@@ -1218,8 +1218,16 @@ loop:
 					stack = stack[:len(stack)-1]
 				}
 			}
-			// Try compiled fn dispatch first
+			// Try WASM fn dispatch first, then IR, then tree-walker
 			if fn, ok := fnObj.(*Fn); ok {
+				// Try WASM native
+				if wp := wasmGetFn(fn); wp != nil {
+					if result := wasmExec(wp, args); result != nil {
+						stack = append(stack, result)
+						continue
+					}
+				}
+				// Try IR
 				if fnProg := irCompileFn(fn); fnProg != nil {
 					if result := irExec(fnProg, args); result != nil {
 						stack = append(stack, result)
