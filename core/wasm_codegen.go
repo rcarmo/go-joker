@@ -36,7 +36,9 @@ func isWasmEligible(prog *IRProgram) bool {
 			pc += 2
 		case irAdd, irSub, irMul, irRem, irInc, irDec,
 			irLt, irEq, irIsZero, irReturn:
-			// ok — all supported
+			// ok
+		case irCallSelf:
+			pc += 2 // nargs operand
 		case irDiv, irSqrt:
 			// ok — float ops, need f64 mode
 		case irJumpIfNot, irJump:
@@ -269,8 +271,14 @@ func compileWasmBody(prog *IRProgram, useFloat bool) []byte {
 			}
 			o = append(o, 0x0c)
 			o = appendULEB(o, depth)
-			// Everything after recur is dead code — stop emitting
 			pc = len(code)
+
+		case irCallSelf:
+			nargs := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			_ = nargs            // args already on WASM stack
+			o = append(o, 0x10)  // call
+			o = appendULEB(o, 0) // function index 0 (self)
 
 		default:
 			return nil
