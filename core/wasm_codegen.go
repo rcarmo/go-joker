@@ -215,14 +215,12 @@ func compileWasmBody(prog *IRProgram, useFloat bool) []byte {
 		case irLt:
 			if useFloat {
 				o = append(o, 0x63)
-				o = append(o, 0xb7)
 			} else {
 				o = append(o, 0x53, 0xad)
 			}
 		case irEq:
 			if useFloat {
 				o = append(o, 0x61)
-				o = append(o, 0xb7)
 			} else {
 				o = append(o, 0x51, 0xad)
 			}
@@ -231,18 +229,16 @@ func compileWasmBody(prog *IRProgram, useFloat bool) []byte {
 				o = append(o, 0x44)
 				o = appendF64(o, 0.0)
 				o = append(o, 0x61)
-				o = append(o, 0xb7)
 			} else {
 				o = append(o, 0x50, 0xad)
 			}
 
 		case irJumpIfNot:
 			pc += 2
-			if useFloat {
-				o = append(o, 0xb0) // i32.trunc_f64_u
-			} else {
+			if !useFloat {
 				o = append(o, 0xa7) // i32.wrap_i64
 			}
+			// In f64 mode, comparison already left i32 on stack
 			o = append(o, 0x04, 0x40) // if void
 			depth++
 
@@ -271,10 +267,10 @@ func compileWasmBody(prog *IRProgram, useFloat bool) []byte {
 				o = append(o, 0x21)
 				o = appendULEB(o, i)
 			}
-			// br to $loop
-			// $loop = depth (ifs are between us and loop)
 			o = append(o, 0x0c)
 			o = appendULEB(o, depth)
+			// Everything after recur is dead code — stop emitting
+			pc = len(code)
 
 		default:
 			return nil
@@ -287,9 +283,14 @@ func compileWasmBody(prog *IRProgram, useFloat bool) []byte {
 		depth--
 	}
 
-	o = append(o, 0x0b)       // end loop
-	o = append(o, 0x42, 0x00) // unreachable i64
-	o = append(o, 0x0b)       // end block
-	o = append(o, 0x0b)       // end func
+	o = append(o, 0x0b) // end loop
+	if useFloat {
+		o = append(o, 0x44) // f64.const 0.0
+		o = appendF64(o, 0.0)
+	} else {
+		o = append(o, 0x42, 0x00) // i64.const 0
+	}
+	o = append(o, 0x0b) // end block
+	o = append(o, 0x0b) // end func
 	return o
 }

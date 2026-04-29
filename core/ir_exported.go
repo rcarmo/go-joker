@@ -91,3 +91,6 @@ func WasmExecExported(wp *WasmProgram, slots []Object) Object { return wasmExec(
 
 func IsWasmEligibleExported(prog *IRProgram) bool { return isWasmEligible(prog) }
 func IrToWasmExported(prog *IRProgram) []byte     { return irToWasm(prog) }
+
+func IsFloatExported(prog *IRProgram) bool { return irProgramUsesFloat(prog) }
+func (p *IRProgram) CodeAt(i int) byte     { return p.code[i] }
