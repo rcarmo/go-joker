@@ -284,10 +284,10 @@ Joker AST → IR compiler → WASM codegen → wazero JIT compile → native exe
 
 | Engine | Arithmetic loop | Allocs/op |
 |--------|----------------|-----------|
-| **WASM/wazero** | **0.36 ms** | **3** |
+| **WASM/wazero** | **0.32 ms** | **24** |
 | Bun/JSC | 0.38 ms | — |
-| Goja | 17.5 ms | — |
-| IR interpreter | 28.7 ms | 500k |
+| Goja | 18.8 ms | — |
+| IR interpreter | 28 ms | 500k |
 | Tree-walker (original) | 189.8 ms | 3.1M |
 
 ### Trade-offs
@@ -321,7 +321,7 @@ Joker AST → IR compiler → WASM codegen → wazero JIT compile → native exe
 
 | Benchmark | Original | Optimized | Speedup |
 |-----------|----------|-----------|---------|
-| Arithmetic loop | 189.8 ms | 38.8 ms (IR) / 0.36 ms (WASM) | 5× / 527× |
+| Arithmetic loop | 189.8 ms | 38.8 ms (IR) / 0.32 ms (WASM) | 5× / 590× |
 | Recursive fib | 546 ms | 65.6 ms | 8.3× |
 | Word frequency | 280 ms | 7.0 ms | 40× |
 
