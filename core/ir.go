@@ -122,6 +122,12 @@ func irCompileFn(fn *Fn) *IRProgram {
 		c.bindingMap[bindingKey{frame: fnFrame, index: i}] = i
 	}
 
+	// If the fn is tail-rewritten, its body has RecurExpr nodes
+	// that need a recur target (like a loop body)
+	if fn.fnExpr.tailRewritten {
+		c.recurTargets = []recurTarget{{pc: 0, baseSlot: 0, nBinds: len(arity.args)}}
+	}
+
 	// If the fn has a self-binding, mark it for self-recursive IR dispatch
 	if fn.fnExpr.self.name != nil {
 		// The self-binding is typically at frame fnFrame-1, index 0

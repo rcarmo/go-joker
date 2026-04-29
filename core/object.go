@@ -713,6 +713,21 @@ func (fn *Fn) Call(args []Object) Object {
 			// If tail-self-calls were rewritten to recur at parse time,
 			// use evalLoop directly (no trampoline needed)
 			if fn.fnExpr.tailRewritten {
+				// Try WASM for rewritten tail-recursive fns
+				if wp := wasmGetFn(fn); wp != nil {
+					if result := wasmExec(wp, args); result != nil {
+						RT.popFrame()
+						return result
+					}
+				}
+				// Try IR
+				if prog := irCompileFn(fn); prog != nil {
+					if result := irExec(prog, args); result != nil {
+						RT.popFrame()
+						return result
+					}
+				}
+				// Fallback to evalLoop
 				childEnv := LocalEnv{bindings: args, parent: fn.env}
 				if fn.env != nil {
 					childEnv.frame = fn.env.frame + 1
