@@ -30,7 +30,10 @@ var (
 
 func getWasmRT() wazero.Runtime {
 	wasmRTOnce.Do(func() {
-		wasmRT = wazero.NewRuntime(context.Background())
+		// Use a compilation cache for faster startup on repeated runs
+		cache := wazero.NewCompilationCache()
+		wasmRT = wazero.NewRuntimeWithConfig(context.Background(),
+			wazero.NewRuntimeConfig().WithCompilationCache(cache))
 	})
 	return wasmRT
 }
