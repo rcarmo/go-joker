@@ -5,3 +5,5 @@
 *.bat text=auto
 
 *.tgz binary
+*.png binary
+*.svg binary
