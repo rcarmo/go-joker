@@ -1,5 +1,7 @@
 # go-joker
 
+![icon](docs/icon-256)
+
 An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Lisp interpreter) for inclusion in [gi](https://github.com/rcarmo/gi), a self-hosted coding agent.
 
 ## What this is
