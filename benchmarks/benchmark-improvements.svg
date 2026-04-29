@@ -79,35 +79,35 @@
   <g transform="translate(48,182)">
     <rect class="row" x="0" y="0" width="1104" height="136" rx="16" />
     <text class="text section" x="20" y="30">Arithmetic loop</text>
-    <text class="improve" x="1058" y="30" text-anchor="end">-89.9%</text>
+    <text class="improve" x="1058" y="30" text-anchor="end">-93.9%</text>
     <text class="muted tiny" x="20" y="58">Baseline</text>
     <rect class="track" x="120" y="44" width="620" height="22" rx="8" />
     <rect class="baseline" x="120" y="44" width="620" height="22" rx="8" />
     <text class="muted tiny" x="20" y="96">Latest</text>
     <rect class="track" x="120" y="82" width="620" height="22" rx="8" />
-    <rect class="current" x="120" y="82" width="63" height="22" rx="8" />
+    <rect class="current" x="120" y="82" width="38" height="22" rx="8" />
     <text class="text metric" x="790" y="61">189.8 ms</text><text class="muted small" x="900" y="61">baseline</text>
-    <text class="text metric" x="790" y="99">19.20 ms</text><text class="muted small" x="900" y="99">latest</text>
+    <text class="text metric" x="790" y="99">11.60 ms</text><text class="muted small" x="900" y="99">latest</text>
   </g>
   
   <g transform="translate(48,334)">
     <rect class="row" x="0" y="0" width="1104" height="136" rx="16" />
     <text class="text section" x="20" y="30">Recursive fib</text>
-    <text class="improve" x="1058" y="30" text-anchor="end">-25.1%</text>
+    <text class="improve" x="1058" y="30" text-anchor="end">-84.5%</text>
     <text class="muted tiny" x="20" y="58">Baseline</text>
     <rect class="track" x="120" y="44" width="620" height="22" rx="8" />
     <rect class="baseline" x="120" y="44" width="620" height="22" rx="8" />
     <text class="muted tiny" x="20" y="96">Latest</text>
     <rect class="track" x="120" y="82" width="620" height="22" rx="8" />
-    <rect class="current" x="120" y="82" width="465" height="22" rx="8" />
+    <rect class="current" x="120" y="82" width="96" height="22" rx="8" />
     <text class="text metric" x="790" y="61">546.0 ms</text><text class="muted small" x="900" y="61">baseline</text>
-    <text class="text metric" x="790" y="99">409.1 ms</text><text class="muted small" x="900" y="99">latest</text>
+    <text class="text metric" x="790" y="99">84.50 ms</text><text class="muted small" x="900" y="99">latest</text>
   </g>
   
   <g transform="translate(48,486)">
     <rect class="row" x="0" y="0" width="1104" height="136" rx="16" />
     <text class="text section" x="20" y="30">Word frequency</text>
-    <text class="improve" x="1058" y="30" text-anchor="end">-96.7%</text>
+    <text class="improve" x="1058" y="30" text-anchor="end">-96.8%</text>
     <text class="muted tiny" x="20" y="58">Baseline</text>
     <rect class="track" x="120" y="44" width="620" height="22" rx="8" />
     <rect class="baseline" x="120" y="44" width="620" height="22" rx="8" />
@@ -115,7 +115,7 @@
     <rect class="track" x="120" y="82" width="620" height="22" rx="8" />
     <rect class="current" x="120" y="82" width="20" height="22" rx="8" />
     <text class="text metric" x="790" y="61">279.9 ms</text><text class="muted small" x="900" y="61">baseline</text>
-    <text class="text metric" x="790" y="99">9.10 ms</text><text class="muted small" x="900" y="99">latest</text>
+    <text class="text metric" x="790" y="99">9.00 ms</text><text class="muted small" x="900" y="99">latest</text>
   </g>
   
 
