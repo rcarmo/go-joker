@@ -85,6 +85,7 @@ type IRProgram struct {
 	numSlots    int
 	captureKeys []bindingKey
 	hasSelf     bool
+	escapeInfo  *EscapeInfo
 }
 
 // ---------- Fn compilation ----------
@@ -812,10 +813,25 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 	}
 	copy(slots, initSlots)
 
-	// Convert ArrayVector slots to transient for in-place mutation
-	for i, s := range slots {
-		if av, ok := s.(*ArrayVector); ok {
-			slots[i] = ToTransient(av)
+	// Escape analysis: only convert safe vector slots to transient
+	// Only run if there are actually vector-typed slots
+	hasVector := false
+	for _, s := range slots {
+		if _, ok := s.(*ArrayVector); ok {
+			hasVector = true
+			break
+		}
+	}
+	if hasVector {
+		if prog.escapeInfo == nil {
+			prog.escapeInfo = analyzeEscapes(prog)
+		}
+		for i, s := range slots {
+			if prog.escapeInfo.SafeMutableSlots[i] {
+				if av, ok := s.(*ArrayVector); ok {
+					slots[i] = ToTransient(av)
+				}
+			}
 		}
 	}
 
