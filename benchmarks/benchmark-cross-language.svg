@@ -1,283 +1,168 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
   <title id="title">Cross-language benchmark matrix</title>
-  <desc id="desc">Heatmap matrix comparing Bun/JSC, Python, Goja, and Joker across all CLBG + micro benchmarks. Cell color = relative speed.</desc>
+  <desc id="desc">Heatmap: Bun/JSC, Python, Goja, Joker across all benchmarks. Cell color = relative speed per row.</desc>
   <style>
-    :root {
-      color-scheme: light dark;
-      --bg: #f6f8fc; --panel: #fff; --border: #c7d3ea;
-      --text: #172033; --muted: #6b7a96; --head: #e8edf5;
-      --fast: #22a566; --mid: #f5a623; --slow: #e04848; --na: #e2e8f2;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0b1020; --panel: #11182b; --border: #25324f;
-        --text: #e3ecff; --muted: #8da0c4; --head: #182240;
-        --fast: #2dbd72; --mid: #d4952a; --slow: #c93e3e; --na: #1a2540;
-      }
-    }
-    svg { background: var(--bg); }
-    .panel { fill: var(--panel); stroke: var(--border); stroke-width: 1; }
-    .head { fill: var(--head); }
-    .text { fill: var(--text); font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
-    .muted { fill: var(--muted); font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
-    .white { fill: #fff; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
-    .title { font-size: 22px; font-weight: 700; }
-    .subtitle { font-size: 13px; font-weight: 500; }
-    .colhead { font-size: 14px; font-weight: 700; }
-    .rowhead { font-size: 12px; font-weight: 600; }
-    .cell { font-size: 11px; font-weight: 600; }
-    .tiny { font-size: 9px; font-weight: 500; }
-    .note { font-size: 11px; }
+    :root { color-scheme: light dark;
+      --bg:#f6f8fc;--panel:#fff;--border:#c7d3ea;--text:#172033;--muted:#6b7a96;--head:#e8edf5;
+      --f:#22a566;--m:#f5a623;--s:#e04848;--na:#e2e8f2; }
+    @media(prefers-color-scheme:dark){ :root {
+      --bg:#0b1020;--panel:#11182b;--border:#25324f;--text:#e3ecff;--muted:#8da0c4;--head:#182240;
+      --f:#2dbd72;--m:#d4952a;--s:#c93e3e;--na:#1a2540; }}
+    svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.head{fill:var(--head)}
+    .text{fill:var(--text);font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+    .muted{fill:var(--muted);font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+    .w{fill:#fff;font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+    .title{font-size:22px;font-weight:700}.sub{font-size:13px;font-weight:500}
+    .ch{font-size:14px;font-weight:700}.rh{font-size:12px;font-weight:600}
+    .c{font-size:11px;font-weight:600}.t{font-size:9px;font-weight:500}.n{font-size:11px}
   </style>
-
-  <rect x="0" y="0" width="1200" height="820" fill="var(--bg)" />
-  <rect class="panel" x="20" y="20" width="1160" height="780" rx="14" />
-
+  <rect x="0" y="0" width="1200" height="820" fill="var(--bg)"/>
+  <rect class="panel" x="20" y="20" width="1160" height="780" rx="14"/>
   <text class="text title" x="44" y="58">Cross-language benchmark matrix</text>
-  <text class="muted subtitle" x="44" y="78">All times in ms/op. Cell color: 🟢 fastest in row → 🟡 mid → 🔴 slowest. Sorted by Joker/Goja ratio.</text>
+  <text class="muted sub" x="44" y="78">All times ms/op • Cell color: 🟢 fast → 🟡 mid → 🔴 slow per row • Sorted by Joker/Goja ratio</text>
 
-  <!-- Column headers -->
+  <!-- Headers -->
   <g transform="translate(40,100)">
-    <rect class="head" x="220" y="0" width="180" height="32" rx="6" />
-    <rect class="head" x="410" y="0" width="180" height="32" rx="6" />
-    <rect class="head" x="600" y="0" width="180" height="32" rx="6" />
-    <rect class="head" x="790" y="0" width="180" height="32" rx="6" />
-    <rect class="head" x="980" y="0" width="160" height="32" rx="6" />
-    <text class="text colhead" x="310" y="22" text-anchor="middle">Bun/JSC</text>
-    <text class="text colhead" x="500" y="22" text-anchor="middle">Python 3.13</text>
-    <text class="text colhead" x="690" y="22" text-anchor="middle">Goja</text>
-    <text class="text colhead" x="880" y="22" text-anchor="middle">Joker</text>
-    <text class="text colhead" x="1060" y="22" text-anchor="middle">Joker/Goja</text>
+    <rect class="head" x="220" y="0" width="170" height="30" rx="5"/><text class="text ch" x="305" y="21" text-anchor="middle">Bun/JSC</text>
+    <rect class="head" x="400" y="0" width="170" height="30" rx="5"/><text class="text ch" x="485" y="21" text-anchor="middle">Python</text>
+    <rect class="head" x="580" y="0" width="170" height="30" rx="5"/><text class="text ch" x="665" y="21" text-anchor="middle">Goja</text>
+    <rect class="head" x="760" y="0" width="170" height="30" rx="5"/><text class="text ch" x="845" y="21" text-anchor="middle">Joker</text>
+    <rect class="head" x="940" y="0" width="170" height="30" rx="5"/><text class="text ch" x="1025" y="21" text-anchor="middle">Joker/Goja</text>
   </g>
 
-  <!-- Data rows. 15 benchmarks × 38px each, starting at y=142 -->
-  <!-- Row colors: interpolate from green (fastest) to red (slowest) per row -->
-
-  <!-- Helper: each row has 5 cells. The ms values determine cell colors. -->
-  <!-- I'll use opacity-based coloring: fast=green bg, slow=red bg -->
-
-  <!-- Row 1: pidigits — Joker wins -->
-  <g transform="translate(40,142)">
-    <text class="text rowhead" x="0" y="18">pidigits</text>
-    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#22a566" opacity="0.4" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#22a566" opacity="0.5" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.02</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">0.05</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">0.15</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">0.052</text>
-    <text class="white cell" x="1060" y="18" text-anchor="middle">0.35× ✅</text>
+  <!-- Data rows: y=140, step=36 -->
+  <!-- 1: arithmetic ⚡ 0.02× -->
+  <g transform="translate(40,140)">
+    <text class="text rh" x="0" y="18">arithmetic loop ⚡</text>
+    <rect fill="#f5a623" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.38</text>
+    <rect fill="#e04848" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">7.31</text>
+    <rect fill="#e04848" opacity=".4" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">18.77</text>
+    <rect fill="#22a566" opacity=".4" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="14" text-anchor="middle">0.29</text><text class="muted t" x="845" y="26" text-anchor="middle">WASM</text>
+    <rect fill="#22a566" opacity=".6" x="940" y="2" width="170" height="28" rx="4"/><text class="w c" x="1025" y="20" text-anchor="middle">0.02× ✅</text>
   </g>
-
-  <!-- Row 2: regex-redux -->
+  <!-- 2: pidigits 0.28× -->
   <g transform="translate(40,178)">
-    <text class="text rowhead" x="0" y="18">regex-redux</text>
-    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.06</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">0.09</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">0.14</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">0.086</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">0.61×</text>
+    <text class="text rh" x="0" y="18">pidigits</text>
+    <rect fill="#22a566" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.02</text>
+    <rect fill="#f5a623" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">0.05</text>
+    <rect fill="#e04848" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">0.15</text>
+    <rect fill="#22a566" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">0.042</text>
+    <rect fill="#22a566" opacity=".5" x="940" y="2" width="170" height="28" rx="4"/><text class="w c" x="1025" y="20" text-anchor="middle">0.28× ✅</text>
+  </g>
+  <!-- 3: regex 0.56× -->
+  <g transform="translate(40,216)">
+    <text class="text rh" x="0" y="18">regex-redux</text>
+    <rect fill="#22a566" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.06</text>
+    <rect fill="#f5a623" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">0.09</text>
+    <rect fill="#e04848" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">0.14</text>
+    <rect fill="#f5a623" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">0.079</text>
+    <rect fill="#22a566" opacity=".4" x="940" y="2" width="170" height="28" rx="4"/><text class="w c" x="1025" y="20" text-anchor="middle">0.56× ✅</text>
+  </g>
+  <!-- 4: spectral 0.58× ⚡ -->
+  <g transform="translate(40,254)">
+    <text class="text rh" x="0" y="18">spectral-norm ⚡</text>
+    <rect fill="#22a566" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">1.86</text>
+    <rect fill="#f5a623" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">24.5</text>
+    <rect fill="#e04848" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">65.2</text>
+    <rect fill="#f5a623" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="14" text-anchor="middle">37.6</text><text class="muted t" x="845" y="26" text-anchor="middle">WASM fn</text>
+    <rect fill="#22a566" opacity=".4" x="940" y="2" width="170" height="28" rx="4"/><text class="w c" x="1025" y="20" text-anchor="middle">0.58× ✅</text>
+  </g>
+  <!-- 5: fib 0.81× -->
+  <g transform="translate(40,292)">
+    <text class="text rh" x="0" y="18">recursive fib</text>
+    <rect fill="#22a566" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.98</text>
+    <rect fill="#f5a623" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">20.7</text>
+    <rect fill="#e04848" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">80.4</text>
+    <rect fill="#e04848" opacity=".2" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">65.4</text>
+    <rect fill="#22a566" opacity=".3" x="940" y="2" width="170" height="28" rx="4"/><text class="text c" x="1025" y="20" text-anchor="middle">0.81× ✅</text>
+  </g>
+  <!-- 6: k-nucleotide 2.3× -->
+  <g transform="translate(40,330)">
+    <text class="text rh" x="0" y="18">k-nucleotide</text>
+    <rect fill="#f5a623" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.06</text>
+    <rect fill="#22a566" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">0.03</text>
+    <rect fill="#f5a623" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">0.48</text>
+    <rect fill="#e04848" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">1.09</text>
+    <rect fill="#f5a623" opacity=".3" x="940" y="2" width="170" height="28" rx="4"/><text class="text c" x="1025" y="20" text-anchor="middle">2.3×</text>
+  </g>
+  <!-- 7: rev-comp 2.4× -->
+  <g transform="translate(40,368)">
+    <text class="text rh" x="0" y="18">reverse-complement</text>
+    <rect fill="#f5a623" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.02</text>
+    <rect fill="#22a566" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">0.01</text>
+    <rect fill="#f5a623" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">0.13</text>
+    <rect fill="#e04848" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">0.31</text>
+    <rect fill="#f5a623" opacity=".3" x="940" y="2" width="170" height="28" rx="4"/><text class="text c" x="1025" y="20" text-anchor="middle">2.4×</text>
+  </g>
+  <!-- 8: fannkuch 2.4× -->
+  <g transform="translate(40,406)">
+    <text class="text rh" x="0" y="18">fannkuch-redux</text>
+    <rect fill="#22a566" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.34</text>
+    <rect fill="#22a566" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">4.94</text>
+    <rect fill="#f5a623" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">24.0</text>
+    <rect fill="#e04848" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">57.7</text>
+    <rect fill="#f5a623" opacity=".3" x="940" y="2" width="170" height="28" rx="4"/><text class="text c" x="1025" y="20" text-anchor="middle">2.4×</text>
+  </g>
+  <!-- 9: binary-trees 2.5× -->
+  <g transform="translate(40,444)">
+    <text class="text rh" x="0" y="18">binary-trees</text>
+    <rect fill="#22a566" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">5.68</text>
+    <rect fill="#f5a623" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">54.2</text>
+    <rect fill="#f5a623" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">172</text>
+    <rect fill="#e04848" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">432</text>
+    <rect fill="#f5a623" opacity=".3" x="940" y="2" width="170" height="28" rx="4"/><text class="text c" x="1025" y="20" text-anchor="middle">2.5×</text>
+  </g>
+  <!-- 10: mandelbrot 2.5× -->
+  <g transform="translate(40,482)">
+    <text class="text rh" x="0" y="18">mandelbrot</text>
+    <rect fill="#22a566" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.25</text>
+    <rect fill="#22a566" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">4.76</text>
+    <rect fill="#f5a623" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">39.0</text>
+    <rect fill="#e04848" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">98.9</text>
+    <rect fill="#f5a623" opacity=".3" x="940" y="2" width="170" height="28" rx="4"/><text class="text c" x="1025" y="20" text-anchor="middle">2.5×</text>
+  </g>
+  <!-- 11: fasta 2.9× -->
+  <g transform="translate(40,520)">
+    <text class="text rh" x="0" y="18">fasta</text>
+    <rect fill="#22a566" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.02</text>
+    <rect fill="#22a566" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">0.06</text>
+    <rect fill="#f5a623" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">0.60</text>
+    <rect fill="#e04848" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">1.73</text>
+    <rect fill="#f5a623" opacity=".3" x="940" y="2" width="170" height="28" rx="4"/><text class="text c" x="1025" y="20" text-anchor="middle">2.9×</text>
+  </g>
+  <!-- 12: tail-rec 5.2× -->
+  <g transform="translate(40,558)">
+    <text class="text rh" x="0" y="18">tail-recursive sum</text>
+    <rect fill="#22a566" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.22</text>
+    <rect fill="#22a566" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">3.46</text>
+    <rect fill="#f5a623" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">16.2</text>
+    <rect fill="#e04848" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">83.7</text>
+    <rect fill="#e04848" opacity=".3" x="940" y="2" width="170" height="28" rx="4"/><text class="text c" x="1025" y="20" text-anchor="middle">5.2×</text>
+  </g>
+  <!-- 13: n-body 5.9× -->
+  <g transform="translate(40,596)">
+    <text class="text rh" x="0" y="18">n-body</text>
+    <rect fill="#22a566" opacity=".3" x="220" y="2" width="170" height="28" rx="4"/><text class="text c" x="305" y="20" text-anchor="middle">0.18</text>
+    <rect fill="#22a566" opacity=".3" x="400" y="2" width="170" height="28" rx="4"/><text class="text c" x="485" y="20" text-anchor="middle">0.66</text>
+    <rect fill="#f5a623" opacity=".3" x="580" y="2" width="170" height="28" rx="4"/><text class="text c" x="665" y="20" text-anchor="middle">4.75</text>
+    <rect fill="#e04848" opacity=".3" x="760" y="2" width="170" height="28" rx="4"/><text class="text c" x="845" y="20" text-anchor="middle">27.9</text>
+    <rect fill="#e04848" opacity=".3" x="940" y="2" width="170" height="28" rx="4"/><text class="text c" x="1025" y="20" text-anchor="middle">5.9×</text>
   </g>
 
-  <!-- Row 3: arithmetic loop — WASM! -->
-  <g transform="translate(40,214)">
-    <text class="text rowhead" x="0" y="18">arithmetic loop ⚡</text>
-    <rect fill="#f5a623" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.4" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#22a566" opacity="0.4" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#22a566" opacity="0.5" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.38</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">7.31</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">18.77</text>
-    <text class="text cell" x="880" y="14" text-anchor="middle">0.32</text>
-    <text class="muted tiny" x="880" y="26" text-anchor="middle">WASM native</text>
-    <text class="white cell" x="1060" y="18" text-anchor="middle">0.02× ✅</text>
+  <!-- Divider + summary -->
+  <line x1="40" y1="636" x2="1140" y2="636" stroke="var(--border)"/>
+  <g transform="translate(40,648)">
+    <text class="text rh" x="0" y="18">Joker wins vs Goja</text>
+    <text class="text c" x="305" y="18" text-anchor="middle">13/13</text>
+    <text class="text c" x="485" y="18" text-anchor="middle">13/13</text>
+    <text class="text c" x="665" y="18" text-anchor="middle">—</text>
+    <text class="text c" x="845" y="18" text-anchor="middle">5/13</text>
+    <text class="muted t" x="1025" y="18" text-anchor="middle">arith, pidig, regex, spec, fib</text>
   </g>
 
-  <!-- Row 4: recursive fib -->
-  <g transform="translate(40,250)">
-    <text class="text rowhead" x="0" y="18">recursive fib</text>
-    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.2" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.98</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">20.67</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">80.41</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">99.8</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">1.24×</text>
-  </g>
-
-  <!-- Row 5: binary-trees -->
-  <g transform="translate(40,286)">
-    <text class="text rowhead" x="0" y="18">binary-trees</text>
-    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.2" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">5.68</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">54.24</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">172.3</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">431.4</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">2.5×</text>
-  </g>
-
-  <!-- Row 6: fannkuch -->
-  <g transform="translate(40,322)">
-    <text class="text rowhead" x="0" y="18">fannkuch-redux</text>
-    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.34</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">4.94</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">24.01</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">77.8</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">3.2×</text>
-  </g>
-
-  <!-- Row 7: k-nucleotide -->
-  <g transform="translate(40,358)">
-    <text class="text rowhead" x="0" y="18">k-nucleotide</text>
-    <rect fill="#f5a623" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.06</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">0.03</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">0.48</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">1.56</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">3.3×</text>
-  </g>
-
-  <!-- Row 8: mandelbrot -->
-  <g transform="translate(40,394)">
-    <text class="text rowhead" x="0" y="18">mandelbrot</text>
-    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.25</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">4.76</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">38.96</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">128.3</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">3.3×</text>
-  </g>
-
-  <!-- Row 9: spectral-norm -->
-  <g transform="translate(40,430)">
-    <text class="text rowhead" x="0" y="18">spectral-norm</text>
-    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">1.86</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">24.48</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">65.17</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">260.0</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">4.0×</text>
-  </g>
-
-  <!-- Row 10: reverse-complement -->
-  <g transform="translate(40,466)">
-    <text class="text rowhead" x="0" y="18">reverse-complement</text>
-    <rect fill="#f5a623" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.02</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">0.01</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">0.13</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">0.55</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">4.2×</text>
-  </g>
-
-  <!-- Row 11: fasta -->
-  <g transform="translate(40,502)">
-    <text class="text rowhead" x="0" y="18">fasta</text>
-    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.02</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">0.06</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">0.60</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">1.54</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">2.6×</text>
-  </g>
-
-  <!-- Row 12: tail-recursive sum -->
-  <g transform="translate(40,538)">
-    <text class="text rowhead" x="0" y="18">tail-recursive sum</text>
-    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.22</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">3.46</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">16.17</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">81.9</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">5.1×</text>
-  </g>
-
-  <!-- Row 13: n-body -->
-  <g transform="translate(40,574)">
-    <text class="text rowhead" x="0" y="18">n-body</text>
-    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
-    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
-    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
-    <rect fill="#e04848" opacity="0.3" x="980" y="0" width="160" height="34" rx="4" />
-    <text class="text cell" x="310" y="18" text-anchor="middle">0.18</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">0.66</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">4.75</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">22.8</text>
-    <text class="text cell" x="1060" y="18" text-anchor="middle">4.8×</text>
-  </g>
-
-  <!-- Divider -->
-  <line x1="40" y1="618" x2="1140" y2="618" stroke="var(--border)" stroke-width="1" />
-
-  <!-- Summary row -->
-  <g transform="translate(40,630)">
-    <text class="text rowhead" x="0" y="18">Wins vs Goja</text>
-    <text class="text cell" x="310" y="18" text-anchor="middle">13/13</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">13/13</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">—</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">3/13</text>
-    <text class="muted tiny" x="1060" y="18" text-anchor="middle">pidigits, regex, arith</text>
-  </g>
-
-  <g transform="translate(40,660)">
-    <text class="text rowhead" x="0" y="18">Geometric mean ratio</text>
-    <text class="text cell" x="310" y="18" text-anchor="middle">~0.01×</text>
-    <text class="text cell" x="500" y="18" text-anchor="middle">~0.2×</text>
-    <text class="text cell" x="690" y="18" text-anchor="middle">1.0×</text>
-    <text class="text cell" x="880" y="18" text-anchor="middle">~2.7×</text>
-  </g>
-
-  <!-- Notes -->
-  <g transform="translate(40,710)">
-    <text class="muted note" x="0" y="14">All values in ms/op, 5 iterations, i7-12700. ⚡ = WASM native compilation.</text>
-    <text class="muted note" x="0" y="32">Cell colors: 🟢 green = fast for row, 🟡 orange = mid, 🔴 red = slowest.</text>
-    <text class="muted note" x="0" y="50">Joker optimization: IR bytecode (26 opcodes) + WASM/wazero + TCO + transient vectors + compiled fn dispatch.</text>
-    <text class="muted note" x="0" y="68">Sorted by Joker/Goja ratio (best first). Joker's arithmetic loop via WASM matches Bun/JSC.</text>
+  <g transform="translate(40,700)">
+    <text class="muted n" x="0" y="14">All values ms/op, 5 iterations, i7-12700. ⚡ = WASM native compilation via wazero.</text>
+    <text class="muted n" x="0" y="32">Optimization: IR bytecode (26 opcodes) + WASM/wazero JIT + TCO rewrite + transient vectors + compiled fn dispatch.</text>
+    <text class="muted n" x="0" y="50">Joker arithmetic loop matches Bun/JSC (0.29ms vs 0.38ms). Spectral-norm via WASM fn dispatch beats Goja (37.6ms vs 65ms).</text>
   </g>
 </svg>
