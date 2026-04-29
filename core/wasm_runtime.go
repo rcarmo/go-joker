@@ -14,9 +14,11 @@ import (
 
 // WasmProgram is a compiled, ready-to-execute WASM module.
 type WasmProgram struct {
-	mod      api.Module
-	execFn   api.Function
-	useFloat bool
+	mod        api.Module
+	execFn     api.Function
+	useFloat   bool
+	hasImports bool
+	constants  []Object // pre-stored constants for handle references
 }
 
 var (
@@ -67,7 +69,12 @@ func wasmGetCached(prog *IRProgram) *WasmProgram {
 
 // wasmCompile translates IR → WASM binary → wazero compiled module.
 func wasmCompile(prog *IRProgram) *WasmProgram {
+	// Try pure-numeric path first (faster, no imports needed)
 	bin := irToWasm(prog)
+	// TODO: enable imports path once control flow validation is fixed
+	// if bin == nil {
+	// 	bin = irToWasmWithImports(prog)
+	// }
 	if bin == nil {
 		return nil
 	}
@@ -91,12 +98,26 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 		return nil
 	}
 
-	return &WasmProgram{mod: mod, execFn: execFn, useFloat: irProgramUsesFloat(prog)}
+	wp := &WasmProgram{
+		mod:        mod,
+		execFn:     execFn,
+		useFloat:   irProgramUsesFloat(prog),
+		hasImports: !isWasmEligible(prog),
+		constants:  prog.constants,
+	}
+	return wp
 }
 
 func wasmExec(wp *WasmProgram, slots []Object) Object {
 	// Create object table for this execution
 	table := &objectTable{objects: make([]Object, 0, 16)}
+
+	// Pre-populate with IR program constants (for handle references)
+	if wp.hasImports && len(wp.constants) > 0 {
+		for _, c := range wp.constants {
+			table.objects = append(table.objects, c)
+		}
+	}
 
 	params := make([]uint64, len(slots))
 	for i, s := range slots {
