@@ -1,141 +1,283 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
-  <title id="title">Joker vs Goja — CLBG benchmark ratio</title>
-  <desc id="desc">Vertical bar chart showing Joker/Goja time ratio. Below 1.0 = Joker wins.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">Cross-language benchmark matrix</title>
+  <desc id="desc">Heatmap matrix comparing Bun/JSC, Python, Goja, and Joker across all CLBG + micro benchmarks. Cell color = relative speed.</desc>
   <style>
     :root {
       color-scheme: light dark;
-      --bg: #f6f8fc; --panel: #ffffff; --border: #c7d3ea;
-      --text: #172033; --muted: #6b7a96; --grid: #e2e9f4;
-      --win: #23a566; --close: #f5a623; --gap: #e04848;
-      --parity: #3572a5;
+      --bg: #f6f8fc; --panel: #fff; --border: #c7d3ea;
+      --text: #172033; --muted: #6b7a96; --head: #e8edf5;
+      --fast: #22a566; --mid: #f5a623; --slow: #e04848; --na: #e2e8f2;
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #0b1020; --panel: #11182b; --border: #25324f;
-        --text: #e3ecff; --muted: #8da0c4; --grid: #1e2d4a;
-        --win: #37c67e; --close: #f5a623; --gap: #f06060;
-        --parity: #6b9fd4;
+        --text: #e3ecff; --muted: #8da0c4; --head: #182240;
+        --fast: #2dbd72; --mid: #d4952a; --slow: #c93e3e; --na: #1a2540;
       }
     }
     svg { background: var(--bg); }
     .panel { fill: var(--panel); stroke: var(--border); stroke-width: 1; }
+    .head { fill: var(--head); }
     .text { fill: var(--text); font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
     .muted { fill: var(--muted); font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
-    .title { font-size: 24px; font-weight: 700; }
-    .subtitle { font-size: 14px; font-weight: 500; }
-    .label { font-size: 12px; font-weight: 600; }
-    .value { font-size: 12px; font-weight: 700; }
-    .small { font-size: 11px; font-weight: 500; }
-    .tiny { font-size: 10px; font-weight: 500; }
-    .grid { stroke: var(--grid); stroke-width: 1; }
-    .parity { stroke: var(--parity); stroke-width: 2; stroke-dasharray: 6,4; }
-    .win { fill: var(--win); }
-    .close { fill: var(--close); }
-    .gap { fill: var(--gap); }
+    .white { fill: #fff; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    .title { font-size: 22px; font-weight: 700; }
+    .subtitle { font-size: 13px; font-weight: 500; }
+    .colhead { font-size: 14px; font-weight: 700; }
+    .rowhead { font-size: 12px; font-weight: 600; }
+    .cell { font-size: 11px; font-weight: 600; }
+    .tiny { font-size: 9px; font-weight: 500; }
+    .note { font-size: 11px; }
   </style>
 
-  <rect x="0" y="0" width="1200" height="900" fill="var(--bg)" />
-  <rect class="panel" x="24" y="24" width="1152" height="852" rx="16" />
+  <rect x="0" y="0" width="1200" height="820" fill="var(--bg)" />
+  <rect class="panel" x="20" y="20" width="1160" height="780" rx="14" />
 
-  <text class="text title" x="56" y="68">Joker / Goja time ratio — CLBG + micro benchmarks</text>
-  <text class="muted subtitle" x="56" y="92">Bar height = how many × slower than Goja. Below the 1.0× line = Joker wins.</text>
+  <text class="text title" x="44" y="58">Cross-language benchmark matrix</text>
+  <text class="muted subtitle" x="44" y="78">All times in ms/op. Cell color: 🟢 fastest in row → 🟡 mid → 🔴 slowest. Sorted by Joker/Goja ratio.</text>
 
-  <g transform="translate(750,60)">
-    <rect class="win" x="0" y="0" width="14" height="14" rx="3" /><text class="text small" x="20" y="12">Joker faster</text>
-    <rect class="close" x="130" y="0" width="14" height="14" rx="3" /><text class="text small" x="150" y="12">Within 4×</text>
-    <rect class="gap" x="250" y="0" width="14" height="14" rx="3" /><text class="text small" x="270" y="12">Over 4×</text>
+  <!-- Column headers -->
+  <g transform="translate(40,100)">
+    <rect class="head" x="220" y="0" width="180" height="32" rx="6" />
+    <rect class="head" x="410" y="0" width="180" height="32" rx="6" />
+    <rect class="head" x="600" y="0" width="180" height="32" rx="6" />
+    <rect class="head" x="790" y="0" width="180" height="32" rx="6" />
+    <rect class="head" x="980" y="0" width="160" height="32" rx="6" />
+    <text class="text colhead" x="310" y="22" text-anchor="middle">Bun/JSC</text>
+    <text class="text colhead" x="500" y="22" text-anchor="middle">Python 3.13</text>
+    <text class="text colhead" x="690" y="22" text-anchor="middle">Goja</text>
+    <text class="text colhead" x="880" y="22" text-anchor="middle">Joker</text>
+    <text class="text colhead" x="1060" y="22" text-anchor="middle">Joker/Goja</text>
   </g>
 
-  <!-- Y axis: 0 at y=720, 7× at y=130. Per unit = 84.3px. Parity at y=636 -->
-  <line class="grid" x1="80" y1="636" x2="1140" y2="636" />
-  <line class="grid" x1="80" y1="551" x2="1140" y2="551" />
-  <line class="grid" x1="80" y1="467" x2="1140" y2="467" />
-  <line class="grid" x1="80" y1="383" x2="1140" y2="383" />
-  <line class="grid" x1="80" y1="299" x2="1140" y2="299" />
-  <line class="grid" x1="80" y1="214" x2="1140" y2="214" />
-  <line class="grid" x1="80" y1="130" x2="1140" y2="130" />
-  <line class="parity" x1="80" y1="636" x2="1140" y2="636" />
+  <!-- Data rows. 15 benchmarks × 38px each, starting at y=142 -->
+  <!-- Row colors: interpolate from green (fastest) to red (slowest) per row -->
 
-  <text class="muted small" x="72" y="724" text-anchor="end">0×</text>
-  <text class="muted small" x="72" y="640" text-anchor="end">1×</text>
-  <text class="muted small" x="72" y="555" text-anchor="end">2×</text>
-  <text class="muted small" x="72" y="471" text-anchor="end">3×</text>
-  <text class="muted small" x="72" y="387" text-anchor="end">4×</text>
-  <text class="muted small" x="72" y="303" text-anchor="end">5×</text>
-  <text class="muted small" x="72" y="218" text-anchor="end">6×</text>
-  <text class="muted small" x="72" y="134" text-anchor="end">7×</text>
-  <text class="muted tiny" x="56" y="640" text-anchor="end">parity →</text>
+  <!-- Helper: each row has 5 cells. The ms values determine cell colors. -->
+  <!-- I'll use opacity-based coloring: fast=green bg, slow=red bg -->
 
-  <!-- Bars sorted by ratio. x starts at 95, width 80, gap 12 -->
-  <!-- pidigits: 0.11/0.15 = 0.73× -->
-  <rect class="win" x="95" y="658" width="80" height="62" rx="6" />
-  <text class="text value" x="135" y="654" text-anchor="middle">0.7×</text>
-  <text class="text label" x="135" y="746" text-anchor="middle">pidigits</text>
-  <text class="muted tiny" x="135" y="760" text-anchor="middle">0.11 ms</text>
+  <!-- Row 1: pidigits — Joker wins -->
+  <g transform="translate(40,142)">
+    <text class="text rowhead" x="0" y="18">pidigits</text>
+    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#22a566" opacity="0.4" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#22a566" opacity="0.5" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.02</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">0.05</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">0.15</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">0.052</text>
+    <text class="white cell" x="1060" y="18" text-anchor="middle">0.35× ✅</text>
+  </g>
 
-  <!-- fib: 65.6/80.4 = 0.82× -->
-  <rect class="win" x="187" y="651" width="80" height="69" rx="6" />
-  <text class="text value" x="227" y="647" text-anchor="middle">0.8×</text>
-  <text class="text label" x="227" y="746" text-anchor="middle">fib</text>
-  <text class="muted tiny" x="227" y="760" text-anchor="middle">65.6 ms</text>
+  <!-- Row 2: regex-redux -->
+  <g transform="translate(40,178)">
+    <text class="text rowhead" x="0" y="18">regex-redux</text>
+    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.06</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">0.09</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">0.14</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">0.086</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">0.61×</text>
+  </g>
 
-  <!-- regex: 0.16/0.14 = 1.1× -->
-  <rect class="close" x="279" y="627" width="80" height="93" rx="6" />
-  <text class="text value" x="319" y="623" text-anchor="middle">1.1×</text>
-  <text class="text label" x="319" y="746" text-anchor="middle">regex</text>
-  <text class="muted tiny" x="319" y="760" text-anchor="middle">0.16 ms</text>
+  <!-- Row 3: arithmetic loop — WASM! -->
+  <g transform="translate(40,214)">
+    <text class="text rowhead" x="0" y="18">arithmetic loop ⚡</text>
+    <rect fill="#f5a623" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.4" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#22a566" opacity="0.4" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#22a566" opacity="0.5" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.38</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">7.31</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">18.77</text>
+    <text class="text cell" x="880" y="14" text-anchor="middle">0.32</text>
+    <text class="muted tiny" x="880" y="26" text-anchor="middle">WASM native</text>
+    <text class="white cell" x="1060" y="18" text-anchor="middle">0.02× ✅</text>
+  </g>
 
-  <!-- binary-trees: 474/172 = 2.8× -->
-  <rect class="close" x="371" y="484" width="80" height="236" rx="6" />
-  <text class="text value" x="411" y="480" text-anchor="middle">2.8×</text>
-  <text class="text label" x="411" y="746" text-anchor="middle">b-trees</text>
-  <text class="muted tiny" x="411" y="760" text-anchor="middle">474 ms</text>
+  <!-- Row 4: recursive fib -->
+  <g transform="translate(40,250)">
+    <text class="text rowhead" x="0" y="18">recursive fib</text>
+    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.2" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.98</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">20.67</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">80.41</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">99.8</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">1.24×</text>
+  </g>
 
-  <!-- fannkuch: 85.8/24 = 3.6× -->
-  <rect class="close" x="463" y="416" width="80" height="304" rx="6" />
-  <text class="text value" x="503" y="412" text-anchor="middle">3.6×</text>
-  <text class="text label" x="503" y="746" text-anchor="middle">fannkuch</text>
-  <text class="muted tiny" x="503" y="760" text-anchor="middle">85.8 ms</text>
+  <!-- Row 5: binary-trees -->
+  <g transform="translate(40,286)">
+    <text class="text rowhead" x="0" y="18">binary-trees</text>
+    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.2" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">5.68</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">54.24</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">172.3</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">431.4</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">2.5×</text>
+  </g>
 
-  <!-- mandelbrot: 158/39 = 4.0× -->
-  <rect class="gap" x="555" y="383" width="80" height="337" rx="6" />
-  <text class="text value" x="595" y="379" text-anchor="middle">4.0×</text>
-  <text class="text label" x="595" y="746" text-anchor="middle">mandel</text>
-  <text class="muted tiny" x="595" y="760" text-anchor="middle">158 ms</text>
+  <!-- Row 6: fannkuch -->
+  <g transform="translate(40,322)">
+    <text class="text rowhead" x="0" y="18">fannkuch-redux</text>
+    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.34</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">4.94</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">24.01</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">77.8</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">3.2×</text>
+  </g>
 
-  <!-- k-nucleotide: 2.0/0.48 = 4.2× -->
-  <rect class="gap" x="647" y="366" width="80" height="354" rx="6" />
-  <text class="text value" x="687" y="362" text-anchor="middle">4.2×</text>
-  <text class="text label" x="687" y="746" text-anchor="middle">k-nucl</text>
-  <text class="muted tiny" x="687" y="760" text-anchor="middle">2.0 ms</text>
+  <!-- Row 7: k-nucleotide -->
+  <g transform="translate(40,358)">
+    <text class="text rowhead" x="0" y="18">k-nucleotide</text>
+    <rect fill="#f5a623" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.06</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">0.03</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">0.48</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">1.56</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">3.3×</text>
+  </g>
 
-  <!-- spectral: 293/65 = 4.5× -->
-  <rect class="gap" x="739" y="341" width="80" height="379" rx="6" />
-  <text class="text value" x="779" y="337" text-anchor="middle">4.5×</text>
-  <text class="text label" x="779" y="746" text-anchor="middle">spectral</text>
-  <text class="muted tiny" x="779" y="760" text-anchor="middle">293 ms</text>
+  <!-- Row 8: mandelbrot -->
+  <g transform="translate(40,394)">
+    <text class="text rowhead" x="0" y="18">mandelbrot</text>
+    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.4" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.25</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">4.76</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">38.96</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">128.3</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">3.3×</text>
+  </g>
 
-  <!-- rev-comp: 0.60/0.13 = 4.6× -->
-  <rect class="gap" x="831" y="332" width="80" height="388" rx="6" />
-  <text class="text value" x="871" y="328" text-anchor="middle">4.6×</text>
-  <text class="text label" x="871" y="746" text-anchor="middle">rev-comp</text>
-  <text class="muted tiny" x="871" y="760" text-anchor="middle">0.60 ms</text>
+  <!-- Row 9: spectral-norm -->
+  <g transform="translate(40,430)">
+    <text class="text rowhead" x="0" y="18">spectral-norm</text>
+    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">1.86</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">24.48</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">65.17</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">260.0</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">4.0×</text>
+  </g>
 
-  <!-- fasta: 2.8/0.60 = 4.7× -->
-  <rect class="gap" x="923" y="324" width="80" height="396" rx="6" />
-  <text class="text value" x="963" y="320" text-anchor="middle">4.7×</text>
-  <text class="text label" x="963" y="746" text-anchor="middle">fasta</text>
-  <text class="muted tiny" x="963" y="760" text-anchor="middle">2.8 ms</text>
+  <!-- Row 10: reverse-complement -->
+  <g transform="translate(40,466)">
+    <text class="text rowhead" x="0" y="18">reverse-complement</text>
+    <rect fill="#f5a623" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.02</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">0.01</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">0.13</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">0.55</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">4.2×</text>
+  </g>
 
-  <!-- n-body: 30.5/4.75 = 6.4× -->
-  <rect class="gap" x="1015" y="181" width="80" height="539" rx="6" />
-  <text class="text value" x="1055" y="177" text-anchor="middle">6.4×</text>
-  <text class="text label" x="1055" y="746" text-anchor="middle">n-body</text>
-  <text class="muted tiny" x="1055" y="760" text-anchor="middle">30.5 ms</text>
+  <!-- Row 11: fasta -->
+  <g transform="translate(40,502)">
+    <text class="text rowhead" x="0" y="18">fasta</text>
+    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.02</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">0.06</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">0.60</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">1.54</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">2.6×</text>
+  </g>
 
-  <g transform="translate(56,790)">
-    <text class="text small" x="0" y="16">Sorted by Joker/Goja ratio. Green = Joker wins. Orange = within 4×. Red = over 4×.</text>
-    <text class="muted tiny" x="0" y="36">IR bytecode (26 opcodes) • TCO rewrite • transient vectors • self-recursive dispatch • compiled fn dispatch</text>
-    <text class="muted tiny" x="0" y="50">All values ms/op, 5 iterations. Host: i7-12700. WASM backend not shown (0.36ms arithmetic loop).</text>
+  <!-- Row 12: tail-recursive sum -->
+  <g transform="translate(40,538)">
+    <text class="text rowhead" x="0" y="18">tail-recursive sum</text>
+    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.22</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">3.46</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">16.17</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">81.9</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">5.1×</text>
+  </g>
+
+  <!-- Row 13: n-body -->
+  <g transform="translate(40,574)">
+    <text class="text rowhead" x="0" y="18">n-body</text>
+    <rect fill="#22a566" opacity="0.3" x="220" y="0" width="180" height="34" rx="4" />
+    <rect fill="#22a566" opacity="0.3" x="410" y="0" width="180" height="34" rx="4" />
+    <rect fill="#f5a623" opacity="0.3" x="600" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="790" y="0" width="180" height="34" rx="4" />
+    <rect fill="#e04848" opacity="0.3" x="980" y="0" width="160" height="34" rx="4" />
+    <text class="text cell" x="310" y="18" text-anchor="middle">0.18</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">0.66</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">4.75</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">22.8</text>
+    <text class="text cell" x="1060" y="18" text-anchor="middle">4.8×</text>
+  </g>
+
+  <!-- Divider -->
+  <line x1="40" y1="618" x2="1140" y2="618" stroke="var(--border)" stroke-width="1" />
+
+  <!-- Summary row -->
+  <g transform="translate(40,630)">
+    <text class="text rowhead" x="0" y="18">Wins vs Goja</text>
+    <text class="text cell" x="310" y="18" text-anchor="middle">13/13</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">13/13</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">—</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">3/13</text>
+    <text class="muted tiny" x="1060" y="18" text-anchor="middle">pidigits, regex, arith</text>
+  </g>
+
+  <g transform="translate(40,660)">
+    <text class="text rowhead" x="0" y="18">Geometric mean ratio</text>
+    <text class="text cell" x="310" y="18" text-anchor="middle">~0.01×</text>
+    <text class="text cell" x="500" y="18" text-anchor="middle">~0.2×</text>
+    <text class="text cell" x="690" y="18" text-anchor="middle">1.0×</text>
+    <text class="text cell" x="880" y="18" text-anchor="middle">~2.7×</text>
+  </g>
+
+  <!-- Notes -->
+  <g transform="translate(40,710)">
+    <text class="muted note" x="0" y="14">All values in ms/op, 5 iterations, i7-12700. ⚡ = WASM native compilation.</text>
+    <text class="muted note" x="0" y="32">Cell colors: 🟢 green = fast for row, 🟡 orange = mid, 🔴 red = slowest.</text>
+    <text class="muted note" x="0" y="50">Joker optimization: IR bytecode (26 opcodes) + WASM/wazero + TCO + transient vectors + compiled fn dispatch.</text>
+    <text class="muted note" x="0" y="68">Sorted by Joker/Goja ratio (best first). Joker's arithmetic loop via WASM matches Bun/JSC.</text>
   </g>
 </svg>
