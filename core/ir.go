@@ -1171,9 +1171,11 @@ loop:
 			key := stack[len(stack)-2]
 			coll := stack[len(stack)-3]
 			stack = stack[:len(stack)-3]
-			// Fast path: transient vector in-place mutation
+			// Fast path: transient in-place mutation
 			if tv, ok := coll.(*TransientVector); ok {
 				stack = append(stack, tv.AssocInPlace(key, val))
+			} else if tm, ok := coll.(*TransientMap); ok {
+				stack = append(stack, tm.AssocInPlace(key, val))
 			} else if a, ok := coll.(Associative); ok {
 				stack = append(stack, a.Assoc(key, val))
 			} else {

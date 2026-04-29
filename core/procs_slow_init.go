@@ -193,4 +193,32 @@ func init() {
 	intern("infinite?__", procIsInfinite, "procIsInfinite")
 	intern("parseDouble__", procParseDouble, "procParseDouble")
 	intern("parseLong__", procParseLong, "procParseLong")
+
+	// Transient operations
+	intern("transient__", procTransient, "procTransient")
+	intern("assoc!__", procAssocBang, "procAssocBang")
+	intern("conj!__", procConjBang, "procConjBang")
+	intern("pop!__", procPopBang, "procPopBang")
+	intern("persistent!__", procPersistentBang, "procPersistentBang")
+	intern("transient?__", procIsTransient, "procIsTransient")
+}
+
+func init() {
+	// Register transient operations as public core vars
+	ns := GLOBAL_ENV.CoreNamespace
+	for _, r := range []struct {
+		name  string
+		fn    ProcFn
+		pname string
+	}{
+		{"transient", procTransient, "procTransient"},
+		{"assoc!", procAssocBang, "procAssocBang"},
+		{"conj!", procConjBang, "procConjBang"},
+		{"pop!", procPopBang, "procPopBang"},
+		{"persistent!", procPersistentBang, "procPersistentBang"},
+		{"transient?", procIsTransient, "procIsTransient"},
+	} {
+		vr := ns.Intern(MakeSymbol(r.name))
+		vr.Value = Proc{Fn: r.fn, Name: r.pname}
+	}
 }

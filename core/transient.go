@@ -1,17 +1,30 @@
 package core
 
-// transient.go — Clojure-style transient vectors for mutation-heavy loops.
+// transient.go — Clojure-style transient data structures.
 //
-// A TransientVector wraps an ArrayVector and allows in-place mutation.
-// It is created via (transient v) and frozen back with (persistent! v).
-// Only the IR uses transients internally — they are not exposed as
-// user-facing Joker primitives in this implementation.
+// Transients provide O(1) mutable access to vectors and maps within
+// a single-threaded context. They are created from persistent structures,
+// mutated in place, and then frozen back to persistent form.
 //
-// This follows Clojure's transient semantics: single-owner, single-thread.
+// API:
+//   (transient coll)        → TransientVector or TransientMap
+//   (assoc! tv idx val)     → tv (mutated in place)
+//   (conj! tv val)          → tv (appended in place)
+//   (pop! tv)               → tv (last element removed)
+//   (persistent! tv)        → persistent vector or map
+//   (transient? x)          → true if x is a transient
+//
+// Semantics:
+//   - Single-owner: do not share transients across goroutines
+//   - After persistent!, the transient is invalid (further mutation panics)
+//   - Transients implement Counted, Indexed, and Gettable
 
-// TransientVector is a mutable wrapper around an array of Objects.
+// ---------- TransientVector ----------
+
+// TransientVector is a mutable vector backed by a Go slice.
 type TransientVector struct {
-	arr []Object
+	arr    []Object
+	frozen bool
 }
 
 func (tv *TransientVector) ToString(escape bool) string   { return "#<transient-vector>" }
@@ -20,12 +33,38 @@ func (tv *TransientVector) GetInfo() *ObjectInfo          { return nil }
 func (tv *TransientVector) WithInfo(*ObjectInfo) Object   { return tv }
 func (tv *TransientVector) GetType() *Type                { return TYPE.ArrayVector }
 func (tv *TransientVector) Hash() uint32                  { return 0 }
+func (tv *TransientVector) Count() int                    { return len(tv.arr) }
 
-// Assoc mutates in place and returns self.
+func (tv *TransientVector) checkFrozen() {
+	if tv.frozen {
+		panic(RT.NewError("Cannot mutate a frozen transient"))
+	}
+}
+
+// AssocInPlace sets an element by index. Returns self.
 func (tv *TransientVector) AssocInPlace(key, val Object) *TransientVector {
+	tv.checkFrozen()
 	idx := key.(Int).I
 	if idx >= 0 && idx < len(tv.arr) {
 		tv.arr[idx] = val
+	} else if idx == len(tv.arr) {
+		tv.arr = append(tv.arr, val)
+	}
+	return tv
+}
+
+// ConjInPlace appends an element. Returns self.
+func (tv *TransientVector) ConjInPlace(val Object) *TransientVector {
+	tv.checkFrozen()
+	tv.arr = append(tv.arr, val)
+	return tv
+}
+
+// PopInPlace removes the last element. Returns self.
+func (tv *TransientVector) PopInPlace() *TransientVector {
+	tv.checkFrozen()
+	if len(tv.arr) > 0 {
+		tv.arr = tv.arr[:len(tv.arr)-1]
 	}
 	return tv
 }
@@ -38,13 +77,19 @@ func (tv *TransientVector) Nth(i int) Object {
 	return NIL
 }
 
-// Count returns the length.
-func (tv *TransientVector) Count() int {
-	return len(tv.arr)
+// Get implements Gettable for transient vectors.
+func (tv *TransientVector) Get(key Object) (bool, Object) {
+	if idx, ok := key.(Int); ok {
+		if idx.I >= 0 && idx.I < len(tv.arr) {
+			return true, tv.arr[idx.I]
+		}
+	}
+	return false, NIL
 }
 
-// ToPersistent freezes back to an ArrayVector.
+// ToPersistent freezes the transient and returns a persistent vector.
 func (tv *TransientVector) ToPersistent() *ArrayVector {
+	tv.frozen = true
 	arr := make([]Object, len(tv.arr))
 	copy(arr, tv.arr)
 	return &ArrayVector{arr: arr}
@@ -55,4 +100,174 @@ func ToTransient(v *ArrayVector) *TransientVector {
 	arr := make([]Object, len(v.arr))
 	copy(arr, v.arr)
 	return &TransientVector{arr: arr}
+}
+
+// ---------- TransientMap ----------
+
+// TransientMap is a mutable map backed by a Go map.
+type TransientMap struct {
+	m      map[uint32][]mapEntry
+	count  int
+	frozen bool
+}
+
+type mapEntry struct {
+	key Object
+	val Object
+}
+
+func (tm *TransientMap) ToString(escape bool) string   { return "#<transient-map>" }
+func (tm *TransientMap) Equals(other interface{}) bool { return tm == other }
+func (tm *TransientMap) GetInfo() *ObjectInfo          { return nil }
+func (tm *TransientMap) WithInfo(*ObjectInfo) Object   { return tm }
+func (tm *TransientMap) GetType() *Type                { return TYPE.ArrayMap }
+func (tm *TransientMap) Hash() uint32                  { return 0 }
+func (tm *TransientMap) Count() int                    { return tm.count }
+
+func (tm *TransientMap) checkFrozen() {
+	if tm.frozen {
+		panic(RT.NewError("Cannot mutate a frozen transient"))
+	}
+}
+
+// AssocInPlace sets a key-value pair. Returns self.
+func (tm *TransientMap) AssocInPlace(key, val Object) *TransientMap {
+	tm.checkFrozen()
+	h := key.Hash()
+	bucket := tm.m[h]
+	for i, e := range bucket {
+		if e.key.Equals(key) {
+			tm.m[h][i].val = val
+			return tm
+		}
+	}
+	tm.m[h] = append(bucket, mapEntry{key, val})
+	tm.count++
+	return tm
+}
+
+// Get implements Gettable for transient maps.
+func (tm *TransientMap) Get(key Object) (bool, Object) {
+	h := key.Hash()
+	for _, e := range tm.m[h] {
+		if e.key.Equals(key) {
+			return true, e.val
+		}
+	}
+	return false, NIL
+}
+
+// ToPersistent freezes and returns a persistent ArrayMap or HashMap.
+func (tm *TransientMap) ToPersistent() Object {
+	tm.frozen = true
+	if tm.count <= int(HASHMAP_THRESHOLD/2) {
+		res := EmptyArrayMap()
+		for _, bucket := range tm.m {
+			for _, e := range bucket {
+				res.Add(e.key, e.val)
+			}
+		}
+		return res
+	}
+	res := EmptyHashMap
+	for _, bucket := range tm.m {
+		for _, e := range bucket {
+			res = res.Assoc(e.key, e.val).(*HashMap)
+		}
+	}
+	return res
+}
+
+// MapToTransient creates a TransientMap from a Map.
+func MapToTransient(m Map) *TransientMap {
+	tm := &TransientMap{
+		m: make(map[uint32][]mapEntry),
+	}
+	if m == nil {
+		return tm
+	}
+	s := m.Seq()
+	for !s.IsEmpty() {
+		pair := s.First()
+		// Map entries are seqable pairs (key val)
+		if seq, ok := pair.(Seqable); ok {
+			ps := seq.Seq()
+			if !ps.IsEmpty() {
+				key := ps.First()
+				ps = ps.Rest()
+				if !ps.IsEmpty() {
+					val := ps.First()
+					h := key.Hash()
+					tm.m[h] = append(tm.m[h], mapEntry{key, val})
+					tm.count++
+				}
+			}
+		}
+		s = s.Rest()
+	}
+	return tm
+}
+
+// ---------- Joker procs ----------
+
+var procTransient = func(args []Object) Object {
+	switch coll := args[0].(type) {
+	case *ArrayVector:
+		return ToTransient(coll)
+	case Map:
+		return MapToTransient(coll)
+	default:
+		panic(RT.NewError("transient not supported on: " + coll.GetType().ToString(false)))
+	}
+}
+
+var procAssocBang = func(args []Object) Object {
+	switch coll := args[0].(type) {
+	case *TransientVector:
+		return coll.AssocInPlace(args[1], args[2])
+	case *TransientMap:
+		return coll.AssocInPlace(args[1], args[2])
+	default:
+		panic(RT.NewError("assoc! requires a transient, got: " + coll.GetType().ToString(false)))
+	}
+}
+
+var procConjBang = func(args []Object) Object {
+	switch coll := args[0].(type) {
+	case *TransientVector:
+		return coll.ConjInPlace(args[1])
+	case *TransientMap:
+		return coll.AssocInPlace(args[1], args[2])
+	default:
+		panic(RT.NewError("conj! requires a transient, got: " + coll.GetType().ToString(false)))
+	}
+}
+
+var procPopBang = func(args []Object) Object {
+	switch coll := args[0].(type) {
+	case *TransientVector:
+		return coll.PopInPlace()
+	default:
+		panic(RT.NewError("pop! requires a transient vector, got: " + coll.GetType().ToString(false)))
+	}
+}
+
+var procPersistentBang = func(args []Object) Object {
+	switch coll := args[0].(type) {
+	case *TransientVector:
+		return coll.ToPersistent()
+	case *TransientMap:
+		return coll.ToPersistent()
+	default:
+		panic(RT.NewError("persistent! requires a transient, got: " + coll.GetType().ToString(false)))
+	}
+}
+
+var procIsTransient = func(args []Object) Object {
+	switch args[0].(type) {
+	case *TransientVector, *TransientMap:
+		return Boolean{B: true}
+	default:
+		return Boolean{B: false}
+	}
 }
