@@ -6,18 +6,25 @@ func irToWasm(prog *IRProgram) []byte {
 	if !isWasmEligible(prog) {
 		return nil
 	}
-	body := compileWasmBody(prog)
+	useFloat := irProgramUsesFloat(prog)
+	body := compileWasmBody(prog, useFloat)
 	if body == nil {
 		return nil
 	}
 	m := newWasmModule()
-	m.addTypeSection(prog.numSlots)
+	valType := byte(0x7e) // i64
+	if useFloat {
+		valType = 0x7c // f64
+	}
+	m.addTypeSectionTyped(prog.numSlots, valType)
 	m.addFuncSection()
 	m.addExportSection()
 	m.addCodeSection(body)
 	return m.bytes()
 }
 
+// isWasmEligible checks if all IR opcodes can map to WASM.
+// Returns false for programs with non-numeric ops (collections, strings, fn calls).
 func isWasmEligible(prog *IRProgram) bool {
 	code := prog.code
 	pc := 0
@@ -27,9 +34,11 @@ func isWasmEligible(prog *IRProgram) bool {
 		switch op {
 		case irLiteral, irLoadSlot, irStoreSlot:
 			pc += 2
-		case irAdd, irSub, irMul, irDiv, irRem, irInc, irDec,
-			irLt, irEq, irIsZero, irReturn, irSqrt:
-			// ok
+		case irAdd, irSub, irMul, irRem, irInc, irDec,
+			irLt, irEq, irIsZero, irReturn:
+			// ok — all supported
+		case irDiv, irSqrt:
+			// ok — float ops, need f64 mode
 		case irJumpIfNot, irJump:
 			pc += 2
 		case irRecur:
@@ -37,13 +46,47 @@ func isWasmEligible(prog *IRProgram) bool {
 			tgt := int(code[pc-2])<<8 | int(code[pc-1])
 			if tgt != 0 {
 				pc += 2
-				return false
+				return false // nested loops not yet
 			}
 		default:
 			return false
 		}
 	}
 	return true
+}
+
+// irProgramUsesFloat checks if the IR uses any float operations or double constants.
+func irProgramUsesFloat(prog *IRProgram) bool {
+	// Check constants
+	for _, c := range prog.constants {
+		if _, ok := c.(Double); ok {
+			return true
+		}
+	}
+	// Check opcodes
+	code := prog.code
+	pc := 0
+	for pc < len(code) {
+		op := code[pc]
+		pc++
+		switch op {
+		case irDiv, irSqrt:
+			return true
+		case irLiteral, irLoadSlot, irStoreSlot:
+			pc += 2
+		case irJumpIfNot, irJump:
+			pc += 2
+		case irRecur:
+			pc += 4
+			tgt := int(code[pc-2])<<8 | int(code[pc-1])
+			if tgt != 0 {
+				pc += 2
+			}
+		default:
+			// single-byte opcodes
+		}
+	}
+	return false
 }
 
 // compileWasmBody generates WASM instructions.
@@ -61,12 +104,16 @@ func isWasmEligible(prog *IRProgram) bool {
 //
 // For if/else: both branches end with `br` (stack-polymorphic),
 // so `if void` works and no values need to flow through the if block.
-func compileWasmBody(prog *IRProgram) []byte {
+func compileWasmBody(prog *IRProgram, useFloat bool) []byte {
 	var o []byte
 	o = append(o, 0x00) // 0 local decls
 
-	o = append(o, 0x02, 0x7e) // block $exit -> i64
-	o = append(o, 0x03, 0x40) // loop $loop -> void
+	resType := byte(0x7e) // i64
+	if useFloat {
+		resType = 0x7c // f64
+	}
+	o = append(o, 0x02, resType) // block $exit -> result type
+	o = append(o, 0x03, 0x40)    // loop $loop -> void
 
 	code := prog.code
 	pc := 0
@@ -80,12 +127,27 @@ func compileWasmBody(prog *IRProgram) []byte {
 		case irLiteral:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			v, ok := prog.constants[idx].(Int)
-			if !ok {
-				return nil
+			c := prog.constants[idx]
+			if useFloat {
+				var fv float64
+				switch v := c.(type) {
+				case Int:
+					fv = float64(v.I)
+				case Double:
+					fv = v.D
+				default:
+					return nil
+				}
+				o = append(o, 0x44) // f64.const
+				o = appendF64(o, fv)
+			} else {
+				v, ok := c.(Int)
+				if !ok {
+					return nil
+				}
+				o = append(o, 0x42) // i64.const
+				o = appendSLEB(o, int64(v.I))
 			}
-			o = append(o, 0x42)
-			o = appendSLEB(o, int64(v.I))
 
 		case irLoadSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
@@ -100,27 +162,87 @@ func compileWasmBody(prog *IRProgram) []byte {
 			o = appendULEB(o, idx)
 
 		case irAdd:
-			o = append(o, 0x7c)
+			if useFloat {
+				o = append(o, 0xa0)
+			} else {
+				o = append(o, 0x7c)
+			}
 		case irSub:
-			o = append(o, 0x7d)
+			if useFloat {
+				o = append(o, 0xa1)
+			} else {
+				o = append(o, 0x7d)
+			}
 		case irMul:
-			o = append(o, 0x7e)
+			if useFloat {
+				o = append(o, 0xa2)
+			} else {
+				o = append(o, 0x7e)
+			}
+		case irDiv:
+			if useFloat {
+				o = append(o, 0xa3)
+			} else {
+				return nil
+			}
+		case irSqrt:
+			if useFloat {
+				o = append(o, 0x9f)
+			} else {
+				return nil
+			}
 		case irRem:
-			o = append(o, 0x81) // i64.rem_s
+			if useFloat {
+				return nil
+			}
+			o = append(o, 0x81)
 		case irInc:
-			o = append(o, 0x42, 0x01, 0x7c)
+			if useFloat {
+				o = append(o, 0x44)
+				o = appendF64(o, 1.0)
+				o = append(o, 0xa0)
+			} else {
+				o = append(o, 0x42, 0x01, 0x7c)
+			}
 		case irDec:
-			o = append(o, 0x42, 0x01, 0x7d)
+			if useFloat {
+				o = append(o, 0x44)
+				o = appendF64(o, 1.0)
+				o = append(o, 0xa1)
+			} else {
+				o = append(o, 0x42, 0x01, 0x7d)
+			}
 		case irLt:
-			o = append(o, 0x53, 0xad)
+			if useFloat {
+				o = append(o, 0x63)
+				o = append(o, 0xb7)
+			} else {
+				o = append(o, 0x53, 0xad)
+			}
 		case irEq:
-			o = append(o, 0x51, 0xad)
+			if useFloat {
+				o = append(o, 0x61)
+				o = append(o, 0xb7)
+			} else {
+				o = append(o, 0x51, 0xad)
+			}
 		case irIsZero:
-			o = append(o, 0x50, 0xad)
+			if useFloat {
+				o = append(o, 0x44)
+				o = appendF64(o, 0.0)
+				o = append(o, 0x61)
+				o = append(o, 0xb7)
+			} else {
+				o = append(o, 0x50, 0xad)
+			}
 
 		case irJumpIfNot:
 			pc += 2
-			o = append(o, 0xa7)       // i32.wrap_i64
+			if useFloat {
+				o = append(o, 0xb0) // i32.trunc_f64_u
+			} else {
+				o = append(o, 0xa7) // i32.wrap_i64
+			}
 			o = append(o, 0x04, 0x40) // if void
 			depth++
 

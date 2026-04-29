@@ -20,16 +20,21 @@ func newWasmModule() *wasmModule {
 	return m
 }
 
-// addTypeSection adds a single func type: (i64, i64, ...) -> (i64)
+// addTypeSection adds a func type with i64 params and result.
 func (m *wasmModule) addTypeSection(numParams int) {
+	m.addTypeSectionTyped(numParams, 0x7e)
+}
+
+// addTypeSectionTyped adds a func type with the given value type for all params and result.
+func (m *wasmModule) addTypeSectionTyped(numParams int, valType byte) {
 	var body []byte
 	body = append(body, 0x01)          // 1 type entry
 	body = append(body, 0x60)          // functype
 	body = appendULEB(body, numParams) // param count
 	for i := 0; i < numParams; i++ {
-		body = append(body, 0x7e) // i64
+		body = append(body, valType)
 	}
-	body = append(body, 0x01, 0x7e) // 1 result: i64
+	body = append(body, 0x01, valType) // 1 result
 	m.addSection(0x01, body)
 }
 

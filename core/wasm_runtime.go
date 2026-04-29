@@ -5,7 +5,6 @@ package core
 
 import (
 	"context"
-	"fmt"
 	"math"
 	"sync"
 
@@ -15,8 +14,9 @@ import (
 
 // WasmProgram is a compiled, ready-to-execute WASM module.
 type WasmProgram struct {
-	mod    api.Module
-	execFn api.Function
+	mod      api.Module
+	execFn   api.Function
+	useFloat bool
 }
 
 var (
@@ -73,7 +73,6 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 
 	compiled, err := rt.CompileModule(ctx, bin)
 	if err != nil {
-		fmt.Printf("WASM compile error: %v\n", err)
 		return nil
 	}
 
@@ -88,17 +87,26 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 		return nil
 	}
 
-	return &WasmProgram{mod: mod, execFn: execFn}
+	return &WasmProgram{mod: mod, execFn: execFn, useFloat: irProgramUsesFloat(prog)}
 }
 
-// wasmExec runs a WASM program with the given Joker Object slots.
-// Only supports Int slots (passed as i64). Returns nil on failure.
+// wasmExec runs a WASM program. Supports Int (i64 mode) and Double (f64 mode).
 func wasmExec(wp *WasmProgram, slots []Object) Object {
 	params := make([]uint64, len(slots))
 	for i, s := range slots {
 		switch v := s.(type) {
 		case Int:
-			params[i] = uint64(v.I)
+			if wp.useFloat {
+				params[i] = math.Float64bits(float64(v.I))
+			} else {
+				params[i] = uint64(v.I)
+			}
+		case Double:
+			if wp.useFloat {
+				params[i] = math.Float64bits(v.D)
+			} else {
+				return nil
+			}
 		default:
 			return nil
 		}
@@ -110,6 +118,9 @@ func wasmExec(wp *WasmProgram, slots []Object) Object {
 	}
 	if len(results) == 0 {
 		return NIL
+	}
+	if wp.useFloat {
+		return Double{D: math.Float64frombits(results[0])}
 	}
 	return Int{I: int(int64(results[0]))}
 }

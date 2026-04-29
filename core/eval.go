@@ -163,8 +163,14 @@ func Eval(expr Expr, env *LocalEnv) Object {
 		for _, bindingExpr := range expr.values {
 			childEnv.bindings = append(childEnv.bindings, Eval(bindingExpr, &childEnv))
 		}
-		// Try IR fast path
+		// Try WASM native path first (pure integer loops)
 		if prog := irGetCached(expr); prog != nil {
+			if wp := wasmGetCached(prog); wp != nil {
+				if result := wasmExec(wp, childEnv.bindings); result != nil {
+					return result
+				}
+			}
+			// Try IR fast path
 			initSlots := childEnv.bindings
 			// Resolve captured outer bindings
 			if len(prog.captureKeys) > 0 {
@@ -787,8 +793,14 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 	for _, bindingExpr := range expr.values {
 		childEnv.bindings = append(childEnv.bindings, Eval(bindingExpr, &childEnv))
 	}
-	// Try IR fast path
+	// Try WASM native path first
 	if prog := irGetCached(expr); prog != nil {
+		if wp := wasmGetCached(prog); wp != nil {
+			if result := wasmExec(wp, childEnv.bindings); result != nil {
+				return result
+			}
+		}
+		// Try IR fast path
 		initSlots := childEnv.bindings
 		if len(prog.captureKeys) > 0 {
 			full := make([]Object, prog.numSlots)
