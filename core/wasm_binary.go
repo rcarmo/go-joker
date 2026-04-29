@@ -38,7 +38,27 @@ func (m *wasmModule) addTypeSectionTyped(numParams int, valType byte) {
 	m.addSection(0x01, body)
 }
 
-// addFuncSection declares 1 function with type index 0.
+// addImportSection adds the "joker" host module imports.
+func (m *wasmModule) addImportSection(funcs []string, paramCounts []int) {
+	var body []byte
+	body = appendULEB(body, len(funcs)) // number of imports
+	for i, name := range funcs {
+		// module name
+		modName := []byte(wasmHostModuleName)
+		body = appendULEB(body, len(modName))
+		body = append(body, modName...)
+		// field name
+		body = appendULEB(body, len(name))
+		body = append(body, []byte(name)...)
+		// import kind: func
+		body = append(body, 0x00)
+		// type index (imports come after the main type, starting at index 1)
+		body = appendULEB(body, i+1)
+		_ = paramCounts[i] // used for type section
+	}
+	m.addSection(0x02, body)
+}
+
 func (m *wasmModule) addFuncSection() {
 	m.addSection(0x03, []byte{0x01, 0x00})
 }

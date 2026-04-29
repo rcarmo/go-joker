@@ -30,10 +30,11 @@ var (
 
 func getWasmRT() wazero.Runtime {
 	wasmRTOnce.Do(func() {
-		// Use a compilation cache for faster startup on repeated runs
 		cache := wazero.NewCompilationCache()
 		wasmRT = wazero.NewRuntimeWithConfig(context.Background(),
 			wazero.NewRuntimeConfig().WithCompilationCache(cache))
+		// Register host functions for collection operations
+		registerWasmHost(wasmRT)
 	})
 	return wasmRT
 }
@@ -93,8 +94,10 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 	return &WasmProgram{mod: mod, execFn: execFn, useFloat: irProgramUsesFloat(prog)}
 }
 
-// wasmExec runs a WASM program. Supports Int (i64 mode) and Double (f64 mode).
 func wasmExec(wp *WasmProgram, slots []Object) Object {
+	// Create object table for this execution
+	table := &objectTable{objects: make([]Object, 0, 16)}
+
 	params := make([]uint64, len(slots))
 	for i, s := range slots {
 		switch v := s.(type) {
@@ -111,21 +114,29 @@ func wasmExec(wp *WasmProgram, slots []Object) Object {
 				return nil
 			}
 		default:
-			return nil
+			// Non-numeric object — store as handle
+			params[i] = table.store(s)
 		}
 	}
 
-	results, err := wp.execFn.Call(context.Background(), params...)
+	ctx := withObjectTable(context.Background(), table)
+	results, err := wp.execFn.Call(ctx, params...)
 	if err != nil {
 		return nil
 	}
 	if len(results) == 0 {
 		return NIL
 	}
+
+	r := results[0]
 	if wp.useFloat {
-		return Double{D: math.Float64frombits(results[0])}
+		return Double{D: math.Float64frombits(r)}
 	}
-	return Int{I: int(int64(results[0]))}
+	// Check if result is a handle
+	if isHandle(r) {
+		return table.load(r)
+	}
+	return Int{I: int(int64(r))}
 }
 
 // Ensure math import is used
