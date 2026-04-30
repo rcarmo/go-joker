@@ -521,7 +521,8 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
 1. **IR coverage and diagnostics**
    - Keep broadening the lowered IR subset before adding new surface APIs.
    - Initial `IR explain`/`WASM explain` helpers now report whether the first hot loop compiled, slot/capture/op counts, pure-WASM eligibility, host-import requirements, string-op rejection, helper-call/multi-function gaps, and no-loop cases.
-   - Next: improve IR rejection specificity for unsupported AST forms instead of only returning a generic compile rejection.
+   - IR rejection specificity now covers unsupported expression types, unsupported callable shapes, unsupported core vars, wrong arity, binding/capture failures, slot collisions, too many captures, and dynamic map literals.
+   - Next: add source-location breadcrumbs for nested failures so benchmark diagnostics can point at the exact sub-form.
    - Track counters for IR compiled/rejected, WASM compiled/rejected, fallback reason, and runtime fallback.
    - Add more regression tests around nested `let`, nested `loop`, captured bindings, closures, and helper calls.
 
@@ -533,6 +534,7 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
    - Consider builder-style internal representations for repeated concatenation patterns.
 
 3. **Persistent map/vector internals**
+   - Literal map expressions, including `{}`, now compile to IR constants so more map-update loops can stay on the lowered path.
    - Continue reducing allocation in `ArrayMap`/`HashMap` update loops.
    - Keep safe transient conversion for non-escaping loop slots and improve escape precision.
    - Improve small-map specialization and vector update/copy paths without changing persistent semantics.

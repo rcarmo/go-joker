@@ -32,6 +32,8 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - First string/sequence IR fast path: unary `str` lowering plus string `nth` ASCII-prefix fast path inside IR.
 - IR equality now falls back to generic `Object.Equals` after numeric fast paths, allowing small string/char helper functions to stay compiled.
 - IR helper/self-call dispatch now uses stack-backed argument arrays for small arities.
+- IR rejection diagnostics now report specific unsupported expression/callable/arity/binding/slot reasons instead of only a generic compile failure.
+- Literal map expressions, including `{}`, now compile to IR constants, keeping more map-update loops on the lowered path.
 
 ## Current benchmark checkpoint
 
@@ -62,7 +64,8 @@ Highlights from the 2026-04-30 run:
 
 - Broaden IR coverage before adding new public APIs.
 - Initial `IR explain`/`WASM explain` helpers now identify compiled loops, slot/capture/op counts, pure-WASM eligibility, host-import requirements, string-op rejection, helper-call/multi-function gaps, and no-loop cases.
-- Next: improve IR rejection specificity for unsupported AST forms instead of returning only a generic compile rejection.
+- IR rejection specificity now covers unsupported expression types, unsupported callable shapes, unsupported core vars, wrong arity, binding/capture failures, slot collisions, too many captures, and dynamic map literals.
+- Next: add source-location breadcrumbs for nested failures so benchmark diagnostics can point at the exact sub-form.
 - Track counters for compiled/rejected/fallback cases.
 - Add regression tests for nested `let`, nested `loop`, captures, closures, and helper calls.
 - Keep slot allocation and capture handling safe; do not trade correctness for speed.

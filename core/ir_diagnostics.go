@@ -134,9 +134,12 @@ func explainIRCompile(loop *LoopExpr) IRDiagnostic {
 	if loop == nil {
 		return IRDiagnostic{Reason: "nil loop"}
 	}
-	prog := irCompile(loop)
+	prog, reason := irCompileExplain(loop)
 	if prog == nil {
-		return IRDiagnostic{Reason: "IR compiler rejected loop body (unsupported form or unsafe binding shape)"}
+		if reason == "" {
+			reason = "IR compiler rejected loop body (unsupported form or unsafe binding shape)"
+		}
+		return IRDiagnostic{Reason: reason}
 	}
 	wasm := explainWASMEligibility(prog)
 	return IRDiagnostic{

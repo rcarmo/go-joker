@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"math"
 	"sync"
 )
@@ -187,6 +188,7 @@ type irCompiler struct {
 	selfSlot     int
 	selfNArgs    int
 	recurTargets []recurTarget // stack of recur targets for nested loops
+	rejectReason string
 }
 
 type recurTarget struct {
@@ -196,6 +198,11 @@ type recurTarget struct {
 }
 
 func irCompile(loop *LoopExpr) *IRProgram {
+	prog, _ := irCompileExplain(loop)
+	return prog
+}
+
+func irCompileExplain(loop *LoopExpr) (*IRProgram, string) {
 	c := &irCompiler{
 		bindingMap: make(map[bindingKey]int),
 		loopFrame:  -1,
@@ -216,24 +223,24 @@ func irCompile(loop *LoopExpr) *IRProgram {
 
 	for i, expr := range loopLet.body {
 		if !c.compileExpr(expr, i == len(loopLet.body)-1) {
-			return nil
+			return nil, c.reasonOr("IR compiler rejected loop body")
 		}
 	}
 	if len(c.code) == 0 {
-		return nil
+		return nil, "IR compiler emitted no code"
 	}
 	if c.code[len(c.code)-1] != irReturn && c.code[len(c.code)-1] != irJump {
 		c.emit(irReturn)
 	}
 	// Safety limit: too many captures indicates complex nested scoping
 	if len(c.captureKeys) > 12 {
-		return nil
+		return nil, fmt.Sprintf("too many captured bindings: %d > 12", len(c.captureKeys))
 	}
 	// Validate: ensure no slot is assigned twice
 	slotUsed := make(map[int]bool, c.numSlots)
 	for _, slot := range c.bindingMap {
 		if slotUsed[slot] {
-			return nil // slot collision detected
+			return nil, fmt.Sprintf("IR slot collision detected at slot %d", slot)
 		}
 		slotUsed[slot] = true
 	}
@@ -242,7 +249,21 @@ func irCompile(loop *LoopExpr) *IRProgram {
 		constants:   c.constants,
 		numSlots:    c.numSlots,
 		captureKeys: c.captureKeys,
+	}, ""
+}
+
+func (c *irCompiler) reject(format string, args ...interface{}) bool {
+	if c.rejectReason == "" {
+		c.rejectReason = fmt.Sprintf(format, args...)
 	}
+	return false
+}
+
+func (c *irCompiler) reasonOr(fallback string) string {
+	if c.rejectReason != "" {
+		return c.rejectReason
+	}
+	return fallback
 }
 
 func guessLoopFrame(body []Expr) int {
@@ -351,6 +372,49 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 		}
 		return true
 
+	case *MapExpr:
+		allLiteral := true
+		for i := range e.keys {
+			if _, ok := e.keys[i].(*LiteralExpr); !ok {
+				allLiteral = false
+				break
+			}
+			if _, ok := e.values[i].(*LiteralExpr); !ok {
+				allLiteral = false
+				break
+			}
+		}
+		if !allLiteral {
+			return c.reject("unsupported dynamic map literal in IR")
+		}
+		var obj Object
+		if int64(len(e.keys)) > HASHMAP_THRESHOLD/2 {
+			res := EmptyHashMap
+			for i := range e.keys {
+				key := e.keys[i].(*LiteralExpr).obj
+				if res.containsKey(key) {
+					return c.reject("duplicate key in IR map literal: %s", key.ToString(false))
+				}
+				res = res.Assoc(key, e.values[i].(*LiteralExpr).obj).(*HashMap)
+			}
+			obj = res
+		} else {
+			res := EmptyArrayMap()
+			for i := range e.keys {
+				key := e.keys[i].(*LiteralExpr).obj
+				if !res.Add(key, e.values[i].(*LiteralExpr).obj) {
+					return c.reject("duplicate key in IR map literal: %s", key.ToString(false))
+				}
+			}
+			obj = res
+		}
+		idx := c.addConstant(obj)
+		c.emitWithOperand(irLiteral, idx)
+		if isLast {
+			c.emit(irReturn)
+		}
+		return true
+
 	case *BindingExpr:
 		key := bindingKey{frame: e.binding.frame, index: e.binding.index}
 		slot, ok := c.bindingMap[key]
@@ -361,7 +425,7 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 				c.captureKeys = append(c.captureKeys, key)
 				c.numSlots++
 			} else {
-				return false
+				return c.reject("binding frame %d index %d is not in loop frame %d and cannot be captured", e.binding.frame, e.binding.index, c.loopFrame)
 			}
 		}
 		c.emitWithOperand(irLoadSlot, slot)
@@ -400,7 +464,7 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 
 	case *RecurExpr:
 		if len(c.recurTargets) == 0 {
-			return false
+			return c.reject("recur used outside a loop target")
 		}
 		target := c.recurTargets[len(c.recurTargets)-1]
 		for _, arg := range e.args {
@@ -420,20 +484,20 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 
 	case *LetExpr:
 		if c.depth > 4 {
-			return false
+			return c.reject("IR nesting depth exceeded for let: %d > 4", c.depth)
 		}
 		c.depth++
 		return c.compileLetBody(e, isLast)
 
 	case *LoopExpr:
 		if c.depth > 4 {
-			return false
+			return c.reject("IR nesting depth exceeded for nested loop: %d > 4", c.depth)
 		}
 		c.depth++
 		return c.compileNestedLoop(e, isLast)
 
 	default:
-		return false
+		return c.reject("unsupported IR expression type %T", expr)
 	}
 }
 
@@ -568,7 +632,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 				c.captureKeys = append(c.captureKeys, key)
 				c.numSlots++
 			} else {
-				return false
+				return c.reject("callable binding frame %d index %d is not capturable from loop frame %d", bindExpr.binding.frame, bindExpr.binding.index, c.loopFrame)
 			}
 		}
 
@@ -593,7 +657,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 
 	vref, ok := expr.callable.(*VarRefExpr)
 	if !ok {
-		return false
+		return c.reject("unsupported callable expression type %T", expr.callable)
 	}
 	procName := ""
 	switch v := vref.vr.Value.(type) {
@@ -603,13 +667,13 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		procName = coreVarToProcName(vref.vr)
 	}
 	if procName == "" {
-		return false
+		return c.reject("unsupported callable var %s", vref.vr.name.ToString(false))
 	}
 
 	switch procName {
 	case "procAdd":
 		if len(expr.args) != 2 {
-			return false
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 			return false
@@ -617,7 +681,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irAdd)
 	case "procSubtract":
 		if len(expr.args) != 2 {
-			return false
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 			return false
@@ -625,7 +689,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irSub)
 	case "procMultiply":
 		if len(expr.args) != 2 {
-			return false
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 			return false
@@ -633,7 +697,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irMul)
 	case "procRem":
 		if len(expr.args) != 2 {
-			return false
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 			return false
@@ -641,7 +705,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irRem)
 	case "procDivide":
 		if len(expr.args) != 2 {
-			return false
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 			return false
@@ -649,7 +713,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irDiv)
 	case "procInc":
 		if len(expr.args) != 1 {
-			return false
+			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) {
 			return false
@@ -657,7 +721,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irInc)
 	case "procDec":
 		if len(expr.args) != 1 {
-			return false
+			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) {
 			return false
@@ -665,7 +729,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irDec)
 	case "procLt":
 		if len(expr.args) != 2 {
-			return false
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 			return false
@@ -673,7 +737,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irLt)
 	case "procEq":
 		if len(expr.args) != 2 {
-			return false
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 			return false
@@ -681,7 +745,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irEq)
 	case "procIsZero":
 		if len(expr.args) != 1 {
-			return false
+			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) {
 			return false
@@ -699,11 +763,11 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			}
 			c.emit(irGet3)
 		} else {
-			return false
+			return c.reject("%s expects 2 or 3 args, got %d", procName, len(expr.args))
 		}
 	case "procAssoc":
 		if len(expr.args) != 3 {
-			return false
+			return c.reject("%s expects 3 args, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) || !c.compileExpr(expr.args[2], false) {
 			return false
@@ -711,7 +775,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irAssoc)
 	case "procNth":
 		if len(expr.args) != 2 {
-			return false
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 			return false
@@ -719,7 +783,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irNth)
 	case "procConj":
 		if len(expr.args) != 2 {
-			return false
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 			return false
@@ -727,7 +791,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irConj)
 	case "procSqrt":
 		if len(expr.args) != 1 {
-			return false
+			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) {
 			return false
@@ -735,7 +799,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		c.emit(irSqrt)
 	case "procFirst":
 		if len(expr.args) != 1 {
-			return false
+			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) {
 			return false
@@ -753,18 +817,18 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			}
 			c.emit(irStr2)
 		} else {
-			return false
+			return c.reject("%s expects 1 or 2 args, got %d", procName, len(expr.args))
 		}
 	case "procCount":
 		if len(expr.args) != 1 {
-			return false
+			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
 		}
 		if !c.compileExpr(expr.args[0], false) {
 			return false
 		}
 		c.emit(irCount)
 	default:
-		return false
+		return c.reject("unsupported core proc for IR: %s", procName)
 	}
 	if isLast {
 		c.emit(irReturn)
