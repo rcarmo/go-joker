@@ -3,6 +3,22 @@
 This document provides guidance for AI coding agents working in the Joker codebase.
 Joker is a small Clojure interpreter, linter, and formatter written in Go.
 
+## Git Identity
+
+All commits in this repository must use:
+
+- Author: `Rui Carmo <rui.carmo@gmail.com>`
+- Committer: `Rui Carmo <rui.carmo@gmail.com>`
+
+Configure both local and global Git identity before committing:
+
+```bash
+git config user.name "Rui Carmo"
+git config user.email "rui.carmo@gmail.com"
+git config --global user.name "Rui Carmo"
+git config --global user.email "rui.carmo@gmail.com"
+```
+
 ## Project Structure
 
 ```
