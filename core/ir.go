@@ -437,7 +437,6 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 }
 
 func (c *irCompiler) compileLetBody(e *LetExpr, isLast bool) bool {
-	baseSlot := c.numSlots
 	letFrame := -1
 	for _, bodyExpr := range e.body {
 		if f := findBindingFrame(bodyExpr); f > c.loopFrame {
@@ -452,11 +451,15 @@ func (c *irCompiler) compileLetBody(e *LetExpr, isLast bool) bool {
 		if !c.compileExpr(bindExpr, false) {
 			return false
 		}
-		slot := baseSlot + i
+		// Allocate the let slot after compiling the value expression: the
+		// value may capture an outer binding, which grows c.numSlots. Using
+		// a stale baseSlot would collide with those capture slots and make
+		// otherwise valid loops non-compilable.
+		slot := c.numSlots
+		c.numSlots++
 		c.bindingMap[bindingKey{frame: letFrame, index: i}] = slot
 		c.emitWithOperand(irStoreSlot, slot)
 	}
-	c.numSlots = baseSlot + len(e.values)
 	for i, bodyExpr := range e.body {
 		if !c.compileExpr(bodyExpr, isLast && i == len(e.body)-1) {
 			return false
@@ -467,7 +470,7 @@ func (c *irCompiler) compileLetBody(e *LetExpr, isLast bool) bool {
 
 func (c *irCompiler) compileNestedLoop(loop *LoopExpr, isLast bool) bool {
 	loopLet := (*LetExpr)(loop)
-	baseSlot := c.numSlots
+	baseSlot := -1
 
 	loopFrame := -1
 	for _, bodyExpr := range loopLet.body {
@@ -484,11 +487,20 @@ func (c *irCompiler) compileNestedLoop(loop *LoopExpr, isLast bool) bool {
 		if !c.compileExpr(bindExpr, false) {
 			return false
 		}
-		slot := baseSlot + i
+		// As with let, init expressions may capture outer bindings and grow
+		// c.numSlots. Allocate loop slots after each init is compiled so the
+		// nested loop's contiguous recur target never collides with captures.
+		slot := c.numSlots
+		if i == 0 {
+			baseSlot = slot
+		}
+		c.numSlots++
 		c.bindingMap[bindingKey{frame: loopFrame, index: i}] = slot
 		c.emitWithOperand(irStoreSlot, slot)
 	}
-	c.numSlots = baseSlot + len(loopLet.names)
+	if baseSlot < 0 {
+		return false
+	}
 
 	loopStartPC := len(c.code)
 	c.recurTargets = append(c.recurTargets, recurTarget{
@@ -813,24 +825,33 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 	}
 	copy(slots, initSlots)
 
-	// Escape analysis: only convert safe vector slots to transient
-	// Only run if there are actually vector-typed slots
-	hasVector := false
+	// Escape analysis: convert safe collection slots to transients.
+	// Only run if there are actually mutable collection-typed slots.
+	hasMutableCollection := false
 	for _, s := range slots {
-		if _, ok := s.(*ArrayVector); ok {
-			hasVector = true
+		switch s.(type) {
+		case *ArrayVector, *ArrayMap, *HashMap:
+			hasMutableCollection = true
+		}
+		if hasMutableCollection {
 			break
 		}
 	}
-	if hasVector {
+	if hasMutableCollection {
 		if prog.escapeInfo == nil {
 			prog.escapeInfo = analyzeEscapes(prog)
 		}
 		for i, s := range slots {
-			if prog.escapeInfo.SafeMutableSlots[i] {
-				if av, ok := s.(*ArrayVector); ok {
-					slots[i] = ToTransient(av)
-				}
+			if !prog.escapeInfo.SafeMutableSlots[i] {
+				continue
+			}
+			switch v := s.(type) {
+			case *ArrayVector:
+				slots[i] = ToTransient(v)
+			case *ArrayMap:
+				slots[i] = MapToTransient(v)
+			case *HashMap:
+				slots[i] = MapToTransient(v)
 			}
 		}
 	}
@@ -1129,9 +1150,12 @@ loop:
 				return NIL
 			}
 			result := stack[len(stack)-1]
-			// Freeze any transient vectors before returning
-			if tv, ok := result.(*TransientVector); ok {
-				return tv.ToPersistent()
+			// Freeze any transients before returning
+			switch v := result.(type) {
+			case *TransientVector:
+				return v.ToPersistent()
+			case *TransientMap:
+				return v.ToPersistent()
 			}
 			return result
 

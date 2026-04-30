@@ -3,7 +3,7 @@
     "project": "go-joker",
     "scope": "core interpreter optimization",
     "host": "12th Gen Intel(R) Core(TM) i7-12700",
-    "command": "go test ./core -run '^$' -bench 'BenchmarkCLBG|BenchmarkEval' -benchmem -benchtime=5x"
+    "command": "go test ./core -run '^$' -bench 'BenchmarkCLBG|BenchmarkEval|BenchmarkWasm' -benchmem -benchtime=5x"
   },
   "series": [
     {
@@ -26,49 +26,58 @@
       "label": "Current (IR + WASM + TCO + transients)",
       "benchmarks": {
         "arithmetic_loop": {
-          "ms_per_op": 0.36
+          "ms_per_op": 0.264
         },
         "recursive_fib": {
-          "ms_per_op": 1.3
+          "ms_per_op": 0.957
         },
         "word_frequency": {
-          "ms_per_op": 13.8
+          "ms_per_op": 7.71
         },
         "map_update_loop": {
-          "ms_per_op": 17.3
+          "ms_per_op": 0.899
         },
         "tail_recursive_sum": {
-          "ms_per_op": 0.13
+          "ms_per_op": 0.06
         },
         "clbg_nbody": {
-          "ms_per_op": 21.1
+          "ms_per_op": 28.6
         },
         "clbg_spectral_norm": {
-          "ms_per_op": 63.6
+          "ms_per_op": 70.9
         },
         "clbg_binary_trees": {
-          "ms_per_op": 400.6
+          "ms_per_op": 433.8
         },
         "clbg_fannkuch": {
-          "ms_per_op": 93.0
+          "ms_per_op": 82.2
         },
         "clbg_mandelbrot": {
-          "ms_per_op": 138.4
+          "ms_per_op": 128.1
         },
         "clbg_fasta": {
-          "ms_per_op": 2.3
+          "ms_per_op": 1.53
         },
         "clbg_pidigits": {
-          "ms_per_op": 0.063
+          "ms_per_op": 0.048
         },
         "clbg_knucleotide": {
-          "ms_per_op": 2.0
+          "ms_per_op": 0.927
         },
         "clbg_reverse_complement": {
-          "ms_per_op": 0.72
+          "ms_per_op": 0.559
         },
         "clbg_regex_redux": {
-          "ms_per_op": 0.21
+          "ms_per_op": 0.076
+        },
+        "wasm_array_f64_sum": {
+          "ms_per_op": 0.027
+        },
+        "wasm_arithmetic_loop": {
+          "ms_per_op": 0.329
+        },
+        "wasm_float_loop": {
+          "ms_per_op": 0.112
         }
       }
     }

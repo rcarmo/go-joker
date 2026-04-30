@@ -71,7 +71,7 @@ func wasmGetCached(prog *IRProgram) *WasmProgram {
 func wasmCompile(prog *IRProgram) *WasmProgram {
 	// Try pure-numeric path first (faster, no imports needed)
 	bin := irToWasm(prog)
-	// TODO: enable imports path once control flow validation is fixed
+	// TODO: enable imports path once collection handle ABI/control-flow is fully validated.
 	// if bin == nil {
 	// 	bin = irToWasmWithImports(prog)
 	// }

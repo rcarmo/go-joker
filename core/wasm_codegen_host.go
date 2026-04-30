@@ -115,7 +115,10 @@ func isWasmWithImportsEligible(prog *IRProgram) bool {
 			irGet, irGet3, irAssoc, irNth, irConj, irFirst, irCount:
 			// all supported with imports
 		case irCallSelf:
-			pc += 2
+			// Imported collection values are opaque handles, and recursive
+			// imported-WASM functions need a multi-function/handle-aware ABI to
+			// be safe. Keep recursive fns on the existing IR/tree path for now.
+			return false
 		case irStr2, irBuildVec, irToTransient, irAssocBang, irToPersistent, irCallSlot:
 			return false // not supported in WASM yet
 		case irJumpIfNot, irJump:
