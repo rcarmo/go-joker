@@ -1432,7 +1432,7 @@ loop:
 			case String:
 				stack = append(stack, av)
 			case Char:
-				stack = append(stack, String{S: string(av.Ch)})
+				stack = append(stack, String{S: charToStringFast(av.Ch)})
 			default:
 				stack = append(stack, String{S: a.ToString(false)})
 			}
