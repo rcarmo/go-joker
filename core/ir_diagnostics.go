@@ -88,6 +88,8 @@ func irOpcodeName(op byte) string {
 		return "irBuildVec"
 	case irStr2:
 		return "irStr2"
+	case irStr1:
+		return "irStr1"
 	case irCount:
 		return "irCount"
 	case irToTransient:
@@ -178,7 +180,7 @@ func explainWASMEligibility(prog *IRProgram) WASMDiagnostic {
 			}
 		case irGet, irGet3, irAssoc, irNth, irConj, irFirst, irCount:
 			return WASMDiagnostic{Reason: "requires WASM host imports for collection op", PC: opPC, Op: op, OpName: irOpcodeName(op), UsesFloat: usesFloat, HasImports: true}
-		case irStr2:
+		case irStr1, irStr2:
 			return WASMDiagnostic{Reason: "string operation not supported by WASM backend", PC: opPC, Op: op, OpName: irOpcodeName(op), UsesFloat: usesFloat}
 		case irCallSlot:
 			return WASMDiagnostic{Reason: "local/helper function call needs multi-function WASM module", PC: opPC, Op: op, OpName: irOpcodeName(op), UsesFloat: usesFloat}

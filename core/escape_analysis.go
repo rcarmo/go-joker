@@ -176,6 +176,10 @@ func analyzeEscapes(prog *IRProgram) *EscapeInfo {
 			popN(n)
 			push(-1)
 
+		case irStr1:
+			pop()
+			push(-1)
+
 		case irStr2:
 			pop()
 			pop()

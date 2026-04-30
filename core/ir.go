@@ -46,6 +46,7 @@ const (
 	irFirst                    // pop 1, push first element
 	irBuildVec                 // operand: n elements; pop n, push new vector
 	irStr2                     // pop 2, push string concatenation
+	irStr1                     // pop 1, push string conversion
 	irCount                    // pop 1, push count
 	irToTransient              // pop 1 (ArrayVector), push TransientVector
 	irAssocBang                // pop 3 (tv, key, val), mutate in place, push tv
@@ -741,7 +742,12 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		}
 		c.emit(irFirst)
 	case "procStr":
-		if len(expr.args) == 2 {
+		if len(expr.args) == 1 {
+			if !c.compileExpr(expr.args[0], false) {
+				return false
+			}
+			c.emit(irStr1)
+		} else if len(expr.args) == 2 {
 			if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 				return false
 			}
@@ -1223,6 +1229,8 @@ loop:
 				}
 			case *TransientVector:
 				stack = append(stack, c.Nth(idx.I))
+			case String:
+				stack = append(stack, stringNthFast(c.S, idx.I))
 			case Indexed:
 				stack = append(stack, c.Nth(idx.I))
 			default:
@@ -1339,6 +1347,20 @@ loop:
 				stack = stack[:len(stack)-1]
 			}
 			stack = append(stack, &ArrayVector{arr: arr})
+
+		case irStr1:
+			a := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			switch av := a.(type) {
+			case Nil:
+				stack = append(stack, String{S: ""})
+			case String:
+				stack = append(stack, av)
+			case Char:
+				stack = append(stack, String{S: string(av.Ch)})
+			default:
+				stack = append(stack, String{S: a.ToString(false)})
+			}
 
 		case irStr2:
 			b := stack[len(stack)-1]

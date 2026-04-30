@@ -29,6 +29,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - IR slot-allocation collision fixes for captured inner `let`/nested loop init expressions.
 - Safe transient maps in IR loops, dropping `map-update-loop` from ~17.3ms to ~0.899ms.
 - Initial IR/WASM explain diagnostics for hot-loop path inspection.
+- First string/sequence IR fast path: unary `str` lowering plus string `nth` ASCII-prefix fast path inside IR.
 
 ## Current benchmark checkpoint
 
@@ -66,8 +67,9 @@ Highlights from the 2026-04-30 run:
 
 ### B. String and sequence throughput
 
-- Optimize `str`, `nth`, `subs`, `count`, regex result handling, and sequence iteration.
-- Add ASCII/byte fast paths where semantics allow while preserving Unicode behavior.
+- Started: IR now lowers unary `str`, allowing loops that convert chars to strings to stay on the IR path, and `irNth` has a Unicode-preserving ASCII-prefix fast path for strings.
+- Continue optimizing `str`, `nth`, `subs`, `count`, regex result handling, and sequence iteration.
+- Add more ASCII/byte fast paths where semantics allow while preserving Unicode behavior.
 - Reduce per-character object churn in CLBG-style string workloads.
 - Consider internal builder-style optimizations for repeated concatenation patterns.
 

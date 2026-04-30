@@ -119,7 +119,7 @@ func isWasmWithImportsEligible(prog *IRProgram) bool {
 			// imported-WASM functions need a multi-function/handle-aware ABI to
 			// be safe. Keep recursive fns on the existing IR/tree path for now.
 			return false
-		case irStr2, irBuildVec, irToTransient, irAssocBang, irToPersistent, irCallSlot:
+		case irStr1, irStr2, irBuildVec, irToTransient, irAssocBang, irToPersistent, irCallSlot:
 			return false // not supported in WASM yet
 		case irJumpIfNot, irJump:
 			pc += 2
