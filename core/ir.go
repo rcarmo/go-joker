@@ -1082,7 +1082,7 @@ loop:
 					continue
 				}
 			}
-			return nil
+			stack = append(stack, Boolean{B: a.Equals(b)})
 
 		case irIsZero:
 			a := stack[len(stack)-1]
@@ -1267,8 +1267,13 @@ loop:
 			pc += 2
 			fnObj := slots[slotIdx]
 			var args []Object
+			var argsBuf [4]Object
 			if nargs > 0 {
-				args = make([]Object, nargs)
+				if nargs <= len(argsBuf) {
+					args = argsBuf[:nargs]
+				} else {
+					args = make([]Object, nargs)
+				}
 				for i := nargs - 1; i >= 0; i-- {
 					args[i] = stack[len(stack)-1]
 					stack = stack[:len(stack)-1]
@@ -1306,7 +1311,13 @@ loop:
 		case irCallSelf:
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			args := make([]Object, nargs)
+			var args []Object
+			var argsBuf [4]Object
+			if nargs <= len(argsBuf) {
+				args = argsBuf[:nargs]
+			} else {
+				args = make([]Object, nargs)
+			}
 			for i := nargs - 1; i >= 0; i-- {
 				args[i] = stack[len(stack)-1]
 				stack = stack[:len(stack)-1]

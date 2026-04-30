@@ -30,6 +30,8 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - Safe transient maps in IR loops, dropping `map-update-loop` from ~17.3ms to ~0.899ms.
 - Initial IR/WASM explain diagnostics for hot-loop path inspection.
 - First string/sequence IR fast path: unary `str` lowering plus string `nth` ASCII-prefix fast path inside IR.
+- IR equality now falls back to generic `Object.Equals` after numeric fast paths, allowing small string/char helper functions to stay compiled.
+- IR helper/self-call dispatch now uses stack-backed argument arrays for small arities.
 
 ## Current benchmark checkpoint
 
@@ -82,8 +84,9 @@ Highlights from the 2026-04-30 run:
 
 ### D. Function call overhead and inlining
 
+- Started: IR helper/self-call dispatch now uses stack-backed argument arrays for small arities, reducing allocation in helper-heavy loops.
 - Revisit tiny local function inlining now that slot-collision regressions are covered.
-- Reduce frame/env allocation for simple calls.
+- Continue reducing frame/env allocation for simple calls.
 - Cache compiled helper functions aggressively.
 - Avoid tree-walker fallback for hot helper-call patterns.
 

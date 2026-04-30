@@ -538,6 +538,7 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
    - Improve small-map specialization and vector update/copy paths without changing persistent semantics.
 
 4. **Function call overhead and inlining**
+   - Started: IR helper/self-call dispatch now uses stack-backed argument arrays for small arities, and IR equality falls back to `Object.Equals` after numeric fast paths so string/char helper functions can remain compiled.
    - Revisit IR inlining for tiny local functions now that slot-collision regressions are covered.
    - Fast-path arity checks and reduce frame/env allocation for simple calls.
    - Cache compiled helper functions aggressively and avoid returning to the tree-walker for hot call sites.
