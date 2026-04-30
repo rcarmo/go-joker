@@ -28,6 +28,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - CLBG-inspired benchmark suite and generated benchmark charts.
 - IR slot-allocation collision fixes for captured inner `let`/nested loop init expressions.
 - Safe transient maps in IR loops, dropping `map-update-loop` from ~17.3ms to ~0.899ms.
+- Initial IR/WASM explain diagnostics for hot-loop path inspection.
 
 ## Current benchmark checkpoint
 
@@ -57,7 +58,8 @@ Highlights from the 2026-04-30 run:
 ### A. IR coverage and diagnostics
 
 - Broaden IR coverage before adding new public APIs.
-- Add `IR explain`/`WASM explain` diagnostics with explicit rejection reasons.
+- Initial `IR explain`/`WASM explain` helpers now identify compiled loops, slot/capture/op counts, pure-WASM eligibility, host-import requirements, string-op rejection, helper-call/multi-function gaps, and no-loop cases.
+- Next: improve IR rejection specificity for unsupported AST forms instead of returning only a generic compile rejection.
 - Track counters for compiled/rejected/fallback cases.
 - Add regression tests for nested `let`, nested `loop`, captures, closures, and helper calls.
 - Keep slot allocation and capture handling safe; do not trade correctness for speed.

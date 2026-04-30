@@ -520,7 +520,8 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
 
 1. **IR coverage and diagnostics**
    - Keep broadening the lowered IR subset before adding new surface APIs.
-   - Add an `IR explain`/`WASM explain` diagnostic mode that reports why a loop did not compile.
+   - Initial `IR explain`/`WASM explain` helpers now report whether the first hot loop compiled, slot/capture/op counts, pure-WASM eligibility, host-import requirements, string-op rejection, helper-call/multi-function gaps, and no-loop cases.
+   - Next: improve IR rejection specificity for unsupported AST forms instead of only returning a generic compile rejection.
    - Track counters for IR compiled/rejected, WASM compiled/rejected, fallback reason, and runtime fallback.
    - Add more regression tests around nested `let`, nested `loop`, captured bindings, closures, and helper calls.
 
