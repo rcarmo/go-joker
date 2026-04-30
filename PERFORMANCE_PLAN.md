@@ -1,155 +1,121 @@
-# Joker performance plan for gi
+# Joker core performance plan for gi
 
 Status: Active
-Date: 2026-04-28
+Date: 2026-04-30
 
-This plan tracks the work needed to drastically improve the performance of the vendored Joker runtime used by gi.
+This plan tracks the work to make core Joker faster for gi scripting. Additional namespaces and public convenience wrappers stay on the roadmap, but the current priority is the core evaluator/IR/runtime.
 
 ## Goals
 
-1. Build a **repeatable benchmark and profiling harness** inside the fork.
-2. Optimize the **current interpreter/runtime hot paths** using benchmark-guided changes.
-3. Introduce a **lowered execution path** that can evolve into a compiled/bytecode path.
-4. Preserve language compatibility for the subset exercised by gi scripting.
+1. Keep Joker language semantics compatible with upstream.
+2. Make the hot subset used by gi scripts fast: loops, recursion, numeric ops, text/sequence processing, map/vector updates, and helper calls.
+3. Prefer all-Go, embeddable optimizations: evaluator fast paths, IR, transients, and wazero WASM where it is safe.
+4. Keep every optimization measurable, testable, and bisectable.
 
-## Constraints
+## Completed major work
 
-- Keep the fork buildable inside gi without external services.
-- Prefer incremental, measurable changes.
-- Avoid semantic drift from upstream Joker unless explicitly documented.
-- Optimize the subset relevant to gi first: loops, recursion, numeric ops, text processing, JSON, map updates, and native bridge calls.
+- Evaluator fast paths for hot numeric procs and binding lookup.
+- Stack-backed argument arrays for common call/recur arities.
+- Reduced loop/frame allocation and removed hot-path `defer` use.
+- Direct `ArraySeq` indexing for `SeqNth`/`SeqTryNth`.
+- Lowered IR stack machine for hot loops and helper functions.
+- Tail-call optimization and parse-time tail-call-to-`recur` rewriting.
+- WASM/wazero backend for pure numeric loops and self-recursive functions.
+- WASM f64 support and compiled helper dispatch for spectral-norm style code.
+- Escape analysis for safe in-place collection mutation.
+- Internal and explicit transient vector/map support.
+- WASM linear-memory f64/i64 arrays as an experimental foundation.
+- CLBG-inspired benchmark suite and generated benchmark charts.
+- IR slot-allocation collision fixes for captured inner `let`/nested loop init expressions.
+- Safe transient maps in IR loops, dropping `map-update-loop` from ~17.3ms to ~0.899ms.
 
-## Workstreams
+## Current benchmark checkpoint
 
-### Workstream A — Benchmark + profiling harness
+Command:
 
-Add benchmark coverage directly in `core/` for:
+```sh
+go test ./core -run '^$' -bench 'BenchmarkCLBG|BenchmarkEval|BenchmarkWasm' -benchmem -benchtime=5x
+```
 
-- recursive fibonacci
-- tight arithmetic loop
-- word frequency over text
-- JSON parse + projection
-- realistic gi-style bridge/data transforms later
+Host: 12th Gen Intel(R) Core(TM) i7-12700
 
-Deliverables:
+Highlights from the 2026-04-30 run:
 
-- Go benchmark file in `core/`
-- helper for parse-once / eval-many benchmarking
-- baseline numbers recorded before and after optimizations
-- optional CPU/alloc profiling instructions in benchmark comments or this file
+| Benchmark | Time | Notes |
+|---|---:|---|
+| arithmetic loop | ~0.264ms | WASM/IR hot path |
+| recursive fib | ~0.957ms | TCO/IR/WASM path |
+| tail-recursive sum | ~0.060ms | TCO/WASM path |
+| map-update-loop | ~0.899ms | IR + transient maps |
+| word-frequency | ~7.71ms | IR + maps, still sequence/text-heavy |
+| k-nucleotide | ~0.927ms | improved, still string-heavy |
+| fannkuch-redux | ~82.2ms | collection-heavy |
+| mandelbrot | ~128ms | helper-call/WASM multi-function gap |
 
-### Workstream B — Interpreter/runtime hotspot optimization
+## High-priority workstreams
 
-Profile and optimize the current evaluator first.
+### A. IR coverage and diagnostics
 
-Primary suspects:
+- Broaden IR coverage before adding new public APIs.
+- Add `IR explain`/`WASM explain` diagnostics with explicit rejection reasons.
+- Track counters for compiled/rejected/fallback cases.
+- Add regression tests for nested `let`, nested `loop`, captures, closures, and helper calls.
+- Keep slot allocation and capture handling safe; do not trade correctness for speed.
 
-- `CallExpr.Eval`
-- `Fn.Call`
-- numeric procs in `core/procs.go`
-- sequence iteration and allocation in loops
-- local binding lookup / frame handling
-- persistent map update overhead for common patterns
+### B. String and sequence throughput
 
-Initial optimization targets:
+- Optimize `str`, `nth`, `subs`, `count`, regex result handling, and sequence iteration.
+- Add ASCII/byte fast paths where semantics allow while preserving Unicode behavior.
+- Reduce per-character object churn in CLBG-style string workloads.
+- Consider internal builder-style optimizations for repeated concatenation patterns.
 
-1. numeric fast paths for `+`, `*`, `rem`, `inc`, `dec`, comparisons
-2. reduce common allocations in argument evaluation / call dispatch
-3. optimize common lookup/update patterns used by text and JSON workloads
+### C. Persistent data structure internals
 
-### Workstream C — Lowered execution path
+- Continue reducing `ArrayMap`/`HashMap` update allocation.
+- Improve small-map specialization and vector update/copy behavior.
+- Refine escape analysis so more safe collection slots use transients.
+- Preserve persistent semantics and single-owner transient safety.
 
-Do not jump directly to a bytecode VM.
+### D. Function call overhead and inlining
 
-Stage the work as:
+- Revisit tiny local function inlining now that slot-collision regressions are covered.
+- Reduce frame/env allocation for simple calls.
+- Cache compiled helper functions aggressively.
+- Avoid tree-walker fallback for hot helper-call patterns.
 
-1. define a lowered internal IR for a hot subset
-2. interpret that IR with slot-resolved locals
-3. add optional bytecode emission later if the IR pays off
+## Medium-priority WASM workstreams
 
-Target subset for first lowering pass:
+### E. Multi-function WASM modules
 
-- literals
-- local binding load/store
-- `let`
-- `if`
-- `do`
-- `loop/recur`
-- direct function calls
-- primitive arithmetic/comparison ops
+- Emit multiple functions in one WASM module.
+- Support direct WASM-to-WASM calls for eligible helper functions.
+- Define a safe capture/local ABI.
+- Target mandelbrot/pixel-style helper-heavy numeric workloads.
 
-### Workstream D — Validation
+### F. WASM host imports for collections
 
-For every optimization stage:
+- Keep disabled until the handle ABI and structured control-flow lowering are fully validated.
+- Avoid recursive imported-WASM collection functions until multi-function support exists.
+- Add comparison tests against IR/tree-walker before enabling by default.
 
-- rerun benchmarks
-- compare alloc/op and ns/op
-- confirm gi scripting tests still pass
-- keep changes bisectable
+### G. WASM linear memory auto-use
 
-## Milestones
+- Existing f64/i64 arrays are explicit and experimental.
+- Add IR opcodes for typed load/store before automatic use.
+- Use WASM memory operations directly, not host-side `Memory.Read`/`Write`, for real speedups.
 
-### Milestone 1 — Baseline and first wins
+## Roadmap only
 
-- [x] Add benchmark harness in `core/` (`core/perf_bench_test.go`)
-- [x] Capture initial numbers for arithmetic/fib/text benchmarks
-- [x] Land first runtime fast paths in arithmetic/comparison ops (`+`, `*`, `rem`, `<`, `=`, `inc`, `dec`)
-- [ ] Record deltas against a clean pre-optimization baseline run
+- Public `core.joke` wrappers for transients.
+- Additional namespaces and libraries.
+- Broader bridge/API exposure beyond the core runtime.
 
-Current benchmark checkpoint (`go test ./core -run '^$' -bench 'BenchmarkEval(ArithmeticLoop|RecursiveFib|WordFrequency)$' -benchmem -benchtime=5x` on the gi dev host):
+## Validation rules
 
-- arithmetic loop: ~172ms, ~77.6 MB, ~2.70M allocs
-- recursive fib: ~393ms, ~190.9 MB, ~6.98M allocs
-- word frequency: ~10.1ms, ~6.5 MB, ~172k allocs
+For every optimization:
 
-Additional findings and changes landed so far:
-
-- `evalLoop` no longer allocates a replacement `LocalEnv` frame on every `recur`; it now reuses the existing loop frame by replacing `env.bindings` in place.
-- `CallExpr.Eval` / `RecurExpr.Eval` now use fixed-size stack-backed arg arrays for 0–4 argument common cases before falling back to generic allocation.
-- `CallExpr.Eval` now also dispatches directly to `Proc.Fn` and `*Fn` in the common paths before falling back to the generic `Callable` interface path.
-- binding resolution now fast-paths current-frame and parent-frame lookups before falling back to the generic environment walk.
-- `Fn.Call`, `FnExpr.Eval`, `LetExpr.Eval`, and `LoopExpr.Eval` now build child environments inline instead of routing through helper methods that return new frame pointers.
-- numeric fast paths now cover `+`, `-`, `*`, `rem`, `<`, `=`, `inc`, `dec`, and `zero?` for common `Int`/`Double` cases.
-- `CallExpr.Eval` now additionally fast-paths a hot subset of builtin proc execution directly in the evaluator (`procAdd`, `procSubtract`, `procMultiply`, `procRem`, `procLt`, `procEq`, `procInc`, `procDec`, `procIsZero`) to avoid temporary `[]Object` allocation on extremely hot call sites.
-- `SeqNth` / `SeqTryNth` now fast-path `*ArraySeq` directly by index instead of repeatedly traversing via `Rest()`, which removed a large amount of allocation from sequence-indexing-heavy workloads.
-- profiling showed the original word-frequency benchmark was dominated by `ArraySeq.Rest` allocation churn triggered indirectly by repeated `nth` over sequences.
-- the main remaining hotspots for arithmetic/recursive workloads are still evaluator dispatch and allocation pressure, but the temporary arg-slice allocation component has now been reduced materially.
-
-These are still early checkpoint numbers, but the harness is now in place and later passes should keep splitting work by workload type: arithmetic/recursion vs. sequence/map-heavy text processing.
-
-### Milestone 2 — Call/eval optimization
-
-- [x] Profile arithmetic-loop hotspot shape with `pprof`
-- [x] Reduce some call-path allocations for small arg-count call/recur cases
-- [ ] Reduce evaluator dispatch overhead further (`Eval`, `IfExpr`, `Fn.Call`)
-- [ ] Record deltas against a clean pre-optimization baseline branch/run
-
-### Milestone 3 — Lowered IR prototype
-
-- [ ] Design minimal IR types
-- [ ] Lower simple loop/arithmetic subset
-- [ ] Add IR evaluator behind an internal switch
-- [ ] Benchmark against interpreter
-
-### Milestone 4 — Compiled execution expansion
-
-- [ ] Extend lowered path to more forms used by gi
-- [ ] Decide whether to freeze at IR or continue to bytecode VM
-
-## Files of interest
-
-- `core/eval.go`
-- `core/object.go`
-- `core/procs.go`
-- `core/numbers.go`
-- `core/map.go`
-- `core/vector.go`
-- `core/array_vector.go`
-- future benchmark files in `core/*_test.go`
-
-## Current execution order
-
-1. Add baseline benchmark file
-2. Optimize hot numeric/runtime paths
-3. Re-benchmark
-4. Start IR design after measured gains from interpreter changes
+- Run `go test ./core`.
+- Run targeted benchmarks before/after.
+- Add regression tests for compiler/runtime correctness.
+- Update `benchmarks/benchmark-history.json` and regenerate SVGs when benchmark numbers change materially.
+- Keep CLBG-style results documented as pipeline stress tests, not broad real-world claims.

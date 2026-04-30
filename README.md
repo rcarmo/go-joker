@@ -18,10 +18,11 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 | What | Result |
 |------|--------|
-| **Arithmetic loop via WASM** | **0.32 ms** — matches Bun/JSC (0.38 ms), 590× faster than original |
-| **Recursive fib** | 99.8 ms — beats Goja (80 ms baseline), 5.5× faster than original |
-| **Word frequency** | 10.2 ms — 27× faster than original |
-| **Joker beats Goja on** | pidigits (0.35×), regex-redux (0.61×), arithmetic loop (0.02× via WASM) |
+| **Arithmetic loop via WASM** | **~0.26 ms** — matches Bun/JSC-class speed, >700× faster than original |
+| **Recursive fib** | **~0.96 ms** — WASM/IR path, >500× faster than original |
+| **Map update loop** | **~0.90 ms** — IR + transient maps, ~19× faster than the previous IR path |
+| **Word frequency** | **~7.7 ms** — IR + maps, ~36× faster than original |
+| **Joker beats Goja on** | arithmetic, tail recursion, recursive fib, pidigits, regex-redux, map-update-style core workloads |
 
 ## What's different from upstream Joker
 
@@ -34,8 +35,8 @@ Pure numeric loops compile further to WASM bytecode and execute via [wazero](htt
 ### Generic tail-call optimization
 Self-recursive functions in tail position are automatically rewritten to `recur` at parse time, eliminating stack growth. A runtime trampoline handles cases the rewriter can't catch.
 
-### Transient vectors
-Loops that update vectors via `assoc` automatically use in-place mutation (Clojure-style transients), eliminating persistent copy overhead.
+### Transient vectors and maps
+Loops that update non-escaping vectors or maps via `assoc` automatically use in-place mutation (Clojure-style transients), eliminating persistent copy/update overhead while preserving persistent results at loop return.
 
 ### Evaluator fast paths
 Numeric operations, binding resolution, and function dispatch all have type-specialized fast paths that avoid the generic Joker evaluation machinery.

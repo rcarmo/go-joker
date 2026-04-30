@@ -514,30 +514,59 @@ If replaying this work as commits:
 
 ## Future Directions
 
-### High priority
+The immediate priority is **core Joker speed**, not additional namespaces. Namespace wrappers and extra libraries should remain on the roadmap, but they should not displace evaluator/IR/runtime work.
 
-1. **WASM Double support**: add f64 type tracking to the WASM codegen. Would unlock n-body and spectral-norm via WASM.
+### High priority — core runtime
 
-2. **WASM host function imports**: register gi bridge functions as WASM imports via `wazero.HostModuleBuilder`. Enables WASM-compiled loops to call Joker's `get`, `assoc`, `nth`, etc.
+1. **IR coverage and diagnostics**
+   - Keep broadening the lowered IR subset before adding new surface APIs.
+   - Add an `IR explain`/`WASM explain` diagnostic mode that reports why a loop did not compile.
+   - Track counters for IR compiled/rejected, WASM compiled/rejected, fallback reason, and runtime fallback.
+   - Add more regression tests around nested `let`, nested `loop`, captured bindings, closures, and helper calls.
 
-3. **WASM compilation caching**: use `wazero.NewCompilationCacheWithDir()` to persist compiled native code across process restarts.
+2. **String and sequence throughput**
+   - Optimize `str`, `nth`, `subs`, `count`, regex result handling, and sequence iteration.
+   - Add ASCII/byte fast paths where Joker semantics allow it, while preserving Unicode correctness.
+   - Reduce per-character `Char`/`String` allocation in CLBG-style string workloads.
+   - Consider builder-style internal representations for repeated concatenation patterns.
 
-4. **Wire WASM into eval path**: automatically try WASM before IR for eligible loops.
+3. **Persistent map/vector internals**
+   - Continue reducing allocation in `ArrayMap`/`HashMap` update loops.
+   - Keep safe transient conversion for non-escaping loop slots and improve escape precision.
+   - Improve small-map specialization and vector update/copy paths without changing persistent semantics.
 
-### Medium priority
+4. **Function call overhead and inlining**
+   - Revisit IR inlining for tiny local functions now that slot-collision regressions are covered.
+   - Fast-path arity checks and reduce frame/env allocation for simple calls.
+   - Cache compiled helper functions aggressively and avoid returning to the tree-walker for hot call sites.
 
-5. **Register-based IR**: replace the stack machine with a register machine for better slot reuse and function inlining.
+### Medium priority — WASM backend
 
-6. **Clojure-style transients**: expose `transient`/`persistent!` as user-facing primitives. Current auto-transient is limited.
+5. **Multi-function WASM modules**
+   - Emit multiple functions per WASM module so helper-heavy numeric code can call local helpers natively.
+   - Required to close gaps such as mandelbrot/pixel-style workloads.
+   - Needs a clear capture/local ABI and direct WASM-to-WASM calls for eligible callees.
 
-7. **String builder**: optimize repeated string concatenation with a builder pattern.
+6. **WASM host imports for collections**
+   - Keep the imported-collection path behind validation until the handle ABI and structured control-flow lowering are safe.
+   - Avoid recursive imported-WASM collection functions until multi-function support is in place.
+   - Add validation tests that compare WASM+imports results against IR/tree-walker results before enabling by default.
 
-8. **Mutual tail-call optimization**: extend TCO beyond self-calls.
+7. **WASM linear memory auto-use**
+   - The explicit f64/i64 array support is a foundation; core Joker does not yet automatically use it.
+   - Add IR opcodes for direct typed array load/store and WASM codegen that emits memory operations instead of host-side `Memory.Read`/`Write`.
+   - Consider numeric array specialization for embeddings/signal-processing workloads only when semantics are clear.
 
-### Research
+### Roadmap only — user-facing surface
 
-9. **WASM SIMD**: wazero supports WASM SIMD instructions. Could accelerate vector math workloads.
+8. **User-facing transients and namespace wrappers**
+   - The core transient data structures exist, but public `core.joke` wrappers and additional namespaces are not immediate priorities.
+   - Add them once the core execution paths and diagnostics are stable.
 
-10. **WASM GC proposal**: when WASM GC lands in wazero, Joker Objects could live in WASM memory directly.
+### Benchmark hygiene
 
-11. **Profile-guided optimization**: instrument IR execution to identify the hottest loops, compile only those to WASM.
+9. **Keep benchmarks reproducible**
+   - Store stable baseline/current snapshots in JSON and generate charts from that data only.
+   - Report medians over multiple runs when comparing small deltas.
+   - Distinguish tree-walker, IR, IR+transients, WASM, and WASM+imports in benchmark annotations.
+   - Keep CLBG results framed as IR/WASM pipeline stress tests, not broad real-world performance claims.
