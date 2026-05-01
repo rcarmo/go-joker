@@ -189,8 +189,17 @@ func Eval(expr Expr, env *LocalEnv) Object {
 				initSlots = full
 			}
 			if irTypedEnabled() {
-				if result := irExecTyped(prog, initSlots); result != nil {
-					return result
+				var typedResult Object
+				func() {
+					defer func() {
+						if r := recover(); r != nil {
+							typedResult = nil
+						}
+					}()
+					typedResult = irExecTyped(prog, initSlots)
+				}()
+				if typedResult != nil {
+					return typedResult
 				}
 			}
 			if wp := wasmGetCachedWithOneHelper(prog, initSlots); wp != nil {
@@ -828,8 +837,17 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 			initSlots = full
 		}
 		if irTypedEnabled() {
-			if result := irExecTyped(prog, initSlots); result != nil {
-				return result
+			var typedResult Object
+			func() {
+				defer func() {
+					if r := recover(); r != nil {
+						typedResult = nil
+					}
+				}()
+				typedResult = irExecTyped(prog, initSlots)
+			}()
+			if typedResult != nil {
+				return typedResult
 			}
 		}
 		if wp := wasmGetCachedWithOneHelper(prog, initSlots); wp != nil {

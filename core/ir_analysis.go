@@ -85,9 +85,8 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 			a.UsesString = true
 			a.HasGenericNth = true
 		case irCount:
-			// Count is eligible for typed string loops; collection uses remain
-			// represented by the producing collection ops.
-			a.UsesString = true
+			// Count alone is type-polymorphic; typed-string eligibility comes from
+			// the producer (str/nth/string constant), not from count itself.
 		case irStr1, irStr2:
 			a.UsesString = true
 		case irToTransient, irAssocBang, irToPersistent:
