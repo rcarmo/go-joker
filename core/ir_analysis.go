@@ -72,12 +72,16 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 				a.UsesString = true
 			}
 			pc += 2
-		case irGet, irGet3, irAssoc, irNth, irConj, irFirst, irCount:
+		case irGet, irGet3, irAssoc, irNth, irConj, irFirst:
 			a.UsesCollection = true
-			if op == irNth || op == irCount {
+			if op == irNth {
 				// Could be string or collection at runtime; mark both so gates stay conservative.
 				a.UsesString = true
 			}
+		case irCount:
+			// Count is eligible for typed string loops; collection uses remain
+			// represented by the producing collection ops.
+			a.UsesString = true
 		case irStr1, irStr2:
 			a.UsesString = true
 		case irToTransient, irAssocBang, irToPersistent:
