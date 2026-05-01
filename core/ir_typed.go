@@ -24,6 +24,7 @@ const (
 	irValString
 	irValStringBuilder
 	irValStringIntMap
+	irValIntVector
 	irValNil
 )
 
@@ -36,6 +37,7 @@ type irValue struct {
 	s   string
 	buf []byte
 	sm  map[string]int
+	iv  []int
 	obj Object
 }
 
@@ -55,6 +57,11 @@ func irTypedMapEnabled() bool {
 	mode := irTypedMapMode()
 	return mode != "0" && mode != "off" && mode != "false"
 }
+
+func irTypedVecEnabled() bool {
+	mode := os.Getenv("JOKER_IR_TYPED_VEC")
+	return mode == "1" || mode == "on" || mode == "true" || mode == "force"
+}
 func irTypedMapForce() bool {
 	mode := irTypedMapMode()
 	return mode == "1" || mode == "force" || mode == "all"
@@ -65,7 +72,10 @@ func irTypedEligible(a IRAnalysis) bool {
 		return false
 	}
 	if a.UsesCollection && (a.HasMapOps || !a.HasGenericNth) {
-		return irTypedMapEnabled() && a.HasMapOps && a.UsesString
+		if irTypedMapEnabled() && a.HasMapOps && a.UsesString {
+			return true
+		}
+		return irTypedVecEnabled() && a.UsesCollection && !a.UsesString && !a.HasMapOps
 	}
 	return a.UsesString || a.SuggestedPath == "typed-ir-string-candidate" || a.SuggestedPath == "typed-ir-generic-string-nth-candidate"
 }
@@ -93,6 +103,18 @@ func objectToIRValue(obj Object) irValue {
 		return irValue{tag: irValChar, r: v.Ch}
 	case String:
 		return stringToIRValue(v.S)
+	case *ArrayVector:
+		if irTypedVecEnabled() {
+			iv := make([]int, len(v.arr))
+			for i, obj := range v.arr {
+				x, ok := obj.(Int)
+				if !ok {
+					return irValue{tag: irValObject, obj: obj}
+				}
+				iv[i] = x.I
+			}
+			return irValue{tag: irValIntVector, iv: iv}
+		}
 	case *ArrayMap:
 		if v.Count() == 0 {
 			return irValue{tag: irValStringIntMap, sm: make(map[string]int)}
@@ -129,6 +151,12 @@ func (v irValue) object() Object {
 			res.Add(String{S: k}, Int{I: v})
 		}
 		return res
+	case irValIntVector:
+		arr := make([]Object, len(v.iv))
+		for i, x := range v.iv {
+			arr[i] = Int{I: x}
+		}
+		return &ArrayVector{arr: arr}
 	case irValNil:
 		return NIL
 	default:
@@ -436,18 +464,29 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			key := stack[len(stack)-2]
 			coll := stack[len(stack)-3]
 			stack = stack[:len(stack)-3]
-			if coll.tag != irValStringIntMap || val.tag != irValInt {
+			if coll.tag == irValStringIntMap && val.tag == irValInt {
+				k, ok := irValueStringKey(key)
+				if !ok {
+					return nil
+				}
+				if coll.sm == nil {
+					coll.sm = make(map[string]int)
+				}
+				coll.sm[k] = val.i
+				stack = append(stack, coll)
+			} else if coll.tag == irValIntVector && key.tag == irValInt && val.tag == irValInt {
+				if key.i < 0 || key.i > len(coll.iv) {
+					return nil
+				}
+				if key.i == len(coll.iv) {
+					coll.iv = append(coll.iv, val.i)
+				} else {
+					coll.iv[key.i] = val.i
+				}
+				stack = append(stack, coll)
+			} else {
 				return nil
 			}
-			k, ok := irValueStringKey(key)
-			if !ok {
-				return nil
-			}
-			if coll.sm == nil {
-				coll.sm = make(map[string]int)
-			}
-			coll.sm[k] = val.i
-			stack = append(stack, coll)
 		case irNth:
 			idx := stack[len(stack)-1]
 			coll := stack[len(stack)-2]
@@ -476,6 +515,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 						return nil
 					}
 				}
+			} else if coll.tag == irValIntVector {
+				if idx.i >= len(coll.iv) {
+					return nil
+				}
+				stack = append(stack, irValue{tag: irValInt, i: coll.iv[idx.i]})
 			} else if coll.tag == irValObject {
 				switch v := coll.obj.(type) {
 				case *ArrayVector:
@@ -565,6 +609,8 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				stack = append(stack, irValue{tag: irValInt, i: a.i})
 			} else if a.tag == irValStringIntMap {
 				stack = append(stack, irValue{tag: irValInt, i: len(a.sm)})
+			} else if a.tag == irValIntVector {
+				stack = append(stack, irValue{tag: irValInt, i: len(a.iv)})
 			} else if a.tag == irValObject {
 				if c, ok := a.obj.(Counted); ok {
 					stack = append(stack, irValue{tag: irValInt, i: c.Count()})
