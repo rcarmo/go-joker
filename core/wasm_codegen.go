@@ -111,10 +111,25 @@ func compileWasmBody(prog *IRProgram, useFloat bool) []byte {
 }
 
 func compileWasmBodyWithHelper(prog *IRProgram, useFloat bool, helperSlot int, helperFuncIdx int) []byte {
-	var o []byte
-	o = append(o, 0x00) // 0 local decls
+	return compileWasmBodyWithHelperParams(prog, useFloat, helperSlot, helperFuncIdx, prog.numSlots)
+}
 
-	resType := byte(0x7e) // i64
+func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot int, helperFuncIdx int, numParams int) []byte {
+	var o []byte
+	valType := byte(0x7e) // i64
+	if useFloat {
+		valType = 0x7c // f64
+	}
+	extraLocals := prog.numSlots - numParams
+	if extraLocals > 0 {
+		o = append(o, 0x01) // 1 local decl group
+		o = appendULEB(o, extraLocals)
+		o = append(o, valType)
+	} else {
+		o = append(o, 0x00) // 0 local decls
+	}
+
+	resType := valType
 	if useFloat {
 		resType = 0x7c // f64
 	}

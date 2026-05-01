@@ -100,7 +100,8 @@ Highlights from the 2026-04-30 run:
 ### E. Multi-function WASM modules
 
 - Started: a one-helper WASM module prototype can emit a caller plus one captured helper function and lower `irCallSlot` to a direct WASM `call`.
-- The prototype is covered by an internal test but is not enabled on the main eval path yet; naive activation regressed helper-heavy benchmarks due to selection/ABI heuristics.
+- The prototype is covered by an internal test and can be exercised with `JOKER_WASM_MULTIFN=1`, but remains disabled by default; benchmark probes still regress mandelbrot/spectral due to helper-call/module selection overhead.
+- Helper functions with compiler-local slots now get proper WASM locals instead of being modeled as extra parameters.
 - Next: add a cost model/gating rule so the multi-function module is used only when it wins over standalone helper WASM/IR dispatch.
 - Define a broader safe capture/local ABI before enabling mandelbrot/pixel-style workloads by default.
 

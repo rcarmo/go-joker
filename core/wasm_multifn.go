@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"os"
 	"sync"
 
 	"github.com/tetratelabs/wazero"
@@ -10,9 +11,9 @@ import (
 // wasm_multifn.go — experimental one-helper multi-function WASM modules.
 //
 // This removes the host boundary for hot loops that call a single captured
-// helper function (e.g. mandelbrot's pixel function). The caller remains the
-// exported exec function; the helper is emitted as a second internal WASM
-// function and irCallSlot becomes a direct WASM call.
+// helper function. The caller remains the exported exec function; the helper is
+// emitted as a second internal WASM function and irCallSlot becomes a direct
+// WASM call. This is intentionally not wired into the default eval path yet.
 
 type wasmMultiKey struct {
 	caller *IRProgram
@@ -21,8 +22,10 @@ type wasmMultiKey struct {
 
 var wasmMultiFnCache sync.Map // map[wasmMultiKey]*WasmProgram
 
+func wasmMultiFnEnabled() bool { return os.Getenv("JOKER_WASM_MULTIFN") == "1" }
+
 func wasmGetCachedWithOneHelper(prog *IRProgram, slots []Object) *WasmProgram {
-	helperSlot, helperFn, helperProg, ok := findSingleWasmHelper(prog, slots)
+	helperSlot, helperFn, helperProg, helperParams, ok := findSingleWasmHelper(prog, slots)
 	if !ok {
 		return nil
 	}
@@ -34,7 +37,7 @@ func wasmGetCachedWithOneHelper(prog *IRProgram, slots []Object) *WasmProgram {
 		}
 		return wp
 	}
-	wp := wasmCompileWithOneHelper(prog, helperSlot, helperProg)
+	wp := wasmCompileWithOneHelper(prog, helperSlot, helperProg, helperParams)
 	if wp == nil {
 		wasmMultiFnCache.Store(key, wasmFail)
 		return nil
@@ -43,7 +46,7 @@ func wasmGetCachedWithOneHelper(prog *IRProgram, slots []Object) *WasmProgram {
 	return wp
 }
 
-func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram, bool) {
+func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram, int, bool) {
 	code := prog.code
 	pc := 0
 	helperSlot := -1
@@ -63,7 +66,7 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 				helperSlot = slot
 				helperNArgs = nargs
 			} else if helperSlot != slot || helperNArgs != nargs {
-				return 0, nil, nil, false
+				return 0, nil, nil, 0, false
 			}
 		case irRecur:
 			pc += 4
@@ -74,20 +77,20 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 		}
 	}
 	if helperSlot < 0 || helperSlot >= len(slots) {
-		return 0, nil, nil, false
+		return 0, nil, nil, 0, false
 	}
 	helperFn, ok := slots[helperSlot].(*Fn)
 	if !ok || len(helperFn.fnExpr.arities) != 1 || len(helperFn.fnExpr.arities[0].args) != helperNArgs {
-		return 0, nil, nil, false
+		return 0, nil, nil, 0, false
 	}
 	helperProg := irCompileFn(helperFn)
 	if helperProg == nil || helperProg.hasSelf || !isWasmEligible(helperProg) {
-		return 0, nil, nil, false
+		return 0, nil, nil, 0, false
 	}
 	if !isWasmEligibleWithOneHelper(prog, helperSlot) {
-		return 0, nil, nil, false
+		return 0, nil, nil, 0, false
 	}
-	return helperSlot, helperFn, helperProg, true
+	return helperSlot, helperFn, helperProg, helperNArgs, true
 }
 
 func isWasmEligibleWithOneHelper(prog *IRProgram, helperSlot int) bool {
@@ -126,17 +129,17 @@ func isWasmEligibleWithOneHelper(prog *IRProgram, helperSlot int) bool {
 	return true
 }
 
-func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRProgram) *WasmProgram {
+func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRProgram, helperParams int) *WasmProgram {
 	useFloat := irProgramUsesFloat(prog) || irProgramUsesFloat(helperProg)
 	callerBody := compileWasmBodyWithHelper(prog, useFloat, helperSlot, 1)
 	if callerBody == nil {
 		return nil
 	}
-	helperBody := compileWasmBodyWithHelper(helperProg, useFloat, -1, -1)
+	helperBody := compileWasmBodyWithHelperParams(helperProg, useFloat, -1, -1, helperParams)
 	if helperBody == nil {
 		return nil
 	}
-	bin := wasmModuleWithTwoFuncs(prog.numSlots, helperProg.numSlots, useFloat, callerBody, helperBody)
+	bin := wasmModuleWithTwoFuncs(prog.numSlots, helperParams, useFloat, callerBody, helperBody)
 
 	rt := getWasmRT()
 	ctx := context.Background()
@@ -161,7 +164,6 @@ func wasmModuleWithTwoFuncs(callerParams, helperParams int, useFloat bool, calle
 	if useFloat {
 		valType = 0x7c
 	}
-	// Type section: caller type 0, helper type 1.
 	var typeBody []byte
 	typeBody = append(typeBody, 0x02)
 	for _, n := range []int{callerParams, helperParams} {
@@ -173,11 +175,8 @@ func wasmModuleWithTwoFuncs(callerParams, helperParams int, useFloat bool, calle
 		typeBody = append(typeBody, 0x01, valType)
 	}
 	m.addSection(0x01, typeBody)
-	// Function section: two defined funcs, type indices 0 and 1.
 	m.addSection(0x03, []byte{0x02, 0x00, 0x01})
-	// Export function 0 as exec.
 	m.addExportSection()
-	// Code section: two bodies.
 	var codeBody []byte
 	codeBody = append(codeBody, 0x02)
 	codeBody = appendULEB(codeBody, len(callerBody))
