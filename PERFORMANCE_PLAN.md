@@ -25,7 +25,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - Escape analysis for safe in-place collection mutation.
 - Internal and explicit transient vector/map support.
 - WASM linear-memory f64/i64 arrays as an experimental foundation.
-- CLBG-inspired benchmark suite and generated benchmark charts.
+- CLBG-inspired benchmark suite, generated benchmark charts, and a repeat-run median benchmark harness.
 - IR slot-allocation collision fixes for captured inner `let`/nested loop init expressions.
 - Safe transient maps in IR loops, dropping `map-update-loop` from ~17.3ms to ~0.899ms.
 - Initial IR/WASM explain diagnostics for hot-loop path inspection.
@@ -128,7 +128,7 @@ Highlights from the 2026-04-30 run:
 For every optimization:
 
 - Run `go test ./core`.
-- Run targeted benchmarks before/after.
+- Run targeted benchmarks before/after; use `benchmarks/run_benchmarks.py` for median/stdev summaries when judging optimization decisions.
 - Add regression tests for compiler/runtime correctness.
 - Update `benchmarks/benchmark-history.json` and regenerate SVGs when benchmark numbers change materially.
 - Keep CLBG-style results documented as pipeline stress tests, not broad real-world claims.
