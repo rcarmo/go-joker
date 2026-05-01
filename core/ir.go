@@ -19,40 +19,41 @@ import (
 
 // Opcodes
 const (
-	irLiteral      byte = iota // operand: index into constants pool
-	irLoadSlot                 // operand: slot index in locals
-	irStoreSlot                // operand: slot index in locals
-	irAdd                      // pop 2, push sum (Int fast path)
-	irSub                      // pop 2, push difference
-	irMul                      // pop 2, push product
-	irRem                      // pop 2, push remainder
-	irDiv                      // pop 2, push quotient (Double)
-	irInc                      // pop 1, push +1
-	irDec                      // pop 1, push -1
-	irLt                       // pop 2, push Boolean
-	irEq                       // pop 2, push Boolean
-	irIsZero                   // pop 1, push Boolean
-	irJumpIfNot                // operand: target PC (uint16 big-endian in next 2 bytes)
-	irJump                     // operand: target PC
-	irRecur                    // operand: nargs (2 bytes) + target PC (2 bytes)
-	irReturn                   // pop 1, return it
-	irGet                      // pop 2 (coll, key), push result or NIL
-	irGet3                     // pop 3 (coll, key, default), push result
-	irAssoc                    // pop 3 (coll, key, val), push new map
-	irNth                      // pop 2 (coll, index), push element
-	irConj                     // pop 2 (coll, val), push conj'd
-	irSqrt                     // pop 1, push sqrt
-	irCallSlot                 // operand1: slot (2 bytes), operand2: nargs (2 bytes)
-	irCallSelf                 // operand: nargs (2 bytes)
-	irFirst                    // pop 1, push first element
-	irBuildVec                 // operand: n elements; pop n, push new vector
-	irStr2                     // pop 2, push string concatenation
-	irStr1                     // pop 1, push string conversion
-	irCount                    // pop 1, push count
-	irToTransient              // pop 1 (ArrayVector), push TransientVector
-	irAssocBang                // pop 3 (tv, key, val), mutate in place, push tv
-	irToPersistent             // pop 1 (TransientVector), push ArrayVector
-	irFallback                 // cannot execute in IR; fall back to tree Eval
+	irLiteral        byte = iota // operand: index into constants pool
+	irLoadSlot                   // operand: slot index in locals
+	irStoreSlot                  // operand: slot index in locals
+	irAdd                        // pop 2, push sum (Int fast path)
+	irSub                        // pop 2, push difference
+	irMul                        // pop 2, push product
+	irRem                        // pop 2, push remainder
+	irDiv                        // pop 2, push quotient (Double)
+	irInc                        // pop 1, push +1
+	irDec                        // pop 1, push -1
+	irLt                         // pop 2, push Boolean
+	irEq                         // pop 2, push Boolean
+	irIsZero                     // pop 1, push Boolean
+	irJumpIfNot                  // operand: target PC (uint16 big-endian in next 2 bytes)
+	irJump                       // operand: target PC
+	irRecur                      // operand: nargs (2 bytes) + target PC (2 bytes)
+	irReturn                     // pop 1, return it
+	irGet                        // pop 2 (coll, key), push result or NIL
+	irGet3                       // pop 3 (coll, key, default), push result
+	irAssoc                      // pop 3 (coll, key, val), push new map
+	irNth                        // pop 2 (coll, index), push element
+	irConj                       // pop 2 (coll, val), push conj'd
+	irSqrt                       // pop 1, push sqrt
+	irCallSlot                   // operand1: slot (2 bytes), operand2: nargs (2 bytes)
+	irCallSelf                   // operand: nargs (2 bytes)
+	irFirst                      // pop 1, push first element
+	irBuildVec                   // operand: n elements; pop n, push new vector
+	irStr2                       // pop 2, push string concatenation
+	irStr1                       // pop 1, push string conversion
+	irNthStringASCII             // operand: constant string index; pop idx, push char
+	irCount                      // pop 1, push count
+	irToTransient                // pop 1 (ArrayVector), push TransientVector
+	irAssocBang                  // pop 3 (tv, key, val), mutate in place, push tv
+	irToPersistent               // pop 1 (TransientVector), push ArrayVector
+	irFallback                   // cannot execute in IR; fall back to tree Eval
 )
 
 // ---------- Cache ----------
@@ -330,6 +331,31 @@ func (c *irCompiler) addConstant(obj Object) int {
 	}
 	c.constants = append(c.constants, obj)
 	return len(c.constants) - 1
+}
+
+func isASCIIBytes(s string) bool {
+	for i := 0; i < len(s); i++ {
+		if s[i] >= 0x80 {
+			return false
+		}
+	}
+	return true
+}
+
+func (c *irCompiler) constantASCIIString(expr Expr) (string, bool) {
+	switch e := expr.(type) {
+	case *LiteralExpr:
+		if s, ok := e.obj.(String); ok && isASCIIBytes(s.S) {
+			return s.S, true
+		}
+	case *BindingExpr:
+		if lit, ok := e.binding.value.(*LiteralExpr); ok {
+			if s, ok := lit.obj.(String); ok && isASCIIBytes(s.S) {
+				return s.S, true
+			}
+		}
+	}
+	return "", false
 }
 
 func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
@@ -777,10 +803,18 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		if len(expr.args) != 2 {
 			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
-		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
-			return false
+		if s, ok := c.constantASCIIString(expr.args[0]); ok {
+			if !c.compileExpr(expr.args[1], false) {
+				return false
+			}
+			idx := c.addConstant(String{S: s})
+			c.emitWithOperand(irNthStringASCII, idx)
+		} else {
+			if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
+				return false
+			}
+			c.emit(irNth)
 		}
-		c.emit(irNth)
 	case "procConj":
 		if len(expr.args) != 2 {
 			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
@@ -1316,6 +1350,8 @@ loop:
 			coll := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			switch c := coll.(type) {
+			case *TransientVector:
+				stack = append(stack, c.ConjInPlace(val))
 			case Conjable:
 				stack = append(stack, c.Conj(val))
 			default:
@@ -1446,6 +1482,21 @@ loop:
 			default:
 				stack = append(stack, String{S: a.ToString(false)})
 			}
+
+		case irNthStringASCII:
+			idxConst := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			idxObj := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			idx, ok := idxObj.(Int)
+			if !ok {
+				return nil
+			}
+			s := prog.constants[idxConst].(String).S
+			if idx.I < 0 || idx.I >= len(s) {
+				return nil
+			}
+			stack = append(stack, Char{Ch: rune(s[idx.I])})
 
 		case irStr2:
 			b := stack[len(stack)-1]

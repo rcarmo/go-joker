@@ -80,7 +80,7 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 		op := code[pc]
 		pc++
 		switch op {
-		case irLiteral, irLoadSlot, irStoreSlot, irJumpIfNot, irJump, irCallSelf, irBuildVec:
+		case irLiteral, irLoadSlot, irStoreSlot, irJumpIfNot, irJump, irCallSelf, irBuildVec, irNthStringASCII:
 			pc += 2
 		case irCallSlot:
 			slot := int(code[pc])<<8 | int(code[pc+1])
@@ -133,7 +133,7 @@ func isWasmEligibleWithOneHelper(prog *IRProgram, helperSlot int) bool {
 		op := code[pc]
 		pc++
 		switch op {
-		case irLiteral, irLoadSlot, irStoreSlot:
+		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
 			pc += 2
 		case irAdd, irSub, irMul, irRem, irInc, irDec,
 			irLt, irEq, irIsZero, irReturn, irDiv, irSqrt:

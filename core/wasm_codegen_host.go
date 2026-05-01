@@ -108,7 +108,7 @@ func isWasmWithImportsEligible(prog *IRProgram) bool {
 		op := code[pc]
 		pc++
 		switch op {
-		case irLiteral, irLoadSlot, irStoreSlot:
+		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
 			pc += 2
 		case irAdd, irSub, irMul, irDiv, irRem, irInc, irDec,
 			irLt, irEq, irIsZero, irReturn, irSqrt,

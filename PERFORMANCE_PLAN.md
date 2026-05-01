@@ -32,6 +32,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - First string/sequence IR fast path: unary `str` lowering plus string `nth` ASCII-prefix fast path inside IR.
 - Cached string rune counts now accelerate repeated `count`/`subs` over stable strings while preserving Unicode semantics.
 - IR equality now has primitive char/string fast paths before generic `Object.Equals`, allowing small text helper functions to stay compiled with less dispatch overhead.
+- Added `irNthStringASCII`, a specialized opcode for `nth` over compile-time-known ASCII strings, reducing generic object dispatch in text loops.
 - IR helper/self-call dispatch now uses stack-backed argument arrays for small arities.
 - IR rejection diagnostics now report specific unsupported expression/callable/arity/binding/slot reasons instead of only a generic compile failure.
 - Literal map expressions, including `{}`, now compile to IR constants, keeping more map-update loops on the lowered path.
@@ -73,7 +74,7 @@ Highlights from the 2026-04-30 run:
 
 ### B. String and sequence throughput
 
-- Started: IR now lowers unary `str`, allowing loops that convert chars to strings to stay on the IR path; `irNth` has a Unicode-preserving ASCII-prefix fast path for strings; `irEq` has direct char/string equality.
+- Started: IR now lowers unary `str`, allowing loops that convert chars to strings to stay on the IR path; `irNth` has a Unicode-preserving ASCII-prefix fast path for strings; `irEq` has direct char/string equality; `irNthStringASCII` handles constant ASCII string indexing directly.
 - Started optimizing `count`/`subs`: repeated string rune counts are cached, ASCII `subs` avoids `[]rune` conversion, and `stringSeq` implements `Count`.
 - Continue optimizing `str`, `nth`, regex result handling, and sequence iteration.
 - Add more ASCII/byte fast paths where semantics allow while preserving Unicode behavior.

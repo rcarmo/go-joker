@@ -32,7 +32,7 @@ func isWasmEligible(prog *IRProgram) bool {
 		op := code[pc]
 		pc++
 		switch op {
-		case irLiteral, irLoadSlot, irStoreSlot:
+		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
 			pc += 2
 		case irAdd, irSub, irMul, irRem, irInc, irDec,
 			irLt, irEq, irIsZero, irReturn:
@@ -74,7 +74,7 @@ func irProgramUsesFloat(prog *IRProgram) bool {
 		switch op {
 		case irDiv, irSqrt:
 			return true
-		case irLiteral, irLoadSlot, irStoreSlot:
+		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
 			pc += 2
 		case irJumpIfNot, irJump:
 			pc += 2

@@ -71,6 +71,11 @@ func analyzeEscapes(prog *IRProgram) *EscapeInfo {
 			pc += 2
 			push(-1) // literal, not from a slot
 
+		case irNthStringASCII:
+			pc += 2
+			pop() // index
+			push(-1)
+
 		case irLoadSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
