@@ -1441,16 +1441,27 @@ loop:
 			b := stack[len(stack)-1]
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			stack = append(stack, String{S: a.ToString(false) + b.ToString(false)})
+			if av, ok := a.(String); ok {
+				switch bv := b.(type) {
+				case Char:
+					stack = append(stack, String{S: av.S + charToStringFast(bv.Ch)})
+				case String:
+					stack = append(stack, String{S: av.S + bv.S})
+				default:
+					stack = append(stack, String{S: av.S + b.ToString(false)})
+				}
+			} else {
+				stack = append(stack, String{S: a.ToString(false) + b.ToString(false)})
+			}
 
 		case irCount:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			switch v := a.(type) {
-			case String:
-				stack = append(stack, Int{I: stringRuneCountFast(v.S)})
 			case Counted:
 				stack = append(stack, Int{I: v.Count()})
+			case String:
+				stack = append(stack, Int{I: len(v.S)})
 			default:
 				return nil
 			}
