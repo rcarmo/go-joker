@@ -41,10 +41,13 @@ func irTypedEnabled() bool {
 }
 
 func irTypedEligible(a IRAnalysis) bool {
-	if a.NumOps == 0 || a.UsesCollection || a.UsesTransient || a.HasCallSlot || a.HasSelfCall || a.HasNestedRecur {
+	if a.NumOps == 0 || a.UsesTransient || a.HasCallSlot || a.HasSelfCall || a.HasNestedRecur {
 		return false
 	}
-	return a.UsesString || a.SuggestedPath == "typed-ir-string-candidate"
+	if a.UsesCollection && (a.HasMapOps || !a.HasGenericNth) {
+		return false
+	}
+	return a.UsesString || a.SuggestedPath == "typed-ir-string-candidate" || a.SuggestedPath == "typed-ir-generic-string-nth-candidate"
 }
 
 func objectToIRValue(obj Object) irValue {
@@ -322,6 +325,36 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				return NIL
 			}
 			return stack[len(stack)-1].object()
+		case irNth:
+			idx := stack[len(stack)-1]
+			coll := stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if idx.tag != irValInt || coll.tag != irValString {
+				return nil
+			}
+			if idx.i < 0 {
+				return nil
+			}
+			if isASCIIBytes(coll.s) {
+				if idx.i >= len(coll.s) {
+					return nil
+				}
+				stack = append(stack, irValue{tag: irValChar, r: rune(coll.s[idx.i])})
+			} else {
+				n := 0
+				found := false
+				for _, r := range coll.s {
+					if n == idx.i {
+						stack = append(stack, irValue{tag: irValChar, r: r})
+						found = true
+						break
+					}
+					n++
+				}
+				if !found {
+					return nil
+				}
+			}
 		case irNthStringASCII:
 			idxConst := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2

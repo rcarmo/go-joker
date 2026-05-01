@@ -19,6 +19,8 @@ type IRAnalysis struct {
 	CallSlotCount    int
 	HasSelfCall      bool
 	HasNestedRecur   bool
+	HasGenericNth    bool
+	HasMapOps        bool
 	HasStringAppend  bool
 	HasStringPrepend bool
 
@@ -75,12 +77,13 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 				a.UsesString = true
 			}
 			pc += 2
-		case irGet, irGet3, irAssoc, irNth, irConj, irFirst:
+		case irGet, irGet3, irAssoc, irConj, irFirst:
 			a.UsesCollection = true
-			if op == irNth {
-				// Could be string or collection at runtime; mark both so gates stay conservative.
-				a.UsesString = true
-			}
+			a.HasMapOps = true
+		case irNth:
+			a.UsesCollection = true
+			a.UsesString = true
+			a.HasGenericNth = true
 		case irCount:
 			// Count is eligible for typed string loops; collection uses remain
 			// represented by the producing collection ops.
@@ -133,6 +136,9 @@ func suggestIRPath(a IRAnalysis) string {
 	}
 	if a.UsesString && !a.UsesCollection {
 		return "typed-ir-string-candidate"
+	}
+	if a.HasGenericNth && a.UsesString && !a.HasMapOps {
+		return "typed-ir-generic-string-nth-candidate"
 	}
 	if a.UsesCollection && !a.UsesString {
 		return "ir-collection-builder-candidate"

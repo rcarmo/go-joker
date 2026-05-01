@@ -37,7 +37,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - IR helper inlining now defaults to `auto`: text-oriented tiny helpers and tiny straight-line collection helpers are inlined. `JOKER_IR_INLINE=force` enables all tiny helpers for experiments; `off` disables it. This yields a large reverse-complement win without default-enabling numeric helper inlining.
 - TransientString prepend builders are enabled in auto mode for `(str char-or-string acc)` loops; append builders remain force-only because they regress broader CLBG text cases.
 - IR rejection diagnostics now report specific unsupported expression/callable/arity/binding/slot reasons instead of only a generic compile failure.
-- Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack.
+- Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack. It now supports generic string `nth` in addition to constant ASCII string indexing.
 - Literal map expressions, including `{}`, now compile to IR constants, keeping more map-update loops on the lowered path.
 
 ## Current benchmark checkpoint

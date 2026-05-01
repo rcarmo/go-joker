@@ -528,7 +528,7 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
 
 2. **String and sequence throughput**
    - Started: IR now lowers unary `str`, allowing char-to-string conversion loops to remain in IR; `irNth` has a Unicode-preserving ASCII-prefix fast path for strings; `irEq` has direct char/string equality; `irNthStringASCII` handles compile-time-known ASCII string indexing directly.
-   - Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack; probes reduce allocations in string append, char-compare, k-nucleotide, and reverse-complement workloads.
+   - Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack. It supports constant ASCII and generic string `nth`; probes reduce allocations in string append, char-compare, k-nucleotide, and reverse-complement workloads.
    - TransientString prepend builders are enabled in auto mode for `(str char-or-string acc)` style loops; append builders remain force-only because they regress broader CLBG text cases.
    - Repeated string rune counts are cached; ASCII `subs` avoids `[]rune` conversion; `stringSeq` implements `Count`.
    - Continue optimizing `str`, `nth`, regex result handling, and sequence iteration.
