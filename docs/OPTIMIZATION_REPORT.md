@@ -551,8 +551,8 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
 5. **Multi-function WASM modules**
    - Started: a one-helper WASM module prototype can emit a caller plus one captured helper function and lower `irCallSlot` to a direct WASM `call`.
    - Helper functions with compiler-local slots now get proper WASM locals instead of being modeled as extra parameters.
-   - Required to close gaps such as mandelbrot/pixel-style workloads; it can be probed with `JOKER_WASM_MULTIFN=1`, but remains disabled by default because current benchmark probes still regress mandelbrot/spectral.
-   - Next work is a cost model/gating rule and a broader safe capture/local ABI before enabling this path by default.
+   - Required to close gaps such as mandelbrot/pixel-style workloads; default `auto` mode permits only integer one-helper modules, while float helper modules require `JOKER_WASM_MULTIFN=force` for benchmark probing.
+   - Next work is a measured cost model and broader safe capture/local ABI before enabling float helper modules by default.
 
 6. **WASM host imports for collections**
    - Keep the imported-collection path behind validation until the handle ABI and structured control-flow lowering are safe.

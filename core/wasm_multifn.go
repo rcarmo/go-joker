@@ -20,13 +20,37 @@ type wasmMultiKey struct {
 	helper *FnArityExpr
 }
 
-var wasmMultiFnCache sync.Map // map[wasmMultiKey]*WasmProgram
+var wasmMultiFnCache sync.Map    // map[wasmMultiKey]*WasmProgram
+var wasmMultiFnProgFail sync.Map // map[*IRProgram]bool for no-helper/auto-rejected callers
 
-func wasmMultiFnEnabled() bool { return os.Getenv("JOKER_WASM_MULTIFN") == "1" }
+func wasmMultiFnMode() string {
+	mode := os.Getenv("JOKER_WASM_MULTIFN")
+	if mode == "" {
+		return "auto"
+	}
+	return mode
+}
+
+func wasmMultiFnEnabled() bool {
+	mode := wasmMultiFnMode()
+	return mode != "0" && mode != "off" && mode != "false"
+}
+
+func wasmMultiFnForce() bool {
+	mode := wasmMultiFnMode()
+	return mode == "1" || mode == "force" || mode == "all"
+}
 
 func wasmGetCachedWithOneHelper(prog *IRProgram, slots []Object) *WasmProgram {
+	if !wasmMultiFnEnabled() {
+		return nil
+	}
+	if _, failed := wasmMultiFnProgFail.Load(prog); failed {
+		return nil
+	}
 	helperSlot, helperFn, helperProg, helperParams, ok := findSingleWasmHelper(prog, slots)
 	if !ok {
+		wasmMultiFnProgFail.Store(prog, true)
 		return nil
 	}
 	key := wasmMultiKey{caller: prog, helper: &helperFn.fnExpr.arities[0]}
@@ -51,6 +75,7 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 	pc := 0
 	helperSlot := -1
 	helperNArgs := -1
+	helperCalls := 0
 	for pc < len(code) {
 		op := code[pc]
 		pc++
@@ -62,6 +87,7 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 			pc += 2
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
+			helperCalls++
 			if helperSlot < 0 {
 				helperSlot = slot
 				helperNArgs = nargs
@@ -88,6 +114,13 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 		return 0, nil, nil, 0, false
 	}
 	if !isWasmEligibleWithOneHelper(prog, helperSlot) {
+		return 0, nil, nil, 0, false
+	}
+	// Conservative auto mode: only enable integer one-helper modules. Float
+	// helper modules are correct enough for direct tests but currently regress
+	// mandelbrot/spectral in end-to-end benchmark probes; use force/all to study
+	// them without affecting default performance.
+	if !wasmMultiFnForce() && (helperCalls == 0 || irProgramUsesFloat(prog) || irProgramUsesFloat(helperProg)) {
 		return 0, nil, nil, 0, false
 	}
 	return helperSlot, helperFn, helperProg, helperNArgs, true

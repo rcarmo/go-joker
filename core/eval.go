@@ -188,11 +188,9 @@ func Eval(expr Expr, env *LocalEnv) Object {
 				}
 				initSlots = full
 			}
-			if wasmMultiFnEnabled() {
-				if wp := wasmGetCachedWithOneHelper(prog, initSlots); wp != nil {
-					if result := wasmExec(wp, initSlots); result != nil {
-						return result
-					}
+			if wp := wasmGetCachedWithOneHelper(prog, initSlots); wp != nil {
+				if result := wasmExec(wp, initSlots); result != nil {
+					return result
 				}
 			}
 			var result Object
@@ -824,11 +822,9 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 			}
 			initSlots = full
 		}
-		if wasmMultiFnEnabled() {
-			if wp := wasmGetCachedWithOneHelper(prog, initSlots); wp != nil {
-				if result := wasmExec(wp, initSlots); result != nil {
-					return result
-				}
+		if wp := wasmGetCachedWithOneHelper(prog, initSlots); wp != nil {
+			if result := wasmExec(wp, initSlots); result != nil {
+				return result
 			}
 		}
 		var result Object
