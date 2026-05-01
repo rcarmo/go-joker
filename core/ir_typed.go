@@ -29,9 +29,9 @@ const (
 
 type irValue struct {
 	tag irValueTag
-	i   int
+	i   int // int value, or cached rune count for strings/builders
 	f   float64
-	b   bool
+	b   bool // cached ASCII flag for strings/builders
 	r   rune
 	s   string
 	buf []byte
@@ -59,6 +59,17 @@ func irTypedEligible(a IRAnalysis) bool {
 	return a.UsesString || a.SuggestedPath == "typed-ir-string-candidate" || a.SuggestedPath == "typed-ir-generic-string-nth-candidate"
 }
 
+func stringToIRValue(s string) irValue {
+	ascii := true
+	for i := 0; i < len(s); i++ {
+		if s[i] >= utf8.RuneSelf {
+			ascii = false
+			return irValue{tag: irValString, s: s, i: utf8.RuneCountInString(s), b: false}
+		}
+	}
+	return irValue{tag: irValString, s: s, i: len(s), b: ascii}
+}
+
 func objectToIRValue(obj Object) irValue {
 	switch v := obj.(type) {
 	case Int:
@@ -70,7 +81,7 @@ func objectToIRValue(obj Object) irValue {
 	case Char:
 		return irValue{tag: irValChar, r: v.Ch}
 	case String:
-		return irValue{tag: irValString, s: v.S}
+		return stringToIRValue(v.S)
 	case *ArrayMap:
 		if v.Count() == 0 {
 			return irValue{tag: irValStringIntMap, sm: make(map[string]int)}
@@ -206,7 +217,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		if v.tag == irValString && i < len(analysis.StringAppendSlots) && (analysis.StringAppendSlots[i] || analysis.StringPrependSlots[i]) {
 			buf := make([]byte, len(v.s), len(v.s)+16)
 			copy(buf, v.s)
-			v = irValue{tag: irValStringBuilder, buf: buf}
+			v = irValue{tag: irValStringBuilder, buf: buf, i: v.i, b: v.b}
 		}
 		slots[i] = v
 	}
@@ -409,7 +420,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				return nil
 			}
 			if coll.tag == irValString {
-				if isASCIIBytes(coll.s) {
+				if coll.b {
 					if idx.i >= len(coll.s) {
 						return nil
 					}
@@ -463,13 +474,27 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if a.tag == irValString || a.tag == irValStringBuilder {
 				stack = append(stack, a)
 			} else {
-				stack = append(stack, irValue{tag: irValString, s: irValueToString(a)})
+				stack = append(stack, stringToIRValue(irValueToString(a)))
 			}
 		case irStr2:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			if a.tag == irValStringBuilder {
-				a.buf = append(a.buf, irValueToString(b)...)
+				bs := irValueToString(b)
+				a.buf = append(a.buf, bs...)
+				if a.b {
+					for i := 0; i < len(bs); i++ {
+						if bs[i] >= utf8.RuneSelf {
+							a.b = false
+							break
+						}
+					}
+				}
+				if a.b {
+					a.i += len(bs)
+				} else {
+					a.i = irStringRuneCount(string(a.buf))
+				}
 				stack = append(stack, a)
 			} else if b.tag == irValStringBuilder {
 				prefix := irValueToString(a)
@@ -477,18 +502,31 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 					b.buf = append(b.buf, make([]byte, len(prefix))...)
 					copy(b.buf[len(prefix):], b.buf[:len(b.buf)-len(prefix)])
 					copy(b.buf, prefix)
+					if b.b {
+						for i := 0; i < len(prefix); i++ {
+							if prefix[i] >= utf8.RuneSelf {
+								b.b = false
+								break
+							}
+						}
+					}
+					if b.b {
+						b.i += len(prefix)
+					} else {
+						b.i = irStringRuneCount(string(b.buf))
+					}
 				}
 				stack = append(stack, b)
 			} else {
-				stack = append(stack, irValue{tag: irValString, s: irValueToString(a) + irValueToString(b)})
+				stack = append(stack, stringToIRValue(irValueToString(a)+irValueToString(b)))
 			}
 		case irCount:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			if a.tag == irValString {
-				stack = append(stack, irValue{tag: irValInt, i: irStringRuneCount(a.s)})
+				stack = append(stack, irValue{tag: irValInt, i: a.i})
 			} else if a.tag == irValStringBuilder {
-				stack = append(stack, irValue{tag: irValInt, i: irStringRuneCount(string(a.buf))})
+				stack = append(stack, irValue{tag: irValInt, i: a.i})
 			} else if a.tag == irValStringIntMap {
 				stack = append(stack, irValue{tag: irValInt, i: len(a.sm)})
 			} else {

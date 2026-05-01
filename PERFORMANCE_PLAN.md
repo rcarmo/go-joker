@@ -38,7 +38,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - TransientString prepend builders are enabled in auto mode for `(str char-or-string acc)` loops; append builders remain force-only because they regress broader CLBG text cases.
 - IR rejection diagnostics now report specific unsupported expression/callable/arity/binding/slot reasons instead of only a generic compile failure.
 - Loop-frame inference now prefers bindings seen in `recur` arguments, allowing nested/captured loop shapes like k-nucleotide's frequency loop to compile.
-- Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack. It now supports generic string/vector `nth`, typed string-builder slots, and experimental string-int map values behind `JOKER_IR_TYPED_MAP=1`.
+- Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack. It now caches string length/ASCII metadata, supports generic string/vector `nth`, typed string-builder slots, and experimental string-int map values behind `JOKER_IR_TYPED_MAP=1`.
 - Literal map expressions, including `{}`, now compile to IR constants, keeping more map-update loops on the lowered path.
 
 ## Current benchmark checkpoint
