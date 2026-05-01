@@ -90,6 +90,7 @@ type IRProgram struct {
 	captureKeys []bindingKey
 	hasSelf     bool
 	escapeInfo  *EscapeInfo
+	analysis    *IRAnalysis
 }
 
 // ---------- Fn compilation ----------

@@ -32,6 +32,9 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 	if prog == nil {
 		return IRAnalysis{SuggestedPath: "none"}
 	}
+	if prog.analysis != nil {
+		return *prog.analysis
+	}
 	info := prog.escapeInfo
 	if info == nil {
 		info = analyzeEscapes(prog)
@@ -108,6 +111,7 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 		}
 	}
 	a.SuggestedPath = suggestIRPath(a)
+	prog.analysis = &a
 	return a
 }
 

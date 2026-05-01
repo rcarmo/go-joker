@@ -1,6 +1,10 @@
 package core
 
-import "os"
+import (
+	"os"
+	"strconv"
+	"unicode/utf8"
+)
 
 // ir_typed.go — experimental typed IR executor (v2).
 //
@@ -33,7 +37,7 @@ type irValue struct {
 
 func irTypedEnabled() bool {
 	mode := os.Getenv("JOKER_IR_TYPED")
-	return mode == "1" || mode == "on" || mode == "true" || mode == "force"
+	return mode != "0" && mode != "off" && mode != "false"
 }
 
 func irTypedEligible(a IRAnalysis) bool {
@@ -93,6 +97,37 @@ func (v irValue) truthy() bool {
 	default:
 		return true
 	}
+}
+
+func irValueToString(v irValue) string {
+	switch v.tag {
+	case irValString:
+		return v.s
+	case irValChar:
+		return charToStringFast(v.r)
+	case irValNil:
+		return ""
+	case irValInt:
+		return strconv.Itoa(v.i)
+	case irValDouble:
+		return strconv.FormatFloat(v.f, 'g', -1, 64)
+	case irValBool:
+		if v.b {
+			return "true"
+		}
+		return "false"
+	default:
+		return v.object().ToString(false)
+	}
+}
+
+func irStringRuneCount(s string) int {
+	for i := 0; i < len(s); i++ {
+		if s[i] >= utf8.RuneSelf {
+			return utf8.RuneCountInString(s)
+		}
+	}
+	return len(s)
 }
 
 func irValueEq(a, b irValue) (irValue, bool) {
@@ -303,36 +338,20 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irStr1:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			switch a.tag {
-			case irValString:
+			if a.tag == irValString {
 				stack = append(stack, a)
-			case irValChar:
-				stack = append(stack, irValue{tag: irValString, s: charToStringFast(a.r)})
-			case irValNil:
-				stack = append(stack, irValue{tag: irValString, s: ""})
-			default:
-				stack = append(stack, irValue{tag: irValString, s: a.object().ToString(false)})
+			} else {
+				stack = append(stack, irValue{tag: irValString, s: irValueToString(a)})
 			}
 		case irStr2:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			as, bs := a.object().ToString(false), b.object().ToString(false)
-			if a.tag == irValString {
-				as = a.s
-			} else if a.tag == irValChar {
-				as = charToStringFast(a.r)
-			}
-			if b.tag == irValString {
-				bs = b.s
-			} else if b.tag == irValChar {
-				bs = charToStringFast(b.r)
-			}
-			stack = append(stack, irValue{tag: irValString, s: as + bs})
+			stack = append(stack, irValue{tag: irValString, s: irValueToString(a) + irValueToString(b)})
 		case irCount:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			if a.tag == irValString {
-				stack = append(stack, irValue{tag: irValInt, i: len(a.s)})
+				stack = append(stack, irValue{tag: irValInt, i: irStringRuneCount(a.s)})
 			} else {
 				return nil
 			}
