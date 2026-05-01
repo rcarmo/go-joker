@@ -107,6 +107,10 @@ func irProgramUsesFloat(prog *IRProgram) bool {
 // For if/else: both branches end with `br` (stack-polymorphic),
 // so `if void` works and no values need to flow through the if block.
 func compileWasmBody(prog *IRProgram, useFloat bool) []byte {
+	return compileWasmBodyWithHelper(prog, useFloat, -1, -1)
+}
+
+func compileWasmBodyWithHelper(prog *IRProgram, useFloat bool, helperSlot int, helperFuncIdx int) []byte {
 	var o []byte
 	o = append(o, 0x00) // 0 local decls
 
@@ -272,6 +276,18 @@ func compileWasmBody(prog *IRProgram, useFloat bool) []byte {
 			o = append(o, 0x0c)
 			o = appendULEB(o, depth)
 			pc = len(code)
+
+		case irCallSlot:
+			slotIdx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			nargs := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			_ = nargs // args already on WASM stack
+			if slotIdx != helperSlot || helperFuncIdx < 0 {
+				return nil
+			}
+			o = append(o, 0x10)
+			o = appendULEB(o, helperFuncIdx)
 
 		case irCallSelf:
 			nargs := int(code[pc])<<8 | int(code[pc+1])

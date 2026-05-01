@@ -548,9 +548,9 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
 ### Medium priority — WASM backend
 
 5. **Multi-function WASM modules**
-   - Emit multiple functions per WASM module so helper-heavy numeric code can call local helpers natively.
-   - Required to close gaps such as mandelbrot/pixel-style workloads.
-   - Needs a clear capture/local ABI and direct WASM-to-WASM calls for eligible callees.
+   - Started: a one-helper WASM module prototype can emit a caller plus one captured helper function and lower `irCallSlot` to a direct WASM `call`.
+   - Required to close gaps such as mandelbrot/pixel-style workloads, but not enabled on the main eval path yet because naive activation can regress helper-heavy benchmarks.
+   - Next work is a cost model/gating rule and a broader safe capture/local ABI before enabling this path by default.
 
 6. **WASM host imports for collections**
    - Keep the imported-collection path behind validation until the handle ABI and structured control-flow lowering are safe.

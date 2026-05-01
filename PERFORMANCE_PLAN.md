@@ -97,10 +97,10 @@ Highlights from the 2026-04-30 run:
 
 ### E. Multi-function WASM modules
 
-- Emit multiple functions in one WASM module.
-- Support direct WASM-to-WASM calls for eligible helper functions.
-- Define a safe capture/local ABI.
-- Target mandelbrot/pixel-style helper-heavy numeric workloads.
+- Started: a one-helper WASM module prototype can emit a caller plus one captured helper function and lower `irCallSlot` to a direct WASM `call`.
+- The prototype is covered by an internal test but is not enabled on the main eval path yet; naive activation regressed helper-heavy benchmarks due to selection/ABI heuristics.
+- Next: add a cost model/gating rule so the multi-function module is used only when it wins over standalone helper WASM/IR dispatch.
+- Define a broader safe capture/local ABI before enabling mandelbrot/pixel-style workloads by default.
 
 ### F. WASM host imports for collections
 
