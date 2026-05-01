@@ -542,9 +542,9 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
 
 4. **Function call overhead and inlining**
    - Started: IR helper/self-call dispatch now uses stack-backed argument arrays for small arities, and IR equality has direct char/string fast paths before falling back to `Object.Equals`.
-   - Tiny helper inlining now defaults to `auto`: only text helpers (string/char literals or `str` usage) are inlined. `JOKER_IR_INLINE=force` enables all tiny helpers for experiments; `off` disables it.
-   - Median probes show reverse-complement around ~0.08ms in auto mode, while numeric helper loops remain protected from default inlining.
-   - Next: broaden the gate to more text helper patterns and add source breadcrumbs for inlining decisions.
+   - Tiny helper inlining now defaults to `auto`: text helpers (string/char literals or `str` usage) and tiny straight-line collection helpers (`nth`/`get`/`assoc`/`conj`/`count`/`first`) are inlined. `JOKER_IR_INLINE=force` enables all tiny helpers for experiments; `off` disables it.
+   - Median probes show reverse-complement remains much faster in auto mode, and a synthetic collection-helper loop improves substantially, while numeric helper loops remain protected from default inlining.
+   - Next: add source breadcrumbs for inlining decisions and keep broadening only when the median harness shows a win.
    - Fast-path arity checks and reduce frame/env allocation for simple calls.
    - Cache compiled helper functions aggressively and avoid returning to the tree-walker for hot call sites.
 

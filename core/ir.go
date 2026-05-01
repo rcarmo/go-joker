@@ -672,6 +672,106 @@ func exprHasTextLiteralOrStr(expr Expr) bool {
 	return false
 }
 
+func exprHasCollectionOp(expr Expr) bool {
+	switch e := expr.(type) {
+	case *IfExpr:
+		return exprHasCollectionOp(e.cond) || exprHasCollectionOp(e.positive) || exprHasCollectionOp(e.negative)
+	case *LetExpr:
+		for _, v := range e.values {
+			if exprHasCollectionOp(v) {
+				return true
+			}
+		}
+		for _, b := range e.body {
+			if exprHasCollectionOp(b) {
+				return true
+			}
+		}
+	case *CallExpr:
+		if vref, ok := e.callable.(*VarRefExpr); ok {
+			switch coreVarToProcName(vref.vr) {
+			case "procNth", "procGet", "procAssoc", "procConj", "procCount", "procFirst":
+				return true
+			}
+		} else {
+			// Calls through local helpers are not considered straight-line.
+			return false
+		}
+		for _, a := range e.args {
+			if exprHasCollectionOp(a) {
+				return true
+			}
+		}
+	case *RecurExpr:
+		for _, a := range e.args {
+			if exprHasCollectionOp(a) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func exprIsStraightLine(expr Expr) bool {
+	switch e := expr.(type) {
+	case *LoopExpr, *RecurExpr:
+		return false
+	case *LetExpr:
+		for _, v := range e.values {
+			if !exprIsStraightLine(v) {
+				return false
+			}
+		}
+		for _, b := range e.body {
+			if !exprIsStraightLine(b) {
+				return false
+			}
+		}
+	case *IfExpr:
+		return exprIsStraightLine(e.cond) && exprIsStraightLine(e.positive) && exprIsStraightLine(e.negative)
+	case *CallExpr:
+		if _, ok := e.callable.(*VarRefExpr); !ok {
+			return false
+		}
+		for _, a := range e.args {
+			if !exprIsStraightLine(a) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func exprCount(expr Expr) int {
+	switch e := expr.(type) {
+	case *IfExpr:
+		return 1 + exprCount(e.cond) + exprCount(e.positive) + exprCount(e.negative)
+	case *LetExpr:
+		n := 1
+		for _, v := range e.values {
+			n += exprCount(v)
+		}
+		for _, b := range e.body {
+			n += exprCount(b)
+		}
+		return n
+	case *CallExpr:
+		n := 1 + exprCount(e.callable)
+		for _, a := range e.args {
+			n += exprCount(a)
+		}
+		return n
+	case *RecurExpr:
+		n := 1
+		for _, a := range e.args {
+			n += exprCount(a)
+		}
+		return n
+	default:
+		return 1
+	}
+}
+
 func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool {
 	_ = fnSlot
 	if irInlineDisabled() {
@@ -683,14 +783,18 @@ func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool
 	}
 	arity := fnExpr.arities[0]
 	if !irInlineForce() {
-		textHelper := false
+		inlineOK := false
 		for _, b := range arity.body {
 			if exprHasTextLiteralOrStr(b) {
-				textHelper = true
+				inlineOK = true
+				break
+			}
+			if exprHasCollectionOp(b) && exprIsStraightLine(b) && exprCount(b) <= 16 {
+				inlineOK = true
 				break
 			}
 		}
-		if !textHelper {
+		if !inlineOK {
 			return false
 		}
 	}
