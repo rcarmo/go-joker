@@ -65,7 +65,7 @@ func irTypedEligible(a IRAnalysis) bool {
 		return false
 	}
 	if a.UsesCollection && (a.HasMapOps || !a.HasGenericNth) {
-		return irTypedMapEnabled() && a.HasMapOps && a.UsesString && (irTypedMapForce() || a.HasStringAppend || a.HasStringPrepend)
+		return irTypedMapEnabled() && a.HasMapOps && a.UsesString
 	}
 	return a.UsesString || a.SuggestedPath == "typed-ir-string-candidate" || a.SuggestedPath == "typed-ir-generic-string-nth-candidate"
 }
@@ -171,6 +171,19 @@ func irValueToString(v irValue) string {
 		return "false"
 	default:
 		return v.object().ToString(false)
+	}
+}
+
+func irValueStringKey(v irValue) (string, bool) {
+	switch v.tag {
+	case irValString:
+		return v.s, true
+	case irValStringBuilder:
+		return string(v.buf), true
+	case irValChar:
+		return charToStringFast(v.r), true
+	default:
+		return "", false
 	}
 }
 
@@ -392,7 +405,10 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if coll.tag != irValStringIntMap {
 				return nil
 			}
-			k := irValueToString(key)
+			k, ok := irValueStringKey(key)
+			if !ok {
+				return nil
+			}
 			if v, ok := coll.sm[k]; ok {
 				stack = append(stack, irValue{tag: irValInt, i: v})
 			} else {
@@ -406,7 +422,10 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if coll.tag != irValStringIntMap || def.tag != irValInt {
 				return nil
 			}
-			k := irValueToString(key)
+			k, ok := irValueStringKey(key)
+			if !ok {
+				return nil
+			}
 			if v, ok := coll.sm[k]; ok {
 				stack = append(stack, irValue{tag: irValInt, i: v})
 			} else {
@@ -420,10 +439,14 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if coll.tag != irValStringIntMap || val.tag != irValInt {
 				return nil
 			}
+			k, ok := irValueStringKey(key)
+			if !ok {
+				return nil
+			}
 			if coll.sm == nil {
 				coll.sm = make(map[string]int)
 			}
-			coll.sm[irValueToString(key)] = val.i
+			coll.sm[k] = val.i
 			stack = append(stack, coll)
 		case irNth:
 			idx := stack[len(stack)-1]

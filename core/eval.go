@@ -188,7 +188,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 				}
 				initSlots = full
 			}
-			if irTypedEnabled() {
+			if irTypedEnabled() && !prog.typedFailed {
 				var typedResult Object
 				func() {
 					defer func() {
@@ -201,6 +201,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 				if typedResult != nil {
 					return typedResult
 				}
+				prog.typedFailed = true
 			}
 			if wp := wasmGetCachedWithOneHelper(prog, initSlots); wp != nil {
 				if result := wasmExec(wp, initSlots); result != nil {
@@ -836,7 +837,7 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 			}
 			initSlots = full
 		}
-		if irTypedEnabled() {
+		if irTypedEnabled() && !prog.typedFailed {
 			var typedResult Object
 			func() {
 				defer func() {
@@ -849,6 +850,7 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 			if typedResult != nil {
 				return typedResult
 			}
+			prog.typedFailed = true
 		}
 		if wp := wasmGetCachedWithOneHelper(prog, initSlots); wp != nil {
 			if result := wasmExec(wp, initSlots); result != nil {

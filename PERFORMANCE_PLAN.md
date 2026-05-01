@@ -39,7 +39,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - IR rejection diagnostics now report specific unsupported expression/callable/arity/binding/slot reasons instead of only a generic compile failure.
 - Loop-frame inference now prefers bindings seen in `recur` arguments, allowing nested/captured loop shapes like k-nucleotide's frequency loop to compile.
 - Constant `count` folding for literal/bound counted values removes `irCount` from loops like fasta and lets them reach the pure WASM backend.
-- Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack. It now caches string length/ASCII metadata, supports generic string/vector `nth`, typed string-builder slots, and auto-gated string-int map values (`JOKER_IR_TYPED_MAP=force` broadens the map path for experiments).
+- Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack. It now caches string length/ASCII metadata, supports generic string/vector `nth`, typed string-builder slots, and safe string-int map values with runtime fallback for non-string keys.
 - Literal map expressions, including `{}`, now compile to IR constants, keeping more map-update loops on the lowered path.
 
 ## Current benchmark checkpoint

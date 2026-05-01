@@ -91,6 +91,7 @@ type IRProgram struct {
 	hasSelf     bool
 	escapeInfo  *EscapeInfo
 	analysis    *IRAnalysis
+	typedFailed bool
 }
 
 // ---------- Fn compilation ----------
