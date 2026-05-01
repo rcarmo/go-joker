@@ -527,7 +527,7 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
    - Add more regression tests around nested `let`, nested `loop`, captured bindings, closures, and helper calls.
 
 2. **String and sequence throughput**
-   - Started: IR now lowers unary `str`, allowing char-to-string conversion loops to remain in IR, and `irNth` has a Unicode-preserving ASCII-prefix fast path for strings.
+   - Started: IR now lowers unary `str`, allowing char-to-string conversion loops to remain in IR; `irNth` has a Unicode-preserving ASCII-prefix fast path for strings; `irEq` has direct char/string equality.
    - Repeated string rune counts are cached; ASCII `subs` avoids `[]rune` conversion; `stringSeq` implements `Count`.
    - Continue optimizing `str`, `nth`, regex result handling, and sequence iteration.
    - Add more ASCII/byte fast paths where Joker semantics allow it, while preserving Unicode correctness.
@@ -541,7 +541,7 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
    - Improve small-map specialization and vector update/copy paths without changing persistent semantics.
 
 4. **Function call overhead and inlining**
-   - Started: IR helper/self-call dispatch now uses stack-backed argument arrays for small arities, and IR equality falls back to `Object.Equals` after numeric fast paths so string/char helper functions can remain compiled.
+   - Started: IR helper/self-call dispatch now uses stack-backed argument arrays for small arities, and IR equality has direct char/string fast paths before falling back to `Object.Equals`.
    - Revisit IR inlining for tiny local functions now that slot-collision regressions are covered.
    - Fast-path arity checks and reduce frame/env allocation for simple calls.
    - Cache compiled helper functions aggressively and avoid returning to the tree-walker for hot call sites.

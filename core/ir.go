@@ -1145,6 +1145,16 @@ loop:
 					stack = append(stack, Boolean{B: av.D == bv.D})
 					continue
 				}
+			case Char:
+				if bv, ok := b.(Char); ok {
+					stack = append(stack, Boolean{B: av.Ch == bv.Ch})
+					continue
+				}
+			case String:
+				if bv, ok := b.(String); ok {
+					stack = append(stack, Boolean{B: av.S == bv.S})
+					continue
+				}
 			}
 			stack = append(stack, Boolean{B: a.Equals(b)})
 
