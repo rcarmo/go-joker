@@ -1629,7 +1629,7 @@ func (s String) Hash() uint32 {
 }
 
 func (s String) Count() int {
-	return stringRuneCountFast(s.S)
+	return utf8.RuneCountInString(s.S)
 }
 
 func (s String) Seq() Seq {
@@ -1638,12 +1638,6 @@ func (s String) Seq() Seq {
 
 func (seq *stringSeq) Seq() Seq    { return seq }
 func (seq *stringSeq) sequential() {}
-func (seq *stringSeq) Count() int {
-	if seq.off >= len(seq.s) {
-		return 0
-	}
-	return stringRuneCountFast(seq.s[seq.off:])
-}
 
 func (seq *stringSeq) First() Object {
 	if seq.off >= len(seq.s) {

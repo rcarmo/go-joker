@@ -18,6 +18,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode/utf8"
 )
 
 var coreNamespaces []string
@@ -497,7 +498,7 @@ var procIsSpecialSymbol = func(args []Object) Object {
 var procSubs = func(args []Object) Object {
 	s := EnsureArgIsString(args, 0).S
 	start := EnsureArgIsInt(args, 1).I
-	slen := stringRuneCountFast(s)
+	slen := utf8.RuneCountInString(s)
 	end := slen
 	if len(args) > 2 {
 		end = EnsureArgIsInt(args, 2).I
@@ -507,9 +508,6 @@ var procSubs = func(args []Object) Object {
 	}
 	if end < 0 || end > slen {
 		panic(RT.NewError(fmt.Sprintf("String index out of range: %d", end)))
-	}
-	if slen == len(s) {
-		return String{S: s[start:end]}
 	}
 	return String{S: string([]rune(s)[start:end])}
 }
@@ -717,8 +715,6 @@ var procEquals = func(args []Object) Object {
 
 var procCount = func(args []Object) Object {
 	switch obj := args[0].(type) {
-	case String:
-		return Int{I: stringRuneCountFast(obj.S)}
 	case Counted:
 		return Int{I: obj.Count()}
 	default:
