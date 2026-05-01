@@ -1176,8 +1176,12 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 			case *HashMap:
 				slots[i] = MapToTransient(v)
 			case String:
-				if irStringBuilderEnabled() && prog.escapeInfo.StringBuilderSlots[i] {
-					slots[i] = ToTransientString(v)
+				if !irStringBuilderDisabled() {
+					if irStringBuilderForce() && (prog.escapeInfo.StringBuilderSlots[i] || prog.escapeInfo.StringPrependSlots[i]) {
+						slots[i] = ToTransientString(v)
+					} else if !irStringBuilderForce() && prog.escapeInfo.StringPrependSlots[i] {
+						slots[i] = ToTransientString(v)
+					}
 				}
 			}
 		}
@@ -1743,8 +1747,16 @@ loop:
 					stack = append(stack, String{S: av.S + charToStringFast(bv.Ch)})
 				case String:
 					stack = append(stack, String{S: av.S + bv.S})
+				case *TransientString:
+					stack = append(stack, bv.PrependString(av.S))
 				default:
 					stack = append(stack, String{S: av.S + b.ToString(false)})
+				}
+			case Char:
+				if bv, ok := b.(*TransientString); ok {
+					stack = append(stack, bv.PrependChar(av.Ch))
+				} else {
+					stack = append(stack, String{S: charToStringFast(av.Ch) + b.ToString(false)})
 				}
 			default:
 				stack = append(stack, String{S: a.ToString(false) + b.ToString(false)})

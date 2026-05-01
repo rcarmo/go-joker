@@ -16,8 +16,11 @@ type EscapeInfo struct {
 	// SafeMutableSlots[i] = true means slot i can use transient builders.
 	SafeMutableSlots []bool
 	// StringBuilderSlots[i] = true means slot i is used as the left operand
-	// of irStr2 and can benefit from a TransientString builder.
+	// of irStr2 and can benefit from append-style TransientString building.
 	StringBuilderSlots []bool
+	// StringPrependSlots[i] = true means slot i is used as the right operand
+	// of irStr2 and can benefit from prepend-style TransientString building.
+	StringPrependSlots []bool
 }
 
 // analyzeEscapes performs escape analysis on an IR program.
@@ -25,6 +28,7 @@ func analyzeEscapes(prog *IRProgram) *EscapeInfo {
 	info := &EscapeInfo{
 		SafeMutableSlots:   make([]bool, prog.numSlots),
 		StringBuilderSlots: make([]bool, prog.numSlots),
+		StringPrependSlots: make([]bool, prog.numSlots),
 	}
 
 	// Start by assuming all slots are safe
@@ -198,10 +202,13 @@ func analyzeEscapes(prog *IRProgram) *EscapeInfo {
 			push(-1)
 
 		case irStr2:
-			pop()
+			b := pop()
 			a := pop()
 			if a.fromSlot >= 0 {
 				info.StringBuilderSlots[a.fromSlot] = true
+			}
+			if b.fromSlot >= 0 {
+				info.StringPrependSlots[b.fromSlot] = true
 			}
 			push(-1)
 

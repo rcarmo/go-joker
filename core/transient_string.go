@@ -8,7 +8,21 @@ import "os"
 // loop slots to TransientString so repeated `(str s char)` appends mutate a
 // byte buffer instead of allocating a fresh String every iteration.
 
-func irStringBuilderEnabled() bool { return os.Getenv("JOKER_IR_STRING_BUILDER") == "1" }
+func irStringBuilderMode() string {
+	mode := os.Getenv("JOKER_IR_STRING_BUILDER")
+	if mode == "" {
+		return "auto"
+	}
+	return mode
+}
+func irStringBuilderForce() bool {
+	mode := irStringBuilderMode()
+	return mode == "1" || mode == "force" || mode == "all"
+}
+func irStringBuilderDisabled() bool {
+	mode := irStringBuilderMode()
+	return mode == "0" || mode == "off" || mode == "false"
+}
 
 type TransientString struct {
 	buf    []byte
@@ -62,6 +76,31 @@ func (ts *TransientString) AppendChar(ch rune) *TransientString {
 func (ts *TransientString) AppendString(s string) *TransientString {
 	ts.checkFrozen()
 	ts.buf = append(ts.buf, s...)
+	return ts
+}
+
+func (ts *TransientString) PrependChar(ch rune) *TransientString {
+	ts.checkFrozen()
+	var prefix []byte
+	if ch >= 0 && ch < 128 {
+		prefix = []byte{byte(ch)}
+	} else {
+		prefix = []byte(string(ch))
+	}
+	ts.buf = append(ts.buf, make([]byte, len(prefix))...)
+	copy(ts.buf[len(prefix):], ts.buf[:len(ts.buf)-len(prefix)])
+	copy(ts.buf, prefix)
+	return ts
+}
+
+func (ts *TransientString) PrependString(s string) *TransientString {
+	ts.checkFrozen()
+	if s == "" {
+		return ts
+	}
+	ts.buf = append(ts.buf, make([]byte, len(s))...)
+	copy(ts.buf[len(s):], ts.buf[:len(ts.buf)-len(s)])
+	copy(ts.buf, s)
 	return ts
 }
 
