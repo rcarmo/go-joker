@@ -22,6 +22,7 @@ const (
 	irValBool
 	irValChar
 	irValString
+	irValStringBuilder
 	irValNil
 )
 
@@ -32,6 +33,7 @@ type irValue struct {
 	b   bool
 	r   rune
 	s   string
+	buf []byte
 	obj Object
 }
 
@@ -81,6 +83,8 @@ func (v irValue) object() Object {
 		return Char{Ch: v.r}
 	case irValString:
 		return String{S: v.s}
+	case irValStringBuilder:
+		return String{S: string(v.buf)}
 	case irValNil:
 		return NIL
 	default:
@@ -106,6 +110,8 @@ func irValueToString(v irValue) string {
 	switch v.tag {
 	case irValString:
 		return v.s
+	case irValStringBuilder:
+		return string(v.buf)
 	case irValChar:
 		return charToStringFast(v.r)
 	case irValNil:
@@ -146,6 +152,8 @@ func irValueEq(a, b irValue) (irValue, bool) {
 			return irValue{tag: irValBool, b: a.r == b.r}, true
 		case irValString:
 			return irValue{tag: irValBool, b: a.s == b.s}, true
+		case irValStringBuilder:
+			return irValue{tag: irValBool, b: string(a.buf) == string(b.buf)}, true
 		case irValNil:
 			return irValue{tag: irValBool, b: true}, true
 		}
@@ -172,7 +180,13 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		slots = make([]irValue, prog.numSlots)
 	}
 	for i := 0; i < len(initSlots) && i < len(slots); i++ {
-		slots[i] = objectToIRValue(initSlots[i])
+		v := objectToIRValue(initSlots[i])
+		if v.tag == irValString && i < len(analysis.StringAppendSlots) && (analysis.StringAppendSlots[i] || analysis.StringPrependSlots[i]) {
+			buf := make([]byte, len(v.s), len(v.s)+16)
+			copy(buf, v.s)
+			v = irValue{tag: irValStringBuilder, buf: buf}
+		}
+		slots[i] = v
 	}
 
 	var stackBuf [32]irValue
@@ -371,7 +385,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irStr1:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			if a.tag == irValString {
+			if a.tag == irValString || a.tag == irValStringBuilder {
 				stack = append(stack, a)
 			} else {
 				stack = append(stack, irValue{tag: irValString, s: irValueToString(a)})
@@ -379,12 +393,27 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irStr2:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			stack = append(stack, irValue{tag: irValString, s: irValueToString(a) + irValueToString(b)})
+			if a.tag == irValStringBuilder {
+				a.buf = append(a.buf, irValueToString(b)...)
+				stack = append(stack, a)
+			} else if b.tag == irValStringBuilder {
+				prefix := irValueToString(a)
+				if prefix != "" {
+					b.buf = append(b.buf, make([]byte, len(prefix))...)
+					copy(b.buf[len(prefix):], b.buf[:len(b.buf)-len(prefix)])
+					copy(b.buf, prefix)
+				}
+				stack = append(stack, b)
+			} else {
+				stack = append(stack, irValue{tag: irValString, s: irValueToString(a) + irValueToString(b)})
+			}
 		case irCount:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			if a.tag == irValString {
 				stack = append(stack, irValue{tag: irValInt, i: irStringRuneCount(a.s)})
+			} else if a.tag == irValStringBuilder {
+				stack = append(stack, irValue{tag: irValInt, i: irStringRuneCount(string(a.buf))})
 			} else {
 				return nil
 			}

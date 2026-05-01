@@ -37,7 +37,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - IR helper inlining now defaults to `auto`: text-oriented tiny helpers and tiny straight-line collection helpers are inlined. `JOKER_IR_INLINE=force` enables all tiny helpers for experiments; `off` disables it. This yields a large reverse-complement win without default-enabling numeric helper inlining.
 - TransientString prepend builders are enabled in auto mode for `(str char-or-string acc)` loops; append builders remain force-only because they regress broader CLBG text cases.
 - IR rejection diagnostics now report specific unsupported expression/callable/arity/binding/slot reasons instead of only a generic compile failure.
-- Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack. It now supports generic string `nth` in addition to constant ASCII string indexing.
+- Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack. It now supports generic string `nth` and typed string-builder slots in addition to constant ASCII string indexing.
 - Literal map expressions, including `{}`, now compile to IR constants, keeping more map-update loops on the lowered path.
 
 ## Current benchmark checkpoint
@@ -78,7 +78,7 @@ Highlights from the 2026-04-30 run:
 ### B. String and sequence throughput
 
 - Started: IR now lowers unary `str`, allowing loops that convert chars to strings to stay on the IR path; `irNth` has a Unicode-preserving ASCII-prefix fast path for strings; `irEq` has direct char/string equality; `irNthStringASCII` handles constant ASCII string indexing directly.
-- Typed IR v2 now runs automatically for primitive/string-only loops with tagged values, reducing allocations in string append, char-compare, k-nucleotide, and reverse-complement probes; use `JOKER_IR_TYPED=off` to disable.
+- Typed IR v2 now runs automatically for primitive/string-only loops with tagged values and internal builder slots, reducing allocations in string append, char-compare, k-nucleotide, and reverse-complement probes; use `JOKER_IR_TYPED=off` to disable.
 - TransientString prepend builders are enabled in auto mode for `(str char-or-string acc)` style loops; append builders remain force-only because they regress broader CLBG text cases.
 - Started optimizing `count`/`subs`: repeated string rune counts are cached, ASCII `subs` avoids `[]rune` conversion, and `stringSeq` implements `Count`.
 - Continue optimizing `str`, `nth`, regex result handling, and sequence iteration.
