@@ -13,14 +13,18 @@ package core
 
 // EscapeInfo holds escape analysis results for an IR program.
 type EscapeInfo struct {
-	// SafeMutableSlots[i] = true means slot i can use transient vectors.
+	// SafeMutableSlots[i] = true means slot i can use transient builders.
 	SafeMutableSlots []bool
+	// StringBuilderSlots[i] = true means slot i is used as the left operand
+	// of irStr2 and can benefit from a TransientString builder.
+	StringBuilderSlots []bool
 }
 
 // analyzeEscapes performs escape analysis on an IR program.
 func analyzeEscapes(prog *IRProgram) *EscapeInfo {
 	info := &EscapeInfo{
-		SafeMutableSlots: make([]bool, prog.numSlots),
+		SafeMutableSlots:   make([]bool, prog.numSlots),
+		StringBuilderSlots: make([]bool, prog.numSlots),
 	}
 
 	// Start by assuming all slots are safe
@@ -107,11 +111,19 @@ func analyzeEscapes(prog *IRProgram) *EscapeInfo {
 			push(-1)
 
 		case irAssoc:
-			// assoc(coll, key, val) — produces new collection
-			// The original coll is NOT retained (new one is created)
-			pop() // val
-			pop() // key
-			pop() // coll — safe (not retained after assoc)
+			// assoc(coll, key, val) stores key/val in the resulting collection.
+			// The collection slot itself remains safe for transient mutation, but
+			// key/value slots escape into the collection and must not be mutable
+			// builders (e.g. TransientString).
+			val := pop()
+			key := pop()
+			pop() // coll — safe
+			if val.fromSlot >= 0 {
+				info.SafeMutableSlots[val.fromSlot] = false
+			}
+			if key.fromSlot >= 0 {
+				info.SafeMutableSlots[key.fromSlot] = false
+			}
 			push(-1)
 
 		case irNth:
@@ -187,7 +199,10 @@ func analyzeEscapes(prog *IRProgram) *EscapeInfo {
 
 		case irStr2:
 			pop()
-			pop()
+			a := pop()
+			if a.fromSlot >= 0 {
+				info.StringBuilderSlots[a.fromSlot] = true
+			}
 			push(-1)
 
 		case irToTransient, irToPersistent, irAssocBang:

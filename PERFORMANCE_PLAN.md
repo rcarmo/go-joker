@@ -34,6 +34,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - IR equality now has primitive char/string fast paths before generic `Object.Equals`, allowing small text helper functions to stay compiled with less dispatch overhead.
 - Added `irNthStringASCII`, a specialized opcode for `nth` over compile-time-known ASCII strings, reducing generic object dispatch in text loops.
 - IR helper/self-call dispatch now uses stack-backed argument arrays for small arities.
+- Prototype IR helper inlining is available behind `JOKER_IR_INLINE=1`; probes show large reverse-complement wins but numeric helper regressions, so it remains gated.
 - IR rejection diagnostics now report specific unsupported expression/callable/arity/binding/slot reasons instead of only a generic compile failure.
 - Literal map expressions, including `{}`, now compile to IR constants, keeping more map-update loops on the lowered path.
 
@@ -91,7 +92,8 @@ Highlights from the 2026-04-30 run:
 ### D. Function call overhead and inlining
 
 - Started: IR helper/self-call dispatch now uses stack-backed argument arrays for small arities, reducing allocation in helper-heavy loops.
-- Revisit tiny local function inlining now that slot-collision regressions are covered.
+- Prototype tiny helper inlining exists behind `JOKER_IR_INLINE=1`; median probes show reverse-complement can improve substantially, while numeric helper loops can regress, so default remains off.
+- Next: add a static/diagnostic gate for text helpers versus numeric helpers before default enablement.
 - Continue reducing frame/env allocation for simple calls.
 - Cache compiled helper functions aggressively.
 - Avoid tree-walker fallback for hot helper-call patterns.

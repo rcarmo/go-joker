@@ -542,7 +542,8 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
 
 4. **Function call overhead and inlining**
    - Started: IR helper/self-call dispatch now uses stack-backed argument arrays for small arities, and IR equality has direct char/string fast paths before falling back to `Object.Equals`.
-   - Revisit IR inlining for tiny local functions now that slot-collision regressions are covered.
+   - Prototype tiny helper inlining exists behind `JOKER_IR_INLINE=1`; probes show large reverse-complement wins but numeric helper regressions, so default remains off.
+   - Next: add a static/diagnostic gate for text helpers versus numeric helpers before default enablement.
    - Fast-path arity checks and reduce frame/env allocation for simple calls.
    - Cache compiled helper functions aggressively and avoid returning to the tree-walker for hot call sites.
 

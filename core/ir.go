@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"math"
+	"os"
 	"sync"
 )
 
@@ -611,10 +612,54 @@ func (c *irCompiler) compileNestedLoop(loop *LoopExpr, isLast bool) bool {
 	return true
 }
 
+func irInlineEnabled() bool { return os.Getenv("JOKER_IR_INLINE") == "1" }
+
 func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool {
-	// Inlining disabled for now — needs smarter slot reuse to avoid
-	// bloating slot counts in compiled fn programs.
-	return false
+	_ = fnSlot
+	if !irInlineEnabled() {
+		return false
+	}
+	fnExpr := findFnExprForBinding(expr.callable)
+	if fnExpr == nil || len(fnExpr.arities) != 1 || fnExpr.variadic != nil {
+		return false
+	}
+	arity := fnExpr.arities[0]
+	if len(arity.args) != len(expr.args) || len(arity.body) != 1 {
+		return false
+	}
+	fnFrame := guessLoopFrame(arity.body)
+	if fnFrame < 0 {
+		return false
+	}
+	baseSlot := c.numSlots
+	for _, arg := range expr.args {
+		if !c.compileExpr(arg, false) {
+			return false
+		}
+	}
+	oldBindings := make(map[bindingKey]int, len(arity.args))
+	oldPresent := make(map[bindingKey]bool, len(arity.args))
+	for i := len(arity.args) - 1; i >= 0; i-- {
+		slot := baseSlot + i
+		key := bindingKey{frame: fnFrame, index: i}
+		if old, ok := c.bindingMap[key]; ok {
+			oldBindings[key] = old
+			oldPresent[key] = true
+		}
+		c.bindingMap[key] = slot
+		c.emitWithOperand(irStoreSlot, slot)
+	}
+	c.numSlots = baseSlot + len(arity.args)
+	ok := c.compileExpr(arity.body[0], isLast)
+	for i := range arity.args {
+		key := bindingKey{frame: fnFrame, index: i}
+		if oldPresent[key] {
+			c.bindingMap[key] = oldBindings[key]
+		} else {
+			delete(c.bindingMap, key)
+		}
+	}
+	return ok
 }
 
 // findFnExprForBinding tries to find the FnExpr for a callable binding.
@@ -929,19 +974,19 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 	}
 	copy(slots, initSlots)
 
-	// Escape analysis: convert safe collection slots to transients.
-	// Only run if there are actually mutable collection-typed slots.
-	hasMutableCollection := false
+	// Escape analysis: convert safe local values to transient builders.
+	// Only run if there are actually mutable candidate slots.
+	hasMutableCandidate := false
 	for _, s := range slots {
 		switch s.(type) {
-		case *ArrayVector, *ArrayMap, *HashMap:
-			hasMutableCollection = true
+		case *ArrayVector, *ArrayMap, *HashMap, String:
+			hasMutableCandidate = true
 		}
-		if hasMutableCollection {
+		if hasMutableCandidate {
 			break
 		}
 	}
-	if hasMutableCollection {
+	if hasMutableCandidate {
 		if prog.escapeInfo == nil {
 			prog.escapeInfo = analyzeEscapes(prog)
 		}
@@ -956,6 +1001,10 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 				slots[i] = MapToTransient(v)
 			case *HashMap:
 				slots[i] = MapToTransient(v)
+			case String:
+				if irStringBuilderEnabled() && prog.escapeInfo.StringBuilderSlots[i] {
+					slots[i] = ToTransientString(v)
+				}
 			}
 		}
 	}
@@ -1270,6 +1319,8 @@ loop:
 				return v.ToPersistent()
 			case *TransientMap:
 				return v.ToPersistent()
+			case *TransientString:
+				return v.ToPersistent()
 			}
 			return result
 
@@ -1502,7 +1553,17 @@ loop:
 			b := stack[len(stack)-1]
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			if av, ok := a.(String); ok {
+			switch av := a.(type) {
+			case *TransientString:
+				switch bv := b.(type) {
+				case Char:
+					stack = append(stack, av.AppendChar(bv.Ch))
+				case String:
+					stack = append(stack, av.AppendString(bv.S))
+				default:
+					stack = append(stack, av.AppendString(b.ToString(false)))
+				}
+			case String:
 				switch bv := b.(type) {
 				case Char:
 					stack = append(stack, String{S: av.S + charToStringFast(bv.Ch)})
@@ -1511,7 +1572,7 @@ loop:
 				default:
 					stack = append(stack, String{S: av.S + b.ToString(false)})
 				}
-			} else {
+			default:
 				stack = append(stack, String{S: a.ToString(false) + b.ToString(false)})
 			}
 
@@ -1519,6 +1580,8 @@ loop:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			switch v := a.(type) {
+			case *TransientString:
+				stack = append(stack, Int{I: v.Count()})
 			case Counted:
 				stack = append(stack, Int{I: v.Count()})
 			case String:
