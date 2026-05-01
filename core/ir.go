@@ -612,11 +612,69 @@ func (c *irCompiler) compileNestedLoop(loop *LoopExpr, isLast bool) bool {
 	return true
 }
 
-func irInlineEnabled() bool { return os.Getenv("JOKER_IR_INLINE") == "1" }
+func irInlineMode() string {
+	mode := os.Getenv("JOKER_IR_INLINE")
+	if mode == "" {
+		return "auto"
+	}
+	return mode
+}
+
+func irInlineForce() bool {
+	mode := irInlineMode()
+	return mode == "1" || mode == "force" || mode == "all"
+}
+
+func irInlineDisabled() bool {
+	mode := irInlineMode()
+	return mode == "0" || mode == "off" || mode == "false"
+}
+
+func exprHasTextLiteralOrStr(expr Expr) bool {
+	switch e := expr.(type) {
+	case *LiteralExpr:
+		switch e.obj.(type) {
+		case String, Char:
+			return true
+		}
+	case *IfExpr:
+		return exprHasTextLiteralOrStr(e.cond) || exprHasTextLiteralOrStr(e.positive) || exprHasTextLiteralOrStr(e.negative)
+	case *LetExpr:
+		for _, v := range e.values {
+			if exprHasTextLiteralOrStr(v) {
+				return true
+			}
+		}
+		for _, b := range e.body {
+			if exprHasTextLiteralOrStr(b) {
+				return true
+			}
+		}
+	case *CallExpr:
+		if vref, ok := e.callable.(*VarRefExpr); ok && coreVarToProcName(vref.vr) == "procStr" {
+			return true
+		}
+		if exprHasTextLiteralOrStr(e.callable) {
+			return true
+		}
+		for _, a := range e.args {
+			if exprHasTextLiteralOrStr(a) {
+				return true
+			}
+		}
+	case *RecurExpr:
+		for _, a := range e.args {
+			if exprHasTextLiteralOrStr(a) {
+				return true
+			}
+		}
+	}
+	return false
+}
 
 func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool {
 	_ = fnSlot
-	if !irInlineEnabled() {
+	if irInlineDisabled() {
 		return false
 	}
 	fnExpr := findFnExprForBinding(expr.callable)
@@ -624,6 +682,18 @@ func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool
 		return false
 	}
 	arity := fnExpr.arities[0]
+	if !irInlineForce() {
+		textHelper := false
+		for _, b := range arity.body {
+			if exprHasTextLiteralOrStr(b) {
+				textHelper = true
+				break
+			}
+		}
+		if !textHelper {
+			return false
+		}
+	}
 	if len(arity.args) != len(expr.args) || len(arity.body) != 1 {
 		return false
 	}
