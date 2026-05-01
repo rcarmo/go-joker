@@ -18,6 +18,7 @@ type IRDiagnostic struct {
 	NumOps      int
 	UsesWASM    bool
 	WASM        WASMDiagnostic
+	Analysis    IRAnalysis
 }
 
 type WASMDiagnostic struct {
@@ -144,6 +145,7 @@ func explainIRCompile(loop *LoopExpr) IRDiagnostic {
 		return IRDiagnostic{Reason: reason}
 	}
 	wasm := explainWASMEligibility(prog)
+	analysis := AnalyzeIRProgram(prog)
 	return IRDiagnostic{
 		Compiled:    true,
 		NumSlots:    prog.numSlots,
@@ -151,6 +153,7 @@ func explainIRCompile(loop *LoopExpr) IRDiagnostic {
 		NumOps:      irOpCount(prog.code),
 		UsesWASM:    wasm.Eligible && !wasm.HasImports,
 		WASM:        wasm,
+		Analysis:    analysis,
 	}
 }
 
