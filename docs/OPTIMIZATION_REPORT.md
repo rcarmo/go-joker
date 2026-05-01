@@ -528,7 +528,8 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
 
 2. **String and sequence throughput**
    - Started: IR now lowers unary `str`, allowing char-to-string conversion loops to remain in IR, and `irNth` has a Unicode-preserving ASCII-prefix fast path for strings.
-   - Continue optimizing `str`, `nth`, `subs`, `count`, regex result handling, and sequence iteration.
+   - Repeated string rune counts are cached; ASCII `subs` avoids `[]rune` conversion; `stringSeq` implements `Count`.
+   - Continue optimizing `str`, `nth`, regex result handling, and sequence iteration.
    - Add more ASCII/byte fast paths where Joker semantics allow it, while preserving Unicode correctness.
    - Reduce per-character `Char`/`String` allocation in CLBG-style string workloads.
    - Consider builder-style internal representations for repeated concatenation patterns.

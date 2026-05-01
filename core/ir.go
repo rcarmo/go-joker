@@ -1447,10 +1447,10 @@ loop:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			switch v := a.(type) {
+			case String:
+				stack = append(stack, Int{I: stringRuneCountFast(v.S)})
 			case Counted:
 				stack = append(stack, Int{I: v.Count()})
-			case String:
-				stack = append(stack, Int{I: len(v.S)})
 			default:
 				return nil
 			}

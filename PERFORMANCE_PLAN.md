@@ -30,6 +30,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - Safe transient maps in IR loops, dropping `map-update-loop` from ~17.3ms to ~0.899ms.
 - Initial IR/WASM explain diagnostics for hot-loop path inspection.
 - First string/sequence IR fast path: unary `str` lowering plus string `nth` ASCII-prefix fast path inside IR.
+- Cached string rune counts now accelerate repeated `count`/`subs` over stable strings while preserving Unicode semantics.
 - IR equality now falls back to generic `Object.Equals` after numeric fast paths, allowing small string/char helper functions to stay compiled.
 - IR helper/self-call dispatch now uses stack-backed argument arrays for small arities.
 - IR rejection diagnostics now report specific unsupported expression/callable/arity/binding/slot reasons instead of only a generic compile failure.
@@ -73,7 +74,8 @@ Highlights from the 2026-04-30 run:
 ### B. String and sequence throughput
 
 - Started: IR now lowers unary `str`, allowing loops that convert chars to strings to stay on the IR path, and `irNth` has a Unicode-preserving ASCII-prefix fast path for strings.
-- Continue optimizing `str`, `nth`, `subs`, `count`, regex result handling, and sequence iteration.
+- Started optimizing `count`/`subs`: repeated string rune counts are cached, ASCII `subs` avoids `[]rune` conversion, and `stringSeq` implements `Count`.
+- Continue optimizing `str`, `nth`, regex result handling, and sequence iteration.
 - Add more ASCII/byte fast paths where semantics allow while preserving Unicode behavior.
 - Reduce per-character object churn in CLBG-style string workloads.
 - Consider internal builder-style optimizations for repeated concatenation patterns.
