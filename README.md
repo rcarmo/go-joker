@@ -18,16 +18,17 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 | What | Result |
 |------|--------|
-| **Arithmetic loop via WASM** | **~0.26 ms** — matches Bun/JSC-class speed, >700× faster than original |
-| **Recursive fib** | **~0.96 ms** — WASM/IR path, >500× faster than original |
-| **Map update loop** | **~0.90 ms** — IR + transient maps, ~19× faster than the previous IR path |
-| **Word frequency** | **~7.7 ms** — IR + maps, ~36× faster than original |
-| **Joker beats Goja on** | arithmetic, tail recursion, recursive fib, pidigits, regex-redux, map-update-style core workloads |
+| **Arithmetic loop via WASM** | **~0.24 ms** — matches Bun/JSC-class speed, >700× faster than original |
+| **Recursive fib** | **~0.85 ms** — WASM/IR path, >600× faster than original |
+| **Fasta** | **~0.21 ms** — constant-count folding unlocks the pure WASM path |
+| **k-nucleotide** | **~0.46 ms** — typed IR string/map path, now near Goja parity |
+| **Reverse complement** | **~0.058 ms** — typed IR/text-helper inlining, faster than Goja |
+| **Joker beats Goja on** | 9/13 tracked cross-language benchmarks in the latest 5x run |
 
 ## What's different from upstream Joker
 
-### IR bytecode interpreter (26 opcodes)
-Hot loops and functions compile to a flat bytecode that runs in a stack-machine interpreter, avoiding the overhead of tree-walking evaluation, interface dispatch, and per-call allocation.
+### IR bytecode interpreter (typed + boxed paths)
+Hot loops and functions compile to a flat bytecode. Eligible primitive/string loops now run on a typed IR value stack, while collection-heavy or unsupported cases fall back to the boxed IR interpreter and then to the tree-walker.
 
 ### WASM/wazero native compilation
 Pure numeric loops compile further to WASM bytecode and execute via [wazero](https://github.com/tetratelabs/wazero)'s native code compiler. This achieves JIT-level performance (matching Bun/JSC) with zero CGo dependencies.
@@ -60,7 +61,8 @@ Joker Source → Reader + Parser → AST
 ```
 
 - **WASM path**: pure integer/float loops → wazero JIT → native code
-- **IR path**: loops with collections, fn calls, let bindings → bytecode interpreter
+- **Typed IR path**: primitive/string loops → tagged values, low allocation
+- **Boxed IR path**: loops with collections, fn calls, let bindings → bytecode interpreter
 - **Tree-walker**: everything else (macros, special forms, I/O)
 - **gi bridge**: hooks, tools, state access — callable from IR via `irCallSlot`
 

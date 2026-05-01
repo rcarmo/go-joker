@@ -1,7 +1,7 @@
 # Joker core performance plan for gi
 
 Status: Active
-Date: 2026-04-30
+Date: 2026-05-01
 
 This plan tracks the work to make core Joker faster for gi scripting. Additional namespaces and public convenience wrappers stay on the roadmap, but the current priority is the core evaluator/IR/runtime.
 
@@ -52,18 +52,20 @@ go test ./core -run '^$' -bench 'BenchmarkCLBG|BenchmarkEval|BenchmarkWasm' -ben
 
 Host: 12th Gen Intel(R) Core(TM) i7-12700
 
-Highlights from the 2026-04-30 run:
+Highlights from the 2026-05-01 run (`go test ./core -run '^$' -bench 'BenchmarkCLBG|BenchmarkEval|BenchmarkIRString|BenchmarkIRChar|BenchmarkIRTyped|BenchmarkWasm' -benchmem -benchtime=5x`):
 
 | Benchmark | Time | Notes |
 |---|---:|---|
-| arithmetic loop | ~0.264ms | WASM/IR hot path |
-| recursive fib | ~0.957ms | TCO/IR/WASM path |
-| tail-recursive sum | ~0.060ms | TCO/WASM path |
-| map-update-loop | ~0.899ms | IR + transient maps |
-| word-frequency | ~7.71ms | IR + maps, still sequence/text-heavy |
-| k-nucleotide | ~0.927ms | improved, still string-heavy |
-| fannkuch-redux | ~82.2ms | collection-heavy |
-| mandelbrot | ~128ms | helper-call/WASM multi-function gap |
+| arithmetic loop | ~0.236ms | WASM/IR hot path |
+| recursive fib | ~0.852ms | TCO/IR/WASM path |
+| tail-recursive sum | ~0.081ms | TCO/WASM path |
+| fasta | ~0.206ms | constant-count folding + pure WASM |
+| k-nucleotide | ~0.465ms | typed IR string/map path |
+| reverse-complement | ~0.058ms | typed IR + text helper inlining |
+| map-update-loop | ~0.980ms | IR + transient maps |
+| spectral-norm | ~59.8ms | near Goja parity |
+| word-frequency | ~10.0ms | still regex/sequence/map-heavy |
+| mandelbrot | ~155ms | helper-call/WASM multi-function gap |
 
 ## High-priority workstreams
 

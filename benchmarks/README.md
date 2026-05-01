@@ -4,9 +4,11 @@ This directory stores the benchmark dataset and generated chart for the Joker op
 
 ## Files
 
-- `benchmark-history.json` — source-of-truth dataset
-- `benchmark-improvements.svg` — generated SVG chart
-- `generate_svg.go` — tiny generator that reads the JSON and writes the SVG
+- `benchmark-history.json` — source-of-truth dataset for published charts
+- `benchmark-cross-language.svg` — latest cross-language matrix chart
+- `benchmark-improvements.svg` — generated SVG chart vs. original Joker
+- `generate_svg.go` — tiny generator that reads the JSON and writes the improvement SVG
+- `run_benchmarks.py` — repeat-run median harness for lower-noise decisions
 
 ## Regenerate the chart
 
@@ -39,6 +41,7 @@ Use `--env JOKER_WASM_MULTIFN=force` to probe the multi-function WASM path separ
 ## Update workflow
 
 1. Run the median harness for decision-making.
-2. If updating published charts, copy the selected median values into `benchmark-history.json`.
-3. Regenerate the SVG with `generate_svg.go`.
-4. Commit both files.
+2. Run the full 5x matrix command when publishing a checkpoint.
+3. Copy selected checkpoint values into `benchmark-history.json`.
+4. Regenerate `benchmark-improvements.svg` with `generate_svg.go` and update `benchmark-cross-language.svg`.
+5. Commit the JSON and SVG files together.

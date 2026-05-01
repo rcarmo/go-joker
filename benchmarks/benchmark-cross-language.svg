@@ -1,108 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
-<title id="title">Cross-language benchmark matrix</title><desc id="desc">Heatmap sorted by Joker/Goja ratio.</desc>
-<style>:root{color-scheme:light dark;--bg:#f6f8fc;--panel:#fff;--border:#c7d3ea;--text:#172033;--muted:#6b7a96;--head:#e8edf5}@media(prefers-color-scheme:dark){:root{--bg:#0b1020;--panel:#11182b;--border:#25324f;--text:#e3ecff;--muted:#8da0c4;--head:#182240}}svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.head{fill:var(--head)}.text{fill:var(--text);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.muted{fill:var(--muted);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.title{font-size:22px;font-weight:700}.sub{font-size:13px}.ch{font-size:13px;font-weight:700}.rh{font-size:11px;font-weight:600}.c{font-size:11px;font-weight:600}.t{font-size:9px}.white{fill:#fff;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:11px;font-weight:600}</style>
-<rect width="1200" height="820" fill="var(--bg)"/><rect class="panel" x="20" y="20" width="1160" height="780" rx="14"/>
-<text class="text title" x="44" y="56">Cross-language benchmark matrix</text>
-<text class="muted sub" x="44" y="76">All times ms/op • Sorted by Joker/Goja ratio • ⚡ = WASM native • 5 iterations, i7-12700 • core Joker optimization run</text>
-
-<g transform="translate(0,96)">
-<rect class="head" x="250" y="0" width="140" height="28" rx="5"/><text class="text ch" x="320.0" y="19" text-anchor="middle">Bun/JSC</text>
-<rect class="head" x="400" y="0" width="140" height="28" rx="5"/><text class="text ch" x="470.0" y="19" text-anchor="middle">Python</text>
-<rect class="head" x="550" y="0" width="140" height="28" rx="5"/><text class="text ch" x="620.0" y="19" text-anchor="middle">Goja</text>
-<rect class="head" x="700" y="0" width="140" height="28" rx="5"/><text class="text ch" x="770.0" y="19" text-anchor="middle">Joker</text>
-<rect class="head" x="850" y="0" width="105" height="28" rx="5"/><text class="text ch" x="902.5" y="19" text-anchor="middle">Joker/Goja</text>
-<rect class="head" x="975" y="0" width="150" height="28" rx="5"/><text class="text ch" x="1050.0" y="19" text-anchor="middle">Note</text>
-</g>
-<g transform="translate(40,132)"><text class="text rh" x="0" y="16">tail-rec sum ⚡</text>
-<rect fill="#22a566" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.22</text>
-<rect fill="#22a566" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">3.46</text>
-<rect fill="#22a566" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">16.2</text>
-<rect fill="#22a566" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">0.06</text>
-<rect fill="#22a566" opacity="0.55" x="810" y="2" width="105" height="28" rx="4"/><text class="white" x="862" y="18" text-anchor="middle">0.00×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle">beats Goja</text></g>
-<g transform="translate(40,166)"><text class="text rh" x="0" y="16">recursive fib ⚡</text>
-<rect fill="#22a566" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.98</text>
-<rect fill="#22a566" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">20.7</text>
-<rect fill="#22a566" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">80.4</text>
-<rect fill="#22a566" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">0.96</text>
-<rect fill="#22a566" opacity="0.55" x="810" y="2" width="105" height="28" rx="4"/><text class="white" x="862" y="18" text-anchor="middle">0.01×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle">beats Goja</text></g>
-<g transform="translate(40,200)"><text class="text rh" x="0" y="16">arithmetic loop ⚡</text>
-<rect fill="#22a566" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.38</text>
-<rect fill="#22a566" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">7.31</text>
-<rect fill="#22a566" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">18.8</text>
-<rect fill="#22a566" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">0.26</text>
-<rect fill="#22a566" opacity="0.55" x="810" y="2" width="105" height="28" rx="4"/><text class="white" x="862" y="18" text-anchor="middle">0.01×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle">beats Goja</text></g>
-<g transform="translate(40,234)"><text class="text rh" x="0" y="16">pidigits</text>
-<rect fill="#22a566" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.02</text>
-<rect fill="#22a566" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">0.05</text>
-<rect fill="#22a566" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">0.15</text>
-<rect fill="#22a566" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">0.048</text>
-<rect fill="#22a566" opacity="0.55" x="810" y="2" width="105" height="28" rx="4"/><text class="white" x="862" y="18" text-anchor="middle">0.32×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle">beats Goja</text></g>
-<g transform="translate(40,268)"><text class="text rh" x="0" y="16">regex-redux</text>
-<rect fill="#22a566" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.06</text>
-<rect fill="#22a566" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">0.09</text>
-<rect fill="#22a566" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">0.14</text>
-<rect fill="#22a566" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">0.076</text>
-<rect fill="#22a566" opacity="0.35" x="810" y="2" width="105" height="28" rx="4"/><text class="text c" x="862" y="18" text-anchor="middle">0.54×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle">beats Goja</text></g>
-<g transform="translate(40,302)"><text class="text rh" x="0" y="16">spectral-norm ⚡</text>
-<rect fill="#f5a623" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">1.86</text>
-<rect fill="#f5a623" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">24.5</text>
-<rect fill="#f5a623" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">65.2</text>
-<rect fill="#f5a623" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">70.9</text>
-<rect fill="#f5a623" opacity="0.3" x="810" y="2" width="105" height="28" rx="4"/><text class="text c" x="862" y="18" text-anchor="middle">1.09×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle">near parity</text></g>
-<g transform="translate(40,336)"><text class="text rh" x="0" y="16">k-nucleotide</text>
-<rect fill="#f5a623" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.06</text>
-<rect fill="#f5a623" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">0.03</text>
-<rect fill="#f5a623" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">0.48</text>
-<rect fill="#f5a623" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">0.93</text>
-<rect fill="#f5a623" opacity="0.3" x="810" y="2" width="105" height="28" rx="4"/><text class="text c" x="862" y="18" text-anchor="middle">1.93×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle"></text></g>
-<g transform="translate(40,370)"><text class="text rh" x="0" y="16">binary-trees</text>
-<rect fill="#f5a623" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">5.68</text>
-<rect fill="#f5a623" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">54.2</text>
-<rect fill="#f5a623" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">172.3</text>
-<rect fill="#f5a623" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">433.8</text>
-<rect fill="#f5a623" opacity="0.3" x="810" y="2" width="105" height="28" rx="4"/><text class="text c" x="862" y="18" text-anchor="middle">2.52×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle"></text></g>
-<g transform="translate(40,404)"><text class="text rh" x="0" y="16">fasta</text>
-<rect fill="#f5a623" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.02</text>
-<rect fill="#f5a623" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">0.06</text>
-<rect fill="#f5a623" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">0.6</text>
-<rect fill="#f5a623" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">1.53</text>
-<rect fill="#f5a623" opacity="0.3" x="810" y="2" width="105" height="28" rx="4"/><text class="text c" x="862" y="18" text-anchor="middle">2.55×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle"></text></g>
-<g transform="translate(40,438)"><text class="text rh" x="0" y="16">mandelbrot</text>
-<rect fill="#e04848" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.25</text>
-<rect fill="#e04848" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">4.76</text>
-<rect fill="#e04848" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">39</text>
-<rect fill="#e04848" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">128.1</text>
-<rect fill="#e04848" opacity="0.25" x="810" y="2" width="105" height="28" rx="4"/><text class="text c" x="862" y="18" text-anchor="middle">3.29×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle"></text></g>
-<g transform="translate(40,472)"><text class="text rh" x="0" y="16">fannkuch-redux</text>
-<rect fill="#e04848" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.34</text>
-<rect fill="#e04848" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">4.94</text>
-<rect fill="#e04848" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">24</text>
-<rect fill="#e04848" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">82.2</text>
-<rect fill="#e04848" opacity="0.25" x="810" y="2" width="105" height="28" rx="4"/><text class="text c" x="862" y="18" text-anchor="middle">3.42×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle"></text></g>
-<g transform="translate(40,506)"><text class="text rh" x="0" y="16">reverse-complement</text>
-<rect fill="#e04848" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.02</text>
-<rect fill="#e04848" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">0.01</text>
-<rect fill="#e04848" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">0.13</text>
-<rect fill="#e04848" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">0.56</text>
-<rect fill="#e04848" opacity="0.25" x="810" y="2" width="105" height="28" rx="4"/><text class="text c" x="862" y="18" text-anchor="middle">4.30×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle"></text></g>
-<g transform="translate(40,540)"><text class="text rh" x="0" y="16">n-body</text>
-<rect fill="#e04848" opacity=".12" x="210" y="2" width="140" height="28" rx="4"/><text class="text c" x="280" y="18" text-anchor="middle">0.18</text>
-<rect fill="#e04848" opacity=".12" x="360" y="2" width="140" height="28" rx="4"/><text class="text c" x="430" y="18" text-anchor="middle">0.66</text>
-<rect fill="#e04848" opacity=".12" x="510" y="2" width="140" height="28" rx="4"/><text class="text c" x="580" y="18" text-anchor="middle">4.75</text>
-<rect fill="#e04848" opacity=".12" x="660" y="2" width="140" height="28" rx="4"/><text class="text c" x="730" y="18" text-anchor="middle">28.6</text>
-<rect fill="#e04848" opacity="0.25" x="810" y="2" width="105" height="28" rx="4"/><text class="text c" x="862" y="18" text-anchor="middle">6.02×</text>
-<text class="muted t" x="1010" y="18" text-anchor="middle"></text></g>
-<line x1="40" y1="580" x2="1140" y2="580" stroke="var(--border)"/><text class="text rh" x="40" y="608">Joker wins vs Goja: 5/13</text><text class="muted sub" x="40" y="630">New core win: map-update-loop dropped to 0.899ms (from 17.3ms) by fixing IR let/capture slot allocation and enabling transient maps.</text>
-<text class="muted sub" x="40" y="760">Remaining gaps are collection-heavy persistent structures, recursive tree allocation and string/sequence throughput; namespaces stay roadmap-only for now.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="860" viewBox="0 0 1240 860"><style>:root{color-scheme:light dark;--bg:#f6f8fc;--panel:#fff;--border:#c7d3ea;--text:#172033;--muted:#64748b;--head:#e8edf5;--grid:#d8e1f2}@media(prefers-color-scheme:dark){:root{--bg:#0b1020;--panel:#11182b;--border:#25324f;--text:#e3ecff;--muted:#8da0c4;--head:#182240;--grid:#25324f}}svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.head{fill:var(--head)}.text{fill:var(--text);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.muted{fill:var(--muted);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.title{font-size:23px;font-weight:750}.sub{font-size:13px}.ch{font-size:13px;font-weight:750}.rh{font-size:12px;font-weight:650}.c{font-size:11px;font-weight:650}.small{font-size:10px}.white{fill:#fff;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:11px;font-weight:750}</style><rect width="1240" height="860" fill="var(--bg)"/><rect class="panel" x="20" y="20" width="1200" height="820" rx="16"/><text class="text title" x="48" y="58">Joker matrix — typed IR v2 + count folding</text><text class="muted sub" x="48" y="80">ms/op • sorted by Joker/Goja • 5x run on i7-12700 • latest optimized master</text>
+<rect x="48" y="104" width="170" height="54" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="62" y="126">Wins vs Goja</text><text class="text" style="font-size:21px;font-weight:800" x="62" y="149">9/13</text>
+<rect x="233" y="104" width="170" height="54" rx="10" fill="#f5a623" opacity=".16" stroke="#f5a623" stroke-opacity=".35"/><text class="muted small" x="247" y="126">Within 2× Goja</text><text class="text" style="font-size:21px;font-weight:800" x="247" y="149">9/13</text>
+<rect x="418" y="104" width="170" height="54" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="432" y="126">fasta</text><text class="text" style="font-size:21px;font-weight:800" x="432" y="149">0.21ms</text>
+<rect x="603" y="104" width="170" height="54" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="617" y="126">k-nucleotide</text><text class="text" style="font-size:21px;font-weight:800" x="617" y="149">0.46ms</text>
+<rect x="788" y="104" width="170" height="54" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="802" y="126">reverse-comp</text><text class="text" style="font-size:21px;font-weight:800" x="802" y="149">0.058ms</text>
+<rect class="head" x="300" y="184" width="135" height="30" rx="6"/><text class="text ch" x="367.5" y="204" text-anchor="middle">Bun/JSC</text>
+<rect class="head" x="450" y="184" width="135" height="30" rx="6"/><text class="text ch" x="517.5" y="204" text-anchor="middle">Python</text>
+<rect class="head" x="600" y="184" width="135" height="30" rx="6"/><text class="text ch" x="667.5" y="204" text-anchor="middle">Goja</text>
+<rect class="head" x="750" y="184" width="135" height="30" rx="6"/><text class="text ch" x="817.5" y="204" text-anchor="middle">Joker</text>
+<rect class="head" x="900" y="184" width="115" height="30" rx="6"/><text class="text ch" x="957.5" y="204" text-anchor="middle">Joker/Goja</text>
+<rect class="head" x="1030" y="184" width="150" height="30" rx="6"/><text class="text ch" x="1105.0" y="204" text-anchor="middle">Status</text>
+<g transform="translate(0,226)"><text class="text rh" x="48" y="19">tail-rec sum ⚡</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#20a464" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.22</text>
+<rect fill="#20a464" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">3.46</text>
+<rect fill="#20a464" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">16.2</text>
+<rect fill="#20a464" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">0.081</text>
+<rect fill="#20a464" opacity="0.72" x="900" y="2" width="115" height="28" rx="5"/><text class="white" x="957.5" y="20" text-anchor="middle">0.01×</text><text class="muted small" x="1105" y="20" text-anchor="middle">beats Goja</text></g>
+<g transform="translate(0,266)"><text class="text rh" x="48" y="19">recursive fib ⚡</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#20a464" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.98</text>
+<rect fill="#20a464" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">20.7</text>
+<rect fill="#20a464" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">80.4</text>
+<rect fill="#20a464" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">0.85</text>
+<rect fill="#20a464" opacity="0.72" x="900" y="2" width="115" height="28" rx="5"/><text class="white" x="957.5" y="20" text-anchor="middle">0.01×</text><text class="muted small" x="1105" y="20" text-anchor="middle">beats Goja</text></g>
+<g transform="translate(0,306)"><text class="text rh" x="48" y="19">arithmetic loop ⚡</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#20a464" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.38</text>
+<rect fill="#20a464" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">7.31</text>
+<rect fill="#20a464" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">18.8</text>
+<rect fill="#20a464" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">0.24</text>
+<rect fill="#20a464" opacity="0.72" x="900" y="2" width="115" height="28" rx="5"/><text class="white" x="957.5" y="20" text-anchor="middle">0.01×</text><text class="muted small" x="1105" y="20" text-anchor="middle">beats Goja</text></g>
+<g transform="translate(0,346)"><text class="text rh" x="48" y="19">pidigits</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#2dbd72" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.02</text>
+<rect fill="#2dbd72" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">0.05</text>
+<rect fill="#2dbd72" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">0.15</text>
+<rect fill="#2dbd72" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">0.042</text>
+<rect fill="#2dbd72" opacity="0.52" x="900" y="2" width="115" height="28" rx="5"/><text class="text c" x="957.5" y="20" text-anchor="middle">0.28×</text><text class="muted small" x="1105" y="20" text-anchor="middle">beats Goja</text></g>
+<g transform="translate(0,386)"><text class="text rh" x="48" y="19">fasta ⚡</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#2dbd72" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.02</text>
+<rect fill="#2dbd72" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">0.06</text>
+<rect fill="#2dbd72" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">0.6</text>
+<rect fill="#2dbd72" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">0.21</text>
+<rect fill="#2dbd72" opacity="0.52" x="900" y="2" width="115" height="28" rx="5"/><text class="text c" x="957.5" y="20" text-anchor="middle">0.34×</text><text class="muted small" x="1105" y="20" text-anchor="middle">beats Goja</text></g>
+<g transform="translate(0,426)"><text class="text rh" x="48" y="19">reverse-complement</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#2dbd72" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.02</text>
+<rect fill="#2dbd72" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">0.01</text>
+<rect fill="#2dbd72" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">0.13</text>
+<rect fill="#2dbd72" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">0.058</text>
+<rect fill="#2dbd72" opacity="0.52" x="900" y="2" width="115" height="28" rx="5"/><text class="text c" x="957.5" y="20" text-anchor="middle">0.45×</text><text class="muted small" x="1105" y="20" text-anchor="middle">beats Goja</text></g>
+<g transform="translate(0,466)"><text class="text rh" x="48" y="19">regex-redux</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#2dbd72" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.06</text>
+<rect fill="#2dbd72" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">0.09</text>
+<rect fill="#2dbd72" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">0.14</text>
+<rect fill="#2dbd72" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">0.091</text>
+<rect fill="#2dbd72" opacity="0.52" x="900" y="2" width="115" height="28" rx="5"/><text class="text c" x="957.5" y="20" text-anchor="middle">0.65×</text><text class="muted small" x="1105" y="20" text-anchor="middle">beats Goja</text></g>
+<g transform="translate(0,506)"><text class="text rh" x="48" y="19">spectral-norm ⚡</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#2dbd72" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">1.86</text>
+<rect fill="#2dbd72" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">24.5</text>
+<rect fill="#2dbd72" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">65.2</text>
+<rect fill="#2dbd72" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">59.8</text>
+<rect fill="#2dbd72" opacity="0.52" x="900" y="2" width="115" height="28" rx="5"/><text class="text c" x="957.5" y="20" text-anchor="middle">0.92×</text><text class="muted small" x="1105" y="20" text-anchor="middle">beats Goja</text></g>
+<g transform="translate(0,546)"><text class="text rh" x="48" y="19">k-nucleotide</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#2dbd72" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.06</text>
+<rect fill="#2dbd72" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">0.03</text>
+<rect fill="#2dbd72" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">0.48</text>
+<rect fill="#2dbd72" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">0.46</text>
+<rect fill="#2dbd72" opacity="0.52" x="900" y="2" width="115" height="28" rx="5"/><text class="text c" x="957.5" y="20" text-anchor="middle">0.97×</text><text class="muted small" x="1105" y="20" text-anchor="middle">beats Goja</text></g>
+<g transform="translate(0,586)"><text class="text rh" x="48" y="19">binary-trees</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#e08a2e" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">5.68</text>
+<rect fill="#e08a2e" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">54.2</text>
+<rect fill="#e08a2e" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">172.3</text>
+<rect fill="#e08a2e" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">525.7</text>
+<rect fill="#e08a2e" opacity="0.34" x="900" y="2" width="115" height="28" rx="5"/><text class="text c" x="957.5" y="20" text-anchor="middle">3.05×</text><text class="muted small" x="1105" y="20" text-anchor="middle">gap</text></g>
+<g transform="translate(0,626)"><text class="text rh" x="48" y="19">mandelbrot</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#e08a2e" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.25</text>
+<rect fill="#e08a2e" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">4.76</text>
+<rect fill="#e08a2e" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">39</text>
+<rect fill="#e08a2e" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">154.9</text>
+<rect fill="#e08a2e" opacity="0.34" x="900" y="2" width="115" height="28" rx="5"/><text class="text c" x="957.5" y="20" text-anchor="middle">3.98×</text><text class="muted small" x="1105" y="20" text-anchor="middle">gap</text></g>
+<g transform="translate(0,666)"><text class="text rh" x="48" y="19">fannkuch-redux</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#d94b4b" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.34</text>
+<rect fill="#d94b4b" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">4.94</text>
+<rect fill="#d94b4b" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">24</text>
+<rect fill="#d94b4b" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">101</text>
+<rect fill="#d94b4b" opacity="0.32" x="900" y="2" width="115" height="28" rx="5"/><text class="text c" x="957.5" y="20" text-anchor="middle">4.21×</text><text class="muted small" x="1105" y="20" text-anchor="middle">gap</text></g>
+<g transform="translate(0,706)"><text class="text rh" x="48" y="19">n-body</text><line x1="48" y1="34" x2="1180" y2="34" stroke="var(--grid)" stroke-opacity=".45"/>
+<rect fill="#d94b4b" opacity=".10" x="300" y="2" width="135" height="28" rx="5"/><text class="text c" x="367.5" y="20" text-anchor="middle">0.18</text>
+<rect fill="#d94b4b" opacity=".10" x="450" y="2" width="135" height="28" rx="5"/><text class="text c" x="517.5" y="20" text-anchor="middle">0.66</text>
+<rect fill="#d94b4b" opacity=".10" x="600" y="2" width="135" height="28" rx="5"/><text class="text c" x="667.5" y="20" text-anchor="middle">4.75</text>
+<rect fill="#d94b4b" opacity=".10" x="750" y="2" width="135" height="28" rx="5"/><text class="text c" x="817.5" y="20" text-anchor="middle">33.5</text>
+<rect fill="#d94b4b" opacity="0.32" x="900" y="2" width="115" height="28" rx="5"/><text class="text c" x="957.5" y="20" text-anchor="middle">7.04×</text><text class="muted small" x="1105" y="20" text-anchor="middle">gap</text></g>
+<text class="muted sub" x="48" y="764">Microbenches: word-frequency 10ms, map-update-loop 0.98ms.</text></svg>

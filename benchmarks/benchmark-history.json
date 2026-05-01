@@ -26,49 +26,49 @@
       "label": "Current (IR + WASM + TCO + transients)",
       "benchmarks": {
         "arithmetic_loop": {
-          "ms_per_op": 0.264
+          "ms_per_op": 0.23645
         },
         "recursive_fib": {
-          "ms_per_op": 0.957
+          "ms_per_op": 0.852234
         },
         "word_frequency": {
-          "ms_per_op": 7.71
+          "ms_per_op": 10.013554
         },
         "map_update_loop": {
-          "ms_per_op": 0.899
+          "ms_per_op": 0.980405
         },
         "tail_recursive_sum": {
-          "ms_per_op": 0.06
+          "ms_per_op": 0.080956
         },
         "clbg_nbody": {
-          "ms_per_op": 28.6
+          "ms_per_op": 33.458009
         },
         "clbg_spectral_norm": {
-          "ms_per_op": 70.9
+          "ms_per_op": 59.8014
         },
         "clbg_binary_trees": {
-          "ms_per_op": 433.8
+          "ms_per_op": 525.653264
         },
         "clbg_fannkuch": {
-          "ms_per_op": 82.2
+          "ms_per_op": 100.989555
         },
         "clbg_mandelbrot": {
-          "ms_per_op": 128.1
+          "ms_per_op": 154.940339
         },
         "clbg_fasta": {
-          "ms_per_op": 1.53
+          "ms_per_op": 0.206424
         },
         "clbg_pidigits": {
-          "ms_per_op": 0.048
+          "ms_per_op": 0.042265
         },
         "clbg_knucleotide": {
-          "ms_per_op": 0.927
+          "ms_per_op": 0.464926
         },
         "clbg_reverse_complement": {
-          "ms_per_op": 0.559
+          "ms_per_op": 0.058133
         },
         "clbg_regex_redux": {
-          "ms_per_op": 0.076
+          "ms_per_op": 0.091066
         },
         "wasm_array_f64_sum": {
           "ms_per_op": 0.027
