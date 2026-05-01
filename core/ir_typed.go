@@ -23,6 +23,7 @@ const (
 	irValChar
 	irValString
 	irValStringBuilder
+	irValStringIntMap
 	irValNil
 )
 
@@ -34,6 +35,7 @@ type irValue struct {
 	r   rune
 	s   string
 	buf []byte
+	sm  map[string]int
 	obj Object
 }
 
@@ -42,12 +44,17 @@ func irTypedEnabled() bool {
 	return mode != "0" && mode != "off" && mode != "false"
 }
 
+func irTypedMapEnabled() bool {
+	mode := os.Getenv("JOKER_IR_TYPED_MAP")
+	return mode == "1" || mode == "on" || mode == "true" || mode == "force"
+}
+
 func irTypedEligible(a IRAnalysis) bool {
 	if a.NumOps == 0 || a.UsesTransient || a.HasCallSlot || a.HasSelfCall || a.HasNestedRecur {
 		return false
 	}
 	if a.UsesCollection && (a.HasMapOps || !a.HasGenericNth) {
-		return false
+		return irTypedMapEnabled() && a.HasMapOps && a.UsesString
 	}
 	return a.UsesString || a.SuggestedPath == "typed-ir-string-candidate" || a.SuggestedPath == "typed-ir-generic-string-nth-candidate"
 }
@@ -64,11 +71,20 @@ func objectToIRValue(obj Object) irValue {
 		return irValue{tag: irValChar, r: v.Ch}
 	case String:
 		return irValue{tag: irValString, s: v.S}
+	case *ArrayMap:
+		if v.Count() == 0 {
+			return irValue{tag: irValStringIntMap, sm: make(map[string]int)}
+		}
+	case *HashMap:
+		if v.Count() == 0 {
+			return irValue{tag: irValStringIntMap, sm: make(map[string]int)}
+		}
 	case Nil:
 		return irValue{tag: irValNil}
 	default:
 		return irValue{tag: irValObject, obj: obj}
 	}
+	return irValue{tag: irValObject, obj: obj}
 }
 
 func (v irValue) object() Object {
@@ -85,6 +101,12 @@ func (v irValue) object() Object {
 		return String{S: v.s}
 	case irValStringBuilder:
 		return String{S: string(v.buf)}
+	case irValStringIntMap:
+		res := EmptyArrayMap()
+		for k, v := range v.sm {
+			res.Add(String{S: k}, Int{I: v})
+		}
+		return res
 	case irValNil:
 		return NIL
 	default:
@@ -339,6 +361,33 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				return NIL
 			}
 			return stack[len(stack)-1].object()
+		case irGet3:
+			def := stack[len(stack)-1]
+			key := stack[len(stack)-2]
+			coll := stack[len(stack)-3]
+			stack = stack[:len(stack)-3]
+			if coll.tag != irValStringIntMap || def.tag != irValInt {
+				return nil
+			}
+			k := irValueToString(key)
+			if v, ok := coll.sm[k]; ok {
+				stack = append(stack, irValue{tag: irValInt, i: v})
+			} else {
+				stack = append(stack, def)
+			}
+		case irAssoc:
+			val := stack[len(stack)-1]
+			key := stack[len(stack)-2]
+			coll := stack[len(stack)-3]
+			stack = stack[:len(stack)-3]
+			if coll.tag != irValStringIntMap || val.tag != irValInt {
+				return nil
+			}
+			if coll.sm == nil {
+				coll.sm = make(map[string]int)
+			}
+			coll.sm[irValueToString(key)] = val.i
+			stack = append(stack, coll)
 		case irNth:
 			idx := stack[len(stack)-1]
 			coll := stack[len(stack)-2]
@@ -414,6 +463,8 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				stack = append(stack, irValue{tag: irValInt, i: irStringRuneCount(a.s)})
 			} else if a.tag == irValStringBuilder {
 				stack = append(stack, irValue{tag: irValInt, i: irStringRuneCount(string(a.buf))})
+			} else if a.tag == irValStringIntMap {
+				stack = append(stack, irValue{tag: irValInt, i: len(a.sm)})
 			} else {
 				return nil
 			}
