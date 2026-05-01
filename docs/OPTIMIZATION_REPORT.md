@@ -522,6 +522,7 @@ The immediate priority is **core Joker speed**, not additional namespaces. Names
    - Keep broadening the lowered IR subset before adding new surface APIs.
    - Initial `IR explain`/`WASM explain` helpers now report whether the first hot loop compiled, slot/capture/op counts, pure-WASM eligibility, host-import requirements, string-op rejection, helper-call/multi-function gaps, and no-loop cases.
    - IR rejection specificity now covers unsupported expression types, unsupported callable shapes, unsupported core vars, wrong arity, binding/capture failures, slot collisions, too many captures, and dynamic map literals.
+   - Loop-frame inference now prefers bindings seen in `recur` arguments, allowing nested/captured loop shapes like k-nucleotide's frequency loop to compile.
    - Next: add source-location breadcrumbs for nested failures so benchmark diagnostics can point at the exact sub-form.
    - Track counters for IR compiled/rejected, WASM compiled/rejected, fallback reason, and runtime fallback.
    - Add more regression tests around nested `let`, nested `loop`, captured bindings, closures, and helper calls.

@@ -271,8 +271,42 @@ func (c *irCompiler) reasonOr(fallback string) string {
 
 func guessLoopFrame(body []Expr) int {
 	for _, expr := range body {
+		if f := findRecurBindingFrame(expr); f >= 0 {
+			return f
+		}
+	}
+	for _, expr := range body {
 		if f := findBindingFrame(expr); f >= 0 {
 			return f
+		}
+	}
+	return -1
+}
+
+func findRecurBindingFrame(expr Expr) int {
+	switch e := expr.(type) {
+	case *RecurExpr:
+		for _, arg := range e.args {
+			if f := findBindingFrame(arg); f >= 0 {
+				return f
+			}
+		}
+	case *IfExpr:
+		if f := findRecurBindingFrame(e.positive); f >= 0 {
+			return f
+		}
+		return findRecurBindingFrame(e.negative)
+	case *LetExpr:
+		for _, b := range e.body {
+			if f := findRecurBindingFrame(b); f >= 0 {
+				return f
+			}
+		}
+	case *CallExpr:
+		for _, arg := range e.args {
+			if f := findRecurBindingFrame(arg); f >= 0 {
+				return f
+			}
 		}
 	}
 	return -1
