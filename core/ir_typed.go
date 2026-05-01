@@ -44,17 +44,28 @@ func irTypedEnabled() bool {
 	return mode != "0" && mode != "off" && mode != "false"
 }
 
-func irTypedMapEnabled() bool {
+func irTypedMapMode() string {
 	mode := os.Getenv("JOKER_IR_TYPED_MAP")
-	return mode == "1" || mode == "on" || mode == "true" || mode == "force"
+	if mode == "" {
+		return "auto"
+	}
+	return mode
+}
+func irTypedMapEnabled() bool {
+	mode := irTypedMapMode()
+	return mode != "0" && mode != "off" && mode != "false"
+}
+func irTypedMapForce() bool {
+	mode := irTypedMapMode()
+	return mode == "1" || mode == "force" || mode == "all"
 }
 
 func irTypedEligible(a IRAnalysis) bool {
-	if a.NumOps == 0 || a.UsesTransient || a.HasCallSlot || a.HasSelfCall || a.HasNestedRecur {
+	if a.NumOps == 0 || a.UsesTransient || a.HasCallSlot || a.HasSelfCall {
 		return false
 	}
 	if a.UsesCollection && (a.HasMapOps || !a.HasGenericNth) {
-		return irTypedMapEnabled() && a.HasMapOps && a.UsesString
+		return irTypedMapEnabled() && a.HasMapOps && a.UsesString && (irTypedMapForce() || a.HasStringAppend || a.HasStringPrepend)
 	}
 	return a.UsesString || a.SuggestedPath == "typed-ir-string-candidate" || a.SuggestedPath == "typed-ir-generic-string-nth-candidate"
 }
@@ -358,11 +369,13 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			pc += 2
 			target := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
+			baseSlot := 0
 			if target != 0 {
-				return nil
+				baseSlot = int(code[pc])<<8 | int(code[pc+1])
+				pc += 2
 			}
 			for i := nargs - 1; i >= 0; i-- {
-				slots[i] = stack[len(stack)-1]
+				slots[baseSlot+i] = stack[len(stack)-1]
 				stack = stack[:len(stack)-1]
 			}
 			pc = target
