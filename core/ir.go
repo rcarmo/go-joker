@@ -394,6 +394,32 @@ func (c *irCompiler) constantASCIIString(expr Expr) (string, bool) {
 	return "", false
 }
 
+func (c *irCompiler) constantCount(expr Expr) (int, bool) {
+	switch e := expr.(type) {
+	case *LiteralExpr:
+		switch v := e.obj.(type) {
+		case String:
+			return v.Count(), true
+		case Counted:
+			return v.Count(), true
+		}
+	case *BindingExpr:
+		// Only fold captured/outer bindings. Loop-local bindings can change via
+		// recur even when their initial value is a literal.
+		if e.binding.frame < c.loopFrame {
+			if lit, ok := e.binding.value.(*LiteralExpr); ok {
+				switch v := lit.obj.(type) {
+				case String:
+					return v.Count(), true
+				case Counted:
+					return v.Count(), true
+				}
+			}
+		}
+	}
+	return 0, false
+}
+
 func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 	switch e := expr.(type) {
 	case *LiteralExpr:
@@ -1111,10 +1137,15 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		if len(expr.args) != 1 {
 			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
 		}
-		if !c.compileExpr(expr.args[0], false) {
-			return false
+		if n, ok := c.constantCount(expr.args[0]); ok {
+			idx := c.addConstant(Int{I: n})
+			c.emitWithOperand(irLiteral, idx)
+		} else {
+			if !c.compileExpr(expr.args[0], false) {
+				return false
+			}
+			c.emit(irCount)
 		}
-		c.emit(irCount)
 	default:
 		return c.reject("unsupported core proc for IR: %s", procName)
 	}
