@@ -565,6 +565,12 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				stack = append(stack, irValue{tag: irValInt, i: a.i})
 			} else if a.tag == irValStringIntMap {
 				stack = append(stack, irValue{tag: irValInt, i: len(a.sm)})
+			} else if a.tag == irValObject {
+				if c, ok := a.obj.(Counted); ok {
+					stack = append(stack, irValue{tag: irValInt, i: c.Count()})
+				} else {
+					return nil
+				}
 			} else {
 				return nil
 			}
