@@ -361,6 +361,19 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				return NIL
 			}
 			return stack[len(stack)-1].object()
+		case irGet:
+			key := stack[len(stack)-1]
+			coll := stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if coll.tag != irValStringIntMap {
+				return nil
+			}
+			k := irValueToString(key)
+			if v, ok := coll.sm[k]; ok {
+				stack = append(stack, irValue{tag: irValInt, i: v})
+			} else {
+				stack = append(stack, irValue{tag: irValNil})
+			}
 		case irGet3:
 			def := stack[len(stack)-1]
 			key := stack[len(stack)-2]
@@ -392,31 +405,44 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			idx := stack[len(stack)-1]
 			coll := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			if idx.tag != irValInt || coll.tag != irValString {
+			if idx.tag != irValInt || idx.i < 0 {
 				return nil
 			}
-			if idx.i < 0 {
-				return nil
-			}
-			if isASCIIBytes(coll.s) {
-				if idx.i >= len(coll.s) {
-					return nil
-				}
-				stack = append(stack, irValue{tag: irValChar, r: rune(coll.s[idx.i])})
-			} else {
-				n := 0
-				found := false
-				for _, r := range coll.s {
-					if n == idx.i {
-						stack = append(stack, irValue{tag: irValChar, r: r})
-						found = true
-						break
+			if coll.tag == irValString {
+				if isASCIIBytes(coll.s) {
+					if idx.i >= len(coll.s) {
+						return nil
 					}
-					n++
+					stack = append(stack, irValue{tag: irValChar, r: rune(coll.s[idx.i])})
+				} else {
+					n := 0
+					found := false
+					for _, r := range coll.s {
+						if n == idx.i {
+							stack = append(stack, irValue{tag: irValChar, r: r})
+							found = true
+							break
+						}
+						n++
+					}
+					if !found {
+						return nil
+					}
 				}
-				if !found {
+			} else if coll.tag == irValObject {
+				switch v := coll.obj.(type) {
+				case *ArrayVector:
+					if idx.i >= len(v.arr) {
+						return nil
+					}
+					stack = append(stack, objectToIRValue(v.arr[idx.i]))
+				case Indexed:
+					stack = append(stack, objectToIRValue(v.Nth(idx.i)))
+				default:
 					return nil
 				}
+			} else {
+				return nil
 			}
 		case irNthStringASCII:
 			idxConst := int(code[pc])<<8 | int(code[pc+1])
