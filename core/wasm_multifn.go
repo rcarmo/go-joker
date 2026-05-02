@@ -116,11 +116,10 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 	if !isWasmEligibleWithOneHelper(prog, helperSlot) {
 		return 0, nil, nil, 0, false
 	}
-	// Conservative auto mode: only enable integer one-helper modules. Float
-	// helper modules are correct enough for direct tests but currently regress
-	// mandelbrot/spectral in end-to-end benchmark probes; use force/all to study
-	// them without affecting default performance.
-	if !wasmMultiFnForce() && (helperCalls == 0 || irProgramUsesFloat(prog) || irProgramUsesFloat(helperProg)) {
+	// Multi-function WASM: enable for both integer and float helpers.
+	// Originally gated because float helpers were believed to regress,
+	// but 5x median probes show no regression vs auto (within noise).
+	if !wasmMultiFnForce() && helperCalls == 0 {
 		return 0, nil, nil, 0, false
 	}
 	return helperSlot, helperFn, helperProg, helperNArgs, true
