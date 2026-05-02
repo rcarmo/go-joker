@@ -903,9 +903,7 @@ func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool
 					break
 				}
 				// Inline pure arithmetic helpers (≤32 exprs) only when the
-				// caller loop has no collection ops. If the caller uses
-				// nth/get/etc, the helper likely runs faster as standalone
-				// WASM via irCallSlot.
+				// caller loop has no collection ops.
 				if exprIsPureArithmetic(b) && exprCount(b) <= 32 && !c.hasCollectionOps {
 					inlineOK = true
 					break
@@ -923,17 +921,22 @@ func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool
 	if fnFrame < 0 {
 		return false
 	}
-	baseSlot := c.numSlots
+	// Use a synthetic frame to avoid collision with the caller's loop frame.
+	// The fn's parameters may share the same (frame, index) as the caller's
+	// loop bindings. By remapping to a unique frame, inline temps don't
+	// overwrite caller slots.
+	inlineFrame := fnFrame + 1000
 	for _, arg := range expr.args {
 		if !c.compileExpr(arg, false) {
 			return false
 		}
 	}
+	baseSlot := c.numSlots
 	oldBindings := make(map[bindingKey]int, len(arity.args))
 	oldPresent := make(map[bindingKey]bool, len(arity.args))
 	for i := len(arity.args) - 1; i >= 0; i-- {
 		slot := baseSlot + i
-		key := bindingKey{frame: fnFrame, index: i}
+		key := bindingKey{frame: inlineFrame, index: i}
 		if old, ok := c.bindingMap[key]; ok {
 			oldBindings[key] = old
 			oldPresent[key] = true
@@ -941,14 +944,33 @@ func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool
 		c.bindingMap[key] = slot
 		c.emitWithOperand(irStoreSlot, slot)
 	}
+	// Also remap the original fnFrame bindings so body references resolve
+	origKeys := make([]bindingKey, len(arity.args))
+	origOld := make(map[bindingKey]int)
+	origPresent := make(map[bindingKey]bool)
+	for i := range arity.args {
+		origKey := bindingKey{frame: fnFrame, index: i}
+		origKeys[i] = origKey
+		if old, ok := c.bindingMap[origKey]; ok {
+			origOld[origKey] = old
+			origPresent[origKey] = true
+		}
+		c.bindingMap[origKey] = baseSlot + i
+	}
 	c.numSlots = baseSlot + len(arity.args)
 	ok := c.compileExpr(arity.body[0], isLast)
 	for i := range arity.args {
-		key := bindingKey{frame: fnFrame, index: i}
+		key := bindingKey{frame: inlineFrame, index: i}
 		if oldPresent[key] {
 			c.bindingMap[key] = oldBindings[key]
 		} else {
 			delete(c.bindingMap, key)
+		}
+		origKey := origKeys[i]
+		if origPresent[origKey] {
+			c.bindingMap[origKey] = origOld[origKey]
+		} else {
+			delete(c.bindingMap, origKey)
 		}
 	}
 	return ok
