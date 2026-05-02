@@ -208,6 +208,9 @@ func Eval(expr Expr, env *LocalEnv) Object {
 					return result
 				}
 			}
+			if result := wasmMemNthCompileAndExec(prog, initSlots); result != nil {
+				return result
+			}
 			var result Object
 			func() {
 				defer func() {
@@ -856,6 +859,9 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 			if result := wasmExec(wp, initSlots); result != nil {
 				return result
 			}
+		}
+		if result := wasmMemNthCompileAndExec(prog, initSlots); result != nil {
+			return result
 		}
 		var result Object
 		func() {

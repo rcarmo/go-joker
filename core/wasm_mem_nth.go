@@ -1,0 +1,548 @@
+package core
+
+// wasm_mem_nth.go — WASM f64 codegen with linear memory for vector nth.
+//
+// For loops that use f64 arithmetic + vector nth + optional helper calls,
+// vector elements are copied into WASM linear memory before execution.
+// The nth opcode becomes an f64.load from computed memory address.
+// This eliminates all Go↔WASM boundary crossings for nth.
+
+import (
+	"context"
+	"encoding/binary"
+	"math"
+	"sync"
+
+	"github.com/tetratelabs/wazero"
+)
+
+var wasmMemNthCache sync.Map
+
+type wasmMemNthKey struct {
+	prog   *IRProgram
+	helper *IRProgram
+}
+
+type WasmMemNthProgram struct {
+	wp       *WasmProgram
+	memSlots []int // which param slots are vectors stored in memory
+	// offset in memory for each vector slot: slot → byte offset
+	memOffsets map[int]int
+}
+
+// wasmMemNthEligible checks if the loop can use the memory-nth WASM path.
+// Requires: f64 arithmetic, irNth on captured vectors, optional irCallSlot.
+func wasmMemNthEligible(prog *IRProgram, slots []Object) bool {
+	if prog == nil || len(slots) < prog.numSlots {
+		return false
+	}
+	// Check if any slot is a Double (indicates float loop)
+	hasFloat := false
+	for _, s := range slots {
+		if _, ok := s.(Double); ok {
+			hasFloat = true
+			break
+		}
+	}
+	if !hasFloat {
+		hasFloat = irProgramUsesFloat(prog)
+	}
+	if !hasFloat {
+		return false
+	}
+	code := prog.code
+	pc := 0
+	hasNth := false
+	nthSlots := make(map[int]bool) // which slots are used as nth collection args
+	for pc < len(code) {
+		op := code[pc]
+		pc++
+		switch op {
+		case irLiteral, irLoadSlot, irStoreSlot:
+			pc += 2
+		case irAdd, irSub, irMul, irDiv, irRem, irInc, irDec,
+			irLt, irEq, irIsZero, irReturn, irSqrt:
+			// ok
+		case irNth:
+			hasNth = true
+		case irCallSlot:
+			pc += 4
+		case irJumpIfNot, irJump:
+			pc += 2
+		case irRecur:
+			pc += 4
+			if tgt := int(code[pc-2])<<8 | int(code[pc-1]); tgt != 0 {
+				return false
+			}
+		default:
+			return false
+		}
+	}
+	if !hasNth {
+		return false
+	}
+	// Find which slots are loaded before nth and verify they're vectors
+	pc = 0
+	for pc < len(code) {
+		op := code[pc]
+		pc++
+		switch op {
+		case irLoadSlot:
+			slotIdx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			// Check if next non-load op is nth
+			if pc < len(code) {
+				nextOp := code[pc]
+				if nextOp == irLoadSlot {
+					// Pattern: load coll, load idx, nth
+					nextSlot := int(code[pc+1])<<8 | int(code[pc+2])
+					if pc+3 < len(code) && code[pc+3] == irNth {
+						_ = nextSlot
+						nthSlots[slotIdx] = true
+					}
+				} else if nextOp == irNth {
+					// Immediate nth after one load — unusual but handle it
+				}
+			}
+		case irLiteral, irStoreSlot:
+			pc += 2
+		case irCallSlot:
+			pc += 4
+		case irJumpIfNot, irJump:
+			pc += 2
+		case irRecur:
+			pc += 4
+			if tgt := int(code[pc-2])<<8 | int(code[pc-1]); tgt != 0 {
+				pc += 2
+			}
+		default:
+			// single byte
+		}
+	}
+	// Verify that nth collection slots hold ArrayVectors
+	for slot := range nthSlots {
+		if slot >= len(slots) {
+			return false
+		}
+		if _, ok := slots[slot].(*ArrayVector); !ok {
+			return false
+		}
+	}
+	return true
+}
+
+// wasmMemNthCompileAndExec compiles and executes the loop with linear memory nth.
+func wasmMemNthCompileAndExec(prog *IRProgram, slots []Object) Object {
+	if !wasmMemNthEligible(prog, slots) {
+		return nil
+	}
+	// Find helper
+	helperSlot, helperProg := findHelperForMemNth(prog, slots)
+
+	key := wasmMemNthKey{prog: prog, helper: helperProg}
+	var wp *WasmProgram
+	if v, ok := wasmMemNthCache.Load(key); ok {
+		cached := v.(*WasmProgram)
+		if cached == wasmFail {
+			return nil
+		}
+		wp = cached
+	} else {
+		wp = buildMemNthModule(prog, helperSlot, helperProg)
+		if wp == nil {
+			wasmMemNthCache.Store(key, wasmFail)
+			return nil
+		}
+		wasmMemNthCache.Store(key, wp)
+	}
+
+	// Identify vector slots and copy data to memory
+	vecSlots := findVecSlots(prog, slots)
+	memOffsets := make(map[int]int)
+	offset := 0
+	for _, vs := range vecSlots {
+		memOffsets[vs.slot] = offset
+		offset += len(vs.vec.arr) * 8 // 8 bytes per f64
+	}
+
+	// Write vector data to WASM memory
+	mem := wp.mod.ExportedMemory("memory")
+	if mem == nil {
+		return nil
+	}
+	buf := make([]byte, 8)
+	for _, vs := range vecSlots {
+		base := memOffsets[vs.slot]
+		for i, obj := range vs.vec.arr {
+			var fv float64
+			switch v := obj.(type) {
+			case Double:
+				fv = v.D
+			case Int:
+				fv = float64(v.I)
+			default:
+				return nil
+			}
+			binary.LittleEndian.PutUint64(buf, math.Float64bits(fv))
+			mem.Write(uint32(base+i*8), buf)
+		}
+	}
+
+	// Build WASM params
+	params := make([]uint64, prog.numSlots)
+	for i, s := range slots {
+		switch v := s.(type) {
+		case Int:
+			params[i] = math.Float64bits(float64(v.I))
+		case Double:
+			params[i] = math.Float64bits(v.D)
+		default:
+			// For vector slots, pass the memory byte offset as f64
+			if off, ok := memOffsets[i]; ok {
+				params[i] = math.Float64bits(float64(off))
+			} else {
+				params[i] = 0
+			}
+		}
+	}
+
+	ctx := context.Background()
+	results, err := wp.execFn.Call(ctx, params...)
+	if err != nil {
+		return nil
+	}
+	if len(results) == 0 {
+		return NIL
+	}
+	return Double{D: math.Float64frombits(results[0])}
+}
+
+type vecSlotInfo struct {
+	slot int
+	vec  *ArrayVector
+}
+
+func findVecSlots(prog *IRProgram, slots []Object) []vecSlotInfo {
+	// Find slots loaded before irNth
+	code := prog.code
+	var result []vecSlotInfo
+	seen := make(map[int]bool)
+	pc := 0
+	for pc < len(code) {
+		op := code[pc]
+		pc++
+		switch op {
+		case irLoadSlot:
+			slotIdx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			if pc+3 < len(code) && code[pc] == irLoadSlot && code[pc+3] == irNth {
+				if !seen[slotIdx] {
+					if v, ok := slots[slotIdx].(*ArrayVector); ok {
+						result = append(result, vecSlotInfo{slot: slotIdx, vec: v})
+						seen[slotIdx] = true
+					}
+				}
+			}
+		case irLiteral, irStoreSlot:
+			pc += 2
+		case irCallSlot:
+			pc += 4
+		case irJumpIfNot, irJump:
+			pc += 2
+		case irRecur:
+			pc += 4
+			if tgt := int(code[pc-2])<<8 | int(code[pc-1]); tgt != 0 {
+				pc += 2
+			}
+		default:
+		}
+	}
+	return result
+}
+
+func findHelperForMemNth(prog *IRProgram, slots []Object) (int, *IRProgram) {
+	code := prog.code
+	pc := 0
+	helperSlot := -1
+	for pc < len(code) {
+		op := code[pc]
+		pc++
+		switch op {
+		case irCallSlot:
+			s := int(code[pc])<<8 | int(code[pc+1])
+			pc += 4
+			if helperSlot < 0 {
+				helperSlot = s
+			} else if helperSlot != s {
+				return -1, nil
+			}
+		case irLiteral, irLoadSlot, irStoreSlot:
+			pc += 2
+		case irJumpIfNot, irJump:
+			pc += 2
+		case irRecur:
+			pc += 4
+			if tgt := int(code[pc-2])<<8 | int(code[pc-1]); tgt != 0 {
+				pc += 2
+			}
+		default:
+		}
+	}
+	if helperSlot < 0 || helperSlot >= len(slots) {
+		return -1, nil
+	}
+	fn, ok := slots[helperSlot].(*Fn)
+	if !ok {
+		return -1, nil
+	}
+	hp := irCompileFn(fn)
+	if hp == nil || !isWasmEligible(hp) {
+		return -1, nil
+	}
+	return helperSlot, hp
+}
+
+func buildMemNthModule(prog *IRProgram, helperSlot int, helperProg *IRProgram) *WasmProgram {
+	rt := getWasmRT()
+	if rt == nil {
+		return nil
+	}
+	helperFuncIdx := -1
+	helperParams := 0
+	if helperProg != nil {
+		helperFuncIdx = 1
+		helperParams = helperProg.numSlots
+	}
+
+	callerBody := buildMemNthBody(prog, helperSlot, helperFuncIdx, prog.numSlots)
+	if callerBody == nil {
+		return nil
+	}
+	var helperBody []byte
+	if helperProg != nil {
+		helperBody = compileWasmBodyWithHelperParams(helperProg, true, -1, -1, helperParams)
+		if helperBody == nil {
+			return nil
+		}
+	}
+
+	bin := assembleMemNthModule(prog.numSlots, helperParams, callerBody, helperBody)
+	ctx := context.Background()
+	compiled, err := rt.CompileModule(ctx, bin)
+	if err != nil {
+		return nil
+	}
+	mod, err := rt.InstantiateModule(ctx, compiled, wazero.NewModuleConfig().WithName(nextWasmModName()))
+	if err != nil {
+		return nil
+	}
+	execFn := mod.ExportedFunction("exec")
+	if execFn == nil {
+		return nil
+	}
+	return &WasmProgram{mod: mod, execFn: execFn, useFloat: true, hasImports: false, constants: prog.constants}
+}
+
+func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) []byte {
+	var o []byte
+	extra := prog.numSlots - numParams
+	// Local decls: extra f64 locals + 1 i32 temp for nth address computation
+	if extra > 0 {
+		o = append(o, 0x02) // 2 groups
+		o = appendULEB(o, extra)
+		o = append(o, 0x7c) // f64
+		o = append(o, 0x01) // 1 i32
+		o = append(o, 0x7f) // i32
+	} else {
+		o = append(o, 0x01) // 1 group
+		o = append(o, 0x01) // 1 i32
+		o = append(o, 0x7f)
+	}
+	i32Temp := prog.numSlots  // local index of i32 temp
+	o = append(o, 0x02, 0x7c) // block $exit → f64
+	o = append(o, 0x03, 0x40) // loop $loop → void
+
+	code := prog.code
+	pc := 0
+	depth := 0
+
+	for pc < len(code) {
+		op := code[pc]
+		pc++
+		switch op {
+		case irLiteral:
+			idx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			c := prog.constants[idx]
+			var fv float64
+			switch v := c.(type) {
+			case Int:
+				fv = float64(v.I)
+			case Double:
+				fv = v.D
+			default:
+				return nil
+			}
+			o = append(o, 0x44)
+			o = appendF64(o, fv)
+		case irLoadSlot:
+			idx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			o = append(o, 0x20)
+			o = appendULEB(o, idx)
+		case irStoreSlot:
+			idx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			o = append(o, 0x21)
+			o = appendULEB(o, idx)
+		case irAdd:
+			o = append(o, 0xa0)
+		case irSub:
+			o = append(o, 0xa1)
+		case irMul:
+			o = append(o, 0xa2)
+		case irDiv:
+			o = append(o, 0xa3)
+		case irSqrt:
+			o = append(o, 0x9f)
+		case irInc:
+			o = append(o, 0x44)
+			o = appendF64(o, 1.0)
+			o = append(o, 0xa0)
+		case irDec:
+			o = append(o, 0x44)
+			o = appendF64(o, 1.0)
+			o = append(o, 0xa1)
+		case irLt:
+			o = append(o, 0x63) // f64.lt → i32
+			o = append(o, 0xb7) // f64.convert_i32_s → f64 (for storage)
+		case irEq:
+			o = append(o, 0x61) // f64.eq → i32
+			o = append(o, 0xb7)
+		case irIsZero:
+			o = append(o, 0x44)
+			o = appendF64(o, 0.0)
+			o = append(o, 0x61)
+			o = append(o, 0xb7)
+
+		case irNth:
+			// Stack: [base_offset_f64, idx_f64]
+			// Compute address: i32(base) + i32(idx) * 8
+			o = append(o, 0xaa) // i32.trunc_f64_s (idx → i32)
+			o = append(o, 0x21) // local.set i32_temp
+			o = appendULEB(o, i32Temp)
+			o = append(o, 0xaa) // i32.trunc_f64_s (base → i32)
+			o = append(o, 0x20) // local.get i32_temp
+			o = appendULEB(o, i32Temp)
+			o = append(o, 0x41, 0x08)       // i32.const 8
+			o = append(o, 0x6c)             // i32.mul
+			o = append(o, 0x6a)             // i32.add
+			o = append(o, 0x2b, 0x03, 0x00) // f64.load align=3 offset=0
+
+		case irCallSlot:
+			slotIdx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			nargs := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			_ = nargs
+			if slotIdx != helperSlot || helperFuncIdx < 0 {
+				return nil
+			}
+			o = append(o, 0x10)
+			o = appendULEB(o, helperFuncIdx)
+		case irJumpIfNot:
+			pc += 2
+			// Comparison results are f64 (0.0 or 1.0), convert to i32 for if
+			o = append(o, 0xaa) // i32.trunc_f64_s
+			o = append(o, 0x04, 0x40)
+			depth++
+		case irJump:
+			pc += 2
+			o = append(o, 0x05)
+		case irReturn:
+			o = append(o, 0x0c)
+			o = appendULEB(o, depth+1)
+			if depth > 0 && pc < len(code) && code[pc] != irJump {
+				o = append(o, 0x05)
+			}
+		case irRecur:
+			nargs := int(code[pc])<<8 | int(code[pc+1])
+			pc += 4
+			for i := nargs - 1; i >= 0; i-- {
+				o = append(o, 0x21)
+				o = appendULEB(o, i)
+			}
+			o = append(o, 0x0c)
+			o = appendULEB(o, depth)
+			pc = len(code)
+		default:
+			return nil
+		}
+	}
+	for depth > 0 {
+		o = append(o, 0x0b)
+		depth--
+	}
+	o = append(o, 0x0b)
+	o = append(o, 0x44)
+	o = appendF64(o, 0.0)
+	o = append(o, 0x0b)
+	o = append(o, 0x0b)
+	return o
+}
+
+func assembleMemNthModule(callerParams, helperParams int, callerBody, helperBody []byte) []byte {
+	m := newWasmModule()
+	numFuncs := 1
+	if helperBody != nil {
+		numFuncs = 2
+	}
+	// Type section
+	var typeBody []byte
+	typeBody = appendULEB(typeBody, numFuncs)
+	for _, n := range []int{callerParams, helperParams}[:numFuncs] {
+		typeBody = append(typeBody, 0x60)
+		typeBody = appendULEB(typeBody, n)
+		for i := 0; i < n; i++ {
+			typeBody = append(typeBody, 0x7c)
+		}
+		typeBody = append(typeBody, 0x01, 0x7c)
+	}
+	m.addSection(0x01, typeBody)
+
+	// Function section
+	var funcBody []byte
+	funcBody = appendULEB(funcBody, numFuncs)
+	for i := 0; i < numFuncs; i++ {
+		funcBody = appendULEB(funcBody, i) // type index
+	}
+	m.addSection(0x03, funcBody)
+
+	// Memory section: 1 page (64KB)
+	m.addSection(0x05, []byte{0x01, 0x00, 0x01}) // 1 memory, min=1
+
+	// Export section
+	execName := []byte("exec")
+	memName := []byte("memory")
+	var expBody []byte
+	expBody = appendULEB(expBody, 2)
+	expBody = appendULEB(expBody, len(execName))
+	expBody = append(expBody, execName...)
+	expBody = append(expBody, 0x00, 0x00) // func, index 0
+	expBody = appendULEB(expBody, len(memName))
+	expBody = append(expBody, memName...)
+	expBody = append(expBody, 0x02, 0x00) // memory, index 0
+	m.addSection(0x07, expBody)
+
+	// Code section
+	var codeBody []byte
+	codeBody = appendULEB(codeBody, numFuncs)
+	codeBody = appendULEB(codeBody, len(callerBody))
+	codeBody = append(codeBody, callerBody...)
+	if helperBody != nil {
+		codeBody = appendULEB(codeBody, len(helperBody))
+		codeBody = append(codeBody, helperBody...)
+	}
+	m.addSection(0x0a, codeBody)
+	return m.bytes()
+}
