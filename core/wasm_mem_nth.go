@@ -11,6 +11,7 @@ import (
 	"context"
 	"encoding/binary"
 	"math"
+	"os"
 	"sync"
 
 	"github.com/tetratelabs/wazero"
@@ -30,7 +31,41 @@ type WasmMemNthProgram struct {
 	memOffsets map[int]int
 }
 
-// wasmMemNthEligible checks if the loop can use the memory-nth WASM path.
+// wasmMemNthStaticEligible is a fast static check (no slot inspection).
+func wasmMemNthStaticEligible(prog *IRProgram) bool {
+	if os.Getenv("JOKER_WASM_MEM_NTH") == "" {
+		return false
+	}
+	code := prog.code
+	pc := 0
+	hasNth := false
+	for pc < len(code) {
+		op := code[pc]
+		pc++
+		switch op {
+		case irLiteral, irLoadSlot, irStoreSlot:
+			pc += 2
+		case irAdd, irSub, irMul, irDiv, irRem, irInc, irDec,
+			irLt, irEq, irIsZero, irReturn, irSqrt:
+			// ok
+		case irNth:
+			hasNth = true
+		case irCallSlot:
+			pc += 4
+		case irJumpIfNot, irJump:
+			pc += 2
+		case irRecur:
+			pc += 4
+			if tgt := int(code[pc-2])<<8 | int(code[pc-1]); tgt != 0 {
+				return false
+			}
+		default:
+			return false
+		}
+	}
+	return hasNth
+}
+
 // Requires: f64 arithmetic, irNth on captured vectors, optional irCallSlot.
 func wasmMemNthEligible(prog *IRProgram, slots []Object) bool {
 	if prog == nil || len(slots) < prog.numSlots {

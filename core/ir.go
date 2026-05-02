@@ -84,14 +84,15 @@ func irGetCached(loop *LoopExpr) *IRProgram {
 // ---------- Program ----------
 
 type IRProgram struct {
-	code        []byte
-	constants   []Object
-	numSlots    int
-	captureKeys []bindingKey
-	hasSelf     bool
-	escapeInfo  *EscapeInfo
-	analysis    *IRAnalysis
-	typedFailed bool
+	code         []byte
+	constants    []Object
+	numSlots     int
+	captureKeys  []bindingKey
+	hasSelf      bool
+	escapeInfo   *EscapeInfo
+	analysis     *IRAnalysis
+	typedFailed  bool
+	memNthFailed bool
 }
 
 // ---------- Fn compilation ----------

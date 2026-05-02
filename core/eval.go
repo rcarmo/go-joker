@@ -188,6 +188,12 @@ func Eval(expr Expr, env *LocalEnv) Object {
 				}
 				initSlots = full
 			}
+			if !prog.memNthFailed && wasmMemNthStaticEligible(prog) {
+				if result := wasmMemNthCompileAndExec(prog, initSlots); result != nil {
+					return result
+				}
+				prog.memNthFailed = true
+			}
 			if irTypedEnabled() && !prog.typedFailed {
 				var typedResult Object
 				func() {
