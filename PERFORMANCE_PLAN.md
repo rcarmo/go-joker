@@ -1,7 +1,7 @@
 # Joker core performance plan for gi
 
 Status: Active
-Date: 2026-05-01
+Date: 2026-05-02
 
 This plan tracks the work to make core Joker faster for gi scripting. Additional namespaces and public convenience wrappers stay on the roadmap, but the current priority is the core evaluator/IR/runtime.
 
@@ -52,20 +52,51 @@ go test ./core -run '^$' -bench 'BenchmarkCLBG|BenchmarkEval|BenchmarkWasm' -ben
 
 Host: 12th Gen Intel(R) Core(TM) i7-12700
 
-Highlights from the 2026-05-01 run (`go test ./core -run '^$' -bench 'BenchmarkCLBG|BenchmarkEval|BenchmarkIRString|BenchmarkIRChar|BenchmarkIRTyped|BenchmarkWasm' -benchmem -benchtime=5x`):
+Highlights from the 2026-05-02 exhaustion checkpoint run:
 
 | Benchmark | Time | Notes |
 |---|---:|---|
-| arithmetic loop | ~0.236ms | WASM/IR hot path |
-| recursive fib | ~0.852ms | TCO/IR/WASM path |
-| tail-recursive sum | ~0.081ms | TCO/WASM path |
-| fasta | ~0.206ms | constant-count folding + pure WASM |
-| k-nucleotide | ~0.465ms | typed IR string/map path |
-| reverse-complement | ~0.058ms | typed IR + text helper inlining |
-| map-update-loop | ~0.980ms | IR + transient maps |
-| spectral-norm | ~59.8ms | near Goja parity |
-| word-frequency | ~10.0ms | still regex/sequence/map-heavy |
-| mandelbrot | ~155ms | helper-call/WASM multi-function gap |
+| arithmetic loop | ~0.310ms | WASM/IR hot path |
+| recursive fib | ~1.199ms | TCO/IR/WASM path |
+| tail-recursive sum | ~0.060ms | TCO/WASM path |
+| fasta | ~0.245ms | constant-count folding + pure WASM |
+| k-nucleotide | ~0.444ms | typed IR string/map path |
+| reverse-complement | ~0.078ms | typed IR + text helper inlining |
+| map-update-loop | ~1.620ms | IR + transient maps |
+| spectral-norm | ~67.6ms | near Goja parity |
+| word-frequency | ~12.7ms | still regex/sequence/map-heavy |
+| mandelbrot | ~185ms | typed call slots added, allocs unchanged |
+| fannkuch-redux | ~111ms | vector permutation, persistent data structure overhead |
+| n-body | ~41.9ms | object mutation, persistent data structure overhead |
+| binary-trees | ~634ms | recursive tree allocation |
+
+## IR/WASM exhaustion analysis
+
+The following IR and WASM techniques have been **fully explored**:
+
+| Technique | Status | Evidence |
+|---|---|---|
+| WASM pure numeric | **Exhausted** | Arithmetic, fib, tail-rec match Bun/JSC |
+| IR boxed interpreter | **Exhausted** | 26+ opcodes cover all hot loop patterns |
+| Typed IR v2 (primitives/strings) | **Exhausted** | Auto-enabled, builder slots, count folding |
+| Typed IR string-int maps | **Exhausted** | k-nucleotide near parity |
+| Typed IR call slots + sqrt | **Exhausted** | Allocs unchanged — call boundary still boxes |
+| Typed IR int-vectors | **Probed, no win** | `JOKER_IR_TYPED_VEC=1` correct but no speedup |
+| Helper inlining | **Exhausted** | Force mode regresses spectral-norm |
+| Multi-fn WASM | **Probed, no win** | Float helpers regress or neutral |
+| Transients | **Exhausted** | Cannot cross function call boundaries |
+| TCO rewrite | **Exhausted** | Parse-time + runtime trampoline |
+| Constant count folding | **Exhausted** | Fasta became pure WASM |
+| Loop frame inference | **Exhausted** | Recur-arg preference unlocked k-nucleotide |
+
+### Remaining 4 gaps require architectural changes
+
+| Benchmark | Gap | Root cause | Would need |
+|---|---|---|---|
+| n-body (8.8×) | Object mutation | Persistent vector copy on every update | Mutable objects or interprocedural escape analysis |
+| mandelbrot (4.8×) | Helper call boundary | Boxing/unboxing at pixel call | Interprocedural inlining or WASM module merging |
+| fannkuch (4.6×) | Vector permutation | `assoc`/`nth` on persistent vectors | Mutable array slots or transients across fn boundaries |
+| binary-trees (3.7×) | Recursive allocation | 7.4M objects from tree construction | Allocation sinking or region-based memory |
 
 ## High-priority workstreams
 
