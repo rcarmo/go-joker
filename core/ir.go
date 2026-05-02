@@ -1763,6 +1763,27 @@ loop:
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			fnObj := slots[slotIdx]
+			// Fast path: native f64 closure
+			if fn, ok := fnObj.(*Fn); ok {
+				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
+					var f64buf [4]float64
+					f64args := f64buf[:nargs]
+					for i := nargs - 1; i >= 0; i-- {
+						switch v := stack[len(stack)-1].(type) {
+						case Double:
+							f64args[i] = v.D
+						case Int:
+							f64args[i] = float64(v.I)
+						default:
+							f64args[i] = 0
+						}
+						stack = stack[:len(stack)-1]
+					}
+					stack = append(stack, Double{D: fnProg.nativeHelper(f64args)})
+					continue
+				}
+			}
+			// Slow path
 			var args []Object
 			var argsBuf [4]Object
 			if nargs > 0 {
