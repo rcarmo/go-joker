@@ -12,6 +12,7 @@ import (
 	"encoding/binary"
 	"math"
 	"os"
+	"reflect"
 	"sync"
 
 	"github.com/tetratelabs/wazero"
@@ -22,13 +23,6 @@ var wasmMemNthCache sync.Map
 type wasmMemNthKey struct {
 	prog   *IRProgram
 	helper *IRProgram
-}
-
-type WasmMemNthProgram struct {
-	wp       *WasmProgram
-	memSlots []int // which param slots are vectors stored in memory
-	// offset in memory for each vector slot: slot → byte offset
-	memOffsets map[int]int
 }
 
 // wasmMemNthStaticEligible is a fast static check (no slot inspection).
@@ -166,83 +160,102 @@ func wasmMemNthEligible(prog *IRProgram, slots []Object) bool {
 	return true
 }
 
+type wasmMemNthCached struct {
+	wp         *WasmProgram
+	vecSlotIdx []int     // initSlots indices that hold vectors
+	memOffsets []int     // byte offset for each vecSlotIdx
+	lastVecPtr []uintptr // last-written vector pointer per slot
+	paramsBuf  []uint64  // reusable params buffer
+	buf8       [8]byte   // reusable byte buffer for f64 writes
+}
+
 // wasmMemNthCompileAndExec compiles and executes the loop with linear memory nth.
 func wasmMemNthCompileAndExec(prog *IRProgram, slots []Object) Object {
 	if !wasmMemNthEligible(prog, slots) {
 		return nil
 	}
-	// Find helper
 	helperSlot, helperProg := findHelperForMemNth(prog, slots)
 
 	key := wasmMemNthKey{prog: prog, helper: helperProg}
-	var wp *WasmProgram
+	var c *wasmMemNthCached
 	if v, ok := wasmMemNthCache.Load(key); ok {
-		cached := v.(*WasmProgram)
-		if cached == wasmFail {
-			return nil
+		if v == nil {
+			return nil // cached failure
 		}
-		wp = cached
+		c = v.(*wasmMemNthCached)
 	} else {
-		wp = buildMemNthModule(prog, helperSlot, helperProg)
+		wp := buildMemNthModule(prog, helperSlot, helperProg)
 		if wp == nil {
-			wasmMemNthCache.Store(key, wasmFail)
+			wasmMemNthCache.Store(key, nil)
 			return nil
 		}
-		wasmMemNthCache.Store(key, wp)
+		// Identify vector slots
+		vecSlots := findVecSlots(prog, slots)
+		var vecIdx []int
+		var memOff []int
+		offset := 0
+		for _, vs := range vecSlots {
+			vecIdx = append(vecIdx, vs.slot)
+			memOff = append(memOff, offset)
+			offset += len(vs.vec.arr) * 8
+		}
+		c = &wasmMemNthCached{
+			wp:         wp,
+			vecSlotIdx: vecIdx,
+			memOffsets: memOff,
+			lastVecPtr: make([]uintptr, len(vecIdx)),
+			paramsBuf:  make([]uint64, prog.numSlots),
+		}
+		wasmMemNthCache.Store(key, c)
 	}
 
-	// Identify vector slots and copy data to memory
-	vecSlots := findVecSlots(prog, slots)
-	memOffsets := make(map[int]int)
-	offset := 0
-	for _, vs := range vecSlots {
-		memOffsets[vs.slot] = offset
-		offset += len(vs.vec.arr) * 8 // 8 bytes per f64
-	}
-
-	// Write vector data to WASM memory
-	mem := wp.mod.ExportedMemory("memory")
+	// Write vector data to memory — skip if same vector pointer
+	mem := c.wp.mod.ExportedMemory("memory")
 	if mem == nil {
 		return nil
 	}
-	buf := make([]byte, 8)
-	for _, vs := range vecSlots {
-		base := memOffsets[vs.slot]
-		for i, obj := range vs.vec.arr {
-			var fv float64
-			switch v := obj.(type) {
-			case Double:
-				fv = v.D
-			case Int:
-				fv = float64(v.I)
-			default:
-				return nil
+	for vi, slotIdx := range c.vecSlotIdx {
+		vec := slots[slotIdx].(*ArrayVector)
+		vecPtr := reflect.ValueOf(vec).Pointer()
+		if vecPtr != c.lastVecPtr[vi] {
+			base := c.memOffsets[vi]
+			for i, obj := range vec.arr {
+				var fv float64
+				switch v := obj.(type) {
+				case Double:
+					fv = v.D
+				case Int:
+					fv = float64(v.I)
+				default:
+					return nil
+				}
+				binary.LittleEndian.PutUint64(c.buf8[:], math.Float64bits(fv))
+				mem.Write(uint32(base+i*8), c.buf8[:])
 			}
-			binary.LittleEndian.PutUint64(buf, math.Float64bits(fv))
-			mem.Write(uint32(base+i*8), buf)
+			c.lastVecPtr[vi] = vecPtr
 		}
 	}
 
-	// Build WASM params
-	params := make([]uint64, prog.numSlots)
+	// Build params — reuse buffer
 	for i, s := range slots {
 		switch v := s.(type) {
 		case Int:
-			params[i] = math.Float64bits(float64(v.I))
+			c.paramsBuf[i] = math.Float64bits(float64(v.I))
 		case Double:
-			params[i] = math.Float64bits(v.D)
+			c.paramsBuf[i] = math.Float64bits(v.D)
 		default:
-			// For vector slots, pass the memory byte offset as f64
-			if off, ok := memOffsets[i]; ok {
-				params[i] = math.Float64bits(float64(off))
-			} else {
-				params[i] = 0
+			// Vector slot: pass memory byte offset
+			for vi, si := range c.vecSlotIdx {
+				if si == i {
+					c.paramsBuf[i] = math.Float64bits(float64(c.memOffsets[vi]))
+					break
+				}
 			}
 		}
 	}
 
 	ctx := context.Background()
-	results, err := wp.execFn.Call(ctx, params...)
+	results, err := c.wp.execFn.Call(ctx, c.paramsBuf...)
 	if err != nil {
 		return nil
 	}
