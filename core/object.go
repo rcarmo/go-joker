@@ -175,7 +175,9 @@ type (
 		isMacro       bool
 		fnExpr        *FnExpr
 		env           *LocalEnv
-		tailRewritten bool // tail-self-calls rewritten to recur
+		tailRewritten bool       // tail-self-calls rewritten to recur
+		irProg        *IRProgram // cached IR compilation (nil = not attempted, irCompileFailed = failed)
+		irProgOnce    uint32     // atomic: 0=not tried, 1=done
 	}
 	ExInfo struct {
 		ArrayMap

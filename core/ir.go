@@ -84,15 +84,18 @@ func irGetCached(loop *LoopExpr) *IRProgram {
 // ---------- Program ----------
 
 type IRProgram struct {
-	code         []byte
-	constants    []Object
-	numSlots     int
-	captureKeys  []bindingKey
-	hasSelf      bool
-	escapeInfo   *EscapeInfo
-	analysis     *IRAnalysis
-	typedFailed  bool
-	memNthFailed bool
+	code          []byte
+	constants     []Object
+	numSlots      int
+	captureKeys   []bindingKey
+	hasSelf       bool
+	escapeInfo    *EscapeInfo
+	analysis      *IRAnalysis
+	typedFailed   bool
+	memNthFailed  bool
+	nativeHelper  nativeF64Fn
+	nativeChecked bool
+	floatConsts   []float64
 }
 
 // ---------- Fn compilation ----------
@@ -170,6 +173,9 @@ func irCompileFn(fn *Fn) *IRProgram {
 		numSlots:  c.numSlots,
 		hasSelf:   c.hasSelf,
 	}
+	// Eagerly compile native f64 helper if eligible
+	prog.nativeHelper = irCompileNativeHelper(prog)
+	prog.nativeChecked = true
 	irFnCache.Store(&arity, prog)
 	return prog
 }

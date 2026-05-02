@@ -674,6 +674,26 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			fnObj := initSlots[slotIdx]
+			// Fast path: native f64 closure (zero boxing)
+			if fn, ok := fnObj.(*Fn); ok {
+				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
+					var f64buf [4]float64
+					f64args := f64buf[:nargs]
+					for i := nargs - 1; i >= 0; i-- {
+						v := stack[len(stack)-1]
+						stack = stack[:len(stack)-1]
+						if v.tag == irValDouble {
+							f64args[i] = v.f
+						} else if v.tag == irValInt {
+							f64args[i] = float64(v.i)
+						}
+					}
+					r := fnProg.nativeHelper(f64args)
+					stack = append(stack, irValue{tag: irValDouble, f: r})
+					continue
+				}
+			}
+			// Slow path: box args and dispatch through WASM/IR/tree-walker
 			var argsBuf [4]Object
 			var args []Object
 			if nargs <= len(argsBuf) {
