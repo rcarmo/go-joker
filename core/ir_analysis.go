@@ -82,7 +82,6 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 			a.HasMapOps = true
 		case irNth:
 			a.UsesCollection = true
-			a.UsesString = true
 			a.HasGenericNth = true
 		case irCount:
 			// Count alone is type-polymorphic; typed-string eligibility comes from
