@@ -22,64 +22,12 @@ func irGetFnProg(fn *Fn) *IRProgram {
 				if loop, ok := arity.body[0].(*LoopExpr); ok {
 					loopProg := irCompile(loop)
 					if loopProg != nil && loopProg.nativeHelper != nil {
-						// Build a wrapper that maps fn args to loop init slots.
-						// The loop has: [loop bindings..., captures...]
-						// Captures reference the fn's parameter frame.
-						le := (*LetExpr)(loop)
-						nLoopBinds := len(le.names)
-						nSlots := loopProg.numSlots
-						capKeys := loopProg.captureKeys
-						// Pre-compute loop init values (must be literals: 0, 0.0, etc.)
-						initVals := make([]float64, nLoopBinds)
-						canWrap := true
-						for i, v := range le.values {
-							switch lit := v.(type) {
-							case *LiteralExpr:
-								switch lv := lit.obj.(type) {
-								case Int:
-									initVals[i] = float64(lv.I)
-								case Double:
-									initVals[i] = lv.D
-								default:
-									canWrap = false
-								}
-							default:
-								canWrap = false
-							}
-						}
-						if canWrap {
-							// Build capture-to-fnarg mapping
-							fnFrame := guessLoopFrame(arity.body)
-							capArgIdx := make([]int, len(capKeys))
-							for ci, ck := range capKeys {
-								if ck.frame == fnFrame {
-									capArgIdx[ci] = ck.index
-								} else {
-									canWrap = false
-									break
-								}
-							}
-							if canWrap {
-								loopNative := loopProg.nativeHelper
-								wrapper := func(fnArgs []float64) float64 {
-									var buf [16]float64
-									var loopArgs []float64
-									if nSlots <= len(buf) {
-										loopArgs = buf[:nSlots]
-									} else {
-										loopArgs = make([]float64, nSlots)
-									}
-									copy(loopArgs[:nLoopBinds], initVals)
-									for ci, argIdx := range capArgIdx {
-										loopArgs[nLoopBinds+ci] = fnArgs[argIdx]
-									}
-									return loopNative(loopArgs)
-								}
-								prog = &IRProgram{
-									numSlots:      len(arity.args),
-									nativeHelper:  wrapper,
-									nativeChecked: true,
-								}
+						wrapper := buildNativeLoopWrapper(fn, arity, loop, loopProg)
+						if wrapper != nil {
+							prog = &IRProgram{
+								numSlots:      len(arity.args),
+								nativeHelper:  wrapper,
+								nativeChecked: true,
 							}
 						}
 					}
@@ -94,4 +42,112 @@ func irGetFnProg(fn *Fn) *IRProgram {
 	}
 	atomic.StoreUint32(&fn.irProgOnce, 1)
 	return prog
+}
+
+// buildNativeLoopWrapper builds a native f64 wrapper for a fn whose body
+// is a single loop. Resolves captures from both fn params (dynamic) and
+// outer scope (constant, resolved from fn.env at wrapper creation time).
+func buildNativeLoopWrapper(fn *Fn, arity FnArityExpr, loop *LoopExpr, loopProg *IRProgram) nativeF64Fn {
+	le := (*LetExpr)(loop)
+	nLoopBinds := len(le.names)
+	nSlots := loopProg.numSlots
+	capKeys := loopProg.captureKeys
+
+	// Pre-compute loop init values (must be numeric literals)
+	initVals := make([]float64, nLoopBinds)
+	for i, v := range le.values {
+		lit, ok := v.(*LiteralExpr)
+		if !ok {
+			return nil
+		}
+		switch lv := lit.obj.(type) {
+		case Int:
+			initVals[i] = float64(lv.I)
+		case Double:
+			initVals[i] = lv.D
+		default:
+			return nil
+		}
+	}
+
+	// Identify fn param frame: the frame that has indices 0..len(args)-1
+	// used as captures. Multiple captures from same frame with valid param indices.
+	fnParamFrame := -1
+	for _, ck := range capKeys {
+		if ck.index < len(arity.args) {
+			if fnParamFrame < 0 {
+				fnParamFrame = ck.frame
+			} else if fnParamFrame != ck.frame {
+				// Conflicting frames — can't determine param frame
+				break
+			}
+		}
+	}
+	if fnParamFrame < 0 {
+		return nil
+	}
+
+	// Classify captures
+	type capInfo struct {
+		isDynamic bool
+		argIdx    int
+		constVal  float64
+	}
+	caps := make([]capInfo, len(capKeys))
+	for ci, ck := range capKeys {
+		if ck.frame == fnParamFrame && ck.index < len(arity.args) {
+			caps[ci] = capInfo{isDynamic: true, argIdx: ck.index}
+		} else if ck.frame == fnParamFrame {
+			// Same frame as params but index >= nparams: let binding inside fn body.
+			// The loop native helper will compute it; use 0 as placeholder.
+			caps[ci] = capInfo{constVal: 0}
+		} else {
+			// Try to resolve from fn's env chain by walking parents
+			resolved := false
+			e := fn.env
+			for e != nil {
+				if ck.index < len(e.bindings) {
+					obj := e.bindings[ck.index]
+					switch v := obj.(type) {
+					case Int:
+						caps[ci] = capInfo{constVal: float64(v.I)}
+						resolved = true
+					case Double:
+						caps[ci] = capInfo{constVal: v.D}
+						resolved = true
+					case *Fn:
+						caps[ci] = capInfo{constVal: 0}
+						resolved = true
+					}
+					if resolved {
+						break
+					}
+				}
+				e = e.parent
+			}
+			if !resolved {
+				return nil
+			}
+		}
+	}
+
+	loopNative := loopProg.nativeHelper
+	return func(fnArgs []float64) float64 {
+		var buf [16]float64
+		var loopArgs []float64
+		if nSlots <= len(buf) {
+			loopArgs = buf[:nSlots]
+		} else {
+			loopArgs = make([]float64, nSlots)
+		}
+		copy(loopArgs[:nLoopBinds], initVals)
+		for ci, cap := range caps {
+			if cap.isDynamic {
+				loopArgs[nLoopBinds+ci] = fnArgs[cap.argIdx]
+			} else {
+				loopArgs[nLoopBinds+ci] = cap.constVal
+			}
+		}
+		return loopNative(loopArgs)
+	}
 }

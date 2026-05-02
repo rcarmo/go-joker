@@ -1763,7 +1763,7 @@ loop:
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			fnObj := slots[slotIdx]
-			// Fast path: native f64 closure
+			// Fast path: native f64 closure (fn-level or loop-level)
 			if fn, ok := fnObj.(*Fn); ok {
 				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
 					var f64buf [4]float64
