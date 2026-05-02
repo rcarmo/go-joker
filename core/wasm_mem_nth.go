@@ -255,14 +255,10 @@ func wasmMemNthCompileAndExec(prog *IRProgram, slots []Object) Object {
 	}
 
 	ctx := context.Background()
-	results, err := c.wp.execFn.Call(ctx, c.paramsBuf...)
-	if err != nil {
+	if err := c.wp.execFn.CallWithStack(ctx, c.paramsBuf); err != nil {
 		return nil
 	}
-	if len(results) == 0 {
-		return NIL
-	}
-	return Double{D: math.Float64frombits(results[0])}
+	return Double{D: math.Float64frombits(c.paramsBuf[0])}
 }
 
 type vecSlotInfo struct {

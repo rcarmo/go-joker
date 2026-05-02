@@ -119,37 +119,38 @@ func wasmExec(wp *WasmProgram, slots []Object) Object {
 		}
 	}
 
-	params := make([]uint64, len(slots))
+	var stackBuf [16]uint64
+	var stack []uint64
+	if len(slots) <= len(stackBuf) {
+		stack = stackBuf[:len(slots)]
+	} else {
+		stack = make([]uint64, len(slots))
+	}
 	for i, s := range slots {
 		switch v := s.(type) {
 		case Int:
 			if wp.useFloat {
-				params[i] = math.Float64bits(float64(v.I))
+				stack[i] = math.Float64bits(float64(v.I))
 			} else {
-				params[i] = uint64(v.I)
+				stack[i] = uint64(v.I)
 			}
 		case Double:
 			if wp.useFloat {
-				params[i] = math.Float64bits(v.D)
+				stack[i] = math.Float64bits(v.D)
 			} else {
 				return nil
 			}
 		default:
-			// Non-numeric object — store as handle
-			params[i] = table.store(s)
+			stack[i] = table.store(s)
 		}
 	}
 
 	ctx := withObjectTable(context.Background(), table)
-	results, err := wp.execFn.Call(ctx, params...)
-	if err != nil {
+	if err := wp.execFn.CallWithStack(ctx, stack); err != nil {
 		return nil
 	}
-	if len(results) == 0 {
-		return NIL
-	}
 
-	r := results[0]
+	r := stack[0]
 	if wp.useFloat {
 		return Double{D: math.Float64frombits(r)}
 	}
