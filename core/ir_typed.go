@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math"
 	"os"
 	"strconv"
 	"unicode/utf8"
@@ -68,8 +69,12 @@ func irTypedMapForce() bool {
 }
 
 func irTypedEligible(a IRAnalysis) bool {
-	if a.NumOps == 0 || a.UsesTransient || a.HasCallSlot || a.HasSelfCall {
+	if a.NumOps == 0 || a.UsesTransient || a.HasSelfCall {
 		return false
+	}
+	// Call-slot loops: allow if numeric-only (no strings/collections)
+	if a.HasCallSlot {
+		return !a.UsesString && !a.UsesCollection && !a.HasMapOps
 	}
 	if a.UsesCollection && (a.HasMapOps || !a.HasGenericNth) {
 		if irTypedMapEnabled() && a.HasMapOps && a.UsesString {
@@ -620,6 +625,54 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			} else {
 				return nil
 			}
+		case irCallSlot:
+			slotIdx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			nargs := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			fnObj := initSlots[slotIdx]
+			var argsBuf [4]Object
+			var args []Object
+			if nargs <= len(argsBuf) {
+				args = argsBuf[:nargs]
+			} else {
+				args = make([]Object, nargs)
+			}
+			for i := nargs - 1; i >= 0; i-- {
+				args[i] = stack[len(stack)-1].object()
+				stack = stack[:len(stack)-1]
+			}
+			var result Object
+			if fn, ok := fnObj.(*Fn); ok {
+				if wp := wasmGetFn(fn); wp != nil {
+					result = wasmExec(wp, args)
+				}
+				if result == nil {
+					if fnProg := irCompileFn(fn); fnProg != nil {
+						result = irExec(fnProg, args)
+					}
+				}
+				if result == nil {
+					result = fn.Call(args)
+				}
+			} else if callable, ok := fnObj.(Callable); ok {
+				result = callable.Call(args)
+			} else {
+				return nil
+			}
+			stack = append(stack, objectToIRValue(result))
+
+		case irSqrt:
+			a := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if a.tag == irValDouble {
+				stack = append(stack, irValue{tag: irValDouble, f: math.Sqrt(a.f)})
+			} else if a.tag == irValInt {
+				stack = append(stack, irValue{tag: irValDouble, f: math.Sqrt(float64(a.i))})
+			} else {
+				return nil
+			}
+
 		default:
 			return nil
 		}
