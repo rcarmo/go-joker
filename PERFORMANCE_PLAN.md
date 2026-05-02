@@ -175,3 +175,28 @@ For every optimization:
 - Add regression tests for compiler/runtime correctness.
 - Update `benchmarks/benchmark-history.json` and regenerate SVGs when benchmark numbers change materially.
 - Keep CLBG-style results documented as pipeline stress tests, not broad real-world claims.
+
+## Native f64 helper closures (2026-05-02)
+
+The biggest single optimization breakthrough: compiling pure arithmetic helper
+functions to Go `func([]float64) float64` closures that execute with zero Object
+boxing and zero WASM boundary overhead.
+
+Key results:
+- Spectral-norm: **70ms → 35ms** (2× faster), allocs **849K → 149K** (5.7× reduction)
+- Spectral-norm vs Goja: **1.08× → 0.65×** (now comfortably beats)
+- Spectral-norm vs Python: **2.88× → 1.74×** (within striking distance)
+
+Implementation:
+1. `irCompileNativeHelper` compiles IR programs with pure numeric opcodes to
+   a lean float64 stack machine closure (ir_native_helper.go)
+2. `irCompileFn` eagerly compiles the native helper at fn-compilation time
+3. `irGetFnProg` caches the *IRProgram on the *Fn with an atomic flag,
+   eliminating sync.Map lookups (ir_fn_cache.go)
+4. Both typed IR and boxed IR call-slot dispatchers check `fnProg.nativeHelper`
+   before the WASM/IR/tree-walker fallback chain
+5. For fns whose body is a single LoopExpr with captures from the fn's param
+   frame, a wrapper closure maps fn args to loop init slots
+
+Also: `CallWithStack` replaces `Call()` in wasmExec, eliminating per-call
+allocation for all WASM paths.
