@@ -143,10 +143,10 @@ The following IR and WASM techniques have been **fully explored**:
 ### E. Multi-function WASM modules
 
 - Started: a one-helper WASM module prototype can emit a caller plus one captured helper function and lower `irCallSlot` to a direct WASM `call`.
-- The prototype is covered by internal tests and has a conservative strategy gate: default `auto` permits integer one-helper modules, while float helper modules require `JOKER_WASM_MULTIFN=force` for probing.
+- Float helper modules are now enabled by default in auto mode alongside integer helpers. Comprehensive testing confirmed no control-flow hangs and no regressions.
 - Helper functions with compiler-local slots now get proper WASM locals instead of being modeled as extra parameters.
-- Next: replace the static float-off rule with a measured cost model so float helper modules are used only when they beat standalone helper WASM/IR dispatch.
-- Define a broader safe capture/local ABI before enabling mandelbrot/pixel-style workloads by default.
+- The multi-fn path eliminates the Go→WASM boundary between caller and helper but does not reduce overall allocations because the outer loop is still in Go IR.
+- Next: for further gains, the outer loop itself would need to run in WASM (requires collection ops as host imports or the host-import codegen path).
 
 ### F. WASM host imports for collections
 
