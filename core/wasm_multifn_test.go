@@ -5,6 +5,9 @@ import (
 )
 
 func TestWasmOneHelperModule(t *testing.T) {
+	// Use a helper with a string op so auto-inlining won't absorb it
+	// (auto inlines text helpers but not ones with both text and non-text mixed patterns)
+	t.Setenv("JOKER_IR_INLINE", "off")
 	expr := compileTestExpr(t, `(let [f (fn [x] (+ (* x x) 1))]
   (loop [i 0 acc 0]
     (if (= i 5)

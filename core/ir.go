@@ -181,18 +181,19 @@ type bindingKey struct {
 }
 
 type irCompiler struct {
-	code         []byte
-	constants    []Object
-	bindingMap   map[bindingKey]int
-	captureKeys  []bindingKey
-	numSlots     int
-	loopFrame    int
-	depth        int
-	hasSelf      bool
-	selfSlot     int
-	selfNArgs    int
-	recurTargets []recurTarget // stack of recur targets for nested loops
-	rejectReason string
+	code             []byte
+	constants        []Object
+	bindingMap       map[bindingKey]int
+	captureKeys      []bindingKey
+	numSlots         int
+	loopFrame        int
+	depth            int
+	hasSelf          bool
+	selfSlot         int
+	selfNArgs        int
+	recurTargets     []recurTarget
+	rejectReason     string
+	hasCollectionOps bool
 }
 
 type recurTarget struct {
@@ -210,6 +211,14 @@ func irCompileExplain(loop *LoopExpr) (*IRProgram, string) {
 	c := &irCompiler{
 		bindingMap: make(map[bindingKey]int),
 		loopFrame:  -1,
+	}
+	// Pre-scan loop body for collection ops to gate arithmetic helper inlining
+	le := (*LetExpr)(loop)
+	for _, b := range le.body {
+		if exprHasCollectionOp(b) {
+			c.hasCollectionOps = true
+			break
+		}
 	}
 	c.numSlots = len(loop.names)
 
@@ -774,6 +783,43 @@ func exprHasCollectionOp(expr Expr) bool {
 	return false
 }
 
+func exprIsPureArithmetic(expr Expr) bool {
+	switch e := expr.(type) {
+	case *LiteralExpr:
+		switch e.obj.(type) {
+		case Int, Double:
+			return true
+		default:
+			return false
+		}
+	case *BindingExpr:
+		return true
+	case *IfExpr:
+		return exprIsPureArithmetic(e.cond) && exprIsPureArithmetic(e.positive) && exprIsPureArithmetic(e.negative)
+	case *CallExpr:
+		if vref, ok := e.callable.(*VarRefExpr); ok {
+			switch coreVarToProcName(vref.vr) {
+			case "procAdd", "procSubtract", "procMultiply", "procDivide",
+				"procInc", "procDec", "procRem", "procQuot",
+				"procLt", "procGt", "procLte", "procGte", "procEq",
+				"procAbs", "procMax", "procMin":
+			default:
+				return false
+			}
+		} else {
+			return false
+		}
+		for _, a := range e.args {
+			if !exprIsPureArithmetic(a) {
+				return false
+			}
+		}
+		return true
+	default:
+		return false
+	}
+}
+
 func exprIsStraightLine(expr Expr) bool {
 	switch e := expr.(type) {
 	case *LoopExpr, *RecurExpr:
@@ -851,9 +897,19 @@ func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool
 				inlineOK = true
 				break
 			}
-			if exprHasCollectionOp(b) && exprIsStraightLine(b) && exprCount(b) <= 16 {
-				inlineOK = true
-				break
+			if exprIsStraightLine(b) {
+				if exprHasCollectionOp(b) && exprCount(b) <= 16 {
+					inlineOK = true
+					break
+				}
+				// Inline pure arithmetic helpers (≤32 exprs) only when the
+				// caller loop has no collection ops. If the caller uses nth/get/etc,
+				// the helper was likely running as native WASM on its own — inlining
+				// would pull it into slower boxed IR.
+				if exprIsPureArithmetic(b) && exprCount(b) <= 32 && !c.hasCollectionOps {
+					inlineOK = true
+					break
+				}
 			}
 		}
 		if !inlineOK {
@@ -1059,6 +1115,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		}
 		c.emit(irIsZero)
 	case "procGet":
+		c.hasCollectionOps = true
 		if len(expr.args) == 2 {
 			if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
 				return false
@@ -1073,6 +1130,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			return c.reject("%s expects 2 or 3 args, got %d", procName, len(expr.args))
 		}
 	case "procAssoc":
+		c.hasCollectionOps = true
 		if len(expr.args) != 3 {
 			return c.reject("%s expects 3 args, got %d", procName, len(expr.args))
 		}
@@ -1081,6 +1139,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		}
 		c.emit(irAssoc)
 	case "procNth":
+		c.hasCollectionOps = true
 		if len(expr.args) != 2 {
 			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
@@ -1097,6 +1156,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			c.emit(irNth)
 		}
 	case "procConj":
+		c.hasCollectionOps = true
 		if len(expr.args) != 2 {
 			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
 		}
@@ -1113,6 +1173,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 		}
 		c.emit(irSqrt)
 	case "procFirst":
+		c.hasCollectionOps = true
 		if len(expr.args) != 1 {
 			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
 		}
@@ -1135,6 +1196,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			return c.reject("%s expects 1 or 2 args, got %d", procName, len(expr.args))
 		}
 	case "procCount":
+		c.hasCollectionOps = true
 		if len(expr.args) != 1 {
 			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
 		}
