@@ -72,15 +72,19 @@ func irTypedEligible(a IRAnalysis) bool {
 	if a.NumOps == 0 || a.UsesTransient || a.HasSelfCall {
 		return false
 	}
-	// Call-slot loops: allow if numeric-only (no strings/collections)
+	// Call-slot loops: allow if numeric-only or numeric+generic-nth
 	if a.HasCallSlot {
-		return !a.UsesString && !a.UsesCollection && !a.HasMapOps
+		return !a.UsesString && !a.HasMapOps && (!a.UsesCollection || a.HasGenericNth)
 	}
 	if a.UsesCollection && (a.HasMapOps || !a.HasGenericNth) {
 		if irTypedMapEnabled() && a.HasMapOps && a.UsesString {
 			return true
 		}
 		return irTypedVecEnabled() && a.UsesCollection && !a.UsesString && !a.HasMapOps
+	}
+	// Accept: float/int + generic-nth (e.g. inlined arithmetic helpers with vector nth)
+	if a.UsesCollection && a.HasGenericNth && !a.HasMapOps && !a.UsesString {
+		return true
 	}
 	return a.UsesString || a.SuggestedPath == "typed-ir-string-candidate" || a.SuggestedPath == "typed-ir-generic-string-nth-candidate"
 }
@@ -335,6 +339,23 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			stack = stack[:len(stack)-2]
 			if a.tag == irValInt && b.tag == irValInt {
 				stack = append(stack, irValue{tag: irValInt, i: a.i - b.i})
+			} else if a.tag == irValDouble || b.tag == irValDouble {
+				af, bf := 0.0, 0.0
+				if a.tag == irValDouble {
+					af = a.f
+				} else if a.tag == irValInt {
+					af = float64(a.i)
+				} else {
+					return nil
+				}
+				if b.tag == irValDouble {
+					bf = b.f
+				} else if b.tag == irValInt {
+					bf = float64(b.i)
+				} else {
+					return nil
+				}
+				stack = append(stack, irValue{tag: irValDouble, f: af - bf})
 			} else {
 				return nil
 			}
@@ -363,6 +384,28 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			} else {
 				return nil
 			}
+		case irDiv:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			af, bf := 0.0, 0.0
+			if a.tag == irValDouble {
+				af = a.f
+			} else if a.tag == irValInt {
+				af = float64(a.i)
+			} else {
+				return nil
+			}
+			if b.tag == irValDouble {
+				bf = b.f
+			} else if b.tag == irValInt {
+				bf = float64(b.i)
+			} else {
+				return nil
+			}
+			if bf == 0 {
+				return nil
+			}
+			stack = append(stack, irValue{tag: irValDouble, f: af / bf})
 		case irRem:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]

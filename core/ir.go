@@ -903,9 +903,9 @@ func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool
 					break
 				}
 				// Inline pure arithmetic helpers (≤32 exprs) only when the
-				// caller loop has no collection ops. If the caller uses nth/get/etc,
-				// the helper was likely running as native WASM on its own — inlining
-				// would pull it into slower boxed IR.
+				// caller loop has no collection ops. If the caller uses
+				// nth/get/etc, the helper likely runs faster as standalone
+				// WASM via irCallSlot.
 				if exprIsPureArithmetic(b) && exprCount(b) <= 32 && !c.hasCollectionOps {
 					inlineOK = true
 					break
