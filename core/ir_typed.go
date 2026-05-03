@@ -750,6 +750,21 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				return nil
 			}
 
+		case irConj:
+			val := stack[len(stack)-1]
+			coll := stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if coll.tag == irValObject {
+				if c, ok := coll.obj.(Conjable); ok {
+					result := c.Conj(val.object())
+					stack = append(stack, objectToIRValue(result))
+				} else {
+					return nil
+				}
+			} else {
+				return nil
+			}
+
 		default:
 			return nil
 		}
