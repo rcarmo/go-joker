@@ -11,6 +11,9 @@ import "math"
 // nativeF64Fn is a compiled Go closure for a pure arithmetic helper.
 type nativeF64Fn func(args []float64) float64
 
+// nativeF64Fn2 is a 2-argument specialization that avoids slice allocation.
+type nativeF64Fn2 func(a, b float64) float64
+
 // irCompileNativeHelper attempts to compile an IR program (helper function)
 // to a native Go float64 closure.
 func irCompileNativeHelper(prog *IRProgram) nativeF64Fn {

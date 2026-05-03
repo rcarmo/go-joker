@@ -96,6 +96,7 @@ type IRProgram struct {
 	typedFailed     bool
 	memNthFailed    bool
 	nativeHelper    nativeF64Fn
+	nativeHelper2   nativeF64Fn2
 	nativeChecked   bool
 	floatConsts     []float64
 }

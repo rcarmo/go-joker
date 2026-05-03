@@ -691,18 +691,18 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			// Fast path: native f64 closure (zero boxing)
 			if fn, ok := fnObj.(*Fn); ok {
 				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
-					var f64buf [4]float64
-					f64args := f64buf[:nargs]
+					// Call native helper with stack-allocated args
+					f64buf := [4]float64{}
 					for i := nargs - 1; i >= 0; i-- {
 						v := stack[len(stack)-1]
 						stack = stack[:len(stack)-1]
 						if v.tag == irValDouble {
-							f64args[i] = v.f
+							f64buf[i] = v.f
 						} else if v.tag == irValInt {
-							f64args[i] = float64(v.i)
+							f64buf[i] = float64(v.i)
 						}
 					}
-					r := fnProg.nativeHelper(f64args)
+					r := fnProg.nativeHelper(noescape64(f64buf[:nargs]))
 					stack = append(stack, irValue{tag: irValDouble, f: r})
 					continue
 				}
