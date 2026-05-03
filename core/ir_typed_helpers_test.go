@@ -8,9 +8,9 @@ func TestIRValueToString(t *testing.T) {
 		w string
 	}{
 		{irValue{tag: irValInt, i: 42}, "42"},
-		{irValue{tag: irValChar, r: 'A'}, "A"},
-		{irValue{tag: irValString, s: "abc"}, "abc"},
-		{irValue{tag: irValBool, b: true}, "true"},
+		{irMakeChar('A'), "A"},
+		{irMakeString("abc", 3, true), "abc"},
+		{irMakeBool(true), "true"},
 		{irValue{tag: irValNil}, ""},
 	}
 	for _, c := range cases {

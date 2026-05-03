@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 	"unicode/utf8"
+	"unsafe"
 )
 
 // ir_typed.go — experimental typed IR executor (v2).
@@ -29,17 +30,15 @@ const (
 	irValNil
 )
 
+// irValue is the tagged value for the typed IR executor.
+// Layout: 32 bytes for the compact numeric path.
+// String/collection data is stored behind an unsafe.Pointer to avoid
+// bloating the struct for the common numeric case.
 type irValue struct {
 	tag irValueTag
-	i   int // int value, or cached rune count for strings/builders
-	f   float64
-	b   bool // cached ASCII flag for strings/builders
-	r   rune
-	s   string
-	buf []byte
-	sm  map[string]int
-	iv  []int
-	obj Object
+	i   int            // int value, bool (0/1), rune, rune count for strings
+	f   float64        // double value, or ASCII flag (nonzero = ASCII) for strings
+	p   unsafe.Pointer // -> string | []byte | map[string]int | []int | Object
 }
 
 func irTypedEnabled() bool {
@@ -98,10 +97,10 @@ func stringToIRValue(s string) irValue {
 	for i := 0; i < len(s); i++ {
 		if s[i] >= utf8.RuneSelf {
 			ascii = false
-			return irValue{tag: irValString, s: s, i: utf8.RuneCountInString(s), b: false}
+			return irMakeString(s, utf8.RuneCountInString(s), false)
 		}
 	}
-	return irValue{tag: irValString, s: s, i: len(s), b: ascii}
+	return irMakeString(s, len(s), ascii)
 }
 
 func objectToIRValue(obj Object) irValue {
@@ -111,9 +110,9 @@ func objectToIRValue(obj Object) irValue {
 	case Double:
 		return irValue{tag: irValDouble, f: v.D}
 	case Boolean:
-		return irValue{tag: irValBool, b: v.B}
+		return irMakeBool(v.B)
 	case Char:
-		return irValue{tag: irValChar, r: v.Ch}
+		return irMakeChar(v.Ch)
 	case String:
 		return stringToIRValue(v.S)
 	case *ArrayVector:
@@ -122,26 +121,26 @@ func objectToIRValue(obj Object) irValue {
 			for i, obj := range v.arr {
 				x, ok := obj.(Int)
 				if !ok {
-					return irValue{tag: irValObject, obj: obj}
+					return irMakeObject(obj)
 				}
 				iv[i] = x.I
 			}
-			return irValue{tag: irValIntVector, iv: iv}
+			return irMakeIntVector(iv)
 		}
 	case *ArrayMap:
 		if v.Count() == 0 {
-			return irValue{tag: irValStringIntMap, sm: make(map[string]int)}
+			return irMakeStringIntMap(make(map[string]int))
 		}
 	case *HashMap:
 		if v.Count() == 0 {
-			return irValue{tag: irValStringIntMap, sm: make(map[string]int)}
+			return irMakeStringIntMap(make(map[string]int))
 		}
 	case Nil:
 		return irValue{tag: irValNil}
 	default:
-		return irValue{tag: irValObject, obj: obj}
+		return irMakeObject(obj)
 	}
-	return irValue{tag: irValObject, obj: obj}
+	return irMakeObject(obj)
 }
 
 func (v irValue) object() Object {
@@ -151,39 +150,39 @@ func (v irValue) object() Object {
 	case irValDouble:
 		return Double{D: v.f}
 	case irValBool:
-		return Boolean{B: v.b}
+		return Boolean{B: v.boolean()}
 	case irValChar:
-		return Char{Ch: v.r}
+		return Char{Ch: v.char()}
 	case irValString:
-		return String{S: v.s}
+		return String{S: v.str()}
 	case irValStringBuilder:
-		return String{S: string(v.buf)}
+		return String{S: string(v.bytes())}
 	case irValStringIntMap:
 		res := EmptyArrayMap()
-		for k, v := range v.sm {
+		for k, v := range v.stringIntMap() {
 			res.Add(String{S: k}, Int{I: v})
 		}
 		return res
 	case irValIntVector:
-		arr := make([]Object, len(v.iv))
-		for i, x := range v.iv {
+		arr := make([]Object, len(v.intVec()))
+		for i, x := range v.intVec() {
 			arr[i] = Int{I: x}
 		}
 		return &ArrayVector{arr: arr}
 	case irValNil:
 		return NIL
 	default:
-		if v.obj == nil {
+		if v.obj() == nil {
 			return NIL
 		}
-		return v.obj
+		return v.obj()
 	}
 }
 
 func (v irValue) truthy() bool {
 	switch v.tag {
 	case irValBool:
-		return v.b
+		return v.boolean()
 	case irValNil:
 		return false
 	default:
@@ -194,11 +193,11 @@ func (v irValue) truthy() bool {
 func irValueToString(v irValue) string {
 	switch v.tag {
 	case irValString:
-		return v.s
+		return v.str()
 	case irValStringBuilder:
-		return string(v.buf)
+		return string(v.bytes())
 	case irValChar:
-		return charToStringFast(v.r)
+		return charToStringFast(v.char())
 	case irValNil:
 		return ""
 	case irValInt:
@@ -206,7 +205,7 @@ func irValueToString(v irValue) string {
 	case irValDouble:
 		return strconv.FormatFloat(v.f, 'g', -1, 64)
 	case irValBool:
-		if v.b {
+		if v.boolean() {
 			return "true"
 		}
 		return "false"
@@ -218,11 +217,11 @@ func irValueToString(v irValue) string {
 func irValueStringKey(v irValue) (string, bool) {
 	switch v.tag {
 	case irValString:
-		return v.s, true
+		return v.str(), true
 	case irValStringBuilder:
-		return string(v.buf), true
+		return string(v.bytes()), true
 	case irValChar:
-		return charToStringFast(v.r), true
+		return charToStringFast(v.char()), true
 	default:
 		return "", false
 	}
@@ -241,28 +240,28 @@ func irValueEq(a, b irValue) (irValue, bool) {
 	if a.tag == b.tag {
 		switch a.tag {
 		case irValInt:
-			return irValue{tag: irValBool, b: a.i == b.i}, true
+			return irMakeBool(a.i == b.i), true
 		case irValDouble:
-			return irValue{tag: irValBool, b: a.f == b.f}, true
+			return irMakeBool(a.f == b.f), true
 		case irValBool:
-			return irValue{tag: irValBool, b: a.b == b.b}, true
+			return irMakeBool(a.boolean() == b.boolean()), true
 		case irValChar:
-			return irValue{tag: irValBool, b: a.r == b.r}, true
+			return irMakeBool(a.char() == b.char()), true
 		case irValString:
-			return irValue{tag: irValBool, b: a.s == b.s}, true
+			return irMakeBool(a.str() == b.str()), true
 		case irValStringBuilder:
-			return irValue{tag: irValBool, b: string(a.buf) == string(b.buf)}, true
+			return irMakeBool(string(a.bytes()) == string(b.bytes())), true
 		case irValNil:
-			return irValue{tag: irValBool, b: true}, true
+			return irMakeBool(true), true
 		}
 	}
 	if a.tag == irValInt && b.tag == irValDouble {
-		return irValue{tag: irValBool, b: float64(a.i) == b.f}, true
+		return irMakeBool(float64(a.i) == b.f), true
 	}
 	if a.tag == irValDouble && b.tag == irValInt {
-		return irValue{tag: irValBool, b: a.f == float64(b.i)}, true
+		return irMakeBool(a.f == float64(b.i)), true
 	}
-	return irValue{tag: irValBool, b: a.object().Equals(b.object())}, true
+	return irMakeBool(a.object().Equals(b.object())), true
 }
 
 func irExecTyped(prog *IRProgram, initSlots []Object) Object {
@@ -280,9 +279,9 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 	for i := 0; i < len(initSlots) && i < len(slots); i++ {
 		v := objectToIRValue(initSlots[i])
 		if v.tag == irValString && i < len(analysis.StringAppendSlots) && (analysis.StringAppendSlots[i] || analysis.StringPrependSlots[i]) {
-			buf := make([]byte, len(v.s), len(v.s)+16)
-			copy(buf, v.s)
-			v = irValue{tag: irValStringBuilder, buf: buf, i: v.i, b: v.b}
+			buf := make([]byte, len(v.str()), len(v.str())+16)
+			copy(buf, v.str())
+			v = irMakeStringBuilder(buf, v.i, v.boolean())
 		}
 		slots[i] = v
 	}
@@ -439,13 +438,13 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			if a.tag == irValInt && b.tag == irValInt {
-				stack = append(stack, irValue{tag: irValBool, b: a.i < b.i})
+				stack = append(stack, irMakeBool(a.i < b.i))
 			} else if a.tag == irValDouble && b.tag == irValDouble {
-				stack = append(stack, irValue{tag: irValBool, b: a.f < b.f})
+				stack = append(stack, irMakeBool(a.f < b.f))
 			} else if a.tag == irValDouble && b.tag == irValInt {
-				stack = append(stack, irValue{tag: irValBool, b: a.f < float64(b.i)})
+				stack = append(stack, irMakeBool(a.f < float64(b.i)))
 			} else if a.tag == irValInt && b.tag == irValDouble {
-				stack = append(stack, irValue{tag: irValBool, b: float64(a.i) < b.f})
+				stack = append(stack, irMakeBool(float64(a.i) < b.f))
 			} else {
 				return nil
 			}
@@ -499,7 +498,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if !ok {
 				return nil
 			}
-			if v, ok := coll.sm[k]; ok {
+			if v, ok := coll.stringIntMap()[k]; ok {
 				stack = append(stack, irValue{tag: irValInt, i: v})
 			} else {
 				stack = append(stack, irValue{tag: irValNil})
@@ -516,7 +515,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if !ok {
 				return nil
 			}
-			if v, ok := coll.sm[k]; ok {
+			if v, ok := coll.stringIntMap()[k]; ok {
 				stack = append(stack, irValue{tag: irValInt, i: v})
 			} else {
 				stack = append(stack, def)
@@ -531,20 +530,22 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				if !ok {
 					return nil
 				}
-				if coll.sm == nil {
-					coll.sm = make(map[string]int)
+				if coll.stringIntMap() == nil {
+					coll.setStringIntMap(make(map[string]int))
 				}
-				coll.sm[k] = val.i
+				coll.stringIntMap()[k] = val.i
 				stack = append(stack, coll)
 			} else if coll.tag == irValIntVector && key.tag == irValInt && val.tag == irValInt {
-				if key.i < 0 || key.i > len(coll.iv) {
+				if key.i < 0 || key.i > len(coll.intVec()) {
 					return nil
 				}
-				if key.i == len(coll.iv) {
-					coll.iv = append(coll.iv, val.i)
+				iv := coll.intVec()
+				if key.i == len(iv) {
+					iv = append(iv, val.i)
 				} else {
-					coll.iv[key.i] = val.i
+					iv[key.i] = val.i
 				}
+				coll.setIntVec(iv)
 				stack = append(stack, coll)
 			} else {
 				return nil
@@ -557,17 +558,17 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				return nil
 			}
 			if coll.tag == irValString {
-				if coll.b {
-					if idx.i >= len(coll.s) {
+				if coll.boolean() {
+					if idx.i >= len(coll.str()) {
 						return nil
 					}
-					stack = append(stack, irValue{tag: irValChar, r: rune(coll.s[idx.i])})
+					stack = append(stack, irMakeChar(rune(coll.str()[idx.i])))
 				} else {
 					n := 0
 					found := false
-					for _, r := range coll.s {
+					for _, r := range coll.str() {
 						if n == idx.i {
-							stack = append(stack, irValue{tag: irValChar, r: r})
+							stack = append(stack, irMakeChar(r))
 							found = true
 							break
 						}
@@ -578,12 +579,12 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 					}
 				}
 			} else if coll.tag == irValIntVector {
-				if idx.i >= len(coll.iv) {
+				if idx.i >= len(coll.intVec()) {
 					return nil
 				}
-				stack = append(stack, irValue{tag: irValInt, i: coll.iv[idx.i]})
+				stack = append(stack, irValue{tag: irValInt, i: coll.intVec()[idx.i]})
 			} else if coll.tag == irValObject {
-				switch v := coll.obj.(type) {
+				switch v := coll.obj().(type) {
 				case *ArrayVector:
 					if idx.i >= len(v.arr) {
 						return nil
@@ -609,7 +610,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if idx.i < 0 || idx.i >= len(s) {
 				return nil
 			}
-			stack = append(stack, irValue{tag: irValChar, r: rune(s[idx.i])})
+			stack = append(stack, irMakeChar(rune(s[idx.i])))
 		case irStr1:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
@@ -623,40 +624,46 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			stack = stack[:len(stack)-2]
 			if a.tag == irValStringBuilder {
 				bs := irValueToString(b)
-				a.buf = append(a.buf, bs...)
-				if a.b {
+				abuf := append(a.bytes(), bs...)
+				ascii := a.isASCII()
+				if ascii {
 					for i := 0; i < len(bs); i++ {
 						if bs[i] >= utf8.RuneSelf {
-							a.b = false
+							ascii = false
 							break
 						}
 					}
 				}
-				if a.b {
-					a.i += len(bs)
+				rc := a.i
+				if ascii {
+					rc += len(bs)
 				} else {
-					a.i = irStringRuneCount(string(a.buf))
+					rc = irStringRuneCount(string(abuf))
 				}
-				stack = append(stack, a)
+				stack = append(stack, irMakeStringBuilder(abuf, rc, ascii))
 			} else if b.tag == irValStringBuilder {
 				prefix := irValueToString(a)
 				if prefix != "" {
-					b.buf = append(b.buf, make([]byte, len(prefix))...)
-					copy(b.buf[len(prefix):], b.buf[:len(b.buf)-len(prefix)])
-					copy(b.buf, prefix)
-					if b.b {
+					bbuf := b.bytes()
+					newBuf := make([]byte, len(prefix)+len(bbuf))
+					copy(newBuf, prefix)
+					copy(newBuf[len(prefix):], bbuf)
+					ascii := b.isASCII()
+					if ascii {
 						for i := 0; i < len(prefix); i++ {
 							if prefix[i] >= utf8.RuneSelf {
-								b.b = false
+								ascii = false
 								break
 							}
 						}
 					}
-					if b.b {
-						b.i += len(prefix)
+					rc := b.i
+					if ascii {
+						rc += len(prefix)
 					} else {
-						b.i = irStringRuneCount(string(b.buf))
+						rc = irStringRuneCount(string(newBuf))
 					}
+					b = irMakeStringBuilder(newBuf, rc, ascii)
 				}
 				stack = append(stack, b)
 			} else {
@@ -670,11 +677,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			} else if a.tag == irValStringBuilder {
 				stack = append(stack, irValue{tag: irValInt, i: a.i})
 			} else if a.tag == irValStringIntMap {
-				stack = append(stack, irValue{tag: irValInt, i: len(a.sm)})
+				stack = append(stack, irValue{tag: irValInt, i: len(a.stringIntMap())})
 			} else if a.tag == irValIntVector {
-				stack = append(stack, irValue{tag: irValInt, i: len(a.iv)})
+				stack = append(stack, irValue{tag: irValInt, i: len(a.intVec())})
 			} else if a.tag == irValObject {
-				if c, ok := a.obj.(Counted); ok {
+				if c, ok := a.obj().(Counted); ok {
 					stack = append(stack, irValue{tag: irValInt, i: c.Count()})
 				} else {
 					return nil
@@ -755,7 +762,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			coll := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			if coll.tag == irValObject {
-				if c, ok := coll.obj.(Conjable); ok {
+				if c, ok := coll.obj().(Conjable); ok {
 					result := c.Conj(val.object())
 					stack = append(stack, objectToIRValue(result))
 				} else {
