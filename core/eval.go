@@ -202,7 +202,10 @@ func Eval(expr Expr, env *LocalEnv) Object {
 							typedResult = nil
 						}
 					}()
-					typedResult = irExecTyped(prog, initSlots)
+					typedResult = irExecTypedNB(prog, initSlots)
+					if typedResult == nil {
+						typedResult = irExecTyped(prog, initSlots)
+					}
 				}()
 				if typedResult != nil {
 					return typedResult
@@ -854,7 +857,10 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 						typedResult = nil
 					}
 				}()
-				typedResult = irExecTyped(prog, initSlots)
+				typedResult = irExecTypedNB(prog, initSlots)
+				if typedResult == nil {
+					typedResult = irExecTyped(prog, initSlots)
+				}
 			}()
 			if typedResult != nil {
 				return typedResult
