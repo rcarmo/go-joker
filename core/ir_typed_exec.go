@@ -36,6 +36,9 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 	code := prog.code
 	pc := 0
 
+	// Frame stack for irCallSelf — avoids recursive irExecTyped calls
+	var typedFrameStack *irTypedFrameStack
+
 	for pc < len(code) {
 		op := code[pc]
 		pc++
@@ -225,9 +228,24 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			stack = stack[:0]
 		case irReturn:
 			if len(stack) == 0 {
+				if typedFrameStack != nil && typedFrameStack.depth > 0 {
+					var sl int
+					pc, sl = typedFrameStack.pop(slots)
+					stack = stack[:sl]
+					stack = append(stack, irValue{tag: irValNil})
+					continue
+				}
 				return NIL
 			}
-			return stack[len(stack)-1].object()
+			result := stack[len(stack)-1]
+			if typedFrameStack != nil && typedFrameStack.depth > 0 {
+				var sl int
+				pc, sl = typedFrameStack.pop(slots)
+				stack = stack[:sl]
+				stack = append(stack, result)
+				continue
+			}
+			return result.object()
 		case irGet:
 			key := stack[len(stack)-1]
 			coll := stack[len(stack)-2]
@@ -516,21 +534,40 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irCallSelf:
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			// Box args and dispatch through irExecTyped recursively
-			args := make([]Object, nargs)
-			for i := nargs - 1; i >= 0; i-- {
-				args[i] = stack[len(stack)-1].object()
-				stack = stack[:len(stack)-1]
+			if typedFrameStack == nil {
+				typedFrameStack = newIRTypedFrameStack(prog.numSlots)
 			}
-			result := irExecTyped(prog, args)
-			if result == nil {
-				// Fall back to irExec
-				result = irExec(prog, args)
+			if typedFrameStack.depth < 256 {
+				// Save current state and restart
+				typedFrameStack.push(pc, slots, len(stack)-nargs)
+				for i := nargs - 1; i >= 0; i-- {
+					slots[i] = stack[len(stack)-1]
+					stack = stack[:len(stack)-1]
+				}
+				for i := nargs; i < len(slots); i++ {
+					slots[i] = irValue{}
+				}
+				// Re-fill captures
+				for i, obj := range prog.captureSlots {
+					slots[prog.captureSlotIdxs[i]] = objectToIRValue(obj)
+				}
+				pc = 0
+			} else {
+				// Deep recursion: box args and fall back
+				args := make([]Object, nargs)
+				for i := nargs - 1; i >= 0; i-- {
+					args[i] = stack[len(stack)-1].object()
+					stack = stack[:len(stack)-1]
+				}
+				result := irExecTyped(prog, args)
+				if result == nil {
+					result = irExec(prog, args)
+				}
+				if result == nil {
+					return nil
+				}
+				stack = append(stack, objectToIRValue(result))
 			}
-			if result == nil {
-				return nil
-			}
-			stack = append(stack, objectToIRValue(result))
 
 		case irFirst:
 			a := stack[len(stack)-1]
