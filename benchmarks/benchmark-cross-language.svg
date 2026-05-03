@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1340" height="900" viewBox="0 0 1340 900"><style>:root{color-scheme:light dark;--bg:#f6f8fc;--panel:#fff;--border:#c7d3ea;--text:#172033;--muted:#64748b;--head:#e8edf5;--grid:#d8e1f2}@media(prefers-color-scheme:dark){:root{--bg:#0b1020;--panel:#11182b;--border:#25324f;--text:#e3ecff;--muted:#8da0c4;--head:#182240;--grid:#25324f}}svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.head{fill:var(--head)}.text{fill:var(--text);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.muted{fill:var(--muted);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.title{font-size:22px;font-weight:750}.sub{font-size:12px}.ch{font-size:12px;font-weight:750}.rh{font-size:11px;font-weight:650}.c{font-size:10px;font-weight:650}.small{font-size:10px}.white{fill:#fff;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:10px;font-weight:750}</style><rect width="1340" height="900" fill="var(--bg)"/><rect class="panel" x="20" y="20" width="1300" height="860" rx="16"/><text class="text title" x="44" y="56">Joker — 32-byte irValue + frame stack + fn closure IR</text><text class="muted sub" x="44" y="76">ms/op • best-of-3×3x on i7-12700</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1340" height="900" viewBox="0 0 1340 900"><style>:root{color-scheme:light dark;--bg:#f6f8fc;--panel:#fff;--border:#c7d3ea;--text:#172033;--muted:#64748b;--head:#e8edf5;--grid:#d8e1f2}@media(prefers-color-scheme:dark){:root{--bg:#0b1020;--panel:#11182b;--border:#25324f;--text:#e3ecff;--muted:#8da0c4;--head:#182240;--grid:#25324f}}svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.head{fill:var(--head)}.text{fill:var(--text);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.muted{fill:var(--muted);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.title{font-size:22px;font-weight:750}.sub{font-size:12px}.ch{font-size:12px;font-weight:750}.rh{font-size:11px;font-weight:650}.c{font-size:10px;font-weight:650}.small{font-size:10px}.white{fill:#fff;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:10px;font-weight:750}</style><rect width="1340" height="900" fill="var(--bg)"/><rect class="panel" x="20" y="20" width="1300" height="860" rx="16"/><text class="text title" x="44" y="56">Joker IR — 32-byte values + frame stack + fn closures + noescape</text><text class="muted sub" x="44" y="76">ms/op • best-of-3×3x on i7-12700</text>
 <rect x="44" y="96" width="180" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="56" y="116">Beat Goja</text><text class="text" style="font-size:20px;font-weight:800" x="56" y="138">11/13</text>
 <rect x="239" y="96" width="180" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="251" y="116">Beat Python</text><text class="text" style="font-size:20px;font-weight:800" x="251" y="138">5/13</text>
-<rect x="434" y="96" width="180" height="50" rx="10" fill="#20a464" opacity=".16" stroke="#20a464" stroke-opacity=".35"/><text class="muted small" x="446" y="116">spectral ⚡</text><text class="text" style="font-size:20px;font-weight:800" x="446" y="138">13.4ms</text>
-<rect x="629" y="96" width="180" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="641" y="116">binary-trees</text><text class="text" style="font-size:20px;font-weight:800" x="641" y="138">112.5ms</text>
-<rect x="824" y="96" width="180" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="836" y="116">mandelbrot</text><text class="text" style="font-size:20px;font-weight:800" x="836" y="138">21.2ms</text>
+<rect x="434" y="96" width="180" height="50" rx="10" fill="#20a464" opacity=".16" stroke="#20a464" stroke-opacity=".35"/><text class="muted small" x="446" y="116">spectral ⚡</text><text class="text" style="font-size:20px;font-weight:800" x="446" y="138">19.6ms</text>
+<rect x="629" y="96" width="180" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="641" y="116">binary-trees</text><text class="text" style="font-size:20px;font-weight:800" x="641" y="138">110ms</text>
+<rect x="824" y="96" width="180" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="836" y="116">mandelbrot</text><text class="text" style="font-size:20px;font-weight:800" x="836" y="138">30.2ms</text>
 <rect class="head" x="280" y="168" width="110" height="28" rx="5"/><text class="text ch" x="335" y="187" text-anchor="middle">Bun/JSC</text>
 <rect class="head" x="400" y="168" width="110" height="28" rx="5"/><text class="text ch" x="455" y="187" text-anchor="middle">Python</text>
 <rect class="head" x="520" y="168" width="110" height="28" rx="5"/><text class="text ch" x="575" y="187" text-anchor="middle">Goja</text>
@@ -15,15 +15,15 @@
 <rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.22</text>
 <rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">3.46</text>
 <rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">16.2</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.083</text>
-<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.01×</text>
+<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.075</text>
+<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.00×</text>
 <rect fill="#20a464" opacity="0.72" x="865" y="2" width="95" height="26" rx="4"/><text class="white" x="912" y="18" text-anchor="middle">0.02×</text>
 <text class="muted small" x="1040" y="18">✅ both</text></g>
 <g transform="translate(0,242)"><text class="text rh" x="44" y="17">recursive fib ⚡</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
 <rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.98</text>
 <rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">20.7</text>
 <rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">80.4</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.97</text>
+<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">1.1</text>
 <rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.01×</text>
 <rect fill="#20a464" opacity="0.72" x="865" y="2" width="95" height="26" rx="4"/><text class="white" x="912" y="18" text-anchor="middle">0.05×</text>
 <text class="muted small" x="1040" y="18">✅ both</text></g>
@@ -31,33 +31,33 @@
 <rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.38</text>
 <rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">7.31</text>
 <rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">18.8</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.24</text>
-<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.01×</text>
-<rect fill="#20a464" opacity="0.72" x="865" y="2" width="95" height="26" rx="4"/><text class="white" x="912" y="18" text-anchor="middle">0.03×</text>
+<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.29</text>
+<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.02×</text>
+<rect fill="#20a464" opacity="0.72" x="865" y="2" width="95" height="26" rx="4"/><text class="white" x="912" y="18" text-anchor="middle">0.04×</text>
 <text class="muted small" x="1040" y="18">✅ both</text></g>
 <g transform="translate(0,314)"><text class="text rh" x="44" y="17">fasta</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
 <rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.02</text>
 <rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.06</text>
 <rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.6</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.078</text>
+<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.077</text>
 <rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.13×</text>
-<rect fill="#f5a623" opacity="0.38" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">1.30×</text>
+<rect fill="#f5a623" opacity="0.38" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">1.28×</text>
 <text class="muted small" x="1040" y="18">✅ Goja</text></g>
-<g transform="translate(0,350)"><text class="text rh" x="44" y="17">spectral-norm ⚡</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">1.86</text>
-<rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">24.5</text>
-<rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">65.2</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">13.4</text>
-<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.21×</text>
-<rect fill="#2dbd72" opacity="0.52" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">0.55×</text>
-<text class="muted small" x="1040" y="18">✅ both</text></g>
-<g transform="translate(0,386)"><text class="text rh" x="44" y="17">pidigits ⚡</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<g transform="translate(0,350)"><text class="text rh" x="44" y="17">pidigits ⚡</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
 <rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.02</text>
 <rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.05</text>
 <rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.15</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.032</text>
-<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.21×</text>
-<rect fill="#2dbd72" opacity="0.52" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">0.64×</text>
+<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.03</text>
+<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.20×</text>
+<rect fill="#2dbd72" opacity="0.52" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">0.60×</text>
+<text class="muted small" x="1040" y="18">✅ both</text></g>
+<g transform="translate(0,386)"><text class="text rh" x="44" y="17">spectral-norm ⚡</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">1.86</text>
+<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">24.5</text>
+<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">65.2</text>
+<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">19.6</text>
+<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.30×</text>
+<rect fill="#2dbd72" opacity="0.52" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">0.80×</text>
 <text class="muted small" x="1040" y="18">✅ both</text></g>
 <g transform="translate(0,422)"><text class="text rh" x="44" y="17">k-nucleotide</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
 <rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.06</text>
@@ -65,54 +65,54 @@
 <rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.48</text>
 <rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.16</text>
 <rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.33×</text>
-<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">5.30×</text>
+<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">5.20×</text>
 <text class="muted small" x="1040" y="18">✅ Goja</text></g>
-<g transform="translate(0,458)"><text class="text rh" x="44" y="17">reverse-complement</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.02</text>
-<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.01</text>
-<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.13</text>
-<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.063</text>
-<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.48×</text>
-<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">6.30×</text>
+<g transform="translate(0,458)"><text class="text rh" x="44" y="17">binary-trees 🔥</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">5.68</text>
+<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">54.2</text>
+<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">172.3</text>
+<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">110</text>
+<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.64×</text>
+<rect fill="#e08a2e" opacity="0.34" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">2.03×</text>
 <text class="muted small" x="1040" y="18">✅ Goja</text></g>
 <g transform="translate(0,494)"><text class="text rh" x="44" y="17">mandelbrot 🔥</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
 <rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.25</text>
 <rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">4.76</text>
 <rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">39</text>
-<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">21.2</text>
-<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.54×</text>
-<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">4.45×</text>
+<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">30.2</text>
+<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.78×</text>
+<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">6.34×</text>
 <text class="muted small" x="1040" y="18">✅ Goja</text></g>
-<g transform="translate(0,530)"><text class="text rh" x="44" y="17">regex-redux 🟡</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<g transform="translate(0,530)"><text class="text rh" x="44" y="17">regex-redux</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
 <rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.06</text>
 <rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.09</text>
 <rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.14</text>
-<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.091</text>
-<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.65×</text>
-<rect fill="#f5a623" opacity="0.38" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">1.01×</text>
+<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.11</text>
+<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.79×</text>
+<rect fill="#f5a623" opacity="0.38" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">1.23×</text>
 <text class="muted small" x="1040" y="18">✅ Goja</text></g>
-<g transform="translate(0,566)"><text class="text rh" x="44" y="17">binary-trees 🔥</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">5.68</text>
-<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">54.2</text>
-<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">172.3</text>
-<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">112.5</text>
-<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.65×</text>
-<rect fill="#e08a2e" opacity="0.34" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">2.07×</text>
+<g transform="translate(0,566)"><text class="text rh" x="44" y="17">reverse-complement</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.02</text>
+<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.01</text>
+<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.13</text>
+<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.12</text>
+<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.95×</text>
+<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">12.40×</text>
 <text class="muted small" x="1040" y="18">✅ Goja</text></g>
 <g transform="translate(0,602)"><text class="text rh" x="44" y="17">fannkuch-redux</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
 <rect fill="#d94b4b" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.34</text>
 <rect fill="#d94b4b" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">4.94</text>
 <rect fill="#d94b4b" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">24</text>
-<rect fill="#d94b4b" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">115.8</text>
-<rect fill="#d94b4b" opacity="0.32" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">4.82×</text>
-<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">23.44×</text>
+<rect fill="#d94b4b" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">114.7</text>
+<rect fill="#d94b4b" opacity="0.32" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">4.78×</text>
+<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">23.22×</text>
 <text class="muted small" x="1040" y="18">❌ gap</text></g>
 <g transform="translate(0,638)"><text class="text rh" x="44" y="17">n-body</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
 <rect fill="#d94b4b" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.18</text>
 <rect fill="#d94b4b" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.66</text>
 <rect fill="#d94b4b" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">4.75</text>
-<rect fill="#d94b4b" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">27.4</text>
-<rect fill="#d94b4b" opacity="0.32" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">5.77×</text>
-<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">41.52×</text>
+<rect fill="#d94b4b" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">33.8</text>
+<rect fill="#d94b4b" opacity="0.32" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">7.12×</text>
+<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">51.21×</text>
 <text class="muted small" x="1040" y="18">❌ gap</text></g>
-<text class="muted sub" x="44" y="690">spectral-norm now 0.55× Python (2× faster). binary-trees 112ms (frame stack). 32-byte irValue everywhere.</text></svg>
+<text class="muted sub" x="44" y="690">spectral 0.80× Python. binary-trees 110ms (frame stack). 32-byte irValue. Reverted broken let frame detection.</text></svg>
