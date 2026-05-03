@@ -1,118 +1,177 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1340" height="900" viewBox="0 0 1340 900"><style>:root{color-scheme:light dark;--bg:#f6f8fc;--panel:#fff;--border:#c7d3ea;--text:#172033;--muted:#64748b;--head:#e8edf5;--grid:#d8e1f2}@media(prefers-color-scheme:dark){:root{--bg:#0b1020;--panel:#11182b;--border:#25324f;--text:#e3ecff;--muted:#8da0c4;--head:#182240;--grid:#25324f}}svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.head{fill:var(--head)}.text{fill:var(--text);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.muted{fill:var(--muted);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.title{font-size:22px;font-weight:750}.sub{font-size:12px}.ch{font-size:12px;font-weight:750}.rh{font-size:11px;font-weight:650}.c{font-size:10px;font-weight:650}.small{font-size:10px}.white{fill:#fff;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:10px;font-weight:750}</style><rect width="1340" height="900" fill="var(--bg)"/><rect class="panel" x="20" y="20" width="1300" height="860" rx="16"/><text class="text title" x="44" y="56">Joker IR — keyword tag + self-call eligibility + typed dispatch</text><text class="muted sub" x="44" y="76">ms/op • best-of-3×3x on i7-12700. Session: mandelbrot 159→15ms, btrees 527→110ms.</text>
-<rect x="44" y="96" width="180" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="56" y="116">Beat Goja</text><text class="text" style="font-size:20px;font-weight:800" x="56" y="138">11/13</text>
-<rect x="239" y="96" width="180" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="251" y="116">Beat Python</text><text class="text" style="font-size:20px;font-weight:800" x="251" y="138">5/13</text>
-<rect x="434" y="96" width="180" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="446" y="116">mandelbrot</text><text class="text" style="font-size:20px;font-weight:800" x="446" y="138">15.2ms</text>
-<rect x="629" y="96" width="180" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="641" y="116">binary-trees</text><text class="text" style="font-size:20px;font-weight:800" x="641" y="138">110ms</text>
-<rect x="824" y="96" width="180" height="50" rx="10" fill="#20a464" opacity=".16" stroke="#20a464" stroke-opacity=".35"/><text class="muted small" x="836" y="116">spectral</text><text class="text" style="font-size:20px;font-weight:800" x="836" y="138">19.8ms</text>
-<rect class="head" x="280" y="168" width="110" height="28" rx="5"/><text class="text ch" x="335" y="187" text-anchor="middle">Bun/JSC</text>
-<rect class="head" x="400" y="168" width="110" height="28" rx="5"/><text class="text ch" x="455" y="187" text-anchor="middle">Python</text>
-<rect class="head" x="520" y="168" width="110" height="28" rx="5"/><text class="text ch" x="575" y="187" text-anchor="middle">Goja</text>
-<rect class="head" x="640" y="168" width="110" height="28" rx="5"/><text class="text ch" x="695" y="187" text-anchor="middle">Joker</text>
-<rect class="head" x="760" y="168" width="95" height="28" rx="5"/><text class="text ch" x="807" y="187" text-anchor="middle">J/Goja</text>
-<rect class="head" x="865" y="168" width="95" height="28" rx="5"/><text class="text ch" x="912" y="187" text-anchor="middle">J/Python</text>
-<rect class="head" x="970" y="168" width="120" height="28" rx="5"/><text class="text ch" x="1030" y="187" text-anchor="middle">Status</text>
-<g transform="translate(0,206)"><text class="text rh" x="44" y="17">tail_recursive_sum</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.22</text>
-<rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">3.6</text>
-<rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">28</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.071</text>
-<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.00×</text>
-<rect fill="#20a464" opacity="0.72" x="865" y="2" width="95" height="26" rx="4"/><text class="white" x="912" y="18" text-anchor="middle">0.02×</text>
-<text class="muted small" x="1040" y="18">✅ both</text></g>
-<g transform="translate(0,242)"><text class="text rh" x="44" y="17">recursive_fib</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.98</text>
-<rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">21</text>
-<rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">67</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">1.19</text>
-<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.02×</text>
-<rect fill="#20a464" opacity="0.72" x="865" y="2" width="95" height="26" rx="4"/><text class="white" x="912" y="18" text-anchor="middle">0.06×</text>
-<text class="muted small" x="1040" y="18">✅ both</text></g>
-<g transform="translate(0,278)"><text class="text rh" x="44" y="17">arithmetic_loop</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.38</text>
-<rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">6.65</text>
-<rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">13.5</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.25</text>
-<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.02×</text>
-<rect fill="#20a464" opacity="0.72" x="865" y="2" width="95" height="26" rx="4"/><text class="white" x="912" y="18" text-anchor="middle">0.04×</text>
-<text class="muted small" x="1040" y="18">✅ both</text></g>
-<g transform="translate(0,314)"><text class="text rh" x="44" y="17">fasta</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.02</text>
-<rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.06</text>
-<rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.6</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.08</text>
-<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.13×</text>
-<rect fill="#f5a623" opacity="0.38" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">1.33×</text>
-<text class="muted small" x="1040" y="18">✅ Goja</text></g>
-<g transform="translate(0,350)"><text class="text rh" x="44" y="17">pidigits</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#20a464" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.02</text>
-<rect fill="#20a464" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.05</text>
-<rect fill="#20a464" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.15</text>
-<rect fill="#20a464" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.037</text>
-<rect fill="#20a464" opacity="0.72" x="760" y="2" width="95" height="26" rx="4"/><text class="white" x="807" y="18" text-anchor="middle">0.25×</text>
-<rect fill="#2dbd72" opacity="0.52" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">0.74×</text>
-<text class="muted small" x="1040" y="18">✅ both</text></g>
-<g transform="translate(0,386)"><text class="text rh" x="44" y="17">spectral_norm</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">1.86</text>
-<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">24.5</text>
-<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">65</text>
-<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">19.8</text>
-<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.30×</text>
-<rect fill="#2dbd72" opacity="0.52" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">0.81×</text>
-<text class="muted small" x="1040" y="18">✅ both</text></g>
-<g transform="translate(0,422)"><text class="text rh" x="44" y="17">mandelbrot</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.25</text>
-<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">4.76</text>
-<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">39</text>
-<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">15.2</text>
-<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.39×</text>
-<rect fill="#e08a2e" opacity="0.34" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">3.19×</text>
-<text class="muted small" x="1040" y="18">✅ Goja</text></g>
-<g transform="translate(0,458)"><text class="text rh" x="44" y="17">knucleotide</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.06</text>
-<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.03</text>
-<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.48</text>
-<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.21</text>
-<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.43×</text>
-<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">6.90×</text>
-<text class="muted small" x="1040" y="18">✅ Goja</text></g>
-<g transform="translate(0,494)"><text class="text rh" x="44" y="17">binary_trees</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">5.68</text>
-<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">54.2</text>
-<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">172</text>
-<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">110</text>
-<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.64×</text>
-<rect fill="#e08a2e" opacity="0.34" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">2.03×</text>
-<text class="muted small" x="1040" y="18">✅ Goja</text></g>
-<g transform="translate(0,530)"><text class="text rh" x="44" y="17">regex_redux</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.06</text>
-<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.09</text>
-<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.14</text>
-<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.098</text>
-<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.70×</text>
-<rect fill="#f5a623" opacity="0.38" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">1.09×</text>
-<text class="muted small" x="1040" y="18">✅ Goja</text></g>
-<g transform="translate(0,566)"><text class="text rh" x="44" y="17">reverse_complement</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#2dbd72" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.02</text>
-<rect fill="#2dbd72" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.01</text>
-<rect fill="#2dbd72" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">0.13</text>
-<rect fill="#2dbd72" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">0.1</text>
-<rect fill="#2dbd72" opacity="0.52" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">0.79×</text>
-<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">10.30×</text>
-<text class="muted small" x="1040" y="18">✅ Goja</text></g>
-<g transform="translate(0,602)"><text class="text rh" x="44" y="17">fannkuch</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#d94b4b" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.34</text>
-<rect fill="#d94b4b" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">4.94</text>
-<rect fill="#d94b4b" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">24</text>
-<rect fill="#d94b4b" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">136.5</text>
-<rect fill="#d94b4b" opacity="0.32" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">5.69×</text>
-<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">27.63×</text>
-<text class="muted small" x="1040" y="18">❌ gap</text></g>
-<g transform="translate(0,638)"><text class="text rh" x="44" y="17">nbody</text><line x1="44" y1="30" x2="1280" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
-<rect fill="#d94b4b" opacity=".08" x="280" y="2" width="110" height="26" rx="4"/><text class="text c" x="335" y="18" text-anchor="middle">0.18</text>
-<rect fill="#d94b4b" opacity=".08" x="400" y="2" width="110" height="26" rx="4"/><text class="text c" x="455" y="18" text-anchor="middle">0.66</text>
-<rect fill="#d94b4b" opacity=".08" x="520" y="2" width="110" height="26" rx="4"/><text class="text c" x="575" y="18" text-anchor="middle">4.75</text>
-<rect fill="#d94b4b" opacity=".08" x="640" y="2" width="110" height="26" rx="4"/><text class="text c" x="695" y="18" text-anchor="middle">43.5</text>
-<rect fill="#d94b4b" opacity="0.32" x="760" y="2" width="95" height="26" rx="4"/><text class="text c" x="807" y="18" text-anchor="middle">9.16×</text>
-<rect fill="#d94b4b" opacity="0.32" x="865" y="2" width="95" height="26" rx="4"/><text class="text c" x="912" y="18" text-anchor="middle">65.91×</text>
-<text class="muted small" x="1040" y="18">❌ gap</text></g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="920" viewBox="0 0 1500 920"><style>:root{color-scheme:light dark;--bg:#f6f8fc;--panel:#fff;--border:#c7d3ea;--text:#172033;--muted:#64748b;--head:#e8edf5;--grid:#d8e1f2}@media(prefers-color-scheme:dark){:root{--bg:#0b1020;--panel:#11182b;--border:#25324f;--text:#e3ecff;--muted:#8da0c4;--head:#182240;--grid:#25324f}}svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.head{fill:var(--head)}.text{fill:var(--text);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.muted{fill:var(--muted);font-family:Inter,ui-sans-serif,system-ui,sans-serif}.title{font-size:22px;font-weight:750}.sub{font-size:12px}.ch{font-size:11px;font-weight:750}.rh{font-size:11px;font-weight:650}.c{font-size:10px;font-weight:650}.small{font-size:10px}.white{fill:#fff;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:10px;font-weight:750}.spark{fill:var(--muted);font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:9px}</style>
+<rect width="1500" height="920" fill="var(--bg)"/><rect class="panel" x="20" y="20" width="1460" height="880" rx="16"/>
+<text class="text title" x="44" y="56">Joker IR Optimization — Final Comparison Matrix</text>
+<text class="muted sub" x="44" y="76">5×3x min values on i7-12700 · 5/13 beat Python · 11/13 beat Goja</text>
+<rect x="44" y="96" width="192" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="56" y="116">Beat Goja</text><text class="text" style="font-size:18px;font-weight:800" x="56" y="138">11/13</text>
+<rect x="249" y="96" width="192" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="261" y="116">Beat Python</text><text class="text" style="font-size:18px;font-weight:800" x="261" y="138">5/13</text>
+<rect x="454" y="96" width="192" height="50" rx="10" fill="#20a464" opacity=".16" stroke="#20a464" stroke-opacity=".35"/><text class="muted small" x="466" y="116">mandelbrot</text><text class="text" style="font-size:18px;font-weight:800" x="466" y="138">14.1ms ← 159</text>
+<rect x="659" y="96" width="192" height="50" rx="10" fill="#2dbd72" opacity=".16" stroke="#2dbd72" stroke-opacity=".35"/><text class="muted small" x="671" y="116">binary-trees</text><text class="text" style="font-size:18px;font-weight:800" x="671" y="138">115.3ms ← 528</text>
+<rect x="864" y="96" width="192" height="50" rx="10" fill="#20a464" opacity=".16" stroke="#20a464" stroke-opacity=".35"/><text class="muted small" x="876" y="116">spectral</text><text class="text" style="font-size:18px;font-weight:800" x="876" y="138">18ms ← 70</text>
+<rect class="head" x="44" y="168" width="110" height="28" rx="5"/><text class="text ch" x="99" y="187" text-anchor="middle"></text>
+<rect class="head" x="160" y="168" width="80" height="28" rx="5"/><text class="text ch" x="200" y="187" text-anchor="middle">Bun</text>
+<rect class="head" x="245" y="168" width="80" height="28" rx="5"/><text class="text ch" x="285" y="187" text-anchor="middle">Python</text>
+<rect class="head" x="330" y="168" width="80" height="28" rx="5"/><text class="text ch" x="370" y="187" text-anchor="middle">Goja</text>
+<rect class="head" x="415" y="168" width="80" height="28" rx="5"/><text class="text ch" x="455" y="187" text-anchor="middle">Joker</text>
+<rect class="head" x="500" y="168" width="75" height="28" rx="5"/><text class="text ch" x="537" y="187" text-anchor="middle">Start</text>
+<rect class="head" x="580" y="168" width="50" height="28" rx="5"/><text class="text ch" x="605" y="187" text-anchor="middle">Δ</text>
+<rect class="head" x="640" y="168" width="75" height="28" rx="5"/><text class="text ch" x="677" y="187" text-anchor="middle">J/Goja</text>
+<rect class="head" x="720" y="168" width="75" height="28" rx="5"/><text class="text ch" x="757" y="187" text-anchor="middle">J/Py</text>
+<rect class="head" x="800" y="168" width="85" height="28" rx="5"/><text class="text ch" x="842" y="187" text-anchor="middle">Status</text>
+<rect class="head" x="890" y="168" width="570" height="28" rx="5"/><text class="text ch" x="1175" y="187" text-anchor="middle">Execution path</text>
+<g transform="translate(0,206)"><text class="text rh" x="44" y="17">tail-rec sum</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.22</text>
+<text class="text c" x="285" y="18" text-anchor="middle">3.6</text>
+<text class="text c" x="370" y="18" text-anchor="middle">28</text>
+<text class="text c" x="455" y="18" text-anchor="middle">0.068</text>
+<text class="text c" x="540" y="18" text-anchor="middle">0.073</text>
+<text class="text c" style="fill:#64748b" x="605" y="18" text-anchor="middle">1.1×</text>
+<rect fill="#20a464" opacity="0.72" x="640" y="2" width="75" height="26" rx="4"/><text class="white" x="677" y="18" text-anchor="middle">0.00×</text>
+<rect fill="#20a464" opacity="0.72" x="720" y="2" width="75" height="26" rx="4"/><text class="white" x="757" y="18" text-anchor="middle">0.02×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ both</text>
+<text class="spark" x="895" y="18">Typed IR + TCO</text>
+</g>
+<g transform="translate(0,242)"><text class="text rh" x="44" y="17">recursive fib</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.98</text>
+<text class="text c" x="285" y="18" text-anchor="middle">21</text>
+<text class="text c" x="370" y="18" text-anchor="middle">67</text>
+<text class="text c" x="455" y="18" text-anchor="middle">1.17</text>
+<text class="text c" x="540" y="18" text-anchor="middle">1.15</text>
+<text class="text c" style="fill:#64748b" x="605" y="18" text-anchor="middle">1.0×</text>
+<rect fill="#20a464" opacity="0.72" x="640" y="2" width="75" height="26" rx="4"/><text class="white" x="677" y="18" text-anchor="middle">0.02×</text>
+<rect fill="#20a464" opacity="0.72" x="720" y="2" width="75" height="26" rx="4"/><text class="white" x="757" y="18" text-anchor="middle">0.06×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ both</text>
+<text class="spark" x="895" y="18">Typed frame stack</text>
+</g>
+<g transform="translate(0,278)"><text class="text rh" x="44" y="17">arithmetic loop</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.38</text>
+<text class="text c" x="285" y="18" text-anchor="middle">6.65</text>
+<text class="text c" x="370" y="18" text-anchor="middle">13.5</text>
+<text class="text c" x="455" y="18" text-anchor="middle">0.31</text>
+<text class="text c" x="540" y="18" text-anchor="middle">0.28</text>
+<text class="text c" style="fill:#64748b" x="605" y="18" text-anchor="middle">0.9×</text>
+<rect fill="#20a464" opacity="0.72" x="640" y="2" width="75" height="26" rx="4"/><text class="white" x="677" y="18" text-anchor="middle">0.02×</text>
+<rect fill="#20a464" opacity="0.72" x="720" y="2" width="75" height="26" rx="4"/><text class="white" x="757" y="18" text-anchor="middle">0.05×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ both</text>
+<text class="spark" x="895" y="18">Typed IR</text>
+</g>
+<g transform="translate(0,314)"><text class="text rh" x="44" y="17">fasta</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.02</text>
+<text class="text c" x="285" y="18" text-anchor="middle">0.06</text>
+<text class="text c" x="370" y="18" text-anchor="middle">0.6</text>
+<text class="text c" x="455" y="18" text-anchor="middle">0.086</text>
+<text class="text c" x="540" y="18" text-anchor="middle">0.22</text>
+<text class="text c" style="fill:#2dbd72" x="605" y="18" text-anchor="middle">2.6×</text>
+<rect fill="#20a464" opacity="0.72" x="640" y="2" width="75" height="26" rx="4"/><text class="white" x="677" y="18" text-anchor="middle">0.14×</text>
+<rect fill="#f5a623" opacity="0.38" x="720" y="2" width="75" height="26" rx="4"/><text class="text c" x="757" y="18" text-anchor="middle">1.43×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ Goja</text>
+<text class="spark" x="895" y="18">Typed IR (int)</text>
+</g>
+<g transform="translate(0,350)"><text class="text rh" x="44" y="17">pidigits</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.02</text>
+<text class="text c" x="285" y="18" text-anchor="middle">0.05</text>
+<text class="text c" x="370" y="18" text-anchor="middle">0.15</text>
+<text class="text c" x="455" y="18" text-anchor="middle">0.034</text>
+<text class="text c" x="540" y="18" text-anchor="middle">0.1</text>
+<text class="text c" style="fill:#2dbd72" x="605" y="18" text-anchor="middle">2.9×</text>
+<rect fill="#20a464" opacity="0.72" x="640" y="2" width="75" height="26" rx="4"/><text class="white" x="677" y="18" text-anchor="middle">0.23×</text>
+<rect fill="#2dbd72" opacity="0.52" x="720" y="2" width="75" height="26" rx="4"/><text class="text c" x="757" y="18" text-anchor="middle">0.68×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ both</text>
+<text class="spark" x="895" y="18">Typed IR</text>
+</g>
+<g transform="translate(0,386)"><text class="text rh" x="44" y="17">spectral-norm</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">1.86</text>
+<text class="text c" x="285" y="18" text-anchor="middle">24.5</text>
+<text class="text c" x="370" y="18" text-anchor="middle">65</text>
+<text class="text c" x="455" y="18" text-anchor="middle">18</text>
+<text class="text c" x="540" y="18" text-anchor="middle">33.4</text>
+<text class="text c" style="fill:#f5a623" x="605" y="18" text-anchor="middle">1.9×</text>
+<rect fill="#2dbd72" opacity="0.52" x="640" y="2" width="75" height="26" rx="4"/><text class="text c" x="677" y="18" text-anchor="middle">0.28×</text>
+<rect fill="#2dbd72" opacity="0.52" x="720" y="2" width="75" height="26" rx="4"/><text class="text c" x="757" y="18" text-anchor="middle">0.74×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ both</text>
+<text class="spark" x="895" y="18">Native f64 + typed</text>
+</g>
+<g transform="translate(0,422)"><text class="text rh" x="44" y="17">mandelbrot</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.25</text>
+<text class="text c" x="285" y="18" text-anchor="middle">4.76</text>
+<text class="text c" x="370" y="18" text-anchor="middle">39</text>
+<text class="text c" x="455" y="18" text-anchor="middle">14.1</text>
+<text class="text c" x="540" y="18" text-anchor="middle">158.7</text>
+<text class="text c" style="fill:#2dbd72" x="605" y="18" text-anchor="middle">11.3×</text>
+<rect fill="#2dbd72" opacity="0.52" x="640" y="2" width="75" height="26" rx="4"/><text class="text c" x="677" y="18" text-anchor="middle">0.36×</text>
+<rect fill="#e08a2e" opacity="0.34" x="720" y="2" width="75" height="26" rx="4"/><text class="text c" x="757" y="18" text-anchor="middle">2.96×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ Goja</text>
+<text class="spark" x="895" y="18">Typed IR + fn closure</text>
+</g>
+<g transform="translate(0,458)"><text class="text rh" x="44" y="17">reverse-comp</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.02</text>
+<text class="text c" x="285" y="18" text-anchor="middle">0.01</text>
+<text class="text c" x="370" y="18" text-anchor="middle">0.13</text>
+<text class="text c" x="455" y="18" text-anchor="middle">0.065</text>
+<text class="text c" x="540" y="18" text-anchor="middle">0.082</text>
+<text class="text c" style="fill:#f5a623" x="605" y="18" text-anchor="middle">1.3×</text>
+<rect fill="#2dbd72" opacity="0.52" x="640" y="2" width="75" height="26" rx="4"/><text class="text c" x="677" y="18" text-anchor="middle">0.50×</text>
+<rect fill="#d94b4b" opacity="0.32" x="720" y="2" width="75" height="26" rx="4"/><text class="text c" x="757" y="18" text-anchor="middle">6.50×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ Goja</text>
+<text class="spark" x="895" y="18">Typed IR (string)</text>
+</g>
+<g transform="translate(0,494)"><text class="text rh" x="44" y="17">k-nucleotide</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.06</text>
+<text class="text c" x="285" y="18" text-anchor="middle">0.03</text>
+<text class="text c" x="370" y="18" text-anchor="middle">0.48</text>
+<text class="text c" x="455" y="18" text-anchor="middle">0.27</text>
+<text class="text c" x="540" y="18" text-anchor="middle">0.41</text>
+<text class="text c" style="fill:#f5a623" x="605" y="18" text-anchor="middle">1.5×</text>
+<rect fill="#2dbd72" opacity="0.52" x="640" y="2" width="75" height="26" rx="4"/><text class="text c" x="677" y="18" text-anchor="middle">0.57×</text>
+<rect fill="#d94b4b" opacity="0.32" x="720" y="2" width="75" height="26" rx="4"/><text class="text c" x="757" y="18" text-anchor="middle">9.13×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ Goja</text>
+<text class="spark" x="895" y="18">Typed IR (str+map)</text>
+</g>
+<g transform="translate(0,530)"><text class="text rh" x="44" y="17">binary-trees</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">5.68</text>
+<text class="text c" x="285" y="18" text-anchor="middle">54.2</text>
+<text class="text c" x="370" y="18" text-anchor="middle">172</text>
+<text class="text c" x="455" y="18" text-anchor="middle">115.3</text>
+<text class="text c" x="540" y="18" text-anchor="middle">527.6</text>
+<text class="text c" style="fill:#2dbd72" x="605" y="18" text-anchor="middle">4.6×</text>
+<rect fill="#2dbd72" opacity="0.52" x="640" y="2" width="75" height="26" rx="4"/><text class="text c" x="677" y="18" text-anchor="middle">0.67×</text>
+<rect fill="#e08a2e" opacity="0.34" x="720" y="2" width="75" height="26" rx="4"/><text class="text c" x="757" y="18" text-anchor="middle">2.13×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ Goja</text>
+<text class="spark" x="895" y="18">Typed fstack + kw tag</text>
+</g>
+<g transform="translate(0,566)"><text class="text rh" x="44" y="17">regex-redux</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.06</text>
+<text class="text c" x="285" y="18" text-anchor="middle">0.09</text>
+<text class="text c" x="370" y="18" text-anchor="middle">0.14</text>
+<text class="text c" x="455" y="18" text-anchor="middle">0.096</text>
+<text class="text c" x="540" y="18" text-anchor="middle">0.12</text>
+<text class="text c" style="fill:#f5a623" x="605" y="18" text-anchor="middle">1.2×</text>
+<rect fill="#2dbd72" opacity="0.52" x="640" y="2" width="75" height="26" rx="4"/><text class="text c" x="677" y="18" text-anchor="middle">0.69×</text>
+<rect fill="#f5a623" opacity="0.38" x="720" y="2" width="75" height="26" rx="4"/><text class="text c" x="757" y="18" text-anchor="middle">1.07×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">✅ Goja</text>
+<text class="spark" x="895" y="18">Typed IR (string)</text>
+</g>
+<g transform="translate(0,602)"><text class="text rh" x="44" y="17">fannkuch</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.34</text>
+<text class="text c" x="285" y="18" text-anchor="middle">4.94</text>
+<text class="text c" x="370" y="18" text-anchor="middle">24</text>
+<text class="text c" x="455" y="18" text-anchor="middle">162.8</text>
+<text class="text c" x="540" y="18" text-anchor="middle">94.1</text>
+<text class="text c" style="fill:#64748b" x="605" y="18" text-anchor="middle">0.6×</text>
+<rect fill="#d94b4b" opacity="0.32" x="640" y="2" width="75" height="26" rx="4"/><text class="text c" x="677" y="18" text-anchor="middle">6.78×</text>
+<rect fill="#d94b4b" opacity="0.32" x="720" y="2" width="75" height="26" rx="4"/><text class="text c" x="757" y="18" text-anchor="middle">32.96×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">❌ gap</text>
+<text class="spark" x="895" y="18">Boxed IR + tree-walker</text>
+</g>
+<g transform="translate(0,638)"><text class="text rh" x="44" y="17">n-body</text><line x1="44" y1="30" x2="1440" y2="30" stroke="var(--grid)" stroke-opacity=".4"/>
+<text class="text c" x="200" y="18" text-anchor="middle">0.18</text>
+<text class="text c" x="285" y="18" text-anchor="middle">0.66</text>
+<text class="text c" x="370" y="18" text-anchor="middle">4.75</text>
+<text class="text c" x="455" y="18" text-anchor="middle">38.2</text>
+<text class="text c" x="540" y="18" text-anchor="middle">34.2</text>
+<text class="text c" style="fill:#64748b" x="605" y="18" text-anchor="middle">0.9×</text>
+<rect fill="#d94b4b" opacity="0.32" x="640" y="2" width="75" height="26" rx="4"/><text class="text c" x="677" y="18" text-anchor="middle">8.04×</text>
+<rect fill="#d94b4b" opacity="0.32" x="720" y="2" width="75" height="26" rx="4"/><text class="text c" x="757" y="18" text-anchor="middle">57.88×</text>
+<text class="muted small" x="842" y="18" text-anchor="middle">❌ gap</text>
+<text class="spark" x="895" y="18">Boxed IR + tree-walker</text>
+</g>
+<text class="muted sub" x="44" y="694">Δ = speedup from session start (mandelbrot 159→14ms = 11.3×). Start = values before this optimization session.</text></svg>
