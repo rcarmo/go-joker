@@ -1452,6 +1452,9 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 	code := prog.code
 	pc := 0
 
+	// Frame stack for irCallSelf — avoids recursive irExec calls
+	var frameStack *irFrameStack
+
 loop:
 	for pc < len(code) {
 		op := code[pc]
@@ -1747,10 +1750,36 @@ loop:
 
 		case irReturn:
 			if len(stack) == 0 {
+				if frameStack != nil && frameStack.depth > 0 {
+					var sl int
+					pc, sl = frameStack.pop(slots)
+					stack = stack[:sl]
+					stack = append(stack, NIL)
+					// pc already restored
+					continue
+				}
 				return NIL
 			}
 			result := stack[len(stack)-1]
-			// Freeze any transients before returning
+			// If we're in a self-recursive frame, pop and push result to caller
+			if frameStack != nil && frameStack.depth > 0 {
+				// Freeze transients
+				switch v := result.(type) {
+				case *TransientVector:
+					result = v.ToPersistent()
+				case *TransientMap:
+					result = v.ToPersistent()
+				case *TransientString:
+					result = v.ToPersistent()
+				}
+				var sl int
+				pc, sl = frameStack.pop(slots)
+				stack = stack[:sl]
+				stack = append(stack, result)
+				// pc already restored
+				continue
+			}
+			// Top-level return
 			switch v := result.(type) {
 			case *TransientVector:
 				return v.ToPersistent()
@@ -1934,22 +1963,27 @@ loop:
 		case irCallSelf:
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			var args []Object
-			var argsBuf [4]Object
-			if nargs <= len(argsBuf) {
-				args = argsBuf[:nargs]
-			} else {
-				args = make([]Object, nargs)
+			// Initialize frame stack on first self-call
+			if frameStack == nil {
+				frameStack = newIRFrameStack(prog.numSlots)
 			}
+			// Save current state
+			frameStack.push(pc, slots, len(stack)-nargs)
+			// Pop args from stack into new slot values
 			for i := nargs - 1; i >= 0; i-- {
-				args[i] = stack[len(stack)-1]
+				slots[i] = stack[len(stack)-1]
 				stack = stack[:len(stack)-1]
 			}
-			result := irExec(prog, args)
-			if result == nil {
-				return nil
+			// Clear remaining slots
+			for i := nargs; i < len(slots); i++ {
+				slots[i] = nil
 			}
-			stack = append(stack, result)
+			// Re-fill captures
+			for i, obj := range prog.captureSlots {
+				slots[prog.captureSlotIdxs[i]] = obj
+			}
+			// Restart execution from beginning
+			pc = 0
 
 		case irFirst:
 			a := stack[len(stack)-1]
