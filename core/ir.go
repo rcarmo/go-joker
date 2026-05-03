@@ -704,11 +704,15 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 }
 
 func (c *irCompiler) compileLetBody(e *LetExpr, isLast bool) bool {
-	letFrame := -1
-	for _, bodyExpr := range e.body {
-		if f := findBindingFrame(bodyExpr); f > c.loopFrame {
-			letFrame = f
-			break
+	// Detect let frame using precise binding reference analysis
+	letFrame := findLetFrame(e.body, len(e.values), c.bindingMap)
+	if letFrame < 0 {
+		// Fallback: first binding frame > loopFrame
+		for _, bodyExpr := range e.body {
+			if f := findBindingFrame(bodyExpr); f > c.loopFrame {
+				letFrame = f
+				break
+			}
 		}
 	}
 	if letFrame < 0 {
