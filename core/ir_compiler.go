@@ -119,17 +119,18 @@ func guessFnParamFrame(body []Expr, nparams int) int {
 	if nparams == 0 {
 		return -1
 	}
-	// Collect all frames referenced by BindingExprs with index < nparams.
-	// The fn param frame is the minimum (outermost) such frame.
-	minFrame := -1
+	// Collect all (frame, index) pairs from BindingExprs with index < nparams.
+	// The fn param frame is the smallest frame where ALL indices 0..nparams-1 appear.
+	frameSeen := map[int]map[int]bool{}
 	var scan func(e Expr)
 	scan = func(e Expr) {
 		switch x := e.(type) {
 		case *BindingExpr:
 			if x.binding.index < nparams {
-				if minFrame < 0 || x.binding.frame < minFrame {
-					minFrame = x.binding.frame
+				if frameSeen[x.binding.frame] == nil {
+					frameSeen[x.binding.frame] = map[int]bool{}
 				}
+				frameSeen[x.binding.frame][x.binding.index] = true
 			}
 		case *LoopExpr:
 			le := (*LetExpr)(x)
@@ -164,7 +165,16 @@ func guessFnParamFrame(body []Expr, nparams int) int {
 	for _, e := range body {
 		scan(e)
 	}
-	return minFrame
+	// Find smallest frame with all nparams indices present
+	bestFrame := -1
+	for f, idxSet := range frameSeen {
+		if len(idxSet) >= nparams {
+			if bestFrame < 0 || f < bestFrame {
+				bestFrame = f
+			}
+		}
+	}
+	return bestFrame
 }
 
 func guessLoopFrame(body []Expr) int {

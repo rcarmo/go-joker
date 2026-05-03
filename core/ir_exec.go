@@ -547,8 +547,12 @@ loop:
 						continue
 					}
 				}
-				// Try IR
+				// Try IR — typed executor first (zero-alloc numerics)
 				if fnProg := irCompileFn(fn); fnProg != nil {
+					if result := irExecTyped(fnProg, args); result != nil {
+						stack = append(stack, result)
+						continue
+					}
 					if result := irExec(fnProg, args); result != nil {
 						stack = append(stack, result)
 						continue

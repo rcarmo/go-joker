@@ -487,11 +487,12 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			}
 			var result Object
 			if fn, ok := fnObj.(*Fn); ok {
-				if wp := wasmGetFn(fn); wp != nil {
-					result = wasmExec(wp, args)
-				}
-				if result == nil {
-					if fnProg := irCompileFn(fn); fnProg != nil {
+				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
+					// Already handled above
+				} else if fnProg := irCompileFn(fn); fnProg != nil {
+					// Try typed executor first (zero-alloc numerics)
+					result = irExecTyped(fnProg, args)
+					if result == nil {
 						result = irExec(fnProg, args)
 					}
 				}
