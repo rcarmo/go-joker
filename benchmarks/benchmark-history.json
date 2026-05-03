@@ -29,46 +29,46 @@
           "ms_per_op": 0.308
         },
         "recursive_fib": {
-          "ms_per_op": 1.171
+          "ms_per_op": 0.811
         },
         "word_frequency": {
-          "ms_per_op": 9.1
+          "ms_per_op": 12.0
         },
         "map_update_loop": {
-          "ms_per_op": 1.06
+          "ms_per_op": 0.78
         },
         "tail_recursive_sum": {
           "ms_per_op": 0.068
         },
         "clbg_nbody": {
-          "ms_per_op": 38.2
+          "ms_per_op": 26.0
         },
         "clbg_spectral_norm": {
-          "ms_per_op": 18.0
+          "ms_per_op": 11.3
         },
         "clbg_binary_trees": {
-          "ms_per_op": 115.3
+          "ms_per_op": 65.9
         },
         "clbg_fannkuch": {
-          "ms_per_op": 162.8
+          "ms_per_op": 89.5
         },
         "clbg_mandelbrot": {
-          "ms_per_op": 14.1
+          "ms_per_op": 9.5
         },
         "clbg_fasta": {
-          "ms_per_op": 0.086
+          "ms_per_op": 0.074
         },
         "clbg_pidigits": {
-          "ms_per_op": 0.034
+          "ms_per_op": 0.032
         },
         "clbg_knucleotide": {
-          "ms_per_op": 0.274
+          "ms_per_op": 0.207
         },
         "clbg_reverse_complement": {
           "ms_per_op": 0.065
         },
         "clbg_regex_redux": {
-          "ms_per_op": 0.096
+          "ms_per_op": 0.094
         },
         "wasm_array_f64_sum": {
           "ms_per_op": 0.027
