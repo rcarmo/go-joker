@@ -573,6 +573,55 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			}
 			stack = append(stack, objectToIRValue(&ArrayVector{arr: arr}))
 
+		case irToTransient:
+			a := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if a.tag == irValObject {
+				if av, ok := a.obj().(*ArrayVector); ok {
+					stack = append(stack, objectToIRValue(ToTransient(av)))
+				} else {
+					return nil
+				}
+			} else {
+				return nil
+			}
+
+		case irAssocBang:
+			val := stack[len(stack)-1]
+			key := stack[len(stack)-2]
+			tv := stack[len(stack)-3]
+			stack = stack[:len(stack)-3]
+			if tv.tag == irValObject {
+				switch t := tv.obj().(type) {
+				case *TransientVector:
+					t.AssocInPlace(key.object(), val.object())
+					stack = append(stack, objectToIRValue(t))
+				case *TransientMap:
+					t.AssocInPlace(key.object(), val.object())
+					stack = append(stack, objectToIRValue(t))
+				default:
+					return nil
+				}
+			} else {
+				return nil
+			}
+
+		case irToPersistent:
+			a := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if a.tag == irValObject {
+				switch t := a.obj().(type) {
+				case *TransientVector:
+					stack = append(stack, objectToIRValue(t.ToPersistent()))
+				case *TransientMap:
+					stack = append(stack, objectToIRValue(t.ToPersistent()))
+				default:
+					return nil
+				}
+			} else {
+				return nil
+			}
+
 		default:
 			return nil
 		}

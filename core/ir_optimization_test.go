@@ -379,3 +379,115 @@ func TestIRFrameStackPushPop(t *testing.T) {
 		t.Fatalf("slot[0] = %v after pop, want 42", slots[0])
 	}
 }
+
+// --- irCallSelf in typed executor ---
+
+func TestTypedExecutorCallSelf(t *testing.T) {
+	clbgInit()
+	// Simple self-recursive fn
+	r := Eval(compileBenchExpr(t, `(letfn [(sum [n]
+      (if (= n 0) 0 (+ n (sum (- n 1)))))]
+    (sum 10))`), nil)
+	if r == nil || r.(Int).I != 55 {
+		t.Fatalf("sum(10) = %v, want 55", r)
+	}
+}
+
+func TestTypedExecutorBuildVec(t *testing.T) {
+	clbgInit()
+	r := Eval(compileBenchExpr(t, `(loop [i 0 v []]
+    (if (= i 3) v (recur (+ i 1) (conj v [:item i]))))`), nil)
+	if r == nil {
+		t.Fatal("buildvec loop returned nil")
+	}
+	t.Logf("result: %s", r.ToString(false))
+}
+
+func TestTypedExecutorFirst(t *testing.T) {
+	clbgInit()
+	r := Eval(compileBenchExpr(t, `(let [v [:a :b :c]]
+    (loop [i 0 result []]
+      (if (= i 3) result
+        (recur (+ i 1) (conj result (first v))))))`), nil)
+	if r == nil {
+		t.Fatal("first loop returned nil")
+	}
+}
+
+// --- advance fn compilation ---
+
+func TestAdvanceFnCompiles(t *testing.T) {
+	clbgInit()
+	expr := compileBenchExpr(t, nbodyScript)
+	le := expr.(*LetExpr)
+	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	for _, v := range le.values {
+		env.bindings = append(env.bindings, Eval(v, env))
+	}
+	advanceFn := env.bindings[14].(*Fn)
+	prog := irCompileFn(advanceFn)
+	if prog == nil {
+		t.Fatal("advance fn should compile with depth limit 8")
+	}
+	t.Logf("advance: slots=%d caps=%d", prog.numSlots, len(prog.captureSlots))
+}
+
+func TestHeapPermFnCompiles(t *testing.T) {
+	clbgInit()
+	expr := compileBenchExpr(t, fannkuchScript)
+	le := expr.(*LetExpr)
+	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	for _, v := range le.values {
+		env.bindings = append(env.bindings, Eval(v, env))
+	}
+	letfnLoop := le.body[0].(*LoopExpr)
+	letfnLe := (*LetExpr)(letfnLoop)
+	env2 := &LocalEnv{bindings: make([]Object, 0), frame: 0, parent: env}
+	for _, v := range letfnLe.values {
+		env2.bindings = append(env2.bindings, Eval(v, env2))
+	}
+	heapPermFn := env2.bindings[0].(*Fn)
+	prog := irCompileFn(heapPermFn)
+	if prog == nil {
+		t.Fatal("heap-perm fn should compile with depth limit 8")
+	}
+	t.Logf("heap-perm: slots=%d caps=%d hasSelf=%v", prog.numSlots, len(prog.captureSlots), prog.hasSelf)
+}
+
+// --- Transient ops in typed executor ---
+
+func TestTypedExecutorTransientOps(t *testing.T) {
+	clbgInit()
+	// This triggers irToTransient + irAssocBang + irToPersistent via escape analysis
+	r := Eval(compileBenchExpr(t, `(loop [i 0 v [0 0 0 0 0]]
+    (if (= i 5) v (recur (+ i 1) (assoc v i (* i i)))))`), nil)
+	if r == nil {
+		t.Fatal("transient loop returned nil")
+	}
+	av := r.(*ArrayVector)
+	if av.arr[4].(Int).I != 16 {
+		t.Fatalf("v[4] = %v, want 16", av.arr[4])
+	}
+}
+
+func TestTypedExecutorNthOnObject(t *testing.T) {
+	clbgInit()
+	r := Eval(compileBenchExpr(t, `(let [v [10 20 30]]
+    (loop [i 0 s 0]
+      (if (= i 3) s (recur (+ i 1) (+ s (nth v i))))))`), nil)
+	if r == nil || r.(Int).I != 60 {
+		t.Fatalf("nth sum = %v, want 60", r)
+	}
+}
+
+func TestTypedExecutorStringOps(t *testing.T) {
+	clbgInit()
+	r := Eval(compileBenchExpr(t, `(loop [i 0 s ""]
+    (if (= i 3) s (recur (+ i 1) (str s (str i)))))`), nil)
+	if r == nil {
+		t.Fatal("str loop returned nil")
+	}
+	if r.(String).S != "012" {
+		t.Fatalf("str result = %q, want \"012\"", r.(String).S)
+	}
+}
