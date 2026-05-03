@@ -86,6 +86,10 @@ func irTypedEligible(a IRAnalysis) bool {
 	if a.UsesCollection && a.HasGenericNth && !a.HasMapOps && !a.UsesString {
 		return true
 	}
+	// Accept: pure numeric loops (no strings, no collections, no call-slots)
+	if !a.UsesString && !a.UsesCollection && !a.HasCallSlot && !a.HasSelfCall {
+		return true
+	}
 	return a.UsesString || a.SuggestedPath == "typed-ir-string-candidate" || a.SuggestedPath == "typed-ir-generic-string-nth-candidate"
 }
 
@@ -282,6 +286,10 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		}
 		slots[i] = v
 	}
+	// Pre-fill captured closure values into their assigned slots
+	for i, obj := range prog.captureSlots {
+		slots[prog.captureSlotIdxs[i]] = objectToIRValue(obj)
+	}
 
 	var stackBuf [32]irValue
 	stack := stackBuf[:0]
@@ -432,6 +440,12 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			stack = stack[:len(stack)-2]
 			if a.tag == irValInt && b.tag == irValInt {
 				stack = append(stack, irValue{tag: irValBool, b: a.i < b.i})
+			} else if a.tag == irValDouble && b.tag == irValDouble {
+				stack = append(stack, irValue{tag: irValBool, b: a.f < b.f})
+			} else if a.tag == irValDouble && b.tag == irValInt {
+				stack = append(stack, irValue{tag: irValBool, b: a.f < float64(b.i)})
+			} else if a.tag == irValInt && b.tag == irValDouble {
+				stack = append(stack, irValue{tag: irValBool, b: float64(a.i) < b.f})
 			} else {
 				return nil
 			}

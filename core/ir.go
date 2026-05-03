@@ -84,18 +84,20 @@ func irGetCached(loop *LoopExpr) *IRProgram {
 // ---------- Program ----------
 
 type IRProgram struct {
-	code          []byte
-	constants     []Object
-	numSlots      int
-	captureKeys   []bindingKey
-	hasSelf       bool
-	escapeInfo    *EscapeInfo
-	analysis      *IRAnalysis
-	typedFailed   bool
-	memNthFailed  bool
-	nativeHelper  nativeF64Fn
-	nativeChecked bool
-	floatConsts   []float64
+	code            []byte
+	constants       []Object
+	numSlots        int
+	captureKeys     []bindingKey
+	captureSlots    []Object // resolved capture values from fn.env
+	captureSlotIdxs []int    // slot indices for each capture
+	hasSelf         bool
+	escapeInfo      *EscapeInfo
+	analysis        *IRAnalysis
+	typedFailed     bool
+	memNthFailed    bool
+	nativeHelper    nativeF64Fn
+	nativeChecked   bool
+	floatConsts     []float64
 }
 
 // ---------- Fn compilation ----------
@@ -125,6 +127,11 @@ func irCompileFn(fn *Fn) *IRProgram {
 
 	// Determine the frame from the body
 	fnFrame := guessLoopFrame(arity.body)
+	if fnFrame < 0 {
+		// For fns, find param frame by scanning body for BindingExprs
+		// that reference indices 0..nparams-1
+		fnFrame = guessFnParamFrame(arity.body, len(arity.args))
+	}
 	if fnFrame < 0 {
 		fnFrame = 1
 	}
@@ -162,21 +169,54 @@ func irCompileFn(fn *Fn) *IRProgram {
 	if c.code[len(c.code)-1] != irReturn {
 		c.emit(irReturn)
 	}
-	// Allow self-captures but no other captures
+	// Resolve captures from fn's closure environment.
+	// Captures reference parse-time frames, but fn.env holds the actual
+	// runtime values. Walk the env chain to find matching bindings.
 	if len(c.captureKeys) > 0 {
-		irFnCache.Store(&arity, irCompileFailed)
-		return nil
+		capSlots := make([]Object, len(c.captureKeys))
+		capIdxs := make([]int, len(c.captureKeys))
+		allResolved := true
+		for ci, ck := range c.captureKeys {
+			capIdxs[ci] = c.bindingMap[ck]
+			resolved := false
+			e := fn.env
+			for e != nil {
+				if ck.index < len(e.bindings) {
+					capSlots[ci] = e.bindings[ck.index]
+					resolved = true
+					break
+				}
+				e = e.parent
+			}
+			if !resolved {
+				allResolved = false
+				break
+			}
+		}
+		if !allResolved {
+			irFnCache.Store(&arity, irCompileFailed)
+			return nil
+		}
+		c.captureSlots = capSlots
+		c.captureSlotIdxs = capIdxs
 	}
 	prog := &IRProgram{
-		code:      c.code,
-		constants: c.constants,
-		numSlots:  c.numSlots,
-		hasSelf:   c.hasSelf,
+		code:            c.code,
+		constants:       c.constants,
+		numSlots:        c.numSlots,
+		captureKeys:     c.captureKeys,
+		captureSlots:    c.captureSlots,
+		captureSlotIdxs: c.captureSlotIdxs,
+		hasSelf:         c.hasSelf,
 	}
 	// Eagerly compile native f64 helper if eligible
 	prog.nativeHelper = irCompileNativeHelper(prog)
 	prog.nativeChecked = true
-	irFnCache.Store(&arity, prog)
+	// Don't cache in irFnCache if we have closure captures — each fn
+	// instance may have different env bindings for the same arity.
+	if len(prog.captureSlots) == 0 {
+		irFnCache.Store(&arity, prog)
+	}
 	return prog
 }
 
@@ -192,6 +232,8 @@ type irCompiler struct {
 	constants        []Object
 	bindingMap       map[bindingKey]int
 	captureKeys      []bindingKey
+	captureSlots     []Object
+	captureSlotIdxs  []int
 	numSlots         int
 	loopFrame        int
 	depth            int
@@ -284,6 +326,60 @@ func (c *irCompiler) reasonOr(fallback string) string {
 		return c.rejectReason
 	}
 	return fallback
+}
+
+// guessFnParamFrame scans a fn body for BindingExpr nodes that reference
+// indices 0..nparams-1, returning the common frame. Returns -1 if ambiguous.
+func guessFnParamFrame(body []Expr, nparams int) int {
+	if nparams == 0 {
+		return -1
+	}
+	// Collect all frames referenced by BindingExprs with index < nparams.
+	// The fn param frame is the minimum (outermost) such frame.
+	minFrame := -1
+	var scan func(e Expr)
+	scan = func(e Expr) {
+		switch x := e.(type) {
+		case *BindingExpr:
+			if x.binding.index < nparams {
+				if minFrame < 0 || x.binding.frame < minFrame {
+					minFrame = x.binding.frame
+				}
+			}
+		case *LoopExpr:
+			le := (*LetExpr)(x)
+			for _, v := range le.values {
+				scan(v)
+			}
+			for _, b := range le.body {
+				scan(b)
+			}
+		case *LetExpr:
+			for _, v := range x.values {
+				scan(v)
+			}
+			for _, b := range x.body {
+				scan(b)
+			}
+		case *IfExpr:
+			scan(x.cond)
+			scan(x.positive)
+			scan(x.negative)
+		case *CallExpr:
+			scan(x.callable)
+			for _, a := range x.args {
+				scan(a)
+			}
+		case *RecurExpr:
+			for _, a := range x.args {
+				scan(a)
+			}
+		}
+	}
+	for _, e := range body {
+		scan(e)
+	}
+	return minFrame
 }
 
 func guessLoopFrame(body []Expr) int {
@@ -1305,6 +1401,10 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 		slots = make([]Object, prog.numSlots)
 	}
 	copy(slots, initSlots)
+	// Pre-fill captured closure values into their assigned slots
+	for i, obj := range prog.captureSlots {
+		slots[prog.captureSlotIdxs[i]] = obj
+	}
 
 	// Escape analysis: convert safe local values to transient builders.
 	// Only run if there are actually mutable candidate slots.
