@@ -1824,7 +1824,11 @@ loop:
 					return nil
 				}
 			case *TransientVector:
-				stack = append(stack, c.Nth(idx.I))
+				if idx.I >= 0 && idx.I < len(c.arr) {
+					stack = append(stack, c.arr[idx.I])
+				} else {
+					return nil
+				}
 			case String:
 				stack = append(stack, stringNthFast(c.S, idx.I))
 			case Indexed:
@@ -1952,6 +1956,12 @@ loop:
 			stack = stack[:len(stack)-1]
 			switch v := a.(type) {
 			case *ArrayVector:
+				if len(v.arr) > 0 {
+					stack = append(stack, v.arr[0])
+				} else {
+					stack = append(stack, NIL)
+				}
+			case *TransientVector:
 				if len(v.arr) > 0 {
 					stack = append(stack, v.arr[0])
 				} else {
