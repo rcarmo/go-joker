@@ -67,7 +67,7 @@ func irTypedMapForce() bool {
 }
 
 func irTypedEligible(a IRAnalysis) bool {
-	if a.NumOps == 0 || a.UsesTransient || a.HasSelfCall {
+	if a.NumOps == 0 || a.UsesTransient {
 		return false
 	}
 	// Call-slot loops: allow if numeric-only or numeric+generic-nth

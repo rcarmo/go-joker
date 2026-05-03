@@ -513,6 +513,66 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				return nil
 			}
 
+		case irCallSelf:
+			nargs := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			// Box args and dispatch through irExecTyped recursively
+			args := make([]Object, nargs)
+			for i := nargs - 1; i >= 0; i-- {
+				args[i] = stack[len(stack)-1].object()
+				stack = stack[:len(stack)-1]
+			}
+			result := irExecTyped(prog, args)
+			if result == nil {
+				// Fall back to irExec
+				result = irExec(prog, args)
+			}
+			if result == nil {
+				return nil
+			}
+			stack = append(stack, objectToIRValue(result))
+
+		case irFirst:
+			a := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if a.tag == irValObject {
+				switch v := a.obj().(type) {
+				case *ArrayVector:
+					if len(v.arr) > 0 {
+						stack = append(stack, objectToIRValue(v.arr[0]))
+					} else {
+						stack = append(stack, irValue{tag: irValNil})
+					}
+				case *TransientVector:
+					if len(v.arr) > 0 {
+						stack = append(stack, objectToIRValue(v.arr[0]))
+					} else {
+						stack = append(stack, irValue{tag: irValNil})
+					}
+				case Seqable:
+					seq := v.Seq()
+					if seq == nil {
+						stack = append(stack, irValue{tag: irValNil})
+					} else {
+						stack = append(stack, objectToIRValue(seq.First()))
+					}
+				default:
+					return nil
+				}
+			} else {
+				return nil
+			}
+
+		case irBuildVec:
+			n := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			arr := make([]Object, n)
+			for i := n - 1; i >= 0; i-- {
+				arr[i] = stack[len(stack)-1].object()
+				stack = stack[:len(stack)-1]
+			}
+			stack = append(stack, objectToIRValue(&ArrayVector{arr: arr}))
+
 		default:
 			return nil
 		}
