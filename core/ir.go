@@ -426,6 +426,50 @@ func findRecurBindingFrame(expr Expr) int {
 	return -1
 }
 
+// findMaxBindingFrame returns the maximum frame across all BindingExprs
+// in the given expressions that exceed minFrame. Does NOT recurse into
+// nested LetExpr/LoopExpr bodies (those determine their own frame).
+func findMaxBindingFrame(exprs []Expr, minFrame int) int {
+	maxF := -1
+	var scan func(e Expr)
+	scan = func(e Expr) {
+		switch x := e.(type) {
+		case *BindingExpr:
+			if x.binding.frame > minFrame && x.binding.frame > maxF {
+				maxF = x.binding.frame
+			}
+		case *IfExpr:
+			scan(x.cond)
+			scan(x.positive)
+			scan(x.negative)
+		case *CallExpr:
+			scan(x.callable)
+			for _, a := range x.args {
+				scan(a)
+			}
+		case *RecurExpr:
+			for _, a := range x.args {
+				scan(a)
+			}
+		case *LetExpr:
+			// Only scan values, not body (body will have its own let frame)
+			for _, v := range x.values {
+				scan(v)
+			}
+		case *LoopExpr:
+			// Only scan init values, not body
+			le := (*LetExpr)(x)
+			for _, v := range le.values {
+				scan(v)
+			}
+		}
+	}
+	for _, e := range exprs {
+		scan(e)
+	}
+	return maxF
+}
+
 func findBindingFrame(expr Expr) int {
 	switch e := expr.(type) {
 	case *BindingExpr:
@@ -704,12 +748,12 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 }
 
 func (c *irCompiler) compileLetBody(e *LetExpr, isLast bool) bool {
+	// Find the let binding frame: the maximum frame in the body that
+	// exceeds loopFrame, with indices 0..n-1 matching the let bindings.
 	letFrame := -1
-	for _, bodyExpr := range e.body {
-		if f := findBindingFrame(bodyExpr); f > c.loopFrame {
-			letFrame = f
-			break
-		}
+	maxFrame := findMaxBindingFrame(e.body, c.loopFrame)
+	if maxFrame > c.loopFrame {
+		letFrame = maxFrame
 	}
 	if letFrame < 0 {
 		letFrame = c.loopFrame + c.depth
@@ -740,11 +784,9 @@ func (c *irCompiler) compileNestedLoop(loop *LoopExpr, isLast bool) bool {
 	baseSlot := -1
 
 	loopFrame := -1
-	for _, bodyExpr := range loopLet.body {
-		if f := findBindingFrame(bodyExpr); f > c.loopFrame {
-			loopFrame = f
-			break
-		}
+	maxF := findMaxBindingFrame(loopLet.body, c.loopFrame)
+	if maxF > c.loopFrame {
+		loopFrame = maxF
 	}
 	if loopFrame < 0 {
 		loopFrame = c.loopFrame + c.depth
