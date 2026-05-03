@@ -491,3 +491,32 @@ func TestTypedExecutorStringOps(t *testing.T) {
 		t.Fatalf("str result = %q, want \"012\"", r.(String).S)
 	}
 }
+
+func TestIrValueKeywordRoundtrip(t *testing.T) {
+	clbgInit()
+	kw := Eval(compileBenchExpr(t, `:test`), nil).(Keyword)
+	v := objectToIRValue(kw)
+	if v.tag != irValKeyword {
+		t.Fatalf("expected irValKeyword, got %d", v.tag)
+	}
+	back := v.object().(Keyword)
+	if *back.name != *kw.name {
+		t.Fatalf("keyword roundtrip: %v != %v", *back.name, *kw.name)
+	}
+}
+
+func TestIrValueKeywordEquality(t *testing.T) {
+	clbgInit()
+	kw1 := objectToIRValue(Eval(compileBenchExpr(t, `:leaf`), nil))
+	kw2 := objectToIRValue(Eval(compileBenchExpr(t, `:leaf`), nil))
+	kw3 := objectToIRValue(Eval(compileBenchExpr(t, `:node`), nil))
+	
+	eq12, ok := irValueEq(kw1, kw2)
+	if !ok || !eq12.boolean() {
+		t.Fatal(":leaf should equal :leaf")
+	}
+	eq13, ok := irValueEq(kw1, kw3)
+	if !ok || eq13.boolean() {
+		t.Fatal(":leaf should not equal :node")
+	}
+}

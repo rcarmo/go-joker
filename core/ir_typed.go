@@ -27,6 +27,7 @@ const (
 	irValStringIntMap
 	irValIntVector
 	irValNil
+	irValKeyword
 )
 
 // irValue is the tagged value for the typed IR executor.
@@ -136,6 +137,8 @@ func objectToIRValue(obj Object) irValue {
 		}
 	case Nil:
 		return irValue{tag: irValNil}
+	case Keyword:
+		return irValue{tag: irValKeyword, p: unsafe.Pointer(v.name)}
 	default:
 		return irMakeObject(obj)
 	}
@@ -170,6 +173,8 @@ func (v irValue) object() Object {
 		return &ArrayVector{arr: arr}
 	case irValNil:
 		return NIL
+	case irValKeyword:
+		return Keyword{name: (*string)(v.p)}
 	default:
 		if v.obj() == nil {
 			return NIL
@@ -252,6 +257,9 @@ func irValueEq(a, b irValue) (irValue, bool) {
 			return irMakeBool(string(a.bytes()) == string(b.bytes())), true
 		case irValNil:
 			return irMakeBool(true), true
+		case irValKeyword:
+			// Keywords are interned — pointer equality on name
+			return irMakeBool(a.p == b.p), true
 		}
 	}
 	if a.tag == irValInt && b.tag == irValDouble {
