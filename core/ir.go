@@ -1880,7 +1880,7 @@ loop:
 						}
 						stack = stack[:len(stack)-1]
 					}
-					stack = append(stack, Double{D: fnProg.nativeHelper(f64args)})
+					stack = append(stack, Double{D: fnProg.nativeHelper(noescape64(f64args))})
 					continue
 				}
 			}

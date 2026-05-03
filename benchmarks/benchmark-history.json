@@ -32,43 +32,43 @@
           "ms_per_op": 1.007
         },
         "word_frequency": {
-          "ms_per_op": 10.598
+          "ms_per_op": 12.5
         },
         "map_update_loop": {
-          "ms_per_op": 1.222
+          "ms_per_op": 1.13
         },
         "tail_recursive_sum": {
           "ms_per_op": 0.059
         },
         "clbg_nbody": {
-          "ms_per_op": 32.722
+          "ms_per_op": 35.7
         },
         "clbg_spectral_norm": {
-          "ms_per_op": 36.407
+          "ms_per_op": 26.7
         },
         "clbg_binary_trees": {
-          "ms_per_op": 527.195
+          "ms_per_op": 515.0
         },
         "clbg_fannkuch": {
-          "ms_per_op": 87.66
+          "ms_per_op": 98.0
         },
         "clbg_mandelbrot": {
-          "ms_per_op": 25.493
+          "ms_per_op": 23.3
         },
         "clbg_fasta": {
-          "ms_per_op": 0.24
+          "ms_per_op": 0.258
         },
         "clbg_pidigits": {
-          "ms_per_op": 0.042
+          "ms_per_op": 0.041
         },
         "clbg_knucleotide": {
-          "ms_per_op": 0.288
+          "ms_per_op": 0.411
         },
         "clbg_reverse_complement": {
-          "ms_per_op": 0.068
+          "ms_per_op": 0.067
         },
         "clbg_regex_redux": {
-          "ms_per_op": 0.117
+          "ms_per_op": 0.121
         },
         "wasm_array_f64_sum": {
           "ms_per_op": 0.027
