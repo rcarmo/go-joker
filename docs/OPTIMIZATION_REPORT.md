@@ -1,585 +1,286 @@
-# Joker Runtime Optimization — Technical Report
+# Joker Optimization Architecture
 
-**Project:** gi / third_party/joker
-**Date:** 2026-04-28 — 2026-04-29
-**Author:** Agent-assisted optimization session (Rui Carmo + Claude)
+## Overview
 
----
-
-## Executive Summary
-
-This document describes a comprehensive performance optimization effort on the vendored Joker (Clojure-like Lisp) runtime used as a scripting engine inside the `gi` agent harness. The work progressed through five major phases over a single extended session:
-
-1. **Evaluator micro-optimizations** — fast paths for hot procs, allocation reduction
-2. **Lowered IR bytecode interpreter** — a 26-opcode stack machine for hot loops
-3. **Generic tail-call optimization** — trampoline + parse-time rewriting
-4. **CLBG benchmark suite** — all 10 Computer Language Benchmarks Game programs, compared across 4 engines
-5. **WASM/wazero native compilation** — JIT-quality execution for numeric loops
-
-The net effect: **Joker now matches Bun/JSC speed on pure numeric loops** (0.36ms via WASM vs 0.38ms Bun) and **beats Goja (gi's JS engine) on 3 of 11 benchmarks** in the interpreted path.
-
----
-
-## Table of Contents
-
-1. [Motivation](#motivation)
-2. [Baseline State](#baseline-state)
-3. [Phase 1: Evaluator Fast Paths](#phase-1-evaluator-fast-paths)
-4. [Phase 2: IR Bytecode Interpreter](#phase-2-ir-bytecode-interpreter)
-5. [Phase 3: Tail-Call Optimization](#phase-3-tail-call-optimization)
-6. [Phase 4: CLBG Benchmark Suite](#phase-4-clbg-benchmark-suite)
-7. [Phase 5: WASM/Wazero Backend](#phase-5-wasmwazero-backend)
-8. [Cross-Language Comparison](#cross-language-comparison)
-9. [Architecture Overview](#architecture-overview)
-10. [Files Changed](#files-changed)
-11. [Trade-offs and Decisions](#trade-offs-and-decisions)
-12. [Reproducing the Work](#reproducing-the-work)
-13. [Future Directions](#future-directions)
-
----
-
-## Motivation
-
-Joker is used as one of two scripting runtimes (alongside Goja/JavaScript) in `gi`. The original Joker interpreter is a straightforward tree-walking evaluator — correct and simple, but slow. Benchmarking showed it was **5–30× slower than Goja** and **100–500× slower than JIT engines** on representative workloads.
-
-For `gi` to use Joker for non-trivial scripting (data transforms, hooks, agent tool implementations), the runtime needed to be substantially faster without losing its embedding simplicity or compatibility with the existing bridge API.
-
----
-
-## Baseline State
-
-The starting point was the upstream Joker interpreter (candid82/joker v1.7.1, vendored at `third_party/joker/`) with the gi scripting bridge already wired.
-
-### Baseline benchmarks (first stable measurement)
-
-| Benchmark | Time | Allocs |
-|-----------|------|--------|
-| Arithmetic loop (100k iter) | 189.8 ms | 3.10M |
-| Recursive fib(24) × 3 | 546.0 ms | 8.10M |
-| Word frequency (4k words) | 279.9 ms | 8.18M |
-
-### Profiling findings
-
-The tree-walking evaluator spent most time in:
-- `Eval()` — dynamic dispatch via interface method calls
-- `CallExpr.Eval()` — argument slice allocation per call
-- `Fn.Call()` — `LocalEnv` frame allocation + `defer RT.popFrame()`
-- `evalSeq()` — `make([]Object, n)` for every call's arguments
-- `GetOps().Combine()` — numeric type dispatch for arithmetic
-
----
-
-## Phase 1: Evaluator Fast Paths
-
-### What changed
-
-1. **Numeric proc fast paths** (`core/procs.go`)
-   - `+`, `-`, `*`, `rem`, `<`, `=`, `inc`, `dec`, `zero?` — added type-switch fast paths for `Int` and `Double` before falling through to the generic `GetOps().Combine()` dispatch.
-
-2. **CallExpr.Eval stack-backed args** (`core/eval.go`)
-   - For 0–4 argument calls, use `var args [N]Object` on the stack instead of `make([]Object, n)`.
-   - Separate dispatch for `Proc`, `*Fn`, and generic `Callable` to avoid interface overhead.
-
-3. **Binding resolution fast path** (`core/eval.go`)
-   - `resolveBinding()` checks current-frame and parent-frame before falling through to the generic walk.
-
-4. **Eval type switch** (`core/eval.go`)
-   - `Eval()` now has an initial type switch for `*LiteralExpr`, `*BindingExpr`, and `*VarRefExpr` that returns immediately without setting `RT.currentExpr` or using `defer`.
-   - `*IfExpr`, `*LetExpr`, `*LoopExpr`, `*DoExpr`, `*FnExpr` are handled inline in the switch to avoid interface method dispatch.
-
-5. **Frame allocation** (`core/eval.go`, `core/object.go`)
-   - `LetExpr.Eval`, `LoopExpr.Eval`, `FnExpr.Eval`, and `Fn.Call` build `LocalEnv` frames inline instead of calling helper methods that return heap-allocated pointers.
-   - `evalLoop` reuses the loop frame's `env.bindings` slice on `recur` instead of allocating a replacement.
-
-6. **Defer removal** (`core/object.go`)
-   - `Fn.Call` uses explicit `RT.pushFrame()` / `res := evalLoop(...)` / `RT.popFrame()` / `return res` instead of `defer RT.popFrame()`.
-
-7. **Sequence indexing** (`core/seq.go`)
-   - `SeqNth` and `SeqTryNth` fast-path `*ArraySeq` with direct array indexing instead of traversing via `Rest()`.
-
-### Trade-offs
-
-- **Code duplication**: the type-switch fast paths duplicate logic from the generic path. This is intentional — the fast path avoids interface dispatch and allocation.
-- **Correctness**: every fast path falls through to the original implementation for non-Int/Double types, preserving semantics.
-- **Maintainability**: fast paths are clearly marked and only cover the hot subset. Adding a new numeric type requires updating both paths.
-
-### Outcome
-
-| Benchmark | Before | After Phase 1 | Speedup |
-|-----------|--------|---------------|---------|
-| Arithmetic loop | 189.8 ms | ~155 ms | 1.2× |
-| Word frequency | 279.9 ms | ~11 ms | 25× |
-
-The word-frequency improvement was dramatic because it eliminated the `ArraySeq.Rest()` allocation churn from repeated `nth` over sequences.
-
----
-
-## Phase 2: IR Bytecode Interpreter
-
-### Design
-
-A flat bytecode representation for the hot subset of Joker expressions. The IR is:
-- **Stack-based**: operand stack for intermediate values
-- **Slot-based locals**: bindings resolved by integer index, no frame walking
-- **Typed operations**: Int and Double handled natively, fallback for other types
-- **Compiled lazily**: on first execution of a `LoopExpr`, compiled and cached
-
-### Opcodes (26 total)
-
-| Category | Opcodes |
-|----------|---------|
-| Data | `irLiteral`, `irLoadSlot`, `irStoreSlot` |
-| Arithmetic | `irAdd`, `irSub`, `irMul`, `irDiv`, `irRem`, `irInc`, `irDec` |
-| Comparison | `irLt`, `irEq`, `irIsZero` |
-| Control | `irJumpIfNot`, `irJump`, `irRecur`, `irReturn` |
-| Collections | `irGet`, `irGet3`, `irAssoc`, `irNth`, `irConj`, `irFirst`, `irBuildVec` |
-| Functions | `irCallSlot`, `irCallSelf` |
-| String | `irStr2`, `irCount` |
-| Math | `irSqrt` |
-| Transient | `irToTransient`, `irAssocBang`, `irToPersistent` |
-
-### Key mechanisms
-
-1. **IR compilation** (`irCompile`): walks the `LoopExpr` AST and emits bytecode. Bails (returns nil) for unsupported forms — the tree-walker handles those.
-
-2. **IR caching** (`irCache sync.Map`): keyed by `*LoopExpr` pointer. Sentinel value `irCompileFailed` prevents repeated compilation attempts.
-
-3. **Outer binding capture**: when the loop body references bindings from enclosing `let`/`fn` frames, the IR captures them as extra slots at loop entry.
-
-4. **Nested loop support**: inner `*LoopExpr` compiles inline with a target-PC-aware `irRecur` that jumps to the right loop header.
-
-5. **Compiled fn dispatch** (`irCallSlot`): calls to captured `*Fn` values first check if the fn has a compiled IR, and if so, execute it via nested `irExec` instead of `Fn.Call`.
-
-6. **Self-recursive dispatch** (`irCallSelf`): when a compiled fn calls itself, `irExec` recurses with the same program.
-
-7. **Stack-backed buffers**: `irExec` uses `var buf [16]Object` for slots and stack when the counts are small enough, avoiding heap allocation.
-
-8. **Transient vectors**: `irExec` automatically converts `ArrayVector` slots to `TransientVector` at loop entry, enabling in-place `assoc`. Frozen back to persistent on return.
-
-9. **Core var detection** (`coreVarToProcName`): maps Joker core function names (`+`, `-`, `=`, `get`, `assoc`, `nth`, etc.) to internal proc names so the IR compiler can recognize calls through `*Fn` wrappers.
-
-10. **Panic-safe execution**: `irExec` call sites use `defer/recover` to catch slot-index panics from binding collisions, falling back to the tree-walker gracefully.
-
-### Trade-offs
-
-- **Compilation cost**: ~1µs per loop compilation. Amortized by caching.
-- **Binding collision risk**: complex nested scoping can produce incorrect slot assignments. Mitigated by slot validation + capture limits + panic recovery.
-- **IR code size**: the `ir.go` file grew to ~1200 lines. Could be split further but the opcode set is cohesive.
-- **Transient safety**: automatic transient conversion assumes single-owner vectors within loop bodies. This is safe for loop/recur patterns but could produce incorrect results if a vector escapes through a function call.
-
-### Outcome
-
-| Benchmark | Before IR | After IR | Speedup |
-|-----------|-----------|----------|---------|
-| Arithmetic loop | ~155 ms | ~20 ms | 8× |
-| Recursive fib | ~324 ms | ~85 ms | 3.8× |
-| Spectral-norm | ~438 ms | ~264 ms | 1.7× |
-| Binary-trees | ~688 ms | ~397 ms | 1.7× |
-
----
-
-## Phase 3: Tail-Call Optimization
-
-### Runtime trampoline (`core/tco.go`)
-
-For `letfn`-defined functions with self-referencing names, `Fn.Call` uses a trampoline loop:
-1. Evaluate the body with `evalBodyTCO`
-2. If the result is a `*TailCall` targeting the same fn, rebind args and loop
-3. Otherwise, return the result
-
-`evalBodyTCO` propagates tail position through `*IfExpr`, `*LetExpr`, and `*DoExpr`.
-
-### Parse-time rewriting (`core/tco_rewrite.go`)
-
-For functions where the trampoline fires, a parse-time pass rewrites self-tail-calls to `RecurExpr`, allowing `evalLoop` to handle them without the trampoline overhead:
-1. `rewriteTailCallsToRecur` detects tail-position self-calls by name matching
-2. Replaces them with `RecurExpr` nodes
-3. Sets `FnExpr.tailRewritten` flag
-4. `Fn.Call` bypasses the trampoline for rewritten fns
-
-### Trade-offs
-
-- **Name matching**: uses `*string` pointer comparison on binding names, which can be fragile for shadowed bindings.
-- **Self-calls only**: doesn't handle mutual recursion.
-- **Trampoline overhead**: the runtime trampoline allocates a `TailCall` struct per tail call when the rewrite doesn't fire.
-
-### Outcome
-
-- Tail-recursive sum (100k depth): **no stack overflow** (was stack overflow before)
-- Binary-trees: ~480ms → ~397ms (-17%)
-
----
-
-## Phase 4: CLBG Benchmark Suite
-
-### Programs ported
-
-All 10 Computer Language Benchmarks Game programs, adapted for Joker:
-
-| # | Program | What it tests | Joker adaptation notes |
-|---|---------|--------------|----------------------|
-| 1 | n-body | FP arithmetic, vector mutation | Inline Newton sqrt, persistent vector bodies |
-| 2 | spectral-norm | FP matrix computation | Functions `A`, `mul-Av`, `mul-Atv` as `let`-bound fns |
-| 3 | binary-trees | Allocation, recursion | Vector-based tree nodes `[:leaf]` / `[:node l r]` |
-| 4 | fannkuch-redux | Array permutation | Persistent vector swaps via `assoc` |
-| 5 | mandelbrot | Complex FP iteration | `letfn`-bound pixel function |
-| 6 | fasta | Sequence generation | Modular arithmetic loop |
-| 7 | pidigits | Big integer arithmetic | Ratio-based (exact), not integer division |
-| 8 | k-nucleotide | String + map frequency counting | Character-by-character substring building |
-| 9 | reverse-complement | String reversal | Character mapping + string accumulation |
-| 10 | regex-redux | Regex matching | `re-seq` + `re-pattern` |
-
-### Cross-language scripts
-
-Equivalent implementations in:
-- **Python 3.13** (`benchmarks/cross_lang_bench.py`)
-- **Bun/JSC** (`benchmarks/cross_lang_bench.js`)
-- **Goja** (`benchmarks/cross_lang_bench_goja.go`)
-
-### Notable finding: pidigits correctness
-
-Joker produces the **correct** pidigits checksum (129) because `/` on integers returns exact `Ratio` values. JavaScript engines (Bun, Goja) produce an incorrect result (138) due to floating-point precision loss in the large intermediate values. Python also produces 129 (arbitrary-precision integers).
-
-### Benchmark data and charts
-
-- `benchmarks/benchmark-history.json` — structured benchmark data
-- `benchmarks/benchmark-cross-language.svg` — generated comparison chart
-- `benchmarks/generate_svg.go` — data-driven SVG generator
-
----
-
-## Phase 5: WASM/Wazero Backend
-
-### Architecture
+Joker's execution engine uses a **tiered dispatch** model with five execution paths, each progressively faster and more specialized. Programs enter at the top (tree-walker) and are promoted to faster tiers as the compiler proves they're eligible.
 
 ```
-Joker AST → IR compiler → WASM codegen → wazero JIT compile → native execution
-                        ↘ IR interpreter (fallback)
-                        ↘ Tree-walker (final fallback)
+┌─────────────────────────────────────────────────┐
+│  Clojure source                                 │
+│  ↓ parse                                        │
+│  AST (Expr tree)                                │
+│  ↓ irCompile / irCompileFn                      │
+│  IR bytecode (IRProgram)                        │
+│  ↓ dispatch                                     │
+│                                                 │
+│  ┌──────────────┐  ┌──────────────┐             │
+│  │ irExecTyped  │  │   irExec     │             │
+│  │ (32B irValue │  │ ([]Object    │             │
+│  │  stack)      │  │  stack)      │             │
+│  └──────┬───────┘  └──────┬───────┘             │
+│         │                 │                     │
+│         ▼                 ▼                     │
+│  ┌──────────────┐  ┌──────────────┐             │
+│  │ Native f64   │  │   WASM       │             │
+│  │ closures     │  │ (wazero)     │             │
+│  └──────────────┘  └──────────────┘             │
+│                                                 │
+│  Fallback: tree-walker (Fn.Call → Eval)         │
+└─────────────────────────────────────────────────┘
 ```
 
-### Implementation
+## Tier 1: Tree-Walker (baseline)
 
-| File | Purpose |
-|------|---------|
-| `wasm_binary.go` | WASM module binary format builder |
-| `wasm_codegen.go` | IR → WASM instruction translation |
-| `wasm_runtime.go` | wazero compilation, execution, caching |
-| `wasm_test.go` | Correctness tests + benchmarks |
+The default execution path. Every Clojure expression has an `Eval(env)` method that walks the AST recursively. Function calls go through `Fn.Call(args)` which creates a new `LocalEnv`, binds arguments, and evaluates the body.
 
-### WASM codegen strategy
+**Cost model:**
+- Every numeric value (`Int{I: x}`, `Double{D: x}`) stored in an `Object` interface escapes to heap
+- Each function call allocates an environment frame
+- ~50ns per expression evaluation (interface dispatch + GC pressure)
 
-- IR stack operations map 1:1 to WASM stack operations
-- `irRecur` → `local.set` + `br $loop`
-- `irReturn` → `br $exit` (to enclosing `block (result i64)`)
-- `irJumpIfNot` → `i32.wrap_i64; if void`
-- All values are `i64` (unboxed integers)
-- Comparisons produce i64 (0 or 1) via `i64.extend_i32_u`
+**When used:** Expressions that can't be compiled to IR, or functions called from non-IR code paths.
 
-### Bug found and fixed
+## Tier 2: Boxed IR Interpreter (`irExec`)
 
-`irRem` was mapped to WASM opcode `0x80` (`i64.div_u`) instead of `0x81` (`i64.rem_s`). Caught by the test suite.
+**File:** `core/ir_exec.go` (765 lines)
 
-### Result
+The IR compiler (`irCompile` / `irCompileFn`) translates loop bodies and function bodies into a bytecode program (`IRProgram`). The bytecode uses a stack machine with ~30 opcodes covering arithmetic, comparisons, control flow, collection operations, and function dispatch.
 
-| Engine | Arithmetic loop | Allocs/op |
-|--------|----------------|-----------|
-| **WASM/wazero** | **0.32 ms** | **24** |
-| Bun/JSC | 0.38 ms | — |
-| Goja | 18.8 ms | — |
-| IR interpreter | 28 ms | 500k |
-| Tree-walker (original) | 189.8 ms | 3.1M |
-
-### Trade-offs
-
-- **Integer-only**: current WASM backend only handles `Int` values. Double support needs typed stack tracking.
-- **No host function imports yet**: WASM modules can't call back to Joker/gi. Planned via wazero's `HostModuleBuilder`.
-- **Module naming**: each compiled module needs a unique name for wazero. Currently uses a simple counter.
-- **Startup cost**: first WASM compilation takes ~1ms. Subsequent executions are near-instant. Wazero supports filesystem-based compilation caching for cross-process persistence.
-
----
-
-## Cross-Language Comparison
-
-### Final results (Joker interpreted path, not WASM)
-
-| Benchmark | Bun/JSC | Python | Goja | Joker | Joker/Goja |
-|-----------|---------|--------|------|-------|------------|
-| n-body | 0.18 ms | 0.66 ms | 4.75 ms | 30.5 ms | 6.4× |
-| spectral-norm | 1.86 ms | 24.5 ms | 65.2 ms | 293 ms | 4.5× |
-| binary-trees | 5.68 ms | 54.2 ms | 172 ms | 474 ms | 2.8× |
-| fannkuch | 0.34 ms | 4.94 ms | 24.0 ms | 85.8 ms | 3.6× |
-| mandelbrot | 0.25 ms | 4.76 ms | 39.0 ms | 158 ms | 4.0× |
-| fasta | 0.02 ms | 0.06 ms | 0.60 ms | 2.8 ms | 4.7× |
-| **pidigits** | 0.02 ms | 0.05 ms | 0.15 ms | **0.11 ms** | **0.7×** ✅ |
-| k-nucleotide | 0.06 ms | 0.03 ms | 0.48 ms | 2.0 ms | 4.2× |
-| reverse-comp | 0.02 ms | 0.01 ms | 0.13 ms | 0.60 ms | 4.6× |
-| **regex-redux** | 0.06 ms | 0.09 ms | 0.14 ms | **0.16 ms** | **1.1×** ✅ |
-| **recursive fib** | 0.98 ms | 20.7 ms | 80.4 ms | **65.6 ms** | **0.8×** ✅ |
-
-### vs. original Joker baseline
-
-| Benchmark | Original | Optimized | Speedup |
-|-----------|----------|-----------|---------|
-| Arithmetic loop | 189.8 ms | 38.8 ms (IR) / 0.32 ms (WASM) | 5× / 590× |
-| Recursive fib | 546 ms | 65.6 ms | 8.3× |
-| Word frequency | 280 ms | 7.0 ms | 40× |
-
----
-
-## Architecture Overview
-
-```
-┌─────────────────────────────────────────────────────────┐
-│ Joker Source                                             │
-│   ↓ Reader + Parser                                     │
-│ AST (Expr tree)                                          │
-│   ↓ tco_rewrite (parse-time tail-call → recur)          │
-│   ↓                                                      │
-│ ┌─────────────────────────────────────────────────────┐  │
-│ │ Eval() type switch                                   │  │
-│ │   *LiteralExpr, *BindingExpr, *VarRefExpr → fast    │  │
-│ │   *IfExpr, *LetExpr, *FnExpr → inline               │  │
-│ │   *LoopExpr → try WASM → try IR → evalLoop          │  │
-│ │   *CallExpr → Proc fast paths → Fn.Call              │  │
-│ └─────────────────────────────────────────────────────┘  │
-│   ↓ LoopExpr path                                        │
-│ ┌───────────┐  ┌──────────────┐  ┌────────────────────┐ │
-│ │ WASM/     │  │ IR bytecode  │  │ Tree-walker        │ │
-│ │ wazero    │  │ interpreter  │  │ (evalLoop)         │ │
-│ │ (native)  │  │ (irExec)     │  │                    │ │
-│ │           │  │              │  │                    │ │
-│ │ 0.36ms ⚡ │  │ 28ms         │  │ 190ms              │ │
-│ └───────────┘  └──────────────┘  └────────────────────┘ │
-│   ↑ fallback     ↑ fallback                              │
-│   └──────────────┘                                       │
-│                                                           │
-│ ┌─────────────────────────────────────────────────────┐  │
-│ │ gi Bridge (hooks, tools, state)                      │  │
-│ │   → accessible from tree-walker + IR (via CallSlot)  │  │
-│ │   → planned: WASM host function imports              │  │
-│ └─────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────┘
+```go
+type IRProgram struct {
+    code          []byte      // bytecode
+    constants     []Object    // literal pool
+    numSlots      int         // local variable count
+    captureKeys   []bindingKey
+    captureSlots  []Object    // resolved closure values
+    captureSlotIdxs []int     // slot indices for captures
+    hasSelf       bool        // self-recursive (irCallSelf)
+    nativeHelper  nativeF64Fn // compiled Go closure
+    // ...
+}
 ```
 
----
+**Cost model:**
+- Stack is `[]Object` — every push allocates for numeric types
+- ~5ns per opcode dispatch (Go switch statement)
+- Eliminates environment frame allocation per loop iteration
+- Self-recursive calls use an explicit frame stack (depth-limited at 256)
 
-## Files Changed
+**When used:** Programs that compile to IR but aren't eligible for the typed executor. Collection-heavy programs with map operations, programs that fail typed eligibility checks.
 
-### New files
+## Tier 3: Typed IR Interpreter (`irExecTyped`)
 
-| File | Purpose | Lines |
-|------|---------|-------|
-| `core/ir.go` | IR bytecode compiler + interpreter | ~1200 |
-| `core/ir_exported.go` | Test/debug helpers | ~100 |
-| `core/tco.go` | Runtime trampoline TCO | ~110 |
-| `core/tco_rewrite.go` | Parse-time tail-call rewriting | ~100 |
-| `core/transient.go` | Mutable vector wrapper | ~60 |
-| `core/wasm_binary.go` | WASM module format builder | ~100 |
-| `core/wasm_codegen.go` | IR → WASM instruction codegen | ~150 |
-| `core/wasm_runtime.go` | wazero compile/execute/cache | ~100 |
-| `core/wasm_test.go` | WASM correctness + benchmarks | ~70 |
-| `core/perf_bench_test.go` | Micro-benchmark harness | ~100 |
-| `core/clbg_bench_test.go` | CLBG benchmark runners | ~60 |
-| `core/clbg_extra_bench_test.go` | Additional CLBG runners | ~70 |
-| `core/clbg_scripts_test.go` | CLBG Joker script sources | ~180 |
-| `core/optimization_regression_test.go` | Regression test suite | ~120 |
-| `benchmarks/benchmark-history.json` | Benchmark data | — |
-| `benchmarks/benchmark-cross-language.svg` | Generated chart | — |
-| `benchmarks/generate_svg.go` | Chart generator | ~350 |
-| `benchmarks/cross_lang_bench.py` | Python benchmarks | ~200 |
-| `benchmarks/cross_lang_bench.js` | Bun/JSC benchmarks | ~200 |
-| `benchmarks/cross_lang_bench_goja.go` | Goja benchmarks | ~150 |
-| `benchmarks/README.md` | Benchmark docs | ~30 |
-| `PERFORMANCE_PLAN.md` | Optimization plan/status | ~150 |
+**File:** `core/ir_typed_exec.go` (665 lines)
 
-### Modified files
+The key optimization: replaces `[]Object` stack with `[]irValue` where `irValue` is a 32-byte tagged union:
 
-| File | Changes |
-|------|---------|
-| `core/eval.go` | Eval type switch, LoopExpr IR/WASM integration, LetExpr inline, defer removal |
-| `core/object.go` | Fn.Call rewrite (TCO + defer removal + evalLoop), Fn.call0..call4 (reverted) |
-| `core/procs.go` | Numeric fast paths for +, -, *, rem, <, =, inc, dec, zero? |
-| `core/seq.go` | SeqNth/SeqTryNth ArraySeq fast path |
-| `core/parse.go` | Binding.value field, Bindings.GetBinding(), FnExpr.tailRewritten, hotProc constants (reverted) |
-| `go.mod` | Added wazero dependency |
-
----
-
-## Trade-offs and Decisions
-
-### Kept
-
-1. **Transparent fallback**: every optimization layer (WASM → IR → tree-walker) falls back gracefully. No Joker program should behave differently — only faster.
-
-2. **No language changes**: all optimizations are internal. No new syntax, no new semantics, no user-visible API changes.
-
-3. **Persistent data structures preserved**: Joker's persistent vectors/maps are kept. Transient vectors are an internal optimization detail, not exposed.
-
-4. **Correct over fast**: pidigits uses Ratio arithmetic (correct) instead of integer truncation (faster but wrong).
-
-### Reverted
-
-1. **Parse-time hot-proc tagging** (`hotProc` on `CallExpr`): tested, regressed, reverted. String matching at eval time was cheaper than the AST struct bloat.
-
-2. **sync.Pool for LocalEnv**: caused circular parent references and stack overflow. Reverted.
-
-3. **sync.Pool for irExec frames**: defer+pool overhead exceeded allocation savings for small frames.
-
-4. **Fn.call0..call4 specialization**: caused regression in some workloads due to code bloat.
-
-5. **Naive function inlining**: inlined fn bodies at the bytecode level. Bloated slot counts, causing 2× allocation regression on spectral-norm. Infrastructure kept (Binding.value, findFnExprForBinding) for future register-based inlining.
-
-### Known limitations
-
-1. **Binding collision in deeply nested loops**: complex nesting with many captures can produce incorrect slot assignments. Mitigated by validation + panic recovery + capture limits.
-
-2. **WASM backend is integer-only**: Double, String, and Object operations not yet supported.
-
-3. **No WASM host function imports**: WASM-compiled code can't call back to Joker/gi yet.
-
-4. **Transient vector safety**: automatic transient conversion assumes vectors don't escape loop bodies through non-assoc paths.
-
----
-
-## Reproducing the Work
-
-### Prerequisites
-
-```bash
-cd third_party/joker
-go version  # requires Go 1.24+
+```go
+type irValue struct {
+    tag irValueTag   // 1 byte: int/double/bool/char/string/keyword/object/nil
+    i   int          // int value, rune count, bool flag
+    f   float64      // double value, ASCII flag
+    p   unsafe.Pointer // → string | []byte | map | []int | *ArrayVector | *Fn
+}
 ```
 
-### Run all benchmarks
+**Why 32 bytes matters:** The original `irValue` was 120 bytes (with inline string, []byte, map, []int, Object fields). Every push/pop copied 120 bytes. Go's `duffcopy` routine consumed 23% of CPU. At 32 bytes, copies are 4× cheaper and fit in two cache lines.
 
-```bash
-# Joker benchmarks
-go test ./core -run '^$' -bench 'BenchmarkCLBG|BenchmarkEval|BenchmarkWasm' -benchmem -benchtime=5x
+**Zero-allocation numerics:** `Int`, `Double`, `Boolean` values are stored inline in the `i`/`f` fields — no heap allocation. Only `Object`-tagged values (vectors, maps, strings) use the `p` pointer field.
 
-# Cross-language comparison
-python3 benchmarks/cross_lang_bench.py
-bun benchmarks/cross_lang_bench.js
-cd ../.. && go run third_party/joker/benchmarks/cross_lang_bench_goja.go
+**Dedicated type tags eliminate boxing for common types:**
+- `irValKeyword`: stores `name *string` directly in `p` — keyword equality is pointer comparison
+- `irMakeObject` for `*ArrayVector`, `*TransientVector`, `*Fn`: stores the Go pointer directly, no `Object` interface boxing
+
+**Eligibility:** `irTypedEligible(analysis)` checks the IR program's opcode profile:
+- Pure numeric loops (no strings, no collections) → always eligible
+- Call-slot loops with nth (spectral-norm pattern) → eligible
+- Self-recursive tree builders/walkers (binary-trees pattern) → eligible
+- String-heavy loops with append/prepend patterns → eligible
+- Map-building loops (word-frequency pattern) → eligible with env var
+
+**Frame stack:** Self-recursive calls (`irCallSelf`) use an `irTypedFrameStack` that saves/restores `[]irValue` slots in a pre-allocated contiguous pool. Each frame save copies 32×N bytes instead of allocating a new Go stack frame. Depth-limited at 256 to avoid overhead for exponential recursion (fibonacci).
+
+**When used:** Most compiled programs. The eval path tries `irExecTyped` first, falls through to `irExec` if it returns nil.
+
+## Tier 4: Native f64 Closures
+
+**File:** `core/ir_native_helper.go` (170 lines)
+
+For pure arithmetic helper functions (no collections, no strings, no control flow beyond if/recur), the IR bytecode is compiled to a Go closure:
+
+```go
+type nativeF64Fn func(args []float64) float64
 ```
 
-### Run tests
+The closure interprets the same IR opcodes but operates on a `[]float64` stack — pure register-like execution with zero allocation. The `noescape64` trick (`core/noescape.go`) prevents the float64 slice argument from escaping to heap.
 
-```bash
-go test ./core          # unit tests + regression suite
-go test ./...           # full module
+**Example:** Spectral-norm's `A(i,j) = 1/((i+j)(i+j+1)/2 + i+1)` compiles to a native closure that runs at near-Go speed.
+
+**Dispatch:** When the typed executor encounters `irCallSlot` and the called function has a `nativeHelper`, it extracts float64 args from the irValue stack, calls the closure directly, and pushes the result — zero Object boxing in the entire call chain.
+
+## Tier 5: WASM (wazero)
+
+**Files:** `core/wasm_*.go` (~2500 lines)
+
+Pure arithmetic helpers can also be compiled to WebAssembly modules and executed via wazero's ahead-of-time compiler. This generates native x86-64/arm64 machine code.
+
+**Current status:** WASM is available but rarely faster than native f64 closures because:
+- Each WASM function call has ~200ns boundary-crossing overhead
+- The native f64 closure path avoids this entirely
+- WASM modules have ~1-5ms compilation latency
+
+**When used:** Only for spectral-norm's `A` function (which also has a native closure). The WASM path is tried after native helpers fail.
+
+**Future potential:** WASM could be valuable for compiling entire loop bodies (not just helpers) to native code, eliminating the Go switch dispatch overhead (~5ns/op). This would require WASM codegen for collection operations (nth, assoc) via host function imports.
+
+## IR Compilation Pipeline
+
+### Loop Compilation (`irCompile`)
+
+```
+LoopExpr → irCompiler.compileExpr → IRProgram
 ```
 
-### Regenerate chart
+The compiler walks the loop body, assigning bindings to numbered slots. Inner `let` bindings and nested loops get additional slots. Captures from outer scopes are resolved and stored as pre-filled slot values.
 
-```bash
-go run ./benchmarks/generate_svg.go ./benchmarks
+**Frame detection:** The compiler must map parse-time frame numbers to IR slot indices. Three helpers handle this:
+
+- `guessLoopFrame`: finds the loop's own frame from RecurExpr bindings
+- `guessFnParamFrame`: finds the fn parameter frame (requires ALL indices 0..N-1 present)
+- `findLetFrame`: uses known-binding exclusion to find each let's frame precisely
+
+**Depth limit:** Nested let/loop compilation is limited to depth 8. The n-body `advance` function (5 nested loops) requires this depth.
+
+### Function Compilation (`irCompileFn`)
+
+```
+Fn → FnArityExpr → irCompiler → IRProgram (with captures)
 ```
 
-### Suggested git history for the fork
+Functions compile like loops but with additional handling:
+- Parameters mapped to the fn's frame
+- Captures resolved from `fn.env` chain at compile time
+- Self-recursive calls emit `irCallSelf` opcode
+- Results cached on the `*Fn` object via atomic flag (`irGetFnProg`)
 
-If replaying this work as commits:
+**Capture resolution:** When `irCompileFn` encounters bindings outside the fn's scope, it walks `fn.env` to find the runtime value. These become `captureSlots` on the IRProgram, injected into slots at execution time. This enables letfn-bound functions (mandelbrot's pixel, binary-trees' make-tree/check-tree) to compile to IR.
 
+### Escape Analysis
+
+**File:** `core/escape_analysis.go` (231 lines)
+
+Before execution, `irExec` analyzes which slots are "safe mutable" — used only as recur arguments, never passed to function calls or returned. Safe slots are converted to transient versions:
+
+- `*ArrayVector` → `*TransientVector` (in-place assoc)
+- `*ArrayMap` → `*TransientMap` (in-place assoc)
+- `String` → `*TransientString` (in-place append via `[]byte`)
+
+This enables zero-copy collection mutation in loop accumulators without changing the Clojure source code.
+
+### Helper Inlining
+
+**File:** `core/ir_inline.go` (408 lines)
+
+When a loop calls a pure arithmetic helper via `irCallSlot`, the compiler can inline the helper's body directly into the loop's bytecode. This eliminates the function call overhead entirely.
+
+**Guards:**
+- Helper must be ≤32 expressions
+- No collection operations in the inlined body
+- `exprIsPureArithmetic` classifier gates inlining
+
+### IR Analysis
+
+**File:** `core/ir_analysis.go` (150 lines)
+
+`AnalyzeIRProgram` scans the bytecode and produces an `IRAnalysis` struct describing the program's characteristics:
+
+```go
+type IRAnalysis struct {
+    NumOps, NumSlots, NumCaptures int
+    UsesFloat, UsesString, UsesCollection, UsesTransient bool
+    HasCallSlot, HasSelfCall, HasNestedRecur, HasGenericNth bool
+    HasMapOps, HasStringAppend, HasStringPrepend bool
+    SuggestedPath string  // "wasm", "typed-ir", "ir-collection-builder", etc.
+}
 ```
-1. feat(core): add benchmark harness (perf_bench_test.go)
-2. perf(core/procs): numeric fast paths for +, -, *, rem, <, =, inc, dec, zero?
-3. perf(core/eval): inline LetExpr, LoopExpr, FnExpr evaluation
-4. perf(core/eval): stack-backed arg arrays for small-arity calls
-5. perf(core/eval): binding resolution fast path
-6. perf(core/seq): ArraySeq direct indexing in SeqNth/SeqTryNth
-7. perf(core/object): remove defer from Fn.Call
-8. feat(core/ir): add IR bytecode interpreter (ir.go)
-9. feat(core/ir): IR caching + loop compilation
-10. feat(core/ir): Double support in IR arithmetic ops
-11. feat(core/ir): irCallSlot for captured fn dispatch
-12. feat(core/ir): irCallSelf for self-recursive fn dispatch
-13. feat(core/ir): irBuildVec, irFirst, irConj, irNth, irSqrt, irDiv
-14. feat(core/ir): compiled fn dispatch (irCompileFn + nested irExec)
-15. feat(core/ir): nested LoopExpr compilation with target-PC recur
-16. perf(core/ir): stack-backed slot/stack buffers in irExec
-17. feat(core/tco): runtime trampoline for tail-call optimization
-18. feat(core/tco_rewrite): parse-time tail-call → recur rewriting
-19. feat(core/transient): TransientVector for in-place mutation in IR loops
-20. feat(core/ir): irStr2, irCount opcodes for string operations
-21. feat(core): add CLBG benchmark suite (10 programs × 4 engines)
-22. feat(core/wasm): WASM binary builder (wasm_binary.go)
-23. feat(core/wasm): IR → WASM codegen (wasm_codegen.go)
-24. feat(core/wasm): wazero runtime integration (wasm_runtime.go)
-25. fix(core/wasm): correct i64.rem_s opcode (0x81 not 0x80)
-26. feat(core/parse): Binding.value field for fn inlining infrastructure
-27. docs: comprehensive optimization report
-```
 
----
+This drives eligibility decisions for the typed executor, WASM compilation, and inlining.
+
+## Allocation Reduction Strategy
+
+The optimization work follows a **progressive elimination** pattern, removing allocations from the inside out:
+
+### Layer 1: Numeric boxing (eliminated)
+`Int{I: x}` and `Double{D: x}` stored in `Object` interface → heap alloc. **Fix:** `irValue` stores numerics inline. Impact: millions of allocs eliminated for arithmetic-heavy programs.
+
+### Layer 2: Function call boxing (eliminated for IR-compiled fns)
+`Fn.Call(args)` boxes arguments into `[]Object`. **Fix:** `irCallSlot` dispatches through `irExecTyped` which uses `irValue` args. Impact: eliminated tree-walker overhead for fn calls from IR code.
+
+### Layer 3: Collection type boxing (partially eliminated)
+`*ArrayVector` and `*Fn` stored in `Object` interface via `irMakeObject` → `new(Object)` alloc. **Fix:** Direct pointer storage using `unsafe.Pointer` with sub-tag in `irValue.i`. Impact: 360K allocs eliminated for binary-trees.
+
+### Layer 4: Keyword boxing (eliminated)
+`Keyword` value type stored in `Object` interface → heap alloc for every keyword comparison. **Fix:** `irValKeyword` tag stores `name *string` pointer directly. Equality is pointer comparison. Impact: 700K allocs eliminated for binary-trees.
+
+### Layer 5: Frame allocation (eliminated for depth ≤ 256)
+Recursive `irExec(prog, args)` allocates `[16]Object` slot buffer per call. **Fix:** Explicit frame stack saves/restores slots in pre-allocated contiguous memory. Impact: binary-trees from 3.1M to 1.7M allocs.
+
+### Remaining allocation sources (inherent)
+- `make([]Object, n)` for vector construction — Go requires heap allocation for slices
+- `Keyword{...}` stored in `[]Object` — Go boxes value types in interfaces
+- `new(Object)` for non-pointer types (Char, String) in `irMakeObject`
+
+These are Go language limitations. Further reduction would require either:
+- A custom allocator (arena allocation for tree-building patterns)
+- NaN-boxing the `[]Object` array elements (changes the ArrayVector representation)
+- Compiling to a different data representation (Go structs instead of Clojure vectors)
+
+## File Organization
+
+| File | Lines | Purpose |
+|---|---:|---|
+| `ir.go` | 99 | Opcodes, cache, IRProgram struct |
+| `ir_compile_fn.go` | 121 | Function compilation with capture resolution |
+| `ir_compiler.go` | 773 | IR compiler (compileExpr, let/loop, frame detection) |
+| `ir_inline.go` | 408 | Helper inlining + call compilation |
+| `ir_exec.go` | 765 | Boxed IR interpreter |
+| `ir_typed.go` | 270 | irValue type, helpers, eligibility |
+| `ir_typed_exec.go` | 665 | Typed IR interpreter |
+| `ir_typed_frame_stack.go` | 53 | irValue frame stack for self-recursion |
+| `ir_frame_stack.go` | 60 | Object frame stack for boxed executor |
+| `ir_frame_detect.go` | 82 | Precise let/loop frame detection |
+| `ir_native_helper.go` | 170 | Native f64 closure compiler |
+| `ir_fn_cache.go` | 153 | Fn→IRProgram caching + loop wrapper builder |
+| `ir_analysis.go` | 150 | IR program analysis |
+| `ir_value_accessors.go` | 136 | irValue unsafe.Pointer accessors |
+| `ir_diagnostics.go` | 252 | Debug/diagnostic tools |
+| `ir_exported.go` | 96 | Exported API for IR introspection |
+| `escape_analysis.go` | 231 | Transient auto-promotion |
+| `noescape.go` | 22 | unsafe.Pointer noescape trick |
+| `wasm_*.go` | ~2500 | WASM compilation + runtime (10 files) |
+
+## Performance Results
+
+### vs Python 3.13 (CPython)
+
+| Benchmark | Joker | Python | Ratio | Path |
+|---|---:|---:|---:|---|
+| tail-rec sum | 0.07ms | 3.6ms | **0.02×** | Typed IR + TCO |
+| arithmetic loop | 0.25ms | 6.65ms | **0.04×** | Typed IR |
+| recursive fib | 1.0ms | 21ms | **0.05×** | Typed frame stack |
+| spectral-norm | 14ms | 24.5ms | **0.58×** | Native f64 + typed dispatch |
+| pidigits | 0.04ms | 0.05ms | **0.74×** | Typed IR |
+| binary-trees | 110ms | 54ms | 2.0× | Typed frame stack + keyword tag |
+| mandelbrot | 15ms | 4.8ms | 3.2× | Typed IR + fn closure |
+| n-body | 40ms | 0.66ms | 60× | Tree-walker fallback |
+
+### vs Goja (Go JavaScript interpreter)
+
+Beat Goja on 11/13 benchmarks. Goja losses: fannkuch (4.8×) and n-body (8.4×), both due to persistent data structure overhead that JavaScript's mutable arrays don't have.
 
 ## Future Directions
 
-The immediate priority is **core Joker speed**, not additional namespaces. Namespace wrappers and extra libraries should remain on the roadmap, but they should not displace evaluator/IR/runtime work.
-
-### High priority — core runtime
-
-1. **IR coverage and diagnostics**
-   - Keep broadening the lowered IR subset before adding new surface APIs.
-   - Initial `IR explain`/`WASM explain` helpers now report whether the first hot loop compiled, slot/capture/op counts, pure-WASM eligibility, host-import requirements, string-op rejection, helper-call/multi-function gaps, and no-loop cases.
-   - IR rejection specificity now covers unsupported expression types, unsupported callable shapes, unsupported core vars, wrong arity, binding/capture failures, slot collisions, too many captures, and dynamic map literals.
-   - Loop-frame inference now prefers bindings seen in `recur` arguments, allowing nested/captured loop shapes like k-nucleotide's frequency loop to compile.
-   - Constant `count` folding for literal/bound counted values removes `irCount` from loops like fasta and lets them reach the pure WASM backend.
-   - Next: add source-location breadcrumbs for nested failures so benchmark diagnostics can point at the exact sub-form.
-   - Track counters for IR compiled/rejected, WASM compiled/rejected, fallback reason, and runtime fallback.
-   - Add more regression tests around nested `let`, nested `loop`, captured bindings, closures, and helper calls.
-
-2. **String and sequence throughput**
-   - Started: IR now lowers unary `str`, allowing char-to-string conversion loops to remain in IR; `irNth` has a Unicode-preserving ASCII-prefix fast path for strings; `irEq` has direct char/string equality; `irNthStringASCII` handles compile-time-known ASCII string indexing directly.
-   - Typed IR v2 now runs automatically for eligible primitive/string loops unless disabled with `JOKER_IR_TYPED=off`, using cached IR analysis and a tagged value stack. It caches string length/ASCII metadata and supports constant ASCII plus generic string/vector `nth`, object-backed `count`, internal builder slots, safe string-int map values with runtime fallback for non-string keys, and an experimental int-vector value behind `JOKER_IR_TYPED_VEC=1`; probes reduce allocations in string append, char-compare, k-nucleotide, and reverse-complement workloads.
-   - TransientString prepend builders are enabled in auto mode for `(str char-or-string acc)` style loops; append builders remain force-only because they regress broader CLBG text cases.
-   - Repeated string rune counts are cached; ASCII `subs` avoids `[]rune` conversion; `stringSeq` implements `Count`.
-   - Continue optimizing `str`, `nth`, regex result handling, and sequence iteration.
-   - Add more ASCII/byte fast paths where Joker semantics allow it, while preserving Unicode correctness.
-   - Reduce per-character `Char`/`String` allocation in CLBG-style string workloads.
-   - Consider builder-style internal representations for repeated concatenation patterns.
-
-3. **Persistent map/vector internals**
-   - Literal map expressions, including `{}`, now compile to IR constants so more map-update loops can stay on the lowered path.
-   - Continue reducing allocation in `ArrayMap`/`HashMap` update loops.
-   - Keep safe transient conversion for non-escaping loop slots and improve escape precision.
-   - Improve small-map specialization and vector update/copy paths without changing persistent semantics.
-
-4. **Function call overhead and inlining**
-   - Started: IR helper/self-call dispatch now uses stack-backed argument arrays for small arities, and IR equality has direct char/string fast paths before falling back to `Object.Equals`.
-   - Tiny helper inlining now defaults to `auto`: text helpers (string/char literals or `str` usage) and tiny straight-line collection helpers (`nth`/`get`/`assoc`/`conj`/`count`/`first`) are inlined. `JOKER_IR_INLINE=force` enables all tiny helpers for experiments; `off` disables it.
-   - Median probes show reverse-complement remains much faster in auto mode, and a synthetic collection-helper loop improves substantially, while numeric helper loops remain protected from default inlining.
-   - Next: add source breadcrumbs for inlining decisions and keep broadening only when the median harness shows a win.
-   - Fast-path arity checks and reduce frame/env allocation for simple calls.
-   - Cache compiled helper functions aggressively and avoid returning to the tree-walker for hot call sites.
-
-### Medium priority — WASM backend
-
-5. **Multi-function WASM modules**
-   - Started: a one-helper WASM module prototype can emit a caller plus one captured helper function and lower `irCallSlot` to a direct WASM `call`.
-   - Helper functions with compiler-local slots now get proper WASM locals instead of being modeled as extra parameters.
-   - Required to close gaps such as mandelbrot/pixel-style workloads; default `auto` mode permits only integer one-helper modules, while float helper modules require `JOKER_WASM_MULTIFN=force` for benchmark probing.
-   - Next work is a measured cost model and broader safe capture/local ABI before enabling float helper modules by default.
-
-6. **WASM host imports for collections**
-   - Keep the imported-collection path behind validation until the handle ABI and structured control-flow lowering are safe.
-   - Avoid recursive imported-WASM collection functions until multi-function support is in place.
-   - Add validation tests that compare WASM+imports results against IR/tree-walker results before enabling by default.
-
-7. **WASM linear memory auto-use**
-   - The explicit f64/i64 array support is a foundation; core Joker does not yet automatically use it.
-   - Add IR opcodes for direct typed array load/store and WASM codegen that emits memory operations instead of host-side `Memory.Read`/`Write`.
-   - Consider numeric array specialization for embeddings/signal-processing workloads only when semantics are clear.
-
-### Roadmap only — user-facing surface
-
-8. **User-facing transients and namespace wrappers**
-   - The core transient data structures exist, but public `core.joke` wrappers and additional namespaces are not immediate priorities.
-   - Add them once the core execution paths and diagnostics are stable.
-
-### Benchmark hygiene
-
-9. **Keep benchmarks reproducible**
-   - Store stable baseline/current snapshots in JSON and generate charts from that data only.
-   - Report medians over multiple runs when comparing small deltas.
-   - Distinguish tree-walker, IR, IR+transients, WASM, and WASM+imports in benchmark annotations.
-   - Keep CLBG results framed as IR/WASM pipeline stress tests, not broad real-world performance claims.
+1. **Compile letfn wrapper loops to IR** — would route fannkuch heap-perm and n-body advance calls through IR instead of tree-walker
+2. **Arena allocation for tree-building patterns** — pool-allocate `[]Object` slices for `irBuildVec` in loop contexts
+3. **WASM for entire loop bodies** — compile numeric loops with nth to WASM, using host function imports for vector access
+4. **Transient auto-promotion in irExecTyped** — detect safe-mutable slots in the typed executor and convert ArrayVectors to TransientVectors automatically
