@@ -77,9 +77,11 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 				a.UsesString = true
 			}
 			pc += 2
-		case irGet, irGet3, irAssoc, irFirst:
+		case irGet, irGet3, irAssoc:
 			a.UsesCollection = true
 			a.HasMapOps = true
+		case irFirst:
+			a.UsesCollection = true
 		case irConj:
 			a.UsesCollection = true
 		case irNth:

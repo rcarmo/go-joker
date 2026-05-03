@@ -1,12 +1,14 @@
 package core
 
+import (
+	"unsafe"
+)
+
 // ir_value_accessors.go — typed accessors for irValue's unsafe.Pointer field.
 //
 // irValue stores extended data (strings, collections, objects) behind an
 // unsafe.Pointer to keep the struct at 32 bytes for the numeric hot path.
 // These accessors provide type-safe reads/writes.
-
-import "unsafe"
 
 // --- String ---
 
@@ -113,12 +115,34 @@ func (v *irValue) setIntVec(iv []int) {
 // --- Object ---
 
 func irMakeObject(obj Object) irValue {
-	return irValue{tag: irValObject, p: unsafe.Pointer(&obj)}
+	// For common concrete pointer types, store directly to avoid
+	// allocating an Object interface box. Use i field as sub-tag.
+	switch v := obj.(type) {
+	case *ArrayVector:
+		return irValue{tag: irValObject, i: 1, p: unsafe.Pointer(v)}
+	case *TransientVector:
+		return irValue{tag: irValObject, i: 2, p: unsafe.Pointer(v)}
+	case *Fn:
+		return irValue{tag: irValObject, i: 3, p: unsafe.Pointer(v)}
+	default:
+		p := new(Object)
+		*p = obj
+		return irValue{tag: irValObject, i: 0, p: unsafe.Pointer(p)}
+	}
 }
 
 func (v irValue) obj() Object {
 	if v.p == nil {
 		return NIL
 	}
-	return *(*Object)(v.p)
+	switch v.i {
+	case 1:
+		return (*ArrayVector)(v.p)
+	case 2:
+		return (*TransientVector)(v.p)
+	case 3:
+		return (*Fn)(v.p)
+	default:
+		return *(*Object)(v.p)
+	}
 }

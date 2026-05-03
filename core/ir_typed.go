@@ -85,7 +85,7 @@ func irTypedEligible(a IRAnalysis) bool {
 		return true
 	}
 	// Accept: pure numeric loops (no strings, no collections, no call-slots)
-	if !a.UsesString && !a.UsesCollection && !a.HasCallSlot && !a.HasSelfCall {
+	if !a.UsesString && !a.UsesCollection && !a.HasCallSlot {
 		return true
 	}
 	return a.UsesString || a.SuggestedPath == "typed-ir-string-candidate" || a.SuggestedPath == "typed-ir-generic-string-nth-candidate"
