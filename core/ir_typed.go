@@ -79,6 +79,10 @@ func irTypedEligible(a IRAnalysis) bool {
 		if irTypedMapEnabled() && a.HasMapOps && a.UsesString {
 			return true
 		}
+		// Self-recursive tree builders/walkers (binary-trees pattern)
+		if a.HasSelfCall && !a.HasMapOps && !a.UsesString {
+			return true
+		}
 		return irTypedVecEnabled() && a.UsesCollection && !a.UsesString && !a.HasMapOps
 	}
 	// Accept: float/int + generic-nth (e.g. inlined arithmetic helpers with vector nth)
