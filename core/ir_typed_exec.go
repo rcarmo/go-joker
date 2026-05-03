@@ -609,7 +609,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				arr[i] = stack[len(stack)-1].object()
 				stack = stack[:len(stack)-1]
 			}
-			stack = append(stack, objectToIRValue(&ArrayVector{arr: arr}))
+			stack = append(stack, irMakeObject(&ArrayVector{arr: arr}))
 
 		case irToTransient:
 			a := stack[len(stack)-1]
