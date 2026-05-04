@@ -784,6 +784,41 @@ func str(args ...Object) string {
 }
 
 var procStr = func(args []Object) Object {
+	// Fast path: 2-arg str (common in parsers: (str buf c))
+	if len(args) == 2 {
+		a, b := args[0], args[1]
+		// Fastest: string + char (the parser hot path)
+		if as, ok := a.(String); ok {
+			if bc, ok := b.(Char); ok {
+				return String{S: as.S + charToStringFast(bc.Ch)}
+			}
+			if bs, ok := b.(String); ok {
+				return String{S: as.S + bs.S}
+			}
+		}
+		// General 2-arg
+		if a.Equals(NIL) {
+			if b.Equals(NIL) {
+				return String{S: ""}
+			}
+			return String{S: b.ToString(false)}
+		}
+		if b.Equals(NIL) {
+			return String{S: a.ToString(false)}
+		}
+		return String{S: a.ToString(false) + b.ToString(false)}
+	}
+	// 1-arg str
+	if len(args) == 1 {
+		a := args[0]
+		if a.Equals(NIL) {
+			return String{S: ""}
+		}
+		if s, ok := a.(String); ok {
+			return s
+		}
+		return String{S: a.ToString(false)}
+	}
 	return String{S: str(args...)}
 }
 

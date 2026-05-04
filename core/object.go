@@ -19,6 +19,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 	"unicode/utf8"
 	"unsafe"
@@ -1218,7 +1219,7 @@ func (c Char) ToString(escape bool) string {
 	if escape {
 		return escapeRune(c.Ch)
 	}
-	return string(c.Ch)
+	return charToStringFast(c.Ch)
 }
 
 func (c Char) Equals(other interface{}) bool {
@@ -1691,23 +1692,12 @@ func (s String) Nth(i int) Object {
 	if i < 0 {
 		panic(RT.NewError(fmt.Sprintf("Negative index: %d", i)))
 	}
-	// Fast path: if i < len and byte at i is ASCII AND no multi-byte
-	// chars exist before position i, byte index == rune index.
-	// Quick check: if len(s.S) equals the rune-count-so-far, it's ASCII.
-	if i < len(s.S) && s.S[i] < 0x80 {
-		// Verify no multi-byte chars before index i by checking
-		// that no byte in s.S[:i+1] has high bit set.
-		ascii := true
-		for j := 0; j <= i; j++ {
-			if s.S[j] >= 0x80 {
-				ascii = false
-				break
-			}
-		}
-		if ascii {
-			return Char{Ch: rune(s.S[i])}
-		}
+	// Fast path: for pure ASCII strings, byte index == rune index.
+	// Check: if len(s) matches byte count, all chars are single-byte.
+	if i < len(s.S) && stringIsASCII(s.S) {
+		return Char{Ch: rune(s.S[i])}
 	}
+	// Slow path: UTF-8 rune iteration
 	n := 0
 	for _, r := range s.S {
 		if n == i {
@@ -1719,13 +1709,30 @@ func (s String) Nth(i int) Object {
 }
 
 // stringIsASCII returns true if all bytes in s are < 0x80.
+// Caches results for strings > 8 bytes to avoid repeated scans.
+var asciiCache sync.Map // string -> bool
+
 func stringIsASCII(s string) bool {
+	if len(s) <= 8 {
+		for i := 0; i < len(s); i++ {
+			if s[i] >= 0x80 {
+				return false
+			}
+		}
+		return true
+	}
+	if v, ok := asciiCache.Load(s); ok {
+		return v.(bool)
+	}
+	result := true
 	for i := 0; i < len(s); i++ {
 		if s[i] >= 0x80 {
-			return false
+			result = false
+			break
 		}
 	}
-	return true
+	asciiCache.Store(s, result)
+	return result
 }
 
 func (s String) TryNth(i int, d Object) Object {
