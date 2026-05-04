@@ -660,6 +660,59 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				return nil
 			}
 
+		case irIntCast:
+			a := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			switch a.tag {
+			case irValChar:
+				stack = append(stack, irValue{tag: irValInt, i: int(a.char())})
+			case irValInt:
+				stack = append(stack, a)
+			case irValDouble:
+				stack = append(stack, irValue{tag: irValInt, i: int(a.f)})
+			default:
+				return nil
+			}
+
+		case irSubs:
+			nargs := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			if nargs == 3 {
+				ei := stack[len(stack)-1]
+				si := stack[len(stack)-2]
+				sv := stack[len(stack)-3]
+				stack = stack[:len(stack)-3]
+				if sv.tag == irValString && si.tag == irValInt {
+					s := sv.str()
+					start := si.i
+					end := ei.i
+					if sv.isASCII() {
+						stack = append(stack, irMakeString(s[start:end], end-start, true))
+					} else {
+						runes := []rune(s)
+						stack = append(stack, stringToIRValue(string(runes[start:end])))
+					}
+				} else {
+					return nil
+				}
+			} else {
+				si := stack[len(stack)-1]
+				sv := stack[len(stack)-2]
+				stack = stack[:len(stack)-2]
+				if sv.tag == irValString && si.tag == irValInt {
+					s := sv.str()
+					start := si.i
+					if sv.isASCII() {
+						stack = append(stack, irMakeString(s[start:], len(s)-start, true))
+					} else {
+						runes := []rune(s)
+						stack = append(stack, stringToIRValue(string(runes[start:])))
+					}
+				} else {
+					return nil
+				}
+			}
+
 		default:
 			return nil
 		}

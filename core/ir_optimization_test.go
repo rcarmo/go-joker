@@ -520,3 +520,36 @@ func TestIrValueKeywordEquality(t *testing.T) {
 		t.Fatal(":leaf should not equal :node")
 	}
 }
+
+// --- irIntCast and irSubs opcodes ---
+
+func TestIRIntCast(t *testing.T) {
+	clbgInit()
+	tests := []struct{ expr, want string }{
+		{`(let [f (fn [c] (int c))] (f \A))`, "65"},
+		{`(let [f (fn [c] (int c))] (f \0))`, "48"},
+		{`(let [f (fn [n] (int n))] (f 3.7))`, "3"},
+		{`(let [f (fn [n] (int n))] (f 42))`, "42"},
+	}
+	for _, tt := range tests {
+		r := Eval(compileBenchExpr(t, tt.expr), nil)
+		if r.ToString(false) != tt.want {
+			t.Errorf("%s = %s, want %s", tt.expr, r.ToString(false), tt.want)
+		}
+	}
+}
+
+func TestIRSubs(t *testing.T) {
+	clbgInit()
+	tests := []struct{ expr, want string }{
+		{`(let [f (fn [s] (subs s 1 3))] (f "hello"))`, "el"},
+		{`(let [f (fn [s] (subs s 0 5))] (f "hello"))`, "hello"},
+		{`(let [f (fn [s i] (subs s i))] (f "hello" 2))`, "llo"},
+	}
+	for _, tt := range tests {
+		r := Eval(compileBenchExpr(t, tt.expr), nil)
+		if r.ToString(false) != tt.want {
+			t.Errorf("%s = %s, want %s", tt.expr, r.ToString(false), tt.want)
+		}
+	}
+}

@@ -52,6 +52,8 @@ const (
 	irAssocBang                  // pop 3 (tv, key, val), mutate in place, push tv
 	irToPersistent               // pop 1 (TransientVector), push ArrayVector
 	irFallback                   // cannot execute in IR; fall back to tree Eval
+	irIntCast                    // pop 1 (Char or Number), push Int
+	irSubs                       // pop 2 or 3 (string, start [, end]), push substring
 )
 
 // ---------- Cache ----------

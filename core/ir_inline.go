@@ -248,6 +248,25 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			return false
 		}
 		c.emit(irEq)
+	case "procInt":
+		if len(expr.args) != 1 {
+			return c.reject("%s expects 1 arg", procName)
+		}
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
+		c.emit(irIntCast)
+	case "procSubs":
+		if len(expr.args) < 2 || len(expr.args) > 3 {
+			return c.reject("%s expects 2-3 args", procName)
+		}
+		for _, a := range expr.args {
+			if !c.compileExpr(a, false) {
+				return false
+			}
+		}
+		// Encode arg count in the opcode operand
+		c.emitWithOperand(irSubs, len(expr.args))
 	case "procIsZero":
 		if len(expr.args) != 1 {
 			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
@@ -402,6 +421,10 @@ func coreVarToProcName(vr *Var) string {
 		return "procCount"
 	case "nth":
 		return "procNth"
+	case "int":
+		return "procInt"
+	case "subs":
+		return "procSubs"
 	default:
 		return ""
 	}

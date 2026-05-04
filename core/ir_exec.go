@@ -755,6 +755,51 @@ loop:
 			} else {
 				return nil
 			}
+		case irIntCast:
+			a := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			switch v := a.(type) {
+			case Char:
+				stack = append(stack, Int{I: int(v.Ch)})
+			case Int:
+				stack = append(stack, v)
+			case Double:
+				stack = append(stack, Int{I: int(v.D)})
+			default:
+				return nil
+			}
+
+		case irSubs:
+			nargs := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			if nargs == 3 {
+				end := stack[len(stack)-1]
+				start := stack[len(stack)-2]
+				sObj := stack[len(stack)-3]
+				stack = stack[:len(stack)-3]
+				s := sObj.(String).S
+				si := start.(Int).I
+				ei := end.(Int).I
+				if stringIsASCII(s) {
+					stack = append(stack, String{S: s[si:ei]})
+				} else {
+					runes := []rune(s)
+					stack = append(stack, String{S: string(runes[si:ei])})
+				}
+			} else {
+				start := stack[len(stack)-1]
+				sObj := stack[len(stack)-2]
+				stack = stack[:len(stack)-2]
+				s := sObj.(String).S
+				si := start.(Int).I
+				if stringIsASCII(s) {
+					stack = append(stack, String{S: s[si:]})
+				} else {
+					runes := []rune(s)
+					stack = append(stack, String{S: string(runes[si:])})
+				}
+			}
+
 		case irFallback:
 			return nil
 
