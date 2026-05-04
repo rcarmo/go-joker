@@ -501,7 +501,6 @@ func (c *irCompiler) compileLetBody(e *LetExpr, isLast bool) bool {
 	// Detect let frame using precise binding reference analysis
 	letFrame := findLetFrame(e.body, len(e.values), c.bindingMap)
 	if letFrame < 0 {
-		// Fallback: first binding frame > loopFrame
 		for _, bodyExpr := range e.body {
 			if f := findBindingFrame(bodyExpr); f > c.loopFrame {
 				letFrame = f
@@ -511,6 +510,16 @@ func (c *irCompiler) compileLetBody(e *LetExpr, isLast bool) bool {
 	}
 	if letFrame < 0 {
 		letFrame = c.loopFrame + c.depth
+	}
+	// Save ALL existing bindings for this frame (not just the indices we'll
+	// overwrite) so we can restore after the let scope exits. This prevents
+	// inner let scopes from corrupting outer scope binding maps when the
+	// parser assigns the same frame number to multiple scopes.
+	savedBindings := make(map[bindingKey]int)
+	for key, slot := range c.bindingMap {
+		if key.frame == letFrame {
+			savedBindings[key] = slot
+		}
 	}
 	for i, bindExpr := range e.values {
 		if !c.compileExpr(bindExpr, false) {
@@ -530,6 +539,16 @@ func (c *irCompiler) compileLetBody(e *LetExpr, isLast bool) bool {
 			return false
 		}
 	}
+	// Restore outer scope bindings for this frame.
+	// First, delete all current frame bindings, then restore saved ones.
+	for key := range c.bindingMap {
+		if key.frame == letFrame {
+			delete(c.bindingMap, key)
+		}
+	}
+	for key, slot := range savedBindings {
+		c.bindingMap[key] = slot
+	}
 	return true
 }
 
@@ -546,6 +565,14 @@ func (c *irCompiler) compileNestedLoop(loop *LoopExpr, isLast bool) bool {
 	}
 	if loopFrame < 0 {
 		loopFrame = c.loopFrame + c.depth
+	}
+
+	// Save existing bindings for this frame to restore after scope exits.
+	savedBindings := make(map[bindingKey]int)
+	for key, slot := range c.bindingMap {
+		if key.frame == loopFrame {
+			savedBindings[key] = slot
+		}
 	}
 
 	for i, bindExpr := range loopLet.values {
@@ -582,6 +609,15 @@ func (c *irCompiler) compileNestedLoop(loop *LoopExpr, isLast bool) bool {
 	}
 
 	c.recurTargets = c.recurTargets[:len(c.recurTargets)-1]
+	// Restore outer scope bindings for this frame.
+	for key := range c.bindingMap {
+		if key.frame == loopFrame {
+			delete(c.bindingMap, key)
+		}
+	}
+	for key, slot := range savedBindings {
+		c.bindingMap[key] = slot
+	}
 	return true
 }
 
