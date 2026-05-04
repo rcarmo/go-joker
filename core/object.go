@@ -1631,6 +1631,9 @@ func (s String) Hash() uint32 {
 }
 
 func (s String) Count() int {
+	if stringIsASCII(s.S) {
+		return len(s.S)
+	}
 	return utf8.RuneCountInString(s.S)
 }
 
@@ -1688,23 +1691,56 @@ func (s String) Nth(i int) Object {
 	if i < 0 {
 		panic(RT.NewError(fmt.Sprintf("Negative index: %d", i)))
 	}
-	j, r := 0, 't'
-	for j, r = range s.S {
-		if i == j {
-			return Char{Ch: r}
+	// Fast path: if i < len and byte at i is ASCII AND no multi-byte
+	// chars exist before position i, byte index == rune index.
+	// Quick check: if len(s.S) equals the rune-count-so-far, it's ASCII.
+	if i < len(s.S) && s.S[i] < 0x80 {
+		// Verify no multi-byte chars before index i by checking
+		// that no byte in s.S[:i+1] has high bit set.
+		ascii := true
+		for j := 0; j <= i; j++ {
+			if s.S[j] >= 0x80 {
+				ascii = false
+				break
+			}
+		}
+		if ascii {
+			return Char{Ch: rune(s.S[i])}
 		}
 	}
-	panic(RT.NewError(fmt.Sprintf("Index %d exceeds string's length %d", i, j+1)))
+	n := 0
+	for _, r := range s.S {
+		if n == i {
+			return Char{Ch: r}
+		}
+		n++
+	}
+	panic(RT.NewError(fmt.Sprintf("Index %d exceeds string's length %d", i, n)))
+}
+
+// stringIsASCII returns true if all bytes in s are < 0x80.
+func stringIsASCII(s string) bool {
+	for i := 0; i < len(s); i++ {
+		if s[i] >= 0x80 {
+			return false
+		}
+	}
+	return true
 }
 
 func (s String) TryNth(i int, d Object) Object {
 	if i < 0 {
 		return d
 	}
-	for j, r := range s.S {
-		if i == j {
+	if i < len(s.S) && stringIsASCII(s.S) {
+		return Char{Ch: rune(s.S[i])}
+	}
+	n := 0
+	for _, r := range s.S {
+		if n == i {
 			return Char{Ch: r}
 		}
+		n++
 	}
 	return d
 }
