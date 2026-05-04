@@ -29,7 +29,7 @@ func irCompileNativeHelper(prog *IRProgram) nativeF64Fn {
 		case irLiteral, irLoadSlot, irStoreSlot:
 			pc += 2
 		case irAdd, irSub, irMul, irDiv, irRem, irInc, irDec,
-			irLt, irEq, irIsZero, irReturn, irSqrt:
+			irLt, irGte, irGt, irLte, irEq, irIsZero, irReturn, irSqrt:
 			// ok
 		case irJumpIfNot, irJump:
 			pc += 2
@@ -119,6 +119,27 @@ func irCompileNativeHelper(prog *IRProgram) nativeF64Fn {
 			case irLt:
 				sp--
 				if stack[sp-1] < stack[sp] {
+					stack[sp-1] = 1.0
+				} else {
+					stack[sp-1] = 0.0
+				}
+			case irGte:
+				sp--
+				if stack[sp-1] >= stack[sp] {
+					stack[sp-1] = 1.0
+				} else {
+					stack[sp-1] = 0.0
+				}
+			case irGt:
+				sp--
+				if stack[sp-1] > stack[sp] {
+					stack[sp-1] = 1.0
+				} else {
+					stack[sp-1] = 0.0
+				}
+			case irLte:
+				sp--
+				if stack[sp-1] <= stack[sp] {
 					stack[sp-1] = 1.0
 				} else {
 					stack[sp-1] = 0.0

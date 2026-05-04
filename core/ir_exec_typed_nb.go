@@ -151,6 +151,33 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 				stackBuf[sp-1] = nbBool(nbToFloat(a) < nbToFloat(b))
 			}
 
+		case irGte:
+			sp--
+			a, b := stackBuf[sp-1], stackBuf[sp]
+			if nbIsInt(a) && nbIsInt(b) {
+				stackBuf[sp-1] = nbBool(nbToInt(a) >= nbToInt(b))
+			} else {
+				stackBuf[sp-1] = nbBool(nbToFloat(a) >= nbToFloat(b))
+			}
+
+		case irGt:
+			sp--
+			a, b := stackBuf[sp-1], stackBuf[sp]
+			if nbIsInt(a) && nbIsInt(b) {
+				stackBuf[sp-1] = nbBool(nbToInt(a) > nbToInt(b))
+			} else {
+				stackBuf[sp-1] = nbBool(nbToFloat(a) > nbToFloat(b))
+			}
+
+		case irLte:
+			sp--
+			a, b := stackBuf[sp-1], stackBuf[sp]
+			if nbIsInt(a) && nbIsInt(b) {
+				stackBuf[sp-1] = nbBool(nbToInt(a) <= nbToInt(b))
+			} else {
+				stackBuf[sp-1] = nbBool(nbToFloat(a) <= nbToFloat(b))
+			}
+
 		case irEq:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]

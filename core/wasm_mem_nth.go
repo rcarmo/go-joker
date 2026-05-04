@@ -40,7 +40,7 @@ func wasmMemNthStaticEligible(prog *IRProgram) bool {
 		case irLiteral, irLoadSlot, irStoreSlot:
 			pc += 2
 		case irAdd, irSub, irMul, irDiv, irRem, irInc, irDec,
-			irLt, irEq, irIsZero, irReturn, irSqrt:
+			irLt, irGte, irGt, irLte, irEq, irIsZero, irReturn, irSqrt:
 			// ok
 		case irNth:
 			hasNth = true
@@ -90,7 +90,7 @@ func wasmMemNthEligible(prog *IRProgram, slots []Object) bool {
 		case irLiteral, irLoadSlot, irStoreSlot:
 			pc += 2
 		case irAdd, irSub, irMul, irDiv, irRem, irInc, irDec,
-			irLt, irEq, irIsZero, irReturn, irSqrt:
+			irLt, irGte, irGt, irLte, irEq, irIsZero, irReturn, irSqrt:
 			// ok
 		case irNth:
 			hasNth = true
@@ -459,7 +459,16 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 			o = append(o, 0xa1)
 		case irLt:
 			o = append(o, 0x63) // f64.lt → i32
-			o = append(o, 0xb7) // f64.convert_i32_s → f64 (for storage)
+			o = append(o, 0xb7) // f64.convert_i32_s → f64
+		case irGte:
+			o = append(o, 0x65) // f64.ge → i32
+			o = append(o, 0xb7)
+		case irGt:
+			o = append(o, 0x64) // f64.gt → i32
+			o = append(o, 0xb7)
+		case irLte:
+			o = append(o, 0x66) // f64.le → i32
+			o = append(o, 0xb7)
 		case irEq:
 			o = append(o, 0x61) // f64.eq → i32
 			o = append(o, 0xb7)

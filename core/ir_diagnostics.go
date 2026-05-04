@@ -55,6 +55,12 @@ func irOpcodeName(op byte) string {
 		return "irDec"
 	case irLt:
 		return "irLt"
+	case irGte:
+		return "irGte"
+	case irGt:
+		return "irGt"
+	case irLte:
+		return "irLte"
 	case irEq:
 		return "irEq"
 	case irIsZero:
@@ -172,7 +178,7 @@ func explainWASMEligibility(prog *IRProgram) WASMDiagnostic {
 		case irLiteral, irLoadSlot, irStoreSlot:
 			pc += 2
 		case irAdd, irSub, irMul, irRem, irInc, irDec,
-			irLt, irEq, irIsZero, irReturn:
+			irLt, irGte, irGt, irLte, irEq, irIsZero, irReturn:
 			// pure WASM supported
 		case irDiv, irSqrt:
 			// pure WASM supported in f64 mode

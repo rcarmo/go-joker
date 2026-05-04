@@ -369,7 +369,7 @@ func TestIRFrameStackPushPop(t *testing.T) {
 
 	// Modify slots
 	slots[0] = Int{I: 99}
-	
+
 	// Pop should restore original
 	pc, sl := fs.pop(slots)
 	if pc != 10 || sl != 5 {
@@ -510,7 +510,7 @@ func TestIrValueKeywordEquality(t *testing.T) {
 	kw1 := objectToIRValue(Eval(compileBenchExpr(t, `:leaf`), nil))
 	kw2 := objectToIRValue(Eval(compileBenchExpr(t, `:leaf`), nil))
 	kw3 := objectToIRValue(Eval(compileBenchExpr(t, `:node`), nil))
-	
+
 	eq12, ok := irValueEq(kw1, kw2)
 	if !ok || !eq12.boolean() {
 		t.Fatal(":leaf should equal :leaf")

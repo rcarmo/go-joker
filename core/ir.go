@@ -54,6 +54,9 @@ const (
 	irFallback                   // cannot execute in IR; fall back to tree Eval
 	irIntCast                    // pop 1 (Char or Number), push Int
 	irSubs                       // pop 2 or 3 (string, start [, end]), push substring
+	irGte                        // pop 2, push a >= b
+	irGt                         // pop 2, push a > b
+	irLte                        // pop 2, push a <= b
 )
 
 // ---------- Cache ----------

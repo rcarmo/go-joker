@@ -111,7 +111,7 @@ func isWasmWithImportsEligible(prog *IRProgram) bool {
 		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
 			pc += 2
 		case irAdd, irSub, irMul, irDiv, irRem, irInc, irDec,
-			irLt, irEq, irIsZero, irReturn, irSqrt,
+			irLt, irGte, irGt, irLte, irEq, irIsZero, irReturn, irSqrt,
 			irGet, irGet3, irAssoc, irNth, irConj, irFirst, irCount:
 			// all supported with imports
 		case irCallSelf:
@@ -197,7 +197,13 @@ func compileWasmBodyWithImports(prog *IRProgram) []byte {
 		case irDec:
 			o = append(o, 0x42, 0x01, 0x7d)
 		case irLt:
-			o = append(o, 0x53, 0xad)
+			o = append(o, 0x53, 0xad) // i64.lt_s, extend
+		case irGte:
+			o = append(o, 0x56, 0xad) // i64.ge_s, extend
+		case irGt:
+			o = append(o, 0x55, 0xad) // i64.gt_s, extend
+		case irLte:
+			o = append(o, 0x57, 0xad) // i64.le_s, extend
 		case irEq:
 			o = append(o, 0x51, 0xad)
 		case irIsZero:

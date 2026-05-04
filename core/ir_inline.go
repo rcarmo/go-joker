@@ -240,6 +240,30 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			return false
 		}
 		c.emit(irLt)
+	case "procGte":
+		if len(expr.args) != 2 {
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
+		}
+		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
+			return false
+		}
+		c.emit(irGte)
+	case "procGt":
+		if len(expr.args) != 2 {
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
+		}
+		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
+			return false
+		}
+		c.emit(irGt)
+	case "procLte":
+		if len(expr.args) != 2 {
+			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))
+		}
+		if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {
+			return false
+		}
+		c.emit(irLte)
 	case "procEq":
 		if len(expr.args) != 2 {
 			return c.reject("%s expects 2 args, got %d", procName, len(expr.args))

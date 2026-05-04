@@ -258,6 +258,84 @@ loop:
 			}
 			return nil
 
+		case irGte:
+			b := stack[len(stack)-1]
+			a := stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			switch av := a.(type) {
+			case Int:
+				switch bv := b.(type) {
+				case Int:
+					stack = append(stack, Boolean{B: av.I >= bv.I})
+					continue
+				case Double:
+					stack = append(stack, Boolean{B: float64(av.I) >= bv.D})
+					continue
+				}
+			case Double:
+				switch bv := b.(type) {
+				case Int:
+					stack = append(stack, Boolean{B: av.D >= float64(bv.I)})
+					continue
+				case Double:
+					stack = append(stack, Boolean{B: av.D >= bv.D})
+					continue
+				}
+			}
+			return nil
+
+		case irGt:
+			b := stack[len(stack)-1]
+			a := stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			switch av := a.(type) {
+			case Int:
+				switch bv := b.(type) {
+				case Int:
+					stack = append(stack, Boolean{B: av.I > bv.I})
+					continue
+				case Double:
+					stack = append(stack, Boolean{B: float64(av.I) > bv.D})
+					continue
+				}
+			case Double:
+				switch bv := b.(type) {
+				case Int:
+					stack = append(stack, Boolean{B: av.D > float64(bv.I)})
+					continue
+				case Double:
+					stack = append(stack, Boolean{B: av.D > bv.D})
+					continue
+				}
+			}
+			return nil
+
+		case irLte:
+			b := stack[len(stack)-1]
+			a := stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			switch av := a.(type) {
+			case Int:
+				switch bv := b.(type) {
+				case Int:
+					stack = append(stack, Boolean{B: av.I <= bv.I})
+					continue
+				case Double:
+					stack = append(stack, Boolean{B: float64(av.I) <= bv.D})
+					continue
+				}
+			case Double:
+				switch bv := b.(type) {
+				case Int:
+					stack = append(stack, Boolean{B: av.D <= float64(bv.I)})
+					continue
+				case Double:
+					stack = append(stack, Boolean{B: av.D <= bv.D})
+					continue
+				}
+			}
+			return nil
+
 		case irEq:
 			b := stack[len(stack)-1]
 			a := stack[len(stack)-2]

@@ -198,6 +198,48 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			} else {
 				return nil
 			}
+		case irGte:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt {
+				stack = append(stack, irMakeBool(a.i >= b.i))
+			} else if a.tag == irValDouble && b.tag == irValDouble {
+				stack = append(stack, irMakeBool(a.f >= b.f))
+			} else if a.tag == irValDouble && b.tag == irValInt {
+				stack = append(stack, irMakeBool(a.f >= float64(b.i)))
+			} else if a.tag == irValInt && b.tag == irValDouble {
+				stack = append(stack, irMakeBool(float64(a.i) >= b.f))
+			} else {
+				return nil
+			}
+		case irGt:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt {
+				stack = append(stack, irMakeBool(a.i > b.i))
+			} else if a.tag == irValDouble && b.tag == irValDouble {
+				stack = append(stack, irMakeBool(a.f > b.f))
+			} else if a.tag == irValDouble && b.tag == irValInt {
+				stack = append(stack, irMakeBool(a.f > float64(b.i)))
+			} else if a.tag == irValInt && b.tag == irValDouble {
+				stack = append(stack, irMakeBool(float64(a.i) > b.f))
+			} else {
+				return nil
+			}
+		case irLte:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt {
+				stack = append(stack, irMakeBool(a.i <= b.i))
+			} else if a.tag == irValDouble && b.tag == irValDouble {
+				stack = append(stack, irMakeBool(a.f <= b.f))
+			} else if a.tag == irValDouble && b.tag == irValInt {
+				stack = append(stack, irMakeBool(a.f <= float64(b.i)))
+			} else if a.tag == irValInt && b.tag == irValDouble {
+				stack = append(stack, irMakeBool(float64(a.i) <= b.f))
+			} else {
+				return nil
+			}
 		case irEq:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]

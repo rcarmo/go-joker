@@ -135,7 +135,7 @@ func isWasmEligibleWithOneHelper(prog *IRProgram, helperSlot int) bool {
 		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
 			pc += 2
 		case irAdd, irSub, irMul, irRem, irInc, irDec,
-			irLt, irEq, irIsZero, irReturn, irDiv, irSqrt:
+			irLt, irGte, irGt, irLte, irEq, irIsZero, irReturn, irDiv, irSqrt:
 			// supported
 		case irCallSlot:
 			slot := int(code[pc])<<8 | int(code[pc+1])

@@ -35,7 +35,7 @@ func isWasmEligible(prog *IRProgram) bool {
 		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
 			pc += 2
 		case irAdd, irSub, irMul, irRem, irInc, irDec,
-			irLt, irEq, irIsZero, irReturn:
+			irLt, irGte, irGt, irLte, irEq, irIsZero, irReturn:
 			// ok
 		case irCallSelf:
 			pc += 2 // nargs operand
@@ -235,9 +235,27 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 			}
 		case irLt:
 			if useFloat {
-				o = append(o, 0x63)
+				o = append(o, 0x63) // f64.lt
 			} else {
-				o = append(o, 0x53, 0xad)
+				o = append(o, 0x53, 0xad) // i64.lt_s, i64.extend_i32_s
+			}
+		case irGte:
+			if useFloat {
+				o = append(o, 0x65) // f64.ge
+			} else {
+				o = append(o, 0x56, 0xad) // i64.ge_s, i64.extend_i32_s
+			}
+		case irGt:
+			if useFloat {
+				o = append(o, 0x64) // f64.gt
+			} else {
+				o = append(o, 0x55, 0xad) // i64.gt_s, i64.extend_i32_s
+			}
+		case irLte:
+			if useFloat {
+				o = append(o, 0x66) // f64.le
+			} else {
+				o = append(o, 0x57, 0xad) // i64.le_s, i64.extend_i32_s
 			}
 		case irEq:
 			if useFloat {

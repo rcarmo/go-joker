@@ -93,7 +93,7 @@ func analyzeEscapes(prog *IRProgram) *EscapeInfo {
 			pc += 2
 			pop()
 
-		case irAdd, irSub, irMul, irDiv, irRem, irLt, irEq:
+		case irAdd, irSub, irMul, irDiv, irRem, irLt, irGte, irGt, irLte, irEq:
 			pop()
 			pop()
 			push(-1) // result not from a slot
