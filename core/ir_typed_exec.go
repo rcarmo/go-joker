@@ -6,7 +6,13 @@ import (
 )
 
 func irExecTyped(prog *IRProgram, initSlots []Object) Object {
-	analysis := AnalyzeIRProgram(prog)
+	var analysis IRAnalysis
+	if prog.analysis != nil {
+		analysis = *prog.analysis
+	} else {
+		analysis = AnalyzeIRProgram(prog)
+		prog.analysis = &analysis
+	}
 	if !irTypedEligible(analysis) {
 		return nil
 	}

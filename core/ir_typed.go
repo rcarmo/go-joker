@@ -3,6 +3,7 @@ package core
 import (
 	"os"
 	"strconv"
+	"sync"
 	"unicode/utf8"
 	"unsafe"
 )
@@ -178,7 +179,8 @@ func (v irValue) object() Object {
 	case irValNil:
 		return NIL
 	case irValKeyword:
-		return Keyword{name: (*string)(v.p)}
+		// Return cached keyword Object to avoid heap allocation
+		return keywordObjectFromName((*string)(v.p))
 	default:
 		if v.obj() == nil {
 			return NIL
@@ -273,4 +275,19 @@ func irValueEq(a, b irValue) (irValue, bool) {
 		return irMakeBool(a.f == float64(b.i)), true
 	}
 	return irMakeBool(a.object().Equals(b.object())), true
+}
+
+// keywordObjectCache caches Keyword Objects by name pointer to avoid
+// repeated heap allocation when converting irValKeyword → Object.
+var keywordObjectCache sync.Map // *string → Object (Keyword)
+
+func keywordObjectFromName(name *string) Object {
+	if v, ok := keywordObjectCache.Load(name); ok {
+		return v.(Object)
+	}
+	kw := Keyword{name: name}
+	// Store as Object interface to avoid re-boxing
+	var obj Object = kw
+	keywordObjectCache.Store(name, obj)
+	return obj
 }
