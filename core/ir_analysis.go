@@ -21,6 +21,7 @@ type IRAnalysis struct {
 	HasNestedRecur   bool
 	HasGenericNth    bool
 	HasMapOps        bool
+	HasAssoc         bool
 	HasStringAppend  bool
 	HasStringPrepend bool
 
@@ -77,9 +78,12 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 				a.UsesString = true
 			}
 			pc += 2
-		case irGet, irGet3, irAssoc:
+		case irGet, irGet3:
 			a.UsesCollection = true
 			a.HasMapOps = true
+		case irAssoc:
+			a.UsesCollection = true
+			a.HasAssoc = true
 		case irFirst:
 			a.UsesCollection = true
 		case irConj:

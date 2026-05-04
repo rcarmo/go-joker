@@ -76,6 +76,10 @@ func irTypedEligible(a IRAnalysis) bool {
 	if a.HasCallSlot {
 		return !a.UsesString && !a.HasMapOps && (!a.UsesCollection || a.HasGenericNth)
 	}
+	// Collection programs with nth and optional assoc (vector-assoc pattern)
+	if a.UsesCollection && a.HasGenericNth && !a.HasMapOps && !a.UsesString {
+		return true
+	}
 	if a.UsesCollection && (a.HasMapOps || !a.HasGenericNth) {
 		if irTypedMapEnabled() && a.HasMapOps && a.UsesString {
 			return true
@@ -85,10 +89,6 @@ func irTypedEligible(a IRAnalysis) bool {
 			return true
 		}
 		return irTypedVecEnabled() && a.UsesCollection && !a.UsesString && !a.HasMapOps
-	}
-	// Accept: float/int + generic-nth (e.g. inlined arithmetic helpers with vector nth)
-	if a.UsesCollection && a.HasGenericNth && !a.HasMapOps && !a.UsesString {
-		return true
 	}
 	// Accept: pure numeric loops (no strings, no collections, no call-slots)
 	if !a.UsesString && !a.UsesCollection && !a.HasCallSlot {

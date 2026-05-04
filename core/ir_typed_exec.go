@@ -355,7 +355,16 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				coll.setIntVec(iv)
 				stack = append(stack, coll)
 			} else {
-				return nil
+				// General assoc path for Object types (vector of doubles, etc.)
+				collObj := coll.object()
+				keyObj := key.object()
+				valObj := val.object()
+				if assocable, ok := collObj.(Associative); ok {
+					result := assocable.Assoc(keyObj, valObj)
+					stack = append(stack, objectToIRValue(result))
+				} else {
+					return nil
+				}
 			}
 		case irNth:
 			idx := stack[len(stack)-1]
