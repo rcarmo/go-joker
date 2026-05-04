@@ -94,3 +94,31 @@ func IrToWasmExported(prog *IRProgram) []byte     { return irToWasm(prog) }
 
 func IsFloatExported(prog *IRProgram) bool { return irProgramUsesFloat(prog) }
 func (p *IRProgram) CodeAt(i int) byte     { return p.code[i] }
+
+// --- Exports for std/jit namespace ---
+
+func IrCompileFn(fn *Fn) *IRProgram                  { return irCompileFn(fn) }
+func IrExecTyped(prog *IRProgram, s []Object) Object { return irExecTyped(prog, s) }
+func IrExec(prog *IRProgram, s []Object) Object      { return irExec(prog, s) }
+
+func (p *IRProgram) HasSelf() bool          { return p.hasSelf }
+func (p *IRProgram) CaptureSlots() []Object { return p.captureSlots }
+func (p *IRProgram) GetNativeHelper() func([]float64) float64 {
+	if p.nativeHelper != nil {
+		return func(args []float64) float64 { return p.nativeHelper(args) }
+	}
+	return nil
+}
+
+type IRAnalysisExported struct {
+	Eligible bool
+	Path     string
+}
+
+func AnalyzeIRProgramExported(prog *IRProgram) IRAnalysisExported {
+	a := AnalyzeIRProgram(prog)
+	return IRAnalysisExported{
+		Eligible: irTypedEligible(a),
+		Path:     a.SuggestedPath,
+	}
+}

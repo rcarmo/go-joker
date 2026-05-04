@@ -1,0 +1,24 @@
+(ns ^{:go-imports []
+      :doc "JIT compilation for Clojure functions. Compiles pure arithmetic functions to native Go closures for maximum performance."}
+  jit)
+
+(defn compile
+  "Compiles a function to the fastest available execution path.
+  For pure arithmetic fns, returns a native Go f64 closure.
+  For other fns, returns an IR-compiled wrapper."
+  {:added "1.0"
+   :go "compile(fn)"}
+  [fn])
+
+(defn info
+  "Returns a map with compilation information about a function.
+  Keys: :compiled, :path, :slots, :captures, :self-recursive."
+  {:added "1.0"
+   :go "info(fn)"}
+  [fn])
+
+(defn compiled?
+  "Returns true if the function can be compiled to IR."
+  {:added "1.0"
+   :go "isCompiled(fn)"}
+  [fn])
