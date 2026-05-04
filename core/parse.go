@@ -422,6 +422,14 @@ func (pos Position) Pos() Position {
 	return pos
 }
 
+func (expr *LetExpr) Name() string {
+	return "let"
+}
+
+func (expr *LoopExpr) Name() string {
+	return "loop"
+}
+
 func printError(pos Position, msg string) {
 	PROBLEM_COUNT++
 	fmt.Fprintf(Stderr, "%s:%d:%d: %s\n", pos.Filename(), pos.startLine, pos.startColumn, msg)
