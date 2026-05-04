@@ -182,6 +182,118 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 
 	os.WriteFile(filepath.Join(baseDir, "benchmark-improvements.svg"), []byte(b.String()), 0644)
 	fmt.Println("wrote", filepath.Join(baseDir, "benchmark-improvements.svg"))
+
+	// Generate cross-language comparison SVG
+	generateCrossLanguageSVG(baseDir, h)
+}
+
+func generateCrossLanguageSVG(baseDir string, h History) {
+	type CLRow struct {
+		Name     string
+		JokerMS  float64
+		PythonMS float64
+		GojaMS   float64
+		VsPython float64
+		VsGoja   float64
+	}
+
+	var rows []CLRow
+	current := h.Series[len(h.Series)-1]
+	for name, bench := range current.Benchmarks {
+		r := CLRow{Name: name, JokerMS: bench.MSPerOp}
+		if py, ok := h.CrossLanguage.Python313[name]; ok {
+			r.PythonMS = py
+			r.VsPython = bench.MSPerOp / py
+		}
+		if gj, ok := h.CrossLanguage.Goja[name]; ok {
+			r.GojaMS = gj
+			r.VsGoja = bench.MSPerOp / gj
+		}
+		rows = append(rows, r)
+	}
+	sort.Slice(rows, func(i, j int) bool {
+		return rows[i].VsPython < rows[j].VsPython
+	})
+
+	rowHeight := 54
+	headerHeight := 100
+	height := headerHeight + len(rows)*rowHeight + 60
+
+	var b strings.Builder
+	b.WriteString(fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="%d" viewBox="0 0 1200 %d">
+<style>
+:root { color-scheme: light dark; --bg:#f6f8fc;--panel:#fff;--row:#f0f4fb;--track:#dfe7f5;--border:#c7d3ea;--text:#172033;--muted:#55627c;--win:#23a566;--close:#f5a623;--gap:#e04848;--baseline:#7f93b8;--py:#306998;--goja:#c96b2e; }
+@media(prefers-color-scheme:dark){:root{--bg:#0b1020;--panel:#11182b;--row:#0f1728;--track:#1c2740;--border:#25324f;--text:#e3ecff;--muted:#9db0d6;--win:#37c67e;--close:#f5a623;--gap:#f06060;--baseline:#7288b3;--py:#5b9bd5;--goja:#e8a04f;}}
+svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill:var(--row);stroke:var(--border)}
+.text{fill:var(--text);font-family:Inter,system-ui,sans-serif}.muted{fill:var(--muted);font-family:Inter,system-ui,sans-serif}
+.title{font-size:22px;font-weight:700}.subtitle{font-size:12px;font-weight:500}.label{font-size:12px;font-weight:600}.small{font-size:11px;font-weight:500}.tiny{font-size:10px}
+.win{fill:var(--win)}.close{fill:var(--close)}.gap{fill:var(--gap)}.py{fill:var(--py)}.goja{fill:var(--goja)}
+</style>
+`, height, height))
+
+	b.WriteString(fmt.Sprintf(`<rect x="0" y="0" width="1200" height="%d" fill="var(--bg)"/>`, height))
+	b.WriteString(fmt.Sprintf(`<rect class="panel" x="20" y="20" width="1160" height="%d" rx="14"/>`, height-40))
+	b.WriteString(`<text class="text title" x="40" y="56">Joker vs Python 3.13 vs Goja — CLBG benchmarks</text>`)
+
+	winsP, winsG := 0, 0
+	for _, r := range rows {
+		if r.VsPython < 1 { winsP++ }
+		if r.VsGoja < 1 { winsG++ }
+	}
+	b.WriteString(fmt.Sprintf(`<text class="muted subtitle" x="40" y="76">Beat Python: %d/%d • Beat Goja: %d/%d</text>`, winsP, len(rows), winsG, len(rows)))
+
+	// Column headers
+	b.WriteString(`<text class="muted tiny" x="200" y="94">Joker ms</text>`)
+	b.WriteString(`<text class="muted tiny" x="280" y="94">Python ms</text>`)
+	b.WriteString(`<text class="muted tiny" x="370" y="94">Goja ms</text>`)
+	b.WriteString(`<text class="muted tiny" x="450" y="94">vs Python</text>`)
+	b.WriteString(`<text class="muted tiny" x="560" y="94">vs Goja</text>`)
+	b.WriteString(`<text class="muted tiny" x="660" y="94">ratio bar (log scale)</text>`)
+
+	y := headerHeight
+	for _, r := range rows {
+		b.WriteString(fmt.Sprintf(`<g transform="translate(32,%d)">`, y))
+		b.WriteString(`<rect class="row" x="0" y="0" width="1136" height="46" rx="6"/>`)
+
+		displayName := strings.ReplaceAll(r.Name, "_", "-")
+		b.WriteString(fmt.Sprintf(`<text class="text label" x="10" y="28">%s</text>`, displayName))
+		b.WriteString(fmt.Sprintf(`<text class="muted small" x="170" y="28">%.3f</text>`, r.JokerMS))
+		b.WriteString(fmt.Sprintf(`<text class="muted small" x="260" y="28">%.2f</text>`, r.PythonMS))
+		b.WriteString(fmt.Sprintf(`<text class="muted small" x="350" y="28">%.2f</text>`, r.GojaMS))
+
+		// vs Python ratio
+		pyClass := "win"
+		if r.VsPython >= 1 && r.VsPython < 2 { pyClass = "close" }
+		if r.VsPython >= 2 { pyClass = "gap" }
+		b.WriteString(fmt.Sprintf(`<text class="%s small" x="440" y="28">%.2f×</text>`, pyClass, r.VsPython))
+
+		// vs Goja ratio
+		gjClass := "win"
+		if r.VsGoja >= 1 && r.VsGoja < 2 { gjClass = "close" }
+		if r.VsGoja >= 2 { gjClass = "gap" }
+		b.WriteString(fmt.Sprintf(`<text class="%s small" x="550" y="28">%.2f×</text>`, gjClass, r.VsGoja))
+
+		// Log-scale bar for vs Python ratio
+		barMax := 500.0
+		logRatio := math.Log2(math.Max(r.VsPython, 0.01))
+		// Map log2 range [-6, 5] to [0, barMax]
+		barWidth := int(math.Round((logRatio + 6) / 11.0 * barMax))
+		if barWidth < 2 { barWidth = 2 }
+		if barWidth > int(barMax) { barWidth = int(barMax) }
+		// Midpoint at log2(1) = 0 -> pixel 273
+		b.WriteString(fmt.Sprintf(`<rect fill="var(--track)" x="640" y="14" width="%d" height="18" rx="4"/>`, int(barMax)))
+		b.WriteString(fmt.Sprintf(`<rect class="%s" x="640" y="14" width="%d" height="18" rx="4" opacity="0.8"/>`, pyClass, barWidth))
+		// 1× reference line
+		oneX := int(math.Round(6.0 / 11.0 * barMax))
+		b.WriteString(fmt.Sprintf(`<line x1="%d" y1="12" x2="%d" y2="34" stroke="var(--text)" stroke-width="1" opacity="0.3"/>`, 640+oneX, 640+oneX))
+
+		b.WriteString(`</g>`)
+		y += rowHeight
+	}
+
+	b.WriteString(`</svg>`)
+	os.WriteFile(filepath.Join(baseDir, "benchmark-cross-language.svg"), []byte(b.String()), 0644)
+	fmt.Println("wrote", filepath.Join(baseDir, "benchmark-cross-language.svg"))
 }
 
 func speedupLabel(pct float64) string {

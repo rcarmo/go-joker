@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="220" viewBox="0 0 1200 220">
+<style>
+:root { color-scheme: light dark; --bg:#f6f8fc;--panel:#fff;--row:#f0f4fb;--track:#dfe7f5;--border:#c7d3ea;--text:#172033;--muted:#55627c;--win:#23a566;--close:#f5a623;--gap:#e04848;--baseline:#7f93b8; }
+@media(prefers-color-scheme:dark){:root{--bg:#0b1020;--panel:#11182b;--row:#0f1728;--track:#1c2740;--border:#25324f;--text:#e3ecff;--muted:#9db0d6;--win:#37c67e;--close:#f5a623;--gap:#f06060;--baseline:#7288b3;}}
+svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill:var(--row);stroke:var(--border)}.track{fill:var(--track)}.baseline{fill:var(--baseline)}.win{fill:var(--win)}.close{fill:var(--close)}.gap{fill:var(--gap)}
+.text{fill:var(--text);font-family:Inter,system-ui,sans-serif}.muted{fill:var(--muted);font-family:Inter,system-ui,sans-serif}
+.title{font-size:22px;font-weight:700}.subtitle{font-size:12px;font-weight:500}.label{font-size:12px;font-weight:600}.small{font-size:11px;font-weight:500}.tiny{font-size:10px}
+</style>
+<rect x="0" y="0" width="1200" height="220" fill="var(--bg)"/><rect class="panel" x="20" y="20" width="1160" height="180" rx="14"/><text class="text title" x="40" y="56">Joker benchmark improvements</text><text class="muted subtitle" x="40" y="76">Generated from benchmark-history.json • Host: </text></svg>
