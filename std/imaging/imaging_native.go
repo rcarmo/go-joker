@@ -56,6 +56,11 @@ func wrapImage(img *image.NRGBA) *Image {
 	return &Image{img: img}
 }
 
+// WrapImage creates a Joker Image from an *image.NRGBA (exported for other packages).
+func WrapImage(img *image.NRGBA) Object {
+	return &Image{img: img}
+}
+
 func toNRGBA(img image.Image) *image.NRGBA {
 	if nrgba, ok := img.(*image.NRGBA); ok {
 		return nrgba

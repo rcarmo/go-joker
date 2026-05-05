@@ -1,0 +1,411 @@
+package svg
+
+import (
+	"bytes"
+	"fmt"
+	"image"
+	"image/color"
+	"os"
+	"strings"
+
+	svglib "github.com/ajstarks/svgo"
+	"github.com/srwiley/oksvg"
+	"github.com/srwiley/rasterx"
+
+	. "github.com/candid82/joker/core"
+	imaging "github.com/candid82/joker/std/imaging"
+)
+
+// Canvas wraps an SVG being built.
+type Canvas struct {
+	InfoHolder
+	buf *bytes.Buffer
+	svg *svglib.SVG
+	w   int
+	h   int
+}
+
+var typeCanvas = &Type{}
+
+func (c *Canvas) ToString(escape bool) string {
+	return fmt.Sprintf("#<SVG %dx%d>", c.w, c.h)
+}
+func (c *Canvas) Equals(other interface{}) bool { return c == other }
+func (c *Canvas) GetInfo() *ObjectInfo           { return nil }
+func (c *Canvas) WithInfo(info *ObjectInfo) Object { return c }
+func (c *Canvas) GetType() *Type                 { return typeCanvas }
+func (c *Canvas) Hash() uint32                   { return 0 }
+
+func extractCanvas(args []Object, idx int) *Canvas {
+	c, ok := args[idx].(*Canvas)
+	if !ok {
+		panic(RT.NewError("Expected SVG canvas argument"))
+	}
+	return c
+}
+
+// parseStyle converts a Joker map to SVG style string
+func parseStyle(args []Object, idx int) string {
+	if idx >= len(args) {
+		return ""
+	}
+	m, ok := args[idx].(Map)
+	if !ok {
+		// Try as a string
+		if s, ok := args[idx].(String); ok {
+			return s.S
+		}
+		return ""
+	}
+	var parts []string
+	for iter := m.Iter(); iter.HasNext(); {
+		pair := iter.Next()
+		k := pair.Key.ToString(false)
+		// Strip leading : from keywords
+		if len(k) > 0 && k[0] == ':' {
+			k = k[1:]
+		}
+		v := pair.Value.ToString(false)
+		parts = append(parts, k+":"+v)
+	}
+	return strings.Join(parts, ";")
+}
+
+// --- Creation ---
+
+var procCanvas ProcFn = func(args []Object) Object {
+	w := ExtractInt(args, 0)
+	h := ExtractInt(args, 1)
+	buf := &bytes.Buffer{}
+	s := svglib.New(buf)
+	s.Start(w, h)
+	return &Canvas{buf: buf, svg: s, w: w, h: h}
+}
+
+var procCanvasWithViewbox ProcFn = func(args []Object) Object {
+	w := ExtractInt(args, 0)
+	h := ExtractInt(args, 1)
+	vw := ExtractInt(args, 2)
+	vh := ExtractInt(args, 3)
+	buf := &bytes.Buffer{}
+	s := svglib.New(buf)
+	s.Startview(w, h, 0, 0, vw, vh)
+	return &Canvas{buf: buf, svg: s, w: w, h: h}
+}
+
+// --- Shapes ---
+
+var procRect ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	x := ExtractInt(args, 1)
+	y := ExtractInt(args, 2)
+	w := ExtractInt(args, 3)
+	h := ExtractInt(args, 4)
+	style := parseStyle(args, 5)
+	if style != "" {
+		c.svg.Rect(x, y, w, h, "style=\""+style+"\"")
+	} else {
+		c.svg.Rect(x, y, w, h)
+	}
+	return args[0]
+}
+
+var procRoundrect ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	x := ExtractInt(args, 1)
+	y := ExtractInt(args, 2)
+	w := ExtractInt(args, 3)
+	h := ExtractInt(args, 4)
+	rx := ExtractInt(args, 5)
+	ry := ExtractInt(args, 6)
+	style := parseStyle(args, 7)
+	if style != "" {
+		c.svg.Roundrect(x, y, w, h, rx, ry, "style=\""+style+"\"")
+	} else {
+		c.svg.Roundrect(x, y, w, h, rx, ry)
+	}
+	return args[0]
+}
+
+var procCircle ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	cx := ExtractInt(args, 1)
+	cy := ExtractInt(args, 2)
+	r := ExtractInt(args, 3)
+	style := parseStyle(args, 4)
+	if style != "" {
+		c.svg.Circle(cx, cy, r, "style=\""+style+"\"")
+	} else {
+		c.svg.Circle(cx, cy, r)
+	}
+	return args[0]
+}
+
+var procEllipse ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	cx := ExtractInt(args, 1)
+	cy := ExtractInt(args, 2)
+	rx := ExtractInt(args, 3)
+	ry := ExtractInt(args, 4)
+	style := parseStyle(args, 5)
+	if style != "" {
+		c.svg.Ellipse(cx, cy, rx, ry, "style=\""+style+"\"")
+	} else {
+		c.svg.Ellipse(cx, cy, rx, ry)
+	}
+	return args[0]
+}
+
+var procLine ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	x1 := ExtractInt(args, 1)
+	y1 := ExtractInt(args, 2)
+	x2 := ExtractInt(args, 3)
+	y2 := ExtractInt(args, 4)
+	style := parseStyle(args, 5)
+	if style != "" {
+		c.svg.Line(x1, y1, x2, y2, "style=\""+style+"\"")
+	} else {
+		c.svg.Line(x1, y1, x2, y2)
+	}
+	return args[0]
+}
+
+var procPath ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	d := ExtractString(args, 1)
+	style := parseStyle(args, 2)
+	if style != "" {
+		c.svg.Path(d, "style=\""+style+"\"")
+	} else {
+		c.svg.Path(d)
+	}
+	return args[0]
+}
+
+var procPolygon ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	// args[1] = vector of x coords, args[2] = vector of y coords
+	xv := args[1].(Indexed)
+	yv := args[2].(Indexed)
+	n := xv.(Counted).Count()
+	xs := make([]int, n)
+	ys := make([]int, n)
+	for i := 0; i < n; i++ {
+		xs[i] = EnsureObjectIsInt(xv.Nth(i), "").I
+		ys[i] = EnsureObjectIsInt(yv.Nth(i), "").I
+	}
+	style := parseStyle(args, 3)
+	if style != "" {
+		c.svg.Polygon(xs, ys, "style=\""+style+"\"")
+	} else {
+		c.svg.Polygon(xs, ys)
+	}
+	return args[0]
+}
+
+var procPolyline ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	xv := args[1].(Indexed)
+	yv := args[2].(Indexed)
+	n := xv.(Counted).Count()
+	xs := make([]int, n)
+	ys := make([]int, n)
+	for i := 0; i < n; i++ {
+		xs[i] = EnsureObjectIsInt(xv.Nth(i), "").I
+		ys[i] = EnsureObjectIsInt(yv.Nth(i), "").I
+	}
+	style := parseStyle(args, 3)
+	if style != "" {
+		c.svg.Polyline(xs, ys, "style=\""+style+"\"")
+	} else {
+		c.svg.Polyline(xs, ys)
+	}
+	return args[0]
+}
+
+// --- Text ---
+
+var procText ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	x := ExtractInt(args, 1)
+	y := ExtractInt(args, 2)
+	text := ExtractString(args, 3)
+	style := parseStyle(args, 4)
+	if style != "" {
+		c.svg.Text(x, y, text, "style=\""+style+"\"")
+	} else {
+		c.svg.Text(x, y, text)
+	}
+	return args[0]
+}
+
+// --- Grouping & Transform ---
+
+var procGroup ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	style := parseStyle(args, 1)
+	if style != "" {
+		c.svg.Group("style=\"" + style + "\"")
+	} else {
+		c.svg.Group()
+	}
+	return args[0]
+}
+
+var procGroupEnd ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	c.svg.Gend()
+	return args[0]
+}
+
+var procTranslate ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	x := ExtractInt(args, 1)
+	y := ExtractInt(args, 2)
+	c.svg.Gtransform(fmt.Sprintf("translate(%d,%d)", x, y))
+	return args[0]
+}
+
+var procScale ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	sx := ExtractDouble(args, 1)
+	sy := sx
+	if len(args) > 2 {
+		sy = ExtractDouble(args, 2)
+	}
+	c.svg.Gtransform(fmt.Sprintf("scale(%g,%g)", sx, sy))
+	return args[0]
+}
+
+var procRotate ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	angle := ExtractDouble(args, 1)
+	c.svg.Gtransform(fmt.Sprintf("rotate(%g)", angle))
+	return args[0]
+}
+
+var procTransformEnd ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	c.svg.Gend()
+	return args[0]
+}
+
+// --- Definitions & Use ---
+
+var procDef ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	c.svg.Def()
+	return args[0]
+}
+
+var procDefEnd ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	c.svg.DefEnd()
+	return args[0]
+}
+
+// --- Output ---
+
+var procToString ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	c.svg.End()
+	return MakeString(c.buf.String())
+}
+
+var procSave ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	path := ExtractString(args, 1)
+	c.svg.End()
+	err := writeFile(path, c.buf.Bytes())
+	if err != nil {
+		panic(RT.NewError("svg/save: " + err.Error()))
+	}
+	return NIL
+}
+
+// --- Raw SVG injection ---
+
+var procRaw ProcFn = func(args []Object) Object {
+	c := extractCanvas(args, 0)
+	s := ExtractString(args, 1)
+	fmt.Fprint(c.buf, s)
+	return args[0]
+}
+
+// --- Render SVG to raster Image ---
+
+var procRender ProcFn = func(args []Object) Object {
+	svgData := ExtractString(args, 0)
+	w := ExtractInt(args, 1)
+	h := ExtractInt(args, 2)
+
+	icon, err := oksvg.ReadIconStream(strings.NewReader(svgData))
+	if err != nil {
+		panic(RT.NewError("svg/render: " + err.Error()))
+	}
+
+	icon.SetTarget(0, 0, float64(w), float64(h))
+	img := image.NewRGBA(image.Rect(0, 0, w, h))
+	scanner := rasterx.NewScannerGV(w, h, img, img.Bounds())
+	dasher := rasterx.NewDasher(w, h, scanner)
+	icon.Draw(dasher, 1.0)
+
+	// Convert RGBA to NRGBA for imaging compatibility
+	nrgba := image.NewNRGBA(img.Bounds())
+	for y := 0; y < h; y++ {
+		for x := 0; x < w; x++ {
+			r, g, b, a := img.At(x, y).RGBA()
+			if a > 0 {
+				nrgba.SetNRGBA(x, y, color.NRGBA{
+					R: uint8(r * 255 / a),
+					G: uint8(g * 255 / a),
+					B: uint8(b * 255 / a),
+					A: uint8(a >> 8),
+				})
+			}
+		}
+	}
+	return imaging.WrapImage(nrgba)
+}
+
+// --- Render SVG file to raster ---
+
+var procRenderFile ProcFn = func(args []Object) Object {
+	path := ExtractString(args, 0)
+	w := ExtractInt(args, 1)
+	h := ExtractInt(args, 2)
+
+	icon, err := oksvg.ReadIcon(path, oksvg.StrictErrorMode)
+	if err != nil {
+		panic(RT.NewError("svg/render-file: " + err.Error()))
+	}
+
+	icon.SetTarget(0, 0, float64(w), float64(h))
+	img := image.NewRGBA(image.Rect(0, 0, w, h))
+	scanner := rasterx.NewScannerGV(w, h, img, img.Bounds())
+	dasher := rasterx.NewDasher(w, h, scanner)
+	icon.Draw(dasher, 1.0)
+
+	nrgba := image.NewNRGBA(img.Bounds())
+	for y := 0; y < h; y++ {
+		for x := 0; x < w; x++ {
+			r, g, b, a := img.At(x, y).RGBA()
+			if a > 0 {
+				nrgba.SetNRGBA(x, y, color.NRGBA{
+					R: uint8(r * 255 / a),
+					G: uint8(g * 255 / a),
+					B: uint8(b * 255 / a),
+					A: uint8(a >> 8),
+				})
+			}
+		}
+	}
+	return imaging.WrapImage(nrgba)
+}
+
+// --- Helpers ---
+
+func writeFile(path string, data []byte) error {
+	return os.WriteFile(path, data, 0644)
+}
