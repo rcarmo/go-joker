@@ -23,6 +23,24 @@ func irGetFnProg(fn *Fn) *IRProgram {
 		}
 		return fn.irProg
 	}
+	// Check arity-level cache first to avoid recompiling per-instance
+	if len(fn.fnExpr.arities) == 1 {
+		if cached, ok := irFnCache.Load(&fn.fnExpr.arities[0]); ok {
+			prog := cached.(*IRProgram)
+			if prog == irCompileFailed {
+				fn.irProg = irCompileFailed
+				atomic.StoreUint32(&fn.irProgOnce, 1)
+				return nil
+			}
+			// Arity cache has a prog, but it might have wrong captures
+			// for this instance. Only reuse if no captures.
+			if len(prog.captureSlots) == 0 {
+				fn.irProg = prog
+				atomic.StoreUint32(&fn.irProgOnce, 1)
+				return prog
+			}
+		}
+	}
 	prog := irCompileFn(fn)
 	if prog == nil {
 		// irCompileFn fails for fns with captures. But if the fn body is
