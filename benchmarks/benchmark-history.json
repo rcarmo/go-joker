@@ -50,7 +50,7 @@
           "ms_per_op": 10.376
         },
         "fannkuch": {
-          "ms_per_op": 118.397
+          "ms_per_op": 77.868
         },
         "nbody": {
           "ms_per_op": 9.317
