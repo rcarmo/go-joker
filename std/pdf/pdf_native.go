@@ -1,0 +1,320 @@
+package pdf
+
+import (
+	"bytes"
+	"fmt"
+	"os"
+
+	"github.com/signintech/gopdf"
+
+	. "github.com/candid82/joker/core"
+)
+
+// Document wraps a gopdf instance.
+type Document struct {
+	InfoHolder
+	pdf    *gopdf.GoPdf
+	w, h   float64
+	closed bool
+}
+
+var typeDocument = &Type{}
+
+func (d *Document) ToString(escape bool) string {
+	return fmt.Sprintf("#<PDF %.0fx%.0f>", d.w, d.h)
+}
+func (d *Document) Equals(other interface{}) bool   { return d == other }
+func (d *Document) GetInfo() *ObjectInfo            { return nil }
+func (d *Document) WithInfo(info *ObjectInfo) Object { return d }
+func (d *Document) GetType() *Type                  { return typeDocument }
+func (d *Document) Hash() uint32                    { return 0 }
+
+func extractDoc(args []Object, idx int) *Document {
+	d, ok := args[idx].(*Document)
+	if !ok {
+		panic(RT.NewError("Expected PDF document argument"))
+	}
+	return d
+}
+
+// --- Page sizes ---
+
+var pageSizes = map[string]*gopdf.Rect{
+	"a4":        gopdf.PageSizeA4,
+	"a3":        gopdf.PageSizeA3,
+	"a5":        gopdf.PageSizeA5,
+	"letter":    gopdf.PageSizeLetter,
+	"legal":     gopdf.PageSizeLegal,
+	"landscape": {W: 842, H: 595}, // A4 landscape
+}
+
+// --- Creation ---
+
+var procDocument ProcFn = func(args []Object) Object {
+	w := 595.0 // A4 default
+	h := 842.0
+	if len(args) > 0 {
+		if kw, ok := args[0].(Keyword); ok {
+			size := pageSizes[kw.Name()]
+			if size != nil {
+				w, h = size.W, size.H
+			}
+		} else if len(args) >= 2 {
+			w = ExtractDouble(args, 0)
+			h = ExtractDouble(args, 1)
+		}
+	}
+	pdf := &gopdf.GoPdf{}
+	pdf.Start(gopdf.Config{PageSize: gopdf.Rect{W: w, H: h}})
+	pdf.AddPage()
+	return &Document{pdf: pdf, w: w, h: h}
+}
+
+var procPage ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	d.pdf.AddPage()
+	return args[0]
+}
+
+// --- Fonts ---
+
+var procFont ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	name := ExtractString(args, 1)
+	size := ExtractDouble(args, 2)
+
+	// Check if font already added, if not try to add it
+	err := d.pdf.SetFont(name, "", int(size))
+	if err != nil {
+		// Try to add as TTF file path
+		err2 := d.pdf.AddTTFFont(name, name)
+		if err2 != nil {
+			panic(RT.NewError("pdf/font: " + err.Error() + " (also tried as file: " + err2.Error() + ")"))
+		}
+		err = d.pdf.SetFont(name, "", int(size))
+		if err != nil {
+			panic(RT.NewError("pdf/font: " + err.Error()))
+		}
+	}
+	return args[0]
+}
+
+var procFontFile ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	name := ExtractString(args, 1)
+	path := ExtractString(args, 2)
+	size := 12.0
+	if len(args) > 3 {
+		size = ExtractDouble(args, 3)
+	}
+	err := d.pdf.AddTTFFont(name, path)
+	if err != nil {
+		panic(RT.NewError("pdf/font-file: " + err.Error()))
+	}
+	err = d.pdf.SetFont(name, "", int(size))
+	if err != nil {
+		panic(RT.NewError("pdf/font-file set: " + err.Error()))
+	}
+	return args[0]
+}
+
+var procFontSize ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	size := ExtractDouble(args, 1)
+	d.pdf.SetFontSize(size)
+	return args[0]
+}
+
+// --- Text ---
+
+var procText ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	x := ExtractDouble(args, 1)
+	y := ExtractDouble(args, 2)
+	text := ExtractString(args, 3)
+	d.pdf.SetXY(x, y)
+	d.pdf.Cell(nil, text)
+	return args[0]
+}
+
+var procTextWrap ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	x := ExtractDouble(args, 1)
+	y := ExtractDouble(args, 2)
+	w := ExtractDouble(args, 3)
+	text := ExtractString(args, 4)
+	d.pdf.SetXY(x, y)
+	rect := &gopdf.Rect{W: w, H: 0}
+	d.pdf.MultiCell(rect, text)
+	return args[0]
+}
+
+// --- Drawing ---
+
+var procLine ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	x1 := ExtractDouble(args, 1)
+	y1 := ExtractDouble(args, 2)
+	x2 := ExtractDouble(args, 3)
+	y2 := ExtractDouble(args, 4)
+	d.pdf.Line(x1, y1, x2, y2)
+	return args[0]
+}
+
+var procRect ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	x := ExtractDouble(args, 1)
+	y := ExtractDouble(args, 2)
+	w := ExtractDouble(args, 3)
+	h := ExtractDouble(args, 4)
+	style := "D" // draw border
+	if len(args) > 5 {
+		style = ExtractKeyword(args, 5)
+	}
+	d.pdf.RectFromUpperLeftWithStyle(x, y, w, h, style)
+	return args[0]
+}
+
+var procOval ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	x := ExtractDouble(args, 1)
+	y := ExtractDouble(args, 2)
+	rx := ExtractDouble(args, 3)
+	ry := ExtractDouble(args, 4)
+	d.pdf.Oval(x, y, rx, ry)
+	return args[0]
+}
+
+// --- Color ---
+
+var procColor ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	r := ExtractInt(args, 1)
+	g := ExtractInt(args, 2)
+	b := ExtractInt(args, 3)
+	d.pdf.SetTextColor(uint8(r), uint8(g), uint8(b))
+	return args[0]
+}
+
+var procStrokeColor ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	r := ExtractInt(args, 1)
+	g := ExtractInt(args, 2)
+	b := ExtractInt(args, 3)
+	d.pdf.SetStrokeColor(uint8(r), uint8(g), uint8(b))
+	return args[0]
+}
+
+var procFillColor ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	r := ExtractInt(args, 1)
+	g := ExtractInt(args, 2)
+	b := ExtractInt(args, 3)
+	d.pdf.SetFillColor(uint8(r), uint8(g), uint8(b))
+	return args[0]
+}
+
+var procLineWidth ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	w := ExtractDouble(args, 1)
+	d.pdf.SetLineWidth(w)
+	return args[0]
+}
+
+// --- Images ---
+
+var procImage ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	path := ExtractString(args, 1)
+	x := ExtractDouble(args, 2)
+	y := ExtractDouble(args, 3)
+
+	opts := &gopdf.Rect{}
+	if len(args) > 4 {
+		opts.W = ExtractDouble(args, 4)
+	}
+	if len(args) > 5 {
+		opts.H = ExtractDouble(args, 5)
+	}
+
+	d.pdf.Image(path, x, y, opts)
+	return args[0]
+}
+
+// --- Position ---
+
+var procMoveTo ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	x := ExtractDouble(args, 1)
+	y := ExtractDouble(args, 2)
+	d.pdf.SetXY(x, y)
+	return args[0]
+}
+
+var procGetX ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	return Double{D: d.pdf.GetX()}
+}
+
+var procGetY ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	return Double{D: d.pdf.GetY()}
+}
+
+// --- Link ---
+
+var procLink ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	url := ExtractString(args, 1)
+	x := ExtractDouble(args, 2)
+	y := ExtractDouble(args, 3)
+	w := ExtractDouble(args, 4)
+	h := ExtractDouble(args, 5)
+	d.pdf.AddExternalLink(url, x, y, w, h)
+	return args[0]
+}
+
+// --- Output ---
+
+var procSave ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	path := ExtractString(args, 1)
+	err := d.pdf.WritePdf(path)
+	if err != nil {
+		panic(RT.NewError("pdf/save: " + err.Error()))
+	}
+	return NIL
+}
+
+var procToBytes ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	var buf bytes.Buffer
+	_, err := d.pdf.WriteTo(&buf)
+	if err != nil {
+		panic(RT.NewError("pdf/to-bytes: " + err.Error()))
+	}
+	return MakeString(buf.String())
+}
+
+// --- Page info ---
+
+var procPageCount ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	return MakeInt(d.pdf.GetNumberOfPages())
+}
+
+// --- Margins ---
+
+var procMargins ProcFn = func(args []Object) Object {
+	d := extractDoc(args, 0)
+	left := ExtractDouble(args, 1)
+	top := ExtractDouble(args, 2)
+	right := ExtractDouble(args, 3)
+	bottom := ExtractDouble(args, 4)
+	d.pdf.SetMargins(left, top, right, bottom)
+	return args[0]
+}
+
+func init() {
+	_ = os.Getenv("") // ensure os is used
+}

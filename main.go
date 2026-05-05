@@ -32,6 +32,7 @@ import (
 	_ "github.com/candid82/joker/std/markdown"
 	_ "github.com/candid82/joker/std/math"
 	_ "github.com/candid82/joker/std/os"
+	_ "github.com/candid82/joker/std/pdf"
 	_ "github.com/candid82/joker/std/runtime"
 	_ "github.com/candid82/joker/std/strconv"
 	_ "github.com/candid82/joker/std/string"
