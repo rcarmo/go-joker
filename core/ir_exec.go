@@ -336,6 +336,35 @@ loop:
 			}
 			return nil
 
+		case irCursorChar:
+			cur, ok := stack[len(stack)-1].(*StringCursor)
+			stack = stack[:len(stack)-1]
+			if !ok {
+				return nil
+			}
+			r := cur.Char()
+			if r < 0 {
+				stack = append(stack, NIL)
+			} else {
+				stack = append(stack, Char{Ch: r})
+			}
+
+		case irCursorNext:
+			cur, ok := stack[len(stack)-1].(*StringCursor)
+			stack = stack[:len(stack)-1]
+			if !ok {
+				return nil
+			}
+			stack = append(stack, cur.Next())
+
+		case irCursorDone:
+			cur, ok := stack[len(stack)-1].(*StringCursor)
+			stack = stack[:len(stack)-1]
+			if !ok {
+				return nil
+			}
+			stack = append(stack, Boolean{B: cur.Done()})
+
 		case irEq:
 			b := stack[len(stack)-1]
 			a := stack[len(stack)-2]

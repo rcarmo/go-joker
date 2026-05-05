@@ -57,6 +57,9 @@ const (
 	irGte                        // pop 2, push a >= b
 	irGt                         // pop 2, push a > b
 	irLte                        // pop 2, push a <= b
+	irCursorChar                 // pop cursor, push char (rune as Char)
+	irCursorNext                 // pop cursor, push new cursor (advanced by 1)
+	irCursorDone                 // pop cursor, push boolean (done?)
 )
 
 // ---------- Cache ----------

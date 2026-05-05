@@ -3,6 +3,7 @@ package core
 import (
 	"math"
 	"unicode/utf8"
+	"unsafe"
 )
 
 func irExecTyped(prog *IRProgram, initSlots []Object) Object {
@@ -240,6 +241,40 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			} else {
 				return nil
 			}
+
+		case irCursorChar:
+			v := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if v.tag != irValCursor {
+				return nil
+			}
+			cur := (*StringCursor)(v.p)
+			r := cur.Char()
+			if r < 0 {
+				stack = append(stack, irValue{tag: irValNil})
+			} else {
+				stack = append(stack, irMakeChar(r))
+			}
+
+		case irCursorNext:
+			v := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if v.tag != irValCursor {
+				return nil
+			}
+			cur := (*StringCursor)(v.p)
+			next := cur.Next()
+			stack = append(stack, irValue{tag: irValCursor, p: unsafe.Pointer(next)})
+
+		case irCursorDone:
+			v := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if v.tag != irValCursor {
+				return nil
+			}
+			cur := (*StringCursor)(v.p)
+			stack = append(stack, irMakeBool(cur.Done()))
+
 		case irEq:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]

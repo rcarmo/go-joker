@@ -29,6 +29,7 @@ const (
 	irValIntVector
 	irValNil
 	irValKeyword
+	irValCursor // StringCursor pointer in obj field
 )
 
 // irValue is the tagged value for the typed IR executor.
@@ -144,6 +145,8 @@ func objectToIRValue(obj Object) irValue {
 		return irValue{tag: irValNil}
 	case Keyword:
 		return irValue{tag: irValKeyword, p: unsafe.Pointer(v.name)}
+	case *StringCursor:
+		return irValue{tag: irValCursor, p: unsafe.Pointer(v)}
 	default:
 		return irMakeObject(obj)
 	}
@@ -179,8 +182,9 @@ func (v irValue) object() Object {
 	case irValNil:
 		return NIL
 	case irValKeyword:
-		// Return cached keyword Object to avoid heap allocation
 		return keywordObjectFromName((*string)(v.p))
+	case irValCursor:
+		return (*StringCursor)(v.p)
 	default:
 		if v.obj() == nil {
 			return NIL

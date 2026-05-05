@@ -366,6 +366,30 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			return false
 		}
 		c.emit(irFirst)
+	case "procCursorChar":
+		if len(expr.args) != 1 {
+			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
+		}
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
+		c.emit(irCursorChar)
+	case "procCursorNext":
+		if len(expr.args) != 1 {
+			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
+		}
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
+		c.emit(irCursorNext)
+	case "procCursorDone":
+		if len(expr.args) != 1 {
+			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
+		}
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
+		c.emit(irCursorDone)
 	case "procStr":
 		if len(expr.args) == 1 {
 			if !c.compileExpr(expr.args[0], false) {
