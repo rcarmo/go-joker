@@ -1,7 +1,6 @@
 joker
 .vscode
 .idea
-core/a_*.go
 *.exe
 *~
 *.zip
