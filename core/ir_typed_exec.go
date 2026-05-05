@@ -510,7 +510,13 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			pc += 2
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			fnObj := initSlots[slotIdx]
+			// Load fn from typed slots (supports captures beyond initSlots)
+			var fnObj Object
+			if slotIdx < len(initSlots) {
+				fnObj = initSlots[slotIdx]
+			} else {
+				fnObj = slots[slotIdx].object()
+			}
 			// Fast path: native f64 closure (zero boxing)
 			if fn, ok := fnObj.(*Fn); ok {
 				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {

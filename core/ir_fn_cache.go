@@ -2,6 +2,18 @@ package core
 
 import "sync/atomic"
 
+// irGetCachedFnProg returns the IR program for fn only if already compiled
+// and cached. Never triggers compilation. Safe to call during parse time.
+func irGetCachedFnProg(fn *Fn) *IRProgram {
+	if atomic.LoadUint32(&fn.irProgOnce) != 1 {
+		return nil
+	}
+	if fn.irProg == irCompileFailed {
+		return nil
+	}
+	return fn.irProg
+}
+
 // irGetFnProg returns the cached IR program for a Fn, compiling on first access.
 // Uses atomic flag for lock-free single-check.
 func irGetFnProg(fn *Fn) *IRProgram {
