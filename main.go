@@ -24,6 +24,7 @@ import (
 	_ "github.com/candid82/joker/std/hex"
 	_ "github.com/candid82/joker/std/html"
 	_ "github.com/candid82/joker/std/http"
+	_ "github.com/candid82/joker/std/imaging"
 	_ "github.com/candid82/joker/std/io"
 	_ "github.com/candid82/joker/std/jit"
 	_ "github.com/candid82/joker/std/json"
