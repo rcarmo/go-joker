@@ -41,19 +41,19 @@
           "ms_per_op": 1.306
         },
         "binary_trees": {
-          "ms_per_op": 92.14
+          "ms_per_op": 85.043
         },
         "spectral_norm": {
-          "ms_per_op": 18.481
+          "ms_per_op": 12.928
         },
         "mandelbrot": {
-          "ms_per_op": 10.376
+          "ms_per_op": 9.715
         },
         "fannkuch": {
-          "ms_per_op": 77.868
+          "ms_per_op": 89.474
         },
         "nbody": {
-          "ms_per_op": 9.317
+          "ms_per_op": 10.765
         },
         "fasta": {
           "ms_per_op": 0.047

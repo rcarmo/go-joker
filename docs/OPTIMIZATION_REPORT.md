@@ -67,12 +67,11 @@ Joker's execution engine uses a **tiered dispatch** model with five execution pa
 `irAdd`, `irSub`, `irMul`, `irDiv`, `irRem`, `irInc`, `irDec`, `irSqrt`
 
 ### Comparison
-`irLt`, `irEq`, `irIsZero`
+`irLt`, `irGte`, `irGt`, `irLte`, `irEq`, `irIsZero`
 
-Note: `>=`, `>`, `<=` are NOT yet IR opcodes due to a correctness bug with `or` macro expansion. They compile as `irLt` with swapped args for `>`, but `>=` and `<=` still use tree-walker.
-
-### String
+### String & Cursor
 `irStr1`, `irStr2`, `irNthStringASCII`, `irIntCast` (char→int), `irSubs` (substring)
+`irCursorChar`, `irCursorNext`, `irCursorDone` (StringCursor ops)
 
 ### Collection
 `irNth`, `irFirst`, `irGet`, `irGet3`, `irAssoc`, `irConj`, `irCount`, `irBuildVec`
@@ -195,6 +194,9 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_frame_detect.go` | ~85 | Precise let/loop frame detection |
 | `ir_native_helper.go` | ~170 | Native f64 closure compiler |
 | `ir_fn_cache.go` | ~155 | Fn→IRProgram caching + loop wrapper |
+| `string_cursor.go` | ~110 | StringCursor type (O(1) advance) |
+| `string_cursor_procs.go` | ~55 | Cursor procs (string-cursor, cursor-char, etc.) |
+| `string_cursor_init.go` | ~30 | Runtime proc registration |
 | `ir_analysis.go` | ~155 | IR program analysis |
 | `ir_value_accessors.go` | ~140 | irValue unsafe.Pointer accessors |
 | `ir_nanbox.go` | ~100 | NaN-boxing encode/decode |
@@ -207,7 +209,14 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 
 ## Known Issues
 
-1. **`>=`/`>`/`<=` compilation** deferred — `or` macro's `let` temporary bindings get wrong slot assignments when enclosing loops newly compile to IR
+1. ~~**`>=`/`>`/`<=` compilation** deferred~~ — **FIXED**: opcodes `irGte`/`irGt`/`irLte` appended at end of iota + scope save/restore in compiler
 2. **NaN-box for boxed executor** — object side-table causes correctness bugs for fn calls; only works in the typed executor
 3. **Arena allocation** — shared backing arrays corrupt data when vectors are modified by transient assoc
 4. **Transient auto-promotion in typed executor** — breaks spectral-norm's conj pattern
+5. ~~**Inline frame collision**~~ — **FIXED**: `tryInlineCall` now clears conflicting frame bindings before compiling inlined body
+
+## Recent Breakthroughs
+
+- **IR compiler scope save/restore** — N-body 41.7ms → 9.3ms (4.5×). Parser reuses frame numbers across sibling scopes; save/restore in `compileLetBody` and `compileNestedLoop` prevents slot collision.
+- **StringCursor type + IR opcodes** — Cursor-based JSON parser 3-3.5× faster than nth-based. `irCursorChar`, `irCursorNext`, `irCursorDone` run zero-alloc in typed executor.
+- **irCallSlot captured fn fix** — Fannkuch 118ms → 78ms. Typed executor now resolves captured fns from `slots` array instead of `initSlots`.

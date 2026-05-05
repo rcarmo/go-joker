@@ -18,12 +18,13 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 | What | Result |
 |------|--------|
-| **Arithmetic loop via WASM** | **~0.24 ms** — matches Bun/JSC-class speed, >700× faster than original |
-| **Recursive fib** | **~0.85 ms** — WASM/IR path, >600× faster than original |
-| **Fasta** | **~0.21 ms** — constant-count folding unlocks the pure WASM path |
-| **k-nucleotide** | **~0.46 ms** — typed IR string/map path, now near Goja parity |
-| **Reverse complement** | **~0.058 ms** — typed IR/text-helper inlining, faster than Goja |
-| **Joker beats Goja on** | 9/13 tracked cross-language benchmarks in the latest 5x run |
+| **N-body** | **~10.8 ms** — IR scope save/restore fix, 4.5× faster than before |
+| **Mandelbrot** | **~9.7 ms** — WASM/IR typed path, 17× faster than original |
+| **Binary trees** | **~85 ms** — self-recursive IR + transient vectors |
+| **Cursor JSON parse** | **~99 µs** — 3.5× faster than nth-based, StringCursor IR opcodes |
+| **Arithmetic loop** | **~0.24 ms** — matches Bun/JSC-class speed via WASM |
+| **Joker beats Python on** | 6/13 CLBG benchmarks |
+| **Joker beats Goja on** | 11/13 CLBG benchmarks |
 
 ## What's different from upstream Joker
 
@@ -38,6 +39,9 @@ Self-recursive functions in tail position are automatically rewritten to `recur`
 
 ### Transient vectors and maps
 Loops that update non-escaping vectors or maps via `assoc` automatically use in-place mutation (Clojure-style transients), eliminating persistent copy/update overhead while preserving persistent results at loop return.
+
+### StringCursor native type
+A zero-alloc O(1) string iterator with IR opcodes (`irCursorChar`, `irCursorNext`, `irCursorDone`). Cursor-based parsers run 3-3.5× faster than equivalent index-based code by eliminating per-character nth scanning and position arithmetic.
 
 ### Evaluator fast paths
 Numeric operations, binding resolution, and function dispatch all have type-specialized fast paths that avoid the generic Joker evaluation machinery.
