@@ -588,15 +588,32 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
 					// Already handled above
 				} else if fnProg := irCompileFn(fn); fnProg != nil {
+					// Resolve captures from fn.env if program has capture keys
+					callArgs := args
+					if len(fnProg.captureKeys) > 0 {
+						full := make([]Object, fnProg.numSlots)
+						copy(full, args)
+						for ci, ck := range fnProg.captureKeys {
+							e := fn.env
+							for e != nil {
+								if ck.index < len(e.bindings) {
+									full[fnProg.captureSlotIdxs[ci]] = e.bindings[ck.index]
+									break
+								}
+								e = e.parent
+							}
+						}
+						callArgs = full
+					}
 					// Try typed executor first, skip if previously failed
 					if !fnProg.typedFailed {
-						result = irExecTyped(fnProg, args)
+						result = irExecTyped(fnProg, callArgs)
 						if result == nil {
 							fnProg.typedFailed = true
 						}
 					}
 					if result == nil {
-						result = irExec(fnProg, args)
+						result = irExec(fnProg, callArgs)
 					}
 				}
 				if result == nil {

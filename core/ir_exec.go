@@ -656,14 +656,30 @@ loop:
 				}
 				// Try IR — typed executor first, skip if previously failed
 				if fnProg := irCompileFn(fn); fnProg != nil {
+					callArgs := args
+					if len(fnProg.captureKeys) > 0 {
+						full := make([]Object, fnProg.numSlots)
+						copy(full, args)
+						for ci, ck := range fnProg.captureKeys {
+							e := fn.env
+							for e != nil {
+								if ck.index < len(e.bindings) {
+									full[fnProg.captureSlotIdxs[ci]] = e.bindings[ck.index]
+									break
+								}
+								e = e.parent
+							}
+						}
+						callArgs = full
+					}
 					if !fnProg.typedFailed {
-						if result := irExecTyped(fnProg, args); result != nil {
+						if result := irExecTyped(fnProg, callArgs); result != nil {
 							stack = append(stack, result)
 							continue
 						}
 						fnProg.typedFailed = true
 					}
-					if result := irExec(fnProg, args); result != nil {
+					if result := irExec(fnProg, callArgs); result != nil {
 						stack = append(stack, result)
 						continue
 					}

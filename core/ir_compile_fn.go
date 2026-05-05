@@ -80,35 +80,13 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 	if c.code[len(c.code)-1] != irReturn {
 		c.emit(irReturn)
 	}
-	// Resolve captures from fn's closure environment.
-	// Captures reference parse-time frames, but fn.env holds the actual
-	// runtime values. Walk the env chain to find matching bindings.
+	// Compute capture slot indices (where each capture goes in the slot array).
+	// Actual capture VALUES are resolved dynamically at call time from fn.env.
 	if len(c.captureKeys) > 0 {
-		capSlots := make([]Object, len(c.captureKeys))
 		capIdxs := make([]int, len(c.captureKeys))
-		allResolved := true
 		for ci, ck := range c.captureKeys {
 			capIdxs[ci] = c.bindingMap[ck]
-			resolved := false
-			e := fn.env
-			for e != nil {
-				if ck.index < len(e.bindings) {
-					capSlots[ci] = e.bindings[ck.index]
-					resolved = true
-					break
-				}
-				e = e.parent
-			}
-			if !resolved {
-				allResolved = false
-				break
-			}
 		}
-		if !allResolved {
-			
-			return nil
-		}
-		c.captureSlots = capSlots
 		c.captureSlotIdxs = capIdxs
 	}
 	prog := &IRProgram{
@@ -123,10 +101,9 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 	// Eagerly compile native f64 helper if eligible
 	prog.nativeHelper = irCompileNativeHelper(prog)
 	prog.nativeChecked = true
-	// Don't cache in irFnCache if we have closure captures — each fn
-	// instance may have different env bindings for the same arity.
-	if len(prog.captureSlots) == 0 {
-		irFnCache.Store(&arity, prog)
-	}
+	// Cache at arity level. For fns with captures, store a "template"
+	// program. The captureSlots are resolved per-instance but the bytecode
+	// and captureKeys are shared.
+	irFnCache.Store(&arity, prog)
 	return prog
 }
