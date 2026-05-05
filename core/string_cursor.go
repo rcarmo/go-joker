@@ -56,14 +56,20 @@ func (c *StringCursor) Next() *StringCursor {
 	if c.byteOff >= len(c.s) {
 		return c
 	}
+	next := &StringCursor{
+		s:         c.s,
+		byteOff:   c.byteOff,
+		runeIndex: c.runeIndex + 1,
+		runeCount: c.runeCount,
+		ascii:     c.ascii,
+	}
 	if c.ascii {
-		c.byteOff++
+		next.byteOff++
 	} else {
 		_, size := utf8.DecodeRuneInString(c.s[c.byteOff:])
-		c.byteOff += size
+		next.byteOff += size
 	}
-	c.runeIndex++
-	return c
+	return next
 }
 
 // Index returns the current rune index.

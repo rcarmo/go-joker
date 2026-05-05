@@ -78,7 +78,26 @@ func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool
 		c.bindingMap[origKey] = baseSlot + i
 	}
 	c.numSlots = baseSlot + len(arity.args)
+	// The inlined body may contain let/or expansions at frames that
+	// collide with the caller's loop bindings. To avoid findLetFrame
+	// skipping those frames ("already known"), temporarily clear
+	// caller bindings at the inlined body's internal let frames.
+	inlineLetFrames := collectLetFrames(arity.body[0], fnFrame)
+	savedInlineFrames := make(map[bindingKey]int)
+	for k, v := range c.bindingMap {
+		for _, lf := range inlineLetFrames {
+			if k.frame == lf {
+				savedInlineFrames[k] = v
+			}
+		}
+	}
+	for k := range savedInlineFrames {
+		delete(c.bindingMap, k)
+	}
 	ok := c.compileExpr(arity.body[0], isLast)
+	for k, v := range savedInlineFrames {
+		c.bindingMap[k] = v
+	}
 	for i := range arity.args {
 		key := bindingKey{frame: inlineFrame, index: i}
 		if oldPresent[key] {
@@ -475,5 +494,66 @@ func coreVarToProcName(vr *Var) string {
 		return "procSubs"
 	default:
 		return ""
+	}
+}
+
+// collectLetFrames finds all frames used by LetExpr nodes inside an expression
+// that are deeper than fnFrame (i.e., internal to the inlined fn body).
+func collectLetFrames(expr Expr, fnFrame int) []int {
+	var frames []int
+	seen := map[int]bool{}
+	var scan func(e Expr)
+	scan = func(e Expr) {
+		switch x := e.(type) {
+		case *LetExpr:
+			// Check what frame this let's bindings use
+			for _, b := range x.body {
+				scanBindings(b, len(x.values), fnFrame, seen, &frames)
+			}
+			for _, v := range x.values {
+				scan(v)
+			}
+			for _, b := range x.body {
+				scan(b)
+			}
+		case *IfExpr:
+			scan(x.cond)
+			scan(x.positive)
+			scan(x.negative)
+		case *CallExpr:
+			scan(x.callable)
+			for _, a := range x.args {
+				scan(a)
+			}
+		}
+	}
+	scan(expr)
+	return frames
+}
+
+func scanBindings(expr Expr, nBinds int, fnFrame int, seen map[int]bool, frames *[]int) {
+	switch x := expr.(type) {
+	case *BindingExpr:
+		f := x.binding.frame
+		if f > fnFrame && x.binding.index < nBinds && !seen[f] {
+			seen[f] = true
+			*frames = append(*frames, f)
+		}
+	case *IfExpr:
+		scanBindings(x.cond, nBinds, fnFrame, seen, frames)
+		scanBindings(x.positive, nBinds, fnFrame, seen, frames)
+		scanBindings(x.negative, nBinds, fnFrame, seen, frames)
+	case *CallExpr:
+		scanBindings(x.callable, nBinds, fnFrame, seen, frames)
+		for _, a := range x.args {
+			scanBindings(a, nBinds, fnFrame, seen, frames)
+		}
+	case *LetExpr:
+		for _, v := range x.values {
+			scanBindings(v, nBinds, fnFrame, seen, frames)
+		}
+		for _, b := range x.body {
+			scanBindings(b, nBinds, fnFrame, seen, frames)
+		}
 	}
 }
