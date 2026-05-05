@@ -19,22 +19,33 @@ func irCompileFn(fn *Fn) *IRProgram {
 		return prog
 	}
 
-	c := &irCompiler{
-		bindingMap: make(map[bindingKey]int),
-		loopFrame:  -1,
-	}
-	c.numSlots = len(arity.args)
-
 	// Determine the frame from the body
 	fnFrame := guessLoopFrame(arity.body)
 	if fnFrame < 0 {
-		// For fns, find param frame by scanning body for BindingExprs
-		// that reference indices 0..nparams-1
 		fnFrame = guessFnParamFrame(arity.body, len(arity.args))
 	}
 	if fnFrame < 0 {
 		fnFrame = 1
 	}
+	// Try compilation with guessed frame; if it fails, retry with frame+1
+	// (the guess can pick a capture frame instead of the param frame)
+	for attempt := 0; attempt < 2; attempt++ {
+		trialFrame := fnFrame + attempt
+		prog := irCompileFnWithFrame(fn, arity, trialFrame)
+		if prog != nil {
+			return prog
+		}
+	}
+	irFnCache.Store(&arity, irCompileFailed)
+	return nil
+}
+
+func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
+	c := &irCompiler{
+		bindingMap: make(map[bindingKey]int),
+		loopFrame:  -1,
+	}
+	c.numSlots = len(arity.args)
 	c.loopFrame = fnFrame
 	for i := range arity.args {
 		c.bindingMap[bindingKey{frame: fnFrame, index: i}] = i
@@ -58,12 +69,12 @@ func irCompileFn(fn *Fn) *IRProgram {
 	// Compile body
 	for i, expr := range arity.body {
 		if !c.compileExpr(expr, i == len(arity.body)-1) {
-			irFnCache.Store(&arity, irCompileFailed)
+			
 			return nil
 		}
 	}
 	if len(c.code) == 0 {
-		irFnCache.Store(&arity, irCompileFailed)
+		
 		return nil
 	}
 	if c.code[len(c.code)-1] != irReturn {
@@ -94,7 +105,7 @@ func irCompileFn(fn *Fn) *IRProgram {
 			}
 		}
 		if !allResolved {
-			irFnCache.Store(&arity, irCompileFailed)
+			
 			return nil
 		}
 		c.captureSlots = capSlots
