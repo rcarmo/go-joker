@@ -588,8 +588,13 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
 					// Already handled above
 				} else if fnProg := irCompileFn(fn); fnProg != nil {
-					// Try typed executor first (zero-alloc numerics)
-					result = irExecTyped(fnProg, args)
+					// Try typed executor first, skip if previously failed
+					if !fnProg.typedFailed {
+						result = irExecTyped(fnProg, args)
+						if result == nil {
+							fnProg.typedFailed = true
+						}
+					}
 					if result == nil {
 						result = irExec(fnProg, args)
 					}

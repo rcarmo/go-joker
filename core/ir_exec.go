@@ -654,11 +654,14 @@ loop:
 						continue
 					}
 				}
-				// Try IR — typed executor first (zero-alloc numerics)
+				// Try IR — typed executor first, skip if previously failed
 				if fnProg := irCompileFn(fn); fnProg != nil {
-					if result := irExecTyped(fnProg, args); result != nil {
-						stack = append(stack, result)
-						continue
+					if !fnProg.typedFailed {
+						if result := irExecTyped(fnProg, args); result != nil {
+							stack = append(stack, result)
+							continue
+						}
+						fnProg.typedFailed = true
 					}
 					if result := irExec(fnProg, args); result != nil {
 						stack = append(stack, result)

@@ -479,15 +479,15 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 		return true
 
 	case *LetExpr:
-		if c.depth > 8 {
-			return c.reject("IR nesting depth exceeded for let: %d > 4", c.depth)
+		if c.depth > 16 {
+			return c.reject("IR nesting depth exceeded for let: %d > 16", c.depth)
 		}
 		c.depth++
 		return c.compileLetBody(e, isLast)
 
 	case *LoopExpr:
-		if c.depth > 8 {
-			return c.reject("IR nesting depth exceeded for nested loop: %d > 4", c.depth)
+		if c.depth > 16 {
+			return c.reject("IR nesting depth exceeded for nested loop: %d > 16", c.depth)
 		}
 		c.depth++
 		return c.compileNestedLoop(e, isLast)
