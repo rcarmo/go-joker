@@ -1,11 +1,8 @@
-name: Build & Release
+name: Release
 
 on:
   push:
-    branches: [master]
     tags: ['v*']
-  pull_request:
-    branches: [master]
 
 permissions:
   contents: write
@@ -29,20 +26,14 @@ jobs:
         include:
           - goos: linux
             goarch: amd64
-            suffix: linux-amd64
           - goos: linux
             goarch: arm64
-            suffix: linux-arm64
           - goos: darwin
             goarch: amd64
-            suffix: darwin-amd64
           - goos: darwin
             goarch: arm64
-            suffix: darwin-arm64
           - goos: windows
             goarch: amd64
-            suffix: windows-amd64
-            ext: .exe
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -55,27 +46,70 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: '0'
         run: |
-          mkdir -p dist
-          go build -ldflags="-s -w" -o dist/joker-${{ matrix.suffix }}${{ matrix.ext }} .
+          ext=""
+          if [ "${{ matrix.goos }}" = "windows" ]; then ext=".exe"; fi
+          go build -ldflags="-s -w -X main.version=${{ github.ref_name }}" \
+            -o joker-${{ matrix.goos }}-${{ matrix.goarch }}${ext} .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: joker-${{ matrix.suffix }}
-          path: dist/joker-${{ matrix.suffix }}${{ matrix.ext }}
+          name: joker-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: joker-*
 
   release:
-    if: startsWith(github.ref, 'refs/tags/v')
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: actions/download-artifact@v4
         with:
-          path: artifacts
+          path: release-files
           merge-multiple: true
 
-      - name: Create release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: artifacts/*
-          generate_release_notes: true
+      - name: Generate release notes
+        env:
+          REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          previous=$(git tag --sort=-v:refname | grep '^v' | grep -v "^${TAG}$" | head -1 || true)
+          {
+            echo "# go-joker ${TAG}"
+            echo
+            echo "Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo
+            echo "## Binaries"
+            echo
+            for f in release-files/joker-*; do
+              echo "- $(basename "$f")"
+            done
+            echo
+            if [ -n "$previous" ]; then
+              echo "## Changes since ${previous}"
+              range="${previous}..${TAG}"
+            else
+              echo "## Changes"
+              range="${TAG}"
+            fi
+            echo
+            git log --no-merges --date=short --pretty=format:'- \`%h\` %ad %s' "$range"
+            echo
+          } > release-notes.md
+          cat release-notes.md
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --title "go-joker ${TAG}" --notes-file release-notes.md
+          else
+            gh release create "$TAG" --title "go-joker ${TAG}" --notes-file release-notes.md
+          fi
+          gh release upload "$TAG" release-files/* --clobber
