@@ -495,6 +495,22 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 	case *TryExpr:
 		return c.compileTryCatch(e, isLast)
 
+	case *DoExpr:
+		for i, bodyExpr := range e.body {
+			if !c.compileExpr(bodyExpr, isLast && i == len(e.body)-1) {
+				return false
+			}
+			// Discard intermediate values (not the last one)
+			if i < len(e.body)-1 {
+				c.emit(irPop)
+			}
+		}
+		if len(e.body) == 0 {
+			c.emitWithOperand(irLiteral, c.addConstant(NIL))
+			if isLast { c.emit(irReturn) }
+		}
+		return true
+
 	default:
 		return c.reject("unsupported IR expression type %T", expr)
 	}

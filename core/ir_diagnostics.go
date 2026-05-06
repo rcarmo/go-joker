@@ -73,6 +73,10 @@ func irOpcodeName(op byte) string {
 		return "irApply"
 	case irThrow:
 		return "irThrow"
+	case irTryCatch:
+		return "irTryCatch"
+	case irPop:
+		return "irPop"
 	case irEq:
 		return "irEq"
 	case irIsZero:

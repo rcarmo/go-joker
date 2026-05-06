@@ -382,16 +382,13 @@ loop:
 			panic(RT.NewError(v.ToString(false)))
 
 		case irTryCatch:
-			// Format: catchPC(2) + bindSlot(2)
-			// Register a catch handler for panics in the try body
-			catchPC := int(code[pc])<<8 | int(code[pc+1])
-			bindSlot := int(code[pc+2])<<8 | int(code[pc+3])
 			pc += 4
-			_ = catchPC
-			_ = bindSlot
-			// TODO: full try/catch requires restructuring the exec loop
-			// For now, bail to tree-walker for programs with try/catch
 			return nil
+
+		case irPop:
+			if len(stack) > 0 {
+				stack = stack[:len(stack)-1]
+			}
 
 		case irEq:
 			b := stack[len(stack)-1]
