@@ -1,0 +1,86 @@
+{
+  "title": "go-joker execution pipeline — tiered dispatch with IR compilation",
+  "nodes": [
+    {
+      "id": "source",
+      "label": "Clojure Source",
+      "sub": ".joke files",
+      "tag": "input",
+      "column": 0,
+      "row": 0
+    },
+    {
+      "id": "parser",
+      "label": "Reader + Parser",
+      "sub": "AST · TCO rewrite",
+      "tag": "processing",
+      "column": 1,
+      "row": 0
+    },
+    {
+      "id": "compiler",
+      "label": "IR Compiler",
+      "sub": "45+ opcodes · scope analysis",
+      "tag": "processing",
+      "column": 2,
+      "row": 0
+    },
+    {
+      "id": "dispatch",
+      "label": "Tiered Dispatch",
+      "sub": "per-instance fn cache",
+      "tag": "backend",
+      "column": 3,
+      "row": 0,
+      "children": [
+        {
+          "id": "wasm",
+          "label": "WASM",
+          "sub": "native JIT",
+          "tag": "backend"
+        },
+        {
+          "id": "typed",
+          "label": "Typed IR",
+          "sub": "irValue stack",
+          "tag": "backend"
+        },
+        {
+          "id": "boxed",
+          "label": "Boxed IR",
+          "sub": "transients",
+          "tag": "state"
+        },
+        {
+          "id": "tree",
+          "label": "Tree-walker",
+          "sub": "full semantics",
+          "tag": "infra"
+        }
+      ]
+    },
+    {
+      "id": "runtime",
+      "label": "joker.runtime",
+      "sub": "introspection · profiling",
+      "tag": "monitor",
+      "column": 4,
+      "row": 1
+    },
+    {
+      "id": "namespaces",
+      "label": "Namespaces",
+      "sub": "imaging · svg · pdf · jit",
+      "tag": "output",
+      "column": 4,
+      "row": 0
+    }
+  ],
+  "edges": [
+    { "from": "source", "to": "parser" },
+    { "from": "parser", "to": "compiler" },
+    { "from": "compiler", "to": "dispatch", "label": "IRProgram" },
+    { "from": "dispatch", "to": "namespaces" },
+    { "from": "runtime", "to": "dispatch", "label": "inspect", "accent": true }
+  ]
+}

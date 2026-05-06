@@ -12,7 +12,7 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 ### vs. original Joker
 
-![improvements](benchmarks/benchmark-improvements.svg)
+![improvements](benchmarks/benchmark-speedup.svg)
 
 ### Highlights
 
@@ -59,27 +59,13 @@ Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze
 
 ## Architecture
 
-```
-Joker Source → Reader + Parser → AST
-                                  ↓
-                           tco_rewrite (parse-time tail-call → recur)
-                                  ↓
-                              Eval() type switch
-                                  ↓
-                    ┌─────────────┼─────────────┐
-                    ↓             ↓             ↓
-              WASM/wazero    IR bytecode    Tree-walker
-              (native)       (irExec)      (evalLoop)
-              0.32ms ⚡       28ms           190ms
-                    ↑             ↑
-                    └──fallback───┘
-```
+![architecture](benchmarks/architecture.svg)
 
-- **WASM path**: pure integer/float loops → wazero JIT → native code
-- **Typed IR path**: primitive/string loops → tagged values, low allocation
-- **Boxed IR path**: loops with collections, fn calls, let bindings → bytecode interpreter
-- **Tree-walker**: everything else (macros, special forms, I/O)
-- **gi bridge**: hooks, tools, state access — callable from IR via `irCallSlot`
+- **WASM path**: pure integer/float loops → wazero JIT → native code (~0.2ms)
+- **Typed IR path**: primitive/string/cursor loops → irValue stack, zero-boxing (~2–8ms)
+- **Boxed IR path**: collections, fn calls, transients → []Object interpreter (~10–40ms)
+- **Tree-walker**: full Clojure semantics (macros, special forms, I/O)
+- **Fallback chain**: WASM → Typed IR → Boxed IR → Tree-walker (automatic)
 
 ## Building & testing
 
