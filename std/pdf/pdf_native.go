@@ -23,11 +23,11 @@ var typeDocument = &Type{}
 func (d *Document) ToString(escape bool) string {
 	return fmt.Sprintf("#<PDF %.0fx%.0f>", d.w, d.h)
 }
-func (d *Document) Equals(other interface{}) bool   { return d == other }
-func (d *Document) GetInfo() *ObjectInfo            { return nil }
+func (d *Document) Equals(other interface{}) bool    { return d == other }
+func (d *Document) GetInfo() *ObjectInfo             { return nil }
 func (d *Document) WithInfo(info *ObjectInfo) Object { return d }
-func (d *Document) GetType() *Type                  { return typeDocument }
-func (d *Document) Hash() uint32                    { return 0 }
+func (d *Document) GetType() *Type                   { return typeDocument }
+func (d *Document) Hash() uint32                     { return 0 }
 
 func extractDoc(args []Object, idx int) *Document {
 	d, ok := args[idx].(*Document)
@@ -121,7 +121,9 @@ var procFontFile ProcFn = func(args []Object) Object {
 var procFontSize ProcFn = func(args []Object) Object {
 	d := extractDoc(args, 0)
 	size := ExtractDouble(args, 1)
-	d.pdf.SetFontSize(size)
+	if err := d.pdf.SetFontSize(size); err != nil {
+		panic(RT.NewError("pdf/font-size: " + err.Error()))
+	}
 	return args[0]
 }
 
@@ -133,7 +135,9 @@ var procText ProcFn = func(args []Object) Object {
 	y := ExtractDouble(args, 2)
 	text := ExtractString(args, 3)
 	d.pdf.SetXY(x, y)
-	d.pdf.Cell(nil, text)
+	if err := d.pdf.Cell(nil, text); err != nil {
+		panic(RT.NewError("pdf/text: " + err.Error()))
+	}
 	return args[0]
 }
 
@@ -145,7 +149,9 @@ var procTextWrap ProcFn = func(args []Object) Object {
 	text := ExtractString(args, 4)
 	d.pdf.SetXY(x, y)
 	rect := &gopdf.Rect{W: w, H: 0}
-	d.pdf.MultiCell(rect, text)
+	if err := d.pdf.MultiCell(rect, text); err != nil {
+		panic(RT.NewError("pdf/text-wrap: " + err.Error()))
+	}
 	return args[0]
 }
 
@@ -237,7 +243,9 @@ var procImage ProcFn = func(args []Object) Object {
 		opts.H = ExtractDouble(args, 5)
 	}
 
-	d.pdf.Image(path, x, y, opts)
+	if err := d.pdf.Image(path, x, y, opts); err != nil {
+		panic(RT.NewError("pdf/image: " + err.Error()))
+	}
 	return args[0]
 }
 

@@ -3,7 +3,6 @@ package http
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -61,7 +60,7 @@ func mapToReq(request Map) *http.Request {
 func reqToMap(host String, port String, req *http.Request) Map {
 	defer req.Body.Close()
 	res := EmptyArrayMap()
-	body, err := ioutil.ReadAll(req.Body)
+	body, err := io.ReadAll(req.Body)
 	PanicOnErr(err)
 	res.Add(MakeKeyword("request-method"), MakeKeyword(strings.ToLower(req.Method)))
 	res.Add(MakeKeyword("body"), MakeString(string(body)))
@@ -84,7 +83,7 @@ func reqToMap(host String, port String, req *http.Request) Map {
 func respToMap(resp *http.Response) Map {
 	defer resp.Body.Close()
 	res := EmptyArrayMap()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	PanicOnErr(err)
 	res.Add(MakeKeyword("body"), MakeString(string(body)))
 	res.Add(MakeKeyword("status"), MakeInt(resp.StatusCode))

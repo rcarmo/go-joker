@@ -378,7 +378,6 @@ loop:
 
 		case irThrow:
 			v := stack[len(stack)-1]
-			stack = stack[:len(stack)-1]
 			panic(RT.NewError(v.ToString(false)))
 
 		case irTryCatch:
@@ -756,33 +755,33 @@ loop:
 						}
 					}
 					if fnProg != nil {
-					callArgs := args
-					if len(fnProg.captureKeys) > 0 {
-						full := make([]Object, fnProg.numSlots)
-						copy(full, args)
-						for ci, ck := range fnProg.captureKeys {
-							e := fn.env
-							for e != nil {
-								if ck.index < len(e.bindings) {
-									full[fnProg.captureSlotIdxs[ci]] = e.bindings[ck.index]
-									break
+						callArgs := args
+						if len(fnProg.captureKeys) > 0 {
+							full := make([]Object, fnProg.numSlots)
+							copy(full, args)
+							for ci, ck := range fnProg.captureKeys {
+								e := fn.env
+								for e != nil {
+									if ck.index < len(e.bindings) {
+										full[fnProg.captureSlotIdxs[ci]] = e.bindings[ck.index]
+										break
+									}
+									e = e.parent
 								}
-								e = e.parent
 							}
+							callArgs = full
 						}
-						callArgs = full
-					}
-					if !fnProg.typedFailed {
-						if result := irExecTyped(fnProg, callArgs); result != nil {
+						if !fnProg.typedFailed {
+							if result := irExecTyped(fnProg, callArgs); result != nil {
+								stack = append(stack, result)
+								continue
+							}
+							fnProg.typedFailed = true
+						}
+						if result := irExec(fnProg, callArgs); result != nil {
 							stack = append(stack, result)
 							continue
 						}
-						fnProg.typedFailed = true
-					}
-					if result := irExec(fnProg, callArgs); result != nil {
-						stack = append(stack, result)
-						continue
-					}
 					} // end if fnProg != nil
 				}
 			}
@@ -948,8 +947,6 @@ loop:
 				stack = append(stack, Int{I: v.Count()})
 			case Counted:
 				stack = append(stack, Int{I: v.Count()})
-			case String:
-				stack = append(stack, Int{I: len(v.S)})
 			default:
 				return nil
 			}

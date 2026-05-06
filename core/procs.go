@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math"
 	"math/big"
 	"math/rand"
@@ -1551,11 +1550,11 @@ var procBufferedReader = func(args []Object) Object {
 var procSlurp = func(args []Object) Object {
 	switch f := args[0].(type) {
 	case String:
-		b, err := ioutil.ReadFile(f.S)
+		b, err := os.ReadFile(f.S)
 		PanicOnErr(err)
 		return String{S: string(b)}
 	case io.Reader:
-		b, err := ioutil.ReadAll(f)
+		b, err := io.ReadAll(f)
 		PanicOnErr(err)
 		return String{S: string(b)}
 	default:
@@ -2060,7 +2059,7 @@ func ProcessReaderFromEval(reader *Reader, filename string) {
 		PanicOnErr(err)
 		expr, err := TryParse(obj, parseContext)
 		PanicOnErr(err)
-		obj, err = TryEval(expr)
+		_, err = TryEval(expr)
 		PanicOnErr(err)
 	}
 }
@@ -2379,8 +2378,4 @@ func ProcessLinterFiles(dialect Dialect, filename string, workingDir string) {
 	case CLJ:
 		ProcessLinterFile(configDir, "linter.clj")
 	}
-}
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
 }

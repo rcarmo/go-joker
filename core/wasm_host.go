@@ -206,8 +206,6 @@ func registerWasmHost(rt wazero.Runtime) {
 				switch v := coll.(type) {
 				case Counted:
 					return uint64(v.Count())
-				case String:
-					return uint64(len(v.S))
 				}
 				return 0
 			}).Export("count")

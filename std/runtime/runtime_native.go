@@ -156,27 +156,43 @@ var procGC ProcFn = func(args []Object) Object {
 
 var procBenchmark ProcFn = func(args []Object) Object {
 	callable := EnsureArgIsCallable(args, 0)
-	// Auto-calibrate: run until 1 second or 1000 iterations
-	warmup := 3
-	for i := 0; i < warmup; i++ {
+	// Warm up a little to reduce one-off effects.
+	for i := 0; i < 3; i++ {
 		callable.Call(nil)
 	}
 
-	// Measure
+	// Calibrate by increasing iteration count until a single measurement window
+	// is long enough to be stable.
 	runtime.GC()
 	n := 1
 	var elapsed time.Duration
-	for elapsed < 500*time.Millisecond {
+	const target = 250 * time.Millisecond
+	const maxIters = 100_000_000
+	for {
 		start := time.Now()
 		for i := 0; i < n; i++ {
 			callable.Call(nil)
 		}
 		elapsed = time.Since(start)
-		if elapsed < 100*time.Millisecond {
+		if elapsed >= target || n >= maxIters {
+			break
+		}
+		if elapsed < 10*time.Millisecond {
 			n *= 10
+		} else {
+			n *= 2
+		}
+		if n > maxIters {
+			n = maxIters
 		}
 	}
+	if n <= 0 {
+		n = 1
+	}
 	nsPerOp := elapsed.Nanoseconds() / int64(n)
+	if nsPerOp < 0 {
+		nsPerOp = 0
+	}
 
 	m := EmptyArrayMap()
 	m = assocM(m, MakeKeyword("ns-per-op"), Int{I: int(nsPerOp)})

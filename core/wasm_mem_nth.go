@@ -129,8 +129,6 @@ func wasmMemNthEligible(prog *IRProgram, slots []Object) bool {
 						_ = nextSlot
 						nthSlots[slotIdx] = true
 					}
-				} else if nextOp == irNth {
-					// Immediate nth after one load — unusual but handle it
 				}
 			}
 		case irLiteral, irStoreSlot:

@@ -3,7 +3,6 @@ package os
 import (
 	"bytes"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"strings"
@@ -144,7 +143,7 @@ func execute(name string, opts Map) Object {
 }
 
 func readDir(dirname string) Object {
-	files, err := ioutil.ReadDir(dirname)
+	entries, err := os.ReadDir(dirname)
 	PanicOnErr(err)
 	res := EmptyVector()
 	name := MakeKeyword("name")
@@ -152,13 +151,15 @@ func readDir(dirname string) Object {
 	mode := MakeKeyword("mode")
 	isDir := MakeKeyword("dir?")
 	modTime := MakeKeyword("modtime")
-	for _, f := range files {
+	for _, e := range entries {
+		info, err := e.Info()
+		PanicOnErr(err)
 		m := EmptyArrayMap()
-		m.Add(name, MakeString(f.Name()))
-		m.Add(size, MakeInt(int(f.Size())))
-		m.Add(mode, MakeInt(int(f.Mode())))
-		m.Add(isDir, MakeBoolean(f.IsDir()))
-		m.Add(modTime, MakeInt(int(f.ModTime().Unix())))
+		m.Add(name, MakeString(e.Name()))
+		m.Add(size, MakeInt(int(info.Size())))
+		m.Add(mode, MakeInt(int(info.Mode())))
+		m.Add(isDir, MakeBoolean(e.IsDir()))
+		m.Add(modTime, MakeInt(int(info.ModTime().Unix())))
 		res = res.Conjoin(m)
 	}
 	return res

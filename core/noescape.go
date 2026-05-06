@@ -1,22 +1,10 @@
 package core
 
-import "unsafe"
-
-// noescape64 hides a []float64 from escape analysis.
-// The caller must ensure the slice is not retained by the callee.
+// noescape64 used to hide slices from escape analysis via unsafe pointer tricks.
 //
-//go:nosplit
+// Go vet now flags that pattern as unsafe-pointer misuse, and the optimization
+// is not required for correctness. Keep this helper as an identity function so
+// call sites remain simple while preserving vet-clean builds.
 func noescape64(s []float64) []float64 {
-	p := unsafe.SliceData(s)
-	np := (*float64)(noescape(unsafe.Pointer(p)))
-	return unsafe.Slice(np, len(s))
-}
-
-// noescape hides a pointer from escape analysis.
-//
-//go:nosplit
-//go:nocheckptr
-func noescape(p unsafe.Pointer) unsafe.Pointer {
-	x := uintptr(p)
-	return unsafe.Pointer(x ^ 0 ^ 0)
+	return s
 }

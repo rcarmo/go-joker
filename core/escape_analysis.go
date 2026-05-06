@@ -172,14 +172,8 @@ func analyzeEscapes(prog *IRProgram) *EscapeInfo {
 			pc += 2
 
 		case irReturn:
-			// The returned value escapes the function
-			e := pop()
-			if e.fromSlot >= 0 {
-				// Returning a slot value means it escapes
-				// But for loop results, the vector IS the final value — that's OK
-				// We only care about mutation DURING the loop
-				// So returning is actually fine for our purposes
-			}
+			// Return value doesn't affect in-function mutation safety.
+			_ = pop()
 
 		case irRecur:
 			nargs := int(code[pc])<<8 | int(code[pc+1])

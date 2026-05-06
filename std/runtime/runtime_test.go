@@ -3,6 +3,7 @@ package runtime
 import (
 	"strings"
 	"testing"
+	"time"
 
 	. "github.com/candid82/joker/core"
 )
@@ -40,13 +41,32 @@ func TestAnalyze(t *testing.T) {
 
 func TestBenchmarkFn(t *testing.T) {
 	initRuntimeNamespace()
-	// Benchmark a simple fn
+	// Benchmark a simple fn; this should complete quickly and never loop forever.
 	counter := Int{I: 0}
 	fn := Proc{Fn: func(args []Object) Object {
 		counter.I++
 		return counter
 	}, Name: "test-fn"}
-	result := procBenchmark([]Object{fn})
+
+	resCh := make(chan Object, 1)
+	go func() {
+		resCh <- procBenchmark([]Object{fn})
+	}()
+
+	var result Object
+	select {
+	case result = <-resCh:
+	case <-time.After(5 * time.Second):
+		t.Fatal("procBenchmark timed out")
+	}
+
+	am, ok := result.(*ArrayMap)
+	if !ok {
+		t.Fatalf("unexpected result type: %T", result)
+	}
+	if ok, v := am.Get(MakeKeyword("iterations")); !ok || v.(Int).I <= 0 {
+		t.Fatalf("invalid iterations in result: %s", result.ToString(false))
+	}
 	t.Logf("benchmark: %s", result.ToString(false))
 }
 

@@ -251,7 +251,7 @@ func formatSeqEx(seq Seq, w io.Writer, indent int, formatAsDef bool) int {
 		}
 	} else if obj.Equals(SYMBOLS.catch) {
 		if !seq.IsEmpty() {
-			seq, prevObj, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
+			seq, _, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
 			seq, prevObj, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
 		}
 	} else if obj.Equals(SYMBOLS.fn) {
@@ -260,7 +260,7 @@ func formatSeqEx(seq Seq, w io.Writer, indent int, formatAsDef bool) int {
 			case Vec:
 				seq, prevObj, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
 			case Symbol:
-				seq, prevObj, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
+				seq, _, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
 				seq, prevObj, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
 			default:
 				if !isNewLine(obj, seq.First()) {
@@ -272,14 +272,12 @@ func formatSeqEx(seq Seq, w io.Writer, indent int, formatAsDef bool) int {
 		if v, ok := seq.First().(Vec); ok {
 			fmt.Fprint(w, " ")
 			i = formatBindings(v, w, i+1)
-			prevObj = seq.First()
 			seq = seq.Rest()
 		}
 	} else if obj.Equals(SYMBOLS.letfn) {
 		if v, ok := seq.First().(Vec); ok {
 			fmt.Fprint(w, " ")
 			i = formatVectorVertically(v, w, i+1)
-			prevObj = seq.First()
 			seq = seq.Rest()
 		}
 	} else if isDoIndent(obj) {

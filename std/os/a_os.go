@@ -4,7 +4,6 @@ package os
 
 import (
 	. "github.com/candid82/joker/core"
-	"io/ioutil"
 	"os"
 )
 
@@ -180,7 +179,7 @@ func __create_temp_(_args []Object) Object {
 	case _c == 2:
 		dir := ExtractString(_args, 0)
 		pattern := ExtractString(_args, 1)
-		_res, err := ioutil.TempFile(dir, pattern)
+		_res, err := os.CreateTemp(dir, pattern)
 		PanicOnErr(err)
 		return MakeFile(_res)
 
@@ -557,7 +556,7 @@ func __mkdir_temp_(_args []Object) Object {
 	case _c == 2:
 		dir := ExtractString(_args, 0)
 		pattern := ExtractString(_args, 1)
-		_res, err := ioutil.TempDir(dir, pattern)
+		_res, err := os.MkdirTemp(dir, pattern)
 		PanicOnErr(err)
 		return MakeString(_res)
 

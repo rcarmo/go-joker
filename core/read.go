@@ -716,16 +716,16 @@ func readString(reader *Reader) Object {
 }
 
 func readMulti(reader *Reader, previouslyRead []Object) (Object, []Object) {
-	if len(previouslyRead) == 0 {
+	for len(previouslyRead) == 0 {
 		obj, multi := Read(reader)
-		if multi {
-			v := obj.(Vec)
-			for i := 0; i < v.Count(); i++ {
-				previouslyRead = append(previouslyRead, v.At(i))
-			}
-		} else {
+		if !multi {
 			return obj, previouslyRead
 		}
+		v := obj.(Vec)
+		for i := 0; i < v.Count(); i++ {
+			previouslyRead = append(previouslyRead, v.At(i))
+		}
+		// If a splice produced no forms, keep reading.
 	}
 	obj := previouslyRead[len(previouslyRead)-1]
 	previouslyRead = previouslyRead[0 : len(previouslyRead)-1]
@@ -752,7 +752,8 @@ func readCondList(reader *Reader) Object {
 	var res Object = nil
 	for r != ')' || len(forms) != 0 {
 		if res == nil {
-			feature, forms := readMulti(reader, forms)
+			var feature Object
+			feature, forms = readMulti(reader, forms)
 			if feature.Equals(KEYWORDS.none) || feature.Equals(KEYWORDS.else_) {
 				panic(MakeReadError(reader, "Feature name "+feature.ToString(false)+" is reserved"))
 			}
