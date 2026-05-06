@@ -63,6 +63,7 @@ const (
 	irPackRest                   // operand: startIdx — pack slots[startIdx:nargs] into vector, store to slot
 	irApply                      // pop fn + args-seq, call fn with unpacked args, push result
 	irThrow                      // pop value, panic with it
+	irTryCatch                   // operands: catchPC(2) + bindSlot(2) — set up catch handler
 )
 
 // ---------- Cache ----------

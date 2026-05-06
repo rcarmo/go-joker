@@ -294,6 +294,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			stack = stack[:len(stack)-1]
 			panic(RT.NewError(v.object().ToString(false)))
 
+		case irTryCatch:
+			// Bail to boxed/tree-walker for try/catch programs
+			pc += 4 // skip catchPC + bindSlot operands
+			return nil
+
 		case irEq:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]

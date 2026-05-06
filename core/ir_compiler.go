@@ -492,6 +492,9 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 		c.depth++
 		return c.compileNestedLoop(e, isLast)
 
+	case *TryExpr:
+		return c.compileTryCatch(e, isLast)
+
 	default:
 		return c.reject("unsupported IR expression type %T", expr)
 	}
@@ -816,4 +819,66 @@ func exprCount(expr Expr) int {
 	default:
 		return 1
 	}
+}
+
+func (c *irCompiler) compileTryCatch(e *TryExpr, isLast bool) bool {
+	// Only support single catch with no finally for now
+	if len(e.catches) != 1 || len(e.finallyExpr) > 0 {
+		return c.reject("IR try/catch: only single catch without finally supported")
+	}
+	catch := e.catches[0]
+
+	// Emit irTryCatch with placeholder for catchPC
+	catchPCIdx := len(c.code) + 1 // position where catchPC will be
+	bindSlot := c.numSlots
+	c.numSlots++
+	c.code = append(c.code, irTryCatch, 0, 0, byte(bindSlot>>8), byte(bindSlot))
+
+	// Compile try body
+	for i, bodyExpr := range e.body {
+		if !c.compileExpr(bodyExpr, isLast && i == len(e.body)-1) {
+			return false
+		}
+	}
+	if !isLast {
+		// Jump over catch body
+		jumpIdx := len(c.code) + 1
+		c.code = append(c.code, irJump, 0, 0)
+		// Patch catchPC to here
+		catchPC := len(c.code)
+		c.code[catchPCIdx] = byte(catchPC >> 8)
+		c.code[catchPCIdx+1] = byte(catchPC)
+
+		// Set up catch binding
+		catchFrame := c.loopFrame + c.depth + 1
+		c.bindingMap[bindingKey{frame: catchFrame, index: 0}] = bindSlot
+		_ = catch.excSymbol
+
+		// Compile catch body
+		for i, bodyExpr := range catch.body {
+			if !c.compileExpr(bodyExpr, isLast && i == len(catch.body)-1) {
+				return false
+			}
+		}
+		// Patch jump target to after catch
+		afterCatch := len(c.code)
+		c.code[jumpIdx] = byte(afterCatch >> 8)
+		c.code[jumpIdx+1] = byte(afterCatch)
+	} else {
+		// isLast: try body already has irReturn
+		// Patch catchPC to here for the catch handler
+		catchPC := len(c.code)
+		c.code[catchPCIdx] = byte(catchPC >> 8)
+		c.code[catchPCIdx+1] = byte(catchPC)
+
+		catchFrame := c.loopFrame + c.depth + 1
+		c.bindingMap[bindingKey{frame: catchFrame, index: 0}] = bindSlot
+
+		for i, bodyExpr := range catch.body {
+			if !c.compileExpr(bodyExpr, i == len(catch.body)-1) {
+				return false
+			}
+		}
+	}
+	return true
 }
