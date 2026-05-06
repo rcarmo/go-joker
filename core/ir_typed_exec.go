@@ -422,7 +422,10 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				collObj := coll.object()
 				keyObj := key.object()
 				valObj := val.object()
-				if assocable, ok := collObj.(Associative); ok {
+				if tv, ok := collObj.(*TransientVector); ok {
+					result := tv.AssocInPlace(keyObj, valObj)
+					stack = append(stack, objectToIRValue(result))
+				} else if assocable, ok := collObj.(Associative); ok {
 					result := assocable.Assoc(keyObj, valObj)
 					stack = append(stack, objectToIRValue(result))
 				} else {

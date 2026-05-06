@@ -500,7 +500,6 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 			if !c.compileExpr(bodyExpr, isLast && i == len(e.body)-1) {
 				return false
 			}
-			// Discard intermediate values (not the last one)
 			if i < len(e.body)-1 {
 				c.emit(irPop)
 			}
