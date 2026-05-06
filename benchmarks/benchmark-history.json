@@ -41,34 +41,34 @@
           "ms_per_op": 0.733
         },
         "binary_trees": {
-          "ms_per_op": 112.0
+          "ms_per_op": 101.0
         },
         "spectral_norm": {
-          "ms_per_op": 20.7
+          "ms_per_op": 20.5
         },
         "mandelbrot": {
-          "ms_per_op": 5.0
+          "ms_per_op": 7.5
         },
         "fannkuch": {
-          "ms_per_op": 91.4
+          "ms_per_op": 37.2
         },
         "nbody": {
-          "ms_per_op": 2.7
+          "ms_per_op": 2.0
         },
         "fasta": {
-          "ms_per_op": 0.049
+          "ms_per_op": 0.042
         },
         "pidigits": {
-          "ms_per_op": 0.021
+          "ms_per_op": 0.015
         },
         "knucleotide": {
-          "ms_per_op": 0.201
+          "ms_per_op": 0.248
         },
         "reverse_complement": {
-          "ms_per_op": 0.062
+          "ms_per_op": 0.045
         },
         "regex_redux": {
-          "ms_per_op": 0.114
+          "ms_per_op": 0.115
         }
       }
     }
