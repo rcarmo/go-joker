@@ -659,7 +659,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if fn, ok := fnObj.(*Fn); ok {
 				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
 					// Already handled above
-				} else if fnProg := irCompileFn(fn); fnProg != nil && !fnProg.execFailed {
+				} else if fnProg := irGetFnProg(fn); fnProg != nil && !fnProg.execFailed {
 					// Multi-arity dispatch
 					if fnProg.arityPrograms != nil {
 						if sub, ok := fnProg.arityPrograms[nargs]; ok {
