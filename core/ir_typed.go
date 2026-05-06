@@ -77,9 +77,13 @@ func irTypedEligible(a IRAnalysis) bool {
 	if a.HasCallSlot {
 		return !a.UsesString && !a.HasMapOps && (!a.UsesCollection || a.HasGenericNth)
 	}
-	// Collection programs with nth and optional assoc (vector-assoc pattern)
-	if a.UsesCollection && a.HasGenericNth && !a.HasMapOps && !a.UsesString {
+	// Collection programs with nth but NO assoc (read-only vector access)
+	if a.UsesCollection && a.HasGenericNth && !a.HasMapOps && !a.UsesString && !a.HasAssoc {
 		return true
+	}
+	// Collection programs with assoc: prefer boxed executor (has transient support)
+	if a.UsesCollection && a.HasGenericNth && a.HasAssoc && !a.HasMapOps && !a.UsesString {
+		return false
 	}
 	if a.UsesCollection && (a.HasMapOps || !a.HasGenericNth) {
 		if irTypedMapEnabled() && a.HasMapOps && a.UsesString {
