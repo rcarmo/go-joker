@@ -402,6 +402,37 @@ loop:
 			fn := &Fn{fnExpr: prog.fnExprs[idx], env: fnEnv}
 			stack = append(stack, fn)
 
+		case irCase:
+			// Jump table: dispatch by integer value
+			slotIdx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			nCases := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			var testVal int
+			switch v := slots[slotIdx].(type) {
+			case Int:
+				testVal = v.I
+			default:
+				// Skip table, jump to default
+				pc += nCases * 4
+				pc = int(code[pc])<<8 | int(code[pc+1])
+				continue
+			}
+			matched := false
+			for i := 0; i < nCases; i++ {
+				caseVal := int(int16(code[pc])<<8 | int16(code[pc+1]))
+				target := int(code[pc+2])<<8 | int(code[pc+3])
+				pc += 4
+				if testVal == caseVal {
+					pc = target
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				pc = int(code[pc])<<8 | int(code[pc+1])
+			}
+
 		case irEq:
 			b := stack[len(stack)-1]
 			a := stack[len(stack)-2]

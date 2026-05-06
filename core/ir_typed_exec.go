@@ -317,6 +317,33 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			fn := &Fn{fnExpr: prog.fnExprs[idx], env: fnEnv}
 			stack = append(stack, objectToIRValue(fn))
 
+		case irCase:
+			slotIdx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			nCases := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			v := slots[slotIdx]
+			if v.tag != irValInt {
+				pc += nCases * 4
+				pc = int(code[pc])<<8 | int(code[pc+1])
+				continue
+			}
+			testVal := v.i
+			matched := false
+			for i := 0; i < nCases; i++ {
+				caseVal := int(int16(code[pc])<<8 | int16(code[pc+1]))
+				target := int(code[pc+2])<<8 | int(code[pc+3])
+				pc += 4
+				if testVal == caseVal {
+					pc = target
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				pc = int(code[pc])<<8 | int(code[pc+1])
+			}
+
 		case irEq:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]

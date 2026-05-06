@@ -79,6 +79,8 @@ func irOpcodeName(op byte) string {
 		return "irPop"
 	case irMakeFn:
 		return "irMakeFn"
+	case irCase:
+		return "irCase"
 	case irEq:
 		return "irEq"
 	case irIsZero:

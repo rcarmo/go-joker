@@ -66,6 +66,7 @@ const (
 	irTryCatch                   // operands: catchPC(2) + bindSlot(2) — set up catch handler
 	irPop                        // pop and discard top of stack
 	irMakeFn                     // operand: constant index (FnExpr) — creates *Fn with current env
+	irCase                       // operands: slot(2) + nCases(2) + [value(2)+targetPC(2)]*n + defaultPC(2)
 )
 
 // ---------- Cache ----------
