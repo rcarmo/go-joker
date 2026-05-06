@@ -118,16 +118,16 @@ var knucleotideScript = `(let [dna "GGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATT
 // --- reverse-complement (simplified) — reverse and complement a DNA string ---
 
 var reverseComplementScript = `(let [dna "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAAT"
-      comp (fn [c]
-        (if (= c "A") "T"
-        (if (= c "T") "A"
-        (if (= c "G") "C"
-        (if (= c "C") "G" c)))))
       len-dna (count dna)]
   (loop [i 0 result ""]
     (if (= i len-dna)
       (count result)
-      (recur (+ i 1) (str (comp (str (nth dna (- (- len-dna 1) i)))) result)))))`
+      (let [c (nth dna (- (- len-dna 1) i))
+            comp-c (if (= c \G) "C"
+                   (if (= c \C) "G"
+                   (if (= c \A) "T"
+                   (if (= c \T) "A" (str c)))))]
+        (recur (+ i 1) (str result comp-c))))))`
 
 // suppress unused
 var _ = fannkuchScript

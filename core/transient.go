@@ -77,6 +77,13 @@ func (tv *TransientVector) Nth(i int) Object {
 	return NIL
 }
 
+func (tv *TransientVector) TryNth(i int, d Object) Object {
+	if i >= 0 && i < len(tv.arr) {
+		return tv.arr[i]
+	}
+	return d
+}
+
 // Get implements Gettable for transient vectors.
 func (tv *TransientVector) Get(key Object) (bool, Object) {
 	if idx, ok := key.(Int); ok {
