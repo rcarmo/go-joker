@@ -220,3 +220,32 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 - **IR compiler scope save/restore** — N-body 41.7ms → 9.3ms (4.5×). Parser reuses frame numbers across sibling scopes; save/restore in `compileLetBody` and `compileNestedLoop` prevents slot collision.
 - **StringCursor type + IR opcodes** — Cursor-based JSON parser 3-3.5× faster than nth-based. `irCursorChar`, `irCursorNext`, `irCursorDone` run zero-alloc in typed executor.
 - **irCallSlot captured fn fix** — Fannkuch 118ms → 78ms. Typed executor now resolves captured fns from `slots` array instead of `initSlots`.
+
+## PersistentVector (HAMT trie)
+
+A 32-way persistent vector trie with tail optimization is implemented in
+`core/persistent_vector.go`. It provides O(log32 n) assoc with structural
+sharing between versions.
+
+### Performance characteristics
+
+| Operation | ArrayVector (flat) | PersistentVector (trie) |
+|---|---|---|
+| Nth | O(1) direct | O(log32 n) traverse |
+| Assoc | O(n) full clone | O(log32 n) path copy |
+| Conj | O(n) clone+append | O(1) amortized (tail) |
+| Memory/version | O(n) | O(log32 n) shared |
+
+### Crossover point
+
+- n ≤ 64: ArrayVector faster (flat clone is cache-friendly)
+- n > 64: PersistentVector faster (structural sharing dominates)
+
+For n=35 (n-body): ArrayVector 1.9µs vs PV 2.3µs — flat clone wins.
+For n=200: ArrayVector 5.2µs vs PV 2.4µs — PV 2.1× faster.
+
+### Integration status
+
+Standalone implementation, not yet replacing ArrayVector in the runtime.
+Future work: auto-promote to PV when vector size exceeds threshold, or
+use PV for map implementations (HAMT for persistent hash maps).
