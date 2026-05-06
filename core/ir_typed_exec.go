@@ -17,7 +17,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 	if !irTypedEligible(analysis) {
 		return nil
 	}
-	var slotBuf [16]irValue
+	var slotBuf [128]irValue
 	var slots []irValue
 	if prog.numSlots <= len(slotBuf) {
 		slots = slotBuf[:prog.numSlots]
