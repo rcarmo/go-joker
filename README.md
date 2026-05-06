@@ -10,10 +10,6 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 ![benchmark comparison](benchmarks/benchmark-transposed.svg)
 
-### Cross-language benchmark matrix
-
-![benchmark matrix](benchmarks/benchmark-cross-language.svg)
-
 ### vs. original Joker
 
 ![improvements](benchmarks/benchmark-improvements.svg)
@@ -118,6 +114,10 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 
 Based on [candid82/joker](https://github.com/candid82/joker) v1.7.1.  
 Original README preserved as [`ORIGINAL_README.md`](ORIGINAL_README.md).
+
+## Why v42?
+
+Because 42 is the answer, and we didn't want to collide with upstream version numbers.
 
 ## License
 
