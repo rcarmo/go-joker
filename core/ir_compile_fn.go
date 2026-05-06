@@ -8,8 +8,7 @@ package core
 func irCompileFn(fn *Fn) *IRProgram {
 	// Variadic-only fn (fn [x & rest] ...)
 	if len(fn.fnExpr.arities) == 0 && fn.fnExpr.variadic != nil {
-		// Can't compile variadic fns yet (rest arg packing not implemented)
-		return nil
+		return irCompileVariadicFn(fn)
 	}
 	if len(fn.fnExpr.arities) == 0 {
 		return nil
@@ -175,4 +174,33 @@ func irCompileMultiArity(fn *Fn) *IRProgram {
 	}
 	irFnCache.Store(&firstArity, wrapper)
 	return wrapper
+}
+
+// irCompileVariadicFn compiles a variadic fn (fn [x & rest] ...).
+// The rest parameter is packed into a vector from remaining args.
+func irCompileVariadicFn(fn *Fn) *IRProgram {
+	va := *fn.fnExpr.variadic
+	firstArity := va // use variadic as the cache key stand-in
+
+	if cached, ok := irFnCache.Load(&firstArity); ok {
+		prog := cached.(*IRProgram)
+		if prog == irCompileFailed {
+			return nil
+		}
+		return prog
+	}
+
+	// The variadic arity has named args + one rest arg.
+	// args slice passed to the fn has arbitrary length >= len(va.args)-1
+	// (the last arg in va.args is the rest parameter).
+	// We compile the body with all named args as slots, plus the rest slot.
+	prog := irCompileFnWithFrame(fn, va, -1)
+	if prog == nil {
+		irFnCache.Store(&firstArity, irCompileFailed)
+		return nil
+	}
+	// Mark as variadic so the executor knows to pack rest args
+	prog.variadicMinArgs = len(va.args) - 1 // exclude the & rest param from required count
+	irFnCache.Store(&firstArity, prog)
+	return prog
 }

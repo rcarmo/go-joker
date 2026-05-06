@@ -60,6 +60,7 @@ const (
 	irCursorChar                 // pop cursor, push char (rune as Char)
 	irCursorNext                 // pop cursor, push new cursor (advanced by 1)
 	irCursorDone                 // pop cursor, push boolean (done?)
+	irPackRest                   // operand: startIdx — pack slots[startIdx:nargs] into vector, store to slot
 )
 
 // ---------- Cache ----------
