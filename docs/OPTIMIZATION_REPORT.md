@@ -298,3 +298,112 @@ The boxed IR executor (`irExec`) automatically promotes safe loop
 variables to transients via escape analysis — no manual transient
 calls needed for simple loop patterns. The auto-promotion is
 transparent and produces the same persistent result at loop exit.
+
+## joker.runtime — Introspection Namespace
+
+The `joker.runtime` namespace provides full visibility into the IR compiler,
+WASM backend, escape analysis, and profiling from within Joker scripts.
+
+### IR Disassembly
+
+```clojure
+(require '[joker.runtime :as rt])
+
+(println (rt/disassemble (fn [x y] (+ (* x x) (* y y)))))
+;; Output:
+;;   [  0] irLoadSlot slot[0]
+;;   [  3] irLoadSlot slot[0]
+;;   [  6] irMul
+;;   [  7] irLoadSlot slot[1]
+;;   [ 10] irLoadSlot slot[1]
+;;   [ 13] irMul
+;;   [ 14] irAdd
+;;   [ 15] irReturn
+```
+
+### IR Analysis
+
+```clojure
+(rt/analyze (fn [x y] (+ (* x x) (* y y))))
+;; => {:compiled true
+;;     :slots 2
+;;     :code-bytes 16
+;;     :captures 0
+;;     :self-recursive false
+;;     :eligible-typed true
+;;     :has-call-slot false
+;;     :has-self-call false
+;;     :uses-collection false
+;;     :uses-string false
+;;     :has-map-ops false
+;;     :has-assoc false
+;;     :has-generic-nth false
+;;     :path "typed-ir"}
+```
+
+### WASM Diagnostics
+
+```clojure
+;; Check why a fn can't use WASM:
+(rt/wasm-diagnostic (fn [v i] (nth v i)))
+;; => {:eligible false
+;;     :reason "requires WASM host imports for collection op"
+;;     :uses-float false
+;;     :has-imports true}
+
+;; Pure numeric fn — WASM eligible:
+(rt/wasm-diagnostic (fn [x] (* x x)))
+;; => {:eligible true :uses-float false :has-imports false}
+```
+
+### Escape Analysis
+
+```clojure
+;; See which loop slots are safe for transient auto-promotion:
+(rt/escape-analysis (fn [bodies dt]
+  (loop [i 0 b bodies]
+    (if (= i 5) b
+      (recur (+ i 1) (assoc b (* i 7) dt))))))
+;; => {:safe-mutable-slots [false false true ...] :num-slots 4}
+;; slot 2 (b) is safe for transient conversion
+```
+
+### Profiling
+
+```clojure
+;; Quick profile with N iterations:
+(rt/profile #(reduce + (range 1000)) 100)
+;; => {:time-ns 487230
+;;     :time-ms 0.487
+;;     :allocs 1003
+;;     :bytes 24072
+;;     :iterations 100
+;;     :result 499500}
+
+;; Auto-calibrating benchmark (runs until stable):
+(rt/benchmark #(reduce + (range 1000)))
+;; => {:ns-per-op 4521
+;;     :ms-per-op 0.004521
+;;     :iterations 110820
+;;     :total-ms 501}
+```
+
+### Memory & GC
+
+```clojure
+(rt/mem-stats)
+;; => {:heap-alloc-mb 2.34
+;;     :heap-objects 12847
+;;     :gc-cycles 3
+;;     :total-alloc-mb 15.6
+;;     :goroutines 2}
+
+(rt/gc)  ;; force garbage collection
+```
+
+### Use Cases
+
+- **Debugging**: disassemble a slow fn to see if it compiles to IR
+- **Optimization**: check escape analysis to verify transient promotion
+- **Benchmarking**: profile with allocation counts to find hotspots
+- **WASM eligibility**: understand why a fn doesn't use native compilation
