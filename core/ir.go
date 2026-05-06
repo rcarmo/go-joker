@@ -65,6 +65,7 @@ const (
 	irThrow                      // pop value, panic with it
 	irTryCatch                   // operands: catchPC(2) + bindSlot(2) — set up catch handler
 	irPop                        // pop and discard top of stack
+	irMakeFn                     // operand: constant index (FnExpr) — creates *Fn with current env
 )
 
 // ---------- Cache ----------
@@ -113,4 +114,5 @@ type IRProgram struct {
 	arityPrograms   map[int]*IRProgram
 	variadicProg    *IRProgram // for variadic arity (min args)
 	variadicMinArgs int
+	fnExprs         []*FnExpr // for irMakeFn opcode
 }

@@ -28,6 +28,7 @@ type irCompiler struct {
 	recurTargets     []recurTarget
 	rejectReason     string
 	hasCollectionOps bool
+	fnExprs          []*FnExpr
 }
 
 type recurTarget struct {
@@ -494,6 +495,19 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 
 	case *TryExpr:
 		return c.compileTryCatch(e, isLast)
+
+	case *FnExpr:
+		// Store FnExpr index for irMakeFn opcode
+		if c.fnExprs == nil {
+			c.fnExprs = make([]*FnExpr, 0)
+		}
+		idx := len(c.fnExprs)
+		c.fnExprs = append(c.fnExprs, e)
+		c.emitWithOperand(irMakeFn, idx)
+		if isLast {
+			c.emit(irReturn)
+		}
+		return true
 
 	case *DoExpr:
 		for i, bodyExpr := range e.body {

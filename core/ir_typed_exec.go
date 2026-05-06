@@ -303,6 +303,20 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				stack = stack[:len(stack)-1]
 			}
 
+		case irMakeFn:
+			idx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			if prog.fnExprs == nil || idx >= len(prog.fnExprs) {
+				return nil
+			}
+			// Create Fn with current slots as env
+			fnEnv := &LocalEnv{bindings: make([]Object, len(slots))}
+			for i, v := range slots {
+				fnEnv.bindings[i] = v.object()
+			}
+			fn := &Fn{fnExpr: prog.fnExprs[idx], env: fnEnv}
+			stack = append(stack, objectToIRValue(fn))
+
 		case irEq:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]

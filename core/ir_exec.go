@@ -390,6 +390,18 @@ loop:
 				stack = stack[:len(stack)-1]
 			}
 
+		case irMakeFn:
+			idx := int(code[pc])<<8 | int(code[pc+1])
+			pc += 2
+			if prog.fnExprs == nil || idx >= len(prog.fnExprs) {
+				return nil
+			}
+			// Create a Fn with current slots as env
+			fnEnv := &LocalEnv{bindings: make([]Object, len(slots))}
+			copy(fnEnv.bindings, slots)
+			fn := &Fn{fnExpr: prog.fnExprs[idx], env: fnEnv}
+			stack = append(stack, fn)
+
 		case irEq:
 			b := stack[len(stack)-1]
 			a := stack[len(stack)-2]

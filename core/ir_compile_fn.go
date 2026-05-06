@@ -120,6 +120,7 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 		captureSlots:    c.captureSlots,
 		captureSlotIdxs: c.captureSlotIdxs,
 		hasSelf:         c.hasSelf,
+		fnExprs:         c.fnExprs,
 	}
 	// Eagerly compile native f64 helper if eligible
 	prog.nativeHelper = irCompileNativeHelper(prog)
