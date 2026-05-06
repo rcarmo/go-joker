@@ -1,10 +1,10 @@
 {
-  "title": "go-joker execution pipeline — tiered dispatch with IR compilation",
+  "title": "go-joker — tiered IR compilation with WASM native backend",
   "nodes": [
     {
       "id": "source",
       "label": "Clojure Source",
-      "sub": ".joke files",
+      "sub": ".joke scripts",
       "tag": "input",
       "column": 0,
       "row": 0
@@ -20,67 +20,62 @@
     {
       "id": "compiler",
       "label": "IR Compiler",
-      "sub": "45+ opcodes · scope analysis",
+      "sub": "45+ opcodes",
       "tag": "processing",
       "column": 2,
       "row": 0
     },
     {
-      "id": "dispatch",
-      "label": "Tiered Dispatch",
-      "sub": "per-instance fn cache",
+      "id": "wasm",
+      "label": "WASM / wazero",
+      "sub": "native JIT · ~0.2ms",
       "tag": "backend",
       "column": 3,
-      "row": 0,
-      "children": [
-        {
-          "id": "wasm",
-          "label": "WASM",
-          "sub": "native JIT",
-          "tag": "backend"
-        },
-        {
-          "id": "typed",
-          "label": "Typed IR",
-          "sub": "irValue stack",
-          "tag": "backend"
-        },
-        {
-          "id": "boxed",
-          "label": "Boxed IR",
-          "sub": "transients",
-          "tag": "state"
-        },
-        {
-          "id": "tree",
-          "label": "Tree-walker",
-          "sub": "full semantics",
-          "tag": "infra"
-        }
-      ]
+      "row": 0
     },
     {
-      "id": "runtime",
-      "label": "joker.runtime",
-      "sub": "introspection · profiling",
-      "tag": "monitor",
-      "column": 4,
+      "id": "typed",
+      "label": "Typed IR",
+      "sub": "irValue stack · ~2ms",
+      "tag": "backend",
+      "column": 3,
       "row": 1
     },
     {
-      "id": "namespaces",
-      "label": "Namespaces",
-      "sub": "imaging · svg · pdf · jit",
+      "id": "boxed",
+      "label": "Boxed IR",
+      "sub": "transients · ~15ms",
+      "tag": "state",
+      "column": 3,
+      "row": 2
+    },
+    {
+      "id": "tree",
+      "label": "Tree-walker",
+      "sub": "full semantics",
+      "tag": "infra",
+      "column": 3,
+      "row": 3
+    },
+    {
+      "id": "output",
+      "label": "Result",
+      "sub": "Object value",
       "tag": "output",
       "column": 4,
-      "row": 0
+      "row": 1
     }
   ],
   "edges": [
     { "from": "source", "to": "parser" },
     { "from": "parser", "to": "compiler" },
-    { "from": "compiler", "to": "dispatch", "label": "IRProgram" },
-    { "from": "dispatch", "to": "namespaces" },
-    { "from": "runtime", "to": "dispatch", "label": "inspect", "accent": true }
+    { "from": "compiler", "to": "wasm" },
+    { "from": "compiler", "to": "typed" },
+    { "from": "compiler", "to": "boxed" },
+    { "from": "compiler", "to": "tree", "label": "fallback" },
+    { "from": "wasm", "to": "output" },
+    { "from": "typed", "to": "output" },
+    { "from": "boxed", "to": "output" },
+    { "from": "tree", "to": "output" }
   ]
 }
