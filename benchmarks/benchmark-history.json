@@ -26,49 +26,49 @@
       "label": "Current (IR + WASM + TCO + transients)",
       "benchmarks": {
         "arithmetic_loop": {
-          "ms_per_op": 0.269
+          "ms_per_op": 0.237
         },
         "recursive_fib": {
-          "ms_per_op": 0.946
+          "ms_per_op": 0.959
         },
         "tail_recursive_sum": {
           "ms_per_op": 0.062
         },
         "word_frequency": {
-          "ms_per_op": 13.606
+          "ms_per_op": 13.6
         },
         "map_update_loop": {
           "ms_per_op": 0.733
         },
         "binary_trees": {
-          "ms_per_op": 102.035
+          "ms_per_op": 112.0
         },
         "spectral_norm": {
-          "ms_per_op": 12.578
+          "ms_per_op": 20.7
         },
         "mandelbrot": {
-          "ms_per_op": 12.408
+          "ms_per_op": 5.0
         },
         "fannkuch": {
-          "ms_per_op": 80.947
+          "ms_per_op": 91.4
         },
         "nbody": {
-          "ms_per_op": 10.516
+          "ms_per_op": 2.7
         },
         "fasta": {
-          "ms_per_op": 0.047
+          "ms_per_op": 0.049
         },
         "pidigits": {
-          "ms_per_op": 0.022
+          "ms_per_op": 0.021
         },
         "knucleotide": {
-          "ms_per_op": 0.178
+          "ms_per_op": 0.201
         },
         "reverse_complement": {
-          "ms_per_op": 0.067
+          "ms_per_op": 0.062
         },
         "regex_redux": {
-          "ms_per_op": 0.096
+          "ms_per_op": 0.114
         }
       }
     }
