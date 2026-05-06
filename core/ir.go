@@ -117,4 +117,6 @@ type IRProgram struct {
 	variadicProg    *IRProgram // for variadic arity (min args)
 	variadicMinArgs int
 	fnExprs         []*FnExpr // for irMakeFn opcode
+	captureSlotSet  []bool    // captureSlotSet[i] = true if slot i holds a capture (skip clearing)
 }
+

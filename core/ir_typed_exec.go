@@ -795,16 +795,25 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if typedFrameStack.depth < 256 {
 				// Save current state and restart
 				typedFrameStack.push(pc, slots, len(stack)-nargs)
+				// Pop args directly into slots (no intermediate copy)
 				for i := nargs - 1; i >= 0; i-- {
 					slots[i] = stack[len(stack)-1]
 					stack = stack[:len(stack)-1]
 				}
-				for i := nargs; i < len(slots); i++ {
-					slots[i] = irValue{}
-				}
-				// Re-fill captures
-				for i, obj := range prog.captureSlots {
-					slots[prog.captureSlotIdxs[i]] = objectToIRValue(obj)
+				// Clear only non-capture working slots
+				if prog.captureSlotSet != nil {
+					for i := nargs; i < len(slots); i++ {
+						if !prog.captureSlotSet[i] {
+							slots[i] = irValue{}
+						}
+					}
+				} else {
+					for i := nargs; i < len(slots); i++ {
+						slots[i] = irValue{}
+					}
+					for i, obj := range prog.captureSlots {
+						slots[prog.captureSlotIdxs[i]] = objectToIRValue(obj)
+					}
 				}
 				pc = 0
 			} else {

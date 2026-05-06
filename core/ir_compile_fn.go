@@ -123,6 +123,13 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 		fnExprs:         c.fnExprs,
 	}
 	// Eagerly compile native f64 helper if eligible
+	// Pre-compute capture slot set for fast irCallSelf
+	if len(c.captureSlotIdxs) > 0 && c.hasSelf {
+		prog.captureSlotSet = make([]bool, c.numSlots)
+		for _, idx := range c.captureSlotIdxs {
+			prog.captureSlotSet[idx] = true
+		}
+	}
 	prog.nativeHelper = irCompileNativeHelper(prog)
 	prog.nativeChecked = true
 	// Cache at arity level. For fns with captures, store a "template"
