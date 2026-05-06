@@ -88,14 +88,10 @@ type (
 		Ch rune
 	}
 	Double struct {
-		InfoHolder
-		D        float64
-		Original string
+		D float64
 	}
 	Int struct {
-		InfoHolder
-		I        int
-		Original string
+		I int
 	}
 	BigInt struct {
 		InfoHolder
@@ -1268,10 +1264,9 @@ func MakeDouble(d float64) Double {
 	return Double{D: d}
 }
 
+func (d Double) GetInfo() *ObjectInfo        { return nil }
+
 func (d Double) ToString(escape bool) string {
-	if FORMAT_MODE && d.Original != "" {
-		return d.Original
-	}
 	dbl := d.D
 	if math.IsInf(dbl, 1) {
 		return "##Inf"
@@ -1313,11 +1308,10 @@ func (d Double) Compare(other Object) int {
 	return CompareNumbers(d, EnsureObjectIsNumber(other, "Cannot compare Double: %s"))
 }
 
+func (i Int) GetInfo() *ObjectInfo        { return nil }
+
 func (i Int) ToString(escape bool) string {
-	if FORMAT_MODE && i.Original != "" {
-		return i.Original
-	}
-	return fmt.Sprintf("%d", i.I)
+	return strconv.Itoa(i.I)
 }
 
 func MakeInt(i int) Int {
@@ -1333,7 +1327,7 @@ func MakeIntVector(ii []int) *ArrayVector {
 }
 
 func MakeIntWithOriginal(orig string, i int) Int {
-	return Int{I: i, Original: orig}
+	return Int{I: i}
 }
 
 func (i Int) Equals(other interface{}) bool {

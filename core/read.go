@@ -323,7 +323,7 @@ func scanInt(orig, str string, base int, reader *Reader) Object {
 		return scanBigInt(orig, str, base, reader)
 	}
 	// TODO: 32-bit issue
-	return MakeReadObject(reader, Int{I: int(i), Original: orig})
+	return MakeReadObject(reader, Int{I: int(i)})
 }
 
 func scanFloat(str string, reader *Reader) Object {
@@ -331,7 +331,7 @@ func scanFloat(str string, reader *Reader) Object {
 	if e != nil {
 		panic(invalidNumberError(reader, str))
 	}
-	return MakeReadObject(reader, Double{D: dbl, Original: str})
+	return MakeReadObject(reader, Double{D: dbl})
 }
 
 func readNumber(reader *Reader) Object {

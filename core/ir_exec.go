@@ -8,8 +8,8 @@ import (
 
 func irExec(prog *IRProgram, initSlots []Object) Object {
 	var slots []Object
-	if prog.numSlots <= 128 {
-		var buf [128]Object
+	if prog.numSlots <= 16 {
+		var buf [16]Object
 		slots = buf[:prog.numSlots]
 	} else {
 		slots = make([]Object, prog.numSlots)

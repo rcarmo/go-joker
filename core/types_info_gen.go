@@ -63,12 +63,10 @@ func (x Char) WithInfo(info *ObjectInfo) Object {
 }
 
 func (x Double) WithInfo(info *ObjectInfo) Object {
-	x.info = info
 	return x
 }
 
 func (x Int) WithInfo(info *ObjectInfo) Object {
-	x.info = info
 	return x
 }
 

@@ -17,7 +17,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 	if !irTypedEligible(analysis) {
 		return nil
 	}
-	var slotBuf [128]irValue
+	var slotBuf [16]irValue
 	var slots []irValue
 	if prog.numSlots <= len(slotBuf) {
 		slots = slotBuf[:prog.numSlots]
@@ -886,4 +886,15 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		return NIL
 	}
 	return stack[len(stack)-1].object()
+}
+
+// irExecTypedIV runs the typed executor and returns the result as irValue
+// directly, avoiding the Object boxing/unboxing at callSlot boundaries.
+// Returns (result, true) on success, (zero, false) on failure.
+func irExecTypedIV(prog *IRProgram, initSlots []Object) (irValue, bool) {
+	result := irExecTyped(prog, initSlots)
+	if result == nil {
+		return irValue{}, false
+	}
+	return objectToIRValue(result), true
 }
