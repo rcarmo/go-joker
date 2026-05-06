@@ -67,6 +67,11 @@ const (
 	irPop                        // pop and discard top of stack
 	irMakeFn                     // operand: constant index (FnExpr) — creates *Fn with current env
 	irCase                       // operands: slot(2) + nCases(2) + [value(2)+targetPC(2)]*n + defaultPC(2)
+	irBitAnd                     // pop 2, push a & b
+	irBitOr                      // pop 2, push a | b
+	irBitNot                     // pop 1, push ^a
+	irBitShiftLeft               // pop 2, push a << b
+	irBitShiftRight              // pop 2, push a >> b (arithmetic)
 )
 
 // ---------- Cache ----------

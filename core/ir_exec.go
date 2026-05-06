@@ -402,6 +402,27 @@ loop:
 			fn := &Fn{fnExpr: prog.fnExprs[idx], env: fnEnv}
 			stack = append(stack, fn)
 
+		case irBitAnd:
+			b, a := stack[len(stack)-1].(Int), stack[len(stack)-2].(Int)
+			stack = stack[:len(stack)-2]
+			stack = append(stack, Int{I: a.I & b.I})
+		case irBitOr:
+			b, a := stack[len(stack)-1].(Int), stack[len(stack)-2].(Int)
+			stack = stack[:len(stack)-2]
+			stack = append(stack, Int{I: a.I | b.I})
+		case irBitNot:
+			a := stack[len(stack)-1].(Int)
+			stack = stack[:len(stack)-1]
+			stack = append(stack, Int{I: ^a.I})
+		case irBitShiftLeft:
+			b, a := stack[len(stack)-1].(Int), stack[len(stack)-2].(Int)
+			stack = stack[:len(stack)-2]
+			stack = append(stack, Int{I: a.I << uint(b.I)})
+		case irBitShiftRight:
+			b, a := stack[len(stack)-1].(Int), stack[len(stack)-2].(Int)
+			stack = stack[:len(stack)-2]
+			stack = append(stack, Int{I: a.I >> uint(b.I)})
+
 		case irCase:
 			// Jump table: dispatch by integer value
 			slotIdx := int(code[pc])<<8 | int(code[pc+1])

@@ -437,6 +437,30 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			}
 			c.emit(irCount)
 		}
+	case "procBitAnd":
+		if len(expr.args) != 2 { return c.reject("bit-and expects 2 args") }
+		if !c.compileExpr(expr.args[0], false) { return false }
+		if !c.compileExpr(expr.args[1], false) { return false }
+		c.emit(irBitAnd)
+	case "procBitOr":
+		if len(expr.args) != 2 { return c.reject("bit-or expects 2 args") }
+		if !c.compileExpr(expr.args[0], false) { return false }
+		if !c.compileExpr(expr.args[1], false) { return false }
+		c.emit(irBitOr)
+	case "procBitNot":
+		if len(expr.args) != 1 { return c.reject("bit-not expects 1 arg") }
+		if !c.compileExpr(expr.args[0], false) { return false }
+		c.emit(irBitNot)
+	case "procBitShiftLeft":
+		if len(expr.args) != 2 { return c.reject("bit-shift-left expects 2 args") }
+		if !c.compileExpr(expr.args[0], false) { return false }
+		if !c.compileExpr(expr.args[1], false) { return false }
+		c.emit(irBitShiftLeft)
+	case "procBitShiftRight":
+		if len(expr.args) != 2 { return c.reject("bit-shift-right expects 2 args") }
+		if !c.compileExpr(expr.args[0], false) { return false }
+		if !c.compileExpr(expr.args[1], false) { return false }
+		c.emit(irBitShiftRight)
 	case "procApply":
 		if len(expr.args) != 2 {
 			return c.reject("apply expects 2 args (fn + args), got %d", len(expr.args))

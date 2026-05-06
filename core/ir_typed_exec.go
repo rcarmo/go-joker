@@ -317,6 +317,37 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			fn := &Fn{fnExpr: prog.fnExprs[idx], env: fnEnv}
 			stack = append(stack, objectToIRValue(fn))
 
+		case irBitAnd:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt {
+				stack = append(stack, irValue{tag: irValInt, i: a.i & b.i})
+			} else { return nil }
+		case irBitOr:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt {
+				stack = append(stack, irValue{tag: irValInt, i: a.i | b.i})
+			} else { return nil }
+		case irBitNot:
+			a := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if a.tag == irValInt {
+				stack = append(stack, irValue{tag: irValInt, i: ^a.i})
+			} else { return nil }
+		case irBitShiftLeft:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt {
+				stack = append(stack, irValue{tag: irValInt, i: a.i << uint(b.i)})
+			} else { return nil }
+		case irBitShiftRight:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt {
+				stack = append(stack, irValue{tag: irValInt, i: a.i >> uint(b.i)})
+			} else { return nil }
+
 		case irCase:
 			slotIdx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
@@ -1142,6 +1173,26 @@ func irExecTypedInline(prog *IRProgram, slots []irValue) irValue {
 			v := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			if v.tag == irValInt { stack = append(stack, irMakeBool(v.i == 0)) } else { return irValue{} }
+		case irBitAnd:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt { stack = append(stack, irValue{tag: irValInt, i: a.i & b.i}) } else { return irValue{} }
+		case irBitOr:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt { stack = append(stack, irValue{tag: irValInt, i: a.i | b.i}) } else { return irValue{} }
+		case irBitNot:
+			a := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if a.tag == irValInt { stack = append(stack, irValue{tag: irValInt, i: ^a.i}) } else { return irValue{} }
+		case irBitShiftLeft:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt { stack = append(stack, irValue{tag: irValInt, i: a.i << uint(b.i)}) } else { return irValue{} }
+		case irBitShiftRight:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			if a.tag == irValInt && b.tag == irValInt { stack = append(stack, irValue{tag: irValInt, i: a.i >> uint(b.i)}) } else { return irValue{} }
 		default:
 			return irValue{} // unsupported opcode — bail
 		}

@@ -81,6 +81,16 @@ func irOpcodeName(op byte) string {
 		return "irMakeFn"
 	case irCase:
 		return "irCase"
+	case irBitAnd:
+		return "irBitAnd"
+	case irBitOr:
+		return "irBitOr"
+	case irBitNot:
+		return "irBitNot"
+	case irBitShiftLeft:
+		return "irBitShiftLeft"
+	case irBitShiftRight:
+		return "irBitShiftRight"
 	case irEq:
 		return "irEq"
 	case irIsZero:
