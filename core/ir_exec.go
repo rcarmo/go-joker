@@ -656,6 +656,17 @@ loop:
 				}
 				// Try IR — typed executor first, skip if previously failed
 				if fnProg := irCompileFn(fn); fnProg != nil {
+					// Multi-arity dispatch
+					if fnProg.arityPrograms != nil {
+						if sub, ok := fnProg.arityPrograms[nargs]; ok {
+							fnProg = sub
+						} else if fnProg.variadicProg != nil && nargs >= fnProg.variadicMinArgs {
+							fnProg = fnProg.variadicProg
+						} else {
+							fnProg = nil
+						}
+					}
+					if fnProg != nil {
 					callArgs := args
 					if len(fnProg.captureKeys) > 0 {
 						full := make([]Object, fnProg.numSlots)
@@ -683,6 +694,7 @@ loop:
 						stack = append(stack, result)
 						continue
 					}
+					} // end if fnProg != nil
 				}
 			}
 			// Fallback to normal Fn.Call

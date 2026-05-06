@@ -588,6 +588,19 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
 					// Already handled above
 				} else if fnProg := irCompileFn(fn); fnProg != nil {
+					// Multi-arity dispatch
+					if fnProg.arityPrograms != nil {
+						if sub, ok := fnProg.arityPrograms[nargs]; ok {
+							fnProg = sub
+						} else if fnProg.variadicProg != nil && nargs >= fnProg.variadicMinArgs {
+							fnProg = fnProg.variadicProg
+						} else {
+							fnProg = nil
+						}
+					}
+					if fnProg == nil {
+						result = fn.Call(args)
+					} else {
 					// Resolve captures from fn.env if program has capture keys
 					callArgs := args
 					if len(fnProg.captureKeys) > 0 {
@@ -615,6 +628,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 					if result == nil {
 						result = irExec(fnProg, callArgs)
 					}
+					} // end else (fnProg != nil after arity dispatch)
 				}
 				if result == nil {
 					result = fn.Call(args)

@@ -6,10 +6,24 @@ package core
 // The args become slots 0..n-1. Returns nil if the body can't be compiled.
 // selfBinding optionally identifies the binding key for self-recursive calls.
 func irCompileFn(fn *Fn) *IRProgram {
-	if len(fn.fnExpr.arities) != 1 {
+	// Variadic-only fn (fn [x & rest] ...)
+	if len(fn.fnExpr.arities) == 0 && fn.fnExpr.variadic != nil {
+		// Can't compile variadic fns yet (rest arg packing not implemented)
 		return nil
 	}
-	arity := fn.fnExpr.arities[0]
+	if len(fn.fnExpr.arities) == 0 {
+		return nil
+	}
+	// Single arity: original fast path
+	if len(fn.fnExpr.arities) == 1 && fn.fnExpr.variadic == nil {
+		arity := fn.fnExpr.arities[0]
+		return irCompileSingleArity(fn, arity)
+	}
+	// Multi-arity: compile each arity separately
+	return irCompileMultiArity(fn)
+}
+
+func irCompileSingleArity(fn *Fn, arity FnArityExpr) *IRProgram {
 
 	if cached, ok := irFnCache.Load(&arity); ok {
 		prog := cached.(*IRProgram)
@@ -41,6 +55,16 @@ func irCompileFn(fn *Fn) *IRProgram {
 }
 
 func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
+	// Auto-detect frame if -1
+	if fnFrame < 0 {
+		fnFrame = guessLoopFrame(arity.body)
+		if fnFrame < 0 {
+			fnFrame = guessFnParamFrame(arity.body, len(arity.args))
+		}
+		if fnFrame < 0 {
+			fnFrame = 1
+		}
+	}
 	c := &irCompiler{
 		bindingMap: make(map[bindingKey]int),
 		loopFrame:  -1,
@@ -106,4 +130,49 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 	// and captureKeys are shared.
 	irFnCache.Store(&arity, prog)
 	return prog
+}
+
+// irCompileMultiArity compiles a multi-arity fn into an IRProgram with
+// arityPrograms map for dispatch by arg count.
+func irCompileMultiArity(fn *Fn) *IRProgram {
+	// Check cache using first arity
+	firstArity := fn.fnExpr.arities[0]
+	if cached, ok := irFnCache.Load(&firstArity); ok {
+		prog := cached.(*IRProgram)
+		if prog == irCompileFailed {
+			return nil
+		}
+		return prog
+	}
+
+	programs := make(map[int]*IRProgram)
+	for _, arity := range fn.fnExpr.arities {
+		prog := irCompileFnWithFrame(fn, arity, -1) // -1 means auto-detect
+		if prog == nil {
+			// If any arity fails, mark the whole fn as failed
+			irFnCache.Store(&firstArity, irCompileFailed)
+			return nil
+		}
+		programs[len(arity.args)] = prog
+	}
+
+	// Handle variadic arity
+	var varProg *IRProgram
+	varMinArgs := 0
+	if fn.fnExpr.variadic != nil {
+		va := *fn.fnExpr.variadic
+		varProg = irCompileFnWithFrame(fn, va, -1)
+		if varProg != nil {
+			varMinArgs = len(va.args)
+		}
+	}
+
+	// Create wrapper program that dispatches by arity
+	wrapper := &IRProgram{
+		arityPrograms:   programs,
+		variadicProg:    varProg,
+		variadicMinArgs: varMinArgs,
+	}
+	irFnCache.Store(&firstArity, wrapper)
+	return wrapper
 }

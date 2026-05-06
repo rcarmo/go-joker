@@ -104,4 +104,8 @@ type IRProgram struct {
 	nativeHelper2   nativeF64Fn2
 	nativeChecked   bool
 	floatConsts     []float64
+	// Multi-arity support: map from arg count to sub-program
+	arityPrograms   map[int]*IRProgram
+	variadicProg    *IRProgram // for variadic arity (min args)
+	variadicMinArgs int
 }
