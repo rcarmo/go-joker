@@ -8,11 +8,11 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 ### Performance — Joker vs Python vs Goja (CLBG benchmarks)
 
-![benchmark comparison](benchmarks/benchmark-transposed.svg)
+<img src="benchmarks/benchmark-transposed.svg" alt="benchmark comparison" width="100%">
 
 ### vs. original Joker
 
-![improvements](benchmarks/benchmark-speedup.svg)
+<img src="benchmarks/benchmark-speedup.svg" alt="improvements" width="100%">
 
 ### Highlights
 
@@ -59,7 +59,7 @@ Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze
 
 ## Architecture
 
-![architecture](benchmarks/architecture.svg)
+<img src="benchmarks/architecture.svg" alt="architecture" width="100%">
 
 - **WASM path**: pure integer/float loops → wazero JIT → native code (~0.2ms)
 - **Typed IR path**: primitive/string/cursor loops → irValue stack, zero-boxing (~2–8ms)
