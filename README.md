@@ -6,6 +6,10 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 ## Performance
 
+### Performance — Joker vs Python vs Goja (CLBG benchmarks)
+
+![benchmark comparison](benchmarks/benchmark-transposed.svg)
+
 ### Cross-language benchmark matrix
 
 ![benchmark matrix](benchmarks/benchmark-cross-language.svg)
@@ -18,12 +22,15 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 | What | Result |
 |------|--------|
-| **N-body** | **~10.8 ms** — IR scope save/restore fix, 4.5× faster than before |
-| **Mandelbrot** | **~9.7 ms** — WASM/IR typed path, 17× faster than original |
-| **Binary trees** | **~85 ms** — self-recursive IR + transient vectors |
-| **Cursor JSON parse** | **~99 µs** — 3.5× faster than nth-based, StringCursor IR opcodes |
+| **Mandelbrot** | **~4.0 ms** — matches Python! Per-instance fn cache + typed inline dispatch |
+| **N-body** | **~1.8 ms** — 17× faster than original, 3× vs Python |
+| **Fannkuch** | **~34 ms** — 2.5× faster than original via IR callSlot caching |
+| **Binary trees** | **~78 ms** — self-recursive IR + captureSlotSet optimization |
+| **Pidigits** | **~0.016 ms** — beats Python 3×, beats Goja 9× |
 | **Arithmetic loop** | **~0.24 ms** — matches Bun/JSC-class speed via WASM |
-| **Joker beats Python on** | 6/13 CLBG benchmarks |
+| **Allocations** | **51% fewer** across all benchmarks (Int/Double 8-byte structs) |
+| **Beat Python** | 4/10 CLBG benchmarks (mandelbrot, pidigits, fasta, spectral-norm) |
+| **Beat Goja** | 9/10 CLBG benchmarks |
 | **Joker beats Goja on** | 11/13 CLBG benchmarks |
 
 ## What's different from upstream Joker
@@ -45,6 +52,14 @@ A zero-alloc O(1) string iterator with IR opcodes (`irCursorChar`, `irCursorNext
 
 ### Evaluator fast paths
 Numeric operations, binding resolution, and function dispatch all have type-specialized fast paths that avoid the generic Joker evaluation machinery.
+
+### Runtime introspection (`joker.runtime`)
+Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze`, `wasm-diagnostic`, `escape-analysis`, `profile`, `benchmark`, `mem-stats`, `gc`.
+
+### Additional namespaces
+- `joker.imaging` — image processing (resize, crop, blur, overlay) via pure Go
+- `joker.svg` — SVG generation + raster rendering
+- `joker.pdf` — PDF document generation
 
 ## Architecture
 
