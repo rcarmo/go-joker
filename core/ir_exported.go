@@ -111,14 +111,28 @@ func (p *IRProgram) GetNativeHelper() func([]float64) float64 {
 }
 
 type IRAnalysisExported struct {
-	Eligible bool
-	Path     string
+	Eligible       bool
+	Path           string
+	HasCallSlot    bool
+	HasSelfCall    bool
+	UsesCollection bool
+	UsesString     bool
+	HasMapOps      bool
+	HasAssoc       bool
+	HasGenericNth  bool
 }
 
 func AnalyzeIRProgramExported(prog *IRProgram) IRAnalysisExported {
 	a := AnalyzeIRProgram(prog)
 	return IRAnalysisExported{
-		Eligible: irTypedEligible(a),
-		Path:     a.SuggestedPath,
+		Eligible:       irTypedEligible(a),
+		Path:           a.SuggestedPath,
+		HasCallSlot:    a.HasCallSlot,
+		HasSelfCall:    a.HasSelfCall,
+		UsesCollection: a.UsesCollection,
+		UsesString:     a.UsesString,
+		HasMapOps:      a.HasMapOps,
+		HasAssoc:       a.HasAssoc,
+		HasGenericNth:  a.HasGenericNth,
 	}
 }
