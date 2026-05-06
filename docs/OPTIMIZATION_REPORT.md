@@ -249,3 +249,52 @@ For n=200: ArrayVector 5.2µs vs PV 2.4µs — PV 2.1× faster.
 Standalone implementation, not yet replacing ArrayVector in the runtime.
 Future work: auto-promote to PV when vector size exceeds threshold, or
 use PV for map implementations (HAMT for persistent hash maps).
+
+## Transient Collections
+
+Joker exposes Clojure-compatible transient operations for batch mutations:
+
+```clojure
+(let [v [1 2 3 4 5]
+      tv (transient v)        ;; create mutable version
+      tv (assoc! tv 2 99)     ;; in-place mutation (zero copy)
+      tv (conj! tv 6)         ;; in-place append
+      result (persistent! tv)] ;; freeze back to immutable
+  result)  ;; => [1 2 99 4 5 6]
+```
+
+### API
+
+| Function | Description |
+|---|---|
+| `(transient coll)` | Create mutable transient from persistent vector/map |
+| `(assoc! tv k v)` | Mutate in-place, return tv |
+| `(conj! tv v)` | Append in-place, return tv |
+| `(persistent! tv)` | Freeze to immutable, invalidate transient |
+
+### When to use
+
+Transients help when doing **many mutations in a bounded scope**:
+```clojure
+;; Good: 1000 mutations, one persistent! at the end
+(persistent!
+  (loop [i 0 v (transient [])]
+    (if (= i 1000) v
+      (recur (+ i 1) (conj! v i)))))
+
+;; Bad: few mutations per transient lifecycle (overhead > savings)
+(loop [p perm ...]
+  (persistent! (assoc! (transient p) 0 x)))  ;; worse than (assoc p 0 x)
+```
+
+### Contract
+- Single-threaded use only (no sharing across goroutines)
+- Must not use transient after `persistent!`
+- Must not use the original persistent collection after `transient`
+
+### IR integration
+
+The boxed IR executor (`irExec`) automatically promotes safe loop
+variables to transients via escape analysis — no manual transient
+calls needed for simple loop patterns. The auto-promotion is
+transparent and produces the same persistent result at loop exit.
