@@ -106,6 +106,7 @@ type IRProgram struct {
 	escapeInfo      *EscapeInfo
 	analysis        *IRAnalysis
 	typedFailed     bool
+	execFailed      bool // both typed AND boxed failed — skip IR entirely
 	memNthFailed    bool
 	nativeHelper    nativeF64Fn
 	nativeHelper2   nativeF64Fn2

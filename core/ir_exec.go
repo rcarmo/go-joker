@@ -723,7 +723,7 @@ loop:
 					}
 				}
 				// Try IR — typed executor first, skip if previously failed
-				if fnProg := irCompileFn(fn); fnProg != nil {
+				if fnProg := irCompileFn(fn); fnProg != nil && !fnProg.execFailed {
 					// Multi-arity dispatch
 					if fnProg.arityPrograms != nil {
 						if sub, ok := fnProg.arityPrograms[nargs]; ok {
