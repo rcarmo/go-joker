@@ -67,6 +67,12 @@ func irOpcodeName(op byte) string {
 		return "irCursorNext"
 	case irCursorDone:
 		return "irCursorDone"
+	case irPackRest:
+		return "irPackRest"
+	case irApply:
+		return "irApply"
+	case irThrow:
+		return "irThrow"
 	case irEq:
 		return "irEq"
 	case irIsZero:

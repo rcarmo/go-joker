@@ -275,6 +275,25 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			cur := (*StringCursor)(v.p)
 			stack = append(stack, irMakeBool(cur.Done()))
 
+		case irApply:
+			argsVal := stack[len(stack)-1]
+			fnVal := stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			fnObj := fnVal.object()
+			argsObj := argsVal.object()
+			callable, ok := fnObj.(Callable)
+			if !ok {
+				return nil
+			}
+			args := ToSlice(argsObj.(Seqable).Seq())
+			result := callable.Call(args)
+			stack = append(stack, objectToIRValue(result))
+
+		case irThrow:
+			v := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			panic(RT.NewError(v.object().ToString(false)))
+
 		case irEq:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]

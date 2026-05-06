@@ -437,6 +437,26 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			}
 			c.emit(irCount)
 		}
+	case "procApply":
+		if len(expr.args) != 2 {
+			return c.reject("apply expects 2 args (fn + args), got %d", len(expr.args))
+		}
+		// Compile fn and args-seq onto stack, then irApply
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
+		if !c.compileExpr(expr.args[1], false) {
+			return false
+		}
+		c.emit(irApply)
+	case "procThrow":
+		if len(expr.args) != 1 {
+			return c.reject("throw expects 1 arg, got %d", len(expr.args))
+		}
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
+		c.emit(irThrow)
 	default:
 		return c.reject("unsupported core proc for IR: %s", procName)
 	}

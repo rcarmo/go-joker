@@ -365,6 +365,22 @@ loop:
 			}
 			stack = append(stack, Boolean{B: cur.Done()})
 
+		case irApply:
+			argsSeq := stack[len(stack)-1]
+			fnObj := stack[len(stack)-2]
+			stack = stack[:len(stack)-2]
+			callable, ok := fnObj.(Callable)
+			if !ok {
+				return nil
+			}
+			args := ToSlice(argsSeq.(Seqable).Seq())
+			stack = append(stack, callable.Call(args))
+
+		case irThrow:
+			v := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			panic(RT.NewError(v.ToString(false)))
+
 		case irEq:
 			b := stack[len(stack)-1]
 			a := stack[len(stack)-2]

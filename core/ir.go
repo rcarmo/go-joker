@@ -61,6 +61,8 @@ const (
 	irCursorNext                 // pop cursor, push new cursor (advanced by 1)
 	irCursorDone                 // pop cursor, push boolean (done?)
 	irPackRest                   // operand: startIdx — pack slots[startIdx:nargs] into vector, store to slot
+	irApply                      // pop fn + args-seq, call fn with unpacked args, push result
+	irThrow                      // pop value, panic with it
 )
 
 // ---------- Cache ----------
