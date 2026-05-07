@@ -1,7 +1,5 @@
 package core
 
-import "sync"
-
 // range_fast.go — Efficient Range type that implements Reduce for fast numeric reduce.
 
 // IntRange represents a range of integers [start, end) with step.
@@ -55,14 +53,14 @@ func (r *IntRange) Count() int {
 }
 
 func (r *IntRange) reduce(f Callable) Object {
-	if r.step > 0 && r.start >= r.end {
+	if r.isEmpty() {
 		return f.Call(nil)
 	}
-	if r.step < 0 && r.start <= r.end {
-		return f.Call(nil)
+	if result, ok := r.reduceFast(f); ok {
+		return result
 	}
 	acc := Object(Int{I: r.start})
-	for i := r.start + r.step; (r.step > 0 && i < r.end) || (r.step < 0 && i > r.end); i += r.step {
+	for i := r.start + r.step; r.contains(i); i += r.step {
 		acc = f.Call([]Object{acc, Int{I: i}})
 		if IsReduced(acc) {
 			return DerefReduced(acc)
@@ -72,14 +70,181 @@ func (r *IntRange) reduce(f Callable) Object {
 }
 
 func (r *IntRange) reduceInit(f Callable, init Object) Object {
+	if result, ok := r.reduceInitFast(f, init); ok {
+		return result
+	}
 	acc := init
-	for i := r.start; (r.step > 0 && i < r.end) || (r.step < 0 && i > r.end); i += r.step {
+	for i := r.start; r.contains(i); i += r.step {
 		acc = f.Call([]Object{acc, Int{I: i}})
 		if IsReduced(acc) {
 			return DerefReduced(acc)
 		}
 	}
 	return acc
+}
+
+func (r *IntRange) isEmpty() bool {
+	return (r.step > 0 && r.start >= r.end) || (r.step < 0 && r.start <= r.end)
+}
+
+func (r *IntRange) contains(i int) bool {
+	return (r.step > 0 && i < r.end) || (r.step < 0 && i > r.end)
+}
+
+func (r *IntRange) reduceFast(f Callable) (Object, bool) {
+	name := hotReducerName(f)
+	switch name {
+	case "procAdd", "procunchecked-add", "procunchecked-add-int":
+		acc := r.start
+		for i := r.start + r.step; r.contains(i); i += r.step {
+			acc += i
+		}
+		return Int{I: acc}, true
+	case "procMultiply", "procunchecked-multiply", "procunchecked-multiply-int":
+		acc := r.start
+		for i := r.start + r.step; r.contains(i); i += r.step {
+			acc *= i
+		}
+		return Int{I: acc}, true
+	case "procMax":
+		acc := r.start
+		for i := r.start + r.step; r.contains(i); i += r.step {
+			if i > acc {
+				acc = i
+			}
+		}
+		return Int{I: acc}, true
+	case "procMin":
+		acc := r.start
+		for i := r.start + r.step; r.contains(i); i += r.step {
+			if i < acc {
+				acc = i
+			}
+		}
+		return Int{I: acc}, true
+	}
+	return nil, false
+}
+
+func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
+	name := hotReducerName(f)
+	switch acc := init.(type) {
+	case Int:
+		v := acc.I
+		switch name {
+		case "procAdd", "procunchecked-add", "procunchecked-add-int":
+			for i := r.start; r.contains(i); i += r.step {
+				v += i
+			}
+			return Int{I: v}, true
+		case "procMultiply", "procunchecked-multiply", "procunchecked-multiply-int":
+			for i := r.start; r.contains(i); i += r.step {
+				v *= i
+			}
+			return Int{I: v}, true
+		case "procMax":
+			for i := r.start; r.contains(i); i += r.step {
+				if i > v {
+					v = i
+				}
+			}
+			return Int{I: v}, true
+		case "procMin":
+			for i := r.start; r.contains(i); i += r.step {
+				if i < v {
+					v = i
+				}
+			}
+			return Int{I: v}, true
+		}
+	case Double:
+		v := acc.D
+		switch name {
+		case "procAdd":
+			for i := r.start; r.contains(i); i += r.step {
+				v += float64(i)
+			}
+			return Double{D: v}, true
+		case "procMultiply":
+			for i := r.start; r.contains(i); i += r.step {
+				v *= float64(i)
+			}
+			return Double{D: v}, true
+		case "procMax":
+			for i := r.start; r.contains(i); i += r.step {
+				fi := float64(i)
+				if fi > v {
+					v = fi
+				}
+			}
+			return Double{D: v}, true
+		case "procMin":
+			for i := r.start; r.contains(i); i += r.step {
+				fi := float64(i)
+				if fi < v {
+					v = fi
+				}
+			}
+			return Double{D: v}, true
+		}
+	}
+	return nil, false
+}
+
+func hotReducerName(f Callable) string {
+	switch c := f.(type) {
+	case Proc:
+		return c.Name
+	case *Fn:
+		if c.defVar != nil {
+			return hotReducerSymbol(c.defVar.name.ToString(false))
+		}
+		if name := findFnVarName(c); name != "" {
+			return hotReducerSymbol(name)
+		}
+	case *Var:
+		return hotReducerSymbol(c.name.ToString(false))
+	}
+	return ""
+}
+
+func findFnVarName(fn *Fn) string {
+	if fn == nil {
+		return ""
+	}
+	if ns := GLOBAL_ENV.CurrentNamespace(); ns != nil {
+		for _, vr := range ns.Mappings() {
+			if vr.Value == fn {
+				return vr.name.ToString(false)
+			}
+		}
+	}
+	if ns := GLOBAL_ENV.CoreNamespace; ns != nil {
+		for _, vr := range ns.Mappings() {
+			if vr.Value == fn {
+				return vr.name.ToString(false)
+			}
+		}
+	}
+	return ""
+}
+
+func hotReducerSymbol(sym string) string {
+	switch sym {
+	case "+":
+		return "procAdd"
+	case "*":
+		return "procMultiply"
+	case "max":
+		return "procMax"
+	case "min":
+		return "procMin"
+	case "unchecked-add", "unchecked-add-int":
+		return "procunchecked-add"
+	case "unchecked-multiply", "unchecked-multiply-int":
+		return "procunchecked-multiply"
+	}
+	return ""
 }
 
 // intRangeSeq is the lazy seq view of an IntRange
@@ -124,46 +289,46 @@ func (s *intRangeSeq) IsEmpty() bool {
 }
 func (s *intRangeSeq) Cons(obj Object) Seq { return &ConsSeq{first: obj, rest: s} }
 
-// Lazy override of core/range — fires once on first call after core.joke is loaded.
-var rangeOverrideOnce sync.Once
-
+// maybeOverrideRange installs the IntRange-backed range wrapper after core.joke is loaded.
+// It may be called multiple times; it only wraps the original range once.
 func maybeOverrideRange() {
-	rangeOverrideOnce.Do(func() {
-		ns := GLOBAL_ENV.CoreNamespace
-		if ns == nil {
-			return
-		}
-		rangeVr := ns.Resolve("range")
-		if rangeVr == nil {
-			return
-		}
-		origRange, ok := rangeVr.Value.(Callable)
-		if !ok {
-			return
-		}
+	ns := GLOBAL_ENV.CoreNamespace
+	if ns == nil {
+		return
+	}
+	rangeVr := ns.Resolve("range")
+	if rangeVr == nil {
+		return
+	}
+	if p, ok := rangeVr.Value.(Proc); ok && p.Name == "procRangeFast" {
+		return
+	}
+	origRange, ok := rangeVr.Value.(Callable)
+	if !ok {
+		return
+	}
 
-		rangeVr.Value = Proc{Name: "procRangeFast", Fn: func(args []Object) Object {
-			switch len(args) {
-			case 1:
-				if end, ok := args[0].(Int); ok {
-					return NewIntRange(0, end.I, 1)
+	rangeVr.Value = Proc{Name: "procRangeFast", Fn: func(args []Object) Object {
+		switch len(args) {
+		case 1:
+			if end, ok := args[0].(Int); ok {
+				return NewIntRange(0, end.I, 1)
+			}
+		case 2:
+			if start, ok := args[0].(Int); ok {
+				if end, ok := args[1].(Int); ok {
+					return NewIntRange(start.I, end.I, 1)
 				}
-			case 2:
-				if start, ok := args[0].(Int); ok {
-					if end, ok := args[1].(Int); ok {
-						return NewIntRange(start.I, end.I, 1)
-					}
-				}
-			case 3:
-				if start, ok := args[0].(Int); ok {
-					if end, ok := args[1].(Int); ok {
-						if step, ok := args[2].(Int); ok {
-							return NewIntRange(start.I, end.I, step.I)
-						}
+			}
+		case 3:
+			if start, ok := args[0].(Int); ok {
+				if end, ok := args[1].(Int); ok {
+					if step, ok := args[2].(Int); ok && step.I != 0 {
+						return NewIntRange(start.I, end.I, step.I)
 					}
 				}
 			}
-			return origRange.Call(args)
-		}}
-	})
+		}
+		return origRange.Call(args)
+	}}
 }

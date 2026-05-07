@@ -1837,6 +1837,17 @@ func IsInstance(t *Type, obj Object) bool {
 	if obj.Equals(NIL) {
 		return false
 	}
+	// Interface-typed extension objects may report a concrete sequence/map type
+	// from GetType while still satisfying runtime interfaces such as Reduce.
+	// Check the actual Go interface first for hot extension paths.
+	if t == TYPE.Reduce {
+		_, ok := obj.(Reduce)
+		return ok
+	}
+	if t == TYPE.KVReduce {
+		_, ok := obj.(KVReduce)
+		return ok
+	}
 	return IsEqualOrImplements(t, obj.GetType())
 }
 

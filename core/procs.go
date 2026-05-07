@@ -2110,6 +2110,9 @@ func setCoreNamespaces() {
 	vr = ns.Resolve("*loaded-libs*")
 	set = vr.Value.(*MapSet).Conj(ns.Name).(*MapSet)
 	vr.Value = set
+
+	// Install runtime overrides that depend on core.joke vars existing.
+	maybeOverrideRange()
 }
 
 var procIsNamespaceInitialized = func(args []Object) Object {
