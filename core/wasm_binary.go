@@ -59,8 +59,15 @@ func (m *wasmModule) addImportSection(funcs []string, paramCounts []int) {
 	m.addSection(0x02, body)
 }
 
+// addFuncSection adds function index declarations.
 func (m *wasmModule) addFuncSection() {
 	m.addSection(0x03, []byte{0x01, 0x00})
+}
+
+// addFuncSectionRecursive declares one function of type 0 that can call itself.
+func (m *wasmModule) addFuncSectionRecursive() {
+	// Same as addFuncSection — funcidx 0 type 0 is sufficient for self-calls
+	m.addFuncSection()
 }
 
 // addExportSection exports function 0 as "exec".

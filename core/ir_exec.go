@@ -805,17 +805,20 @@ loop:
 			if frameStack == nil {
 				frameStack = newIRFrameStack(prog.numSlots)
 			}
-			if frameStack.depth < 256 {
+			if frameStack.depth < 512 {
 				frameStack.push(pc, slots, len(stack)-nargs)
 				for i := nargs - 1; i >= 0; i-- {
 					slots[i] = stack[len(stack)-1]
 					stack = stack[:len(stack)-1]
 				}
-				for i := nargs; i < len(slots); i++ {
-					slots[i] = nil
-				}
-				for i, obj := range prog.captureSlots {
-					slots[prog.captureSlotIdxs[i]] = obj
+				// Only clear slots beyond nargs if there are captures
+				if len(prog.captureSlots) > 0 {
+					for i := nargs; i < len(slots); i++ {
+						slots[i] = nil
+					}
+					for i, obj := range prog.captureSlots {
+						slots[prog.captureSlotIdxs[i]] = obj
+					}
 				}
 				pc = 0
 			} else {

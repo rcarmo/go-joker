@@ -17,7 +17,11 @@ func irToWasm(prog *IRProgram) []byte {
 		valType = 0x7c // f64
 	}
 	m.addTypeSectionTyped(prog.numSlots, valType)
-	m.addFuncSection()
+	if prog.hasSelf {
+		m.addFuncSectionRecursive()
+	} else {
+		m.addFuncSection()
+	}
 	m.addExportSection()
 	m.addCodeSection(body)
 	return m.bytes()

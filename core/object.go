@@ -15,6 +15,7 @@ import (
 	"io"
 	"math"
 	"math/big"
+	"os"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -706,6 +707,14 @@ func (fn *Fn) Hash() uint32 {
 }
 
 func (fn *Fn) Call(args []Object) Object {
+	// Fast path: native Go codegen for defn-originated pure-integer recursive fns
+	if fn.defVar != nil {
+		if entry := tryNativeRecursive(fn); entry != nil {
+			if result := callNativeRecursive(entry, args); result != nil {
+				return result
+			}
+		}
+	}
 	if len(fn.fnExpr.arities) == 1 {
 		arity := fn.fnExpr.arities[0]
 		if len(arity.args) == len(args) {
@@ -738,10 +747,17 @@ func (fn *Fn) Call(args []Object) Object {
 			}
 			// TCO trampoline for self-recursive functions
 			if fn.fnExpr.self.name != nil {
-				// Try IR compilation for the fn body (covers defn-style non-tail recursion)
-				// Only attempt if the fn has a defVar (var-based recursion) and isn't
-				// already handled by the tailRewritten path.
+				if os.Getenv("JOKER_NATIVE_TRACE") != "" {
+					fmt.Fprintf(os.Stderr, "[CALL] self fn %s defVar=%v\n", *fn.fnExpr.self.name, fn.defVar != nil)
+				}
+				// Try native Go codegen for pure-integer recursive fns
 				if fn.defVar != nil {
+					if entry := tryNativeRecursive(fn); entry != nil {
+						if result := callNativeRecursive(entry, args); result != nil {
+							return result
+						}
+					}
+					// Try IR compilation
 					if prog := irCompileFn(fn); prog != nil {
 						if result := irExec(prog, args); result != nil {
 							return result
