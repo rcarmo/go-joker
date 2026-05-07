@@ -1,5 +1,7 @@
 package core
 
+import "unsafe"
+
 // transducer_compat.go — Transducer runtime support with proper Reduced type.
 //
 // Provides full Clojure transducer semantics:
@@ -9,6 +11,112 @@ package core
 // - completing (1 and 2-arity)
 // - eduction (materialized vector-backed)
 // - sequence 2-arity via eduction
+
+// xformKind describes one compiled transducer step.
+type xformKind byte
+
+const (
+	xformMap xformKind = iota
+	xformFilter
+	xformTake
+)
+
+type xformStep struct {
+	kind xformKind
+	fn   Callable
+	n    int
+}
+
+// XForm is an internal transducer pipeline representation.
+// It is also Callable, so it remains compatible with generic transducer use.
+type XForm struct {
+	InfoHolder
+	MetaHolder
+	steps []xformStep
+}
+
+func (xf *XForm) ToString(escape bool) string      { return "#object[XForm]" }
+func (xf *XForm) Equals(other interface{}) bool    { return xf == other }
+func (xf *XForm) GetType() *Type                   { return TYPE.Fn }
+func (xf *XForm) Hash() uint32                     { return HashPtr(uintptr(unsafe.Pointer(xf))) }
+func (xf *XForm) WithInfo(info *ObjectInfo) Object { res := *xf; res.info = info; return &res }
+func (xf *XForm) WithMeta(m Map) Object            { res := *xf; res.meta = SafeMerge(res.meta, m); return &res }
+
+func (xf *XForm) Call(args []Object) Object {
+	CheckArity(args, 1, 1)
+	rf := EnsureArgIsCallable(args, 0)
+	return buildXFormRF(xf.steps, rf).(Object)
+}
+
+func buildXFormRF(steps []xformStep, rf Callable) Callable {
+	wrapped := rf
+	for i := len(steps) - 1; i >= 0; i-- {
+		step := steps[i]
+		switch step.kind {
+		case xformMap:
+			f := step.fn
+			downstream := wrapped
+			wrapped = Proc{Name: "procMapXfRF", Fn: func(callArgs []Object) Object {
+				switch len(callArgs) {
+				case 0:
+					return call0(downstream)
+				case 1:
+					return downstream.Call(callArgs)
+				case 2:
+					return call2(downstream, callArgs[0], call1(f, callArgs[1]))
+				default:
+					PanicArityMinMax(len(callArgs), 0, 2)
+					return NIL
+				}
+			}}
+		case xformFilter:
+			pred := step.fn
+			downstream := wrapped
+			wrapped = Proc{Name: "procFilterXfRF", Fn: func(callArgs []Object) Object {
+				switch len(callArgs) {
+				case 0:
+					return call0(downstream)
+				case 1:
+					return downstream.Call(callArgs)
+				case 2:
+					if ToBool(call1(pred, callArgs[1])) {
+						return downstream.Call(callArgs)
+					}
+					return callArgs[0]
+				default:
+					PanicArityMinMax(len(callArgs), 0, 2)
+					return NIL
+				}
+			}}
+		case xformTake:
+			limit := step.n
+			downstream := wrapped
+			remaining := limit
+			wrapped = Proc{Name: "procTakeXfRF", Fn: func(callArgs []Object) Object {
+				switch len(callArgs) {
+				case 0:
+					return call0(downstream)
+				case 1:
+					return downstream.Call(callArgs)
+				case 2:
+					if remaining <= 0 {
+						return EnsureReduced(callArgs[0])
+					}
+					out := downstream.Call(callArgs)
+					remaining--
+					if remaining <= 0 {
+						return EnsureReduced(out)
+					}
+					return out
+				default:
+					PanicArityMinMax(len(callArgs), 0, 2)
+					return NIL
+				}
+			}}
+		}
+	}
+	return wrapped
+}
 
 func completeReducingFn(rf Callable, res Object) Object {
 	completed := res
@@ -24,6 +132,9 @@ func completeReducingFn(rf Callable, res Object) Object {
 }
 
 func transduceInternal(xform Callable, reducingFnObj Object, init Object, collObj Object) Object {
+	if xf, ok := xform.(*XForm); ok {
+		return transducePipeline(xf, reducingFnObj, init, collObj)
+	}
 	rfObj := call1(xform, reducingFnObj)
 	rf := EnsureObjectIsCallable(rfObj, "transduce xform must produce a reducing function, got %s")
 
@@ -41,81 +152,93 @@ func transduceInternal(xform Callable, reducingFnObj Object, init Object, collOb
 	return completeReducingFn(rf, res)
 }
 
-func makeMapTransducer(f Callable) Object {
-	return Proc{Name: "procMapXf", Fn: func(args []Object) Object {
-		CheckArity(args, 1, 1)
-		rf := EnsureArgIsCallable(args, 0)
-		return Proc{Name: "procMapXfRF", Fn: func(callArgs []Object) Object {
-			switch len(callArgs) {
-			case 0:
-				return rf.Call(nil)
-			case 1:
-				return rf.Call(callArgs)
-			case 2:
-				mapped := call1(f, callArgs[1])
-				return call2(rf, callArgs[0], mapped)
-			default:
-				PanicArityMinMax(len(callArgs), 0, 2)
-				return NIL
+func transducePipeline(xf *XForm, reducingFnObj Object, init Object, collObj Object) Object {
+	rf := EnsureObjectIsCallable(reducingFnObj, "transduce reducing function must be Callable, got %s")
+	s := EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be Seqable, got %s").Seq()
+	res := init
+	reducerName := hotReducerName(rf)
+	takeRemaining := -1
+	for _, step := range xf.steps {
+		if step.kind == xformTake {
+			takeRemaining = step.n
+			break
+		}
+	}
+	for !s.IsEmpty() {
+		val := s.First()
+		include := true
+		stopAfter := false
+		for _, step := range xf.steps {
+			switch step.kind {
+			case xformMap:
+				val = call1(step.fn, val)
+			case xformFilter:
+				if !ToBool(call1(step.fn, val)) {
+					include = false
+				}
+			case xformTake:
+				if takeRemaining <= 0 {
+					return completeReducingFn(rf, res)
+				}
+				takeRemaining--
+				if takeRemaining == 0 {
+					stopAfter = true
+				}
 			}
-		}}
-	}}
+			if !include {
+				break
+			}
+		}
+		if include {
+			step := reduceStepFastByName(rf, reducerName, res, val)
+			if IsReduced(step) {
+				return completeReducingFn(rf, DerefReduced(step))
+			}
+			res = step
+			if stopAfter {
+				return completeReducingFn(rf, res)
+			}
+		}
+		s = s.Rest()
+	}
+	return completeReducingFn(rf, res)
+}
+
+func reduceStepFast(rf Callable, acc Object, val Object) Object {
+	return reduceStepFastByName(rf, hotReducerName(rf), acc, val)
+}
+
+func reduceStepFastByName(rf Callable, name string, acc Object, val Object) Object {
+	switch name {
+	case "procAdd", "procunchecked-add", "procunchecked-add-int":
+		if a, ok := acc.(Int); ok {
+			if b, ok := val.(Int); ok {
+				return Int{I: a.I + b.I}
+			}
+		}
+	case "procMultiply", "procunchecked-multiply", "procunchecked-multiply-int":
+		if a, ok := acc.(Int); ok {
+			if b, ok := val.(Int); ok {
+				return Int{I: a.I * b.I}
+			}
+		}
+	}
+	return call2(rf, acc, val)
+}
+
+func makeMapTransducer(f Callable) Object {
+	return &XForm{steps: []xformStep{{kind: xformMap, fn: f}}}
 }
 
 func makeFilterTransducer(pred Callable) Object {
-	return Proc{Name: "procFilterXf", Fn: func(args []Object) Object {
-		CheckArity(args, 1, 1)
-		rf := EnsureArgIsCallable(args, 0)
-		return Proc{Name: "procFilterXfRF", Fn: func(callArgs []Object) Object {
-			switch len(callArgs) {
-			case 0:
-				return rf.Call(nil)
-			case 1:
-				return rf.Call(callArgs)
-			case 2:
-				if ToBool(call1(pred, callArgs[1])) {
-					return rf.Call(callArgs)
-				}
-				return callArgs[0]
-			default:
-				PanicArityMinMax(len(callArgs), 0, 2)
-				return NIL
-			}
-		}}
-	}}
+	return &XForm{steps: []xformStep{{kind: xformFilter, fn: pred}}}
 }
 
 func makeTakeTransducer(n int) Object {
 	if n < 0 {
 		n = 0
 	}
-	limit := n
-	return Proc{Name: "procTakeXf", Fn: func(args []Object) Object {
-		CheckArity(args, 1, 1)
-		rf := EnsureArgIsCallable(args, 0)
-		remaining := limit // fresh counter per builder invocation
-		return Proc{Name: "procTakeXfRF", Fn: func(callArgs []Object) Object {
-			switch len(callArgs) {
-			case 0:
-				return rf.Call(nil)
-			case 1:
-				return rf.Call(callArgs)
-			case 2:
-				if remaining <= 0 {
-					return EnsureReduced(callArgs[0])
-				}
-				out := rf.Call(callArgs)
-				remaining--
-				if remaining <= 0 {
-					return EnsureReduced(out)
-				}
-				return out
-			default:
-				PanicArityMinMax(len(callArgs), 0, 2)
-				return NIL
-			}
-		}}
-	}}
+	return &XForm{steps: []xformStep{{kind: xformTake, n: n}}}
 }
 
 func referToUser(sym Symbol, vr *Var) {
@@ -219,7 +342,8 @@ func installTransducerCompat() {
 	filterVr := ns.Resolve("filter")
 	takeVr := ns.Resolve("take")
 	sequenceVr := ns.Resolve("sequence")
-	if mapVr == nil || filterVr == nil || takeVr == nil || sequenceVr == nil {
+	compVr := ns.Resolve("comp")
+	if mapVr == nil || filterVr == nil || takeVr == nil || sequenceVr == nil || compVr == nil {
 		return
 	}
 
@@ -227,7 +351,8 @@ func installTransducerCompat() {
 	filterOrig, filterOK := filterVr.Value.(Callable)
 	takeOrig, takeOK := takeVr.Value.(Callable)
 	sequenceOrig, sequenceOK := sequenceVr.Value.(Callable)
-	if !mapOK || !filterOK || !takeOK || !sequenceOK {
+	compOrig, compOK := compVr.Value.(Callable)
+	if !mapOK || !filterOK || !takeOK || !sequenceOK || !compOK {
 		return
 	}
 
@@ -256,6 +381,22 @@ func installTransducerCompat() {
 			return makeTakeTransducer(n)
 		}
 		return takeOrig.Call(args)
+	}}
+
+	// comp of internal xforms returns a fused pipeline.
+	compVr.Value = Proc{Name: "procCompXfCompat", Fn: func(args []Object) Object {
+		if len(args) > 0 {
+			steps := make([]xformStep, 0)
+			for _, arg := range args {
+				xf, ok := arg.(*XForm)
+				if !ok {
+					return compOrig.Call(args)
+				}
+				steps = append(steps, xf.steps...)
+			}
+			return &XForm{steps: steps}
+		}
+		return compOrig.Call(args)
 	}}
 
 	// transduce — full 3 and 4-arity support
