@@ -11,3 +11,4 @@ docs/dash/*.css
 docs/dash/*.js
 .claude
 *.test
+tests/clojure-test-suite/
