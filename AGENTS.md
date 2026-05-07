@@ -50,6 +50,38 @@ go build                 # Compile
 go build -tags go_spew   # Enables joker.core/go-spew debugging function
 ```
 
+## Preferred workflow: Makefile targets
+
+When possible, prefer `make` targets over ad-hoc commands. They centralize flags and are reproducible across environments.
+
+```bash
+# Discover available targets
+make help
+
+# Reproducible full test run (recommended default for agents)
+make test-repro
+
+# Deterministic subsets
+make test-core
+make test-std
+make test-short
+
+# Full audit pipeline
+make audit-fast   # test + vet + staticcheck + lint + vuln
+make audit        # audit-fast + race + benchmark sanity
+```
+
+Useful overrides:
+
+```bash
+# Change package scope and timeout without editing the Makefile
+make test-repro TEST_PKGS=./core TEST_TIMEOUT=30m
+```
+
+Notes:
+- `make` exports `TMPDIR`/`GOTMPDIR` to avoid noexec `/tmp` issues in constrained environments.
+- If tooling is missing, targets auto-bootstrap required binaries via `make tools`.
+
 ## Test Commands
 
 ```bash
