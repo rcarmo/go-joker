@@ -314,14 +314,12 @@ func __exit_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		code := ExtractInt(_args, 0)
-		_res := NIL
 		ExitJoker(code)
-		return _res
+		return NIL
 
 	case _c == 0:
-		_res := NIL
 		ExitJoker(0)
-		return _res
+		return NIL
 
 	default:
 		PanicArity(_c)
