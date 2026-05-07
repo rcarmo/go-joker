@@ -11,13 +11,14 @@ GOLANGCI_LINT_BIN ?= $(TOOLBIN)/golangci-lint
 GOVULNCHECK_BIN ?= $(TOOLBIN)/govulncheck
 
 BENCH_REGEX ?= BenchmarkCLBG(NBody|Mandelbrot|SpectralNorm|BinaryTrees|FannkuchRedux)
+COMPARE_OUT ?= benchmarks/compare/out/latest
 
 TEST_PKGS ?= ./...
 TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -33,6 +34,8 @@ help:
 	@echo "  make vuln           # Run govulncheck"
 	@echo "  make race           # Run race tests on critical packages"
 	@echo "  make bench-sanity   # Run CLBG benchmark sanity subset"
+	@echo "  make compare-bench  # Run cross-runtime comparison sub-project"
+	@echo "  make compare-clean  # Remove generated comparison outputs"
 	@echo "  make audit-fast     # test + vet + staticcheck + lint + vuln"
 	@echo "  make audit          # full audit-fast + race + bench-sanity"
 
@@ -74,6 +77,12 @@ race:
 
 bench-sanity:
 	$(GO) test ./core -run '^$$' -bench '$(BENCH_REGEX)' -benchmem -benchtime=1x -count=3
+
+compare-bench:
+	bash benchmarks/compare/collect.sh $(COMPARE_OUT)
+
+compare-clean:
+	rm -rf benchmarks/compare/out/latest
 
 audit-fast: tools test vet staticcheck-sa lint vuln
 
