@@ -2113,6 +2113,7 @@ func setCoreNamespaces() {
 
 	// Install runtime overrides that depend on core.joke vars existing.
 	maybeOverrideRange()
+	maybeOverrideSeqOps()
 }
 
 var procIsNamespaceInitialized = func(args []Object) Object {

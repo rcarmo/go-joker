@@ -50,9 +50,30 @@ func (seq *ConsSeq) reduceInit(f Callable, init Object) Object {
 
 // MappingSeq Reduce support
 func (seq *MappingSeq) reduce(f Callable) Object {
-	return seqReduce(seq, f)
+	if seq.seq.IsEmpty() {
+		return call0(f)
+	}
+	acc := seq.fn(seq.seq.First())
+	cur := seq.seq.Rest()
+	for !cur.IsEmpty() {
+		acc = call2(f, acc, seq.fn(cur.First()))
+		if IsReduced(acc) {
+			return DerefReduced(acc)
+		}
+		cur = cur.Rest()
+	}
+	return acc
 }
 
 func (seq *MappingSeq) reduceInit(f Callable, init Object) Object {
-	return seqReduceInit(seq, f, init)
+	acc := init
+	cur := seq.seq
+	for !cur.IsEmpty() {
+		acc = call2(f, acc, seq.fn(cur.First()))
+		if IsReduced(acc) {
+			return DerefReduced(acc)
+		}
+		cur = cur.Rest()
+	}
+	return acc
 }
