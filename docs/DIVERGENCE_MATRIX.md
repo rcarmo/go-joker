@@ -2,7 +2,17 @@
 
 _Generated: 2026-05-07_
 
-**234/234 pass** (100%), 0 fail, 0 error
+**242/242 pass** (100%), 0 fail, 0 error
+
+## api (5/5)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| var? | pass | `true` | `true` |
+| var?-no | pass | `false` | `false` |
+| var-get | pass | `42` | `42` |
+| alter-var-root | pass | `15` | `15` |
+| file-seq | pass | `true` | `true` |
 
 ## arithmetic (12/12)
 
@@ -296,6 +306,14 @@ _Generated: 2026-05-07_
 | contains? | pass | `true` | `true` |
 | count | pass | `3` | `3` |
 | set? | pass | `true` | `true` |
+
+## sorted (3/3)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| sorted-map | pass | `:a` | `:a` |
+| sorted-set | pass | `1` | `1` |
+| comparator | pass | `-1` | `-1` |
 
 ## string (6/6)
 

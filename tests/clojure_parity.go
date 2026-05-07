@@ -319,6 +319,18 @@ var parityTests = []PTest{
 	{"atom-ext", "compare-and-set!-false", "(let [a (atom 42)] (compare-and-set! a 0 99) @a)", "42"},
 	{"atom-ext", "add-watch", "(let [a (atom 0) log (atom [])] (add-watch a :k (fn [k r o n] (swap! log conj n))) (reset! a 1) (swap! a inc) @log)", "[]"},
 	{"atom-ext", "record?", "(do (__defrecord 'T \"v\") (record? (->T 1)))", "true"},
+
+	// --- Sorted collections ---
+	{"sorted", "sorted-map", "(first (keys (sorted-map :c 3 :a 1 :b 2)))", ":a"},
+	{"sorted", "sorted-set", "(first (sorted-set 3 1 2))", "1"},
+	{"sorted", "comparator", "((comparator <) 1 2)", "-1"},
+
+	// --- Core API gaps ---
+	{"api", "var?", "(var? (var inc))", "true"},
+	{"api", "var?-no", "(var? 42)", "false"},
+	{"api", "var-get", "(do (def x 42) (var-get (var x)))", "42"},
+	{"api", "alter-var-root", "(do (def avr-test 10) (alter-var-root (var avr-test) + 5) avr-test)", "15"},
+	{"api", "file-seq", "(> (count (file-seq \".\")) 0)", "true"},
 }
 
 // findLastForm finds the byte offset of the last top-level s-expression.
