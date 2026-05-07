@@ -131,7 +131,7 @@ func (seq *LazySeq) Seq() Seq {
 
 func (seq *LazySeq) realize() {
 	if seq.seq == nil {
-		seq.seq = EnsureObjectIsSeqable(seq.fn.Call([]Object{}), "").Seq()
+		seq.seq = EnsureObjectIsSeqable(call0(seq.fn), "").Seq()
 	}
 }
 

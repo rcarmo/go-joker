@@ -99,7 +99,7 @@ func registerSortedCollProcs() {
 			if ToBool(pred.Call(cArgs)) {
 				return Int{I: -1}
 			}
-			if ToBool(pred.Call([]Object{cArgs[1], cArgs[0]})) {
+			if ToBool(call2(pred, cArgs[1], cArgs[0])) {
 				return Int{I: 1}
 			}
 			return Int{I: 0}

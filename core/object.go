@@ -581,7 +581,7 @@ func (d *Delay) WithInfo(info *ObjectInfo) Object {
 
 func (d *Delay) Force() Object {
 	if d.value == nil {
-		d.value = d.fn.Call([]Object{})
+		d.value = call0(d.fn)
 	}
 	return d.value
 }
@@ -857,12 +857,12 @@ func (fn *Fn) Call(args []Object) Object {
 }
 
 func compare(c Callable, a, b Object) int {
-	switch r := c.Call([]Object{a, b}).(type) {
+	switch r := call2(c, a, b).(type) {
 	case Boolean:
 		if r.B {
 			return -1
 		}
-		if EnsureObjectIsBoolean(c.Call([]Object{b, a}), "").B {
+		if EnsureObjectIsBoolean(call2(c, b, a), "").B {
 			return 1
 		}
 		return 0
@@ -1967,7 +1967,7 @@ func CountedIndexedCompare(v1, v2 CountedIndexed) int {
 func CountedIndexedKvreduce(v CountedIndexed, c Callable, init Object) Object {
 	res := init
 	for i := 0; i < v.Count(); i++ {
-		res = c.Call([]Object{res, Int{I: i}, v.At(i)})
+		res = call3(c, res, Int{I: i}, v.At(i))
 	}
 	return res
 }
@@ -2012,7 +2012,7 @@ func CountedIndexedFormat(v CountedIndexed, w io.Writer, indent int) int {
 func CountedIndexedReduce(v CountedIndexed, c Callable) Object {
 	switch v.Count() {
 	case 0:
-		return c.Call([]Object{})
+		return call0(c)
 	case 1:
 		return v.At(0)
 	default:

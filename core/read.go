@@ -1167,7 +1167,7 @@ func readTagged(reader *Reader) Object {
 		if !ok {
 			return handleNoReaderError(reader, s)
 		}
-		return EnsureObjectIsVar(readFunc, "").Call([]Object{readFirst(reader)})
+		return call1(EnsureObjectIsVar(readFunc, ""), readFirst(reader))
 	default:
 		panic(MakeReadError(reader, "Reader tag must be a symbol"))
 	}

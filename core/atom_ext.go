@@ -42,7 +42,7 @@ func notifyWatches(a *Atom, oldVal, newVal Object) {
 		return
 	}
 	for _, w := range ext.watches {
-		w.fn.Call([]Object{w.key, a, oldVal, newVal})
+		call4(w.fn, w.key, a, oldVal, newVal)
 	}
 }
 
@@ -52,7 +52,7 @@ func validateAtom(a *Atom, newVal Object) {
 	if ext == nil || ext.validator == nil {
 		return
 	}
-	result := ext.validator.Call([]Object{newVal})
+	result := call1(ext.validator, newVal)
 	if !ToBool(result) {
 		panic(RT.NewError("Invalid reference state"))
 	}
@@ -79,7 +79,7 @@ func registerAtomExtProcs() {
 		} else {
 			fn := EnsureObjectIsCallable(args[1], "validator must be a function, got %s")
 			// Validate current value
-			result := fn.Call([]Object{a.Deref()})
+			result := call1(fn, a.Deref())
 			if !ToBool(result) {
 				panic(RT.NewError("Invalid reference state"))
 			}

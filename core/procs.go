@@ -1873,7 +1873,7 @@ var procGo = func(args []Object) Object {
 		}()
 
 		RT.GIL.Lock()
-		res := f.Call([]Object{})
+		res := call0(f)
 		ch.ch <- MakeFutureResult(res, nil)
 		ch.Close()
 	}()

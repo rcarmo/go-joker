@@ -18,19 +18,19 @@ func completeReducingFn(rf Callable, res Object) Object {
 				completed = res
 			}
 		}()
-		completed = rf.Call([]Object{res})
+		completed = call1(rf, res)
 	}()
 	return DerefReduced(completed)
 }
 
 func transduceInternal(xform Callable, reducingFnObj Object, init Object, collObj Object) Object {
-	rfObj := xform.Call([]Object{reducingFnObj})
+	rfObj := call1(xform, reducingFnObj)
 	rf := EnsureObjectIsCallable(rfObj, "transduce xform must produce a reducing function, got %s")
 
 	s := EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be Seqable, got %s").Seq()
 	res := init
 	for !s.IsEmpty() {
-		step := rf.Call([]Object{res, s.First()})
+		step := call2(rf, res, s.First())
 		if IsReduced(step) {
 			res = DerefReduced(step)
 			return completeReducingFn(rf, res)
@@ -52,8 +52,8 @@ func makeMapTransducer(f Callable) Object {
 			case 1:
 				return rf.Call(callArgs)
 			case 2:
-				mapped := f.Call([]Object{callArgs[1]})
-				return rf.Call([]Object{callArgs[0], mapped})
+				mapped := call1(f, callArgs[1])
+				return call2(rf, callArgs[0], mapped)
 			default:
 				PanicArityMinMax(len(callArgs), 0, 2)
 				return NIL
@@ -73,7 +73,7 @@ func makeFilterTransducer(pred Callable) Object {
 			case 1:
 				return rf.Call(callArgs)
 			case 2:
-				if ToBool(pred.Call([]Object{callArgs[1]})) {
+				if ToBool(call1(pred, callArgs[1])) {
 					return rf.Call(callArgs)
 				}
 				return callArgs[0]

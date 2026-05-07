@@ -864,7 +864,7 @@ func (m *HashMap) kvreduce(c Callable, init Object) Object {
 	iter := m.Iter()
 	for iter.HasNext() {
 		kv := iter.Next()
-		res = c.Call([]Object{res, kv.Key, kv.Value})
+		res = call3(c, res, kv.Key, kv.Value)
 	}
 	return res
 }

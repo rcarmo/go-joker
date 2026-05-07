@@ -5,7 +5,7 @@ package core
 func seqReduceInit(s Seq, f Callable, init Object) Object {
 	acc := init
 	for !s.IsEmpty() {
-		acc = f.Call([]Object{acc, s.First()})
+		acc = call2(f, acc, s.First())
 		if IsReduced(acc) {
 			return DerefReduced(acc)
 		}
@@ -21,7 +21,7 @@ func seqReduce(s Seq, f Callable) Object {
 	acc := s.First()
 	s = s.Rest()
 	for !s.IsEmpty() {
-		acc = f.Call([]Object{acc, s.First()})
+		acc = call2(f, acc, s.First())
 		if IsReduced(acc) {
 			return DerefReduced(acc)
 		}
