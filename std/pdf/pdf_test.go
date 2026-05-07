@@ -2,10 +2,21 @@ package pdf
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	. "github.com/candid82/joker/core"
 )
+
+func expectPanic(t *testing.T, fn func()) {
+	t.Helper()
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("expected panic")
+		}
+	}()
+	fn()
+}
 
 func TestDocumentCreate(t *testing.T) {
 	initPDFNamespace()
@@ -18,7 +29,7 @@ func TestDocumentCreate(t *testing.T) {
 
 	// Add text (need a font first)
 	// gopdf requires an explicit TTF font - skip text test without font file
-	
+
 	// Draw shapes (these work without fonts)
 	procLine([]Object{doc, Double{D: 50}, Double{D: 50}, Double{D: 500}, Double{D: 50}})
 	procRect([]Object{doc, Double{D: 50}, Double{D: 100}, Double{D: 200}, Double{D: 150}})
@@ -45,4 +56,13 @@ func TestDocumentCreate(t *testing.T) {
 	}
 	t.Logf("PDF size: %d bytes", info.Size())
 	os.Remove(path)
+}
+
+func TestImageMissingPathPanics(t *testing.T) {
+	initPDFNamespace()
+	doc := procDocument(nil)
+
+	expectPanic(t, func() {
+		procImage([]Object{doc, MakeString(filepath.Join(t.TempDir(), "missing.png")), Double{D: 10}, Double{D: 10}})
+	})
 }
