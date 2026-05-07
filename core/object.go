@@ -1345,7 +1345,7 @@ func (d Double) Compare(other Object) int {
 func (i Int) GetInfo() *ObjectInfo { return nil }
 
 func (i Int) ToString(escape bool) string {
-	return strconv.Itoa(i.I)
+	return intToString(i.I)
 }
 
 func MakeInt(i int) Int {
