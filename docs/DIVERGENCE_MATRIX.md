@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-07_
 
-**166/166 pass** (100%), 0 fail, 0 error
+**207/207 pass** (100%), 0 fail, 0 error
 
 ## arithmetic (12/12)
 
@@ -114,6 +114,24 @@ _Generated: 2026-05-07_
 | basic | pass | `10` | `10` |
 | defn-recur | pass | `5050` | `5050` |
 
+## macro (13/13)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| when | pass | `(if true (do 1 2) nil)` | `(if true (do 1 2) nil)` |
+| when-not | pass | `(if false nil 42)` | `(if false nil 42)` |
+| or-empty | pass | `nil` | `nil` |
+| and-empty | pass | `true` | `true` |
+| ->thread | pass | `3` | `3` |
+| ->>thread | pass | `15` | `15` |
+| if-not | pass | `42` | `42` |
+| doto | pass | `1` | `1` |
+| if-let | pass | `42` | `42` |
+| if-let-nil | pass | `-1` | `-1` |
+| when-let | pass | `43` | `43` |
+| when-first | pass | `1` | `1` |
+| when-first-nil | pass | `nil` | `nil` |
+
 ## map (12/12)
 
 | Test | Status | Expected | Got |
@@ -143,6 +161,39 @@ _Generated: 2026-05-07_
 | not-empty | pass | `[1]` | `[1]` |
 | not-empty-nil | pass | `nil` | `nil` |
 | rand-int | pass | `true` | `true` |
+
+## reader (28/28)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| quote | pass | `foo` | `foo` |
+| deref-atom | pass | `42` | `42` |
+| anonymous-fn | pass | `7` | `7` |
+| set-literal | pass | `3` | `3` |
+| regex | pass | `123` | `123` |
+| char-literal | pass | `97` | `97` |
+| char-newline | pass | `10` | `10` |
+| char-space | pass | `32` | `32` |
+| char-tab | pass | `9` | `9` |
+| nil-literal | pass | `true` | `true` |
+| true-literal | pass | `true` | `true` |
+| false-literal | pass | `true` | `true` |
+| keyword-ns | pass | `foo` | `foo` |
+| symbol-ns | pass | `foo` | `foo` |
+| vector-literal | pass | `true` | `true` |
+| map-literal | pass | `true` | `true` |
+| empty-list | pass | `true` | `true` |
+| neg-number | pass | `-42` | `-42` |
+| float-e | pass | `1000.0` | `1000.0` |
+| hex-int | pass | `255` | `255` |
+| octal-int | pass | `255` | `255` |
+| ratio | pass | `0.3333333333333333` | `0.3333333333333333` |
+| string-escape | pass | `3` | `3` |
+| string-unicode | pass | `65` | `65` |
+| meta-reader | pass | `true` | `true` |
+| varquote | pass | `true` | `true` |
+| comment | pass | `3` | `3` |
+| nested-coll | pass | `42` | `42` |
 
 ## regex (3/3)
 
