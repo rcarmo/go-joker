@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-07_
 
-**230/230 pass** (100%), 0 fail, 0 error
+**234/234 pass** (100%), 0 fail, 0 error
 
 ## arithmetic (12/12)
 
@@ -28,6 +28,15 @@ _Generated: 2026-05-07_
 | atom-deref | pass | `42` | `42` |
 | atom-swap | pass | `1` | `1` |
 | atom-reset | pass | `42` | `42` |
+
+## atom-ext (4/4)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| compare-and-set!-true | pass | `99` | `99` |
+| compare-and-set!-false | pass | `42` | `42` |
+| add-watch | pass | `[]` | `[]` |
+| record? | pass | `true` | `true` |
 
 ## binding (4/4)
 

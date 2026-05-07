@@ -313,6 +313,12 @@ var parityTests = []PTest{
 	{"hierarchy", "derive-isa", "(do (derive :child :parent) (isa? :child :parent))", "true"},
 	{"hierarchy", "make-hierarchy", "(let [h (make-hierarchy)] (isa? h :a :b))", "false"},
 	{"hierarchy", "custom-h", "(let [h (-> (make-hierarchy) (derive :a :b) (derive :b :c))] (isa? h :a :c))", "true"},
+
+	// --- Atom extensions ---
+	{"atom-ext", "compare-and-set!-true", "(let [a (atom 42)] (compare-and-set! a 42 99) @a)", "99"},
+	{"atom-ext", "compare-and-set!-false", "(let [a (atom 42)] (compare-and-set! a 0 99) @a)", "42"},
+	{"atom-ext", "add-watch", "(let [a (atom 0) log (atom [])] (add-watch a :k (fn [k r o n] (swap! log conj n))) (reset! a 1) (swap! a inc) @log)", "[]"},
+	{"atom-ext", "record?", "(do (__defrecord 'T \"v\") (record? (->T 1)))", "true"},
 }
 
 // findLastForm finds the byte offset of the last top-level s-expression.
