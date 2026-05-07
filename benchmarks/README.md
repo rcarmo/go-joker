@@ -116,15 +116,15 @@ Direct head-to-head against [let-go](https://github.com/nooga/let-go)'s benchmar
 
 | Benchmark | let-go | go-joker | Winner |
 |---|---:|---:|---|
-| fib | 3068.2ms | 504.9ms | **go-joker** (6.1×) |
-| loop-recur | 75.2ms | 6.52ms | **go-joker** (11.5×) |
-| map-filter | 3.35ms | 6.46ms | let-go (1.9×) |
-| persistent-map | 16.0ms | 16.5ms | near parity (let-go 1.03×) |
-| reduce | 101.4ms | 5.69ms | **go-joker** (17.8×) |
-| tak | 3343.4ms | 593.1ms | **go-joker** (5.6×) |
-| transducers | 3.97ms | 7.61ms | let-go (1.9×) |
+| fib | 2623.5ms | 423.9ms | **go-joker** (6.2×) |
+| loop-recur | 77.5ms | 7.07ms | **go-joker** (11.0×) |
+| map-filter | 3.42ms | 5.17ms | let-go (1.5×) |
+| persistent-map | 16.9ms | 17.9ms | near parity (let-go 1.06×) |
+| reduce | 87.0ms | 5.90ms | **go-joker** (14.7×) |
+| tak | 2862.2ms | 610.6ms | **go-joker** (4.7×) |
+| transducers | 3.37ms | 7.46ms | let-go (2.2×) |
 
-**go-joker wins 4/7, persistent-map is effectively at parity; remaining gaps are map/filter and transducer dispatch.**
+**go-joker wins 4/7, persistent-map is effectively at parity; map-filter narrowed to ~1.5× and the main remaining gap is transducer dispatch/startup overhead.**
 
 For detailed analysis see [`docs/PARITY_STATUS.md`](../docs/PARITY_STATUS.md).
 
