@@ -430,7 +430,17 @@ func evalSeq(exprs []Expr, env *LocalEnv) []Object {
 }
 
 func (expr *CallExpr) Eval(env *LocalEnv) Object {
-	callable := Eval(expr.callable, env)
+	// Fast path: if callable is a VarRefExpr, inline the var resolution
+	// to avoid the full Eval dispatch overhead on hot recursive paths.
+	var callable Object
+	if vref, ok := expr.callable.(*VarRefExpr); ok {
+		callable = vref.vr.Value
+		if callable == nil {
+			callable = NIL
+		}
+	} else {
+		callable = Eval(expr.callable, env)
+	}
 	switch callable := callable.(type) {
 	case Proc:
 		switch len(expr.args) {

@@ -708,10 +708,10 @@ func (fn *Fn) Call(args []Object) Object {
 	if len(fn.fnExpr.arities) == 1 {
 		arity := fn.fnExpr.arities[0]
 		if len(arity.args) == len(args) {
-			RT.pushFrame()
 			// If tail-self-calls were rewritten to recur at parse time,
 			// use evalLoop directly (no trampoline needed)
 			if fn.fnExpr.tailRewritten {
+				RT.pushFrame()
 				// Try WASM for rewritten tail-recursive fns
 				if wp := wasmGetFn(fn); wp != nil {
 					if result := wasmExec(wp, args); result != nil {
@@ -735,9 +735,9 @@ func (fn *Fn) Call(args []Object) Object {
 				RT.popFrame()
 				return res
 			}
-			defer RT.popFrame()
 			// TCO trampoline for self-recursive functions
 			if fn.fnExpr.self.name != nil {
+				RT.pushFrame()
 				prevActiveFn := activeFn
 				activeFn = fn
 				for {
@@ -751,18 +751,16 @@ func (fn *Fn) Call(args []Object) Object {
 						continue
 					}
 					activeFn = prevActiveFn
+					RT.popFrame()
 					return result
 				}
 			}
-			// Normal execution (no TCO)
+			// Normal single-arity execution — no frame push/pop overhead
 			childEnv := LocalEnv{bindings: args, parent: fn.env}
 			if fn.env != nil {
 				childEnv.frame = fn.env.frame + 1
 			}
-			RT.pushFrame()
-			res := evalLoop(arity.body, &childEnv)
-			RT.popFrame()
-			return res
+			return evalLoop(arity.body, &childEnv)
 		}
 	}
 
@@ -1264,7 +1262,7 @@ func MakeDouble(d float64) Double {
 	return Double{D: d}
 }
 
-func (d Double) GetInfo() *ObjectInfo        { return nil }
+func (d Double) GetInfo() *ObjectInfo { return nil }
 
 func (d Double) ToString(escape bool) string {
 	dbl := d.D
@@ -1308,7 +1306,7 @@ func (d Double) Compare(other Object) int {
 	return CompareNumbers(d, EnsureObjectIsNumber(other, "Cannot compare Double: %s"))
 }
 
-func (i Int) GetInfo() *ObjectInfo        { return nil }
+func (i Int) GetInfo() *ObjectInfo { return nil }
 
 func (i Int) ToString(escape bool) string {
 	return strconv.Itoa(i.I)
