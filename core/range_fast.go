@@ -28,7 +28,27 @@ func (r *IntRange) Seq() Seq {
 	if r.step < 0 && r.start <= r.end {
 		return EmptyList
 	}
-	return &intRangeSeq{r: r, cur: r.start}
+	return r.chunkedSeqFrom(r.start)
+}
+
+func (r *IntRange) chunkedSeqFrom(cur int) Seq {
+	if !r.contains(cur) {
+		return EmptyList
+	}
+	buf := make([]Object, 0, 32)
+	v := cur
+	for len(buf) < 32 && r.contains(v) {
+		buf = append(buf, Int{I: v})
+		v += r.step
+	}
+	chunk := &ArrayChunk{arr: buf, off: 0, end: len(buf)}
+	var rest Seq
+	if r.contains(v) {
+		rest = &LazySeq{fn: Proc{Name: "procIntRangeChunkRest", Fn: func(args []Object) Object {
+			return r.chunkedSeqFrom(v)
+		}}}
+	}
+	return &ChunkedCons{chunk: chunk, rest: rest, idx: 0}
 }
 
 func (r *IntRange) Count() int {

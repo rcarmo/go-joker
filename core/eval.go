@@ -434,6 +434,9 @@ func evalSeq(exprs []Expr, env *LocalEnv) []Object {
 }
 
 func (expr *CallExpr) Eval(env *LocalEnv) Object {
+	if result, ok := evalReducePipelineFast(expr, env); ok {
+		return result
+	}
 	// Fast path: if callable is a VarRefExpr, inline the var resolution
 	// to avoid the full Eval dispatch overhead on hot recursive paths.
 	var callable Object
@@ -447,6 +450,23 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 	}
 	switch callable := callable.(type) {
 	case Proc:
+		if callable.Name == "procReduce" && (len(expr.args) == 2 || len(expr.args) == 3) {
+			f := Eval(expr.args[0], env)
+			if fn, ok := f.(Callable); ok {
+				if len(expr.args) == 3 {
+					init := Eval(expr.args[1], env)
+					coll := Eval(expr.args[2], env)
+					if r, ok := coll.(Reduce); ok {
+						return r.reduceInit(fn, init)
+					}
+				} else {
+					coll := Eval(expr.args[1], env)
+					if r, ok := coll.(Reduce); ok {
+						return r.reduce(fn)
+					}
+				}
+			}
+		}
 		switch len(expr.args) {
 		case 0:
 			return callable.Fn(nil)
@@ -724,6 +744,23 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 			return callable.Fn(args)
 		}
 	case *Fn:
+		if findFnVarName(callable) == "reduce" && (len(expr.args) == 2 || len(expr.args) == 3) {
+			f := Eval(expr.args[0], env)
+			if fn, ok := f.(Callable); ok {
+				if len(expr.args) == 3 {
+					init := Eval(expr.args[1], env)
+					coll := Eval(expr.args[2], env)
+					if r, ok := coll.(Reduce); ok {
+						return r.reduceInit(fn, init)
+					}
+				} else {
+					coll := Eval(expr.args[1], env)
+					if r, ok := coll.(Reduce); ok {
+						return r.reduce(fn)
+					}
+				}
+			}
+		}
 		switch len(expr.args) {
 		case 0:
 			return callable.Call(nil)

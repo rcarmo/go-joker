@@ -34,14 +34,12 @@ func (h *Hierarchy) Equals(other interface{}) bool { return h == other }
 func (h *Hierarchy) GetType() *Type                { return TYPE.Fn }
 func (h *Hierarchy) Hash() uint32                  { return HashPtr(uintptr(unsafe.Pointer(h))) }
 func (h *Hierarchy) WithInfo(info *ObjectInfo) Object {
-	res := *h
-	res.info = info
-	return &res
+	h.info = info
+	return h
 }
 func (h *Hierarchy) WithMeta(m Map) Object {
-	res := *h
-	res.meta = SafeMerge(res.meta, m)
-	return &res
+	h.meta = SafeMerge(h.meta, m)
+	return h
 }
 
 func objKey(obj Object) string {
