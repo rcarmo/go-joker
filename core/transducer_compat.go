@@ -177,6 +177,26 @@ func installTransducerCompat() {
 		return
 	}
 
+	// Fix reduce-kv to handle nil coll (returns init)
+	rkvVr := ns.Resolve("reduce-kv")
+	if rkvVr != nil {
+		origRKV, ok := rkvVr.Value.(Callable)
+		if ok {
+			rkvVr.Value = Proc{Name: "procReduceKvNilSafe", Fn: func(args []Object) Object {
+				if len(args) >= 3 {
+					coll := args[2]
+					if coll == nil {
+						return args[1]
+					}
+					if _, ok := coll.(Nil); ok {
+						return args[1]
+					}
+				}
+				return origRKV.Call(args)
+			}}
+		}
+	}
+
 	// reduced family
 	reducedVr := ns.Intern(MakeSymbol("reduced"))
 	reducedVr.Value = Proc{Name: "procReducedCompat", Fn: func(args []Object) Object {
@@ -362,4 +382,5 @@ func installTransducerCompat() {
 
 func init() {
 	installTransducerCompat()
+	maybeOverrideRange()
 }

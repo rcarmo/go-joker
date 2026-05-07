@@ -183,6 +183,21 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 	if !ok {
 		return c.reject("unsupported callable expression type %T", expr.callable)
 	}
+
+	// Check for var-based self-recursive call (defn fib [...] (fib ...))
+	if c.hasSelf && c.selfVar != nil && vref.vr == c.selfVar && len(expr.args) == c.selfNArgs {
+		for _, arg := range expr.args {
+			if !c.compileExpr(arg, false) {
+				return false
+			}
+		}
+		c.emitWithOperand(irCallSelf, len(expr.args))
+		if isLast {
+			c.emit(irReturn)
+		}
+		return true
+	}
+
 	procName := ""
 	switch v := vref.vr.Value.(type) {
 	case Proc:
@@ -438,28 +453,56 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			c.emit(irCount)
 		}
 	case "procBitAnd":
-		if len(expr.args) != 2 { return c.reject("bit-and expects 2 args") }
-		if !c.compileExpr(expr.args[0], false) { return false }
-		if !c.compileExpr(expr.args[1], false) { return false }
+		if len(expr.args) != 2 {
+			return c.reject("bit-and expects 2 args")
+		}
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
+		if !c.compileExpr(expr.args[1], false) {
+			return false
+		}
 		c.emit(irBitAnd)
 	case "procBitOr":
-		if len(expr.args) != 2 { return c.reject("bit-or expects 2 args") }
-		if !c.compileExpr(expr.args[0], false) { return false }
-		if !c.compileExpr(expr.args[1], false) { return false }
+		if len(expr.args) != 2 {
+			return c.reject("bit-or expects 2 args")
+		}
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
+		if !c.compileExpr(expr.args[1], false) {
+			return false
+		}
 		c.emit(irBitOr)
 	case "procBitNot":
-		if len(expr.args) != 1 { return c.reject("bit-not expects 1 arg") }
-		if !c.compileExpr(expr.args[0], false) { return false }
+		if len(expr.args) != 1 {
+			return c.reject("bit-not expects 1 arg")
+		}
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
 		c.emit(irBitNot)
 	case "procBitShiftLeft":
-		if len(expr.args) != 2 { return c.reject("bit-shift-left expects 2 args") }
-		if !c.compileExpr(expr.args[0], false) { return false }
-		if !c.compileExpr(expr.args[1], false) { return false }
+		if len(expr.args) != 2 {
+			return c.reject("bit-shift-left expects 2 args")
+		}
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
+		if !c.compileExpr(expr.args[1], false) {
+			return false
+		}
 		c.emit(irBitShiftLeft)
 	case "procBitShiftRight":
-		if len(expr.args) != 2 { return c.reject("bit-shift-right expects 2 args") }
-		if !c.compileExpr(expr.args[0], false) { return false }
-		if !c.compileExpr(expr.args[1], false) { return false }
+		if len(expr.args) != 2 {
+			return c.reject("bit-shift-right expects 2 args")
+		}
+		if !c.compileExpr(expr.args[0], false) {
+			return false
+		}
+		if !c.compileExpr(expr.args[1], false) {
+			return false
+		}
 		c.emit(irBitShiftRight)
 	case "procApply":
 		if len(expr.args) != 2 {
@@ -510,6 +553,12 @@ func coreVarToProcName(vr *Var) string {
 		return "procDec"
 	case "<":
 		return "procLt"
+	case "<=":
+		return "procLte"
+	case ">":
+		return "procGt"
+	case ">=":
+		return "procGte"
 	case "=":
 		return "procEq"
 	case "zero?":

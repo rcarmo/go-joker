@@ -1,5 +1,10 @@
 package core
 
+import (
+	"fmt"
+	"os"
+)
+
 // ---------- Fn compilation ----------
 
 // irCompileFn attempts to compile a single-arity Fn body into an IRProgram.
@@ -89,15 +94,24 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 		c.selfNArgs = len(arity.args)
 	}
 
+	// If the fn was defined via defn, enable var-based self-call detection
+	if fn.defVar != nil {
+		c.hasSelf = true
+		c.selfVar = fn.defVar
+		c.selfNArgs = len(arity.args)
+	}
+
 	// Compile body
 	for i, expr := range arity.body {
 		if !c.compileExpr(expr, i == len(arity.body)-1) {
-			
+			if os.Getenv("JOKER_IR_DEBUG") != "" {
+				fmt.Fprintf(os.Stderr, "[IR] fn compile rejected: %s\n", c.reasonOr("unknown"))
+			}
 			return nil
 		}
 	}
 	if len(c.code) == 0 {
-		
+
 		return nil
 	}
 	if c.code[len(c.code)-1] != irReturn {

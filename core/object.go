@@ -175,6 +175,7 @@ type (
 		tailRewritten bool       // tail-self-calls rewritten to recur
 		irProg        *IRProgram // cached IR compilation (nil = not attempted, irCompileFailed = failed)
 		irProgOnce    uint32     // atomic: 0=not tried, 1=done
+		defVar        *Var       // set when this fn is the value of a defn-created var
 	}
 	ExInfo struct {
 		ArrayMap
@@ -737,6 +738,16 @@ func (fn *Fn) Call(args []Object) Object {
 			}
 			// TCO trampoline for self-recursive functions
 			if fn.fnExpr.self.name != nil {
+				// Try IR compilation for the fn body (covers defn-style non-tail recursion)
+				// Only attempt if the fn has a defVar (var-based recursion) and isn't
+				// already handled by the tailRewritten path.
+				if fn.defVar != nil {
+					if prog := irCompileFn(fn); prog != nil {
+						if result := irExec(prog, args); result != nil {
+							return result
+						}
+					}
+				}
 				RT.pushFrame()
 				prevActiveFn := activeFn
 				activeFn = fn
@@ -755,12 +766,15 @@ func (fn *Fn) Call(args []Object) Object {
 					return result
 				}
 			}
-			// Normal single-arity execution — no frame push/pop overhead
+			// Normal single-arity execution
 			childEnv := LocalEnv{bindings: args, parent: fn.env}
 			if fn.env != nil {
 				childEnv.frame = fn.env.frame + 1
 			}
-			return evalLoop(arity.body, &childEnv)
+			RT.pushFrame()
+			res := evalLoop(arity.body, &childEnv)
+			RT.popFrame()
+			return res
 		}
 	}
 

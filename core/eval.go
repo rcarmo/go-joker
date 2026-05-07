@@ -397,6 +397,10 @@ func (expr *SetExpr) Eval(env *LocalEnv) Object {
 func (expr *DefExpr) Eval(env *LocalEnv) Object {
 	if expr.value != nil {
 		expr.vr.Value = Eval(expr.value, env)
+		// Track the def var on Fn values for var-based self-recursive IR dispatch
+		if fn, ok := expr.vr.Value.(*Fn); ok {
+			fn.defVar = expr.vr
+		}
 	}
 	meta := EmptyArrayMap()
 	meta.Add(KEYWORDS.line, Int{I: expr.startLine})

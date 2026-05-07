@@ -25,6 +25,7 @@ type irCompiler struct {
 	hasSelf          bool
 	selfSlot         int
 	selfNArgs        int
+	selfVar          *Var // for defn-style var-based self-calls
 	recurTargets     []recurTarget
 	rejectReason     string
 	hasCollectionOps bool
@@ -520,7 +521,9 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 		}
 		if len(e.body) == 0 {
 			c.emitWithOperand(irLiteral, c.addConstant(NIL))
-			if isLast { c.emit(irReturn) }
+			if isLast {
+				c.emit(irReturn)
+			}
 		}
 		return true
 
