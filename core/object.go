@@ -701,6 +701,14 @@ func (fn *Fn) GetType() *Type {
 	return TYPE.Fn
 }
 
+// clearArgs nils out an args slice to release references for GC.
+// This prevents retention of large objects across recursive call chains.
+func clearArgs(args []Object) {
+	for i := range args {
+		args[i] = nil
+	}
+}
+
 func (fn *Fn) Hash() uint32 {
 	return HashPtr(uintptr(unsafe.Pointer(fn)))
 }
@@ -724,6 +732,7 @@ func (fn *Fn) Call(args []Object) Object {
 				// Try WASM for rewritten tail-recursive fns
 				if wp := wasmGetFn(fn); wp != nil {
 					if result := wasmExec(wp, args); result != nil {
+						clearArgs(args)
 						RT.popFrame()
 						return result
 					}
@@ -731,6 +740,7 @@ func (fn *Fn) Call(args []Object) Object {
 				// Try IR
 				if prog := irCompileFn(fn); prog != nil {
 					if result := irExec(prog, args); result != nil {
+						clearArgs(args)
 						RT.popFrame()
 						return result
 					}

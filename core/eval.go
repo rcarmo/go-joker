@@ -565,6 +565,28 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 						return Int{I: a.I % b.I}
 					}
 				}
+			case "procDivide":
+				ax := Eval(expr.args[0], env)
+				bx := Eval(expr.args[1], env)
+				switch a := ax.(type) {
+				case Int:
+					switch b := bx.(type) {
+					case Int:
+						if b.I == 0 {
+							panicOnZero(INT_OPS, b)
+						}
+						return Double{D: float64(a.I) / float64(b.I)}
+					case Double:
+						return Double{D: float64(a.I) / b.D}
+					}
+				case Double:
+					switch b := bx.(type) {
+					case Int:
+						return Double{D: a.D / float64(b.I)}
+					case Double:
+						return Double{D: a.D / b.D}
+					}
+				}
 			case "procLt":
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
@@ -601,6 +623,63 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 						return Boolean{B: a.D == float64(b.I)}
 					case Double:
 						return Boolean{B: a.D == b.D}
+					}
+				}
+			case "procGt":
+				ax := Eval(expr.args[0], env)
+				bx := Eval(expr.args[1], env)
+				switch a := ax.(type) {
+				case Int:
+					switch b := bx.(type) {
+					case Int:
+						return Boolean{B: a.I > b.I}
+					case Double:
+						return Boolean{B: float64(a.I) > b.D}
+					}
+				case Double:
+					switch b := bx.(type) {
+					case Int:
+						return Boolean{B: a.D > float64(b.I)}
+					case Double:
+						return Boolean{B: a.D > b.D}
+					}
+				}
+			case "procGte":
+				ax := Eval(expr.args[0], env)
+				bx := Eval(expr.args[1], env)
+				switch a := ax.(type) {
+				case Int:
+					switch b := bx.(type) {
+					case Int:
+						return Boolean{B: a.I >= b.I}
+					case Double:
+						return Boolean{B: float64(a.I) >= b.D}
+					}
+				case Double:
+					switch b := bx.(type) {
+					case Int:
+						return Boolean{B: a.D >= float64(b.I)}
+					case Double:
+						return Boolean{B: a.D >= b.D}
+					}
+				}
+			case "procLte":
+				ax := Eval(expr.args[0], env)
+				bx := Eval(expr.args[1], env)
+				switch a := ax.(type) {
+				case Int:
+					switch b := bx.(type) {
+					case Int:
+						return Boolean{B: a.I <= b.I}
+					case Double:
+						return Boolean{B: float64(a.I) <= b.D}
+					}
+				case Double:
+					switch b := bx.(type) {
+					case Int:
+						return Boolean{B: a.D <= float64(b.I)}
+					case Double:
+						return Boolean{B: a.D <= b.D}
 					}
 				}
 			}
