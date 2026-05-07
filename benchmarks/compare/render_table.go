@@ -29,7 +29,8 @@ type history struct {
 var lineRE = regexp.MustCompile(`^([a-zA-Z0-9_\-]+)\s+([0-9]+(?:\.[0-9]+)?)\s+ms/op`)
 
 func canonical(name string) string {
-	switch name {
+	n := strings.ToLower(strings.ReplaceAll(name, "-", "_"))
+	switch n {
 	case "nbody_100steps":
 		return "nbody"
 	case "spectral_norm_50":
@@ -44,8 +45,26 @@ func canonical(name string) string {
 		return "fasta"
 	case "pidigits_27":
 		return "pidigits"
+	case "arithmeticloop":
+		return "arithmetic_loop"
+	case "recursivefib":
+		return "recursive_fib"
+	case "tailrecursivesum":
+		return "tail_recursive_sum"
+	case "spectralnorm":
+		return "spectral_norm"
+	case "binarytrees":
+		return "binary_trees"
+	case "reversecomplement":
+		return "reverse_complement"
+	case "regexredux":
+		return "regex_redux"
+	case "mapupdateloop":
+		return "map_update_loop"
+	case "wordfrequency":
+		return "word_frequency"
 	default:
-		return strings.ToLower(strings.ReplaceAll(name, "-", "_"))
+		return n
 	}
 }
 
@@ -144,7 +163,7 @@ func main() {
 	}
 
 	preferred := []string{
-		"arithmetic_loop", "recursive_fib", "tail_recursive_sum", "nbody", "spectral_norm", "binary_trees", "fannkuch", "mandelbrot", "fasta", "knucleotide", "reverse_complement", "regex_redux", "pidigits",
+		"arithmetic_loop", "recursive_fib", "tail_recursive_sum", "map_update_loop", "word_frequency", "nbody", "spectral_norm", "binary_trees", "fannkuch", "mandelbrot", "fasta", "knucleotide", "reverse_complement", "regex_redux", "pidigits",
 	}
 	keys := make([]string, 0, len(keysMap))
 	seen := map[string]bool{}

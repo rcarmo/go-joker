@@ -34,7 +34,7 @@ help:
 	@echo "  make vuln           # Run govulncheck"
 	@echo "  make race           # Run race tests on critical packages"
 	@echo "  make bench-sanity   # Run CLBG benchmark sanity subset"
-	@echo "  make compare-bench  # Run cross-runtime comparison sub-project"
+	@echo "  make compare-bench  # Run cross-runtime + let-go-suite comparison sub-project"
 	@echo "  make compare-clean  # Remove generated comparison outputs"
 	@echo "  make audit-fast     # test + vet + staticcheck + lint + vuln"
 	@echo "  make audit          # full audit-fast + race + bench-sanity"

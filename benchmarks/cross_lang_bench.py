@@ -124,6 +124,24 @@ def binary_trees():
         total += c
     return total
 
+# --- Map update loop (matches BenchmarkEvalMapUpdateLoop shape) ---
+def map_update_loop():
+    keys = [f"k{i}" for i in range(16)]
+    counts = {}
+    for i in range(5000):
+        k = keys[i & 15]
+        counts[k] = counts.get(k, 0) + 1
+    return counts.get("k0", 0) + counts.get("k7", 0) + counts.get("k15", 0)
+
+# --- Word frequency (matches BenchmarkEvalWordFrequency shape) ---
+def word_frequency():
+    base = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta"]
+    text = " ".join(base[i % len(base)] for i in range(4000))
+    counts = {}
+    for w in text.split():
+        counts[w] = counts.get(w, 0) + 1
+    return counts.get("theta", 0) + counts.get("alpha", 0)
+
 if __name__ == "__main__":
     print("Python 3.13 benchmarks (5 iterations each)")
     print("=" * 60)
@@ -222,6 +240,8 @@ bench("mandelbrot_200", mandelbrot)
 bench("fasta_1000", fasta)
 bench("knucleotide", knucleotide)
 bench("reverse_complement", reverse_complement)
+bench("map_update_loop", map_update_loop)
+bench("word_frequency", word_frequency)
 
 # --- Regex-redux (simplified) ---
 import re

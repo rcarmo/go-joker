@@ -724,7 +724,18 @@ func updateVar(vr *Var, info *ObjectInfo, valueExpr Expr, sym Symbol) {
 }
 
 func isCreatedByMacro(formSeq Seq) bool {
-	return formSeq.First().GetInfo().Pos().filename == STR.coreFilename
+	if formSeq == nil || formSeq.IsEmpty() {
+		return false
+	}
+	first := formSeq.First()
+	if first == nil {
+		return false
+	}
+	info := first.GetInfo()
+	if info == nil {
+		return false
+	}
+	return info.Pos().filename == STR.coreFilename
 }
 
 func parseDef(obj Object, ctx *ParseContext, isForLinter bool) *DefExpr {

@@ -81,8 +81,14 @@ if command -v go >/dev/null 2>&1; then
     -goja "${OUT_DIR}/goja.txt" \
     -letgo "${OUT_DIR}/letgo.txt" \
     -out "${OUT_DIR}/direct-comparison.md"
+
+  run_capture letgo-suite-report go run "${ROOT_DIR}/benchmarks/compare/run_letgo_suite.go" \
+    -bench-dir "${ROOT_DIR}/benchmarks/compare/letgo_suite" \
+    -out "${OUT_DIR}/letgo-suite-comparison.md" \
+    -json "${OUT_DIR}/letgo-suite-results.json"
 else
   printf "# SKIPPED: go not found\n" >"${OUT_DIR}/direct-comparison.md"
+  printf "# SKIPPED: go not found\n" >"${OUT_DIR}/letgo-suite-comparison.md"
 fi
 
 echo "[compare] done"

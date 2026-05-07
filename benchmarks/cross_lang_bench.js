@@ -126,6 +126,25 @@ function binaryTrees() {
   return total;
 }
 
+function mapUpdateLoop() {
+  const keys = Array.from({ length: 16 }, (_, i) => `k${i}`);
+  const counts = Object.create(null);
+  for (let i = 0; i < 5000; i++) {
+    const k = keys[i & 15];
+    counts[k] = (counts[k] || 0) + 1;
+  }
+  return (counts.k0 || 0) + (counts.k7 || 0) + (counts.k15 || 0);
+}
+
+function wordFrequency() {
+  const base = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta"];
+  const words = new Array(4000);
+  for (let i = 0; i < words.length; i++) words[i] = base[i % base.length];
+  const counts = Object.create(null);
+  for (const w of words) counts[w] = (counts[w] || 0) + 1;
+  return (counts.theta || 0) + (counts.alpha || 0);
+}
+
 console.log("Bun/JSC benchmarks (5 iterations each)");
 console.log("=".repeat(60));
 bench("arithmetic_loop", arithmeticLoop);
@@ -201,6 +220,8 @@ bench("mandelbrot_200", mandelbrot);
 bench("fasta_1000", fasta);
 bench("knucleotide", knucleotide);
 bench("reverse_complement", reverseComplement);
+bench("map_update_loop", mapUpdateLoop);
+bench("word_frequency", wordFrequency);
 
 // --- Regex-redux ---
 function regexRedux() {

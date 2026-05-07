@@ -61,6 +61,18 @@ function binaryTrees() {
   for(var d=4;d<15;d++){var it=1<<(14-d),c=0;for(var i=0;i<it;i++)c+=check(make(d));total+=c;}
   return total;
 }
+function mapUpdateLoop(){
+  var keys=[];for(var i=0;i<16;i++) keys.push("k"+i);
+  var m={};
+  for(var i=0;i<5000;i++){var k=keys[i&15];m[k]=(m[k]||0)+1;}
+  return (m.k0||0)+(m.k7||0)+(m.k15||0);
+}
+function wordFrequency(){
+  var base=["alpha","beta","gamma","delta","epsilon","zeta","eta","theta"];
+  var counts={};
+  for(var i=0;i<4000;i++){var w=base[i%base.length];counts[w]=(counts[w]||0)+1;}
+  return (counts.theta||0)+(counts.alpha||0);
+}
 function fannkuch(){var n=7,perm=[];for(var i=0;i<n;i++)perm.push(i);var mf=0,cs=0,sign=1,c=[];for(var i=0;i<n;i++)c.push(0);while(true){var p=perm.slice(),fl=0;while(p[0]!==0){var k=p[0];for(var lo=0,hi=k;lo<hi;lo++,hi--){var t=p[lo];p[lo]=p[hi];p[hi]=t;}fl++;}if(fl>mf)mf=fl;cs+=sign===1?fl:-fl;var i=1;sign=-sign;while(i<n){c[i]++;if(c[i]<i+1){if((i+1)%2===0){var t=perm[0];perm[0]=perm[i];perm[i]=t;}else{var t=perm[0];perm[0]=perm[1];perm[1]=t;}break;}c[i]=0;i++;}if(i>=n)break;}return mf*1000+cs;}
 function mandelbrot(){var n=40,lsq=4.0,mi=50,count=0;for(var y=0;y<n;y++)for(var x=0;x<n;x++){var cr=2.0*x/n-1.5,ci=2.0*y/n-1.0,zr=0,zi=0,ins=1;for(var i=0;i<mi;i++){var zr2=zr*zr,zi2=zi*zi;if(zr2+zi2>lsq){ins=0;break;}zi=2*zr*zi+ci;zr=zr2-zi2+cr;}count+=ins;}return count;}
 function fasta(){var im=139968,ia=3877,ic=29573,alu="GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCGCCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAA",seed=42,cs=0;for(var i=0;i<1000;i++){seed=(seed*ia+ic)%im;cs+=seed%alu.length;}return cs+seed;}
@@ -77,29 +89,34 @@ func main() {
 		panic(err)
 	}
 
-	benchmarks := []string{
-		"arithmeticLoop",
-		"recursiveFib",
-		"tailRecursiveSum",
-		"nbody",
-		"spectralNorm",
-		"binaryTrees",
-		"fannkuch",
-		"mandelbrot",
-		"fasta",
-		"knucleotide",
-		"reverseComplement",
-		"regexRedux",
-		"pidigits",
+	benchmarks := []struct {
+		label  string
+		fnName string
+	}{
+		{"arithmetic_loop", "arithmeticLoop"},
+		{"recursive_fib", "recursiveFib"},
+		{"tail_recursive_sum", "tailRecursiveSum"},
+		{"nbody_100steps", "nbody"},
+		{"spectral_norm_50", "spectralNorm"},
+		{"binary_trees_14", "binaryTrees"},
+		{"fannkuch_7", "fannkuch"},
+		{"mandelbrot_200", "mandelbrot"},
+		{"fasta_1000", "fasta"},
+		{"knucleotide", "knucleotide"},
+		{"reverse_complement", "reverseComplement"},
+		{"map_update_loop", "mapUpdateLoop"},
+		{"word_frequency", "wordFrequency"},
+		{"regex_redux", "regexRedux"},
+		{"pidigits_27", "pidigits"},
 	}
 
 	fmt.Println("Goja benchmarks (5 iterations each)")
 	fmt.Println("============================================================")
 
-	for _, name := range benchmarks {
-		fn, ok := goja.AssertFunction(vm.Get(name))
+	for _, bm := range benchmarks {
+		fn, ok := goja.AssertFunction(vm.Get(bm.fnName))
 		if !ok {
-			fmt.Printf("%-30s SKIP (not a function)\n", name)
+			fmt.Printf("%-30s SKIP (not a function)\n", bm.label)
 			continue
 		}
 		var totalNs int64
@@ -109,13 +126,12 @@ func main() {
 			result, err = fn(goja.Undefined())
 			elapsed := time.Since(start).Nanoseconds()
 			if err != nil {
-				fmt.Printf("%-30s ERROR: %v\n", name, err)
+				fmt.Printf("%-30s ERROR: %v\n", bm.label, err)
 				break
 			}
 			totalNs += elapsed
 		}
 		avgMs := float64(totalNs) / 5.0 / 1_000_000.0
-		fmt.Printf("%-30s %10.2f ms/op  (result: %v)\n", name, avgMs, result)
+		fmt.Printf("%-30s %10.2f ms/op  (result: %v)\n", bm.label, avgMs, result)
 	}
 }
-

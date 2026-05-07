@@ -174,6 +174,30 @@
         (recur (inc d) (+ total c)))
       total)))
 
+;; --- Map update loop (matches BenchmarkEvalMapUpdateLoop shape) ---
+(defn map-update-loop []
+  (let [ks [:k0 :k1 :k2 :k3 :k4 :k5 :k6 :k7 :k8 :k9 :k10 :k11 :k12 :k13 :k14 :k15]]
+    (loop [i 0 m {}]
+      (if (= i 5000)
+        (+ (get m :k0 0) (+ (get m :k7 0) (get m :k15 0)))
+        (let [k (nth ks (mod i 16))]
+          (recur (inc i) (assoc m k (inc (get m k 0)))))))))
+
+;; --- Word frequency (matches BenchmarkEvalWordFrequency shape) ---
+(defn word-frequency []
+  (let [text (apply str (interpose " "
+                    (loop [i 0 out []]
+                      (if (< i 4000)
+                        (let [w (nth ["alpha" "beta" "gamma" "delta" "epsilon" "zeta" "eta" "theta"] (mod i 8))]
+                          (recur (inc i) (conj out w)))
+                        out))))
+        words (re-seq #"\S+" text)]
+    (loop [i 0 counts {}]
+      (if (= i (count words))
+        (+ (get counts "theta" 0) (get counts "alpha" 0))
+        (let [w (nth words i)]
+          (recur (inc i) (assoc counts w (inc (get counts w 0)))))))))
+
 ;; --- Fannkuch-redux (N=7) ---
 (defn fannkuch []
   (let [n 7
@@ -320,5 +344,7 @@
 (bench "fasta_1000"          fasta)
 (bench "knucleotide"         knucleotide)
 (bench "reverse_complement"  reverse-complement)
+(bench "map_update_loop"     map-update-loop)
+(bench "word_frequency"      word-frequency)
 (bench "regex_redux"         regex-redux)
 (bench "pidigits_27"         pidigits)

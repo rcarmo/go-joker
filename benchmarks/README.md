@@ -2,7 +2,7 @@
 
 ## CLBG Benchmarks (Computer Language Benchmarks Game)
 
-13 benchmarks adapted from the [Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/). Scaled down for benchmark harness practicality.
+13 CLBG benchmarks adapted from the [Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/), plus 2 additional runtime micro-workloads (`map_update_loop`, `word_frequency`). Scaled down for benchmark harness practicality.
 
 ### Current Results (5×5x min on i7-12700)
 
@@ -67,7 +67,7 @@ go test ./std/jit -bench 'BenchmarkJIT' -benchmem
 ### Cross-language reimplementations
 
 The `cross_lang_bench.{py,js,clj}` files are self-contained ports of the same
-13 algorithms in different runtimes. Each prints `name | avg ms/op | result`
+15 workloads in different runtimes. Each prints `name | avg ms/op | result`
 for 5 iterations.
 
 For reproducible direct comparison, use the `benchmarks/compare` sub-project:
@@ -75,6 +75,7 @@ For reproducible direct comparison, use the `benchmarks/compare` sub-project:
 ```bash
 make compare-bench
 # -> benchmarks/compare/out/latest/direct-comparison.md
+# -> benchmarks/compare/out/latest/letgo-suite-comparison.md
 ```
 
 ```bash
@@ -108,3 +109,7 @@ Session start → final (best-of-5 min values):
 | fasta | 0.22ms | **0.048ms** | **4.6×** |
 
 See [OPTIMIZATION_REPORT.md](../docs/OPTIMIZATION_REPORT.md) for the full architecture documentation.
+
+For current runtime + language parity status against let-go suite runs, see:
+
+- [`docs/PARITY_STATUS.md`](../docs/PARITY_STATUS.md)
