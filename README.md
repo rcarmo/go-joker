@@ -18,16 +18,16 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 | What | Result |
 |------|--------|
-| **Mandelbrot** | **~4.0 ms** — matches Python! Per-instance fn cache + typed inline dispatch |
-| **N-body** | **~1.8 ms** — 17× faster than original, 3× vs Python |
-| **Fannkuch** | **~34 ms** — 2.5× faster than original via IR callSlot caching |
-| **Binary trees** | **~78 ms** — self-recursive IR + captureSlotSet optimization |
-| **Pidigits** | **~0.016 ms** — beats Python 3×, beats Goja 9× |
-| **Arithmetic loop** | **~0.24 ms** — matches Bun/JSC-class speed via WASM |
+| **Mandelbrot** | **~3.97 ms** — beats Python (~4.97 ms) via per-instance fn cache + typed inline dispatch |
+| **N-body** | **~1.76 ms** — beats Goja (~5.20 ms) and let-go (~2.26 ms) |
+| **Fannkuch** | **~33.7 ms** — 2.5× faster than original via IR callSlot caching |
+| **Binary trees** | **~78.3 ms** — beats Goja (~148 ms) and let-go (~131 ms) |
+| **Pidigits** | **~0.016 ms** — beats Python (~0.13 ms), Goja (~0.23 ms), and let-go (~0.34 ms) |
+| **Arithmetic loop** | **~0.237 ms** — faster than Bun/JSC (~0.37 ms), Goja, Python, and let-go |
 | **Allocations** | **51% fewer** across all benchmarks (Int/Double 8-byte structs) |
-| **Beat Python** | 6/13 CLBG benchmarks |
+| **Beat Python** | 7/13 CLBG benchmarks |
 | **Beat Goja** | 12/13 CLBG benchmarks |
-| **Beat let-go** | 12/15 cross-language benchmarks, 3/7 let-go suite (fib 5.8×, tak 5.1×, loop-recur 12×) |
+| **Beat let-go** | 14/15 cross-language benchmarks, 4/7 let-go suite (reduce 14.7×, fib 6.2×, tak 4.7×, loop-recur 11×) |
 | **Language compliance** | **261/261 parity tests passing** (`docs/DIVERGENCE_MATRIX.md`) |
 
 ## What's different from upstream Joker

@@ -19,16 +19,16 @@ func main() {
 	}
 
 	data := []Bench{
-		{"n-body", 0.66, 4.75, 1.765},
-		{"mandelbrot", 4.76, 39.0, 3.972},
-		{"spectral", 24.48, 65.0, 17.35},
-		{"binary-trees", 54.2, 172.0, 78.27},
-		{"fannkuch", 4.94, 24.0, 33.70},
-		{"fasta", 0.06, 0.60, 0.066},
-		{"pidigits", 0.05, 0.15, 0.016},
-		{"k-nucleotide", 0.03, 0.48, 0.251},
-		{"rev-comp", 0.01, 0.13, 0.043},
-		{"regex-redux", 0.09, 0.14, 0.083},
+		{"n-body", 0.43, 5.20, 1.76},
+		{"mandelbrot", 4.97, 38.9, 3.97},
+		{"spectral", 16.7, 74.3, 17.4},
+		{"binary-trees", 39.0, 148.1, 78.3},
+		{"fannkuch", 3.63, 20.3, 33.7},
+		{"fasta", 0.26, 0.59, 0.066},
+		{"pidigits", 0.13, 0.23, 0.016},
+		{"k-nucleotide", 0.13, 0.51, 0.251},
+		{"rev-comp", 0.03, 0.13, 0.043},
+		{"regex-redux", 0.17, 0.20, 0.083},
 	}
 
 	// Sort by Joker speed (fastest first)
