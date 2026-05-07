@@ -306,6 +306,13 @@ var parityTests = []PTest{
 	{"tagged", "inst-parse", `(string? (str #inst "2024-01-15T10:30:00Z"))`, "true"},
 	{"tagged", "uuid-parse", `#uuid "550e8400-e29b-41d4-a716-446655440000"`, "550e8400-e29b-41d4-a716-446655440000"},
 	{"tagged", "data-readers", "(map? default-data-readers)", "true"},
+
+	// --- Hierarchy ---
+	{"hierarchy", "isa?-same", "(isa? :x :x)", "true"},
+	{"hierarchy", "isa?-false", "(isa? :x :y)", "false"},
+	{"hierarchy", "derive-isa", "(do (derive :child :parent) (isa? :child :parent))", "true"},
+	{"hierarchy", "make-hierarchy", "(let [h (make-hierarchy)] (isa? h :a :b))", "false"},
+	{"hierarchy", "custom-h", "(let [h (-> (make-hierarchy) (derive :a :b) (derive :b :c))] (isa? h :a :c))", "true"},
 }
 
 // findLastForm finds the byte offset of the last top-level s-expression.

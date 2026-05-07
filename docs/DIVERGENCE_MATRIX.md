@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-07_
 
-**225/225 pass** (100%), 0 fail, 0 error
+**230/230 pass** (100%), 0 fail, 0 error
 
 ## arithmetic (12/12)
 
@@ -85,6 +85,16 @@ _Generated: 2026-05-07_
 | complement | pass | `true` | `true` |
 | juxt | pass | `[13 72 3 6]` | `[13 72 3 6]` |
 | memoize | pass | `25` | `25` |
+
+## hierarchy (5/5)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| isa?-same | pass | `true` | `true` |
+| isa?-false | pass | `false` | `false` |
+| derive-isa | pass | `true` | `true` |
+| make-hierarchy | pass | `false` | `false` |
+| custom-h | pass | `true` | `true` |
 
 ## kw-sym (5/5)
 
