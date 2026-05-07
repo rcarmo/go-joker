@@ -70,6 +70,13 @@ The `cross_lang_bench.{py,js,clj}` files are self-contained ports of the same
 13 algorithms in different runtimes. Each prints `name | avg ms/op | result`
 for 5 iterations.
 
+For reproducible direct comparison, use the `benchmarks/compare` sub-project:
+
+```bash
+make compare-bench
+# -> benchmarks/compare/out/latest/direct-comparison.md
+```
+
 ```bash
 python3 benchmarks/cross_lang_bench.py        # CPython 3.13
 bun     benchmarks/cross_lang_bench.js        # Bun (or node)

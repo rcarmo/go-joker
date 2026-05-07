@@ -1,0 +1,210 @@
+//go:build ignore
+
+package main
+
+import (
+	"bufio"
+	"encoding/json"
+	"flag"
+	"fmt"
+	"os"
+	"regexp"
+	"sort"
+	"strings"
+)
+
+type benchmark struct {
+	MSPerOp float64 `json:"ms_per_op"`
+}
+
+type series struct {
+	ID         string               `json:"id"`
+	Benchmarks map[string]benchmark `json:"benchmarks"`
+}
+
+type history struct {
+	Series []series `json:"series"`
+}
+
+var lineRE = regexp.MustCompile(`^([a-zA-Z0-9_\-]+)\s+([0-9]+(?:\.[0-9]+)?)\s+ms/op`)
+
+func canonical(name string) string {
+	switch name {
+	case "nbody_100steps":
+		return "nbody"
+	case "spectral_norm_50":
+		return "spectral_norm"
+	case "binary_trees_14":
+		return "binary_trees"
+	case "fannkuch_7":
+		return "fannkuch"
+	case "mandelbrot_200":
+		return "mandelbrot"
+	case "fasta_1000":
+		return "fasta"
+	case "pidigits_27":
+		return "pidigits"
+	default:
+		return strings.ToLower(strings.ReplaceAll(name, "-", "_"))
+	}
+}
+
+func parseRuntimeFile(path string) map[string]float64 {
+	m := map[string]float64{}
+	f, err := os.Open(path)
+	if err != nil {
+		return m
+	}
+	defer f.Close()
+
+	s := bufio.NewScanner(f)
+	for s.Scan() {
+		line := strings.TrimSpace(s.Text())
+		if strings.HasPrefix(line, "# SKIPPED") || line == "" {
+			continue
+		}
+		parts := lineRE.FindStringSubmatch(line)
+		if len(parts) != 3 {
+			continue
+		}
+		var v float64
+		_, _ = fmt.Sscanf(parts[2], "%f", &v)
+		m[canonical(parts[1])] = v
+	}
+	return m
+}
+
+func format(v float64, ok bool) string {
+	if !ok {
+		return "-"
+	}
+	if v < 1 {
+		return fmt.Sprintf("%.3f", v)
+	}
+	if v < 10 {
+		return fmt.Sprintf("%.2f", v)
+	}
+	return fmt.Sprintf("%.1f", v)
+}
+
+func main() {
+	historyPath := flag.String("history", "benchmarks/benchmark-history.json", "Path to benchmark-history.json")
+	pythonPath := flag.String("python", "", "Path to python runtime output")
+	bunPath := flag.String("bun", "", "Path to bun runtime output")
+	gojaPath := flag.String("goja", "", "Path to goja runtime output")
+	letgoPath := flag.String("letgo", "", "Path to let-go runtime output")
+	outPath := flag.String("out", "", "Output markdown file")
+	flag.Parse()
+
+	if *outPath == "" {
+		fmt.Fprintln(os.Stderr, "-out is required")
+		os.Exit(2)
+	}
+
+	data, err := os.ReadFile(*historyPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "read history: %v\n", err)
+		os.Exit(1)
+	}
+	var h history
+	if err := json.Unmarshal(data, &h); err != nil {
+		fmt.Fprintf(os.Stderr, "parse history: %v\n", err)
+		os.Exit(1)
+	}
+
+	joker := map[string]float64{}
+	for _, s := range h.Series {
+		if s.ID == "current" {
+			for k, v := range s.Benchmarks {
+				joker[k] = v.MSPerOp
+			}
+		}
+	}
+
+	python := parseRuntimeFile(*pythonPath)
+	bun := parseRuntimeFile(*bunPath)
+	goja := parseRuntimeFile(*gojaPath)
+	letgo := parseRuntimeFile(*letgoPath)
+
+	keysMap := map[string]struct{}{}
+	for k := range joker {
+		keysMap[k] = struct{}{}
+	}
+	for k := range python {
+		keysMap[k] = struct{}{}
+	}
+	for k := range bun {
+		keysMap[k] = struct{}{}
+	}
+	for k := range goja {
+		keysMap[k] = struct{}{}
+	}
+	for k := range letgo {
+		keysMap[k] = struct{}{}
+	}
+
+	preferred := []string{
+		"arithmetic_loop", "recursive_fib", "tail_recursive_sum", "nbody", "spectral_norm", "binary_trees", "fannkuch", "mandelbrot", "fasta", "knucleotide", "reverse_complement", "regex_redux", "pidigits",
+	}
+	keys := make([]string, 0, len(keysMap))
+	seen := map[string]bool{}
+	for _, k := range preferred {
+		if _, ok := keysMap[k]; ok {
+			keys = append(keys, k)
+			seen[k] = true
+		}
+	}
+	for k := range keysMap {
+		if !seen[k] {
+			keys = append(keys, k)
+		}
+	}
+	sort.Strings(keys[len(preferred):])
+
+	var b strings.Builder
+	b.WriteString("# Direct runtime comparison\n\n")
+	b.WriteString("Generated from `benchmark-history.json` (Joker) and cross-language runtime scripts. Values are ms/op; lower is better.\n\n")
+	b.WriteString("| Benchmark | Joker | Python | Bun/Node | Goja | let-go | Winner |\n")
+	b.WriteString("|---|---:|---:|---:|---:|---:|---|\n")
+
+	for _, k := range keys {
+		j, jok := joker[k]
+		p, pok := python[k]
+		bu, buok := bun[k]
+		g, gok := goja[k]
+		l, lok := letgo[k]
+
+		winner := "-"
+		minV := 0.0
+		pick := func(label string, ok bool, v float64) {
+			if !ok {
+				return
+			}
+			if winner == "-" || v < minV {
+				winner = label
+				minV = v
+			}
+		}
+		pick("Joker", jok, j)
+		pick("Python", pok, p)
+		pick("Bun/Node", buok, bu)
+		pick("Goja", gok, g)
+		pick("let-go", lok, l)
+
+		fmt.Fprintf(&b, "| %s | %s | %s | %s | %s | %s | %s |\n",
+			strings.ReplaceAll(k, "_", "-"),
+			format(j, jok),
+			format(p, pok),
+			format(bu, buok),
+			format(g, gok),
+			format(l, lok),
+			winner,
+		)
+	}
+
+	if err := os.WriteFile(*outPath, []byte(b.String()), 0o644); err != nil {
+		fmt.Fprintf(os.Stderr, "write output: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Println("wrote", *outPath)
+}
