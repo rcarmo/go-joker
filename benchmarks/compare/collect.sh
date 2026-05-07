@@ -39,7 +39,28 @@ else
 fi
 
 if command -v go >/dev/null 2>&1; then
-  run_capture goja go run "${ROOT_DIR}/benchmarks/cross_lang_bench_goja.go"
+  GOJA_TMP="${OUT_DIR}/goja-tmp"
+  rm -rf "${GOJA_TMP}"
+  mkdir -p "${GOJA_TMP}"
+  # Remove build-ignore tag so the file can be run inside the temp module.
+  grep -v '^//go:build ignore$' "${ROOT_DIR}/benchmarks/cross_lang_bench_goja.go" > "${GOJA_TMP}/main.go"
+  cat >"${GOJA_TMP}/go.mod" <<'EOF'
+module goja-compare-temp
+
+go 1.25.0
+
+require github.com/dop251/goja v0.0.0-20260311135729-065cd970411c
+EOF
+
+  echo "[compare] running goja: go run (temp module)"
+  if (cd "${GOJA_TMP}" && go mod tidy && go run ./main.go) >"${OUT_DIR}/goja.txt" 2>"${OUT_DIR}/goja.err"; then
+    rm -f "${OUT_DIR}/goja.err"
+    echo "[compare] goja: ok"
+  else
+    echo "[compare] goja: skipped/failed (see ${OUT_DIR}/goja.err)"
+    printf "# SKIPPED: command failed: go run ./main.go (temp goja module)\n" >"${OUT_DIR}/goja.txt"
+  fi
+  rm -rf "${GOJA_TMP}"
 else
   printf "# SKIPPED: go not found\n" >"${OUT_DIR}/goja.txt"
 fi
