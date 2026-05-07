@@ -15,7 +15,6 @@ import (
 	"io"
 	"math"
 	"math/big"
-	"os"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -747,9 +746,6 @@ func (fn *Fn) Call(args []Object) Object {
 			}
 			// TCO trampoline for self-recursive functions
 			if fn.fnExpr.self.name != nil {
-				if os.Getenv("JOKER_NATIVE_TRACE") != "" {
-					fmt.Fprintf(os.Stderr, "[CALL] self fn %s defVar=%v\n", *fn.fnExpr.self.name, fn.defVar != nil)
-				}
 				// Try native Go codegen for pure-integer recursive fns
 				if fn.defVar != nil {
 					if entry := tryNativeRecursive(fn); entry != nil {

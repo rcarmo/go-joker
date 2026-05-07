@@ -136,10 +136,11 @@ func makeTakeTransducer(n int) Object {
 	if n < 0 {
 		n = 0
 	}
-	remaining := n
+	limit := n
 	return Proc{Name: "procTakeTransducerBuilder", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		rf := EnsureArgIsCallable(args, 0)
+		remaining := limit // fresh counter per builder invocation
 		return Proc{Name: "procTakeTransducerRF", Fn: func(callArgs []Object) Object {
 			switch len(callArgs) {
 			case 0:

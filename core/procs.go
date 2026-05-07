@@ -1672,13 +1672,6 @@ var procLoadLibFromPath = func(args []Object) Object {
 var procReduceKv = func(args []Object) Object {
 	f := EnsureArgIsCallable(args, 0)
 	init := args[1]
-	collObj := args[2]
-	if collObj == nil {
-		return init
-	}
-	if _, ok := collObj.(Nil); ok {
-		return init
-	}
 	coll := EnsureArgIsKVReduce(args, 2)
 	return coll.kvreduce(f, init)
 }

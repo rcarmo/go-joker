@@ -30,14 +30,6 @@ func seqReduce(s Seq, f Callable) Object {
 	return acc
 }
 
-func isNilObject(obj Object) bool {
-	if obj == nil {
-		return true
-	}
-	_, ok := obj.(Nil)
-	return ok
-}
-
 // LazySeq Reduce support — implements the Reduce interface so (reduce f init lazy-seq) works.
 func (seq *LazySeq) reduce(f Callable) Object {
 	return seqReduce(seq.Seq(), f)

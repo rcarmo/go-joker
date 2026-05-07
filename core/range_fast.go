@@ -48,6 +48,9 @@ func (r *IntRange) Count() int {
 		}
 		return n
 	}
+	if r.step == 0 {
+		panic(RT.NewError("range: step must not be 0"))
+	}
 	return 0
 }
 
@@ -111,6 +114,9 @@ func (s *intRangeSeq) Rest() Seq {
 	return &intRangeSeq{r: s.r, cur: next}
 }
 func (s *intRangeSeq) IsEmpty() bool {
+	if s.r.step == 0 {
+		return false // infinite range
+	}
 	if s.r.step > 0 {
 		return s.cur >= s.r.end
 	}

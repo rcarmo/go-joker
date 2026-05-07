@@ -8,8 +8,6 @@ package core
 // slice allocation per call.
 
 import (
-	"fmt"
-	"os"
 	"sync"
 )
 
@@ -67,11 +65,6 @@ func compileNativeRecursive(fn *Fn) *nativeRecursiveEntry {
 	}
 
 	entry := &nativeRecursiveEntry{arity: nargs}
-
-	if os.Getenv("JOKER_IR_DEBUG") != "" {
-		fmt.Fprintf(os.Stderr, "[NATIVE] attempting compile for %s arity=%d paramFrame=%d\n",
-			selfVar.name.ToString(false), nargs, paramFrame)
-	}
 
 	switch nargs {
 	case 1:
