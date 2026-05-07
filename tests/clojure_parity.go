@@ -288,6 +288,37 @@ var parityTests = []PTest{
 	{"protocol", "extend-dispatch", "(do (def P (__defprotocol 'P \"pfn\" 1)) (__extend-type P \"Int\" \"pfn\" (fn [x] (+ x 1))) (let [f (resolve 'pfn)] (f 41)))", "42"},
 	{"protocol", "satisfies?-true", "(do (def P (__defprotocol 'P \"bar\" 1)) (__extend-type P \"String\" \"bar\" (fn [s] s)) (satisfies? P \"x\"))", "true"},
 	{"protocol", "satisfies?-false", "(do (def P (__defprotocol 'P \"bar\" 1)) (satisfies? P :kw))", "false"},
+
+	// --- Record parity ---
+	{"record", "defrecord-ctor", "(do (__defrecord 'R \"a\" \"b\") (:a (->R 1 2)))", "1"},
+	{"record", "defrecord-get", "(do (__defrecord 'R \"a\" \"b\") (get (->R 10 20) :b))", "20"},
+	{"record", "defrecord-assoc", "(do (__defrecord 'R \"a\" \"b\") (:a (assoc (->R 1 2) :a 99)))", "99"},
+	{"record", "defrecord-ext", "(do (__defrecord 'R \"a\" \"b\") (:c (assoc (->R 1 2) :c 3)))", "3"},
+	{"record", "defrecord-count", "(do (__defrecord 'R \"a\" \"b\") (count (->R 1 2)))", "2"},
+	{"record", "defrecord-eq", "(do (__defrecord 'R \"a\" \"b\") (= (->R 1 2) (->R 1 2)))", "true"},
+	{"record", "defrecord-neq", "(do (__defrecord 'R \"a\" \"b\") (= (->R 1 2) (->R 1 3)))", "false"},
+	{"record", "record?", "(do (__defrecord 'R \"a\") (record? (->R 1)))", "true"},
+	{"record", "record?-no", "(record? {})", "false"},
+	{"record", "map-ctor", "(do (__defrecord 'R \"x\" \"y\") (:x (map->R {:x 10 :y 20})))", "10"},
+	{"record", "dissoc-base", "(do (__defrecord 'R \"a\" \"b\") (map? (dissoc (->R 1 2) :a)))", "true"},
+}
+
+// findLastForm finds the byte offset of the last top-level s-expression.
+func findLastForm(s string) int {
+	depth := 0
+	lastStart := -1
+	for i := 0; i < len(s); i++ {
+		switch s[i] {
+		case '(':
+			if depth == 0 {
+				lastStart = i
+			}
+			depth++
+		case ')':
+			depth--
+		}
+	}
+	return lastStart
 }
 
 func main() {
@@ -309,7 +340,30 @@ func main() {
 	pass, fail, errCount := 0, 0, 0
 
 	for _, t := range parityTests {
-		cmd := exec.Command(jokerBin, "-e", "(println "+t.Expr+")")
+		var cmd *exec.Cmd
+		if strings.Contains(t.Expr, "__defrecord") || strings.Contains(t.Expr, "__defprotocol") {
+			// Multi-form: write to temp file so each top-level form is parsed/evaled sequentially
+			// Strip outer (do ...) and make forms top-level, adding (println ...) around the last
+			inner := t.Expr
+			if strings.HasPrefix(inner, "(do ") && strings.HasSuffix(inner, ")") {
+				inner = inner[4 : len(inner)-1]
+			}
+			// Find the last balanced form and wrap in println
+			lastParen := findLastForm(inner)
+			var script string
+			if lastParen >= 0 {
+				script = inner[:lastParen] + "(println " + inner[lastParen:] + ")"
+			} else {
+				script = "(println " + inner + ")"
+			}
+			tmpFile, _ := os.CreateTemp("", "parity-*.clj")
+			tmpFile.WriteString(script)
+			tmpFile.Close()
+			cmd = exec.Command(jokerBin, tmpFile.Name())
+			defer os.Remove(tmpFile.Name())
+		} else {
+			cmd = exec.Command(jokerBin, "-e", "(println "+t.Expr+")")
+		}
 		out, err := cmd.CombinedOutput()
 		got := strings.TrimSpace(string(out))
 

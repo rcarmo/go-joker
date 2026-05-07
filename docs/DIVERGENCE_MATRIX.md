@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-07_
 
-**211/211 pass** (100%), 0 fail, 0 error
+**222/222 pass** (100%), 0 fail, 0 error
 
 ## arithmetic (12/12)
 
@@ -203,6 +203,22 @@ _Generated: 2026-05-07_
 | varquote | pass | `true` | `true` |
 | comment | pass | `3` | `3` |
 | nested-coll | pass | `42` | `42` |
+
+## record (11/11)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| defrecord-ctor | pass | `1` | `1` |
+| defrecord-get | pass | `20` | `20` |
+| defrecord-assoc | pass | `99` | `99` |
+| defrecord-ext | pass | `3` | `3` |
+| defrecord-count | pass | `2` | `2` |
+| defrecord-eq | pass | `true` | `true` |
+| defrecord-neq | pass | `false` | `false` |
+| record? | pass | `true` | `true` |
+| record?-no | pass | `false` | `false` |
+| map-ctor | pass | `10` | `10` |
+| dissoc-base | pass | `true` | `true` |
 
 ## regex (3/3)
 
