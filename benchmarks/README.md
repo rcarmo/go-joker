@@ -8,21 +8,21 @@
 
 | Benchmark | Joker | Python 3.13 | Goja (Go JS) | vs Python | vs Goja |
 |---|---:|---:|---:|---:|---:|
-| tail-rec sum | 0.074ms | 3.60ms | 28.0ms | **0.02×** | 0.00× |
-| arithmetic loop | 0.317ms | 6.65ms | 13.5ms | **0.05×** | 0.02× |
-| recursive fib | 1.192ms | 21.0ms | 67.0ms | **0.06×** | 0.02× |
-| pidigits | 0.020ms | 0.05ms | 0.15ms | **0.40×** | 0.13× |
-| spectral-norm | 16.1ms | 24.5ms | 65.0ms | **0.66×** | 0.25× |
-| fasta | 0.048ms | 0.06ms | 0.60ms | **0.80×** | 0.08× |
-| regex-redux | 0.096ms | 0.09ms | 0.14ms | 1.07× | 0.69× |
-| binary-trees | 98ms | 54ms | 172ms | 1.81× | 0.57× |
-| mandelbrot | 14.3ms | 4.76ms | 39ms | 3.00× | 0.37× |
-| k-nucleotide | 0.154ms | 0.03ms | 0.48ms | 5.13× | 0.32× |
-| reverse-comp | 0.070ms | 0.01ms | 0.13ms | 7.00× | 0.54× |
-| fannkuch | 110ms | 4.94ms | 24ms | 22× | 4.58× |
-| n-body | 39ms | 0.66ms | 4.75ms | 59× | 8.23× |
+| tail-rec sum | 0.062ms | 5.48ms | 15.8ms | **0.01×** | 0.00× |
+| arithmetic loop | 0.237ms | 8.07ms | 26.2ms | **0.03×** | 0.01× |
+| recursive fib | 0.959ms | 16.6ms | 107.7ms | **0.06×** | 0.01× |
+| pidigits | 0.016ms | 0.13ms | 0.20ms | **0.12×** | 0.08× |
+| fasta | 0.066ms | 0.20ms | 0.65ms | **0.33×** | 0.10× |
+| regex-redux | 0.083ms | 0.12ms | 0.18ms | 0.69× | 0.46× |
+| spectral-norm | 17.4ms | 15.8ms | 105.2ms | 1.10× | 0.17× |
+| nbody | 1.76ms | 0.57ms | 7.16ms | 3.09× | 0.25× |
+| mandelbrot | 3.97ms | 5.24ms | 27.9ms | **0.76×** | 0.14× |
+| binary-trees | 78.3ms | 35.8ms | 175.7ms | 2.19× | 0.45× |
+| knucleotide | 0.251ms | 0.04ms | 0.57ms | 6.28× | 0.44× |
+| reverse-comp | 0.043ms | 0.02ms | 0.11ms | 2.15× | 0.39× |
+| fannkuch | 33.7ms | 3.59ms | 14.6ms | 9.39× | 2.31× |
 
-**Beat Python: 6/13 | Beat Goja: 11/13**
+**Beat Python: 6/13 | Beat Goja: 12/13**
 
 ## Parser Benchmarks (Pure Implementations)
 
@@ -110,6 +110,20 @@ Session start → final (best-of-5 min values):
 
 See [OPTIMIZATION_REPORT.md](../docs/OPTIMIZATION_REPORT.md) for the full architecture documentation.
 
-For current runtime + language parity status against let-go suite runs, see:
+## let-go Benchmark Suite Parity
 
-- [`docs/PARITY_STATUS.md`](../docs/PARITY_STATUS.md)
+Direct head-to-head against [let-go](https://github.com/nooga/let-go)'s benchmark suite.
+
+| Benchmark | let-go | go-joker | Winner |
+|---|---:|---:|---|
+| fib | 3361.6ms | 575.9ms | **go-joker** (5.8×) |
+| loop-recur | 77.2ms | 6.45ms | **go-joker** (12.0×) |
+| map-filter | 3.52ms | 6.54ms | let-go (1.9×) |
+| persistent-map | 16.7ms | 24.1ms | let-go (1.4×) |
+| reduce | 104.0ms | 214.5ms | let-go (2.1×) |
+| tak | 3610.3ms | 705.8ms | **go-joker** (5.1×) |
+| transducers | 3.98ms | 6.18ms | let-go (1.6×) |
+
+**go-joker wins 3/7 (by 5–12×), let-go wins 4/7 (by 1.4–2.1×).**
+
+For detailed analysis see [`docs/PARITY_STATUS.md`](../docs/PARITY_STATUS.md).

@@ -25,11 +25,14 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 | **Pidigits** | **~0.016 ms** — beats Python 3×, beats Goja 9× |
 | **Arithmetic loop** | **~0.24 ms** — matches Bun/JSC-class speed via WASM |
 | **Allocations** | **51% fewer** across all benchmarks (Int/Double 8-byte structs) |
-| **Beat Python** | 4/10 CLBG benchmarks (mandelbrot, pidigits, fasta, spectral-norm) |
-| **Beat Goja** | 9/10 CLBG benchmarks |
-| **Joker beats Goja on** | 11/13 CLBG benchmarks |
+| **Beat Python** | 6/13 CLBG benchmarks |
+| **Beat Goja** | 12/13 CLBG benchmarks |
+| **Beat let-go** | 12/15 cross-language benchmarks, 3/7 let-go suite (fib 5.8×, tak 5.1×, loop-recur 12×) |
 
 ## What's different from upstream Joker
+
+### Native integer codegen for recursive fns
+Pure-integer recursive `defn` bodies (fib, tak) are compiled to fixed-arity native Go closures, eliminating all Object boxing and interface dispatch. fib(35) runs in 0.5s (53× faster than tree-walker).
 
 ### IR bytecode interpreter (typed + boxed paths)
 Hot loops and functions compile to a flat bytecode. Eligible primitive/string loops now run on a typed IR value stack, while collection-heavy or unsupported cases fall back to the boxed IR interpreter and then to the tree-walker.
@@ -45,6 +48,12 @@ Loops that update non-escaping vectors or maps via `assoc` automatically use in-
 
 ### StringCursor native type
 A zero-alloc O(1) string iterator with IR opcodes (`irCursorChar`, `irCursorNext`, `irCursorDone`). Cursor-based parsers run 3-3.5× faster than equivalent index-based code by eliminating per-character nth scanning and position arithmetic.
+
+### IntRange + seq-walking reduce
+`(range n)` with integer arguments returns an `IntRange` that implements reduce directly without seq allocation. Reduce-over-range is 18× faster. Lazy seqs (`LazySeq`, `ConsSeq`, `MappingSeq`) also support fast reduce.
+
+### Transducer compatibility layer
+One-arg transducer arities for `map`/`filter`/`take`, plus `transduce`, `reduced`/`reduced?`/`ensure-reduced`/`unreduced`, `completing`, `eduction`, and `sequence` 2-arity support.
 
 ### Evaluator fast paths
 Numeric operations, binding resolution, and function dispatch all have type-specialized fast paths that avoid the generic Joker evaluation machinery.
@@ -94,6 +103,7 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 
 - [`docs/OPTIMIZATION_REPORT.md`](docs/OPTIMIZATION_REPORT.md) — full technical report (phases, trade-offs, outcomes, suggested git history)
 - [`benchmarks/README.md`](benchmarks/README.md) — benchmark data and chart regeneration
+- [`docs/PARITY_STATUS.md`](docs/PARITY_STATUS.md) — let-go benchmark parity status and analysis
 - [`PERFORMANCE_PLAN.md`](PERFORMANCE_PLAN.md) — optimization roadmap and milestones
 
 ## Upstream

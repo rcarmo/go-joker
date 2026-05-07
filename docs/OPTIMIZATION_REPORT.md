@@ -32,32 +32,40 @@ Joker's execution engine uses a **tiered dispatch** model with five execution pa
 
 ## Execution Tiers
 
-### Tier 0: NaN-boxed Typed Executor (`irExecTypedNB`)
+### Tier 0: Native Integer Closures (`tryNativeRecursive`)
+- **Type:** `func(a int) int` / `func(a, b int) int` / `func(a, b, c int) int`
+- **When:** Pure-integer recursive `defn` (arithmetic, comparisons, self-calls only)
+- **Zero-alloc:** No Object boxing, no interface dispatch, no slice allocation
+- **Dispatch:** Checked first in `Fn.Call` when `defVar != nil`; falls through if fn body isn't pure-integer
+- **Impact:** fib(35) 26s → 0.5s (53×), tak(30,22,12) 25s → 0.7s (35×)
+- **File:** `core/native_recursive.go`
+
+### Tier 1: NaN-boxed Typed Executor (`irExecTypedNB`)
 - **Stack:** `[]uint64` — 8 bytes per entry
 - **When:** Pure numeric loops (no collections, strings, fn calls, self-recursion)
 - **Impact:** pidigits 2× faster, fasta 1.3× faster vs 32-byte irValue
 - **Opcodes:** Arithmetic, comparisons, jumps, recur, return, nth, count
 
-### Tier 1: Typed IR Executor (`irExecTyped`)
+### Tier 2: Typed IR Executor (`irExecTyped`)
 - **Stack:** `[]irValue` — 32 bytes per entry (was 120 before optimization)
 - **When:** Numeric loops, call-slot loops with nth, self-recursive tree walkers, string loops
 - **Zero-alloc:** Int, Double, Boolean, Char, Keyword stored inline
-- **Frame stack:** `irTypedFrameStack` for self-recursive calls (depth ≤ 256)
+- **Frame stack:** `irTypedFrameStack` for self-recursive calls (depth ≤ 512)
 - **Opcodes:** All arithmetic + comparisons + nth + first + conj + assoc + buildVec + callSlot + callSelf + str1/str2 + count + intCast + subs + toTransient/assocBang/toPersistent
 
-### Tier 2: Native f64 Closures
+### Tier 3: Native f64 Closures
 - **Type:** `func([]float64) float64` — compiled Go closure
 - **When:** Pure arithmetic helper functions (spectral-norm's A function)
 - **noescape64:** Prevents f64 slice from escaping to heap
 - **Dispatch:** Called from irCallSlot when `fnProg.nativeHelper != nil`
 
-### Tier 3: Boxed IR Executor (`irExec`)
+### Tier 4: Boxed IR Executor (`irExec`)
 - **Stack:** `[]Object` — heap-allocated interface values
 - **When:** Programs that fail typed eligibility (complex collection ops, map ops)
 - **Escape analysis:** Converts safe-mutable ArrayVector/ArrayMap slots to transients
-- **Frame stack:** `irFrameStack` for self-recursive calls (depth ≤ 256)
+- **Frame stack:** `irFrameStack` for self-recursive calls (depth ≤ 512)
 
-### Tier 4: Tree-Walker (`Fn.Call` / `Eval`)
+### Tier 5: Tree-Walker (`Fn.Call` / `Eval`)
 - **When:** Expressions that can't compile to IR (atoms, higher-order fns, try/catch)
 - **irDispatchFnCall:** Self-recursive compiled fns called from tree-walker are dispatched through IR (depth-limited at 64)
 
@@ -193,6 +201,7 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_frame_stack.go` | ~60 | Object frame stack for boxed executor |
 | `ir_frame_detect.go` | ~85 | Precise let/loop frame detection |
 | `ir_native_helper.go` | ~170 | Native f64 closure compiler |
+| `native_recursive.go` | ~450 | Native int closure compiler (fib/tak) |
 | `ir_fn_cache.go` | ~155 | Fn→IRProgram caching + loop wrapper |
 | `string_cursor.go` | ~110 | StringCursor type (O(1) advance) |
 | `string_cursor_procs.go` | ~55 | Cursor procs (string-cursor, cursor-char, etc.) |
@@ -203,6 +212,9 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_call_dispatch.go` | ~35 | IR-aware fn dispatch from tree-walker |
 | `ir_arena.go` | — | (removed — arena caused corruption) |
 | `noescape.go` | ~22 | unsafe.Pointer noescape trick |
+| `range_fast.go` | ~130 | IntRange with fast reduce |
+| `reduce_fast.go` | ~55 | Seq-walking reduce support |
+| `transducer_compat.go` | ~340 | Transducer compatibility shims |
 | `escape_analysis.go` | ~230 | Transient auto-promotion |
 | `wasm_*.go` | ~2500 | WASM compilation + runtime (10 files) |
 | `std/jit/` | ~200 | joker.jit namespace |
