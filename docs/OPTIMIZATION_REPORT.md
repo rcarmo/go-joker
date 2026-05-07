@@ -2,28 +2,28 @@
 
 ## Overview
 
-Joker's execution engine uses a **tiered dispatch** model with five execution paths, each progressively faster and more specialized. Programs enter at the top (tree-walker) and are promoted to faster tiers as the compiler proves they're eligible.
+Joker's execution engine uses a **tiered dispatch** model with five execution paths, each progressively faster and more specialized. Programs enter at the tree-walker and are promoted to faster tiers as eligibility is proven. Recursive arithmetic `defn`s can bypass IR entirely via native integer closures.
 
 ```
 ┌─────────────────────────────────────────────────┐
 │  Clojure source                                 │
 │  ↓ parse                                        │
 │  AST (Expr tree)                                │
-│  ↓ irCompile / irCompileFn                      │
-│  IR bytecode (IRProgram)                        │
 │  ↓ dispatch                                     │
 │                                                 │
-│  ┌──────────────┐  ┌──────────────┐             │
-│  │ irExecTypedNB│  │ irExecTyped  │             │
-│  │ (8B NaN-box  │  │ (32B irValue │             │
-│  │  stack)      │  │  stack)      │             │
-│  └──────┬───────┘  └──────┬───────┘             │
-│         │                 │                     │
-│         ▼                 ▼                     │
-│  ┌──────────────┐  ┌──────────────┐             │
-│  │ Native f64   │  │   irExec     │             │
-│  │ closures     │  │ ([]Object)   │             │
-│  └──────────────┘  └──────────────┘             │
+│  ┌──────────────────────────────┐               │
+│  │ Tier 0: native int closures  │               │
+│  │ (fib/tak-style recursion)    │               │
+│  └──────────────┬───────────────┘               │
+│                 │ fallback                       │
+│  ┌──────────────▼───────────────┐               │
+│  │ IR compile (irCompileFn/loop)│               │
+│  └──────────────┬───────────────┘               │
+│                 │                               │
+│   ┌─────────────▼─────────────┐  ┌────────────┐│
+│   │ irExecTypedNB / irExecTyped│  │ irExec     ││
+│   │ + optional native f64      │  │ ([]Object) ││
+│   └────────────────────────────┘  └────────────┘│
 │                                                 │
 │  Fallback: tree-walker (Fn.Call → Eval)         │
 │  + irDispatchFnCall for self-recursive fns      │
@@ -68,6 +68,19 @@ Joker's execution engine uses a **tiered dispatch** model with five execution pa
 ### Tier 5: Tree-Walker (`Fn.Call` / `Eval`)
 - **When:** Expressions that can't compile to IR (atoms, higher-order fns, try/catch)
 - **irDispatchFnCall:** Self-recursive compiled fns called from tree-walker are dispatched through IR (depth-limited at 64)
+
+## Language Compliance (current)
+
+- Internal compliance suite: **261/261 pass** (`tests/clojure_parity.go`)
+- Divergence matrix: `docs/DIVERGENCE_MATRIX.md`
+- Recently added parity surfaces:
+  - protocols + records
+  - hierarchies (`derive`/`underive`/`isa?`)
+  - tagged literals (`#inst`, `#uuid`) and data-reader vars
+  - sorted collection API (`sorted-map`, `sorted-set`, `sorted?`, `comparator`)
+  - atom validator/watch/CAS semantics
+  - chunked-seq API compatibility
+  - unchecked arithmetic + primitive array helper surface
 
 ## IR Opcodes
 
@@ -214,10 +227,21 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `noescape.go` | ~22 | unsafe.Pointer noescape trick |
 | `range_fast.go` | ~130 | IntRange with fast reduce |
 | `reduce_fast.go` | ~55 | Seq-walking reduce support |
-| `transducer_compat.go` | ~340 | Transducer compatibility shims |
+| `reduced.go` | ~80 | Dedicated `Reduced` runtime type |
+| `transducer_compat.go` | ~340 | Full transducer semantics wiring |
+| `protocol.go` / `protocol_init.go` | ~430 | Protocol dispatch + registration |
+| `record.go` / `record_init.go` | ~500 | Record type + constructors (`->Type`, `map->Type`) |
+| `hierarchy.go` / `hierarchy_init.go` | ~450 | Hierarchy DAG + derive/isa APIs |
+| `chunked_seq.go` | ~230 | Chunked-seq API compatibility layer |
+| `atom_ext.go` | ~170 | Validators, watches, CAS for atoms |
+| `unchecked_arith.go` | ~400 | `unchecked-*` + primitive array helper surface |
+| `core_api_gaps.go` | ~200 | Remaining compatibility APIs (`alter-var-root`, etc.) |
+| `sorted_colls.go` | ~180 | sorted-map/set API and metadata support |
+| `tagged_literals.go` | ~130 | `#inst`/`#uuid` data readers |
 | `escape_analysis.go` | ~230 | Transient auto-promotion |
 | `wasm_*.go` | ~2500 | WASM compilation + runtime (10 files) |
 | `std/jit/` | ~200 | joker.jit namespace |
+| `standalone.go` | ~180 | Standalone binary packaging (`joker compile`) |
 
 ## Known Issues
 

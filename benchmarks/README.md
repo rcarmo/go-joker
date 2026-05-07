@@ -127,3 +127,14 @@ Direct head-to-head against [let-go](https://github.com/nooga/let-go)'s benchmar
 **go-joker wins 3/7 (by 5–12×), let-go wins 4/7 (by 1.4–2.1×).**
 
 For detailed analysis see [`docs/PARITY_STATUS.md`](../docs/PARITY_STATUS.md).
+
+## Language Compliance Suite
+
+Clojure language compliance is tracked separately from runtime speed using:
+
+```bash
+make parity
+# -> docs/DIVERGENCE_MATRIX.md
+```
+
+Current result: **261/261 pass (100%)**.

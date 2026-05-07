@@ -28,6 +28,7 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 | **Beat Python** | 6/13 CLBG benchmarks |
 | **Beat Goja** | 12/13 CLBG benchmarks |
 | **Beat let-go** | 12/15 cross-language benchmarks, 3/7 let-go suite (fib 5.8×, tak 5.1×, loop-recur 12×) |
+| **Language compliance** | **261/261 parity tests passing** (`docs/DIVERGENCE_MATRIX.md`) |
 
 ## What's different from upstream Joker
 
@@ -52,8 +53,8 @@ A zero-alloc O(1) string iterator with IR opcodes (`irCursorChar`, `irCursorNext
 ### IntRange + seq-walking reduce
 `(range n)` with integer arguments returns an `IntRange` that implements reduce directly without seq allocation. Reduce-over-range is 18× faster. Lazy seqs (`LazySeq`, `ConsSeq`, `MappingSeq`) also support fast reduce.
 
-### Transducer compatibility layer
-One-arg transducer arities for `map`/`filter`/`take`, plus `transduce`, `reduced`/`reduced?`/`ensure-reduced`/`unreduced`, `completing`, `eduction`, and `sequence` 2-arity support.
+### Full transducer semantics
+`map`/`filter`/`take` transducer arities, `transduce` (3/4 arity), `reduced`/`reduced?`/`ensure-reduced`/`unreduced`, `completing`, `eduction`, and `sequence` 2-arity are implemented using a dedicated `Reduced` runtime type (not map-tag shims).
 
 ### Evaluator fast paths
 Numeric operations, binding resolution, and function dispatch all have type-specialized fast paths that avoid the generic Joker evaluation machinery.
@@ -65,6 +66,16 @@ Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze
 - `joker.imaging` — image processing (resize, crop, blur, overlay) via pure Go
 - `joker.svg` — SVG generation + raster rendering
 - `joker.pdf` — PDF document generation
+
+### Clojure parity surface now implemented
+- Protocols: `defprotocol`, `extend-type`, `satisfies?`, protocol method dispatch
+- Records: `defrecord` runtime support (`__defrecord`, `->Type`, `map->Type`, `record?`)
+- Hierarchies: `derive`, `underive`, `isa?`, `parents`, `ancestors`, `descendants`, `make-hierarchy`
+- Tagged literals/readers: `#inst`, `#uuid`, `default-data-readers`, `*data-readers*`
+- Sorted collection API: `sorted-map`, `sorted-set`, `sorted?`, `comparator`
+- Atom mutation parity: `set-validator!`, `get-validator`, `add-watch`, `remove-watch`, `compare-and-set!`
+- Chunked seq API: `chunk-buffer`, `chunk-append`, `chunk`, `chunk-cons`, `chunk-first`, `chunk-rest`, `chunk-next`, `chunked-seq?`
+- Unchecked arithmetic + primitive array helpers: `unchecked-*`, `int-array`, `long-array`, `aget`, `aset`, `alength`, `aclone`, `make-array`
 
 ## Architecture
 
@@ -81,6 +92,7 @@ Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze
 ```bash
 go test ./core              # run all tests
 go test ./core -bench .     # run all benchmarks
+make parity                 # run language parity suite + refresh divergence matrix
 ```
 
 ## Benchmarks
@@ -103,7 +115,8 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 
 - [`docs/OPTIMIZATION_REPORT.md`](docs/OPTIMIZATION_REPORT.md) — full technical report (phases, trade-offs, outcomes, suggested git history)
 - [`benchmarks/README.md`](benchmarks/README.md) — benchmark data and chart regeneration
-- [`docs/PARITY_STATUS.md`](docs/PARITY_STATUS.md) — let-go benchmark parity status and analysis
+- [`docs/PARITY_STATUS.md`](docs/PARITY_STATUS.md) — let-go benchmark parity + language compliance status
+- [`docs/DIVERGENCE_MATRIX.md`](docs/DIVERGENCE_MATRIX.md) — latest compliance matrix (**261/261 pass**)
 - [`PERFORMANCE_PLAN.md`](PERFORMANCE_PLAN.md) — optimization roadmap and milestones
 
 ## Upstream
