@@ -64,8 +64,8 @@ func (r *IntRange) reduce(f Callable) Object {
 	acc := Object(Int{I: r.start})
 	for i := r.start + r.step; (r.step > 0 && i < r.end) || (r.step < 0 && i > r.end); i += r.step {
 		acc = f.Call([]Object{acc, Int{I: i}})
-		if isReducedObj(acc) {
-			return unreducedObj(acc)
+		if IsReduced(acc) {
+			return DerefReduced(acc)
 		}
 	}
 	return acc
@@ -75,8 +75,8 @@ func (r *IntRange) reduceInit(f Callable, init Object) Object {
 	acc := init
 	for i := r.start; (r.step > 0 && i < r.end) || (r.step < 0 && i > r.end); i += r.step {
 		acc = f.Call([]Object{acc, Int{I: i}})
-		if isReducedObj(acc) {
-			return unreducedObj(acc)
+		if IsReduced(acc) {
+			return DerefReduced(acc)
 		}
 	}
 	return acc

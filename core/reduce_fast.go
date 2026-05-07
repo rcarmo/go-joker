@@ -6,8 +6,8 @@ func seqReduceInit(s Seq, f Callable, init Object) Object {
 	acc := init
 	for !s.IsEmpty() {
 		acc = f.Call([]Object{acc, s.First()})
-		if isReducedObj(acc) {
-			return unreducedObj(acc)
+		if IsReduced(acc) {
+			return DerefReduced(acc)
 		}
 		s = s.Rest()
 	}
@@ -22,8 +22,8 @@ func seqReduce(s Seq, f Callable) Object {
 	s = s.Rest()
 	for !s.IsEmpty() {
 		acc = f.Call([]Object{acc, s.First()})
-		if isReducedObj(acc) {
-			return unreducedObj(acc)
+		if IsReduced(acc) {
+			return DerefReduced(acc)
 		}
 		s = s.Rest()
 	}

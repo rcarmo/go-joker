@@ -1,58 +1,14 @@
 package core
 
-// Runtime compatibility shims for transducer-style workloads and basic
-// Clojure transducer helpers.
+// transducer_compat.go — Transducer runtime support with proper Reduced type.
 //
-// Provides:
+// Provides full Clojure transducer semantics:
 // - transducer arities for map/filter/take
-// - transduce
+// - transduce (3-arity and 4-arity)
 // - reduced, reduced?, ensure-reduced, unreduced
-// - completing
+// - completing (1 and 2-arity)
 // - eduction (materialized vector-backed)
 // - sequence 2-arity via eduction
-
-var (
-	transducerReducedKey = MakeKeyword("joker.core/reduced")
-	transducerValueKey   = MakeKeyword("value")
-)
-
-func reducedWrap(v Object) Object {
-	m := EmptyArrayMap()
-	m.Add(transducerReducedKey, Boolean{B: true})
-	m.Add(transducerValueKey, v)
-	return m
-}
-
-func isReducedObj(v Object) bool {
-	m, ok := v.(Gettable)
-	if !ok {
-		return false
-	}
-	ok, tag := m.Get(transducerReducedKey)
-	return ok && ToBool(tag)
-}
-
-func unreducedObj(v Object) Object {
-	m, ok := v.(Gettable)
-	if !ok {
-		return v
-	}
-	ok, tag := m.Get(transducerReducedKey)
-	if !ok || !ToBool(tag) {
-		return v
-	}
-	if ok, inner := m.Get(transducerValueKey); ok {
-		return inner
-	}
-	return NIL
-}
-
-func ensureReducedObj(v Object) Object {
-	if isReducedObj(v) {
-		return v
-	}
-	return reducedWrap(v)
-}
 
 func completeReducingFn(rf Callable, res Object) Object {
 	completed := res
@@ -64,10 +20,7 @@ func completeReducingFn(rf Callable, res Object) Object {
 		}()
 		completed = rf.Call([]Object{res})
 	}()
-	if isReducedObj(completed) {
-		return unreducedObj(completed)
-	}
-	return completed
+	return DerefReduced(completed)
 }
 
 func transduceInternal(xform Callable, reducingFnObj Object, init Object, collObj Object) Object {
@@ -78,8 +31,8 @@ func transduceInternal(xform Callable, reducingFnObj Object, init Object, collOb
 	res := init
 	for !s.IsEmpty() {
 		step := rf.Call([]Object{res, s.First()})
-		if isReducedObj(step) {
-			res = unreducedObj(step)
+		if IsReduced(step) {
+			res = DerefReduced(step)
 			return completeReducingFn(rf, res)
 		}
 		res = step
@@ -89,10 +42,10 @@ func transduceInternal(xform Callable, reducingFnObj Object, init Object, collOb
 }
 
 func makeMapTransducer(f Callable) Object {
-	return Proc{Name: "procMapTransducerBuilder", Fn: func(args []Object) Object {
+	return Proc{Name: "procMapXf", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		rf := EnsureArgIsCallable(args, 0)
-		return Proc{Name: "procMapTransducerRF", Fn: func(callArgs []Object) Object {
+		return Proc{Name: "procMapXfRF", Fn: func(callArgs []Object) Object {
 			switch len(callArgs) {
 			case 0:
 				return rf.Call(nil)
@@ -110,10 +63,10 @@ func makeMapTransducer(f Callable) Object {
 }
 
 func makeFilterTransducer(pred Callable) Object {
-	return Proc{Name: "procFilterTransducerBuilder", Fn: func(args []Object) Object {
+	return Proc{Name: "procFilterXf", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		rf := EnsureArgIsCallable(args, 0)
-		return Proc{Name: "procFilterTransducerRF", Fn: func(callArgs []Object) Object {
+		return Proc{Name: "procFilterXfRF", Fn: func(callArgs []Object) Object {
 			switch len(callArgs) {
 			case 0:
 				return rf.Call(nil)
@@ -137,11 +90,11 @@ func makeTakeTransducer(n int) Object {
 		n = 0
 	}
 	limit := n
-	return Proc{Name: "procTakeTransducerBuilder", Fn: func(args []Object) Object {
+	return Proc{Name: "procTakeXf", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		rf := EnsureArgIsCallable(args, 0)
 		remaining := limit // fresh counter per builder invocation
-		return Proc{Name: "procTakeTransducerRF", Fn: func(callArgs []Object) Object {
+		return Proc{Name: "procTakeXfRF", Fn: func(callArgs []Object) Object {
 			switch len(callArgs) {
 			case 0:
 				return rf.Call(nil)
@@ -149,12 +102,12 @@ func makeTakeTransducer(n int) Object {
 				return rf.Call(callArgs)
 			case 2:
 				if remaining <= 0 {
-					return ensureReducedObj(callArgs[0])
+					return EnsureReduced(callArgs[0])
 				}
 				out := rf.Call(callArgs)
 				remaining--
 				if remaining <= 0 {
-					return ensureReducedObj(out)
+					return EnsureReduced(out)
 				}
 				return out
 			default:
@@ -198,38 +151,41 @@ func installTransducerCompat() {
 		}
 	}
 
-	// reduced family
+	// reduced — wraps value in Reduced box
 	reducedVr := ns.Intern(MakeSymbol("reduced"))
-	reducedVr.Value = Proc{Name: "procReducedCompat", Fn: func(args []Object) Object {
+	reducedVr.Value = Proc{Name: "procReduced", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
-		return reducedWrap(args[0])
+		return MakeReduced(args[0])
 	}}
 	referToUser(MakeSymbol("reduced"), reducedVr)
 
+	// reduced? — type check, no map lookup
 	reducedQVr := ns.Intern(MakeSymbol("reduced?"))
-	reducedQVr.Value = Proc{Name: "procReducedQCompat", Fn: func(args []Object) Object {
+	reducedQVr.Value = Proc{Name: "procReducedQ", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
-		return MakeBoolean(isReducedObj(args[0]))
+		return MakeBoolean(IsReduced(args[0]))
 	}}
 	referToUser(MakeSymbol("reduced?"), reducedQVr)
 
+	// ensure-reduced
 	ensureReducedVr := ns.Intern(MakeSymbol("ensure-reduced"))
-	ensureReducedVr.Value = Proc{Name: "procEnsureReducedCompat", Fn: func(args []Object) Object {
+	ensureReducedVr.Value = Proc{Name: "procEnsureReduced", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
-		return ensureReducedObj(args[0])
+		return EnsureReduced(args[0])
 	}}
 	referToUser(MakeSymbol("ensure-reduced"), ensureReducedVr)
 
+	// unreduced — deref a Reduced box (identity if not reduced)
 	unreducedVr := ns.Intern(MakeSymbol("unreduced"))
-	unreducedVr.Value = Proc{Name: "procUnreducedCompat", Fn: func(args []Object) Object {
+	unreducedVr.Value = Proc{Name: "procUnreduced", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
-		return unreducedObj(args[0])
+		return DerefReduced(args[0])
 	}}
 	referToUser(MakeSymbol("unreduced"), unreducedVr)
 
-	// completing
+	// completing — wraps a reducing fn with optional completion step
 	completingVr := ns.Intern(MakeSymbol("completing"))
-	completingVr.Value = Proc{Name: "procCompletingCompat", Fn: func(args []Object) Object {
+	completingVr.Value = Proc{Name: "procCompleting", Fn: func(args []Object) Object {
 		if len(args) != 1 && len(args) != 2 {
 			PanicArityMinMax(len(args), 1, 2)
 		}
@@ -275,8 +231,8 @@ func installTransducerCompat() {
 		return
 	}
 
-	// map transducer arity
-	mapVr.Value = Proc{Name: "procMapTransducerCompat", Fn: func(args []Object) Object {
+	// map transducer arity: (map f) returns a transducer
+	mapVr.Value = Proc{Name: "procMapXfCompat", Fn: func(args []Object) Object {
 		if len(args) == 1 {
 			f := EnsureArgIsCallable(args, 0)
 			return makeMapTransducer(f)
@@ -284,8 +240,8 @@ func installTransducerCompat() {
 		return mapOrig.Call(args)
 	}}
 
-	// filter transducer arity
-	filterVr.Value = Proc{Name: "procFilterTransducerCompat", Fn: func(args []Object) Object {
+	// filter transducer arity: (filter pred) returns a transducer
+	filterVr.Value = Proc{Name: "procFilterXfCompat", Fn: func(args []Object) Object {
 		if len(args) == 1 {
 			pred := EnsureArgIsCallable(args, 0)
 			return makeFilterTransducer(pred)
@@ -293,8 +249,8 @@ func installTransducerCompat() {
 		return filterOrig.Call(args)
 	}}
 
-	// take transducer arity
-	takeVr.Value = Proc{Name: "procTakeTransducerCompat", Fn: func(args []Object) Object {
+	// take transducer arity: (take n) returns a transducer when used with transduce
+	takeVr.Value = Proc{Name: "procTakeXfCompat", Fn: func(args []Object) Object {
 		if len(args) == 1 {
 			n := EnsureArgIsNumber(args, 0).Int().I
 			return makeTakeTransducer(n)
@@ -302,7 +258,8 @@ func installTransducerCompat() {
 		return takeOrig.Call(args)
 	}}
 
-	transduceProc := Proc{Name: "procTransduceCompat", Fn: func(args []Object) Object {
+	// transduce — full 3 and 4-arity support
+	transduceProc := Proc{Name: "procTransduce", Fn: func(args []Object) Object {
 		if len(args) != 3 && len(args) != 4 {
 			PanicArityMinMax(len(args), 3, 4)
 		}
@@ -327,8 +284,9 @@ func installTransducerCompat() {
 	transduceVr.Value = transduceProc
 	referToUser(MakeSymbol("transduce"), transduceVr)
 
+	// eduction — materializes transducer pipeline into a vector
 	eductionVr := ns.Intern(MakeSymbol("eduction"))
-	eductionVr.Value = Proc{Name: "procEductionCompat", Fn: func(args []Object) Object {
+	eductionVr.Value = Proc{Name: "procEduction", Fn: func(args []Object) Object {
 		if len(args) < 2 {
 			PanicArityMinMax(len(args), 2, 999)
 		}
@@ -346,7 +304,7 @@ func installTransducerCompat() {
 		}
 		xform := EnsureObjectIsCallable(xformObj, "eduction expected callable xform, got %s")
 
-		rf := Proc{Name: "procEductionConjRF", Fn: func(callArgs []Object) Object {
+		conjRF := Proc{Name: "procEductionConjRF", Fn: func(callArgs []Object) Object {
 			switch len(callArgs) {
 			case 0:
 				return EmptyArrayVector()
@@ -364,11 +322,11 @@ func installTransducerCompat() {
 			}
 		}}
 
-		return transduceInternal(xform, rf, EmptyArrayVector(), collObj)
+		return transduceInternal(xform, conjRF, EmptyArrayVector(), collObj)
 	}}
 	referToUser(MakeSymbol("eduction"), eductionVr)
 
-	// sequence 2-arity compatibility: (sequence xform coll)
+	// sequence 2-arity: (sequence xform coll) → lazy seq of eduction result
 	sequenceVr.Value = Proc{Name: "procSequenceCompat", Fn: func(args []Object) Object {
 		if len(args) == 2 {
 			res := eductionVr.Value.(Callable).Call(args)
