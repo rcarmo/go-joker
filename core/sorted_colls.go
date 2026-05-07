@@ -8,6 +8,18 @@ package core
 
 import "sort"
 
+var sortedMetaCache Map
+
+func sortedCollMeta() Map {
+	if sortedMetaCache != nil {
+		return sortedMetaCache
+	}
+	m := EmptyArrayMap()
+	m.Add(MakeKeyword("sorted"), Boolean{B: true})
+	sortedMetaCache = m
+	return sortedMetaCache
+}
+
 func init() {
 	registerSortedCollProcs()
 }
@@ -41,7 +53,7 @@ func registerSortedCollProcs() {
 		for _, p := range pairs {
 			m.Add(p.key, p.val)
 		}
-		return m
+		return m.WithMeta(sortedCollMeta())
 	}}
 	referToUser(MakeSymbol("sorted-map"), smVr)
 
@@ -57,14 +69,22 @@ func registerSortedCollProcs() {
 		for _, v := range sorted {
 			s = s.Conj(v).(*MapSet)
 		}
-		return s
+		return s.WithMeta(sortedCollMeta())
 	}}
 	referToUser(MakeSymbol("sorted-set"), ssVr)
 
-	// sorted? — (sorted? coll) — always false for now (no sorted type tag)
+	// sorted? — (sorted? coll)
 	sortedQVr := ns.Intern(MakeSymbol("sorted?"))
 	sortedQVr.Value = Proc{Name: "procSortedQ", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
+		if m, ok := args[0].(Meta); ok {
+			meta := m.GetMeta()
+			if meta != nil {
+				if ok, v := meta.Get(MakeKeyword("sorted")); ok {
+					return MakeBoolean(ToBool(v))
+				}
+			}
+		}
 		return Boolean{B: false}
 	}}
 	referToUser(MakeSymbol("sorted?"), sortedQVr)

@@ -13,6 +13,7 @@ package core
 import (
 	"fmt"
 	"sync"
+	"unsafe"
 )
 
 // Protocol represents a Clojure-style protocol.
@@ -44,7 +45,7 @@ func (p *Protocol) Equals(other interface{}) bool {
 }
 
 func (p *Protocol) GetType() *Type { return TYPE.Fn }
-func (p *Protocol) Hash() uint32   { return HashPtr(uintptr(0)) }
+func (p *Protocol) Hash() uint32   { return HashPtr(uintptr(unsafe.Pointer(p))) }
 
 func (p *Protocol) WithInfo(info *ObjectInfo) Object {
 	res := *p

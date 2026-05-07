@@ -549,7 +549,11 @@ var procSwap = func(args []Object) Object {
 	a := EnsureArgIsAtom(args, 0)
 	f := EnsureArgIsCallable(args, 1)
 	fargs := append([]Object{a.value}, args[2:]...)
-	a.value = f.Call(fargs)
+	oldValue := a.value
+	newValue := f.Call(fargs)
+	validateAtom(a, newValue)
+	a.value = newValue
+	notifyWatches(a, oldValue, newValue)
 	return a.value
 }
 
@@ -558,20 +562,30 @@ var procSwapVals = func(args []Object) Object {
 	f := EnsureArgIsCallable(args, 1)
 	fargs := append([]Object{a.value}, args[2:]...)
 	oldValue := a.value
-	a.value = f.Call(fargs)
+	newValue := f.Call(fargs)
+	validateAtom(a, newValue)
+	a.value = newValue
+	notifyWatches(a, oldValue, newValue)
 	return NewVectorFrom(oldValue, a.value)
 }
 
 var procReset = func(args []Object) Object {
 	a := EnsureArgIsAtom(args, 0)
-	a.value = args[1]
+	oldValue := a.value
+	newValue := args[1]
+	validateAtom(a, newValue)
+	a.value = newValue
+	notifyWatches(a, oldValue, newValue)
 	return a.value
 }
 
 var procResetVals = func(args []Object) Object {
 	a := EnsureArgIsAtom(args, 0)
 	oldValue := a.value
-	a.value = args[1]
+	newValue := args[1]
+	validateAtom(a, newValue)
+	a.value = newValue
+	notifyWatches(a, oldValue, newValue)
 	return NewVectorFrom(oldValue, a.value)
 }
 

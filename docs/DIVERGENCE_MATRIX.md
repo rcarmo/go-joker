@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-07_
 
-**260/260 pass** (100%), 0 fail, 0 error
+**261/261 pass** (100%), 0 fail, 0 error
 
 ## api (5/5)
 
@@ -45,7 +45,7 @@ _Generated: 2026-05-07_
 |---|---|---|---|
 | compare-and-set!-true | pass | `99` | `99` |
 | compare-and-set!-false | pass | `42` | `42` |
-| add-watch | pass | `[]` | `[]` |
+| add-watch | pass | `[1 2]` | `[1 2]` |
 | record? | pass | `true` | `true` |
 
 ## binding (4/4)
@@ -315,12 +315,13 @@ _Generated: 2026-05-07_
 | count | pass | `3` | `3` |
 | set? | pass | `true` | `true` |
 
-## sorted (3/3)
+## sorted (4/4)
 
 | Test | Status | Expected | Got |
 |---|---|---|---|
 | sorted-map | pass | `:a` | `:a` |
 | sorted-set | pass | `1` | `1` |
+| sorted? | pass | `true` | `true` |
 | comparator | pass | `-1` | `-1` |
 
 ## string (6/6)

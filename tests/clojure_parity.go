@@ -317,12 +317,13 @@ var parityTests = []PTest{
 	// --- Atom extensions ---
 	{"atom-ext", "compare-and-set!-true", "(let [a (atom 42)] (compare-and-set! a 42 99) @a)", "99"},
 	{"atom-ext", "compare-and-set!-false", "(let [a (atom 42)] (compare-and-set! a 0 99) @a)", "42"},
-	{"atom-ext", "add-watch", "(let [a (atom 0) log (atom [])] (add-watch a :k (fn [k r o n] (swap! log conj n))) (reset! a 1) (swap! a inc) @log)", "[]"},
+	{"atom-ext", "add-watch", "(let [a (atom 0) log (atom [])] (add-watch a :k (fn [k r o n] (swap! log conj n))) (reset! a 1) (swap! a inc) @log)", "[1 2]"},
 	{"atom-ext", "record?", "(do (__defrecord 'T \"v\") (record? (->T 1)))", "true"},
 
 	// --- Sorted collections ---
 	{"sorted", "sorted-map", "(first (keys (sorted-map :c 3 :a 1 :b 2)))", ":a"},
 	{"sorted", "sorted-set", "(first (sorted-set 3 1 2))", "1"},
+	{"sorted", "sorted?", "(sorted? (sorted-map :b 2 :a 1))", "true"},
 	{"sorted", "comparator", "((comparator <) 1 2)", "-1"},
 
 	// --- Core API gaps ---

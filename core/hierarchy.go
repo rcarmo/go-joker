@@ -6,35 +6,49 @@ package core
 // relationships between keywords and symbols. The global hierarchy
 // is stored as a var and used by default for isa?/derive/underive.
 
-import "sync"
+import (
+	"sync"
+	"unsafe"
+)
 
 // Hierarchy represents a Clojure hierarchy.
 type Hierarchy struct {
 	InfoHolder
 	MetaHolder
 	mu         sync.RWMutex
-	parents    map[uint64]map[uint64]bool // child hash → set of parent hashes
-	parentKeys map[uint64]Object          // hash → object (for iteration)
-	childKeys  map[uint64]Object
+	parents    map[string]map[string]bool // child key → set of parent keys
+	parentKeys map[string]Object          // key → object (for iteration)
+	childKeys  map[string]Object
 }
 
 func MakeHierarchy() *Hierarchy {
 	return &Hierarchy{
-		parents:    make(map[uint64]map[uint64]bool),
-		parentKeys: make(map[uint64]Object),
-		childKeys:  make(map[uint64]Object),
+		parents:    make(map[string]map[string]bool),
+		parentKeys: make(map[string]Object),
+		childKeys:  make(map[string]Object),
 	}
 }
 
-func (h *Hierarchy) ToString(escape bool) string      { return "#object[Hierarchy]" }
-func (h *Hierarchy) Equals(other interface{}) bool    { return h == other }
-func (h *Hierarchy) GetType() *Type                   { return TYPE.Fn }
-func (h *Hierarchy) Hash() uint32                     { return 0 }
-func (h *Hierarchy) WithInfo(info *ObjectInfo) Object { return h }
-func (h *Hierarchy) WithMeta(m Map) Object            { return h }
+func (h *Hierarchy) ToString(escape bool) string   { return "#object[Hierarchy]" }
+func (h *Hierarchy) Equals(other interface{}) bool { return h == other }
+func (h *Hierarchy) GetType() *Type                { return TYPE.Fn }
+func (h *Hierarchy) Hash() uint32                  { return HashPtr(uintptr(unsafe.Pointer(h))) }
+func (h *Hierarchy) WithInfo(info *ObjectInfo) Object {
+	res := *h
+	res.info = info
+	return &res
+}
+func (h *Hierarchy) WithMeta(m Map) Object {
+	res := *h
+	res.meta = SafeMerge(res.meta, m)
+	return &res
+}
 
-func objKey(obj Object) uint64 {
-	return uint64(obj.Hash())<<32 | uint64(obj.Hash())
+func objKey(obj Object) string {
+	if obj == nil {
+		return "nil"
+	}
+	return obj.GetType().ToString(false) + "|" + obj.ToString(false)
 }
 
 // Derive adds a parent relationship: child isa? parent
@@ -46,7 +60,7 @@ func (h *Hierarchy) Derive(child, parent Object) {
 	pk := objKey(parent)
 
 	if h.parents[ck] == nil {
-		h.parents[ck] = make(map[uint64]bool)
+		h.parents[ck] = make(map[string]bool)
 	}
 	h.parents[ck][pk] = true
 	h.parentKeys[pk] = parent
@@ -78,10 +92,10 @@ func (h *Hierarchy) IsA(child, parent Object) bool {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 
-	return h.isALocked(objKey(child), objKey(parent), make(map[uint64]bool))
+	return h.isALocked(objKey(child), objKey(parent), make(map[string]bool))
 }
 
-func (h *Hierarchy) isALocked(ck, pk uint64, visited map[uint64]bool) bool {
+func (h *Hierarchy) isALocked(ck, pk string, visited map[string]bool) bool {
 	if visited[ck] {
 		return false
 	}
@@ -128,12 +142,12 @@ func (h *Hierarchy) Ancestors(tag Object) []Object {
 	defer h.mu.RUnlock()
 
 	result := make([]Object, 0)
-	visited := make(map[uint64]bool)
+	visited := make(map[string]bool)
 	h.collectAncestors(objKey(tag), &result, visited)
 	return result
 }
 
-func (h *Hierarchy) collectAncestors(tk uint64, result *[]Object, visited map[uint64]bool) {
+func (h *Hierarchy) collectAncestors(tk string, result *[]Object, visited map[string]bool) {
 	ps, ok := h.parents[tk]
 	if !ok {
 		return
@@ -156,7 +170,7 @@ func (h *Hierarchy) Descendants(tag Object) []Object {
 
 	pk := objKey(tag)
 	result := make([]Object, 0)
-	visited := make(map[uint64]bool)
+	visited := make(map[string]bool)
 
 	for ck, ps := range h.parents {
 		if ps[pk] && !visited[ck] {
@@ -170,7 +184,7 @@ func (h *Hierarchy) Descendants(tag Object) []Object {
 	return result
 }
 
-func (h *Hierarchy) collectDescendants(pk uint64, result *[]Object, visited map[uint64]bool) {
+func (h *Hierarchy) collectDescendants(pk string, result *[]Object, visited map[string]bool) {
 	for ck, ps := range h.parents {
 		if ps[pk] && !visited[ck] {
 			visited[ck] = true
