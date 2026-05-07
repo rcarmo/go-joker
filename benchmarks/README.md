@@ -64,6 +64,30 @@ go test ./std/json ./std/yaml ./std/html -bench 'BenchmarkNative' -benchmem
 go test ./std/jit -bench 'BenchmarkJIT' -benchmem
 ```
 
+### Cross-language reimplementations
+
+The `cross_lang_bench.{py,js,clj}` files are self-contained ports of the same
+13 algorithms in different runtimes. Each prints `name | avg ms/op | result`
+for 5 iterations.
+
+```bash
+python3 benchmarks/cross_lang_bench.py        # CPython 3.13
+bun     benchmarks/cross_lang_bench.js        # Bun (or node)
+lg      benchmarks/cross_lang_bench.clj       # let-go
+```
+
+[let-go](https://github.com/nooga/let-go) is a small Clojure-like language
+with a bytecode stack VM written in Go. Install with Homebrew:
+
+```bash
+brew tap nooga/let-go https://github.com/nooga/let-go
+brew install let-go
+```
+
+(Or build from source — `go install github.com/nooga/let-go@latest`.) The
+`.clj` file is a let-go port of the same algorithms, analogous to the `.py`
+and `.js` files — not portable Clojure source.
+
 ## Optimization Session Progress
 
 Session start → final (best-of-5 min values):
