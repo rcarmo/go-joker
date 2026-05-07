@@ -282,6 +282,12 @@ var parityTests = []PTest{
 	{"macro", "when-let", "(when-let [x 42] (inc x))", "43"},
 	{"macro", "when-first", "(when-first [x [1 2 3]] x)", "1"},
 	{"macro", "when-first-nil", "(when-first [x nil] x)", "nil"},
+
+	// --- Protocol parity ---
+	{"protocol", "defprotocol", "(do (def P (__defprotocol 'P \"foo\" 1)) (satisfies? P 42))", "false"},
+	{"protocol", "extend-dispatch", "(do (def P (__defprotocol 'P \"pfn\" 1)) (__extend-type P \"Int\" \"pfn\" (fn [x] (+ x 1))) (let [f (resolve 'pfn)] (f 41)))", "42"},
+	{"protocol", "satisfies?-true", "(do (def P (__defprotocol 'P \"bar\" 1)) (__extend-type P \"String\" \"bar\" (fn [s] s)) (satisfies? P \"x\"))", "true"},
+	{"protocol", "satisfies?-false", "(do (def P (__defprotocol 'P \"bar\" 1)) (satisfies? P :kw))", "false"},
 }
 
 func main() {

@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-07_
 
-**207/207 pass** (100%), 0 fail, 0 error
+**211/211 pass** (100%), 0 fail, 0 error
 
 ## arithmetic (12/12)
 
@@ -161,6 +161,15 @@ _Generated: 2026-05-07_
 | not-empty | pass | `[1]` | `[1]` |
 | not-empty-nil | pass | `nil` | `nil` |
 | rand-int | pass | `true` | `true` |
+
+## protocol (4/4)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| defprotocol | pass | `false` | `false` |
+| extend-dispatch | pass | `42` | `42` |
+| satisfies?-true | pass | `true` | `true` |
+| satisfies?-false | pass | `false` | `false` |
 
 ## reader (28/28)
 
