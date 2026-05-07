@@ -12,12 +12,21 @@ GOVULNCHECK_BIN ?= $(TOOLBIN)/govulncheck
 
 BENCH_REGEX ?= BenchmarkCLBG(NBody|Mandelbrot|SpectralNorm|BinaryTrees|FannkuchRedux)
 
-.PHONY: help tools test vet staticcheck-sa lint vuln race bench-sanity audit-fast audit
+TEST_PKGS ?= ./...
+TEST_TIMEOUT ?= 20m
+TEST_COUNT ?= 1
+TEST_SHUFFLE ?= off
+
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity audit-fast audit
 
 help:
 	@echo "Available targets:"
 	@echo "  make tools          # Install/update audit tools (staticcheck, golangci-lint, govulncheck)"
-	@echo "  make test           # Run full test suite"
+	@echo "  make test           # Run full test suite (cached)"
+	@echo "  make test-repro     # Reproducible tests: no shuffle, no cache"
+	@echo "  make test-short     # Reproducible short test run"
+	@echo "  make test-core      # Reproducible core test run"
+	@echo "  make test-std       # Reproducible std/* test run"
 	@echo "  make vet            # Run go vet"
 	@echo "  make staticcheck-sa # Run staticcheck SA checks"
 	@echo "  make lint           # Run focused golangci-lint profile"
@@ -34,7 +43,19 @@ tools:
 	@$(GO) install golang.org/x/vuln/cmd/govulncheck@latest
 
 test:
-	$(GO) test ./...
+	$(GO) test $(TEST_PKGS)
+
+test-repro:
+	$(GO) test -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT) $(TEST_PKGS)
+
+test-short:
+	$(GO) test -short -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT) $(TEST_PKGS)
+
+test-core:
+	$(GO) test -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT) ./core
+
+test-std:
+	$(GO) test -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT) ./std/...
 
 vet:
 	$(GO) vet ./...
