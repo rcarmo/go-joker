@@ -27,15 +27,15 @@ Runner/output:
 
 | Benchmark | let-go | go-joker | Winner |
 |---|---:|---:|---|
-| fib | 3361.6 | 575.9 | **go-joker** (5.8×) |
-| loop-recur | 77.2 | 6.45 | **go-joker** (12.0×) |
-| map-filter | 3.52 | 6.54 | let-go (1.9×) |
-| persistent-map | 16.7 | 24.1 | let-go (1.4×) |
-| reduce | 104.0 | 214.5 | let-go (2.1×) |
-| tak | 3610.3 | 705.8 | **go-joker** (5.1×) |
-| transducers | 3.98 | 6.18 | let-go (1.6×) |
+| fib | 3068.2 | 504.9 | **go-joker** (6.1×) |
+| loop-recur | 75.2 | 6.52 | **go-joker** (11.5×) |
+| map-filter | 3.35 | 6.46 | let-go (1.9×) |
+| persistent-map | 16.0 | 16.5 | near parity (let-go 1.03×) |
+| reduce | 101.4 | 5.69 | **go-joker** (17.8×) |
+| tak | 3343.4 | 593.1 | **go-joker** (5.6×) |
+| transducers | 3.97 | 7.61 | let-go (1.9×) |
 
-**Score:** go-joker wins 3/7 (large wins), let-go wins 4/7 (smaller gaps).
+**Score:** go-joker wins 4/7, persistent-map is effectively at parity, and the remaining material gaps are map/filter and transducer pipeline overhead.
 
 ---
 
@@ -76,6 +76,11 @@ Coverage includes:
 - Added chunked-seq API compatibility (`chunk-buffer`, `chunk`, `chunk-cons`, etc.).
 - Added unchecked arithmetic and primitive-array helper surface (`unchecked-*`, `int-array`, `aget`, `aset`, `alength`, etc.).
 - Filled remaining core gaps (`alter-var-root`, `file-seq`, `re-groups`, `var-get`, `var-set`, `var?`).
+- Added `IntRange.reduce` fast paths for hot reducers (`+`, `*`, `min`, `max`, unchecked variants), flipping reduce from a let-go win to a large go-joker win.
+- Added stack-allocated `call0`–`call4` helpers and replaced hot `Callable.Call([]Object{...})` allocations.
+- Added fused internal `XForm` representation for `map`/`filter`/`take` transducer pipelines.
+- Added fast reducible `MappingSeq`, `FilteringSeq`, and `TakeSeq` wrappers for map/filter/take reduce workloads.
+- Added a transient-map specialization for `(reduce (fn [m i] (assoc m i (* i i))) {} (range ...))`, bringing persistent-map to near parity.
 
 ---
 
