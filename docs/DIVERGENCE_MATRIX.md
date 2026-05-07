@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-07_
 
-**222/222 pass** (100%), 0 fail, 0 error
+**225/225 pass** (100%), 0 fail, 0 error
 
 ## arithmetic (12/12)
 
@@ -288,6 +288,14 @@ _Generated: 2026-05-07_
 | string? | pass | `true` | `true` |
 | char | pass | `A` | `A` |
 | int-char | pass | `65` | `65` |
+
+## tagged (3/3)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| inst-parse | pass | `true` | `true` |
+| uuid-parse | pass | `550e8400-e29b-41d4-a716-446655440000` | `550e8400-e29b-41d4-a716-446655440000` |
+| data-readers | pass | `true` | `true` |
 
 ## transducer (4/4)
 
