@@ -331,6 +331,30 @@ var parityTests = []PTest{
 	{"api", "var-get", "(do (def x 42) (var-get (var x)))", "42"},
 	{"api", "alter-var-root", "(do (def avr-test 10) (alter-var-root (var avr-test) + 5) avr-test)", "15"},
 	{"api", "file-seq", "(> (count (file-seq \".\")) 0)", "true"},
+
+	// --- Chunked seqs ---
+	{"chunked", "chunk-buffer", "(let [b (chunk-buffer 2)] (chunk-append b 1) (chunk-append b 2) (first (chunk-cons (chunk b) nil)))", "1"},
+	{"chunked", "chunked-seq?", "(let [b (chunk-buffer 1)] (chunk-append b :x) (chunked-seq? (chunk-cons (chunk b) nil)))", "true"},
+	{"chunked", "chunk-rest", "(let [b (chunk-buffer 2)] (chunk-append b 10) (chunk-append b 20) (first (chunk-rest (chunk-cons (chunk b) '(30)))))", "30"},
+
+	// --- Transient collections ---
+	{"transient", "transient-conj", "(persistent! (conj! (transient [1 2]) 3))", "[1 2 3]"},
+	{"transient", "transient-assoc", "(persistent! (assoc! (transient [1 2 3]) 1 99))", "[1 99 3]"},
+	{"transient", "transient?", "(transient? (transient []))", "true"},
+	{"transient", "transient?-no", "(transient? [])", "false"},
+	{"transient", "pop!", "(persistent! (pop! (conj! (transient []) 1)))", "[]"},
+
+	// --- Unchecked arithmetic ---
+	{"unchecked", "add", "(unchecked-add 1 2)", "3"},
+	{"unchecked", "subtract", "(unchecked-subtract 10 3)", "7"},
+	{"unchecked", "multiply", "(unchecked-multiply 3 4)", "12"},
+	{"unchecked", "inc", "(unchecked-inc 5)", "6"},
+	{"unchecked", "dec", "(unchecked-dec 5)", "4"},
+	{"unchecked", "negate", "(unchecked-negate 5)", "-5"},
+	{"unchecked", "int-array", "(count (int-array 3))", "3"},
+	{"unchecked", "int-array-init", "(nth (int-array [10 20 30]) 1)", "20"},
+	{"unchecked", "aget", "(aget [10 20 30] 1)", "20"},
+	{"unchecked", "alength", "(alength [1 2 3])", "3"},
 }
 
 // findLastForm finds the byte offset of the last top-level s-expression.

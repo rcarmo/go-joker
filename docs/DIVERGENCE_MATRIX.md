@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-07_
 
-**242/242 pass** (100%), 0 fail, 0 error
+**260/260 pass** (100%), 0 fail, 0 error
 
 ## api (5/5)
 
@@ -56,6 +56,14 @@ _Generated: 2026-05-07_
 | let-destructure-vec | pass | `3` | `3` |
 | let-destructure-map | pass | `3` | `3` |
 | letfn | pass | `42` | `42` |
+
+## chunked (3/3)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| chunk-buffer | pass | `1` | `1` |
+| chunked-seq? | pass | `true` | `true` |
+| chunk-rest | pass | `30` | `30` |
 
 ## comparison (12/12)
 
@@ -343,6 +351,16 @@ _Generated: 2026-05-07_
 | transduce-take | pass | `[1 2]` | `[1 2]` |
 | transduce-comp | pass | `6` | `6` |
 
+## transient (5/5)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| transient-conj | pass | `[1 2 3]` | `[1 2 3]` |
+| transient-assoc | pass | `[1 99 3]` | `[1 99 3]` |
+| transient? | pass | `true` | `true` |
+| transient?-no | pass | `false` | `false` |
+| pop! | pass | `[]` | `[]` |
+
 ## type (15/15)
 
 | Test | Status | Expected | Got |
@@ -362,6 +380,21 @@ _Generated: 2026-05-07_
 | sequential? | pass | `true` | `true` |
 | associative? | pass | `true` | `true` |
 | counted? | pass | `true` | `true` |
+
+## unchecked (10/10)
+
+| Test | Status | Expected | Got |
+|---|---|---|---|
+| add | pass | `3` | `3` |
+| subtract | pass | `7` | `7` |
+| multiply | pass | `12` | `12` |
+| inc | pass | `6` | `6` |
+| dec | pass | `4` | `4` |
+| negate | pass | `-5` | `-5` |
+| int-array | pass | `3` | `3` |
+| int-array-init | pass | `20` | `20` |
+| aget | pass | `20` | `20` |
+| alength | pass | `3` | `3` |
 
 ## vector (13/13)
 
