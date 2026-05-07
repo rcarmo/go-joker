@@ -127,6 +127,9 @@ func (r *IntRange) reduceFast(f Callable) (Object, bool) {
 }
 
 func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
+	if result, ok := r.reduceMapAssocSquareFast(f, init); ok {
+		return result, true
+	}
 	name := hotReducerName(f)
 	switch acc := init.(type) {
 	case Int:
@@ -189,6 +192,59 @@ func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
 		}
 	}
 	return nil, false
+}
+
+func (r *IntRange) reduceMapAssocSquareFast(f Callable, init Object) (Object, bool) {
+	fn, ok := f.(*Fn)
+	if !ok || fn == nil || fn.fnExpr == nil || len(fn.fnExpr.arities) != 1 || fn.fnExpr.variadic != nil {
+		return nil, false
+	}
+	m, ok := init.(Map)
+	if !ok {
+		return nil, false
+	}
+	arity := fn.fnExpr.arities[0]
+	if len(arity.args) != 2 || len(arity.body) != 1 {
+		return nil, false
+	}
+	pf := guessFnParamFrame(arity.body, 2)
+	if pf < 0 {
+		pf = 1
+	}
+	call, ok := arity.body[0].(*CallExpr)
+	if !ok || len(call.args) != 3 {
+		return nil, false
+	}
+	vref, ok := call.callable.(*VarRefExpr)
+	if !ok || coreVarToProcName(vref.vr) != "procAssoc" {
+		return nil, false
+	}
+	base, ok := call.args[0].(*BindingExpr)
+	if !ok || base.binding.frame != pf || base.binding.index != 0 {
+		return nil, false
+	}
+	key, ok := call.args[1].(*BindingExpr)
+	if !ok || key.binding.frame != pf || key.binding.index != 1 {
+		return nil, false
+	}
+	mul, ok := call.args[2].(*CallExpr)
+	if !ok || len(mul.args) != 2 {
+		return nil, false
+	}
+	mulRef, ok := mul.callable.(*VarRefExpr)
+	if !ok || coreVarToProcName(mulRef.vr) != "procMultiply" {
+		return nil, false
+	}
+	lhs, lok := mul.args[0].(*BindingExpr)
+	rhs, rok := mul.args[1].(*BindingExpr)
+	if !lok || !rok || lhs.binding.frame != pf || rhs.binding.frame != pf || lhs.binding.index != 1 || rhs.binding.index != 1 {
+		return nil, false
+	}
+	tm := MapToTransient(m)
+	for i := r.start; r.contains(i); i += r.step {
+		tm.AssocInPlace(Int{I: i}, Int{I: i * i})
+	}
+	return tm.ToPersistent(), true
 }
 
 func hotReducerName(f Callable) string {
