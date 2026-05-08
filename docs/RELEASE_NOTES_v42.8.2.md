@@ -92,25 +92,25 @@ Current documented best-Joker cross-runtime results include:
 
 | Benchmark | Joker | Python | Bun/JSC | Goja | let-go | Winner |
 |---|---:|---:|---:|---:|---:|---|
-| arithmetic-loop | 0.257ms | 5.32ms | 0.290ms | 14.9ms | 10.2ms | Joker |
-| recursive-fib | 0.942ms | 14.9ms | 0.900ms | 67.5ms | 33.2ms | Bun/JSC |
-| tail-recursive-sum | 0.058ms | 4.25ms | 0.200ms | 10.8ms | 6.98ms | Joker |
-| map-update-loop | 0.002ms | 0.240ms | 0.100ms | 1.57ms | 2.67ms | Joker |
-| word-frequency | 0.329ms | 0.370ms | 0.110ms | 1.25ms | 24.6ms | Bun/JSC |
-| nbody | 0.005ms | 0.380ms | 0.200ms | 4.71ms | 2.03ms | Joker |
-| spectral-norm | 0.103ms | 12.5ms | 0.730ms | 54.2ms | 33.0ms | Joker |
-| binary-trees | 3.96ms | 29.8ms | 5.24ms | 131.4ms | 114.4ms | Joker |
-| fannkuch | 0.206ms | 3.01ms | 0.390ms | 16.9ms | 12.3ms | Joker |
-| mandelbrot | 0.083ms | 2.40ms | 0.290ms | 25.8ms | 12.7ms | Joker |
-| fasta | 0.047ms | 0.080ms | 0.020ms | 0.380ms | 0.290ms | Bun/JSC |
-| knucleotide | 0.008ms | 0.030ms | 0.050ms | 0.410ms | 0.420ms | Joker |
-| reverse-complement | 0.001ms | 0.010ms | 0.020ms | 0.090ms | 0.130ms | Joker |
-| regex-redux | 0.068ms | 0.090ms | 0.060ms | 0.080ms | 0.160ms | Bun/JSC |
-| pidigits | 0.020ms | 0.050ms | 0.020ms | 0.110ms | 0.210ms | Bun/JSC |
+| arithmetic-loop | 0.308ms | 8.39ms | 0.270ms | 19.2ms | 14.7ms | Bun/JSC |
+| recursive-fib | 1.22ms | 24.3ms | 1.09ms | 80.4ms | 51.4ms | Bun/JSC |
+| tail-recursive-sum | 0.077ms | 8.81ms | 0.260ms | 14.7ms | 7.80ms | Joker |
+| map-update-loop | 0.002ms | 0.250ms | 0.110ms | 1.66ms | 2.91ms | Joker |
+| word-frequency | 0.533ms | 0.460ms | 0.210ms | 3.51ms | 25.3ms | Bun/JSC |
+| nbody | 0.006ms | 0.710ms | 0.210ms | 6.27ms | 4.84ms | Joker |
+| spectral-norm | 0.136ms | 20.4ms | 0.620ms | 86.0ms | 54.3ms | Joker |
+| binary-trees | 4.24ms | 47.1ms | 5.78ms | 166.3ms | 120.5ms | Joker |
+| fannkuch | 0.244ms | 2.09ms | 0.480ms | 16.8ms | 14.2ms | Joker |
+| mandelbrot | 0.116ms | 2.74ms | 0.370ms | 33.3ms | 14.2ms | Joker |
+| fasta | 0.139ms | 0.070ms | 0.030ms | 0.530ms | 0.240ms | Bun/JSC |
+| knucleotide | 0.008ms | 0.030ms | 0.050ms | 0.470ms | 0.450ms | Joker |
+| reverse-complement | 0.001ms | 0.010ms | 0.020ms | 0.080ms | 0.070ms | Joker |
+| regex-redux | 0.068ms | 0.120ms | 0.080ms | 0.170ms | 0.100ms | Joker |
+| pidigits | 0.047ms | 0.060ms | 0.020ms | 0.180ms | 0.310ms | Bun/JSC |
 
 Score against the non-Joker runtimes in this displayed track:
 
-- Joker beats Python on 15/15 workloads.
+- Joker beats Python on 13/15 workloads.
 - Joker beats Goja on 15/15 workloads.
 - Joker beats let-go on 15/15 workloads.
 
@@ -118,15 +118,15 @@ The separate let-go suite parity report remains intentionally distinct from the 
 
 | Benchmark | let-go | go-joker | Winner |
 |---|---:|---:|---|
-| fib | 2478.3ms | 1780.9ms | go-joker |
-| loop-recur | 87.2ms | 7.59ms | go-joker |
-| map-filter | 3.91ms | 5.99ms | let-go |
-| persistent-map | 16.5ms | 17.8ms | let-go |
-| reduce | 107.8ms | 6.07ms | go-joker |
-| tak | 3265.3ms | 2530.7ms | go-joker |
-| transducers | 4.03ms | 5.95ms | let-go |
+| fib | 1934.9ms | 1269.6ms | go-joker |
+| loop-recur | 73.8ms | 8.70ms | go-joker |
+| map-filter | 5.37ms | 7.48ms | let-go |
+| persistent-map | 29.9ms | 26.2ms | go-joker |
+| reduce | 109.1ms | 7.81ms | go-joker |
+| tak | 2804.1ms | 2547.6ms | go-joker |
+| transducers | 3.15ms | 5.40ms | let-go |
 
-Score: go-joker wins 4/7 in the mirrored let-go benchmark suite. The remaining gaps are `map-filter`, `transducers`, and near-parity `persistent-map`.
+Score: go-joker wins 5/7 in the mirrored let-go benchmark suite. The remaining gaps are `map-filter` and `transducers`.
 
 ## Upstream Joker features ported
 
@@ -171,6 +171,8 @@ The release includes documentation refreshes and coverage guardrails to keep pub
   - best-Joker/runtime-idiomatic benchmarks
 
 ## CI and validation fixes
+
+After the release notes were first published, the benchmark validation follow-up was completed: `core/benchmark_results_test.go` now asserts representative portable, micro, and best-Joker/native helper outputs. This pins benchmark semantics independently of timing numbers and catches drift in native helper variants.
 
 During the release validation pass, a parity regression was found and fixed:
 
@@ -232,10 +234,10 @@ Observed results:
 - `69ed932` — `bench: complete best-joker gap variants`
 - `ecc1c73` — `upstream: port latest joker runtime features`
 - `3c58585` — `release: bump to v42.8.2`
+- `b5de548` — `ci: relax fib10 benchmark threshold`
 
 ## Known follow-ups
 
-- Add explicit benchmark-result validation tests for portable and best-Joker/native helper variants before relying on future performance claims.
 - Continue tracking upstream `candid82/joker` feature commits selectively.
 - Keep static analysis scoped to avoid noise from generated files.
 - Continue investigating remaining let-go suite gaps:

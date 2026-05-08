@@ -18,14 +18,15 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 | What | Result |
 |------|--------|
-| **Mandelbrot** | **~0.083 ms** best-Joker path — ~29× faster than Python (~2.40 ms) |
-| **N-body** | **~0.005 ms** best-Joker path — ~76× faster than Python and ~400× faster than let-go |
-| **Fannkuch** | **~0.206 ms** best-Joker path — ~15× faster than Python |
-| **Binary trees** | **~3.96 ms** best-Joker path — beats Python (~29.8 ms), Bun/JSC (~5.24 ms), Goja, and let-go |
-| **Pidigits** | **~0.020 ms** — on par with Bun/JSC and faster than Python, Goja, and let-go |
-| **Arithmetic loop** | **~0.257 ms** — faster than Bun/JSC, Goja, Python, and let-go |
-| **Best-Joker suite** | beats Python, Goja, and let-go on **15/15** displayed cross-runtime workloads |
-| **let-go suite** | wins 4/7 let-go suite workloads (reduce 17.8×, loop-recur 11.5×, fib 1.4×, tak 1.3×) |
+| **Mandelbrot** | **~0.116 ms** best-Joker path — ~24× faster than Python (~2.74 ms) |
+| **N-body** | **~0.006 ms** best-Joker path — ~118× faster than Python and ~807× faster than let-go |
+| **Fannkuch** | **~0.244 ms** best-Joker path — ~8.6× faster than Python |
+| **Binary trees** | **~4.24 ms** best-Joker path — beats Python (~47.1 ms), Bun/JSC (~5.78 ms), Goja, and let-go |
+| **Pidigits** | **~0.047 ms** — faster than Python, Goja, and let-go |
+| **Arithmetic loop** | **~0.308 ms** — faster than Goja, Python, and let-go; Bun/JSC edges this run |
+| **Benchmark validation** | portable, micro, and best-Joker/native helper outputs are pinned in `core/benchmark_results_test.go` |
+| **Best-Joker suite** | beats Python on **13/15**, Goja on **15/15**, and let-go on **15/15** displayed workloads |
+| **let-go suite** | wins 5/7 let-go suite workloads (reduce 14.0×, loop-recur 8.5×, fib 1.5×, tak 1.1×, persistent-map 1.1×) |
 | **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
 | **Concurrency** | GIL-free — true parallel goroutines, futures, promises, agents, pmap |
 | **Namespaces** | 28 namespaces including `joker.random`, `joker.log`, HTTP router |
