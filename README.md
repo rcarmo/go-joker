@@ -27,8 +27,10 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 | **Allocations** | **51% fewer** across all benchmarks (Int/Double 8-byte structs) |
 | **Beat Python** | 7/13 CLBG benchmarks |
 | **Beat Goja** | 12/13 CLBG benchmarks |
-| **Beat let-go** | 14/15 cross-language benchmarks, 5/7 let-go suite (reduce 13.4×, loop-recur 15.6×, fib 5.6×, tak 4.3×) |
+| **Beat let-go** | 14/15 cross-language benchmarks, 4/7 let-go suite (reduce 16.2×, loop-recur 11.4×, fib 6.1×, tak 6.0×) |
 | **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
+| **Concurrency** | GIL-free — true parallel goroutines, futures, promises, agents, pmap |
+| **Namespaces** | 28 namespaces including `joker.random`, `joker.log`, HTTP router |
 
 ## What's different from upstream Joker
 
@@ -62,10 +64,16 @@ Numeric operations, binding resolution, and function dispatch all have type-spec
 ### Runtime introspection (`joker.runtime`)
 Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze`, `wasm-diagnostic`, `escape-analysis`, `profile`, `benchmark`, `mem-stats`, `gc`.
 
+### GIL-free concurrency
+The Global Interpreter Lock has been removed. Goroutines run in true parallel on Go scheduler threads. Immutable data structures need no coordination. Atoms use per-atom mutexes. Concurrency primitives: `alts!`, `timeout`, `future`, `promise`, `agent`, `pmap`, `pcalls`.
+
 ### Additional namespaces
 - `joker.imaging` — image processing (resize, crop, blur, overlay) via pure Go
 - `joker.svg` — SVG generation + raster rendering
 - `joker.pdf` — PDF document generation
+- `joker.random` — random numbers (int, float, choice, shuffle, uuid, secure-bytes)
+- `joker.log` — leveled logging (debug, info, warn, error)
+- `joker.http.router` — Bottle-style HTTP routing with path params, middleware, CORS
 
 ### Clojure parity surface now implemented
 - Protocols: public `defprotocol`, `extend-type`, `extend-protocol`, `satisfies?`, protocol method dispatch
@@ -122,7 +130,7 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 
 ## Upstream
 
-Based on [candid82/joker](https://github.com/candid82/joker) v1.7.1.  
+Based on [candid82/joker](https://github.com/candid82/joker) v1.7.1. This fork is v1.8.0.  
 Original README preserved as [`ORIGINAL_README.md`](ORIGINAL_README.md).
 
 ## Why v42?

@@ -116,15 +116,15 @@ Direct head-to-head against [let-go](https://github.com/nooga/let-go)'s benchmar
 
 | Benchmark | let-go | go-joker | Winner |
 |---|---:|---:|---|
-| fib | 1881.2ms | 336.1ms | **go-joker** (5.6×) |
-| loop-recur | 105.8ms | 6.79ms | **go-joker** (15.6×) |
-| map-filter | 3.80ms | 5.59ms | let-go (1.5×) |
-| persistent-map | 23.3ms | 16.2ms | **go-joker** (1.4×) |
-| reduce | 71.4ms | 5.31ms | **go-joker** (13.4×) |
-| tak | 2017.1ms | 470.4ms | **go-joker** (4.3×) |
-| transducers | 3.13ms | 4.88ms | let-go (1.6×) |
+| fib | 3124.6ms | 511.2ms | **go-joker** (6.1×) |
+| loop-recur | 87.1ms | 7.61ms | **go-joker** (11.4×) |
+| map-filter | 3.80ms | 5.72ms | let-go (1.5×) |
+| persistent-map | 17.5ms | 18.5ms | let-go (1.06×) |
+| reduce | 107.3ms | 6.61ms | **go-joker** (16.2×) |
+| tak | 3497.5ms | 579.6ms | **go-joker** (6.0×) |
+| transducers | 4.20ms | 7.02ms | let-go (1.7×) |
 
-**go-joker wins 5/7; remaining gaps are map-filter and transducers, both narrowed to ~1.5–1.6×.**
+**go-joker wins 4/7; remaining gaps are map-filter (~1.5×), transducers (~1.7×), and persistent-map (near parity).**
 
 For detailed analysis see [`docs/PARITY_STATUS.md`](../docs/PARITY_STATUS.md).
 
