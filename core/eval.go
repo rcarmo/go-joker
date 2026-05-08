@@ -28,12 +28,6 @@ type (
 
 var RT *Runtime = &Runtime{}
 
-// clone captures the current goroutine's callstack/expr for error snapshots.
-func (rt *Runtime) clone() *Runtime {
-	// Return a snapshot struct compatible with EvalError formatting.
-	return rt
-}
-
 // cloneGRT captures a snapshot of current goroutine state for error reporting.
 func cloneGRT() *goroutineRT {
 	grt := currentGRT()
@@ -133,9 +127,10 @@ func Eval(expr Expr, env *LocalEnv) Object {
 	case *VarRefExpr:
 		return expr.vr.Resolve()
 	}
-	parentExpr := mainRT.currentExpr
-	mainRT.currentExpr = expr
-	defer func() { mainRT.currentExpr = parentExpr }()
+	grt := currentGRT()
+	parentExpr := grt.currentExpr
+	grt.currentExpr = expr
+	defer restoreCurrentExpr(parentExpr)
 	switch expr := expr.(type) {
 	case *IfExpr:
 		switch cond := Eval(expr.cond, env).(type) {

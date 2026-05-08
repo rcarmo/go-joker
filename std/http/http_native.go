@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 
 	. "github.com/candid82/joker/core"
 	ws "github.com/gorilla/websocket"
@@ -204,11 +205,16 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 	}
 	defer conn.Close()
 
+	var writeMu sync.Mutex
+
 	// Build send-fn: (fn [msg]) sends a text message
 	sendFn := Proc{Name: "ws-send", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		msg := args[0].ToString(false)
-		if err := conn.WriteMessage(ws.TextMessage, []byte(msg)); err != nil {
+		writeMu.Lock()
+		err := conn.WriteMessage(ws.TextMessage, []byte(msg))
+		writeMu.Unlock()
+		if err != nil {
 			panic(RT.NewError("websocket send error: " + err.Error()))
 		}
 		return NIL
@@ -269,8 +275,19 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
 		h := EnsureObjectIsMap(headers, "stream headers: %s")
 		for iter := h.Iter(); iter.HasNext(); {
 			p := iter.Next()
-			header.Set(EnsureObjectIsString(p.Key, "header name: %s").S,
-				EnsureObjectIsString(p.Value, "header value: %s").S)
+			hname := EnsureObjectIsString(p.Key, "header name: %s").S
+			switch pvalue := p.Value.(type) {
+			case String:
+				header.Add(hname, pvalue.S)
+			case Seqable:
+				s := pvalue.Seq()
+				for !s.IsEmpty() {
+					header.Add(hname, EnsureObjectIsString(s.First(), "header value: %s").S)
+					s = s.Rest()
+				}
+			default:
+				panic(RT.NewError("stream header value must be a string or a seq of strings"))
+			}
 		}
 	}
 

@@ -152,16 +152,27 @@ func installConcurrencyExt() {
 		}
 		results := make([]Object, len(elems))
 		done := make(chan int, len(elems))
+		panicCh := make(chan interface{}, len(elems))
 		for i, elem := range elems {
 			go func(idx int, val Object) {
 				registerGoroutineRT()
 				defer unregisterGoroutineRT()
+				defer func() {
+					if r := recover(); r != nil {
+						panicCh <- r
+					}
+					done <- idx
+				}()
 				results[idx] = call1(f, val)
-				done <- idx
 			}(i, elem)
 		}
 		for range elems {
 			<-done
+		}
+		select {
+		case r := <-panicCh:
+			panic(r)
+		default:
 		}
 		return NewListFrom(results...)
 	}}
@@ -176,17 +187,28 @@ func installConcurrencyExt() {
 		}
 		results := make([]Object, len(args))
 		done := make(chan int, len(args))
+		panicCh := make(chan interface{}, len(args))
 		for i, arg := range args {
 			f := EnsureObjectIsCallable(arg, "pcalls requires callable arguments")
 			go func(idx int, fn Callable) {
 				registerGoroutineRT()
 				defer unregisterGoroutineRT()
+				defer func() {
+					if r := recover(); r != nil {
+						panicCh <- r
+					}
+					done <- idx
+				}()
 				results[idx] = call0(fn)
-				done <- idx
 			}(i, f)
 		}
 		for range args {
 			<-done
+		}
+		select {
+		case r := <-panicCh:
+			panic(r)
+		default:
 		}
 		return NewListFrom(results...)
 	}}
@@ -232,6 +254,10 @@ func procAlts(args []Object) Object {
 			// Check if it's a vector-like [channel value] for put.
 			if ci, ok := item.(CountedIndexed); ok && ci.Count() == 2 {
 				ch := EnsureObjectIsChannel(ci.At(0), "alts! put port first element must be a channel")
+				if ch.isClosed {
+					// Clojure-like semantics: put on closed channel returns false immediately.
+					return NewVectorFrom(MakeBoolean(false), ch)
+				}
 				val := ci.At(1)
 				cases = append(cases, reflect.SelectCase{
 					Dir:  reflect.SelectSend,
@@ -259,7 +285,7 @@ func procAlts(args []Object) Object {
 
 	// Default case.
 	if hasDefault && chosen == len(cases)-1 {
-		return NewVectorFrom(defaultVal, NIL)
+		return NewVectorFrom(defaultVal, MakeKeyword("default"))
 	}
 
 	info := infos[chosen]
@@ -357,12 +383,10 @@ func init() {
 // Agent holds mutable state that is updated asynchronously via send/send-off.
 type Agent struct {
 	MetaHolder
-	mu       sync.Mutex
-	value    Object
-	queue    chan agentAction
-	errMode  Keyword // :continue or :fail (default :continue)
-	err      Error
-	shutdown chan struct{}
+	mu    sync.Mutex
+	value Object
+	queue chan agentAction
+	err   Error
 }
 
 type agentAction struct {
@@ -372,10 +396,8 @@ type agentAction struct {
 
 func newAgent(initVal Object) *Agent {
 	a := &Agent{
-		value:    initVal,
-		queue:    make(chan agentAction, 256),
-		errMode:  MakeKeyword("continue"),
-		shutdown: make(chan struct{}),
+		value: initVal,
+		queue: make(chan agentAction, 256),
 	}
 	go a.processLoop()
 	return a
@@ -384,25 +406,20 @@ func newAgent(initVal Object) *Agent {
 func (a *Agent) processLoop() {
 	registerGoroutineRT()
 	defer unregisterGoroutineRT()
-	for {
-		select {
-		case action := <-a.queue:
-			a.mu.Lock()
-			func() {
-				defer func() {
-					if r := recover(); r != nil {
-						if e, ok := r.(Error); ok {
-							a.err = e
-						}
+	for action := range a.queue {
+		a.mu.Lock()
+		func() {
+			defer func() {
+				if r := recover(); r != nil {
+					if e, ok := r.(Error); ok {
+						a.err = e
 					}
-				}()
-				args := append([]Object{a.value}, action.args...)
-				a.value = action.fn.Call(args)
+				}
 			}()
-			a.mu.Unlock()
-		case <-a.shutdown:
-			return
-		}
+			args := append([]Object{a.value}, action.args...)
+			a.value = action.fn.Call(args)
+		}()
+		a.mu.Unlock()
 	}
 }
 
@@ -504,7 +521,10 @@ func installAgentExt() {
 		if e == nil {
 			return NIL
 		}
-		return e.(*EvalError)
+		if eo, ok := e.(Object); ok {
+			return eo
+		}
+		return MakeString(e.Error())
 	}}
 	referToUser(MakeSymbol("agent-error"), aeVr)
 }

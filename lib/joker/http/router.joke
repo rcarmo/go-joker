@@ -20,6 +20,8 @@
     
     (joker.http/start-server \"localhost:8080\" app)")
 
+(require 'joker.string)
+
 ;;────────────────────────────────────────────────────────────
 ;; PATH MATCHING
 ;;────────────────────────────────────────────────────────────
@@ -91,12 +93,12 @@
    Returns 404 if no route matches."
   [routes]
   (fn [request]
-    (let [uri    (:uri request)
-          method (:request-method request)]
+    (let [uri        (:uri request)
+          req-method (:request-method request)]
       (or
         (some
-          (fn [{:keys [method pattern handler] :as route}]
-            (when (or (= (:method route) :any) (= (:method route) method))
+          (fn [{:keys [method pattern handler]}]
+            (when (or (= method :any) (= method req-method))
               (when-let [params (match-path pattern uri)]
                 (handler (assoc request :path-params params)))))
           routes)
@@ -142,10 +144,9 @@
   [handler]
   (fn [request]
     (let [resp (handler request)]
-      (binding [*err* *err*]
-        (println (str (:request-method request) " "
-                      (:uri request) " → "
-                      (:status resp 200))))
+      (println (str (:request-method request) " "
+                    (:uri request) " → "
+                    (:status resp 200)))
       resp)))
 
 (defn wrap-content-type
