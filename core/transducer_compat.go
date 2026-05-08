@@ -22,9 +22,10 @@ const (
 )
 
 type xformStep struct {
-	kind xformKind
-	fn   Callable
-	n    int
+	kind      xformKind
+	intrinsic reducibleIntrinsic
+	fn        Callable
+	n         int
 }
 
 // XForm is an internal transducer pipeline representation.
@@ -154,6 +155,9 @@ func transduceInternal(xform Callable, reducingFnObj Object, init Object, collOb
 
 func transducePipeline(xf *XForm, reducingFnObj Object, init Object, collObj Object) Object {
 	rf := EnsureObjectIsCallable(reducingFnObj, "transduce reducing function must be Callable, got %s")
+	if r, ok := collObj.(*IntRange); ok {
+		return transducePipelineRange(xf, rf, init, r)
+	}
 	s := EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be Seqable, got %s").Seq()
 	res := init
 	reducerName := hotReducerName(rf)
@@ -171,9 +175,9 @@ func transducePipeline(xf *XForm, reducingFnObj Object, init Object, collObj Obj
 		for _, step := range xf.steps {
 			switch step.kind {
 			case xformMap:
-				val = call1(step.fn, val)
+				val = applyXFormMapStep(step, val)
 			case xformFilter:
-				if !ToBool(call1(step.fn, val)) {
+				if !applyXFormFilterStep(step, val) {
 					include = false
 				}
 			case xformTake:
@@ -204,6 +208,74 @@ func transducePipeline(xf *XForm, reducingFnObj Object, init Object, collObj Obj
 	return completeReducingFn(rf, res)
 }
 
+func transducePipelineRange(xf *XForm, rf Callable, init Object, r *IntRange) Object {
+	res := init
+	reducerName := hotReducerName(rf)
+	takeRemaining := -1
+	for _, step := range xf.steps {
+		if step.kind == xformTake {
+			takeRemaining = step.n
+			break
+		}
+	}
+	for i := r.start; r.contains(i); i += r.step {
+		val := Object(Int{I: i})
+		include := true
+		stopAfter := false
+		for _, step := range xf.steps {
+			switch step.kind {
+			case xformMap:
+				val = applyXFormMapStep(step, val)
+			case xformFilter:
+				if !applyXFormFilterStep(step, val) {
+					include = false
+				}
+			case xformTake:
+				if takeRemaining <= 0 {
+					return completeReducingFn(rf, res)
+				}
+				takeRemaining--
+				if takeRemaining == 0 {
+					stopAfter = true
+				}
+			}
+			if !include {
+				break
+			}
+		}
+		if include {
+			step := reduceStepFastByName(rf, reducerName, res, val)
+			if IsReduced(step) {
+				return completeReducingFn(rf, DerefReduced(step))
+			}
+			res = step
+			if stopAfter {
+				return completeReducingFn(rf, res)
+			}
+		}
+	}
+	return completeReducingFn(rf, res)
+}
+
+func applyXFormMapStep(step xformStep, val Object) Object {
+	if step.intrinsic == reducibleSquareInt {
+		if iv, ok := val.(Int); ok {
+			return Int{I: iv.I * iv.I}
+		}
+	}
+	return call1(step.fn, val)
+}
+
+func applyXFormFilterStep(step xformStep, val Object) bool {
+	if step.intrinsic == reducibleEvenInt {
+		if iv, ok := val.(Int); ok {
+			return iv.I%2 == 0
+		}
+		return false
+	}
+	return ToBool(call1(step.fn, val))
+}
+
 func reduceStepFast(rf Callable, acc Object, val Object) Object {
 	return reduceStepFastByName(rf, hotReducerName(rf), acc, val)
 }
@@ -227,11 +299,19 @@ func reduceStepFastByName(rf Callable, name string, acc Object, val Object) Obje
 }
 
 func makeMapTransducer(f Callable) Object {
-	return &XForm{steps: []xformStep{{kind: xformMap, fn: f}}}
+	step := xformStep{kind: xformMap, fn: f}
+	if fn, ok := f.(*Fn); ok && isSquareFnExpr(fn.fnExpr) {
+		step.intrinsic = reducibleSquareInt
+	}
+	return &XForm{steps: []xformStep{step}}
 }
 
 func makeFilterTransducer(pred Callable) Object {
-	return &XForm{steps: []xformStep{{kind: xformFilter, fn: pred}}}
+	step := xformStep{kind: xformFilter, fn: pred}
+	if findFnVarNameCallable(pred) == "even?" {
+		step.intrinsic = reducibleEvenInt
+	}
+	return &XForm{steps: []xformStep{step}}
 }
 
 func makeTakeTransducer(n int) Object {

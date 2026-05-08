@@ -282,6 +282,16 @@ func hotReducerName(f Callable) string {
 	return ""
 }
 
+func findFnVarNameCallable(c Callable) string {
+	switch f := c.(type) {
+	case *Fn:
+		return findFnVarName(f)
+	case *Var:
+		return f.name.ToString(false)
+	}
+	return ""
+}
+
 func findFnVarName(fn *Fn) string {
 	if fn != nil && fn.defVar != nil {
 		return fn.defVar.name.ToString(false)
