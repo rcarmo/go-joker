@@ -310,6 +310,8 @@ var parityTests = []PTest{
 	{"tagged", "inst-parse", `(string? (str #inst "2024-01-15T10:30:00Z"))`, "true"},
 	{"tagged", "uuid-parse", `#uuid "550e8400-e29b-41d4-a716-446655440000"`, "550e8400-e29b-41d4-a716-446655440000"},
 	{"tagged", "data-readers", "(map? default-data-readers)", "true"},
+	{"tagged", "custom-data-reader", "(do (var-set (var *data-readers*) (assoc *data-readers* 'foo (fn [v] (+ v 1)))) (read-string \"#foo 41\"))", "42"},
+	{"tagged", "default-data-reader-fn", "(do (var-set (var *default-data-reader-fn*) (fn [tag val] val)) (read-string \"#bar 42\"))", "42"},
 
 	// --- Hierarchy ---
 	{"hierarchy", "isa?-same", "(isa? :x :x)", "true"},

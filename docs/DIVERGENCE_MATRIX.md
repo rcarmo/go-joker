@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-08_
 
-**267/267 pass** (100%), 0 fail, 0 error
+**269/269 pass** (100%), 0 fail, 0 error
 
 ## api (5/5)
 
@@ -341,13 +341,15 @@ _Generated: 2026-05-08_
 | char | pass | `A` | `A` |
 | int-char | pass | `65` | `65` |
 
-## tagged (3/3)
+## tagged (5/5)
 
 | Test | Status | Expected | Got |
 |---|---|---|---|
 | inst-parse | pass | `true` | `true` |
 | uuid-parse | pass | `550e8400-e29b-41d4-a716-446655440000` | `550e8400-e29b-41d4-a716-446655440000` |
 | data-readers | pass | `true` | `true` |
+| custom-data-reader | pass | `42` | `42` |
+| default-data-reader-fn | pass | `42` | `42` |
 
 ## transducer (4/4)
 

@@ -70,4 +70,21 @@ func registerTaggedLiterals() {
 	}
 	dataReadersVr.Value = m
 	referToUser(MakeSymbol("*data-readers*"), dataReadersVr)
+
+	// Clojure-compatible fallback hook. If non-nil, called as (f tag value)
+	// when a reader tag is not present in *data-readers* or default-data-readers.
+	fallbackVr := ns.Resolve("*default-data-reader-fn*")
+	if fallbackVr == nil {
+		fallbackVr = ns.Intern(MakeSymbol("*default-data-reader-fn*"))
+	}
+	fallbackVr.Value = NIL
+	referToUser(MakeSymbol("*default-data-reader-fn*"), fallbackVr)
+
+	// Convenience alias used by some lightweight compatibility tests/docs.
+	fallbackAliasVr := ns.Resolve("default-data-reader-fn")
+	if fallbackAliasVr == nil {
+		fallbackAliasVr = ns.Intern(MakeSymbol("default-data-reader-fn"))
+	}
+	fallbackAliasVr.Value = fallbackVr
+	referToUser(MakeSymbol("default-data-reader-fn"), fallbackAliasVr)
 }

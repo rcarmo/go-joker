@@ -1134,16 +1134,45 @@ func filename(f *string) string {
 }
 
 func handleNoReaderError(reader *Reader, s Symbol) Object {
+	return handleNoReaderErrorValue(reader, s, readFirst(reader))
+}
+
+func handleNoReaderErrorValue(reader *Reader, s Symbol, value Object) Object {
 	if SUPPRESS_READ {
-		return readFirst(reader)
+		return value
 	}
 	if LINTER_MODE {
 		if DIALECT != EDN {
 			printReadWarning(reader, "No reader function for tag "+s.ToString(false))
 		}
-		return readFirst(reader)
+		return value
 	}
 	panic(MakeReadError(reader, "No reader function for tag "+s.ToString(false)))
+}
+
+func lookupDataReader(s Symbol) (Object, bool) {
+	for _, name := range []string{"*data-readers*", "default-data-readers"} {
+		vr := GLOBAL_ENV.CoreNamespace.Resolve(name)
+		if vr == nil {
+			continue
+		}
+		readersMap, ok := vr.Value.(Map)
+		if !ok {
+			continue
+		}
+		if ok, readFunc := readersMap.Get(s); ok {
+			return readFunc, true
+		}
+	}
+	return nil, false
+}
+
+func lookupDefaultDataReaderFn() (Callable, bool) {
+	vr := GLOBAL_ENV.CoreNamespace.Resolve("*default-data-reader-fn*")
+	if vr == nil || vr.Value == nil || IsNil(vr.Value) {
+		return nil, false
+	}
+	return EnsureObjectIsCallable(vr.Value, "*default-data-reader-fn* must be callable, got %s"), true
 }
 
 func readTagged(reader *Reader) Object {
@@ -1155,19 +1184,14 @@ func readTagged(reader *Reader) Object {
 	}
 	switch s := obj.(type) {
 	case Symbol:
-		readersVar, ok := GLOBAL_ENV.CoreNamespace.mappings[SYMBOLS.defaultDataReaders.name]
-		if !ok {
-			return handleNoReaderError(reader, s)
+		value := readFirst(reader)
+		if readFunc, ok := lookupDataReader(s); ok {
+			return call1(EnsureObjectIsCallable(readFunc, "data reader must be callable, got %s"), value)
 		}
-		readersMap, ok := readersVar.Value.(Map)
-		if !ok {
-			return handleNoReaderError(reader, s)
+		if fallback, ok := lookupDefaultDataReaderFn(); ok {
+			return call2(fallback, s, value)
 		}
-		ok, readFunc := readersMap.Get(s)
-		if !ok {
-			return handleNoReaderError(reader, s)
-		}
-		return call1(EnsureObjectIsVar(readFunc, ""), readFirst(reader))
+		return handleNoReaderErrorValue(reader, s, value)
 	default:
 		panic(MakeReadError(reader, "Reader tag must be a symbol"))
 	}
