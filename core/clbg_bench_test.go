@@ -61,6 +61,16 @@ func BenchmarkCLBGBinaryTrees(b *testing.B) {
 	}
 }
 
+func BenchmarkCLBGBinaryTreesParallel(b *testing.B) {
+	clbgInit()
+	expr := compileBenchExpr(b, binaryTreesParallelScript)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
+
 // n-body: simulate 5 bodies for 1000 steps, return final energy.
 // Scaled down from CLBG's 50M steps for benchmark harness practicality.
 const nbodyScript = `
@@ -220,4 +230,23 @@ const binaryTreesScript = `
                       c
                       (recur (+ i 1) (+ c (check-tree (make-tree d))))))]
         (recur (+ d 1) (+ total check))))))
+`
+
+const binaryTreesParallelScript = `
+(letfn [(make-tree [depth]
+          (if (= depth 0)
+            [:leaf]
+            (let [d (- depth 1)]
+              [:node (make-tree d) (make-tree d)])))
+        (check-tree [tree]
+          (if (= (first tree) :leaf)
+            1
+            (+ 1 (+ (check-tree (nth tree 1)) (check-tree (nth tree 2))))))
+        (depth-check [d]
+          (let [iterations (loop [i 0 n 1] (if (= i (- 14 d)) n (recur (+ i 1) (* n 2))))]
+            (loop [i 0 c 0]
+              (if (= i iterations)
+                c
+                (recur (+ i 1) (+ c (check-tree (make-tree d))))))))]
+  (reduce + 0 (pmap depth-check (range 4 15))))
 `

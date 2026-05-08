@@ -24,6 +24,33 @@
 
 **Beat Python: 7/13 | Beat Goja: 12/13**
 
+## Parallel benchmark variants
+
+Parallel variants are intentionally tracked separately from the single-threaded baseline benchmarks so language/runtime parity numbers remain comparable while still exposing multicore throughput.
+
+Run these with a fixed Go scheduler width:
+
+```bash
+GOMAXPROCS=4 TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
+  go test ./core -run '^$' -bench '^BenchmarkCLBGBinaryTrees$' -benchmem -benchtime=10x
+
+GOMAXPROCS=4 TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
+  go test ./core -run '^$' -bench '^BenchmarkCLBGBinaryTreesParallel$' -benchmem -benchtime=10x
+```
+
+Current audit results, run one benchmark per isolated `tmux` session with `GOMAXPROCS=4` on i7-12700:
+
+| Benchmark | Time | Allocated | Allocs | Notes |
+|---|---:|---:|---:|---|
+| `BenchmarkCLBGBinaryTrees` | 103.4ms/op | 38.8MB/op | 1,095,880/op | single-thread baseline |
+| `BenchmarkCLBGBinaryTreesParallel` | 53.6ms/op | 77.6MB/op | 2,191,973/op | `pmap` over independent tree depths; **1.93× faster** |
+
+Audit notes:
+
+- `binary-trees` is the best current concurrency win because each depth/iteration group is independent and coarse enough to amortize `pmap` overhead.
+- `mandelbrot` row-level parallelism and `spectral-norm` row-level parallelism were tested but rejected for now because their scaled-down benchmark sizes are too small; goroutine/list materialization overhead outweighed the work.
+- A `pcalls` variant of recursive `fib` was tested in isolation and rejected because it hangs when recursively invoking the same self-recursive function concurrently. Keep that out of the benchmark suite until the recursive function/concurrent-call interaction is fixed.
+
 ## Parser Benchmarks (Pure Implementations)
 
 Same recursive-descent algorithm in each language. No native/C library calls.
