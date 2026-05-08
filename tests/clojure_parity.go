@@ -288,6 +288,8 @@ var parityTests = []PTest{
 	{"protocol", "extend-dispatch", "(do (def P (__defprotocol 'P \"pfn\" 1)) (__extend-type P \"Int\" \"pfn\" (fn [x] (+ x 1))) (let [f (resolve 'pfn)] (f 41)))", "42"},
 	{"protocol", "satisfies?-true", "(do (def P (__defprotocol 'P \"bar\" 1)) (__extend-type P \"String\" \"bar\" (fn [s] s)) (satisfies? P \"x\"))", "true"},
 	{"protocol", "satisfies?-false", "(do (def P (__defprotocol 'P \"bar\" 1)) (satisfies? P :kw))", "false"},
+	{"protocol", "public-defprotocol", "(do (defprotocol PubP (pubfoo [this])) (extend-type String PubP (pubfoo [this] (str \"hi \" this))) (pubfoo \"x\"))", "hi x"},
+	{"protocol", "public-extend-protocol", "(do (defprotocol PubP2 (pubbar [this])) (extend-protocol PubP2 String (pubbar [this] (str \"s\" this)) Int (pubbar [this] (+ this 1))) (str (pubbar \"x\") \"/\" (pubbar 41)))", "sx/42"},
 
 	// --- Record parity ---
 	{"record", "defrecord-ctor", "(do (__defrecord 'R \"a\" \"b\") (:a (->R 1 2)))", "1"},
@@ -301,6 +303,8 @@ var parityTests = []PTest{
 	{"record", "record?-no", "(record? {})", "false"},
 	{"record", "map-ctor", "(do (__defrecord 'R \"x\" \"y\") (:x (map->R {:x 10 :y 20})))", "10"},
 	{"record", "dissoc-base", "(do (__defrecord 'R \"a\" \"b\") (map? (dissoc (->R 1 2) :a)))", "true"},
+	{"record", "public-defrecord", "(do (defrecord PubR [x y]) (:y (->PubR 1 2)))", "2"},
+	{"record", "public-defrecord-protocol", "(do (defprotocol RP (rv [this])) (defrecord RImpl [v] RP (rv [this] (:v this))) (rv (->RImpl 99)))", "99"},
 
 	// --- Tagged literals ---
 	{"tagged", "inst-parse", `(string? (str #inst "2024-01-15T10:30:00Z"))`, "true"},
@@ -396,7 +400,7 @@ func main() {
 
 	for _, t := range parityTests {
 		var cmd *exec.Cmd
-		if strings.Contains(t.Expr, "__defrecord") || strings.Contains(t.Expr, "__defprotocol") {
+		if strings.Contains(t.Expr, "__defrecord") || strings.Contains(t.Expr, "__defprotocol") || strings.Contains(t.Expr, "defprotocol") || strings.Contains(t.Expr, "defrecord") || strings.Contains(t.Expr, "extend-type") || strings.Contains(t.Expr, "extend-protocol") {
 			// Multi-form: write to temp file so each top-level form is parsed/evaled sequentially
 			// Strip outer (do ...) and make forms top-level, adding (println ...) around the last
 			inner := t.Expr

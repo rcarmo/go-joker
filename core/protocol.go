@@ -80,7 +80,7 @@ func typeNameOf(obj Object) string {
 	if obj == nil {
 		return "nil"
 	}
-	switch obj.(type) {
+	switch obj := obj.(type) {
 	case Nil:
 		return "nil"
 	case Int:
@@ -125,6 +125,8 @@ func typeNameOf(obj Object) string {
 		return "Fn"
 	case *Atom:
 		return "Atom"
+	case *Record:
+		return obj.rtype.name
 	default:
 		return obj.GetType().ToString(false)
 	}

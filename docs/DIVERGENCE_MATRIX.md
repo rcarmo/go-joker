@@ -1,8 +1,8 @@
 # Clojure parity divergence matrix
 
-_Generated: 2026-05-07_
+_Generated: 2026-05-08_
 
-**261/261 pass** (100%), 0 fail, 0 error
+**265/265 pass** (100%), 0 fail, 0 error
 
 ## api (5/5)
 
@@ -199,7 +199,7 @@ _Generated: 2026-05-07_
 | not-empty-nil | pass | `nil` | `nil` |
 | rand-int | pass | `true` | `true` |
 
-## protocol (4/4)
+## protocol (6/6)
 
 | Test | Status | Expected | Got |
 |---|---|---|---|
@@ -207,6 +207,8 @@ _Generated: 2026-05-07_
 | extend-dispatch | pass | `42` | `42` |
 | satisfies?-true | pass | `true` | `true` |
 | satisfies?-false | pass | `false` | `false` |
+| public-defprotocol | pass | `hi x` | `hi x` |
+| public-extend-protocol | pass | `sx/42` | `sx/42` |
 
 ## reader (28/28)
 
@@ -241,7 +243,7 @@ _Generated: 2026-05-07_
 | comment | pass | `3` | `3` |
 | nested-coll | pass | `42` | `42` |
 
-## record (11/11)
+## record (13/13)
 
 | Test | Status | Expected | Got |
 |---|---|---|---|
@@ -256,6 +258,8 @@ _Generated: 2026-05-07_
 | record?-no | pass | `false` | `false` |
 | map-ctor | pass | `10` | `10` |
 | dissoc-base | pass | `true` | `true` |
+| public-defrecord | pass | `2` | `2` |
+| public-defrecord-protocol | pass | `99` | `99` |
 
 ## regex (3/3)
 
