@@ -259,6 +259,14 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 // Response map can include :status and :headers (applied before streaming).
 // Default Content-Type is text/event-stream.
 func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
+	closeInfo := sseCloseInfo("completed", nil)
+	if ok, onClose := respMap.Get(MakeKeyword("on-close")); ok {
+		onCloseFn := EnsureObjectIsCallable(onClose, "stream on-close must be callable: %s")
+		defer func() {
+			onCloseFn.Call([]Object{closeInfo})
+		}()
+	}
+
 	flusher, ok := w.(http.Flusher)
 	if !ok {
 		w.WriteHeader(500)
@@ -325,6 +333,26 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
 		return NIL
 	}}
 
+	defer func() {
+		if r := recover(); r != nil {
+			if err, ok := r.(error); ok {
+				closeInfo = sseCloseInfo("error", err)
+			} else {
+				closeInfo = sseCloseInfo("error", nil)
+			}
+			panic(r)
+		}
+	}()
+
 	// Call the stream function with send-event
 	streamFn.Call([]Object{sendEvent})
+}
+
+func sseCloseInfo(reason string, err error) Object {
+	m := EmptyArrayMap()
+	m.Add(MakeKeyword("reason"), MakeKeyword(reason))
+	if err != nil {
+		m.Add(MakeKeyword("error"), RT.NewError(err.Error()))
+	}
+	return m
 }

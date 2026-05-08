@@ -8,6 +8,7 @@ require (
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/candid82/liner v1.4.0
 	github.com/disintegration/imaging v1.6.2
+	github.com/fsnotify/fsnotify v1.10.0
 	github.com/go-git/go-git/v5 v5.17.1
 	github.com/jcburley/go-spew v1.3.0
 	github.com/pkg/profile v1.2.1

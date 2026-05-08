@@ -54,6 +54,9 @@
       (send-event data)
       (send-event event data)
 
+    Optional :on-close is called as (fn [info]) when the stream exits.
+    info contains {:reason :completed}, or {:reason :error :error err}.
+
   Header values can be strings or seqs of strings."
   {:added "1.0"
    :go "startServer(addr, handler)"}
