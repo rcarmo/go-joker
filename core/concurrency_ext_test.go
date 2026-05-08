@@ -43,6 +43,14 @@ func TestConcurrencyPmapAndPcalls(t *testing.T) {
 	requireInt(t, evalTestScript(t, `(reduce + 0 (pcalls #(+ 1 1) #(+ 2 2) #(+ 3 3)))`), 12)
 }
 
+func TestConcurrencyPcallsRecursiveFn(t *testing.T) {
+	requireInt(t, evalTestScript(t, `(letfn [(fib [n]
+  (if (< n 2) n (+ (fib (- n 1)) (fib (- n 2)))))]
+  (reduce + 0 (pcalls (fn [] (fib 20))
+                      (fn [] (fib 20))
+                      (fn [] (fib 20)))))`), 20295)
+}
+
 func TestConcurrencyPcallsPanicPropagates(t *testing.T) {
 	didPanic := false
 	func() {

@@ -42,14 +42,14 @@ Current audit results, run one benchmark per isolated `tmux` session with `GOMAX
 
 | Benchmark | Time | Allocated | Allocs | Notes |
 |---|---:|---:|---:|---|
-| `BenchmarkCLBGBinaryTrees` | 103.4ms/op | 38.8MB/op | 1,095,880/op | single-thread baseline |
-| `BenchmarkCLBGBinaryTreesParallel` | 53.6ms/op | 77.6MB/op | 2,191,973/op | `pmap` over independent tree depths; **1.93× faster** |
+| `BenchmarkCLBGBinaryTrees` | 62.1ms/op | 38.8MB/op | 1,096,473/op | single-thread baseline after captured `*Fn` IR dispatch fix |
+| `BenchmarkCLBGBinaryTreesParallel` | 62.1ms/op | 77.6MB/op | 2,192,176/op | `pmap` over independent tree depths; no longer faster once the baseline uses the same IR path |
 
 Audit notes:
 
-- `binary-trees` is the best current concurrency win because each depth/iteration group is independent and coarse enough to amortize `pmap` overhead.
+- `binary-trees` was the best initial concurrency candidate because each depth/iteration group is independent, but after fixing captured `*Fn` IR dispatch the single-thread baseline caught up; keep the variant as a concurrency smoke benchmark rather than a published speedup claim.
 - `mandelbrot` row-level parallelism and `spectral-norm` row-level parallelism were tested but rejected for now because their scaled-down benchmark sizes are too small; goroutine/list materialization overhead outweighed the work.
-- A `pcalls` variant of recursive `fib` was tested in isolation and rejected because it hangs when recursively invoking the same self-recursive function concurrently. Keep that out of the benchmark suite until the recursive function/concurrent-call interaction is fixed.
+- A `pcalls` variant of recursive `fib` exposed a missing IR dispatch path for captured/self-recursive `*Fn` calls from the tree walker. That correctness/performance bug is fixed, but the parallel benchmark variant is still rejected because `pcalls` overhead dominates at this scaled-down size.
 
 ## Parser Benchmarks (Pure Implementations)
 

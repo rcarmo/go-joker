@@ -775,32 +775,32 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 		}
 		switch len(expr.args) {
 		case 0:
-			return callable.Call(nil)
+			return irDispatchFnCall(callable, nil)
 		case 1:
 			var args [1]Object
 			args[0] = Eval(expr.args[0], env)
-			return callable.Call(args[:])
+			return irDispatchFnCall(callable, args[:])
 		case 2:
 			var args [2]Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
-			return callable.Call(args[:])
+			return irDispatchFnCall(callable, args[:])
 		case 3:
 			var args [3]Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			args[2] = Eval(expr.args[2], env)
-			return callable.Call(args[:])
+			return irDispatchFnCall(callable, args[:])
 		case 4:
 			var args [4]Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			args[2] = Eval(expr.args[2], env)
 			args[3] = Eval(expr.args[3], env)
-			return callable.Call(args[:])
+			return irDispatchFnCall(callable, args[:])
 		default:
 			args := evalSeq(expr.args, env)
-			return callable.Call(args)
+			return irDispatchFnCall(callable, args)
 		}
 	case Callable:
 		switch len(expr.args) {
