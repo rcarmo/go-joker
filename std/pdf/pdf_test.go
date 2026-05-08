@@ -47,7 +47,7 @@ func TestDocumentCreate(t *testing.T) {
 	}
 
 	// Save
-	path := "/workspace/tmp/test-output.pdf"
+	path := filepath.Join(t.TempDir(), "test-output.pdf")
 	procSave([]Object{doc, MakeString(path)})
 
 	info, err := os.Stat(path)
