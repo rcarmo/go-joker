@@ -1,6 +1,6 @@
 # Parity Status: let-go runtime + Clojure language compliance
 
-_Last updated: 2026-05-07_
+_Last updated: 2026-05-08_
 
 ## Scope
 
@@ -82,6 +82,11 @@ Coverage includes:
 - Added fused internal `XForm` representation for `map`/`filter`/`take` transducer pipelines.
 - Added fast reducible `MappingSeq`, `FilteringSeq`, and `TakeSeq` wrappers for map/filter/take reduce workloads.
 - Added a transient-map specialization for `(reduce (fn [m i] (assoc m i (* i i))) {} (range ...))`, bringing persistent-map to near parity.
+- Added GIL-free concurrency primitives: `alts!`, `timeout`, `future`/`promise`, `agent`, `pmap`, `pcalls`.
+- Added `joker.random` namespace (int/float/choice/shuffle/uuid/secure values).
+- Added `joker.log` namespace (debug/info/warn/error + level control).
+- Added HTTP response extensions for WebSocket upgrade and SSE streaming (`:websocket`, `:stream`).
+- Added pure Clojure `joker.http.router` library (routing + middleware).
 
 ---
 

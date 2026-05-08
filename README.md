@@ -67,12 +67,13 @@ Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze
 ### GIL-free concurrency
 The Global Interpreter Lock has been removed. Goroutines run in true parallel on Go scheduler threads. Immutable data structures need no coordination. Atoms use per-atom mutexes. Concurrency primitives: `alts!`, `timeout`, `future`, `promise`, `agent`, `pmap`, `pcalls`.
 
-### Additional namespaces
+### Additional namespaces / web runtime
 - `joker.imaging` — image processing (resize, crop, blur, overlay) via pure Go
 - `joker.svg` — SVG generation + raster rendering
 - `joker.pdf` — PDF document generation
 - `joker.random` — random numbers (int, float, choice, shuffle, uuid, secure-bytes)
 - `joker.log` — leveled logging (debug, info, warn, error)
+- `joker.http` — Ring-style HTTP + **WebSocket** and **SSE/streaming** response extensions
 - `joker.http.router` — Bottle-style HTTP routing with path params, middleware, CORS
 
 ### Clojure parity surface now implemented
@@ -123,6 +124,7 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 ## Documentation
 
 - [`docs/OPTIMIZATION_REPORT.md`](docs/OPTIMIZATION_REPORT.md) — full technical report (phases, trade-offs, outcomes, suggested git history)
+- [`docs/WEB_RUNTIME_AND_NAMESPACES.md`](docs/WEB_RUNTIME_AND_NAMESPACES.md) — WebSocket/SSE usage + router + all new namespaces
 - [`benchmarks/README.md`](benchmarks/README.md) — benchmark data and chart regeneration
 - [`docs/PARITY_STATUS.md`](docs/PARITY_STATUS.md) — let-go benchmark parity + language compliance status
 - [`docs/DIVERGENCE_MATRIX.md`](docs/DIVERGENCE_MATRIX.md) — latest compliance matrix (**271/271 pass**)
