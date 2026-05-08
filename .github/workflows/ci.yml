@@ -18,6 +18,10 @@ jobs:
         run: go build -o joker .
       - name: Run tests
         run: go test ./core ./std/... -timeout 120s -count=1
+      - name: Run local parity suite
+        run: go run tests/clojure_parity.go -joker ./joker -out docs/DIVERGENCE_MATRIX.md
+      - name: Run imported jank smoke subset
+        run: JOKER_BIN=./joker tests/run_jank_subset.sh
       - name: Run vet
         run: go vet ./core ./std/...
 
