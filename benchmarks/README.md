@@ -32,6 +32,24 @@
 |---|---:|---:|---:|
 | `BenchmarkEvalWordFrequency` | 181ms/op, 49.9MB/op, 612k allocs/op | 0.449ms/op, 0.536MB/op, 8.1k allocs/op | ~403× faster, ~93× fewer allocations |
 
+### Benchmark intent taxonomy
+
+The benchmark suite now separates portable/literal ports from best-Joker runtime shapes. Portable results remain useful for cross-language parity, but best-Joker variants show what users should write when targeting Joker's strongest execution paths.
+
+| Benchmark | Intent | Notes |
+|---|---|---|
+| `BenchmarkEvalTailRecursiveSum` | portable/stress | Measures recursive function self-call overhead (`irCallSelf`). Useful runtime stress, but not comparable to Python's `while` loop. |
+| `BenchmarkEvalTailRecursiveSumLoopRecur` | best-Joker | Equivalent sum written as `loop/recur`, matching Python's iterative shape and hitting `irRecur`. |
+| `BenchmarkEvalWordFrequency` | best-Joker | Uses native tokenization + `frequencies` instead of regex plus interpreted persistent-map updates. |
+| `BenchmarkCLBGBinaryTreesParallel` | concurrency smoke/best-Joker | Uses `pmap` over independent depth work; keep separate from portable single-thread CLBG. |
+
+Focused tail-sum audit (`-benchtime=100x`):
+
+| Benchmark | Time | Allocated | Allocs | Meaning |
+|---|---:|---:|---:|---|
+| `BenchmarkEvalTailRecursiveSum` | 12.37ms/op | 3.20MB/op | 299,770/op | recursive function path |
+| `BenchmarkEvalTailRecursiveSumLoopRecur` | 0.080ms/op | 775B/op | 7/op | best-Joker iterative path |
+
 ## Parallel benchmark variants
 
 Parallel variants are intentionally tracked separately from the single-threaded baseline benchmarks so language/runtime parity numbers remain comparable while still exposing multicore throughput.

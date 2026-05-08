@@ -95,3 +95,15 @@ func BenchmarkEvalTailRecursiveSum(b *testing.B) {
 		_ = Eval(expr, nil)
 	}
 }
+
+func BenchmarkEvalTailRecursiveSumLoopRecur(b *testing.B) {
+	expr := compileBenchExpr(b, `(loop [n 100000 acc 0]
+  (if (zero? n)
+    acc
+    (recur (dec n) (+ acc n))))`)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
