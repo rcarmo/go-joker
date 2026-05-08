@@ -8,9 +8,14 @@ import (
 	"strings"
 
 	. "github.com/candid82/joker/core"
+	ws "github.com/gorilla/websocket"
 )
 
 var client = &http.Client{}
+
+var upgrader = ws.Upgrader{
+	CheckOrigin: func(r *http.Request) bool { return true },
+}
 
 func extractMethod(request Map) string {
 	if ok, m := request.Get(MakeKeyword("method")); ok {
@@ -159,7 +164,21 @@ func startServer(addr string, handler Callable) Object {
 			}
 		}()
 		response := handler.Call([]Object{reqToMap(host, port, req)})
-		mapToResp(EnsureObjectIsMap(response, "HTTP response: %s"), w)
+		respMap := EnsureObjectIsMap(response, "HTTP response: %s")
+
+		// Check for WebSocket upgrade
+		if ok, wsConf := respMap.Get(MakeKeyword("websocket")); ok {
+			handleWebSocket(w, req, EnsureObjectIsMap(wsConf, "websocket config: %s"))
+			return
+		}
+
+		// Check for SSE/streaming response
+		if ok, streamFn := respMap.Get(MakeKeyword("stream")); ok {
+			handleStream(w, respMap, EnsureObjectIsCallable(streamFn, "stream value must be callable: %s"))
+			return
+		}
+
+		mapToResp(respMap, w)
 	}))
 	PanicOnErr(err)
 	return NIL
@@ -169,4 +188,126 @@ func startFileServer(addr string, root string) Object {
 	err := http.ListenAndServe(addr, http.FileServer(http.Dir(root)))
 	PanicOnErr(err)
 	return NIL
+}
+
+// handleWebSocket upgrades the connection and runs callbacks.
+// Config map keys:
+//
+//	:on-open    (fn [send-fn close-fn]) — called once after upgrade
+//	:on-message (fn [msg]) — called for each text message received
+//	:on-close   (fn []) — called when connection closes
+func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
+	conn, err := upgrader.Upgrade(w, req, nil)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "websocket upgrade error:", err)
+		return
+	}
+	defer conn.Close()
+
+	// Build send-fn: (fn [msg]) sends a text message
+	sendFn := Proc{Name: "ws-send", Fn: func(args []Object) Object {
+		CheckArity(args, 1, 1)
+		msg := args[0].ToString(false)
+		if err := conn.WriteMessage(ws.TextMessage, []byte(msg)); err != nil {
+			panic(RT.NewError("websocket send error: " + err.Error()))
+		}
+		return NIL
+	}}
+
+	// Build close-fn: (fn []) closes the connection
+	closeFn := Proc{Name: "ws-close", Fn: func(args []Object) Object {
+		conn.Close()
+		return NIL
+	}}
+
+	// Call on-open
+	if ok, onOpen := conf.Get(MakeKeyword("on-open")); ok {
+		EnsureObjectIsCallable(onOpen, "on-open must be callable: %s").Call([]Object{sendFn, closeFn})
+	}
+
+	// Read loop
+	_, onMsg := conf.Get(MakeKeyword("on-message"))
+	var onMsgFn Callable
+	if onMsg != nil {
+		onMsgFn = EnsureObjectIsCallable(onMsg, "on-message must be callable: %s")
+	}
+
+	for {
+		_, message, err := conn.ReadMessage()
+		if err != nil {
+			break
+		}
+		if onMsgFn != nil {
+			onMsgFn.Call([]Object{MakeString(string(message))})
+		}
+	}
+
+	// Call on-close
+	if ok, onClose := conf.Get(MakeKeyword("on-close")); ok {
+		EnsureObjectIsCallable(onClose, "on-close must be callable: %s").Call([]Object{})
+	}
+}
+
+// handleStream writes an SSE/chunked streaming response.
+// The stream fn receives a send-event callback: (fn [event-data])
+// Response map can include :status and :headers (applied before streaming).
+// Default Content-Type is text/event-stream.
+func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		w.WriteHeader(500)
+		io.WriteString(w, "Streaming not supported")
+		return
+	}
+
+	// Apply headers
+	header := w.Header()
+	header.Set("Content-Type", "text/event-stream")
+	header.Set("Cache-Control", "no-cache")
+	header.Set("Connection", "keep-alive")
+	if ok, headers := respMap.Get(MakeKeyword("headers")); ok {
+		h := EnsureObjectIsMap(headers, "stream headers: %s")
+		for iter := h.Iter(); iter.HasNext(); {
+			p := iter.Next()
+			header.Set(EnsureObjectIsString(p.Key, "header name: %s").S,
+				EnsureObjectIsString(p.Value, "header value: %s").S)
+		}
+	}
+
+	// Apply status
+	status := 200
+	if ok, s := respMap.Get(MakeKeyword("status")); ok {
+		status = EnsureObjectIsInt(s, "stream status: %s").I
+	}
+	w.WriteHeader(status)
+	flusher.Flush()
+
+	// Build send-event fn: (fn [data]) or (fn [event data])
+	sendEvent := Proc{Name: "sse-send", Fn: func(args []Object) Object {
+		switch len(args) {
+		case 1:
+			// data-only: sends "data: ...\n\n"
+			data := args[0].ToString(false)
+			for _, line := range strings.Split(data, "\n") {
+				fmt.Fprintf(w, "data: %s\n", line)
+			}
+			fmt.Fprint(w, "\n")
+		case 2:
+			// event + data: sends "event: ...\ndata: ...\n\n"
+			event := args[0].ToString(false)
+			data := args[1].ToString(false)
+			fmt.Fprintf(w, "event: %s\n", event)
+			for _, line := range strings.Split(data, "\n") {
+				fmt.Fprintf(w, "data: %s\n", line)
+			}
+			fmt.Fprint(w, "\n")
+		default:
+			panic(RT.NewError("send-event expects 1 or 2 args: [data] or [event data]"))
+		}
+		flusher.Flush()
+		return NIL
+	}}
+
+	// Call the stream function with send-event
+	streamFn.Call([]Object{sendEvent})
 }
