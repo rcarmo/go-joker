@@ -64,10 +64,24 @@ func splitOnStringOrRegex(s string, sep Object, n int) Object {
 		if n == 0 {
 			n = -1
 		}
-		v := strings.SplitN(s, sep.S, n)
-		result := EmptyVector()
+		var v []string
+		if sep.S == "" {
+			// Treat an empty separator as a whitespace split. This mirrors the
+			// common text-tokenization fast path and avoids regex/re-seq object churn.
+			if n < 0 {
+				v = strings.Fields(s)
+			} else {
+				v = strings.Fields(s)
+				if n > 0 && len(v) > n {
+					v = v[:n]
+				}
+			}
+		} else {
+			v = strings.SplitN(s, sep.S, n)
+		}
+		result := EmptyArrayVector()
 		for _, el := range v {
-			result = result.Conjoin(String{S: el})
+			result.Append(String{S: el})
 		}
 		return result
 	case *Regex:

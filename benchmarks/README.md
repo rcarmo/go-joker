@@ -24,6 +24,14 @@
 
 **Beat Python: 7/13 | Beat Goja: 12/13**
 
+### Runtime micro-workloads
+
+`BenchmarkEvalWordFrequency` now uses native whitespace tokenization plus native `frequencies` over string keys instead of regex `re-seq` and interpreted persistent-map churn. Current focused result:
+
+| Benchmark | Before | Current | Allocation change |
+|---|---:|---:|---:|
+| `BenchmarkEvalWordFrequency` | 181ms/op, 49.9MB/op, 612k allocs/op | 0.449ms/op, 0.536MB/op, 8.1k allocs/op | ~403× faster, ~93× fewer allocations |
+
 ## Parallel benchmark variants
 
 Parallel variants are intentionally tracked separately from the single-threaded baseline benchmarks so language/runtime parity numbers remain comparable while still exposing multicore throughput.

@@ -114,6 +114,7 @@ func ToTransient(v *ArrayVector) *TransientVector {
 // TransientMap is a mutable map backed by a Go map.
 type TransientMap struct {
 	m      map[uint32][]mapEntry
+	sm     map[string]Object // fast side table for String keys
 	count  int
 	frozen bool
 }
@@ -140,6 +141,16 @@ func (tm *TransientMap) checkFrozen() {
 // AssocInPlace sets a key-value pair. Returns self.
 func (tm *TransientMap) AssocInPlace(key, val Object) *TransientMap {
 	tm.checkFrozen()
+	if s, ok := key.(String); ok {
+		if tm.sm == nil {
+			tm.sm = make(map[string]Object)
+		}
+		if _, exists := tm.sm[s.S]; !exists {
+			tm.count++
+		}
+		tm.sm[s.S] = val
+		return tm
+	}
 	h := key.Hash()
 	bucket := tm.m[h]
 	for i, e := range bucket {
@@ -155,6 +166,12 @@ func (tm *TransientMap) AssocInPlace(key, val Object) *TransientMap {
 
 // Get implements Gettable for transient maps.
 func (tm *TransientMap) Get(key Object) (bool, Object) {
+	if s, ok := key.(String); ok && tm.sm != nil {
+		v, ok := tm.sm[s.S]
+		if ok {
+			return true, v
+		}
+	}
 	h := key.Hash()
 	for _, e := range tm.m[h] {
 		if e.key.Equals(key) {
@@ -169,6 +186,9 @@ func (tm *TransientMap) ToPersistent() Object {
 	tm.frozen = true
 	if tm.count <= int(HASHMAP_THRESHOLD/2) {
 		res := EmptyArrayMap()
+		for k, v := range tm.sm {
+			res.Add(String{S: k}, v)
+		}
 		for _, bucket := range tm.m {
 			for _, e := range bucket {
 				res.Add(e.key, e.val)
@@ -177,6 +197,9 @@ func (tm *TransientMap) ToPersistent() Object {
 		return res
 	}
 	res := EmptyHashMap
+	for k, v := range tm.sm {
+		res = res.Assoc(String{S: k}, v).(*HashMap)
+	}
 	for _, bucket := range tm.m {
 		for _, e := range bucket {
 			res = res.Assoc(e.key, e.val).(*HashMap)
@@ -204,9 +227,7 @@ func MapToTransient(m Map) *TransientMap {
 				ps = ps.Rest()
 				if !ps.IsEmpty() {
 					val := ps.First()
-					h := key.Hash()
-					tm.m[h] = append(tm.m[h], mapEntry{key, val})
-					tm.count++
+					tm.AssocInPlace(key, val)
 				}
 			}
 		}

@@ -39,6 +39,25 @@ func TestTransientMap(t *testing.T) {
 	}
 }
 
+func TestTransientMapStringKeys(t *testing.T) {
+	tm := MapToTransient(nil)
+	tm.AssocInPlace(String{S: "alpha"}, Int{I: 1})
+	tm.AssocInPlace(String{S: "beta"}, Int{I: 2})
+	tm.AssocInPlace(String{S: "alpha"}, Int{I: 3})
+	if tm.Count() != 2 {
+		t.Fatalf("expected 2, got %d", tm.Count())
+	}
+	ok, v := tm.Get(String{S: "alpha"})
+	if !ok || v.(Int).I != 3 {
+		t.Fatalf("expected 3 for alpha")
+	}
+	pm := tm.ToPersistent().(Map)
+	ok, v = pm.Get(String{S: "beta"})
+	if !ok || v.(Int).I != 2 {
+		t.Fatalf("expected persistent beta=2")
+	}
+}
+
 func TestTransientProcs(t *testing.T) {
 	t.Skip("transient procs registered but parser symbol resolution needs core.joke wrappers")
 }

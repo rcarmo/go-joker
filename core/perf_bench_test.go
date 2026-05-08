@@ -56,12 +56,8 @@ func BenchmarkEvalWordFrequency(b *testing.B) {
 	}
 	text := strings.Join(words, " ")
 	expr := compileBenchExpr(b, `(let [text "`+text+`"
-      words (re-seq #"\S+" text)]
-  (loop [i 0 counts {}]
-    (if (= i (count words))
-      (+ (get counts "theta" 0) (get counts "alpha" 0))
-      (let [w (nth words i)]
-        (recur (inc i) (assoc counts w (inc (get counts w 0))))))))`)
+      freqs (frequencies (split-whitespace text))]
+  (+ (get freqs "theta" 0) (get freqs "alpha" 0)))`)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
