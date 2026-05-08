@@ -1,0 +1,192 @@
+(ns joker.http.router
+  "Minimal Ring-compatible HTTP router for go-joker.
+  
+  Routes are data — vectors of [method pattern handler].
+  Middleware is standard Ring wrapping — (fn [handler] (fn [req] resp)).
+  
+  Usage:
+    (require '[joker.http.router :refer [router GET POST PUT DELETE ANY wrap
+                                          wrap-json wrap-cors wrap-logger
+                                          prefix]])
+    
+    (def app
+      (wrap
+        (router
+          [(GET  \"/\"           (fn [_] {:status 200 :body \"Hello!\"}))
+           (GET  \"/users/:id\"  (fn [req] {:status 200 :body (str \"User \" (get-in req [:path-params :id]))}))
+           (POST \"/users\"      (fn [req] {:status 201 :body (:body req)}))])
+        wrap-logger
+        wrap-cors))
+    
+    (joker.http/start-server \"localhost:8080\" app)")
+
+;;────────────────────────────────────────────────────────────
+;; PATH MATCHING
+;;────────────────────────────────────────────────────────────
+
+(defn- split-path
+  "Splits a URI path into non-empty segments."
+  [path]
+  (vec (remove empty? (joker.string/split path "/"))))
+
+(defn- match-path
+  "Returns map of path params if pattern matches uri, else nil.
+   Segments starting with ':' are parameters.
+   A trailing '*' segment matches the rest of the path."
+  [pattern uri]
+  (let [pat (split-path pattern)
+        uri (split-path uri)
+        pn  (count pat)
+        un  (count uri)]
+    (cond
+      ;; Exact length match
+      (= pn un)
+      (loop [i 0 params {}]
+        (if (= i pn)
+          params
+          (let [p (nth pat i)
+                u (nth uri i)]
+            (cond
+              (joker.string/starts-with? p ":") (recur (inc i) (assoc params (keyword (subs p 1)) u))
+              (= p u)                           (recur (inc i) params)
+              :else                             nil))))
+      ;; Wildcard: last pattern segment is "*"
+      (and (pos? pn) (= "*" (nth pat (dec pn))) (<= (dec pn) un))
+      (loop [i 0 params {}]
+        (if (= i (dec pn))
+          (assoc params :* (joker.string/join "/" (subvec uri i)))
+          (let [p (nth pat i)
+                u (nth uri i)]
+            (cond
+              (joker.string/starts-with? p ":") (recur (inc i) (assoc params (keyword (subs p 1)) u))
+              (= p u)                           (recur (inc i) params)
+              :else                             nil))))
+      :else nil)))
+
+;;────────────────────────────────────────────────────────────
+;; ROUTE CONSTRUCTION
+;;────────────────────────────────────────────────────────────
+
+(defn make-route
+  "Creates a route entry: [method pattern handler].
+   method is a keyword (:get :post :put :delete :any).
+   pattern is a string like \"/users/:id\".
+   handler is (fn [request] response-map)."
+  [method pattern handler]
+  {:method method :pattern pattern :handler handler})
+
+(defn GET    [pattern handler] (make-route :get    pattern handler))
+(defn POST   [pattern handler] (make-route :post   pattern handler))
+(defn PUT    [pattern handler] (make-route :put    pattern handler))
+(defn DELETE [pattern handler] (make-route :delete pattern handler))
+(defn ANY    [pattern handler] (make-route :any    pattern handler))
+
+;;────────────────────────────────────────────────────────────
+;; ROUTER
+;;────────────────────────────────────────────────────────────
+
+(defn router
+  "Takes a seq of routes. Returns a Ring handler.
+   Matched path params are merged into request under :path-params.
+   Returns 404 if no route matches."
+  [routes]
+  (fn [request]
+    (let [uri    (:uri request)
+          method (:request-method request)]
+      (or
+        (some
+          (fn [{:keys [method pattern handler] :as route}]
+            (when (or (= (:method route) :any) (= (:method route) method))
+              (when-let [params (match-path pattern uri)]
+                (handler (assoc request :path-params params)))))
+          routes)
+        {:status  404
+         :headers {"Content-Type" "text/plain"}
+         :body    "Not Found"}))))
+
+;;────────────────────────────────────────────────────────────
+;; MIDDLEWARE COMPOSITION
+;;────────────────────────────────────────────────────────────
+
+(defn wrap
+  "Composes middleware around a handler, left-to-right.
+   (wrap handler mw-a mw-b) applies mw-a outermost.
+   Request flows: mw-a → mw-b → handler → mw-b → mw-a."
+  [handler & middlewares]
+  (reduce (fn [h mw] (mw h)) handler (reverse middlewares)))
+
+;;────────────────────────────────────────────────────────────
+;; STOCK MIDDLEWARE
+;;────────────────────────────────────────────────────────────
+
+(defn wrap-json
+  "Sets Content-Type: application/json on all responses."
+  [handler]
+  (fn [request]
+    (let [resp (handler request)]
+      (assoc-in resp [:headers "Content-Type"] "application/json; charset=utf-8"))))
+
+(defn wrap-cors
+  "Adds permissive CORS headers."
+  ([handler] (wrap-cors handler "*"))
+  ([handler origin]
+   (fn [request]
+     (let [resp (handler request)]
+       (update resp :headers merge
+               {"Access-Control-Allow-Origin"  origin
+                "Access-Control-Allow-Methods" "GET, POST, PUT, DELETE, OPTIONS"
+                "Access-Control-Allow-Headers" "Content-Type, Authorization"})))))
+
+(defn wrap-logger
+  "Logs method + uri + status to stderr."
+  [handler]
+  (fn [request]
+    (let [resp (handler request)]
+      (binding [*err* *err*]
+        (println (str (:request-method request) " "
+                      (:uri request) " → "
+                      (:status resp 200))))
+      resp)))
+
+(defn wrap-content-type
+  "Sets a default Content-Type if none set by handler."
+  [content-type]
+  (fn [handler]
+    (fn [request]
+      (let [resp (handler request)]
+        (if (get-in resp [:headers "Content-Type"])
+          resp
+          (assoc-in resp [:headers "Content-Type"] content-type))))))
+
+;;────────────────────────────────────────────────────────────
+;; RESPONSE HELPERS
+;;────────────────────────────────────────────────────────────
+
+(defn response
+  "Creates a 200 response with the given body."
+  [body]
+  {:status 200 :headers {} :body body})
+
+(defn not-found
+  "Creates a 404 response."
+  ([] (not-found "Not Found"))
+  ([body] {:status 404 :headers {} :body body}))
+
+(defn redirect
+  "Creates a 302 redirect response."
+  [url]
+  {:status 302 :headers {"Location" url} :body ""})
+
+(defn json-response
+  "Creates a 200 JSON response (body must already be a JSON string)."
+  [body]
+  {:status 200 :headers {"Content-Type" "application/json; charset=utf-8"} :body body})
+
+;;────────────────────────────────────────────────────────────
+;; ROUTE GROUPING
+;;────────────────────────────────────────────────────────────
+
+(defn prefix
+  "Prepends a base path to all routes in the collection."
+  [base routes]
+  (map #(update % :pattern (fn [p] (str base p))) routes))
