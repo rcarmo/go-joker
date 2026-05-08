@@ -27,7 +27,7 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 | **Allocations** | **51% fewer** across all benchmarks (Int/Double 8-byte structs) |
 | **Beat Python** | 7/13 CLBG benchmarks |
 | **Beat Goja** | 12/13 CLBG benchmarks |
-| **Beat let-go** | 14/15 cross-language benchmarks, 4/7 let-go suite (reduce 16.2×, loop-recur 11.4×, fib 6.1×, tak 6.0×) |
+| **Beat let-go** | 14/15 cross-language benchmarks, 4/7 let-go suite (reduce 16.7×, loop-recur 13.2×, fib 6.8×, tak 7.0×) |
 | **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
 | **Concurrency** | GIL-free — true parallel goroutines, futures, promises, agents, pmap |
 | **Namespaces** | 28 namespaces including `joker.random`, `joker.log`, HTTP router |

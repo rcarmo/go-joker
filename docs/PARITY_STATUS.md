@@ -1,6 +1,6 @@
 # Parity Status: let-go runtime + Clojure language compliance
 
-_Last updated: 2026-05-08_
+_Last updated: 2026-05-08 (post v42.8.1 benchmark refresh)_
 
 ## Scope
 
@@ -27,15 +27,15 @@ Runner/output:
 
 | Benchmark | let-go | go-joker | Winner |
 |---|---:|---:|---|
-| fib | 3124.6 | 511.2 | **go-joker** (6.1×) |
-| loop-recur | 87.1 | 7.61 | **go-joker** (11.4×) |
-| map-filter | 3.80 | 5.72 | let-go (1.5×) |
-| persistent-map | 17.5 | 18.5 | let-go (1.06×) |
-| reduce | 107.3 | 6.61 | **go-joker** (16.2×) |
-| tak | 3497.5 | 579.6 | **go-joker** (6.0×) |
-| transducers | 4.20 | 7.02 | let-go (1.7×) |
+| fib | 3252.2 | 480.5 | **go-joker** (6.8×) |
+| loop-recur | 95.5 | 7.26 | **go-joker** (13.2×) |
+| map-filter | 4.34 | 5.83 | let-go (1.34×) |
+| persistent-map | 16.5 | 17.8 | let-go (1.08×) |
+| reduce | 99.1 | 5.93 | **go-joker** (16.7×) |
+| tak | 3590.1 | 514.3 | **go-joker** (7.0×) |
+| transducers | 3.90 | 6.05 | let-go (1.55×) |
 
-**Score:** go-joker wins 4/7. The remaining gaps are map-filter (~1.5×), transducers (~1.7×), and persistent-map (near parity).
+**Score:** go-joker wins 4/7. The remaining gaps are map-filter (~1.34×), transducers (~1.55×), and persistent-map (near parity).
 
 ---
 
