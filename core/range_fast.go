@@ -147,7 +147,7 @@ func (r *IntRange) reduceFast(f Callable) (Object, bool) {
 }
 
 func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
-	if result, ok := r.reduceMapAssocSquareFast(f, init); ok {
+	if result, ok := r.reduceMapAssocFast(f, init); ok {
 		return result, true
 	}
 	name := hotReducerName(f)
@@ -214,7 +214,7 @@ func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
 	return nil, false
 }
 
-func (r *IntRange) reduceMapAssocSquareFast(f Callable, init Object) (Object, bool) {
+func (r *IntRange) reduceMapAssocFast(f Callable, init Object) (Object, bool) {
 	fn, ok := f.(*Fn)
 	if !ok || fn == nil || fn.fnExpr == nil || len(fn.fnExpr.arities) != 1 || fn.fnExpr.variadic != nil {
 		return nil, false
@@ -243,26 +243,14 @@ func (r *IntRange) reduceMapAssocSquareFast(f Callable, init Object) (Object, bo
 	if !ok || base.binding.frame != pf || base.binding.index != 0 {
 		return nil, false
 	}
-	key, ok := call.args[1].(*BindingExpr)
-	if !ok || key.binding.frame != pf || key.binding.index != 1 {
-		return nil, false
-	}
-	mul, ok := call.args[2].(*CallExpr)
-	if !ok || len(mul.args) != 2 {
-		return nil, false
-	}
-	mulRef, ok := mul.callable.(*VarRefExpr)
-	if !ok || coreVarToProcName(mulRef.vr) != "procMultiply" {
-		return nil, false
-	}
-	lhs, lok := mul.args[0].(*BindingExpr)
-	rhs, rok := mul.args[1].(*BindingExpr)
-	if !lok || !rok || lhs.binding.frame != pf || rhs.binding.frame != pf || lhs.binding.index != 1 || rhs.binding.index != 1 {
+	keyFn := compileIntExpr2(call.args[1], nil, pf, &nativeRecursiveEntry{arity: 2})
+	valFn := compileIntExpr2(call.args[2], nil, pf, &nativeRecursiveEntry{arity: 2})
+	if keyFn == nil || valFn == nil {
 		return nil, false
 	}
 	tm := MapToTransient(m)
 	for i := r.start; r.contains(i); i += r.step {
-		tm.AssocInPlace(Int{I: i}, Int{I: i * i})
+		tm.AssocInPlace(Int{I: keyFn(0, i)}, Int{I: valFn(0, i)})
 	}
 	return tm.ToPersistent(), true
 }
