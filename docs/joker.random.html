@@ -1,0 +1,179 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: joker.random</h1>
+    <span class="var-added">v1.0</span>
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#_summary">Summary</a>
+      </li>
+      <li>
+        <a href="#_index">Index</a>
+      </li>
+      <li>
+        <a href="#_constants">Constants</a>
+      </li>
+      <li>
+        <a href="#_variables">Variables</a>
+      </li>
+      <li>
+        <a href="#_functions">Functions, Macros, and Special Forms</a>
+      </li>
+    </ul>
+    <h2 id="_summary">Summary</h2>
+    <p class="var-docstr">Random number generation (math/rand/v2 + crypto/rand).</p>
+    <h2 id="_index">Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#boolean">boolean</a>
+</li>
+<li>
+  <a href="#choice">choice</a>
+</li>
+<li>
+  <a href="#float">float</a>
+</li>
+<li>
+  <a href="#int">int</a>
+</li>
+<li>
+  <a href="#int-between">int-between</a>
+</li>
+<li>
+  <a href="#int-n">int-n</a>
+</li>
+<li>
+  <a href="#secure-bytes">secure-bytes</a>
+</li>
+<li>
+  <a href="#secure-int">secure-int</a>
+</li>
+<li>
+  <a href="#shuffle">shuffle</a>
+</li>
+<li>
+  <a href="#uuid">uuid</a>
+</li>
+
+    </ul>
+    <h2 id="_constants">Constants</h2>
+    Constants are variables with <tt>:const true</tt> in their metadata. Joker currently does not recognize them as special; as such, it allows redefining them or their values.
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_variables">Variables</h2>
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_functions">Functions, Macros, and Special Forms</h2>
+    <ul>
+      <li>
+  <h3 class="Function" id="boolean">boolean</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(boolean)</code></div>
+</pre>
+  <p class="var-docstr">Returns a random boolean.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="choice">choice</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(choice coll)</code></div>
+</pre>
+  <p class="var-docstr">Returns a random element from coll.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="float">float</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(float)</code></div>
+</pre>
+  <p class="var-docstr">Returns a random float in [0.0, 1.0).</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="int">int</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(int)</code></div>
+</pre>
+  <p class="var-docstr">Returns a non-negative random integer.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="int-between">int-between</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(int-between lo hi)</code></div>
+</pre>
+  <p class="var-docstr">Returns a random integer in [lo, hi).</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="int-n">int-n</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(int-n n)</code></div>
+</pre>
+  <p class="var-docstr">Returns a random integer in [0, n).</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="secure-bytes">secure-bytes</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(secure-bytes n)</code></div>
+</pre>
+  <p class="var-docstr">Returns n cryptographically random bytes as a hex string.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="secure-int">secure-int</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(secure-int n)</code></div>
+</pre>
+  <p class="var-docstr">Returns a cryptographically random integer in [0, n).</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="shuffle">shuffle</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(shuffle coll)</code></div>
+</pre>
+  <p class="var-docstr">Returns a vector with elements of coll in random order.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="uuid">uuid</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(uuid)</code></div>
+</pre>
+  <p class="var-docstr">Returns a random UUID v4 string.</p>
+  
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+<script src="main.js"></script>
+</html>

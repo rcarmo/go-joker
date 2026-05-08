@@ -1,0 +1,426 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: joker.imaging</h1>
+    <span class="var-added">v1.0</span>
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#_summary">Summary</a>
+      </li>
+      <li>
+        <a href="#_index">Index</a>
+      </li>
+      <li>
+        <a href="#_constants">Constants</a>
+      </li>
+      <li>
+        <a href="#_variables">Variables</a>
+      </li>
+      <li>
+        <a href="#_functions">Functions, Macros, and Special Forms</a>
+      </li>
+    </ul>
+    <h2 id="_summary">Summary</h2>
+    <p class="var-docstr">Image processing: resize, crop, rotate, color adjustments, blur, sharpen, overlay. Pure Go, backed by disintegration/imaging.</p>
+    <h2 id="_index">Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#blur">blur</a>
+</li>
+<li>
+  <a href="#bounds">bounds</a>
+</li>
+<li>
+  <a href="#brightness">brightness</a>
+</li>
+<li>
+  <a href="#contrast">contrast</a>
+</li>
+<li>
+  <a href="#crop">crop</a>
+</li>
+<li>
+  <a href="#crop-center">crop-center</a>
+</li>
+<li>
+  <a href="#decode">decode</a>
+</li>
+<li>
+  <a href="#encode">encode</a>
+</li>
+<li>
+  <a href="#fill">fill</a>
+</li>
+<li>
+  <a href="#fit">fit</a>
+</li>
+<li>
+  <a href="#flip-h">flip-h</a>
+</li>
+<li>
+  <a href="#flip-v">flip-v</a>
+</li>
+<li>
+  <a href="#gamma">gamma</a>
+</li>
+<li>
+  <a href="#grayscale">grayscale</a>
+</li>
+<li>
+  <a href="#height">height</a>
+</li>
+<li>
+  <a href="#invert">invert</a>
+</li>
+<li>
+  <a href="#new">new</a>
+</li>
+<li>
+  <a href="#open">open</a>
+</li>
+<li>
+  <a href="#overlay">overlay</a>
+</li>
+<li>
+  <a href="#paste">paste</a>
+</li>
+<li>
+  <a href="#resize">resize</a>
+</li>
+<li>
+  <a href="#rotate">rotate</a>
+</li>
+<li>
+  <a href="#saturation">saturation</a>
+</li>
+<li>
+  <a href="#save">save</a>
+</li>
+<li>
+  <a href="#sharpen">sharpen</a>
+</li>
+<li>
+  <a href="#sigmoid">sigmoid</a>
+</li>
+<li>
+  <a href="#transpose">transpose</a>
+</li>
+<li>
+  <a href="#transverse">transverse</a>
+</li>
+<li>
+  <a href="#width">width</a>
+</li>
+
+    </ul>
+    <h2 id="_constants">Constants</h2>
+    Constants are variables with <tt>:const true</tt> in their metadata. Joker currently does not recognize them as special; as such, it allows redefining them or their values.
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_variables">Variables</h2>
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_functions">Functions, Macros, and Special Forms</h2>
+    <ul>
+      <li>
+  <h3 class="Function" id="blur">blur</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(blur img sigma)</code></div>
+</pre>
+  <p class="var-docstr">Applies gaussian blur with given sigma.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="bounds">bounds</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(bounds img)</code></div>
+</pre>
+  <p class="var-docstr">Returns [x y width height] of image bounds.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="brightness">brightness</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(brightness img amount)</code></div>
+</pre>
+  <p class="var-docstr">Adjusts brightness. Range -100 to 100.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="contrast">contrast</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(contrast img amount)</code></div>
+</pre>
+  <p class="var-docstr">Adjusts contrast. Range -100 to 100.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="crop">crop</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(crop img x y width height)</code></div>
+</pre>
+  <p class="var-docstr">Crops region at x,y with given width and height.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="crop-center">crop-center</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(crop-center img width height)</code></div>
+</pre>
+  <p class="var-docstr">Crops width×height from center of image.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="decode">decode</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(decode data)</code></div>
+</pre>
+  <p class="var-docstr">Decodes image from byte string.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="encode">encode</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(encode img format &amp; quality)</code></div>
+</pre>
+  <p class="var-docstr">Encodes image to bytes. Format: :png :jpeg :gif :bmp :tiff. Optional quality for JPEG.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="fill">fill</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(fill img width height &amp; anchor)</code></div>
+</pre>
+  <p class="var-docstr">Resizes and crops to fill exact width×height. Anchor: :center :top :bottom etc.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="fit">fit</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(fit img width height)</code></div>
+</pre>
+  <p class="var-docstr">Resizes to fit within width×height preserving aspect ratio.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="flip-h">flip-h</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(flip-h img)</code></div>
+</pre>
+  <p class="var-docstr">Flips image horizontally.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="flip-v">flip-v</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(flip-v img)</code></div>
+</pre>
+  <p class="var-docstr">Flips image vertically.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="gamma">gamma</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(gamma img value)</code></div>
+</pre>
+  <p class="var-docstr">Adjusts gamma correction. &gt;1 brightens, &lt;1 darkens.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="grayscale">grayscale</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(grayscale img)</code></div>
+</pre>
+  <p class="var-docstr">Converts image to grayscale.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="height">height</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(height img)</code></div>
+</pre>
+  <p class="var-docstr">Returns image height in pixels.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="invert">invert</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(invert img)</code></div>
+</pre>
+  <p class="var-docstr">Inverts image colors.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="new">new</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(new width height &amp; color)</code></div>
+</pre>
+  <p class="var-docstr">Creates new image. Optional color as [r g b a] vector.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="open">open</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(open path)</code></div>
+</pre>
+  <p class="var-docstr">Opens an image file. Supports PNG, JPEG, GIF, BMP, TIFF.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="overlay">overlay</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(overlay base top x y &amp; opacity)</code></div>
+</pre>
+  <p class="var-docstr">Overlays top image at x,y with optional opacity (0.0-1.0).</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="paste">paste</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(paste base top x y)</code></div>
+</pre>
+  <p class="var-docstr">Pastes image at x,y (no alpha blending).</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="resize">resize</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(resize img width height)</code></div>
+</pre>
+  <p class="var-docstr">Resizes image to width×height. Use 0 for proportional.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="rotate">rotate</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(rotate img degrees)</code></div>
+</pre>
+  <p class="var-docstr">Rotates image by degrees (any angle). Background is transparent.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="saturation">saturation</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(saturation img amount)</code></div>
+</pre>
+  <p class="var-docstr">Adjusts saturation. Range -100 to 100.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="save">save</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(save img path)</code></div>
+</pre>
+  <p class="var-docstr">Saves image to file. Format detected from extension.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="sharpen">sharpen</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(sharpen img sigma)</code></div>
+</pre>
+  <p class="var-docstr">Sharpens image with given sigma.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="sigmoid">sigmoid</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(sigmoid img midpoint factor)</code></div>
+</pre>
+  <p class="var-docstr">Applies sigmoid contrast. Midpoint 0-1, factor controls steepness.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="transpose">transpose</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(transpose img)</code></div>
+</pre>
+  <p class="var-docstr">Transposes image (swap x and y axes).</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="transverse">transverse</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(transverse img)</code></div>
+</pre>
+  <p class="var-docstr">Transverses image (rotate 270° then flip).</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="width">width</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(width img)</code></div>
+</pre>
+  <p class="var-docstr">Returns image width in pixels.</p>
+  
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+<script src="main.js"></script>
+</html>

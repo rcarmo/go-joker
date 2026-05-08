@@ -89,7 +89,40 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(start-server addr handler)</code></div>
 </pre>
-  <p class="var-docstr">Starts HTTP server on the TCP network address addr.</p>
+  <p class="var-docstr">Starts an HTTP server on the TCP network address addr.<br>
+<br>
+  handler is called as (handler request-map) and should return a response map.<br>
+<br>
+  Standard HTTP response map:<br>
+    {:status 200<br>
+     :headers {&#39;Content-Type&#39; &#39;text/plain&#39;}<br>
+     :body &#39;Hello&#39;}<br>
+<br>
+  Request map keys include:<br>
+    :request-method :uri :query-string :body :headers<br>
+    :server-name :server-port :remote-addr :protocol :scheme :host<br>
+<br>
+  WebSocket upgrade extension (response key :websocket):<br>
+    {:websocket<br>
+      {:on-open    (fn [send close] ...)<br>
+       :on-message (fn [msg] ...)<br>
+       :on-close   (fn [] ...)}}<br>
+<br>
+    send is (fn [msg]) and sends a text frame.<br>
+    close is (fn []) and closes the connection.<br>
+<br>
+  SSE/chunked streaming extension (response key :stream):<br>
+    {:status 200<br>
+     :headers {&#39;Cache-Control&#39; &#39;no-cache&#39;}<br>
+     :stream (fn [send-event]<br>
+               (send-event &#39;tick&#39;)<br>
+               (send-event &#39;complete&#39; &#39;done&#39;))}<br>
+<br>
+    send-event supports:<br>
+      (send-event data)<br>
+      (send-event event data)<br>
+<br>
+  Header values can be strings or seqs of strings.</p>
   
   
 </li>

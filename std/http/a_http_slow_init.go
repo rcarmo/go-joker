@@ -40,6 +40,39 @@ func InternsOrThunks() {
 	httpNamespace.InternVar("start-server", start_server_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("addr"), MakeSymbol("handler"))),
-			`Starts HTTP server on the TCP network address addr.`, "1.0"))
+			`Starts an HTTP server on the TCP network address addr.
+
+  handler is called as (handler request-map) and should return a response map.
+
+  Standard HTTP response map:
+    {:status 200
+     :headers {'Content-Type' 'text/plain'}
+     :body 'Hello'}
+
+  Request map keys include:
+    :request-method :uri :query-string :body :headers
+    :server-name :server-port :remote-addr :protocol :scheme :host
+
+  WebSocket upgrade extension (response key :websocket):
+    {:websocket
+      {:on-open    (fn [send close] ...)
+       :on-message (fn [msg] ...)
+       :on-close   (fn [] ...)}}
+
+    send is (fn [msg]) and sends a text frame.
+    close is (fn []) and closes the connection.
+
+  SSE/chunked streaming extension (response key :stream):
+    {:status 200
+     :headers {'Cache-Control' 'no-cache'}
+     :stream (fn [send-event]
+               (send-event 'tick')
+               (send-event 'complete' 'done'))}
+
+    send-event supports:
+      (send-event data)
+      (send-event event data)
+
+  Header values can be strings or seqs of strings.`, "1.0"))
 
 }

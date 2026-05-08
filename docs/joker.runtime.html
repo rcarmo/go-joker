@@ -25,17 +25,32 @@
       </li>
     </ul>
     <h2 id="_summary">Summary</h2>
-    <p class="var-docstr">Provides access to Go and Joker runtime information.</p>
+    <p class="var-docstr">Runtime introspection: IR disassembly, profiling, WASM diagnostics, escape analysis, memory stats.</p>
     <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
-  <a href="#go-root">go-root</a>
+  <a href="#analyze">analyze</a>
 </li>
 <li>
-  <a href="#go-version">go-version</a>
+  <a href="#benchmark">benchmark</a>
 </li>
 <li>
-  <a href="#joker-version">joker-version</a>
+  <a href="#disassemble">disassemble</a>
+</li>
+<li>
+  <a href="#escape-analysis">escape-analysis</a>
+</li>
+<li>
+  <a href="#gc">gc</a>
+</li>
+<li>
+  <a href="#mem-stats">mem-stats</a>
+</li>
+<li>
+  <a href="#profile">profile</a>
+</li>
+<li>
+  <a href="#wasm-diagnostic">wasm-diagnostic</a>
 </li>
 
     </ul>
@@ -51,33 +66,74 @@
     <h2 id="_functions">Functions, Macros, and Special Forms</h2>
     <ul>
       <li>
-  <h3 class="Function" id="go-root">go-root</h3>
+  <h3 class="Function" id="analyze">analyze</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(go-root)</code></div>
-</pre>
-  <p class="var-docstr">Returns the GOROOT string (as returned by runtime/GOROOT()).</p>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns IR analysis map: slots, captures, eligibility, path, opcodes.</p>
   
   
 </li>
 <li>
-  <h3 class="Function" id="go-version">go-version</h3>
+  <h3 class="Function" id="benchmark">benchmark</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(go-version)</code></div>
-</pre>
-  <p class="var-docstr">Returns the Go version string (as returned by runtime/Version()).</p>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Auto-calibrating benchmark of a zero-arg fn: returns {:ms-per-op :ns-per-op :iterations}.</p>
   
   
 </li>
 <li>
-  <h3 class="Function" id="joker-version">joker-version</h3>
+  <h3 class="Function" id="disassemble">disassemble</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(joker-version)</code></div>
-</pre>
-  <p class="var-docstr">Returns the raw Joker version string (including the leading &#39;v&#39;,<br>
-  which joker.core/joker-version omits).</p>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns IR bytecode disassembly of a function as a string.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="escape-analysis">escape-analysis</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns escape analysis: which slots are safe for transient promotion.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="gc">gc</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Forces garbage collection.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="mem-stats">mem-stats</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns current memory stats: heap, objects, GC cycles.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="profile">profile</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Profiles a zero-arg fn: returns {:time-ms :allocs :bytes :result}. Optional iterations arg.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="wasm-diagnostic">wasm-diagnostic</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns WASM eligibility diagnostic: reason, uses-float, has-imports.</p>
   
   
 </li>

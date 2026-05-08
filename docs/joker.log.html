@@ -1,0 +1,140 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: joker.log</h1>
+    <span class="var-added">v1.0</span>
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#_summary">Summary</a>
+      </li>
+      <li>
+        <a href="#_index">Index</a>
+      </li>
+      <li>
+        <a href="#_constants">Constants</a>
+      </li>
+      <li>
+        <a href="#_variables">Variables</a>
+      </li>
+      <li>
+        <a href="#_functions">Functions, Macros, and Special Forms</a>
+      </li>
+    </ul>
+    <h2 id="_summary">Summary</h2>
+    <p class="var-docstr">Simple leveled logging to stderr.</p>
+    <h2 id="_index">Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#debug">debug</a>
+</li>
+<li>
+  <a href="#error">error</a>
+</li>
+<li>
+  <a href="#get-level">get-level</a>
+</li>
+<li>
+  <a href="#info">info</a>
+</li>
+<li>
+  <a href="#logf">logf</a>
+</li>
+<li>
+  <a href="#set-level!">set-level!</a>
+</li>
+<li>
+  <a href="#warn">warn</a>
+</li>
+
+    </ul>
+    <h2 id="_constants">Constants</h2>
+    Constants are variables with <tt>:const true</tt> in their metadata. Joker currently does not recognize them as special; as such, it allows redefining them or their values.
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_variables">Variables</h2>
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_functions">Functions, Macros, and Special Forms</h2>
+    <ul>
+      <li>
+  <h3 class="Function" id="debug">debug</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(debug &amp; args)</code></div>
+</pre>
+  <p class="var-docstr">Logs a DEBUG message to stderr.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="error">error</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(error &amp; args)</code></div>
+</pre>
+  <p class="var-docstr">Logs an ERROR message to stderr.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="get-level">get-level</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(get-level)</code></div>
+</pre>
+  <p class="var-docstr">Returns the current log level as a keyword.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="info">info</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(info &amp; args)</code></div>
+</pre>
+  <p class="var-docstr">Logs an INFO message to stderr.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="logf">logf</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(logf level &amp; args)</code></div>
+</pre>
+  <p class="var-docstr">Logs a message at the specified level.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="set-level!">set-level!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(set-level! level)</code></div>
+</pre>
+  <p class="var-docstr">Sets the minimum log level (:debug, :info, :warn, :error). Default is :warn.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="warn">warn</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(warn &amp; args)</code></div>
+</pre>
+  <p class="var-docstr">Logs a WARN message to stderr.</p>
+  
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+<script src="main.js"></script>
+</html>

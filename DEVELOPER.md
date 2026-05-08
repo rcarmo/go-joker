@@ -416,6 +416,14 @@ Once a `joker` executable has been built with the desired new and changed namesp
 $ (cd docs; ../joker generate-docs.joke)
 ```
 
+For this fork, you can also run:
+
+```
+$ make docs-check
+```
+
+This regenerates docs and verifies expected namespace/feature coverage (including newly added namespaces and web runtime extensions).
+
 Joker distributions currently include `core` and `std` libraries' documentation in their repositories, so new and changed `.html` files should be added to the changeset(s) along with the corresponding library code.
 
 ### Beware Circular Dependencies

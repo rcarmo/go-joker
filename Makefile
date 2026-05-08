@@ -12,13 +12,14 @@ GOVULNCHECK_BIN ?= $(TOOLBIN)/govulncheck
 
 BENCH_REGEX ?= BenchmarkCLBG(NBody|Mandelbrot|SpectralNorm|BinaryTrees|FannkuchRedux)
 COMPARE_OUT ?= benchmarks/compare/out/latest
+DOCS_JOKER_BIN ?= /workspace/tmp/go-joker-docs
 
 TEST_PKGS ?= ./...
 TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean parity jank-subset audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean docs docs-check parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -34,7 +35,9 @@ help:
 	@echo "  make vuln           # Run govulncheck"
 	@echo "  make race           # Run race tests on critical packages"
 	@echo "  make bench-sanity   # Run CLBG benchmark sanity subset"
-	@echo "  make parity         # Run Clojure parity tests (269 core form tests)"
+	@echo "  make docs           # Generate HTML docs from runtime namespaces"
+	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
+	@echo "  make parity         # Run Clojure parity tests (271 core form tests)"
 	@echo "  make jank-subset    # Run imported jank-lang/clojure-test-suite subset"
 	@echo "  make compare-bench  # Run cross-runtime + let-go-suite comparison sub-project"
 	@echo "  make compare-clean  # Remove generated comparison outputs"
@@ -85,6 +88,32 @@ compare-bench:
 
 compare-clean:
 	rm -rf benchmarks/compare/out/latest
+
+docs:
+	$(GO) build -o $(DOCS_JOKER_BIN) .
+	cd docs && $(DOCS_JOKER_BIN) generate-docs.joke
+
+docs-check: docs
+	test -f docs/joker.imaging.html
+	test -f docs/joker.jit.html
+	test -f docs/joker.log.html
+	test -f docs/joker.pdf.html
+	test -f docs/joker.random.html
+	test -f docs/joker.svg.html
+	grep -q 'id="joker.log"' docs/index.html
+	grep -q 'id="joker.random"' docs/index.html
+	grep -q 'id="joker.imaging"' docs/index.html
+	grep -q 'id="joker.pdf"' docs/index.html
+	grep -q 'id="joker.svg"' docs/index.html
+	grep -q 'WebSocket upgrade extension' docs/joker.http.html
+	grep -q 'SSE/chunked streaming extension' docs/joker.http.html
+	grep -q 'id="alts!"' docs/joker.core.html
+	grep -q 'id="timeout"' docs/joker.core.html
+	grep -q 'id="future"' docs/joker.core.html
+	grep -q 'id="promise"' docs/joker.core.html
+	grep -q 'id="agent"' docs/joker.core.html
+	grep -q 'id="pmap"' docs/joker.core.html
+	grep -q 'id="pcalls"' docs/joker.core.html
 
 parity:
 	$(GO) run tests/clojure_parity.go -joker $(shell pwd)/joker -out docs/DIVERGENCE_MATRIX.md

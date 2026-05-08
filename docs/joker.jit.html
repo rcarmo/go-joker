@@ -1,0 +1,93 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: joker.jit</h1>
+    <span class="var-added">v1.0</span>
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#_summary">Summary</a>
+      </li>
+      <li>
+        <a href="#_index">Index</a>
+      </li>
+      <li>
+        <a href="#_constants">Constants</a>
+      </li>
+      <li>
+        <a href="#_variables">Variables</a>
+      </li>
+      <li>
+        <a href="#_functions">Functions, Macros, and Special Forms</a>
+      </li>
+    </ul>
+    <h2 id="_summary">Summary</h2>
+    <p class="var-docstr">JIT compilation for Clojure functions. Compiles pure arithmetic functions to native Go closures for maximum performance.</p>
+    <h2 id="_index">Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#compile">compile</a>
+</li>
+<li>
+  <a href="#compiled?">compiled?</a>
+</li>
+<li>
+  <a href="#info">info</a>
+</li>
+
+    </ul>
+    <h2 id="_constants">Constants</h2>
+    Constants are variables with <tt>:const true</tt> in their metadata. Joker currently does not recognize them as special; as such, it allows redefining them or their values.
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_variables">Variables</h2>
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_functions">Functions, Macros, and Special Forms</h2>
+    <ul>
+      <li>
+  <h3 class="Function" id="compile">compile</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(compile fn)</code></div>
+</pre>
+  <p class="var-docstr">Compiles a function to the fastest available execution path.<br>
+For pure arithmetic fns, returns a native Go f64 closure.<br>
+For other fns, returns an IR-compiled wrapper.<br>
+The returned function can be called like any other fn.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="compiled?">compiled?</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(compiled? fn)</code></div>
+</pre>
+  <p class="var-docstr">Returns true if the function can be compiled to IR.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="info">info</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(info fn)</code></div>
+</pre>
+  <p class="var-docstr">Returns a map with compilation information about a function.<br>
+Keys: :compiled, :path, :slots, :captures, :self-recursive.<br>
+:path is one of &#34;native-f64&#34;, &#34;typed-ir&#34;, &#34;boxed-ir&#34;.</p>
+  
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+<script src="main.js"></script>
+</html>
