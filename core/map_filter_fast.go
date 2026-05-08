@@ -1,102 +1,233 @@
 package core
 
-// map_filter_fast.go — AST-level fused path for the hot benchmark shape:
-// (reduce + init (take n (filter even? (map #(* % %) (range ...)))))
+// map_filter_fast.go — AST-level fused reducible pipelines.
+//
+// Recognizes reduce over a map/filter/take pipeline rooted at range and executes
+// it in one loop, avoiding lazy seq wrapper churn. This replaces the earlier
+// square/even/take/range-only special case with a small general pipeline compiler.
+
+type reducibleStepKind byte
+
+const (
+	reducibleMap reducibleStepKind = iota
+	reducibleFilter
+	reducibleTake
+)
+
+type reducibleIntrinsic byte
+
+const (
+	reducibleGeneric reducibleIntrinsic = iota
+	reducibleSquareInt
+	reducibleEvenInt
+)
+
+type reducibleStep struct {
+	kind      reducibleStepKind
+	intrinsic reducibleIntrinsic
+	fn        Callable
+	takeLimit int
+}
+
+type reducibleRangePipeline struct {
+	start int
+	end   int
+	step  int
+	steps []reducibleStep
+}
 
 func evalReducePipelineFast(expr *CallExpr, env *LocalEnv) (Object, bool) {
-	vref, ok := expr.callable.(*VarRefExpr)
-	if !ok || vref.vr.name.ToString(false) != "reduce" || len(expr.args) != 3 {
+	if !callableName(expr.callable, "reduce") || (len(expr.args) != 2 && len(expr.args) != 3) {
 		return nil, false
 	}
-	redRef, ok := expr.args[0].(*VarRefExpr)
-	if !ok || redRef.vr.name.ToString(false) != "+" {
-		return nil, false
-	}
-	initObj := Eval(expr.args[1], env)
-	init, ok := initObj.(Int)
+
+	reducerObj := Eval(expr.args[0], env)
+	reducer, ok := reducerObj.(Callable)
 	if !ok {
 		return nil, false
 	}
 
-	// take
-	takeCall, ok := expr.args[2].(*CallExpr)
-	if !ok || len(takeCall.args) != 2 || !callableName(takeCall.callable, "take") {
+	var init Object
+	var collExpr Expr
+	if len(expr.args) == 3 {
+		init = Eval(expr.args[1], env)
+		collExpr = expr.args[2]
+	} else {
+		collExpr = expr.args[1]
+	}
+
+	pipeline, ok := compileReducibleRangePipeline(collExpr, env)
+	if !ok || pipeline.step == 0 {
 		return nil, false
 	}
-	nObj := Eval(takeCall.args[0], env)
-	n, ok := nObj.(Int)
+
+	if len(expr.args) == 2 {
+		return reducePipelineNoInit(reducer, pipeline)
+	}
+	return reducePipelineInit(reducer, init, pipeline), true
+}
+
+func compileReducibleRangePipeline(expr Expr, env *LocalEnv) (reducibleRangePipeline, bool) {
+	call, ok := expr.(*CallExpr)
 	if !ok {
-		return nil, false
+		return reducibleRangePipeline{}, false
 	}
 
-	// filter
-	filterCall, ok := takeCall.args[1].(*CallExpr)
-	if !ok || len(filterCall.args) != 2 || !callableName(filterCall.callable, "filter") {
-		return nil, false
-	}
-	predRef, ok := filterCall.args[0].(*VarRefExpr)
-	if !ok || predRef.vr.name.ToString(false) != "even?" {
-		return nil, false
+	if callableName(call.callable, "range") {
+		start, end, step, ok := evalRangeArgs(call.args, env)
+		if !ok || step == 0 {
+			return reducibleRangePipeline{}, false
+		}
+		return reducibleRangePipeline{start: start, end: end, step: step}, true
 	}
 
-	// map
-	mapCall, ok := filterCall.args[1].(*CallExpr)
-	if !ok || len(mapCall.args) != 2 || !callableName(mapCall.callable, "map") {
-		return nil, false
-	}
-	if !isSquareMapperExpr(mapCall.args[0]) {
-		return nil, false
+	if callableName(call.callable, "map") && len(call.args) == 2 {
+		inner, ok := compileReducibleRangePipeline(call.args[1], env)
+		if !ok {
+			return reducibleRangePipeline{}, false
+		}
+		if isSquareMapperExpr(call.args[0]) {
+			inner.steps = append(inner.steps, reducibleStep{kind: reducibleMap, intrinsic: reducibleSquareInt})
+			return inner, true
+		}
+		fnObj := Eval(call.args[0], env)
+		fn, ok := fnObj.(Callable)
+		if !ok {
+			return reducibleRangePipeline{}, false
+		}
+		inner.steps = append(inner.steps, reducibleStep{kind: reducibleMap, fn: fn})
+		return inner, true
 	}
 
-	// range
-	rangeCall, ok := mapCall.args[1].(*CallExpr)
-	if !ok || !callableName(rangeCall.callable, "range") {
-		return nil, false
-	}
-	start, end, step, ok := evalRangeArgs(rangeCall.args, env)
-	if !ok || step == 0 {
-		return nil, false
+	if callableName(call.callable, "filter") && len(call.args) == 2 {
+		inner, ok := compileReducibleRangePipeline(call.args[1], env)
+		if !ok {
+			return reducibleRangePipeline{}, false
+		}
+		if callableName(call.args[0], "even?") {
+			inner.steps = append(inner.steps, reducibleStep{kind: reducibleFilter, intrinsic: reducibleEvenInt})
+			return inner, true
+		}
+		fnObj := Eval(call.args[0], env)
+		fn, ok := fnObj.(Callable)
+		if !ok {
+			return reducibleRangePipeline{}, false
+		}
+		inner.steps = append(inner.steps, reducibleStep{kind: reducibleFilter, fn: fn})
+		return inner, true
 	}
 
-	acc := init.I
-	taken := 0
-	for i := start; ((step > 0 && i < end) || (step < 0 && i > end)) && taken < n.I; i += step {
-		v := i * i
-		if v%2 == 0 {
-			acc += v
-			taken++
+	if callableName(call.callable, "take") && len(call.args) == 2 {
+		inner, ok := compileReducibleRangePipeline(call.args[1], env)
+		if !ok {
+			return reducibleRangePipeline{}, false
+		}
+		nObj := Eval(call.args[0], env)
+		n, ok := nObj.(Int)
+		if !ok {
+			return reducibleRangePipeline{}, false
+		}
+		inner.steps = append(inner.steps, reducibleStep{kind: reducibleTake, takeLimit: n.I})
+		return inner, true
+	}
+
+	return reducibleRangePipeline{}, false
+}
+
+func reducePipelineNoInit(reducer Callable, p reducibleRangePipeline) (Object, bool) {
+	seen := false
+	var acc Object
+	_, stopped := walkReducibleRangePipeline(p, func(v Object) bool {
+		if !seen {
+			acc = v
+			seen = true
+			return false
+		}
+		acc = reduceStepFast(reducer, acc, v)
+		return IsReduced(acc)
+	})
+	if !seen {
+		return call0(reducer), true
+	}
+	if stopped && IsReduced(acc) {
+		return DerefReduced(acc), true
+	}
+	return acc, true
+}
+
+func reducePipelineInit(reducer Callable, init Object, p reducibleRangePipeline) Object {
+	acc := init
+	reducerName := hotReducerName(reducer)
+	_, stopped := walkReducibleRangePipeline(p, func(v Object) bool {
+		acc = reduceStepFastByName(reducer, reducerName, acc, v)
+		return IsReduced(acc)
+	})
+	if stopped && IsReduced(acc) {
+		return DerefReduced(acc)
+	}
+	return acc
+}
+
+func walkReducibleRangePipeline(p reducibleRangePipeline, emit func(Object) bool) (emitted int, stopped bool) {
+	takeRemaining := make([]int, len(p.steps))
+	for i, step := range p.steps {
+		if step.kind == reducibleTake {
+			takeRemaining[i] = step.takeLimit
 		}
 	}
-	return Int{I: acc}, true
-}
 
-func callableName(expr Expr, name string) bool {
-	vref, ok := expr.(*VarRefExpr)
-	return ok && vref.vr.name.ToString(false) == name
-}
+	for i := p.start; (p.step > 0 && i < p.end) || (p.step < 0 && i > p.end); i += p.step {
+		v := Object(Int{I: i})
+		alive := true
+		stopAfterCurrent := false
 
-func evalRangeArgs(args []Expr, env *LocalEnv) (start, end, step int, ok bool) {
-	switch len(args) {
-	case 1:
-		endObj := Eval(args[0], env)
-		endInt, yes := endObj.(Int)
-		return 0, endInt.I, 1, yes
-	case 2:
-		startObj := Eval(args[0], env)
-		endObj := Eval(args[1], env)
-		startInt, sok := startObj.(Int)
-		endInt, eok := endObj.(Int)
-		return startInt.I, endInt.I, 1, sok && eok
-	case 3:
-		startObj := Eval(args[0], env)
-		endObj := Eval(args[1], env)
-		stepObj := Eval(args[2], env)
-		startInt, sok := startObj.(Int)
-		endInt, eok := endObj.(Int)
-		stepInt, tok := stepObj.(Int)
-		return startInt.I, endInt.I, stepInt.I, sok && eok && tok
+		for si, step := range p.steps {
+			if !alive {
+				break
+			}
+			switch step.kind {
+			case reducibleMap:
+				if step.intrinsic == reducibleSquareInt {
+					if iv, ok := v.(Int); ok {
+						v = Int{I: iv.I * iv.I}
+					} else {
+						v = call1(step.fn, v)
+					}
+				} else {
+					v = call1(step.fn, v)
+				}
+			case reducibleFilter:
+				if step.intrinsic == reducibleEvenInt {
+					if iv, ok := v.(Int); ok {
+						alive = iv.I%2 == 0
+					} else {
+						alive = false
+					}
+				} else if !ToBool(call1(step.fn, v)) {
+					alive = false
+				}
+			case reducibleTake:
+				if takeRemaining[si] <= 0 {
+					return emitted, true
+				}
+				takeRemaining[si]--
+				if takeRemaining[si] == 0 {
+					stopAfterCurrent = true
+				}
+			}
+		}
+
+		if alive {
+			emitted++
+			if emit(v) {
+				return emitted, true
+			}
+		}
+		if stopAfterCurrent {
+			return emitted, true
+		}
 	}
-	return 0, 0, 0, false
+	return emitted, false
 }
 
 func isSquareMapperExpr(expr Expr) bool {
@@ -147,4 +278,33 @@ func isSquareFnExpr(fn *FnExpr) bool {
 	lhs, lok := call.args[0].(*BindingExpr)
 	rhs, rok := call.args[1].(*BindingExpr)
 	return lok && rok && lhs.binding.frame == pf && rhs.binding.frame == pf && lhs.binding.index == 0 && rhs.binding.index == 0
+}
+
+func callableName(expr Expr, name string) bool {
+	vref, ok := expr.(*VarRefExpr)
+	return ok && vref.vr.name.ToString(false) == name
+}
+
+func evalRangeArgs(args []Expr, env *LocalEnv) (start, end, step int, ok bool) {
+	switch len(args) {
+	case 1:
+		endObj := Eval(args[0], env)
+		endInt, yes := endObj.(Int)
+		return 0, endInt.I, 1, yes
+	case 2:
+		startObj := Eval(args[0], env)
+		endObj := Eval(args[1], env)
+		startInt, sok := startObj.(Int)
+		endInt, eok := endObj.(Int)
+		return startInt.I, endInt.I, 1, sok && eok
+	case 3:
+		startObj := Eval(args[0], env)
+		endObj := Eval(args[1], env)
+		stepObj := Eval(args[2], env)
+		startInt, sok := startObj.(Int)
+		endInt, eok := endObj.(Int)
+		stepInt, tok := stepObj.(Int)
+		return startInt.I, endInt.I, stepInt.I, sok && eok && tok
+	}
+	return 0, 0, 0, false
 }

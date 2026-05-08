@@ -128,13 +128,10 @@ func (s *TakeSeq) reduce(f Callable) Object {
 }
 
 func (s *TakeSeq) reduceFused(f Callable) (Object, bool) {
-	return s.reduceInitFused(f, Int{I: 0})
+	return nil, false
 }
 
 func (s *TakeSeq) reduceInit(f Callable, init Object) Object {
-	if result, ok := s.reduceInitFused(f, init); ok {
-		return result
-	}
 	acc := init
 	cur := s.seq
 	for i := 0; i < s.n && !cur.IsEmpty(); i++ {
@@ -145,64 +142,6 @@ func (s *TakeSeq) reduceInit(f Callable, init Object) Object {
 		cur = cur.Rest()
 	}
 	return acc
-}
-
-func (s *TakeSeq) reduceInitFused(f Callable, init Object) (Object, bool) {
-	if s.n < 0 || hotReducerName(f) != "procAdd" {
-		return nil, false
-	}
-	acc, ok := init.(Int)
-	if !ok {
-		return nil, false
-	}
-	fs, ok := s.seq.(*FilteringSeq)
-	if !ok || !isEvenPredicate(fs.pred) {
-		return nil, false
-	}
-	ms, ok := fs.seq.(*MappingSeq)
-	if !ok || !isSquareIntMapper(ms.fn) {
-		return nil, false
-	}
-	rs, ok := ms.seq.(*intRangeSeq)
-	if !ok || rs == nil || rs.r == nil {
-		return nil, false
-	}
-	result := acc.I
-	taken := 0
-	for i := rs.cur; rs.r.contains(i) && taken < s.n; i += rs.r.step {
-		v := i * i
-		if v%2 == 0 {
-			result += v
-			taken++
-		}
-	}
-	return Int{I: result}, true
-}
-
-func isEvenPredicate(c Callable) bool {
-	switch x := c.(type) {
-	case *Fn:
-		if x.defVar != nil && x.defVar.name.ToString(false) == "even?" {
-			return true
-		}
-		return findFnVarName(x) == "even?"
-	case *Var:
-		return x.name.ToString(false) == "even?"
-	}
-	return false
-}
-
-func isSquareIntMapper(fn func(Object) Object) bool {
-	if fn == nil {
-		return false
-	}
-	for _, probe := range []int{0, 1, 2, 3, 7} {
-		v, ok := fn(Int{I: probe}).(Int)
-		if !ok || v.I != probe*probe {
-			return false
-		}
-	}
-	return true
 }
 
 func maybeOverrideSeqOps() {
