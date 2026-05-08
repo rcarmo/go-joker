@@ -27,7 +27,7 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 | **Allocations** | **51% fewer** across all benchmarks (Int/Double 8-byte structs) |
 | **Beat Python** | 7/13 CLBG benchmarks |
 | **Beat Goja** | 12/13 CLBG benchmarks |
-| **Beat let-go** | 14/15 cross-language benchmarks, 4/7 let-go suite (reduce 14.7×, fib 6.2×, tak 4.7×, loop-recur 11×) |
+| **Beat let-go** | 14/15 cross-language benchmarks, 5/7 let-go suite (reduce 13.4×, loop-recur 15.6×, fib 5.6×, tak 4.3×) |
 | **Language compliance** | **269/269 parity tests passing** (`docs/DIVERGENCE_MATRIX.md`) |
 
 ## What's different from upstream Joker

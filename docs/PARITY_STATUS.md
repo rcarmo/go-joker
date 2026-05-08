@@ -27,15 +27,15 @@ Runner/output:
 
 | Benchmark | let-go | go-joker | Winner |
 |---|---:|---:|---|
-| fib | 2623.5 | 423.9 | **go-joker** (6.2×) |
-| loop-recur | 77.5 | 7.07 | **go-joker** (11.0×) |
-| map-filter | 3.42 | 5.17 | let-go (1.5×) |
-| persistent-map | 16.9 | 17.9 | near parity (let-go 1.06×) |
-| reduce | 87.0 | 5.90 | **go-joker** (14.7×) |
-| tak | 2862.2 | 610.6 | **go-joker** (4.7×) |
-| transducers | 3.37 | 7.46 | let-go (2.2×) |
+| fib | 1881.2 | 336.1 | **go-joker** (5.6×) |
+| loop-recur | 105.8 | 6.79 | **go-joker** (15.6×) |
+| map-filter | 3.80 | 5.59 | let-go (1.5×) |
+| persistent-map | 23.3 | 16.2 | **go-joker** (1.4×) |
+| reduce | 71.4 | 5.31 | **go-joker** (13.4×) |
+| tak | 2017.1 | 470.4 | **go-joker** (4.3×) |
+| transducers | 3.13 | 4.88 | let-go (1.6×) |
 
-**Score:** go-joker wins 4/7, persistent-map is effectively at parity, and map-filter has narrowed to ~1.5×. The remaining material gap is transducer dispatch/startup overhead.
+**Score:** go-joker wins 5/7. The remaining material gaps are map-filter and transducers, both narrowed to ~1.5–1.6×.
 
 ---
 
