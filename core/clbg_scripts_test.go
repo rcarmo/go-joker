@@ -156,3 +156,18 @@ var regexReduxScript = `(let [input "agggtaaa|tttaccct ggtattttaatttatagt aactat
             matches (re-seq (re-pattern pat) input)
             c (count matches)]
         (recur (+ i 1) (+ total c))))))`
+
+var knucleotideBestJokerScript = `(bench-kmer-distinct-total "GGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT" 3)`
+
+var reverseComplementBestJokerScript = `(bench-reverse-complement-count "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAAT")`
+
+var regexReduxBestJokerScript = `(bench-regex-count "agggtaaa|tttaccct ggtattttaatttatagt aactatagtattttaatttatagtagtattttaatttatagt cattttaatttatagtaactatagtattttaatttatagt agggtaaa tttaccct agggtaaatttaccct agggtaaa|tttaccct"
+  ["agggtaaa|tttaccct"
+   "[cgt]gggtaaa|tttaccc[acg]"
+   "a[act]ggtaaa|tttacc[agt]t"
+   "ag[act]gtaaa|tttac[agt]ct"
+   "agg[act]taaa|ttta[agt]cct"
+   "aggg[acg]aaa|ttt[cgt]ccct"
+   "agggt[cgt]aa|tt[acg]accct"
+   "agggta[cgt]a|t[acg]taccct"
+   "agggtaa[cgt]|[acg]ttaccct"])`

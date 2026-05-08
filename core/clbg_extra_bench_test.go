@@ -47,6 +47,15 @@ func BenchmarkCLBGKnucleotide(b *testing.B) {
 	}
 }
 
+func BenchmarkCLBGKnucleotideBestJoker(b *testing.B) {
+	expr := compileBenchExpr(b, knucleotideBestJokerScript)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
+
 func BenchmarkCLBGReverseComplement(b *testing.B) {
 	expr := compileBenchExpr(b, reverseComplementScript)
 	b.ReportAllocs()
@@ -56,8 +65,26 @@ func BenchmarkCLBGReverseComplement(b *testing.B) {
 	}
 }
 
+func BenchmarkCLBGReverseComplementBestJoker(b *testing.B) {
+	expr := compileBenchExpr(b, reverseComplementBestJokerScript)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
+
 func BenchmarkCLBGRegexRedux(b *testing.B) {
 	expr := compileBenchExpr(b, regexReduxScript)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
+
+func BenchmarkCLBGRegexReduxBestJoker(b *testing.B) {
+	expr := compileBenchExpr(b, regexReduxBestJokerScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {

@@ -41,7 +41,12 @@ The benchmark suite now separates portable/literal ports from best-Joker runtime
 | `BenchmarkEvalTailRecursiveSum` | portable/stress | Measures recursive function self-call overhead (`irCallSelf`). Useful runtime stress, but not comparable to Python's `while` loop. |
 | `BenchmarkEvalTailRecursiveSumLoopRecur` | best-Joker | Equivalent sum written as `loop/recur`, matching Python's iterative shape and hitting `irRecur`. |
 | `BenchmarkEvalWordFrequency` | best-Joker | Uses native tokenization + `frequencies` instead of regex plus interpreted persistent-map updates. |
+| `BenchmarkEvalMapUpdateLoop` | portable/stress | Persistent-map update loop. A transient rewrite was tested and rejected because generic `assoc!` dispatch overhead dominated this small-key workload. |
+| `BenchmarkCLBGKnucleotideBestJoker` | best-Joker/native | Uses a native k-mer distinct-count helper instead of interpreted substring construction plus persistent-map churn. |
+| `BenchmarkCLBGReverseComplementBestJoker` | best-Joker/native | Uses a byte-slice native reverse-complement helper instead of repeated string concatenation. |
+| `BenchmarkCLBGRegexReduxBestJoker` | best-Joker/native | Uses count-only native regex matching instead of `re-seq` object materialization. |
 | `BenchmarkCLBGBinaryTreesParallel` | concurrency smoke/best-Joker | Uses `pmap` over independent depth work; keep separate from portable single-thread CLBG. |
+| `BenchmarkCLBGNBody`, `BenchmarkCLBGSpectralNorm`, `BenchmarkCLBGMandelbrot`, `BenchmarkCLBGFannkuchRedux`, `BenchmarkCLBGFasta`, `BenchmarkCLBGPidigits` | portable/stress | No accepted best-Joker rewrite in this pass; keep as algorithm/runtime stress until a non-cheating stronger shape is identified. |
 
 Focused tail-sum audit (`-benchtime=100x`):
 
@@ -49,6 +54,15 @@ Focused tail-sum audit (`-benchtime=100x`):
 |---|---:|---:|---:|---|
 | `BenchmarkEvalTailRecursiveSum` | 12.37ms/op | 3.20MB/op | 299,770/op | recursive function path |
 | `BenchmarkEvalTailRecursiveSumLoopRecur` | 0.080ms/op | 775B/op | 7/op | best-Joker iterative path |
+
+Focused best-Joker CLBG/string audit (`-benchtime=50x`):
+
+| Benchmark | Portable | Best-Joker | Speedup |
+|---|---:|---:|---:|
+| k-nucleotide | 0.230ms/op | 0.0126ms/op | 18.3× |
+| reverse-complement | 0.046ms/op | 0.000374ms/op | 124× |
+| regex-redux | 0.351ms/op | 0.083ms/op | 4.2× |
+| map-update-loop transient attempt | 0.823ms/op | rejected: 184.9ms/op | generic transient dispatch too costly here |
 
 ## Parallel benchmark variants
 
