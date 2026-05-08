@@ -137,10 +137,20 @@ func (env *Env) EnsureSymbolIsNamespace(sym Symbol) *Namespace {
 	if sym.ns != nil {
 		panic(RT.NewError("Namespace's name cannot be qualified: " + sym.ToString(false)))
 	}
+	nsRWMu.RLock()
+	ns := env.Namespaces[sym.name]
+	nsRWMu.RUnlock()
+	if ns != nil {
+		return ns
+	}
+	nsRWMu.Lock()
+	// Double-check under write lock.
 	if env.Namespaces[sym.name] == nil {
 		env.Namespaces[sym.name] = NewNamespace(sym)
 	}
-	return env.Namespaces[sym.name]
+	ns = env.Namespaces[sym.name]
+	nsRWMu.Unlock()
+	return ns
 }
 
 func (env *Env) EnsureSymbolIsLib(sym Symbol) *Namespace {
@@ -156,7 +166,9 @@ func (env *Env) NamespaceFor(ns *Namespace, s Symbol) *Namespace {
 	} else {
 		res = ns.aliases[s.ns]
 		if res == nil {
+			nsRWMu.RLock()
 			res = env.Namespaces[s.ns]
+			nsRWMu.RUnlock()
 		}
 	}
 	if res != nil {
@@ -190,7 +202,9 @@ func (env *Env) FindNamespace(s Symbol) *Namespace {
 	if s.ns != nil {
 		return nil
 	}
+	nsRWMu.RLock()
 	ns := env.Namespaces[s.name]
+	nsRWMu.RUnlock()
 	if ns != nil {
 		ns.MaybeLazy("FindNameSpace")
 	}
@@ -204,8 +218,10 @@ func (env *Env) RemoveNamespace(s Symbol) *Namespace {
 	if s.Equals(SYMBOLS.joker_core) {
 		panic(RT.NewError("Cannot remove core namespace"))
 	}
+	nsRWMu.Lock()
 	ns := env.Namespaces[s.name]
 	delete(env.Namespaces, s.name)
+	nsRWMu.Unlock()
 	return ns
 }
 

@@ -734,7 +734,6 @@ func main() {
 	// Check for embedded standalone payload before anything else
 	if src, ok := checkEmbeddedSource(); ok {
 		GLOBAL_ENV.InitEnv(Stdin, Stdout, Stderr, os.Args[1:])
-		RT.GIL.Lock()
 		ProcessCoreData()
 		GLOBAL_ENV.ReferCoreToUser()
 		GLOBAL_ENV.SetEnvArgs(os.Args[1:])
@@ -751,7 +750,6 @@ func main() {
 
 	saveForRepl = saveForRepl && (exitToRepl || errorToRepl) // don't bother saving stuff if no repl
 
-	RT.GIL.Lock()
 	ProcessCoreData()
 
 	GLOBAL_ENV.ReferCoreToUser()

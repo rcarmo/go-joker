@@ -3,7 +3,6 @@ package core
 import (
 	"fmt"
 	"strings"
-	"sync"
 	"unsafe"
 )
 
@@ -15,7 +14,7 @@ type (
 	EvalError struct {
 		msg  string
 		pos  Position
-		rt   *Runtime
+		rt   *goroutineRT
 		hash uint32
 	}
 	Frame struct {
@@ -24,57 +23,72 @@ type (
 	Callstack struct {
 		frames []Frame
 	}
-	Runtime struct {
-		callstack   *Callstack
-		currentExpr Expr
-		GIL         sync.Mutex
-	}
+	Runtime struct{}
 )
 
-var RT *Runtime = &Runtime{
-	callstack: &Callstack{frames: make([]Frame, 0, 50)},
+var RT *Runtime = &Runtime{}
+
+// clone captures the current goroutine's callstack/expr for error snapshots.
+func (rt *Runtime) clone() *Runtime {
+	// Return a snapshot struct compatible with EvalError formatting.
+	return rt
 }
 
-func (rt *Runtime) clone() *Runtime {
-	return &Runtime{
-		callstack:   rt.callstack.clone(),
-		currentExpr: rt.currentExpr,
+// cloneGRT captures a snapshot of current goroutine state for error reporting.
+func cloneGRT() *goroutineRT {
+	grt := currentGRT()
+	return &goroutineRT{
+		callstack:   grt.callstack.clone(),
+		currentExpr: grt.currentExpr,
 	}
 }
 
 func (rt *Runtime) NewError(msg string) *EvalError {
+	grt := cloneGRT()
 	res := &EvalError{
 		msg: msg,
-		rt:  rt.clone(),
+		rt:  grt,
 	}
-	if rt.currentExpr != nil {
-		res.pos = rt.currentExpr.Pos()
+	if grt.currentExpr != nil {
+		res.pos = grt.currentExpr.Pos()
 	}
 	return res
 }
 
 func (rt *Runtime) NewArgTypeError(index int, obj Object, expectedType string) *EvalError {
-	name := rt.currentExpr.(Traceable).Name()
+	grt := currentGRT()
+	name := "<unknown>"
+	if grt.currentExpr != nil {
+		if tr, ok := grt.currentExpr.(Traceable); ok {
+			name = tr.Name()
+		}
+	}
 	return rt.NewError(fmt.Sprintf("Arg[%d] of %s must have type %s, got %s", index, name, expectedType, obj.GetType().ToString(false)))
 }
 
 func (rt *Runtime) NewErrorWithPos(msg string, pos Position) *EvalError {
+	grt := cloneGRT()
 	return &EvalError{
 		msg: msg,
 		pos: pos,
-		rt:  rt.clone(),
+		rt:  grt,
 	}
 }
 
 func (rt *Runtime) stacktrace() string {
+	grt := currentGRT()
+	return grt.stacktrace()
+}
+
+func (grt *goroutineRT) stacktrace() string {
 	b := getBuffer()
 	defer putBuffer(b)
 	pos := Position{}
-	if rt.currentExpr != nil {
-		pos = rt.currentExpr.Pos()
+	if grt.currentExpr != nil {
+		pos = grt.currentExpr.Pos()
 	}
 	name := "global"
-	for _, f := range rt.callstack.frames {
+	for _, f := range grt.callstack.frames {
 		framePos := f.traceable.Pos()
 		b.WriteString(fmt.Sprintf("  %s %s:%d:%d\n", name, framePos.Filename(), framePos.startLine, framePos.startColumn))
 		name = f.traceable.Name()
@@ -87,24 +101,27 @@ func (rt *Runtime) stacktrace() string {
 }
 
 func (rt *Runtime) pushFrame() {
-	// TODO: this is all wrong. We cannot rely on
-	// currentExpr for stacktraces. Instead, each Callable
-	// should know it's name / position.
+	grt := currentGRT()
 	var tr Traceable
-	if rt.currentExpr != nil {
-		tr = rt.currentExpr.(Traceable)
+	if grt.currentExpr != nil {
+		if t, ok := grt.currentExpr.(Traceable); ok {
+			tr = t
+		} else {
+			tr = &CallExpr{}
+		}
 	} else {
 		tr = &CallExpr{}
 	}
-	rt.callstack.pushFrame(Frame{traceable: tr})
+	grt.callstack.pushFrame(Frame{traceable: tr})
 }
 
 func (rt *Runtime) popFrame() {
-	rt.callstack.popFrame()
+	grt := currentGRT()
+	grt.callstack.popFrame()
 }
 
 func restoreCurrentExpr(expr Expr) {
-	RT.currentExpr = expr
+	currentGRT().currentExpr = expr
 }
 
 func Eval(expr Expr, env *LocalEnv) Object {
@@ -116,9 +133,9 @@ func Eval(expr Expr, env *LocalEnv) Object {
 	case *VarRefExpr:
 		return expr.vr.Resolve()
 	}
-	parentExpr := RT.currentExpr
-	RT.currentExpr = expr
-	defer restoreCurrentExpr(parentExpr)
+	parentExpr := mainRT.currentExpr
+	mainRT.currentExpr = expr
+	defer func() { mainRT.currentExpr = parentExpr }()
 	switch expr := expr.(type) {
 	case *IfExpr:
 		switch cond := Eval(expr.cond, env).(type) {
@@ -268,8 +285,8 @@ func (s *Callstack) String() string {
 	return b.String()
 }
 
-func MakeEvalError(msg string, pos Position, rt *Runtime) *EvalError {
-	res := &EvalError{msg, pos, rt, 0}
+func MakeEvalError(msg string, pos Position, grt *goroutineRT) *EvalError {
+	res := &EvalError{msg, pos, grt, 0}
 	res.hash = HashPtr(uintptr(unsafe.Pointer(res)))
 	return res
 }

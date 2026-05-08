@@ -786,16 +786,17 @@ loop:
 				}
 			}
 			// Fallback to normal Fn.Call
-			prevExpr := RT.currentExpr
-			RT.currentExpr = &CallExpr{}
+			grt := currentGRT()
+			prevExpr := grt.currentExpr
+			grt.currentExpr = &CallExpr{}
 			switch fn := fnObj.(type) {
 			case Callable:
 				stack = append(stack, fn.Call(args))
 			default:
-				RT.currentExpr = prevExpr
+				grt.currentExpr = prevExpr
 				return nil
 			}
-			RT.currentExpr = prevExpr
+			grt.currentExpr = prevExpr
 
 		case irCallSelf:
 			nargs := int(code[pc])<<8 | int(code[pc+1])

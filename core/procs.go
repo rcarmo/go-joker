@@ -406,7 +406,7 @@ var procUnsignedBitShiftRight = func(args []Object) Object {
 var procExInfo = func(args []Object) Object {
 	CheckArity(args, 2, 3)
 	res := &ExInfo{
-		rt: RT.clone(),
+		rt: cloneGRT(),
 	}
 	res.Add(KEYWORDS.message, EnsureArgIsString(args, 0))
 	res.Add(KEYWORDS.data, EnsureArgIsMap(args, 1))
@@ -548,45 +548,53 @@ var procDeref = func(args []Object) Object {
 var procSwap = func(args []Object) Object {
 	a := EnsureArgIsAtom(args, 0)
 	f := EnsureArgIsCallable(args, 1)
+	a.mu.Lock()
 	fargs := append([]Object{a.value}, args[2:]...)
 	oldValue := a.value
 	newValue := f.Call(fargs)
 	validateAtom(a, newValue)
 	a.value = newValue
+	a.mu.Unlock()
 	notifyWatches(a, oldValue, newValue)
-	return a.value
+	return newValue
 }
 
 var procSwapVals = func(args []Object) Object {
 	a := EnsureArgIsAtom(args, 0)
 	f := EnsureArgIsCallable(args, 1)
+	a.mu.Lock()
 	fargs := append([]Object{a.value}, args[2:]...)
 	oldValue := a.value
 	newValue := f.Call(fargs)
 	validateAtom(a, newValue)
 	a.value = newValue
+	a.mu.Unlock()
 	notifyWatches(a, oldValue, newValue)
-	return NewVectorFrom(oldValue, a.value)
+	return NewVectorFrom(oldValue, newValue)
 }
 
 var procReset = func(args []Object) Object {
 	a := EnsureArgIsAtom(args, 0)
+	a.mu.Lock()
 	oldValue := a.value
 	newValue := args[1]
 	validateAtom(a, newValue)
 	a.value = newValue
+	a.mu.Unlock()
 	notifyWatches(a, oldValue, newValue)
-	return a.value
+	return newValue
 }
 
 var procResetVals = func(args []Object) Object {
 	a := EnsureArgIsAtom(args, 0)
+	a.mu.Lock()
 	oldValue := a.value
 	newValue := args[1]
 	validateAtom(a, newValue)
 	a.value = newValue
+	a.mu.Unlock()
 	notifyWatches(a, oldValue, newValue)
-	return NewVectorFrom(oldValue, a.value)
+	return NewVectorFrom(oldValue, newValue)
 }
 
 var procAlterMeta = func(args []Object) Object {
@@ -1827,22 +1835,17 @@ var procSend = func(args []Object) (obj Object) {
 	obj = MakeBoolean(true)
 	defer func() {
 		if r := recover(); r != nil {
-			RT.GIL.Lock()
 			obj = MakeBoolean(false)
 		}
 	}()
-	RT.GIL.Unlock()
 	ch.ch <- MakeFutureResult(v, nil)
-	RT.GIL.Lock()
 	return
 }
 
 var procReceive = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	ch := EnsureArgIsChannel(args, 0)
-	RT.GIL.Unlock()
 	res, ok := <-ch.ch
-	RT.GIL.Lock()
 	if !ok {
 		return NIL
 	}
@@ -1857,6 +1860,8 @@ var procGo = func(args []Object) Object {
 	f := EnsureArgIsCallable(args, 0)
 	ch := MakeChannel(make(chan FutureResult, 1))
 	go func() {
+		registerGoroutineRT()
+		defer unregisterGoroutineRT()
 
 		defer func() {
 			if r := recover(); r != nil {
@@ -1865,14 +1870,11 @@ var procGo = func(args []Object) Object {
 					ch.ch <- MakeFutureResult(NIL, r)
 					ch.Close()
 				default:
-					RT.GIL.Unlock()
 					panic(r)
 				}
 			}
-			RT.GIL.Unlock()
 		}()
 
-		RT.GIL.Lock()
 		res := call0(f)
 		ch.ch <- MakeFutureResult(res, nil)
 		ch.Close()

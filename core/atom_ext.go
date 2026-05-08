@@ -139,14 +139,16 @@ func registerAtomExtProcs() {
 		a := EnsureObjectIsAtom(args[0], "compare-and-set! requires an atom, got %s")
 		oldVal := args[1]
 		newVal := args[2]
-		current := a.Deref()
-		if current.Equals(oldVal) {
+		a.mu.Lock()
+		if a.value.Equals(oldVal) {
 			validateAtom(a, newVal)
 			old := a.value
 			a.value = newVal
+			a.mu.Unlock()
 			notifyWatches(a, old, newVal)
 			return Boolean{B: true}
 		}
+		a.mu.Unlock()
 		return Boolean{B: false}
 	}}
 	referToUser(MakeSymbol("compare-and-set!"), casVr)

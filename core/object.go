@@ -179,7 +179,7 @@ type (
 	}
 	ExInfo struct {
 		ArrayMap
-		rt *Runtime
+		rt *goroutineRT
 	}
 	RecurBindings []Object
 	Delay         struct {
@@ -240,6 +240,7 @@ type (
 	}
 	Atom struct {
 		MetaHolder
+		mu    sync.Mutex
 		value Object
 	}
 	Deref interface {
@@ -419,7 +420,13 @@ func MakeKeyword(nsname string) Keyword {
 }
 
 func PanicArity(n int) {
-	name := RT.currentExpr.(Traceable).Name()
+	grt := currentGRT()
+	name := "<unknown>"
+	if grt.currentExpr != nil {
+		if tr, ok := grt.currentExpr.(Traceable); ok {
+			name = tr.Name()
+		}
+	}
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s", n, name)))
 }
 
@@ -440,7 +447,13 @@ func rangeString(min, max int) string {
 }
 
 func PanicArityMinMax(n, min, max int) {
-	name := RT.currentExpr.(Traceable).Name()
+	grt := currentGRT()
+	name := "<unknown>"
+	if grt.currentExpr != nil {
+		if tr, ok := grt.currentExpr.(Traceable); ok {
+			name = tr.Name()
+		}
+	}
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, name, rangeString(min, max))))
 }
 
@@ -537,9 +550,11 @@ func (a *Atom) WithInfo(info *ObjectInfo) Object {
 }
 
 func (a *Atom) WithMeta(meta Map) Object {
-	res := *a
-	res.meta = SafeMerge(res.meta, meta)
-	return &res
+	res := &Atom{
+		value: a.value,
+	}
+	res.meta = SafeMerge(a.meta, meta)
+	return res
 }
 
 func (a *Atom) ResetMeta(newMeta Map) Map {
@@ -552,7 +567,10 @@ func (a *Atom) AlterMeta(fn *Fn, args []Object) Map {
 }
 
 func (a *Atom) Deref() Object {
-	return a.value
+	a.mu.Lock()
+	v := a.value
+	a.mu.Unlock()
+	return v
 }
 
 func (d *Delay) ToString(escape bool) string {

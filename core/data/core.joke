@@ -4479,13 +4479,11 @@
   If exception is thrown inside the body, it will be caught and re-thrown upon
   reading from the returned channel.
 
-  Joker is single threaded and uses the GIL (Global Interpreter Lock) to make sure
-  only one goroutine (including the root one) executes at the same time.
-  However, channel operations and some I/O functions (joker.http/send, joker.os/sh*, joker.os/exec,
-  and joker.time/sleep) release the GIL and allow other goroutines to run.
-  So using goroutines only makes sense if you do I/O (specifically, calling the above functions)
-  inside them. Also, note that a goroutine may never have a chance to run if the root goroutine
-  (or another goroutine) doesn't do any I/O or channel operations (<! or >!)."
+  Goroutines run in true parallel on Go scheduler threads. Immutable data
+  structures are safe to share without coordination. Use atoms (swap!/reset!)
+  for shared mutable state — they are protected by per-atom locks.
+  Channel operations (<! and >!) block the calling goroutine until a
+  counterpart is available."
   {:added "1.0"}
   [& body]
   `(go__ (fn [] ~@body)))
