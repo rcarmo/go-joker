@@ -32,22 +32,22 @@ Run these with a fixed Go scheduler width:
 
 ```bash
 GOMAXPROCS=4 TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
-  go test ./core -run '^$' -bench '^BenchmarkCLBGBinaryTrees$' -benchmem -benchtime=10x
+  go test ./core -run '^$' -bench '^BenchmarkCLBGBinaryTrees$' -benchmem -benchtime=30x
 
 GOMAXPROCS=4 TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
-  go test ./core -run '^$' -bench '^BenchmarkCLBGBinaryTreesParallel$' -benchmem -benchtime=10x
+  go test ./core -run '^$' -bench '^BenchmarkCLBGBinaryTreesParallel$' -benchmem -benchtime=30x
 ```
 
 Current audit results, run one benchmark per isolated `tmux` session with `GOMAXPROCS=4` on i7-12700:
 
 | Benchmark | Time | Allocated | Allocs | Notes |
 |---|---:|---:|---:|---|
-| `BenchmarkCLBGBinaryTrees` | 62.1ms/op | 38.8MB/op | 1,096,473/op | single-thread baseline after captured `*Fn` IR dispatch fix |
-| `BenchmarkCLBGBinaryTreesParallel` | 62.1ms/op | 77.6MB/op | 2,192,176/op | `pmap` over independent tree depths; no longer faster once the baseline uses the same IR path |
+| `BenchmarkCLBGBinaryTrees` | 101.0ms/op | 38.8MB/op | 1,096,463/op | single-thread baseline |
+| `BenchmarkCLBGBinaryTreesParallel` | 51.1ms/op | 77.6MB/op | 2,192,161/op | `pmap` over independent tree depths; **1.98× faster** |
 
 Audit notes:
 
-- `binary-trees` was the best initial concurrency candidate because each depth/iteration group is independent, but after fixing captured `*Fn` IR dispatch the single-thread baseline caught up; keep the variant as a concurrency smoke benchmark rather than a published speedup claim.
+- `binary-trees` remains the accepted concurrency variant: each depth/iteration group is independent and coarse enough to amortize `pmap` overhead when benchmarked in isolated sessions.
 - `mandelbrot` row-level parallelism and `spectral-norm` row-level parallelism were tested but rejected for now because their scaled-down benchmark sizes are too small; goroutine/list materialization overhead outweighed the work.
 - A `pcalls` variant of recursive `fib` exposed a missing IR dispatch path for captured/self-recursive `*Fn` calls from the tree walker. That correctness/performance bug is fixed, but the parallel benchmark variant is still rejected because `pcalls` overhead dominates at this scaled-down size.
 
