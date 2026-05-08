@@ -47,7 +47,8 @@ Primary compliance artifact:
 
 Current result:
 
-- **269/269 pass (100%)**, 0 fail, 0 error.
+- **271/271 pass (100%)**, 0 fail, 0 error.
+- Imported `jank-lang/clojure-test-suite` smoke subset: **7/7 pass** with local harness.
 
 Coverage includes:
 
@@ -92,6 +93,9 @@ make compare-bench
 
 # Language parity + divergence matrix refresh
 make parity
+
+# Imported jank-lang/clojure-test-suite smoke subset
+make jank-subset
 
 # Full fast audit
 make audit-fast

@@ -1,0 +1,22 @@
+(ns clojure.test)
+
+(defmacro is [form & _]
+  `(when-not ~form
+     (throw (ex-info "is assertion failed" {:form '~form}))))
+
+(defmacro are [argv expr & args]
+  (let [n (count argv)
+        groups (partition n args)]
+    `(do ~@(map (fn [g]
+                  `(let [~@(mapcat vector argv g)]
+                     (is ~expr)))
+                groups))))
+
+(defmacro testing [msg & body]
+  `(do ~@body))
+
+(defmacro deftest [name & body]
+  `(defn ~name [] ~@body))
+
+(defn run-tests [& _] true)
+(defn do-report [_] nil)

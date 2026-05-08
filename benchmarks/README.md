@@ -135,6 +135,9 @@ Clojure language compliance is tracked separately from runtime speed using:
 ```bash
 make parity
 # -> docs/DIVERGENCE_MATRIX.md
+
+make jank-subset
+# -> runs imported jank-lang/clojure-test-suite smoke subset
 ```
 
-Current result: **269/269 pass (100%)**.
+Current result: **271/271 pass (100%)** plus **7/7 imported jank-suite smoke files**.

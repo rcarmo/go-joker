@@ -18,7 +18,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean parity audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -34,7 +34,8 @@ help:
 	@echo "  make vuln           # Run govulncheck"
 	@echo "  make race           # Run race tests on critical packages"
 	@echo "  make bench-sanity   # Run CLBG benchmark sanity subset"
-	@echo "  make parity         # Run Clojure parity tests (166 core form tests)"
+	@echo "  make parity         # Run Clojure parity tests (269 core form tests)"
+	@echo "  make jank-subset    # Run imported jank-lang/clojure-test-suite subset"
 	@echo "  make compare-bench  # Run cross-runtime + let-go-suite comparison sub-project"
 	@echo "  make compare-clean  # Remove generated comparison outputs"
 	@echo "  make audit-fast     # test + vet + staticcheck + lint + vuln"
@@ -87,6 +88,9 @@ compare-clean:
 
 parity:
 	$(GO) run tests/clojure_parity.go -joker $(shell pwd)/joker -out docs/DIVERGENCE_MATRIX.md
+
+jank-subset:
+	JOKER_BIN=$(shell pwd)/joker tests/run_jank_subset.sh
 
 audit-fast: tools test vet staticcheck-sa lint vuln
 

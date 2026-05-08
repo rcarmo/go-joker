@@ -71,7 +71,7 @@ Joker's execution engine uses a **tiered dispatch** model with five execution pa
 
 ## Language Compliance (current)
 
-- Internal compliance suite: **261/261 pass** (`tests/clojure_parity.go`)
+- Internal compliance suite: **271/271 pass** (`tests/clojure_parity.go`)
 - Divergence matrix: `docs/DIVERGENCE_MATRIX.md`
 - Recently added parity surfaces:
   - protocols + records

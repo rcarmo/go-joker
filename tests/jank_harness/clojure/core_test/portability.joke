@@ -1,0 +1,9 @@
+(ns clojure.core-test.portability)
+
+(defmacro when-var-exists [var-sym & body]
+  `(do ~@body))
+
+(defn big-int? [n]
+  (and (integer? n) (not (int? n))))
+
+(defn sleep [_] nil)

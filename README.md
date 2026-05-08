@@ -28,7 +28,7 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 | **Beat Python** | 7/13 CLBG benchmarks |
 | **Beat Goja** | 12/13 CLBG benchmarks |
 | **Beat let-go** | 14/15 cross-language benchmarks, 5/7 let-go suite (reduce 13.4×, loop-recur 15.6×, fib 5.6×, tak 4.3×) |
-| **Language compliance** | **269/269 parity tests passing** (`docs/DIVERGENCE_MATRIX.md`) |
+| **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
 
 ## What's different from upstream Joker
 
@@ -93,6 +93,7 @@ Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze
 go test ./core              # run all tests
 go test ./core -bench .     # run all benchmarks
 make parity                 # run language parity suite + refresh divergence matrix
+make jank-subset            # run imported jank-lang/clojure-test-suite smoke subset
 ```
 
 ## Benchmarks
@@ -116,7 +117,7 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 - [`docs/OPTIMIZATION_REPORT.md`](docs/OPTIMIZATION_REPORT.md) — full technical report (phases, trade-offs, outcomes, suggested git history)
 - [`benchmarks/README.md`](benchmarks/README.md) — benchmark data and chart regeneration
 - [`docs/PARITY_STATUS.md`](docs/PARITY_STATUS.md) — let-go benchmark parity + language compliance status
-- [`docs/DIVERGENCE_MATRIX.md`](docs/DIVERGENCE_MATRIX.md) — latest compliance matrix (**269/269 pass**)
+- [`docs/DIVERGENCE_MATRIX.md`](docs/DIVERGENCE_MATRIX.md) — latest compliance matrix (**271/271 pass**)
 - [`PERFORMANCE_PLAN.md`](PERFORMANCE_PLAN.md) — optimization roadmap and milestones
 
 ## Upstream
