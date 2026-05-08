@@ -1,6 +1,10 @@
 package core
 
+import "sync"
+
 // range_fast.go — Efficient Range type that implements Reduce for fast numeric reduce.
+
+var hotReducerFnCache sync.Map // *Fn -> reducer proc name string
 
 // IntRange represents a range of integers [start, end) with step.
 type IntRange struct {
@@ -263,8 +267,12 @@ func hotReducerName(f Callable) string {
 		if c.defVar != nil {
 			return hotReducerSymbol(c.defVar.name.ToString(false))
 		}
-		if name := findFnVarName(c); name != "" {
-			return hotReducerSymbol(name)
+		if cached, ok := hotReducerFnCache.Load(c); ok {
+			return cached.(string)
+		}
+		if proc := bindHotReducerDefVar(c); proc != "" {
+			hotReducerFnCache.Store(c, proc)
+			return proc
 		}
 	case *Var:
 		return hotReducerSymbol(c.name.ToString(false))
@@ -273,6 +281,9 @@ func hotReducerName(f Callable) string {
 }
 
 func findFnVarName(fn *Fn) string {
+	if fn != nil && fn.defVar != nil {
+		return fn.defVar.name.ToString(false)
+	}
 	if fn == nil {
 		return ""
 	}
@@ -287,6 +298,27 @@ func findFnVarName(fn *Fn) string {
 		for _, vr := range ns.Mappings() {
 			if vr.Value == fn {
 				return vr.name.ToString(false)
+			}
+		}
+	}
+	return ""
+}
+
+func bindHotReducerDefVar(fn *Fn) string {
+	if fn == nil {
+		return ""
+	}
+	for _, ns := range []*Namespace{GLOBAL_ENV.CurrentNamespace(), GLOBAL_ENV.CoreNamespace} {
+		if ns == nil {
+			continue
+		}
+		for _, vr := range ns.Mappings() {
+			if vr.Value == fn {
+				proc := hotReducerSymbol(vr.name.ToString(false))
+				if proc != "" {
+					fn.defVar = vr
+					return proc
+				}
 			}
 		}
 	}
