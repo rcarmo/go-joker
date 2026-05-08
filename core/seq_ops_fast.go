@@ -144,6 +144,55 @@ func (s *TakeSeq) reduceInit(f Callable, init Object) Object {
 	return acc
 }
 
+func chunkedMapSeq(f Callable, src Seq) Seq {
+	if src == nil || src.IsEmpty() {
+		return EmptyList
+	}
+	buf := make([]Object, 0, 32)
+	cur := src
+	for len(buf) < 32 && !cur.IsEmpty() {
+		buf = append(buf, call1(f, cur.First()))
+		cur = cur.Rest()
+	}
+	chunk := &ArrayChunk{arr: buf, off: 0, end: len(buf)}
+	var rest Seq
+	if !cur.IsEmpty() {
+		restCur := cur
+		rest = &LazySeq{fn: Proc{Name: "procChunkedMapRest", Fn: func(args []Object) Object {
+			return chunkedMapSeq(f, restCur)
+		}}}
+	}
+	return &ChunkedCons{chunk: chunk, rest: rest, idx: 0}
+}
+
+func chunkedFilterSeq(pred Callable, src Seq) Seq {
+	cur := src
+	for {
+		if cur == nil || cur.IsEmpty() {
+			return EmptyList
+		}
+		buf := make([]Object, 0, 32)
+		for len(buf) < 32 && !cur.IsEmpty() {
+			v := cur.First()
+			if ToBool(call1(pred, v)) {
+				buf = append(buf, v)
+			}
+			cur = cur.Rest()
+		}
+		if len(buf) > 0 {
+			chunk := &ArrayChunk{arr: buf, off: 0, end: len(buf)}
+			var rest Seq
+			if !cur.IsEmpty() {
+				restCur := cur
+				rest = &LazySeq{fn: Proc{Name: "procChunkedFilterRest", Fn: func(args []Object) Object {
+					return chunkedFilterSeq(pred, restCur)
+				}}}
+			}
+			return &ChunkedCons{chunk: chunk, rest: rest, idx: 0}
+		}
+	}
+}
+
 func maybeOverrideSeqOps() {
 	ns := GLOBAL_ENV.CoreNamespace
 	if ns == nil {
@@ -170,6 +219,9 @@ func maybeOverrideSeqOps() {
 		if len(args) == 2 {
 			f := EnsureArgIsCallable(args, 0)
 			s := EnsureObjectIsSeqable(args[1], "map requires seqable").Seq()
+			if _, ok := s.(*ChunkedCons); ok {
+				return chunkedMapSeq(f, s)
+			}
 			return &MappingSeq{seq: s, fn: func(o Object) Object { return call1(f, o) }}
 		}
 		return mapOrig.Call(args)
@@ -179,7 +231,12 @@ func maybeOverrideSeqOps() {
 			return makeFilterTransducer(EnsureArgIsCallable(args, 0))
 		}
 		if len(args) == 2 {
-			return &FilteringSeq{seq: EnsureArgIsSeqable(args, 1).Seq(), pred: EnsureArgIsCallable(args, 0)}
+			pred := EnsureArgIsCallable(args, 0)
+			s := EnsureArgIsSeqable(args, 1).Seq()
+			if _, ok := s.(*ChunkedCons); ok {
+				return chunkedFilterSeq(pred, s)
+			}
+			return &FilteringSeq{seq: s, pred: pred}
 		}
 		return filterOrig.Call(args)
 	}}

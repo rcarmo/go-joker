@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-08_
 
-**269/269 pass** (100%), 0 fail, 0 error
+**271/271 pass** (100%), 0 fail, 0 error
 
 ## api (5/5)
 
@@ -57,13 +57,15 @@ _Generated: 2026-05-08_
 | let-destructure-map | pass | `3` | `3` |
 | letfn | pass | `42` | `42` |
 
-## chunked (3/3)
+## chunked (5/5)
 
 | Test | Status | Expected | Got |
 |---|---|---|---|
 | chunk-buffer | pass | `1` | `1` |
 | chunked-seq? | pass | `true` | `true` |
 | chunk-rest | pass | `30` | `30` |
+| chunked-map | pass | `true` | `true` |
+| chunked-filter | pass | `true` | `true` |
 
 ## comparison (12/12)
 

@@ -345,6 +345,8 @@ var parityTests = []PTest{
 	{"chunked", "chunk-buffer", "(let [b (chunk-buffer 2)] (chunk-append b 1) (chunk-append b 2) (first (chunk-cons (chunk b) nil)))", "1"},
 	{"chunked", "chunked-seq?", "(let [b (chunk-buffer 1)] (chunk-append b :x) (chunked-seq? (chunk-cons (chunk b) nil)))", "true"},
 	{"chunked", "chunk-rest", "(let [b (chunk-buffer 2)] (chunk-append b 10) (chunk-append b 20) (first (chunk-rest (chunk-cons (chunk b) '(30)))))", "30"},
+	{"chunked", "chunked-map", "(chunked-seq? (seq (map inc (range 100))))", "true"},
+	{"chunked", "chunked-filter", "(chunked-seq? (seq (filter even? (range 100))))", "true"},
 
 	// --- Transient collections ---
 	{"transient", "transient-conj", "(persistent! (conj! (transient [1 2]) 3))", "[1 2 3]"},
