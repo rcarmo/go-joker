@@ -2,7 +2,7 @@
 
 _Generated: 2026-05-08_
 
-**265/265 pass** (100%), 0 fail, 0 error
+**267/267 pass** (100%), 0 fail, 0 error
 
 ## api (5/5)
 
@@ -319,7 +319,7 @@ _Generated: 2026-05-08_
 | count | pass | `3` | `3` |
 | set? | pass | `true` | `true` |
 
-## sorted (4/4)
+## sorted (6/6)
 
 | Test | Status | Expected | Got |
 |---|---|---|---|
@@ -327,6 +327,8 @@ _Generated: 2026-05-08_
 | sorted-set | pass | `1` | `1` |
 | sorted? | pass | `true` | `true` |
 | comparator | pass | `-1` | `-1` |
+| subseq-set | pass | `[2 3 4]` | `[2 3 4]` |
+| rsubseq-map | pass | `[:c :b :a]` | `[:c :b :a]` |
 
 ## string (6/6)
 

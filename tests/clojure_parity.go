@@ -329,6 +329,8 @@ var parityTests = []PTest{
 	{"sorted", "sorted-set", "(first (sorted-set 3 1 2))", "1"},
 	{"sorted", "sorted?", "(sorted? (sorted-map :b 2 :a 1))", "true"},
 	{"sorted", "comparator", "((comparator <) 1 2)", "-1"},
+	{"sorted", "subseq-set", "(vec (subseq (sorted-set 1 2 3 4 5) >= 2 < 5))", "[2 3 4]"},
+	{"sorted", "rsubseq-map", "(vec (map first (rsubseq (sorted-map :a 1 :b 2 :c 3) <= :c)))", "[:c :b :a]"},
 
 	// --- Core API gaps ---
 	{"api", "var?", "(var? (var inc))", "true"},

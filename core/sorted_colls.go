@@ -89,6 +89,19 @@ func registerSortedCollProcs() {
 	}}
 	referToUser(MakeSymbol("sorted?"), sortedQVr)
 
+	// subseq/rsubseq — range queries over sorted coll API.
+	subseqVr := ns.Intern(MakeSymbol("subseq"))
+	subseqVr.Value = Proc{Name: "procSubseq", Fn: func(args []Object) Object {
+		return sortedSubseq(args, false)
+	}}
+	referToUser(MakeSymbol("subseq"), subseqVr)
+
+	rsubseqVr := ns.Intern(MakeSymbol("rsubseq"))
+	rsubseqVr.Value = Proc{Name: "procRsubseq", Fn: func(args []Object) Object {
+		return sortedSubseq(args, true)
+	}}
+	referToUser(MakeSymbol("rsubseq"), rsubseqVr)
+
 	// comparator — (comparator pred) — wraps a boolean predicate into a comparator fn
 	compVr := ns.Intern(MakeSymbol("comparator"))
 	compVr.Value = Proc{Name: "procComparator", Fn: func(args []Object) Object {
@@ -106,6 +119,84 @@ func registerSortedCollProcs() {
 		}}
 	}}
 	referToUser(MakeSymbol("comparator"), compVr)
+}
+
+func sortedSubseq(args []Object, reverse bool) Object {
+	if len(args) != 3 && len(args) != 5 {
+		PanicArityMinMax(len(args), 3, 5)
+	}
+	coll := args[0]
+	entries := sortedEntries(coll)
+	if reverse {
+		for i, j := 0, len(entries)-1; i < j; i, j = i+1, j-1 {
+			entries[i], entries[j] = entries[j], entries[i]
+		}
+	}
+	startPred := EnsureObjectIsCallable(args[1], "subseq predicate must be callable, got %s")
+	startKey := args[2]
+	var endPred Callable
+	var endKey Object
+	if len(args) == 5 {
+		endPred = EnsureObjectIsCallable(args[3], "subseq predicate must be callable, got %s")
+		endKey = args[4]
+	}
+	out := make([]Object, 0)
+	for _, e := range entries {
+		k := rangeKey(e)
+		if !rangePred(startPred, k, startKey) {
+			continue
+		}
+		if endPred != nil && !rangePred(endPred, k, endKey) {
+			continue
+		}
+		out = append(out, e)
+	}
+	if len(out) == 0 {
+		return NIL
+	}
+	return &ArraySeq{arr: out, index: 0}
+}
+
+func sortedEntries(coll Object) []Object {
+	out := make([]Object, 0)
+	if m, ok := coll.(Map); ok {
+		for it := m.Iter(); it.HasNext(); {
+			p := it.Next()
+			out = append(out, NewArrayVectorFrom(p.Key, p.Value))
+		}
+		sort.Slice(out, func(i, j int) bool { return compareObjects(rangeKey(out[i]), rangeKey(out[j])) < 0 })
+		return out
+	}
+	if s, ok := coll.(Seqable); ok {
+		for seq := s.Seq(); !seq.IsEmpty(); seq = seq.Rest() {
+			out = append(out, seq.First())
+		}
+		sort.Slice(out, func(i, j int) bool { return compareObjects(out[i], out[j]) < 0 })
+	}
+	return out
+}
+
+func rangeKey(entry Object) Object {
+	if v, ok := entry.(Vec); ok && v.Count() >= 1 {
+		return v.Nth(0)
+	}
+	return entry
+}
+
+func rangePred(pred Callable, a, b Object) bool {
+	if name := hotReducerName(pred); name != "" {
+		switch name {
+		case "procLt":
+			return compareObjects(a, b) < 0
+		case "procLte":
+			return compareObjects(a, b) <= 0
+		case "procGt":
+			return compareObjects(a, b) > 0
+		case "procGte":
+			return compareObjects(a, b) >= 0
+		}
+	}
+	return ToBool(call2(pred, a, b))
 }
 
 // compareObjects provides a default ordering for Clojure values.

@@ -319,6 +319,14 @@ func hotReducerSymbol(sym string) string {
 		return "procunchecked-add"
 	case "unchecked-multiply", "unchecked-multiply-int":
 		return "procunchecked-multiply"
+	case "<":
+		return "procLt"
+	case "<=":
+		return "procLte"
+	case ">":
+		return "procGt"
+	case ">=":
+		return "procGte"
 	}
 	return ""
 }
