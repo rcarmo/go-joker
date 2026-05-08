@@ -209,7 +209,11 @@ func irCompileVariadicFn(fn *Fn) *IRProgram {
 	// (the last arg in va.args is the rest parameter).
 	// We compile the body with all named args as slots, plus the rest slot.
 	prog := irCompileFnWithFrame(fn, va, -1)
-	if prog == nil {
+	if prog == nil || len(prog.captureKeys) > 0 {
+		// Variadic functions with closed-over bindings need exact rest-slot
+		// frame handling. Keep them on the tree-walker until the IR variadic
+		// closure path is capture-safe; otherwise forms like (constantly x)
+		// can read the packed rest argument instead of the captured value.
 		irFnCache.Store(&firstArity, irCompileFailed)
 		return nil
 	}

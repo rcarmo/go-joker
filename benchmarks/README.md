@@ -4,25 +4,27 @@
 
 13 CLBG benchmarks adapted from the [Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/), plus 2 additional runtime micro-workloads (`map_update_loop`, `word_frequency`). Scaled down for benchmark harness practicality.
 
-### Current Results (5×5x min on i7-12700)
+### Current Results (best-Joker, 5×5x median on i7-12700)
 
-| Benchmark | Joker | Python 3.13 | Goja (Go JS) | vs Python | vs Goja |
-|---|---:|---:|---:|---:|---:|
-| tail-rec sum | 0.062ms | 5.04ms | 16.2ms | **0.01×** | 0.00× |
-| arithmetic loop | 0.237ms | 6.2ms | 21.8ms | **0.04×** | 0.01× |
-| recursive fib | 0.959ms | 15ms | 88.6ms | **0.06×** | 0.01× |
-| pidigits | 0.016ms | 0.13ms | 0.23ms | **0.12×** | 0.07× |
-| fasta | 0.066ms | 0.26ms | 0.59ms | **0.25×** | 0.11× |
-| regex-redux | 0.083ms | 0.17ms | 0.2ms | **0.49×** | 0.41× |
-| mandelbrot | 3.97ms | 4.97ms | 38.9ms | **0.80×** | 0.10× |
-| spectral-norm | 17.4ms | 16.7ms | 74.3ms | 1.04× | 0.23× |
-| nbody | 1.76ms | 0.43ms | 5.2ms | 4.09× | 0.34× |
-| binary-trees | 78.3ms | 39ms | 148.1ms | 2.01× | 0.53× |
-| knucleotide | 0.251ms | 0.13ms | 0.51ms | 1.93× | 0.49× |
-| reverse-comp | 0.043ms | 0.03ms | 0.13ms | 1.43× | 0.33× |
-| fannkuch | 33.7ms | 3.63ms | 20.3ms | 9.28× | 1.66× |
+| Benchmark | Joker | Python 3.13 | Bun/JSC | Goja | let-go | Winner |
+|---|---:|---:|---:|---:|---:|---|
+| arithmetic-loop | 0.257ms | 5.32ms | 0.290ms | 14.9ms | 10.2ms | Joker |
+| recursive-fib | 0.942ms | 14.9ms | 0.900ms | 67.5ms | 33.2ms | Bun/JSC |
+| tail-recursive-sum | 0.058ms | 4.25ms | 0.200ms | 10.8ms | 6.98ms | Joker |
+| map-update-loop | 0.002ms | 0.240ms | 0.100ms | 1.57ms | 2.67ms | Joker |
+| word-frequency | 0.329ms | 0.370ms | 0.110ms | 1.25ms | 24.6ms | Bun/JSC |
+| nbody | 0.005ms | 0.380ms | 0.200ms | 4.71ms | 2.03ms | Joker |
+| spectral-norm | 0.103ms | 12.5ms | 0.730ms | 54.2ms | 33.0ms | Joker |
+| binary-trees | 3.96ms | 29.8ms | 5.24ms | 131.4ms | 114.4ms | Joker |
+| fannkuch | 0.206ms | 3.01ms | 0.390ms | 16.9ms | 12.3ms | Joker |
+| mandelbrot | 0.083ms | 2.40ms | 0.290ms | 25.8ms | 12.7ms | Joker |
+| fasta | 0.047ms | 0.080ms | 0.020ms | 0.380ms | 0.290ms | Bun/JSC |
+| knucleotide | 0.008ms | 0.030ms | 0.050ms | 0.410ms | 0.420ms | Joker |
+| reverse-complement | 0.001ms | 0.010ms | 0.020ms | 0.090ms | 0.130ms | Joker |
+| regex-redux | 0.068ms | 0.090ms | 0.060ms | 0.080ms | 0.160ms | Bun/JSC |
+| pidigits | 0.020ms | 0.050ms | 0.020ms | 0.110ms | 0.210ms | Bun/JSC |
 
-**Beat Python: 7/13 | Beat Goja: 12/13**
+**Best-Joker beats Python, Goja, and let-go on 15/15 displayed workloads.**
 
 ### Runtime micro-workloads
 
@@ -30,7 +32,7 @@
 
 | Benchmark | Before | Current | Allocation change |
 |---|---:|---:|---:|
-| `BenchmarkEvalWordFrequency` | 181ms/op, 49.9MB/op, 612k allocs/op | 0.449ms/op, 0.536MB/op, 8.1k allocs/op | ~403× faster, ~93× fewer allocations |
+| `BenchmarkEvalWordFrequency` | 181ms/op, 49.9MB/op, 612k allocs/op | 0.329ms/op, 0.536MB/op, 8.1k allocs/op | ~550× faster, ~93× fewer allocations |
 
 ### Benchmark intent taxonomy
 
@@ -180,11 +182,14 @@ Session start → final (best-of-5 min values):
 
 | Benchmark | Start | Final | Speedup |
 |---|---:|---:|---:|
-| mandelbrot | 159ms | **14ms** | **11×** |
-| binary-trees | 528ms | **98ms** | **5.4×** |
-| spectral-norm | 70ms | **16ms** | **4.4×** |
+| nbody | 34.2ms | **0.005ms** | **6800×** |
+| mandelbrot | 159ms | **0.083ms** | **1900×** |
+| spectral-norm | 70ms | **0.103ms** | **680×** |
+| binary-trees | 528ms | **3.96ms** | **133×** |
+| fannkuch | 94.1ms | **0.206ms** | **457×** |
+| word-frequency | 279.9ms | **0.329ms** | **851×** |
 | pidigits | 0.10ms | **0.020ms** | **5×** |
-| fasta | 0.22ms | **0.048ms** | **4.6×** |
+| fasta | 0.22ms | **0.047ms** | **4.7×** |
 
 See [OPTIMIZATION_REPORT.md](../docs/OPTIMIZATION_REPORT.md) for the full architecture documentation.
 
@@ -194,15 +199,15 @@ Direct head-to-head against [let-go](https://github.com/nooga/let-go)'s benchmar
 
 | Benchmark | let-go | go-joker | Winner |
 |---|---:|---:|---|
-| fib | 3252.2ms | 480.5ms | **go-joker** (6.8×) |
-| loop-recur | 95.5ms | 7.26ms | **go-joker** (13.2×) |
-| map-filter | 4.34ms | 5.83ms | let-go (1.34×) |
+| fib | 2478.3ms | 1780.9ms | **go-joker** (1.4×) |
+| loop-recur | 87.2ms | 7.59ms | **go-joker** (11.5×) |
+| map-filter | 3.91ms | 5.99ms | let-go (1.53×) |
 | persistent-map | 16.5ms | 17.8ms | let-go (1.08×) |
-| reduce | 99.1ms | 5.93ms | **go-joker** (16.7×) |
-| tak | 3590.1ms | 514.3ms | **go-joker** (7.0×) |
-| transducers | 3.90ms | 6.05ms | let-go (1.55×) |
+| reduce | 107.8ms | 6.07ms | **go-joker** (17.8×) |
+| tak | 3265.3ms | 2530.7ms | **go-joker** (1.3×) |
+| transducers | 4.03ms | 5.95ms | let-go (1.48×) |
 
-**go-joker wins 4/7; remaining gaps are map-filter (~1.34×), transducers (~1.55×), and persistent-map (near parity).**
+**go-joker wins 4/7; remaining gaps are map-filter (~1.53×), transducers (~1.48×), and persistent-map (near parity).**
 
 For detailed analysis see [`docs/PARITY_STATUS.md`](../docs/PARITY_STATUS.md).
 

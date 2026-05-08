@@ -18,19 +18,19 @@ type Row struct {
 
 func main() {
 	data := []Row{
-		{"arith-loop", 189.78, 0.237},
-		{"rec-fib", 546.02, 0.959},
-		{"mandelbrot", 159.0, 3.972},
-		{"n-body", 34.2, 1.765},
-		{"spectral-norm", 70.0, 17.35},
-		{"binary-trees", 528.0, 78.27},
-		{"fannkuch", 94.1, 33.70},
-		{"fasta", 0.22, 0.066},
-		{"pidigits", 0.10, 0.016},
-		{"knucleotide", 0.41, 0.251},
-		{"rev-complement", 0.082, 0.043},
-		{"regex-redux", 0.12, 0.083},
-		{"word-frequency", 279.92, 13.6},
+		{"arith-loop", 189.78, 0.257},
+		{"rec-fib", 546.02, 0.942},
+		{"mandelbrot", 159.0, 0.083},
+		{"n-body", 34.2, 0.005},
+		{"spectral-norm", 70.0, 0.103},
+		{"binary-trees", 528.0, 3.96},
+		{"fannkuch", 94.1, 0.206},
+		{"fasta", 0.22, 0.047},
+		{"pidigits", 0.10, 0.020},
+		{"knucleotide", 0.41, 0.008},
+		{"rev-complement", 0.082, 0.001},
+		{"regex-redux", 0.12, 0.068},
+		{"word-frequency", 279.92, 0.329},
 	}
 
 	sort.Slice(data, func(i, j int) bool {

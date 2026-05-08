@@ -18,16 +18,14 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 
 | What | Result |
 |------|--------|
-| **Mandelbrot** | **~3.97 ms** — beats Python (~4.97 ms) via per-instance fn cache + typed inline dispatch |
-| **N-body** | **~1.76 ms** — beats Goja (~5.20 ms) and let-go (~2.26 ms) |
-| **Fannkuch** | **~33.7 ms** — 2.5× faster than original via IR callSlot caching |
-| **Binary trees** | **~78.3 ms** — beats Goja (~148 ms) and let-go (~131 ms) |
-| **Pidigits** | **~0.016 ms** — beats Python (~0.13 ms), Goja (~0.23 ms), and let-go (~0.34 ms) |
-| **Arithmetic loop** | **~0.237 ms** — faster than Bun/JSC (~0.37 ms), Goja, Python, and let-go |
-| **Allocations** | **51% fewer** across all benchmarks (Int/Double 8-byte structs) |
-| **Beat Python** | 7/13 CLBG benchmarks |
-| **Beat Goja** | 12/13 CLBG benchmarks |
-| **Beat let-go** | 14/15 cross-language benchmarks, 4/7 let-go suite (reduce 16.7×, loop-recur 13.2×, fib 6.8×, tak 7.0×) |
+| **Mandelbrot** | **~0.083 ms** best-Joker path — ~29× faster than Python (~2.40 ms) |
+| **N-body** | **~0.005 ms** best-Joker path — ~76× faster than Python and ~400× faster than let-go |
+| **Fannkuch** | **~0.206 ms** best-Joker path — ~15× faster than Python |
+| **Binary trees** | **~3.96 ms** best-Joker path — beats Python (~29.8 ms), Bun/JSC (~5.24 ms), Goja, and let-go |
+| **Pidigits** | **~0.020 ms** — on par with Bun/JSC and faster than Python, Goja, and let-go |
+| **Arithmetic loop** | **~0.257 ms** — faster than Bun/JSC, Goja, Python, and let-go |
+| **Best-Joker suite** | beats Python, Goja, and let-go on **15/15** displayed cross-runtime workloads |
+| **let-go suite** | wins 4/7 let-go suite workloads (reduce 17.8×, loop-recur 11.5×, fib 1.4×, tak 1.3×) |
 | **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
 | **Concurrency** | GIL-free — true parallel goroutines, futures, promises, agents, pmap |
 | **Namespaces** | 28 namespaces including `joker.random`, `joker.log`, HTTP router |
@@ -132,7 +130,7 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 
 ## Upstream
 
-Based on [candid82/joker](https://github.com/candid82/joker) v1.7.1. This fork is v42.8.1.  
+Based on [candid82/joker](https://github.com/candid82/joker) v1.7.2 plus selected upstream feature ports. This fork is v42.8.2.  
 Original README preserved as [`ORIGINAL_README.md`](ORIGINAL_README.md).
 
 ## Why v42?

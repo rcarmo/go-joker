@@ -28,5 +28,14 @@ func irDispatchFnCall(fn *Fn, args []Object) Object {
 			return result
 		}
 	}
+	if len(args) > 0 {
+		// CallExpr's fixed-arity fast paths pass slices backed by stack arrays.
+		// fn.Call stores the argument slice in the lexical environment, so a
+		// closure returned from that call must not retain stack-backed storage
+		// that a later call can overwrite.
+		stableArgs := make([]Object, len(args))
+		copy(stableArgs, args)
+		args = stableArgs
+	}
 	return fn.Call(args)
 }

@@ -2,7 +2,7 @@
 
 _Last updated: 2026-05-08_
 
-This guide documents the new concurrency/web runtime surface and namespace additions in go-joker v42.8.1+.
+This guide documents the new concurrency/web runtime surface and namespace additions in go-joker v42.8.2+.
 
 ---
 

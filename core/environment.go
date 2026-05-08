@@ -88,6 +88,16 @@ func (env *Env) InitEnv(stdin io.Reader, stdout, stderr io.Writer, args []string
 	env.stdin.Value = MakeBufferedReader(stdin)
 	env.stdout.Value = MakeIOWriter(stdout)
 	env.stderr.Value = MakeIOWriter(stderr)
+	// Keep constantly capture-correct even when the evaluator's fixed-arity
+	// call fast paths are active; the core.joke closure shape is sensitive to
+	// local frame reuse in this optimized fork.
+	if vr := env.CoreNamespace.Resolve("constantly"); vr != nil {
+		vr.Value = Proc{Name: "procConstantly", Fn: func(args []Object) Object {
+			CheckArity(args, 1, 1)
+			x := args[0]
+			return Proc{Name: "procConstantlyValue", Fn: func(_ []Object) Object { return x }}
+		}}
+	}
 	env.SetEnvArgs(args)
 }
 
