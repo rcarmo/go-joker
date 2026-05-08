@@ -28,7 +28,7 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 | **Beat Python** | 7/13 CLBG benchmarks |
 | **Beat Goja** | 12/13 CLBG benchmarks |
 | **Beat let-go** | 14/15 cross-language benchmarks, 4/7 let-go suite (reduce 14.7×, fib 6.2×, tak 4.7×, loop-recur 11×) |
-| **Language compliance** | **261/261 parity tests passing** (`docs/DIVERGENCE_MATRIX.md`) |
+| **Language compliance** | **269/269 parity tests passing** (`docs/DIVERGENCE_MATRIX.md`) |
 
 ## What's different from upstream Joker
 
@@ -68,11 +68,11 @@ Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze
 - `joker.pdf` — PDF document generation
 
 ### Clojure parity surface now implemented
-- Protocols: `defprotocol`, `extend-type`, `satisfies?`, protocol method dispatch
-- Records: `defrecord` runtime support (`__defrecord`, `->Type`, `map->Type`, `record?`)
+- Protocols: public `defprotocol`, `extend-type`, `extend-protocol`, `satisfies?`, protocol method dispatch
+- Records: public `defrecord`, generated `->Type`/`map->Type` constructors, `record?`, protocol clauses
 - Hierarchies: `derive`, `underive`, `isa?`, `parents`, `ancestors`, `descendants`, `make-hierarchy`
-- Tagged literals/readers: `#inst`, `#uuid`, `default-data-readers`, `*data-readers*`
-- Sorted collection API: `sorted-map`, `sorted-set`, `sorted?`, `comparator`
+- Tagged literals/readers: `#inst`, `#uuid`, `default-data-readers`, `*data-readers*`, `*default-data-reader-fn*`
+- Sorted collection API: `sorted-map`, `sorted-set`, `sorted?`, `comparator`, `subseq`, `rsubseq`
 - Atom mutation parity: `set-validator!`, `get-validator`, `add-watch`, `remove-watch`, `compare-and-set!`
 - Chunked seq API: `chunk-buffer`, `chunk-append`, `chunk`, `chunk-cons`, `chunk-first`, `chunk-rest`, `chunk-next`, `chunked-seq?`
 - Unchecked arithmetic + primitive array helpers: `unchecked-*`, `int-array`, `long-array`, `aget`, `aset`, `alength`, `aclone`, `make-array`
@@ -116,7 +116,7 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 - [`docs/OPTIMIZATION_REPORT.md`](docs/OPTIMIZATION_REPORT.md) — full technical report (phases, trade-offs, outcomes, suggested git history)
 - [`benchmarks/README.md`](benchmarks/README.md) — benchmark data and chart regeneration
 - [`docs/PARITY_STATUS.md`](docs/PARITY_STATUS.md) — let-go benchmark parity + language compliance status
-- [`docs/DIVERGENCE_MATRIX.md`](docs/DIVERGENCE_MATRIX.md) — latest compliance matrix (**261/261 pass**)
+- [`docs/DIVERGENCE_MATRIX.md`](docs/DIVERGENCE_MATRIX.md) — latest compliance matrix (**269/269 pass**)
 - [`PERFORMANCE_PLAN.md`](PERFORMANCE_PLAN.md) — optimization roadmap and milestones
 
 ## Upstream

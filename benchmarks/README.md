@@ -137,4 +137,4 @@ make parity
 # -> docs/DIVERGENCE_MATRIX.md
 ```
 
-Current result: **261/261 pass (100%)**.
+Current result: **269/269 pass (100%)**.

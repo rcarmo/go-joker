@@ -47,16 +47,16 @@ Primary compliance artifact:
 
 Current result:
 
-- **261/261 pass (100%)**, 0 fail, 0 error.
+- **269/269 pass (100%)**, 0 fail, 0 error.
 
 Coverage includes:
 
 - core arithmetic/comparison/control flow
 - vectors/maps/sets/lists/seq operations
 - transducers + reduced semantics
-- protocols/records/hierarchies
-- tagged literals/readers (`#inst`, `#uuid`)
-- sorted collection API (`sorted-map`, `sorted-set`, `sorted?`, `comparator`)
+- public protocols/records/hierarchies
+- tagged literals/readers (`#inst`, `#uuid`, `*data-readers*`, `*default-data-reader-fn*`)
+- sorted collection API (`sorted-map`, `sorted-set`, `sorted?`, `comparator`, `subseq`, `rsubseq`)
 - atom validators/watches/CAS
 - chunked seq API surface
 - unchecked arithmetic + primitive array helpers
@@ -67,8 +67,8 @@ Coverage includes:
 ## Recently completed parity work
 
 - Replaced map-tag reduced shim with a proper runtime `Reduced` type (`core/reduced.go`).
-- Added protocol support (`defprotocol`/`extend-type` runtime surface, dispatch, `satisfies?`).
-- Added record support (`__defrecord`, `->Type`, `map->Type`, `record?`) with map interop semantics.
+- Added public protocol support (`defprotocol`, `extend-type`, `extend-protocol`), dispatch, and `satisfies?`.
+- Added public record support (`defrecord`, generated `->Type`/`map->Type`, protocol clauses, `record?`) with map interop semantics.
 - Added hierarchy support (`derive`, `underive`, `isa?`, `parents`, `ancestors`, `descendants`, `make-hierarchy`).
 - Added tagged literal readers (`#inst`, `#uuid`) and default data-reader registration.
 - Added sorted collection API (`sorted-map`, `sorted-set`, `sorted?`, `comparator`).
