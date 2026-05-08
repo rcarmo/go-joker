@@ -79,6 +79,15 @@ func BenchmarkEvalMapUpdateLoop(b *testing.B) {
 	}
 }
 
+func BenchmarkEvalMapUpdateLoopBestJoker(b *testing.B) {
+	expr := compileBenchExpr(b, `(bench-map-update-loop 5000)`)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
+
 func BenchmarkEvalJSONParseSum(b *testing.B) {
 	b.Skip("requires additional benchmark harness setup for classpath-aware std namespace loading")
 }

@@ -41,9 +41,29 @@ func BenchmarkCLBGNBody(b *testing.B) {
 	}
 }
 
+func BenchmarkCLBGNBodyBestJoker(b *testing.B) {
+	clbgInit()
+	expr := compileBenchExpr(b, `(bench-nbody-energy 100)`)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
+
 func BenchmarkCLBGSpectralNorm(b *testing.B) {
 	clbgInit()
 	expr := compileBenchExpr(b, spectralNormScript)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
+
+func BenchmarkCLBGSpectralNormBestJoker(b *testing.B) {
+	clbgInit()
+	expr := compileBenchExpr(b, `(bench-spectral-norm 50)`)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -64,6 +84,16 @@ func BenchmarkCLBGBinaryTrees(b *testing.B) {
 func BenchmarkCLBGBinaryTreesParallel(b *testing.B) {
 	clbgInit()
 	expr := compileBenchExpr(b, binaryTreesParallelScript)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
+
+func BenchmarkCLBGBinaryTreesBestJoker(b *testing.B) {
+	clbgInit()
+	expr := compileBenchExpr(b, `(bench-binary-trees 14)`)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {

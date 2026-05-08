@@ -11,8 +11,26 @@ func BenchmarkCLBGFannkuchRedux(b *testing.B) {
 	}
 }
 
+func BenchmarkCLBGFannkuchReduxBestJoker(b *testing.B) {
+	expr := compileBenchExpr(b, `(bench-fannkuch 7)`)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
+
 func BenchmarkCLBGMandelbrot(b *testing.B) {
 	expr := compileBenchExpr(b, mandelbrotScript)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Eval(expr, nil)
+	}
+}
+
+func BenchmarkCLBGMandelbrotBestJoker(b *testing.B) {
+	expr := compileBenchExpr(b, `(bench-mandelbrot-count 40 50)`)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
