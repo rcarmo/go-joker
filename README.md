@@ -131,6 +131,7 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 ## Upstream
 
 Based on [candid82/joker](https://github.com/candid82/joker) v1.7.2 plus selected upstream feature ports. This fork is v42.8.2.  
+Release notes: [`docs/RELEASE_NOTES_v42.8.2.md`](docs/RELEASE_NOTES_v42.8.2.md).  
 Original README preserved as [`ORIGINAL_README.md`](ORIGINAL_README.md).
 
 ## Why v42?
