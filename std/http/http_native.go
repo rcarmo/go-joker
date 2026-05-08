@@ -68,7 +68,11 @@ func reqToMap(host String, port String, req *http.Request) Map {
 	res.Add(MakeKeyword("query-string"), MakeString(req.URL.RawQuery))
 	res.Add(MakeKeyword("server-name"), host)
 	res.Add(MakeKeyword("server-port"), port)
-	res.Add(MakeKeyword("remote-addr"), MakeString(req.RemoteAddr[:strings.LastIndexByte(req.RemoteAddr, byte(':'))]))
+	remoteAddr := req.RemoteAddr
+	if i := strings.LastIndexByte(remoteAddr, byte(':')); i >= 0 {
+		remoteAddr = remoteAddr[:i]
+	}
+	res.Add(MakeKeyword("remote-addr"), MakeString(remoteAddr))
 	res.Add(MakeKeyword("protocol"), MakeString(req.Proto))
 	res.Add(MakeKeyword("scheme"), MakeKeyword("http"))
 	res.Add(MakeKeyword("host"), MakeString(req.Host))
