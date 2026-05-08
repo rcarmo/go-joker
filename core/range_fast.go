@@ -265,7 +265,9 @@ func hotReducerName(f Callable) string {
 		return c.Name
 	case *Fn:
 		if c.defVar != nil {
-			return hotReducerSymbol(c.defVar.name.ToString(false))
+			if proc := hotReducerSymbol(c.defVar.name.ToString(false)); proc != "" {
+				return proc
+			}
 		}
 		if cached, ok := hotReducerFnCache.Load(c); ok {
 			return cached.(string)

@@ -57,7 +57,7 @@ func evalReducePipelineFast(expr *CallExpr, env *LocalEnv) (Object, bool) {
 	}
 
 	pipeline, ok := compileReducibleRangePipeline(collExpr, env)
-	if !ok || pipeline.step == 0 {
+	if !ok || pipeline.step == 0 || len(pipeline.steps) == 0 {
 		return nil, false
 	}
 
