@@ -19,7 +19,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean docs docs-check parity jank-subset audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -35,6 +35,7 @@ help:
 	@echo "  make vuln           # Run govulncheck"
 	@echo "  make race           # Run race tests on critical packages"
 	@echo "  make bench-sanity   # Run CLBG benchmark sanity subset"
+	@echo "  make coverage       # Run package coverage and generated-file-aware summary"
 	@echo "  make docs           # Generate HTML docs from runtime namespaces"
 	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
 	@echo "  make parity         # Run Clojure parity tests (271 core form tests)"
@@ -88,6 +89,13 @@ compare-bench:
 
 compare-clean:
 	rm -rf benchmarks/compare/out/latest
+
+coverage:
+	$(GO) test ./core ./std/... -coverprofile=$(TMPDIR)/go-joker.cover -covermode=atomic -timeout $(TEST_TIMEOUT) -count=$(TEST_COUNT)
+	tests/coverage_summary.sh $(TMPDIR)/go-joker.cover $(TMPDIR)/go-joker.cover.func
+
+coverage-summary:
+	tests/coverage_summary.sh $(TMPDIR)/go-joker.cover $(TMPDIR)/go-joker.cover.func
 
 docs:
 	$(GO) build -o $(DOCS_JOKER_BIN) .
