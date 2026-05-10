@@ -82,6 +82,30 @@
       (contains? seen (first frontier)) (recur (rest frontier) seen)
       :else (recur (concat (rest frontier) (get adj (first frontier) [])) (conj seen (first frontier))))))
 
+(defn clamp [lo hi v] (max lo (min hi v)))
+(defn label-width [n] (min 280 (max 90 (max (* (count (node-label n)) 6.2) 120))))
+(def label-height 34)
+(defn overlaps? [a b]
+  (and (< (:x a) (+ (:x b) (:w b) 6))
+       (> (+ (:x a) (:w a) 6) (:x b))
+       (< (- (:y a) (/ (:h a) 2)) (+ (:y b) (/ (:h b) 2) 4))
+       (> (+ (:y a) (/ (:h a) 2) 4) (- (:y b) (/ (:h b) 2)))))
+(defn collides? [box placed] (some #(overlaps? box %) placed))
+(defn place-label [name base-x base-y w width height top bottom placed]
+  (let [cap 144 vertical-rings 18 x-offsets [0 90 -70 180 -130 270 -210 360] y-step 26]
+    (loop [attempt 0 best nil fallback nil]
+      (let [lane (quot attempt vertical-rings)
+            ring (mod attempt vertical-rings)
+            xo (nth x-offsets (min lane (dec (count x-offsets))))
+            yo (if (zero? ring) 0 (* (if (odd? ring) 1 -1) (inc (quot (dec ring) 2)) y-step))
+            x (clamp 8 (- width w 8) (+ base-x xo))
+            y (clamp (+ top (/ label-height 2)) (- height bottom (/ label-height 2)) (+ base-y yo))
+            box {:name name :x x :y y :w w :h label-height}
+            dx (- x base-x) dy (- y base-y)
+            score (+ (sqrt (+ (* dx dx) (* dy dy))) (* (joker.math/abs dx) 0.35))
+            best (if (and (not (collides? box placed)) (or (nil? best) (< score (:score best)))) {:box box :score score} best)]
+        (if (>= attempt cap) (or (:box best) box) (recur (inc attempt) best box))))))
+
 (defn depths [nodes links]
   ;; Assign left-to-right levels but ignore self/back edges so cycles and recursion do
   ;; not inflate depths over repeated relaxation passes.
@@ -134,18 +158,36 @@
                                   c2 (- x2 (max 40 (* (- x2 x1) 0.45)))]
                               (str "<path d=\"M" x1 "," (:y a) " C" c1 "," (:y a) " " c2 "," (:y b) " " x2 "," (:y b) "\" fill=\"none\" stroke=\"hsl(" (mod (* i 37) 360) " 70% 55%)\" stroke-opacity=\"0.28\" stroke-width=\"" sw "\"><title>" (esc (:source e)) " → " (esc (:target e)) ": count " (fmt-num (edge-count e)) ", total " (fmt-time (edge-value e)) "</title></path>\n"))
                             ""))) links))
+        marker-boxes (map (fn [n] (let [p (get positioned (node-name n))]
+                                    {:name (str "marker:" (node-name n)) :x (- (:x p) 4) :y (:y p) :w (+ node-w 8) :h (+ (:h p) 8)})) nodes)
+        ordered-labels (sort-by (fn [n] (let [p (get positioned (node-name n))] [(:x p) (:y p)])) nodes)
+        label-state (reduce (fn [state n]
+                              (let [p (get positioned (node-name n))
+                                    base-x (+ (:x p) node-w 10)
+                                    base-y (:y p)
+                                    box (place-label (node-name n) base-x base-y (label-width n) width height top bottom (:placed state))]
+                                {:placed (conj (:placed state) box)
+                                 :labels (assoc (:labels state) (node-name n) {:x (:x box) :y (:y box)})}))
+                            {:placed (vec marker-boxes) :labels {}} ordered-labels)
+        label-pos (:labels label-state)
         node-svg (apply str
                         (map (fn [n]
                                (let [p (get positioned (node-name n))
-                                     opacity (+ 0.45 (* 0.55 (sqrt (/ (node-value n) max-node))))]
-                                 (str "<g><rect x=\"" (:x p) "\" y=\"" (- (:y p) (/ (:h p) 2))
+                                     lp (get label-pos (node-name n) {:x (+ (:x p) node-w 8) :y (:y p)})
+                                     opacity (+ 0.45 (* 0.55 (sqrt (/ (node-value n) max-node))))
+                                     leader (if (> (joker.math/abs (- (:y lp) (:y p))) 3)
+                                              (str "<path d=\"M" (+ (:x p) node-w) "," (:y p) " L" (- (:x lp) 5) "," (- (:y lp) 4) "\" stroke=\"#94a3b8\" stroke-width=\"0.9\" stroke-dasharray=\"2 3\" stroke-opacity=\"0.75\" fill=\"none\"/>")
+                                              (str "<path d=\"M" (+ (:x p) node-w) "," (:y p) " L" (- (:x lp) 5) "," (:y p) "\" stroke=\"#94a3b8\" stroke-width=\"0.9\" stroke-dasharray=\"2 3\" stroke-opacity=\"0.45\" fill=\"none\"/>"))]
+                                 (str "<g>" leader "<rect x=\"" (:x p) "\" y=\"" (- (:y p) (/ (:h p) 2))
                                       "\" width=\"" node-w "\" height=\"" (:h p)
                                       "\" rx=\"2\" fill=\"#60a5fa\" opacity=\"" opacity "\"/>"
-                                      "<text x=\"" (+ (:x p) node-w 8) "\" y=\"" (- (:y p) 3)
+                                      "<text x=\"" (:x lp) "\" y=\"" (- (:y lp) 12)
                                       "\" fill=\"#e5e7eb\" font-size=\"11\">" (esc (node-label n)) "</text>"
-                                      "<text x=\"" (+ (:x p) node-w 8) "\" y=\"" (+ (:y p) 11)
+                                      "<text x=\"" (:x lp) "\" y=\"" (+ (:y lp) 2)
                                       "\" fill=\"#9ca3af\" font-size=\"10\">count " (fmt-num (node-count n))
-                                      " · total " (fmt-time (node-value n)) "</text></g>\n")))
+                                      " · total " (fmt-time (node-value n)) "</text>"
+                                      "<text x=\"" (:x lp) "\" y=\"" (+ (:y lp) 15)
+                                      "\" fill=\"#93c5fd\" font-size=\"10\">avg " (fmt-time (if (pos? (node-count n)) (/ (node-value n) (node-count n)) 0)) "</text></g>\n")))
                              nodes))]
     (str "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" width "\" height=\"" height "\" viewBox=\"0 0 " width " " height "\">"
          "<rect width=\"100%\" height=\"100%\" fill=\"#111827\"/>"

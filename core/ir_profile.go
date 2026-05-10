@@ -25,8 +25,15 @@ func irProfileExecStart() {
 	}
 }
 
+func irProfileStart() time.Time {
+	if !irProfileEnabled {
+		return zeroTime
+	}
+	return time.Now()
+}
+
 func irProfileOp(prev byte, op byte, hasPrev bool, prevStarted time.Time) time.Time {
-	now := time.Now()
+	now := irProfileStart()
 	if !irProfileEnabled {
 		return now
 	}
