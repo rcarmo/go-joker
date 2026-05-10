@@ -91,7 +91,7 @@ compare-clean:
 
 docs:
 	$(GO) build -o $(DOCS_JOKER_BIN) .
-	cd docs && $(DOCS_JOKER_BIN) generate-docs.joke
+	cd docs && $(DOCS_JOKER_BIN) generate-docs.joke > docs-generation.log && cat docs-generation.log && ! grep -q WARNING docs-generation.log && rm docs-generation.log
 
 docs-check: docs
 	test -f docs/joker.imaging.html

@@ -32,42 +32,46 @@ func installCoreAsyncNamespace() {
 	if vr := core.Resolve(">!"); vr != nil {
 		ns.Refer(MakeSymbol(">!!"), vr)
 	}
-	installMacro(ns, "go-loop", macroCoreAsyncGoLoop)
-	installMacro(ns, "thread", macroCoreAsyncThread)
-	installMacro(ns, "thread-call", macroCoreAsyncThreadCall)
+	installAsyncMacro(ns, "go-loop", "Like core.async/go with an initial loop/recur binding vector.", macroCoreAsyncGoLoop)
+	installAsyncMacro(ns, "thread", "Runs body asynchronously on a native goroutine and returns a future.", macroCoreAsyncThread)
+	installAsyncMacro(ns, "thread-call", "Runs a zero-argument function asynchronously and returns a future.", macroCoreAsyncThreadCall)
 
-	installAsyncProc(ns, "buffer", procAsyncBuffer)
-	installAsyncProc(ns, "dropping-buffer", procAsyncBuffer)
-	installAsyncProc(ns, "sliding-buffer", procAsyncBuffer)
-	installAsyncProc(ns, "promise-chan", procAsyncPromiseChan)
-	installAsyncProc(ns, "to-chan", procAsyncToChan)
-	installAsyncProc(ns, "to-chan!", procAsyncToChan)
-	installAsyncProc(ns, "onto-chan", procAsyncOntoChan)
-	installAsyncProc(ns, "onto-chan!", procAsyncOntoChan)
-	installAsyncProc(ns, "put!", procAsyncPutBang)
-	installAsyncProc(ns, "take!", procAsyncTakeBang)
-	installAsyncProc(ns, "pipe", procAsyncPipe)
-	installAsyncProc(ns, "merge", procAsyncMerge)
-	installAsyncProc(ns, "split", procAsyncSplit)
-	installAsyncProc(ns, "map<", procAsyncMapFrom)
-	installAsyncProc(ns, "filter<", procAsyncFilterFrom)
-	installAsyncProc(ns, "map>", procAsyncMapTo)
-	installAsyncProc(ns, "filter>", procAsyncFilterTo)
-	installAsyncProc(ns, "reduce", procAsyncReduce)
-	installAsyncProc(ns, "into", procAsyncInto)
-	installAsyncProc(ns, "mult", procAsyncMult)
-	installAsyncProc(ns, "tap", procAsyncTap)
-	installAsyncProc(ns, "untap", procAsyncUntap)
-	installAsyncProc(ns, "untap-all", procAsyncUntapAll)
-	installAsyncProc(ns, "pub", procAsyncPub)
-	installAsyncProc(ns, "sub", procAsyncSub)
-	installAsyncProc(ns, "unsub", procAsyncUnsub)
-	installAsyncProc(ns, "unsub-all", procAsyncUnsubAll)
+	installAsyncProc(ns, "buffer", "Returns a fixed-size channel buffer descriptor.", procAsyncBuffer)
+	installAsyncProc(ns, "dropping-buffer", "Returns a dropping channel buffer descriptor.", procAsyncBuffer)
+	installAsyncProc(ns, "sliding-buffer", "Returns a sliding channel buffer descriptor.", procAsyncBuffer)
+	installAsyncProc(ns, "promise-chan", "Returns a channel that accepts exactly one value then closes.", procAsyncPromiseChan)
+	installAsyncProc(ns, "to-chan", "Copies a collection onto a new channel and closes it.", procAsyncToChan)
+	installAsyncProc(ns, "to-chan!", "Alias for to-chan.", procAsyncToChan)
+	installAsyncProc(ns, "onto-chan", "Copies a collection onto a channel, optionally closing it.", procAsyncOntoChan)
+	installAsyncProc(ns, "onto-chan!", "Alias for onto-chan.", procAsyncOntoChan)
+	installAsyncProc(ns, "put!", "Asynchronously puts a value on a channel and optionally invokes a callback.", procAsyncPutBang)
+	installAsyncProc(ns, "take!", "Asynchronously takes a value from a channel and invokes a callback.", procAsyncTakeBang)
+	installAsyncProc(ns, "pipe", "Pipes values from one channel to another.", procAsyncPipe)
+	installAsyncProc(ns, "merge", "Merges multiple input channels onto one output channel.", procAsyncMerge)
+	installAsyncProc(ns, "split", "Splits an input channel into true/false output channels by predicate.", procAsyncSplit)
+	installAsyncProc(ns, "map<", "Maps a function over values taken from a channel.", procAsyncMapFrom)
+	installAsyncProc(ns, "filter<", "Filters values taken from a channel by predicate.", procAsyncFilterFrom)
+	installAsyncProc(ns, "map>", "Maps values before putting them on a channel.", procAsyncMapTo)
+	installAsyncProc(ns, "filter>", "Filters values before putting them on a channel.", procAsyncFilterTo)
+	installAsyncProc(ns, "reduce", "Reduces values from a channel and returns a result channel.", procAsyncReduce)
+	installAsyncProc(ns, "into", "Collects values from a channel into a collection.", procAsyncInto)
+	installAsyncProc(ns, "mult", "Creates a multicast source from a channel.", procAsyncMult)
+	installAsyncProc(ns, "tap", "Adds a tap channel to a mult.", procAsyncTap)
+	installAsyncProc(ns, "untap", "Removes a tap channel from a mult.", procAsyncUntap)
+	installAsyncProc(ns, "untap-all", "Removes all tap channels from a mult.", procAsyncUntapAll)
+	installAsyncProc(ns, "pub", "Creates a topic publication from a channel.", procAsyncPub)
+	installAsyncProc(ns, "sub", "Subscribes a channel to a publication topic.", procAsyncSub)
+	installAsyncProc(ns, "unsub", "Unsubscribes a channel from a publication topic.", procAsyncUnsub)
+	installAsyncProc(ns, "unsub-all", "Unsubscribes channels from publication topics.", procAsyncUnsubAll)
 }
 
-func installAsyncProc(ns *Namespace, name string, fn ProcFn) {
-	vr := ns.Intern(MakeSymbol(name))
-	vr.Value = Proc{Name: "procCoreAsync" + name, Fn: fn}
+func installAsyncProc(ns *Namespace, name, doc string, fn ProcFn) {
+	ns.InternVar(name, Proc{Name: "procCoreAsync" + name, Fn: fn}, MakeMeta(nil, doc, "1.0"))
+}
+
+func installAsyncMacro(ns *Namespace, name, doc string, fn func([]Object) Object) {
+	vr := ns.InternVar(name, Proc{Name: "macro" + name, Fn: fn}, MakeMeta(nil, doc, "1.0"))
+	vr.isMacro = true
 }
 
 func macroCoreAsyncGoLoop(args []Object) Object {
