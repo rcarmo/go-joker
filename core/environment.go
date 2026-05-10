@@ -193,12 +193,15 @@ func (env *Env) ResolveIn(n *Namespace, s Symbol) (*Var, bool) {
 		return nil, false
 	}
 	if v, ok := ns.mappings[s.name]; ok {
+		traceSymbolResolve(ns, s, true)
 		return v, true
 	}
 	if s.Equals(env.IN_NS_VAR.name) {
+		traceSymbolResolve(ns, s, true)
 		return env.IN_NS_VAR, true
 	}
 	if s.Equals(env.NS_VAR.name) {
+		traceSymbolResolve(ns, s, true)
 		return env.NS_VAR, true
 	}
 	return nil, false

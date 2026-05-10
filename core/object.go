@@ -994,6 +994,8 @@ func (v *Var) Hash() uint32 {
 }
 
 func (v *Var) Resolve() Object {
+	traceVarDeref(v)
+	defer symbolTraceMaybeWrite()
 	if v.Value == nil {
 		return NIL
 	}
