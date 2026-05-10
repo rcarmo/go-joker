@@ -16,6 +16,12 @@
   [x]
   (write x))
 
+(defn write-verbose
+  "Writes x as Transit+JSON without rolling cache refs for readable diagnostics."
+  {:added "1.0"
+   :go "writeTransitVerbose(x)"}
+  [x])
+
 (defn read
   "Reads a Transit+JSON string into Joker data. Supports the subset emitted by
   write plus plain JSON arrays/objects."

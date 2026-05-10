@@ -133,10 +133,10 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 
 ### Phase 2 — Fuller Transit protocol
 
-- [ ] Add Transit rolling cache read/write support (`^` refs) for strings and map keys.
-- [ ] Add tagged value support for `~#set`, `~#list`, quote, and `cmap`.
-- [ ] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden payload tests.
-- [ ] Add `write-verbose`/non-cached output mode for debugging and parity with let-go.
+- [x] Add Transit rolling cache read/write support (`^` refs) for strings and map keys.
+- [x] Add tagged value support for `~#set`, `~#list`, quote, and `cmap`.
+- [x] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden payload tests.
+- [x] Add `write-verbose`/non-cached output mode for debugging and parity with let-go.
 - [ ] Expose internal helper functions for pod argument/result Transit payloads.
 - [ ] Cross-check known let-go Transit fixtures and pod payload samples.
 
@@ -175,10 +175,10 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [x] Add fake-pod subprocess tests
 
 ### Phase 2 — Fuller Transit protocol
-- [ ] Add rolling cache read/write support (`^` refs)
-- [ ] Add tags: `~#set`, `~#list`, quote, `cmap`
-- [ ] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden tests
-- [ ] Add `write-verbose` / non-cached output mode
+- [x] Add rolling cache read/write support (`^` refs)
+- [x] Add tags: `~#set`, `~#list`, quote, `cmap`
+- [x] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden tests
+- [x] Add `write-verbose` / non-cached output mode
 - [ ] Expose helper functions for pod Transit args/results
 
 ### Phase 3 — Standalone EDN namespace
@@ -236,10 +236,10 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [x] Add fake-pod subprocess tests
 
 ### Phase 2 — Fuller Transit protocol
-- [ ] Add rolling cache read/write support (`^` refs)
-- [ ] Add tags: `~#set`, `~#list`, quote, `cmap`
-- [ ] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden tests
-- [ ] Add `write-verbose` / non-cached output mode
+- [x] Add rolling cache read/write support (`^` refs)
+- [x] Add tags: `~#set`, `~#list`, quote, `cmap`
+- [x] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden tests
+- [x] Add `write-verbose` / non-cached output mode
 - [ ] Expose helper functions for pod Transit args/results
 
 ### Phase 3 — Standalone EDN namespace

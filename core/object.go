@@ -1120,6 +1120,10 @@ func MakeBigInt(b *big.Int) *BigInt {
 	return &BigInt{b: b}
 }
 
+func MakeRatio(r *big.Rat) *Ratio {
+	return &Ratio{r: r}
+}
+
 // Helper function that returns a math/big.Int given an int.
 func MakeMathBigIntFromInt(i int) *big.Int {
 	return MakeMathBigIntFromInt64(int64(i))
