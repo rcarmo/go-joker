@@ -110,37 +110,29 @@
 
 (defn anonymous-fn? [s] (str/starts-with? (str s) "fn@"))
 (defn temporal-function-graph [data]
+  ;; Call-depth Sankey: columns are stack depth, not wall-clock bins. This keeps
+  ;; recursion readable and represents actual call sequence/structure.
   (let [events (filter #(and (pos? (:nanos %)) (not (anonymous-fn? (:name %)))) (:events data))
-        end-ns (reduce max 1 (map #(+ (:start_nanos %) (:nanos %)) events))
-        bins 24
-        bin-size (max 1 (/ end-ns bins))
-        add-event (fn [m e]
-                    (let [start-bin (int (/ (:start_nanos e) bin-size))
-                          end-bin (int (/ (+ (:start_nanos e) (:nanos e)) bin-size))]
-                      (loop [b start-bin acc m]
-                        (if (> b (min (dec bins) end-bin)) acc
-                            (let [bs (* b bin-size)
-                                  be (* (inc b) bin-size)
-                                  es (:start_nanos e)
-                                  ee (+ (:start_nanos e) (:nanos e))
-                                  overlap (max 0 (- (min ee be) (max es bs)))
-                                  k [b (:name e)]]
-                              (recur (inc b) (-> acc
-                                                  (update-in [:value k] (fnil + 0) overlap)
-                                                  (update-in [:count k] (fnil inc 0)))))))))
-        acc (reduce add-event {:value {} :count {}} events)
-        cells (filter #(pos? (second %)) (:value acc))
-        nodes (map (fn [[[b name] v]] {:name (str "t" b "/" name) :label name :value v :count (get-in acc [:count [b name]] 0) :depth b}) cells)
-        names (set (map :name events))
-        links (apply concat
-                     (for [name names]
-                       (let [vals (into {} (map (fn [[[b n] v]] [[b n] v]) cells))]
-                         (keep (fn [b]
-                                 (let [a (get vals [b name] 0) c (get vals [(inc b) name] 0)]
-                                   (when (and (pos? a) (pos? c)) {:source (str "t" b "/" name) :target (str "t" (inc b) "/" name) :value (min a c) :count 1 :avg (min a c)})))
-                               (range (dec bins))))))]
-    {:title (or explicit-title "Clojure function temporal profile")
-     :subtitle (str "Time-sliced named function occupancy · " bins " bins · " (count events) " named events")
+        add-node (fn [m e]
+                   (let [k [(:depth e) (:name e)]]
+                     (-> m
+                         (update-in [:value k] (fnil + 0) (or (:exclusive_nanos e) (:nanos e)))
+                         (update-in [:inclusive k] (fnil + 0) (:nanos e))
+                         (update-in [:count k] (fnil inc 0)))))
+        node-acc (reduce add-node {:value {} :inclusive {} :count {}} events)
+        edge-acc (reduce (fn [m e]
+                           (let [p (:parent e)]
+                             (if (and p (not (anonymous-fn? p)))
+                               (let [src [(dec (:depth e)) p] dst [(:depth e) (:name e)]]
+                                 (-> m
+                                     (update-in [:value [src dst]] (fnil + 0) (:nanos e))
+                                     (update-in [:count [src dst]] (fnil inc 0))))
+                               m))) {:value {} :count {}} events)
+        node-cells (:value node-acc)
+        nodes (map (fn [[[d name] v]] {:name (str "d" d "/" name) :label name :value v :count (get-in node-acc [:count [d name]] 0) :avg (if (pos? (get-in node-acc [:count [d name]] 0)) (/ v (get-in node-acc [:count [d name]])) 0) :depth d}) node-cells)
+        links (map (fn [[[[sd sn] [td tn]] v]] {:source (str "d" sd "/" sn) :target (str "d" td "/" tn) :value v :count (get-in edge-acc [:count [[sd sn] [td tn]]] 0) :avg (if (pos? (get-in edge-acc [:count [[sd sn] [td tn]]] 0)) (/ v (get-in edge-acc [:count [[sd sn] [td tn]]])) 0)}) (:value edge-acc))]
+    {:title (or explicit-title "Clojure function call-depth profile")
+     :subtitle (str "Named function call-depth Sankey · exclusive node time · inclusive edge time · " (count events) " events")
      :nodes nodes :links links}))
 
 (defn trace->graph [data]

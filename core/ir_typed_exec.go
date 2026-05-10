@@ -48,6 +48,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 
 	// Frame stack for irCallSelf — avoids recursive irExecTyped calls
 	var typedFrameStack *irTypedFrameStack
+	var selfTraceStack []func()
 	var irProfPrev byte
 	var irProfHasPrev bool
 	irProfStarted := irProfileStart()
@@ -430,6 +431,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irReturn:
 			if len(stack) == 0 {
 				if typedFrameStack != nil && typedFrameStack.depth > 0 {
+					if len(selfTraceStack) > 0 {
+						exit := selfTraceStack[len(selfTraceStack)-1]
+						selfTraceStack = selfTraceStack[:len(selfTraceStack)-1]
+						exit()
+					}
 					var sl int
 					pc, sl = typedFrameStack.pop(slots)
 					stack = stack[:sl]
@@ -440,6 +446,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			}
 			result := stack[len(stack)-1]
 			if typedFrameStack != nil && typedFrameStack.depth > 0 {
+				if len(selfTraceStack) > 0 {
+					exit := selfTraceStack[len(selfTraceStack)-1]
+					selfTraceStack = selfTraceStack[:len(selfTraceStack)-1]
+					exit()
+				}
 				var sl int
 				pc, sl = typedFrameStack.pop(slots)
 				stack = stack[:sl]
@@ -857,6 +868,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			}
 			if typedFrameStack.depth < 256 {
 				// Save current state and restart
+				selfTraceStack = append(selfTraceStack, traceIRProgramCall(prog, nargs))
 				typedFrameStack.push(pc, slots, len(stack)-nargs)
 				// Pop args directly into slots (no intermediate copy)
 				for i := nargs - 1; i >= 0; i-- {

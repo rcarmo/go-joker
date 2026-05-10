@@ -20,11 +20,17 @@ var functionTraceNanos = map[string]uint64{}
 var functionTraceEdges = map[[2]string]uint64{}
 var functionTraceEdgeNanos = map[[2]string]uint64{}
 
-type functionTraceFrame struct{ name string }
+type functionTraceFrame struct {
+	name       string
+	childNanos uint64
+}
 type functionTraceEvent struct {
-	Name  string `json:"name"`
-	Start uint64 `json:"start_nanos"`
-	Nanos uint64 `json:"nanos"`
+	Name           string `json:"name"`
+	Parent         string `json:"parent,omitempty"`
+	Depth          int    `json:"depth"`
+	Start          uint64 `json:"start_nanos"`
+	Nanos          uint64 `json:"nanos"`
+	ExclusiveNanos uint64 `json:"exclusive_nanos"`
 }
 
 var functionTraceEvents []functionTraceEvent
@@ -61,8 +67,10 @@ func traceFunctionEnter(name string) func() {
 	startRel := uint64(start.Sub(functionTraceT0).Nanoseconds())
 	functionTraceTotal.Add(1)
 	functionTraceMu.Lock()
-	if len(functionTraceStack) > 0 {
-		parent := functionTraceStack[len(functionTraceStack)-1].name
+	depth := len(functionTraceStack)
+	parent := ""
+	if depth > 0 {
+		parent = functionTraceStack[depth-1].name
 		functionTraceEdges[[2]string{parent, name}]++
 	}
 	functionTraceCounts[name]++
@@ -73,14 +81,22 @@ func traceFunctionEnter(name string) func() {
 		functionTraceMu.Lock()
 		idx := len(functionTraceStack) - 1
 		if idx >= 0 {
+			frame := functionTraceStack[idx]
 			functionTraceStack = functionTraceStack[:idx]
+			exclusive := dur
+			if frame.childNanos < dur {
+				exclusive = dur - frame.childNanos
+			} else {
+				exclusive = 0
+			}
 			functionTraceNanos[name] += dur
 			if len(functionTraceEvents) < 200000 {
-				functionTraceEvents = append(functionTraceEvents, functionTraceEvent{Name: name, Start: startRel, Nanos: dur})
+				functionTraceEvents = append(functionTraceEvents, functionTraceEvent{Name: name, Parent: parent, Depth: depth, Start: startRel, Nanos: dur, ExclusiveNanos: exclusive})
 			}
 			if idx > 0 {
 				parent := functionTraceStack[idx-1].name
 				functionTraceEdgeNanos[[2]string{parent, name}] += dur
+				functionTraceStack[idx-1].childNanos += dur
 			}
 		}
 		functionTraceMu.Unlock()
