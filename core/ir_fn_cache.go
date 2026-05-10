@@ -58,6 +58,7 @@ func irGetFnProg(fn *Fn) *IRProgram {
 								numSlots:      len(arity.args),
 								nativeHelper:  wrapper,
 								nativeChecked: true,
+								traceName:     fn.fnExpr.traceName,
 							}
 						}
 					}

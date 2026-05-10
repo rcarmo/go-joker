@@ -7,6 +7,7 @@ import (
 // ---------- Interpreter ----------
 
 func irExec(prog *IRProgram, initSlots []Object) Object {
+	defer traceIRProgramCall(prog, len(initSlots))()
 	irProfileExecStart()
 	defer irProfileMaybeWrite()
 	var slots []Object

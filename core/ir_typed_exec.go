@@ -7,6 +7,7 @@ import (
 )
 
 func irExecTyped(prog *IRProgram, initSlots []Object) Object {
+	defer traceIRProgramCall(prog, len(initSlots))()
 	irProfileExecStart()
 	defer irProfileMaybeWrite()
 	var analysis IRAnalysis

@@ -93,6 +93,7 @@ type (
 		arities       []FnArityExpr
 		variadic      *FnArityExpr
 		self          Symbol
+		traceName     string
 		tailRewritten bool
 	}
 	LetExpr struct {
@@ -959,6 +960,7 @@ func parseFn(obj Object, ctx *ParseContext) Expr {
 	p := bodies.First()
 	if IsSymbol(p) { // self reference
 		res.self = p.(Symbol)
+		res.traceName = res.self.ToString(false)
 		bodies = bodies.Rest()
 		p = bodies.First()
 		ctx.PushLocalFrame([]Symbol{res.self})
@@ -1168,6 +1170,9 @@ func parseLetLoop(obj Object, formName string, ctx *ParseContext) *LetExpr {
 					bind.value = res.values[i]
 					// Rewrite tail-self-calls to recur
 					if fnExpr, ok := res.values[i].(*FnExpr); ok {
+						if fnExpr.traceName == "" {
+							fnExpr.traceName = res.names[i].ToString(false)
+						}
 						rewriteTailCallsToRecur(fnExpr, bind)
 					}
 				}

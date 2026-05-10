@@ -30,6 +30,13 @@ func traceFnCall(fn *Fn, argc int) func() {
 	return traceFunctionEnter(fnTraceName(fn, argc))
 }
 
+func traceIRProgramCall(prog *IRProgram, argc int) func() {
+	if !functionTraceEnabled || prog == nil || prog.traceName == "" {
+		return func() {}
+	}
+	return traceFunctionEnter(fmt.Sprintf("%s/%d", prog.traceName, argc))
+}
+
 func traceProcCall(p Proc, argc int) func() {
 	if !functionTraceEnabled {
 		return func() {}
@@ -70,8 +77,17 @@ func traceFunctionEnter(name string) func() {
 }
 
 func fnTraceName(fn *Fn, argc int) string {
-	if fn.defVar != nil && fn.defVar.ns != nil {
-		return fmt.Sprintf("%s/%s/%d", fn.defVar.ns.Name.ToString(false), fn.defVar.name.ToString(false), argc)
+	if fn.defVar != nil {
+		if fn.defVar.ns != nil {
+			return fmt.Sprintf("%s/%s/%d", fn.defVar.ns.Name.ToString(false), fn.defVar.name.ToString(false), argc)
+		}
+		return fmt.Sprintf("%s/%d", fn.defVar.name.ToString(false), argc)
+	}
+	if fn.fnExpr != nil && fn.fnExpr.traceName != "" {
+		return fmt.Sprintf("%s/%d", fn.fnExpr.traceName, argc)
+	}
+	if fn.fnExpr != nil && fn.fnExpr.self.name != nil {
+		return fmt.Sprintf("%s/%d", fn.fnExpr.self.ToString(false), argc)
 	}
 	if info := fn.GetInfo(); info != nil {
 		return fmt.Sprintf("fn@%s:%d/%d", info.Filename(), info.startLine, argc)

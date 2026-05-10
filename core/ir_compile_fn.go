@@ -127,6 +127,7 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 		captureSlotIdxs: c.captureSlotIdxs,
 		hasSelf:         c.hasSelf,
 		fnExprs:         c.fnExprs,
+		traceName:       fn.fnExpr.traceName,
 	}
 	// Eagerly compile native f64 helper if eligible
 	// Pre-compute capture slot set for fast irCallSelf
@@ -185,6 +186,7 @@ func irCompileMultiArity(fn *Fn) *IRProgram {
 		arityPrograms:   programs,
 		variadicProg:    varProg,
 		variadicMinArgs: varMinArgs,
+		traceName:       fn.fnExpr.traceName,
 	}
 	irFnCache.Store(&firstArity, wrapper)
 	return wrapper
