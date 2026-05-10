@@ -104,6 +104,8 @@ docs:
 docs-check: docs
 	test -f docs/joker.imaging.html
 	test -f docs/joker.jit.html
+	test -f docs/joker.edn.html
+	test -f docs/edn.html
 	test -f docs/joker.log.html
 	test -f docs/joker.pdf.html
 	test -f docs/joker.random.html
@@ -111,6 +113,8 @@ docs-check: docs
 	grep -q 'id="joker.log"' docs/index.html
 	grep -q 'id="joker.random"' docs/index.html
 	grep -q 'id="joker.imaging"' docs/index.html
+	grep -q 'id="joker.edn"' docs/index.html
+	grep -q 'id="edn"' docs/index.html
 	grep -q 'id="joker.pdf"' docs/index.html
 	grep -q 'id="joker.svg"' docs/index.html
 	grep -q 'WebSocket upgrade extension' docs/joker.http.html

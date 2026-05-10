@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	. "github.com/candid82/joker/core"
+	edn "github.com/candid82/joker/std/edn"
 	transit "github.com/candid82/joker/std/transit"
 )
 
@@ -18,7 +19,9 @@ func (p *Pod) encodeArgs(args []Object) (string, error) {
 		bs, err := json.Marshal(vals)
 		return string(bs), err
 	case "edn":
-		return "", fmt.Errorf("EDN pod payloads are not supported yet")
+		objs := make([]Object, len(args))
+		copy(objs, args)
+		return edn.WriteEDNString(NewVectorFrom(objs...)), nil
 	case "transit+json":
 		return transit.TransitEncodeArgs(args)
 	default:
@@ -35,7 +38,7 @@ func (p *Pod) decodePayload(s string) (Object, error) {
 		}
 		return podPayloadToObject(v), nil
 	case "edn":
-		return NIL, fmt.Errorf("EDN pod payloads are not supported yet")
+		return edn.ReadEDNString(s)
 	case "transit+json":
 		return transit.TransitDecodeValue(s)
 	default:

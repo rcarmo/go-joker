@@ -19,6 +19,7 @@ import (
 	_ "github.com/candid82/joker/std/bolt"
 	_ "github.com/candid82/joker/std/crypto"
 	_ "github.com/candid82/joker/std/csv"
+	_ "github.com/candid82/joker/std/edn"
 	_ "github.com/candid82/joker/std/filepath"
 	_ "github.com/candid82/joker/std/git"
 	_ "github.com/candid82/joker/std/hex"

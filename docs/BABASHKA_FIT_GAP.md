@@ -32,7 +32,7 @@ The poor fit/non-goal is:
 | Babashka area | go-joker status | Fit | Plan |
 |---|---|---:|---|
 | Core Clojure data/code | Strong parity suite; records/protocols/hierarchies/tagged literals added | High | Continue parity tests |
-| EDN data | Core reader/pr-str exists; standalone EDN namespace missing | High | Implement `joker.edn`/`edn` |
+| EDN data | `joker.edn` and `edn` namespaces provide `read-string`/`write-string` over the reader/printer without eval | High | Expand options/tag tests as real pod/script payloads require |
 | JSON/YAML/CSV/base64/hex/url/string/time | Available with growing direct tests | High | Continue coverage hardening |
 | HTTP client/server | Available; go-joker has persistent clients, WebSocket/SSE/router | High | Keep go-joker API; add adapters if needed |
 | `clojure.core.async` | Broad compatibility shim over Go goroutines | Medium/High | Maintain practical API parity, not IOC internals |
@@ -63,7 +63,7 @@ Required:
 - request IDs and response routing
 - dynamic namespace/var installation from `describe`
 - JSON payload format first
-- EDN and Transit+JSON after codec support lands
+- EDN and Transit+JSON payload formats after codec support lands
 
 Out of scope for first pass:
 
@@ -75,12 +75,13 @@ Out of scope for first pass:
 
 Target: portable data IO for scripts and pod payload support.
 
-Implement:
+Implemented baseline:
 
-- `edn/read-string` and/or `joker.edn/read-string`
-- `edn/write-string` and/or `joker.edn/write-string`
-- no evaluation of forms
-- tagged literal support needed by pod payloads
+- `edn/read-string` and `joker.edn/read-string`
+- `edn/write-string` and `joker.edn/write-string`
+- no evaluation of forms; reuses Joker reader/printer
+- tagged literal behavior follows existing Joker data-reader handling
+- pod EDN payload encode/decode is wired
 
 ### 3. Fuller Transit
 

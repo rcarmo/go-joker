@@ -25,9 +25,20 @@ func TestPodTransitPayloadSupport(t *testing.T) {
 	}
 }
 
-func TestPodEDNPayloadStillExplicitlyUnsupported(t *testing.T) {
+func TestPodEDNPayloadSupport(t *testing.T) {
 	p := newPod("pod-edn", "edn", "edn", nil, nil, nil)
-	if _, err := p.encodeArgs([]Object{MakeString("x")}); err == nil || !strings.Contains(err.Error(), "EDN") {
-		t.Fatalf("expected EDN unsupported error, got %v", err)
+	encoded, err := p.encodeArgs([]Object{MakeString("x"), MakeKeyword("k")})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if encoded != "[\"x\" :k]" {
+		t.Fatalf("unexpected EDN args: %s", encoded)
+	}
+	decoded, err := p.decodePayload(`{:ok true}`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if decoded.ToString(false) != "{:ok true}" {
+		t.Fatalf("decode mismatch: %s", decoded.ToString(false))
 	}
 }

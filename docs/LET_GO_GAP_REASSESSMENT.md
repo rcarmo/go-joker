@@ -12,7 +12,7 @@ Recent work closed several previously high-priority gaps:
 - JVM-shaped `System`: go-joker now has a `System` compatibility namespace with properties, env, time, line separator, and exit.
 - Numeric tower: go-joker now promotes integer overflow to `BigInt` and improves `BigFloat`/BigDecimal precision behavior.
 
-The main remaining let-go ecosystem lead is **Babashka pods**, backed by fuller Transit/EDN payload support. Secondary gaps are standalone EDN namespace/API shape, terminal/syscall/unix compatibility shims, and let-go's small `zip`/`walk`/`dump`/`test` helper namespaces.
+The main remaining let-go ecosystem lead is **Babashka pods** end-to-end compatibility fixtures and coverage. Transit and EDN payload basics are now in place. Secondary gaps are terminal/syscall/unix compatibility shims and let-go's small `zip`/`walk`/`dump`/`test` helper namespaces.
 
 ## High-level parity table
 
@@ -26,7 +26,7 @@ The main remaining let-go ecosystem lead is **Babashka pods**, backed by fuller 
 | System namespace | `System` shim implemented | `System` shim | broadly closed |
 | BigInt/BigDecimal | overflow promotion + BigFloat precision improvements | BigInt/BigDecimal support | closer; still needs deeper mixed numeric edge-case parity tests |
 | Babashka pods | missing | `pods` and `babashka.pods`, subprocess protocol, bencode routing | largest remaining ecosystem gap |
-| EDN namespace | reader exists in core; no standalone `edn` std namespace | `edn` runtime file/API | gap remains, important for pods/tooling |
+| EDN namespace | `joker.edn` and alias `edn` provide `read-string`/`write-string` and pod EDN payloads | `edn` runtime file/API | baseline gap closed; options/tag coverage can expand with fixtures |
 | nREPL/editor integration | missing | not a major let-go runtime namespace in inspected rt set | still ecosystem gap, but not a direct let-go lead |
 | `syscall`/`unix`/`term` | missing/partial via std/os/io | let-go has shims | optional platform compatibility gap |
 | `walk`/`zip`/`dump`/`test` | missing or core/test alternatives | let-go has small helper namespaces | low/medium gap depending target scripts |
