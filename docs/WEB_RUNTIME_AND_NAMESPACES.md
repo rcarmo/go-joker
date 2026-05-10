@@ -6,7 +6,30 @@ This guide documents the new concurrency/web runtime surface and namespace addit
 
 ---
 
-## 1) `joker.http` web runtime: HTTP, WebSocket, SSE
+## 1) `joker.http` web runtime: HTTP client, WebSocket, SSE
+
+### 1.0 Persistent HTTP client
+
+`joker.http/client` creates a reusable keep-alive HTTP client with an explicit connection pool. Pass it as `:client` in request maps to avoid socket tear-down churn across repeated calls.
+
+```clojure
+(require '[joker.http :as http])
+
+(def c (http/client {:max-idle-conns 256
+                    :max-idle-conns-per-host 64
+                    :idle-timeout-ms 120000}))
+
+(http/get "https://example.com" {:client c})
+(http/post "https://example.com/api" "payload" {:client c
+                                                :headers {"Content-Type" "text/plain"}})
+(http/close-client c)
+```
+
+Available helpers:
+
+- `client`, `close-client`
+- `send` / `request` for full request maps
+- `get`, `post`, `put`, `delete`
 
 `joker.http/start-server` remains Ring-style:
 
@@ -141,18 +164,41 @@ Features:
 
 ---
 
-## 3) New concurrency primitives (core)
+## 3) Concurrency and `clojure.core.async`
 
-New core forms/fns:
+Core forms/fns:
 
-- `alts!`
-- `timeout`
+- `go`, `chan`, `<!`, `>!`, `close!`
+- `alts!`, `timeout`
 - `future`, `future-call`, `future?`
 - `promise`, `deliver`, `promise?`, `realized?`
 - `agent`, `send`, `send-off`, `await`, `agent-error`
 - `pmap`, `pcalls`
 
-These run on the GIL-free runtime with true parallel goroutines.
+`clojure.core.async` is now available as a compatibility namespace over the same GIL-free channel runtime:
+
+- aliases: `chan`, `<!`, `>!`, `<!!`, `>!!`, `close!`, `alts!`, `timeout`, `go`
+- macros: `go-loop`, `thread`, `thread-call`
+- async callbacks: `put!`, `take!`
+- channel construction/loading: `buffer`, `dropping-buffer`, `sliding-buffer`, `promise-chan`, `to-chan`, `to-chan!`, `onto-chan`, `onto-chan!`
+- pipelines: `pipe`, `merge`, `split`, `map<`, `filter<`, `map>`, `filter>`
+- reductions: `reduce`, `into`
+- broadcast/topic helpers: `mult`, `tap`, `untap`, `untap-all`, `pub`, `sub`, `unsub`, `unsub-all`
+
+Example:
+
+```clojure
+(require '[clojure.core.async :as a])
+
+(let [c (a/chan 1)]
+  (a/go-loop [i 0]
+    (if (< i 3)
+      (do (a/>! c i) (recur (inc i)))
+      (a/close! c)))
+  [(a/<!! c) (a/<!! c) (a/<!! c)])
+```
+
+These run on true Go scheduler goroutines. `go`/`go-loop` are intentionally real goroutines, not IOC state machines.
 
 ---
 

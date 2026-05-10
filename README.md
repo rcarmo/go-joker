@@ -29,7 +29,7 @@ An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Li
 | **let-go suite** | wins 5/7 let-go suite workloads (reduce 14.0×, loop-recur 8.5×, fib 1.5×, tak 1.1×, persistent-map 1.1×) |
 | **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
 | **Concurrency** | GIL-free — true parallel goroutines, futures, promises, agents, pmap |
-| **Namespaces** | 28 namespaces including `joker.random`, `joker.log`, HTTP router |
+| **Namespaces** | 29+ namespaces including `clojure.core.async`, `joker.random`, `joker.log`, HTTP router |
 
 ## What's different from upstream Joker
 
@@ -64,7 +64,7 @@ Numeric operations, binding resolution, and function dispatch all have type-spec
 Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze`, `wasm-diagnostic`, `escape-analysis`, `profile`, `benchmark`, `mem-stats`, `gc`.
 
 ### GIL-free concurrency
-The Global Interpreter Lock has been removed. Goroutines run in true parallel on Go scheduler threads. Immutable data structures need no coordination. Atoms use per-atom mutexes. Concurrency primitives: `alts!`, `timeout`, `future`, `promise`, `agent`, `pmap`, `pcalls`.
+The Global Interpreter Lock has been removed. Goroutines run in true parallel on Go scheduler threads. Immutable data structures need no coordination. Atoms use per-atom mutexes. Concurrency primitives: `alts!`, `timeout`, `future`, `promise`, `agent`, `pmap`, `pcalls`, plus a `clojure.core.async` compatibility namespace with `go-loop`, `put!`/`take!`, `pipe`, `merge`, `split`, `mult`, and `pub` helpers.
 
 ### Additional namespaces / web runtime
 - `joker.imaging` — image processing (resize, crop, blur, overlay) via pure Go
@@ -72,7 +72,7 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 - `joker.pdf` — PDF document generation
 - `joker.random` — random numbers (int, float, choice, shuffle, uuid, secure-bytes)
 - `joker.log` — leveled logging (debug, info, warn, error)
-- `joker.http` — Ring-style HTTP + **WebSocket** and **SSE/streaming** response extensions
+- `joker.http` — persistent keep-alive HTTP client, Ring-style HTTP server, **WebSocket** and **SSE/streaming** response extensions
 - `joker.http.router` — Bottle-style HTTP routing with path params, middleware, CORS
 
 ### Clojure parity surface now implemented

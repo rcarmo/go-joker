@@ -7,12 +7,52 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"time"
+	"unsafe"
 
 	. "github.com/candid82/joker/core"
 	ws "github.com/gorilla/websocket"
 )
 
-var client = &http.Client{}
+var client = newPersistentHTTPClient(100, 100, 90*time.Second)
+
+type HTTPClient struct {
+	client    *http.Client
+	transport *http.Transport
+	hash      uint32
+}
+
+func newPersistentHTTPClient(maxIdle, maxIdlePerHost int, idleTimeout time.Duration) *http.Client {
+	return &http.Client{Transport: &http.Transport{
+		Proxy:                 http.ProxyFromEnvironment,
+		MaxIdleConns:          maxIdle,
+		MaxIdleConnsPerHost:   maxIdlePerHost,
+		IdleConnTimeout:       idleTimeout,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}}
+}
+
+func newHTTPClient(maxIdle, maxIdlePerHost int, idleTimeout time.Duration) *HTTPClient {
+	tr := &http.Transport{
+		Proxy:                 http.ProxyFromEnvironment,
+		MaxIdleConns:          maxIdle,
+		MaxIdleConnsPerHost:   maxIdlePerHost,
+		IdleConnTimeout:       idleTimeout,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}
+	hc := &HTTPClient{client: &http.Client{Transport: tr}, transport: tr}
+	hc.hash = HashPtr(uintptr(unsafe.Pointer(hc)))
+	return hc
+}
+
+func (hc *HTTPClient) ToString(escape bool) string      { return "#object[HTTPClient]" }
+func (hc *HTTPClient) Equals(other interface{}) bool    { return hc == other }
+func (hc *HTTPClient) GetInfo() *ObjectInfo             { return nil }
+func (hc *HTTPClient) WithInfo(info *ObjectInfo) Object { return hc }
+func (hc *HTTPClient) GetType() *Type                   { return TYPE.Proc }
+func (hc *HTTPClient) Hash() uint32                     { return hc.hash }
 
 var upgrader = ws.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
@@ -142,11 +182,53 @@ func mapToResp(response Map, w http.ResponseWriter) {
 	io.WriteString(w, body)
 }
 
+func clientFromRequest(request Map) *http.Client {
+	if ok, c := request.Get(MakeKeyword("client")); ok {
+		hc, ok := c.(*HTTPClient)
+		if !ok {
+			panic(RT.NewError(":client must be an HTTP client created by joker.http/client"))
+		}
+		return hc.client
+	}
+	return client
+}
+
 func sendRequest(request Map) Map {
 	req := mapToReq(request)
-	resp, err := client.Do(req)
+	resp, err := clientFromRequest(request).Do(req)
 	PanicOnErr(err)
 	return respToMap(resp)
+}
+
+func makeClient(args []Object) Object {
+	if len(args) > 1 {
+		panic(RT.NewError("client expects zero args or one options map"))
+	}
+	maxIdle := 100
+	maxIdlePerHost := 100
+	idleTimeoutMs := 90000
+	if len(args) == 1 && !args[0].Equals(NIL) {
+		opts := EnsureObjectIsMap(args[0], "client options must be a map: %s")
+		if ok, v := opts.Get(MakeKeyword("max-idle-conns")); ok {
+			maxIdle = EnsureObjectIsInt(v, ":max-idle-conns: %s").I
+		}
+		if ok, v := opts.Get(MakeKeyword("max-idle-conns-per-host")); ok {
+			maxIdlePerHost = EnsureObjectIsInt(v, ":max-idle-conns-per-host: %s").I
+		}
+		if ok, v := opts.Get(MakeKeyword("idle-timeout-ms")); ok {
+			idleTimeoutMs = EnsureObjectIsInt(v, ":idle-timeout-ms: %s").I
+		}
+	}
+	return newHTTPClient(maxIdle, maxIdlePerHost, time.Duration(idleTimeoutMs)*time.Millisecond)
+}
+
+func closeClient(c Object) Object {
+	hc, ok := c.(*HTTPClient)
+	if !ok {
+		panic(RT.NewError("close-client requires an HTTP client"))
+	}
+	hc.transport.CloseIdleConnections()
+	return NIL
 }
 
 func startServer(addr string, handler Callable) Object {
