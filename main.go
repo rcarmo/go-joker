@@ -38,6 +38,7 @@ import (
 	_ "github.com/candid82/joker/std/strconv"
 	_ "github.com/candid82/joker/std/string"
 	_ "github.com/candid82/joker/std/svg"
+	_ "github.com/candid82/joker/std/system"
 	_ "github.com/candid82/joker/std/time"
 	_ "github.com/candid82/joker/std/transit"
 	_ "github.com/candid82/joker/std/url"

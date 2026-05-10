@@ -1,0 +1,46 @@
+(ns ^{:go-imports []
+      :doc "JVM-shaped System compatibility namespace."}
+  system)
+
+(defn getProperty
+  "Returns a system property by string key, or optional default/nil."
+  {:added "1.0"
+   :go "getProperty(args)"}
+  ([^String key])
+  ([^String key default]))
+
+(defn getProperties
+  "Returns all System compatibility properties as a map."
+  {:added "1.0"
+   :go "systemProperties()"}
+  [])
+
+(defn getenv
+  "Returns an environment variable value, or nil."
+  {:added "1.0"
+   :go "systemGetenv(args)"}
+  [^String name])
+
+(defn exit
+  "Exits the process with integer code."
+  {:added "1.0"
+   :go "systemExit(args)"}
+  [^Int code])
+
+(defn lineSeparator
+  "Returns the platform line separator."
+  {:added "1.0"
+   :go "lineSeparator()"}
+  [])
+
+(defn currentTimeMillis
+  "Returns current Unix time in milliseconds."
+  {:added "1.0"
+   :go "currentTimeMillis()"}
+  [])
+
+(defn nanoTime
+  "Returns current time in nanoseconds."
+  {:added "1.0"
+   :go "nanoTime()"}
+  [])
