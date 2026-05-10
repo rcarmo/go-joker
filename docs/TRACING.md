@@ -73,7 +73,7 @@ These are intentionally optional and disabled by default. They add overhead and 
 
 ## Pure Joker Sankey renderer
 
-`docs/render-trace-svg.clj` is a small Joker/Clojure renderer that turns these JSON outputs into compact SVG Sankey diagrams:
+`docs/render-trace-svg.clj` is a small Joker/Clojure renderer that turns these JSON outputs into compact SVG Sankey diagrams. IR opcode data is cyclic, so it is rendered as a two-column transition Sankey (`from/opcode -> to/opcode`) rather than as a fake acyclic progression.
 
 - pprof Sankey JSON (`nodes`/`links`)
 - `go-joker-ir-profile`

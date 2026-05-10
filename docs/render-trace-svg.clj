@@ -27,6 +27,7 @@
 (defn edge-value [e] (or (:nanos e) (:value e) (:count e) 0))
 (defn edge-count [e] (or (:count e) (:samples e) 0))
 (defn node-name [n] (or (:name n) (:symbol n) "?"))
+(defn node-label [n] (or (:label n) (node-name n)))
 (defn node-value [n] (or (:nanos n) (:value n) (:count n) 0))
 (defn node-count [n] (or (:count n) (:samples n) 0))
 
@@ -39,11 +40,22 @@
      :links (:links data)}
 
     (= (:type data) "go-joker-ir-profile")
-    (let [ops (:ops data) counts (into {} (map (fn [o] [(:name o) o]) ops))]
+    ;; IR opcode transitions are a cyclic Markov graph, not an acyclic call graph.
+    ;; Render them as a two-stage transition Sankey (from/op -> to/op) so horizontal
+    ;; layout stays stable and edge widths still represent measured transition time.
+    (let [edges (:edges data)
+          sources (set (map :source edges))
+          targets (set (map :target edges))
+          source-total (reduce (fn [m e] (update m (:source e) (fnil + 0) (:nanos e))) {} edges)
+          target-total (reduce (fn [m e] (update m (:target e) (fnil + 0) (:nanos e))) {} edges)
+          source-count (reduce (fn [m e] (update m (:source e) (fnil + 0) (:count e))) {} edges)
+          target-count (reduce (fn [m e] (update m (:target e) (fnil + 0) (:count e))) {} edges)]
       {:title (or explicit-title "Joker IR opcode trace")
-       :subtitle (str "IR executions " (:execs data) " · timed opcode transitions")
-       :nodes (map (fn [[name row]] {:name name :value (:nanos row) :count (:count row)}) counts)
-       :links (map (fn [e] {:source (:source e) :target (:target e) :value (:nanos e) :count (:count e) :avg_nanos (:avg_nanos e)}) (:edges data))})
+       :subtitle (str "IR executions " (:execs data) " · timed opcode transition matrix")
+       :nodes (concat
+               (map (fn [name] {:name (str "from/" name) :label name :value (get source-total name 0) :count (get source-count name 0)}) sources)
+               (map (fn [name] {:name (str "to/" name) :label name :value (get target-total name 0) :count (get target-count name 0)}) targets))
+       :links (map (fn [e] {:source (str "from/" (:source e)) :target (str "to/" (:target e)) :value (:nanos e) :count (:count e) :avg_nanos (:avg_nanos e)}) edges)})
 
     (= (:type data) "go-joker-function-trace")
     (let [fns (:functions data) counts (into {} (map (fn [f] [(:name f) f]) fns))]
@@ -130,7 +142,7 @@
                                       "\" width=\"" node-w "\" height=\"" (:h p)
                                       "\" rx=\"2\" fill=\"#60a5fa\" opacity=\"" opacity "\"/>"
                                       "<text x=\"" (+ (:x p) node-w 8) "\" y=\"" (- (:y p) 3)
-                                      "\" fill=\"#e5e7eb\" font-size=\"11\">" (esc (node-name n)) "</text>"
+                                      "\" fill=\"#e5e7eb\" font-size=\"11\">" (esc (node-label n)) "</text>"
                                       "<text x=\"" (+ (:x p) node-w 8) "\" y=\"" (+ (:y p) 11)
                                       "\" fill=\"#9ca3af\" font-size=\"10\">count " (fmt-num (node-count n))
                                       " · total " (fmt-time (node-value n)) "</text></g>\n")))
