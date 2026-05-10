@@ -1,0 +1,30 @@
+(ns ^{:go-imports []
+      :doc "Transit+JSON reader and writer for Joker values."}
+  transit)
+
+(defn write
+  "Writes x as a Transit+JSON string. Supports nil, booleans, numbers,
+  strings, keywords, symbols, sequential collections, and maps. Maps are
+  encoded with Transit's array map representation to preserve non-string keys."
+  {:added "1.0"
+   :go "writeTransit(x)"}
+  [x])
+
+(defn write-str
+  "Alias for write."
+  {:added "1.0"}
+  [x]
+  (write x))
+
+(defn read
+  "Reads a Transit+JSON string into Joker data. Supports the subset emitted by
+  write plus plain JSON arrays/objects."
+  {:added "1.0"
+   :go "readTransit(s)"}
+  [^String s])
+
+(defn read-str
+  "Alias for read."
+  {:added "1.0"}
+  [s]
+  (read s))
