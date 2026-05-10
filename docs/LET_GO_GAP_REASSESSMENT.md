@@ -137,7 +137,7 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [x] Add tagged value support for `~#set`, `~#list`, quote, and `cmap`.
 - [x] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden payload tests.
 - [x] Add `write-verbose`/non-cached output mode for debugging and parity with let-go.
-- [ ] Expose internal helper functions for pod argument/result Transit payloads.
+- [x] Expose internal helper functions for pod argument/result Transit payloads.
 - [ ] Cross-check known let-go Transit fixtures and pod payload samples.
 
 ### Phase 3 — Standalone EDN namespace
@@ -179,7 +179,7 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [x] Add tags: `~#set`, `~#list`, quote, `cmap`
 - [x] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden tests
 - [x] Add `write-verbose` / non-cached output mode
-- [ ] Expose helper functions for pod Transit args/results
+- [x] Expose helper functions for pod Transit args/results
 
 ### Phase 3 — Standalone EDN namespace
 - [ ] Add `joker.edn` and/or `edn` namespace with `read-string` and `write-string`
@@ -240,7 +240,7 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [x] Add tags: `~#set`, `~#list`, quote, `cmap`
 - [x] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden tests
 - [x] Add `write-verbose` / non-cached output mode
-- [ ] Expose helper functions for pod Transit args/results
+- [x] Expose helper functions for pod Transit args/results
 
 ### Phase 3 — Standalone EDN namespace
 - [ ] Add `joker.edn` and/or `edn` namespace with `read-string` and `write-string`

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	. "github.com/candid82/joker/core"
+	transit "github.com/candid82/joker/std/transit"
 )
 
 func (p *Pod) encodeArgs(args []Object) (string, error) {
@@ -19,7 +20,7 @@ func (p *Pod) encodeArgs(args []Object) (string, error) {
 	case "edn":
 		return "", fmt.Errorf("EDN pod payloads are not supported yet")
 	case "transit+json":
-		return "", fmt.Errorf("Transit+JSON pod payloads are not supported yet")
+		return transit.TransitEncodeArgs(args)
 	default:
 		return "", fmt.Errorf("unsupported pod format: %s", p.format)
 	}
@@ -36,7 +37,7 @@ func (p *Pod) decodePayload(s string) (Object, error) {
 	case "edn":
 		return NIL, fmt.Errorf("EDN pod payloads are not supported yet")
 	case "transit+json":
-		return NIL, fmt.Errorf("Transit+JSON pod payloads are not supported yet")
+		return transit.TransitDecodeValue(s)
 	default:
 		return NIL, fmt.Errorf("unsupported pod format: %s", p.format)
 	}
