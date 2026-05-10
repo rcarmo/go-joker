@@ -117,3 +117,48 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 4. **Coverage pass for pods/transit/edn** with golden payload tests.
 5. Optional platform namespaces (`term`, `syscall`, `unix`) only after ecosystem scripts demand them.
 
+
+## Execution plan
+
+### Phase 1 — Pods foundation
+
+- [ ] Add bencode encode/decode support for pod protocol messages.
+- [ ] Implement pod registry, lifecycle, shutdown, request IDs, and response routing.
+- [ ] Implement `pods/load-pod` for explicit command paths and cached Babashka pod discovery.
+- [ ] Implement `pods/invoke` low-level invocation with synchronous result handling.
+- [ ] Install compatibility namespaces `pods` and `babashka.pods`.
+- [ ] Dynamically install namespaces/vars returned by pod `describe` messages.
+- [ ] Start with JSON payload format, with clear errors for unsupported `edn`/`transit+json` until phases 2–3 land.
+- [ ] Add unit tests with a local fake pod subprocess fixture.
+
+### Phase 2 — Fuller Transit protocol
+
+- [ ] Add Transit rolling cache read/write support (`^` refs) for strings and map keys.
+- [ ] Add tagged value support for `~#set`, `~#list`, quote, and `cmap`.
+- [ ] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden payload tests.
+- [ ] Add `write-verbose`/non-cached output mode for debugging and parity with let-go.
+- [ ] Expose internal helper functions for pod argument/result Transit payloads.
+- [ ] Cross-check known let-go Transit fixtures and pod payload samples.
+
+### Phase 3 — Standalone EDN namespace
+
+- [ ] Add `joker.edn` and/or `edn` namespace with `read-string` and `write-string`.
+- [ ] Reuse Joker reader/pr-str semantics without evaluating forms.
+- [ ] Add options only where needed for pod compatibility/tag handling.
+- [ ] Add golden tests for primitives, collections, symbols, keywords, tagged literals, BigInt, ratios, and BigFloat.
+- [ ] Wire EDN payload format into pods.
+
+### Phase 4 — Integrated compatibility and coverage
+
+- [ ] Add end-to-end fake pods for JSON, EDN, and Transit+JSON formats.
+- [ ] Add namespace-resolution smoke tests for dynamically installed pod vars.
+- [ ] Add docs pages and docs-check coverage for `pods`, `babashka.pods`, Transit additions, and EDN.
+- [ ] Extend coverage report tracking for these new packages.
+- [ ] Run parity, jank subset, coverage, docs-check, full tests, and vet.
+
+### Phase 5 — Optional script-portability shims
+
+- [ ] Assess real script demand for `term`, `syscall`, and `unix` namespaces.
+- [ ] If needed, implement small platform-gated compatibility shims with conservative APIs.
+- [ ] Assess real script demand for helper namespaces `walk`, `zip`, `dump`, and `test`.
+- [ ] Implement only the helpers required by actual workloads or failing compatibility fixtures.
