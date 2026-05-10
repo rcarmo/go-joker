@@ -223,3 +223,77 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [ ] Do not clone exact `bb` CLI flag/UX behavior; keep go-joker's CLI identity
 - [ ] Do not implement broad low-level syscall/unix surfaces without concrete use cases
 
+## let-go / Babashka gap closure plan
+
+### Phase 1 — Pods foundation
+- [x] Add bencode encode/decode support for pod protocol messages
+- [ ] Implement pod registry, lifecycle, shutdown, request IDs, and response routing
+- [ ] Implement `pods/load-pod` for command paths and Babashka pod cache discovery
+- [ ] Implement `pods/invoke` with synchronous result handling
+- [ ] Install compatibility namespaces `pods` and `babashka.pods`
+- [ ] Dynamically install namespaces/vars returned by pod `describe`
+- [ ] Start with JSON payloads; clear errors for EDN/Transit until later phases
+- [ ] Add fake-pod subprocess tests
+
+### Phase 2 — Fuller Transit protocol
+- [ ] Add rolling cache read/write support (`^` refs)
+- [ ] Add tags: `~#set`, `~#list`, quote, `cmap`
+- [ ] Add BigInt, BigDecimal/BigFloat, ratio, keyword, and symbol golden tests
+- [ ] Add `write-verbose` / non-cached output mode
+- [ ] Expose helper functions for pod Transit args/results
+
+### Phase 3 — Standalone EDN namespace
+- [ ] Add `joker.edn` and/or `edn` namespace with `read-string` and `write-string`
+- [ ] Reuse reader/pr-str without evaluating forms
+- [ ] Add pod-required options/tag handling
+- [ ] Add golden tests for primitives, collections, tagged literals, BigInt, ratios, BigFloat
+- [ ] Wire EDN payload format into pods
+
+### Phase 4 — Babashka compatibility fixture suite
+- [ ] Add a small portable Babashka-script fixture suite
+- [ ] Include positive fixtures for core data, JSON/YAML/HTTP/filesystem basics
+- [ ] Include expected-failure fixtures for Java interop, `bb.edn` tasks/deps, SCI internals, and unsupported library catalog APIs
+- [ ] Ensure unsupported Babashka-specific features fail with explicit non-goal messages
+- [ ] Document namespace aliases/workarounds for portable scripts
+
+### Phase 5 — Integrated pod compatibility and coverage
+- [ ] Add end-to-end fake pods for JSON, EDN, Transit+JSON
+- [ ] Add dynamic namespace/var smoke tests
+- [ ] Add docs-check coverage for pods, babashka.pods, Transit additions, EDN
+- [ ] Extend coverage report tracking for pods/transit/edn packages
+- [ ] Run parity, jank subset, coverage, docs-check, full tests, vet
+
+### Phase 6 — Practical Babashka namespace shims, script-driven only
+- [ ] Assess real script demand for `babashka.fs`-like helpers
+- [ ] Assess real script demand for `babashka.process`-like helpers
+- [ ] Assess real script demand for `clojure.java.io` convenience wrappers that map cleanly to Go IO
+- [ ] Implement only small shims required by actual workloads or fixture failures
+- [ ] Document explicitly omitted Babashka library catalog areas (`babashka.curl`, full `cheshire`, `clojure.data.*`, `selmer`, `rewrite-clj`, etc.)
+
+### Phase 7 — Remaining let-go runtime namespace gaps
+- [ ] Assess `async` namespace alias/wrapper need beyond `clojure.core.async`
+- [ ] Assess `http` namespace compatibility wrappers over `joker.http` (`http/get`, `http/post`, `http/request`, `http/serve` shape)
+- [ ] Assess `math`, `json`, `os`, `io`, `string`, `set`, and `pprint` namespace naming/API aliases where let-go scripts use unqualified short namespaces
+- [ ] Assess `data`, `dump`, `types`, `lang`, and `iort` runtime helper namespaces for real script demand
+- [ ] Implement only thin aliases/adapters when they map cleanly to existing go-joker std/core APIs
+
+### Phase 8 — let-go performance parity gaps
+- [ ] Re-run `make compare-bench` after each runtime batch
+- [ ] Investigate remaining let-go wins: `map-filter` benchmark
+- [ ] Investigate remaining let-go wins: `transducers` benchmark
+- [ ] Add correctness tests before any new benchmark-specific optimization
+- [ ] Keep portable benchmark results separate from best-Joker/native variants
+
+### Phase 9 — Optional portability shims
+- [ ] Assess demand for `term`, `syscall`, `unix`
+- [ ] Implement platform-gated shims only if real scripts require them
+- [ ] Assess demand for `walk`, `zip`, `dump`, `test`
+- [ ] Implement helpers only for actual workload/fixture failures
+
+### Explicit non-goals to preserve
+- [ ] Do not implement arbitrary JVM/Java class loading, reflection, constructors, static members, or JVM classpath semantics
+- [ ] Do not implement full `bb.edn` task runner, `bb tasks`, Babashka deps, Maven/Clojars resolution, or classpath assembly
+- [ ] Do not chase SCI analyzer/evaluator internals or SCI-specific extension hooks
+- [ ] Do not clone the full Babashka bundled library catalog without script-driven justification
+- [ ] Do not clone exact `bb` CLI flag/UX behavior; keep go-joker's CLI identity
+- [ ] Do not implement broad low-level syscall/unix surfaces without concrete use cases
