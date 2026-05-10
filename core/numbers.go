@@ -3,6 +3,7 @@ package core
 import (
 	"math/big"
 	"math/bits"
+	"strconv"
 )
 
 type (
@@ -55,6 +56,33 @@ var (
 	BIGFLOAT_OPS = BigFloatOps{}
 	RATIO_OPS    = RatioOps{}
 )
+
+const maxInt = int(^uint(0) >> 1)
+const minInt = -maxInt - 1
+
+var maxIntBig = big.NewInt(int64(maxInt))
+var minIntBig = big.NewInt(int64(minInt))
+
+func intOrBigInt(b *big.Int) Number {
+	if strconv.IntSize == 64 && b.IsInt64() {
+		return MakeInt(int(b.Int64()))
+	}
+	if strconv.IntSize == 32 && b.Cmp(minIntBig) >= 0 && b.Cmp(maxIntBig) <= 0 {
+		return MakeInt(int(b.Int64()))
+	}
+	return &BigInt{b: new(big.Int).Set(b)}
+}
+
+func bigFloatWithPrec(x, y Number, extra uint) *big.Float {
+	prec := x.BigFloat().Prec()
+	if yp := y.BigFloat().Prec(); yp > prec {
+		prec = yp
+	}
+	if prec < 128 {
+		prec = 128
+	}
+	return new(big.Float).SetPrec(prec + extra).SetMode(big.ToNearestEven)
+}
 
 func ratioOrInt(r *big.Rat) Number {
 	if r.IsInt() {
@@ -255,7 +283,12 @@ func (r *Ratio) Ratio() *big.Rat {
 // Add
 
 func (ops IntOps) Add(x, y Number) Number {
-	return Int{I: x.Int().I + y.Int().I}
+	xi, yi := x.Int().I, y.Int().I
+	if (yi > 0 && xi > maxInt-yi) || (yi < 0 && xi < minInt-yi) {
+		b := new(big.Int).Add(big.NewInt(int64(xi)), big.NewInt(int64(yi)))
+		return &BigInt{b: b}
+	}
+	return Int{I: xi + yi}
 }
 
 func (ops DoubleOps) Add(x, y Number) Number {
@@ -270,10 +303,9 @@ func (ops BigIntOps) Add(x, y Number) Number {
 }
 
 func (ops BigFloatOps) Add(x, y Number) Number {
-	b := &big.Float{}
+	b := bigFloatWithPrec(x, y, 1)
 	b.Add(x.BigFloat(), y.BigFloat())
-	res := BigFloat{b: b}
-	return &res
+	return &BigFloat{b: b}
 }
 
 func (ops RatioOps) Add(x, y Number) Number {
@@ -285,7 +317,12 @@ func (ops RatioOps) Add(x, y Number) Number {
 // Subtract
 
 func (ops IntOps) Subtract(x, y Number) Number {
-	return Int{I: x.Int().I - y.Int().I}
+	xi, yi := x.Int().I, y.Int().I
+	if (yi < 0 && xi > maxInt+yi) || (yi > 0 && xi < minInt+yi) {
+		b := new(big.Int).Sub(big.NewInt(int64(xi)), big.NewInt(int64(yi)))
+		return &BigInt{b: b}
+	}
+	return Int{I: xi - yi}
 }
 
 func (ops DoubleOps) Subtract(x, y Number) Number {
@@ -300,10 +337,9 @@ func (ops BigIntOps) Subtract(x, y Number) Number {
 }
 
 func (ops BigFloatOps) Subtract(x, y Number) Number {
-	b := &big.Float{}
+	b := bigFloatWithPrec(x, y, 1)
 	b.Sub(x.BigFloat(), y.BigFloat())
-	res := BigFloat{b: b}
-	return &res
+	return &BigFloat{b: b}
 }
 
 func (ops RatioOps) Subtract(x, y Number) Number {
@@ -315,7 +351,9 @@ func (ops RatioOps) Subtract(x, y Number) Number {
 // Multiply
 
 func (ops IntOps) Multiply(x, y Number) Number {
-	return Int{I: x.Int().I * y.Int().I}
+	xi, yi := x.Int().I, y.Int().I
+	b := new(big.Int).Mul(big.NewInt(int64(xi)), big.NewInt(int64(yi)))
+	return intOrBigInt(b)
 }
 
 func (ops DoubleOps) Multiply(x, y Number) Number {
@@ -330,10 +368,9 @@ func (ops BigIntOps) Multiply(x, y Number) Number {
 }
 
 func (ops BigFloatOps) Multiply(x, y Number) Number {
-	b := &big.Float{}
+	b := bigFloatWithPrec(x, y, x.BigFloat().Prec()+y.BigFloat().Prec())
 	b.Mul(x.BigFloat(), y.BigFloat())
-	res := BigFloat{b: b}
-	return &res
+	return &BigFloat{b: b}
 }
 
 func (ops RatioOps) Multiply(x, y Number) Number {
@@ -373,10 +410,10 @@ func (ops BigIntOps) Divide(x, y Number) Number {
 }
 
 func (ops BigFloatOps) Divide(x, y Number) Number {
-	b := &big.Float{}
+	panicOnZero(ops, y)
+	b := bigFloatWithPrec(x, y, 64)
 	b.Quo(x.BigFloat(), y.BigFloat())
-	res := BigFloat{b: b}
-	return &res
+	return &BigFloat{b: b}
 }
 
 func (ops RatioOps) Divide(x, y Number) Number {

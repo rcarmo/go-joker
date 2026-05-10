@@ -204,7 +204,7 @@ var procAdd = func(args []Object) Object {
 	case Int:
 		switch y := args[1].(type) {
 		case Int:
-			return Int{I: x.I + y.I}
+			return INT_OPS.Add(x, y)
 		case Double:
 			return Double{D: float64(x.I) + y.D}
 		}
@@ -234,7 +234,7 @@ var procMultiply = func(args []Object) Object {
 	case Int:
 		switch y := args[1].(type) {
 		case Int:
-			return Int{I: x.I * y.I}
+			return INT_OPS.Multiply(x, y)
 		case Double:
 			return Double{D: float64(x.I) * y.D}
 		}
@@ -263,7 +263,7 @@ var procSubtract = func(args []Object) Object {
 	if len(args) == 1 {
 		switch x := args[0].(type) {
 		case Int:
-			return Int{I: -x.I}
+			return INT_OPS.Subtract(Int{I: 0}, x)
 		case Double:
 			return Double{D: -x.D}
 		}
@@ -276,7 +276,7 @@ var procSubtract = func(args []Object) Object {
 	case Int:
 		switch b := args[1].(type) {
 		case Int:
-			return Int{I: a.I - b.I}
+			return INT_OPS.Subtract(a, b)
 		case Double:
 			return Double{D: float64(a.I) - b.D}
 		}
@@ -1129,7 +1129,7 @@ var procDecEx = func(args []Object) Object {
 var procInc = func(args []Object) Object {
 	switch x := args[0].(type) {
 	case Int:
-		return Int{I: x.I + 1}
+		return INT_OPS.Add(x, Int{I: 1})
 	case Double:
 		return Double{D: x.D + 1}
 	}
@@ -1141,7 +1141,7 @@ var procInc = func(args []Object) Object {
 var procDec = func(args []Object) Object {
 	switch x := args[0].(type) {
 	case Int:
-		return Int{I: x.I - 1}
+		return INT_OPS.Subtract(x, Int{I: 1})
 	case Double:
 		return Double{D: x.D - 1}
 	}
