@@ -20,6 +20,14 @@ func TestHelperProcessFakePod(t *testing.T) {
 	}
 	msg := objectMapToPodMessage(obj)
 	id, _ := msg["id"].(string)
+	if msg["op"] == "invoke" {
+		os.Stdout.Write(bencodeEncodePlain(map[string]any{
+			"id":    id,
+			"value": msg["args"],
+			"done":  true,
+		}))
+		os.Exit(0)
+	}
 	os.Stdout.Write(bencodeEncodePlain(map[string]any{
 		"id":     id,
 		"format": "json",
@@ -83,6 +91,35 @@ func TestStartPodProcessSendsDescribe(t *testing.T) {
 	}
 	if firstPodNamespaceName(describe) != "fake.pod" {
 		t.Fatalf("namespace mismatch: %#v", describe)
+	}
+}
+
+func TestPodInvokeJSON(t *testing.T) {
+	shutdownAllPods()
+	pr, pw := io.Pipe()
+	defer pr.Close()
+	defer pw.Close()
+	p := newPod("pod-invoke", "invoke", "json", pw, nil, nil)
+	go func() {
+		for {
+			obj, err := bencodeDecodeReader(pr)
+			if err != nil {
+				return
+			}
+			msg := objectMapToPodMessage(obj)
+			if msg["op"] == "invoke" {
+				p.routeMessage(podMessage{"id": msg["id"], "value": msg["args"], "done": true})
+				return
+			}
+		}
+	}()
+	res, err := p.invoke("fake.pod/echo", []Object{MakeString("hi"), MakeInt(7)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	vec := res.(CountedIndexed)
+	if vec.Count() != 2 || vec.At(0).ToString(false) != "hi" || vec.At(1).(Int).I != 7 {
+		t.Fatalf("invoke result mismatch: %s", res.ToString(false))
 	}
 }
 

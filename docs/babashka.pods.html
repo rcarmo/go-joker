@@ -35,6 +35,9 @@
   <a href="#bencode-encode">bencode-encode</a>
 </li>
 <li>
+  <a href="#invoke">invoke</a>
+</li>
+<li>
   <a href="#load-pod">load-pod</a>
 </li>
 
@@ -67,6 +70,17 @@
   <pre class="var-usage"><div><code>(bencode-encode x)</code></div>
 </pre>
   <p class="var-docstr">Encodes a Joker value as bencode bytes, returned as a string.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="invoke">invoke</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(invoke pod-id var args)</code></div>
+<div><code>(invoke pod-id var args opts)</code></div>
+</pre>
+  <p class="var-docstr">Synchronously invokes a pod var and returns its decoded result. JSON payloads are supported initially.</p>
   
   
 </li>

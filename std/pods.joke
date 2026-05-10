@@ -12,6 +12,15 @@
   ([^String path-or-name])
   ([^String path-or-name version-or-args]))
 
+(defn invoke
+  "Synchronously invokes a pod var and returns its decoded result. JSON payloads
+  are supported initially; EDN and Transit+JSON return explicit unsupported
+  errors until the later codec phases are complete."
+  {:added "1.0"
+   :go "invokePod(args)"}
+  ([^String pod-id var args])
+  ([^String pod-id var args opts]))
+
 (defn bencode-encode
   "Encodes a Joker value as bencode bytes, returned as a string. Intended as
   pod protocol plumbing; public for tests and diagnostics."

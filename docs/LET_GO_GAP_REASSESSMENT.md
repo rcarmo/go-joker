@@ -125,7 +125,7 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [ ] Add bencode encode/decode support for pod protocol messages.
 - [ ] Implement pod registry, lifecycle, shutdown, request IDs, and response routing.
 - [x] Implement `pods/load-pod` for explicit command paths and cached Babashka pod discovery.
-- [ ] Implement `pods/invoke` low-level invocation with synchronous result handling.
+- [x] Implement `pods/invoke` low-level invocation with synchronous result handling.
 - [x] Install compatibility namespaces `pods` and `babashka.pods`.
 - [ ] Dynamically install namespaces/vars returned by pod `describe` messages.
 - [ ] Start with JSON payload format, with clear errors for unsupported `edn`/`transit+json` until phases 2–3 land.
@@ -168,10 +168,10 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [x] Add bencode encode/decode support for pod protocol messages
 - [ ] Implement pod registry, lifecycle, shutdown, request IDs, and response routing
 - [x] Implement `pods/load-pod` for command paths and Babashka pod cache discovery
-- [ ] Implement `pods/invoke` with synchronous result handling
+- [x] Implement `pods/invoke` with synchronous result handling
 - [x] Install compatibility namespaces `pods` and `babashka.pods`
 - [ ] Dynamically install namespaces/vars returned by pod `describe`
-- [ ] Start with JSON payloads; clear errors for EDN/Transit until later phases
+- [x] Start with JSON payloads; clear errors for EDN/Transit until later phases
 - [x] Add fake-pod subprocess tests
 
 ### Phase 2 — Fuller Transit protocol
@@ -229,10 +229,10 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [x] Add bencode encode/decode support for pod protocol messages
 - [ ] Implement pod registry, lifecycle, shutdown, request IDs, and response routing
 - [x] Implement `pods/load-pod` for command paths and Babashka pod cache discovery
-- [ ] Implement `pods/invoke` with synchronous result handling
+- [x] Implement `pods/invoke` with synchronous result handling
 - [x] Install compatibility namespaces `pods` and `babashka.pods`
 - [ ] Dynamically install namespaces/vars returned by pod `describe`
-- [ ] Start with JSON payloads; clear errors for EDN/Transit until later phases
+- [x] Start with JSON payloads; clear errors for EDN/Transit until later phases
 - [x] Add fake-pod subprocess tests
 
 ### Phase 2 — Fuller Transit protocol
