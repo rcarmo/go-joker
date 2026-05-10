@@ -732,6 +732,7 @@ func (fn *Fn) Hash() uint32 {
 }
 
 func (fn *Fn) Call(args []Object) Object {
+	defer traceFnCall(fn, len(args))()
 	// Fast path: native Go codegen for defn-originated pure-integer recursive fns
 	if fn.defVar != nil {
 		if entry := tryNativeRecursive(fn); entry != nil {
@@ -894,6 +895,7 @@ func (fn *Fn) Compare(a, b Object) int {
 }
 
 func (p Proc) Call(args []Object) Object {
+	defer traceProcCall(p, len(args))()
 	return p.Fn(args)
 }
 
