@@ -83,7 +83,10 @@ These are intentionally optional and disabled by default. They add overhead and 
 Usage:
 
 ```bash
-./joker docs/render-trace-svg.clj INPUT.json OUTPUT.svg "Optional title"
+./joker docs/render-trace-svg.clj INPUT.{pprof,json} OUTPUT.svg "Optional title"
+```
+
+When `INPUT` is not JSON, the Joker script runs `go tool pprof -raw` itself and follows the TypeScript renderer's pprof pipeline: parse raw sections, simplify function names, reverse leaf-first stacks, squash adjacent frames, accumulate node/edge time, compute stack-derived depths, and render the same static SVG layout.
 ```
 
 Examples:
