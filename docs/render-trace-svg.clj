@@ -62,21 +62,39 @@
 
 (defn used-node-names [links]
   (reduce (fn [s e] (conj (conj s (:source e)) (:target e))) #{} links))
+(defn reachable? [adj start goal]
+  (loop [frontier (list start) seen #{}]
+    (cond
+      (empty? frontier) false
+      (= (first frontier) goal) true
+      (contains? seen (first frontier)) (recur (rest frontier) seen)
+      :else (recur (concat (rest frontier) (get adj (first frontier) [])) (conj seen (first frontier))))))
+
 (defn depths [nodes links]
+  ;; Assign left-to-right levels but ignore self/back edges so cycles and recursion do
+  ;; not inflate depths over repeated relaxation passes.
   (let [used (if (seq links) (used-node-names links) (set (map node-name nodes)))
-        initial (zipmap used (repeat 0))]
+        adj (reduce (fn [m e] (update m (:source e) conj (:target e))) {} links)
+        acyclic-links (filter (fn [e]
+                                (let [s (:source e) t (:target e)]
+                                  (and (not= s t) (not (reachable? adj t s))))) links)
+        incoming (reduce (fn [m e] (update m (:target e) (fnil inc 0))) {} acyclic-links)
+        roots (seq (filter #(zero? (get incoming % 0)) used))
+        initial (merge (zipmap used (repeat 1)) (zipmap roots (repeat 0)))]
     (loop [i 0 d initial]
-      (if (>= i 64) d
+      (if (>= i 16) d
           (let [nd (reduce (fn [m e]
                              (let [s (:source e) t (:target e) want (inc (get m s 0))]
-                               (if (> want (get m t 0)) (assoc m t want) m))) d links)]
+                               (if (> want (get m t 0)) (assoc m t want) m))) d acyclic-links)]
             (if (= nd d) d (recur (inc i) nd)))))))
 
 (defn render-sankey [g]
   (let [links (take 80 (sort-by (fn [e] (- (edge-value e))) (:links g)))
         used (if (seq links) (used-node-names links) (set (map node-name (:nodes g))))
         nodes (filter #(contains? used (node-name %)) (:nodes g))
-        depth-map (depths nodes links)
+        raw-depth-map (depths nodes links)
+        depth-ranks (zipmap (sort (set (vals raw-depth-map))) (range))
+        depth-map (into {} (map (fn [[k v]] [k (get depth-ranks v 0)]) raw-depth-map))
         width 1400 height (max 700 (+ 120 (* 20 (count nodes))))
         top 70 bottom 30 left 30 right 260 node-w 6
         max-depth (max 1 (reduce max 0 (vals depth-map)))
@@ -106,10 +124,17 @@
                             ""))) links))
         node-svg (apply str
                         (map (fn [n]
-                               (let [p (get positioned (node-name n))]
-                                 (str "<g><rect x=\"" (:x p) "\" y=\"" (- (:y p) (/ (:h p) 2)) "\" width=\"" node-w "\" height=\"" (:h p) "\" rx=\"2\" fill=\"#60a5fa\" opacity=\"" (+ 0.45 (* 0.55 (sqrt (/ (node-value n) max-node)))) "\"/>"
-                                      "<text x=\"" (+ (:x p) node-w 8) "\" y=\"" (- (:y p) 3) "\" fill=\"#e5e7eb\" font-size=\"11\">" (esc (node-name n)) "</text>"
-                                      "<text x=\"" (+ (:x p) node-w 8) "\" y=\"" (+ (:y p) 11) "\" fill=\"#9ca3af\" font-size=\"10\">count " (fmt-num (node-count n)) " · total " (fmt-time (node-value n)) "</text></g>\n"))) nodes))]
+                               (let [p (get positioned (node-name n))
+                                     opacity (+ 0.45 (* 0.55 (sqrt (/ (node-value n) max-node))))]
+                                 (str "<g><rect x=\"" (:x p) "\" y=\"" (- (:y p) (/ (:h p) 2))
+                                      "\" width=\"" node-w "\" height=\"" (:h p)
+                                      "\" rx=\"2\" fill=\"#60a5fa\" opacity=\"" opacity "\"/>"
+                                      "<text x=\"" (+ (:x p) node-w 8) "\" y=\"" (- (:y p) 3)
+                                      "\" fill=\"#e5e7eb\" font-size=\"11\">" (esc (node-name n)) "</text>"
+                                      "<text x=\"" (+ (:x p) node-w 8) "\" y=\"" (+ (:y p) 11)
+                                      "\" fill=\"#9ca3af\" font-size=\"10\">count " (fmt-num (node-count n))
+                                      " · total " (fmt-time (node-value n)) "</text></g>\n")))
+                             nodes))]
     (str "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" width "\" height=\"" height "\" viewBox=\"0 0 " width " " height "\">"
          "<rect width=\"100%\" height=\"100%\" fill=\"#111827\"/>"
          "<text x=\"" (/ width 2) "\" y=\"34\" fill=\"#f9fafb\" font-size=\"22\" text-anchor=\"middle\" font-family=\"system-ui,sans-serif\">" (esc (:title g)) "</text>"
