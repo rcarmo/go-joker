@@ -1,0 +1,17 @@
+(ns ^{:go-imports []
+      :doc "Babashka pods compatibility namespace."}
+  pods)
+
+(defn bencode-encode
+  "Encodes a Joker value as bencode bytes, returned as a string. Intended as
+  pod protocol plumbing; public for tests and diagnostics."
+  {:added "1.0"
+   :go "bencodeEncodeObject(x)"}
+  [x])
+
+(defn bencode-decode
+  "Decodes a bencode string into Joker data. Intended as pod protocol plumbing;
+  public for tests and diagnostics."
+  {:added "1.0"
+   :go "bencodeDecodeBytes(s)"}
+  [^String s])

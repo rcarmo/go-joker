@@ -33,6 +33,7 @@ import (
 	_ "github.com/candid82/joker/std/math"
 	_ "github.com/candid82/joker/std/os"
 	_ "github.com/candid82/joker/std/pdf"
+	_ "github.com/candid82/joker/std/pods"
 	_ "github.com/candid82/joker/std/random"
 	_ "github.com/candid82/joker/std/runtime"
 	_ "github.com/candid82/joker/std/strconv"
