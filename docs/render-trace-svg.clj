@@ -108,6 +108,41 @@
       (build-sankey (parse-pprof-raw (:out res))))
     (json/read-string (slurp path) {:keywords? true})))
 
+(defn anonymous-fn? [s] (str/starts-with? (str s) "fn@"))
+(defn temporal-function-graph [data]
+  (let [events (filter #(and (pos? (:nanos %)) (not (anonymous-fn? (:name %)))) (:events data))
+        end-ns (reduce max 1 (map #(+ (:start_nanos %) (:nanos %)) events))
+        bins 24
+        bin-size (max 1 (/ end-ns bins))
+        add-event (fn [m e]
+                    (let [start-bin (int (/ (:start_nanos e) bin-size))
+                          end-bin (int (/ (+ (:start_nanos e) (:nanos e)) bin-size))]
+                      (loop [b start-bin acc m]
+                        (if (> b (min (dec bins) end-bin)) acc
+                            (let [bs (* b bin-size)
+                                  be (* (inc b) bin-size)
+                                  es (:start_nanos e)
+                                  ee (+ (:start_nanos e) (:nanos e))
+                                  overlap (max 0 (- (min ee be) (max es bs)))
+                                  k [b (:name e)]]
+                              (recur (inc b) (-> acc
+                                                  (update-in [:value k] (fnil + 0) overlap)
+                                                  (update-in [:count k] (fnil inc 0)))))))))
+        acc (reduce add-event {:value {} :count {}} events)
+        cells (filter #(pos? (second %)) (:value acc))
+        nodes (map (fn [[[b name] v]] {:name (str "t" b "/" name) :label name :value v :count (get-in acc [:count [b name]] 0) :depth b}) cells)
+        names (set (map :name events))
+        links (apply concat
+                     (for [name names]
+                       (let [vals (into {} (map (fn [[[b n] v]] [[b n] v]) cells))]
+                         (keep (fn [b]
+                                 (let [a (get vals [b name] 0) c (get vals [(inc b) name] 0)]
+                                   (when (and (pos? a) (pos? c)) {:source (str "t" b "/" name) :target (str "t" (inc b) "/" name) :value (min a c) :count 1 :avg (min a c)})))
+                               (range (dec bins))))))]
+    {:title (or explicit-title "Clojure function temporal profile")
+     :subtitle (str "Time-sliced named function occupancy · " bins " bins · " (count events) " named events")
+     :nodes nodes :links links}))
+
 (defn trace->graph [data]
   (cond
     (:links data) {:title (or explicit-title (:title data) "Go pprof trace") :subtitle (or (:subtitle data) "Sankey rendered by Joker") :nodes (:nodes data) :links (:links data)}
@@ -115,8 +150,10 @@
     (let [edges (:edges data) sources (set (map :source edges)) targets (set (map :target edges)) source-total (reduce (fn [m e] (update m (:source e) (fnil + 0) (:nanos e))) {} edges) target-total (reduce (fn [m e] (update m (:target e) (fnil + 0) (:nanos e))) {} edges) source-count (reduce (fn [m e] (update m (:source e) (fnil + 0) (:count e))) {} edges) target-count (reduce (fn [m e] (update m (:target e) (fnil + 0) (:count e))) {} edges)]
       {:title (or explicit-title "Joker IR opcode trace") :subtitle (str "IR executions " (:execs data) " · timed opcode transition matrix") :nodes (concat (map (fn [name] {:name (str "from/" name) :label name :value (get source-total name 0) :count (get source-count name 0)}) sources) (map (fn [name] {:name (str "to/" name) :label name :value (get target-total name 0) :count (get target-count name 0)}) targets)) :links (map (fn [e] {:source (str "from/" (:source e)) :target (str "to/" (:target e)) :value (:nanos e) :count (:count e) :avg (:avg_nanos e)}) edges)})
     (= (:type data) "go-joker-function-trace")
-    (let [fns (:functions data) counts (into {} (map (fn [f] [(:name f) f]) fns))]
-      {:title (or explicit-title "Joker function trace") :subtitle (str "Function calls " (:total data) " · timed call transitions") :nodes (map (fn [[name row]] {:name name :value (:nanos row) :count (:count row) :avg (:avg_nanos row)}) counts) :links (map (fn [e] {:source (:source e) :target (:target e) :value (:nanos e) :count (:count e) :avg (:avg_nanos e)}) (:edges data))})
+    (if (seq (:events data))
+      (temporal-function-graph data)
+      (let [fns (:functions data) counts (into {} (map (fn [f] [(:name f) f]) fns))]
+        {:title (or explicit-title "Joker function trace") :subtitle (str "Function calls " (:total data) " · timed call transitions") :nodes (map (fn [[name row]] {:name name :value (:nanos row) :count (:count row) :avg (:avg_nanos row)}) counts) :links (map (fn [e] {:source (:source e) :target (:target e) :value (:nanos e) :count (:count e) :avg (:avg_nanos e)}) (:edges data))}))
     (= (:type data) "go-joker-symbol-trace")
     (let [rows (concat (:resolves data) (:derefs data))] {:title (or explicit-title "Joker symbol trace") :subtitle (str "resolves " (:resolve_total data) " · derefs " (:deref_total data) " · count-only") :nodes (map (fn [r] {:name (:symbol r) :value (:count r) :count (:count r)}) rows) :links []})
     :else {:title (or explicit-title "Trace") :subtitle "Unknown trace" :nodes [] :links []}))

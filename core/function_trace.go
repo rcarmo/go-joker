@@ -13,6 +13,7 @@ import (
 var functionTraceEnabled = os.Getenv("JOKER_FUNCTION_TRACE") != "" || os.Getenv("JOKER_FUNCTION_TRACE_OUT") != ""
 var functionTraceOut = os.Getenv("JOKER_FUNCTION_TRACE_OUT")
 var functionTraceTotal atomic.Uint64
+var functionTraceT0 = time.Now()
 var functionTraceMu sync.Mutex
 var functionTraceCounts = map[string]uint64{}
 var functionTraceNanos = map[string]uint64{}
@@ -20,6 +21,13 @@ var functionTraceEdges = map[[2]string]uint64{}
 var functionTraceEdgeNanos = map[[2]string]uint64{}
 
 type functionTraceFrame struct{ name string }
+type functionTraceEvent struct {
+	Name  string `json:"name"`
+	Start uint64 `json:"start_nanos"`
+	Nanos uint64 `json:"nanos"`
+}
+
+var functionTraceEvents []functionTraceEvent
 
 var functionTraceStack []functionTraceFrame
 
@@ -50,6 +58,7 @@ func traceProcCall(p Proc, argc int) func() {
 
 func traceFunctionEnter(name string) func() {
 	start := time.Now()
+	startRel := uint64(start.Sub(functionTraceT0).Nanoseconds())
 	functionTraceTotal.Add(1)
 	functionTraceMu.Lock()
 	if len(functionTraceStack) > 0 {
@@ -66,6 +75,9 @@ func traceFunctionEnter(name string) func() {
 		if idx >= 0 {
 			functionTraceStack = functionTraceStack[:idx]
 			functionTraceNanos[name] += dur
+			if len(functionTraceEvents) < 200000 {
+				functionTraceEvents = append(functionTraceEvents, functionTraceEvent{Name: name, Start: startRel, Nanos: dur})
+			}
 			if idx > 0 {
 				parent := functionTraceStack[idx-1].name
 				functionTraceEdgeNanos[[2]string{parent, name}] += dur
@@ -134,7 +146,7 @@ func functionTraceMaybeWrite() {
 		edges = append(edges, edge{Source: k[0], Target: k[1], Count: v, Nanos: ns, AvgNano: avg})
 	}
 	sort.Slice(edges, func(i, j int) bool { return edges[i].Nanos > edges[j].Nanos })
-	payload := map[string]interface{}{"type": "go-joker-function-trace", "total": functionTraceTotal.Load(), "functions": rows, "edges": edges}
+	payload := map[string]interface{}{"type": "go-joker-function-trace", "total": functionTraceTotal.Load(), "functions": rows, "edges": edges, "events": functionTraceEvents}
 	if b, err := json.MarshalIndent(payload, "", "  "); err == nil {
 		_ = os.WriteFile(functionTraceOut, b, 0o644)
 	}
