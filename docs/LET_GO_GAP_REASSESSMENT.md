@@ -127,7 +127,7 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [x] Implement `pods/load-pod` for explicit command paths and cached Babashka pod discovery.
 - [x] Implement `pods/invoke` low-level invocation with synchronous result handling.
 - [x] Install compatibility namespaces `pods` and `babashka.pods`.
-- [ ] Dynamically install namespaces/vars returned by pod `describe` messages.
+- [x] Dynamically install namespaces/vars returned by pod `describe` messages.
 - [ ] Start with JSON payload format, with clear errors for unsupported `edn`/`transit+json` until phases 2–3 land.
 - [ ] Add unit tests with a local fake pod subprocess fixture.
 
@@ -170,7 +170,7 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [x] Implement `pods/load-pod` for command paths and Babashka pod cache discovery
 - [x] Implement `pods/invoke` with synchronous result handling
 - [x] Install compatibility namespaces `pods` and `babashka.pods`
-- [ ] Dynamically install namespaces/vars returned by pod `describe`
+- [x] Dynamically install namespaces/vars returned by pod `describe`
 - [x] Start with JSON payloads; clear errors for EDN/Transit until later phases
 - [x] Add fake-pod subprocess tests
 
@@ -231,7 +231,7 @@ Recommendation: add small compatibility namespaces only when real scripts fail t
 - [x] Implement `pods/load-pod` for command paths and Babashka pod cache discovery
 - [x] Implement `pods/invoke` with synchronous result handling
 - [x] Install compatibility namespaces `pods` and `babashka.pods`
-- [ ] Dynamically install namespaces/vars returned by pod `describe`
+- [x] Dynamically install namespaces/vars returned by pod `describe`
 - [x] Start with JSON payloads; clear errors for EDN/Transit until later phases
 - [x] Add fake-pod subprocess tests
 

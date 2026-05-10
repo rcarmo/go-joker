@@ -94,6 +94,24 @@ func TestStartPodProcessSendsDescribe(t *testing.T) {
 	}
 }
 
+func TestInstallPodDescribeNamespaces(t *testing.T) {
+	shutdownAllPods()
+	p := newPod("pod-dynamic", "dynamic", "json", io.Discard, nil, nil)
+	registerPod(p)
+	describe := podMessage{"namespaces": []any{podMessage{"name": "fake.dynamic", "vars": []any{podMessage{"name": "echo", "doc": "Echoes its args."}}}}}
+	if err := installPodDescribeNamespaces(p, describe); err != nil {
+		t.Fatal(err)
+	}
+	ns := GLOBAL_ENV.EnsureSymbolIsNamespace(MakeSymbol("fake.dynamic"))
+	vr := ns.Resolve("echo")
+	if vr == nil {
+		t.Fatal("dynamic pod var was not installed")
+	}
+	if vr.Value.GetType() != TYPE.Proc {
+		t.Fatalf("dynamic pod var is not a proc: %T", vr.Value)
+	}
+}
+
 func TestPodInvokeJSON(t *testing.T) {
 	shutdownAllPods()
 	pr, pw := io.Pipe()

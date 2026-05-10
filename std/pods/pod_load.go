@@ -46,6 +46,10 @@ func loadPod(args []Object) Object {
 		p.name = name
 	}
 	registerPod(p)
+	if err := installPodDescribeNamespaces(p, describe); err != nil {
+		p.shutdownPod()
+		panic(RT.NewError("pods/load-pod: " + err.Error()))
+	}
 	p.startRouter()
 	return MakeString(p.id)
 }
