@@ -1,0 +1,119 @@
+# let-go gap reassessment
+
+Generated: 2026-05-10 after go-joker commits through coverage/test cleanup.
+
+## Summary
+
+Recent work closed several previously high-priority gaps:
+
+- `clojure.core.async` compatibility namespace: now broader than let-go's `async` shim in several areas (`mult`, `pub`, `sub`, callbacks, aliases).
+- Persistent HTTP client sessions: go-joker now has explicit reusable `joker.http/client` objects and keep-alive reuse tests; let-go uses `http.DefaultClient` with simpler `http/get`, `http/post`, `http/request`.
+- Transit: go-joker now has `joker.transit` with Transit+JSON primitives, keywords, symbols, arrays, escaped strings, and array-map representation.
+- JVM-shaped `System`: go-joker now has a `System` compatibility namespace with properties, env, time, line separator, and exit.
+- Numeric tower: go-joker now promotes integer overflow to `BigInt` and improves `BigFloat`/BigDecimal precision behavior.
+
+The main remaining let-go ecosystem lead is **Babashka pods**, backed by fuller Transit/EDN payload support. Secondary gaps are standalone EDN namespace/API shape, terminal/syscall/unix compatibility shims, and let-go's small `zip`/`walk`/`dump`/`test` helper namespaces.
+
+## High-level parity table
+
+| Area | go-joker status | let-go status | Assessment |
+|---|---|---|---|
+| Core language parity | 271/271 internal parity pass; jank subset pass | broad Clojure-like runtime | go-joker strong/ahead for tracked suite |
+| Runtime benchmarks | go-joker wins 5/7 let-go-suite benchmarks | wins map-filter/transducers | remaining perf gaps are map/filter and transducer pipelines |
+| `core.async`/async | `clojure.core.async` namespace plus core channel primitives | `async` namespace | go-joker now ahead in API surface, although semantics are goroutine-backed rather than IOC |
+| HTTP server/client | `joker.http` server, router, WebSocket/SSE, persistent client sessions | `http` serve/get/post/request, stream opts | go-joker ahead on server/runtime features and persistent sessions |
+| Transit | `joker.transit` subset | `transit` with cache, tags, set/list/cmap, pod helpers | let-go still ahead in full Transit protocol depth |
+| System namespace | `System` shim implemented | `System` shim | broadly closed |
+| BigInt/BigDecimal | overflow promotion + BigFloat precision improvements | BigInt/BigDecimal support | closer; still needs deeper mixed numeric edge-case parity tests |
+| Babashka pods | missing | `pods` and `babashka.pods`, subprocess protocol, bencode routing | largest remaining ecosystem gap |
+| EDN namespace | reader exists in core; no standalone `edn` std namespace | `edn` runtime file/API | gap remains, important for pods/tooling |
+| nREPL/editor integration | missing | not a major let-go runtime namespace in inspected rt set | still ecosystem gap, but not a direct let-go lead |
+| `syscall`/`unix`/`term` | missing/partial via std/os/io | let-go has shims | optional platform compatibility gap |
+| `walk`/`zip`/`dump`/`test` | missing or core/test alternatives | let-go has small helper namespaces | low/medium gap depending target scripts |
+| Docs/metadata hygiene | warnings now fail docs build | n/a | go-joker guardrail improved |
+
+## Details by remaining gap
+
+### 1. Babashka pods — highest priority remaining gap
+
+let-go has a substantial `pods` implementation:
+
+- namespaces: `pods`, `babashka.pods`
+- API: `load-pod`, `invoke`
+- pod subprocess lifecycle and registry
+- bencode message protocol
+- response routing with pending IDs
+- support for pod formats: `json`, `edn`, `transit+json`
+- cache discovery under `~/.babashka/pods` / `BABASHKA_PODS_DIR`
+- dynamic namespace/var installation from pod descriptions
+
+Recommended go-joker plan:
+
+1. Add minimal bencode dependency/helpers.
+2. Implement pod process lifecycle and registry.
+3. Support `json` first for invocation payloads.
+4. Add standalone `joker.edn`/`edn` helpers or internal EDN encode/decode path.
+5. Upgrade `joker.transit` to the fuller tag/cache subset needed by pod payloads.
+6. Install both `pods` and `babashka.pods` compatibility namespaces.
+
+### 2. Transit protocol depth
+
+go-joker now has a useful Transit+JSON subset, but let-go supports more of the protocol:
+
+- rolling string/key cache (`^` refs)
+- keyword/symbol string caching
+- tagged values (`~#set`, `~#list`, quote, `cmap`)
+- BigInt/BigDecimal and ratio-oriented payload handling
+- pod helper functions for Transit-encoded argument/result payloads
+
+Recommended next steps:
+
+- Add set and list tags.
+- Add verbose/non-cached write mode for debugging parity.
+- Add cache read/write support for compatibility with pod outputs.
+- Add tests using known Transit payloads from let-go.
+
+### 3. Standalone EDN API
+
+Core read/pr-str behavior exists, but let-go has an `edn` runtime component used by pod payloads and ecosystem code. go-joker should expose a small namespace rather than forcing callers through general reader/eval paths.
+
+Recommended API:
+
+- `joker.edn/read-string` or `edn/read-string`
+- `joker.edn/write-string` / `pr-str` equivalent
+- options for keywordization/tag readers only if needed
+
+### 4. Platform namespaces: `term`, `syscall`, `unix`
+
+let-go has compatibility shims for:
+
+- terminal raw mode, restore, read-key, size, cursor movement
+- syscall constants/functions
+- unix constants/functions
+
+These are optional for server/automation workloads but useful for script portability. Implement only if target scripts require them.
+
+### 5. Helper namespaces: `walk`, `zip`, `dump`, `test`
+
+let-go includes these small runtime/helper namespaces. go-joker has strong core and std coverage, but these namespace names may matter for script portability.
+
+Recommendation: add small compatibility namespaces only when real scripts fail to load.
+
+## Areas where go-joker is now ahead
+
+- Web runtime: WebSocket, SSE/chunked streaming, router/middleware.
+- Persistent HTTP clients with explicit client/session objects.
+- Generated documentation coverage and warning guardrails.
+- Benchmark correctness validation before timing comparisons.
+- IR/JIT/WASM internals and artifact export.
+- Broader recent `clojure.core.async` compatibility surface than let-go's inspected `async` namespace.
+- Built-in extra std namespaces (`imaging`, `pdf`, `svg`, `random`, `log`, `jit`, etc.).
+
+## Recommended next implementation order
+
+1. **Pods foundation** (`pods` + `babashka.pods`) with JSON payloads and bencode routing.
+2. **Fuller Transit** needed by pods (`set`, `list`, `cmap`, cache refs, BigInt/BigDecimal tags).
+3. **Standalone EDN namespace** with read/write helpers.
+4. **Coverage pass for pods/transit/edn** with golden payload tests.
+5. Optional platform namespaces (`term`, `syscall`, `unix`) only after ecosystem scripts demand them.
+
