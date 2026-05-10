@@ -11,8 +11,12 @@ import (
 )
 
 func bencodeEncodeObject(obj Object) []byte {
+	return bencodeEncodePlain(objectToBencode(obj))
+}
+
+func bencodeEncodePlain(v interface{}) []byte {
 	var buf bytes.Buffer
-	if err := bencode.NewEncoder(&buf).Encode(objectToBencode(obj)); err != nil {
+	if err := bencode.NewEncoder(&buf).Encode(v); err != nil {
 		panic(RT.NewError("pods/bencode-encode: " + err.Error()))
 	}
 	return buf.Bytes()

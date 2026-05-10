@@ -34,6 +34,9 @@
 <li>
   <a href="#bencode-encode">bencode-encode</a>
 </li>
+<li>
+  <a href="#load-pod">load-pod</a>
+</li>
 
     </ul>
     <h2 id="_constants">Constants</h2>
@@ -64,6 +67,17 @@
   <pre class="var-usage"><div><code>(bencode-encode x)</code></div>
 </pre>
   <p class="var-docstr">Encodes a Joker value as bencode bytes, returned as a string.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="load-pod">load-pod</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(load-pod path-or-name)</code></div>
+<div><code>(load-pod path-or-name version-or-args)</code></div>
+</pre>
+  <p class="var-docstr">Starts a Babashka pod process, sends describe, registers it, and returns its pod id.</p>
   
   
 </li>

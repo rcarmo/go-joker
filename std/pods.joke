@@ -2,6 +2,16 @@
       :doc "Babashka pods compatibility namespace."}
   pods)
 
+(defn load-pod
+  "Starts a Babashka pod process, sends describe, registers it, and returns its
+  pod id. The first argument is either an explicit command path or a pod cache
+  name. The optional second argument is either a version string for Babashka pod
+  cache discovery or a sequence of command arguments."
+  {:added "1.0"
+   :go "loadPod(args)"}
+  ([^String path-or-name])
+  ([^String path-or-name version-or-args]))
+
 (defn bencode-encode
   "Encodes a Joker value as bencode bytes, returned as a string. Intended as
   pod protocol plumbing; public for tests and diagnostics."

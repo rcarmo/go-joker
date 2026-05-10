@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -17,6 +18,7 @@ type Pod struct {
 	id       string
 	name     string
 	format   string
+	cmd      *exec.Cmd
 	stdin    io.Writer
 	stdout   io.Reader
 	stderr   io.Reader
@@ -164,6 +166,10 @@ func (p *Pod) shutdownPod() {
 	}
 	if c, ok := p.stderr.(io.Closer); ok {
 		_ = c.Close()
+	}
+	if p.cmd != nil && p.cmd.Process != nil {
+		_ = p.cmd.Process.Kill()
+		_, _ = p.cmd.Process.Wait()
 	}
 	p.closePending(nil)
 	unregisterPod(p.id)

@@ -3,11 +3,34 @@ package pods
 import (
 	"bytes"
 	"io"
+	"os"
 	"testing"
 	"time"
 
 	. "github.com/candid82/joker/core"
 )
+
+func TestHelperProcessFakePod(t *testing.T) {
+	if os.Getenv("GO_WANT_FAKE_POD") != "1" {
+		return
+	}
+	obj, err := bencodeDecodeReader(os.Stdin)
+	if err != nil {
+		os.Exit(2)
+	}
+	msg := objectMapToPodMessage(obj)
+	id, _ := msg["id"].(string)
+	os.Stdout.Write(bencodeEncodePlain(map[string]any{
+		"id":     id,
+		"format": "json",
+		"namespaces": []any{map[string]any{
+			"name": "fake.pod",
+			"vars": []any{map[string]any{"name": "echo"}},
+		}},
+		"done": true,
+	}))
+	os.Exit(0)
+}
 
 func TestPodRegistryLifecycleAndIDs(t *testing.T) {
 	shutdownAllPods()
@@ -44,6 +67,22 @@ func TestPodResponseRouting(t *testing.T) {
 	}
 	if _, ok := <-ch; ok {
 		t.Fatal("expected pending channel to close on done")
+	}
+}
+
+func TestStartPodProcessSendsDescribe(t *testing.T) {
+	shutdownAllPods()
+	t.Setenv("GO_WANT_FAKE_POD", "1")
+	p, describe, err := startPodProcess(os.Args[0], []string{"-test.run=TestHelperProcessFakePod"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer p.shutdownPod()
+	if describe["format"] != "json" {
+		t.Fatalf("describe format mismatch: %#v", describe)
+	}
+	if firstPodNamespaceName(describe) != "fake.pod" {
+		t.Fatalf("namespace mismatch: %#v", describe)
 	}
 }
 
