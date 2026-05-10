@@ -72,10 +72,12 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 
 	var irProfPrev byte
 	var irProfHasPrev bool
+	irProfStarted := irProfileOp(0, 0, false, zeroTime)
+	defer func() { irProfileFinish(irProfPrev, irProfHasPrev, irProfStarted) }()
 loop:
 	for pc < len(code) {
 		op := code[pc]
-		irProfileOp(irProfPrev, op, irProfHasPrev)
+		irProfStarted = irProfileOp(irProfPrev, op, irProfHasPrev, irProfStarted)
 		irProfPrev, irProfHasPrev = op, true
 		pc++
 		switch op {

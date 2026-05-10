@@ -39,6 +39,7 @@ The JSON includes:
 - total IR execution count
 - opcode counts
 - opcode transition counts
+- opcode/transition elapsed nanoseconds and average nanoseconds
 
 Render with the skill helper:
 
@@ -68,11 +69,11 @@ TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
   go test ./core -run '^$' -bench 'BenchmarkCLBGBinaryTrees$' -benchtime=1s -count=1
 ```
 
-These are intentionally optional and disabled by default. They add overhead and are for diagnostics, not benchmark timing.
+These are intentionally optional and disabled by default. They add overhead and are for diagnostics, not benchmark timing. Function and IR traces include elapsed nanosecond totals/averages, so the Sankey width can represent measured time instead of just counts.
 
-## Pure Joker trace renderer
+## Pure Joker Sankey renderer
 
-`docs/render-trace-svg.clj` is a small Joker/Clojure renderer that turns any of these JSON outputs into a compact SVG bar report:
+`docs/render-trace-svg.clj` is a small Joker/Clojure renderer that turns these JSON outputs into compact SVG Sankey diagrams:
 
 - pprof Sankey JSON (`nodes`/`links`)
 - `go-joker-ir-profile`
@@ -108,5 +109,5 @@ Examples:
 
 - Go CPU profile sample averages reflect the Go profiler sample period. By default this is often 10ms/sample.
 - For finer CPU sampling, use a custom harness that calls `runtime.SetCPUProfileRate` before starting CPU profiling.
-- IR/function/symbol tracing counts events, not wall-clock duration.
+- IR/function traces now include elapsed nanoseconds; symbol tracing remains count-only.
 - Do not compare benchmark timings with tracing enabled.
