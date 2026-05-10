@@ -34,7 +34,9 @@ func IrDebugCompile(loop *LoopExpr) {
 }
 
 func (p *IRProgram) CodeLen() int                       { return len(p.code) }
+func (p *IRProgram) CodeBytes() []byte                  { return append([]byte(nil), p.code...) }
 func (p *IRProgram) ConstLen() int                      { return len(p.constants) }
+func (p *IRProgram) Constants() []Object                { return append([]Object(nil), p.constants...) }
 func (p *IRProgram) NumSlots() int                      { return p.numSlots }
 func (p *IRProgram) CaptureKeys() []bindingKey          { return p.captureKeys }
 func (e *LetExpr) Body() []Expr                         { return e.body }
@@ -91,6 +93,13 @@ func WasmExecExported(wp *WasmProgram, slots []Object) Object { return wasmExec(
 
 func IsWasmEligibleExported(prog *IRProgram) bool { return isWasmEligible(prog) }
 func IrToWasmExported(prog *IRProgram) []byte     { return irToWasm(prog) }
+func WasmCompileBytesExported(prog *IRProgram) []byte {
+	wp := wasmCompile(prog)
+	if wp == nil {
+		return nil
+	}
+	return append([]byte(nil), wp.bytes...)
+}
 
 func IsFloatExported(prog *IRProgram) bool { return irProgramUsesFloat(prog) }
 func (p *IRProgram) CodeAt(i int) byte     { return p.code[i] }

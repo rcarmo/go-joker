@@ -1,7 +1,11 @@
 package jit
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
+	"os"
+
 	. "github.com/candid82/joker/core"
 )
 
@@ -99,4 +103,98 @@ func info(fn *Fn) Object {
 // isCompiled returns true if the fn can be compiled to IR.
 func isCompiled(fn *Fn) bool {
 	return IrCompileFn(fn) != nil
+}
+
+type irExportFile struct {
+	Format    string           `json:"format"`
+	Version   int              `json:"version"`
+	NumSlots  int              `json:"numSlots"`
+	Code      string           `json:"code"`
+	Constants []irExportConst  `json:"constants"`
+	WASM      irExportWASMInfo `json:"wasm"`
+}
+
+type irExportConst struct {
+	Type  string      `json:"type"`
+	Value interface{} `json:"value"`
+}
+
+type irExportWASMInfo struct {
+	Eligible bool   `json:"eligible"`
+	UseFloat bool   `json:"useFloat"`
+	Reason   string `json:"reason,omitempty"`
+}
+
+func exportConst(o Object) irExportConst {
+	switch v := o.(type) {
+	case Int:
+		return irExportConst{Type: "int", Value: v.I}
+	case Double:
+		return irExportConst{Type: "double", Value: v.D}
+	case String:
+		return irExportConst{Type: "string", Value: v.S}
+	case Boolean:
+		return irExportConst{Type: "boolean", Value: v.B}
+	case Keyword:
+		return irExportConst{Type: "keyword", Value: v.ToString(false)}
+	case Symbol:
+		return irExportConst{Type: "symbol", Value: v.ToString(false)}
+	case Nil:
+		return irExportConst{Type: "nil", Value: nil}
+	default:
+		return irExportConst{Type: o.GetType().ToString(false), Value: o.ToString(false)}
+	}
+}
+
+func exportIR(fn *Fn, path String) Object {
+	prog := IrCompileFn(fn)
+	if prog == nil {
+		panic(RT.NewError("jit/export-ir: function cannot be compiled to IR"))
+	}
+	consts := prog.Constants()
+	exportedConsts := make([]irExportConst, len(consts))
+	for i, c := range consts {
+		exportedConsts[i] = exportConst(c)
+	}
+	wasmDiag := ExplainWASMEligibility(prog)
+	file := irExportFile{
+		Format:    "go-joker-ir",
+		Version:   1,
+		NumSlots:  prog.NumSlots(),
+		Code:      base64.StdEncoding.EncodeToString(prog.CodeBytes()),
+		Constants: exportedConsts,
+		WASM: irExportWASMInfo{
+			Eligible: wasmDiag.Eligible,
+			UseFloat: IsFloatExported(prog),
+			Reason:   wasmDiag.Reason,
+		},
+	}
+	data, err := json.MarshalIndent(file, "", "  ")
+	if err != nil {
+		panic(RT.NewError("jit/export-ir: " + err.Error()))
+	}
+	if err := os.WriteFile(path.S, data, 0o644); err != nil {
+		panic(RT.NewError("jit/export-ir: " + err.Error()))
+	}
+	return path
+}
+
+func exportWASM(fn *Fn, path String) Object {
+	prog := IrCompileFn(fn)
+	if prog == nil {
+		panic(RT.NewError("jit/export-wasm: function cannot be compiled to IR"))
+	}
+	bin := WasmCompileBytesExported(prog)
+	if bin == nil {
+		d := ExplainWASMEligibility(prog)
+		reason := d.Reason
+		if reason == "" {
+			reason = "unsupported IR shape"
+		}
+		panic(RT.NewError("jit/export-wasm: function cannot be compiled to standalone WASM: " + reason))
+	}
+	if err := os.WriteFile(path.S, bin, 0o644); err != nil {
+		panic(RT.NewError("jit/export-wasm: " + err.Error()))
+	}
+	return path
 }

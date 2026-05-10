@@ -35,6 +35,12 @@
   <a href="#compiled?">compiled?</a>
 </li>
 <li>
+  <a href="#export-ir">export-ir</a>
+</li>
+<li>
+  <a href="#export-wasm">export-wasm</a>
+</li>
+<li>
   <a href="#info">info</a>
 </li>
 
@@ -70,6 +76,33 @@ The returned function can be called like any other fn.</p>
   <pre class="var-usage"><div><code>(compiled? fn)</code></div>
 </pre>
   <p class="var-docstr">Returns true if the function can be compiled to IR.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="export-ir">export-ir</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(export-ir fn path)</code></div>
+</pre>
+  <p class="var-docstr">Compiles fn to Joker IR and writes a portable .ir JSON file to path.<br>
+<br>
+The file contains format/version metadata, numSlots, base64-encoded IR<br>
+bytecode, serialized literal constants, and WASM eligibility metadata. It is<br>
+intended for external runners/tooling that implement the go-joker IR ABI.</p>
+  
+  
+</li>
+<li>
+  <h3 class="Function" id="export-wasm">export-wasm</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(export-wasm fn path)</code></div>
+</pre>
+  <p class="var-docstr">Compiles fn to a standalone numeric WASM module and writes raw .wasm bytes.<br>
+<br>
+The exported module exposes an exec function. Parameters and return values are<br>
+i64 for integer IR programs or f64 for floating-point IR programs.</p>
   
   
 </li>

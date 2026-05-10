@@ -22,3 +22,24 @@
   {:added "1.0"
    :go "isCompiled(fn)"}
   [fn])
+
+(defn export-ir
+  "Compiles fn to Joker IR and writes a portable .ir JSON file to path.
+
+  The file contains format/version metadata, numSlots, base64-encoded IR
+  bytecode, serialized literal constants, and WASM eligibility metadata. It is
+  intended for external runners/tooling that implement the go-joker IR ABI."
+  {:added "1.0"
+   :go "exportIR(fn, path)"}
+  [fn ^String path])
+
+(defn export-wasm
+  "Compiles fn to a standalone numeric WASM module and writes raw .wasm bytes.
+
+  The exported module exposes an `exec` function. Parameters and return values
+  are i64 for integer IR programs or f64 for floating-point IR programs. Only
+  pure WASM-eligible IR shapes can be exported this way; functions requiring
+  Joker object/collection host imports should use export-ir instead."
+  {:added "1.0"
+   :go "exportWASM(fn, path)"}
+  [fn ^String path])

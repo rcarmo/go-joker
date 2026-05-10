@@ -32,6 +32,23 @@ Keys: :compiled, :path, :slots, :captures, :self-recursive.
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("fn"))),
 			"Returns true if the function can be compiled to IR.", "1.0"))
+
+	jitNamespace.InternVar("export-ir", export_ir_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("fn"), MakeSymbol("path"))),
+			`Compiles fn to Joker IR and writes a portable .ir JSON file to path.
+
+The file contains format/version metadata, numSlots, base64-encoded IR
+bytecode, serialized literal constants, and WASM eligibility metadata. It is
+intended for external runners/tooling that implement the go-joker IR ABI.`, "1.0"))
+
+	jitNamespace.InternVar("export-wasm", export_wasm_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("fn"), MakeSymbol("path"))),
+			`Compiles fn to a standalone numeric WASM module and writes raw .wasm bytes.
+
+The exported module exposes an exec function. Parameters and return values are
+i64 for integer IR programs or f64 for floating-point IR programs.`, "1.0"))
 }
 
 var compile_ Proc = Proc{Fn: func(args []Object) Object {
@@ -48,3 +65,15 @@ var compiled_ Proc = Proc{Fn: func(args []Object) Object {
 	fn := EnsureArgIsFn(args, 0)
 	return Boolean{B: isCompiled(fn)}
 }, Name: "compiled?", Package: "std/jit"}
+
+var export_ir_ Proc = Proc{Fn: func(args []Object) Object {
+	fn := EnsureArgIsFn(args, 0)
+	path := EnsureArgIsString(args, 1)
+	return exportIR(fn, path)
+}, Name: "export-ir", Package: "std/jit"}
+
+var export_wasm_ Proc = Proc{Fn: func(args []Object) Object {
+	fn := EnsureArgIsFn(args, 0)
+	path := EnsureArgIsString(args, 1)
+	return exportWASM(fn, path)
+}, Name: "export-wasm", Package: "std/jit"}

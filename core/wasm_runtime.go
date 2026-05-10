@@ -19,6 +19,7 @@ type WasmProgram struct {
 	useFloat   bool
 	hasImports bool
 	constants  []Object // pre-stored constants for handle references
+	bytes      []byte   // raw wasm module for export/debugging
 }
 
 var (
@@ -104,6 +105,7 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 		useFloat:   irProgramUsesFloat(prog),
 		hasImports: !isWasmEligible(prog),
 		constants:  prog.constants,
+		bytes:      append([]byte(nil), bin...),
 	}
 	return wp
 }
