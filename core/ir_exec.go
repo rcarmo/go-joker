@@ -7,6 +7,8 @@ import (
 // ---------- Interpreter ----------
 
 func irExec(prog *IRProgram, initSlots []Object) Object {
+	irProfileExecStart()
+	defer irProfileMaybeWrite()
 	var slots []Object
 	if prog.numSlots <= 16 {
 		var buf [16]Object
@@ -68,9 +70,13 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 	// Frame stack for irCallSelf — avoids recursive irExec calls
 	var frameStack *irFrameStack
 
+	var irProfPrev byte
+	var irProfHasPrev bool
 loop:
 	for pc < len(code) {
 		op := code[pc]
+		irProfileOp(irProfPrev, op, irProfHasPrev)
+		irProfPrev, irProfHasPrev = op, true
 		pc++
 		switch op {
 		case irLiteral:

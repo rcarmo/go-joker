@@ -7,6 +7,8 @@ import (
 )
 
 func irExecTyped(prog *IRProgram, initSlots []Object) Object {
+	irProfileExecStart()
+	defer irProfileMaybeWrite()
 	var analysis IRAnalysis
 	if prog.analysis != nil {
 		analysis = *prog.analysis
@@ -45,9 +47,13 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 
 	// Frame stack for irCallSelf — avoids recursive irExecTyped calls
 	var typedFrameStack *irTypedFrameStack
+	var irProfPrev byte
+	var irProfHasPrev bool
 
 	for pc < len(code) {
 		op := code[pc]
+		irProfileOp(irProfPrev, op, irProfHasPrev)
+		irProfPrev, irProfHasPrev = op, true
 		pc++
 		switch op {
 		case irLiteral:
