@@ -62,8 +62,10 @@ Planned package boundaries:
 
 ### R4 — Generated code boundary
 
+- [x] Inventory generated file families and generator source packages in `docs/GENERATED_BOUNDARY_AUDIT.md`.
+- [x] Add `make generated-check` guardrail and run it from `make docs-check`.
 - [ ] Update generators to emit under a generated package/directory or clearly separated bootstrap module.
-- [ ] Avoid manual edits to generated files.
+- [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
 
 ### R5 — Collections/reader/runtime follow-up
 
@@ -72,4 +74,4 @@ Planned package boundaries:
 
 ## Current execution status
 
-R2 is complete. R3 (IR boundary audit) is the next active refactor batch.
+R3 has established the first IR boundary. R4 generated-code inventory/guardrails are now in place; moving generated artifacts waits on runtime/object initialization boundaries.
