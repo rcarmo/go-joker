@@ -41,6 +41,38 @@ func TestCountedIndexedVectorContract(t *testing.T) {
 	}
 }
 
+func TestAssociativeMapContract(t *testing.T) {
+	entries := []Object{MakeKeyword("a"), MakeInt(1), MakeKeyword("b"), MakeString("two")}
+	maps := []struct {
+		name string
+		m    Map
+	}{
+		{name: "array", m: EmptyArrayMap().Assoc(entries[0], entries[1]).Assoc(entries[2], entries[3]).(Map)},
+		{name: "hash", m: NewHashMap(entries...)},
+	}
+	for _, tc := range maps {
+		if tc.m.Count() != 2 {
+			t.Fatalf("%s Count = %d", tc.name, tc.m.Count())
+		}
+		if found, got := tc.m.Get(MakeKeyword("a")); !found || !got.Equals(MakeInt(1)) {
+			t.Fatalf("%s Get(:a) = %v %v", tc.name, found, got)
+		}
+		updated := tc.m.Assoc(MakeKeyword("a"), MakeInt(10)).(Map)
+		if found, got := updated.Get(MakeKeyword("a")); !found || !got.Equals(MakeInt(10)) {
+			t.Fatalf("%s updated Get(:a) = %v %v", tc.name, found, got)
+		}
+		if found, got := tc.m.Get(MakeKeyword("a")); !found || !got.Equals(MakeInt(1)) {
+			t.Fatalf("%s Assoc mutated original: %v %v", tc.name, found, got)
+		}
+	}
+	if !maps[0].m.Equals(maps[1].m) || !maps[1].m.Equals(maps[0].m) {
+		t.Fatal("array map and hash map should compare equal")
+	}
+	if maps[0].m.Hash() != maps[1].m.Hash() {
+		t.Fatalf("map hash mismatch: array=%d hash=%d", maps[0].m.Hash(), maps[1].m.Hash())
+	}
+}
+
 func TestInfoAndMetaCopyOnWriteContract(t *testing.T) {
 	info := &ObjectInfo{Position: Position{startLine: 42}}
 	meta := EmptyArrayMap().Assoc(MakeKeyword("doc"), MakeString("sample")).(Map)
