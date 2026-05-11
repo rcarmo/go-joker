@@ -13,7 +13,7 @@ func NewModule() *Module {
 }
 
 // AddTypeSection adds a func type with i64 params and result.
-func (m *Module) AddTypeSection(numParams int) { m.AddTypeSectionTyped(numParams, 0x7e) }
+func (m *Module) AddTypeSection(numParams int) { m.AddTypeSectionTyped(numParams, ValTypeI64) }
 
 // AddTypeSectionTyped adds a func type with the given value type for all params and result.
 func (m *Module) AddTypeSectionTyped(numParams int, valType byte) {
