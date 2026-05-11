@@ -50,18 +50,16 @@ Improvement to plan:
 - introduce a small `core/internal/ir.Program` model for bytecode, constants count, slot counts, op metadata, and analysis;
 - keep root-only execution metadata in `core` until call/object contracts are explicit.
 
-### 2. Add direct tests for `core/internal/trace`
+### 2. Direct tests for `core/internal/trace`
 
-`core/internal/trace` is extracted but currently has no package tests. It should get direct tests for:
+`core/internal/trace` now has package tests for:
 
 - function tracer event/edge aggregation
 - symbol resolve/deref aggregation
 - IR profile op/edge aggregation
 - JSON output shape via temp files
 
-Improvement to plan:
-
-- add `core/internal/trace` unit tests before further trace adapter changes.
+Further trace adapter changes should keep extending these direct tests rather than relying only on root-core integration tests.
 
 ### 3. Expand object/protocol contract tests before collection moves
 
@@ -98,7 +96,6 @@ Improvement to plan:
 
 ## Recommended immediate next steps
 
-1. Add `core/internal/trace` package tests.
-2. Start an `ir.Program` model design note or minimal type extraction.
-3. Expand `core-contract-check` with set/seq/transient contracts.
-4. Keep WASM leaf extraction opportunistic, but avoid moving lowering/runtime until IR ownership is clearer.
+1. Start an `ir.Program` model design note or minimal type extraction.
+2. Expand `core-contract-check` with set/seq/transient contracts.
+3. Keep WASM leaf extraction opportunistic, but avoid moving lowering/runtime until IR ownership is clearer.
