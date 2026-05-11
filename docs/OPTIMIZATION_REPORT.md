@@ -282,7 +282,7 @@ For n=200: ArrayVector 5.2µs vs PV 2.4µs — PV 2.1× faster.
 
 ### Integration status
 
-Standalone implementation, not yet replacing ArrayVector in the runtime. The object/protocol semantics are now complete enough for internal experimentation: `PersistentVector` prints like a vector, compares and hashes consistently with other `CountedIndexed` vectors, exposes `At`/`Seq`, and preserves info/meta through copy-on-write helpers. Future work: auto-promote to PV when vector size exceeds threshold, or use PV for map implementations (HAMT for persistent hash maps).
+Standalone implementation, not yet replacing ArrayVector in the runtime. The object/protocol semantics are now complete enough for internal experimentation: `PersistentVector` prints like a vector, compares and hashes consistently with other `CountedIndexed` vectors, exposes `At`/`Seq`, and preserves info/meta. Metadata updates are copy-on-write; source-info handling follows the current core object contract. Future work: auto-promote to PV when vector size exceeds threshold, or use PV for map implementations (HAMT for persistent hash maps).
 
 ## Transient Collections
 
