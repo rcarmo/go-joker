@@ -73,6 +73,43 @@ func TestAssociativeMapContract(t *testing.T) {
 	}
 }
 
+func TestSetContract(t *testing.T) {
+	set := EmptySet().Conj(MakeInt(1)).Conj(MakeInt(2)).(*MapSet)
+	if set.Count() != 2 {
+		t.Fatalf("Count = %d, want 2", set.Count())
+	}
+	if found, got := set.Get(MakeInt(1)); !found || !got.Equals(MakeInt(1)) {
+		t.Fatalf("Get(1) = %v %v", found, got)
+	}
+	if got := set.Call([]Object{MakeInt(2)}); !got.Equals(MakeInt(2)) {
+		t.Fatalf("Call(2) = %s", got.ToString(false))
+	}
+	if got := set.Call([]Object{MakeInt(3)}); got != NIL {
+		t.Fatalf("Call(3) = %s, want nil", got.ToString(false))
+	}
+	removed := set.Disjoin(MakeInt(1)).(*MapSet)
+	if found, _ := removed.Get(MakeInt(1)); found {
+		t.Fatal("Disjoin result still contains removed value")
+	}
+	if found, _ := set.Get(MakeInt(1)); !found {
+		t.Fatal("Disjoin mutated original set")
+	}
+	set2 := NewSetFromSeq(NewListFrom(MakeInt(2), MakeInt(1)).Seq())
+	if !set.Equals(set2) || set.Hash() != set2.Hash() {
+		t.Fatalf("equivalent sets should compare equal with same hash: %s / %s", set.ToString(false), set2.ToString(false))
+	}
+	meta := EmptyArrayMap().Assoc(MakeKeyword("tag"), MakeString("kept")).(Map)
+	withMeta := set.WithMeta(meta).(*MapSet)
+	conjMeta := withMeta.Conj(MakeInt(3)).(Meta)
+	if found, got := conjMeta.GetMeta().Get(MakeKeyword("tag")); !found || !got.Equals(MakeString("kept")) {
+		t.Fatal("set Conj did not preserve metadata")
+	}
+	disjoinMeta := withMeta.Disjoin(MakeInt(1)).(Meta)
+	if found, got := disjoinMeta.GetMeta().Get(MakeKeyword("tag")); !found || !got.Equals(MakeString("kept")) {
+		t.Fatal("set Disjoin did not preserve metadata")
+	}
+}
+
 func TestInfoAndMetaContract(t *testing.T) {
 	info := &ObjectInfo{Position: Position{startLine: 42}}
 	meta := EmptyArrayMap().Assoc(MakeKeyword("doc"), MakeString("sample")).(Map)

@@ -26,7 +26,7 @@ func (v *MapSet) WithMeta(meta Map) Object {
 }
 
 func (set *MapSet) Disjoin(key Object) Set {
-	return &MapSet{m: set.m.Without(key)}
+	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.m.Without(key)}
 }
 
 func (set *MapSet) Add(obj Object) bool {
@@ -45,7 +45,7 @@ func (set *MapSet) Add(obj Object) bool {
 }
 
 func (set *MapSet) Conj(obj Object) Conjable {
-	return &MapSet{m: set.m.Assoc(obj, Boolean{B: true}).(Map)}
+	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.m.Assoc(obj, Boolean{B: true}).(Map)}
 }
 
 func EmptySet() *MapSet {

@@ -95,7 +95,8 @@ Planned package boundaries:
 - [x] Inventory object/protocol contracts blocking broad moves in `docs/refactor/object-protocol-contracts.md`.
 - [x] Add `make core-contract-check` for object/protocol contract tests that gate future splits.
 - [x] Add direct `core/internal/trace` package tests.
-- [ ] Extend `core-contract-check` with set/seq/transient contracts.
+- [x] Extend `core-contract-check` with set contracts.
+- [ ] Extend `core-contract-check` with seq/transient contracts.
 - [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
 - [ ] Move collections only after object/protocol contracts are explicit.
 - [ ] Move reader only after object construction and tagged literal contracts are explicit.
