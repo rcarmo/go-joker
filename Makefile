@@ -19,7 +19,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check import-identity-check parity jank-subset audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check import-identity-check non-goals-check parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -40,6 +40,7 @@ help:
 	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
 	@echo "  make generated-check # Verify generated-file boundary guardrails"
 	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker"
+	@echo "  make non-goals-check # Verify explicit non-goals remain documented"
 	@echo "  make parity         # Run Clojure parity tests (271 core form tests)"
 	@echo "  make jank-subset    # Run imported jank-lang/clojure-test-suite subset"
 	@echo "  make bb-compat      # Run portable Babashka compatibility fixture suite"
@@ -113,7 +114,10 @@ generated-check:
 import-identity-check:
 	tests/import_identity_guard.sh .
 
-docs-check: docs generated-check import-identity-check
+non-goals-check:
+	tests/non_goals_guard.sh .
+
+docs-check: docs generated-check import-identity-check non-goals-check
 	test -f docs/ARCHITECTURE_REFACTOR_PLAN.md
 	test -f docs/IR_BOUNDARY_AUDIT.md
 	test -f docs/GENERATED_BOUNDARY_AUDIT.md

@@ -42,6 +42,7 @@ Planned package boundaries:
 - [x] Record package map and migration constraints.
 - [x] Keep `make docs-check`, `make bb-compat`, full tests, and vet as required checks.
 - [x] Guard module/import identity with `make import-identity-check` from `make docs-check`.
+- [x] Guard explicit Babashka/non-goal boundaries with `make non-goals-check` from `make docs-check`.
 
 ### R1 — Extract leaf tracing state
 
