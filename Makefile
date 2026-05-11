@@ -133,6 +133,7 @@ docs-check: docs generated-check import-identity-check non-goals-check layout-ch
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md
+	test -f docs/refactor/module-structure-followup.md
 	test -f docs/refactor/ir-boundary.md
 	test -f docs/refactor/generated-boundary.md
 	test -f docs/refactor/core-split.md
