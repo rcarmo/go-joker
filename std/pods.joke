@@ -13,9 +13,9 @@
   ([^String path-or-name version-or-args]))
 
 (defn invoke
-  "Synchronously invokes a pod var and returns its decoded result. JSON payloads
-  are supported initially; EDN and Transit+JSON return explicit unsupported
-  errors until the later codec phases are complete."
+  "Synchronously invokes a pod var and returns its decoded result. Supports JSON,
+  EDN, and Transit+JSON pod payloads. Optional opts may include
+  :timeout-ms to bound synchronous waits (default 30000)."
   {:added "1.0"
    :go "invokePod(args)"}
   ([^String pod-id var args])

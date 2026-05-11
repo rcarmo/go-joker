@@ -112,6 +112,20 @@ func TestInstallPodDescribeNamespaces(t *testing.T) {
 	}
 }
 
+func TestPodInvokeTimeoutCleansPending(t *testing.T) {
+	shutdownAllPods()
+	p := newPod("pod-timeout", "timeout", "json", io.Discard, nil, nil)
+	if _, err := p.invokeWithTimeout("fake.pod/hang", []Object{MakeString("hi")}, time.Millisecond); err == nil || err.Error() != "timed out waiting for pod response" {
+		t.Fatalf("expected timeout error, got %v", err)
+	}
+	p.pendingMu.Lock()
+	pending := len(p.pending)
+	p.pendingMu.Unlock()
+	if pending != 0 {
+		t.Fatalf("pending requests leaked after timeout: %d", pending)
+	}
+}
+
 func TestPodInvokeJSON(t *testing.T) {
 	shutdownAllPods()
 	pr, pw := io.Pipe()

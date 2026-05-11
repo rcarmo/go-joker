@@ -92,6 +92,15 @@ func (p *Pod) registerPending(id string) chan podMessage {
 	return ch
 }
 
+func (p *Pod) unregisterPending(id string) {
+	p.pendingMu.Lock()
+	if ch := p.pending[id]; ch != nil {
+		delete(p.pending, id)
+		safeClosePodChannel(ch)
+	}
+	p.pendingMu.Unlock()
+}
+
 func (p *Pod) routeMessage(msg podMessage) {
 	id, _ := msg["id"].(string)
 	if id == "" {
@@ -106,10 +115,20 @@ func (p *Pod) routeMessage(msg podMessage) {
 	if ch == nil {
 		return
 	}
-	ch <- msg
+	safeSendPodMessage(ch, msg)
 	if isPodDoneMessage(msg) {
-		close(ch)
+		safeClosePodChannel(ch)
 	}
+}
+
+func safeSendPodMessage(ch chan podMessage, msg podMessage) {
+	defer func() { _ = recover() }()
+	ch <- msg
+}
+
+func safeClosePodChannel(ch chan podMessage) {
+	defer func() { _ = recover() }()
+	close(ch)
 }
 
 func isPodDoneMessage(msg podMessage) bool {
@@ -150,7 +169,7 @@ func (p *Pod) closePending(_ error) {
 	defer p.pendingMu.Unlock()
 	for id, ch := range p.pending {
 		delete(p.pending, id)
-		close(ch)
+		safeClosePodChannel(ch)
 	}
 }
 
