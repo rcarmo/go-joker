@@ -24,7 +24,7 @@ Because these are used by almost every subsystem, extracting collections or read
 
 ## Collections move prerequisites
 
-Recent audit work completed `PersistentVector` object semantics in root `core`: it now uses the standard counted/indexed print, equality, hash, `At`, and `Seq` contracts and preserves info/meta. This is a useful template for future collection moves, but the broader collection boundary still needs explicit contracts before package extraction.
+Recent audit work completed `PersistentVector` object semantics in root `core`: it now uses the standard counted/indexed print, equality, hash, `At`, and `Seq` contracts and preserves info/meta. `core/object_protocol_contract_test.go` now exercises these contracts across `ArrayVector`, `Vector`, and `PersistentVector`. This is a useful template for future collection moves, but the broader collection boundary still needs explicit contracts before package extraction.
 
 Before moving concrete collection implementations, define or document:
 
