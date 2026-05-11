@@ -126,6 +126,7 @@ docs-check: docs generated-check import-identity-check non-goals-check refactor-
 	test -f docs/IR_BOUNDARY_AUDIT.md
 	test -f docs/GENERATED_BOUNDARY_AUDIT.md
 	test -f docs/CORE_SPLIT_AUDIT.md
+	test -f docs/OBJECT_PROTOCOL_CONTRACT_AUDIT.md
 	test -f docs/BABASHKA_SHIM_ASSESSMENT.md
 	test -f docs/PORTABILITY_SHIM_ASSESSMENT.md
 	test -f docs/joker.imaging.html

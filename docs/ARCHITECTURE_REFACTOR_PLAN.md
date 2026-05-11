@@ -77,7 +77,8 @@ Planned package boundaries:
 ### R5 — Collections/reader/runtime follow-up
 
 - [x] Inventory collection/reader/runtime/evaluator/WASM split candidates in `docs/CORE_SPLIT_AUDIT.md`.
-- [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable.
+- [x] Inventory object/protocol contracts blocking broad moves in `docs/OBJECT_PROTOCOL_CONTRACT_AUDIT.md`.
+- [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
 - [ ] Move collections only after object/protocol contracts are explicit.
 - [ ] Move reader only after object construction and tagged literal contracts are explicit.
 - [ ] Move runtime/evaluator only after call/error/frame contracts are explicit.
