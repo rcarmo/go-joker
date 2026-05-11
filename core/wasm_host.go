@@ -16,6 +16,7 @@ import (
 	"math"
 	"sync"
 
+	"github.com/rcarmo/go-joker/core/internal/wasm"
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/api"
 )
@@ -65,7 +66,7 @@ func getObjectTable(ctx context.Context) *objectTable {
 }
 
 // wasmHostModuleName is the import module name for Joker host functions.
-const wasmHostModuleName = "joker"
+const wasmHostModuleName = wasm.HostModuleName
 
 var wasmHostRegistered sync.Once
 

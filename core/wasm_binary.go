@@ -21,7 +21,7 @@ func (m *wasmModule) addTypeSectionTyped(numParams int, valType byte) {
 // addImportSection adds the "joker" host module imports.
 func (m *wasmModule) addImportSection(funcs []string, paramCounts []int) {
 	_ = paramCounts // type section construction uses the counts; import section only needs function names.
-	m.inner.AddImportSection(wasmHostModuleName, funcs)
+	m.inner.AddImportSection(corewasm.HostModuleName, funcs)
 }
 
 // addFuncSection adds function index declarations.

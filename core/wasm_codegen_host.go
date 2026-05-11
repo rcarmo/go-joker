@@ -1,5 +1,7 @@
 package core
 
+import "github.com/rcarmo/go-joker/core/internal/wasm"
+
 // wasm_codegen_host.go — WASM codegen with host function imports.
 //
 // Extends the base codegen to emit modules that import the "joker"
@@ -7,23 +9,9 @@ package core
 // collection IR opcodes (irGet, irGet3, irAssoc, irNth, irConj, etc.)
 // use this path instead of the pure-numeric codegen.
 
-// hostImport describes a host function import.
-type hostImport struct {
-	name      string
-	numParams int // all params and results are i64
-}
-
 // standardHostImports lists the host functions in fixed order.
 // Their indices in the WASM module are 0..len-1.
-var standardHostImports = []hostImport{
-	{"get", 2},   // (coll, key) -> result
-	{"get3", 3},  // (coll, key, default) -> result
-	{"assoc", 3}, // (coll, key, val) -> new_coll
-	{"nth", 2},   // (coll, idx) -> result
-	{"conj", 2},  // (coll, val) -> new_coll
-	{"count", 1}, // (coll) -> i64
-	{"first", 1}, // (coll) -> result
-}
+var standardHostImports = wasm.StandardHostImports
 
 // irToWasmWithImports compiles an IR program that uses collection ops
 // to a WASM module with host function imports.
@@ -47,8 +35,8 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 	// Import function types (index 0..6)
 	for _, imp := range standardHostImports {
 		typeBody = append(typeBody, 0x60) // functype
-		typeBody = appendULEB(typeBody, imp.numParams)
-		for j := 0; j < imp.numParams; j++ {
+		typeBody = appendULEB(typeBody, imp.NumParams)
+		for j := 0; j < imp.NumParams; j++ {
 			typeBody = append(typeBody, 0x7e) // i64
 		}
 		typeBody = append(typeBody, 0x01, 0x7e) // 1 result: i64
@@ -69,8 +57,8 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 		modName := []byte(wasmHostModuleName)
 		importBody = appendULEB(importBody, len(modName))
 		importBody = append(importBody, modName...)
-		importBody = appendULEB(importBody, len(imp.name))
-		importBody = append(importBody, []byte(imp.name)...)
+		importBody = appendULEB(importBody, len(imp.Name))
+		importBody = append(importBody, []byte(imp.Name)...)
 		importBody = append(importBody, 0x00)  // import kind: func
 		importBody = appendULEB(importBody, i) // type index
 	}
