@@ -202,7 +202,7 @@ Validation after the fix:
 The release was validated with the local equivalent of the GitHub Actions CI flow:
 
 ```bash
-go build -o joker .
+go build -o joker ./cmd/joker
 ./joker --version
 # v42.8.2
 

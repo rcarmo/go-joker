@@ -12,6 +12,7 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 
 ## Current high-level state
 
+- CLI entrypoint now lives under `cmd/joker`.
 - `std/*` is already package-oriented and mostly healthy.
 - `core` is the main monolith.
 - Generated `core/a_*.go` files dominate size and should eventually move behind a generated bootstrap package or at least a generated-code directory with explicit init hooks.
@@ -74,4 +75,4 @@ Planned package boundaries:
 
 ## Current execution status
 
-R3 has established the first IR boundary. R4 generated-code inventory/guardrails are now in place; moving generated artifacts waits on runtime/object initialization boundaries.
+R3 has established the first IR boundary. R4 generated-code inventory/guardrails are now in place; moving generated artifacts waits on runtime/object initialization boundaries. The CLI entrypoint has moved to `cmd/joker` as the first top-level repository layout cleanup.

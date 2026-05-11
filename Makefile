@@ -100,7 +100,7 @@ coverage-summary:
 	tests/coverage_summary.sh $(TMPDIR)/go-joker.cover $(TMPDIR)/go-joker.cover.func
 
 docs:
-	$(GO) build -o $(DOCS_JOKER_BIN) .
+	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
 	cd docs && $(DOCS_JOKER_BIN) generate-docs.joke > docs-generation.log && cat docs-generation.log && ! grep -q WARNING docs-generation.log && rm docs-generation.log
 
 bb-compat:

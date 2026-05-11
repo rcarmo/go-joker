@@ -22,7 +22,7 @@ jobs:
         with:
           go-version: '1.26.3'
       - name: Build
-        run: go build -o joker .
+        run: go build -o joker ./cmd/joker
       - name: Run tests
         run: go test ./core ./std/... -timeout 120s -count=1
       - name: Generate docs and verify namespace/feature coverage

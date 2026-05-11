@@ -18,7 +18,7 @@ func buildJokerForCompat(t *testing.T) string {
 		t.Fatal(err)
 	}
 	bin := filepath.Join(t.TempDir(), "joker")
-	cmd := exec.Command("go", "build", "-o", bin, ".")
+	cmd := exec.Command("go", "build", "-o", bin, "./cmd/joker")
 	cmd.Dir = root
 	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
 	out, err := cmd.CombinedOutput()
