@@ -149,6 +149,17 @@ func TestTransientContract(t *testing.T) {
 		t.Fatalf("persistent map string get = %v %v", found, got)
 	}
 	assertPanics(t, "mutating frozen transient map", func() { tm.AssocInPlace(MakeKeyword("z"), MakeInt(0)) })
+	if got := procIsTransient([]Object{ToTransient(NewArrayVectorFrom())}); !got.Equals(Boolean{B: true}) {
+		t.Fatal("transient? should recognize transient vectors")
+	}
+	if got := procIsTransient([]Object{MapToTransient(nil)}); !got.Equals(Boolean{B: true}) {
+		t.Fatal("transient? should recognize transient maps")
+	}
+	if got := procIsTransient([]Object{NewArrayVectorFrom()}); !got.Equals(Boolean{B: false}) {
+		t.Fatal("transient? should reject persistent collections")
+	}
+	assertPanics(t, "assoc! arity", func() { procAssocBang([]Object{MapToTransient(nil), MakeKeyword("k")}) })
+	assertPanics(t, "conj! map arity", func() { procConjBang([]Object{MapToTransient(nil), MakeKeyword("k")}) })
 }
 
 func assertPanics(t *testing.T, name string, f func()) {

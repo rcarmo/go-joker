@@ -242,6 +242,7 @@ func MapToTransient(m Map) *TransientMap {
 // ---------- Joker procs ----------
 
 var procTransient = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	switch coll := args[0].(type) {
 	case *ArrayVector:
 		return ToTransient(coll)
@@ -253,6 +254,7 @@ var procTransient = func(args []Object) Object {
 }
 
 var procAssocBang = func(args []Object) Object {
+	CheckArity(args, 3, 3)
 	switch coll := args[0].(type) {
 	case *TransientVector:
 		return coll.AssocInPlace(args[1], args[2])
@@ -264,10 +266,13 @@ var procAssocBang = func(args []Object) Object {
 }
 
 var procConjBang = func(args []Object) Object {
+	CheckArity(args, 2, 3)
 	switch coll := args[0].(type) {
 	case *TransientVector:
+		CheckArity(args, 2, 2)
 		return coll.ConjInPlace(args[1])
 	case *TransientMap:
+		CheckArity(args, 3, 3)
 		return coll.AssocInPlace(args[1], args[2])
 	default:
 		panic(RT.NewError("conj! requires a transient, got: " + coll.GetType().ToString(false)))
@@ -275,6 +280,7 @@ var procConjBang = func(args []Object) Object {
 }
 
 var procPopBang = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	switch coll := args[0].(type) {
 	case *TransientVector:
 		return coll.PopInPlace()
@@ -284,6 +290,7 @@ var procPopBang = func(args []Object) Object {
 }
 
 var procPersistentBang = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	switch coll := args[0].(type) {
 	case *TransientVector:
 		return coll.ToPersistent()
@@ -295,6 +302,7 @@ var procPersistentBang = func(args []Object) Object {
 }
 
 var procIsTransient = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	switch args[0].(type) {
 	case *TransientVector, *TransientMap:
 		return Boolean{B: true}
