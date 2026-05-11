@@ -44,10 +44,10 @@ docs/           # Documentation generation
 # Manual build steps
 go generate ./...        # Generate code from .joke files
 go vet ./...             # Static analysis
-go build                 # Compile
+go build ./cmd/joker    # Compile
 
 # Build with debugging tools
-go build -tags go_spew   # Enables joker.core/go-spew debugging function
+go build -tags go_spew ./cmd/joker   # Enables joker.core/go-spew debugging function
 ```
 
 ## Preferred workflow: Makefile targets
@@ -132,8 +132,8 @@ import (
 
     "github.com/pkg/profile"
 
-    . "github.com/candid82/joker/core"
-    _ "github.com/candid82/joker/std/string"
+    . "github.com/rcarmo/go-joker/core"
+    _ "github.com/rcarmo/go-joker/std/string"
 )
 ```
 

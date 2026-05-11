@@ -101,6 +101,8 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 
 <img src="benchmarks/architecture.svg" alt="architecture" width="100%">
 
+The repository layout is being split along architectural boundaries. The CLI now lives in `cmd/joker`, tracing/IR/WASM leaf helpers are under `core/internal/{trace,ir,wasm}`, and the ongoing split plan is tracked in [`docs/ARCHITECTURE_REFACTOR_PLAN.md`](docs/ARCHITECTURE_REFACTOR_PLAN.md).
+
 - **WASM path**: pure integer/float loops → wazero JIT → native code (~0.2ms)
 - **Typed IR path**: primitive/string/cursor loops → irValue stack, zero-boxing (~2–8ms)
 - **Boxed IR path**: collections, fn calls, transients → []Object interpreter (~10–40ms)
@@ -134,6 +136,10 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 
 ## Documentation
 
+- [`docs/ARCHITECTURE_REFACTOR_PLAN.md`](docs/ARCHITECTURE_REFACTOR_PLAN.md) — repository split plan and target folder structure
+- [`docs/IR_BOUNDARY_AUDIT.md`](docs/IR_BOUNDARY_AUDIT.md) — IR package boundary inventory
+- [`docs/CORE_SPLIT_AUDIT.md`](docs/CORE_SPLIT_AUDIT.md) — collections/reader/runtime/WASM split candidates
+- [`docs/GENERATED_BOUNDARY_AUDIT.md`](docs/GENERATED_BOUNDARY_AUDIT.md) — generated-code boundary inventory and guardrails
 - [`docs/OPTIMIZATION_REPORT.md`](docs/OPTIMIZATION_REPORT.md) — full technical report (phases, trade-offs, outcomes, suggested git history)
 - [`docs/WEB_RUNTIME_AND_NAMESPACES.md`](docs/WEB_RUNTIME_AND_NAMESPACES.md) — WebSocket/SSE usage + router + all new namespaces
 - [`benchmarks/README.md`](benchmarks/README.md) — benchmark data and chart regeneration
