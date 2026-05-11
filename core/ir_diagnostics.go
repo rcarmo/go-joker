@@ -48,10 +48,7 @@ func explainIRCompile(loop *LoopExpr) IRDiagnostic {
 	}
 	wasm := explainWASMEligibility(prog)
 	analysis := AnalyzeIRProgram(prog)
-	model := prog.model
-	if model == nil {
-		model = prog.refreshModel().model
-	}
+	model := prog.neutralModel()
 	return IRDiagnostic{
 		Compiled:    true,
 		NumSlots:    model.NumSlots,
@@ -67,10 +64,7 @@ func explainWASMEligibility(prog *IRProgram) WASMDiagnostic {
 	if prog == nil {
 		return WASMDiagnostic{Reason: "nil IR program"}
 	}
-	model := prog.model
-	if model == nil {
-		model = prog.refreshModel().model
-	}
+	model := prog.neutralModel()
 	code := model.Code
 	pc := 0
 	usesFloat := irProgramUsesFloat(prog)

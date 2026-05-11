@@ -129,6 +129,16 @@ type IRProgram struct {
 	captureSlotSet  []bool // captureSlotSet[i] = true if slot i holds a capture (skip clearing)
 }
 
+func (p *IRProgram) neutralModel() *coreir.Program {
+	if p == nil {
+		return nil
+	}
+	if p.model == nil {
+		p.refreshModel()
+	}
+	return p.model
+}
+
 func (p *IRProgram) refreshModel() *IRProgram {
 	if p == nil {
 		return nil

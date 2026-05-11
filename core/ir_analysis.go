@@ -23,10 +23,7 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 		info = analyzeEscapes(prog)
 		prog.escapeInfo = info
 	}
-	model := prog.model
-	if model == nil {
-		model = prog.refreshModel().model
-	}
+	model := prog.neutralModel()
 	a := coreir.Analyze(
 		model.Code,
 		model.NumSlots,

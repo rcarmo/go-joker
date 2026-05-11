@@ -5,7 +5,8 @@ import corewasm "github.com/rcarmo/go-joker/core/internal/wasm"
 // wasm_codegen.go — translates IR bytecode to WASM function body.
 
 func irToWasm(prog *IRProgram) []byte {
-	if !isWasmEligible(prog) {
+	model := prog.neutralModel()
+	if model == nil || !isWasmEligible(prog) {
 		return nil
 	}
 	useFloat := irProgramUsesFloat(prog)
@@ -18,7 +19,7 @@ func irToWasm(prog *IRProgram) []byte {
 	if useFloat {
 		valType = corewasm.ValTypeF64
 	}
-	m.addTypeSectionTyped(prog.numSlots, valType)
+	m.addTypeSectionTyped(model.NumSlots, valType)
 	if prog.hasSelf {
 		m.addFuncSectionRecursive()
 	} else {
@@ -32,7 +33,11 @@ func irToWasm(prog *IRProgram) []byte {
 // isWasmEligible checks if all IR opcodes can map to WASM.
 // Returns false for programs with non-numeric ops (collections, strings, fn calls).
 func isWasmEligible(prog *IRProgram) bool {
-	code := prog.code
+	model := prog.neutralModel()
+	if model == nil {
+		return false
+	}
+	code := model.Code
 	pc := 0
 	for pc < len(code) {
 		op := code[pc]
@@ -72,9 +77,9 @@ func irProgramUsesFloat(prog *IRProgram) bool {
 		}
 	}
 	// Check opcodes
-	model := prog.model
+	model := prog.neutralModel()
 	if model == nil {
-		model = prog.refreshModel().model
+		return false
 	}
 	code := model.Code
 	pc := 0
@@ -125,12 +130,16 @@ func compileWasmBodyWithHelper(prog *IRProgram, useFloat bool, helperSlot int, h
 }
 
 func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot int, helperFuncIdx int, numParams int) []byte {
+	model := prog.neutralModel()
+	if model == nil {
+		return nil
+	}
 	var o []byte
 	valType := corewasm.ValTypeI64
 	if useFloat {
 		valType = corewasm.ValTypeF64
 	}
-	extraLocals := prog.numSlots - numParams
+	extraLocals := model.NumSlots - numParams
 	if extraLocals > 0 {
 		o = append(o, 0x01) // 1 local decl group
 		o = appendULEB(o, extraLocals)
@@ -146,7 +155,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 	o = append(o, 0x02, resType) // block $exit -> result type
 	o = append(o, 0x03, 0x40)    // loop $loop -> void
 
-	code := prog.code
+	code := model.Code
 	pc := 0
 	depth := 0 // extra nesting from if blocks
 
