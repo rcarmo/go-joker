@@ -127,7 +127,7 @@ refactor-internals-check:
 	$(GO) test ./core/internal/... -count=$(TEST_COUNT)
 
 core-contract-check:
-	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestInfoAndMetaCopyOnWriteContract|TestPVObjectSemantics' -count=$(TEST_COUNT) -timeout=120s
+	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestInfoAndMetaContract|TestPVObjectSemantics' -count=$(TEST_COUNT) -timeout=120s
 
 docs-check: docs generated-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check
 	test -f docs/ARCHITECTURE_REFACTOR_PLAN.md

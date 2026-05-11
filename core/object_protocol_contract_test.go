@@ -73,7 +73,7 @@ func TestAssociativeMapContract(t *testing.T) {
 	}
 }
 
-func TestInfoAndMetaCopyOnWriteContract(t *testing.T) {
+func TestInfoAndMetaContract(t *testing.T) {
 	info := &ObjectInfo{Position: Position{startLine: 42}}
 	meta := EmptyArrayMap().Assoc(MakeKeyword("doc"), MakeString("sample")).(Map)
 	values := []Object{
@@ -96,7 +96,7 @@ func TestInfoAndMetaCopyOnWriteContract(t *testing.T) {
 		}
 		if originalMeta, ok := v.(Meta); ok && originalMeta.GetMeta() != nil {
 			if found, _ := originalMeta.GetMeta().Get(MakeKeyword("doc")); found {
-				t.Fatalf("%T WithMeta mutated original", v)
+				t.Fatalf("%T WithMeta mutated original metadata", v)
 			}
 		}
 	}
