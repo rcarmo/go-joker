@@ -31,6 +31,7 @@ This folder is the canonical refactor/audit document set:
 - `ir-boundary.md` — IR split inventory and boundary plan.
 - `ir-program-split.md` — next-step design for separating neutral IR model from root-core execution metadata.
 - `generated-boundary.md` — generated-code inventory and guardrails.
+- `generated-bootstrap-contract.md` — next-step data-only contract for moving generated namespace bootstrap payloads.
 - `core-split.md` — collections/reader/runtime/WASM split candidates.
 - `object-protocol-contracts.md` — object/protocol contracts blocking broad moves.
 
@@ -96,6 +97,7 @@ Planned package boundaries:
 - [x] Add `make generated-check` guardrail and run it from `make docs-check`.
 - [x] Track generated root-core file set in `tests/generated_files.txt`.
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
+- [x] Design generated bootstrap contract before generator path changes.
 - [ ] Update generators to emit under a generated package/directory or clearly separated bootstrap module.
 - [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
 

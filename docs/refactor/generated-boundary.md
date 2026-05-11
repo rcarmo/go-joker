@@ -61,12 +61,16 @@ core/
 └── *.go                           # handwritten core only once generated artifacts move
 ```
 
+## Generated bootstrap contract
+
+The next-step contract is documented in `generated-bootstrap-contract.md`: future generated namespace bootstrap output should become data-only payloads owned by `core/internal/generated`, while root `core` remains responsible for mutating namespaces and installing docs/sources. Type assertion/info generation should remain near the object model until object boundaries are explicit.
+
 ## Migration prerequisites
 
 Before moving generated output into `core/internal/generated`, complete or explicitly design:
 
 1. Object/runtime API boundary for generated values.
-2. Namespace initialization contract between generated bootstrap data and `core` runtime.
+2. Namespace initialization contract between generated bootstrap data and `core` runtime. **Designed in `generated-bootstrap-contract.md`; implementation pending.**
 3. Generator import path update away from the current monolithic `core` package.
 4. Full regeneration and byte-for-byte or behavior-equivalent validation.
 5. Removal of generated files from the root `core` directory.
@@ -76,5 +80,6 @@ Before moving generated output into `core/internal/generated`, complete or expli
 - [x] Inventory generated file families and generator source packages.
 - [x] Add generated-file guardrail to avoid manual edits/regressions.
 - [x] Track the generated root-core file set in `tests/generated_files.txt`.
+- [x] Design generated bootstrap contract before generator path changes.
 - [ ] Update generators to emit under a generated package/directory or clearly separated bootstrap module.
 - [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
