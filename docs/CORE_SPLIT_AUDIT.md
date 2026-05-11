@@ -30,6 +30,7 @@ Do not split everything at once. Move leaf or low-cycle families first, then hig
 
 - `core/internal/trace` owns tracing/profiling aggregation state.
 - `core/internal/ir` owns opcode names/constants, bytecode disassembly/counting, and shape analysis.
+- `core/internal/wasm` owns leaf WASM binary encoding helpers.
 - `cmd/joker` owns the CLI entrypoint.
 
 ### 2. Runtime/object boundary
@@ -160,10 +161,15 @@ Current candidate files:
 - `wasm_multifn.go`
 - `wasm_runtime.go`
 
+Current extraction:
+
+- `core/internal/wasm/encoding.go` owns ULEB/SLEB/f64 byte encoding helpers and direct tests.
+- `core/wasm_binary.go` remains as the adapter for module construction because module generation still depends on core-level host constants and IR/WASM assembly flow.
+
 Risks:
 
 - WASM depends heavily on `IRProgram` internals and host object operations.
-- move after the IR program representation is owned by `core/internal/ir`.
+- move the rest after the IR program representation is owned by `core/internal/ir`.
 
 ## R5 decision for now
 
