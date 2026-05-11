@@ -69,6 +69,9 @@ func (tv *TransientVector) PopInPlace() *TransientVector {
 	return tv
 }
 
+// At returns the element at index for CountedIndexed compatibility.
+func (tv *TransientVector) At(i int) Object { return tv.Nth(i) }
+
 // Nth returns the element at index.
 func (tv *TransientVector) Nth(i int) Object {
 	if i >= 0 && i < len(tv.arr) {

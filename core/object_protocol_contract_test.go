@@ -110,6 +110,57 @@ func TestSetContract(t *testing.T) {
 	}
 }
 
+func TestTransientContract(t *testing.T) {
+	vec := NewArrayVectorFrom(MakeInt(1), MakeInt(2))
+	tv := ToTransient(vec)
+	if _, ok := any(tv).(CountedIndexed); !ok {
+		t.Fatal("TransientVector should implement CountedIndexed")
+	}
+	if tv.Count() != 2 || !tv.At(1).Equals(MakeInt(2)) {
+		t.Fatalf("transient vector Count/At mismatch: count=%d at1=%s", tv.Count(), tv.At(1).ToString(false))
+	}
+	tv.AssocInPlace(MakeInt(1), MakeInt(20)).ConjInPlace(MakeInt(3))
+	if tv.Count() != 3 || !tv.At(1).Equals(MakeInt(20)) || !tv.At(2).Equals(MakeInt(3)) {
+		t.Fatalf("transient vector mutation mismatch: %s %s %s", tv.At(0).ToString(false), tv.At(1).ToString(false), tv.At(2).ToString(false))
+	}
+	pv := tv.ToPersistent()
+	if pv.Count() != 3 || !pv.At(1).Equals(MakeInt(20)) {
+		t.Fatalf("persistent vector round trip mismatch: %s", pv.ToString(false))
+	}
+	assertPanics(t, "mutating frozen transient vector", func() { tv.ConjInPlace(MakeInt(4)) })
+
+	m := EmptyArrayMap().Assoc(MakeKeyword("a"), MakeInt(1)).Assoc(MakeString("s"), MakeInt(2)).(Map)
+	tm := MapToTransient(m)
+	tm.AssocInPlace(MakeKeyword("a"), MakeInt(10)).AssocInPlace(MakeString("t"), MakeInt(3))
+	if tm.Count() != 3 {
+		t.Fatalf("transient map Count = %d, want 3", tm.Count())
+	}
+	if found, got := tm.Get(MakeKeyword("a")); !found || !got.Equals(MakeInt(10)) {
+		t.Fatalf("transient map keyword get = %v %v", found, got)
+	}
+	if found, got := tm.Get(MakeString("t")); !found || !got.Equals(MakeInt(3)) {
+		t.Fatalf("transient map string get = %v %v", found, got)
+	}
+	pm := tm.ToPersistent().(Map)
+	if pm.Count() != 3 {
+		t.Fatalf("persistent map Count = %d, want 3", pm.Count())
+	}
+	if found, got := pm.Get(MakeString("t")); !found || !got.Equals(MakeInt(3)) {
+		t.Fatalf("persistent map string get = %v %v", found, got)
+	}
+	assertPanics(t, "mutating frozen transient map", func() { tm.AssocInPlace(MakeKeyword("z"), MakeInt(0)) })
+}
+
+func assertPanics(t *testing.T, name string, f func()) {
+	t.Helper()
+	defer func() {
+		if recover() == nil {
+			t.Fatalf("%s did not panic", name)
+		}
+	}()
+	f()
+}
+
 func TestInfoAndMetaContract(t *testing.T) {
 	info := &ObjectInfo{Position: Position{startLine: 42}}
 	meta := EmptyArrayMap().Assoc(MakeKeyword("doc"), MakeString("sample")).(Map)
