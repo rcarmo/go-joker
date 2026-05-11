@@ -57,7 +57,7 @@ Planned package boundaries:
 
 - [x] Audit all `ir*.go` references to unexported core symbols.
 - [x] Introduce a minimal exported boundary or adapter layer for opcode names/constants in `core/internal/ir`.
-- [ ] Move diagnostic/export helpers first, then compiler/executor.
+- [x] Move diagnostic/export helpers first, then compiler/executor (started with opcode naming, op counting, and disassembly helpers).
 - [x] Keep benchmark correctness tests before performance work.
 
 ### R4 — Generated code boundary

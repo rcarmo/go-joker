@@ -33,30 +33,7 @@ type WASMDiagnostic struct {
 
 func irOpcodeName(op byte) string { return coreir.OpcodeName(op) }
 
-func irOpCount(code []byte) int {
-	pc := 0
-	count := 0
-	for pc < len(code) {
-		op := code[pc]
-		pc++
-		count++
-		switch op {
-		case irLiteral, irLoadSlot, irStoreSlot, irJumpIfNot, irJump, irCallSelf, irBuildVec, irNthStringASCII:
-			pc += 2
-		case irCallSlot:
-			pc += 4
-		case irRecur:
-			pc += 4
-			if pc <= len(code) {
-				tgt := int(code[pc-2])<<8 | int(code[pc-1])
-				if tgt != 0 && pc+2 <= len(code) {
-					pc += 2
-				}
-			}
-		}
-	}
-	return count
-}
+func irOpCount(code []byte) int { return coreir.OpCount(code) }
 
 func explainIRCompile(loop *LoopExpr) IRDiagnostic {
 	if loop == nil {

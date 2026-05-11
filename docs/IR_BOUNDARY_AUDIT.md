@@ -115,5 +115,5 @@ Then `core/ir_diagnostics.go`, `core/ir_profile.go`, and render/export paths can
 
 - [x] Audit all `ir*.go` references to unexported core symbols.
 - [ ] Introduce a minimal exported boundary or adapter layer.
-- [ ] Move diagnostic/export helpers first, then compiler/executor.
+- [x] Move diagnostic/export helpers first, then compiler/executor (started with opcode naming, op counting, and disassembly helpers).
 - [ ] Keep benchmark correctness tests before performance work.
