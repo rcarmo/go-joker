@@ -164,7 +164,8 @@ Current candidate files:
 Current extraction:
 
 - `core/internal/wasm/encoding.go` owns ULEB/SLEB/f64 byte encoding helpers and direct tests.
-- `core/wasm_binary.go` remains as the adapter for module construction because module generation still depends on core-level host constants and IR/WASM assembly flow.
+- `core/internal/wasm/module.go` owns generic WASM module section construction and direct tests.
+- `core/wasm_binary.go` remains as a compatibility adapter for the rest of the root-core WASM code while IR/WASM assembly flow is still coupled to `IRProgram` internals.
 
 Risks:
 
