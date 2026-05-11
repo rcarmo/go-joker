@@ -126,7 +126,11 @@ func compileWasmBody(prog *IRProgram, useFloat bool) []byte {
 }
 
 func compileWasmBodyWithHelper(prog *IRProgram, useFloat bool, helperSlot int, helperFuncIdx int) []byte {
-	return compileWasmBodyWithHelperParams(prog, useFloat, helperSlot, helperFuncIdx, prog.numSlots)
+	model := prog.neutralModel()
+	if model == nil {
+		return nil
+	}
+	return compileWasmBodyWithHelperParams(prog, useFloat, helperSlot, helperFuncIdx, model.NumSlots)
 }
 
 func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot int, helperFuncIdx int, numParams int) []byte {

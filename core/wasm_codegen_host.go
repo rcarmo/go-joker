@@ -16,7 +16,8 @@ var standardHostImports = wasm.StandardHostImports
 // irToWasmWithImports compiles an IR program that uses collection ops
 // to a WASM module with host function imports.
 func irToWasmWithImports(prog *IRProgram) []byte {
-	if !isWasmWithImportsEligible(prog) {
+	model := prog.neutralModel()
+	if model == nil || !isWasmWithImportsEligible(prog) {
 		return nil
 	}
 
@@ -43,8 +44,8 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 	}
 	// Main function type (index 7)
 	typeBody = append(typeBody, 0x60)
-	typeBody = appendULEB(typeBody, prog.numSlots)
-	for i := 0; i < prog.numSlots; i++ {
+	typeBody = appendULEB(typeBody, model.NumSlots)
+	for i := 0; i < model.NumSlots; i++ {
 		typeBody = append(typeBody, wasm.ValTypeI64)
 	}
 	typeBody = append(typeBody, 0x01, wasm.ValTypeI64)
@@ -90,7 +91,11 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 
 // isWasmWithImportsEligible checks if the program can be compiled with host imports.
 func isWasmWithImportsEligible(prog *IRProgram) bool {
-	code := prog.code
+	model := prog.neutralModel()
+	if model == nil {
+		return false
+	}
+	code := model.Code
 	pc := 0
 	for pc < len(code) {
 		op := code[pc]
@@ -127,6 +132,10 @@ func isWasmWithImportsEligible(prog *IRProgram) bool {
 
 // compileWasmBodyWithImports generates function body with host call instructions.
 func compileWasmBodyWithImports(prog *IRProgram) []byte {
+	model := prog.neutralModel()
+	if model == nil {
+		return nil
+	}
 	var o []byte
 	o = append(o, 0x00) // 0 local decls
 
@@ -134,7 +143,7 @@ func compileWasmBodyWithImports(prog *IRProgram) []byte {
 	o = append(o, 0x03, 0x40)            // loop $loop -> void
 
 	mainFuncIdx := len(standardHostImports)
-	code := prog.code
+	code := model.Code
 	pc := 0
 	depth := 0
 
