@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"runtime"
 	"sort"
+	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -35,7 +37,7 @@ type functionTraceEvent struct {
 
 var functionTraceEvents []functionTraceEvent
 
-var functionTraceStack []functionTraceFrame
+var functionTraceStacks = map[uint64][]functionTraceFrame{}
 
 func traceFnCall(fn *Fn, argc int) func() {
 	if !functionTraceEnabled {
@@ -66,23 +68,29 @@ func traceFunctionEnter(name string) func() {
 	start := time.Now()
 	startRel := uint64(start.Sub(functionTraceT0).Nanoseconds())
 	functionTraceTotal.Add(1)
+	gid := functionTraceGID()
 	functionTraceMu.Lock()
-	depth := len(functionTraceStack)
+	stack := functionTraceStacks[gid]
+	depth := len(stack)
 	parent := ""
 	if depth > 0 {
-		parent = functionTraceStack[depth-1].name
+		parent = stack[depth-1].name
 		functionTraceEdges[[2]string{parent, name}]++
 	}
 	functionTraceCounts[name]++
-	functionTraceStack = append(functionTraceStack, functionTraceFrame{name: name})
+	functionTraceStacks[gid] = append(stack, functionTraceFrame{name: name})
 	functionTraceMu.Unlock()
 	return func() {
 		dur := uint64(time.Since(start).Nanoseconds())
 		functionTraceMu.Lock()
-		idx := len(functionTraceStack) - 1
+		stack := functionTraceStacks[gid]
+		idx := len(stack) - 1
+		for idx >= 0 && stack[idx].name != name {
+			idx--
+		}
 		if idx >= 0 {
-			frame := functionTraceStack[idx]
-			functionTraceStack = functionTraceStack[:idx]
+			frame := stack[idx]
+			stack = append(stack[:idx], stack[idx+1:]...)
 			exclusive := dur
 			if frame.childNanos < dur {
 				exclusive = dur - frame.childNanos
@@ -94,14 +102,35 @@ func traceFunctionEnter(name string) func() {
 				functionTraceEvents = append(functionTraceEvents, functionTraceEvent{Name: name, Parent: parent, Depth: depth, Start: startRel, Nanos: dur, ExclusiveNanos: exclusive})
 			}
 			if idx > 0 {
-				parent := functionTraceStack[idx-1].name
+				parent := stack[idx-1].name
 				functionTraceEdgeNanos[[2]string{parent, name}] += dur
-				functionTraceStack[idx-1].childNanos += dur
+				stack[idx-1].childNanos += dur
+			}
+			if len(stack) == 0 {
+				delete(functionTraceStacks, gid)
+			} else {
+				functionTraceStacks[gid] = stack
 			}
 		}
+		shouldWrite := len(functionTraceStacks) == 0
 		functionTraceMu.Unlock()
-		functionTraceMaybeWrite()
+		if shouldWrite {
+			functionTraceMaybeWrite()
+		}
 	}
+}
+
+func functionTraceGID() uint64 {
+	var buf [64]byte
+	n := runtime.Stack(buf[:], false)
+	// Header format: "goroutine 123 [running]:\n".
+	start := len("goroutine ")
+	end := start
+	for end < n && buf[end] >= '0' && buf[end] <= '9' {
+		end++
+	}
+	id, _ := strconv.ParseUint(string(buf[start:end]), 10, 64)
+	return id
 }
 
 func fnTraceName(fn *Fn, argc int) string {

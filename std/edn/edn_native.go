@@ -13,7 +13,7 @@ func readEDNString(s string) Object {
 	r := NewReader(bufio.NewReader(strings.NewReader(s)), "<edn-string>")
 	obj, err := TryRead(r)
 	if err != nil {
-		RT.NewError("EDN read error: " + err.Error())
+		panic(RT.NewError("EDN read error: " + err.Error()))
 	}
 	return obj
 }

@@ -1,7 +1,6 @@
 package pods
 
 import (
-	"fmt"
 	"os"
 	"testing"
 
@@ -107,7 +106,7 @@ func TestPodDynamicNamespaceVarSmoke(t *testing.T) {
 	if vr == nil || vr.Value.GetType() != TYPE.Proc {
 		t.Fatalf("bad dynamic var: %#v", vr)
 	}
-	if got := fmt.Sprint(vr.GetMeta().Get(MakeKeyword("doc"))); got == "" {
-		t.Fatalf("expected metadata doc, got %q", got)
+	if ok, doc := vr.GetMeta().Get(MakeKeyword("doc")); !ok || doc.ToString(false) != "Echo doc" {
+		t.Fatalf("expected metadata doc, got %#v ok=%v", doc, ok)
 	}
 }

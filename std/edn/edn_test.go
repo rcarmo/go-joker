@@ -39,6 +39,15 @@ func TestEDNNumbers(t *testing.T) {
 	roundTrip(t, "1.25M", "1.25M")
 }
 
+func TestEDNReadStringErrorPanics(t *testing.T) {
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected readEDNString to panic on malformed EDN")
+		}
+	}()
+	_ = readEDNString("[")
+}
+
 func TestEDNDecodeAll(t *testing.T) {
 	objs, err := DecodeAllEDN("1 :a [2]")
 	if err != nil {
