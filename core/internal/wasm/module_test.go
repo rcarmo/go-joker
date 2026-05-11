@@ -24,8 +24,17 @@ func TestModuleHeaderAndSections(t *testing.T) {
 
 func TestModuleImportSectionUsesHostModule(t *testing.T) {
 	m := NewModule()
-	m.AddImportSection("joker", []string{"get"}, []int{2})
+	m.AddImportSection("joker", []string{"get"})
 	if !bytes.Contains(m.Bytes(), []byte("joker")) || !bytes.Contains(m.Bytes(), []byte("get")) {
 		t.Fatalf("import section missing host/function names: %x", m.Bytes())
+	}
+}
+
+func TestModuleBytesReturnsCopy(t *testing.T) {
+	m := NewModule()
+	b := m.Bytes()
+	b[0] = 0xff
+	if m.Bytes()[0] != 0x00 {
+		t.Fatal("Bytes exposed mutable module buffer")
 	}
 }

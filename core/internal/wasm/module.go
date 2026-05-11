@@ -29,7 +29,7 @@ func (m *Module) AddTypeSectionTyped(numParams int, valType byte) {
 }
 
 // AddImportSection adds host module function imports.
-func (m *Module) AddImportSection(hostModule string, funcs []string, paramCounts []int) {
+func (m *Module) AddImportSection(hostModule string, funcs []string) {
 	var body []byte
 	body = AppendULEB(body, len(funcs))
 	for i, name := range funcs {
@@ -40,7 +40,6 @@ func (m *Module) AddImportSection(hostModule string, funcs []string, paramCounts
 		body = append(body, []byte(name)...)
 		body = append(body, 0x00) // import kind: func
 		body = AppendULEB(body, i+1)
-		_ = paramCounts[i]
 	}
 	m.AddSection(0x02, body)
 }
@@ -72,4 +71,4 @@ func (m *Module) AddSection(id byte, body []byte) {
 	m.buf = append(m.buf, body...)
 }
 
-func (m *Module) Bytes() []byte { return m.buf }
+func (m *Module) Bytes() []byte { return append([]byte(nil), m.buf...) }
