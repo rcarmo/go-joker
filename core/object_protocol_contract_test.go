@@ -161,6 +161,52 @@ func assertPanics(t *testing.T, name string, f func()) {
 	f()
 }
 
+func TestSeqContract(t *testing.T) {
+	base := NewListFrom(MakeInt(1), MakeInt(2), MakeInt(3)).Seq()
+	seqs := []struct {
+		name string
+		seq  Seq
+	}{
+		{name: "list", seq: base},
+		{name: "array", seq: &ArraySeq{arr: []Object{MakeInt(1), MakeInt(2), MakeInt(3)}}},
+		{name: "vector", seq: NewVectorFrom(MakeInt(1), MakeInt(2), MakeInt(3)).Seq()},
+		{name: "cons", seq: NewConsSeq(MakeInt(1), NewListFrom(MakeInt(2), MakeInt(3)).Seq())},
+		{name: "take", seq: (&TakeSeq{seq: base, n: 3}).Seq()},
+		{name: "filter", seq: (&FilteringSeq{seq: base, pred: Proc{Fn: func(args []Object) Object { return Boolean{B: true} }}}).Seq()},
+	}
+	for _, tc := range seqs {
+		if tc.seq.IsEmpty() {
+			t.Fatalf("%s seq unexpectedly empty", tc.name)
+		}
+		if !tc.seq.First().Equals(MakeInt(1)) {
+			t.Fatalf("%s First = %s, want 1", tc.name, tc.seq.First().ToString(false))
+		}
+		if got := Second(tc.seq); !got.Equals(MakeInt(2)) {
+			t.Fatalf("%s Second = %s, want 2", tc.name, got.ToString(false))
+		}
+		if got := Third(tc.seq); !got.Equals(MakeInt(3)) {
+			t.Fatalf("%s Third = %s, want 3", tc.name, got.ToString(false))
+		}
+		if got := SeqCount(tc.seq); got != 3 {
+			t.Fatalf("%s SeqCount = %d, want 3", tc.name, got)
+		}
+		if got := SeqNth(tc.seq, 2); !got.Equals(MakeInt(3)) {
+			t.Fatalf("%s SeqNth(2) = %s, want 3", tc.name, got.ToString(false))
+		}
+		if !SeqsEqual(tc.seq, base) || !tc.seq.Equals(base) || tc.seq.Hash() != base.Hash() {
+			t.Fatalf("%s should equal/hash like base sequence", tc.name)
+		}
+		withHead := tc.seq.Cons(MakeInt(0))
+		if SeqCount(withHead) != 4 || !withHead.First().Equals(MakeInt(0)) || !Second(withHead).Equals(MakeInt(1)) {
+			t.Fatalf("%s Cons contract failed: %s", tc.name, withHead.ToString(false))
+		}
+	}
+	if !EmptyList.IsEmpty() || SeqCount(EmptyList) != 0 || !EmptyList.Rest().IsEmpty() {
+		t.Fatal("empty list sequence contract failed")
+	}
+	assertPanics(t, "negative SeqNth", func() { SeqNth(base, -1) })
+}
+
 func TestInfoAndMetaContract(t *testing.T) {
 	info := &ObjectInfo{Position: Position{startLine: 42}}
 	meta := EmptyArrayMap().Assoc(MakeKeyword("doc"), MakeString("sample")).(Map)
