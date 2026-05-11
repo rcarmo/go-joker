@@ -58,14 +58,62 @@ func TestTransientMapStringKeys(t *testing.T) {
 	}
 }
 
-func TestTransientProcs(t *testing.T) {
-	t.Skip("transient procs registered but parser symbol resolution needs core.joke wrappers")
+func TestTransientVectorProcs(t *testing.T) {
+	vec := NewArrayVectorFrom(Int{I: 1}, Int{I: 2})
+	tv, ok := procTransient([]Object{vec}).(*TransientVector)
+	if !ok {
+		t.Fatalf("transient vector proc returned %T", tv)
+	}
+	if got := procIsTransient([]Object{tv}); !got.Equals(Boolean{B: true}) {
+		t.Fatalf("transient? returned %s", got.ToString(false))
+	}
+	if procAssocBang([]Object{tv, Int{I: 1}, Int{I: 20}}) != tv {
+		t.Fatal("assoc! should return the same transient vector")
+	}
+	if procConjBang([]Object{tv, Int{I: 3}}) != tv {
+		t.Fatal("conj! should return the same transient vector")
+	}
+	if tv.Count() != 3 || !tv.At(1).Equals(Int{I: 20}) || !tv.At(2).Equals(Int{I: 3}) {
+		t.Fatalf("unexpected transient vector state: count=%d", tv.Count())
+	}
+	if procPopBang([]Object{tv}) != tv {
+		t.Fatal("pop! should return the same transient vector")
+	}
+	persisted := procPersistentBang([]Object{tv}).(*ArrayVector)
+	if persisted.Count() != 2 || !persisted.At(1).Equals(Int{I: 20}) {
+		t.Fatalf("unexpected persistent vector: %s", persisted.ToString(false))
+	}
 }
 
 func TestTransientMapProcs(t *testing.T) {
-	t.Skip("transient procs registered but parser symbol resolution needs core.joke wrappers")
+	tm, ok := procTransient([]Object{EmptyArrayMap()}).(*TransientMap)
+	if !ok {
+		t.Fatalf("transient map proc returned %T", tm)
+	}
+	if got := procIsTransient([]Object{tm}); !got.Equals(Boolean{B: true}) {
+		t.Fatalf("transient? returned %s", got.ToString(false))
+	}
+	if procAssocBang([]Object{tm, MakeKeyword("a"), Int{I: 1}}) != tm {
+		t.Fatal("assoc! should return the same transient map")
+	}
+	if procConjBang([]Object{tm, String{S: "b"}, Int{I: 2}}) != tm {
+		t.Fatal("conj! should return the same transient map")
+	}
+	persisted := procPersistentBang([]Object{tm}).(Map)
+	if persisted.Count() != 2 {
+		t.Fatalf("persistent map count = %d", persisted.Count())
+	}
+	if ok, got := persisted.Get(String{S: "b"}); !ok || !got.Equals(Int{I: 2}) {
+		t.Fatalf("missing persisted string key: %v %v", ok, got)
+	}
 }
 
 func BenchmarkTransientVectorLoop(b *testing.B) {
-	b.Skip("transient procs need core.joke wrappers for parser resolution")
+	for b.Loop() {
+		tv := procTransient([]Object{NewArrayVectorFrom()}).(*TransientVector)
+		for i := 0; i < 100; i++ {
+			procConjBang([]Object{tv, Int{I: i}})
+		}
+		_ = procPersistentBang([]Object{tv})
+	}
 }
