@@ -146,6 +146,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 - [`docs/refactor/code-structure.md`](docs/refactor/code-structure.md) — package/module and coverage audit
 - [`docs/refactor/module-structure-audit.md`](docs/refactor/module-structure-audit.md) — current Go module/package layout and next structural improvements
 - [`docs/refactor/ir-boundary.md`](docs/refactor/ir-boundary.md) — IR package boundary inventory
+- [`docs/refactor/ir-program-split.md`](docs/refactor/ir-program-split.md) — next-step IR model/envelope split design
 - [`docs/refactor/core-split.md`](docs/refactor/core-split.md) — collections/reader/runtime/WASM split candidates
 - [`docs/refactor/object-protocol-contracts.md`](docs/refactor/object-protocol-contracts.md) — object/protocol contracts blocking broad core moves
 - [`docs/refactor/generated-boundary.md`](docs/refactor/generated-boundary.md) — generated-code boundary inventory and guardrails

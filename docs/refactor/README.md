@@ -29,6 +29,7 @@ This folder is the canonical refactor/audit document set:
 - `module-structure-audit.md` — current Go module/package layout and next structural improvements.
 - `module-structure-followup.md` — second-pass package snapshot and concrete next improvements.
 - `ir-boundary.md` — IR split inventory and boundary plan.
+- `ir-program-split.md` — next-step design for separating neutral IR model from root-core execution metadata.
 - `generated-boundary.md` — generated-code inventory and guardrails.
 - `core-split.md` — collections/reader/runtime/WASM split candidates.
 - `object-protocol-contracts.md` — object/protocol contracts blocking broad moves.
@@ -77,7 +78,8 @@ Planned package boundaries:
 - [x] Audit all `ir*.go` references to unexported core symbols.
 - [x] Introduce a minimal exported boundary or adapter layer for opcode names/constants in `core/internal/ir`.
 - [x] Move diagnostic/export helpers first, then compiler/executor (started with opcode naming, op counting, disassembly, and shape-analysis helpers; direct tests now cover the extracted IR helper package).
-- [ ] Split `IRProgram` into a small `core/internal/ir.Program` model plus root-core execution metadata.
+- [x] Design `IRProgram` split into a small `core/internal/ir.Program` model plus root-core execution metadata.
+- [ ] Implement `IRProgram` split into a small `core/internal/ir.Program` model plus root-core execution metadata.
 - [x] Keep benchmark correctness tests before performance work.
 
 ### R4 — Generated code boundary

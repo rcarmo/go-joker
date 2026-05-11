@@ -10,7 +10,7 @@ This is the R3 inventory for moving the current `core/ir*.go` grab-bag into an a
 
 Current files matching `core/ir*.go` include:
 
-- `core/ir.go` — opcode model, cache, `IRProgram`
+- `core/ir.go` — cache and executable `IRProgram` envelope; opcode model has started moving to `core/internal/ir`
 - `core/ir_analysis.go` — analysis summaries
 - `core/ir_call_dispatch.go` — call dispatch bridge from `Fn`/`Proc`
 - `core/ir_compile_fn.go` — function compilation
@@ -105,15 +105,21 @@ core/internal/ir/
 
 Then `core/ir_diagnostics.go`, `core/ir_profile.go`, and render/export paths can call into that package while the compiler/executor still live in `core`.
 
+## IRProgram split note
+
+The next concrete R3 step is documented in `ir-program-split.md`. The planned shape is a package-neutral `core/internal/ir.Program` for bytecode/slot/analysis/arity metadata, while root `core.IRProgram` temporarily remains the executable envelope for `Object` constants, `bindingKey` captures, `FnExpr` references, native helpers, escape analysis, and execution failure caches.
+
 ## Risks
 
-- Moving `IRProgram` too early will expose many unexported core details (`bindingKey`, `Object`, `FnExpr`, `EscapeInfo`, native helper funcs).
+- Moving executable `IRProgram` state too early will expose many unexported core details (`bindingKey`, `Object`, `FnExpr`, `EscapeInfo`, native helper funcs).
 - Moving executor before runtime interfaces exist will create import cycles or broad exports.
 - Tests currently live beside `core` internals; moving tests with the package will require either exported test hooks or package-local tests in the new package.
 
 ## R3 checklist status
 
 - [x] Audit all `ir*.go` references to unexported core symbols.
-- [ ] Introduce a minimal exported boundary or adapter layer.
+- [x] Introduce a minimal exported boundary or adapter layer for opcode names/constants and analysis helpers.
 - [x] Move diagnostic/export helpers first, then compiler/executor (started with opcode naming, op counting, disassembly, and shape-analysis helpers; direct tests now cover the extracted IR helper package).
-- [ ] Keep benchmark correctness tests before performance work.
+- [x] Keep benchmark correctness tests before performance work.
+- [x] Document the `IRProgram` model/envelope split.
+- [ ] Implement the `IRProgram` model/envelope split.
