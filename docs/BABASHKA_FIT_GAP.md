@@ -201,7 +201,7 @@ Completed foundation:
 4. JSON/EDN/Transit+JSON fake-pod end-to-end tests.
 5. Portable Babashka-style fixture suite with expected unsupported-feature failures.
 
-Next work is script-driven only: optional shims (`babashka.fs`, `babashka.process`, `clojure.java.io` convenience wrappers, `term`, `unix`, `syscall`) are assessed from actual fixture failures or user workloads. The current Phase 6 review found no runtime fixture demand for new Babashka namespace shims; see `docs/BABASHKA_SHIM_ASSESSMENT.md`.
+Next work is script-driven only: optional shims (`babashka.fs`, `babashka.process`, `clojure.java.io` convenience wrappers, `term`, `unix`, `syscall`, `walk`, `zip`, `dump`, `test`) are assessed from actual fixture failures or user workloads. The current Phase 6 review found no runtime fixture demand for new Babashka namespace shims; see `docs/BABASHKA_SHIM_ASSESSMENT.md`. The Phase 7 optional portability review likewise found no current demand for new optional shims; see `docs/PORTABILITY_SHIM_ASSESSMENT.md`.
 
 ## Suggested acceptance criteria
 
