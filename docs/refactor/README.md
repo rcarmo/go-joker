@@ -98,6 +98,7 @@ Planned package boundaries:
 - [x] Track generated root-core file set in `tests/generated_files.txt`.
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
 - [x] Design generated bootstrap contract before generator path changes.
+- [x] Add `core/internal/generated` data-only bootstrap payload contract types.
 - [ ] Update generators to emit under a generated package/directory or clearly separated bootstrap module.
 - [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
 

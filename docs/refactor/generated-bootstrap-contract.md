@@ -20,7 +20,7 @@ Only the first two belong in a future generated bootstrap package. Type assertio
 
 ## Proposed contract
 
-A future `core/internal/generated` package should own inert generated payloads, not runtime mutation. The handwritten root runtime should own interpretation and installation.
+The `core/internal/generated` package now defines the inert payload structs for this contract. It should own generated payload data, not runtime mutation. The handwritten root runtime should own interpretation and installation.
 
 Candidate shape:
 
@@ -57,11 +57,12 @@ This keeps generated output data-oriented and avoids importing root `core` from 
 ## Migration sequence
 
 1. Keep existing root generated files guarded by `tests/generated_files.txt`.
-2. Teach generators to optionally emit data-only payloads under `core/internal/generated` while still emitting the current root files.
-3. Add tests comparing data-only payloads with current root generated behavior.
-4. Switch root bootstrap to consume `core/internal/generated` payloads.
-5. Remove root generated bootstrap files from `tests/generated_files.txt` only after equivalent behavior is proven.
-6. Leave type assertion/info generation near the object model until object boundaries are explicit.
+2. Define the data-only payload structs under `core/internal/generated`. **Done: `NamespaceSource` and `VarDoc` are in place with direct tests.**
+3. Teach generators to optionally emit data-only payloads under `core/internal/generated` while still emitting the current root files.
+4. Add tests comparing data-only payloads with current root generated behavior.
+5. Switch root bootstrap to consume `core/internal/generated` payloads.
+6. Remove root generated bootstrap files from `tests/generated_files.txt` only after equivalent behavior is proven.
+7. Leave type assertion/info generation near the object model until object boundaries are explicit.
 
 ## Non-goals
 
