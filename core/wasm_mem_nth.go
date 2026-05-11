@@ -30,7 +30,11 @@ func wasmMemNthStaticEligible(prog *IRProgram) bool {
 	if os.Getenv("JOKER_WASM_MEM_NTH") == "" {
 		return false
 	}
-	code := prog.code
+	model := prog.neutralModel()
+	if model == nil {
+		return false
+	}
+	code := model.Code
 	pc := 0
 	hasNth := false
 	for pc < len(code) {
@@ -62,7 +66,11 @@ func wasmMemNthStaticEligible(prog *IRProgram) bool {
 
 // Requires: f64 arithmetic, irNth on captured vectors, optional irCallSlot.
 func wasmMemNthEligible(prog *IRProgram, slots []Object) bool {
-	if prog == nil || len(slots) < prog.numSlots {
+	if prog == nil {
+		return false
+	}
+	model := prog.neutralModel()
+	if model == nil || len(slots) < model.NumSlots {
 		return false
 	}
 	// Check if any slot is a Double (indicates float loop)
@@ -79,7 +87,7 @@ func wasmMemNthEligible(prog *IRProgram, slots []Object) bool {
 	if !hasFloat {
 		return false
 	}
-	code := prog.code
+	code := model.Code
 	pc := 0
 	hasNth := false
 	nthSlots := make(map[int]bool) // which slots are used as nth collection args
@@ -197,12 +205,17 @@ func wasmMemNthCompileAndExec(prog *IRProgram, slots []Object) Object {
 			memOff = append(memOff, offset)
 			offset += len(vs.vec.arr) * 8
 		}
+		model := prog.neutralModel()
+		if model == nil {
+			wasmMemNthCache.Store(key, nil)
+			return nil
+		}
 		c = &wasmMemNthCached{
 			wp:         wp,
 			vecSlotIdx: vecIdx,
 			memOffsets: memOff,
 			lastVecPtr: make([]uintptr, len(vecIdx)),
-			paramsBuf:  make([]uint64, prog.numSlots),
+			paramsBuf:  make([]uint64, model.NumSlots),
 		}
 		wasmMemNthCache.Store(key, c)
 	}
@@ -266,7 +279,11 @@ type vecSlotInfo struct {
 
 func findVecSlots(prog *IRProgram, slots []Object) []vecSlotInfo {
 	// Find slots loaded before irNth
-	code := prog.code
+	model := prog.neutralModel()
+	if model == nil {
+		return nil
+	}
+	code := model.Code
 	var result []vecSlotInfo
 	seen := make(map[int]bool)
 	pc := 0
@@ -303,7 +320,11 @@ func findVecSlots(prog *IRProgram, slots []Object) []vecSlotInfo {
 }
 
 func findHelperForMemNth(prog *IRProgram, slots []Object) (int, *IRProgram) {
-	code := prog.code
+	model := prog.neutralModel()
+	if model == nil {
+		return -1, nil
+	}
+	code := model.Code
 	pc := 0
 	helperSlot := -1
 	for pc < len(code) {
@@ -353,10 +374,18 @@ func buildMemNthModule(prog *IRProgram, helperSlot int, helperProg *IRProgram) *
 	helperParams := 0
 	if helperProg != nil {
 		helperFuncIdx = 1
-		helperParams = helperProg.numSlots
+		helperModel := helperProg.neutralModel()
+		if helperModel == nil {
+			return nil
+		}
+		helperParams = helperModel.NumSlots
+	}
+	model := prog.neutralModel()
+	if model == nil {
+		return nil
 	}
 
-	callerBody := buildMemNthBody(prog, helperSlot, helperFuncIdx, prog.numSlots)
+	callerBody := buildMemNthBody(prog, helperSlot, helperFuncIdx, model.NumSlots)
 	if callerBody == nil {
 		return nil
 	}
@@ -368,7 +397,7 @@ func buildMemNthModule(prog *IRProgram, helperSlot int, helperProg *IRProgram) *
 		}
 	}
 
-	bin := assembleMemNthModule(prog.numSlots, helperParams, callerBody, helperBody)
+	bin := assembleMemNthModule(model.NumSlots, helperParams, callerBody, helperBody)
 	ctx := context.Background()
 	compiled, err := rt.CompileModule(ctx, bin)
 	if err != nil {
@@ -386,8 +415,12 @@ func buildMemNthModule(prog *IRProgram, helperSlot int, helperProg *IRProgram) *
 }
 
 func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) []byte {
+	model := prog.neutralModel()
+	if model == nil {
+		return nil
+	}
 	var o []byte
-	extra := prog.numSlots - numParams
+	extra := model.NumSlots - numParams
 	// Local decls: extra f64 locals + 1 i32 temp for nth address computation
 	if extra > 0 {
 		o = append(o, 0x02) // 2 groups
@@ -400,11 +433,11 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 		o = append(o, 0x01) // 1 i32
 		o = append(o, 0x7f)
 	}
-	i32Temp := prog.numSlots  // local index of i32 temp
+	i32Temp := model.NumSlots // local index of i32 temp
 	o = append(o, 0x02, 0x7c) // block $exit → f64
 	o = append(o, 0x03, 0x40) // loop $loop → void
 
-	code := prog.code
+	code := model.Code
 	pc := 0
 	depth := 0
 
