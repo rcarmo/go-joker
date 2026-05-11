@@ -1,6 +1,6 @@
 # Parity Status: let-go runtime + Clojure language compliance
 
-_Last updated: 2026-05-08 (post v42.8.2 benchmark refresh)_
+_Last updated: 2026-05-11 (post Babashka pods/EDN/Transit compatibility pass)_
 
 ## Scope
 
@@ -67,6 +67,11 @@ Coverage includes:
 
 ## Recently completed parity work
 
+- Added `pods` and `babashka.pods` compatibility namespaces with pod lifecycle, bencode routing, cache discovery, `load-pod`, `invoke`, and dynamic var installation.
+- Added JSON, EDN, and Transit+JSON pod payload coverage with end-to-end fake pod tests.
+- Added `joker.edn` and alias `edn` with `read-string`/`write-string` over reader/printer semantics without eval.
+- Expanded `joker.transit` with cache refs, set/list/quote/cmap tags, BigInt/BigDecimal/BigFloat/ratio/keyword/symbol payloads, verbose writing, and pod helper functions.
+- Added `make bb-compat` portable Babashka-style fixtures plus expected non-goal failure fixtures for Java interop, `bb.edn` tasks/deps, SCI internals, and broad bundled-library catalog APIs.
 - Replaced map-tag reduced shim with a proper runtime `Reduced` type (`core/reduced.go`).
 - Added public protocol support (`defprotocol`, `extend-type`, `extend-protocol`), dispatch, and `satisfies?`.
 - Added public record support (`defrecord`, generated `->Type`/`map->Type`, protocol clauses, `record?`) with map interop semantics.

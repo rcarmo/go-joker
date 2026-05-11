@@ -4,6 +4,16 @@
 
 An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Lisp interpreter) for inclusion in [gi](https://github.com/rcarmo/gi), a self-hosted coding agent.
 
+## Compatibility additions
+
+This fork includes practical Babashka/let-go compatibility work beyond upstream Joker:
+
+- `pods` and `babashka.pods` with bencode routing, subprocess lifecycle, dynamic vars, and JSON/EDN/Transit+JSON payloads.
+- `joker.edn` plus `edn` alias namespace with `read-string`/`write-string` using the reader/printer without evaluation.
+- Expanded `joker.transit` for pod-oriented Transit+JSON payloads.
+- Portable Babashka fixture suite via `make bb-compat`.
+- Tracing/profile tooling documented in `docs/TRACING.md`.
+
 ## Performance
 
 ### Performance — Joker vs Python vs Goja (CLBG benchmarks)

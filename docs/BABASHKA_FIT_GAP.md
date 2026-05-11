@@ -16,7 +16,7 @@ The best fit is:
 
 - scripts with mostly portable Clojure code
 - CLIs and automation that use data formats and HTTP
-- pod consumers once `pods`/`babashka.pods` are implemented
+- pod consumers using `pods`/`babashka.pods` with JSON, EDN, or Transit+JSON payloads
 - server/runtime scripts that benefit from go-joker's HTTP/WebSocket/SSE/router capabilities
 
 The poor fit/non-goal is:
@@ -36,8 +36,8 @@ The poor fit/non-goal is:
 | JSON/YAML/CSV/base64/hex/url/string/time | Available with growing direct tests | High | Continue coverage hardening |
 | HTTP client/server | Available; go-joker has persistent clients, WebSocket/SSE/router | High | Keep go-joker API; add adapters if needed |
 | `clojure.core.async` | Broad compatibility shim over Go goroutines | Medium/High | Maintain practical API parity, not IOC internals |
-| Pods | Foundation started: bencode helpers and namespaces | High | Implement lifecycle/load/invoke/dynamic vars |
-| Transit | Basic Transit+JSON subset | Medium | Expand for pods and common payloads |
+| Pods | `pods`/`babashka.pods`, lifecycle, cache discovery, invoke, dynamic vars, JSON/EDN/Transit+JSON payloads | High | Add edge-case fixtures only when real pod clients require them |
+| Transit | Fuller pod-oriented Transit+JSON subset with cache refs, tags, numeric payloads, helpers | Medium/High | Expand only from pod/script fixtures |
 | nREPL | Missing | Medium | Optional later editor integration |
 | File/process scripting | Partial via std namespaces and core helpers | Medium | Fill only script-driven gaps |
 | Terminal/syscall/unix | Missing/partial | Low/Medium | Optional platform shims only when real scripts need them |
@@ -62,8 +62,8 @@ Required:
 - pod registry/lifecycle/shutdown
 - request IDs and response routing
 - dynamic namespace/var installation from `describe`
-- JSON payload format first
-- EDN and Transit+JSON payload formats after codec support lands
+- JSON, EDN, and Transit+JSON payload formats
+- end-to-end fake-pod tests for all supported formats
 
 Out of scope for first pass:
 
@@ -87,13 +87,14 @@ Implemented baseline:
 
 Target: pod payload interoperability and common Babashka data exchange.
 
-Implement:
+Implemented baseline:
 
 - rolling cache refs
 - set/list/cmap tags
 - quote tag
-- BigInt/BigDecimal/ratio payload handling
+- BigInt/BigDecimal/BigFloat/ratio payload handling
 - verbose writer for debugging
+- pod argument/result helper functions
 
 ### 4. Practical namespace shims
 
@@ -192,12 +193,15 @@ Avoid:
 
 ## Near-term execution order
 
-1. Finish `pods` foundation.
-2. Add standalone EDN namespace.
-3. Expand Transit enough for pod payloads.
-4. Add fake-pod end-to-end tests.
-5. Add a small Babashka-script fixture suite with expected unsupported-feature failures.
-6. Reassess optional shims (`fs`, `process`, `term`, `unix`, `syscall`) from actual fixture failures.
+Completed foundation:
+
+1. `pods`/`babashka.pods` foundation.
+2. Standalone EDN namespace.
+3. Transit payload support sufficient for pod fixtures.
+4. JSON/EDN/Transit+JSON fake-pod end-to-end tests.
+5. Portable Babashka-style fixture suite with expected unsupported-feature failures.
+
+Next work is script-driven only: reassess optional shims (`babashka.fs`, `babashka.process`, `clojure.java.io` convenience wrappers, `term`, `unix`, `syscall`) from actual fixture failures or user workloads.
 
 ## Suggested acceptance criteria
 

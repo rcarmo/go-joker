@@ -78,13 +78,15 @@ Recommendation: all new Go-installed public vars should use `InternVar(..., Make
 - generated/runtime aggregate coverage for CI trend visibility
 - non-generated feature coverage for meaningful maintenance decisions
 
-Recommendation: add a future coverage report script that filters generated files (`a_*.go`, `types_*_gen.go`, `gen_code/`) and reports package/function gaps.
+Current guardrail: `tests/coverage_summary.sh` filters generated files (`a_*.go`, `types_*_gen.go`, `gen_code/`) and separately reports gap-closure package coverage for `std/pods`, `std/transit`, and `std/edn`.
 
 ### 4. Some compatibility features need explicit contracts
 
-Recent additions (`System`, `joker.transit`, `joker.jit/export-*`, `clojure.core.async`) should each document scope and non-goals:
+Recent additions (`System`, `joker.transit`, `joker.edn`, `pods`/`babashka.pods`, `joker.jit/export-*`, `clojure.core.async`) should each document scope and non-goals:
 
-- Transit is a Transit+JSON subset, not full handler/tag ecosystem yet.
+- Transit is a practical Transit+JSON subset for pod/script payloads, not a full handler ecosystem yet.
+- EDN reuses Joker reader/printer behavior without evaluation; options should expand only from fixture demand.
+- Pods cover lifecycle/load/invoke/dynamic-vars and JSON/EDN/Transit payloads; deeper Babashka edge cases should be fixture-driven.
 - System is JVM-shaped compatibility over Go/OS properties.
 - core.async is goroutine-backed, not IOC-state-machine Clojure core.async.
 - WASM export currently supports standalone pure numeric modules; object/collection host-import ABI is not a stable external contract yet.

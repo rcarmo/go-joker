@@ -244,6 +244,26 @@ Example:
 (joker.log/info "server started" {:port 8080})
 ```
 
+### 4.3 `joker.edn` and `edn`
+
+- `read-string`
+- `write-string`
+
+These reuse Joker reader/printer behavior without evaluating forms and are also used for EDN pod payloads.
+
+```clojure
+(require '[joker.edn :as edn])
+(= {:ok true} (edn/read-string (edn/write-string {:ok true})))
+```
+
+### 4.4 `joker.transit`
+
+Transit+JSON support now includes cache refs, set/list/quote/cmap tags, numeric payloads, `write-verbose`, and helper functions used by pod payloads.
+
+### 4.5 `pods` and `babashka.pods`
+
+Compatibility namespaces support `load-pod`, `invoke`, dynamic vars from pod `describe`, and JSON/EDN/Transit+JSON payload formats. End-to-end fake-pod coverage lives in `std/pods` tests.
+
 ---
 
 ## 5) Extended namespace: `joker.math`
