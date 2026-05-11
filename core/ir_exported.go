@@ -33,11 +33,26 @@ func IrDebugCompile(loop *LoopExpr) {
 	}
 }
 
-func (p *IRProgram) CodeLen() int                       { return len(p.code) }
-func (p *IRProgram) CodeBytes() []byte                  { return append([]byte(nil), p.code...) }
-func (p *IRProgram) ConstLen() int                      { return len(p.constants) }
-func (p *IRProgram) Constants() []Object                { return append([]Object(nil), p.constants...) }
-func (p *IRProgram) NumSlots() int                      { return p.numSlots }
+func (p *IRProgram) CodeLen() int {
+	if p.model == nil {
+		p.refreshModel()
+	}
+	return len(p.model.Code)
+}
+func (p *IRProgram) CodeBytes() []byte {
+	if p.model == nil {
+		p.refreshModel()
+	}
+	return append([]byte(nil), p.model.Code...)
+}
+func (p *IRProgram) ConstLen() int       { return len(p.constants) }
+func (p *IRProgram) Constants() []Object { return append([]Object(nil), p.constants...) }
+func (p *IRProgram) NumSlots() int {
+	if p.model == nil {
+		p.refreshModel()
+	}
+	return p.model.NumSlots
+}
 func (p *IRProgram) CaptureKeys() []bindingKey          { return p.captureKeys }
 func (e *LetExpr) Body() []Expr                         { return e.body }
 func IrExecExported(prog *IRProgram, s []Object) Object { return irExec(prog, s) }
@@ -102,7 +117,12 @@ func WasmCompileBytesExported(prog *IRProgram) []byte {
 }
 
 func IsFloatExported(prog *IRProgram) bool { return irProgramUsesFloat(prog) }
-func (p *IRProgram) CodeAt(i int) byte     { return p.code[i] }
+func (p *IRProgram) CodeAt(i int) byte {
+	if p.model == nil {
+		p.refreshModel()
+	}
+	return p.model.Code[i]
+}
 
 // --- Exports for std/jit namespace ---
 

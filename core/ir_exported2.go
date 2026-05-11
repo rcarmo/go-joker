@@ -10,7 +10,11 @@ func IrDisassemble(prog *IRProgram) string {
 	if prog == nil {
 		return "; nil program"
 	}
-	return coreir.Disassemble(prog.code, func(idx int) string {
+	model := prog.model
+	if model == nil {
+		model = prog.refreshModel().model
+	}
+	return coreir.Disassemble(model.Code, func(idx int) string {
 		if idx < len(prog.constants) && prog.constants[idx] != nil {
 			return prog.constants[idx].ToString(false)
 		}

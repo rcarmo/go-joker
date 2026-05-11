@@ -23,15 +23,20 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 		info = analyzeEscapes(prog)
 		prog.escapeInfo = info
 	}
+	model := prog.model
+	if model == nil {
+		model = prog.refreshModel().model
+	}
 	a := coreir.Analyze(
-		prog.code,
-		prog.numSlots,
+		model.Code,
+		model.NumSlots,
 		len(prog.captureKeys),
 		irProgramUsesFloat(prog),
 		info.StringBuilderSlots,
 		info.StringPrependSlots,
 	)
 	prog.analysis = &a
+	model.Analysis = &a
 	return a
 }
 

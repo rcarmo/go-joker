@@ -48,11 +48,15 @@ func explainIRCompile(loop *LoopExpr) IRDiagnostic {
 	}
 	wasm := explainWASMEligibility(prog)
 	analysis := AnalyzeIRProgram(prog)
+	model := prog.model
+	if model == nil {
+		model = prog.refreshModel().model
+	}
 	return IRDiagnostic{
 		Compiled:    true,
-		NumSlots:    prog.numSlots,
+		NumSlots:    model.NumSlots,
 		NumCaptures: len(prog.captureKeys),
-		NumOps:      irOpCount(prog.code),
+		NumOps:      irOpCount(model.Code),
 		UsesWASM:    wasm.Eligible && !wasm.HasImports,
 		WASM:        wasm,
 		Analysis:    analysis,
@@ -63,7 +67,11 @@ func explainWASMEligibility(prog *IRProgram) WASMDiagnostic {
 	if prog == nil {
 		return WASMDiagnostic{Reason: "nil IR program"}
 	}
-	code := prog.code
+	model := prog.model
+	if model == nil {
+		model = prog.refreshModel().model
+	}
+	code := model.Code
 	pc := 0
 	usesFloat := irProgramUsesFloat(prog)
 	for pc < len(code) {

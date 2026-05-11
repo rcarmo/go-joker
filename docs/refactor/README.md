@@ -80,7 +80,8 @@ Planned package boundaries:
 - [x] Move diagnostic/export helpers first, then compiler/executor (started with opcode naming, op counting, disassembly, and shape-analysis helpers; direct tests now cover the extracted IR helper package).
 - [x] Design `IRProgram` split into a small `core/internal/ir.Program` model plus root-core execution metadata.
 - [x] Start `IRProgram` split with `core/internal/ir.Program` neutral model and root-core envelope population.
-- [ ] Migrate diagnostics/export/profile/WASM eligibility to consume `core/internal/ir.Program`.
+- [x] Migrate diagnostics/export accessors to consume `core/internal/ir.Program`.
+- [ ] Migrate profile/WASM eligibility to consume `core/internal/ir.Program`.
 - [x] Keep benchmark correctness tests before performance work.
 
 ### R4 — Generated code boundary
