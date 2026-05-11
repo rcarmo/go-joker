@@ -21,6 +21,7 @@ type pvNode struct {
 // PersistentVector is an immutable vector backed by a 32-way trie.
 type PersistentVector struct {
 	InfoHolder
+	MetaHolder
 	count int
 	shift uint // bits to shift for root level (5 * depth)
 	root  *pvNode
@@ -278,26 +279,35 @@ func pvNewPath(level uint, node *pvNode) *pvNode {
 
 // --- Object interface ---
 
-func (v *PersistentVector) ToString(escape bool) string {
-	return "TODO" // Use existing vector printing logic
-}
+func (v *PersistentVector) At(i int) Object { return v.Nth(i) }
+
+func (v *PersistentVector) Seq() Seq { return NewVectorFrom(v.ToSlice()...).Seq() }
+
+func (v *PersistentVector) ToString(escape bool) string { return CountedIndexedToString(v, escape) }
 
 func (v *PersistentVector) Equals(other interface{}) bool {
-	if o, ok := other.(*PersistentVector); ok {
-		if v.count != o.count {
-			return false
-		}
-		for i := 0; i < v.count; i++ {
-			if !v.Nth(i).Equals(o.Nth(i)) {
-				return false
-			}
-		}
+	if v == other {
 		return true
 	}
-	return false
+	switch other := other.(type) {
+	case CountedIndexed:
+		return AreCountedIndexedEqual(v, other)
+	default:
+		return IsSeqEqual(v.Seq(), other)
+	}
 }
 
-func (v *PersistentVector) GetInfo() *ObjectInfo             { return nil }
-func (v *PersistentVector) WithInfo(info *ObjectInfo) Object { return v }
-func (v *PersistentVector) GetType() *Type                   { return TYPE.ArrayVector }
-func (v *PersistentVector) Hash() uint32                     { return uint32(v.count) }
+func (v *PersistentVector) WithInfo(info *ObjectInfo) Object {
+	res := *v
+	res.info = info
+	return &res
+}
+
+func (v *PersistentVector) WithMeta(meta Map) Object {
+	res := *v
+	res.meta = SafeMerge(res.meta, meta)
+	return &res
+}
+
+func (v *PersistentVector) GetType() *Type { return TYPE.ArrayVector }
+func (v *PersistentVector) Hash() uint32   { return CountedIndexedHash(v) }

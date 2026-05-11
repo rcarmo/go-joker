@@ -4,6 +4,26 @@ import (
 	"testing"
 )
 
+func TestPVObjectSemantics(t *testing.T) {
+	pv := PersistentVectorFrom([]Object{MakeInt(1), MakeInt(2), MakeInt(3)})
+	av := NewArrayVectorFrom(MakeInt(1), MakeInt(2), MakeInt(3))
+	if got := pv.ToString(false); got != "[1 2 3]" {
+		t.Fatalf("ToString = %q", got)
+	}
+	if !pv.Equals(av) || !av.Equals(pv) {
+		t.Fatal("persistent vector should compare equal to other counted/indexed vectors")
+	}
+	if pv.Hash() != av.Hash() {
+		t.Fatalf("hash mismatch: persistent=%d array=%d", pv.Hash(), av.Hash())
+	}
+	if !pv.At(1).Equals(MakeInt(2)) {
+		t.Fatalf("At(1) = %s", pv.At(1).ToString(false))
+	}
+	if pv.Seq().IsEmpty() || !pv.Seq().First().Equals(MakeInt(1)) {
+		t.Fatal("Seq did not expose first element")
+	}
+}
+
 func TestPVEmpty(t *testing.T) {
 	pv := EmptyPersistentVector()
 	if pv.Count() != 0 {
