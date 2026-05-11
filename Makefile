@@ -114,6 +114,11 @@ import-identity-check:
 	tests/import_identity_guard.sh .
 
 docs-check: docs generated-check import-identity-check
+	test -f docs/ARCHITECTURE_REFACTOR_PLAN.md
+	test -f docs/IR_BOUNDARY_AUDIT.md
+	test -f docs/GENERATED_BOUNDARY_AUDIT.md
+	test -f docs/BABASHKA_SHIM_ASSESSMENT.md
+	test -f docs/PORTABILITY_SHIM_ASSESSMENT.md
 	test -f docs/joker.imaging.html
 	test -f docs/joker.jit.html
 	test -f docs/joker.edn.html
