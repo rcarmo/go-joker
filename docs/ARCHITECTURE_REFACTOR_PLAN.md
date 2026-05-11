@@ -28,7 +28,7 @@ Planned package boundaries:
 | `core/internal/ir` or `core/ir` | `ir*.go`, IR tests | Requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. Do after trace extraction. |
 | `core/internal/wasm` or `core/wasm` | `wasm*.go` | Depends on IR program shape; should follow IR split. |
 | `core/runtime` | goroutine runtime, eval frames, errors, tracing hooks | Needs careful cycle avoidance with evaluator/object model. |
-| `core/collections` | vectors, maps, sets, seqs, transients | Large API surface; likely requires type aliases/wrappers during migration. |
+| `core/collections` | vectors, maps, sets, seqs, transients | Large API surface; split only after IR/generated boundaries are stable. |
 | `core/reader` | `reader.go`, `read.go`, tagged literals | Candidate after object/collection API is stable. |
 | `core/generated` | `a_*.go`, `types_*_gen.go` | Needs generator updates and bootstrapping contract. |
 | `tools/tracing` or skill scripts | pprof/IR/function trace renderers | External tooling can move independently of Go runtime packages. |
@@ -49,9 +49,9 @@ Planned package boundaries:
 
 ### R2 — Extract symbol/IR profiling state
 
-- [ ] Move symbol trace aggregation into `core/internal/trace`.
-- [ ] Move IR opcode profile aggregation into `core/internal/trace` while keeping opcode naming in core.
-- [ ] Preserve JSON output shapes.
+- [x] Move symbol trace aggregation into `core/internal/trace`.
+- [x] Move IR opcode profile aggregation into `core/internal/trace` while keeping opcode naming in core.
+- [x] Preserve JSON output shapes.
 
 ### R3 — Define IR boundary
 
@@ -68,8 +68,8 @@ Planned package boundaries:
 ### R5 — Collections/reader/runtime follow-up
 
 - [ ] Split only after IR/generated boundaries are stable.
-- [ ] Use type aliases or adapter layers to avoid one massive breaking change.
+- [ ] Prefer clean package boundaries over compatibility wrappers; breaking changes are acceptable.
 
 ## Current execution status
 
-R1 is the active refactor batch.
+R2 is complete. R3 (IR boundary audit) is the next active refactor batch.
