@@ -12,6 +12,7 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 - `joker.edn` plus `edn` alias namespace with `read-string`/`write-string` using the reader/printer without evaluation.
 - Expanded `joker.transit` for pod-oriented Transit+JSON payloads.
 - Portable Babashka fixture suite via `make bb-compat`.
+- Script-driven Babashka shim policy documented in `docs/BABASHKA_SHIM_ASSESSMENT.md`.
 - Tracing/profile tooling documented in `docs/TRACING.md`.
 
 ## Performance
