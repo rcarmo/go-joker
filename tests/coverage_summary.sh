@@ -34,6 +34,19 @@ awk '
 ' "$out"
 
 echo
+
+echo "== Gap-closure package coverage =="
+awk '
+  $1 ~ /\/std\/(pods|transit|edn)\// && $3 ~ /%$/ {
+    pct=$3; gsub("%", "", pct); pkg=$1; sub(/:[0-9]+.*/, "", pkg);
+    split(pkg, parts, "/std/"); split(parts[2], rest, "/"); name=rest[1]; count[name]++; sum[name]+=pct+0;
+  }
+  END {
+    for (name in count) printf "%s mean function coverage: %.1f%% (%d funcs)\n", name, sum[name]/count[name], count[name];
+  }
+' "$out" | sort
+
+echo
 echo "== Lowest non-generated functions =="
 awk '
   function generated(path) {
