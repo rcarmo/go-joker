@@ -1,0 +1,9 @@
+(ns bb-compat.core-data
+  (:require [joker.edn :as edn]))
+
+(def data {:name "joker" :xs [1 2 3] :s #{:a :b}})
+(when-not (= 6 (reduce + (:xs data)))
+  (throw "bad reduce"))
+(when-not (= data (edn/read-string (edn/write-string data)))
+  (throw "bad edn roundtrip"))
+(println "OK core-data")

@@ -1,0 +1,17 @@
+(ns bb-compat.codecs
+  (:require [joker.json :as json]
+            [joker.yaml :as yaml]
+            [joker.base64 :as b64]
+            [joker.hex :as hex]))
+
+(when-not (= {:a 1 :b [true nil]}
+             (json/read-string (json/write-string {:a 1 :b [true nil]}) {:keywords? true}))
+  (throw "bad json roundtrip"))
+(when-not (= {"a" 1 "b" [2 3]}
+             (yaml/read-string (yaml/write-string {:a 1 :b [2 3]})))
+  (throw "bad yaml roundtrip"))
+(when-not (= "hello" (b64/decode-string (b64/encode-string "hello")))
+  (throw "bad base64"))
+(when-not (= "6869" (hex/encode-string "hi"))
+  (throw "bad hex"))
+(println "OK codecs")

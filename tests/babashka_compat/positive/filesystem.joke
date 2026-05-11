@@ -1,0 +1,11 @@
+(ns bb-compat.filesystem
+  (:require [joker.os :as os]))
+
+(def path (str (get (os/env) "TMPDIR") "/go-joker-bb-compat-file.txt"))
+(spit path "portable file io")
+(when-not (= "portable file io" (slurp path))
+  (throw "bad file roundtrip"))
+(when-not (os/exists? path)
+  (throw "missing file"))
+(os/remove path)
+(println "OK filesystem")

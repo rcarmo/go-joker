@@ -205,6 +205,6 @@ A Babashka compatibility slice is successful when:
 
 - a JSON-format fake pod can be loaded and invoked through `pods/load-pod` and dynamically installed vars
 - EDN and Transit+JSON fake pods pass golden tests
-- portable scripts using core data, JSON/YAML/HTTP/filesystem basics run unchanged or with documented namespace aliases
+- portable scripts using core data, JSON/YAML/HTTP/filesystem basics run unchanged or with documented namespace aliases (`make bb-compat`)
 - unsupported Java/task/deps/SCI features fail clearly and are listed as non-goals
 - docs and coverage checks pass with no warnings

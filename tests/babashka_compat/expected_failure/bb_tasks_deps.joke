@@ -1,0 +1,2 @@
+;; EXPECT-ERROR: bb.edn tasks/deps/classpath assembly are non-goals for go-joker
+(throw "bb.edn tasks/deps/classpath assembly are non-goals for go-joker")

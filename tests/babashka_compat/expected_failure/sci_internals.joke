@@ -1,0 +1,2 @@
+;; EXPECT-ERROR: SCI analyzer/evaluator internals are a non-goal for go-joker
+(throw "SCI analyzer/evaluator internals are a non-goal for go-joker")

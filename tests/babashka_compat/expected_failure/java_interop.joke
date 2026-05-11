@@ -1,0 +1,2 @@
+;; EXPECT-ERROR: Java/JVM interop is a non-goal for go-joker Babashka compatibility
+(throw "Java/JVM interop is a non-goal for go-joker Babashka compatibility")

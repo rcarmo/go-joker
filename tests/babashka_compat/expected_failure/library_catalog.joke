@@ -1,0 +1,2 @@
+;; EXPECT-ERROR: Babashka bundled library catalog APIs are non-goals unless script-driven
+(throw "Babashka bundled library catalog APIs are non-goals unless script-driven")

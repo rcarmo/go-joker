@@ -1,0 +1,13 @@
+(ns bb-compat.http
+  (:require [joker.http :as http]
+            [joker.json :as json]
+            [joker.os :as os]))
+
+(def url (get (os/env) "BB_COMPAT_HTTP_URL"))
+(def resp (http/send {:method :get :url url}))
+(when-not (= 200 (:status resp))
+  (throw (str "bad status " (:status resp))))
+(when-not (= {:ok true :path "/compat"}
+             (json/read-string (:body resp) {:keywords? true}))
+  (throw "bad http body"))
+(println "OK http")

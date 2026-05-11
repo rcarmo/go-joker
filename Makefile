@@ -40,6 +40,7 @@ help:
 	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
 	@echo "  make parity         # Run Clojure parity tests (271 core form tests)"
 	@echo "  make jank-subset    # Run imported jank-lang/clojure-test-suite subset"
+	@echo "  make bb-compat      # Run portable Babashka compatibility fixture suite"
 	@echo "  make compare-bench  # Run cross-runtime + let-go-suite comparison sub-project"
 	@echo "  make compare-clean  # Remove generated comparison outputs"
 	@echo "  make audit-fast     # test + vet + staticcheck + lint + vuln"
@@ -100,6 +101,9 @@ coverage-summary:
 docs:
 	$(GO) build -o $(DOCS_JOKER_BIN) .
 	cd docs && $(DOCS_JOKER_BIN) generate-docs.joke > docs-generation.log && cat docs-generation.log && ! grep -q WARNING docs-generation.log && rm docs-generation.log
+
+bb-compat:
+	$(GO) test ./tests -run Babashka -count=$(TEST_COUNT) -timeout=120s
 
 docs-check: docs
 	test -f docs/joker.imaging.html
