@@ -69,7 +69,7 @@ Recent `std/transit` and `std/system` match this pattern.
 - remaining `core/ir_*` / `core/wasm_*` — partially extracted, but compiler/executor/runtime pieces still depend on root-core object and call contracts.
 - `core/persistent_vector.go` — object semantics have been tightened (standard vector printing, counted/indexed equality/hash, `At`/`Seq`, info/meta helpers), making it a better template for eventual collection extraction.
 
-Recommendation: avoid broad collection/reader/evaluator moves until `docs/OBJECT_PROTOCOL_CONTRACT_AUDIT.md` contracts are made concrete. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
+Recommendation: avoid broad collection/reader/evaluator moves until `docs/refactor/object-protocol-contracts.md` contracts are made concrete. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
 
 ### 2. Runtime-installed Var metadata is implicit
 

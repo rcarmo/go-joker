@@ -15,10 +15,21 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 - Module identity is now `github.com/rcarmo/go-joker`; remaining `candid82` references should be attribution/upstream history or third-party dependencies only.
 - CLI entrypoint now lives under `cmd/joker`.
 - `std/*` is already package-oriented and mostly healthy.
-- `core` is the main monolith.
-- Generated `core/a_*.go` files dominate size and should eventually move behind a generated bootstrap package or at least a generated-code directory with explicit init hooks.
-- IR/JIT/WASM files are heavily coupled to `core.Object`, `Fn`, `Expr`, `LocalEnv`, and unexported runtime helpers.
-- Tracing/profiling code is comparatively separable and is the first extraction target.
+- `core` remains the main monolith, but leaf packages now exist under `core/internal`.
+- Generated `core/a_*.go` files dominate size and are tracked by `tests/generated_files.txt`; they should eventually move behind a generated bootstrap package or clearly separated bootstrap module.
+- IR/JIT/WASM compiler and executor files are still coupled to `core.Object`, `Fn`, `Expr`, `LocalEnv`, and unexported runtime helpers, but opcode/diagnostic helpers and WASM leaf helpers have been extracted.
+- Tracing/profiling aggregation state is extracted into `core/internal/trace`.
+
+## Refactor document set
+
+This folder is the canonical refactor/audit document set:
+
+- `README.md` — overall plan, status, and target layout.
+- `code-structure.md` — broad package/module and coverage audit.
+- `ir-boundary.md` — IR split inventory and boundary plan.
+- `generated-boundary.md` — generated-code inventory and guardrails.
+- `core-split.md` — collections/reader/runtime/WASM split candidates.
+- `object-protocol-contracts.md` — object/protocol contracts blocking broad moves.
 
 ## Target package map
 
@@ -26,7 +37,7 @@ Planned package boundaries:
 
 | Target | Current files/examples | Notes |
 |---|---|---|
-| `core/internal/trace` | `function_trace.go`, later `symbol_trace.go`, `ir_profile.go` state machinery | Leaf package. No dependency on `core`; core passes names/events/op names in. First extraction target. |
+| `core/internal/trace` | `function_trace.go`, `symbol_trace.go`, `ir_profile.go` state machinery | Extracted leaf package. No dependency on `core`; core passes names/events/op names in. |
 | `core/internal/ir` or `core/ir` | `ir*.go`, IR tests | Requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. Do after trace extraction. |
 | `core/internal/wasm` | `wasm*.go` leaf helpers first | Encoding, module builder, host metadata, and shared constants are extracted; full lowering/runtime still depends on IR program shape and should follow the IR split. |
 | `core/runtime` | goroutine runtime, eval frames, errors, tracing hooks | Needs careful cycle avoidance with evaluator/object model. |
@@ -68,7 +79,7 @@ Planned package boundaries:
 
 ### R4 — Generated code boundary
 
-- [x] Inventory generated file families and generator source packages in `docs/GENERATED_BOUNDARY_AUDIT.md`.
+- [x] Inventory generated file families and generator source packages in `docs/refactor/generated-boundary.md`.
 - [x] Add `make generated-check` guardrail and run it from `make docs-check`.
 - [x] Track generated root-core file set in `tests/generated_files.txt`.
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
@@ -77,8 +88,8 @@ Planned package boundaries:
 
 ### R5 — Collections/reader/runtime follow-up
 
-- [x] Inventory collection/reader/runtime/evaluator/WASM split candidates in `docs/CORE_SPLIT_AUDIT.md`.
-- [x] Inventory object/protocol contracts blocking broad moves in `docs/OBJECT_PROTOCOL_CONTRACT_AUDIT.md`.
+- [x] Inventory collection/reader/runtime/evaluator/WASM split candidates in `docs/refactor/core-split.md`.
+- [x] Inventory object/protocol contracts blocking broad moves in `docs/refactor/object-protocol-contracts.md`.
 - [x] Add `make core-contract-check` for object/protocol contract tests that gate future splits.
 - [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
 - [ ] Move collections only after object/protocol contracts are explicit.

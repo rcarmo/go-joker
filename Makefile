@@ -130,11 +130,12 @@ core-contract-check:
 	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestInfoAndMetaContract|TestPVObjectSemantics' -count=$(TEST_COUNT) -timeout=120s
 
 docs-check: docs generated-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check
-	test -f docs/ARCHITECTURE_REFACTOR_PLAN.md
-	test -f docs/IR_BOUNDARY_AUDIT.md
-	test -f docs/GENERATED_BOUNDARY_AUDIT.md
-	test -f docs/CORE_SPLIT_AUDIT.md
-	test -f docs/OBJECT_PROTOCOL_CONTRACT_AUDIT.md
+	test -f docs/refactor/README.md
+	test -f docs/refactor/code-structure.md
+	test -f docs/refactor/ir-boundary.md
+	test -f docs/refactor/generated-boundary.md
+	test -f docs/refactor/core-split.md
+	test -f docs/refactor/object-protocol-contracts.md
 	test -f docs/BABASHKA_SHIM_ASSESSMENT.md
 	test -f docs/PORTABILITY_SHIM_ASSESSMENT.md
 	test -f docs/joker.imaging.html

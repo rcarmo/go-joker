@@ -101,7 +101,7 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 
 <img src="benchmarks/architecture.svg" alt="architecture" width="100%">
 
-The repository layout is being split along architectural boundaries. The module identity is `github.com/rcarmo/go-joker`, the CLI lives in `cmd/joker`, tracing/IR/WASM leaf helpers are under `core/internal/{trace,ir,wasm}`, and the ongoing split plan is tracked in [`docs/ARCHITECTURE_REFACTOR_PLAN.md`](docs/ARCHITECTURE_REFACTOR_PLAN.md). Standard validation now includes generated-file, import-identity, non-goal, layout, refactor-internal, core object/protocol contract, docs, Babashka fixture, test, and vet guardrails.
+The repository layout is being split along architectural boundaries. The module identity is `github.com/rcarmo/go-joker`, the CLI lives in `cmd/joker`, tracing/IR/WASM leaf helpers are under `core/internal/{trace,ir,wasm}`, and the ongoing split plan is tracked in [`docs/refactor/README.md`](docs/refactor/README.md). Standard validation now includes generated-file, import-identity, non-goal, layout, refactor-internal, core object/protocol contract, docs, Babashka fixture, test, and vet guardrails.
 
 - **WASM path**: pure integer/float loops → wazero JIT → native code (~0.2ms)
 - **Typed IR path**: primitive/string/cursor loops → irValue stack, zero-boxing (~2–8ms)
@@ -136,11 +136,12 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 
 ## Documentation
 
-- [`docs/ARCHITECTURE_REFACTOR_PLAN.md`](docs/ARCHITECTURE_REFACTOR_PLAN.md) — repository split plan and target folder structure
-- [`docs/IR_BOUNDARY_AUDIT.md`](docs/IR_BOUNDARY_AUDIT.md) — IR package boundary inventory
-- [`docs/CORE_SPLIT_AUDIT.md`](docs/CORE_SPLIT_AUDIT.md) — collections/reader/runtime/WASM split candidates
-- [`docs/OBJECT_PROTOCOL_CONTRACT_AUDIT.md`](docs/OBJECT_PROTOCOL_CONTRACT_AUDIT.md) — object/protocol contracts blocking broad core moves
-- [`docs/GENERATED_BOUNDARY_AUDIT.md`](docs/GENERATED_BOUNDARY_AUDIT.md) — generated-code boundary inventory and guardrails
+- [`docs/refactor/README.md`](docs/refactor/README.md) — repository split plan and target folder structure
+- [`docs/refactor/code-structure.md`](docs/refactor/code-structure.md) — package/module and coverage audit
+- [`docs/refactor/ir-boundary.md`](docs/refactor/ir-boundary.md) — IR package boundary inventory
+- [`docs/refactor/core-split.md`](docs/refactor/core-split.md) — collections/reader/runtime/WASM split candidates
+- [`docs/refactor/object-protocol-contracts.md`](docs/refactor/object-protocol-contracts.md) — object/protocol contracts blocking broad core moves
+- [`docs/refactor/generated-boundary.md`](docs/refactor/generated-boundary.md) — generated-code boundary inventory and guardrails
 - [`docs/OPTIMIZATION_REPORT.md`](docs/OPTIMIZATION_REPORT.md) — full technical report (phases, trade-offs, outcomes, suggested git history)
 - [`docs/WEB_RUNTIME_AND_NAMESPACES.md`](docs/WEB_RUNTIME_AND_NAMESPACES.md) — WebSocket/SSE usage + router + all new namespaces
 - [`benchmarks/README.md`](benchmarks/README.md) — benchmark data and chart regeneration
