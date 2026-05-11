@@ -28,7 +28,7 @@ Planned package boundaries:
 |---|---|---|
 | `core/internal/trace` | `function_trace.go`, later `symbol_trace.go`, `ir_profile.go` state machinery | Leaf package. No dependency on `core`; core passes names/events/op names in. First extraction target. |
 | `core/internal/ir` or `core/ir` | `ir*.go`, IR tests | Requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. Do after trace extraction. |
-| `core/internal/wasm` or `core/wasm` | `wasm*.go` | Depends on IR program shape; should follow IR split. |
+| `core/internal/wasm` | `wasm*.go` leaf helpers first | Encoding, module builder, host metadata, and shared constants are extracted; full lowering/runtime still depends on IR program shape and should follow the IR split. |
 | `core/runtime` | goroutine runtime, eval frames, errors, tracing hooks | Needs careful cycle avoidance with evaluator/object model. |
 | `core/collections` | vectors, maps, sets, seqs, transients | Large API surface; split only after IR/generated boundaries are stable. |
 | `core/reader` | `reader.go`, `read.go`, tagged literals | Candidate after object/collection API is stable. |
@@ -86,4 +86,4 @@ Planned package boundaries:
 
 ## Current execution status
 
-R3 has established the first IR boundary. R4 generated-code inventory/guardrails are now in place; moving generated artifacts waits on runtime/object initialization boundaries. The CLI entrypoint has moved to `cmd/joker` as the first top-level repository layout cleanup.
+R3 has established the first IR boundary and extracted tested IR helper packages. R4 generated-code inventory/guardrails are in place, including a manifest of root-core generated files; moving generated artifacts waits on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and documented the object/protocol contracts that block broader collection/reader/runtime moves. The CLI entrypoint lives in `cmd/joker`.

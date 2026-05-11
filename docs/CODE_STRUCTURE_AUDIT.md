@@ -1,16 +1,19 @@
 # Code structure, module boundaries, and coverage audit
 
 Generated: 2026-05-10
+Updated: 2026-05-11
 
 ## Executive summary
 
 The repository is functional and well-tested at the behavior/regression level, but it has a classic interpreter/runtime shape: a large `core` package owns most object model, evaluator, reader/parser, namespace, numeric, concurrency, IR, and WASM responsibilities. `std/*` packages are better bounded: each namespace has a small registration wrapper plus native implementation/tests.
 
-Recent feature work improved boundaries for new code (`std/transit`, `std/system`, `std/jit` export APIs), but the older `core` package still needs gradual decomposition. The safest path is not a large package split; it is to define internal contracts first and enforce them with small tests, docs, and Makefile targets.
+Recent feature work improved boundaries for new code (`std/transit`, `std/system`, `std/jit` export APIs), and the refactor pass has now moved the CLI to `cmd/joker` plus extracted leaf packages under `core/internal/{trace,ir,wasm}`. The older `core` package still needs gradual decomposition. The safest path is to keep defining internal contracts first and enforce them with small tests, docs, and Makefile targets.
 
 ## Current package/module shape
 
-- `core/` is the runtime kernel and contains:
+- `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
+- `core/internal/trace`, `core/internal/ir`, and `core/internal/wasm` now own extracted leaf helpers with direct package tests.
+- `core/` is still the runtime kernel and contains:
   - object/type model (`object.go`, `types_*`)
   - persistent collection implementations
   - reader/parser/evaluator (`read.go`, `parse.go`, `eval.go`)
@@ -42,14 +45,16 @@ Recent `std/transit` and `std/system` match this pattern.
 
 ### IR/WASM/JIT contract
 
-- `core` owns `IRProgram`, lowering, execution, WASM emission and diagnostics.
+- `core/internal/ir` owns opcode constants/names, bytecode counting/disassembly helpers, and IR shape analysis.
+- `core/internal/wasm` owns leaf WASM encoding/module/host metadata/value-type helpers.
+- Root `core` still owns `IRProgram`, lowering, execution, WASM emission orchestration and diagnostics adapters.
 - `std/jit` consumes only exported `core` bridge methods (`IrCompileFn`, `IrExec*`, `IrDisassemble`, `IrToWasmExported`, `WasmCompileBytesExported`).
 - Artifact export is correctly layered in `std/jit`; it does not reach into private `IRProgram` fields.
 
 ### Documentation contract
 
 - Public vars must have `:doc`, `:added`, `:ns`, and `:name` metadata unless explicitly private.
-- `make docs-check` now treats documentation warnings as failures.
+- `make docs-check` now treats documentation warnings as failures and runs generated-file, import-identity, explicit non-goal, and extracted-internal-package guardrails.
 
 ## Boundary concerns / maintenance risks
 
@@ -61,9 +66,9 @@ Recent `std/transit` and `std/system` match this pattern.
 - `core/object.go` — type definitions plus stringification/comparison helpers.
 - `core/parse.go`, `core/read.go`, `core/eval.go` — acceptable for an interpreter but should remain isolated from feature-specific extensions.
 - `core/numbers.go` — numeric contracts are critical and now need focused tests after BigInt/BigDecimal changes.
-- `core/ir_*` / `core/wasm_*` — already separated by filename; keep this boundary strict.
+- remaining `core/ir_*` / `core/wasm_*` — partially extracted, but compiler/executor/runtime pieces still depend on root-core object and call contracts.
 
-Recommendation: avoid moving code immediately. Instead, keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) and avoid growing `procs.go` unless a proc is truly part of the original core operator set.
+Recommendation: avoid broad collection/reader/evaluator moves until `docs/OBJECT_PROTOCOL_CONTRACT_AUDIT.md` contracts are made concrete. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
 
 ### 2. Runtime-installed Var metadata is implicit
 
