@@ -73,7 +73,11 @@ Planned package boundaries:
 
 ### R5 — Collections/reader/runtime follow-up
 
-- [ ] Split only after IR/generated boundaries are stable.
+- [x] Inventory collection/reader/runtime/evaluator/WASM split candidates in `docs/CORE_SPLIT_AUDIT.md`.
+- [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable.
+- [ ] Move collections only after object/protocol contracts are explicit.
+- [ ] Move reader only after object construction and tagged literal contracts are explicit.
+- [ ] Move runtime/evaluator only after call/error/frame contracts are explicit.
 - [ ] Prefer clean package boundaries over compatibility wrappers; breaking changes are acceptable.
 
 ## Current execution status

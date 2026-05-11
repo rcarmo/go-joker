@@ -117,6 +117,7 @@ docs-check: docs generated-check import-identity-check
 	test -f docs/ARCHITECTURE_REFACTOR_PLAN.md
 	test -f docs/IR_BOUNDARY_AUDIT.md
 	test -f docs/GENERATED_BOUNDARY_AUDIT.md
+	test -f docs/CORE_SPLIT_AUDIT.md
 	test -f docs/BABASHKA_SHIM_ASSESSMENT.md
 	test -f docs/PORTABILITY_SHIM_ASSESSMENT.md
 	test -f docs/joker.imaging.html
