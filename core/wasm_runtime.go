@@ -6,6 +6,7 @@ package core
 import (
 	"context"
 	"math"
+	"strconv"
 	"sync"
 
 	"github.com/tetratelabs/wazero"
@@ -47,7 +48,7 @@ func nextWasmModName() string {
 	wasmModSeq++
 	n := wasmModSeq
 	wasmModMu.Unlock()
-	return "joker_wasm_" + string(rune('0'+n%10)) + string(rune('0'+n/10%10))
+	return "joker_wasm_" + strconv.FormatUint(n, 10)
 }
 
 // wasmGetCached retrieves or compiles a WASM program for an IR program.
@@ -96,6 +97,7 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 
 	execFn := mod.ExportedFunction("exec")
 	if execFn == nil {
+		_ = mod.Close(ctx)
 		return nil
 	}
 
