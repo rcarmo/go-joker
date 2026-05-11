@@ -72,8 +72,8 @@ This lets the compiler/executor continue to use root-core object/runtime details
 
 ## Migration sequence
 
-1. Add `core/internal/ir.Program` and conversion/accessor helpers.
-2. Populate `IRProgram.model` during compilation while leaving old fields in place.
+1. Add `core/internal/ir.Program` and conversion/accessor helpers. **Done: initial neutral model exists in `core/internal/ir/model.go`.**
+2. Populate `IRProgram.model` during compilation while leaving old fields in place. **Done: root executable envelopes now refresh a neutral model.**
 3. Move analysis fields/helpers to the internal model.
 4. Update diagnostics/export/profile/WASM eligibility to read the model.
 5. Remove duplicated root fields once no callers use them.

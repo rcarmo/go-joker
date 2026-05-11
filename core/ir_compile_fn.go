@@ -137,6 +137,7 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 			prog.captureSlotSet[idx] = true
 		}
 	}
+	prog.refreshModel()
 	prog.nativeHelper = irCompileNativeHelper(prog)
 	prog.nativeChecked = true
 	// Cache at arity level. For fns with captures, store a "template"
@@ -182,12 +183,12 @@ func irCompileMultiArity(fn *Fn) *IRProgram {
 	}
 
 	// Create wrapper program that dispatches by arity
-	wrapper := &IRProgram{
+	wrapper := (&IRProgram{
 		arityPrograms:   programs,
 		variadicProg:    varProg,
 		variadicMinArgs: varMinArgs,
 		traceName:       fn.fnExpr.traceName,
-	}
+	}).refreshModel()
 	irFnCache.Store(&firstArity, wrapper)
 	return wrapper
 }
@@ -221,6 +222,7 @@ func irCompileVariadicFn(fn *Fn) *IRProgram {
 	}
 	// Mark as variadic so the executor knows to pack rest args
 	prog.variadicMinArgs = len(va.args) - 1 // exclude the & rest param from required count
+	prog.refreshModel()
 	irFnCache.Store(&firstArity, prog)
 	return prog
 }

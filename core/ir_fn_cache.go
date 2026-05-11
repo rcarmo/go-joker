@@ -54,12 +54,12 @@ func irGetFnProg(fn *Fn) *IRProgram {
 					if loopProg != nil && loopProg.nativeHelper != nil {
 						wrapper := buildNativeLoopWrapper(fn, arity, loop, loopProg)
 						if wrapper != nil {
-							prog = &IRProgram{
+							prog = (&IRProgram{
 								numSlots:      len(arity.args),
 								nativeHelper:  wrapper,
 								nativeChecked: true,
 								traceName:     fn.fnExpr.traceName,
-							}
+							}).refreshModel()
 						}
 					}
 				}

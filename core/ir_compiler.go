@@ -93,12 +93,12 @@ func irCompileExplain(loop *LoopExpr) (*IRProgram, string) {
 		}
 		slotUsed[slot] = true
 	}
-	return &IRProgram{
+	return (&IRProgram{
 		code:        c.code,
 		constants:   c.constants,
 		numSlots:    c.numSlots,
 		captureKeys: c.captureKeys,
-	}, ""
+	}).refreshModel(), ""
 }
 
 func (c *irCompiler) reject(format string, args ...interface{}) bool {

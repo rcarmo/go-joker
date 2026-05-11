@@ -103,6 +103,7 @@ func irGetCached(loop *LoopExpr) *IRProgram {
 // ---------- Program ----------
 
 type IRProgram struct {
+	model           *coreir.Program
 	code            []byte
 	constants       []Object
 	numSlots        int
@@ -126,4 +127,33 @@ type IRProgram struct {
 	fnExprs         []*FnExpr // for irMakeFn opcode
 	traceName       string
 	captureSlotSet  []bool // captureSlotSet[i] = true if slot i holds a capture (skip clearing)
+}
+
+func (p *IRProgram) refreshModel() *IRProgram {
+	if p == nil {
+		return nil
+	}
+	model := coreir.NewProgram(p.code, p.numSlots, len(p.constants))
+	model.HasSelf = p.hasSelf
+	model.FloatConsts = append([]float64(nil), p.floatConsts...)
+	model.WithCaptures(p.captureSlotIdxs, p.captureSlotSet)
+	if p.analysis != nil {
+		analysis := coreir.Analyze(p.code, p.numSlots, len(p.captureKeys), len(p.floatConsts) > 0, p.analysis.StringAppendSlots, p.analysis.StringPrependSlots)
+		model.Analysis = &analysis
+	}
+	if len(p.arityPrograms) > 0 || p.variadicProg != nil || p.variadicMinArgs != 0 {
+		arityPrograms := make(map[int]*coreir.Program, len(p.arityPrograms))
+		for arity, prog := range p.arityPrograms {
+			if prog != nil {
+				arityPrograms[arity] = prog.refreshModel().model
+			}
+		}
+		var variadic *coreir.Program
+		if p.variadicProg != nil {
+			variadic = p.variadicProg.refreshModel().model
+		}
+		model.WithArityPrograms(arityPrograms, variadic, p.variadicMinArgs)
+	}
+	p.model = model
+	return p
 }
