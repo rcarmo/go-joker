@@ -5,6 +5,7 @@ import (
 	"os"
 	"sync"
 
+	corewasm "github.com/rcarmo/go-joker/core/internal/wasm"
 	"github.com/tetratelabs/wazero"
 )
 
@@ -192,9 +193,9 @@ func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRPro
 
 func wasmModuleWithTwoFuncs(callerParams, helperParams int, useFloat bool, callerBody, helperBody []byte) []byte {
 	m := newWasmModule()
-	valType := byte(0x7e)
+	valType := corewasm.ValTypeI64
 	if useFloat {
-		valType = 0x7c
+		valType = corewasm.ValTypeF64
 	}
 	var typeBody []byte
 	typeBody = append(typeBody, 0x02)

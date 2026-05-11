@@ -1,5 +1,7 @@
 package core
 
+import corewasm "github.com/rcarmo/go-joker/core/internal/wasm"
+
 // wasm_codegen.go — translates IR bytecode to WASM function body.
 
 func irToWasm(prog *IRProgram) []byte {
@@ -12,9 +14,9 @@ func irToWasm(prog *IRProgram) []byte {
 		return nil
 	}
 	m := newWasmModule()
-	valType := byte(0x7e) // i64
+	valType := corewasm.ValTypeI64
 	if useFloat {
-		valType = 0x7c // f64
+		valType = corewasm.ValTypeF64
 	}
 	m.addTypeSectionTyped(prog.numSlots, valType)
 	if prog.hasSelf {
@@ -120,9 +122,9 @@ func compileWasmBodyWithHelper(prog *IRProgram, useFloat bool, helperSlot int, h
 
 func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot int, helperFuncIdx int, numParams int) []byte {
 	var o []byte
-	valType := byte(0x7e) // i64
+	valType := corewasm.ValTypeI64
 	if useFloat {
-		valType = 0x7c // f64
+		valType = corewasm.ValTypeF64
 	}
 	extraLocals := prog.numSlots - numParams
 	if extraLocals > 0 {
@@ -135,7 +137,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 
 	resType := valType
 	if useFloat {
-		resType = 0x7c // f64
+		resType = corewasm.ValTypeF64
 	}
 	o = append(o, 0x02, resType) // block $exit -> result type
 	o = append(o, 0x03, 0x40)    // loop $loop -> void

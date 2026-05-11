@@ -37,17 +37,17 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 		typeBody = append(typeBody, 0x60) // functype
 		typeBody = appendULEB(typeBody, imp.NumParams)
 		for j := 0; j < imp.NumParams; j++ {
-			typeBody = append(typeBody, 0x7e) // i64
+			typeBody = append(typeBody, wasm.ValTypeI64)
 		}
-		typeBody = append(typeBody, 0x01, 0x7e) // 1 result: i64
+		typeBody = append(typeBody, 0x01, wasm.ValTypeI64)
 	}
 	// Main function type (index 7)
 	typeBody = append(typeBody, 0x60)
 	typeBody = appendULEB(typeBody, prog.numSlots)
 	for i := 0; i < prog.numSlots; i++ {
-		typeBody = append(typeBody, 0x7e) // i64
+		typeBody = append(typeBody, wasm.ValTypeI64)
 	}
-	typeBody = append(typeBody, 0x01, 0x7e) // 1 result: i64
+	typeBody = append(typeBody, 0x01, wasm.ValTypeI64)
 	m.addSection(0x01, typeBody)
 
 	// Import section
@@ -130,8 +130,8 @@ func compileWasmBodyWithImports(prog *IRProgram) []byte {
 	var o []byte
 	o = append(o, 0x00) // 0 local decls
 
-	o = append(o, 0x02, 0x7e) // block $exit -> i64
-	o = append(o, 0x03, 0x40) // loop $loop -> void
+	o = append(o, 0x02, wasm.ValTypeI64) // block $exit -> i64
+	o = append(o, 0x03, 0x40)            // loop $loop -> void
 
 	mainFuncIdx := len(standardHostImports)
 	code := prog.code
