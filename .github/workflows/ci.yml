@@ -61,34 +61,5 @@ jobs:
           path: bench-results.txt
           retention-days: 90
 
-      - name: Check for regressions (fib/tak/loop)
-        run: |
-          echo "=== Checking key benchmark thresholds ==="
-          # Extract ns/op for key benchmarks and check against thresholds
-          # These are generous thresholds (10x headroom) to catch major regressions only
-          set -euo pipefail
-
-          check_bench() {
-            local name="$1"
-            local max_ns="$2"
-            local result
-            result=$(grep "^${name}-" bench-results.txt | head -1 | awk '{print $3}' | tr -d ' ')
-            if [ -z "$result" ]; then
-              echo "SKIP: ${name} not found in results"
-              return 0
-            fi
-            echo "${name}: ${result} ns/op (threshold: ${max_ns} ns/op)"
-            # Compare as integers (truncate decimal)
-            local ns_int=${result%.*}
-            if [ "$ns_int" -gt "$max_ns" ]; then
-              echo "FAIL: ${name} regression detected! ${ns_int} > ${max_ns}"
-              return 1
-            fi
-          }
-
-          # Thresholds based on current baseline + 5x headroom
-          check_bench "BenchmarkFib10"        50000      # ~23µs GitHub runner baseline
-          check_bench "BenchmarkFib20"        2000000    # ~257µs baseline
-          check_bench "BenchmarkTak"          10000000   # ~1.1ms baseline
-          check_bench "BenchmarkLoopRecur1M"  10000000   # ~1.0ms baseline
-          echo "=== All threshold checks passed ==="
+      - name: Check benchmark smoke thresholds
+        run: tests/benchmark_ci_check.sh bench-results.txt
