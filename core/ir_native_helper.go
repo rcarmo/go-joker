@@ -20,8 +20,12 @@ func irCompileNativeHelper(prog *IRProgram) nativeF64Fn {
 	if prog == nil || prog.hasSelf {
 		return nil
 	}
+	model := prog.neutralModel()
+	if model == nil {
+		return nil
+	}
 	// Only compile pure numeric programs (no collections, strings, calls)
-	code := prog.code
+	code := model.Code
 	for pc := 0; pc < len(code); {
 		op := code[pc]
 		pc++
@@ -56,8 +60,8 @@ func irCompileNativeHelper(prog *IRProgram) nativeF64Fn {
 		}
 	}
 
-	numSlots := prog.numSlots
-	codeSlice := prog.code
+	numSlots := model.NumSlots
+	codeSlice := model.Code
 
 	return func(args []float64) float64 {
 		var slotBuf [8]float64

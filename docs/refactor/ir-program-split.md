@@ -75,7 +75,7 @@ This lets the compiler/executor continue to use root-core object/runtime details
 1. Add `core/internal/ir.Program` and conversion/accessor helpers. **Done: initial neutral model exists in `core/internal/ir/model.go`.**
 2. Populate `IRProgram.model` during compilation while leaving old fields in place. **Done: root executable envelopes now refresh a neutral model.**
 3. Move analysis fields/helpers to the internal model. **Started: `AnalyzeIRProgram` writes analysis back into the neutral model.**
-4. Update diagnostics/export/profile/WASM eligibility to read the model. **Started: diagnostics, exported bytecode/slot accessors, pure/imported/memory WASM eligibility, and WASM lowering helpers now read the neutral model; profile paths remain.**
+4. Update diagnostics/export/profile/WASM eligibility to read the model. **Done for diagnostics, exported bytecode/slot accessors, native helper eligibility/lowering, and pure/imported/memory WASM eligibility/lowering. Profile paths are opcode-stream based and do not own program shape. Executor and escape-analysis paths stay on the root executable envelope until runtime/object execution metadata is split.**
 5. Remove duplicated root fields once no callers use them.
 6. Only then consider moving compiler or executor pieces.
 

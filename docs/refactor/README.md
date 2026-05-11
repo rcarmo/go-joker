@@ -85,7 +85,9 @@ Planned package boundaries:
 - [x] Migrate multi-function WASM helper eligibility/lowering to consume `core/internal/ir.Program`.
 - [x] Migrate imported WASM host-codegen eligibility/lowering to consume `core/internal/ir.Program`.
 - [x] Migrate WASM memory helper paths to consume `core/internal/ir.Program`.
-- [ ] Migrate profile paths to consume `core/internal/ir.Program`.
+- [x] Confirm profile paths are opcode-stream based and do not own program shape.
+- [x] Migrate native helper eligibility/lowering to consume `core/internal/ir.Program`.
+- [ ] Leave executor/escape-analysis root fields until runtime/object execution metadata split is explicit.
 - [x] Keep benchmark correctness tests before performance work.
 
 ### R4 — Generated code boundary
