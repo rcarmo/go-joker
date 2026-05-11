@@ -67,6 +67,7 @@ Recent `std/transit` and `std/system` match this pattern.
 - `core/parse.go`, `core/read.go`, `core/eval.go` — acceptable for an interpreter but should remain isolated from feature-specific extensions.
 - `core/numbers.go` — numeric contracts are critical and now need focused tests after BigInt/BigDecimal changes.
 - remaining `core/ir_*` / `core/wasm_*` — partially extracted, but compiler/executor/runtime pieces still depend on root-core object and call contracts.
+- `core/persistent_vector.go` — object semantics have been tightened (standard vector printing, counted/indexed equality/hash, `At`/`Seq`, info/meta helpers), making it a better template for eventual collection extraction.
 
 Recommendation: avoid broad collection/reader/evaluator moves until `docs/OBJECT_PROTOCOL_CONTRACT_AUDIT.md` contracts are made concrete. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
 
