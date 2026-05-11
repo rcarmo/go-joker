@@ -138,7 +138,7 @@ func (p *IRProgram) refreshModel() *IRProgram {
 	model.FloatConsts = append([]float64(nil), p.floatConsts...)
 	model.WithCaptures(p.captureSlotIdxs, p.captureSlotSet)
 	if p.analysis != nil {
-		analysis := coreir.Analyze(p.code, p.numSlots, len(p.captureKeys), len(p.floatConsts) > 0, p.analysis.StringAppendSlots, p.analysis.StringPrependSlots)
+		analysis := coreir.Analyze(p.code, p.numSlots, len(p.captureKeys), irProgramUsesFloat(p), p.analysis.StringAppendSlots, p.analysis.StringPrependSlots)
 		model.Analysis = &analysis
 	}
 	if len(p.arityPrograms) > 0 || p.variadicProg != nil || p.variadicMinArgs != 0 {

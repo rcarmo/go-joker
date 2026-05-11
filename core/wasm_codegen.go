@@ -72,7 +72,11 @@ func irProgramUsesFloat(prog *IRProgram) bool {
 		}
 	}
 	// Check opcodes
-	code := prog.code
+	model := prog.model
+	if model == nil {
+		model = prog.refreshModel().model
+	}
+	code := model.Code
 	pc := 0
 	for pc < len(code) {
 		op := code[pc]

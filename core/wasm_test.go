@@ -82,6 +82,16 @@ func TestWasmFloatLoop(t *testing.T) {
 	if prog == nil {
 		t.Skip("IR failed")
 	}
+	if !irProgramUsesFloat(prog) {
+		t.Fatal("float loop should be detected as using float operations/constants")
+	}
+	if prog.model == nil {
+		t.Fatal("compiled IR program should populate neutral model")
+	}
+	analysis := AnalyzeIRProgram(prog)
+	if prog.model.Analysis == nil || !prog.model.Analysis.UsesFloat || !analysis.UsesFloat {
+		t.Fatalf("neutral model analysis should preserve float usage: model=%#v analysis=%#v", prog.model.Analysis, analysis)
+	}
 	t.Logf("float: %v, eligible: %v", irProgramUsesFloat(prog), isWasmEligible(prog))
 	wp := wasmCompile(prog)
 	if wp == nil {
