@@ -72,7 +72,11 @@ func wasmGetCachedWithOneHelper(prog *IRProgram, slots []Object) *WasmProgram {
 }
 
 func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram, int, bool) {
-	code := prog.code
+	model := prog.neutralModel()
+	if model == nil {
+		return 0, nil, nil, 0, false
+	}
+	code := model.Code
 	pc := 0
 	helperSlot := -1
 	helperNArgs := -1
@@ -127,7 +131,11 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 }
 
 func isWasmEligibleWithOneHelper(prog *IRProgram, helperSlot int) bool {
-	code := prog.code
+	model := prog.neutralModel()
+	if model == nil {
+		return false
+	}
+	code := model.Code
 	pc := 0
 	for pc < len(code) {
 		op := code[pc]
@@ -163,6 +171,10 @@ func isWasmEligibleWithOneHelper(prog *IRProgram, helperSlot int) bool {
 }
 
 func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRProgram, helperParams int) *WasmProgram {
+	model := prog.neutralModel()
+	if model == nil {
+		return nil
+	}
 	useFloat := irProgramUsesFloat(prog) || irProgramUsesFloat(helperProg)
 	callerBody := compileWasmBodyWithHelper(prog, useFloat, helperSlot, 1)
 	if callerBody == nil {
@@ -172,7 +184,7 @@ func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRPro
 	if helperBody == nil {
 		return nil
 	}
-	bin := wasmModuleWithTwoFuncs(prog.numSlots, helperParams, useFloat, callerBody, helperBody)
+	bin := wasmModuleWithTwoFuncs(model.NumSlots, helperParams, useFloat, callerBody, helperBody)
 
 	rt := getWasmRT()
 	ctx := context.Background()

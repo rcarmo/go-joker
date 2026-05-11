@@ -82,7 +82,8 @@ Planned package boundaries:
 - [x] Start `IRProgram` split with `core/internal/ir.Program` neutral model and root-core envelope population.
 - [x] Migrate diagnostics/export accessors to consume `core/internal/ir.Program`.
 - [x] Migrate WASM eligibility/basic lowering to consume `core/internal/ir.Program`.
-- [ ] Migrate profile and remaining WASM lowering helpers to consume `core/internal/ir.Program`.
+- [x] Migrate multi-function WASM helper eligibility/lowering to consume `core/internal/ir.Program`.
+- [ ] Migrate profile and remaining WASM memory/import helper paths to consume `core/internal/ir.Program`.
 - [x] Keep benchmark correctness tests before performance work.
 
 ### R4 — Generated code boundary
