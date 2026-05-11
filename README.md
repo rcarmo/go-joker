@@ -114,6 +114,7 @@ The repository layout is being split along architectural boundaries. The module 
 ```bash
 go test ./core              # run all tests
 go test ./core -bench .     # run all benchmarks
+make core-contract-check    # focused object/protocol split guardrails
 make parity                 # run language parity suite + refresh divergence matrix
 make jank-subset            # run imported jank-lang/clojure-test-suite smoke subset
 ```
@@ -132,10 +133,15 @@ bun benchmarks/cross_lang_bench.js
 
 # Regenerate charts
 go run ./benchmarks/generate_svg.go ./benchmarks
+
+# Check the same broad CI benchmark smoke ceilings used by GitHub Actions
+go test ./core -bench 'BenchmarkCall|BenchmarkFib|BenchmarkTak|BenchmarkLoop|BenchmarkReduce|BenchmarkClosure|BenchmarkMap|BenchmarkVector|BenchmarkTransduce' -benchmem -benchtime=1s -count=3 > bench-results.txt
+tests/benchmark_ci_check.sh bench-results.txt
 ```
 
 ## Documentation
 
+- [`docs/BENCHMARK_CI.md`](docs/BENCHMARK_CI.md) — CI benchmark smoke guard policy and local reproduction
 - [`docs/refactor/README.md`](docs/refactor/README.md) — repository split plan and target folder structure
 - [`docs/refactor/code-structure.md`](docs/refactor/code-structure.md) — package/module and coverage audit
 - [`docs/refactor/module-structure-audit.md`](docs/refactor/module-structure-audit.md) — current Go module/package layout and next structural improvements

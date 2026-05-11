@@ -106,4 +106,4 @@ Planned package boundaries:
 
 ## Current execution status
 
-R3 has established the first IR boundary and extracted tested IR helper packages. R4 generated-code inventory/guardrails are in place, including a manifest of root-core generated files; moving generated artifacts waits on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and documented the object/protocol contracts that block broader collection/reader/runtime moves. The CLI entrypoint lives in `cmd/joker`.
+R3 has established the first IR boundary and extracted tested IR helper packages. R4 generated-code inventory/guardrails are in place, including a manifest of root-core generated files; moving generated artifacts waits on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, transients, seqs, metadata/info behavior, and persistent-vector semantics. The CLI entrypoint lives in `cmd/joker`.

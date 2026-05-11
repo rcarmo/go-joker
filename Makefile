@@ -140,6 +140,7 @@ docs-check: docs generated-check import-identity-check non-goals-check layout-ch
 	test -f docs/refactor/object-protocol-contracts.md
 	test -f docs/BABASHKA_SHIM_ASSESSMENT.md
 	test -f docs/PORTABILITY_SHIM_ASSESSMENT.md
+	test -f docs/BENCHMARK_CI.md
 	test -f docs/joker.imaging.html
 	test -f docs/joker.jit.html
 	test -f docs/joker.edn.html

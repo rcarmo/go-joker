@@ -302,9 +302,12 @@ Joker exposes Clojure-compatible transient operations for batch mutations:
 | Function | Description |
 |---|---|
 | `(transient coll)` | Create mutable transient from persistent vector/map |
-| `(assoc! tv k v)` | Mutate in-place, return tv |
-| `(conj! tv v)` | Append in-place, return tv |
+| `(assoc! tv k v)` | Mutate transient vector/map in-place, return tv |
+| `(conj! tv v)` | Append to transient vector, return tv |
+| `(conj! tm k v)` | Associate key/value in transient map, return tm |
+| `(pop! tv)` | Remove the last element from a transient vector, return tv |
 | `(persistent! tv)` | Freeze to immutable, invalidate transient |
+| `(transient? x)` | True for transient vectors and transient maps |
 
 ### When to use
 
@@ -323,8 +326,9 @@ Transients help when doing **many mutations in a bounded scope**:
 
 ### Contract
 - Single-threaded use only (no sharing across goroutines)
-- Must not use transient after `persistent!`
-- Must not use the original persistent collection after `transient`
+- Must not mutate or read from a transient after `persistent!`
+- The original persistent collection remains valid after `transient`; the transient is a scoped mutable copy/builder
+- Transient maps preserve string-key fast-path entries when converted back with `persistent!`
 
 ### IR integration
 
