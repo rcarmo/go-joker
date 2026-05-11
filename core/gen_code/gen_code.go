@@ -16,11 +16,11 @@ import (
 	"strconv"
 	"strings"
 
-	_ "github.com/candid82/joker/std/html"
-	_ "github.com/candid82/joker/std/string"
+	_ "github.com/rcarmo/go-joker/std/html"
+	_ "github.com/rcarmo/go-joker/std/string"
 
-	. "github.com/candid82/joker/core"
-	"github.com/candid82/joker/core/gen_go"
+	. "github.com/rcarmo/go-joker/core"
+	"github.com/rcarmo/go-joker/core/gen_go"
 )
 
 type FileInfo struct {

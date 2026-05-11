@@ -3,7 +3,7 @@
 package time
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 	"time"
 )
 

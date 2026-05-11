@@ -1,6 +1,6 @@
 package core
 
-import coreir "github.com/candid82/joker/core/internal/ir"
+import coreir "github.com/rcarmo/go-joker/core/internal/ir"
 
 // ir_diagnostics.go — lightweight IR/WASM compilation explanations.
 //

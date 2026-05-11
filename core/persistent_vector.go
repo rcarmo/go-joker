@@ -297,7 +297,7 @@ func (v *PersistentVector) Equals(other interface{}) bool {
 	return false
 }
 
-func (v *PersistentVector) GetInfo() *ObjectInfo            { return nil }
+func (v *PersistentVector) GetInfo() *ObjectInfo             { return nil }
 func (v *PersistentVector) WithInfo(info *ObjectInfo) Object { return v }
-func (v *PersistentVector) GetType() *Type                  { return TYPE.ArrayVector }
-func (v *PersistentVector) Hash() uint32                    { return uint32(v.count) }
+func (v *PersistentVector) GetType() *Type                   { return TYPE.ArrayVector }
+func (v *PersistentVector) Hash() uint32                     { return uint32(v.count) }

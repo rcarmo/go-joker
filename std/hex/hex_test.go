@@ -3,7 +3,7 @@ package hex
 import (
 	"testing"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestHexEncodeDecodeString(t *testing.T) {

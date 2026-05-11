@@ -5,7 +5,7 @@ import (
 	"io"
 	"strings"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func csvLazySeq(rdr *csv.Reader) *LazySeq {

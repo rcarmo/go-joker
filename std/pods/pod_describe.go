@@ -3,7 +3,7 @@ package pods
 import (
 	"fmt"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func installPodDescribeNamespaces(p *Pod, describe podMessage) error {

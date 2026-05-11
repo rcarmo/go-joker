@@ -3,7 +3,7 @@ package core
 import (
 	"sync"
 
-	coreir "github.com/candid82/joker/core/internal/ir"
+	coreir "github.com/rcarmo/go-joker/core/internal/ir"
 )
 
 // ir.go — tiny lowered IR for hot loop/arithmetic subsets.

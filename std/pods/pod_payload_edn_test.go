@@ -3,7 +3,7 @@ package pods
 import (
 	"testing"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestPodPayloadEDNArgsAndResult(t *testing.T) {

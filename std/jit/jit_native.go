@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 // jit_native.go — joker.jit namespace: compile Clojure functions to

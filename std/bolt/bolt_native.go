@@ -5,7 +5,7 @@ import (
 	"os"
 	"unsafe"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 	bolt "go.etcd.io/bbolt"
 )
 

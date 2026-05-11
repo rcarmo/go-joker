@@ -12,8 +12,8 @@ import (
 	"github.com/srwiley/oksvg"
 	"github.com/srwiley/rasterx"
 
-	. "github.com/candid82/joker/core"
-	imaging "github.com/candid82/joker/std/imaging"
+	. "github.com/rcarmo/go-joker/core"
+	imaging "github.com/rcarmo/go-joker/std/imaging"
 )
 
 // Canvas wraps an SVG being built.
@@ -30,11 +30,11 @@ var typeCanvas = &Type{}
 func (c *Canvas) ToString(escape bool) string {
 	return fmt.Sprintf("#<SVG %dx%d>", c.w, c.h)
 }
-func (c *Canvas) Equals(other interface{}) bool { return c == other }
-func (c *Canvas) GetInfo() *ObjectInfo           { return nil }
+func (c *Canvas) Equals(other interface{}) bool    { return c == other }
+func (c *Canvas) GetInfo() *ObjectInfo             { return nil }
 func (c *Canvas) WithInfo(info *ObjectInfo) Object { return c }
-func (c *Canvas) GetType() *Type                 { return typeCanvas }
-func (c *Canvas) Hash() uint32                   { return 0 }
+func (c *Canvas) GetType() *Type                   { return typeCanvas }
+func (c *Canvas) Hash() uint32                     { return 0 }
 
 func extractCanvas(args []Object, idx int) *Canvas {
 	c, ok := args[idx].(*Canvas)

@@ -13,8 +13,8 @@ import (
 	"sort"
 	"strings"
 
-	. "github.com/candid82/joker/core"
 	"github.com/candid82/liner"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var qualifiedSymbolRe *regexp.Regexp = regexp.MustCompile(`([0-9A-Za-z_\-\+\*\'\.]+)/([0-9A-Za-z_\-\+\*\']*$)`)

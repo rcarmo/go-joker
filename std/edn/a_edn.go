@@ -1,6 +1,6 @@
 package edn
 
-import . "github.com/candid82/joker/core"
+import . "github.com/rcarmo/go-joker/core"
 
 var ednNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.edn"))
 var ednAliasNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("edn"))

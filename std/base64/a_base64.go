@@ -3,7 +3,7 @@
 package base64
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var __decode_string__P ProcFn = __decode_string_

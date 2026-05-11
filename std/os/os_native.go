@@ -8,7 +8,7 @@ import (
 	"strings"
 	"syscall"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func env() Object {

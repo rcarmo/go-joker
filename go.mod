@@ -1,4 +1,4 @@
-module github.com/candid82/joker
+module github.com/rcarmo/go-joker
 
 go 1.25.0
 

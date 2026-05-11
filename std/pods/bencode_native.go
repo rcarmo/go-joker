@@ -7,7 +7,7 @@ import (
 
 	"github.com/zeebo/bencode"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func bencodeEncodeObject(obj Object) []byte {

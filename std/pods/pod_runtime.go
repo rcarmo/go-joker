@@ -9,7 +9,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 type podMessage map[string]any

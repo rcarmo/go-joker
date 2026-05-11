@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestCanvasGeneration(t *testing.T) {

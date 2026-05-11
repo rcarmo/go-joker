@@ -5,7 +5,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func fromObject(obj Object) interface{} {

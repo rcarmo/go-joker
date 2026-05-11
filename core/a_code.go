@@ -15438,15 +15438,13 @@ var literalExpr_POS_joker_DOT_core__3188_23__3188_27_NUM_1 LiteralExpr = Literal
 		startColumn: 23,
 		startLine:   3188,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var var_NS_joker_DOT_core_NAME__STAR_loading_DASH_verbosely_STAR__POS_joker_DOT_core_3185_1__3188_28 Var = Var{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_143,
 	},
-	Value: Boolean{
-	},
+	Value:          Boolean{},
 	expr:           &literalExpr_POS_joker_DOT_core__3188_23__3188_27_NUM_1,
 	isDynamic:      true,
 	isGloballyUsed: true,
@@ -16573,8 +16571,7 @@ var literalExpr_POS_joker_DOT_core__727_15__727_15_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 15,
 		startLine:   727,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var varRef_cast_POS_joker_DOT_core__728_25__728_28 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -17413,8 +17410,7 @@ var literalExpr_POS_joker_DOT_core__717_15__717_15_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 15,
 		startLine:   717,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var varRef_cast_POS_joker_DOT_core__718_25__718_28 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -19777,8 +19773,7 @@ var literalExpr_POS_joker_DOT_core__391_22__391_26_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   391,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var objectInfo_POS_joker_DOT_core__391_28__391_31 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -20168,8 +20163,7 @@ var literalExpr_POS_joker_DOT_core__367_14__367_18_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 14,
 		startLine:   367,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var callExpr_POS_joker_DOT_core__367_7__367_19_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -22945,8 +22939,7 @@ var literalExpr_POS_joker_DOT_core__298_14__298_16_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 14,
 		startLine:   298,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__298_7__298_17_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -23063,8 +23056,7 @@ var literalExpr_POS_joker_DOT_core__467_20__467_22_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   467,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_nil_Q__POS_joker_DOT_core__468_6__468_9 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -23330,8 +23322,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__466_3__469_57_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -27559,8 +27550,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_2 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1336_4__1344_67_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -30576,8 +30566,7 @@ var literalExpr_POS_joker_DOT_core__2137_30__2137_32_NUM_1 LiteralExpr = Literal
 		startColumn: 30,
 		startLine:   2137,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2137_3__2138_21_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -31522,8 +31511,7 @@ var literalExpr_POS_joker_DOT_core__2107_3__2107_5_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 3,
 		startLine:   2107,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var fnExpr_POS_joker_DOT_core_2101_1__2107_6_NUM_1 FnExpr = FnExpr{
 	Position: Position{
@@ -31596,8 +31584,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_3 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2122_3__2123_12_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -32153,8 +32140,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_4 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1193_3__1194_89_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -33317,8 +33303,7 @@ var literalExpr_POS_joker_DOT_core__521_22__521_24_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   521,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var fnExpr_POS_joker_DOT_core_521_12__521_25_NUM_1 FnExpr = FnExpr{
 	Position: Position{
@@ -34249,8 +34234,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_5 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__535_21__536_49_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -35973,8 +35957,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_6 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1211_3__1212_90_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -38170,8 +38153,7 @@ var literalExpr_POS_joker_DOT_core__667_6__667_10_NUM_1 LiteralExpr = LiteralExp
 		startColumn: 6,
 		startLine:   667,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__663_4__667_11_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -39359,8 +39341,7 @@ var literalExpr_POS_joker_DOT_core__793_6__793_10_NUM_1 LiteralExpr = LiteralExp
 		startColumn: 6,
 		startLine:   793,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__789_4__793_11_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -40144,8 +40125,7 @@ var literalExpr_POS_joker_DOT_core__587_6__587_10_NUM_1 LiteralExpr = LiteralExp
 		startColumn: 6,
 		startLine:   587,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__583_4__587_11_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -41057,8 +41037,7 @@ var literalExpr_POS_joker_DOT_core__832_6__832_10_NUM_1 LiteralExpr = LiteralExp
 		startColumn: 6,
 		startLine:   832,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__828_4__832_11_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -41985,8 +41964,7 @@ var literalExpr_POS_joker_DOT_core__806_6__806_10_NUM_1 LiteralExpr = LiteralExp
 		startColumn: 6,
 		startLine:   806,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__802_4__806_11_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -43207,8 +43185,7 @@ var literalExpr_POS_joker_DOT_core__819_6__819_10_NUM_1 LiteralExpr = LiteralExp
 		startColumn: 6,
 		startLine:   819,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__815_4__819_11_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -49231,8 +49208,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_7 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4224_3__4225_91_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -50262,8 +50238,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_8 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2438_7__2440_66_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -51354,8 +51329,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_9 LiteralExpr = LiteralEx
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1624_5__1625_44_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -51849,8 +51823,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_10 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1629_7__1631_43_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -52545,8 +52518,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_11 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1635_7__1637_53_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -53158,8 +53130,7 @@ var literalExpr_POS_joker_DOT_core__1589_11__1589_15_NUM_1 LiteralExpr = Literal
 		startColumn: 11,
 		startLine:   1589,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_12 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -53169,8 +53140,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_12 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1586_3__1589_16_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -53666,8 +53636,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_13 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1642_20__1643_64_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -55162,8 +55131,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_14 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2444_7__2445_65_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -56791,8 +56759,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_15 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1679_6__1680_48_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -56834,8 +56801,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_16 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1678_4__1680_49_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -59414,8 +59380,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_17 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2902_4__2904_66_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -60059,8 +60024,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_18 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2906_4__2908_80_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -61141,8 +61105,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_19 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1229_11__1230_38_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -61622,8 +61585,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_20 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4149_3__4149_86_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -62958,8 +62920,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_21 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1659_5__1663_28_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -64497,8 +64458,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_22 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4164_5__4167_37_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -66893,8 +66853,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_ex_DASH_info_POS_joker_DOT_core__1225_18__1225_24 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -69134,8 +69093,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_2 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_2 BindingExpr = BindingExpr{
 	Position: Position{
@@ -69290,8 +69248,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_23 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__1400_3__1402_72_NUM_2 DoExpr = DoExpr{
 	Position: Position{
@@ -75701,8 +75658,7 @@ var literalExpr_POS_joker_DOT_core__4069_14__4069_14_NUM_1 LiteralExpr = Literal
 		startColumn: 14,
 		startLine:   4069,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var varRef_seq_POS_joker_DOT_core__4069_19__4069_21 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -78245,8 +78201,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_24 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1869_4__1870_25_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -78491,8 +78446,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_25 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1872_4__1873_33_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -79672,8 +79626,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_26 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1921_9__1922_55_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -79735,8 +79688,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_27 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1919_5__1922_57_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -80360,8 +80312,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_28 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1925_5__1929_43_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -81209,8 +81160,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_1 LiteralExpr = Literal
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var objectInfo_POS_joker_DOT_core__2524_71__2524_73 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -81229,8 +81179,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_1 LiteralExpr = Literal
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3888_3__3897_54_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -81263,8 +81212,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_2 LiteralExpr = Literal
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3888_3__3897_54_NUM_5 CallExpr = CallExpr{
 	Position: Position{
@@ -81434,8 +81382,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_2 LiteralExpr = Literal
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_3 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -81445,8 +81392,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_3 LiteralExpr = Literal
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3888_3__3897_54_NUM_9 CallExpr = CallExpr{
 	Position: Position{
@@ -81479,8 +81425,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_4 LiteralExpr = Literal
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3888_3__3897_54_NUM_10 CallExpr = CallExpr{
 	Position: Position{
@@ -82331,8 +82276,7 @@ var literalExpr_POS_joker_DOT_core__2227_21__2227_23_NUM_1 LiteralExpr = Literal
 		startColumn: 21,
 		startLine:   2227,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2227_5__2227_24_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -82976,8 +82920,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_29 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1605_3__1606_54_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -83392,8 +83335,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_30 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3892_9__3896_26_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -83772,8 +83714,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_31 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3890_5__3897_53_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -84736,8 +84677,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_32 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3861_5__3863_60_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -85140,8 +85080,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_3 LiteralExpr = Literal
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_5 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -85151,8 +85090,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_5 LiteralExpr = Literal
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3899_17__3903_28_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -85185,8 +85123,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_6 LiteralExpr = Literal
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3899_17__3903_28_NUM_5 CallExpr = CallExpr{
 	Position: Position{
@@ -85716,8 +85653,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_33 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3899_17__3903_28_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -86446,8 +86382,7 @@ var literalExpr_POS_joker_DOT_core__4496_24__4496_24_NUM_1 LiteralExpr = Literal
 		startColumn: 24,
 		startLine:   4496,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__4496_16__4496_25_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -89554,8 +89489,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_34 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3222_3__3225_25_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -89757,8 +89691,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_35 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3392_3__3396_62_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -90690,8 +90623,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_36 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1081_4__1085_15_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -91748,8 +91680,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_37 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4325_3__4330_57_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -91984,8 +91915,7 @@ var literalExpr_POS_joker_DOT_core__516_3__516_7_NUM_1 LiteralExpr = LiteralExpr
 		startColumn: 3,
 		startLine:   516,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var fnExpr_POS_joker_DOT_core_512_1__516_8_NUM_1 FnExpr = FnExpr{
 	Position: Position{
@@ -96963,8 +96893,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_38 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__447_11__448_58_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -97178,8 +97107,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_39 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__449_5__450_87_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -97541,8 +97469,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_3 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_println_DASH_linter___POS_joker_DOT_core__4183_8__4183_23 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -97786,8 +97713,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_4 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_ex_DASH_info_POS_joker_DOT_core__2904_17__2904_23 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -98506,8 +98432,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_40 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4185_3__4186_93_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -98995,8 +98920,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_4 LiteralExpr = Literal
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_7 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -99006,8 +98930,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_7 LiteralExpr = Literal
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__4188_20__4188_66_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -99040,8 +98963,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_8 LiteralExpr = Literal
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__4188_20__4188_66_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -100172,8 +100094,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_5 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_println_DASH_linter___POS_joker_DOT_core__4205_8__4205_23 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -100417,8 +100338,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_6 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_3 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -101117,8 +101037,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_41 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4207_3__4208_94_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -101227,8 +101146,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_5 LiteralExpr = Literal
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_9 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -101238,8 +101156,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_9 LiteralExpr = Literal
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__4210_20__4210_67_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -101272,8 +101189,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_10 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__4210_20__4210_67_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -102559,8 +102475,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_42 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3716_5__3717_96_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -102820,8 +102735,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_43 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3718_5__3719_111_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -102857,8 +102771,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_44 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3715_3__3719_112_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -103650,8 +103563,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_6 LiteralExpr = Literal
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_11 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -103661,8 +103573,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_11 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3723_16__3734_53_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -103698,8 +103609,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_7 LiteralExpr = Literal
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_12 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -103709,8 +103619,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_12 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3723_16__3734_53_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -103743,8 +103652,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_13 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3723_16__3734_53_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -103777,8 +103685,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_14 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3723_16__3734_53_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -103814,8 +103721,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_15 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3723_16__3734_53_NUM_5 CallExpr = CallExpr{
 	Position: Position{
@@ -103900,8 +103806,7 @@ var literalExpr_POS_joker_DOT_core__3727_23__3727_23_NUM_1 LiteralExpr = Literal
 		startColumn: 23,
 		startLine:   3727,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var binding_NUM_561 Binding = Binding{
 	frame:  4,
@@ -105160,8 +105065,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_45 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3726_18__3734_52_NUM_4 IfExpr = IfExpr{
 	Position: Position{
@@ -106893,8 +106797,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_46 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1736_4__1737_26_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -109450,8 +109353,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_47 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4269_4__4271_66_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -114038,8 +113940,7 @@ var literalExpr_POS_joker_DOT_core__4381_21__4381_23_NUM_1 LiteralExpr = Literal
 		startColumn: 21,
 		startLine:   4381,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4379_19__4381_24_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -114932,8 +114833,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_48 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4400_5__4401_127_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -115163,8 +115063,7 @@ var literalExpr_POS_joker_DOT_core__4404_45__4404_47_NUM_1 LiteralExpr = Literal
 		startColumn: 45,
 		startLine:   4404,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__4404_21__4404_48_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -117715,8 +117614,7 @@ var literalExpr_POS_joker_DOT_core__231_12__231_14_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 12,
 		startLine:   231,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_ex_DASH_info_POS_joker_DOT_core__232_20__232_26 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -124332,8 +124230,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_49 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2492_22__2494_87_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -125192,8 +125089,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_8 LiteralExpr = Literal
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var bindingExpr_POS_joker_DOT_core__2504_34__2504_34_NUM_1 BindingExpr = BindingExpr{
 	Position: Position{
@@ -125222,8 +125118,7 @@ var literalExpr_POS_joker_DOT_core__2505_42__2505_46_NUM_1 LiteralExpr = Literal
 		startColumn: 42,
 		startLine:   2505,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var varRef_seq_POS_joker_DOT_core__2506_31__2506_33 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -126231,8 +126126,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_16 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2524_53__2524_74_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -126388,8 +126282,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_50 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2508_30__2527_59_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -126889,8 +126782,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_51 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2531_22__2533_87_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -129470,8 +129362,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_52 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__458_20__460_57_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -130775,8 +130666,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_53 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2549_48__2552_70_NUM_4 IfExpr = IfExpr{
 	Position: Position{
@@ -132985,8 +132875,7 @@ var literalExpr_POS_joker_DOT_core__2566_99__2566_101_NUM_1 LiteralExpr = Litera
 		startColumn: 99,
 		startLine:   2566,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_name_POS_joker_DOT_core__2566_104__2566_107 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -134550,8 +134439,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_54 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2575_16__2579_88_NUM_4 IfExpr = IfExpr{
 	Position: Position{
@@ -135392,8 +135280,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_9 LiteralExpr = Literal
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_17 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -135403,8 +135290,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_17 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3045_18__3049_64_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -135815,8 +135701,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_55 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3046_20__3049_63_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -136880,8 +136765,7 @@ var literalExpr_POS_joker_DOT_core__592_17__592_21_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 17,
 		startLine:   592,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var varRef_not_POS_joker_DOT_core__593_20__593_22 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -137637,8 +137521,7 @@ var literalExpr_POS_joker_DOT_core__3110_12__3110_16_NUM_1 LiteralExpr = Literal
 		startColumn: 12,
 		startLine:   3110,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var varRef_conj_POS_joker_DOT_core__3111_20__3111_23 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -137901,8 +137784,7 @@ var literalExpr_POS_joker_DOT_core__3113_6__3113_10_NUM_1 LiteralExpr = LiteralE
 		startColumn: 6,
 		startLine:   3113,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__3106_4__3113_11_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -138259,8 +138141,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_7 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_783 Binding = Binding{
 	isUsed: true,
@@ -138477,8 +138358,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_8 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_4 BindingExpr = BindingExpr{
 	Position: Position{
@@ -138633,8 +138513,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_56 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__1942_3__1944_73_NUM_2 DoExpr = DoExpr{
 	Position: Position{
@@ -138964,8 +138843,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_57 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1945_3__1947_76_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -139478,8 +139356,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_9 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_gensym_POS_joker_DOT_core__1956_55__1956_60 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -139869,8 +139746,7 @@ var literalExpr_POS_joker_DOT_core__1959_42__1959_42_NUM_1 LiteralExpr = Literal
 		startColumn: 42,
 		startLine:   1959,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__1959_32__1959_43_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -140214,8 +140090,7 @@ var literalExpr_POS_joker_DOT_core__1963_36__1963_40_NUM_1 LiteralExpr = Literal
 		startColumn: 36,
 		startLine:   1963,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var objectInfo_POS_joker_DOT_core__1963_44__1963_47 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -140338,8 +140213,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_58 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1965_47__1965_70_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -140468,8 +140342,7 @@ var literalExpr_POS_joker_DOT_core__1966_35__1966_39_NUM_1 LiteralExpr = Literal
 		startColumn: 35,
 		startLine:   1966,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var objectInfo_POS_joker_DOT_core__1966_43__1966_44 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -140662,8 +140535,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_59 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1969_50__1969_73_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -141368,8 +141240,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_60 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1975_43__1975_66_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -141515,8 +141386,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_61 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1961_20__1975_71_NUM_4 IfExpr = IfExpr{
 	Position: Position{
@@ -141694,8 +141564,7 @@ var literalExpr_POS_joker_DOT_core__1976_16__1976_18_NUM_1 LiteralExpr = Literal
 		startColumn: 16,
 		startLine:   1976,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_seq_POS_joker_DOT_core__1976_21__1976_23 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -142111,8 +141980,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_10 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_799 Binding = Binding{
 	isUsed: true,
@@ -142351,8 +142219,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_11 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_6 BindingExpr = BindingExpr{
 	Position: Position{
@@ -142507,8 +142374,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_62 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__1985_3__1987_62_NUM_2 DoExpr = DoExpr{
 	Position: Position{
@@ -142933,8 +142799,7 @@ var literalExpr_POS_joker_DOT_core__1991_18__1991_18_NUM_1 LiteralExpr = Literal
 		startColumn: 18,
 		startLine:   1991,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__1991_18__1991_18_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -153242,8 +153107,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_63 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2881_3__2882_20_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -153565,8 +153429,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_64 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2873_3__2874_19_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -153888,8 +153751,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_65 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2889_3__2890_22_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -153975,8 +153837,7 @@ var objectInfo_POS_joker_DOT_core__4562_4__4562_5 ObjectInfo = ObjectInfo{
 		startLine:   4562,
 	},
 }
-var arrayVector_POS_joker_DOT_core__4562_4__4562_5_NUM_1 ArrayVector = ArrayVector{
-}
+var arrayVector_POS_joker_DOT_core__4562_4__4562_5_NUM_1 ArrayVector = ArrayVector{}
 var objectInfo_POS_joker_DOT_core__4563_4__4563_14 ObjectInfo = ObjectInfo{
 	Position: Position{
 		endColumn:   14,
@@ -154144,8 +154005,7 @@ var literalExpr_POS_joker_DOT_core__4562_13__4562_13_NUM_1 LiteralExpr = Literal
 		startColumn: 13,
 		startLine:   4562,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__4562_7__4562_14_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -157548,8 +157408,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_66 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2982_23__2983_54_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -158760,8 +158619,7 @@ var literalExpr_POS_joker_DOT_core__2629_54__2629_56_NUM_1 LiteralExpr = Literal
 		startColumn: 54,
 		startLine:   2629,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2629_14__2629_57_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -159548,8 +159406,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_67 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2645_19__2649_44_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -160131,8 +159988,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_68 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2651_27__2658_52_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -160343,8 +160199,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_69 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2659_31__2660_45_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -166785,8 +166640,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_12 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1012 Binding = Binding{
 	isUsed: true,
@@ -167003,8 +166857,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_13 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_8 BindingExpr = BindingExpr{
 	Position: Position{
@@ -167159,8 +167012,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_70 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__2747_3__2749_73_NUM_2 DoExpr = DoExpr{
 	Position: Position{
@@ -167283,8 +167135,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_10 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_18 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -167294,8 +167145,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_18 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2751_29__2754_53_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -167328,8 +167178,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_19 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2751_29__2754_53_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -168631,8 +168480,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_11 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_20 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -168642,8 +168490,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_20 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2756_19__2780_55_NUM_9 CallExpr = CallExpr{
 	Position: Position{
@@ -168679,8 +168526,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_12 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_21 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -168690,8 +168536,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_21 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2756_19__2780_55_NUM_10 CallExpr = CallExpr{
 	Position: Position{
@@ -168724,8 +168569,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_22 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2756_19__2780_55_NUM_11 CallExpr = CallExpr{
 	Position: Position{
@@ -168999,8 +168843,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_13 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_23 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -169010,8 +168853,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_23 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2760_34__2775_73_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -169044,8 +168886,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_24 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2760_34__2775_73_NUM_5 CallExpr = CallExpr{
 	Position: Position{
@@ -171342,8 +171183,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_71 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2761_36__2775_72_NUM_6 IfExpr = IfExpr{
 	Position: Position{
@@ -173252,8 +173092,7 @@ var literalExpr_POS_joker_DOT_core__3989_48__3989_48_NUM_1 LiteralExpr = Literal
 		startColumn: 48,
 		startLine:   3989,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__3989_34__3989_49_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -177381,8 +177220,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_14 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1087 Binding = Binding{
 	isUsed: true,
@@ -177621,8 +177459,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_15 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_10 BindingExpr = BindingExpr{
 	Position: Position{
@@ -177777,8 +177614,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_72 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__1239_4__1241_63_NUM_2 DoExpr = DoExpr{
 	Position: Position{
@@ -177853,8 +177689,7 @@ var literalExpr_POS_joker_DOT_core__1242_25__1242_25_NUM_1 LiteralExpr = Literal
 		startColumn: 25,
 		startLine:   1242,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__1242_15__1242_26_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -178570,8 +178405,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_16 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1092 Binding = Binding{
 	isUsed: true,
@@ -178772,8 +178606,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_17 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_12 BindingExpr = BindingExpr{
 	Position: Position{
@@ -179006,8 +178839,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_18 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_13 BindingExpr = BindingExpr{
 	Position: Position{
@@ -179162,8 +178994,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_73 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__1249_4__1252_63_NUM_3 DoExpr = DoExpr{
 	Position: Position{
@@ -179252,8 +179083,7 @@ var literalExpr_POS_joker_DOT_core__1253_25__1253_25_NUM_1 LiteralExpr = Literal
 		startColumn: 25,
 		startLine:   1253,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__1253_15__1253_26_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -181286,8 +181116,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_19 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1106 Binding = Binding{
 	isUsed: true,
@@ -181488,8 +181317,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_20 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_15 BindingExpr = BindingExpr{
 	Position: Position{
@@ -181722,8 +181550,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_21 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_16 BindingExpr = BindingExpr{
 	Position: Position{
@@ -181878,8 +181705,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_74 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__1285_4__1288_63_NUM_3 DoExpr = DoExpr{
 	Position: Position{
@@ -181968,8 +181794,7 @@ var literalExpr_POS_joker_DOT_core__1289_25__1289_25_NUM_1 LiteralExpr = Literal
 		startColumn: 25,
 		startLine:   1289,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__1289_15__1289_26_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -183464,8 +183289,7 @@ var literalExpr_POS_joker_DOT_core__2130_30__2130_32_NUM_1 LiteralExpr = Literal
 		startColumn: 30,
 		startLine:   2130,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2130_3__2131_20_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -183866,8 +183690,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_75 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3195_5__3196_91_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -185906,8 +185729,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_76 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2338_6__2338_50_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -186177,8 +185999,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_77 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2343_6__2343_50_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -192007,8 +191828,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_78 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4041_4__4045_38_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -192881,8 +192701,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_79 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4055_18__4059_61_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -193021,8 +192840,7 @@ var literalExpr_POS_joker_DOT_core__4060_12__4060_12_NUM_1 LiteralExpr = Literal
 		startColumn: 12,
 		startLine:   4060,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var binding_NUM_1205 Binding = Binding{
 	index:  1,
@@ -194306,8 +194124,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_22 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1210 Binding = Binding{
 	isUsed: true,
@@ -194524,8 +194341,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_23 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_18 BindingExpr = BindingExpr{
 	Position: Position{
@@ -194680,8 +194496,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_80 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__2595_3__2597_72_NUM_2 DoExpr = DoExpr{
 	Position: Position{
@@ -196803,8 +196618,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_81 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1822_3__1823_43_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -197002,8 +196816,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_82 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1830_3__1835_40_NUM_2 IfExpr = IfExpr{
 	Position: Position{
@@ -197511,8 +197324,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_83 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3506_7__3507_63_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -197645,8 +197457,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_24 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var literalExpr_POS_joker_DOT_core__3510_9__3515_48_NUM_1 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -197905,8 +197716,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_84 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3514_13__3515_46_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -198077,8 +197887,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_85 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3504_3__3515_51_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -198854,8 +198663,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_86 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3281_3__3282_55_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -200346,8 +200154,7 @@ var objectInfo_POS_joker_DOT_core__3303_3__3303_4 ObjectInfo = ObjectInfo{
 		startLine:   3303,
 	},
 }
-var arrayVector_POS_joker_DOT_core__3303_3__3303_4_NUM_1 ArrayVector = ArrayVector{
-}
+var arrayVector_POS_joker_DOT_core__3303_3__3303_4_NUM_1 ArrayVector = ArrayVector{}
 var arrayVector_NUM_233 ArrayVector = ArrayVector{
 	arr: []Object{
 		&arrayVector_POS_joker_DOT_core__3303_3__3303_4_NUM_1,
@@ -201577,8 +201384,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_87 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3323_14__3326_28_NUM_2 IfExpr = IfExpr{
 	Position: Position{
@@ -203068,8 +202874,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_88 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3330_5__3332_72_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -203629,8 +203434,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_89 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3338_13__3339_30_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -204352,8 +204156,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_90 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3344_7__3345_59_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -204461,8 +204264,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_91 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3347_9__3348_57_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -204542,8 +204344,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_92 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3346_7__3349_23_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -204651,8 +204452,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_93 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3351_9__3352_62_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -204732,8 +204532,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_94 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3350_7__3353_28_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -205559,8 +205358,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_95 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3357_11__3358_63_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -205661,8 +205459,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_96 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3355_9__3359_25_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -208295,8 +208092,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_97 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2371_5__2372_103_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -208424,8 +208220,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_25 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var objectInfo_POS_joker_DOT_core__2375_15__2375_15 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -208563,8 +208358,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_26 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_ex_DASH_info_POS_joker_DOT_core__2377_21__2377_27 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -209955,8 +209749,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_98 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2373_5__2386_78_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -210182,8 +209975,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_99 LiteralExpr = LiteralE
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3354_7__3360_51_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -211319,8 +211111,7 @@ var literalExpr_POS_joker_DOT_core__3380_25__3380_27_NUM_1 LiteralExpr = Literal
 		startColumn: 25,
 		startLine:   3380,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var objectInfo_POS_joker_DOT_core__3236_1__3241_21 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -212140,8 +211931,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_100 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3383_11__3384_57_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -212285,8 +212075,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_101 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3378_5__3384_60_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -213224,8 +213013,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_27 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1330 Binding = Binding{
 	isUsed: true,
@@ -213442,8 +213230,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_28 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_20 BindingExpr = BindingExpr{
 	Position: Position{
@@ -213598,8 +213385,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_102 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__2690_3__2692_72_NUM_2 DoExpr = DoExpr{
 	Position: Position{
@@ -214333,8 +214119,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_103 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2427_4__2428_46_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -214854,8 +214639,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_14 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_25 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -214865,8 +214649,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_25 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2700_27__2703_86_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -214899,8 +214682,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_26 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2700_27__2703_86_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -214933,8 +214715,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_27 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2700_27__2703_86_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -217165,8 +216946,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_104 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4030_17__4031_69_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -217305,8 +217085,7 @@ var literalExpr_POS_joker_DOT_core__4032_11__4032_11_NUM_1 LiteralExpr = Literal
 		startColumn: 11,
 		startLine:   4032,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var binding_NUM_1358 Binding = Binding{
 	index:  1,
@@ -221758,8 +221537,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_105 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1787_3__1788_40_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -222809,8 +222587,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_106 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1797_3__1805_28_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -226005,8 +225782,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_107 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4336_3__4337_79_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -229048,8 +228824,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_108 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3098_28__3098_49_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -230192,8 +229967,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_109 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3146_19__3146_72_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -230493,8 +230267,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_110 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3151_18__3151_68_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -231214,8 +230987,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_111 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3159_10__3160_71_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -231700,8 +231472,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_112 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3161_10__3162_47_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -234263,8 +234034,7 @@ var literalExpr_POS_joker_DOT_core__2455_19__2455_21_NUM_1 LiteralExpr = Literal
 		startColumn: 19,
 		startLine:   2455,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1484 Binding = Binding{
 	index:  1,
@@ -234373,8 +234143,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_29 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var var_NS_joker_DOT_core_NAME_ns_DASH_resolve__ Var = Var{
 	MetaHolder: MetaHolder{
@@ -234820,8 +234589,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_15 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_28 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -234831,8 +234599,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_28 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3259_18__3263_43_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -234865,8 +234632,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_29 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3259_18__3263_43_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -235059,8 +234825,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_30 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_ex_DASH_info_POS_joker_DOT_core__3262_30__3262_36 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -235420,8 +235185,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_113 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3264_11__3264_42_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -235578,8 +235342,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_16 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_30 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -235589,8 +235352,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_30 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3266_29__3266_65_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -235623,8 +235385,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_31 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__3266_29__3266_65_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -238629,8 +238390,7 @@ var literalExpr_POS_joker_DOT_core__623_7__623_9_NUM_1 LiteralExpr = LiteralExpr
 		startColumn: 7,
 		startLine:   623,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1515 Binding = Binding{
 	index:  2,
@@ -239541,8 +239301,7 @@ var literalExpr_POS_joker_DOT_core__4591_15__4591_19_NUM_1 LiteralExpr = Literal
 		startColumn: 15,
 		startLine:   4591,
 	},
-	obj: Boolean{
-	},
+	obj: Boolean{},
 }
 var objectInfo_POS_joker_DOT_core__4592_7__4592_9 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -239561,8 +239320,7 @@ var literalExpr_POS_joker_DOT_core__4592_7__4592_9_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 7,
 		startLine:   4592,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4589_5__4592_10_NUM_2 IfExpr = IfExpr{
 	Position: Position{
@@ -242624,8 +242382,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_114 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1689_6__1690_51_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -242667,8 +242424,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_115 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1688_4__1690_52_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -243189,8 +242945,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_116 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__3977_4__3981_63_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -244029,8 +243784,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_117 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4620_9__4621_56_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -244092,8 +243846,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_118 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4618_5__4621_58_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -244757,8 +244510,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_119 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4624_5__4628_53_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -245550,8 +245302,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_120 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4638_5__4640_58_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -251989,8 +251740,7 @@ var literalExpr_POS_joker_DOT_core__1768_25__1768_25_NUM_1 LiteralExpr = Literal
 		startColumn: 25,
 		startLine:   1768,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__1768_12__1768_26_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -252033,8 +251783,7 @@ var literalExpr_POS_joker_DOT_core__1769_30__1769_30_NUM_1 LiteralExpr = Literal
 		startColumn: 30,
 		startLine:   1769,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var binding_NUM_1601 Binding = Binding{
 	isUsed: true,
@@ -252454,8 +252203,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_121 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__1773_16__1776_31_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -254287,8 +254035,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_122 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__2949_5__2950_8_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -255076,8 +254823,7 @@ var objectInfo_POS_joker_DOT_core__2143_4__2143_5 ObjectInfo = ObjectInfo{
 		startLine:   2143,
 	},
 }
-var arrayVector_POS_joker_DOT_core__2143_4__2143_5_NUM_1 ArrayVector = ArrayVector{
-}
+var arrayVector_POS_joker_DOT_core__2143_4__2143_5_NUM_1 ArrayVector = ArrayVector{}
 var objectInfo_POS_joker_DOT_core__2144_4__2144_11 ObjectInfo = ObjectInfo{
 	Position: Position{
 		endColumn:   11,
@@ -255413,8 +255159,7 @@ var objectInfo_POS_joker_DOT_core__2146_20__2146_21 ObjectInfo = ObjectInfo{
 		startLine:   2146,
 	},
 }
-var arrayVector_POS_joker_DOT_core__2146_20__2146_21_NUM_1 ArrayVector = ArrayVector{
-}
+var arrayVector_POS_joker_DOT_core__2146_20__2146_21_NUM_1 ArrayVector = ArrayVector{}
 var list_POS_joker_DOT_core__2146_19__2146_22_NUM_1 List = List{
 	count: 1,
 	first: &arrayVector_POS_joker_DOT_core__2146_20__2146_21_NUM_1,
@@ -257006,8 +256751,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_123 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4004_11__4005_55_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -262932,8 +262676,7 @@ var literalExpr_POS_joker_DOT_core__4285_22__4285_24_NUM_1 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   4285,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1667 Binding = Binding{
 	index:  1,
@@ -262984,8 +262727,7 @@ var literalExpr_POS_joker_DOT_core__4286_3__4286_5_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 3,
 		startLine:   4286,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var fnExpr_POS_joker_DOT_core_4280_1__4286_6_NUM_1 FnExpr = FnExpr{
 	Position: Position{
@@ -266017,8 +265759,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_124 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4237_3__4238_93_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -267620,8 +267361,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_125 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_core__4253_3__4254_94_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -269140,8 +268880,7 @@ var literalExpr_POS_joker_DOT_core__4117_16__4117_18_NUM_1 LiteralExpr = Literal
 		startColumn: 16,
 		startLine:   4117,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var objectInfo_POS_joker_DOT_core__4118_8__4118_8 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -269998,8 +269737,7 @@ var literalExpr_POS_joker_DOT_core__4124_16__4124_18_NUM_1 LiteralExpr = Literal
 		startColumn: 16,
 		startLine:   4124,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var objectInfo_POS_joker_DOT_core__4125_8__4125_8 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -271568,8 +271306,7 @@ var literalExpr_POS_joker_DOT_core__4131_16__4131_18_NUM_1 LiteralExpr = Literal
 		startColumn: 16,
 		startLine:   4131,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var objectInfo_POS_joker_DOT_core__4132_8__4132_8 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -273903,8 +273640,7 @@ var literalExpr_POS_joker_DOT_core__4139_18__4139_20_NUM_1 LiteralExpr = Literal
 		startColumn: 18,
 		startLine:   4139,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var objectInfo_POS_joker_DOT_core__4140_10__4140_10 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -287829,8 +287565,7 @@ var objectInfo_POS_joker_DOT_core__4550_3__4550_4 ObjectInfo = ObjectInfo{
 		startLine:   4550,
 	},
 }
-var arrayVector_POS_joker_DOT_core__4550_3__4550_4_NUM_1 ArrayVector = ArrayVector{
-}
+var arrayVector_POS_joker_DOT_core__4550_3__4550_4_NUM_1 ArrayVector = ArrayVector{}
 var arrayVector_NUM_366 ArrayVector = ArrayVector{
 	arr: []Object{
 		&arrayVector_POS_joker_DOT_core__4550_3__4550_4_NUM_1,
@@ -288476,8 +288211,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_126 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__352_5__352_25_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -288821,8 +288555,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_31 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1892 Binding = Binding{
 	isUsed: true,
@@ -289061,8 +288794,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_32 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_22 BindingExpr = BindingExpr{
 	Position: Position{
@@ -289217,8 +288949,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_127 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__2717_3__2719_62_NUM_2 DoExpr = DoExpr{
 	Position: Position{
@@ -289294,8 +289025,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_17 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_32 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -289305,8 +289035,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_32 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2720_3__2723_18_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -289339,8 +289068,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_33 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_core__2720_3__2723_18_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -290227,8 +289955,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_33 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1898 Binding = Binding{
 	isUsed: true,
@@ -290467,8 +290194,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_34 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_24 BindingExpr = BindingExpr{
 	Position: Position{
@@ -290623,8 +290349,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_128 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__1267_3__1269_63_NUM_2 DoExpr = DoExpr{
 	Position: Position{
@@ -290699,8 +290424,7 @@ var literalExpr_POS_joker_DOT_core__1270_24__1270_24_NUM_1 LiteralExpr = Literal
 		startColumn: 24,
 		startLine:   1270,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__1270_14__1270_25_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -291786,8 +291510,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_35 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1904 Binding = Binding{
 	frame:  1,
@@ -292148,8 +291871,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_36 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_1906 Binding = Binding{
 	isUsed: true,
@@ -292388,8 +292110,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_37 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_core__1226_32__1226_36_NUM_26 BindingExpr = BindingExpr{
 	Position: Position{
@@ -292544,8 +292265,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_129 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var doExpr_POS_joker_DOT_core__1304_3__1306_62_NUM_2 DoExpr = DoExpr{
 	Position: Position{
@@ -292620,8 +292340,7 @@ var literalExpr_POS_joker_DOT_core__1307_24__1307_24_NUM_1 LiteralExpr = Literal
 		startColumn: 24,
 		startLine:   1307,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_core__1307_14__1307_25_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -304356,8 +304075,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_130 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_repl__81_5__89_50_NUM_4 IfExpr = IfExpr{
 	Position: Position{
@@ -305565,8 +305283,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_131 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_repl__52_26__52_55_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -305888,8 +305605,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_132 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_repl__54_5__56_14_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -305931,8 +305647,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_133 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_repl__53_3__56_15_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -306005,8 +305720,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_134 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_repl__57_3__58_19_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -306313,8 +306027,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_135 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_repl__65_9__66_67_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -306556,8 +306269,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_136 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_repl__59_3__71_21_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -306668,8 +306380,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_137 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_repl__72_3__72_30_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -307843,8 +307554,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_18 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_34 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -307854,8 +307564,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_34 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_walk__101_11__101_61_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -307888,8 +307597,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_35 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_walk__101_11__101_61_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -308913,8 +308621,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_138 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_walk__44_3__54_23_NUM_4 IfExpr = IfExpr{
 	Position: Position{
@@ -311772,8 +311479,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_19 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_36 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -311783,8 +311489,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_36 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_walk__109_11__109_59_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -311817,8 +311522,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_37 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_walk__109_11__109_59_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -312992,8 +312696,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_38 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_4 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -313211,8 +312914,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_39 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_5 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -314790,26 +314492,22 @@ var arrayMap_NUM_1293 ArrayMap = ArrayMap{
 			hash: 415146070,
 			name: &s_test,
 		},
-		Int{
-		},
+		Int{},
 		Keyword{
 			hash: 802606911,
 			name: &s_pass,
 		},
-		Int{
-		},
+		Int{},
 		Keyword{
 			hash: 2035365230,
 			name: &s_fail,
 		},
-		Int{
-		},
+		Int{},
 		Keyword{
 			hash: 1736104344,
 			name: &s_error,
 		},
-		Int{
-		},
+		Int{},
 	},
 }
 var literalExpr_POS_joker_DOT_test__266_30__266_34_NUM_1 LiteralExpr = LiteralExpr{
@@ -314872,8 +314570,7 @@ var literalExpr_POS_joker_DOT_test__266_36__266_36_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 36,
 		startLine:   266,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_test__266_45__266_45_NUM_1 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -314883,8 +314580,7 @@ var literalExpr_POS_joker_DOT_test__266_45__266_45_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 45,
 		startLine:   266,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_test__266_54__266_54_NUM_1 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -314894,8 +314590,7 @@ var literalExpr_POS_joker_DOT_test__266_54__266_54_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 54,
 		startLine:   266,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_test__266_64__266_64_NUM_1 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -314905,8 +314600,7 @@ var literalExpr_POS_joker_DOT_test__266_64__266_64_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 64,
 		startLine:   266,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var mapExpr_POS_joker_DOT_test__266_29__266_65_NUM_1 MapExpr = MapExpr{
 	Position: Position{
@@ -315264,15 +314958,13 @@ var literalExpr_POS_joker_DOT_test__260_21__260_23_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 21,
 		startLine:   260,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var var_NAME__STAR_report_DASH_counters_STAR__POS_joker_DOT_test_256_1__260_24 Var = Var{
 	MetaHolder: MetaHolder{
 		meta: &hashMap_NUM_94,
 	},
-	Value: Nil{
-	},
+	Value:          Nil{},
 	expr:           &literalExpr_POS_joker_DOT_test__260_21__260_23_NUM_1,
 	isDynamic:      true,
 	isGloballyUsed: true,
@@ -315447,15 +315139,13 @@ var literalExpr_POS_joker_DOT_test__251_23__251_25_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 23,
 		startLine:   251,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var var_NAME__STAR_stack_DASH_trace_DASH_depth_STAR__POS_joker_DOT_test_245_1__251_26 Var = Var{
 	MetaHolder: MetaHolder{
 		meta: &hashMap_NUM_95,
 	},
-	Value: Nil{
-	},
+	Value:     Nil{},
 	expr:      &literalExpr_POS_joker_DOT_test__251_23__251_25_NUM_1,
 	isDynamic: true,
 	isUsed:    true,
@@ -319076,8 +318766,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_139 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__470_5__473_21_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -320000,8 +319689,7 @@ var literalExpr_POS_joker_DOT_test__412_10__412_12_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 10,
 		startLine:   412,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var catchExpr_POS_joker_DOT_test__411_8__412_13_NUM_1 CatchExpr = CatchExpr{
 	Position: Position{
@@ -320372,8 +320060,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_140 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__421_7__423_38_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -320435,8 +320122,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_141 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__420_5__423_39_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -328699,8 +328385,7 @@ var localEnv_NUM_21 LocalEnv = LocalEnv{
 			hash: 1590785587,
 			name: &s_default,
 		},
-		Nil{
-		},
+		Nil{},
 	},
 }
 var localEnv_NUM_20 LocalEnv = LocalEnv{
@@ -330111,8 +329796,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_142 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__627_3__629_39_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -331027,8 +330711,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_143 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__635_3__637_39_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -332241,8 +331924,7 @@ var literalExpr_POS_joker_DOT_test__318_67__318_67_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 67,
 		startLine:   318,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_test__318_57__318_68_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -332317,8 +331999,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_144 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__317_3__318_73_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -333228,8 +332909,7 @@ var objectInfo_POS_joker_DOT_test__309_3__309_4 ObjectInfo = ObjectInfo{
 		startLine:   309,
 	},
 }
-var arrayVector_POS_joker_DOT_test__309_3__309_4_NUM_1 ArrayVector = ArrayVector{
-}
+var arrayVector_POS_joker_DOT_test__309_3__309_4_NUM_1 ArrayVector = ArrayVector{}
 var arrayVector_NUM_412 ArrayVector = ArrayVector{
 	arr: []Object{
 		&arrayVector_POS_joker_DOT_test__309_3__309_4_NUM_1,
@@ -333515,8 +333195,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_145 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__369_5__369_68_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -333679,8 +333358,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_146 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__370_5__370_55_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -334774,8 +334452,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_147 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__378_5__378_68_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -334938,8 +334615,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_148 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__379_5__379_55_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -335601,8 +335277,7 @@ var localEnv_NUM_23 LocalEnv = LocalEnv{
 			hash: 1590785587,
 			name: &s_default,
 		},
-		Nil{
-		},
+		Nil{},
 	},
 }
 var localEnv_NUM_22 LocalEnv = LocalEnv{
@@ -336575,8 +336250,7 @@ var objectInfo_POS_joker_DOT_test__778_4__778_5 ObjectInfo = ObjectInfo{
 		startLine:   778,
 	},
 }
-var arrayVector_POS_joker_DOT_test__778_4__778_5_NUM_1 ArrayVector = ArrayVector{
-}
+var arrayVector_POS_joker_DOT_test__778_4__778_5_NUM_1 ArrayVector = ArrayVector{}
 var objectInfo_POS_joker_DOT_test__779_4__779_7 ObjectInfo = ObjectInfo{
 	Position: Position{
 		endColumn:   7,
@@ -336731,8 +336405,7 @@ var objectInfo_POS_joker_DOT_test__765_4__765_5 ObjectInfo = ObjectInfo{
 		startLine:   765,
 	},
 }
-var arrayVector_POS_joker_DOT_test__765_4__765_5_NUM_1 ArrayVector = ArrayVector{
-}
+var arrayVector_POS_joker_DOT_test__765_4__765_5_NUM_1 ArrayVector = ArrayVector{}
 var objectInfo_POS_joker_DOT_test__766_4__766_17 ObjectInfo = ObjectInfo{
 	Position: Position{
 		endColumn:   17,
@@ -338008,8 +337681,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_20 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_38 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -338019,8 +337691,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_38 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_test__720_3__727_57_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -338053,8 +337724,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_39 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_test__720_3__727_57_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -339169,8 +338839,7 @@ var literalExpr_POS_joker_DOT_test__712_36__712_38_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 36,
 		startLine:   712,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var binding_NUM_2094 Binding = Binding{
 	frame:  4,
@@ -339439,8 +339108,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_149 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__705_3__713_49_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -339597,8 +339265,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_150 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__726_12__727_52_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -339669,8 +339336,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_151 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__725_10__727_53_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -339830,8 +339496,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_152 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__720_3__727_57_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -341516,8 +341181,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_153 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_test__648_3__649_58_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -341746,8 +341410,7 @@ var literalExpr_POS_joker_DOT_test__339_10__339_12_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 10,
 		startLine:   339,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var objectInfo_POS_joker_DOT_test__339_20__339_22 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -341766,8 +341429,7 @@ var literalExpr_POS_joker_DOT_test__339_20__339_22_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 20,
 		startLine:   339,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var mapExpr_POS_joker_DOT_test__339_3__339_23_NUM_1 MapExpr = MapExpr{
 	Position: Position{
@@ -342029,8 +341691,7 @@ var literalExpr_POS_joker_DOT_test__786_30__786_30_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 30,
 		startLine:   786,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_test__786_15__786_31_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -342135,8 +341796,7 @@ var literalExpr_POS_joker_DOT_test__787_31__787_31_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 31,
 		startLine:   787,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_test__787_15__787_32_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -344253,8 +343913,7 @@ var localEnv_NUM_27 LocalEnv = LocalEnv{
 			hash: 1590785587,
 			name: &s_default,
 		},
-		Nil{
-		},
+		Nil{},
 	},
 }
 var localEnv_NUM_26 LocalEnv = LocalEnv{
@@ -349476,8 +349135,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_21 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_40 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -349487,8 +349145,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_40 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_set__119_6__129_22_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -349521,8 +349178,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_41 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_set__119_6__129_22_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -350444,8 +350100,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_22 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_42 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -350455,8 +350110,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_42 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_set__110_15__110_42_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -350489,8 +350143,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_43 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_set__110_15__110_42_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -350858,8 +350511,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_23 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_44 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -350869,8 +350521,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_44 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_set__132_4__141_20_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -350903,8 +350554,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_45 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_set__132_4__141_20_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -350937,8 +350587,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_46 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_set__132_4__141_20_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -351305,8 +350954,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_24 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_47 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -351316,8 +350964,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_47 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_set__84_6__87_12_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -351350,8 +350997,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_48 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_set__84_6__87_12_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -354528,8 +354174,7 @@ var objectInfo_POS_joker_DOT_set__24_4__24_5 ObjectInfo = ObjectInfo{
 		startLine:   24,
 	},
 }
-var arrayVector_POS_joker_DOT_set__24_4__24_5_NUM_1 ArrayVector = ArrayVector{
-}
+var arrayVector_POS_joker_DOT_set__24_4__24_5_NUM_1 ArrayVector = ArrayVector{}
 var objectInfo_POS_joker_DOT_set__25_4__25_7 ObjectInfo = ObjectInfo{
 	Position: Position{
 		endColumn:   7,
@@ -357096,8 +356741,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__112_42__112_44_NUM_1 LiteralExpr = 
 		startColumn: 42,
 		startLine:   112,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_coll_Q__POS_joker_DOT_tools_DOT_cli__113_34__113_38 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -357194,8 +356838,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_154 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__112_27__114_42_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -358355,8 +357998,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_155 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__76_7__79_54_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -358398,8 +358040,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_156 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__74_3__79_56_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -359081,8 +358722,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_25 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_49 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -359092,8 +358732,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_49 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__84_3__103_59_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -359126,8 +358765,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_50 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__84_3__103_59_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -359160,8 +358798,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_51 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__84_3__103_59_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -359413,8 +359050,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_157 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__88_24__89_79_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -359447,8 +359083,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_26 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_52 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -359458,8 +359093,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_52 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__84_3__103_59_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -359492,8 +359126,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_53 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__84_3__103_59_NUM_5 CallExpr = CallExpr{
 	Position: Position{
@@ -359660,8 +359293,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_158 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__90_12__91_71_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -359870,8 +359502,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__94_66__94_68_NUM_1 LiteralExpr = Li
 		startColumn: 66,
 		startLine:   94,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__94_58__94_69_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -359935,8 +359566,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_159 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__93_36__95_62_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -359969,8 +359599,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_27 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_54 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -359980,8 +359609,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_54 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__84_3__103_59_NUM_6 CallExpr = CallExpr{
 	Position: Position{
@@ -360014,8 +359642,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_55 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__84_3__103_59_NUM_7 CallExpr = CallExpr{
 	Position: Position{
@@ -360792,8 +360419,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_40 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_6 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -361330,8 +360956,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_41 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_7 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -361679,8 +361304,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_42 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_8 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -362025,8 +361649,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_43 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_9 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -362357,8 +361980,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_44 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_10 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -362771,8 +362393,7 @@ var literalExpr_POS_joker_DOT_core__361_20__361_22_NUM_45 LiteralExpr = LiteralE
 		startColumn: 20,
 		startLine:   361,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_11 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -364258,8 +363879,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_160 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__194_7__199_38_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -365599,8 +365219,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_28 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_56 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -365610,8 +365229,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_56 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__371_13__374_45_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -365644,8 +365262,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_57 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__371_13__374_45_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -366800,8 +366417,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_161 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__312_13__314_38_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -367147,8 +366763,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_162 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__318_25__321_35_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -367236,8 +366851,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_163 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__322_25__323_39_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -367295,8 +366909,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__324_25__324_26_NUM_1 LiteralExpr = 
 		startColumn: 25,
 		startLine:   324,
 	},
-	obj: String{
-	},
+	obj: String{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__317_21__324_27_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -367434,8 +367047,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__325_25__325_26_NUM_1 LiteralExpr = 
 		startColumn: 25,
 		startLine:   325,
 	},
-	obj: String{
-	},
+	obj: String{},
 }
 var vectorExpr_POS_joker_DOT_tools_DOT_cli__325_20__325_27_NUM_1 VectorExpr = VectorExpr{
 	Position: Position{
@@ -367481,8 +367093,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_29 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_58 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -367492,8 +367103,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_58 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__310_3__328_26_NUM_11 CallExpr = CallExpr{
 	Position: Position{
@@ -367526,8 +367136,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_59 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__310_3__328_26_NUM_12 CallExpr = CallExpr{
 	Position: Position{
@@ -367658,8 +367267,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__327_24__327_25_NUM_1 LiteralExpr = 
 		startColumn: 24,
 		startLine:   327,
 	},
-	obj: String{
-	},
+	obj: String{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__327_15__327_26_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -367771,8 +367379,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__328_21__328_22_NUM_1 LiteralExpr = 
 		startColumn: 21,
 		startLine:   328,
 	},
-	obj: String{
-	},
+	obj: String{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__328_12__328_23_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -370630,8 +370237,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__228_45__228_47_NUM_1 LiteralExpr = 
 		startColumn: 45,
 		startLine:   228,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var vectorExpr_POS_joker_DOT_tools_DOT_cli__228_27__228_48_NUM_1 VectorExpr = VectorExpr{
 	Position: Position{
@@ -370672,8 +370278,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__230_30__230_32_NUM_1 LiteralExpr = 
 		startColumn: 30,
 		startLine:   230,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var varRef_parse_DASH_error_POS_joker_DOT_tools_DOT_cli__230_35__230_45 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -370845,8 +370450,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__231_32__231_34_NUM_1 LiteralExpr = 
 		startColumn: 32,
 		startLine:   231,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var vectorExpr_POS_joker_DOT_tools_DOT_cli__231_25__231_35_NUM_1 VectorExpr = VectorExpr{
 	Position: Position{
@@ -370892,8 +370496,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_30 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_60 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -370903,8 +370506,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_60 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__225_3__234_40_NUM_5 CallExpr = CallExpr{
 	Position: Position{
@@ -370937,8 +370539,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_61 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__225_3__234_40_NUM_6 CallExpr = CallExpr{
 	Position: Position{
@@ -372243,8 +371844,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__213_31__213_32_NUM_1 LiteralExpr = 
 		startColumn: 31,
 		startLine:   213,
 	},
-	obj: String{
-	},
+	obj: String{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__213_8__213_33_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -372434,8 +372034,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_164 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__218_11__221_59_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -372663,8 +372262,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__222_16__222_18_NUM_1 LiteralExpr = 
 		startColumn: 16,
 		startLine:   222,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var vectorExpr_POS_joker_DOT_tools_DOT_cli__222_9__222_19_NUM_1 VectorExpr = VectorExpr{
 	Position: Position{
@@ -373744,8 +373342,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_31 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_62 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -373755,8 +373352,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_62 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__301_11__304_26_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -373789,8 +373385,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_63 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__301_11__304_26_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -373823,8 +373418,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_64 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__301_11__304_26_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -374138,8 +373732,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_32 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_65 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -374149,8 +373742,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_65 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__296_12__299_56_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -374183,8 +373775,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_66 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__296_12__299_56_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -374217,8 +373808,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_67 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__296_12__299_56_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -374265,8 +373855,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_33 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_68 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -374276,8 +373865,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_68 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__296_12__299_56_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -374310,8 +373898,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_69 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__296_12__299_56_NUM_5 CallExpr = CallExpr{
 	Position: Position{
@@ -374862,8 +374449,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_34 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_70 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -374873,8 +374459,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_70 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__290_12__293_44_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -374907,8 +374492,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_71 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__290_12__293_44_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -374941,8 +374525,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_72 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__290_12__293_44_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -374989,8 +374572,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_35 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_73 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -375000,8 +374582,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_73 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__290_12__293_44_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -375034,8 +374615,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_74 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__290_12__293_44_NUM_5 CallExpr = CallExpr{
 	Position: Position{
@@ -375515,8 +375095,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_36 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_75 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -375526,8 +375105,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_75 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__272_10__287_74_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -375560,8 +375138,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_76 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__272_10__287_74_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -375594,8 +375171,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_77 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__272_10__287_74_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -375642,8 +375218,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_37 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_78 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -375653,8 +375228,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_78 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__272_10__287_74_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -375687,8 +375261,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_79 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__272_10__287_74_NUM_5 CallExpr = CallExpr{
 	Position: Position{
@@ -375721,8 +375294,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_80 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__272_10__287_74_NUM_6 CallExpr = CallExpr{
 	Position: Position{
@@ -375961,8 +375533,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_38 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_81 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -375972,8 +375543,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_81 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__274_14__286_46_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -376006,8 +375576,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_82 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__274_14__286_46_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -380130,8 +379699,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__35_40__35_42_NUM_1 LiteralExpr = Li
 		startColumn: 40,
 		startLine:   35,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_tools_DOT_cli__35_44__35_46_NUM_1 BindingExpr = BindingExpr{
 	Position: Position{
@@ -380186,8 +379754,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_39 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_83 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -380197,8 +379764,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_83 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__33_18__37_36_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -380231,8 +379797,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_84 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__33_18__37_36_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -381738,8 +381303,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_40 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_85 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -381749,8 +381313,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_85 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__39_18__50_51_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -381783,8 +381346,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_86 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__39_18__50_51_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -382585,8 +382147,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_41 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_87 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -382596,8 +382157,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_87 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__541_3__550_41_NUM_8 CallExpr = CallExpr{
 	Position: Position{
@@ -382630,8 +382190,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_88 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__541_3__550_41_NUM_9 CallExpr = CallExpr{
 	Position: Position{
@@ -382803,8 +382362,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_42 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_89 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -382814,8 +382372,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_89 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__541_3__550_41_NUM_10 CallExpr = CallExpr{
 	Position: Position{
@@ -382848,8 +382405,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_90 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_tools_DOT_cli__541_3__550_41_NUM_11 CallExpr = CallExpr{
 	Position: Position{
@@ -384011,8 +383567,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__362_5__362_6_NUM_1 LiteralExpr = Li
 		startColumn: 5,
 		startLine:   362,
 	},
-	obj: String{
-	},
+	obj: String{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__354_3__362_7_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -384194,8 +383749,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_165 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__550_14__550_39_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -385427,8 +384981,7 @@ var literalExpr_POS_joker_DOT_hiccup__23_5__23_6_NUM_1 LiteralExpr = LiteralExpr
 		startColumn: 5,
 		startLine:   23,
 	},
-	obj: String{
-	},
+	obj: String{},
 }
 var varRef_number_Q__POS_joker_DOT_hiccup__25_6__25_12 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -385559,8 +385112,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_166 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_hiccup__18_3__29_12_NUM_4 IfExpr = IfExpr{
 	Position: Position{
@@ -387920,8 +387472,7 @@ var literalExpr_POS_joker_DOT_hiccup__164_31__164_33_NUM_1 LiteralExpr = Literal
 		startColumn: 31,
 		startLine:   164,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var bindingExpr_POS_joker_DOT_hiccup__164_35__164_41_NUM_1 BindingExpr = BindingExpr{
 	Position: Position{
@@ -387977,8 +387528,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_43 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_91 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -387988,8 +387538,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_91 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__161_3__166_34_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -388022,8 +387571,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_92 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__161_3__166_34_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -388418,8 +387966,7 @@ var literalExpr_POS_joker_DOT_hiccup__113_5__113_6_NUM_1 LiteralExpr = LiteralEx
 		startColumn: 5,
 		startLine:   113,
 	},
-	obj: String{
-	},
+	obj: String{},
 }
 var varRef_vector_Q__POS_joker_DOT_hiccup__115_6__115_12 VarRefExpr = VarRefExpr{
 	Position: Position{
@@ -389205,8 +388752,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_167 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_hiccup__94_3__95_74_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -389466,8 +389012,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_44 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_93 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -389477,8 +389022,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_93 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__96_3__102_31_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -389511,8 +389055,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_94 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__96_3__102_31_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -389545,8 +389088,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_95 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__96_3__102_31_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -389579,8 +389121,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_96 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__96_3__102_31_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -389762,8 +389303,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_168 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_hiccup__98_34__98_74_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -390426,8 +389966,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_169 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_hiccup__86_48__86_74_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -390524,8 +390063,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_170 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_hiccup__85_15__85_32_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -391001,8 +390539,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_45 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_97 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -391012,8 +390549,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_97 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__135_5__143_55_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -391046,8 +390582,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_98 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__135_5__143_55_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -391080,8 +390615,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_99 LiteralExpr = Litera
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__135_5__143_55_NUM_3 CallExpr = CallExpr{
 	Position: Position{
@@ -391295,8 +390829,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_46 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_100 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -391306,8 +390839,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_100 LiteralExpr = Liter
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__68_13__69_49_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -391340,8 +390872,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_101 LiteralExpr = Liter
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_hiccup__68_13__69_49_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -392121,8 +391652,7 @@ var literalExpr_POS_joker_DOT_hiccup__60_5__60_6_NUM_1 LiteralExpr = LiteralExpr
 		startColumn: 5,
 		startLine:   60,
 	},
-	obj: String{
-	},
+	obj: String{},
 }
 var objectInfo_POS_joker_DOT_hiccup__62_5__62_9 ObjectInfo = ObjectInfo{
 	Position: Position{
@@ -392198,8 +391728,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_171 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_hiccup__53_3__63_31_NUM_3 IfExpr = IfExpr{
 	Position: Position{
@@ -392654,8 +392183,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_172 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_hiccup__137_26__138_56_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -393462,8 +392990,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_173 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_hiccup__108_3__129_26_NUM_6 IfExpr = IfExpr{
 	Position: Position{
@@ -395544,8 +395071,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_47 LiteralExpr = Litera
 		startColumn: 33,
 		startLine:   2503,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_102 LiteralExpr = LiteralExpr{
 	Position: Position{
@@ -395555,8 +395081,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_102 LiteralExpr = Liter
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_pprint__21_51__22_75_NUM_4 CallExpr = CallExpr{
 	Position: Position{
@@ -395589,8 +395114,7 @@ var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_103 LiteralExpr = Liter
 		startColumn: 71,
 		startLine:   2524,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var callExpr_POS_joker_DOT_pprint__21_51__22_75_NUM_5 CallExpr = CallExpr{
 	Position: Position{
@@ -395799,8 +395323,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_174 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_pprint__21_51__22_75_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -396837,8 +396360,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_175 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_pprint__27_10__28_51_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -396915,8 +396437,7 @@ var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_176 LiteralExpr = Literal
 		startColumn: 22,
 		startLine:   352,
 	},
-	obj: Nil{
-	},
+	obj: Nil{},
 }
 var ifExpr_POS_joker_DOT_pprint__11_6__28_53_NUM_1 IfExpr = IfExpr{
 	Position: Position{
@@ -400686,8 +400207,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__15_32__15_32_NUM_1 LiteralExpr =
 		startColumn: 32,
 		startLine:   15,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__15_22__15_33_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -400801,8 +400321,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__15_54__15_54_NUM_1 LiteralExpr =
 		startColumn: 54,
 		startLine:   15,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__15_44__15_55_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -401489,8 +401008,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__20_30__20_30_NUM_1 LiteralExpr =
 		startColumn: 30,
 		startLine:   20,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__20_20__20_31_NUM_2 CallExpr = CallExpr{
 	Position: Position{
@@ -402578,8 +402096,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__40_32__40_32_NUM_1 LiteralExpr =
 		startColumn: 32,
 		startLine:   40,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__40_22__40_33_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -402693,8 +402210,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__40_54__40_54_NUM_1 LiteralExpr =
 		startColumn: 54,
 		startLine:   40,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__40_44__40_55_NUM_1 CallExpr = CallExpr{
 	Position: Position{
@@ -403488,8 +403004,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__46_30__46_30_NUM_1 LiteralExpr =
 		startColumn: 30,
 		startLine:   46,
 	},
-	obj: Int{
-	},
+	obj: Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__46_20__46_31_NUM_2 CallExpr = CallExpr{
 	Position: Position{

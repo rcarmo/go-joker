@@ -4,7 +4,7 @@ import (
 	"runtime"
 	"testing"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestSystemProperties(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func fileSeq(root string) *ArrayVector {

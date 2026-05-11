@@ -6,7 +6,7 @@ import (
 	"math/big"
 	"strings"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 const (

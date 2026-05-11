@@ -1,7 +1,7 @@
 package imaging
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var imagingNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.imaging"))

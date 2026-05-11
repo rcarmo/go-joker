@@ -3,7 +3,7 @@ package url
 import (
 	"net/url"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func pathUnescape(s string) string {

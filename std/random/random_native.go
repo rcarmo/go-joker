@@ -6,7 +6,7 @@ import (
 	"math/big"
 	mrand "math/rand/v2"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 // random_native.go — joker.random namespace.

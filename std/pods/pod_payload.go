@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	. "github.com/candid82/joker/core"
-	edn "github.com/candid82/joker/std/edn"
-	transit "github.com/candid82/joker/std/transit"
+	. "github.com/rcarmo/go-joker/core"
+	edn "github.com/rcarmo/go-joker/std/edn"
+	transit "github.com/rcarmo/go-joker/std/transit"
 )
 
 func (p *Pod) encodeArgs(args []Object) (string, error) {

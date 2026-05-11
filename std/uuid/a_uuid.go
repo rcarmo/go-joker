@@ -3,7 +3,7 @@
 package uuid
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var __new__P ProcFn = __new_

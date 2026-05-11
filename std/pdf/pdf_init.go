@@ -1,7 +1,7 @@
 package pdf
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var pdfNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.pdf"))

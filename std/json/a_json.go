@@ -3,7 +3,7 @@
 package json
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var __json_seq__P ProcFn = __json_seq_

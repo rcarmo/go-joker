@@ -1,7 +1,7 @@
 package svg
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var svgNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.svg"))

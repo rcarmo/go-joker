@@ -3,7 +3,7 @@
 package markdown
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var __convert_string__P ProcFn = __convert_string_

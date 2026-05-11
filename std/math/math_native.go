@@ -5,7 +5,7 @@ import (
 	"math"
 	"math/big"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func modf(x float64) Object {

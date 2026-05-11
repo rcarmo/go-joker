@@ -3,7 +3,7 @@
 package bolt
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var __by_prefix__P ProcFn = __by_prefix_

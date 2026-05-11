@@ -1,7 +1,7 @@
 package jit
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var jitNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.jit"))

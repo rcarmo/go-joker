@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 const podInvokeTimeout = 30 * time.Second

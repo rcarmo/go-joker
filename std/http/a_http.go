@@ -3,7 +3,7 @@
 package http
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var __send__P ProcFn = __send_

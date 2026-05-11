@@ -3,7 +3,7 @@ package transit
 import (
 	"encoding/json"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 // TransitEncodeArgs encodes pod invocation arguments as a Transit+JSON list.

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestDisassemble(t *testing.T) {

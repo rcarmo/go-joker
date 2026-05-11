@@ -7,7 +7,7 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 type fileWatcher struct {

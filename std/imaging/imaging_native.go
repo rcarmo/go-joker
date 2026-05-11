@@ -10,7 +10,7 @@ import (
 
 	"github.com/disintegration/imaging"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 // Image wraps a Go image for use in Joker.
@@ -37,10 +37,10 @@ func (im *Image) Equals(other interface{}) bool {
 	return im == other
 }
 
-func (im *Image) GetInfo() *ObjectInfo { return nil }
+func (im *Image) GetInfo() *ObjectInfo             { return nil }
 func (im *Image) WithInfo(info *ObjectInfo) Object { return im }
-func (im *Image) GetType() *Type { return typeImage }
-func (im *Image) Hash() uint32 { return 0 }
+func (im *Image) GetType() *Type                   { return typeImage }
+func (im *Image) Hash() uint32                     { return 0 }
 
 // --- Helpers ---
 

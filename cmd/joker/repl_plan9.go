@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func repl(phase Phase) {

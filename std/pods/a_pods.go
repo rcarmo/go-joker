@@ -1,6 +1,6 @@
 package pods
 
-import . "github.com/candid82/joker/core"
+import . "github.com/rcarmo/go-joker/core"
 
 var podsNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("pods"))
 var babashkaPodsNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("babashka.pods"))

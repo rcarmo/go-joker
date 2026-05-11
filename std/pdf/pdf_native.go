@@ -7,7 +7,7 @@ import (
 
 	"github.com/signintech/gopdf"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 // Document wraps a gopdf instance.

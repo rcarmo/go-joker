@@ -1,6 +1,6 @@
 package system
 
-import . "github.com/candid82/joker/core"
+import . "github.com/rcarmo/go-joker/core"
 
 var systemNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("System"))
 

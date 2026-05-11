@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func expectPanic(t *testing.T, fn func()) {

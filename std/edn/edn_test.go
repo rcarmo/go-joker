@@ -3,7 +3,7 @@ package edn
 import (
 	"testing"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func roundTrip(t *testing.T, src string, want string) {

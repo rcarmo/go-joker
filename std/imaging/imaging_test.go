@@ -3,7 +3,7 @@ package imaging
 import (
 	"testing"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestNewAndInfo(t *testing.T) {

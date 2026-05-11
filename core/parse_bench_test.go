@@ -96,10 +96,14 @@ func TestJSONParserCorrectness(t *testing.T) {
 		}
 	}
 	r := parse.Call([]Object{String{S: jsonSmall}})
-	if r == nil { t.Fatal("small JSON failed") }
+	if r == nil {
+		t.Fatal("small JSON failed")
+	}
 	t.Logf("small: %s", r.ToString(false))
 	r2 := parse.Call([]Object{String{S: jsonMedium}})
-	if r2 == nil { t.Fatal("medium JSON failed") }
+	if r2 == nil {
+		t.Fatal("medium JSON failed")
+	}
 	t.Logf("medium: %d items", r2.(*ArrayVector).Count())
 }
 
@@ -107,14 +111,18 @@ func BenchmarkParseJSONSmall(b *testing.B) {
 	parse := getJSONParser(b)
 	input := String{S: jsonSmall}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ { parse.Call([]Object{input}) }
+	for i := 0; i < b.N; i++ {
+		parse.Call([]Object{input})
+	}
 }
 
 func BenchmarkParseJSONMedium(b *testing.B) {
 	parse := getJSONParser(b)
 	input := String{S: jsonMedium}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ { parse.Call([]Object{input}) }
+	for i := 0; i < b.N; i++ {
+		parse.Call([]Object{input})
+	}
 }
 
 // --- Pure Clojure XML parser (subset) ---
@@ -188,15 +196,21 @@ func getXMLParser(tb testing.TB) Callable {
 func TestXMLParserCorrectness(t *testing.T) {
 	parse := getXMLParser(t)
 	r := parse.Call([]Object{String{S: `<a x="1">hello</a>`}})
-	if r == nil { t.Fatal("nil") }
+	if r == nil {
+		t.Fatal("nil")
+	}
 	t.Logf("simple: %s", r.ToString(false))
 
 	r2 := parse.Call([]Object{String{S: xmlSmall}})
-	if r2 == nil { t.Fatal("small nil") }
+	if r2 == nil {
+		t.Fatal("small nil")
+	}
 	t.Logf("small: %s", r2.ToString(false))
 
 	r3 := parse.Call([]Object{String{S: xmlMedium}})
-	if r3 == nil { t.Fatal("medium nil") }
+	if r3 == nil {
+		t.Fatal("medium nil")
+	}
 	t.Logf("medium: parsed")
 }
 
@@ -204,14 +218,18 @@ func BenchmarkParseXMLSmall(b *testing.B) {
 	parse := getXMLParser(b)
 	input := String{S: xmlSmall}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ { parse.Call([]Object{input}) }
+	for i := 0; i < b.N; i++ {
+		parse.Call([]Object{input})
+	}
 }
 
 func BenchmarkParseXMLMedium(b *testing.B) {
 	parse := getXMLParser(b)
 	input := String{S: xmlMedium}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ { parse.Call([]Object{input}) }
+	for i := 0; i < b.N; i++ {
+		parse.Call([]Object{input})
+	}
 }
 
 // --- Pure Clojure YAML-like parser (simple key:value + nested indentation) ---
@@ -276,11 +294,15 @@ func getYAMLParser(tb testing.TB) Callable {
 func TestYAMLParserCorrectness(t *testing.T) {
 	parse := getYAMLParser(t)
 	r := parse.Call([]Object{String{S: yamlSmall}})
-	if r == nil { t.Fatal("nil") }
+	if r == nil {
+		t.Fatal("nil")
+	}
 	t.Logf("small: %s", r.ToString(false))
 
 	r2 := parse.Call([]Object{String{S: yamlMedium}})
-	if r2 == nil { t.Fatal("medium nil") }
+	if r2 == nil {
+		t.Fatal("medium nil")
+	}
 	t.Logf("medium: %s", r2.ToString(false))
 }
 
@@ -288,14 +310,18 @@ func BenchmarkParseYAMLSmall(b *testing.B) {
 	parse := getYAMLParser(b)
 	input := String{S: yamlSmall}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ { parse.Call([]Object{input}) }
+	for i := 0; i < b.N; i++ {
+		parse.Call([]Object{input})
+	}
 }
 
 func BenchmarkParseYAMLMedium(b *testing.B) {
 	parse := getYAMLParser(b)
 	input := String{S: yamlMedium}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ { parse.Call([]Object{input}) }
+	for i := 0; i < b.N; i++ {
+		parse.Call([]Object{input})
+	}
 }
 
 // --- HTML entity decode benchmark ---
@@ -330,11 +356,15 @@ func getHTMLDecoder(tb testing.TB) Callable {
 func TestHTMLDecodeCorrectness(t *testing.T) {
 	decode := getHTMLDecoder(t)
 	r := decode.Call([]Object{String{S: htmlSmall}})
-	if r == nil { t.Fatal("nil") }
+	if r == nil {
+		t.Fatal("nil")
+	}
 	t.Logf("small: %s", r.ToString(false))
 
 	r2 := decode.Call([]Object{String{S: htmlMedium}})
-	if r2 == nil { t.Fatal("medium nil") }
+	if r2 == nil {
+		t.Fatal("medium nil")
+	}
 	t.Logf("medium: %s", r2.ToString(false))
 }
 
@@ -342,14 +372,18 @@ func BenchmarkDecodeHTMLSmall(b *testing.B) {
 	decode := getHTMLDecoder(b)
 	input := String{S: htmlSmall}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ { decode.Call([]Object{input}) }
+	for i := 0; i < b.N; i++ {
+		decode.Call([]Object{input})
+	}
 }
 
 func BenchmarkDecodeHTMLMedium(b *testing.B) {
 	decode := getHTMLDecoder(b)
 	input := String{S: htmlMedium}
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ { decode.Call([]Object{input}) }
+	for i := 0; i < b.N; i++ {
+		decode.Call([]Object{input})
+	}
 }
 
 // --- Native Go-backed parser benchmarks ---
@@ -359,7 +393,7 @@ func BenchmarkDecodeHTMLMedium(b *testing.B) {
 // Note: std/json, std/yaml, std/html are in separate packages.
 // We benchmark them via their Go-native functions directly in
 // std/json/json_bench_test.go etc.
-// 
+//
 // Cross-runtime comparison (same input, pure implementations):
 //
 // | Parser      | Size   | Bun/JSC | Python 3.13 | Joker (pure) | Joker (native) |

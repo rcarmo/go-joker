@@ -10,8 +10,8 @@ import (
 	"time"
 	"unsafe"
 
-	. "github.com/candid82/joker/core"
 	ws "github.com/gorilla/websocket"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var client = newPersistentHTTPClient(100, 100, 90*time.Second)

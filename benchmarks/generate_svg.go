@@ -237,8 +237,12 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 
 	winsP, winsG := 0, 0
 	for _, r := range rows {
-		if r.VsPython < 1 { winsP++ }
-		if r.VsGoja < 1 { winsG++ }
+		if r.VsPython < 1 {
+			winsP++
+		}
+		if r.VsGoja < 1 {
+			winsG++
+		}
 	}
 	b.WriteString(fmt.Sprintf(`<text class="muted subtitle" x="40" y="76">Beat Python: %d/%d • Beat Goja: %d/%d</text>`, winsP, len(rows), winsG, len(rows)))
 
@@ -263,14 +267,22 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 
 		// vs Python ratio
 		pyClass := "win"
-		if r.VsPython >= 1 && r.VsPython < 2 { pyClass = "close" }
-		if r.VsPython >= 2 { pyClass = "gap" }
+		if r.VsPython >= 1 && r.VsPython < 2 {
+			pyClass = "close"
+		}
+		if r.VsPython >= 2 {
+			pyClass = "gap"
+		}
 		b.WriteString(fmt.Sprintf(`<text class="%s small" x="440" y="28">%.2f×</text>`, pyClass, r.VsPython))
 
 		// vs Goja ratio
 		gjClass := "win"
-		if r.VsGoja >= 1 && r.VsGoja < 2 { gjClass = "close" }
-		if r.VsGoja >= 2 { gjClass = "gap" }
+		if r.VsGoja >= 1 && r.VsGoja < 2 {
+			gjClass = "close"
+		}
+		if r.VsGoja >= 2 {
+			gjClass = "gap"
+		}
 		b.WriteString(fmt.Sprintf(`<text class="%s small" x="550" y="28">%.2f×</text>`, gjClass, r.VsGoja))
 
 		// Log-scale bar for vs Python ratio
@@ -278,8 +290,12 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 		logRatio := math.Log2(math.Max(r.VsPython, 0.01))
 		// Map log2 range [-6, 5] to [0, barMax]
 		barWidth := int(math.Round((logRatio + 6) / 11.0 * barMax))
-		if barWidth < 2 { barWidth = 2 }
-		if barWidth > int(barMax) { barWidth = int(barMax) }
+		if barWidth < 2 {
+			barWidth = 2
+		}
+		if barWidth > int(barMax) {
+			barWidth = int(barMax)
+		}
 		// Midpoint at log2(1) = 0 -> pixel 273
 		b.WriteString(fmt.Sprintf(`<rect fill="var(--track)" x="640" y="14" width="%d" height="18" rx="4"/>`, int(barMax)))
 		b.WriteString(fmt.Sprintf(`<rect class="%s" x="640" y="14" width="%d" height="18" rx="4" opacity="0.8"/>`, pyClass, barWidth))

@@ -3,7 +3,7 @@ package json
 import (
 	"encoding/json"
 	"fmt"
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 	"io"
 	"strings"
 )

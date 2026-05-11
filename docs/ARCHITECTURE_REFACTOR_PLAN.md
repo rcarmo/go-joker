@@ -12,6 +12,7 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 
 ## Current high-level state
 
+- Module identity is now `github.com/rcarmo/go-joker`; remaining `candid82` references should be attribution/upstream history or third-party dependencies only.
 - CLI entrypoint now lives under `cmd/joker`.
 - `std/*` is already package-oriented and mostly healthy.
 - `core` is the main monolith.

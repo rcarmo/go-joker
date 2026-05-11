@@ -3,7 +3,7 @@
 package math
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 	"math"
 )
 

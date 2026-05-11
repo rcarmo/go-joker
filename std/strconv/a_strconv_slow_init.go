@@ -4,7 +4,7 @@ package strconv
 
 import (
 	"fmt"
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 	"os"
 )
 

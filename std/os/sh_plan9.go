@@ -5,7 +5,7 @@ import (
 	"io"
 	"os/exec"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func sh(dir string, stdin io.Reader, stdout io.Writer, stderr io.Writer, name string, args []string) Object {

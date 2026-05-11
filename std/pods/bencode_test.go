@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestBencodeRoundTripPodMessage(t *testing.T) {

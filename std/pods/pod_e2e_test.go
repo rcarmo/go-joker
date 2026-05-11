@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestHelperProcessFormatPod(t *testing.T) {

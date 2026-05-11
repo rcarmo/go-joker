@@ -3,7 +3,7 @@
 package git
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var __add_commit__P ProcFn = __add_commit_

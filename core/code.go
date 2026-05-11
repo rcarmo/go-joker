@@ -7,7 +7,7 @@ package core
 
 import (
 	"fmt"
-	"github.com/candid82/joker/core/gen_go"
+	"github.com/rcarmo/go-joker/core/gen_go"
 	"reflect"
 	"strings"
 )

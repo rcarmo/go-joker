@@ -3,7 +3,7 @@
 package csv
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var __csv_seq__P ProcFn = __csv_seq_

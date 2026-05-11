@@ -3,7 +3,7 @@ package math
 import (
 	"math"
 
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 // math_extra.go — additional math functions not in the generated a_math.go.

@@ -1,6 +1,6 @@
 package transit
 
-import . "github.com/candid82/joker/core"
+import . "github.com/rcarmo/go-joker/core"
 
 var transitNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.transit"))
 

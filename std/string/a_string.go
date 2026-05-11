@@ -3,7 +3,7 @@
 package string
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 	"regexp"
 	"strings"
 	"unicode"

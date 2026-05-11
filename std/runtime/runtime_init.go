@@ -1,7 +1,7 @@
 package runtime
 
 import (
-	. "github.com/candid82/joker/core"
+	. "github.com/rcarmo/go-joker/core"
 )
 
 var runtimeNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.runtime"))
