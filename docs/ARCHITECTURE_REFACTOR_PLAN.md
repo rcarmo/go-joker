@@ -44,6 +44,7 @@ Planned package boundaries:
 - [x] Guard module/import identity with `make import-identity-check` from `make docs-check`.
 - [x] Guard explicit Babashka/non-goal boundaries with `make non-goals-check` from `make docs-check`.
 - [x] Run extracted `core/internal/...` package tests from `make docs-check` via `make refactor-internals-check`.
+- [x] Guard top-level layout invariants with `make layout-check` from `make docs-check`.
 
 ### R1 — Extract leaf tracing state
 
