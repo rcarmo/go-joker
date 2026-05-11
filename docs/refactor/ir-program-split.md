@@ -68,14 +68,14 @@ type IRProgram struct {
 }
 ```
 
-This lets the compiler/executor continue to use root-core object/runtime details while diagnostics, profiling, export shape, and WASM eligibility start reading the neutral model.
+This lets the compiler/executor continue to use root-core object/runtime details while diagnostics, profiling, export shape, and WASM eligibility start reading the neutral model. Diagnostics and exported bytecode/slot accessors already do this; profile and WASM lowering still need migration.
 
 ## Migration sequence
 
 1. Add `core/internal/ir.Program` and conversion/accessor helpers. **Done: initial neutral model exists in `core/internal/ir/model.go`.**
 2. Populate `IRProgram.model` during compilation while leaving old fields in place. **Done: root executable envelopes now refresh a neutral model.**
-3. Move analysis fields/helpers to the internal model.
-4. Update diagnostics/export/profile/WASM eligibility to read the model. **Started: diagnostics and exported bytecode/slot accessors now read the neutral model.**
+3. Move analysis fields/helpers to the internal model. **Started: `AnalyzeIRProgram` writes analysis back into the neutral model.**
+4. Update diagnostics/export/profile/WASM eligibility to read the model. **Started: diagnostics and exported bytecode/slot accessors now read the neutral model; profile and WASM lowering remain.**
 5. Remove duplicated root fields once no callers use them.
 6. Only then consider moving compiler or executor pieces.
 
