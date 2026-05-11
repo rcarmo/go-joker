@@ -45,7 +45,7 @@ Instead, this batch adds an explicit guardrail:
 - `make generated-check`
 - `tests/generated_guard.sh`
 
-The guard verifies that generated core outputs remain clearly marked and that generator directories still exist. `make docs-check` now runs the generated guard, so generated-file hygiene is part of the standard validation path.
+The guard verifies that generated core outputs remain clearly marked, that the generated file set matches `tests/generated_files.txt`, and that generator directories still exist. `make docs-check` now runs the generated guard, so generated-file hygiene is part of the standard validation path.
 
 ## Target structure after prerequisites
 
@@ -75,5 +75,6 @@ Before moving generated output into `core/internal/generated`, complete or expli
 
 - [x] Inventory generated file families and generator source packages.
 - [x] Add generated-file guardrail to avoid manual edits/regressions.
+- [x] Track the generated root-core file set in `tests/generated_files.txt`.
 - [ ] Update generators to emit under a generated package/directory or clearly separated bootstrap module.
 - [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
