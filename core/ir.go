@@ -2,6 +2,8 @@ package core
 
 import (
 	"sync"
+
+	coreir "github.com/candid82/joker/core/internal/ir"
 )
 
 // ir.go — tiny lowered IR for hot loop/arithmetic subsets.
@@ -17,61 +19,61 @@ import (
 
 // Opcodes
 const (
-	irLiteral        byte = iota // operand: index into constants pool
-	irLoadSlot                   // operand: slot index in locals
-	irStoreSlot                  // operand: slot index in locals
-	irAdd                        // pop 2, push sum (Int fast path)
-	irSub                        // pop 2, push difference
-	irMul                        // pop 2, push product
-	irRem                        // pop 2, push remainder
-	irDiv                        // pop 2, push quotient (Double)
-	irInc                        // pop 1, push +1
-	irDec                        // pop 1, push -1
-	irLt                         // pop 2, push Boolean
-	irEq                         // pop 2, push Boolean
-	irIsZero                     // pop 1, push Boolean
-	irJumpIfNot                  // operand: target PC (uint16 big-endian in next 2 bytes)
-	irJump                       // operand: target PC
-	irRecur                      // operand: nargs (2 bytes) + target PC (2 bytes)
-	irReturn                     // pop 1, return it
-	irGet                        // pop 2 (coll, key), push result or NIL
-	irGet3                       // pop 3 (coll, key, default), push result
-	irAssoc                      // pop 3 (coll, key, val), push new map
-	irNth                        // pop 2 (coll, index), push element
-	irConj                       // pop 2 (coll, val), push conj'd
-	irSqrt                       // pop 1, push sqrt
-	irCallSlot                   // operand1: slot (2 bytes), operand2: nargs (2 bytes)
-	irCallSelf                   // operand: nargs (2 bytes)
-	irFirst                      // pop 1, push first element
-	irBuildVec                   // operand: n elements; pop n, push new vector
-	irStr2                       // pop 2, push string concatenation
-	irStr1                       // pop 1, push string conversion
-	irNthStringASCII             // operand: constant string index; pop idx, push char
-	irCount                      // pop 1, push count
-	irToTransient                // pop 1 (ArrayVector), push TransientVector
-	irAssocBang                  // pop 3 (tv, key, val), mutate in place, push tv
-	irToPersistent               // pop 1 (TransientVector), push ArrayVector
-	irFallback                   // cannot execute in IR; fall back to tree Eval
-	irIntCast                    // pop 1 (Char or Number), push Int
-	irSubs                       // pop 2 or 3 (string, start [, end]), push substring
-	irGte                        // pop 2, push a >= b
-	irGt                         // pop 2, push a > b
-	irLte                        // pop 2, push a <= b
-	irCursorChar                 // pop cursor, push char (rune as Char)
-	irCursorNext                 // pop cursor, push new cursor (advanced by 1)
-	irCursorDone                 // pop cursor, push boolean (done?)
-	irPackRest                   // operand: startIdx — pack slots[startIdx:nargs] into vector, store to slot
-	irApply                      // pop fn + args-seq, call fn with unpacked args, push result
-	irThrow                      // pop value, panic with it
-	irTryCatch                   // operands: catchPC(2) + bindSlot(2) — set up catch handler
-	irPop                        // pop and discard top of stack
-	irMakeFn                     // operand: constant index (FnExpr) — creates *Fn with current env
-	irCase                       // operands: slot(2) + nCases(2) + [value(2)+targetPC(2)]*n + defaultPC(2)
-	irBitAnd                     // pop 2, push a & b
-	irBitOr                      // pop 2, push a | b
-	irBitNot                     // pop 1, push ^a
-	irBitShiftLeft               // pop 2, push a << b
-	irBitShiftRight              // pop 2, push a >> b (arithmetic)
+	irLiteral        = coreir.Literal        // operand: index into constants pool
+	irLoadSlot       = coreir.LoadSlot       // operand: slot index in locals
+	irStoreSlot      = coreir.StoreSlot      // operand: slot index in locals
+	irAdd            = coreir.Add            // pop 2, push sum (Int fast path)
+	irSub            = coreir.Sub            // pop 2, push difference
+	irMul            = coreir.Mul            // pop 2, push product
+	irRem            = coreir.Rem            // pop 2, push remainder
+	irDiv            = coreir.Div            // pop 2, push quotient (Double)
+	irInc            = coreir.Inc            // pop 1, push +1
+	irDec            = coreir.Dec            // pop 1, push -1
+	irLt             = coreir.Lt             // pop 2, push Boolean
+	irEq             = coreir.Eq             // pop 2, push Boolean
+	irIsZero         = coreir.IsZero         // pop 1, push Boolean
+	irJumpIfNot      = coreir.JumpIfNot      // operand: target PC (uint16 big-endian in next 2 bytes)
+	irJump           = coreir.Jump           // operand: target PC
+	irRecur          = coreir.Recur          // operand: nargs (2 bytes) + target PC (2 bytes)
+	irReturn         = coreir.Return         // pop 1, return it
+	irGet            = coreir.Get            // pop 2 (coll, key), push result or NIL
+	irGet3           = coreir.Get3           // pop 3 (coll, key, default), push result
+	irAssoc          = coreir.Assoc          // pop 3 (coll, key, val), push new map
+	irNth            = coreir.Nth            // pop 2 (coll, index), push element
+	irConj           = coreir.Conj           // pop 2 (coll, val), push conj'd
+	irSqrt           = coreir.Sqrt           // pop 1, push sqrt
+	irCallSlot       = coreir.CallSlot       // operand1: slot (2 bytes), operand2: nargs (2 bytes)
+	irCallSelf       = coreir.CallSelf       // operand: nargs (2 bytes)
+	irFirst          = coreir.First          // pop 1, push first element
+	irBuildVec       = coreir.BuildVec       // operand: n elements; pop n, push new vector
+	irStr2           = coreir.Str2           // pop 2, push string concatenation
+	irStr1           = coreir.Str1           // pop 1, push string conversion
+	irNthStringASCII = coreir.NthStringASCII // operand: constant string index; pop idx, push char
+	irCount          = coreir.Count          // pop 1, push count
+	irToTransient    = coreir.ToTransient    // pop 1 (ArrayVector), push TransientVector
+	irAssocBang      = coreir.AssocBang      // pop 3 (tv, key, val), mutate in place, push tv
+	irToPersistent   = coreir.ToPersistent   // pop 1 (TransientVector), push ArrayVector
+	irFallback       = coreir.Fallback       // cannot execute in IR; fall back to tree Eval
+	irIntCast        = coreir.IntCast        // pop 1 (Char or Number), push Int
+	irSubs           = coreir.Subs           // pop 2 or 3 (string, start [, end]), push substring
+	irGte            = coreir.Gte            // pop 2, push a >= b
+	irGt             = coreir.Gt             // pop 2, push a > b
+	irLte            = coreir.Lte            // pop 2, push a <= b
+	irCursorChar     = coreir.CursorChar     // pop cursor, push char (rune as Char)
+	irCursorNext     = coreir.CursorNext     // pop cursor, push new cursor (advanced by 1)
+	irCursorDone     = coreir.CursorDone     // pop cursor, push boolean (done?)
+	irPackRest       = coreir.PackRest       // operand: startIdx — pack slots[startIdx:nargs] into vector, store to slot
+	irApply          = coreir.Apply          // pop fn + args-seq, call fn with unpacked args, push result
+	irThrow          = coreir.Throw          // pop value, panic with it
+	irTryCatch       = coreir.TryCatch       // operands: catchPC(2) + bindSlot(2) — set up catch handler
+	irPop            = coreir.Pop            // pop and discard top of stack
+	irMakeFn         = coreir.MakeFn         // operand: constant index (FnExpr) — creates *Fn with current env
+	irCase           = coreir.Case           // operands: slot(2) + nCases(2) + [value(2)+targetPC(2)]*n + defaultPC(2)
+	irBitAnd         = coreir.BitAnd         // pop 2, push a & b
+	irBitOr          = coreir.BitOr          // pop 2, push a | b
+	irBitNot         = coreir.BitNot         // pop 1, push ^a
+	irBitShiftLeft   = coreir.BitShiftLeft   // pop 2, push a << b
+	irBitShiftRight  = coreir.BitShiftRight  // pop 2, push a >> b (arithmetic)
 )
 
 // ---------- Cache ----------

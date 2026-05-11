@@ -1,6 +1,6 @@
 package core
 
-import "fmt"
+import coreir "github.com/candid82/joker/core/internal/ir"
 
 // ir_diagnostics.go — lightweight IR/WASM compilation explanations.
 //
@@ -31,118 +31,7 @@ type WASMDiagnostic struct {
 	HasImports bool
 }
 
-func irOpcodeName(op byte) string {
-	switch op {
-	case irLiteral:
-		return "irLiteral"
-	case irLoadSlot:
-		return "irLoadSlot"
-	case irStoreSlot:
-		return "irStoreSlot"
-	case irAdd:
-		return "irAdd"
-	case irSub:
-		return "irSub"
-	case irMul:
-		return "irMul"
-	case irRem:
-		return "irRem"
-	case irDiv:
-		return "irDiv"
-	case irInc:
-		return "irInc"
-	case irDec:
-		return "irDec"
-	case irLt:
-		return "irLt"
-	case irGte:
-		return "irGte"
-	case irGt:
-		return "irGt"
-	case irLte:
-		return "irLte"
-	case irCursorChar:
-		return "irCursorChar"
-	case irCursorNext:
-		return "irCursorNext"
-	case irCursorDone:
-		return "irCursorDone"
-	case irPackRest:
-		return "irPackRest"
-	case irApply:
-		return "irApply"
-	case irThrow:
-		return "irThrow"
-	case irTryCatch:
-		return "irTryCatch"
-	case irPop:
-		return "irPop"
-	case irMakeFn:
-		return "irMakeFn"
-	case irCase:
-		return "irCase"
-	case irBitAnd:
-		return "irBitAnd"
-	case irBitOr:
-		return "irBitOr"
-	case irBitNot:
-		return "irBitNot"
-	case irBitShiftLeft:
-		return "irBitShiftLeft"
-	case irBitShiftRight:
-		return "irBitShiftRight"
-	case irEq:
-		return "irEq"
-	case irIsZero:
-		return "irIsZero"
-	case irJumpIfNot:
-		return "irJumpIfNot"
-	case irJump:
-		return "irJump"
-	case irRecur:
-		return "irRecur"
-	case irReturn:
-		return "irReturn"
-	case irGet:
-		return "irGet"
-	case irGet3:
-		return "irGet3"
-	case irAssoc:
-		return "irAssoc"
-	case irNth:
-		return "irNth"
-	case irConj:
-		return "irConj"
-	case irSqrt:
-		return "irSqrt"
-	case irCallSlot:
-		return "irCallSlot"
-	case irCallSelf:
-		return "irCallSelf"
-	case irFirst:
-		return "irFirst"
-	case irBuildVec:
-		return "irBuildVec"
-	case irStr2:
-		return "irStr2"
-	case irStr1:
-		return "irStr1"
-	case irNthStringASCII:
-		return "irNthStringASCII"
-	case irCount:
-		return "irCount"
-	case irToTransient:
-		return "irToTransient"
-	case irAssocBang:
-		return "irAssocBang"
-	case irToPersistent:
-		return "irToPersistent"
-	case irFallback:
-		return "irFallback"
-	default:
-		return fmt.Sprintf("irUnknown(%d)", op)
-	}
-}
+func irOpcodeName(op byte) string { return coreir.OpcodeName(op) }
 
 func irOpCount(code []byte) int {
 	pc := 0

@@ -55,10 +55,10 @@ Planned package boundaries:
 
 ### R3 — Define IR boundary
 
-- [ ] Audit all `ir*.go` references to unexported core symbols.
-- [ ] Introduce a minimal exported boundary or adapter layer.
+- [x] Audit all `ir*.go` references to unexported core symbols.
+- [x] Introduce a minimal exported boundary or adapter layer for opcode names/constants in `core/internal/ir`.
 - [ ] Move diagnostic/export helpers first, then compiler/executor.
-- [ ] Keep benchmark correctness tests before performance work.
+- [x] Keep benchmark correctness tests before performance work.
 
 ### R4 — Generated code boundary
 
