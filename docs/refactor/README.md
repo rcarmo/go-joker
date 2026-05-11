@@ -26,6 +26,7 @@ This folder is the canonical refactor/audit document set:
 
 - `README.md` — overall plan, status, and target layout.
 - `code-structure.md` — broad package/module and coverage audit.
+- `module-structure-audit.md` — current Go module/package layout and next structural improvements.
 - `ir-boundary.md` — IR split inventory and boundary plan.
 - `generated-boundary.md` — generated-code inventory and guardrails.
 - `core-split.md` — collections/reader/runtime/WASM split candidates.

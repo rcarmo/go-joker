@@ -138,6 +138,7 @@ go run ./benchmarks/generate_svg.go ./benchmarks
 
 - [`docs/refactor/README.md`](docs/refactor/README.md) — repository split plan and target folder structure
 - [`docs/refactor/code-structure.md`](docs/refactor/code-structure.md) — package/module and coverage audit
+- [`docs/refactor/module-structure-audit.md`](docs/refactor/module-structure-audit.md) — current Go module/package layout and next structural improvements
 - [`docs/refactor/ir-boundary.md`](docs/refactor/ir-boundary.md) — IR package boundary inventory
 - [`docs/refactor/core-split.md`](docs/refactor/core-split.md) — collections/reader/runtime/WASM split candidates
 - [`docs/refactor/object-protocol-contracts.md`](docs/refactor/object-protocol-contracts.md) — object/protocol contracts blocking broad core moves
