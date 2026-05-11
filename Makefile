@@ -19,7 +19,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check import-identity-check non-goals-check layout-check refactor-internals-check parity jank-subset audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -43,6 +43,7 @@ help:
 	@echo "  make non-goals-check # Verify explicit non-goals remain documented"
 	@echo "  make layout-check    # Verify top-level refactor layout invariants"
 	@echo "  make refactor-internals-check # Run tests for extracted core/internal packages"
+	@echo "  make core-contract-check # Run object/protocol contract tests that gate future core splits"
 	@echo "  make parity         # Run Clojure parity tests (271 core form tests)"
 	@echo "  make jank-subset    # Run imported jank-lang/clojure-test-suite subset"
 	@echo "  make bb-compat      # Run portable Babashka compatibility fixture suite"
@@ -125,7 +126,10 @@ layout-check:
 refactor-internals-check:
 	$(GO) test ./core/internal/... -count=$(TEST_COUNT)
 
-docs-check: docs generated-check import-identity-check non-goals-check layout-check refactor-internals-check
+core-contract-check:
+	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestInfoAndMetaCopyOnWriteContract|TestPVObjectSemantics' -count=$(TEST_COUNT) -timeout=120s
+
+docs-check: docs generated-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check
 	test -f docs/ARCHITECTURE_REFACTOR_PLAN.md
 	test -f docs/IR_BOUNDARY_AUDIT.md
 	test -f docs/GENERATED_BOUNDARY_AUDIT.md
