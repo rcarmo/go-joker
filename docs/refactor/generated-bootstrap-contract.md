@@ -58,7 +58,7 @@ This keeps generated output data-oriented and avoids importing root `core` from 
 
 1. Keep existing root generated files guarded by `tests/generated_files.txt`.
 2. Define the data-only payload structs under `core/internal/generated`. **Done: `NamespaceSource` and `VarDoc` are in place with direct tests.**
-3. Teach generators to optionally emit data-only payloads under `core/internal/generated` while still emitting the current root files.
+3. Teach generators to emit data-only payloads under `core/internal/generated` while still emitting the current root files. **Started: `core_sources_gen.go` now emits the core source manifest.**
 4. Add tests comparing data-only payloads with current root generated behavior.
 5. Switch root bootstrap to consume `core/internal/generated` payloads.
 6. Remove root generated bootstrap files from `tests/generated_files.txt` only after equivalent behavior is proven.

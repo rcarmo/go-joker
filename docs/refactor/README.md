@@ -99,7 +99,8 @@ Planned package boundaries:
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
 - [x] Design generated bootstrap contract before generator path changes.
 - [x] Add `core/internal/generated` data-only bootstrap payload contract types.
-- [ ] Update generators to emit under a generated package/directory or clearly separated bootstrap module.
+- [x] Start generator emission under `core/internal/generated` with core source manifest.
+- [ ] Extend generated bootstrap emission beyond source manifest and switch runtime consumers only after equivalence tests.
 - [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
 
 ### R5 — Collections/reader/runtime follow-up
