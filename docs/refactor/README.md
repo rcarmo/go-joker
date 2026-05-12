@@ -129,6 +129,7 @@ Planned package boundaries:
 - [x] Extend `core-contract-check` with seq contracts.
 - [x] Extend `core-contract-check` with sorted collection contracts.
 - [x] Extend `core-contract-check` with numeric native-int conversion/promotion contracts.
+- [x] Add `make std-contract-check` for focused std native-boundary checks (`http`, `io`, `strconv`, `time`, `markdown`).
 - [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
 - [ ] Move collections only after object/protocol contracts are explicit.
 - [x] Document reader object-construction/tagged-literal contract requirements.
@@ -141,4 +142,4 @@ Planned package boundaries:
 
 ## Current execution status
 
-R3 has established the first IR boundary and extracted tested IR helper packages. A neutral `core/internal/ir.Program` model now exists and root executable `IRProgram` envelopes populate it; diagnostics/export accessors, WASM lowering helpers, and native helper compilation read from that model where appropriate. Runtime/execution-envelope contracts now run from `make runtime-contract-check` inside `make docs-check`. R4 generated-code inventory/guardrails are in place; `core/a_data.go` has been removed in favor of the generated source manifest, while remaining generated artifacts still wait on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, sorted collections, transients, seqs, reader construction, native-int numeric promotion/conversion, metadata/info behavior, and persistent-vector semantics. The CLI entrypoint lives in `cmd/joker`.
+R3 has established the first IR boundary and extracted tested IR helper packages. A neutral `core/internal/ir.Program` model now exists and root executable `IRProgram` envelopes populate it; diagnostics/export accessors, WASM lowering helpers, and native helper compilation read from that model where appropriate. Runtime/execution-envelope contracts now run from `make runtime-contract-check` inside `make docs-check`. R4 generated-code inventory/guardrails are in place; `core/a_data.go` has been removed in favor of the generated source manifest, while remaining generated artifacts still wait on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, sorted collections, transients, seqs, reader construction, native-int numeric promotion/conversion, std native-boundary returns, metadata/info behavior, and persistent-vector semantics. The CLI entrypoint lives in `cmd/joker`.
