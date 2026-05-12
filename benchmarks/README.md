@@ -128,6 +128,10 @@ Same recursive-descent algorithm in each language. No native/C library calls.
 | HTML small | 0.22µs | 4.8µs | **22× faster** |
 | HTML medium | 1.6µs | 23.3µs | **15× faster** |
 
+## Latest profile audit
+
+A full benchmark/profile pass was recorded in [`docs/BENCHMARK_PROFILE_2026-05-12.md`](../docs/BENCHMARK_PROFILE_2026-05-12.md). The main finding is that portable/interpreted CLBG shapes are dominated by allocation churn and Go GC scanning; best-Joker/native-shaped variants remain low-allocation and fast. Near-term optimization should prioritize repeated IR compile/envelope allocation and IR frame-stack allocation over opcode-level micro-optimizations.
+
 ## Running Benchmarks
 
 ```bash

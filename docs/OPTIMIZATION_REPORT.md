@@ -443,5 +443,5 @@ WASM backend, escape analysis, and profiling from within Joker scripts.
 
 - **Debugging**: disassemble a slow fn to see if it compiles to IR
 - **Optimization**: check escape analysis to verify transient promotion
-- **Benchmarking**: profile with allocation counts to find hotspots
+- **Benchmarking**: profile with allocation counts to find hotspots. Latest full-suite profile: [`BENCHMARK_PROFILE_2026-05-12.md`](BENCHMARK_PROFILE_2026-05-12.md), which shows allocation/GC scan cost dominates portable/interpreted CLBG paths.
 - **WASM eligibility**: understand why a fn doesn't use native compilation

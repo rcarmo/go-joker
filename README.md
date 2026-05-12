@@ -14,7 +14,7 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 - CLI entrypoint lives in `cmd/joker`; build with `go build -o joker ./cmd/joker`.
 - Portable Babashka fixture suite via `make bb-compat`.
 - Script-driven Babashka shim policy documented in `docs/BABASHKA_SHIM_ASSESSMENT.md`.
-- Tracing/profile tooling documented in `docs/TRACING.md`.
+- Tracing/profile tooling documented in `docs/TRACING.md`; latest benchmark/profile audit in `docs/BENCHMARK_PROFILE_2026-05-12.md`.
 
 ## Performance
 
@@ -36,7 +36,7 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 | **Binary trees** | **~4.24 ms** best-Joker path — beats Python (~47.1 ms), Bun/JSC (~5.78 ms), Goja, and let-go |
 | **Pidigits** | **~0.047 ms** — faster than Python, Goja, and let-go |
 | **Arithmetic loop** | **~0.308 ms** — faster than Goja, Python, and let-go; Bun/JSC edges this run |
-| **Benchmark validation** | portable, micro, and best-Joker/native helper outputs are pinned in `core/benchmark_results_test.go` |
+| **Benchmark validation** | portable, micro, and best-Joker/native helper outputs are pinned in `core/benchmark_results_test.go`; latest full profile shows allocation/GC cost dominates portable CLBG paths |
 | **Best-Joker suite** | beats Python on **13/15**, Goja on **15/15**, and let-go on **15/15** displayed workloads |
 | **let-go suite** | wins 5/7 let-go suite workloads (reduce 14.0×, loop-recur 8.5×, fib 1.5×, tak 1.1×, persistent-map 1.1×) |
 | **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |

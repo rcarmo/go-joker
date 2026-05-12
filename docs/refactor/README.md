@@ -101,6 +101,7 @@ Planned package boundaries:
 - [x] Gate runtime/execution-envelope contracts with `make runtime-contract-check` from `make docs-check`.
 - [ ] Leave executor/escape-analysis root fields until runtime/object execution metadata contract becomes code.
 - [x] Keep benchmark correctness tests before performance work.
+- [x] Record full benchmark/profile audit in `docs/BENCHMARK_PROFILE_2026-05-12.md` to guide future runtime work.
 
 ### R4 — Generated code boundary
 
