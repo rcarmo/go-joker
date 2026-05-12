@@ -46,6 +46,7 @@ func irCompileSingleArity(fn *Fn, arity FnArityExpr) *IRProgram {
 		trialFrame := fnFrame + attempt
 		prog := irCompileFnWithFrame(fn, arity, trialFrame)
 		if prog != nil {
+			irFnCache.Store(arityKey, prog)
 			return prog
 		}
 	}

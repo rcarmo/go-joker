@@ -92,7 +92,7 @@ Top allocation-space profile from the CLBG/Eval/WASM profile:
 
 - Best-Joker/native-shaped benchmarks remain fast and low allocation.
 - Portable/interpreted CLBG shapes are dominated by allocation churn and follow-on GC scan cost.
-- Near-term optimization should focus on reducing repeated IR compile/envelope allocation and frame-stack allocation in interpreted/portable loops before chasing opcode micro-optimizations.
+- Near-term optimization should focus on reducing repeated IR compile/envelope allocation and frame-stack allocation in interpreted/portable loops before chasing opcode micro-optimizations. Initial follow-up addressed the frame-stack allocation path with bounded pools and fixed unstable IR function cache keys; keep profiling after each batch.
 - `BenchmarkCLBGBinaryTreesParallel` is still useful as a separate concurrency smoke benchmark, but remains allocation-heavy and noisy.
 
 ## Artifacts

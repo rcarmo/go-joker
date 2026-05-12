@@ -102,6 +102,7 @@ Planned package boundaries:
 - [ ] Leave executor/escape-analysis root fields until runtime/object execution metadata contract becomes code.
 - [x] Keep benchmark correctness tests before performance work.
 - [x] Record full benchmark/profile audit in `docs/BENCHMARK_PROFILE_2026-05-12.md` to guide future runtime work.
+- [x] Add stable IR function-cache key contract to prevent repeated compile/envelope allocation regressions.
 
 ### R4 — Generated code boundary
 
