@@ -104,7 +104,8 @@ Planned package boundaries:
 - [x] Start generator emission under `core/internal/generated` with core source manifest.
 - [x] Add equivalence test comparing generated source manifest with current root `coreNamespaces`.
 - [x] Guard generated bootstrap manifest equivalence with `make generated-bootstrap-check` from `make docs-check`.
-- [ ] Extend generated bootstrap emission beyond source manifest and switch runtime consumers only after broader equivalence tests.
+- [x] Start root runtime consumption of generated source manifest via guarded `generatedCoreNamespaces()` helper.
+- [ ] Extend generated bootstrap emission beyond source manifest and switch mutating runtime consumers only after broader equivalence tests.
 - [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
 
 ### R5 — Collections/reader/runtime follow-up

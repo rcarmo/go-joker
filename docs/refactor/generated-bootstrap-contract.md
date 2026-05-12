@@ -60,7 +60,7 @@ This keeps generated output data-oriented and avoids importing root `core` from 
 2. Define the data-only payload structs under `core/internal/generated`. **Done: `NamespaceSource` and `VarDoc` are in place with direct tests.**
 3. Teach generators to emit data-only payloads under `core/internal/generated` while still emitting the current root files. **Started: `core_sources_gen.go` now emits the core source manifest.**
 4. Add tests comparing data-only payloads with current root generated behavior. **Started: root-core tests compare generated source-manifest namespaces with current `coreNamespaces`; `make generated-bootstrap-check` and `make docs-check` now guard this equivalence.**
-5. Switch root bootstrap to consume `core/internal/generated` payloads.
+5. Switch root bootstrap to consume `core/internal/generated` payloads. **Started: root `generatedCoreNamespaces()` consumes the generated source manifest; mutating `*core-namespaces*` still uses existing root data until broader equivalence is complete.**
 6. Remove root generated bootstrap files from `tests/generated_files.txt` only after equivalent behavior is proven.
 7. Leave type assertion/info generation near the object model until object boundaries are explicit.
 
