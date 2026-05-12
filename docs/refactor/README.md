@@ -108,6 +108,7 @@ Planned package boundaries:
 - [x] Switch `*core-namespaces*` bootstrap to generated source manifest plus always-present `user` namespace.
 - [x] Stop emitting/tracking root `core/a_data.go` after generated manifest equivalence.
 - [x] Guard generated source manifest paths against `core/data` files.
+- [x] Guard generated source manifest sync with `CoreSourceFiles`.
 - [ ] Extend generated bootstrap emission beyond source manifest only after broader equivalence tests.
 - [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
 

@@ -37,4 +37,8 @@ elif ! head -n 1 core/internal/generated/core_sources_gen.go | grep -q 'Generate
   missing=1
 fi
 
+if ! tests/generated_source_manifest_guard.py .; then
+  missing=1
+fi
+
 exit "$missing"
