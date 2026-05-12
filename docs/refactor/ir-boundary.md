@@ -122,4 +122,4 @@ The next concrete R3 step is documented in `ir-program-split.md`. The planned sh
 - [x] Move diagnostic/export helpers first, then compiler/executor (started with opcode naming, op counting, disassembly, and shape-analysis helpers; direct tests now cover the extracted IR helper package).
 - [x] Keep benchmark correctness tests before performance work.
 - [x] Document the `IRProgram` model/envelope split.
-- [ ] Implement the `IRProgram` model/envelope split.
+- [x] Implement the initial `IRProgram` model/envelope split: `core/internal/ir.Program` now carries the package-neutral bytecode/slot/analysis shape while root `core.IRProgram` remains the executable envelope for core-owned runtime metadata.

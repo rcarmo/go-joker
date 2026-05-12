@@ -70,10 +70,10 @@ The next-step contract is documented in `generated-bootstrap-contract.md`: futur
 Before moving generated output into `core/internal/generated`, complete or explicitly design:
 
 1. Object/runtime API boundary for generated values.
-2. Namespace initialization contract between generated bootstrap data and `core` runtime. **Designed in `generated-bootstrap-contract.md`; implementation pending.**
-3. Generator import path update away from the current monolithic `core` package.
-4. Full regeneration and byte-for-byte or behavior-equivalent validation.
-5. Removal of generated files from the root `core` directory.
+2. Namespace initialization contract between generated bootstrap data and `core` runtime. **Designed and partially implemented in `generated-bootstrap-contract.md`; `core/internal/generated` owns the source manifest while root `core` still owns mutation/installation.**
+3. Generator import path update away from the current monolithic `core` package for additional payload families.
+4. Full regeneration and byte-for-byte or behavior-equivalent validation for each payload family before moving it.
+5. Removal of generated files from the root `core` directory only after runtime/object initialization boundaries are explicit.
 
 ## R4 checklist status
 
@@ -81,5 +81,7 @@ Before moving generated output into `core/internal/generated`, complete or expli
 - [x] Add generated-file guardrail to avoid manual edits/regressions.
 - [x] Track the generated root-core file set in `tests/generated_files.txt`.
 - [x] Design generated bootstrap contract before generator path changes.
-- [ ] Update generators to emit under a generated package/directory or clearly separated bootstrap module.
-- [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
+- [x] Add generated bootstrap data-only package and source manifest under `core/internal/generated`.
+- [x] Switch `*core-namespaces*` bootstrap to the generated source manifest plus root-owned `user` installation.
+- [ ] Extend generated bootstrap emission beyond source manifest only after broader equivalence tests.
+- [ ] Move remaining generated artifacts after runtime/object initialization boundaries are explicit.

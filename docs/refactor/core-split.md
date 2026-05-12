@@ -178,16 +178,17 @@ Risks:
 
 R5 should remain blocked on the rest of R3/R4:
 
-- IR compiler/executor still live in root `core`.
-- generated bootstrap files still live in root `core`.
-- object/runtime contracts are not explicit enough to move collections or reader cleanly.
+- IR compiler/executor still live in root `core`, although a neutral `core/internal/ir.Program` model and initial `RuntimeExecutionAdapter` contract now reduce the boundary.
+- most generated bootstrap files still live in root `core`; only the source manifest has moved to `core/internal/generated`.
+- object/runtime contracts are broader but still not explicit enough to move collections or reader cleanly.
 
-Therefore the next implementation work should continue reducing IR/WASM/generated coupling before moving collections/reader/runtime.
+Therefore the next implementation work should continue reducing IR/WASM/generated coupling and codifying object/reader/runtime adapters before moving collections/reader/runtime.
 
 ## R5 checklist status
 
 - [x] Inventory collection/reader/runtime/evaluator/WASM split candidates.
 - [x] Confirm that broad R5 moves should wait until IR/generated boundaries are stable.
-- [ ] Move collections only after object/protocol contracts are explicit.
-- [ ] Move reader only after object construction and tagged literal contracts are explicit.
-- [ ] Move runtime/evaluator only after call/error/frame contracts are explicit.
+- [x] Add object/protocol, reader construction, std native-boundary, and runtime execution contract guardrails that make future split prerequisites explicit.
+- [ ] Move collections only after object/protocol contracts are explicit in code and narrow construction adapters exist.
+- [ ] Move reader only after object construction and expression/tagged-literal construction boundaries are explicit in code.
+- [ ] Move runtime/evaluator only after call/error/frame contracts are explicit in code and root execution metadata has a narrow adapter.
