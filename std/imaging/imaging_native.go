@@ -44,6 +44,9 @@ func (im *Image) Hash() uint32                     { return 0 }
 // --- Helpers ---
 
 func extractImage(args []Object, idx int) *Image {
+	if idx < 0 || idx >= len(args) {
+		panic(RT.NewError("Expected Image argument"))
+	}
 	img, ok := args[idx].(*Image)
 	if !ok {
 		panic(RT.NewError("Expected Image argument"))
@@ -322,16 +325,19 @@ var procPaste ProcFn = func(args []Object) Object {
 // --- Info ---
 
 var procWidth ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	im := extractImage(args, 0)
 	return MakeInt(im.img.Bounds().Dx())
 }
 
 var procHeight ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	im := extractImage(args, 0)
 	return MakeInt(im.img.Bounds().Dy())
 }
 
 var procBounds ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	im := extractImage(args, 0)
 	b := im.img.Bounds()
 	return NewVectorFrom(
@@ -345,12 +351,14 @@ var procBounds ProcFn = func(args []Object) Object {
 // --- New blank image ---
 
 var procNewImage ProcFn = func(args []Object) Object {
+	CheckArity(args, 2, 3)
 	w := ExtractInt(args, 0)
 	h := ExtractInt(args, 1)
 	var c color.NRGBA
 	if len(args) > 2 {
 		v, ok := args[2].(Indexed)
-		if !ok {
+		counted, countedOk := args[2].(Counted)
+		if !ok || !countedOk || counted.Count() != 4 {
 			panic(RT.NewError("imaging/new: color must be a vector [r g b a]"))
 		}
 		c.R = uint8(EnsureObjectIsInt(v.Nth(0), "").I)

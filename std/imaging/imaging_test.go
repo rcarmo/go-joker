@@ -70,3 +70,29 @@ func TestCropAndFlip(t *testing.T) {
 		t.Fatal("flip changed width")
 	}
 }
+
+func TestNewImageRejectsShortColorVector(t *testing.T) {
+	defer func() {
+		if recover() == nil {
+			t.Fatal("new image should reject short color vector")
+		}
+	}()
+	procNewImage([]Object{MakeInt(1), MakeInt(1), NewVectorFrom(MakeInt(255))})
+}
+
+func TestImagingInfoArityChecks(t *testing.T) {
+	for name, proc := range map[string]ProcFn{
+		"width":  procWidth,
+		"height": procHeight,
+		"bounds": procBounds,
+	} {
+		t.Run(name, func(t *testing.T) {
+			defer func() {
+				if recover() == nil {
+					t.Fatalf("%s should reject missing image", name)
+				}
+			}()
+			proc(nil)
+		})
+	}
+}
