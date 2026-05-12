@@ -77,3 +77,4 @@ This keeps generated output data-oriented and avoids importing root `core` from 
 - `make generated-check` remains mandatory from `make docs-check`.
 - Regenerated output must be reproducible.
 - Namespace/docs behavior must remain covered by docs generation and parity checks.
+- Generated payload accessors should return fresh data slices so callers cannot mutate package-level shared state; `core/internal/generated` tests guard this for the source manifest.

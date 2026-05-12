@@ -21,6 +21,19 @@ func TestCoreSourceManifest(t *testing.T) {
 	}
 }
 
+func TestCoreSourceManifestReturnsFreshSlice(t *testing.T) {
+	manifest := CoreSourceManifest()
+	if len(manifest) == 0 {
+		t.Fatal("core source manifest should not be empty")
+	}
+	original := manifest[0]
+	manifest[0].Name = "mutated"
+	again := CoreSourceManifest()
+	if again[0] != original {
+		t.Fatalf("CoreSourceManifest should return fresh immutable-by-convention payload slices: got %#v want %#v", again[0], original)
+	}
+}
+
 func TestCoreSourceManifestPathsExist(t *testing.T) {
 	_, file, _, ok := runtime.Caller(0)
 	if !ok {
