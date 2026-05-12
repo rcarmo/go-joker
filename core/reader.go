@@ -49,7 +49,7 @@ func (reader *Reader) Get() rune {
 		reader.isEof = true
 		return EOF
 	case err != nil:
-		panic(err)
+		panic(RT.NewError(err.Error()))
 	case r == '\n':
 		reader.line++
 		reader.prevLineLength = reader.column
