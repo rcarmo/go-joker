@@ -19,6 +19,14 @@ func readOneForContract(t *testing.T, src string) Object {
 	return obj
 }
 
+func requireReadErrorForContract(t *testing.T, src string) {
+	t.Helper()
+	r := NewReader(strings.NewReader(src), "<reader-contract>")
+	if obj, err := TryRead(r); err == nil {
+		t.Fatalf("TryRead(%q) = %s, want read error", src, obj.ToString(false))
+	}
+}
+
 func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	cases := []struct {
 		src  string
@@ -57,10 +65,18 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	if set.Count() != 3 {
 		t.Fatalf("set count = %d, want 3", set.Count())
 	}
+	namespaced := readOneForContract(t, `#:contract{:a 1 :b 2}`).(Map)
+	if found, got := namespaced.Get(MakeKeyword("contract/a")); !found || !got.Equals(MakeInt(1)) {
+		t.Fatalf("namespaced map keyword entry = %v %v", found, got)
+	}
 	list := readOneForContract(t, `(1 2 3)`).(Seq)
 	if SeqCount(list) != 3 || !list.First().Equals(MakeInt(1)) || !Third(list).Equals(MakeInt(3)) {
 		t.Fatalf("list construction mismatch: %s", list.ToString(false))
 	}
+
+	requireReadErrorForContract(t, `{:a 1 :a 2}`)
+	requireReadErrorForContract(t, `#{1 1}`)
+	requireReadErrorForContract(t, `{:a 1 :b}`)
 }
 
 func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testing.T) {
