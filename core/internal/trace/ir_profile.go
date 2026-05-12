@@ -2,6 +2,7 @@ package trace
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"sort"
 	"sync"
@@ -108,7 +109,12 @@ func (p *IRProfile) Write(opName func(byte) string) {
 	}
 	sort.Slice(edges, func(i, j int) bool { return edges[i].Count > edges[j].Count })
 	payload := map[string]interface{}{"type": "go-joker-ir-profile", "execs": p.execs.Load(), "ops": ops, "edges": edges}
-	if b, err := json.MarshalIndent(payload, "", "  "); err == nil {
-		_ = os.WriteFile(p.out, b, 0o644)
+	b, err := json.MarshalIndent(payload, "", "  ")
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "IR profile marshal error:", err)
+		return
+	}
+	if err := os.WriteFile(p.out, b, 0o644); err != nil {
+		fmt.Fprintln(os.Stderr, "IR profile write error:", err)
 	}
 }

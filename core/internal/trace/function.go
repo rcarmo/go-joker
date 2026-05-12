@@ -2,6 +2,7 @@ package trace
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"runtime"
 	"sort"
@@ -156,8 +157,13 @@ func (t *FunctionTracer) Write() {
 	}
 	sort.Slice(edges, func(i, j int) bool { return edges[i].Nanos > edges[j].Nanos })
 	payload := map[string]interface{}{"type": "go-joker-function-trace", "total": t.total.Load(), "functions": rows, "edges": edges, "events": t.events}
-	if b, err := json.MarshalIndent(payload, "", "  "); err == nil {
-		_ = os.WriteFile(t.out, b, 0o644)
+	b, err := json.MarshalIndent(payload, "", "  ")
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "function trace marshal error:", err)
+		return
+	}
+	if err := os.WriteFile(t.out, b, 0o644); err != nil {
+		fmt.Fprintln(os.Stderr, "function trace write error:", err)
 	}
 }
 

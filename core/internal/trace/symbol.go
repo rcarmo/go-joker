@@ -2,6 +2,7 @@ package trace
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"sort"
 	"sync"
@@ -63,7 +64,12 @@ func (t *SymbolTracer) Write() {
 		return rows
 	}
 	payload := map[string]interface{}{"type": "go-joker-symbol-trace", "resolve_total": t.resolve.Load(), "deref_total": t.deref.Load(), "resolves": mkRows(t.resolves), "derefs": mkRows(t.derefs)}
-	if b, err := json.MarshalIndent(payload, "", "  "); err == nil {
-		_ = os.WriteFile(t.out, b, 0o644)
+	b, err := json.MarshalIndent(payload, "", "  ")
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "symbol trace marshal error:", err)
+		return
+	}
+	if err := os.WriteFile(t.out, b, 0o644); err != nil {
+		fmt.Fprintln(os.Stderr, "symbol trace write error:", err)
 	}
 }
