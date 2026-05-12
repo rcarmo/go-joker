@@ -20,8 +20,6 @@ import (
 	"unicode/utf8"
 )
 
-var coreNamespaces []string
-
 type (
 	Phase        int
 	Dialect      int

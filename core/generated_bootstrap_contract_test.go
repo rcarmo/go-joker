@@ -14,7 +14,7 @@ func TestGeneratedCoreNamespacesHelper(t *testing.T) {
 	}
 }
 
-func TestGeneratedCoreSourceManifestMatchesCoreNamespaces(t *testing.T) {
+func TestGeneratedCoreSourceManifestRows(t *testing.T) {
 	manifest := coregenerated.CoreSourceManifest()
 	if len(manifest) == 0 {
 		t.Fatal("generated core source manifest is empty")
@@ -25,14 +25,9 @@ func TestGeneratedCoreSourceManifestMatchesCoreNamespaces(t *testing.T) {
 		}
 	}
 
-	var want []string
-	for _, ns := range coreNamespaces {
-		if ns != "user" {
-			want = append(want, ns)
-		}
-	}
-	sort.Strings(want)
 	got := generatedCoreNamespaces()
+	want := []string{"joker.better-cond", "joker.core", "joker.hiccup", "joker.pprint", "joker.repl", "joker.set", "joker.template", "joker.test", "joker.tools.cli", "joker.walk"}
+	sort.Strings(want)
 	if len(got) != len(want) {
 		t.Fatalf("manifest namespace count = %d %v, want %d %v", len(got), got, len(want), want)
 	}

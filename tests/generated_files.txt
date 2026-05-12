@@ -1,7 +1,6 @@
 core/a_better_cond_code.go
 core/a_code.go
 core/a_core_code.go
-core/a_data.go
 core/a_hiccup_code.go
 core/a_linter_all_data.go
 core/a_linter_clj_data.go
