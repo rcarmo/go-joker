@@ -69,7 +69,7 @@ This is a sketch, not an implementation API. The important boundary is ownership
    - constants/captures (**started: `ir_execution_metadata_contract_test.go` covers constants, slots, captures, escape metadata, and neutral-model analysis handoff**)
    - `irMakeFn`
    - native helper fallback/failure caches
-   - escape-analysis safe mutation slots
+   - escape-analysis safe mutation slots (**started: `escape_analysis_contract_test.go` covers call-argument unsafety and string-builder slot classification**)
    - typed/boxed failure flags
 4. Introduce a small runtime execution adapter in root `core`.
 5. Move escape-analysis helpers only after they depend on neutral model plus explicit runtime facts.
