@@ -71,3 +71,28 @@ func TestRenderSVG(t *testing.T) {
 	}
 	t.Logf("rendered: %s", img.ToString(false))
 }
+
+func expectSVGPanic(t *testing.T, fn func()) {
+	t.Helper()
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected panic")
+		}
+	}()
+	fn()
+}
+
+func TestPolylineRejectsMismatchedCoordinates(t *testing.T) {
+	canvas := procCanvas([]Object{MakeInt(10), MakeInt(10)})
+	expectSVGPanic(t, func() {
+		procPolyline([]Object{canvas, NewVectorFrom(MakeInt(1), MakeInt(2)), NewVectorFrom(MakeInt(1))})
+	})
+}
+
+func TestPolygonRejectsMissingArgs(t *testing.T) {
+	expectSVGPanic(t, func() { procPolygon(nil) })
+}
+
+func TestRawChecksArity(t *testing.T) {
+	expectSVGPanic(t, func() { procRaw(nil) })
+}

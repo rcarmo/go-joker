@@ -37,6 +37,9 @@ func (c *Canvas) GetType() *Type                   { return typeCanvas }
 func (c *Canvas) Hash() uint32                     { return 0 }
 
 func extractCanvas(args []Object, idx int) *Canvas {
+	if idx < 0 || idx >= len(args) {
+		panic(RT.NewError("Expected SVG canvas argument"))
+	}
 	c, ok := args[idx].(*Canvas)
 	if !ok {
 		panic(RT.NewError("Expected SVG canvas argument"))
@@ -184,11 +187,29 @@ var procPath ProcFn = func(args []Object) Object {
 }
 
 var procPolygon ProcFn = func(args []Object) Object {
+	CheckArity(args, 3, 4)
 	c := extractCanvas(args, 0)
 	// args[1] = vector of x coords, args[2] = vector of y coords
-	xv := args[1].(Indexed)
-	yv := args[2].(Indexed)
-	n := xv.(Counted).Count()
+	xv, ok := args[1].(Indexed)
+	if !ok {
+		panic(RT.NewError("svg/polygon: x coordinates must be indexed"))
+	}
+	yv, ok := args[2].(Indexed)
+	if !ok {
+		panic(RT.NewError("svg/polygon: y coordinates must be indexed"))
+	}
+	xc, ok := args[1].(Counted)
+	if !ok {
+		panic(RT.NewError("svg/polygon: x coordinates must be counted"))
+	}
+	yc, ok := args[2].(Counted)
+	if !ok {
+		panic(RT.NewError("svg/polygon: y coordinates must be counted"))
+	}
+	n := xc.Count()
+	if yc.Count() != n {
+		panic(RT.NewError("svg/polygon: coordinate vectors must have equal length"))
+	}
 	xs := make([]int, n)
 	ys := make([]int, n)
 	for i := 0; i < n; i++ {
@@ -205,10 +226,28 @@ var procPolygon ProcFn = func(args []Object) Object {
 }
 
 var procPolyline ProcFn = func(args []Object) Object {
+	CheckArity(args, 3, 4)
 	c := extractCanvas(args, 0)
-	xv := args[1].(Indexed)
-	yv := args[2].(Indexed)
-	n := xv.(Counted).Count()
+	xv, ok := args[1].(Indexed)
+	if !ok {
+		panic(RT.NewError("svg/polyline: x coordinates must be indexed"))
+	}
+	yv, ok := args[2].(Indexed)
+	if !ok {
+		panic(RT.NewError("svg/polyline: y coordinates must be indexed"))
+	}
+	xc, ok := args[1].(Counted)
+	if !ok {
+		panic(RT.NewError("svg/polyline: x coordinates must be counted"))
+	}
+	yc, ok := args[2].(Counted)
+	if !ok {
+		panic(RT.NewError("svg/polyline: y coordinates must be counted"))
+	}
+	n := xc.Count()
+	if yc.Count() != n {
+		panic(RT.NewError("svg/polyline: coordinate vectors must have equal length"))
+	}
 	xs := make([]int, n)
 	ys := make([]int, n)
 	for i := 0; i < n; i++ {
@@ -327,9 +366,12 @@ var procSave ProcFn = func(args []Object) Object {
 // --- Raw SVG injection ---
 
 var procRaw ProcFn = func(args []Object) Object {
+	CheckArity(args, 2, 2)
 	c := extractCanvas(args, 0)
 	s := ExtractString(args, 1)
-	fmt.Fprint(c.buf, s)
+	if _, err := fmt.Fprint(c.buf, s); err != nil {
+		panic(RT.NewError("svg/raw: " + err.Error()))
+	}
 	return args[0]
 }
 
