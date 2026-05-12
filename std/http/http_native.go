@@ -316,7 +316,10 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 
 	// Build close-fn: (fn []) closes the connection
 	closeFn := Proc{Name: "ws-close", Fn: func(args []Object) Object {
-		conn.Close()
+		CheckArity(args, 0, 0)
+		if err := conn.Close(); err != nil {
+			panic(RT.NewError("websocket close error: " + err.Error()))
+		}
 		return NIL
 	}}
 
