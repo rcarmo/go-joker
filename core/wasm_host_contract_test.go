@@ -23,3 +23,10 @@ func TestWasmRawIntRejectsOutOfRangeIndex(t *testing.T) {
 		t.Fatal("wasmRawInt should reject values outside native int range")
 	}
 }
+
+func TestWasmExecRawIntegerResultUsesNativeRange(t *testing.T) {
+	got := wasmRawIntObject(uint64(math.MaxInt64))
+	if math.MaxInt64 > int64(maxInt) && got.GetType() != TYPE.BigInt {
+		t.Fatalf("raw wasm result type = %s, want BigInt", got.GetType().ToString(false))
+	}
+}

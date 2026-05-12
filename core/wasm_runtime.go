@@ -169,7 +169,7 @@ func wasmExec(wp *WasmProgram, slots []Object) Object {
 	if isHandle(r) {
 		return table.load(r)
 	}
-	return Int{I: int(int64(r))}
+	return wasmRawIntObject(r)
 }
 
 // Ensure math import is used
