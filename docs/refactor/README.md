@@ -142,7 +142,7 @@ Planned package boundaries:
 - [ ] Move reader only after object construction and tagged literal contracts are explicit in code.
 - [x] Document runtime/evaluator call/error/frame contract requirements.
 - [ ] Move runtime/evaluator only after call/error/frame contracts are explicit in code.
-- [ ] Prefer clean package boundaries over compatibility wrappers; breaking changes are acceptable.
+- [x] Prefer clean package boundaries over compatibility wrappers; breaking changes are acceptable.
 
 ## Current execution status
 
