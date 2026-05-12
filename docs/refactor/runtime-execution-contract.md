@@ -97,4 +97,5 @@ This is a sketch, not an implementation API. The important boundary is ownership
 
 - Neutral IR model: started and guarded by `core/internal/ir` tests.
 - Diagnostics/export/WASM/native helper readers: migrated to the neutral model where appropriate.
+- Runtime/execution-envelope tests: gated by `make runtime-contract-check`, which is run by `make docs-check`.
 - Executors and escape analysis: intentionally root-bound pending this runtime execution contract becoming code.

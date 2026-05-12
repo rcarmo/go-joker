@@ -19,7 +19,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check parity jank-subset audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check runtime-contract-check parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -45,6 +45,7 @@ help:
 	@echo "  make layout-check    # Verify top-level refactor layout invariants"
 	@echo "  make refactor-internals-check # Run tests for extracted core/internal packages"
 	@echo "  make core-contract-check # Run object/protocol contract tests that gate future core splits"
+	@echo "  make runtime-contract-check # Run IR/runtime execution-envelope contract tests"
 	@echo "  make parity         # Run Clojure parity tests (271 core form tests)"
 	@echo "  make jank-subset    # Run imported jank-lang/clojure-test-suite subset"
 	@echo "  make bb-compat      # Run portable Babashka compatibility fixture suite"
@@ -133,7 +134,10 @@ refactor-internals-check:
 core-contract-check:
 	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestSortedCollectionContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics|TestBigIntInt|TestRatioOrInt|TestReadIntegerUsesNativeIntRange|TestReaderConstructionContract' -count=$(TEST_COUNT) -timeout=120s
 
-docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check
+runtime-contract-check:
+	$(GO) test ./core -run 'TestIRExecutionMetadata|TestEscapeAnalysis|TestIRMakeFn|TestIRCompileFailure|TestNativeHelperEligibility|TestChannelCloseIsIdempotentUnderConcurrency' -count=$(TEST_COUNT) -timeout=120s
+
+docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check runtime-contract-check
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md
