@@ -35,6 +35,7 @@ This folder is the canonical refactor/audit document set:
 - `core-split.md` — collections/reader/runtime/WASM split candidates.
 - `object-protocol-contracts.md` — object/protocol contracts blocking broad moves.
 - `runtime-execution-contract.md` — execution metadata contract required before moving IR executors/runtime frames.
+- `reader-construction-contract.md` — object construction/tagged literal contract required before moving reader/parser code.
 
 ## Target package map
 
@@ -125,7 +126,8 @@ Planned package boundaries:
 - [x] Extend `core-contract-check` with sorted collection contracts.
 - [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
 - [ ] Move collections only after object/protocol contracts are explicit.
-- [ ] Move reader only after object construction and tagged literal contracts are explicit.
+- [x] Document reader object-construction/tagged-literal contract requirements.
+- [ ] Move reader only after object construction and tagged literal contracts are explicit in code.
 - [x] Document runtime/evaluator call/error/frame contract requirements.
 - [ ] Move runtime/evaluator only after call/error/frame contracts are explicit in code.
 - [ ] Prefer clean package boundaries over compatibility wrappers; breaking changes are acceptable.

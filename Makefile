@@ -145,6 +145,7 @@ docs-check: docs generated-check generated-bootstrap-check import-identity-check
 	test -f docs/refactor/core-split.md
 	test -f docs/refactor/object-protocol-contracts.md
 	test -f docs/refactor/runtime-execution-contract.md
+	test -f docs/refactor/reader-construction-contract.md
 	test -f docs/BABASHKA_SHIM_ASSESSMENT.md
 	test -f docs/PORTABILITY_SHIM_ASSESSMENT.md
 	test -f docs/BENCHMARK_CI.md
