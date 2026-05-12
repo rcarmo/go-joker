@@ -110,6 +110,44 @@ func TestSetContract(t *testing.T) {
 	}
 }
 
+func TestSortedCollectionContract(t *testing.T) {
+	sortedMapProc := GLOBAL_ENV.CoreNamespace.Resolve("sorted-map").Value.(Proc)
+	sortedSetProc := GLOBAL_ENV.CoreNamespace.Resolve("sorted-set").Value.(Proc)
+	sortedQProc := GLOBAL_ENV.CoreNamespace.Resolve("sorted?").Value.(Proc)
+	subseqProc := GLOBAL_ENV.CoreNamespace.Resolve("subseq").Value.(Proc)
+	rsubseqProc := GLOBAL_ENV.CoreNamespace.Resolve("rsubseq").Value.(Proc)
+
+	m := sortedMapProc.Call([]Object{MakeInt(2), MakeString("b"), MakeInt(1), MakeString("a")}).(Map)
+	if got := sortedQProc.Call([]Object{m}); !got.Equals(Boolean{B: true}) {
+		t.Fatalf("sorted? sorted-map = %s", got.ToString(false))
+	}
+	entries := sortedEntries(m)
+	if len(entries) != 2 || !rangeKey(entries[0]).Equals(MakeInt(1)) || !rangeKey(entries[1]).Equals(MakeInt(2)) {
+		t.Fatalf("sorted-map entries not ordered: %#v", entries)
+	}
+	if found, got := m.Get(MakeInt(1)); !found || !got.Equals(MakeString("a")) {
+		t.Fatalf("sorted-map lookup = %v %v", found, got)
+	}
+
+	s := sortedSetProc.Call([]Object{MakeInt(3), MakeInt(1), MakeInt(2)}).(*MapSet)
+	if got := sortedQProc.Call([]Object{s}); !got.Equals(Boolean{B: true}) {
+		t.Fatalf("sorted? sorted-set = %s", got.ToString(false))
+	}
+	setEntries := sortedEntries(s)
+	if len(setEntries) != 3 || !setEntries[0].Equals(MakeInt(1)) || !setEntries[2].Equals(MakeInt(3)) {
+		t.Fatalf("sorted-set entries not ordered: %#v", setEntries)
+	}
+
+	sub := subseqProc.Call([]Object{s, Proc{Fn: procGte, Name: "procGte"}, MakeInt(2)}).(Seq)
+	if SeqCount(sub) != 2 || !sub.First().Equals(MakeInt(2)) || !Second(sub).Equals(MakeInt(3)) {
+		t.Fatalf("subseq contract failed: %s", sub.ToString(false))
+	}
+	rsub := rsubseqProc.Call([]Object{s, Proc{Fn: procGte, Name: "procGte"}, MakeInt(2)}).(Seq)
+	if SeqCount(rsub) != 2 || !rsub.First().Equals(MakeInt(3)) || !Second(rsub).Equals(MakeInt(2)) {
+		t.Fatalf("rsubseq contract failed: %s", rsub.ToString(false))
+	}
+}
+
 func TestTransientContract(t *testing.T) {
 	vec := NewArrayVectorFrom(MakeInt(1), MakeInt(2))
 	tv := ToTransient(vec)
