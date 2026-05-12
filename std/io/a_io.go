@@ -35,8 +35,8 @@ func __copy_(_args []Object) Object {
 		src := ExtractIOReader(_args, 1)
 		n, err := io.Copy(dst, src)
 		PanicOnErr(err)
-		_res := int(n)
-		return MakeInt(_res)
+		_res := copyCountObject(n)
+		return _res
 
 	default:
 		PanicArity(_c)

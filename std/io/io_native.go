@@ -1,9 +1,19 @@
 package io
 
 import (
-	. "github.com/rcarmo/go-joker/core"
 	"io"
+	"math/big"
+
+	. "github.com/rcarmo/go-joker/core"
 )
+
+func copyCountObject(n int64) Object {
+	maxNativeInt := int64(int(^uint(0) >> 1))
+	if n > maxNativeInt {
+		return MakeBigInt(big.NewInt(n))
+	}
+	return MakeInt(int(n))
+}
 
 func pipe() Object {
 	r, w := io.Pipe()
