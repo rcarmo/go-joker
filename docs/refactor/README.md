@@ -127,6 +127,7 @@ Planned package boundaries:
 - [x] Extend `core-contract-check` with transient contracts.
 - [x] Extend `core-contract-check` with seq contracts.
 - [x] Extend `core-contract-check` with sorted collection contracts.
+- [x] Extend `core-contract-check` with numeric native-int conversion/promotion contracts.
 - [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
 - [ ] Move collections only after object/protocol contracts are explicit.
 - [x] Document reader object-construction/tagged-literal contract requirements.
