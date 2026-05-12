@@ -79,9 +79,9 @@ Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze
 The Global Interpreter Lock has been removed. Goroutines run in true parallel on Go scheduler threads. Immutable data structures need no coordination. Atoms use per-atom mutexes. Concurrency primitives: `alts!`, `timeout`, `future`, `promise`, `agent`, `pmap`, `pcalls`, plus a `clojure.core.async` compatibility namespace with `go-loop`, `put!`/`take!`, `pipe`, `merge`, `split`, `mult`, and `pub` helpers. Channel close is idempotent and safe under concurrent callers; sends after close return false and takes from closed channels yield `nil`.
 
 ### Additional namespaces / web runtime
-- `joker.imaging` — image processing (resize, crop, blur, overlay) via pure Go
-- `joker.svg` — SVG generation + raster rendering
-- `joker.pdf` — PDF document generation
+- `joker.imaging` — image processing (resize, crop, blur, overlay) via pure Go, with guarded image/color argument boundaries
+- `joker.svg` — SVG generation + raster rendering, with guarded coordinate-vector handling
+- `joker.pdf` — PDF document generation, with checked document-proc arities
 - `joker.random` — random numbers (int, float, choice, shuffle, uuid, secure-bytes)
 - `joker.log` — leveled logging (debug, info, warn, error)
 - `joker.http` — persistent keep-alive HTTP client, Ring-style HTTP server, **WebSocket** and **SSE/streaming** response extensions
