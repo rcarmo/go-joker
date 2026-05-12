@@ -23,8 +23,8 @@ func irCompileFn(fn *Fn) *IRProgram {
 }
 
 func irCompileSingleArity(fn *Fn, arity FnArityExpr) *IRProgram {
-
-	if cached, ok := irFnCache.Load(&arity); ok {
+	arityKey := &fn.fnExpr.arities[0]
+	if cached, ok := irFnCache.Load(arityKey); ok {
 		prog := cached.(*IRProgram)
 		if prog == irCompileFailed {
 			return nil
@@ -49,7 +49,7 @@ func irCompileSingleArity(fn *Fn, arity FnArityExpr) *IRProgram {
 			return prog
 		}
 	}
-	irFnCache.Store(&arity, irCompileFailed)
+	irFnCache.Store(arityKey, irCompileFailed)
 	return nil
 }
 
@@ -140,10 +140,6 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 	prog.refreshModel()
 	prog.nativeHelper = irCompileNativeHelper(prog)
 	prog.nativeChecked = true
-	// Cache at arity level. For fns with captures, store a "template"
-	// program. The captureSlots are resolved per-instance but the bytecode
-	// and captureKeys are shared.
-	irFnCache.Store(&arity, prog)
 	return prog
 }
 
@@ -151,8 +147,8 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 // arityPrograms map for dispatch by arg count.
 func irCompileMultiArity(fn *Fn) *IRProgram {
 	// Check cache using first arity
-	firstArity := fn.fnExpr.arities[0]
-	if cached, ok := irFnCache.Load(&firstArity); ok {
+	firstArityKey := &fn.fnExpr.arities[0]
+	if cached, ok := irFnCache.Load(firstArityKey); ok {
 		prog := cached.(*IRProgram)
 		if prog == irCompileFailed {
 			return nil
@@ -165,7 +161,7 @@ func irCompileMultiArity(fn *Fn) *IRProgram {
 		prog := irCompileFnWithFrame(fn, arity, -1) // -1 means auto-detect
 		if prog == nil {
 			// If any arity fails, mark the whole fn as failed
-			irFnCache.Store(&firstArity, irCompileFailed)
+			irFnCache.Store(firstArityKey, irCompileFailed)
 			return nil
 		}
 		programs[len(arity.args)] = prog
@@ -189,7 +185,7 @@ func irCompileMultiArity(fn *Fn) *IRProgram {
 		variadicMinArgs: varMinArgs,
 		traceName:       fn.fnExpr.traceName,
 	}).refreshModel()
-	irFnCache.Store(&firstArity, wrapper)
+	irFnCache.Store(firstArityKey, wrapper)
 	return wrapper
 }
 
@@ -197,9 +193,9 @@ func irCompileMultiArity(fn *Fn) *IRProgram {
 // The rest parameter is packed into a vector from remaining args.
 func irCompileVariadicFn(fn *Fn) *IRProgram {
 	va := *fn.fnExpr.variadic
-	firstArity := va // use variadic as the cache key stand-in
+	variadicKey := fn.fnExpr.variadic
 
-	if cached, ok := irFnCache.Load(&firstArity); ok {
+	if cached, ok := irFnCache.Load(variadicKey); ok {
 		prog := cached.(*IRProgram)
 		if prog == irCompileFailed {
 			return nil
@@ -217,12 +213,12 @@ func irCompileVariadicFn(fn *Fn) *IRProgram {
 		// frame handling. Keep them on the tree-walker until the IR variadic
 		// closure path is capture-safe; otherwise forms like (constantly x)
 		// can read the packed rest argument instead of the captured value.
-		irFnCache.Store(&firstArity, irCompileFailed)
+		irFnCache.Store(variadicKey, irCompileFailed)
 		return nil
 	}
 	// Mark as variadic so the executor knows to pack rest args
 	prog.variadicMinArgs = len(va.args) - 1 // exclude the & rest param from required count
 	prog.refreshModel()
-	irFnCache.Store(&firstArity, prog)
+	irFnCache.Store(variadicKey, prog)
 	return prog
 }
