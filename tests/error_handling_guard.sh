@@ -22,7 +22,16 @@ if grep -R 'panic(err)' core std \
   status=1
 fi
 
+# File writes in production/runtime code should not be silently discarded.
+if grep -R -E '_ = os\.WriteFile\(|if .*, err := json\.MarshalIndent\(.*; err == nil' core std \
+  --exclude='*_test.go' \
+  --exclude-dir='gen' \
+  --exclude-dir='gen_code' >/tmp/go-joker-ignored-write-errors.txt; then
+  cat /tmp/go-joker-ignored-write-errors.txt >&2
+  status=1
+fi
+
 if [ "$status" -ne 0 ]; then
-  echo "error handling guard: ignored close/process errors or raw panic(err) found" >&2
+  echo "error handling guard: ignored close/process/write errors or raw panic(err) found" >&2
   exit "$status"
 fi

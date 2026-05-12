@@ -135,7 +135,7 @@ Planned package boundaries:
 - [x] Add `make std-contract-check` for focused std native-boundary checks (`http`, `io`, `strconv`, `time`, `markdown`, `os`, `system`, `runtime`).
 - [x] Audit/fix native-int promotion in reader numbers, ratios, BigInt conversion, core file info, HTTP content length, IO copy counts, time durations, strconv parse-int, OS read-dir sizes/timestamps, system time values, runtime profile metrics, and WASM host conversions.
 - [x] Guard closed native-int audit TODOs with `make native-int-check` from `make docs-check`.
-- [x] Guard ignored close/process errors and raw `panic(err)` regressions with `make error-handling-check` from `make docs-check`.
+- [x] Guard ignored close/process/write errors and raw `panic(err)` regressions with `make error-handling-check` from `make docs-check`.
 - [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
 - [ ] Move collections only after object/protocol contracts are explicit.
 - [x] Document reader object-construction/tagged-literal contract requirements.
