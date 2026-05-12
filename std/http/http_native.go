@@ -105,10 +105,11 @@ func mapToReq(request Map) *http.Request {
 }
 
 func reqToMap(host String, port String, req *http.Request) Map {
-	defer req.Body.Close()
 	res := EmptyArrayMap()
 	body, err := io.ReadAll(req.Body)
+	closeErr := req.Body.Close()
 	PanicOnErr(err)
+	PanicOnErr(closeErr)
 	res.Add(MakeKeyword("request-method"), MakeKeyword(strings.ToLower(req.Method)))
 	res.Add(MakeKeyword("body"), MakeString(string(body)))
 	res.Add(MakeKeyword("uri"), MakeString(req.URL.Path))
@@ -132,10 +133,11 @@ func reqToMap(host String, port String, req *http.Request) Map {
 }
 
 func respToMap(resp *http.Response) Map {
-	defer resp.Body.Close()
 	res := EmptyArrayMap()
 	body, err := io.ReadAll(resp.Body)
+	closeErr := resp.Body.Close()
 	PanicOnErr(err)
+	PanicOnErr(closeErr)
 	res.Add(MakeKeyword("body"), MakeString(string(body)))
 	res.Add(MakeKeyword("status"), MakeInt(resp.StatusCode))
 	respHeaders := EmptyArrayMap()
@@ -291,7 +293,11 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 		fmt.Fprintln(os.Stderr, "websocket upgrade error:", err)
 		return
 	}
-	defer conn.Close()
+	defer func() {
+		if err := conn.Close(); err != nil {
+			fmt.Fprintln(os.Stderr, "websocket close error:", err)
+		}
+	}()
 
 	var writeMu sync.Mutex
 
