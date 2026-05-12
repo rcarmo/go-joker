@@ -1,6 +1,7 @@
 package system
 
 import (
+	"math"
 	"runtime"
 	"testing"
 
@@ -28,7 +29,20 @@ func TestGetPropertyDefaultAndEnv(t *testing.T) {
 }
 
 func TestTimes(t *testing.T) {
-	if currentTimeMillis().(Int).I <= 0 || nanoTime().(Int).I <= 0 {
+	if currentTimeMillis().(Number).BigInt().Sign() <= 0 || nanoTime().(Number).BigInt().Sign() <= 0 {
 		t.Fatal("expected positive times")
+	}
+}
+
+func TestSystemIntObjectPromotesOutsideNativeRange(t *testing.T) {
+	got := systemIntObject(math.MaxInt64)
+	if math.MaxInt64 > int64(int(^uint(0)>>1)) {
+		if got.GetType() != TYPE.BigInt {
+			t.Fatalf("system integer object type = %s, want BigInt", got.GetType().ToString(false))
+		}
+		return
+	}
+	if got.GetType() != TYPE.Int {
+		t.Fatalf("system integer object type = %s, want Int", got.GetType().ToString(false))
 	}
 }

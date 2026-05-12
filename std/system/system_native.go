@@ -1,6 +1,7 @@
 package system
 
 import (
+	"math/big"
 	"os"
 	"os/user"
 	"runtime"
@@ -80,5 +81,14 @@ func systemExit(args []Object) Object {
 	return NIL
 }
 
-func currentTimeMillis() Object { return MakeInt(int(time.Now().UnixMilli())) }
-func nanoTime() Object          { return MakeInt(int(time.Now().UnixNano())) }
+func systemIntObject(n int64) Object {
+	maxNativeInt := int64(int(^uint(0) >> 1))
+	minNativeInt := -maxNativeInt - 1
+	if n > maxNativeInt || n < minNativeInt {
+		return MakeBigInt(big.NewInt(n))
+	}
+	return MakeInt(int(n))
+}
+
+func currentTimeMillis() Object { return systemIntObject(time.Now().UnixMilli()) }
+func nanoTime() Object          { return systemIntObject(time.Now().UnixNano()) }
