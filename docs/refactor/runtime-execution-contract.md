@@ -68,7 +68,7 @@ This is a sketch, not an implementation API. The important boundary is ownership
 3. Add focused tests for execution metadata behavior before moving code:
    - constants/captures (**started: `ir_execution_metadata_contract_test.go` covers constants, slots, captures, escape metadata, and neutral-model analysis handoff**)
    - `irMakeFn` (**started: `ir_makefn_contract_test.go` covers FnExpr retention and current-slot capture semantics**)
-   - native helper fallback/failure caches
+   - native helper fallback/failure caches (**started: `ir_failure_cache_contract_test.go` covers compile-failure sentinels and native-helper eligibility caching**)
    - escape-analysis safe mutation slots (**started: `escape_analysis_contract_test.go` covers call-argument unsafety and string-builder slot classification**)
    - typed/boxed failure flags
 4. Introduce a small runtime execution adapter in root `core`.
