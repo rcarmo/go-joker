@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"strings"
 	"text/template"
@@ -124,6 +123,6 @@ func main() {
 	case "info":
 		generateInfo(os.Args[2:])
 	default:
-		fmt.Println("Unknown command: ", cmd)
+		panic("unknown command: " + cmd)
 	}
 }
