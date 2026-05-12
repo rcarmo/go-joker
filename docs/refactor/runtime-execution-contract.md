@@ -82,7 +82,7 @@ This is a sketch, not an implementation API. The important boundary is ownership
    - native helper fallback/failure caches (**started: `ir_failure_cache_contract_test.go` covers compile-failure sentinels and native-helper eligibility caching**)
    - escape-analysis safe mutation slots (**started: `escape_analysis_contract_test.go` covers call-argument unsafety and string-builder slot classification**)
    - typed/boxed failure flags
-   - WASM host native-int conversion boundaries (**started: `wasm_host_contract_test.go` covers raw integer promotion and index rejection**)
+   - WASM/native native-int conversion boundaries (**started: `wasm_host_contract_test.go` covers raw integer result promotion, host argument promotion, and index rejection**)
 4. Introduce a small runtime execution adapter in root `core`. **Started: `RuntimeExecutionAdapter` now codifies root-owned error creation/throwing and `FnExpr`/slot capture construction; boxed and typed executors use it for `irThrow`/`irMakeFn`.**
 5. Move escape-analysis helpers only after they depend on neutral model plus explicit runtime facts.
 6. Move boxed executor, then typed/nanbox executor, only after call/error/frame contracts are explicit.
@@ -98,5 +98,5 @@ This is a sketch, not an implementation API. The important boundary is ownership
 
 - Neutral IR model: started and guarded by `core/internal/ir` tests.
 - Diagnostics/export/WASM/native helper readers: migrated to the neutral model where appropriate.
-- Runtime/execution-envelope tests, including WASM host conversion and `RuntimeExecutionAdapter` contracts: gated by `make runtime-contract-check`, which is run by `make docs-check`.
+- Runtime/execution-envelope tests, including WASM/native integer conversion and `RuntimeExecutionAdapter` contracts: gated by `make runtime-contract-check`, which is run by `make docs-check`.
 - Executors and escape analysis: intentionally root-bound pending this runtime execution contract becoming code.
