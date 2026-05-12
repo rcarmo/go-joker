@@ -27,9 +27,10 @@ func externalHttpSourceToPath(lib string, url string) (path string) {
 		}
 		resp, err := http.Get(url)
 		PanicOnErr(err)
-		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
+			closeErr := resp.Body.Close()
+			PanicOnErr(closeErr)
 			panic(RT.NewError(fmt.Sprintf("Unable to retrieve: %s\nServer response: %d", url, resp.StatusCode)))
 		}
 
@@ -37,9 +38,11 @@ func externalHttpSourceToPath(lib string, url string) (path string) {
 		PanicOnErr(err)
 
 		_, err = io.Copy(out, resp.Body)
-		closeErr := out.Close()
+		bodyCloseErr := resp.Body.Close()
+		fileCloseErr := out.Close()
 		PanicOnErr(err)
-		PanicOnErr(closeErr)
+		PanicOnErr(bodyCloseErr)
+		PanicOnErr(fileCloseErr)
 	}
 
 	return libPath
