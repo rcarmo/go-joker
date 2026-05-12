@@ -6,6 +6,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	ws "github.com/gorilla/websocket"
 	. "github.com/rcarmo/go-joker/core"
@@ -90,6 +91,38 @@ func TestHandleWebSocketUpgradeAndCallbacks(t *testing.T) {
 	}
 	if string(msg) != "ping" {
 		t.Fatalf("expected echo ping, got %q", string(msg))
+	}
+}
+
+func TestHandleWebSocketCloseCallbackIsIdempotent(t *testing.T) {
+	done := make(chan Object, 1)
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		conf := EmptyArrayMap()
+		conf.Add(MakeKeyword("on-open"), Proc{Name: "on-open", Fn: func(args []Object) Object {
+			closeFn := EnsureArgIsCallable(args, 1)
+			closeFn.Call(nil)
+			closeFn.Call(nil)
+			return NIL
+		}})
+		conf.Add(MakeKeyword("on-close"), Proc{Name: "on-close", Fn: func(args []Object) Object {
+			done <- Boolean{B: true}
+			return NIL
+		}})
+		handleWebSocket(w, r, conf)
+	}))
+	defer srv.Close()
+
+	wsURL := "ws" + strings.TrimPrefix(srv.URL, "http")
+	conn, _, err := ws.DefaultDialer.Dial(wsURL, nil)
+	if err != nil {
+		t.Fatalf("websocket dial: %v", err)
+	}
+	defer conn.Close()
+	_, _, _ = conn.ReadMessage()
+	select {
+	case <-done:
+	case <-time.After(2 * time.Second):
+		t.Fatal("websocket on-close was not called")
 	}
 }
 

@@ -293,8 +293,19 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 		fmt.Fprintln(os.Stderr, "websocket upgrade error:", err)
 		return
 	}
+	var closeMu sync.Mutex
+	closed := false
+	closeConn := func() error {
+		closeMu.Lock()
+		defer closeMu.Unlock()
+		if closed {
+			return nil
+		}
+		closed = true
+		return conn.Close()
+	}
 	defer func() {
-		if err := conn.Close(); err != nil {
+		if err := closeConn(); err != nil {
 			fmt.Fprintln(os.Stderr, "websocket close error:", err)
 		}
 	}()
@@ -317,7 +328,7 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 	// Build close-fn: (fn []) closes the connection
 	closeFn := Proc{Name: "ws-close", Fn: func(args []Object) Object {
 		CheckArity(args, 0, 0)
-		if err := conn.Close(); err != nil {
+		if err := closeConn(); err != nil {
 			panic(RT.NewError("websocket close error: " + err.Error()))
 		}
 		return NIL
