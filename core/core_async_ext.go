@@ -122,7 +122,7 @@ func asyncSend(ch *Channel, v Object) bool {
 func asyncRecv(ch *Channel) Object {
 	v, _, err := ch.Receive(nil)
 	if err != nil {
-		panic(err)
+		panic(RT.NewError(err.Error()))
 	}
 	return v
 }
