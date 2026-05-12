@@ -90,6 +90,7 @@ Planned package boundaries:
 - [x] Confirm profile paths are opcode-stream based and do not own program shape.
 - [x] Migrate native helper eligibility/lowering to consume `core/internal/ir.Program`.
 - [x] Document runtime/object execution metadata contract before moving executors or escape analysis.
+- [x] Add initial IR execution-envelope contract tests for constants/captures/escape metadata/model handoff.
 - [ ] Leave executor/escape-analysis root fields until runtime/object execution metadata contract becomes code.
 - [x] Keep benchmark correctness tests before performance work.
 
