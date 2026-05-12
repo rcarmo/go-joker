@@ -95,6 +95,24 @@ Top allocation-space profile from the CLBG/Eval/WASM profile:
 - Near-term optimization should focus on reducing repeated IR compile/envelope allocation and frame-stack allocation in interpreted/portable loops before chasing opcode micro-optimizations. Initial follow-up addressed the frame-stack allocation path with bounded pools and fixed unstable IR function cache keys; keep profiling after each batch.
 - `BenchmarkCLBGBinaryTreesParallel` is still useful as a separate concurrency smoke benchmark, but remains allocation-heavy and noisy.
 
+## Follow-up optimization notes
+
+After this audit, two low-risk allocation fixes were implemented and validated:
+
+- boxed/typed IR self-call frame stacks now use bounded pools and clear retained object slots on release;
+- IR function compilation now uses stable arity/variadic keys and has contract coverage to prevent repeated compile/envelope allocation regressions.
+
+Focused smoke after those changes (`-benchtime=20x`) showed lower allocations on recursive/loop-recur paths:
+
+| Benchmark | time | B/op | allocs/op |
+|---|---:|---:|---:|
+| `BenchmarkEvalRecursiveFib` | 1.106ms | 3378 | 40 |
+| `BenchmarkEvalTailRecursiveSumLoopRecur` | 0.0777ms | 1737 | 11 |
+| `BenchmarkFib20` | 3.088ms | 778 | 7 |
+| `BenchmarkCLBGNBodyBestJoker` | 0.0086ms | 24 | 2 |
+
+Keep this as a directional smoke result only; rerun the full profile before making broader claims.
+
 ## Artifacts
 
 The raw benchmark/profile artifacts for this run were packaged as `go-joker-bench-profile.tar.gz` in the chat session that produced this report.
