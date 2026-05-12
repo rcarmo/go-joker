@@ -148,6 +148,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 - [`docs/refactor/ir-boundary.md`](docs/refactor/ir-boundary.md) — IR package boundary inventory
 - [`docs/refactor/ir-program-split.md`](docs/refactor/ir-program-split.md) — next-step IR model/envelope split design
 - [`docs/refactor/generated-bootstrap-contract.md`](docs/refactor/generated-bootstrap-contract.md) — generated bootstrap data-only boundary design
+- [`docs/refactor/runtime-execution-contract.md`](docs/refactor/runtime-execution-contract.md) — runtime/executor metadata split prerequisites
 - [`docs/refactor/core-split.md`](docs/refactor/core-split.md) — collections/reader/runtime/WASM split candidates
 - [`docs/refactor/object-protocol-contracts.md`](docs/refactor/object-protocol-contracts.md) — object/protocol contracts blocking broad core moves
 - [`docs/refactor/generated-boundary.md`](docs/refactor/generated-boundary.md) — generated-code boundary inventory and guardrails

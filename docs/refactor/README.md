@@ -34,6 +34,7 @@ This folder is the canonical refactor/audit document set:
 - `generated-bootstrap-contract.md` — next-step data-only contract for moving generated namespace bootstrap payloads.
 - `core-split.md` — collections/reader/runtime/WASM split candidates.
 - `object-protocol-contracts.md` — object/protocol contracts blocking broad moves.
+- `runtime-execution-contract.md` — execution metadata contract required before moving IR executors/runtime frames.
 
 ## Target package map
 
@@ -88,7 +89,8 @@ Planned package boundaries:
 - [x] Migrate WASM memory helper paths to consume `core/internal/ir.Program`.
 - [x] Confirm profile paths are opcode-stream based and do not own program shape.
 - [x] Migrate native helper eligibility/lowering to consume `core/internal/ir.Program`.
-- [ ] Leave executor/escape-analysis root fields until runtime/object execution metadata split is explicit.
+- [x] Document runtime/object execution metadata contract before moving executors or escape analysis.
+- [ ] Leave executor/escape-analysis root fields until runtime/object execution metadata contract becomes code.
 - [x] Keep benchmark correctness tests before performance work.
 
 ### R4 — Generated code boundary
@@ -117,7 +119,8 @@ Planned package boundaries:
 - [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
 - [ ] Move collections only after object/protocol contracts are explicit.
 - [ ] Move reader only after object construction and tagged literal contracts are explicit.
-- [ ] Move runtime/evaluator only after call/error/frame contracts are explicit.
+- [x] Document runtime/evaluator call/error/frame contract requirements.
+- [ ] Move runtime/evaluator only after call/error/frame contracts are explicit in code.
 - [ ] Prefer clean package boundaries over compatibility wrappers; breaking changes are acceptable.
 
 ## Current execution status
