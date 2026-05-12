@@ -29,7 +29,7 @@ func InternsOrThunks() {
   - status (int)
   - body (string)
   - headers (map)
-  - content-length (int)`, "1.0"))
+  - content-length (int, or BigInt when it exceeds the native int range)`, "1.0"))
 
 	httpNamespace.InternVar("start-file-server", start_file_server_,
 		MakeMeta(
