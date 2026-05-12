@@ -205,8 +205,11 @@ func (d Double) Ratio() *big.Rat {
 // BigInt conversions
 
 func (b *BigInt) Int() Int {
-	// TODO: 32-bit issue
-	return Int{I: int(b.BigInt().Int64())}
+	bi := b.BigInt()
+	if bi.Cmp(minIntBig) < 0 || bi.Cmp(maxIntBig) > 0 {
+		panic(RT.NewError("BigInt value out of native int range: " + b.ToString(false)))
+	}
+	return Int{I: int(bi.Int64())}
 }
 
 func (b *BigInt) BigInt() *big.Int {
