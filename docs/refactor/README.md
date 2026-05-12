@@ -131,7 +131,7 @@ Planned package boundaries:
 - [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
 - [ ] Move collections only after object/protocol contracts are explicit.
 - [x] Document reader object-construction/tagged-literal contract requirements.
-- [x] Add initial reader construction contract tests for primitives/collections/metadata/tagged fallback.
+- [x] Add reader construction contract tests for primitives, collections, metadata, tagged readers, conditionals, namespaced maps, and literal error paths.
 - [x] Run reader construction contract tests from `make core-contract-check`.
 - [ ] Move reader only after object construction and tagged literal contracts are explicit in code.
 - [x] Document runtime/evaluator call/error/frame contract requirements.
@@ -140,4 +140,4 @@ Planned package boundaries:
 
 ## Current execution status
 
-R3 has established the first IR boundary and extracted tested IR helper packages. A neutral `core/internal/ir.Program` model now exists and root executable `IRProgram` envelopes populate it; diagnostics/export accessors, WASM lowering helpers, and native helper compilation read from that model where appropriate. R4 generated-code inventory/guardrails are in place; `core/a_data.go` has been removed in favor of the generated source manifest, while remaining generated artifacts still wait on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, sorted collections, transients, seqs, reader construction, metadata/info behavior, and persistent-vector semantics. The CLI entrypoint lives in `cmd/joker`.
+R3 has established the first IR boundary and extracted tested IR helper packages. A neutral `core/internal/ir.Program` model now exists and root executable `IRProgram` envelopes populate it; diagnostics/export accessors, WASM lowering helpers, and native helper compilation read from that model where appropriate. R4 generated-code inventory/guardrails are in place; `core/a_data.go` has been removed in favor of the generated source manifest, while remaining generated artifacts still wait on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, sorted collections, transients, seqs, reader construction, native-int numeric promotion/conversion, metadata/info behavior, and persistent-vector semantics. The CLI entrypoint lives in `cmd/joker`.

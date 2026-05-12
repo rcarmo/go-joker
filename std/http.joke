@@ -37,7 +37,7 @@
   - status (int)
   - body (string)
   - headers (map)
-  - content-length (int)"
+  - content-length (int, or BigInt when it exceeds the native int range)"
   {:added "1.0"
    :go "sendRequest(request)"}
   [^Map request])
