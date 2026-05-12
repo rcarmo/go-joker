@@ -19,7 +19,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -43,6 +43,7 @@ help:
 	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker"
 	@echo "  make non-goals-check # Verify explicit non-goals remain documented"
 	@echo "  make layout-check    # Verify top-level refactor layout invariants"
+	@echo "  make native-int-check # Verify 32-bit/native-int audit TODOs are closed"
 	@echo "  make refactor-internals-check # Run tests for extracted core/internal packages"
 	@echo "  make core-contract-check # Run object/protocol contract tests that gate future core splits"
 	@echo "  make runtime-contract-check # Run IR/runtime execution-envelope contract tests"
@@ -129,6 +130,9 @@ non-goals-check:
 layout-check:
 	tests/layout_guard.sh .
 
+native-int-check:
+	tests/native_int_guard.sh .
+
 refactor-internals-check:
 	$(GO) test ./core/internal/... -count=$(TEST_COUNT)
 
@@ -141,7 +145,7 @@ runtime-contract-check:
 std-contract-check:
 	$(GO) test ./std/http ./std/io ./std/strconv ./std/time ./std/markdown -count=$(TEST_COUNT) -timeout=120s
 
-docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
+docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md
