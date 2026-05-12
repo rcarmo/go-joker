@@ -1403,7 +1403,7 @@ var procLoadString = func(args []Object) Object {
 	s := EnsureArgIsString(args, 0)
 	obj, err := loadReader(NewReader(strings.NewReader(s.S), "<string>"))
 	if err != nil {
-		panic(err)
+		panic(RT.NewError(err.Error()))
 	}
 	return obj
 }
