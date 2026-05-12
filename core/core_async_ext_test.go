@@ -58,4 +58,10 @@ func TestCoreAsyncReduceIntoAndCallbacks(t *testing.T) {
     (clojure.core.async/take! c #(deliver p %))
     (clojure.core.async/put! c 9)
     (str @p))`), "9")
+
+	requireString(t, evalTestScript(t, `(let [c (clojure.core.async/chan 1)
+        p (promise)]
+    (clojure.core.async/take! c #(deliver p %))
+    (clojure.core.async/close! c)
+    (str @p))`), "")
 }
