@@ -2362,12 +2362,12 @@ func markJokerNamespacesAsUsed() {
 }
 
 func NewReaderFromFile(filename string) (*Reader, error) {
-	f, err := os.Open(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Fprintln(Stderr, "Error: ", err)
 		return nil, err
 	}
-	return NewReader(bufio.NewReader(f), filename), nil
+	return NewReader(bytes.NewReader(data), filename), nil
 }
 
 func ProcessLinterFile(configDir string, filename string) {
