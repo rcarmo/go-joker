@@ -216,8 +216,8 @@ func __parse_duration_(_args []Object) Object {
 		s := ExtractString(_args, 0)
 		t, err := time.ParseDuration(s)
 		PanicOnErr(err)
-		_res := int(t)
-		return MakeInt(_res)
+		_res := timeIntObject(int64(t))
+		return _res
 
 	default:
 		PanicArity(_c)
@@ -253,8 +253,8 @@ func __round_(_args []Object) Object {
 	case _c == 2:
 		d := ExtractInteger(_args, 0)
 		m := ExtractInteger(_args, 1)
-		_res := int(time.Duration(d).Round(time.Duration(m)))
-		return MakeInt(_res)
+		_res := timeIntObject(int64(time.Duration(d).Round(time.Duration(m))))
+		return _res
 
 	default:
 		PanicArity(_c)
@@ -287,8 +287,8 @@ func __since_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		t := ExtractTime(_args, 0)
-		_res := int(time.Since(t))
-		return MakeInt(_res)
+		_res := timeIntObject(int64(time.Since(t)))
+		return _res
 
 	default:
 		PanicArity(_c)
@@ -340,8 +340,8 @@ func __sub_(_args []Object) Object {
 	case _c == 2:
 		t := ExtractTime(_args, 0)
 		u := ExtractTime(_args, 1)
-		_res := int(t.Sub(u))
-		return MakeInt(_res)
+		_res := timeIntObject(int64(t.Sub(u)))
+		return _res
 
 	default:
 		PanicArity(_c)
@@ -358,8 +358,8 @@ func __truncate_(_args []Object) Object {
 	case _c == 2:
 		d := ExtractInteger(_args, 0)
 		m := ExtractInteger(_args, 1)
-		_res := int(time.Duration(d).Truncate(time.Duration(m)))
-		return MakeInt(_res)
+		_res := timeIntObject(int64(time.Duration(d).Truncate(time.Duration(m))))
+		return _res
 
 	default:
 		PanicArity(_c)
@@ -375,8 +375,8 @@ func __unix_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		t := ExtractTime(_args, 0)
-		_res := int(t.Unix())
-		return MakeInt(_res)
+		_res := timeIntObject(t.Unix())
+		return _res
 
 	default:
 		PanicArity(_c)
@@ -392,8 +392,8 @@ func __until_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		t := ExtractTime(_args, 0)
-		_res := int(time.Until(t))
-		return MakeInt(_res)
+		_res := timeIntObject(int64(time.Until(t)))
+		return _res
 
 	default:
 		PanicArity(_c)
