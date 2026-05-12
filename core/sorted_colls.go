@@ -57,21 +57,48 @@ func registerSortedCollProcs() {
 	}}
 	referToUser(MakeSymbol("sorted-map"), smVr)
 
+	// sorted-map-by — (sorted-map-by comparator k1 v1 k2 v2 ...)
+	smbVr := ns.Intern(MakeSymbol("sorted-map-by"))
+	smbVr.Value = Proc{Name: "procSortedMapBy", Fn: func(args []Object) Object {
+		CheckArity(args, 1, 999)
+		comp := EnsureArgIsCallable(args, 0)
+		keyvals := args[1:]
+		if len(keyvals)%2 != 0 {
+			panic(RT.NewError("sorted-map-by requires an even number of key/value arguments"))
+		}
+		type kv struct {
+			key Object
+			val Object
+		}
+		pairs := make([]kv, len(keyvals)/2)
+		for i := 0; i < len(keyvals); i += 2 {
+			pairs[i/2] = kv{keyvals[i], keyvals[i+1]}
+		}
+		sort.Slice(pairs, func(i, j int) bool {
+			return compareWith(comp, pairs[i].key, pairs[j].key) < 0
+		})
+		m := EmptyArrayMap()
+		for _, p := range pairs {
+			m.Add(p.key, p.val)
+		}
+		return m.WithMeta(sortedCollMeta())
+	}}
+	referToUser(MakeSymbol("sorted-map-by"), smbVr)
+
 	// sorted-set — (sorted-set v1 v2 ...)
 	ssVr := ns.Intern(MakeSymbol("sorted-set"))
 	ssVr.Value = Proc{Name: "procSortedSet", Fn: func(args []Object) Object {
-		sorted := make([]Object, len(args))
-		copy(sorted, args)
-		sort.Slice(sorted, func(i, j int) bool {
-			return compareObjects(sorted[i], sorted[j]) < 0
-		})
-		s := EmptySet()
-		for _, v := range sorted {
-			s = s.Conj(v).(*MapSet)
-		}
-		return s.WithMeta(sortedCollMeta())
+		return sortedSetFrom(args, nil)
 	}}
 	referToUser(MakeSymbol("sorted-set"), ssVr)
+
+	// sorted-set-by — (sorted-set-by comparator v1 v2 ...)
+	ssbVr := ns.Intern(MakeSymbol("sorted-set-by"))
+	ssbVr.Value = Proc{Name: "procSortedSetBy", Fn: func(args []Object) Object {
+		CheckArity(args, 1, 999)
+		return sortedSetFrom(args[1:], EnsureArgIsCallable(args, 0))
+	}}
+	referToUser(MakeSymbol("sorted-set-by"), ssbVr)
 
 	// sorted? — (sorted? coll)
 	sortedQVr := ns.Intern(MakeSymbol("sorted?"))
@@ -119,6 +146,26 @@ func registerSortedCollProcs() {
 		}}
 	}}
 	referToUser(MakeSymbol("comparator"), compVr)
+}
+
+func sortedSetFrom(values []Object, comp Callable) Object {
+	sorted := make([]Object, len(values))
+	copy(sorted, values)
+	sort.Slice(sorted, func(i, j int) bool {
+		if comp != nil {
+			return compareWith(comp, sorted[i], sorted[j]) < 0
+		}
+		return compareObjects(sorted[i], sorted[j]) < 0
+	})
+	s := EmptySet()
+	for _, v := range sorted {
+		s = s.Conj(v).(*MapSet)
+	}
+	return s.WithMeta(sortedCollMeta())
+}
+
+func compareWith(comp Callable, a, b Object) int {
+	return compare(comp, a, b)
 }
 
 func sortedSubseq(args []Object, reverse bool) Object {

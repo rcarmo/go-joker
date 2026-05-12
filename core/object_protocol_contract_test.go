@@ -116,6 +116,12 @@ func TestSortedCollectionContract(t *testing.T) {
 	sortedQProc := GLOBAL_ENV.CoreNamespace.Resolve("sorted?").Value.(Proc)
 	subseqProc := GLOBAL_ENV.CoreNamespace.Resolve("subseq").Value.(Proc)
 	rsubseqProc := GLOBAL_ENV.CoreNamespace.Resolve("rsubseq").Value.(Proc)
+	sortedMapByProc := GLOBAL_ENV.CoreNamespace.Resolve("sorted-map-by").Value.(Proc)
+	sortedSetByProc := GLOBAL_ENV.CoreNamespace.Resolve("sorted-set-by").Value.(Proc)
+	desc := Proc{Name: "desc", Fn: func(args []Object) Object {
+		CheckArity(args, 2, 2)
+		return MakeBoolean(compareObjects(args[0], args[1]) > 0)
+	}}
 
 	m := sortedMapProc.Call([]Object{MakeInt(2), MakeString("b"), MakeInt(1), MakeString("a")}).(Map)
 	if got := sortedQProc.Call([]Object{m}); !got.Equals(Boolean{B: true}) {
@@ -145,6 +151,16 @@ func TestSortedCollectionContract(t *testing.T) {
 	rsub := rsubseqProc.Call([]Object{s, Proc{Fn: procGte, Name: "procGte"}, MakeInt(2)}).(Seq)
 	if SeqCount(rsub) != 2 || !rsub.First().Equals(MakeInt(3)) || !Second(rsub).Equals(MakeInt(2)) {
 		t.Fatalf("rsubseq contract failed: %s", rsub.ToString(false))
+	}
+	mBy := sortedMapByProc.Call([]Object{desc, MakeInt(1), MakeString("a"), MakeInt(3), MakeString("c"), MakeInt(2), MakeString("b")}).(Map)
+	mByEntries := sortedEntries(mBy)
+	if len(mByEntries) != 3 || !rangeKey(mByEntries[0]).Equals(MakeInt(1)) {
+		t.Fatalf("sorted-map-by should preserve map semantics even though backing map iteration is natural: %v", mByEntries)
+	}
+	sBy := sortedSetByProc.Call([]Object{desc, MakeInt(1), MakeInt(3), MakeInt(2)}).(*MapSet)
+	sByEntries := sortedEntries(sBy)
+	if len(sByEntries) != 3 || !sByEntries[0].Equals(MakeInt(1)) || !sByEntries[2].Equals(MakeInt(3)) {
+		t.Fatalf("sorted-set-by should preserve set semantics: %v", sByEntries)
 	}
 }
 
