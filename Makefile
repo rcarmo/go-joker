@@ -19,7 +19,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check parity jank-subset audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -39,6 +39,7 @@ help:
 	@echo "  make docs           # Generate HTML docs from runtime namespaces"
 	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
 	@echo "  make generated-check # Verify generated-file boundary guardrails"
+	@echo "  make generated-bootstrap-check # Verify generated bootstrap manifest equivalence"
 	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker"
 	@echo "  make non-goals-check # Verify explicit non-goals remain documented"
 	@echo "  make layout-check    # Verify top-level refactor layout invariants"
@@ -114,6 +115,9 @@ bb-compat:
 generated-check:
 	tests/generated_guard.sh .
 
+generated-bootstrap-check:
+	$(GO) test ./core -run TestGeneratedCoreSourceManifestMatchesCoreNamespaces -count=$(TEST_COUNT)
+
 import-identity-check:
 	tests/import_identity_guard.sh .
 
@@ -129,7 +133,7 @@ refactor-internals-check:
 core-contract-check:
 	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics' -count=$(TEST_COUNT) -timeout=120s
 
-docs-check: docs generated-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check
+docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md
