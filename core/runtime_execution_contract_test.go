@@ -24,3 +24,19 @@ func TestRuntimeExecutionAdapterErrorf(t *testing.T) {
 		t.Fatalf("Errorf = %#v", err)
 	}
 }
+
+func TestRuntimeExecutionAdapterThrow(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	defer func() {
+		r := recover()
+		err, ok := r.(Error)
+		if !ok {
+			t.Fatalf("Throw panic = %T, want core Error", r)
+		}
+		msg := err.Message().(String)
+		if msg.S != "boom" {
+			t.Fatalf("Throw message = %q, want boom", msg.S)
+		}
+	}()
+	adapter.Throw(MakeString("boom"))
+}

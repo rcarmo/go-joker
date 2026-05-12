@@ -301,7 +301,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 
 		case irThrow:
 			v := stack[len(stack)-1]
-			panic(RT.NewError(v.object().ToString(false)))
+			RuntimeExecutionAdapter{}.Throw(v.object())
 
 		case irTryCatch:
 			pc += 4
@@ -318,12 +318,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if prog.fnExprs == nil || idx >= len(prog.fnExprs) {
 				return nil
 			}
-			// Create Fn with current slots as env
-			fnEnv := &LocalEnv{bindings: make([]Object, len(slots))}
+			capturedSlots := make([]Object, len(slots))
 			for i, v := range slots {
-				fnEnv.bindings[i] = v.object()
+				capturedSlots[i] = v.object()
 			}
-			fn := &Fn{fnExpr: prog.fnExprs[idx], env: fnEnv}
+			fn := RuntimeExecutionAdapter{}.MakeFn(prog.fnExprs[idx], capturedSlots)
 			stack = append(stack, objectToIRValue(fn))
 
 		case irBitAnd:

@@ -12,6 +12,10 @@ func (RuntimeExecutionAdapter) Errorf(format string, args ...any) Error {
 	return RT.NewError(fmt.Sprintf(format, args...))
 }
 
+func (r RuntimeExecutionAdapter) Throw(obj Object) {
+	panic(r.Errorf("%s", obj.ToString(false)))
+}
+
 func (RuntimeExecutionAdapter) MakeFn(fnExpr *FnExpr, slots []Object) Object {
 	fnEnv := &LocalEnv{bindings: make([]Object, len(slots))}
 	copy(fnEnv.bindings, slots)

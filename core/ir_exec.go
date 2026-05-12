@@ -388,7 +388,7 @@ loop:
 
 		case irThrow:
 			v := stack[len(stack)-1]
-			panic(RT.NewError(v.ToString(false)))
+			RuntimeExecutionAdapter{}.Throw(v)
 
 		case irTryCatch:
 			pc += 4
@@ -405,10 +405,7 @@ loop:
 			if prog.fnExprs == nil || idx >= len(prog.fnExprs) {
 				return nil
 			}
-			// Create a Fn with current slots as env
-			fnEnv := &LocalEnv{bindings: make([]Object, len(slots))}
-			copy(fnEnv.bindings, slots)
-			fn := &Fn{fnExpr: prog.fnExprs[idx], env: fnEnv}
+			fn := RuntimeExecutionAdapter{}.MakeFn(prog.fnExprs[idx], slots)
 			stack = append(stack, fn)
 
 		case irBitAnd:
