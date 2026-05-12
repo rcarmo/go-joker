@@ -73,6 +73,15 @@ func intOrBigInt(b *big.Int) Number {
 	return &BigInt{b: new(big.Int).Set(b)}
 }
 
+func intOrBigIntWithOriginal(orig string, b *big.Int) Number {
+	res := intOrBigInt(b)
+	if bi, ok := res.(*BigInt); ok {
+		bi.Original = orig
+		return bi
+	}
+	return res
+}
+
 func bigFloatWithPrec(x, y Number, extra uint) *big.Float {
 	prec := x.BigFloat().Prec()
 	if yp := y.BigFloat().Prec(); yp > prec {
@@ -86,22 +95,14 @@ func bigFloatWithPrec(x, y Number, extra uint) *big.Float {
 
 func ratioOrInt(r *big.Rat) Number {
 	if r.IsInt() {
-		if r.Num().IsInt64() {
-			// TODO: 32-bit issue
-			return MakeInt(int(r.Num().Int64()))
-		}
-		return &BigInt{b: r.Num()}
+		return intOrBigInt(r.Num())
 	}
 	return &Ratio{r: r}
 }
 
 func ratioOrIntWithOriginal(orig string, r *big.Rat) Number {
 	if r.IsInt() {
-		if r.Num().IsInt64() {
-			// TODO: 32-bit issue
-			return MakeIntWithOriginal(orig, int(r.Num().Int64()))
-		}
-		return &BigInt{b: r.Num(), Original: orig}
+		return intOrBigIntWithOriginal(orig, r.Num())
 	}
 	return &Ratio{r: r, Original: orig}
 }
