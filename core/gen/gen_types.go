@@ -58,16 +58,22 @@ func checkError(err error) {
 	}
 }
 
+func closeFile(f *os.File) {
+	checkError(f.Close())
+}
+
 func generateAssertions(types []string) {
 	filename := "types_assert_gen.go"
 	f, err := os.Create(filename)
 	checkError(err)
-	defer f.Close()
+	defer closeFile(f)
 
 	var ensureObjectIs = template.Must(template.New("assert").Parse(ensureObjectIsTemplate))
 	var ensureArgIs = template.Must(template.New("ensure").Parse(ensureArgIsTemplate))
-	f.WriteString(header)
-	f.WriteString(importFmt)
+	_, err = f.WriteString(header)
+	checkError(err)
+	_, err = f.WriteString(importFmt)
+	checkError(err)
 	for _, t := range types {
 		typeInfo := TypeInfo{
 			Name:     t,
@@ -80,8 +86,8 @@ func generateAssertions(types []string) {
 		} else if strings.ContainsRune(t, '.') {
 			typeInfo.Name = strings.ReplaceAll(t, ".", "_")
 		}
-		ensureObjectIs.Execute(f, typeInfo)
-		ensureArgIs.Execute(f, typeInfo)
+		checkError(ensureObjectIs.Execute(f, typeInfo))
+		checkError(ensureArgIs.Execute(f, typeInfo))
 	}
 }
 
@@ -89,11 +95,12 @@ func generateInfo(types []string) {
 	filename := "types_info_gen.go"
 	f, err := os.Create(filename)
 	checkError(err)
-	defer f.Close()
+	defer closeFile(f)
 
 	var info = template.Must(template.New("info").Parse(infoTemplate))
 
-	f.WriteString(header)
+	_, err = f.WriteString(header)
+	checkError(err)
 	for _, t := range types {
 		typeInfo := TypeInfo{
 			Name:     t,
@@ -102,11 +109,14 @@ func generateInfo(types []string) {
 		if t[0] == '*' {
 			typeInfo.Name = t[1:]
 		}
-		info.Execute(f, typeInfo)
+		checkError(info.Execute(f, typeInfo))
 	}
 }
 
 func main() {
+	if len(os.Args) < 2 {
+		panic("usage: gen_types <assert|info> [types...]")
+	}
 	cmd := os.Args[1]
 	switch cmd {
 	case "assert":
