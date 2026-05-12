@@ -96,6 +96,7 @@ Planned package boundaries:
 - [x] Add `irMakeFn` execution-envelope contract tests for FnExpr retention and slot capture semantics.
 - [x] Add IR failure-cache and native-helper eligibility contract tests.
 - [x] Add WASM host native-int conversion contract tests.
+- [x] Add initial root `RuntimeExecutionAdapter` code contract for error creation and `irMakeFn` closure construction.
 - [x] Gate runtime/execution-envelope contracts with `make runtime-contract-check` from `make docs-check`.
 - [ ] Leave executor/escape-analysis root fields until runtime/object execution metadata contract becomes code.
 - [x] Keep benchmark correctness tests before performance work.
@@ -141,7 +142,8 @@ Planned package boundaries:
 - [x] Run reader construction contract tests from `make core-contract-check`.
 - [ ] Move reader only after object construction and tagged literal contracts are explicit in code.
 - [x] Document runtime/evaluator call/error/frame contract requirements.
-- [ ] Move runtime/evaluator only after call/error/frame contracts are explicit in code.
+- [x] Start root runtime execution adapter contract in code for error creation and function construction.
+- [ ] Move runtime/evaluator only after call/error/frame contracts are explicit in code and root execution metadata has a narrow adapter.
 - [x] Prefer clean package boundaries over compatibility wrappers; breaking changes are acceptable.
 
 ## Current execution status
