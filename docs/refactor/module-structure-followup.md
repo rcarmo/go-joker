@@ -13,8 +13,9 @@ Current package/file snapshot:
 | root | 0 | 0 | clean: no root package remains |
 | `cmd/joker` | 7 | 0 | CLI/REPL/standalone helpers are grouped correctly |
 | `core` root | 185 | 49 | still the main monolith |
-| `core/internal/ir` | 4 | 1 | opcodes, disassembly/counting, shape analysis |
-| `core/internal/trace` | 3 | 0 | aggregation state only; no direct tests yet |
+| `core/internal/generated` | 3 | 1 | data-only generated bootstrap contract and source manifest |
+| `core/internal/ir` | 5 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
+| `core/internal/trace` | 4 | 1 | aggregation state with direct JSON-shape tests |
 | `core/internal/wasm` | 8 | 4 | encoding/module/host/opcode leaf helpers |
 | `std/*` | many small packages | mixed | mostly namespace-oriented and healthy |
 | `benchmarks` | 5 | 0 | still mixes package stub and build-tagged report tools |
@@ -45,10 +46,11 @@ The highest-value next boundary remains IR ownership. `core/internal/ir` cannot 
 - `*FnExpr`
 - execution failure/cache flags
 
-Improvement to plan:
+Status:
 
-- introduce a small `core/internal/ir.Program` model for bytecode, constants count, slot counts, op metadata, and analysis;
-- keep root-only execution metadata in `core` until call/object contracts are explicit.
+- `core/internal/ir.Program` now exists for bytecode, constants count, slot counts, op metadata, and analysis.
+- diagnostics/export accessors, WASM lowering helpers, and native helper compilation consume the neutral model where appropriate.
+- root-only execution metadata remains in `core` until call/object contracts are explicit in code.
 
 ### 2. Direct tests for `core/internal/trace`
 
@@ -70,17 +72,20 @@ Current contract tests cover vectors and maps. Before moving collections, add te
 - transients (`TransientVector`, transient map side table behavior)
 - sorted collections if they are candidates for extraction
 
-Improvement to plan:
+Status:
 
-- extend `make core-contract-check` to cover set/seq/transient contracts.
+- `make core-contract-check` now covers set, seq, and transient contracts in addition to vector/map/info/meta coverage.
+- Remaining collection planning should focus on construction APIs and sorted collection contracts only if they become migration candidates.
 
-### 4. Keep generated files root-bound until bootstrap contract exists
+### 4. Keep generated runtime mutation root-bound until broader bootstrap equivalence exists
 
-The generated manifest guard is working. Do not move generated files merely for tidiness until there is a bootstrap API that does not reach into root `core` internals.
+The generated manifest guard is working and `core/internal/generated` now owns data-only bootstrap payload contracts plus the generated source manifest. Do not move root generated runtime mutation merely for tidiness until broader payload equivalence and runtime consumers exist.
 
-Improvement to plan:
+Status:
 
-- design generated bootstrap contract before generator path changes.
+- generated bootstrap contract is documented;
+- source manifest emission has started;
+- `make generated-bootstrap-check` guards manifest equivalence with current root `coreNamespaces`.
 
 ### 5. Move benchmark report generators later
 
@@ -96,6 +101,7 @@ Improvement to plan:
 
 ## Recommended immediate next steps
 
-1. Start an `ir.Program` model design note or minimal type extraction.
-2. Expand `core-contract-check` with set/seq/transient contracts.
-3. Keep WASM leaf extraction opportunistic, but avoid moving lowering/runtime until IR ownership is clearer.
+1. Keep executor/escape-analysis root-bound until the runtime execution contract becomes code.
+2. Extend generated bootstrap emission beyond the source manifest only with broader equivalence tests.
+3. Add construction/sorted collection contracts only if those types become migration candidates.
+4. Keep WASM leaf extraction opportunistic, but avoid moving runtime/object-handle paths until execution metadata is explicit.

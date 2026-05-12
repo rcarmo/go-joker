@@ -20,7 +20,8 @@ Current major packages:
 cmd/joker                         # CLI, REPL, standalone helpers
 core                              # runtime kernel; still the main monolith
 core/internal/trace               # extracted trace/profile aggregation state
-core/internal/ir                  # extracted IR opcode/diagnostic/analysis helpers
+core/internal/generated           # data-only generated bootstrap payload contracts/source manifest
+core/internal/ir                  # extracted IR opcode/diagnostic/analysis helpers and neutral Program model
 core/internal/wasm                # extracted WASM encoding/module/host metadata helpers
 std/*                             # namespace-oriented standard library packages
 tests                             # integration/parity/Babashka fixture tests
@@ -48,11 +49,12 @@ Approximate Go file counts at this audit:
   - `make layout-check`
   - `make import-identity-check`
   - `make generated-check`
+  - `make generated-bootstrap-check`
   - `make non-goals-check`
   - `make refactor-internals-check`
   - `make core-contract-check`
 - Refactor documents consolidated under `docs/refactor/`.
-- Leaf packages extracted under `core/internal/{trace,ir,wasm}`.
+- Leaf packages extracted under `core/internal/{generated,trace,ir,wasm}`.
 
 ## Remaining structural issues
 
@@ -71,43 +73,49 @@ Current root clustering by filename indicates the next logical seams:
 
 Recommendation: continue extracting pure leaf helpers and contracts before moving high-cycle packages.
 
-### 2. Generated bootstrap remains root-coupled
+### 2. Generated bootstrap remains partly root-coupled
 
-Generated files still live in root `core` because they instantiate core runtime values directly. The manifest guard now tracks this, but the structural target remains:
+Generated root files still live in root `core` because they instantiate core runtime values directly. The generated-file manifest guard tracks this. The target package now exists:
 
 ```text
-core/internal/generated/          # future generated/bootstrap package or directory
+core/internal/generated/          # data-only generated/bootstrap contracts and source manifest
 ```
 
-Prerequisites remain those in `generated-boundary.md`: explicit runtime/object initialization contracts and generator import path updates.
+Current progress:
 
-### 3. IR package is not yet the owner of `IRProgram`
+- `NamespaceSource` and `VarDoc` define the inert data-only bootstrap contract.
+- `core_sources_gen.go` is emitted under `core/internal/generated`.
+- `make generated-bootstrap-check` compares the generated source manifest with current root `coreNamespaces`.
 
-`core/internal/ir` owns opcode/constants/analysis helpers, but `IRProgram` still lives in root `core` because it references root-only types (`Object`, `FnExpr`, `bindingKey`, `EscapeInfo`, native helper funcs).
+Remaining prerequisites are in `generated-boundary.md` and `generated-bootstrap-contract.md`: broader equivalence tests, root runtime consumers for generated payloads, and generator import path updates that avoid exporting root runtime internals.
+
+### 3. IR package owns neutral shape, root owns execution metadata
+
+`core/internal/ir` now owns opcode/constants/analysis helpers and a neutral `Program` model. Root `IRProgram` remains the executable envelope because it references root-only types (`Object`, `FnExpr`, `bindingKey`, `EscapeInfo`, native helper funcs). Diagnostics, exported accessors, WASM lowering helpers, and native helper compilation now consume the neutral model where appropriate.
 
 Next improvement:
 
-- define a minimal `ir.Program` representation that excludes root-only runtime fields, or
-- split `IRProgram` into `ir.Program` plus root `core` execution metadata.
+- keep executor and escape-analysis root-bound until the runtime execution contract becomes code;
+- add focused tests for constants/captures, `irMakeFn`, failure caches, and escape-analysis metadata before moving executors.
 
 This is the highest-value next architectural move before broad collection/reader splits.
 
-### 4. WASM lowering/runtime still follows `IRProgram`
+### 4. WASM lowering/runtime still follows root execution metadata
 
-`core/internal/wasm` now owns leaf binary/module/host metadata, but lowering/runtime files remain root-coupled.
+`core/internal/wasm` now owns leaf binary/module/host metadata, and most WASM eligibility/lowering paths read neutral IR shape. Runtime instantiation, constants, object handles, and memory/import bridges remain root-coupled.
 
 Next improvement:
 
-- move more pure WASM bytecode helpers/constants as they are identified;
-- delay full lowering/runtime move until IR program ownership is clarified.
+- move only pure WASM bytecode helpers/constants as they are identified;
+- delay full runtime/lowering move until execution metadata and object-handle contracts are explicit.
 
 ### 5. Collections need a public object/protocol contract before moving
 
-The new `core-contract-check` is a good start, but the collection package still needs explicit construction, equality/hash, seq, metadata, and transient contracts.
+`core-contract-check` now covers vectors, associative maps, sets, transients, seqs, persistent-vector semantics, and info/meta behavior. The collection package still needs explicit construction APIs and any sorted-collection contracts before concrete files move.
 
 Next improvement:
 
-- expand contract tests for `MapSet`, seqs, transients, and sorted collections;
+- add sorted collection/construction contracts if those types are migration candidates;
 - then move concrete collection files behind those tests.
 
 ### 6. Reader/parser/evaluator should move late
@@ -133,10 +141,10 @@ This is lower priority than `core`, but it would reduce package noise in `go lis
 
 ## Recommended next actions
 
-1. Continue IR split by designing `ir.Program` vs root execution metadata.
-2. Add more `core-contract-check` coverage for sets, seqs, transients, and sorted collections.
-3. Keep extracting pure WASM helpers but avoid moving runtime/lowering until IR ownership is clearer.
-4. Update generators only after generated bootstrap contracts are explicit.
+1. Keep executor/escape-analysis root-bound until the runtime execution contract becomes code.
+2. Extend generated bootstrap emission beyond the source manifest only with broader equivalence tests.
+3. Add sorted collection/construction contracts if those types become migration candidates.
+4. Keep extracting pure WASM helpers but avoid moving runtime/lowering until execution metadata and object handles are explicit.
 5. Consider moving build-tagged benchmark generators into `tools/benchmarks` after core refactor checkpoints.
 
 ## Outdated content removed or superseded
