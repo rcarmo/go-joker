@@ -127,6 +127,7 @@ Planned package boundaries:
 - [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
 - [ ] Move collections only after object/protocol contracts are explicit.
 - [x] Document reader object-construction/tagged-literal contract requirements.
+- [x] Add initial reader construction contract tests for primitives/collections/metadata/tagged fallback.
 - [ ] Move reader only after object construction and tagged literal contracts are explicit in code.
 - [x] Document runtime/evaluator call/error/frame contract requirements.
 - [ ] Move runtime/evaluator only after call/error/frame contracts are explicit in code.

@@ -58,7 +58,7 @@ This is a design sketch, not an implementation API. The important rule is that e
 
 ## Migration sequence
 
-1. Add focused contract tests for reader-created primitives, collections, metadata, and tagged literals.
+1. Add focused contract tests for reader-created primitives, collections, metadata, and tagged literals. **Started: `reader_construction_contract_test.go` covers primitive/collection construction, source info, metadata, and tagged fallback behavior.**
 2. Introduce a root adapter implementing the reader construction surface.
 3. Move pure lexical/token helpers first if they have no object dependency.
 4. Move reader construction only after all object creation goes through the adapter.
@@ -73,4 +73,4 @@ This is a design sketch, not an implementation API. The important rule is that e
 
 ## Current status
 
-Reader extraction remains blocked. Collection/object contracts are much stronger now, but source metadata, tagged literal lookup, and expression construction still need explicit code-level boundaries.
+Reader extraction remains blocked. Collection/object contracts are much stronger now, and initial reader construction contract tests cover source metadata and tagged fallback behavior, but an explicit construction adapter plus expression construction boundaries are still needed before package movement.
