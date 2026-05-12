@@ -23,6 +23,17 @@ The neutral `core/internal/ir.Program` now owns bytecode/slot/analysis shape. Ro
 
 These fields are not pure IR shape. Moving them into `core/internal/ir` would leak root runtime internals into the IR model.
 
+## Runtime/channel concurrency contract
+
+The root channel runtime remains in `core` until runtime boundaries are explicit. Its current contract is:
+
+- `Channel.Close()` is idempotent and safe under concurrent callers.
+- `Channel.IsClosed()` is the only supported closed-state accessor; callers must not read internal fields directly.
+- Sending after close returns false rather than panicking.
+- Receiving from a closed channel returns `NIL` with `ChannelReceiveClosed`.
+
+`channel_contract_test.go` guards the concurrent close/idempotency behavior. This matters for future runtime extraction because async helpers, `alts!`, and core send/receive procs must all share the same close-state semantics.
+
 ## Required execution boundary
 
 Before moving executors or escape analysis, define an execution/runtime interface that covers:

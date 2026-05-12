@@ -175,7 +175,7 @@ Core forms/fns:
 - `agent`, `send`, `send-off`, `await`, `agent-error`
 - `pmap`, `pcalls`
 
-`clojure.core.async` is now available as a compatibility namespace over the same GIL-free channel runtime:
+`clojure.core.async` is now available as a compatibility namespace over the same GIL-free channel runtime. Channel close is idempotent and safe to call from concurrent goroutines; sends after close report failure instead of panicking, and takes from closed channels yield `nil`.
 
 - aliases: `chan`, `<!`, `>!`, `<!!`, `>!!`, `close!`, `alts!`, `timeout`, `go`
 - macros: `go-loop`, `thread`, `thread-call`
