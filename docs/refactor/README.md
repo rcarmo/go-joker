@@ -97,7 +97,7 @@ Planned package boundaries:
 - [x] Add IR failure-cache and native-helper eligibility contract tests.
 - [x] Add WASM host native-int conversion contract tests.
 - [x] Add initial root `RuntimeExecutionAdapter` code contract for error creation/throwing and `irMakeFn` closure construction.
-- [x] Route boxed/typed `irThrow` and `irMakeFn` execution through `RuntimeExecutionAdapter`.
+- [x] Route boxed/typed `irThrow`, capture-slot prefill, and `irMakeFn` execution through `RuntimeExecutionAdapter`.
 - [x] Gate runtime/execution-envelope contracts with `make runtime-contract-check` from `make docs-check`.
 - [ ] Leave executor/escape-analysis root fields until runtime/object execution metadata contract becomes code.
 - [x] Keep benchmark correctness tests before performance work.

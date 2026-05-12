@@ -37,8 +37,8 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		slots[i] = v
 	}
 	// Pre-fill captured closure values into their assigned slots
-	for i, obj := range prog.captureSlots {
-		slots[prog.captureSlotIdxs[i]] = objectToIRValue(obj)
+	if !(RuntimeExecutionAdapter{}).ApplyTypedCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
+		return nil
 	}
 
 	var stackBuf [32]irValue
@@ -301,7 +301,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 
 		case irThrow:
 			v := stack[len(stack)-1]
-			RuntimeExecutionAdapter{}.Throw(v.object())
+			(RuntimeExecutionAdapter{}).Throw(v.object())
 
 		case irTryCatch:
 			pc += 4
@@ -322,7 +322,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			for i, v := range slots {
 				capturedSlots[i] = v.object()
 			}
-			fn := RuntimeExecutionAdapter{}.MakeFn(prog.fnExprs[idx], capturedSlots)
+			fn := (RuntimeExecutionAdapter{}).MakeFn(prog.fnExprs[idx], capturedSlots)
 			stack = append(stack, objectToIRValue(fn))
 
 		case irBitAnd:

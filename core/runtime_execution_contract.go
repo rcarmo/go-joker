@@ -16,6 +16,34 @@ func (r RuntimeExecutionAdapter) Throw(obj Object) {
 	panic(r.Errorf("%s", obj.ToString(false)))
 }
 
+func (RuntimeExecutionAdapter) ApplyCaptureSlots(slots []Object, idxs []int, values []Object) bool {
+	if len(idxs) != len(values) {
+		return false
+	}
+	for i, obj := range values {
+		idx := idxs[i]
+		if idx < 0 || idx >= len(slots) {
+			return false
+		}
+		slots[idx] = obj
+	}
+	return true
+}
+
+func (RuntimeExecutionAdapter) ApplyTypedCaptureSlots(slots []irValue, idxs []int, values []Object) bool {
+	if len(idxs) != len(values) {
+		return false
+	}
+	for i, obj := range values {
+		idx := idxs[i]
+		if idx < 0 || idx >= len(slots) {
+			return false
+		}
+		slots[idx] = objectToIRValue(obj)
+	}
+	return true
+}
+
 func (RuntimeExecutionAdapter) MakeFn(fnExpr *FnExpr, slots []Object) Object {
 	fnEnv := &LocalEnv{bindings: make([]Object, len(slots))}
 	copy(fnEnv.bindings, slots)

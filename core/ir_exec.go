@@ -19,8 +19,8 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 	}
 	copy(slots, initSlots)
 	// Pre-fill captured closure values into their assigned slots
-	for i, obj := range prog.captureSlots {
-		slots[prog.captureSlotIdxs[i]] = obj
+	if !(RuntimeExecutionAdapter{}).ApplyCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
+		return nil
 	}
 
 	// Escape analysis: convert safe local values to transient builders.
@@ -388,7 +388,7 @@ loop:
 
 		case irThrow:
 			v := stack[len(stack)-1]
-			RuntimeExecutionAdapter{}.Throw(v)
+			(RuntimeExecutionAdapter{}).Throw(v)
 
 		case irTryCatch:
 			pc += 4
@@ -405,7 +405,7 @@ loop:
 			if prog.fnExprs == nil || idx >= len(prog.fnExprs) {
 				return nil
 			}
-			fn := RuntimeExecutionAdapter{}.MakeFn(prog.fnExprs[idx], slots)
+			fn := (RuntimeExecutionAdapter{}).MakeFn(prog.fnExprs[idx], slots)
 			stack = append(stack, fn)
 
 		case irBitAnd:
@@ -835,8 +835,8 @@ loop:
 					for i := nargs; i < len(slots); i++ {
 						slots[i] = nil
 					}
-					for i, obj := range prog.captureSlots {
-						slots[prog.captureSlotIdxs[i]] = obj
+					if !(RuntimeExecutionAdapter{}).ApplyCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
+						return nil
 					}
 				}
 				pc = 0
