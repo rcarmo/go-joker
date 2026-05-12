@@ -66,3 +66,34 @@ func TestImageMissingPathPanics(t *testing.T) {
 		procImage([]Object{doc, MakeString(filepath.Join(t.TempDir(), "missing.png")), Double{D: 10}, Double{D: 10}})
 	})
 }
+
+func TestPDFProcsCheckArity(t *testing.T) {
+	for name, proc := range map[string]ProcFn{
+		"page":       procPage,
+		"font":       procFont,
+		"font-file":  procFontFile,
+		"font-size":  procFontSize,
+		"text":       procText,
+		"text-wrap":  procTextWrap,
+		"line":       procLine,
+		"rect":       procRect,
+		"oval":       procOval,
+		"color":      procColor,
+		"stroke":     procStrokeColor,
+		"fill":       procFillColor,
+		"line-width": procLineWidth,
+		"image":      procImage,
+		"move-to":    procMoveTo,
+		"get-x":      procGetX,
+		"get-y":      procGetY,
+		"link":       procLink,
+		"save":       procSave,
+		"to-bytes":   procToBytes,
+		"page-count": procPageCount,
+		"margins":    procMargins,
+	} {
+		t.Run(name, func(t *testing.T) {
+			expectPanic(t, func() { proc(nil) })
+		})
+	}
+}

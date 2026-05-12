@@ -29,6 +29,9 @@ func (d *Document) GetType() *Type                   { return typeDocument }
 func (d *Document) Hash() uint32                     { return 0 }
 
 func extractDoc(args []Object, idx int) *Document {
+	if idx < 0 || idx >= len(args) {
+		panic(RT.NewError("Expected PDF document argument"))
+	}
 	d, ok := args[idx].(*Document)
 	if !ok {
 		panic(RT.NewError("Expected PDF document argument"))
@@ -50,6 +53,7 @@ var pageSizes = map[string]*gopdf.Rect{
 // --- Creation ---
 
 var procDocument ProcFn = func(args []Object) Object {
+	CheckArity(args, 0, 2)
 	w := 595.0 // A4 default
 	h := 842.0
 	if len(args) > 0 {
@@ -70,6 +74,7 @@ var procDocument ProcFn = func(args []Object) Object {
 }
 
 var procPage ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
 	d.pdf.AddPage()
 	return args[0]
@@ -78,6 +83,7 @@ var procPage ProcFn = func(args []Object) Object {
 // --- Fonts ---
 
 var procFont ProcFn = func(args []Object) Object {
+	CheckArity(args, 3, 3)
 	d := extractDoc(args, 0)
 	name := ExtractString(args, 1)
 	size := ExtractDouble(args, 2)
@@ -99,6 +105,7 @@ var procFont ProcFn = func(args []Object) Object {
 }
 
 var procFontFile ProcFn = func(args []Object) Object {
+	CheckArity(args, 3, 4)
 	d := extractDoc(args, 0)
 	name := ExtractString(args, 1)
 	path := ExtractString(args, 2)
@@ -118,6 +125,7 @@ var procFontFile ProcFn = func(args []Object) Object {
 }
 
 var procFontSize ProcFn = func(args []Object) Object {
+	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
 	size := ExtractDouble(args, 1)
 	if err := d.pdf.SetFontSize(size); err != nil {
@@ -129,6 +137,7 @@ var procFontSize ProcFn = func(args []Object) Object {
 // --- Text ---
 
 var procText ProcFn = func(args []Object) Object {
+	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
 	x := ExtractDouble(args, 1)
 	y := ExtractDouble(args, 2)
@@ -141,6 +150,7 @@ var procText ProcFn = func(args []Object) Object {
 }
 
 var procTextWrap ProcFn = func(args []Object) Object {
+	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
 	x := ExtractDouble(args, 1)
 	y := ExtractDouble(args, 2)
@@ -157,6 +167,7 @@ var procTextWrap ProcFn = func(args []Object) Object {
 // --- Drawing ---
 
 var procLine ProcFn = func(args []Object) Object {
+	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
 	x1 := ExtractDouble(args, 1)
 	y1 := ExtractDouble(args, 2)
@@ -167,6 +178,7 @@ var procLine ProcFn = func(args []Object) Object {
 }
 
 var procRect ProcFn = func(args []Object) Object {
+	CheckArity(args, 5, 6)
 	d := extractDoc(args, 0)
 	x := ExtractDouble(args, 1)
 	y := ExtractDouble(args, 2)
@@ -181,6 +193,7 @@ var procRect ProcFn = func(args []Object) Object {
 }
 
 var procOval ProcFn = func(args []Object) Object {
+	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
 	x := ExtractDouble(args, 1)
 	y := ExtractDouble(args, 2)
@@ -193,6 +206,7 @@ var procOval ProcFn = func(args []Object) Object {
 // --- Color ---
 
 var procColor ProcFn = func(args []Object) Object {
+	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
 	r := ExtractInt(args, 1)
 	g := ExtractInt(args, 2)
@@ -202,6 +216,7 @@ var procColor ProcFn = func(args []Object) Object {
 }
 
 var procStrokeColor ProcFn = func(args []Object) Object {
+	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
 	r := ExtractInt(args, 1)
 	g := ExtractInt(args, 2)
@@ -211,6 +226,7 @@ var procStrokeColor ProcFn = func(args []Object) Object {
 }
 
 var procFillColor ProcFn = func(args []Object) Object {
+	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
 	r := ExtractInt(args, 1)
 	g := ExtractInt(args, 2)
@@ -220,6 +236,7 @@ var procFillColor ProcFn = func(args []Object) Object {
 }
 
 var procLineWidth ProcFn = func(args []Object) Object {
+	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
 	w := ExtractDouble(args, 1)
 	d.pdf.SetLineWidth(w)
@@ -229,6 +246,7 @@ var procLineWidth ProcFn = func(args []Object) Object {
 // --- Images ---
 
 var procImage ProcFn = func(args []Object) Object {
+	CheckArity(args, 4, 6)
 	d := extractDoc(args, 0)
 	path := ExtractString(args, 1)
 	x := ExtractDouble(args, 2)
@@ -251,6 +269,7 @@ var procImage ProcFn = func(args []Object) Object {
 // --- Position ---
 
 var procMoveTo ProcFn = func(args []Object) Object {
+	CheckArity(args, 3, 3)
 	d := extractDoc(args, 0)
 	x := ExtractDouble(args, 1)
 	y := ExtractDouble(args, 2)
@@ -259,11 +278,13 @@ var procMoveTo ProcFn = func(args []Object) Object {
 }
 
 var procGetX ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
 	return Double{D: d.pdf.GetX()}
 }
 
 var procGetY ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
 	return Double{D: d.pdf.GetY()}
 }
@@ -271,6 +292,7 @@ var procGetY ProcFn = func(args []Object) Object {
 // --- Link ---
 
 var procLink ProcFn = func(args []Object) Object {
+	CheckArity(args, 6, 6)
 	d := extractDoc(args, 0)
 	url := ExtractString(args, 1)
 	x := ExtractDouble(args, 2)
@@ -284,6 +306,7 @@ var procLink ProcFn = func(args []Object) Object {
 // --- Output ---
 
 var procSave ProcFn = func(args []Object) Object {
+	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
 	path := ExtractString(args, 1)
 	err := d.pdf.WritePdf(path)
@@ -294,6 +317,7 @@ var procSave ProcFn = func(args []Object) Object {
 }
 
 var procToBytes ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
 	var buf bytes.Buffer
 	_, err := d.pdf.WriteTo(&buf)
@@ -306,6 +330,7 @@ var procToBytes ProcFn = func(args []Object) Object {
 // --- Page info ---
 
 var procPageCount ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
 	return MakeInt(d.pdf.GetNumberOfPages())
 }
@@ -313,6 +338,7 @@ var procPageCount ProcFn = func(args []Object) Object {
 // --- Margins ---
 
 var procMargins ProcFn = func(args []Object) Object {
+	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
 	left := ExtractDouble(args, 1)
 	top := ExtractDouble(args, 2)
