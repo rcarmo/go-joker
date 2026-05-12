@@ -54,7 +54,7 @@ func convert(source string, renderOptions []renderer.Option) string {
 	)
 	var buf bytes.Buffer
 	if err := md.Convert([]byte(source), &buf); err != nil {
-		panic(err)
+		panic(RT.NewError("markdown/convert-string: " + err.Error()))
 	}
 	return buf.String()
 }
