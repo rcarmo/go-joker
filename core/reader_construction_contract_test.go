@@ -63,7 +63,7 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	}
 }
 
-func TestReaderConstructionContractMetadataAndTaggedReaders(t *testing.T) {
+func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testing.T) {
 	metaObj := readOneForContract(t, `^:private [1 2]`)
 	meta, ok := metaObj.(Meta)
 	if !ok || meta.GetMeta() == nil {
@@ -115,5 +115,15 @@ func TestReaderConstructionContractMetadataAndTaggedReaders(t *testing.T) {
 	}
 	if found, got := payload.Get(MakeKeyword("x")); !found || !got.Equals(MakeInt(1)) {
 		t.Fatalf("tagged fallback payload entry = %v %v", found, got)
+	}
+
+	selected := readOneForContract(t, `#?(:missing :no :joker [1 2])`)
+	selectedVec, ok := selected.(CountedIndexed)
+	if !ok || selectedVec.Count() != 2 || !selectedVec.At(0).Equals(MakeInt(1)) || !selectedVec.At(1).Equals(MakeInt(2)) {
+		t.Fatalf("reader conditional selected wrong form: %s", selected.ToString(false))
+	}
+	spliced := readOneForContract(t, `(#?@(:missing [:no] :joker [1 2]) 3)`).(Seq)
+	if SeqCount(spliced) != 3 || !spliced.First().Equals(MakeInt(1)) || !Second(spliced).Equals(MakeInt(2)) || !Third(spliced).Equals(MakeInt(3)) {
+		t.Fatalf("reader conditional splice mismatch: %s", spliced.ToString(false))
 	}
 }
