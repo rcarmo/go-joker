@@ -51,6 +51,21 @@ func isHandle(v uint64) bool {
 	return v&(1<<62) != 0
 }
 
+func wasmRawInt(v uint64) (int, bool) {
+	i := int64(v)
+	if i < int64(minInt) || i > int64(maxInt) {
+		return 0, false
+	}
+	return int(i), true
+}
+
+func wasmRawIntObject(v uint64) Object {
+	if i, ok := wasmRawInt(v); ok {
+		return Int{I: i}
+	}
+	return MakeBigInt(MakeMathBigIntFromInt64(int64(v)))
+}
+
 // contextKey for passing the object table through wazero context.
 type ctxKey struct{}
 
@@ -88,7 +103,7 @@ func registerWasmHost(rt wazero.Runtime) {
 				if isHandle(key) {
 					keyObj = t.load(key)
 				} else {
-					keyObj = Int{I: int(int64(key))}
+					keyObj = wasmRawIntObject(key)
 				}
 				if g, ok := coll.(Gettable); ok {
 					ok, v := g.Get(keyObj)
@@ -111,7 +126,7 @@ func registerWasmHost(rt wazero.Runtime) {
 				if isHandle(key) {
 					keyObj = t.load(key)
 				} else {
-					keyObj = Int{I: int(int64(key))}
+					keyObj = wasmRawIntObject(key)
 				}
 				if g, ok := coll.(Gettable); ok {
 					ok, v := g.Get(keyObj)
@@ -147,7 +162,10 @@ func registerWasmHost(rt wazero.Runtime) {
 					return 0
 				}
 				coll := t.load(collHandle)
-				i := int(int64(idx))
+				i, ok := wasmRawInt(idx)
+				if !ok {
+					return 0
+				}
 				switch c := coll.(type) {
 				case *ArrayVector:
 					if i >= 0 && i < len(c.arr) {
@@ -236,7 +254,7 @@ func wasmToObj(t *objectTable, v uint64) Object {
 		// Float tagged value
 		return Double{D: math.Float64frombits(v &^ (1 << 63))}
 	}
-	return Int{I: int(int64(v))}
+	return wasmRawIntObject(v)
 }
 
 // Ensure api import is used
