@@ -35,10 +35,11 @@ func externalHttpSourceToPath(lib string, url string) (path string) {
 
 		out, err := os.Create(libPath)
 		PanicOnErr(err)
-		defer out.Close()
 
 		_, err = io.Copy(out, resp.Body)
+		closeErr := out.Close()
 		PanicOnErr(err)
+		PanicOnErr(closeErr)
 	}
 
 	return libPath

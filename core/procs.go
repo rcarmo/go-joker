@@ -1600,9 +1600,10 @@ var procSpit = func(args []Object) Object {
 	case String:
 		file, err := os.OpenFile(f.S, flags, 0644)
 		PanicOnErr(err)
-		defer file.Close()
 		_, err = file.WriteString(str(content))
+		closeErr := file.Close()
 		PanicOnErr(err)
+		PanicOnErr(closeErr)
 	case io.Writer:
 		_, err := io.WriteString(f, str(content))
 		PanicOnErr(err)
@@ -1643,7 +1644,7 @@ func loadFile(filename string) Object {
 	var reader *Reader
 	f, err := os.Open(filename)
 	PanicOnErr(err)
-	defer f.Close()
+	defer func() { PanicOnErr(f.Close()) }()
 	reader = NewReader(bufio.NewReader(f), filename)
 	ProcessReaderFromEval(reader, filename)
 	return NIL
