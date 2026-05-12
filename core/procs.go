@@ -2103,9 +2103,10 @@ func setCoreNamespaces() {
 
 	vr := ns.Resolve("*core-namespaces*")
 	set := vr.Value.(*MapSet)
-	for _, ns := range coreNamespaces {
+	for _, ns := range generatedCoreNamespaces() {
 		set = set.Conj(MakeSymbol(ns)).(*MapSet)
 	}
+	set = set.Conj(MakeSymbol("user")).(*MapSet)
 	vr.Value = set
 
 	// Add 'joker.core to *loaded-libs*, now that it's loaded.
