@@ -23,13 +23,13 @@
   [^Integer sec ^Integer nsec])
 
 (defn unix
-  "Returns t as a Unix time, the number of seconds elapsed since January 1, 1970 UTC."
+  "Returns t as a Unix time, the number of seconds elapsed since January 1, 1970 UTC. Returns Int when the value fits the native int range, otherwise BigInt."
   {:added "1.0"
    :go "timeIntObject(t.Unix())"}
   [^Time t])
 
 (defn sub
-  "Returns the duration t-u in nanoseconds."
+  "Returns the duration t-u in nanoseconds. Returns Int when the value fits the native int range, otherwise BigInt."
   {:added "1.0"
    :go "timeIntObject(int64(t.Sub(u)))"}
   [^Time t ^Time u])
@@ -61,19 +61,19 @@
 (defn parse-duration
   "Parses a duration string. A duration string is a possibly signed sequence of decimal numbers,
   each with optional fraction and a unit suffix, such as 300ms, -1.5h or 2h45m. Valid time units are
-  ns, us (or µs), ms, s, m, h."
+  ns, us (or µs), ms, s, m, h. Returns Int when the duration fits the native int range, otherwise BigInt."
   {:added "1.0"
    :go "!t, err := time.ParseDuration(s); PanicOnErr(err); _res := timeIntObject(int64(t))"}
   [^String s])
 
 (defn since
-  "Returns the time in nanoseconds elapsed since t."
+  "Returns the time in nanoseconds elapsed since t. Returns Int when the value fits the native int range, otherwise BigInt."
   {:added "1.0"
    :go "timeIntObject(int64(time.Since(t)))"}
   [^Time t])
 
 (defn until
-  "Returns the duration in nanoseconds until t."
+  "Returns the duration in nanoseconds until t. Returns Int when the value fits the native int range, otherwise BigInt."
   {:added "1.0"
    :go "timeIntObject(int64(time.Until(t)))"}
   [^Time t])
@@ -102,7 +102,7 @@
 
 (defn round
   "Returns the result of rounding d to the nearest multiple of m. d and m represent time durations in nanoseconds.
-  The rounding behavior for halfway values is to round away from zero. If m <= 0, returns d unchanged."
+  The rounding behavior for halfway values is to round away from zero. If m <= 0, returns d unchanged. Returns Int when the value fits the native int range, otherwise BigInt."
   {:added "1.0"
    :go "timeIntObject(int64(time.Duration(d).Round(time.Duration(m))))"}
   [^Integer d ^Integer m])
@@ -120,7 +120,7 @@
   [^Integer d])
 
 (defn truncate
-  "Returns the result of rounding d toward zero to a multiple of m. If m <= 0, returns d unchanged."
+  "Returns the result of rounding d toward zero to a multiple of m. If m <= 0, returns d unchanged. Returns Int when the value fits the native int range, otherwise BigInt."
   {:added "1.0"
    :go "timeIntObject(int64(time.Duration(d).Truncate(time.Duration(m))))"}
   [^Integer d ^Integer m])
