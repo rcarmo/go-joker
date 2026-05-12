@@ -63,7 +63,7 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	}
 }
 
-func TestReaderConstructionContractMetadataAndTaggedFallback(t *testing.T) {
+func TestReaderConstructionContractMetadataAndTaggedReaders(t *testing.T) {
 	metaObj := readOneForContract(t, `^:private [1 2]`)
 	meta, ok := metaObj.(Meta)
 	if !ok || meta.GetMeta() == nil {
@@ -76,16 +76,34 @@ func TestReaderConstructionContractMetadataAndTaggedFallback(t *testing.T) {
 		t.Fatalf("metadata form did not preserve source info: %#v", metaObj.GetInfo())
 	}
 
-	vr := GLOBAL_ENV.CoreNamespace.Resolve("*default-data-reader-fn*")
-	if vr == nil {
+	dataReadersVar := GLOBAL_ENV.CoreNamespace.Resolve("*data-readers*")
+	if dataReadersVar == nil {
+		t.Fatal("*data-readers* var not found")
+	}
+	oldDataReaders := dataReadersVar.Value
+	readers := EmptyArrayMap()
+	readers.Add(MakeSymbol("contract/direct"), Proc{Name: "readerContractDirect", Fn: func(args []Object) Object {
+		CheckArity(args, 1, 1)
+		return NewArrayVectorFrom(MakeKeyword("direct"), args[0])
+	}})
+	dataReadersVar.Value = readers
+	defer func() { dataReadersVar.Value = oldDataReaders }()
+
+	direct := readOneForContract(t, `#contract/direct 7`).(CountedIndexed)
+	if direct.Count() != 2 || !direct.At(0).Equals(MakeKeyword("direct")) || !direct.At(1).Equals(MakeInt(7)) {
+		t.Fatalf("direct tagged reader mismatch: %s", direct.(Object).ToString(false))
+	}
+
+	fallbackVar := GLOBAL_ENV.CoreNamespace.Resolve("*default-data-reader-fn*")
+	if fallbackVar == nil {
 		t.Fatal("*default-data-reader-fn* var not found")
 	}
-	old := vr.Value
-	vr.Value = Proc{Name: "readerContractFallback", Fn: func(args []Object) Object {
+	oldFallback := fallbackVar.Value
+	fallbackVar.Value = Proc{Name: "readerContractFallback", Fn: func(args []Object) Object {
 		CheckArity(args, 2, 2)
 		return NewArrayVectorFrom(args[0], args[1])
 	}}
-	defer func() { vr.Value = old }()
+	defer func() { fallbackVar.Value = oldFallback }()
 
 	tagged := readOneForContract(t, `#contract/tag {:x 1}`).(CountedIndexed)
 	if tagged.Count() != 2 || !tagged.At(0).Equals(MakeSymbol("contract/tag")) {
