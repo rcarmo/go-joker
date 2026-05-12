@@ -3,6 +3,7 @@ package os
 import (
 	"bytes"
 	"io"
+	"math/big"
 	"os"
 	"os/exec"
 	"strings"
@@ -10,6 +11,15 @@ import (
 
 	. "github.com/rcarmo/go-joker/core"
 )
+
+func nativeIntObject(n int64) Object {
+	maxNativeInt := int64(int(^uint(0) >> 1))
+	minNativeInt := -maxNativeInt - 1
+	if n > maxNativeInt || n < minNativeInt {
+		return MakeBigInt(big.NewInt(n))
+	}
+	return MakeInt(int(n))
+}
 
 func env() Object {
 	res := EmptyArrayMap()
@@ -156,10 +166,10 @@ func readDir(dirname string) Object {
 		PanicOnErr(err)
 		m := EmptyArrayMap()
 		m.Add(name, MakeString(e.Name()))
-		m.Add(size, MakeInt(int(info.Size())))
+		m.Add(size, nativeIntObject(info.Size()))
 		m.Add(mode, MakeInt(int(info.Mode())))
 		m.Add(isDir, MakeBoolean(e.IsDir()))
-		m.Add(modTime, MakeInt(int(info.ModTime().Unix())))
+		m.Add(modTime, nativeIntObject(info.ModTime().Unix()))
 		res = res.Conjoin(m)
 	}
 	return res

@@ -147,7 +147,7 @@ runtime-contract-check:
 	$(GO) test ./core -run 'TestIRExecutionMetadata|TestEscapeAnalysis|TestIRMakeFn|TestIRCompileFailure|TestNativeHelperEligibility|TestChannelCloseIsIdempotentUnderConcurrency|TestWasmRawInt' -count=$(TEST_COUNT) -timeout=120s
 
 std-contract-check:
-	$(GO) test ./std/http ./std/io ./std/strconv ./std/time ./std/markdown -count=$(TEST_COUNT) -timeout=120s
+	$(GO) test ./std/http ./std/io ./std/strconv ./std/time ./std/markdown ./std/os -count=$(TEST_COUNT) -timeout=120s
 
 docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md
