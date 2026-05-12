@@ -12,6 +12,7 @@ import (
 // --- Disassemble ---
 
 var procDisassemble ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
 	if prog == nil {
@@ -23,6 +24,7 @@ var procDisassemble ProcFn = func(args []Object) Object {
 // --- Profile ---
 
 var procProfile ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 2)
 	callable := EnsureArgIsCallable(args, 0)
 	iterations := 1
 	if len(args) > 1 {
@@ -62,6 +64,7 @@ var procProfile ProcFn = func(args []Object) Object {
 // --- WASM Diagnostic ---
 
 var procWasmDiagnostic ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
 	if prog == nil {
@@ -84,6 +87,7 @@ var procWasmDiagnostic ProcFn = func(args []Object) Object {
 // --- IR Analysis ---
 
 var procAnalyze ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
 	if prog == nil {
@@ -119,6 +123,7 @@ var procAnalyze ProcFn = func(args []Object) Object {
 // --- Escape Analysis ---
 
 var procEscapeAnalysis ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
 	if prog == nil {
@@ -138,12 +143,13 @@ var procEscapeAnalysis ProcFn = func(args []Object) Object {
 // --- Memory stats ---
 
 var procMemStats ProcFn = func(args []Object) Object {
+	CheckArity(args, 0, 0)
 	var ms runtime.MemStats
 	runtime.ReadMemStats(&ms)
 	m := EmptyArrayMap()
 	m = assocM(m, MakeKeyword("heap-alloc-mb"), Double{D: float64(ms.HeapAlloc) / 1e6})
-	m = assocM(m, MakeKeyword("heap-objects"), Int{I: int(ms.HeapObjects)})
-	m = assocM(m, MakeKeyword("gc-cycles"), Int{I: int(ms.NumGC)})
+	m = assocM(m, MakeKeyword("heap-objects"), runtimeUintObject(ms.HeapObjects))
+	m = assocM(m, MakeKeyword("gc-cycles"), runtimeUintObject(uint64(ms.NumGC)))
 	m = assocM(m, MakeKeyword("total-alloc-mb"), Double{D: float64(ms.TotalAlloc) / 1e6})
 	m = assocM(m, MakeKeyword("goroutines"), Int{I: runtime.NumGoroutine()})
 	return m
@@ -152,6 +158,7 @@ var procMemStats ProcFn = func(args []Object) Object {
 // --- GC ---
 
 var procGC ProcFn = func(args []Object) Object {
+	CheckArity(args, 0, 0)
 	runtime.GC()
 	return NIL
 }
@@ -159,6 +166,7 @@ var procGC ProcFn = func(args []Object) Object {
 // --- Benchmark helper ---
 
 var procBenchmark ProcFn = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	callable := EnsureArgIsCallable(args, 0)
 	// Warm up a little to reduce one-off effects.
 	for i := 0; i < 3; i++ {
@@ -199,7 +207,7 @@ var procBenchmark ProcFn = func(args []Object) Object {
 	}
 
 	m := EmptyArrayMap()
-	m = assocM(m, MakeKeyword("ns-per-op"), Int{I: int(nsPerOp)})
+	m = assocM(m, MakeKeyword("ns-per-op"), runtimeIntObject(nsPerOp))
 	m = assocM(m, MakeKeyword("ms-per-op"), Double{D: float64(nsPerOp) / 1e6})
 	m = assocM(m, MakeKeyword("iterations"), Int{I: n})
 	m = assocM(m, MakeKeyword("total-ms"), Double{D: float64(elapsed.Milliseconds())})

@@ -33,6 +33,32 @@ func TestRuntimeUintObjectPromotesOutsideNativeRange(t *testing.T) {
 	}
 }
 
+func TestRuntimeProcsCheckArity(t *testing.T) {
+	for name, proc := range map[string]ProcFn{
+		"disassemble":     procDisassemble,
+		"profile":         procProfile,
+		"wasm-diagnostic": procWasmDiagnostic,
+		"analyze":         procAnalyze,
+		"escape-analysis": procEscapeAnalysis,
+		"mem-stats-extra": procMemStats,
+		"gc-extra":        procGC,
+		"benchmark":       procBenchmark,
+	} {
+		t.Run(name, func(t *testing.T) {
+			defer func() {
+				if recover() == nil {
+					t.Fatalf("%s should reject wrong arity", name)
+				}
+			}()
+			if name == "mem-stats-extra" || name == "gc-extra" {
+				proc([]Object{NIL})
+				return
+			}
+			proc(nil)
+		})
+	}
+}
+
 func TestProfileRejectsNonPositiveIterations(t *testing.T) {
 	defer func() {
 		if recover() == nil {
