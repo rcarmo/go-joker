@@ -1,6 +1,7 @@
 package pods
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -181,8 +182,12 @@ func (p *Pod) shutdownPod() {
 	closePodStream("stdout", p.stdout)
 	closePodStream("stderr", p.stderr)
 	if p.cmd != nil && p.cmd.Process != nil {
-		_ = p.cmd.Process.Kill()
-		_, _ = p.cmd.Process.Wait()
+		if err := p.cmd.Process.Kill(); err != nil && !errors.Is(err, os.ErrProcessDone) {
+			fmt.Fprintf(os.Stderr, "pod process kill error: %v\n", err)
+		}
+		if _, err := p.cmd.Process.Wait(); err != nil && !errors.Is(err, os.ErrProcessDone) {
+			fmt.Fprintf(os.Stderr, "pod process wait error: %v\n", err)
+		}
 	}
 	p.closePending(nil)
 	unregisterPod(p.id)
