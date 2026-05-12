@@ -136,7 +136,7 @@ core-contract-check:
 	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestSortedCollectionContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics|TestBigIntInt|TestRatioOrInt|TestReadIntegerUsesNativeIntRange|TestReaderConstructionContract' -count=$(TEST_COUNT) -timeout=120s
 
 runtime-contract-check:
-	$(GO) test ./core -run 'TestIRExecutionMetadata|TestEscapeAnalysis|TestIRMakeFn|TestIRCompileFailure|TestNativeHelperEligibility|TestChannelCloseIsIdempotentUnderConcurrency' -count=$(TEST_COUNT) -timeout=120s
+	$(GO) test ./core -run 'TestIRExecutionMetadata|TestEscapeAnalysis|TestIRMakeFn|TestIRCompileFailure|TestNativeHelperEligibility|TestChannelCloseIsIdempotentUnderConcurrency|TestWasmRawInt' -count=$(TEST_COUNT) -timeout=120s
 
 std-contract-check:
 	$(GO) test ./std/http ./std/io ./std/strconv ./std/time ./std/markdown -count=$(TEST_COUNT) -timeout=120s
