@@ -93,6 +93,7 @@ Planned package boundaries:
 - [x] Document runtime/object execution metadata contract before moving executors or escape analysis.
 - [x] Add initial IR execution-envelope contract tests for constants/captures/escape metadata/model handoff.
 - [x] Add escape-analysis contract tests for call-argument unsafety and string-builder slots.
+- [x] Add `irMakeFn` execution-envelope contract tests for FnExpr retention and slot capture semantics.
 - [ ] Leave executor/escape-analysis root fields until runtime/object execution metadata contract becomes code.
 - [x] Keep benchmark correctness tests before performance work.
 

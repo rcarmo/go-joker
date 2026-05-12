@@ -67,7 +67,7 @@ This is a sketch, not an implementation API. The important boundary is ownership
 2. Keep root `core.IRProgram` as the executable envelope while executor metadata is root-coupled.
 3. Add focused tests for execution metadata behavior before moving code:
    - constants/captures (**started: `ir_execution_metadata_contract_test.go` covers constants, slots, captures, escape metadata, and neutral-model analysis handoff**)
-   - `irMakeFn`
+   - `irMakeFn` (**started: `ir_makefn_contract_test.go` covers FnExpr retention and current-slot capture semantics**)
    - native helper fallback/failure caches
    - escape-analysis safe mutation slots (**started: `escape_analysis_contract_test.go` covers call-argument unsafety and string-builder slot classification**)
    - typed/boxed failure flags

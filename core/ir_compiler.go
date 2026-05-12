@@ -98,6 +98,7 @@ func irCompileExplain(loop *LoopExpr) (*IRProgram, string) {
 		constants:   c.constants,
 		numSlots:    c.numSlots,
 		captureKeys: c.captureKeys,
+		fnExprs:     c.fnExprs,
 	}).refreshModel(), ""
 }
 
