@@ -1,6 +1,7 @@
 package os
 
 import (
+	"fmt"
 	stdos "os"
 	"path/filepath"
 	"sync"
@@ -65,7 +66,9 @@ func (fw *fileWatcher) cancel() {
 
 func (fw *fileWatcher) closeWatcher() {
 	fw.closeOnce.Do(func() {
-		_ = fw.watcher.Close()
+		if err := fw.watcher.Close(); err != nil {
+			fmt.Fprintln(Stderr, "watch close error:", err)
+		}
 	})
 }
 
