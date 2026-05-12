@@ -254,7 +254,7 @@ func procAlts(args []Object) Object {
 			// Check if it's a vector-like [channel value] for put.
 			if ci, ok := item.(CountedIndexed); ok && ci.Count() == 2 {
 				ch := EnsureObjectIsChannel(ci.At(0), "alts! put port first element must be a channel")
-				if ch.isClosed {
+				if ch.IsClosed() {
 					// Clojure-like semantics: put on closed channel returns false immediately.
 					return NewVectorFrom(MakeBoolean(false), ch)
 				}

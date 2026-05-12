@@ -144,7 +144,7 @@ func procAsyncPutBang(args []Object) Object {
 			call1(cb, MakeBoolean(ok))
 		}
 	}()
-	return MakeBoolean(!ch.isClosed)
+	return MakeBoolean(!ch.IsClosed())
 }
 
 func procAsyncTakeBang(args []Object) Object {

@@ -1827,7 +1827,7 @@ var procSend = func(args []Object) (obj Object) {
 	if v.Equals(NIL) {
 		panic(RT.NewError("Can't put nil on channel"))
 	}
-	if ch.isClosed {
+	if ch.IsClosed() {
 		return MakeBoolean(false)
 	}
 	obj = MakeBoolean(true)

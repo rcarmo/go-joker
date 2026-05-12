@@ -1,6 +1,7 @@
 package core
 
 import (
+	"sync"
 	"unsafe"
 )
 
@@ -13,6 +14,7 @@ type (
 	}
 	Channel struct {
 		ch       chan FutureResult
+		closeMu  sync.Mutex
 		isClosed bool
 		hash     uint32
 	}
@@ -63,14 +65,23 @@ func ExtractChannel(args []Object, index int) *Channel {
 }
 
 func (ch *Channel) Close() {
-	if !ch.isClosed {
-		close(ch.ch)
-		ch.isClosed = true
+	ch.closeMu.Lock()
+	defer ch.closeMu.Unlock()
+	if ch.isClosed {
+		return
 	}
+	ch.isClosed = true
+	close(ch.ch)
+}
+
+func (ch *Channel) IsClosed() bool {
+	ch.closeMu.Lock()
+	defer ch.closeMu.Unlock()
+	return ch.isClosed
 }
 
 func (ch *Channel) Send(value Object) (ok bool) {
-	if ch.isClosed {
+	if ch.IsClosed() {
 		return false
 	}
 	ok = true
