@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"fmt"
+	"math/big"
 	"runtime"
 	"time"
 
@@ -27,6 +28,9 @@ var procProfile ProcFn = func(args []Object) Object {
 	if len(args) > 1 {
 		iterations = ensureArgIsIntLocal(args, 1)
 	}
+	if iterations <= 0 {
+		panic(RT.NewError("profile iterations must be positive"))
+	}
 
 	// Force GC before profiling
 	runtime.GC()
@@ -46,10 +50,10 @@ var procProfile ProcFn = func(args []Object) Object {
 	bytes := memAfter.TotalAlloc - memBefore.TotalAlloc
 
 	m := EmptyArrayMap()
-	m = assocM(m, MakeKeyword("time-ns"), Int{I: int(elapsed.Nanoseconds() / int64(iterations))})
+	m = assocM(m, MakeKeyword("time-ns"), runtimeIntObject(elapsed.Nanoseconds()/int64(iterations)))
 	m = assocM(m, MakeKeyword("time-ms"), Double{D: float64(elapsed.Milliseconds()) / float64(iterations)})
-	m = assocM(m, MakeKeyword("allocs"), Int{I: int(allocs / uint64(iterations))})
-	m = assocM(m, MakeKeyword("bytes"), Int{I: int(bytes / uint64(iterations))})
+	m = assocM(m, MakeKeyword("allocs"), runtimeUintObject(allocs/uint64(iterations)))
+	m = assocM(m, MakeKeyword("bytes"), runtimeUintObject(bytes/uint64(iterations)))
 	m = assocM(m, MakeKeyword("iterations"), Int{I: iterations})
 	m = assocM(m, MakeKeyword("result"), result)
 	return m
@@ -203,6 +207,23 @@ var procBenchmark ProcFn = func(args []Object) Object {
 }
 
 // --- Helpers ---
+
+func runtimeIntObject(n int64) Object {
+	maxNativeInt := int64(int(^uint(0) >> 1))
+	minNativeInt := -maxNativeInt - 1
+	if n > maxNativeInt || n < minNativeInt {
+		return MakeBigInt(big.NewInt(n))
+	}
+	return MakeInt(int(n))
+}
+
+func runtimeUintObject(n uint64) Object {
+	maxNativeUint := uint64(int(^uint(0) >> 1))
+	if n > maxNativeUint {
+		return MakeBigInt(new(big.Int).SetUint64(n))
+	}
+	return MakeInt(int(n))
+}
 
 func ensureArgIsFnLocal(args []Object, idx int) *Fn {
 	fn, ok := args[idx].(*Fn)
