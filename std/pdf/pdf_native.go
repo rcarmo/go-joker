@@ -3,7 +3,6 @@ package pdf
 import (
 	"bytes"
 	"fmt"
-	"os"
 
 	"github.com/signintech/gopdf"
 
@@ -321,8 +320,4 @@ var procMargins ProcFn = func(args []Object) Object {
 	bottom := ExtractDouble(args, 4)
 	d.pdf.SetMargins(left, top, right, bottom)
 	return args[0]
-}
-
-func init() {
-	_ = os.Getenv("") // ensure os is used
 }

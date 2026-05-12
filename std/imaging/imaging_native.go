@@ -6,7 +6,6 @@ import (
 	"image"
 	"image/color"
 	"image/png"
-	"os"
 
 	"github.com/disintegration/imaging"
 
@@ -363,8 +362,3 @@ var procNewImage ProcFn = func(args []Object) Object {
 }
 
 // --- Registration ---
-
-func init() {
-	// Ensure image format decoders are registered
-	_ = os.Getenv("") // force init
-}
