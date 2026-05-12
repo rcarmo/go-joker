@@ -1,6 +1,7 @@
 package http
 
 import (
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -36,6 +37,41 @@ func TestHandleStreamSSE(t *testing.T) {
 	if ct := rec.Header().Get("Content-Type"); !strings.Contains(ct, "text/event-stream") {
 		t.Fatalf("expected text/event-stream, got %q", ct)
 	}
+}
+
+type failingStreamWriter struct {
+	header http.Header
+}
+
+func (w *failingStreamWriter) Header() http.Header {
+	return w.header
+}
+
+func (w *failingStreamWriter) Write([]byte) (int, error) {
+	return 0, errors.New("write failed")
+}
+
+func (w *failingStreamWriter) WriteHeader(statusCode int) {}
+
+func (w *failingStreamWriter) Flush() {}
+
+func TestHandleStreamWriteErrorsSurface(t *testing.T) {
+	streamFn := Proc{Name: "test-stream", Fn: func(args []Object) Object {
+		send := EnsureArgIsCallable(args, 0)
+		send.Call([]Object{MakeString("hello")})
+		return NIL
+	}}
+	defer func() {
+		r := recover()
+		err, ok := r.(Error)
+		if !ok {
+			t.Fatalf("panic = %T, want core Error", r)
+		}
+		if !strings.Contains(err.Error(), "stream write error") {
+			t.Fatalf("unexpected stream error: %s", err.Error())
+		}
+	}()
+	handleStream(&failingStreamWriter{header: make(http.Header)}, EmptyArrayMap(), streamFn)
 }
 
 func TestHandleWebSocketUpgradeAndCallbacks(t *testing.T) {

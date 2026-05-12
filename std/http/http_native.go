@@ -378,7 +378,9 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
 	flusher, ok := w.(http.Flusher)
 	if !ok {
 		w.WriteHeader(500)
-		io.WriteString(w, "Streaming not supported")
+		if _, err := io.WriteString(w, "Streaming not supported"); err != nil {
+			fmt.Fprintln(os.Stderr, "streaming unsupported response write error:", err)
+		}
 		return
 	}
 
@@ -415,6 +417,12 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
 	w.WriteHeader(status)
 	flusher.Flush()
 
+	writeStream := func(format string, args ...any) {
+		if _, err := fmt.Fprintf(w, format, args...); err != nil {
+			panic(RT.NewError("stream write error: " + err.Error()))
+		}
+	}
+
 	// Build send-event fn: (fn [data]) or (fn [event data])
 	sendEvent := Proc{Name: "sse-send", Fn: func(args []Object) Object {
 		switch len(args) {
@@ -422,18 +430,18 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
 			// data-only: sends "data: ...\n\n"
 			data := args[0].ToString(false)
 			for _, line := range strings.Split(data, "\n") {
-				fmt.Fprintf(w, "data: %s\n", line)
+				writeStream("data: %s\n", line)
 			}
-			fmt.Fprint(w, "\n")
+			writeStream("\n")
 		case 2:
 			// event + data: sends "event: ...\ndata: ...\n\n"
 			event := args[0].ToString(false)
 			data := args[1].ToString(false)
-			fmt.Fprintf(w, "event: %s\n", event)
+			writeStream("event: %s\n", event)
 			for _, line := range strings.Split(data, "\n") {
-				fmt.Fprintf(w, "data: %s\n", line)
+				writeStream("data: %s\n", line)
 			}
-			fmt.Fprint(w, "\n")
+			writeStream("\n")
 		default:
 			panic(RT.NewError("send-event expects 1 or 2 args: [data] or [event data]"))
 		}
