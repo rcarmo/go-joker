@@ -70,6 +70,7 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 
 	// Frame stack for irCallSelf — avoids recursive irExec calls
 	var frameStack *irFrameStack
+	defer func() { releaseIRFrameStack(frameStack) }()
 	var selfTraceStack []func()
 
 	var irProfPrev byte

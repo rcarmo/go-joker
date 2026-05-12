@@ -1,5 +1,7 @@
 package core
 
+import "sync"
+
 // ir_frame_stack.go — explicit frame stack for irCallSelf to avoid
 // per-call Go stack frame + slot allocation overhead.
 //
@@ -24,13 +26,39 @@ type irFrameStack struct {
 	slotSize int // slots per frame
 }
 
+var irFrameStackPool sync.Pool
+
 func newIRFrameStack(slotSize int) *irFrameStack {
 	const initialDepth = 32
+	if v := irFrameStackPool.Get(); v != nil {
+		fs := v.(*irFrameStack)
+		if cap(fs.frames) >= initialDepth && cap(fs.slotPool) >= initialDepth*slotSize {
+			fs.frames = fs.frames[:initialDepth]
+			fs.slotPool = fs.slotPool[:initialDepth*slotSize]
+			fs.slotSize = slotSize
+			fs.depth = 0
+			return fs
+		}
+	}
 	return &irFrameStack{
 		frames:   make([]irFrame, initialDepth),
 		slotPool: make([]Object, initialDepth*slotSize),
 		slotSize: slotSize,
 	}
+}
+
+func releaseIRFrameStack(fs *irFrameStack) {
+	if fs == nil {
+		return
+	}
+	for i := range fs.slotPool {
+		fs.slotPool[i] = nil
+	}
+	fs.depth = 0
+	if cap(fs.frames) > 2048 || cap(fs.slotPool) > 16384 {
+		return
+	}
+	irFrameStackPool.Put(fs)
 }
 
 func (fs *irFrameStack) push(pc int, slots []Object, stackLen int) {

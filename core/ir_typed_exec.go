@@ -48,6 +48,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 
 	// Frame stack for irCallSelf — avoids recursive irExecTyped calls
 	var typedFrameStack *irTypedFrameStack
+	defer func() { releaseIRTypedFrameStack(typedFrameStack) }()
 	var selfTraceStack []func()
 	var irProfPrev byte
 	var irProfHasPrev bool
