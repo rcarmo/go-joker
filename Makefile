@@ -131,7 +131,7 @@ refactor-internals-check:
 	$(GO) test ./core/internal/... -count=$(TEST_COUNT)
 
 core-contract-check:
-	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestSortedCollectionContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics|TestBigIntInt|TestRatioOrInt|TestReadIntegerUsesNativeIntRange' -count=$(TEST_COUNT) -timeout=120s
+	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestSortedCollectionContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics|TestBigIntInt|TestRatioOrInt|TestReadIntegerUsesNativeIntRange|TestReaderConstructionContract' -count=$(TEST_COUNT) -timeout=120s
 
 docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check refactor-internals-check core-contract-check
 	test -f docs/refactor/README.md

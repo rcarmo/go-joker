@@ -132,6 +132,7 @@ Planned package boundaries:
 - [ ] Move collections only after object/protocol contracts are explicit.
 - [x] Document reader object-construction/tagged-literal contract requirements.
 - [x] Add initial reader construction contract tests for primitives/collections/metadata/tagged fallback.
+- [x] Run reader construction contract tests from `make core-contract-check`.
 - [ ] Move reader only after object construction and tagged literal contracts are explicit in code.
 - [x] Document runtime/evaluator call/error/frame contract requirements.
 - [ ] Move runtime/evaluator only after call/error/frame contracts are explicit in code.

@@ -73,4 +73,4 @@ This is a design sketch, not an implementation API. The important rule is that e
 
 ## Current status
 
-Reader extraction remains blocked. Collection/object contracts are much stronger now, and initial reader construction contract tests cover source metadata, namespaced map construction, literal error handling, direct/fallback tagged literal behavior, and conditional reader selection/splicing, but an explicit construction adapter plus expression construction boundaries are still needed before package movement.
+Reader extraction remains blocked. Collection/object contracts are much stronger now, and reader construction contract tests now run from `make core-contract-check`. They cover source metadata, namespaced map construction, literal error handling, direct/fallback tagged literal behavior, and conditional reader selection/splicing, but an explicit construction adapter plus expression construction boundaries are still needed before package movement.
