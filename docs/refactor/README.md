@@ -100,7 +100,8 @@ Planned package boundaries:
 - [x] Design generated bootstrap contract before generator path changes.
 - [x] Add `core/internal/generated` data-only bootstrap payload contract types.
 - [x] Start generator emission under `core/internal/generated` with core source manifest.
-- [ ] Extend generated bootstrap emission beyond source manifest and switch runtime consumers only after equivalence tests.
+- [x] Add equivalence test comparing generated source manifest with current root `coreNamespaces`.
+- [ ] Extend generated bootstrap emission beyond source manifest and switch runtime consumers only after broader equivalence tests.
 - [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
 
 ### R5 — Collections/reader/runtime follow-up
