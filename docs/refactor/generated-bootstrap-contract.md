@@ -1,12 +1,12 @@
 # Generated bootstrap contract design note
 
-Updated: 2026-05-11
+Updated: 2026-05-12
 
 ## Purpose
 
 This note narrows R4's next step before moving generated artifacts out of root `core`: define the minimum bootstrap contract between generated namespace data and the handwritten runtime.
 
-The current generated files stay in package `core` because they freely reference runtime object constructors, namespace internals, vars, metadata, and init ordering. Moving them blindly would either force broad exports or create compatibility wrappers, both of which are non-goals.
+Most current generated files still stay in package `core` because they freely reference runtime object constructors, namespace internals, vars, metadata, and init ordering. The former root `core/a_data.go` namespace list has moved behind the data-only generated manifest. Moving the remaining generated files blindly would either force broad exports or create compatibility wrappers, both of which are non-goals.
 
 ## Current generated responsibilities
 
@@ -22,7 +22,7 @@ Only the first two belong in a future generated bootstrap package. Type assertio
 
 The `core/internal/generated` package now defines the inert payload structs for this contract. It should own generated payload data, not runtime mutation. The handwritten root runtime should own interpretation and installation.
 
-Candidate shape:
+Current/target shape:
 
 ```go
 package generated
@@ -41,7 +41,8 @@ type VarDoc struct {
     Private bool
 }
 
-func CoreSources() []NamespaceSource
+func CoreSourceManifest() []NamespaceSource
++func CoreSources() []NamespaceSource
 func CoreDocs() []VarDoc
 ```
 
