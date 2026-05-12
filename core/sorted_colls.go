@@ -206,21 +206,35 @@ func sortedSubseq(args []Object, reverse bool) Object {
 
 func sortedEntries(coll Object) []Object {
 	out := make([]Object, 0)
+	preserveOrder := isSortedColl(coll)
 	if m, ok := coll.(Map); ok {
 		for it := m.Iter(); it.HasNext(); {
 			p := it.Next()
 			out = append(out, NewArrayVectorFrom(p.Key, p.Value))
 		}
-		sort.Slice(out, func(i, j int) bool { return compareObjects(rangeKey(out[i]), rangeKey(out[j])) < 0 })
+		if !preserveOrder {
+			sort.Slice(out, func(i, j int) bool { return compareObjects(rangeKey(out[i]), rangeKey(out[j])) < 0 })
+		}
 		return out
 	}
 	if s, ok := coll.(Seqable); ok {
 		for seq := s.Seq(); !seq.IsEmpty(); seq = seq.Rest() {
 			out = append(out, seq.First())
 		}
-		sort.Slice(out, func(i, j int) bool { return compareObjects(out[i], out[j]) < 0 })
+		if !preserveOrder {
+			sort.Slice(out, func(i, j int) bool { return compareObjects(out[i], out[j]) < 0 })
+		}
 	}
 	return out
+}
+
+func isSortedColl(coll Object) bool {
+	m, ok := coll.(Meta)
+	if !ok || m.GetMeta() == nil {
+		return false
+	}
+	ok, v := m.GetMeta().Get(MakeKeyword("sorted"))
+	return ok && ToBool(v)
 }
 
 func rangeKey(entry Object) Object {

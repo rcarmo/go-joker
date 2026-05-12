@@ -154,13 +154,13 @@ func TestSortedCollectionContract(t *testing.T) {
 	}
 	mBy := sortedMapByProc.Call([]Object{desc, MakeInt(1), MakeString("a"), MakeInt(3), MakeString("c"), MakeInt(2), MakeString("b")}).(Map)
 	mByEntries := sortedEntries(mBy)
-	if len(mByEntries) != 3 || !rangeKey(mByEntries[0]).Equals(MakeInt(1)) {
-		t.Fatalf("sorted-map-by should preserve map semantics even though backing map iteration is natural: %v", mByEntries)
+	if len(mByEntries) != 3 || !rangeKey(mByEntries[0]).Equals(MakeInt(3)) || !rangeKey(mByEntries[2]).Equals(MakeInt(1)) {
+		t.Fatalf("sorted-map-by should preserve comparator order: %v", mByEntries)
 	}
 	sBy := sortedSetByProc.Call([]Object{desc, MakeInt(1), MakeInt(3), MakeInt(2)}).(*MapSet)
 	sByEntries := sortedEntries(sBy)
-	if len(sByEntries) != 3 || !sByEntries[0].Equals(MakeInt(1)) || !sByEntries[2].Equals(MakeInt(3)) {
-		t.Fatalf("sorted-set-by should preserve set semantics: %v", sByEntries)
+	if len(sByEntries) != 3 || !sByEntries[0].Equals(MakeInt(3)) || !sByEntries[2].Equals(MakeInt(1)) {
+		t.Fatalf("sorted-set-by should preserve comparator order: %v", sByEntries)
 	}
 }
 
