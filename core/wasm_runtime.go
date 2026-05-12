@@ -5,6 +5,7 @@ package core
 
 import (
 	"context"
+	"fmt"
 	"math"
 	"strconv"
 	"sync"
@@ -70,6 +71,12 @@ func wasmGetCached(prog *IRProgram) *WasmProgram {
 }
 
 // wasmCompile translates IR → WASM binary → wazero compiled module.
+func closeWasmModule(ctx context.Context, mod api.Module) {
+	if err := mod.Close(ctx); err != nil {
+		fmt.Fprintln(Stderr, "wasm module close error:", err)
+	}
+}
+
 func wasmCompile(prog *IRProgram) *WasmProgram {
 	// Try pure-numeric path first (faster, no imports needed)
 	bin := irToWasm(prog)
@@ -97,7 +104,7 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 
 	execFn := mod.ExportedFunction("exec")
 	if execFn == nil {
-		_ = mod.Close(ctx)
+		closeWasmModule(ctx, mod)
 		return nil
 	}
 
