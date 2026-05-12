@@ -368,22 +368,69 @@ var parityTests = []PTest{
 	{"unchecked", "alength", "(alength [1 2 3])", "3"},
 }
 
-// findLastForm finds the byte offset of the last top-level s-expression.
+// findLastForm finds the byte offset of the last top-level form.
 func findLastForm(s string) int {
 	depth := 0
 	lastStart := -1
+	inString := false
+	escaped := false
+	comment := false
+
 	for i := 0; i < len(s); i++ {
-		switch s[i] {
-		case '(':
+		ch := s[i]
+		if comment {
+			if ch == '\n' || ch == '\r' {
+				comment = false
+			}
+			continue
+		}
+		if inString {
+			if escaped {
+				escaped = false
+				continue
+			}
+			if ch == '\\' {
+				escaped = true
+			} else if ch == '"' {
+				inString = false
+			}
+			continue
+		}
+		switch ch {
+		case ';':
+			comment = true
+		case '"':
+			inString = true
+		case '(', '[', '{':
 			if depth == 0 {
 				lastStart = i
 			}
 			depth++
-		case ')':
-			depth--
+		case ')', ']', '}':
+			if depth > 0 {
+				depth--
+			}
 		}
 	}
 	return lastStart
+}
+
+func writeTempScript(script string) (string, error) {
+	tmpFile, err := os.CreateTemp("", "parity-*.clj")
+	if err != nil {
+		return "", err
+	}
+	name := tmpFile.Name()
+	if _, err := tmpFile.WriteString(script); err != nil {
+		tmpFile.Close()
+		os.Remove(name)
+		return "", err
+	}
+	if err := tmpFile.Close(); err != nil {
+		os.Remove(name)
+		return "", err
+	}
+	return name, nil
 }
 
 func main() {
@@ -421,11 +468,14 @@ func main() {
 			} else {
 				script = "(println " + inner + ")"
 			}
-			tmpFile, _ := os.CreateTemp("", "parity-*.clj")
-			tmpFile.WriteString(script)
-			tmpFile.Close()
-			cmd = exec.Command(jokerBin, tmpFile.Name())
-			defer os.Remove(tmpFile.Name())
+			tmpName, err := writeTempScript(script)
+			if err != nil {
+				results = append(results, PResult{Category: t.Category, Name: t.Name, Expected: t.Expected, Got: err.Error(), Status: "error"})
+				errCount++
+				continue
+			}
+			cmd = exec.Command(jokerBin, tmpName)
+			defer os.Remove(tmpName)
 		} else {
 			cmd = exec.Command(jokerBin, "-e", "(println "+t.Expr+")")
 		}
@@ -507,7 +557,10 @@ func main() {
 			b.WriteString("\n")
 		}
 
-		os.WriteFile(outFile, []byte(b.String()), 0644)
+		if err := os.WriteFile(outFile, []byte(b.String()), 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "write report: %v\n", err)
+			os.Exit(1)
+		}
 		fmt.Printf("Report: %s\n", outFile)
 	}
 }

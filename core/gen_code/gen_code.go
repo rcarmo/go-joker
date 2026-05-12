@@ -7,7 +7,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"reflect"
@@ -237,7 +236,7 @@ func init() {
 	name := f.Filename[0 : len(f.Filename)-5] // assumes .joke extension
 	fileContent := strings.ReplaceAll(dataTemplate, "{name}", name)
 	fileContent = strings.Replace(fileContent, "{content}", string(dst), 1)
-	ioutil.WriteFile(fmt.Sprintf(dataFilenamePattern, name), []byte(fileContent), 0666)
+	PanicOnErr(os.WriteFile(fmt.Sprintf(dataFilenamePattern, name), []byte(fileContent), 0644))
 }
 
 func generateDataFile(namespaces map[string]int) {
@@ -260,7 +259,7 @@ func init() {
 	}
 	sort.Strings(coreNamespaces)
 	dataContent := strings.Replace(dataTemplate, "{coreNamespaces}", strings.Join(coreNamespaces, "\n"), 1)
-	ioutil.WriteFile("a_data.go", []byte(dataContent), 0666)
+	PanicOnErr(os.WriteFile("a_data.go", []byte(dataContent), 0644))
 }
 
 func generateBootstrapContractFile() {
@@ -280,8 +279,8 @@ func CoreSourceManifest() []NamespaceSource {
 		rows = append(rows, fmt.Sprintf("\t\t{Name: %s, Path: %s},", strconv.Quote(CoreNameAsNamespaceName(f.Name)), strconv.Quote(f.Filename)))
 	}
 	content := strings.Replace(dataTemplate, "{sources}", strings.Join(rows, "\n"), 1)
-	PanicOnErr(os.MkdirAll("internal/generated", 0777))
-	PanicOnErr(ioutil.WriteFile("internal/generated/core_sources_gen.go", []byte(content), 0666))
+	PanicOnErr(os.MkdirAll("internal/generated", 0755))
+	PanicOnErr(os.WriteFile("internal/generated/core_sources_gen.go", []byte(content), 0644))
 }
 
 func main() {
@@ -558,7 +557,7 @@ func %sLazyInit() {
 		for _, t := range trPerNs {
 			fileContent = strings.ReplaceAll(fileContent, t[0], t[1])
 		}
-		ioutil.WriteFile(codeFile, []byte(fileContent), 0666)
+		PanicOnErr(os.WriteFile(codeFile, []byte(fileContent), 0644))
 	}
 
 	/* Output the master file (a_code.go). */
@@ -612,7 +611,7 @@ import (
 		fileContent = strings.Replace(fileContent, t[0], t[1], 1)
 	}
 
-	ioutil.WriteFile(masterCodeFilename, []byte(fileContent), 0666)
+	PanicOnErr(os.WriteFile(masterCodeFilename, []byte(fileContent), 0644))
 
 	/* Now do linter files, which change joker.core, so this is
 	/* postponed until code gen is done. */
