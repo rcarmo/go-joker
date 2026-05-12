@@ -177,21 +177,25 @@ func (p *Pod) shutdownPod() {
 	if p.shutdown.Swap(true) {
 		return
 	}
-	if c, ok := p.stdin.(io.Closer); ok {
-		_ = c.Close()
-	}
-	if c, ok := p.stdout.(io.Closer); ok {
-		_ = c.Close()
-	}
-	if c, ok := p.stderr.(io.Closer); ok {
-		_ = c.Close()
-	}
+	closePodStream("stdin", p.stdin)
+	closePodStream("stdout", p.stdout)
+	closePodStream("stderr", p.stderr)
 	if p.cmd != nil && p.cmd.Process != nil {
 		_ = p.cmd.Process.Kill()
 		_, _ = p.cmd.Process.Wait()
 	}
 	p.closePending(nil)
 	unregisterPod(p.id)
+}
+
+func closePodStream(name string, stream any) {
+	c, ok := stream.(io.Closer)
+	if !ok || c == nil {
+		return
+	}
+	if err := c.Close(); err != nil {
+		fmt.Fprintf(os.Stderr, "pod %s close error: %v\n", name, err)
+	}
 }
 
 func objectMapToPodMessage(obj any) podMessage {
