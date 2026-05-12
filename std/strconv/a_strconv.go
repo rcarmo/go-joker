@@ -179,8 +179,8 @@ func __parse_int_(_args []Object) Object {
 		bitSize := ExtractInt(_args, 2)
 		t, err := strconv.ParseInt(s, base, bitSize)
 		PanicOnErr(err)
-		_res := int(t)
-		return MakeInt(_res)
+		_res := strconvIntObject(t)
+		return _res
 
 	default:
 		PanicArity(_c)
