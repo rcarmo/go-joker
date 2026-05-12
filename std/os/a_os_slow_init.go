@@ -230,10 +230,10 @@ func InternsOrThunks() {
 			`Reads the directory named by dirname and returns a list of directory entries sorted by filename.
   Each entry is a map with the following keys:
   :name - name (String)
-  :size - size in bytes (Int)
+  :size - size in bytes (Int, or BigInt when it exceeds the native int range)
   :mode - mode (Int)
   :dir? - true if the file is a directory (Boolean)
-  :modtime - modification time (unix timestamp) (Int)`, "1.0"))
+  :modtime - modification time as a Unix timestamp (Int, or BigInt when it exceeds the native int range)`, "1.0"))
 
 	osNamespace.InternVar("lstat", lstat_,
 		MakeMeta(
