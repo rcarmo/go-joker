@@ -3,6 +3,7 @@ package http
 import (
 	"fmt"
 	"io"
+	"math/big"
 	"net/http"
 	"os"
 	"strings"
@@ -142,8 +143,13 @@ func respToMap(resp *http.Response) Map {
 		respHeaders.Add(MakeString(k), MakeStringVector(v))
 	}
 	res.Add(MakeKeyword("headers"), respHeaders)
-	// TODO: 32-bit issue
-	res.Add(MakeKeyword("content-length"), MakeInt(int(resp.ContentLength)))
+	maxNativeInt := int64(int(^uint(0) >> 1))
+	minNativeInt := -maxNativeInt - 1
+	if resp.ContentLength > maxNativeInt || resp.ContentLength < minNativeInt {
+		res.Add(MakeKeyword("content-length"), MakeBigInt(big.NewInt(resp.ContentLength)))
+	} else {
+		res.Add(MakeKeyword("content-length"), MakeInt(int(resp.ContentLength)))
+	}
 	return res
 }
 
