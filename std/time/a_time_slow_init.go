@@ -179,7 +179,7 @@ func InternsOrThunks() {
 			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
 			`Parses a duration string. A duration string is a possibly signed sequence of decimal numbers,
   each with optional fraction and a unit suffix, such as 300ms, -1.5h or 2h45m. Valid time units are
-  ns, us (or µs), ms, s, m, h.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+  ns, us (or µs), ms, s, m, h. Returns Int when the duration fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("parse-in-timezone", parse_in_timezone_,
 		MakeMeta(
@@ -190,7 +190,7 @@ func InternsOrThunks() {
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("d"), MakeSymbol("m"))),
 			`Returns the result of rounding d to the nearest multiple of m. d and m represent time durations in nanoseconds.
-  The rounding behavior for halfway values is to round away from zero. If m <= 0, returns d unchanged.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+  The rounding behavior for halfway values is to round away from zero. If m <= 0, returns d unchanged. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("seconds", seconds_,
 		MakeMeta(
@@ -200,7 +200,7 @@ func InternsOrThunks() {
 	timeNamespace.InternVar("since", since_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("t"))),
-			`Returns the time in nanoseconds elapsed since t.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the time in nanoseconds elapsed since t. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("sleep", sleep_,
 		MakeMeta(
@@ -216,21 +216,21 @@ func InternsOrThunks() {
 	timeNamespace.InternVar("sub", sub_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("t"), MakeSymbol("u"))),
-			`Returns the duration t-u in nanoseconds.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the duration t-u in nanoseconds. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("truncate", truncate_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("d"), MakeSymbol("m"))),
-			`Returns the result of rounding d toward zero to a multiple of m. If m <= 0, returns d unchanged.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the result of rounding d toward zero to a multiple of m. If m <= 0, returns d unchanged. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("unix", unix_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("t"))),
-			`Returns t as a Unix time, the number of seconds elapsed since January 1, 1970 UTC.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns t as a Unix time, the number of seconds elapsed since January 1, 1970 UTC. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("until", until_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("t"))),
-			`Returns the duration in nanoseconds until t.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the duration in nanoseconds until t. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 }

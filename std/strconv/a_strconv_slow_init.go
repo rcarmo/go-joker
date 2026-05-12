@@ -66,7 +66,7 @@ func InternsOrThunks() {
 			NewListFrom(NewVectorFrom(MakeSymbol("s"), MakeSymbol("base"), MakeSymbol("bitSize"))),
 			`Interprets a string s in the given base (0, 2 to 36) and bit size (0 to 64) and returns the corresponding value i.
   If base == 0, the base is implied by the string's prefix: base 16 for "0x", base 8 for "0", and base 10 otherwise. For bases 1, below 0 or above 36 an error is returned.
-  The bitSize argument specifies the integer type that the result must fit into. Bit sizes 0, 8, 16, 32, and 64 correspond to int, int8, int16, int32, and int64. For a bitSize below 0 or above 64 an error is returned.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+  The bitSize argument specifies the integer type that the result must fit into. Bit sizes 0, 8, 16, 32, and 64 correspond to int, int8, int16, int32, and int64. For a bitSize below 0 or above 64 an error is returned. The result is an Int when it fits the native int range, otherwise BigInt.`, "1.0"))
 
 	strconvNamespace.InternVar("printable?", isprintable_,
 		MakeMeta(

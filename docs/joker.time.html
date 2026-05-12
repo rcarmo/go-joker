@@ -469,7 +469,7 @@
 </pre>
   <p class="var-docstr">Parses a duration string. A duration string is a possibly signed sequence of decimal numbers,<br>
   each with optional fraction and a unit suffix, such as 300ms, -1.5h or 2h45m. Valid time units are<br>
-  ns, us (or µs), ms, s, m, h.</p>
+  ns, us (or µs), ms, s, m, h. Returns Int when the duration fits the native int range, otherwise BigInt.</p>
   
   
 </li>
@@ -490,7 +490,7 @@
   <pre class="var-usage"><div><code>(round d m)</code></div>
 </pre>
   <p class="var-docstr">Returns the result of rounding d to the nearest multiple of m. d and m represent time durations in nanoseconds.<br>
-  The rounding behavior for halfway values is to round away from zero. If m &lt;= 0, returns d unchanged.</p>
+  The rounding behavior for halfway values is to round away from zero. If m &lt;= 0, returns d unchanged. Returns Int when the value fits the native int range, otherwise BigInt.</p>
   
   
 </li>
@@ -510,7 +510,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(since t)</code></div>
 </pre>
-  <p class="var-docstr">Returns the time in nanoseconds elapsed since t.</p>
+  <p class="var-docstr">Returns the time in nanoseconds elapsed since t. Returns Int when the value fits the native int range, otherwise BigInt.</p>
   
   
 </li>
@@ -541,7 +541,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(sub t u)</code></div>
 </pre>
-  <p class="var-docstr">Returns the duration t-u in nanoseconds.</p>
+  <p class="var-docstr">Returns the duration t-u in nanoseconds. Returns Int when the value fits the native int range, otherwise BigInt.</p>
   
   
 </li>
@@ -551,7 +551,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(truncate d m)</code></div>
 </pre>
-  <p class="var-docstr">Returns the result of rounding d toward zero to a multiple of m. If m &lt;= 0, returns d unchanged.</p>
+  <p class="var-docstr">Returns the result of rounding d toward zero to a multiple of m. If m &lt;= 0, returns d unchanged. Returns Int when the value fits the native int range, otherwise BigInt.</p>
   
   
 </li>
@@ -561,7 +561,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(unix t)</code></div>
 </pre>
-  <p class="var-docstr">Returns t as a Unix time, the number of seconds elapsed since January 1, 1970 UTC.</p>
+  <p class="var-docstr">Returns t as a Unix time, the number of seconds elapsed since January 1, 1970 UTC. Returns Int when the value fits the native int range, otherwise BigInt.</p>
   
   
 </li>
@@ -571,7 +571,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(until t)</code></div>
 </pre>
-  <p class="var-docstr">Returns the duration in nanoseconds until t.</p>
+  <p class="var-docstr">Returns the duration in nanoseconds until t. Returns Int when the value fits the native int range, otherwise BigInt.</p>
   
   
 </li>

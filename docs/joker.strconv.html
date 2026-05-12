@@ -195,7 +195,7 @@
 </pre>
   <p class="var-docstr">Interprets a string s in the given base (0, 2 to 36) and bit size (0 to 64) and returns the corresponding value i.<br>
   If base == 0, the base is implied by the string&#39;s prefix: base 16 for &#34;0x&#34;, base 8 for &#34;0&#34;, and base 10 otherwise. For bases 1, below 0 or above 36 an error is returned.<br>
-  The bitSize argument specifies the integer type that the result must fit into. Bit sizes 0, 8, 16, 32, and 64 correspond to int, int8, int16, int32, and int64. For a bitSize below 0 or above 64 an error is returned.</p>
+  The bitSize argument specifies the integer type that the result must fit into. Bit sizes 0, 8, 16, 32, and 64 correspond to int, int8, int16, int32, and int64. For a bitSize below 0 or above 64 an error is returned. The result is an Int when it fits the native int range, otherwise BigInt.</p>
   
   
 </li>
