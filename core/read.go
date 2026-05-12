@@ -318,11 +318,10 @@ func scanBigFloat(orig, str string, reader *Reader) Object {
 }
 
 func scanInt(orig, str string, base int, reader *Reader) Object {
-	i, e := strconv.ParseInt(str, base, 0)
+	i, e := strconv.ParseInt(str, base, strconv.IntSize)
 	if e != nil {
 		return scanBigInt(orig, str, base, reader)
 	}
-	// TODO: 32-bit issue
 	return MakeReadObject(reader, Int{I: int(i)})
 }
 
