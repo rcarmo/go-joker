@@ -8,27 +8,37 @@ This is the R3 inventory for moving the current `core/ir*.go` grab-bag into an a
 
 ## Current IR file set
 
-Current files matching `core/ir*.go` include:
+The former `core/ir*.go` grab-bag has now been split into two categories:
 
-- `core/ir.go` — cache and executable `IRProgram` envelope; opcode model has started moving to `core/ir`
-- `core/ir_analysis.go` — analysis summaries
-- `core/ir_call_dispatch.go` — call dispatch bridge from `Fn`/`Proc`
-- `core/ir_compile_fn.go` — function compilation
-- `core/ir_compiler.go` — loop/expression lowering
-- `core/ir_diagnostics.go` — diagnostics and opcode naming
-- `core/ir_exec.go` — boxed interpreter
-- `core/ir_exec_typed_nb.go` — typed/nanbox execution
-- `core/ir_exported.go`, `core/ir_exported2.go` — exported artifact APIs
-- `core/ir_fn_cache.go` — function IR cache
-- `core/ir_frame_detect.go`, `core/ir_frame_stack.go`, `core/ir_typed_frame_stack.go` — frame/stack helpers
-- `core/ir_inline.go` — inline compilation/fast paths
-- `core/ir_map_diagnostics.go` equivalent tests only; no standalone file
-- `core/ir_nanbox.go` — nanbox value helpers
-- `core/ir_native_helper.go` — native numeric helpers
-- `core/ir_profile.go` — now adapter only; state moved to `core/trace`
-- `core/ir_typed.go`, `core/ir_typed_exec.go` — typed IR metadata/executor
-- `core/ir_value_accessors.go` — value access helpers
-- many `core/ir*_test.go` files
+### Real package-owned files under `core/ir/`
+
+- `core/ir/model.go` — neutral `Program` model
+- `core/ir/opcode.go` — opcode constants/naming
+- `core/ir/analysis.go` — analysis summaries
+- `core/ir/disassemble.go` — disassembly helpers
+- `core/ir/frame_stack.go` — reusable generic frame-stack implementation
+- `core/ir/nanbox.go` — reusable NaN-box codec
+
+### Still-root-coupled files renamed out of the misleading `ir_*` prefix
+
+- `core/program_envelope.go` — cache and executable `IRProgram` envelope
+- `core/program_analysis.go` — root analysis adapter layer
+- `core/fn_ir_dispatch.go` — call dispatch bridge from `Fn`/`Proc`
+- `core/fn_ir_compile.go` — function compilation
+- `core/loop_compiler.go` — loop/expression lowering
+- `core/loop_wasm_diagnostics.go` — diagnostics tied to root `Expr` / `LoopExpr`
+- `core/boxed_exec.go` — boxed interpreter
+- `core/typed_exec_nanbox.go` — typed/nanbox execution path
+- `core/debug_ir_exports.go`, `core/runtime_ir_exports.go` — exported artifact APIs
+- `core/fn_ir_cache.go` — function IR cache
+- `core/loop_frame_detect.go` — frame-detection helpers
+- `core/inline_rewrites.go` — inline compilation/fast paths
+- `core/loop_native_helpers.go` — native numeric helpers
+- `core/trace_ir_profile.go` — adapter only; state lives in `core/trace`
+- `core/typed_values.go`, `core/typed_exec.go` — typed IR metadata/executor
+- `core/typed_value_accessors.go` — root-coupled typed value access helpers
+- `core/typed_object_nanbox.go` — root object/table bridge for the extracted NaN-box codec
+- many renamed root tests that no longer use the stale `ir_*` prefix
 
 ## Coupling inventory
 
@@ -66,7 +76,7 @@ The IR layer currently depends on these core concepts:
 The IR split should be incremental and acyclic:
 
 1. **Model/diagnostics leaf first**
-   - Move opcode definitions, opcode naming, `IRProgram` shape, `IRAnalysis`, and diagnostic/export helpers into `core/ir`.
+   - Move opcode definitions, opcode naming, `Program` shape, `IRAnalysis`, frame-stack helpers, and the NaN-box codec into `core/ir`.
    - Keep only adapters in `core` for APIs that must see `LoopExpr`/`FnExpr` initially.
 
 2. **Compiler boundary second**
@@ -84,14 +94,16 @@ The IR split should be incremental and acyclic:
 
 ```text
 core/ir/
-├── model.go              # opcodes, Program, constants/captures metadata
+├── model.go              # neutral Program metadata
 ├── opcode.go             # opcode names, widths, iteration helpers
-├── diagnostics/          # explain/export helpers once cycles are gone
-├── analysis/             # IR analysis summaries
-├── compile/              # expression lowering adapters
-├── exec/                 # boxed interpreter
-├── exec/typed/           # typed/nanbox executor
-├── profile/              # adapters to core/trace IRProfile
+├── analysis.go           # IR analysis summaries
+├── disassemble.go        # human-readable disassembly
+├── frame_stack.go        # reusable generic frame-stack helpers
+├── nanbox.go             # reusable NaN-box codec
+├── compile/              # later, expression lowering adapters
+├── exec/                 # later, boxed interpreter
+├── exec/typed/           # later, typed/nanbox executor
+├── profile/              # later, adapters to core/trace IRProfile
 └── wasm/                 # later, if kept under IR rather than sibling package
 ```
 
@@ -107,7 +119,7 @@ Then `core/ir_diagnostics.go`, `core/ir_profile.go`, and render/export paths can
 
 ## IRProgram split note
 
-The next concrete R3 step is documented in `ir-program-split.md`. The planned shape is a package-neutral `core/ir.Program` for bytecode/slot/analysis/arity metadata, while root `core.IRProgram` temporarily remains the executable envelope for `Object` constants, `bindingKey` captures, `FnExpr` references, native helpers, escape analysis, and execution failure caches.
+The next concrete R3 step is documented in `ir-program-split.md`. The current shape is a package-neutral `core/ir.Program` for bytecode/slot/analysis/arity metadata, while root `core.IRProgram` still remains the executable envelope for `Object` constants, `bindingKey` captures, `FnExpr` references, native helpers, escape analysis, and execution failure caches.
 
 ## Risks
 

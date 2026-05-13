@@ -17,7 +17,7 @@ Examples:
 - `core/a_code.go`
 - `core/a_core_code.go`
 - `core/a_repl_code.go`
-- `core/a_linter_*_data.go`
+- `core/generated/a_linter_*_data.go`
 - `core/a_*_code.go`
 
 The former `core/a_data.go` namespace source-list payload has moved behind `core/generated` and is no longer emitted or tracked as a root generated file.
@@ -54,14 +54,13 @@ The guards verify that generated core outputs remain clearly marked, that the ge
 
 ```text
 core/
-├── internal/
-│   ├── generated/                 # future package/directory for generated bootstrap artifacts
-│   └── ...
+├── generated/                     # data-only generated payloads with real package boundaries
 ├── data/                          # source .joke resources
-├── gen/                           # type metadata generator
-├── gen_code/                      # bootstrap generator driver
-├── gen_go/                        # Go literal emitter helper
-└── *.go                           # handwritten core only once generated artifacts move
+├── gen/
+│   ├── gen_types.go              # type metadata generator
+│   ├── codegen/                  # bootstrap generator driver
+│   └── gengo/                    # Go literal emitter helper
+└── *.go                          # handwritten core plus still-root-coupled generated files
 ```
 
 ## Generated bootstrap contract
