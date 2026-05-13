@@ -160,13 +160,13 @@ tests/benchmark_ci_check.sh bench-results.txt
 - [`benchmarks/README.md`](benchmarks/README.md) — benchmark data and chart regeneration
 - [`docs/PARITY_STATUS.md`](docs/PARITY_STATUS.md) — let-go benchmark parity + language compliance status
 - [`docs/DIVERGENCE_MATRIX.md`](docs/DIVERGENCE_MATRIX.md) — latest compliance matrix (**271/271 pass**)
-- [`PERFORMANCE_PLAN.md`](PERFORMANCE_PLAN.md) — optimization roadmap and milestones
+- [`docs/PERFORMANCE_PLAN.md`](docs/PERFORMANCE_PLAN.md) — optimization roadmap and milestones
 
 ## Upstream
 
 Based on [candid82/joker](https://github.com/candid82/joker) v1.7.2 plus selected upstream feature ports. This fork is v42.8.2.  
 Release notes: [`docs/RELEASE_NOTES_v42.8.2.md`](docs/RELEASE_NOTES_v42.8.2.md).  
-Original README preserved as [`ORIGINAL_README.md`](ORIGINAL_README.md).
+Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 
 ## Why v42?
 

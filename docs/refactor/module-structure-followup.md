@@ -132,7 +132,7 @@ tools/
   release/
 ```
 
-Where `tools/scripts/` owns auxiliary build/test/lint helper scripts that do not need to live in the repository root, `tools/release/` owns release automation that should not sit at top level, and `tools/codegen/` owns standalone code-generation helpers that do not belong in the source roots.
+Where `tools/scripts/` owns auxiliary build/test/lint helper scripts that do not need to live in the repository root, `tools/release/` owns release automation that should not sit at top level, and `tools/codegen/` owns standalone code-generation helpers that do not belong in the source roots. Historical/reference documents should also move under `docs/` rather than staying in the root.
 
 Staged migration order should remain:
 
