@@ -3,7 +3,10 @@ package core
 // ir_exported.go — exported functions for the joker.runtime namespace.
 // These bridge internal IR/WASM/escape analysis to the public API.
 
-import coreir "github.com/rcarmo/go-joker/core/ir"
+import (
+	coreir "github.com/rcarmo/go-joker/core/ir"
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
+)
 
 // IrDisassemble returns a human-readable disassembly of an IR program.
 func IrDisassemble(prog *IRProgram) string {
@@ -20,7 +23,7 @@ func IrDisassemble(prog *IRProgram) string {
 }
 
 // ExplainWASMEligibility exposes the WASM diagnostic for a program.
-func ExplainWASMEligibility(prog *IRProgram) WASMDiagnostic {
+func ExplainWASMEligibility(prog *IRProgram) corewasm.Diagnostic {
 	return explainWASMEligibility(prog)
 }
 
