@@ -1,5 +1,7 @@
 # Std native-boundary contracts
 
+Updated: 2026-05-13
+
 This note records the focused std namespace audit/guardrail work that supports the broader refactor plan. The goal is to keep Go-backed std namespaces from leaking raw Go panics, unchecked native integer conversions, ignored close/write errors, or unchecked argument indexing.
 
 ## Guardrail
@@ -33,7 +35,7 @@ Current coverage:
 - Native procs should call `CheckArity` before indexing `args` unless they deliberately implement variadic behavior and guard all indexes.
 - Helpers that extract wrapped native objects should guard missing indexes before type assertions.
 - Native counts, durations, file sizes, and timestamps should return `Int` only when values fit the native int range; otherwise use `BigInt`.
-- Close/write/process errors should be surfaced as runtime errors or reported to stderr for best-effort diagnostic paths.
+- Close/write/process errors should be surfaced as runtime errors or reported to stderr for best-effort diagnostic paths; lazy sequence decode/walk errors should be wrapped with namespace context before panicking.
 - Shape-dependent indexed data such as color vectors and coordinate vectors should validate `Indexed`/`Counted` and expected lengths before reading elements.
 
 ## Current status

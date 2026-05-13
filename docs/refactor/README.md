@@ -1,6 +1,6 @@
 # Repository architecture refactor plan
 
-Updated: 2026-05-11
+Updated: 2026-05-13
 
 ## Goal
 
@@ -14,7 +14,7 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 
 - Module identity is now `github.com/rcarmo/go-joker`; remaining `candid82` references should be attribution/upstream history or third-party dependencies only.
 - CLI entrypoint now lives under `cmd/joker`.
-- `std/*` is already package-oriented and mostly healthy.
+- `std/*` is already package-oriented and increasingly guarded by focused native-boundary contracts.
 - `core` remains the main monolith, but leaf packages now exist under `core/internal`.
 - Generated `core/a_*.go` files dominate size and are tracked by `tests/generated_files.txt`; they should eventually move behind a generated bootstrap package or clearly separated bootstrap module.
 - IR/JIT/WASM compiler and executor files are still coupled to `core.Object`, `Fn`, `Expr`, `LocalEnv`, and unexported runtime helpers, but opcode/diagnostic helpers and WASM leaf helpers have been extracted.
@@ -151,4 +151,4 @@ Planned package boundaries:
 
 ## Current execution status
 
-R3 has established the first IR boundary and extracted tested IR helper packages. A neutral `core/internal/ir.Program` model now exists and root executable `IRProgram` envelopes populate it; diagnostics/export accessors, WASM lowering helpers, and native helper compilation read from that model where appropriate. Runtime/execution-envelope contracts now run from `make runtime-contract-check` inside `make docs-check`. R4 generated-code inventory/guardrails are in place; `core/a_data.go` has been removed in favor of the generated source manifest, while remaining generated artifacts still wait on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, sorted collections, transients, seqs, reader construction, native-int numeric promotion/conversion, std native-boundary returns and arity/shape checks, metadata/info behavior, and persistent-vector semantics; `make native-int-check`, `make error-handling-check`, and `make std-contract-check` guard recent audit closures. The CLI entrypoint lives in `cmd/joker`.
+R3 has established the first IR boundary and extracted tested IR helper packages. A neutral `core/internal/ir.Program` model now exists and root executable `IRProgram` envelopes populate it; diagnostics/export accessors, WASM lowering helpers, and native helper compilation read from that model where appropriate. Runtime/execution-envelope contracts now run from `make runtime-contract-check` inside `make docs-check`. R4 generated-code inventory/guardrails are in place; `core/a_data.go` has been removed in favor of the generated source manifest, while remaining generated artifacts still wait on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, sorted collections, transients, seqs, reader construction, native-int numeric promotion/conversion, std native-boundary returns and arity/shape checks, metadata/info behavior, and persistent-vector semantics. Recent std audits added `git`, `log`, `csv`, `json`, and `filepath` boundary coverage for argument guards, config shape, level parsing, write/flush propagation, decode wrapping, and walk error context. `make native-int-check`, `make error-handling-check`, and `make std-contract-check` guard recent audit closures. The CLI entrypoint lives in `cmd/joker`.

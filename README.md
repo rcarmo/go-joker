@@ -101,7 +101,7 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 
 <img src="benchmarks/architecture.svg" alt="architecture" width="100%">
 
-The repository layout is being split along architectural boundaries. The module identity is `github.com/rcarmo/go-joker`, the CLI lives in `cmd/joker`, tracing/IR/WASM leaf helpers are under `core/internal/{trace,ir,wasm}`, and the ongoing split plan is tracked in [`docs/refactor/README.md`](docs/refactor/README.md). Standard validation now includes generated-file, import-identity, non-goal, layout, refactor-internal, core object/protocol contract, docs, Babashka fixture, test, and vet guardrails.
+The repository layout is being split along architectural boundaries. The module identity is `github.com/rcarmo/go-joker`, the CLI lives in `cmd/joker`, tracing/IR/WASM leaf helpers are under `core/internal/{trace,ir,wasm}`, and generated source-manifest payloads are under `core/internal/generated`. The ongoing split plan is tracked in [`docs/refactor/README.md`](docs/refactor/README.md). Standard validation now includes generated-file/bootstrap, import-identity, non-goal, layout, refactor-internal, native-int, error-handling, core object/protocol, runtime execution, std native-boundary, docs, Babashka fixture, test, and vet guardrails.
 
 - **WASM path**: pure integer/float loops → wazero JIT → native code (~0.2ms)
 - **Typed IR path**: primitive/string/cursor loops → irValue stack, zero-boxing (~2–8ms)
@@ -115,6 +115,8 @@ The repository layout is being split along architectural boundaries. The module 
 go test ./core              # run all tests
 go test ./core -bench .     # run all benchmarks
 make core-contract-check    # focused object/protocol split guardrails
+make runtime-contract-check # focused runtime/execution-envelope guardrails
+make std-contract-check     # focused std native-boundary guardrails
 make parity                 # run language parity suite + refresh divergence matrix
 make jank-subset            # run imported jank-lang/clojure-test-suite smoke subset
 ```
