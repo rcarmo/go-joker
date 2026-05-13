@@ -21,6 +21,7 @@ Current coverage:
 - `std/svg` — canvas guardrails, polygon/polyline coordinate shape checks, raw write error handling.
 - `std/random` — random range overflow checks and wrapped crypto-random errors.
 - `std/bolt` — BoltDB argument guards and sequence native-int promotion.
+- `std/url` — malformed query/escape errors surface as runtime errors.
 
 ## Audit rules of thumb
 

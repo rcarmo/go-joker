@@ -28,7 +28,10 @@ func systemProperties() Map {
 			uname = u.Username
 		}
 	}
-	cwd, _ := os.Getwd()
+	cwd := ""
+	if dir, err := os.Getwd(); err == nil {
+		cwd = dir
+	}
 	m := EmptyArrayMap()
 	for _, kv := range [][2]string{
 		{"user.home", home},

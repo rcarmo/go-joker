@@ -23,7 +23,10 @@ func queryUnescape(s string) string {
 }
 
 func parseQuery(s string) Object {
-	values, _ := url.ParseQuery(s)
+	values, err := url.ParseQuery(s)
+	if err != nil {
+		panic(RT.NewError("Error parsing query string: " + err.Error()))
+	}
 	res := EmptyArrayMap()
 	for k, v := range values {
 		res.Add(MakeString(k), MakeStringVector(v))
