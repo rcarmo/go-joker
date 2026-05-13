@@ -39,5 +39,3 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 	model.Analysis = &a
 	return a
 }
-
-func suggestIRPath(a IRAnalysis) string { return coreir.SuggestPath(a) }

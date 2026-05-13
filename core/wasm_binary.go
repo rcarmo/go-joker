@@ -39,11 +39,3 @@ func (m *wasmModule) addCodeSection(funcBody []byte) { m.inner.AddCodeSection(fu
 func (m *wasmModule) addSection(id byte, body []byte) { m.inner.AddSection(id, body) }
 
 func (m *wasmModule) bytes() []byte { return m.inner.Bytes() }
-
-// --- LEB128 encoding ---
-
-func appendULEB(buf []byte, v int) []byte { return corewasm.AppendULEB(buf, v) }
-
-func appendSLEB(buf []byte, v int64) []byte { return corewasm.AppendSLEB(buf, v) }
-
-func appendF64(buf []byte, v float64) []byte { return corewasm.AppendF64(buf, v) }

@@ -34,10 +34,6 @@ type WASMDiagnostic struct {
 	HasImports bool
 }
 
-func irOpcodeName(op byte) string { return coreir.OpcodeName(op) }
-
-func irOpCount(code []byte) int { return coreir.OpCount(code) }
-
 func explainIRCompile(loop *LoopExpr) IRDiagnostic {
 	if loop == nil {
 		return IRDiagnostic{Reason: "nil loop"}
@@ -56,7 +52,7 @@ func explainIRCompile(loop *LoopExpr) IRDiagnostic {
 		Compiled:    true,
 		NumSlots:    model.NumSlots,
 		NumCaptures: len(prog.captureKeys),
-		NumOps:      irOpCount(model.Code),
+		NumOps:      coreir.OpCount(model.Code),
 		UsesWASM:    wasm.Eligible && !wasm.HasImports,
 		WASM:        wasm,
 		Analysis:    analysis,
@@ -91,18 +87,18 @@ func explainWASMEligibility(prog *IRProgram) WASMDiagnostic {
 			pc += 4
 			tgt := int(code[pc-2])<<8 | int(code[pc-1])
 			if tgt != 0 {
-				return WASMDiagnostic{Reason: "nested loop recur not supported by pure WASM backend", PC: opPC, Op: op, OpName: irOpcodeName(op), UsesFloat: usesFloat}
+				return WASMDiagnostic{Reason: "nested loop recur not supported by pure WASM backend", PC: opPC, Op: op, OpName: coreir.OpcodeName(op), UsesFloat: usesFloat}
 			}
 		case irGet, irGet3, irAssoc, irNth, irConj, irFirst, irCount:
-			return WASMDiagnostic{Reason: "requires WASM host imports for collection op", PC: opPC, Op: op, OpName: irOpcodeName(op), UsesFloat: usesFloat, HasImports: true}
+			return WASMDiagnostic{Reason: "requires WASM host imports for collection op", PC: opPC, Op: op, OpName: coreir.OpcodeName(op), UsesFloat: usesFloat, HasImports: true}
 		case irStr1, irStr2, irNthStringASCII:
-			return WASMDiagnostic{Reason: "string operation not supported by WASM backend", PC: opPC, Op: op, OpName: irOpcodeName(op), UsesFloat: usesFloat}
+			return WASMDiagnostic{Reason: "string operation not supported by WASM backend", PC: opPC, Op: op, OpName: coreir.OpcodeName(op), UsesFloat: usesFloat}
 		case irCallSlot:
-			return WASMDiagnostic{Reason: "local/helper function call needs multi-function WASM module", PC: opPC, Op: op, OpName: irOpcodeName(op), UsesFloat: usesFloat}
+			return WASMDiagnostic{Reason: "local/helper function call needs multi-function WASM module", PC: opPC, Op: op, OpName: coreir.OpcodeName(op), UsesFloat: usesFloat}
 		case irBuildVec, irToTransient, irAssocBang, irToPersistent:
-			return WASMDiagnostic{Reason: "transient/vector object operation not supported by WASM backend", PC: opPC, Op: op, OpName: irOpcodeName(op), UsesFloat: usesFloat}
+			return WASMDiagnostic{Reason: "transient/vector object operation not supported by WASM backend", PC: opPC, Op: op, OpName: coreir.OpcodeName(op), UsesFloat: usesFloat}
 		default:
-			return WASMDiagnostic{Reason: "unsupported opcode for WASM backend", PC: opPC, Op: op, OpName: irOpcodeName(op), UsesFloat: usesFloat}
+			return WASMDiagnostic{Reason: "unsupported opcode for WASM backend", PC: opPC, Op: op, OpName: coreir.OpcodeName(op), UsesFloat: usesFloat}
 		}
 	}
 	return WASMDiagnostic{Eligible: true, Reason: "eligible for pure WASM backend", UsesFloat: usesFloat}

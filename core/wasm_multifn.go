@@ -181,7 +181,7 @@ func wasmModuleWithTwoFuncs(callerParams, helperParams int, useFloat bool, calle
 	typeBody = append(typeBody, 0x02)
 	for _, n := range []int{callerParams, helperParams} {
 		typeBody = append(typeBody, 0x60)
-		typeBody = appendULEB(typeBody, n)
+		typeBody = corewasm.AppendULEB(typeBody, n)
 		for i := 0; i < n; i++ {
 			typeBody = append(typeBody, valType)
 		}
@@ -192,9 +192,9 @@ func wasmModuleWithTwoFuncs(callerParams, helperParams int, useFloat bool, calle
 	m.addExportSection()
 	var codeBody []byte
 	codeBody = append(codeBody, 0x02)
-	codeBody = appendULEB(codeBody, len(callerBody))
+	codeBody = corewasm.AppendULEB(codeBody, len(callerBody))
 	codeBody = append(codeBody, callerBody...)
-	codeBody = appendULEB(codeBody, len(helperBody))
+	codeBody = corewasm.AppendULEB(codeBody, len(helperBody))
 	codeBody = append(codeBody, helperBody...)
 	m.addSection(0x0a, codeBody)
 	return m.bytes()

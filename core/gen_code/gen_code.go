@@ -20,6 +20,7 @@ import (
 
 	. "github.com/rcarmo/go-joker/core"
 	"github.com/rcarmo/go-joker/core/gen_go"
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
 type FileInfo struct {
@@ -253,7 +254,7 @@ func CoreSourceManifest() []NamespaceSource {
 
 	var rows []string
 	for _, f := range CoreSourceFiles {
-		rows = append(rows, fmt.Sprintf("\t\t{Name: %s, Path: %s},", strconv.Quote(CoreNameAsNamespaceName(f.Name)), strconv.Quote(f.Filename)))
+		rows = append(rows, fmt.Sprintf("\t\t{Name: %s, Path: %s},", strconv.Quote(corestr.CoreNamespaceName(f.Name)), strconv.Quote(f.Filename)))
 	}
 	content := strings.Replace(dataTemplate, "{sources}", strings.Join(rows, "\n"), 1)
 	PanicOnErr(os.MkdirAll("generated", 0755))
@@ -270,7 +271,7 @@ func main() {
 
 	for _, f := range CoreSourceFiles {
 		GLOBAL_ENV.SetCurrentNamespace(GLOBAL_ENV.CoreNamespace)
-		nsName := CoreNameAsNamespaceName(f.Name)
+		nsName := corestr.CoreNamespaceName(f.Name)
 		nsNamePtr := STRINGS.Intern(nsName)
 
 		if ns, found := GLOBAL_ENV.Namespaces[nsNamePtr]; found {
@@ -463,7 +464,7 @@ func init() {
 			filename = name + ".joke"
 			name = strings.ReplaceAll(nsName, "joker.", "")
 		}
-		goname := StringAsGoName(nsName)
+		goname := corestr.GoName(nsName)
 		codeFile := fmt.Sprintf(codeFilenamePattern, name)
 
 		if VerbosityLevel > 0 {
@@ -485,7 +486,7 @@ func init() {
 					}
 					runtime = append(runtime, fmt.Sprintf(`
 	ns_%s.MaybeLazy("%s")`[1:],
-						StringAsGoName(rqNsName), nsName))
+						corestr.GoName(rqNsName), nsName))
 				}
 			}
 			sort.SliceStable(runtime, func(i, j int) bool {
@@ -609,11 +610,11 @@ func stdPackageName(pkg string) string {
 }
 
 func (genEnv *GenEnv) emitProc(target string, p Proc) string {
-	fnName := StringAsGoName(p.Name)
+	fnName := corestr.GoName(p.Name)
 	newPackage := ""
 	if p.Package != "" {
 		pkgName := stdPackageName(p.Package)
-		thunkName := fmt.Sprintf("STD_thunk_%s_%s", StringAsGoName(pkgName), fnName)
+		thunkName := fmt.Sprintf("STD_thunk_%s_%s", corestr.GoName(pkgName), fnName)
 		*genEnv.GenGo.Statics = append(*genEnv.GenGo.Statics, fmt.Sprintf(`
 // package std/%s defines an init() function that sets this to the same as its local var %s:
 var %s_var ProcFn
@@ -651,7 +652,7 @@ func coreTypeString(s string) string {
 func uniqueId(obj interface{}) string {
 	switch obj := obj.(type) {
 	case *string:
-		return "s_" + StringAsGoName(*obj)
+		return "s_" + corestr.GoName(*obj)
 	default:
 	}
 	return UniqueId(obj)

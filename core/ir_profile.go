@@ -4,6 +4,7 @@ import (
 	"os"
 	"time"
 
+	coreir "github.com/rcarmo/go-joker/core/ir"
 	coretrace "github.com/rcarmo/go-joker/core/trace"
 )
 
@@ -30,5 +31,5 @@ func irProfileFinish(last byte, hasLast bool, started time.Time) {
 }
 
 func irProfileMaybeWrite() {
-	irProfile.Write(irOpcodeName)
+	irProfile.Write(coreir.OpcodeName)
 }

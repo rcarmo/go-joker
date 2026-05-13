@@ -426,7 +426,7 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 	// Local decls: extra f64 locals + 1 i32 temp for nth address computation
 	if extra > 0 {
 		o = append(o, 0x02) // 2 groups
-		o = appendULEB(o, extra)
+		o = corewasm.AppendULEB(o, extra)
 		o = append(o, 0x7c) // f64
 		o = append(o, 0x01) // 1 i32
 		o = append(o, 0x7f) // i32
@@ -461,17 +461,17 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 				return nil
 			}
 			o = append(o, 0x44)
-			o = appendF64(o, fv)
+			o = corewasm.AppendF64(o, fv)
 		case irLoadSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			o = append(o, 0x20)
-			o = appendULEB(o, idx)
+			o = corewasm.AppendULEB(o, idx)
 		case irStoreSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			o = append(o, 0x21)
-			o = appendULEB(o, idx)
+			o = corewasm.AppendULEB(o, idx)
 		case irAdd:
 			o = append(o, 0xa0)
 		case irSub:
@@ -484,11 +484,11 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 			o = append(o, 0x9f)
 		case irInc:
 			o = append(o, 0x44)
-			o = appendF64(o, 1.0)
+			o = corewasm.AppendF64(o, 1.0)
 			o = append(o, 0xa0)
 		case irDec:
 			o = append(o, 0x44)
-			o = appendF64(o, 1.0)
+			o = corewasm.AppendF64(o, 1.0)
 			o = append(o, 0xa1)
 		case irLt:
 			o = append(o, 0x63) // f64.lt → i32
@@ -507,7 +507,7 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 			o = append(o, 0xb7)
 		case irIsZero:
 			o = append(o, 0x44)
-			o = appendF64(o, 0.0)
+			o = corewasm.AppendF64(o, 0.0)
 			o = append(o, 0x61)
 			o = append(o, 0xb7)
 
@@ -516,10 +516,10 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 			// Compute address: i32(base) + i32(idx) * 8
 			o = append(o, 0xaa) // i32.trunc_f64_s (idx → i32)
 			o = append(o, 0x21) // local.set i32_temp
-			o = appendULEB(o, i32Temp)
+			o = corewasm.AppendULEB(o, i32Temp)
 			o = append(o, 0xaa) // i32.trunc_f64_s (base → i32)
 			o = append(o, 0x20) // local.get i32_temp
-			o = appendULEB(o, i32Temp)
+			o = corewasm.AppendULEB(o, i32Temp)
 			o = append(o, 0x41, 0x08)       // i32.const 8
 			o = append(o, 0x6c)             // i32.mul
 			o = append(o, 0x6a)             // i32.add
@@ -535,7 +535,7 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 				return nil
 			}
 			o = append(o, 0x10)
-			o = appendULEB(o, helperFuncIdx)
+			o = corewasm.AppendULEB(o, helperFuncIdx)
 		case irJumpIfNot:
 			pc += 2
 			// Comparison results are f64 (0.0 or 1.0), convert to i32 for if
@@ -547,7 +547,7 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 			o = append(o, 0x05)
 		case irReturn:
 			o = append(o, 0x0c)
-			o = appendULEB(o, depth+1)
+			o = corewasm.AppendULEB(o, depth+1)
 			if depth > 0 && pc < len(code) && code[pc] != irJump {
 				o = append(o, 0x05)
 			}
@@ -556,10 +556,10 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 			pc += 4
 			for i := nargs - 1; i >= 0; i-- {
 				o = append(o, 0x21)
-				o = appendULEB(o, i)
+				o = corewasm.AppendULEB(o, i)
 			}
 			o = append(o, 0x0c)
-			o = appendULEB(o, depth)
+			o = corewasm.AppendULEB(o, depth)
 			pc = len(code)
 		default:
 			return nil
@@ -571,7 +571,7 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 	}
 	o = append(o, 0x0b)
 	o = append(o, 0x44)
-	o = appendF64(o, 0.0)
+	o = corewasm.AppendF64(o, 0.0)
 	o = append(o, 0x0b)
 	o = append(o, 0x0b)
 	return o
@@ -585,10 +585,10 @@ func assembleMemNthModule(callerParams, helperParams int, callerBody, helperBody
 	}
 	// Type section
 	var typeBody []byte
-	typeBody = appendULEB(typeBody, numFuncs)
+	typeBody = corewasm.AppendULEB(typeBody, numFuncs)
 	for _, n := range []int{callerParams, helperParams}[:numFuncs] {
 		typeBody = append(typeBody, 0x60)
-		typeBody = appendULEB(typeBody, n)
+		typeBody = corewasm.AppendULEB(typeBody, n)
 		for i := 0; i < n; i++ {
 			typeBody = append(typeBody, 0x7c)
 		}
@@ -598,9 +598,9 @@ func assembleMemNthModule(callerParams, helperParams int, callerBody, helperBody
 
 	// Function section
 	var funcBody []byte
-	funcBody = appendULEB(funcBody, numFuncs)
+	funcBody = corewasm.AppendULEB(funcBody, numFuncs)
 	for i := 0; i < numFuncs; i++ {
-		funcBody = appendULEB(funcBody, i) // type index
+		funcBody = corewasm.AppendULEB(funcBody, i) // type index
 	}
 	m.addSection(0x03, funcBody)
 
@@ -611,22 +611,22 @@ func assembleMemNthModule(callerParams, helperParams int, callerBody, helperBody
 	execName := []byte("exec")
 	memName := []byte("memory")
 	var expBody []byte
-	expBody = appendULEB(expBody, 2)
-	expBody = appendULEB(expBody, len(execName))
+	expBody = corewasm.AppendULEB(expBody, 2)
+	expBody = corewasm.AppendULEB(expBody, len(execName))
 	expBody = append(expBody, execName...)
 	expBody = append(expBody, 0x00, 0x00) // func, index 0
-	expBody = appendULEB(expBody, len(memName))
+	expBody = corewasm.AppendULEB(expBody, len(memName))
 	expBody = append(expBody, memName...)
 	expBody = append(expBody, 0x02, 0x00) // memory, index 0
 	m.addSection(0x07, expBody)
 
 	// Code section
 	var codeBody []byte
-	codeBody = appendULEB(codeBody, numFuncs)
-	codeBody = appendULEB(codeBody, len(callerBody))
+	codeBody = corewasm.AppendULEB(codeBody, numFuncs)
+	codeBody = corewasm.AppendULEB(codeBody, len(callerBody))
 	codeBody = append(codeBody, callerBody...)
 	if helperBody != nil {
-		codeBody = appendULEB(codeBody, len(helperBody))
+		codeBody = corewasm.AppendULEB(codeBody, len(helperBody))
 		codeBody = append(codeBody, helperBody...)
 	}
 	m.addSection(0x0a, codeBody)

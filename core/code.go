@@ -13,31 +13,8 @@ import (
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
-// Convert an "arbitrary" string (really, only valid Joker symbols are supported) to a form
-// that can serve as a substring of a Go symbol name.
-func StringAsGoName(name string) string {
-	return corestr.GoName(name)
-}
-
-// Convert e.g. "<joker.core>" to "joker.core", or "not-bracketed"
-// as-is, with whether brackets were removed.
-func filenameAndWhetherBracketed(name string) (filename string, bracketed bool) {
-	return corestr.FilenameAndWhetherBracketed(name)
-}
-
-// Return filename without a pair of enclosing angle brackets (if any).
-func filenameUnbracketed(name string) string {
-	return corestr.FilenameUnbracketed(name)
-}
-
-// Return filename without a pair of enclosing angle brackets, panic
-// if there aren't any.
-func CoreNameAsNamespaceName(name string) string {
-	return corestr.CoreNamespaceName(name)
-}
-
 func filenameAsGo(name string) string {
-	return StringAsGoName(filenameUnbracketed(name))
+	return corestr.GoName(corestr.FilenameUnbracketed(name))
 }
 
 func positionAsGo(filename *string, startLine, startColumn, endLine, endColumn int) string {
@@ -95,10 +72,10 @@ func (fn *Fn) AsGo() string {
 
 func (ns *Namespace) AsGo() string {
 	file := ""
-	if ns.Name.info != nil && ns.Name.info.filename != nil && *ns.Name.info.filename != *ns.Name.name && filenameUnbracketed(*ns.Name.info.filename) != *ns.Name.name {
-		file = "_FILE_" + StringAsGoName(*ns.Name.info.filename)
+	if ns.Name.info != nil && ns.Name.info.filename != nil && *ns.Name.info.filename != *ns.Name.name && corestr.FilenameUnbracketed(*ns.Name.info.filename) != *ns.Name.name {
+		file = "_FILE_" + corestr.GoName(*ns.Name.info.filename)
 	}
-	return "ns_" + StringAsGoName(*ns.Name.name) + file
+	return "ns_" + corestr.GoName(*ns.Name.name) + file
 }
 
 func (e *Env) AsGo() string {
@@ -109,7 +86,7 @@ func (e *Env) AsGo() string {
 }
 
 func (t *Type) AsGo() string {
-	return "ty_" + StringAsGoName(t.name)
+	return "ty_" + corestr.GoName(t.name)
 }
 
 func kwAsGo(kw Keyword) string {
@@ -147,8 +124,8 @@ func (v *Var) AsGo() string {
 		}
 		if sym.ns == nil {
 			i := v.ns.Name.info
-			if i == nil || i.filename == nil || filenameUnbracketed(*i.filename) != *v.ns.Name.name {
-				ns = "_NS_" + StringAsGoName(*v.ns.Name.name)
+			if i == nil || i.filename == nil || corestr.FilenameUnbracketed(*i.filename) != *v.ns.Name.name {
+				ns = "_NS_" + corestr.GoName(*v.ns.Name.name)
 			}
 		}
 	}
@@ -166,7 +143,7 @@ func (v *Var) AsGo() string {
 func (v *VarRefExpr) AsGo() string {
 	s := *v.vr.name.name
 	if res, ok := infoHolderAsGoName(*v); ok {
-		return "varRef_" + StringAsGoName(s) + "_" + res
+		return "varRef_" + corestr.GoName(s) + "_" + res
 	}
 	return fmt.Sprintf("%s_%d_%d", corestr.VarRefExprName(s), v.startLine, v.startColumn)
 }
