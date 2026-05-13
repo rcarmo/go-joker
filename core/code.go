@@ -11,60 +11,30 @@ import (
 	"strings"
 
 	"github.com/rcarmo/go-joker/core/gen_go"
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
-
-var tr = [][2]string{
-	{"?", "Q"},
-	{"!", "BANG"},
-	{"<=", "LE"},
-	{">=", "GE"},
-	{"<", "LT"},
-	{">", "GT"},
-	{"=", "EQ"},
-	{"'", "APOS"},
-	{"+", "PLUS"},
-	{"-", "DASH"},
-	{"*", "STAR"},
-	{"/", "SLASH"},
-	{"&", "AMP"},
-	{"#", "HASH"},
-	{".", "DOT"},
-	{"%", "PCT"},
-	{".", "DOT"},
-	{":", "COLON"},
-}
 
 // Convert an "arbitrary" string (really, only valid Joker symbols are supported) to a form
 // that can serve as a substring of a Go symbol name.
 func StringAsGoName(name string) string {
-	for _, t := range tr {
-		name = strings.ReplaceAll(name, t[0], "_"+t[1]+"_")
-	}
-	return name
+	return corestr.GoName(name)
 }
 
 // Convert e.g. "<joker.core>" to "joker.core", or "not-bracketed"
 // as-is, with whether brackets were removed.
 func filenameAndWhetherBracketed(name string) (filename string, bracketed bool) {
-	if len(name) > 1 && name[0] == '<' && name[len(name)-1] == '>' {
-		return name[1 : len(name)-1], true
-	}
-	return name, false
+	return corestr.FilenameAndWhetherBracketed(name)
 }
 
 // Return filename without a pair of enclosing angle brackets (if any).
 func filenameUnbracketed(name string) string {
-	filename, _ := filenameAndWhetherBracketed(name)
-	return filename
+	return corestr.FilenameUnbracketed(name)
 }
 
 // Return filename without a pair of enclosing angle brackets, panic
 // if there aren't any.
 func CoreNameAsNamespaceName(name string) string {
-	if filename, bracketed := filenameAndWhetherBracketed(name); bracketed {
-		return filename
-	}
-	panic(fmt.Sprintf("Invalid syntax for core source file namespace id: `%s'", name))
+	return corestr.CoreNamespaceName(name)
 }
 
 func filenameAsGo(name string) string {
