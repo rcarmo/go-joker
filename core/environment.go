@@ -3,7 +3,6 @@ package core
 import (
 	"io"
 	"os"
-	"strings"
 
 	"github.com/rcarmo/go-joker/core/osutil"
 	corestr "github.com/rcarmo/go-joker/core/string"
@@ -233,7 +232,7 @@ func (env *Env) RemoveNamespace(s Symbol) *Namespace {
 }
 
 func (env *Env) ResolveSymbol(s Symbol) Symbol {
-	if strings.ContainsRune(*s.name, '.') {
+	if corestr.HasNamespaceSeparator(*s.name, '.') {
 		return s
 	}
 	if s.ns == nil && TYPES[s.name] != nil {

@@ -870,9 +870,7 @@ func parseParams(params Object) (bindings []Symbol, isVariadic bool) {
 
 func needsUnusedWarning(b *Binding) bool {
 	return !b.isUsed &&
-		!strings.HasPrefix(*b.name.name, "_") &&
-		!strings.HasPrefix(*b.name.name, "&form") &&
-		!strings.HasPrefix(*b.name.name, "&env") &&
+		!corestr.IsIgnorableBindingName(*b.name.name) &&
 		!isSkipUnused(b.name)
 }
 
