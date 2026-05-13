@@ -6,6 +6,16 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
+func expectJSONPanic(t *testing.T, fn func()) {
+	t.Helper()
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected panic")
+		}
+	}()
+	fn()
+}
+
 func TestJSONReadStringKeywordizeAndFromObject(t *testing.T) {
 	opts := EmptyArrayMap()
 	opts.Add(MakeKeyword("keywords?"), Boolean{B: true})
@@ -20,4 +30,13 @@ func TestJSONReadStringKeywordizeAndFromObject(t *testing.T) {
 	if encoded["k"] != "v" {
 		t.Fatalf("fromObject mismatch: %#v", encoded)
 	}
+}
+
+func TestJSONSeqSurfacesDecodeErrors(t *testing.T) {
+	seq := jsonSeqOpts(MakeString(`{"ok":1}
+{"bad"`), nil).(Seq)
+	if seq.First() == nil {
+		t.Fatal("expected first json object")
+	}
+	expectJSONPanic(t, func() { seq.Rest().First() })
 }

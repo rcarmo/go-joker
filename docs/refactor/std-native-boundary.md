@@ -25,6 +25,7 @@ Current coverage:
 - `std/git` — GitRepo argument guards and config map shape regressions.
 - `std/log` — level parsing and variadic logging arity contracts.
 - `std/csv` — writer flush/error propagation for CSV output.
+- `std/json` — lazy stream decode errors surface as runtime errors.
 
 ## Audit rules of thumb
 

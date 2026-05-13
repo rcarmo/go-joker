@@ -121,7 +121,9 @@ func jsonSeqOpts(src Object, opts Map) Object {
 			if err == io.EOF {
 				return EmptyList
 			}
-			PanicOnErr(err)
+			if err != nil {
+				panic(RT.NewError("Cannot decode json stream: " + err.Error()))
+			}
 			obj := toObject(o, keywordize)
 			return NewConsSeq(obj, jsonLazySeq())
 		}
