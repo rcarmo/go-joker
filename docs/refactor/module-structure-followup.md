@@ -17,6 +17,7 @@ Current package/file snapshot:
 | `core/internal/ir` | 6 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
 | `core/internal/trace` | 4 | 1 | aggregation state with direct JSON-shape tests |
 | `core/internal/wasm` | 8 | 4 | encoding/module/host/opcode leaf helpers |
+| `core/runtime` | 1 | 0 | reserved package for evaluator/runtime extraction; currently a documented boundary marker only |
 | `std/*` | many small packages | mixed | mostly namespace-oriented and healthy |
 | `benchmarks` | 5 | 0 | still mixes package stub and build-tagged report tools |
 
@@ -101,7 +102,7 @@ Improvement to plan:
 
 ## Recommended immediate next steps
 
-1. Continue moving nested-call, fallback, and execution-state access behind `RuntimeExecutionAdapter`; do not move executor files until those seams are explicit and tested.
+1. Continue moving nested-call, fallback, and execution-state access behind `RuntimeExecutionAdapter`; keep `core/runtime` as the reserved extraction target, but do not move executor files until those seams are explicit and tested.
 2. Extend generated bootstrap emission beyond the source manifest only with broader equivalence tests.
 3. Define collection construction/adaptation contracts before moving collection implementations.
 4. Define reader object/expression construction contracts before moving reader/parser code.

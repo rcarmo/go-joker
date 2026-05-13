@@ -12,6 +12,7 @@ fail() { echo "layout guard: $*" >&2; status=1; }
 [[ -d core/internal/ir ]] || fail "missing core/internal/ir"
 [[ -d core/internal/wasm ]] || fail "missing core/internal/wasm"
 [[ -d core/internal/generated ]] || fail "missing core/internal/generated"
+[[ -d core/runtime ]] || fail "missing core/runtime"
 [[ -f std/http/router/router.joke ]] || fail "missing std/http/router/router.joke"
 
 if [[ -d lib/joker/http ]]; then
