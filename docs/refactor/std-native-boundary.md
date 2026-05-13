@@ -23,6 +23,7 @@ Current coverage:
 - `std/bolt` — BoltDB argument guards and sequence native-int promotion.
 - `std/url` — malformed query/escape errors surface as runtime errors.
 - `std/git` — GitRepo argument guards and config map shape regressions.
+- `std/log` — level parsing and variadic logging arity contracts.
 
 ## Audit rules of thumb
 

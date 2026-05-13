@@ -17,6 +17,21 @@ var (
 
 var levelNames = []string{"DEBUG", "INFO", "WARN", "ERROR"}
 
+func parseLogLevel(obj Object, context string) int {
+	switch s := obj.ToString(false); s {
+	case ":debug", "debug", `"debug"`:
+		return 0
+	case ":info", "info", `"info"`:
+		return 1
+	case ":warn", "warn", `"warn"`:
+		return 2
+	case ":error", "error", `"error"`:
+		return 3
+	default:
+		panic(RT.NewError(context + " expects :debug, :info, :warn, or :error"))
+	}
+}
+
 func logMsg(level int, args []Object) {
 	if level < logLevel {
 		return
@@ -75,19 +90,7 @@ func initLogNamespace() {
 	// set-level! — set the minimum log level
 	logNamespace.InternVar("set-level!", Proc{Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
-		var lvl int
-		switch s := args[0].ToString(false); s {
-		case ":debug", "debug":
-			lvl = 0
-		case ":info", "info":
-			lvl = 1
-		case ":warn", "warn":
-			lvl = 2
-		case ":error", "error":
-			lvl = 3
-		default:
-			panic(RT.NewError("set-level! expects :debug, :info, :warn, or :error"))
-		}
+		lvl := parseLogLevel(args[0], "set-level!")
 		logMu.Lock()
 		logLevel = lvl
 		logMu.Unlock()
@@ -109,22 +112,8 @@ func initLogNamespace() {
 
 	// logf — formatted log message
 	logNamespace.InternVar("logf", Proc{Fn: func(args []Object) Object {
-		if len(args) < 2 {
-			panic(RT.NewError("logf requires at least 2 args: level and format string"))
-		}
-		var lvl int
-		switch s := args[0].ToString(false); s {
-		case ":debug", "debug":
-			lvl = 0
-		case ":info", "info":
-			lvl = 1
-		case ":warn", "warn":
-			lvl = 2
-		case ":error", "error":
-			lvl = 3
-		default:
-			panic(RT.NewError("logf level must be :debug, :info, :warn, or :error"))
-		}
+		CheckArity(args, 2, -1)
+		lvl := parseLogLevel(args[0], "logf level")
 		logMsg(lvl, args[1:])
 		return NIL
 	}, Name: "log-logf", Package: "std/log"},
