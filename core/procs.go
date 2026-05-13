@@ -9,7 +9,6 @@ import (
 	"math/big"
 	"math/rand"
 	"os"
-	"path/filepath"
 	"reflect"
 	"regexp"
 	"sort"
@@ -1627,10 +1626,10 @@ var procHash = func(args []Object) Object {
 
 func loadFile(filename string) Object {
 	var reader *Reader
-	f, err := os.Open(filename)
+	f, rr, err := osutil.OpenRuneFile(filename)
 	PanicOnErr(err)
 	defer func() { PanicOnErr(f.Close()) }()
-	reader = NewReader(osutil.AsRuneReader(f), filename)
+	reader = NewReader(rr, filename)
 	ProcessReaderFromEval(reader, filename)
 	return NIL
 }
@@ -1659,7 +1658,7 @@ var procLoadLibFromPath = func(args []Object) Object {
 		} else {
 			filename = deps.ResolveLibPath(s, libname)
 		}
-		f, err = os.Open(filename)
+		f, _, err = osutil.OpenRuneFile(filename)
 		if err == nil {
 			canonicalErr = nil
 			break
@@ -2149,12 +2148,17 @@ func ReadConfig(filename string, workingDir string) {
 	if configFileName == "" {
 		return
 	}
-	f, err := os.Open(configFileName)
+	f, rr, err := osutil.OpenRuneFile(configFileName)
 	if err != nil {
 		printConfigError(configFileName, err.Error())
 		return
 	}
-	r := NewReader(osutil.AsRuneReader(f), configFileName)
+	defer func() {
+		if closeErr := f.Close(); closeErr != nil {
+			printConfigError(configFileName, closeErr.Error())
+		}
+	}()
+	r := NewReader(rr, configFileName)
 	config, err := TryRead(r)
 	if err != nil {
 		printConfigError(configFileName, err.Error())
@@ -2314,8 +2318,7 @@ func NewReaderFromFile(filename string) (*Reader, error) {
 }
 
 func ProcessLinterFile(configDir string, filename string) {
-	linterFileName := filepath.Join(configDir, filename)
-	if _, err := os.Stat(linterFileName); err == nil {
+	if linterFileName := osutil.ExistingChild(configDir, filename); linterFileName != "" {
 		if reader, err := NewReaderFromFile(linterFileName); err == nil {
 			ProcessReader(reader, linterFileName, EVAL)
 		}
