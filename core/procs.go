@@ -1,7 +1,6 @@
 package core
 
 import (
-	"bufio"
 	"bytes"
 	"errors"
 	"fmt"
@@ -15,7 +14,6 @@ import (
 	"regexp"
 	"sort"
 	"strconv"
-	"strings"
 	"time"
 	"unicode/utf8"
 
@@ -1315,44 +1313,25 @@ func readFromReader(reader io.RuneReader) Object {
 }
 
 var procRead = func(args []Object) Object {
-	var r io.RuneReader
 	switch f := args[0].(type) {
 	case io.RuneReader:
-		r = f
+		return readFromReader(f)
 	case io.Reader:
-		r = bufio.NewReader(f)
+		return readFromReader(osutil.AsRuneReader(f))
 	default:
 		panic(RT.NewArgTypeError(0, args[0], "io.RuneReader or io.Reader"))
 	}
-	return readFromReader(r)
 }
 
 var procReadString = func(args []Object) Object {
 	CheckArity(args, 1, 1)
-	return readFromReader(strings.NewReader(EnsureArgIsString(args, 0).S))
-}
-
-func readLine(r StringReader) (s string, e error) {
-	s, e = r.ReadString('\n')
-	if e == nil {
-		l := len(s)
-		if s[l-1] == '\n' {
-			l -= 1
-			if l > 0 && s[l-1] == '\r' {
-				l -= 1
-			}
-		}
-		s = s[0:l]
-	} else if s != "" && e == io.EOF {
-		e = nil
-	}
-	return
+	return readFromReader(osutil.StringRuneReader(EnsureArgIsString(args, 0).S))
 }
 
 var procReadLine = func(args []Object) Object {
 	CheckArity(args, 0, 0)
 	f := EnsureObjectIsStringReader(GLOBAL_ENV.stdin.Value, "")
-	line, err := readLine(f)
+	line, err := osutil.ReadLine(f)
 	if err != nil {
 		return NIL
 	}
@@ -1362,7 +1341,7 @@ var procReadLine = func(args []Object) Object {
 var procReaderReadLine = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	rdr := EnsureArgIsStringReader(args, 0)
-	line, err := readLine(rdr)
+	line, err := osutil.ReadLine(rdr)
 	if err != nil {
 		return NIL
 	}
@@ -1407,7 +1386,7 @@ func loadReader(reader *Reader) (Object, error) {
 
 var procLoadString = func(args []Object) Object {
 	s := EnsureArgIsString(args, 0)
-	obj, err := loadReader(NewReader(strings.NewReader(s.S), "<string>"))
+	obj, err := loadReader(NewReader(osutil.StringRuneReader(s.S), "<string>"))
 	if err != nil {
 		panic(RT.NewError(err.Error()))
 	}
@@ -1651,7 +1630,7 @@ func loadFile(filename string) Object {
 	f, err := os.Open(filename)
 	PanicOnErr(err)
 	defer func() { PanicOnErr(f.Close()) }()
-	reader = NewReader(bufio.NewReader(f), filename)
+	reader = NewReader(osutil.AsRuneReader(f), filename)
 	ProcessReaderFromEval(reader, filename)
 	return NIL
 }
@@ -1691,7 +1670,7 @@ var procLoadLibFromPath = func(args []Object) Object {
 	}
 	PanicOnErr(canonicalErr)
 	PanicOnErr(err)
-	reader := NewReader(bufio.NewReader(f), filename)
+	reader := NewReader(osutil.AsRuneReader(f), filename)
 	ProcessReaderFromEval(reader, filename)
 	return NIL
 }
@@ -2175,7 +2154,7 @@ func ReadConfig(filename string, workingDir string) {
 		printConfigError(configFileName, err.Error())
 		return
 	}
-	r := NewReader(bufio.NewReader(f), configFileName)
+	r := NewReader(osutil.AsRuneReader(f), configFileName)
 	config, err := TryRead(r)
 	if err != nil {
 		printConfigError(configFileName, err.Error())
