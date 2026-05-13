@@ -39,7 +39,7 @@ docs/           # Documentation generation
 ./run.sh --build-only
 
 # Quick build - generates, vets, builds
-./build.sh
+./tools/scripts/build.sh
 
 # Manual build steps
 go generate ./...        # Generate code from .joke files
