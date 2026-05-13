@@ -134,7 +134,7 @@ tools/
 
 Where `tools/scripts/` owns auxiliary build/test/lint helper scripts that do not need to live in the repository root, `tools/release/` owns release automation that should not sit at top level, and `tools/codegen/` owns standalone code-generation helpers that do not belong in the source roots. Historical/reference documents should also move under `docs/` rather than staying in the root.
 
-This has now started with `docs/PERFORMANCE_PLAN.md`, `docs/archive/ORIGINAL_README.md`, `docs/LIBRARIES.md`, and `docs/licenses/epl-v10.html`.
+This has now started with `docs/PERFORMANCE_PLAN.md`, `docs/archive/ORIGINAL_README.md`, `docs/LIBRARIES.md`, `docs/DEVELOPER.md`, and `docs/licenses/epl-v10.html`.
 
 Staged migration order should remain:
 
