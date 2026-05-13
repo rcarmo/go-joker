@@ -2,12 +2,14 @@ package core
 
 import (
 	"io"
+
+	"github.com/rcarmo/go-joker/core/internal/runewindow"
 )
 
 type (
 	Reader struct {
 		runeReader     io.RuneReader
-		rw             *RuneWindow
+		rw             *runewindow.Window
 		line           int
 		prevLineLength int
 		column         int
@@ -21,7 +23,7 @@ func NewReader(runeReader io.RuneReader, filename string) *Reader {
 	return &Reader{
 		line:       1,
 		runeReader: runeReader,
-		rw:         &RuneWindow{},
+		rw:         &runewindow.Window{},
 		rewind:     -1,
 		filename:   STRINGS.Intern(filename),
 	}
@@ -32,7 +34,7 @@ func (reader *Reader) Get() rune {
 		return EOF
 	}
 	if reader.rewind > -1 {
-		r := top(reader.rw, reader.rewind)
+		r := reader.rw.Top(reader.rewind)
 		reader.rewind--
 		if r == '\n' {
 			reader.line++
@@ -54,11 +56,11 @@ func (reader *Reader) Get() rune {
 		reader.line++
 		reader.prevLineLength = reader.column
 		reader.column = 0
-		add(reader.rw, r)
+		reader.rw.Add(r)
 		return r
 	default:
 		reader.column++
-		add(reader.rw, r)
+		reader.rw.Add(r)
 		return r
 	}
 }
