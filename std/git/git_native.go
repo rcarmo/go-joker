@@ -53,6 +53,9 @@ func (repo GitRepo) WithInfo(_info *ObjectInfo) Object {
 }
 
 func EnsureArgIsGitRepo(args []Object, index int) GitRepo {
+	if index < 0 || index >= len(args) {
+		panic(RT.NewError("Expected GitRepo argument"))
+	}
 	obj := args[index]
 	if c, yes := obj.(GitRepo); yes {
 		return c
@@ -114,6 +117,10 @@ func makeUrl(url *gitConfig.URL) Map {
 func config(repo *git.Repository) Map {
 	cfg, err := repo.Config()
 	PanicOnErr(err)
+	return makeConfigMap(cfg)
+}
+
+func makeConfigMap(cfg *gitConfig.Config) Map {
 	res := EmptyArrayMap()
 	res.Add(MakeKeyword("bare?"), MakeBoolean(cfg.Core.IsBare))
 	res.Add(MakeKeyword("worktree"), MakeString(cfg.Core.Worktree))
@@ -140,7 +147,7 @@ func config(repo *git.Repository) Map {
 	res.Add(MakeKeyword("branches"), branches)
 	urls := EmptyArrayMap()
 	for name, url := range cfg.URLs {
-		branches.Add(MakeString(name), makeUrl(url))
+		urls.Add(MakeString(name), makeUrl(url))
 	}
 	res.Add(MakeKeyword("urls"), urls)
 	return res
