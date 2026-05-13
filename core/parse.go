@@ -1851,7 +1851,7 @@ func parseSymbol(obj Object, ctx *ParseContext) Expr {
 		// See if this is a JS interop (i.e. Math.PI)
 		parts := corestr.Split(sym.Name(), '.')
 		if len(parts) > 1 && parts[0] != "" && parts[len(parts)-1] != "" {
-			return parseSymbol(DeriveReadObject(obj, MakeSymbol(strings.Join(parts[:len(parts)-1], "."))), ctx)
+			return parseSymbol(DeriveReadObject(obj, MakeSymbol(corestr.JoinDotted(parts[:len(parts)-1]))), ctx)
 		}
 		// Check if this is a constructor call
 		if len(parts) == 2 && parts[0] != "" && parts[len(parts)-1] == "" {
