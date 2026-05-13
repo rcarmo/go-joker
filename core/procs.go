@@ -1762,25 +1762,14 @@ var procLibPath = func(args []Object) Object {
 		var file string
 		if GLOBAL_ENV.file.Value == nil {
 			var err error
-			file, err = filepath.Abs("user")
+			file, err = osutil.Abs("user")
 			PanicOnErr(err)
 		} else {
 			file = EnsureObjectIsString(GLOBAL_ENV.file.Value, "").S
-			if linkDest, err := os.Readlink(file); err == nil {
-				file = linkDest
-			}
+			file = osutil.ResolveSymlink(file)
 		}
 		ns := GLOBAL_ENV.CurrentNamespace().Name
-
-		parts := corestr.Split(ns.Name(), '.')
-		for _ = range parts {
-			file, _ = filepath.Split(file)
-			if len(file) == 0 {
-				break
-			}
-			file = file[:len(file)-1]
-		}
-		path = deps.ResolveLibPath(file, sym.Name())
+		path = deps.ResolveRelativeLibPath(file, ns.Name(), sym.Name())
 	}
 	return String{S: path}
 }
