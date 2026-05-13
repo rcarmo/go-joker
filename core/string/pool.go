@@ -1,4 +1,4 @@
-package stringpool
+package string
 
 type Pool map[string]*string
 
