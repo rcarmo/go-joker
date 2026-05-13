@@ -18,14 +18,20 @@ func timeIntObject(n int64) Object {
 
 func inTimezone(t time.Time, tz string) time.Time {
 	loc, err := time.LoadLocation(tz)
-	PanicOnErr(err)
+	if err != nil {
+		panic(RT.NewError("time/in-timezone: " + err.Error()))
+	}
 	return t.In(loc)
 }
 
 func parseInTimezone(layout string, value string, tz string) time.Time {
 	loc, err := time.LoadLocation(tz)
-	PanicOnErr(err)
+	if err != nil {
+		panic(RT.NewError("time/parse-in-timezone: " + err.Error()))
+	}
 	t, err := time.ParseInLocation(layout, value, loc)
-	PanicOnErr(err)
+	if err != nil {
+		panic(RT.NewError("time/parse-in-timezone: " + err.Error()))
+	}
 	return t
 }

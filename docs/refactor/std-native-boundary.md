@@ -13,7 +13,7 @@ Current coverage:
 - `std/http` — HTTP response/body handling, WebSocket lifecycle, SSE streaming write errors.
 - `std/io` — copy-count native-int promotion and close behavior.
 - `std/strconv` — parse-int range behavior.
-- `std/time` — duration/native-int promotion.
+- `std/time` — duration/native-int promotion and timezone/parse error context.
 - `std/markdown` — conversion error reporting.
 - `std/os` — read-dir metadata size/time promotion and watcher close behavior.
 - `std/system` — large system time values.

@@ -5,6 +5,16 @@ import (
 	"time"
 )
 
+func expectTimePanic(t *testing.T, fn func()) {
+	t.Helper()
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected panic")
+		}
+	}()
+	fn()
+}
+
 func TestTimeTimezoneHelpers(t *testing.T) {
 	utc := time.Date(2026, 5, 10, 12, 0, 0, 0, time.UTC)
 	lisbon := inTimezone(utc, "Europe/Lisbon")
@@ -15,4 +25,10 @@ func TestTimeTimezoneHelpers(t *testing.T) {
 	if parsed.Location().String() != "Europe/Lisbon" || parsed.Hour() != 12 {
 		t.Fatalf("parseInTimezone mismatch: %s", parsed)
 	}
+}
+
+func TestTimezoneHelpersWrapErrors(t *testing.T) {
+	utc := time.Date(2026, 5, 10, 12, 0, 0, 0, time.UTC)
+	expectTimePanic(t, func() { _ = inTimezone(utc, "No/SuchZone") })
+	expectTimePanic(t, func() { _ = parseInTimezone("2006", "bad", "Europe/Lisbon") })
 }
