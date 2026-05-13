@@ -2,11 +2,6 @@ core/a_better_cond_code.go
 core/a_code.go
 core/a_core_code.go
 core/a_hiccup_code.go
-core/a_linter_all_data.go
-core/a_linter_clj_data.go
-core/a_linter_cljs_data.go
-core/a_linter_cljx_data.go
-core/a_linter_joker_data.go
 core/a_pprint_code.go
 core/a_repl_code.go
 core/a_set_code.go
@@ -14,5 +9,10 @@ core/a_template_code.go
 core/a_test_code.go
 core/a_tools_cli_code.go
 core/a_walk_code.go
+core/generated/a_linter_all_data.go
+core/generated/a_linter_clj_data.go
+core/generated/a_linter_cljs_data.go
+core/generated/a_linter_cljx_data.go
+core/generated/a_linter_joker_data.go
 core/types_assert_gen.go
 core/types_info_gen.go

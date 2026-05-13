@@ -131,7 +131,7 @@ func parseArgs(args []string) {
 const masterCodeFilename = "a_code.go"
 const codeFilenamePattern = "a_%s_code.go"
 const masterDataFilename = "a_data.go"
-const dataFilenamePattern = "a_%s_data.go"
+const generatedDataFilenamePattern = "generated/a_%s_data.go"
 
 func packContent(content []byte) []byte {
 	const hextable = "0123456789abcdef"
@@ -211,12 +211,12 @@ func compileLinterFile(f FileInfo) {
 //go:build !gen_code
 // +build !gen_code
 
-package core
+package generated
 
-var {name}Data []byte
+var {varName} []byte
 
 func init() {
-	{name}Data = []byte("{content}")
+	{varName} = []byte("{content}")
 }
 `
 
@@ -235,9 +235,21 @@ func init() {
 	dst := packContent(content)
 
 	name := f.Filename[0 : len(f.Filename)-5] // assumes .joke extension
-	fileContent := strings.ReplaceAll(dataTemplate, "{name}", name)
+	varName := "Linter" + strings.Join(func() []string {
+		parts := strings.Split(name, "_")
+		res := make([]string, 0, len(parts)-1)
+		for _, part := range parts {
+			if part == "linter" || part == "" {
+				continue
+			}
+			res = append(res, strings.ToUpper(part[:1])+part[1:])
+		}
+		return res
+	}(), "") + "Data"
+	fileContent := strings.ReplaceAll(dataTemplate, "{varName}", varName)
 	fileContent = strings.Replace(fileContent, "{content}", string(dst), 1)
-	PanicOnErr(os.WriteFile(fmt.Sprintf(dataFilenamePattern, name), []byte(fileContent), 0644))
+	PanicOnErr(os.MkdirAll("generated", 0755))
+	PanicOnErr(os.WriteFile(fmt.Sprintf(generatedDataFilenamePattern, name), []byte(fileContent), 0644))
 }
 
 func generateBootstrapContractFile() {

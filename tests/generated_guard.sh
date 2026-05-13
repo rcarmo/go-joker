@@ -9,7 +9,12 @@ manifest=tests/generated_files.txt
 if [[ ! -f "$manifest" ]]; then
   echo "generated guard: missing manifest: $manifest" >&2
   missing=1
-elif ! diff -u "$manifest" <(find core -maxdepth 1 -type f \( -name 'a_*.go' -o -name 'types_*_gen.go' \) | sort); then
+elif ! diff -u "$manifest" <(
+  {
+    find core -maxdepth 1 -type f \( -name 'a_*.go' -o -name 'types_*_gen.go' \);
+    find core/generated -maxdepth 1 -type f -name 'a_linter_*_data.go';
+  } | sort
+); then
   echo "generated guard: generated file set changed; update $manifest intentionally" >&2
   missing=1
 fi
@@ -23,7 +28,12 @@ while IFS= read -r file; do
     echo "generated guard: generated file contains TODO/FIXME: $file" >&2
     missing=1
   fi
-done < <(find core -maxdepth 1 -type f \( -name 'a_*.go' -o -name 'types_*_gen.go' \) | sort)
+done < <(
+  {
+    find core -maxdepth 1 -type f \( -name 'a_*.go' -o -name 'types_*_gen.go' \);
+    find core/generated -maxdepth 1 -type f -name 'a_linter_*_data.go';
+  } | sort
+)
 
 for dir in core/gen core/gen_code core/gen_go core/generated; do
   test -d "$dir" || { echo "generated guard: missing generator directory: $dir" >&2; missing=1; }

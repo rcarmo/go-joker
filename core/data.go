@@ -3,6 +3,8 @@
 
 package core
 
+import coregenerated "github.com/rcarmo/go-joker/core/generated"
+
 var haveSetCoreNamespaces bool
 
 func ProcessCoreData() {
@@ -22,17 +24,17 @@ func ProcessLinterData(dialect Dialect) {
 		markJokerNamespacesAsUsed()
 		return
 	}
-	processData(linter_allData)
+	processData(coregenerated.LinterAllData)
 	if dialect == JOKER {
 		markJokerNamespacesAsUsed()
-		processData(linter_jokerData)
+		processData(coregenerated.LinterJokerData)
 		return
 	}
-	processData(linter_cljxData)
+	processData(coregenerated.LinterCljxData)
 	switch dialect {
 	case CLJ:
-		processData(linter_cljData)
+		processData(coregenerated.LinterCljData)
 	case CLJS:
-		processData(linter_cljsData)
+		processData(coregenerated.LinterCljsData)
 	}
 }
