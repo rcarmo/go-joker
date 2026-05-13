@@ -18,6 +18,8 @@ Current package/file snapshot:
 | `core/internal/trace` | 4 | 1 | aggregation state with direct JSON-shape tests |
 | `core/internal/wasm` | 8 | 4 | encoding/module/host/opcode leaf helpers |
 | `core/runtime` | 1 | 0 | reserved package for evaluator/runtime extraction; currently a documented boundary marker only |
+| `core/collections` | 1 | 0 | reserved package for collection extraction; currently a documented boundary marker only |
+| `core/reader` | 1 | 0 | reserved package for reader/parser extraction; currently a documented boundary marker only |
 | `std/*` | many small packages | mixed | mostly namespace-oriented and healthy |
 | `benchmarks` | 5 | 0 | still mixes package stub and build-tagged report tools |
 
@@ -104,6 +106,6 @@ Improvement to plan:
 
 1. Continue moving nested-call, fallback, and execution-state access behind `RuntimeExecutionAdapter`; keep `core/runtime` as the reserved extraction target, but do not move executor files until those seams are explicit and tested.
 2. Extend generated bootstrap emission beyond the source manifest only with broader equivalence tests.
-3. Define collection construction/adaptation contracts before moving collection implementations.
-4. Define reader object/expression construction contracts before moving reader/parser code.
+3. Define collection construction/adaptation contracts before moving collection implementations into the reserved `core/collections` target.
+4. Define reader object/expression construction contracts before moving reader/parser code into the reserved `core/reader` target.
 5. Keep WASM leaf extraction opportunistic, but avoid moving runtime/object-handle paths until execution metadata is explicit.

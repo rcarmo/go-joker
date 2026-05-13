@@ -13,6 +13,11 @@ fail() { echo "layout guard: $*" >&2; status=1; }
 [[ -d core/internal/wasm ]] || fail "missing core/internal/wasm"
 [[ -d core/internal/generated ]] || fail "missing core/internal/generated"
 [[ -d core/runtime ]] || fail "missing core/runtime"
+[[ -d core/collections ]] || fail "missing core/collections"
+[[ -d core/reader ]] || fail "missing core/reader"
+[[ -f core/runtime/doc.go ]] || fail "missing core/runtime/doc.go"
+[[ -f core/collections/doc.go ]] || fail "missing core/collections/doc.go"
+[[ -f core/reader/doc.go ]] || fail "missing core/reader/doc.go"
 [[ -f std/http/router/router.joke ]] || fail "missing std/http/router/router.joke"
 
 if [[ -d lib/joker/http ]]; then

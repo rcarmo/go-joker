@@ -47,8 +47,8 @@ Planned package boundaries:
 | `core/internal/ir` or `core/ir` | `ir*.go`, IR tests | Requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. Do after trace extraction. |
 | `core/internal/wasm` | `wasm*.go` leaf helpers first | Encoding, module builder, host metadata, and shared constants are extracted; full lowering/runtime still depends on IR program shape and should follow the IR split. |
 | `core/runtime` | goroutine runtime, eval frames, errors, tracing hooks | Reserved package exists; production moves require explicit object/call/error/frame contracts first. |
-| `core/collections` | vectors, maps, sets, seqs, transients | Large API surface; split only after IR/generated boundaries are stable. |
-| `core/reader` | `reader.go`, `read.go`, tagged literals | Candidate after object/collection API is stable. |
+| `core/collections` | vectors, maps, sets, seqs, transients | Reserved package should exist as the extraction target; move only after construction/adaptation contracts are explicit. |
+| `core/reader` | `reader.go`, `read.go`, tagged literals | Reserved package should exist as the extraction target; move only after object/expression construction contracts are explicit. |
 | `core/internal/generated` plus future generated packages | `a_*.go`, `types_*_gen.go` | Only move generated files when generator output can declare/import a real package with explicit contracts; do not place `package core` files in subdirectories. |
 | `tools/tracing` or skill scripts | pprof/IR/function trace renderers | External tooling can move independently of Go runtime packages. |
 
