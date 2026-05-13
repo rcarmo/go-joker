@@ -4,6 +4,7 @@ import (
 	"math"
 
 	coreirx "github.com/rcarmo/go-joker/core/ir"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 )
 
 // ---------- Interpreter ----------
@@ -53,10 +54,10 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 			case *HashMap:
 				slots[i] = MapToTransient(v)
 			case String:
-				if !irStringBuilderDisabled() {
-					if irStringBuilderForce() && (prog.escapeInfo.StringBuilderSlots[i] || prog.escapeInfo.StringPrependSlots[i]) {
+				if !corert.IRStringBuilderDisabled() {
+					if corert.IRStringBuilderForce() && (prog.escapeInfo.StringBuilderSlots[i] || prog.escapeInfo.StringPrependSlots[i]) {
 						slots[i] = ToTransientString(v)
-					} else if !irStringBuilderForce() && prog.escapeInfo.StringPrependSlots[i] {
+					} else if !corert.IRStringBuilderForce() && prog.escapeInfo.StringPrependSlots[i] {
 						slots[i] = ToTransientString(v)
 					}
 				}

@@ -1,28 +1,10 @@
 package core
 
-import "os"
-
 // transient_string.go — internal mutable string builder for IR loops.
 //
 // This is not a user-facing transient. The IR can convert proven-local String
 // loop slots to TransientString so repeated `(str s char)` appends mutate a
 // byte buffer instead of allocating a fresh String every iteration.
-
-func irStringBuilderMode() string {
-	mode := os.Getenv("JOKER_IR_STRING_BUILDER")
-	if mode == "" {
-		return "auto"
-	}
-	return mode
-}
-func irStringBuilderForce() bool {
-	mode := irStringBuilderMode()
-	return mode == "1" || mode == "force" || mode == "all"
-}
-func irStringBuilderDisabled() bool {
-	mode := irStringBuilderMode()
-	return mode == "0" || mode == "off" || mode == "false"
-}
 
 type TransientString struct {
 	buf    []byte

@@ -11,10 +11,10 @@ import (
 	"context"
 	"encoding/binary"
 	"math"
-	"os"
 	"reflect"
 	"sync"
 
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"github.com/tetratelabs/wazero"
 )
@@ -28,7 +28,7 @@ type wasmMemNthKey struct {
 
 // wasmMemNthStaticEligible is a fast static check (no slot inspection).
 func wasmMemNthStaticEligible(prog *IRProgram) bool {
-	if os.Getenv("JOKER_WASM_MEM_NTH") == "" {
+	if !corert.WasmMemNthEnabled() {
 		return false
 	}
 	model := prog.neutralModel()

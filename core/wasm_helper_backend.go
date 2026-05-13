@@ -2,9 +2,9 @@ package core
 
 import (
 	"context"
-	"os"
 	"sync"
 
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"github.com/tetratelabs/wazero"
 )
@@ -24,26 +24,8 @@ type wasmMultiKey struct {
 var wasmMultiFnCache sync.Map    // map[wasmMultiKey]*WasmProgram
 var wasmMultiFnProgFail sync.Map // map[*IRProgram]bool for no-helper/auto-rejected callers
 
-func wasmMultiFnMode() string {
-	mode := os.Getenv("JOKER_WASM_MULTIFN")
-	if mode == "" {
-		return "auto"
-	}
-	return mode
-}
-
-func wasmMultiFnEnabled() bool {
-	mode := wasmMultiFnMode()
-	return mode != "0" && mode != "off" && mode != "false"
-}
-
-func wasmMultiFnForce() bool {
-	mode := wasmMultiFnMode()
-	return mode == "1" || mode == "force" || mode == "all"
-}
-
 func wasmGetCachedWithOneHelper(prog *IRProgram, slots []Object) *WasmProgram {
-	if !wasmMultiFnEnabled() {
+	if !corert.WasmMultiFnEnabled() {
 		return nil
 	}
 	if _, failed := wasmMultiFnProgFail.Load(prog); failed {
@@ -128,7 +110,7 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 	// Multi-function WASM: enable for both integer and float helpers.
 	// Originally gated because float helpers were believed to regress,
 	// but 5x median probes show no regression vs auto (within noise).
-	if !wasmMultiFnForce() && helperCalls == 0 {
+	if !corert.WasmMultiFnForce() && helperCalls == 0 {
 		return 0, nil, nil, 0, false
 	}
 	return helperSlot, helperFn, helperProg, helperNArgs, true
