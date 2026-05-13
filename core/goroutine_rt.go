@@ -1,10 +1,10 @@
 package core
 
 import (
-	"runtime"
-	"strconv"
 	"sync"
 	"sync/atomic"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
 )
 
 // goroutine_rt.go — Per-goroutine runtime state, replacing the GIL.
@@ -47,22 +47,7 @@ var (
 )
 
 func init() {
-	mainGoroutineID = goid()
-}
-
-// goid extracts the current goroutine ID from the stack header.
-// Only called at goroutine registration/unregistration time, NOT in hot paths.
-func goid() int64 {
-	var buf [64]byte
-	n := runtime.Stack(buf[:], false)
-	// "goroutine NNN [..."
-	i := 10 // len("goroutine ")
-	j := i
-	for j < n && buf[j] >= '0' && buf[j] <= '9' {
-		j++
-	}
-	id, _ := strconv.ParseInt(string(buf[i:j]), 10, 64)
-	return id
+	mainGoroutineID = corert.GoID()
 }
 
 // currentGRT returns the goroutineRT for the current goroutine.
@@ -73,7 +58,7 @@ func currentGRT() *goroutineRT {
 		return &mainRT
 	}
 	// Spawned goroutines are active — determine which goroutine we are.
-	id := goid()
+	id := corert.GoID()
 	if id == mainGoroutineID {
 		return &mainRT
 	}
@@ -90,7 +75,7 @@ func registerGoroutineRT() *goroutineRT {
 	grt := &goroutineRT{
 		callstack: &Callstack{frames: make([]Frame, 0, 20)},
 	}
-	goroutineRTMap.Store(goid(), grt)
+	goroutineRTMap.Store(corert.GoID(), grt)
 	numSpawnedGoroutines.Add(1)
 	return grt
 }
@@ -98,6 +83,6 @@ func registerGoroutineRT() *goroutineRT {
 // unregisterGoroutineRT removes the current goroutine's state.
 // Called once at goroutine exit.
 func unregisterGoroutineRT() {
-	goroutineRTMap.Delete(goid())
+	goroutineRTMap.Delete(corert.GoID())
 	numSpawnedGoroutines.Add(-1)
 }

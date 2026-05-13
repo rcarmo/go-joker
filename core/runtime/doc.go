@@ -1,7 +1,6 @@
-// Package runtime is reserved for root-runtime extraction.
+// Package runtime owns extracted leaf runtime helpers.
 //
-// It intentionally contains no production runtime yet. Go packages are
-// directory-scoped, so moving evaluator/executor files here must happen only
-// after their object, call, error, and frame dependencies are expressed as
-// explicit contracts instead of unexported core package reach-through.
+// Root evaluator/executor code still lives in package core, but low-coupling
+// runtime bookkeeping helpers can move here once they no longer depend on root
+// object, call, error, or frame internals.
 package runtime
