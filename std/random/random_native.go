@@ -46,7 +46,11 @@ func initRandomNamespace() {
 		if hi <= lo {
 			panic(RT.NewError("int-between: hi must be > lo"))
 		}
-		return MakeInt(lo + mrand.IntN(hi-lo))
+		delta := hi - lo
+		if delta <= 0 {
+			panic(RT.NewError("int-between: range is too large"))
+		}
+		return MakeInt(lo + mrand.IntN(delta))
 	}, Name: "random-int-between", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("lo"), MakeSymbol("hi"))),
 			`Returns a random integer in [lo, hi).`, "1.0"))
@@ -102,7 +106,9 @@ func initRandomNamespace() {
 		CheckArity(args, 0, 0)
 		var b [16]byte
 		_, err := rand.Read(b[:])
-		PanicOnErr(err)
+		if err != nil {
+			panic(RT.NewError("uuid: " + err.Error()))
+		}
 		b[6] = (b[6] & 0x0f) | 0x40 // version 4
 		b[8] = (b[8] & 0x3f) | 0x80 // variant 10
 		s := hex.EncodeToString(b[:])
@@ -119,7 +125,9 @@ func initRandomNamespace() {
 		}
 		b := make([]byte, n)
 		_, err := rand.Read(b)
-		PanicOnErr(err)
+		if err != nil {
+			panic(RT.NewError("secure-bytes: " + err.Error()))
+		}
 		return MakeString(hex.EncodeToString(b))
 	}, Name: "random-secure-bytes", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("n"))),
@@ -134,7 +142,9 @@ func initRandomNamespace() {
 		}
 		bigN := big.NewInt(int64(n))
 		r, err := rand.Int(rand.Reader, bigN)
-		PanicOnErr(err)
+		if err != nil {
+			panic(RT.NewError("secure-int: " + err.Error()))
+		}
 		return MakeInt(int(r.Int64()))
 	}, Name: "random-secure-int", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("n"))),

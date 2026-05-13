@@ -19,6 +19,7 @@ Current coverage:
 - `std/imaging` — image constructor/info arity and vector shape checks.
 - `std/pdf` — document proc arity checks and missing-document guardrails.
 - `std/svg` — canvas guardrails, polygon/polyline coordinate shape checks, raw write error handling.
+- `std/random` — random range overflow checks and wrapped crypto-random errors.
 
 ## Audit rules of thumb
 
