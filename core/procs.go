@@ -19,6 +19,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/rcarmo/go-joker/core/deps"
 	"github.com/rcarmo/go-joker/core/osutil"
 )
 
@@ -1740,7 +1741,9 @@ func libExternalPath(sym Symbol) (path string, ok bool) {
 		if !ok {
 			panic(RT.NewError("Key :url not found in ns-sources for: " + sourceKey))
 		} else {
-			return externalSourceToPath(sym.Name(), url.ToString(false)), true
+			path, err := deps.ExternalSourceToPath(osutil.HomeDir(), sym.Name(), url.ToString(false))
+			PanicOnErr(err)
+			return path, true
 		}
 	}
 	return
