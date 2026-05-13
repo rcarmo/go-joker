@@ -20,6 +20,10 @@ Current package/file snapshot:
 | `core/runtime` | 1 | 0 | reserved package for evaluator/runtime extraction; currently a documented boundary marker only |
 | `core/collections` | 1 | 0 | reserved package for collection extraction; currently a documented boundary marker only |
 | `core/reader` | 1 | 0 | reserved package for reader/parser extraction; currently a documented boundary marker only |
+| `core/ir` | 1 | 0 | reserved package for future IR compiler/executor extraction; neutral leaf model remains in `core/internal/ir` |
+| `core/wasm` | 1 | 0 | reserved package for future root WASM extraction; leaf helpers remain in `core/internal/wasm` |
+| `core/generated` | 1 | 0 | reserved package for future generated payload families that become real package boundaries |
+| `core/string` | 1 | 0 | reserved package for future extraction of root string support helpers |
 | `std/*` | many small packages | mixed | namespace-oriented; now explicitly documented as `std/<namespace>.joke` + `std/<namespace>/*.go` + `std/<namespace>/<subns>/...` |
 | `benchmarks` | 1 | 0 | benchmark data/fixtures remain here; report generators should not live here anymore |
 | `tools/benchmarks` | 4 | 0 | build-ignore report/chart generators and Goja helper moved out of `benchmarks/` |
