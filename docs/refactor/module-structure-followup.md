@@ -11,7 +11,7 @@ Current package/file snapshot:
 | Package/area | Go files | Test files | Notes |
 |---|---:|---:|---|
 | root | 0 | 0 | clean: no root package remains |
-| `cmd/joker` | 7 | 0 | CLI/REPL/standalone helpers are grouped correctly |
+| `cmd/joker` | 14 | 0 | startup/orchestration is now split across cohesive helper files; keep shrinking `main.go` rather than regrowing it |
 | `core` root | 201 | 64 | still the main monolith; contract tests grew intentionally before moves |
 | `core/internal/generated` | 3 | 1 | data-only generated bootstrap contract and source manifest; package-level generated payloads only move here when they can be a true Go package boundary |
 | `core/internal/ir` | 6 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
@@ -101,6 +101,49 @@ tools/benchmarks/
 Improvement to plan:
 
 - defer until core package boundaries settle.
+
+## Desired staged tree
+
+The intended medium-term structure is:
+
+```text
+cmd/joker/
+  main.go
+  args.go
+  compile.go
+  files.go
+  lint.go
+  profile.go
+  repl*.go
+  standalone.go
+
+core/
+  *.go                         # only code that still genuinely belongs to root core
+  internal/generated/
+  internal/ir/
+  internal/trace/
+  internal/wasm/
+  runtime/
+  collections/
+  reader/
+
+std/
+  <namespace>.joke
+  <namespace>/*.go
+  <namespace>/<subns>/...
+
+tools/
+  benchmarks/
+```
+
+Staged migration order should remain:
+
+1. `cmd/joker` split while staying in one package.
+2. Runtime/executor adapter narrowing for `core/runtime`.
+3. Generated payload conversion into real generated packages when equivalence is proven.
+4. Collection construction adapters before `core/collections` moves.
+5. Reader construction adapters before `core/reader` moves.
+6. Low-priority tooling moves such as `tools/benchmarks` last.
 
 ## Recommended immediate next steps
 
