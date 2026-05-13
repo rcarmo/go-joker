@@ -3,6 +3,8 @@ package core
 import (
 	"fmt"
 	"io"
+
+	"github.com/rcarmo/go-joker/core/internal/bufferpool"
 )
 
 type (
@@ -261,8 +263,8 @@ func (seq *ArraySeq) Cons(obj Object) Seq {
 func (seq *ArraySeq) sequential() {}
 
 func SeqToString(seq Seq, escape bool) string {
-	b := getBuffer()
-	defer putBuffer(b)
+	b := bufferpool.Get()
+	defer bufferpool.Put(b)
 	b.WriteRune('(')
 	for iter := iter(seq); iter.HasNext(); {
 		b.WriteString(iter.Next().ToString(escape))

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/bufferpool"
 )
 
 type (
@@ -75,8 +77,8 @@ func (rt *Runtime) stacktrace() string {
 }
 
 func (grt *goroutineRT) stacktrace() string {
-	b := getBuffer()
-	defer putBuffer(b)
+	b := bufferpool.Get()
+	defer bufferpool.Put(b)
 	pos := Position{}
 	if grt.currentExpr != nil {
 		pos = grt.currentExpr.Pos()
@@ -268,8 +270,8 @@ func (s *Callstack) clone() *Callstack {
 }
 
 func (s *Callstack) String() string {
-	b := getBuffer()
-	defer putBuffer(b)
+	b := bufferpool.Get()
+	defer bufferpool.Put(b)
 	for _, f := range s.frames {
 		pos := f.traceable.Pos()
 		b.WriteString(fmt.Sprintf("%s %s:%d:%d\n", f.traceable.Name(), pos.Filename(), pos.startLine, pos.startColumn))
