@@ -1,14 +1,5 @@
 package core
 
-type (
-	StringPool map[string]*string
-)
+import "github.com/rcarmo/go-joker/core/internal/stringpool"
 
-func (p StringPool) Intern(s string) *string {
-	ss, exists := p[s]
-	if exists {
-		return ss
-	}
-	p[s] = &s
-	return &s
-}
+type StringPool = stringpool.Pool
