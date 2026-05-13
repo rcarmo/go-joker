@@ -750,16 +750,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 							}
 							copy(subSlots[:nargs], typedArgs)
 							// Resolve captures
-							for ci, ck := range fnProg.captureKeys {
-								e := fn.env
-								for e != nil {
-									if ck.index < len(e.bindings) {
-										subSlots[fnProg.captureSlotIdxs[ci]] = objectToIRValue(e.bindings[ck.index])
-										break
-									}
-									e = e.parent
-								}
-							}
+							(RuntimeExecutionAdapter{}).InstallTypedEnvCaptures(fnProg, subSlots, fn.env)
 							// Execute inline with typed slots
 							subResult := irExecTypedInline(fnProg, subSlots)
 							if subResult.tag != 0 || subResult.i != 0 || subResult.f != 0 {
@@ -781,22 +772,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 						for i, v := range typedArgs {
 							args[i] = v.object()
 						}
-						callArgs := args
-						if len(fnProg.captureKeys) > 0 {
-							full := make([]Object, fnProg.numSlots)
-							copy(full, args)
-							for ci, ck := range fnProg.captureKeys {
-								e := fn.env
-								for e != nil {
-									if ck.index < len(e.bindings) {
-										full[fnProg.captureSlotIdxs[ci]] = e.bindings[ck.index]
-										break
-									}
-									e = e.parent
-								}
-							}
-							callArgs = full
-						}
+						callArgs := (RuntimeExecutionAdapter{}).PrepareCallSlots(fnProg, args, fn.env)
 						if r := irExec(fnProg, callArgs); r != nil {
 							result = r
 						} else {

@@ -83,7 +83,7 @@ This is a sketch, not an implementation API. The important boundary is ownership
    - escape-analysis safe mutation slots (**started: `escape_analysis_contract_test.go` covers call-argument unsafety and string-builder slot classification**)
    - typed/boxed failure flags
    - WASM/native native-int conversion boundaries (**started: `wasm_host_contract_test.go` covers raw integer result promotion, host argument promotion, and index rejection**)
-4. Introduce a small runtime execution adapter in root `core`. **Started: `RuntimeExecutionAdapter` now codifies root-owned error creation/throwing, capture-slot installation, `FnExpr`/slot capture construction, and typed/boxed execution failure flags; boxed and typed executors use it for `irThrow`, capture prefill, `irMakeFn`, and nested-call failure gating.**
+4. Introduce a small runtime execution adapter in root `core`. **Started: `RuntimeExecutionAdapter` now codifies root-owned error creation/throwing, capture-slot installation, nested-call argument/capture preparation, typed env-capture installation, `FnExpr`/slot capture construction, and typed/boxed execution failure flags; boxed and typed executors use it for `irThrow`, capture prefill, `irMakeFn`, nested-call call-slot preparation, typed capture installation, and failure gating.**
 5. Move escape-analysis helpers only after they depend on neutral model plus explicit runtime facts.
 6. Move boxed executor, then typed/nanbox executor, only after call/error/frame contracts are explicit.
 

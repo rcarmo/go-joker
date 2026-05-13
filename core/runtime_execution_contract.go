@@ -44,6 +44,58 @@ func (RuntimeExecutionAdapter) ApplyTypedCaptureSlots(slots []irValue, idxs []in
 	return true
 }
 
+func (r RuntimeExecutionAdapter) PrepareCallSlots(prog *IRProgram, args []Object, env *LocalEnv) []Object {
+	if prog == nil || len(prog.captureKeys) == 0 {
+		return args
+	}
+	full := make([]Object, prog.numSlots)
+	copy(full, args)
+	r.InstallEnvCaptures(prog, full, env)
+	return full
+}
+
+func (RuntimeExecutionAdapter) InstallEnvCaptures(prog *IRProgram, slots []Object, env *LocalEnv) {
+	if prog == nil {
+		return
+	}
+	for ci, ck := range prog.captureKeys {
+		if ci >= len(prog.captureSlotIdxs) {
+			return
+		}
+		idx := prog.captureSlotIdxs[ci]
+		if idx < 0 || idx >= len(slots) {
+			continue
+		}
+		for e := env; e != nil; e = e.parent {
+			if ck.index < len(e.bindings) {
+				slots[idx] = e.bindings[ck.index]
+				break
+			}
+		}
+	}
+}
+
+func (RuntimeExecutionAdapter) InstallTypedEnvCaptures(prog *IRProgram, slots []irValue, env *LocalEnv) {
+	if prog == nil {
+		return
+	}
+	for ci, ck := range prog.captureKeys {
+		if ci >= len(prog.captureSlotIdxs) {
+			return
+		}
+		idx := prog.captureSlotIdxs[ci]
+		if idx < 0 || idx >= len(slots) {
+			continue
+		}
+		for e := env; e != nil; e = e.parent {
+			if ck.index < len(e.bindings) {
+				slots[idx] = objectToIRValue(e.bindings[ck.index])
+				break
+			}
+		}
+	}
+}
+
 func (RuntimeExecutionAdapter) MakeFn(fnExpr *FnExpr, slots []Object) Object {
 	fnEnv := &LocalEnv{bindings: make([]Object, len(slots))}
 	copy(fnEnv.bindings, slots)

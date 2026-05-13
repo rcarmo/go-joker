@@ -2,6 +2,39 @@ package core
 
 import "testing"
 
+func TestRuntimeExecutionAdapterPrepareCallSlotsInstallsCaptures(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	prog := &IRProgram{
+		numSlots:        3,
+		captureKeys:     []bindingKey{{index: 0}},
+		captureSlotIdxs: []int{2},
+	}
+	env := &LocalEnv{bindings: []Object{MakeString("captured")}}
+	args := []Object{MakeInt(1)}
+	full := adapter.PrepareCallSlots(prog, args, env)
+	if len(full) != 3 || full[0] != args[0] || full[2].(String).S != "captured" {
+		t.Fatalf("prepared call slots mismatch: %#v", full)
+	}
+	if got := adapter.PrepareCallSlots(&IRProgram{}, args, env); len(got) != 1 || got[0] != args[0] {
+		t.Fatalf("capture-free call should reuse args: %#v", got)
+	}
+}
+
+func TestRuntimeExecutionAdapterInstallsTypedEnvCaptures(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	prog := &IRProgram{
+		numSlots:        2,
+		captureKeys:     []bindingKey{{index: 0}},
+		captureSlotIdxs: []int{1},
+	}
+	env := &LocalEnv{bindings: []Object{MakeInt(42)}}
+	slots := make([]irValue, 2)
+	adapter.InstallTypedEnvCaptures(prog, slots, env)
+	if slots[1].tag != irValInt || slots[1].i != 42 {
+		t.Fatalf("typed env capture slot = %#v", slots[1])
+	}
+}
+
 func TestRuntimeExecutionAdapterExecutionFailureFlags(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
 	prog := &IRProgram{}
