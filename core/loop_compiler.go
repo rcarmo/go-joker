@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"os"
 )
 
 // ---------- Compiler ----------
@@ -655,24 +654,6 @@ func (c *irCompiler) compileNestedLoop(loop *LoopExpr, isLast bool) bool {
 		c.bindingMap[key] = slot
 	}
 	return true
-}
-
-func irInlineMode() string {
-	mode := os.Getenv("JOKER_IR_INLINE")
-	if mode == "" {
-		return "auto"
-	}
-	return mode
-}
-
-func irInlineForce() bool {
-	mode := irInlineMode()
-	return mode == "1" || mode == "force" || mode == "all"
-}
-
-func irInlineDisabled() bool {
-	mode := irInlineMode()
-	return mode == "0" || mode == "off" || mode == "false"
 }
 
 func exprHasTextLiteralOrStr(expr Expr) bool {

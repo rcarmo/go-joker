@@ -1,8 +1,10 @@
 package core
 
+import corert "github.com/rcarmo/go-joker/core/runtime"
+
 func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool {
 	_ = fnSlot
-	if irInlineDisabled() {
+	if corert.IRInlineDisabled() {
 		return false
 	}
 	fnExpr := findFnExprForBinding(expr.callable)
@@ -10,7 +12,7 @@ func (c *irCompiler) tryInlineCall(fnSlot int, expr *CallExpr, isLast bool) bool
 		return false
 	}
 	arity := fnExpr.arities[0]
-	if !irInlineForce() {
+	if !corert.IRInlineForce() {
 		inlineOK := false
 		for _, b := range arity.body {
 			if exprHasTextLiteralOrStr(b) {
