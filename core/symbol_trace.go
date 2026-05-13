@@ -3,7 +3,7 @@ package core
 import (
 	"os"
 
-	coretrace "github.com/rcarmo/go-joker/core/internal/trace"
+	coretrace "github.com/rcarmo/go-joker/core/trace"
 )
 
 var symbolTraceEnabled = os.Getenv("JOKER_SYMBOL_TRACE") != "" || os.Getenv("JOKER_SYMBOL_TRACE_OUT") != ""

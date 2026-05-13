@@ -25,7 +25,7 @@ Current files matching `core/ir*.go` include:
 - `core/ir_map_diagnostics.go` equivalent tests only; no standalone file
 - `core/ir_nanbox.go` — nanbox value helpers
 - `core/ir_native_helper.go` — native numeric helpers
-- `core/ir_profile.go` — now adapter only; state moved to `core/internal/trace`
+- `core/ir_profile.go` — now adapter only; state moved to `core/trace`
 - `core/ir_typed.go`, `core/ir_typed_exec.go` — typed IR metadata/executor
 - `core/ir_value_accessors.go` — value access helpers
 - many `core/ir*_test.go` files
@@ -91,7 +91,7 @@ core/internal/ir/
 ├── compile/              # expression lowering adapters
 ├── exec/                 # boxed interpreter
 ├── exec/typed/           # typed/nanbox executor
-├── profile/              # adapters to core/internal/trace IRProfile
+├── profile/              # adapters to core/trace IRProfile
 └── wasm/                 # later, if kept under IR rather than sibling package
 ```
 

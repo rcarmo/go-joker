@@ -19,8 +19,8 @@ Current major packages:
 ```text
 cmd/joker                         # CLI, REPL, standalone helpers
 core                              # runtime kernel; still the main monolith
-core/internal/trace               # extracted trace/profile aggregation state
-core/internal/generated           # data-only generated bootstrap payload contracts/source manifest
+core/trace               # extracted trace/profile aggregation state
+core/generated           # data-only generated bootstrap payload contracts/source manifest
 core/internal/ir                  # extracted IR opcode/diagnostic/analysis helpers and neutral Program model
 core/internal/wasm                # extracted WASM encoding/module/host metadata helpers
 std/*                             # namespace-oriented standard library packages
@@ -78,13 +78,13 @@ Recommendation: continue extracting pure leaf helpers and contracts before movin
 Generated root files still live in root `core` because they instantiate core runtime values directly. The generated-file manifest guard tracks this. The target package now exists:
 
 ```text
-core/internal/generated/          # data-only generated/bootstrap contracts and source manifest
+core/generated/          # data-only generated/bootstrap contracts and source manifest
 ```
 
 Current progress:
 
 - `NamespaceSource` and `VarDoc` define the inert data-only bootstrap contract.
-- `core_sources_gen.go` is emitted under `core/internal/generated`.
+- `core_sources_gen.go` is emitted under `core/generated`.
 - `make generated-bootstrap-check` compares the generated source manifest with current root `coreNamespaces`.
 
 Remaining prerequisites are in `generated-boundary.md` and `generated-bootstrap-contract.md`: broader equivalence tests, root runtime consumers for generated payloads, and generator import path updates that avoid exporting root runtime internals.
@@ -150,5 +150,5 @@ This is lower priority than `core`, but it would reduce package noise in `go lis
 ## Outdated content removed or superseded
 
 - Old root-level refactor audit filenames have been removed in favor of `docs/refactor/*`.
-- Early statements that tracing was only a future extraction target are superseded by extracted `core/internal/trace`.
+- Early statements that tracing was only a future extraction target are superseded by extracted `core/trace`.
 - Early `core/internal/wasm or core/wasm` ambiguity is superseded by `core/internal/wasm` for leaf helpers.

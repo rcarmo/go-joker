@@ -18,7 +18,7 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 - `core` remains the main monolith, but leaf packages now exist under `core/internal`.
 - Generated `core/a_*.go` files dominate size and are tracked by `tests/generated_files.txt`; they remain in root only while they still require `package core` access. Moving them to a subdirectory must be a real package split, not a cosmetic file move.
 - IR/JIT/WASM compiler and executor files are still coupled to `core.Object`, `Fn`, `Expr`, `LocalEnv`, and unexported runtime helpers, but opcode/diagnostic helpers and WASM leaf helpers have been extracted.
-- Tracing/profiling aggregation state is extracted into `core/internal/trace`.
+- Tracing/profiling aggregation state is extracted into `core/trace`.
 
 ## Refactor document set
 
@@ -44,14 +44,14 @@ Planned package boundaries:
 
 | Target | Current files/examples | Notes |
 |---|---|---|
-| `core/internal/trace` | `function_trace.go`, `symbol_trace.go`, `ir_profile.go` state machinery | Extracted leaf package. No dependency on `core`; core passes names/events/op names in. |
+| `core/trace` | `function_trace.go`, `symbol_trace.go`, `ir_profile.go` state machinery | Extracted leaf package. No dependency on `core`; core passes names/events/op names in. |
 | `core/internal/ir` or `core/ir` | `ir*.go`, IR tests | Reserved/public extraction target should exist; requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. |
 | `core/internal/wasm` or `core/wasm` | `wasm*.go` leaf helpers first | Reserved/public extraction target should exist; encoding/module/host metadata are already partly extracted, but full lowering/runtime still depends on IR program shape and runtime contracts. |
 | `core/runtime` | goroutine runtime, eval frames, errors, tracing hooks | Reserved package exists; production moves require explicit object/call/error/frame contracts first. |
 | `core/collections` | vectors, maps, sets, seqs, transients | Reserved package should exist as the extraction target; move only after construction/adaptation contracts are explicit. |
 | `core/reader` | `reader.go`, `read.go`, tagged literals | Reserved package should exist as the extraction target; move only after object/expression construction contracts are explicit. |
 | `core/string` | string caches and string-focused support helpers | Reserved package should exist as the extraction target for root string helpers that can become a real boundary. |
-| `core/generated` and `core/internal/generated` | `a_*.go`, `types_*_gen.go` | Reserved/public extraction target should exist, but only move generated files when generator output can declare/import a real package with explicit contracts; do not place `package core` files in subdirectories. |
+| `core/generated` and `core/generated` | `a_*.go`, `types_*_gen.go` | Reserved/public extraction target should exist, but only move generated files when generator output can declare/import a real package with explicit contracts; do not place `package core` files in subdirectories. |
 | `tools/tracing` or skill scripts | pprof/IR/function trace renderers | External tooling can move independently of Go runtime packages. |
 
 ## Execution phases
@@ -67,15 +67,15 @@ Planned package boundaries:
 
 ### R1 — Extract leaf tracing state
 
-- [x] Move function tracing aggregation/writing into `core/internal/trace`.
+- [x] Move function tracing aggregation/writing into `core/trace`.
 - [x] Leave core-specific name derivation in `core/function_trace.go`.
 - [x] Preserve JSON output shape.
 - [x] Run tracing smoke test and full validation.
 
 ### R2 — Extract symbol/IR profiling state
 
-- [x] Move symbol trace aggregation into `core/internal/trace`.
-- [x] Move IR opcode profile aggregation into `core/internal/trace` while keeping opcode naming in core.
+- [x] Move symbol trace aggregation into `core/trace`.
+- [x] Move IR opcode profile aggregation into `core/trace` while keeping opcode naming in core.
 - [x] Preserve JSON output shapes.
 
 ### R3 — Define IR boundary
@@ -113,8 +113,8 @@ Planned package boundaries:
 - [x] Track generated root-core file set in `tests/generated_files.txt`.
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
 - [x] Design generated bootstrap contract before generator path changes.
-- [x] Add `core/internal/generated` data-only bootstrap payload contract types.
-- [x] Start generator emission under `core/internal/generated` with core source manifest.
+- [x] Add `core/generated` data-only bootstrap payload contract types.
+- [x] Start generator emission under `core/generated` with core source manifest.
 - [x] Add equivalence test comparing generated source manifest with current root `coreNamespaces`.
 - [x] Guard generated bootstrap manifest equivalence with `make generated-bootstrap-check` from `make docs-check`.
 - [x] Start root runtime consumption of generated source manifest via guarded `generatedCoreNamespaces()` helper.
@@ -130,7 +130,7 @@ Planned package boundaries:
 - [x] Inventory collection/reader/runtime/evaluator/WASM split candidates in `docs/refactor/core-split.md`.
 - [x] Inventory object/protocol contracts blocking broad moves in `docs/refactor/object-protocol-contracts.md`.
 - [x] Add `make core-contract-check` for object/protocol contract tests that gate future splits.
-- [x] Add direct `core/internal/trace` package tests.
+- [x] Add direct `core/trace` package tests.
 - [x] Extend `core-contract-check` with set contracts.
 - [x] Extend `core-contract-check` with transient contracts.
 - [x] Extend `core-contract-check` with seq contracts.

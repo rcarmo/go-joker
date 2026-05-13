@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	coretrace "github.com/rcarmo/go-joker/core/internal/trace"
+	coretrace "github.com/rcarmo/go-joker/core/trace"
 )
 
 var functionTraceEnabled = os.Getenv("JOKER_FUNCTION_TRACE") != "" || os.Getenv("JOKER_FUNCTION_TRACE_OUT") != ""

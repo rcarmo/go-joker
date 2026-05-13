@@ -15,7 +15,7 @@ Current package/file snapshot:
 | `core` root | 201 | 64 | still the main monolith; contract tests grew intentionally before moves |
 | `core/generated` | 3 | 1 | data-only generated bootstrap contract and source manifest; package-level generated payloads only move here when they can be a true Go package boundary |
 | `core/internal/ir` | 6 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
-| `core/internal/trace` | 4 | 1 | aggregation state with direct JSON-shape tests |
+| `core/trace` | 4 | 1 | aggregation state with direct JSON-shape tests |
 | `core/internal/wasm` | 8 | 4 | encoding/module/host/opcode leaf helpers |
 | `core/runtime` | 1 | 0 | reserved package for evaluator/runtime extraction; currently a documented boundary marker only |
 | `core/collections` | 1 | 0 | reserved package for collection extraction; currently a documented boundary marker only |
@@ -60,9 +60,9 @@ Status:
 - diagnostics/export accessors, WASM lowering helpers, and native helper compilation consume the neutral model where appropriate.
 - root-only execution metadata remains in `core` until call/object contracts are explicit in code.
 
-### 2. Direct tests for `core/internal/trace`
+### 2. Direct tests for `core/trace`
 
-`core/internal/trace` now has package tests for:
+`core/trace` now has package tests for:
 
 - function tracer event/edge aggregation
 - symbol resolve/deref aggregation

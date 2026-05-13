@@ -12,7 +12,7 @@ Recent feature work improved boundaries for new code (`std/transit`, `std/system
 ## Current package/module shape
 
 - `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
-- `core/internal/trace`, `core/internal/ir`, and `core/internal/wasm` now own extracted leaf helpers with direct package tests.
+- `core/trace`, `core/internal/ir`, and `core/internal/wasm` now own extracted leaf helpers with direct package tests.
 - `core/` is still the runtime kernel and contains:
   - object/type model (`object.go`, `types_*`)
   - persistent collection implementations

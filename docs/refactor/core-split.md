@@ -28,7 +28,7 @@ Do not split everything at once. Move leaf or low-cycle families first, then hig
 
 ### 1. Already started
 
-- `core/internal/trace` owns tracing/profiling aggregation state.
+- `core/trace` owns tracing/profiling aggregation state.
 - `core/internal/ir` owns opcode names/constants, bytecode disassembly/counting, and shape analysis.
 - `core/internal/wasm` owns leaf WASM binary encoding helpers.
 - `cmd/joker` owns the CLI entrypoint.
@@ -179,7 +179,7 @@ Risks:
 R5 should remain blocked on the rest of R3/R4:
 
 - IR compiler/executor still live in root `core`, although a neutral `core/internal/ir.Program` model and initial `RuntimeExecutionAdapter` contract now reduce the boundary.
-- most generated bootstrap files still live in root `core`; only the source manifest has moved to `core/internal/generated`.
+- most generated bootstrap files still live in root `core`; only the source manifest has moved to `core/generated`.
 - object/runtime contracts are broader but still not explicit enough to move collections or reader cleanly.
 
 Therefore the next implementation work should continue reducing IR/WASM/generated coupling and codifying object/reader/runtime adapters before moving collections/reader/runtime.

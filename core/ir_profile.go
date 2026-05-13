@@ -4,7 +4,7 @@ import (
 	"os"
 	"time"
 
-	coretrace "github.com/rcarmo/go-joker/core/internal/trace"
+	coretrace "github.com/rcarmo/go-joker/core/trace"
 )
 
 var zeroTime time.Time

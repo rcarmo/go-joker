@@ -8,7 +8,7 @@ status=0
 fail() { echo "layout guard: $*" >&2; status=1; }
 
 [[ -f cmd/joker/main.go ]] || fail "missing CLI entrypoint cmd/joker/main.go"
-[[ -d core/internal/trace ]] || fail "missing core/internal/trace"
+[[ -d core/trace ]] || fail "missing core/trace"
 [[ -d core/internal/ir ]] || fail "missing core/internal/ir"
 [[ -d core/internal/wasm ]] || fail "missing core/internal/wasm"
 [[ -d core/generated ]] || fail "missing core/generated"

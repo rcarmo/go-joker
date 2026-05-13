@@ -20,7 +20,7 @@ Examples:
 - `core/a_linter_*_data.go`
 - `core/a_*_code.go`
 
-The former `core/a_data.go` namespace source-list payload has moved behind `core/internal/generated` and is no longer emitted or tracked as a root generated file.
+The former `core/a_data.go` namespace source-list payload has moved behind `core/generated` and is no longer emitted or tracked as a root generated file.
 
 These remaining files currently stay in package `core` because their generated values refer to many core runtime types and initialization hooks. Under Go's directory-per-package model, they cannot be moved to a subfolder until they declare/import a real package boundary.
 
@@ -39,7 +39,7 @@ Generated from `go:generate` directives in `core/object.go`:
 
 ## Boundary decision for this batch
 
-Do not move the remaining generated files into a new package yet. They are deeply coupled to the current `core` package and moving them before IR/runtime/object boundaries are clean would create a large, low-signal churn. The one completed exception is the data-only source manifest now emitted under `core/internal/generated` and consumed by root `core` via `generatedCoreNamespaces()`.
+Do not move the remaining generated files into a new package yet. They are deeply coupled to the current `core` package and moving them before IR/runtime/object boundaries are clean would create a large, low-signal churn. The one completed exception is the data-only source manifest now emitted under `core/generated` and consumed by root `core` via `generatedCoreNamespaces()`.
 
 The generated boundary is guarded by:
 
@@ -66,14 +66,14 @@ core/
 
 ## Generated bootstrap contract
 
-The next-step contract is documented in `generated-bootstrap-contract.md`: future generated namespace bootstrap output should become data-only payloads owned by `core/internal/generated`, while root `core` remains responsible for mutating namespaces and installing docs/sources. Type assertion/info generation should remain near the object model until object boundaries are explicit.
+The next-step contract is documented in `generated-bootstrap-contract.md`: future generated namespace bootstrap output should become data-only payloads owned by `core/generated`, while root `core` remains responsible for mutating namespaces and installing docs/sources. Type assertion/info generation should remain near the object model until object boundaries are explicit.
 
 ## Migration prerequisites
 
-Before moving generated output into `core/internal/generated`, complete or explicitly design:
+Before moving generated output into `core/generated`, complete or explicitly design:
 
 1. Object/runtime API boundary for generated values.
-2. Namespace initialization contract between generated bootstrap data and `core` runtime. **Designed and partially implemented in `generated-bootstrap-contract.md`; `core/internal/generated` owns the source manifest while root `core` still owns mutation/installation.**
+2. Namespace initialization contract between generated bootstrap data and `core` runtime. **Designed and partially implemented in `generated-bootstrap-contract.md`; `core/generated` owns the source manifest while root `core` still owns mutation/installation.**
 3. Generator import path update away from the current monolithic `core` package for additional payload families.
 4. Full regeneration and byte-for-byte or behavior-equivalent validation for each payload family before moving it.
 5. Removal of generated files from the root `core` directory only after runtime/object initialization boundaries are explicit.
@@ -84,7 +84,7 @@ Before moving generated output into `core/internal/generated`, complete or expli
 - [x] Add generated-file guardrail to avoid manual edits/regressions.
 - [x] Track the generated root-core file set in `tests/generated_files.txt`.
 - [x] Design generated bootstrap contract before generator path changes.
-- [x] Add generated bootstrap data-only package and source manifest under `core/internal/generated`.
+- [x] Add generated bootstrap data-only package and source manifest under `core/generated`.
 - [x] Switch `*core-namespaces*` bootstrap to the generated source manifest plus root-owned `user` installation.
 - [ ] Extend generated bootstrap emission beyond source manifest only after broader equivalence tests.
 - [ ] Move remaining generated artifacts after runtime/object initialization boundaries are explicit.
