@@ -1558,9 +1558,9 @@ var procSlurp = func(args []Object) Object {
 		PanicOnErr(err)
 		return String{S: s}
 	case io.Reader:
-		b, err := io.ReadAll(f)
+		s, err := osutil.ReadAllString(f)
 		PanicOnErr(err)
-		return String{S: string(b)}
+		return String{S: s}
 	default:
 		panic(RT.NewArgTypeError(0, args[0], "String or IOReader"))
 	}
@@ -1579,7 +1579,7 @@ var procSpit = func(args []Object) Object {
 		err := osutil.WriteFileString(f.S, str(content), appendFile)
 		PanicOnErr(err)
 	case io.Writer:
-		_, err := io.WriteString(f, str(content))
+		err := osutil.WriteString(f, str(content))
 		PanicOnErr(err)
 	default:
 		panic(RT.NewArgTypeError(0, args[0], "String or IOWriter"))
@@ -2304,7 +2304,7 @@ func NewReaderFromFile(filename string) (*Reader, error) {
 		fmt.Fprintln(Stderr, "Error: ", err)
 		return nil, err
 	}
-	return NewReader(bytes.NewReader(data), filename), nil
+	return NewReader(osutil.ByteRuneReader(data), filename), nil
 }
 
 func ProcessLinterFile(configDir string, filename string) {
