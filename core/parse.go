@@ -1849,7 +1849,7 @@ func parseSymbol(obj Object, ctx *ParseContext) Expr {
 			return NewSurrogateExpr(obj)
 		}
 		// See if this is a JS interop (i.e. Math.PI)
-		parts := strings.Split(sym.Name(), ".")
+		parts := corestr.Split(sym.Name(), '.')
 		if len(parts) > 1 && parts[0] != "" && parts[len(parts)-1] != "" {
 			return parseSymbol(DeriveReadObject(obj, MakeSymbol(strings.Join(parts[:len(parts)-1], "."))), ctx)
 		}

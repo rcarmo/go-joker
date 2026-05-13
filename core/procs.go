@@ -21,6 +21,7 @@ import (
 
 	"github.com/rcarmo/go-joker/core/deps"
 	"github.com/rcarmo/go-joker/core/osutil"
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
 type (
@@ -1769,7 +1770,7 @@ var procLibPath = func(args []Object) Object {
 		}
 		ns := GLOBAL_ENV.CurrentNamespace().Name
 
-		parts := strings.Split(ns.Name(), ".")
+		parts := corestr.Split(ns.Name(), '.')
 		for _ = range parts {
 			file, _ = filepath.Split(file)
 			if len(file) == 0 {

@@ -2,12 +2,13 @@ package deps
 
 import (
 	"path/filepath"
-	"strings"
+
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
 // LibNamePath converts a dotted Joker lib name into a relative source path.
 func LibNamePath(lib string) string {
-	return filepath.Join(strings.Split(lib, ".")...) + ".joke"
+	return filepath.Join(corestr.Split(lib, '.')...) + ".joke"
 }
 
 // ResolveLibPath joins a base directory with a dotted Joker lib name.
