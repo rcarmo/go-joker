@@ -24,6 +24,7 @@ Current coverage:
 - `std/url` — malformed query/escape errors surface as runtime errors.
 - `std/git` — GitRepo argument guards and config map shape regressions.
 - `std/log` — level parsing and variadic logging arity contracts.
+- `std/csv` — writer flush/error propagation for CSV output.
 
 ## Audit rules of thumb
 
