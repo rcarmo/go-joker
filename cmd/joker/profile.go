@@ -1,0 +1,70 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"runtime"
+	"runtime/pprof"
+
+	"github.com/pkg/profile"
+	. "github.com/rcarmo/go-joker/core"
+)
+
+var runningProfile interface {
+	Stop()
+}
+
+func startProfiling() error {
+	if cpuProfileName != "" {
+		switch profilerType {
+		case "pkg/profile":
+			runningProfile = profile.Start(profile.ProfilePath(cpuProfileName))
+		case "runtime/pprof":
+			name := cpuProfileName
+			f, err := os.Create(name)
+			if err != nil {
+				cpuProfileName = ""
+				return fmt.Errorf("could not create CPU profile `%s`: %w", name, err)
+			}
+			if cpuProfileRateFlag {
+				runtime.SetCPUProfileRate(cpuProfileRate)
+			}
+			pprof.StartCPUProfile(f)
+			fmt.Fprintf(Stderr, "Profiling started at rate=%d. See file `%s'.\n",
+				cpuProfileRate, cpuProfileName)
+		default:
+			return fmt.Errorf("unrecognized profiler: %s (use 'pkg/profile' or 'runtime/pprof')", profilerType)
+		}
+	} else if memProfileName != "" {
+		// finish() will emit the heap profile on exit.
+	}
+	return nil
+}
+
+func finish() {
+	if runningProfile != nil {
+		runningProfile.Stop()
+		runningProfile = nil
+	} else if cpuProfileName != "" {
+		pprof.StopCPUProfile()
+		fmt.Fprintf(Stderr, "Profiling stopped. See file `%s'.\n", cpuProfileName)
+		cpuProfileName = ""
+	}
+
+	if memProfileName != "" {
+		f, err := os.Create(memProfileName)
+		if err != nil {
+			fmt.Fprintf(Stderr, "Error: Could not create memory profile `%s': %v\n",
+				memProfileName, err)
+		}
+		runtime.GC() // get up-to-date statistics
+		if err := pprof.WriteHeapProfile(f); err != nil {
+			fmt.Fprintf(Stderr, "Error: Could not write memory profile `%s': %v\n",
+				memProfileName, err)
+		}
+		f.Close()
+		fmt.Fprintf(Stderr, "Memory profile rate=%d written to `%s'.\n",
+			runtime.MemProfileRate, memProfileName)
+		memProfileName = ""
+	}
+}
