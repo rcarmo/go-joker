@@ -2,11 +2,11 @@ package core
 
 import (
 	"fmt"
-	"strings"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/bufferpool"
 	"github.com/rcarmo/go-joker/core/hashutil"
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
 type (
@@ -88,10 +88,7 @@ func (grt *goroutineRT) stacktrace() string {
 	for _, f := range grt.callstack.frames {
 		framePos := f.traceable.Pos()
 		b.WriteString(fmt.Sprintf("  %s %s:%d:%d\n", name, framePos.Filename(), framePos.startLine, framePos.startColumn))
-		name = f.traceable.Name()
-		if strings.HasPrefix(name, "#'") {
-			name = name[2:]
-		}
+		name = corestr.TrimVarQuotePrefix(f.traceable.Name())
 	}
 	b.WriteString(fmt.Sprintf("  %s %s:%d:%d", name, pos.Filename(), pos.startLine, pos.startColumn))
 	return b.String()

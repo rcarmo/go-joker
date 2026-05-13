@@ -3,7 +3,8 @@ package core
 import (
 	"fmt"
 	"io"
-	"strings"
+
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
 type (
@@ -134,7 +135,7 @@ func (ns *Namespace) Intern(sym Symbol) *Var {
 				name: sym,
 			}
 			ns.mappings[sym.name] = newVar
-			if !strings.HasPrefix(ns.Name.Name(), "joker.") {
+			if !corestr.HasJokerNamespacePrefix(ns.Name.Name()) {
 				printParseWarning(GetPosition(sym), fmt.Sprintf("WARNING: %s already refers to: %s in namespace %s, being replaced by: %s\n",
 					sym.ToString(false), existingVar.ToString(false), ns.Name.ToString(false), newVar.ToString(false)))
 			}
@@ -168,7 +169,7 @@ func isDeclaredInConfig(vr *Var) bool {
 	if !ok {
 		return false
 	}
-	return strings.Contains(s.S, ".jokerd")
+	return corestr.IsJokerdPath(s.S)
 }
 
 func (ns *Namespace) InternVar(name string, val Object, meta *ArrayMap) *Var {
