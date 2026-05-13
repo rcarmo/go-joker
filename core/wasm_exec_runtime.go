@@ -7,9 +7,9 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"strconv"
 	"sync"
 
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/api"
@@ -30,8 +30,6 @@ var (
 	wasmRTOnce sync.Once
 	wasmCache  sync.Map // map[*IRProgram]*WasmProgram
 	wasmFail   = &WasmProgram{}
-	wasmModSeq uint64 // unique module name counter
-	wasmModMu  sync.Mutex
 )
 
 func getWasmRT() wazero.Runtime {
@@ -43,14 +41,6 @@ func getWasmRT() wazero.Runtime {
 		registerWasmHost(wasmRT)
 	})
 	return wasmRT
-}
-
-func nextWasmModName() string {
-	wasmModMu.Lock()
-	wasmModSeq++
-	n := wasmModSeq
-	wasmModMu.Unlock()
-	return "joker_wasm_" + strconv.FormatUint(n, 10)
 }
 
 // wasmGetCached retrieves or compiles a WASM program for an IR program.
@@ -97,7 +87,7 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 		return nil
 	}
 
-	cfg := wazero.NewModuleConfig().WithName(nextWasmModName())
+	cfg := wazero.NewModuleConfig().WithName(corert.NextWasmModuleName())
 	mod, err := rt.InstantiateModule(ctx, compiled, cfg)
 	if err != nil {
 		return nil

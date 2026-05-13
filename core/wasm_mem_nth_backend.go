@@ -405,7 +405,7 @@ func buildMemNthModule(prog *IRProgram, helperSlot int, helperProg *IRProgram) *
 	if err != nil {
 		return nil
 	}
-	mod, err := rt.InstantiateModule(ctx, compiled, wazero.NewModuleConfig().WithName(nextWasmModName()))
+	mod, err := rt.InstantiateModule(ctx, compiled, wazero.NewModuleConfig().WithName(corert.NextWasmModuleName()))
 	if err != nil {
 		return nil
 	}

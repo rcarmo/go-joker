@@ -146,7 +146,7 @@ func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRPro
 	if err != nil {
 		return nil
 	}
-	mod, err := rt.InstantiateModule(ctx, compiled, wazero.NewModuleConfig().WithName(nextWasmModName()))
+	mod, err := rt.InstantiateModule(ctx, compiled, wazero.NewModuleConfig().WithName(corert.NextWasmModuleName()))
 	if err != nil {
 		return nil
 	}
