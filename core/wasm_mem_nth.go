@@ -578,7 +578,7 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 }
 
 func assembleMemNthModule(callerParams, helperParams int, callerBody, helperBody []byte) []byte {
-	m := newWasmModule()
+	m := corewasm.NewModule()
 	numFuncs := 1
 	if helperBody != nil {
 		numFuncs = 2
@@ -594,7 +594,7 @@ func assembleMemNthModule(callerParams, helperParams int, callerBody, helperBody
 		}
 		typeBody = append(typeBody, 0x01, 0x7c)
 	}
-	m.addSection(0x01, typeBody)
+	m.AddSection(0x01, typeBody)
 
 	// Function section
 	var funcBody []byte
@@ -602,10 +602,10 @@ func assembleMemNthModule(callerParams, helperParams int, callerBody, helperBody
 	for i := 0; i < numFuncs; i++ {
 		funcBody = corewasm.AppendULEB(funcBody, i) // type index
 	}
-	m.addSection(0x03, funcBody)
+	m.AddSection(0x03, funcBody)
 
 	// Memory section: 1 page (64KB)
-	m.addSection(0x05, []byte{0x01, 0x00, 0x01}) // 1 memory, min=1
+	m.AddSection(0x05, []byte{0x01, 0x00, 0x01}) // 1 memory, min=1
 
 	// Export section
 	execName := []byte("exec")
@@ -618,7 +618,7 @@ func assembleMemNthModule(callerParams, helperParams int, callerBody, helperBody
 	expBody = corewasm.AppendULEB(expBody, len(memName))
 	expBody = append(expBody, memName...)
 	expBody = append(expBody, 0x02, 0x00) // memory, index 0
-	m.addSection(0x07, expBody)
+	m.AddSection(0x07, expBody)
 
 	// Code section
 	var codeBody []byte
@@ -629,6 +629,6 @@ func assembleMemNthModule(callerParams, helperParams int, callerBody, helperBody
 		codeBody = corewasm.AppendULEB(codeBody, len(helperBody))
 		codeBody = append(codeBody, helperBody...)
 	}
-	m.addSection(0x0a, codeBody)
-	return m.bytes()
+	m.AddSection(0x0a, codeBody)
+	return m.Bytes()
 }

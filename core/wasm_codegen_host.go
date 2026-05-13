@@ -1,6 +1,9 @@
 package core
 
-import "github.com/rcarmo/go-joker/core/wasm"
+import (
+	"github.com/rcarmo/go-joker/core/wasm"
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
+)
 
 // wasm_codegen_host.go — WASM codegen with host function imports.
 //
@@ -26,7 +29,7 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 		return nil
 	}
 
-	m := newWasmModule()
+	m := corewasm.NewModule()
 
 	// Type section: one type per import + one for the main fn
 	// All use i64 params and i64 result
@@ -49,7 +52,7 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 		typeBody = append(typeBody, wasm.ValTypeI64)
 	}
 	typeBody = append(typeBody, 0x01, wasm.ValTypeI64)
-	m.addSection(0x01, typeBody)
+	m.AddSection(0x01, typeBody)
 
 	// Import section
 	var importBody []byte
@@ -63,14 +66,14 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 		importBody = append(importBody, 0x00)       // import kind: func
 		importBody = wasm.AppendULEB(importBody, i) // type index
 	}
-	m.addSection(0x02, importBody)
+	m.AddSection(0x02, importBody)
 
 	// Function section: 1 function with type index = len(imports)
 	mainTypeIdx := len(standardHostImports)
 	var funcBody []byte
 	funcBody = append(funcBody, 0x01)
 	funcBody = wasm.AppendULEB(funcBody, mainTypeIdx)
-	m.addSection(0x03, funcBody)
+	m.AddSection(0x03, funcBody)
 
 	// Export section: export the main function
 	mainFuncIdx := len(standardHostImports) // imports are 0..6, main is 7
@@ -81,12 +84,12 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 	exportBody = append(exportBody, name...)
 	exportBody = append(exportBody, 0x00) // func export
 	exportBody = wasm.AppendULEB(exportBody, mainFuncIdx)
-	m.addSection(0x07, exportBody)
+	m.AddSection(0x07, exportBody)
 
 	// Code section
-	m.addCodeSection(body)
+	m.AddCodeSection(body)
 
-	return m.bytes()
+	return m.Bytes()
 }
 
 // isWasmWithImportsEligible checks if the program can be compiled with host imports.

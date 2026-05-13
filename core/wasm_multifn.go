@@ -172,7 +172,7 @@ func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRPro
 }
 
 func wasmModuleWithTwoFuncs(callerParams, helperParams int, useFloat bool, callerBody, helperBody []byte) []byte {
-	m := newWasmModule()
+	m := corewasm.NewModule()
 	valType := corewasm.ValTypeI64
 	if useFloat {
 		valType = corewasm.ValTypeF64
@@ -187,15 +187,15 @@ func wasmModuleWithTwoFuncs(callerParams, helperParams int, useFloat bool, calle
 		}
 		typeBody = append(typeBody, 0x01, valType)
 	}
-	m.addSection(0x01, typeBody)
-	m.addSection(0x03, []byte{0x02, 0x00, 0x01})
-	m.addExportSection()
+	m.AddSection(0x01, typeBody)
+	m.AddSection(0x03, []byte{0x02, 0x00, 0x01})
+	m.AddExportSection()
 	var codeBody []byte
 	codeBody = append(codeBody, 0x02)
 	codeBody = corewasm.AppendULEB(codeBody, len(callerBody))
 	codeBody = append(codeBody, callerBody...)
 	codeBody = corewasm.AppendULEB(codeBody, len(helperBody))
 	codeBody = append(codeBody, helperBody...)
-	m.addSection(0x0a, codeBody)
-	return m.bytes()
+	m.AddSection(0x0a, codeBody)
+	return m.Bytes()
 }

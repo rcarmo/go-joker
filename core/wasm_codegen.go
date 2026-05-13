@@ -14,20 +14,20 @@ func irToWasm(prog *IRProgram) []byte {
 	if body == nil {
 		return nil
 	}
-	m := newWasmModule()
+	m := corewasm.NewModule()
 	valType := corewasm.ValTypeI64
 	if useFloat {
 		valType = corewasm.ValTypeF64
 	}
-	m.addTypeSectionTyped(model.NumSlots, valType)
+	m.AddTypeSectionTyped(model.NumSlots, valType)
 	if prog.hasSelf {
-		m.addFuncSectionRecursive()
+		m.AddFuncSectionRecursive()
 	} else {
-		m.addFuncSection()
+		m.AddFuncSection()
 	}
-	m.addExportSection()
-	m.addCodeSection(body)
-	return m.bytes()
+	m.AddExportSection()
+	m.AddCodeSection(body)
+	return m.Bytes()
 }
 
 // compileWasmBody generates WASM instructions.
@@ -70,7 +70,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 	extraLocals := model.NumSlots - numParams
 	if extraLocals > 0 {
 		o = append(o, 0x01) // 1 local decl group
-		o = appendULEB(o, extraLocals)
+		o = corewasm.AppendULEB(o, extraLocals)
 		o = append(o, valType)
 	} else {
 		o = append(o, 0x00) // 0 local decls
@@ -107,27 +107,27 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 					return nil
 				}
 				o = append(o, 0x44) // f64.const
-				o = appendF64(o, fv)
+				o = corewasm.AppendF64(o, fv)
 			} else {
 				v, ok := c.(Int)
 				if !ok {
 					return nil
 				}
 				o = append(o, 0x42) // i64.const
-				o = appendSLEB(o, int64(v.I))
+				o = corewasm.AppendSLEB(o, int64(v.I))
 			}
 
 		case irLoadSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			o = append(o, 0x20)
-			o = appendULEB(o, idx)
+			o = corewasm.AppendULEB(o, idx)
 
 		case irStoreSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			o = append(o, 0x21)
-			o = appendULEB(o, idx)
+			o = corewasm.AppendULEB(o, idx)
 
 		case irAdd:
 			if useFloat {
@@ -167,7 +167,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 		case irInc:
 			if useFloat {
 				o = append(o, 0x44)
-				o = appendF64(o, 1.0)
+				o = corewasm.AppendF64(o, 1.0)
 				o = append(o, 0xa0)
 			} else {
 				o = append(o, 0x42, 0x01, 0x7c)
@@ -175,7 +175,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 		case irDec:
 			if useFloat {
 				o = append(o, 0x44)
-				o = appendF64(o, 1.0)
+				o = corewasm.AppendF64(o, 1.0)
 				o = append(o, 0xa1)
 			} else {
 				o = append(o, 0x42, 0x01, 0x7d)
@@ -213,7 +213,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 		case irIsZero:
 			if useFloat {
 				o = append(o, 0x44)
-				o = appendF64(o, 0.0)
+				o = corewasm.AppendF64(o, 0.0)
 				o = append(o, 0x61)
 			} else {
 				o = append(o, 0x50, 0xad)
@@ -239,7 +239,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 			// Labels: if_0..if_{depth-1}, loop, block
 			// $exit = depth + 1
 			o = append(o, 0x0c)
-			o = appendULEB(o, depth+1)
+			o = corewasm.AppendULEB(o, depth+1)
 			// If we're inside an if and no explicit else follows,
 			// emit else so the false branch code has somewhere to go.
 			if depth > 0 && pc < len(code) && code[pc] != irJump {
@@ -251,10 +251,10 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 			pc += 4
 			for i := nargs - 1; i >= 0; i-- {
 				o = append(o, 0x21)
-				o = appendULEB(o, i)
+				o = corewasm.AppendULEB(o, i)
 			}
 			o = append(o, 0x0c)
-			o = appendULEB(o, depth)
+			o = corewasm.AppendULEB(o, depth)
 			pc = len(code)
 
 		case irCallSlot:
@@ -267,14 +267,14 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 				return nil
 			}
 			o = append(o, 0x10)
-			o = appendULEB(o, helperFuncIdx)
+			o = corewasm.AppendULEB(o, helperFuncIdx)
 
 		case irCallSelf:
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			_ = nargs            // args already on WASM stack
-			o = append(o, 0x10)  // call
-			o = appendULEB(o, 0) // function index 0 (self)
+			_ = nargs                     // args already on WASM stack
+			o = append(o, 0x10)           // call
+			o = corewasm.AppendULEB(o, 0) // function index 0 (self)
 
 		default:
 			return nil
@@ -290,7 +290,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 	o = append(o, 0x0b) // end loop
 	if useFloat {
 		o = append(o, 0x44) // f64.const 0.0
-		o = appendF64(o, 0.0)
+		o = corewasm.AppendF64(o, 0.0)
 	} else {
 		o = append(o, 0x42, 0x00) // i64.const 0
 	}
