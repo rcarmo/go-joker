@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"unsafe"
 
-	"github.com/rcarmo/go-joker/core/internal/hashutil"
+	"github.com/rcarmo/go-joker/core/hashutil"
 )
 
 type (

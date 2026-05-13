@@ -15,7 +15,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/rcarmo/go-joker/core/internal/hashutil"
+	"github.com/rcarmo/go-joker/core/hashutil"
 )
 
 // Protocol represents a Clojure-style protocol.

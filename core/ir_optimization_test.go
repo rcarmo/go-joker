@@ -3,7 +3,7 @@ package core
 import (
 	"testing"
 
-	"github.com/rcarmo/go-joker/core/internal/noescape"
+	coreirx "github.com/rcarmo/go-joker/core/ir"
 )
 
 // --- guessFnParamFrame ---
@@ -217,7 +217,7 @@ func TestIrValueStringIntMapRoundtrip(t *testing.T) {
 
 func TestNoescape64Correctness(t *testing.T) {
 	buf := [4]float64{1.0, 2.0, 3.0, 4.0}
-	s := noescape.Float64(buf[:3])
+	s := coreirx.Float64(buf[:3])
 	if len(s) != 3 || s[0] != 1.0 || s[2] != 3.0 {
 		t.Fatalf("noescape64 returned wrong values: %v", s)
 	}

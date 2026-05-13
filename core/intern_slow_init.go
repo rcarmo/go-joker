@@ -3,4 +3,6 @@
 
 package core
 
-var STRINGS StringPool = StringPool{}
+import "github.com/rcarmo/go-joker/core/stringpool"
+
+var STRINGS stringpool.Pool = stringpool.Pool{}

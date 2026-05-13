@@ -3,7 +3,7 @@ package core
 import (
 	"math"
 
-	"github.com/rcarmo/go-joker/core/internal/noescape"
+	coreirx "github.com/rcarmo/go-joker/core/ir"
 )
 
 // ir_exec_typed_nb.go — NaN-boxed typed IR executor.
@@ -290,7 +290,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 						sp--
 						f64buf[i] = nbToFloat(stackBuf[sp])
 					}
-					stackBuf[sp] = nbDouble(fnProg.nativeHelper(noescape.Float64(f64buf[:nargs])))
+					stackBuf[sp] = nbDouble(fnProg.nativeHelper(coreirx.Float64(f64buf[:nargs])))
 					sp++
 					continue
 				}

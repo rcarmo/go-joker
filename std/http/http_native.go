@@ -13,6 +13,7 @@ import (
 
 	ws "github.com/gorilla/websocket"
 	. "github.com/rcarmo/go-joker/core"
+	"github.com/rcarmo/go-joker/core/hashutil"
 )
 
 var client = newPersistentHTTPClient(100, 100, 90*time.Second)
@@ -44,7 +45,7 @@ func newHTTPClient(maxIdle, maxIdlePerHost int, idleTimeout time.Duration) *HTTP
 		ExpectContinueTimeout: 1 * time.Second,
 	}
 	hc := &HTTPClient{client: &http.Client{Transport: tr}, transport: tr}
-	hc.hash = HashPtr(uintptr(unsafe.Pointer(hc)))
+	hc.hash = hashutil.Ptr(uintptr(unsafe.Pointer(hc)))
 	return hc
 }
 

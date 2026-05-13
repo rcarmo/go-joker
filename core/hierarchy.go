@@ -10,7 +10,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/rcarmo/go-joker/core/internal/hashutil"
+	"github.com/rcarmo/go-joker/core/hashutil"
 )
 
 // Hierarchy represents a Clojure hierarchy.

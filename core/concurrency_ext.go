@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rcarmo/go-joker/core/internal/hashutil"
+	"github.com/rcarmo/go-joker/core/hashutil"
 )
 
 // concurrency_ext.go — Extended concurrency primitives: alts!, timeout, future, promise, pmap.

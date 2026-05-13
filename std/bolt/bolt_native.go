@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	. "github.com/rcarmo/go-joker/core"
+	"github.com/rcarmo/go-joker/core/hashutil"
 	bolt "go.etcd.io/bbolt"
 )
 
@@ -22,7 +23,7 @@ var boltDBType *Type
 
 func MakeBoltDB(db *bolt.DB) BoltDB {
 	res := BoltDB{db, 0}
-	res.hash = HashPtr(uintptr(unsafe.Pointer(db)))
+	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(db)))
 	return res
 }
 

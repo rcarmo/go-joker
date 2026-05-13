@@ -1,4 +1,4 @@
-package noescape
+package ir
 
 // Float64 used to hide slices from escape analysis via unsafe pointer tricks.
 //

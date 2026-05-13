@@ -1,4 +1,4 @@
-package noescape
+package ir
 
 import "testing"
 

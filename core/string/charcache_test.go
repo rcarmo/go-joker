@@ -1,4 +1,4 @@
-package charcache
+package string
 
 import "testing"
 

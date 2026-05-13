@@ -5,8 +5,8 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/rcarmo/go-joker/core/hashutil"
 	"github.com/rcarmo/go-joker/core/internal/bufferpool"
-	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 type (

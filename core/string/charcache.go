@@ -1,4 +1,4 @@
-package charcache
+package string
 
 var ascii [128]string
 

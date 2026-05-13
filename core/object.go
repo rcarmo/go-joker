@@ -22,7 +22,7 @@ import (
 	"unicode/utf8"
 	"unsafe"
 
-	"github.com/rcarmo/go-joker/core/internal/hashutil"
+	"github.com/rcarmo/go-joker/core/hashutil"
 )
 
 type (
@@ -492,10 +492,6 @@ func (s SortableSlice) Swap(i, j int) {
 
 func (s SortableSlice) Less(i, j int) bool {
 	return s.cmp.Compare(s.s[i], s.s[j]) == -1
-}
-
-func HashPtr(ptr uintptr) uint32 {
-	return hashutil.Ptr(ptr)
 }
 
 func hashGobEncoder(e gob.GobEncoder) uint32 {

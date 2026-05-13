@@ -3,7 +3,7 @@ package core
 import (
 	"unsafe"
 
-	"github.com/rcarmo/go-joker/core/internal/hashutil"
+	"github.com/rcarmo/go-joker/core/hashutil"
 )
 
 // transducer_compat.go — Transducer runtime support with proper Reduced type.

@@ -3,7 +3,7 @@ package core
 import (
 	"math"
 
-	"github.com/rcarmo/go-joker/core/internal/noescape"
+	coreirx "github.com/rcarmo/go-joker/core/ir"
 )
 
 // ---------- Interpreter ----------
@@ -735,7 +735,7 @@ loop:
 						}
 						stack = stack[:len(stack)-1]
 					}
-					stack = append(stack, Double{D: fnProg.nativeHelper(noescape.Float64(f64args))})
+					stack = append(stack, Double{D: fnProg.nativeHelper(coreirx.Float64(f64args))})
 					continue
 				}
 			}

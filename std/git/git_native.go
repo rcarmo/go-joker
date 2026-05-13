@@ -8,6 +8,7 @@ import (
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	. "github.com/rcarmo/go-joker/core"
+	"github.com/rcarmo/go-joker/core/hashutil"
 )
 
 type (
@@ -21,7 +22,7 @@ var gitRepoType *Type
 
 func MakeGitRepo(repo *git.Repository) GitRepo {
 	res := GitRepo{repo, 0}
-	res.hash = HashPtr(uintptr(unsafe.Pointer(repo)))
+	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(repo)))
 	return res
 }
 

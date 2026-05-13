@@ -8,6 +8,8 @@ package core
 import (
 	"io"
 	"reflect"
+
+	"github.com/rcarmo/go-joker/core/stringpool"
 )
 
 var s_if string = "if"
@@ -1817,7 +1819,7 @@ var s_zero_Q_ string = "zero?"
 var s_zero_Q___ string = "zero?__"
 var s_zipmap string = "zipmap"
 var s_zs string = "zs"
-var STRINGS StringPool = StringPool{
+var STRINGS stringpool.Pool = stringpool.Pool{
 	"":                           &s_,
 	"%":                          &s__PCT_,
 	"&":                          &s__AMP_,
