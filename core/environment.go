@@ -3,10 +3,10 @@ package core
 import (
 	"io"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/rcarmo/go-joker/core/osutil"
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
 var (
@@ -39,13 +39,10 @@ type (
 
 func versionMap() Map {
 	res := EmptyArrayMap()
-	parts := strings.Split(VERSION[1:], ".")
-	i, _ := strconv.ParseInt(parts[0], 10, 64)
-	res.Add(MakeKeyword("major"), Int{I: int(i)})
-	i, _ = strconv.ParseInt(parts[1], 10, 64)
-	res.Add(MakeKeyword("minor"), Int{I: int(i)})
-	i, _ = strconv.ParseInt(parts[2], 10, 64)
-	res.Add(MakeKeyword("incremental"), Int{I: int(i)})
+	major, minor, incremental := corestr.ParseVersionTriplet(VERSION)
+	res.Add(MakeKeyword("major"), Int{I: int(major)})
+	res.Add(MakeKeyword("minor"), Int{I: int(minor)})
+	res.Add(MakeKeyword("incremental"), Int{I: int(incremental)})
 	return res
 }
 
