@@ -1960,7 +1960,7 @@ func PackReader(reader *Reader, filename string) ([]byte, error) {
 		defer func() {
 			parseContext.GlobalEnv.SetFilename(currentFilename)
 		}()
-		s, err := filepath.Abs(filename)
+		s, err := osutil.Abs(filename)
 		PanicOnErr(err)
 		parseContext.GlobalEnv.SetFilename(MakeString(s))
 	}
@@ -2005,7 +2005,7 @@ func ProcessReader(reader *Reader, filename string, phase Phase) error {
 		defer func() {
 			parseContext.GlobalEnv.SetFilename(currentFilename)
 		}()
-		s, err := filepath.Abs(filename)
+		s, err := osutil.Abs(filename)
 		PanicOnErr(err)
 		parseContext.GlobalEnv.SetFilename(MakeString(s))
 	}
@@ -2071,7 +2071,7 @@ func ProcessReaderFromEval(reader *Reader, filename string) {
 		defer func() {
 			parseContext.GlobalEnv.SetFilename(currentFilename)
 		}()
-		s, err := filepath.Abs(filename)
+		s, err := osutil.Abs(filename)
 		PanicOnErr(err)
 		parseContext.GlobalEnv.SetFilename(MakeString(s))
 	}
@@ -2137,50 +2137,16 @@ var procIsNamespaceInitialized = func(args []Object) Object {
 }
 
 func findConfigFile(filename string, workingDir string, findDir bool) string {
-	var err error
 	configName := ".joker"
 	if findDir {
 		configName = ".jokerd"
 	}
-	if filename != "" {
-		filename, err = filepath.Abs(filename)
-		if err != nil {
-			fmt.Fprintln(Stderr, "Error reading config file "+filename+": ", err)
-			return ""
-		}
+	path, err := osutil.FindConfigPath(filename, workingDir, configName, osutil.HomeDir(), findDir)
+	if err != nil {
+		fmt.Fprintln(Stderr, "Error reading config file "+filename+": ", err)
+		return ""
 	}
-
-	if workingDir != "" {
-		workingDir, err := filepath.Abs(workingDir)
-		if err != nil {
-			fmt.Fprintln(Stderr, "Error resolving working directory"+workingDir+": ", err)
-			return ""
-		}
-		filename = filepath.Join(workingDir, configName)
-	}
-	for {
-		oldFilename := filename
-		filename = filepath.Dir(filename)
-		if filename == oldFilename {
-			home := osutil.HomeDir()
-			if home == "" {
-				return ""
-			}
-			p := filepath.Join(home, configName)
-			if info, err := os.Stat(p); err == nil {
-				if !findDir || info.IsDir() {
-					return p
-				}
-			}
-			return ""
-		}
-		p := filepath.Join(filename, configName)
-		if info, err := os.Stat(p); err == nil {
-			if !findDir || info.IsDir() {
-				return p
-			}
-		}
-	}
+	return path
 }
 
 func printConfigError(filename, msg string) {
