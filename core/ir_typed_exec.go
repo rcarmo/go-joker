@@ -766,7 +766,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 								stack = append(stack, subResult)
 								continue
 							}
-							fnProg.typedFailed = true
+							(RuntimeExecutionAdapter{}).MarkTypedExecutionFailed(fnProg)
 						}
 					}
 					// Fallback: box args
@@ -800,7 +800,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 						if r := irExec(fnProg, callArgs); r != nil {
 							result = r
 						} else {
-							fnProg.execFailed = true
+							(RuntimeExecutionAdapter{}).MarkBoxedExecutionFailed(fnProg)
 						}
 					}
 				}

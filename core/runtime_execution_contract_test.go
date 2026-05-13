@@ -2,6 +2,25 @@ package core
 
 import "testing"
 
+func TestRuntimeExecutionAdapterExecutionFailureFlags(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	prog := &IRProgram{}
+	if !adapter.CanExecuteIR(prog) || !adapter.CanExecuteTypedIR(prog) {
+		t.Fatal("fresh program should be executable by boxed and typed IR")
+	}
+	adapter.MarkTypedExecutionFailed(prog)
+	if !prog.typedFailed || !adapter.CanExecuteIR(prog) || adapter.CanExecuteTypedIR(prog) {
+		t.Fatalf("typed failure should only disable typed IR: %#v", prog)
+	}
+	adapter.MarkBoxedExecutionFailed(prog)
+	if !prog.execFailed || adapter.CanExecuteIR(prog) || adapter.CanExecuteTypedIR(prog) {
+		t.Fatalf("boxed failure should disable all IR execution: %#v", prog)
+	}
+	if adapter.CanExecuteIR(nil) || adapter.CanExecuteTypedIR(nil) {
+		t.Fatal("nil program must not be executable")
+	}
+}
+
 func TestRuntimeExecutionAdapterMakeFnCapturesSlots(t *testing.T) {
 	expr := compileBenchExpr(t, `(fn [y] y)`)
 	fnExpr := expr.(*FnExpr)

@@ -49,3 +49,23 @@ func (RuntimeExecutionAdapter) MakeFn(fnExpr *FnExpr, slots []Object) Object {
 	copy(fnEnv.bindings, slots)
 	return &Fn{fnExpr: fnExpr, env: fnEnv}
 }
+
+func (RuntimeExecutionAdapter) MarkTypedExecutionFailed(prog *IRProgram) {
+	if prog != nil {
+		prog.typedFailed = true
+	}
+}
+
+func (RuntimeExecutionAdapter) MarkBoxedExecutionFailed(prog *IRProgram) {
+	if prog != nil {
+		prog.execFailed = true
+	}
+}
+
+func (RuntimeExecutionAdapter) CanExecuteIR(prog *IRProgram) bool {
+	return prog != nil && !prog.execFailed
+}
+
+func (RuntimeExecutionAdapter) CanExecuteTypedIR(prog *IRProgram) bool {
+	return prog != nil && !prog.typedFailed && !prog.execFailed
+}

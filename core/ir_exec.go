@@ -761,7 +761,7 @@ loop:
 					}
 				}
 				// Try IR — typed executor first, skip if previously failed
-				if fnProg := irGetFnProg(fn); fnProg != nil && !fnProg.execFailed {
+				if fnProg := irGetFnProg(fn); (RuntimeExecutionAdapter{}).CanExecuteIR(fnProg) {
 					// Multi-arity dispatch
 					if fnProg.arityPrograms != nil {
 						if sub, ok := fnProg.arityPrograms[nargs]; ok {
@@ -789,12 +789,12 @@ loop:
 							}
 							callArgs = full
 						}
-						if !fnProg.typedFailed {
+						if (RuntimeExecutionAdapter{}).CanExecuteTypedIR(fnProg) {
 							if result := irExecTyped(fnProg, callArgs); result != nil {
 								stack = append(stack, result)
 								continue
 							}
-							fnProg.typedFailed = true
+							(RuntimeExecutionAdapter{}).MarkTypedExecutionFailed(fnProg)
 						}
 						if result := irExec(fnProg, callArgs); result != nil {
 							stack = append(stack, result)
