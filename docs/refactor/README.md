@@ -45,7 +45,7 @@ Planned package boundaries:
 | Target | Current files/examples | Notes |
 |---|---|---|
 | `core/trace` | `function_trace.go`, `symbol_trace.go`, `ir_profile.go` state machinery | Extracted leaf package. No dependency on `core`; core passes names/events/op names in. |
-| `core/internal/ir` or `core/ir` | `ir*.go`, IR tests | Reserved/public extraction target should exist; requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. |
+| `core/ir` or `core/ir` | `ir*.go`, IR tests | Reserved/public extraction target should exist; requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. |
 | `core/wasm` or `core/wasm` | `wasm*.go` leaf helpers first | Reserved/public extraction target should exist; encoding/module/host metadata are already partly extracted, but full lowering/runtime still depends on IR program shape and runtime contracts. |
 | `core/runtime` | goroutine runtime, eval frames, errors, tracing hooks | Reserved package exists; production moves require explicit object/call/error/frame contracts first. |
 | `core/collections` | vectors, maps, sets, seqs, transients | Reserved package should exist as the extraction target; move only after construction/adaptation contracts are explicit. |
@@ -62,7 +62,7 @@ Planned package boundaries:
 - [x] Keep `make docs-check`, `make bb-compat`, full tests, and vet as required checks.
 - [x] Guard module/import identity with `make import-identity-check` from `make docs-check`.
 - [x] Guard explicit Babashka/non-goal boundaries with `make non-goals-check` from `make docs-check`.
-- [x] Run extracted `core/internal/...` package tests from `make docs-check` via `make refactor-internals-check`.
+- [x] Run extracted `core/*` helper subpackage tests from `make docs-check` via `make refactor-internals-check`.
 - [x] Guard top-level and extracted internal package layout invariants with `make layout-check` from `make docs-check`.
 
 ### R1 — Extract leaf tracing state
@@ -81,17 +81,17 @@ Planned package boundaries:
 ### R3 — Define IR boundary
 
 - [x] Audit all `ir*.go` references to unexported core symbols.
-- [x] Introduce a minimal exported boundary or adapter layer for opcode names/constants in `core/internal/ir`.
+- [x] Introduce a minimal exported boundary or adapter layer for opcode names/constants in `core/ir`.
 - [x] Move diagnostic/export helpers first, then compiler/executor (started with opcode naming, op counting, disassembly, and shape-analysis helpers; direct tests now cover the extracted IR helper package).
-- [x] Design `IRProgram` split into a small `core/internal/ir.Program` model plus root-core execution metadata.
-- [x] Start `IRProgram` split with `core/internal/ir.Program` neutral model and root-core envelope population.
-- [x] Migrate diagnostics/export accessors to consume `core/internal/ir.Program`.
-- [x] Migrate WASM eligibility/basic lowering to consume `core/internal/ir.Program`.
-- [x] Migrate multi-function WASM helper eligibility/lowering to consume `core/internal/ir.Program`.
-- [x] Migrate imported WASM host-codegen eligibility/lowering to consume `core/internal/ir.Program`.
-- [x] Migrate WASM memory helper paths to consume `core/internal/ir.Program`.
+- [x] Design `IRProgram` split into a small `core/ir.Program` model plus root-core execution metadata.
+- [x] Start `IRProgram` split with `core/ir.Program` neutral model and root-core envelope population.
+- [x] Migrate diagnostics/export accessors to consume `core/ir.Program`.
+- [x] Migrate WASM eligibility/basic lowering to consume `core/ir.Program`.
+- [x] Migrate multi-function WASM helper eligibility/lowering to consume `core/ir.Program`.
+- [x] Migrate imported WASM host-codegen eligibility/lowering to consume `core/ir.Program`.
+- [x] Migrate WASM memory helper paths to consume `core/ir.Program`.
 - [x] Confirm profile paths are opcode-stream based and do not own program shape.
-- [x] Migrate native helper eligibility/lowering to consume `core/internal/ir.Program`.
+- [x] Migrate native helper eligibility/lowering to consume `core/ir.Program`.
 - [x] Document runtime/object execution metadata contract before moving executors or escape analysis.
 - [x] Add initial IR execution-envelope contract tests for constants/captures/escape metadata/model handoff.
 - [x] Add escape-analysis contract tests for call-argument unsafety and string-builder slots.
@@ -153,4 +153,4 @@ Planned package boundaries:
 
 ## Current execution status
 
-R3 has established the first IR boundary and extracted tested IR helper packages. A neutral `core/internal/ir.Program` model now exists and root executable `IRProgram` envelopes populate it; diagnostics/export accessors, WASM lowering helpers, and native helper compilation read from that model where appropriate. Runtime/execution-envelope contracts now run from `make runtime-contract-check` inside `make docs-check`. R4 generated-code inventory/guardrails are in place; `core/a_data.go` has been removed in favor of the generated source manifest, while remaining generated artifacts still wait on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, sorted collections, transients, seqs, reader construction, native-int numeric promotion/conversion, std native-boundary returns and arity/shape checks, metadata/info behavior, and persistent-vector semantics. Recent std audits added `git`, `log`, `csv`, `json`, and `filepath` boundary coverage for argument guards, config shape, level parsing, write/flush propagation, decode wrapping, and walk error context. `make native-int-check`, `make error-handling-check`, and `make std-contract-check` guard recent audit closures. The CLI entrypoint lives in `cmd/joker`.
+R3 has established the first IR boundary and extracted tested IR helper packages. A neutral `core/ir.Program` model now exists and root executable `IRProgram` envelopes populate it; diagnostics/export accessors, WASM lowering helpers, and native helper compilation read from that model where appropriate. Runtime/execution-envelope contracts now run from `make runtime-contract-check` inside `make docs-check`. R4 generated-code inventory/guardrails are in place; `core/a_data.go` has been removed in favor of the generated source manifest, while remaining generated artifacts still wait on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, sorted collections, transients, seqs, reader construction, native-int numeric promotion/conversion, std native-boundary returns and arity/shape checks, metadata/info behavior, and persistent-vector semantics. Recent std audits added `git`, `log`, `csv`, `json`, and `filepath` boundary coverage for argument guards, config shape, level parsing, write/flush propagation, decode wrapping, and walk error context. `make native-int-check`, `make error-handling-check`, and `make std-contract-check` guard recent audit closures. The CLI entrypoint lives in `cmd/joker`.

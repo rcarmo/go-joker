@@ -104,7 +104,7 @@ core/internal/eval/
 
 Safe moves before broad object extraction:
 
-- Continue moving pure helpers with no `core.Object` dependency into `core/internal/ir` and `core/wasm`.
+- Continue moving pure helpers with no `core.Object` dependency into `core/ir` and `core/wasm`.
 - Add tests for extracted helpers before moving callers.
 - Keep root-core adapter functions temporary only while their surrounding subsystem is still coupled.
 

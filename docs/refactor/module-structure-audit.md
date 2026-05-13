@@ -21,7 +21,7 @@ cmd/joker                         # CLI, REPL, standalone helpers
 core                              # runtime kernel; still the main monolith
 core/trace               # extracted trace/profile aggregation state
 core/generated           # data-only generated bootstrap payload contracts/source manifest
-core/internal/ir                  # extracted IR opcode/diagnostic/analysis helpers and neutral Program model
+core/ir                  # extracted IR opcode/diagnostic/analysis helpers and neutral Program model
 core/wasm                # extracted WASM encoding/module/host metadata helpers
 std/*                             # namespace-oriented standard library packages
 tests                             # integration/parity/Babashka fixture tests
@@ -91,7 +91,7 @@ Remaining prerequisites are in `generated-boundary.md` and `generated-bootstrap-
 
 ### 3. IR package owns neutral shape, root owns execution metadata
 
-`core/internal/ir` now owns opcode/constants/analysis helpers and a neutral `Program` model. Root `IRProgram` remains the executable envelope because it references root-only types (`Object`, `FnExpr`, `bindingKey`, `EscapeInfo`, native helper funcs). Diagnostics, exported accessors, WASM lowering helpers, and native helper compilation now consume the neutral model where appropriate.
+`core/ir` now owns opcode/constants/analysis helpers and a neutral `Program` model. Root `IRProgram` remains the executable envelope because it references root-only types (`Object`, `FnExpr`, `bindingKey`, `EscapeInfo`, native helper funcs). Diagnostics, exported accessors, WASM lowering helpers, and native helper compilation now consume the neutral model where appropriate.
 
 Next improvement:
 

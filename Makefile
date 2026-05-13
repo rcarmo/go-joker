@@ -45,7 +45,7 @@ help:
 	@echo "  make layout-check    # Verify top-level refactor layout invariants"
 	@echo "  make native-int-check # Verify 32-bit/native-int audit TODOs are closed"
 	@echo "  make error-handling-check # Verify close/process/raw-error audit guardrails"
-	@echo "  make refactor-internals-check # Run tests for extracted core/internal packages"
+	@echo "  make refactor-internals-check # Run tests for extracted core helper subpackages"
 	@echo "  make core-contract-check # Run object/protocol contract tests that gate future core splits"
 	@echo "  make runtime-contract-check # Run IR/runtime execution-envelope contract tests"
 	@echo "  make std-contract-check # Run focused std native-boundary contract tests"
@@ -138,7 +138,7 @@ error-handling-check:
 	tests/error_handling_guard.sh .
 
 refactor-internals-check:
-	$(GO) test ./core/internal/... -count=$(TEST_COUNT)
+	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/stringpool ./core/string ./core/osutil ./core/bufferpool ./core/runewindow -count=$(TEST_COUNT)
 
 core-contract-check:
 	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestSortedCollectionContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics|TestBigIntInt|TestRatioOrInt|TestReadIntegerUsesNativeIntRange|TestFileInfoMapPromotesLargeSize|TestReaderConstructionContract' -count=$(TEST_COUNT) -timeout=120s

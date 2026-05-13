@@ -14,13 +14,13 @@ Current package/file snapshot:
 | `cmd/joker` | 14 | 0 | startup/orchestration is now split across cohesive helper files; keep shrinking `main.go` rather than regrowing it |
 | `core` root | 201 | 64 | still the main monolith; contract tests grew intentionally before moves |
 | `core/generated` | 3 | 1 | data-only generated bootstrap contract and source manifest; package-level generated payloads only move here when they can be a true Go package boundary |
-| `core/internal/ir` | 6 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
+| `core/ir` | 6 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
 | `core/trace` | 4 | 1 | aggregation state with direct JSON-shape tests |
 | `core/wasm` | 8 | 4 | encoding/module/host/opcode leaf helpers |
 | `core/runtime` | 1 | 0 | reserved package for evaluator/runtime extraction; currently a documented boundary marker only |
 | `core/collections` | 1 | 0 | reserved package for collection extraction; currently a documented boundary marker only |
 | `core/reader` | 1 | 0 | reserved package for reader/parser extraction; currently a documented boundary marker only |
-| `core/ir` | 1 | 0 | reserved package for future IR compiler/executor extraction; neutral leaf model remains in `core/internal/ir` |
+| `core/ir` | 1 | 0 | reserved package for future IR compiler/executor extraction; neutral leaf model remains in `core/ir` |
 | `core/wasm` | 1 | 0 | reserved package for future root WASM extraction; leaf helpers remain in `core/wasm` |
 | `core/generated` | 1 | 0 | reserved package for future generated payload families that become real package boundaries |
 | `core/string` | 1 | 0 | reserved package for future extraction of root string support helpers |
@@ -45,7 +45,7 @@ Root `core` clustering remains the structural hotspot:
 
 ### 1. Split `IRProgram` into model plus execution metadata
 
-The highest-value next boundary remains IR ownership. `core/internal/ir` cannot own the program yet because root `IRProgram` still contains runtime-specific fields:
+The highest-value next boundary remains IR ownership. `core/ir` cannot own the program yet because root `IRProgram` still contains runtime-specific fields:
 
 - `[]Object` constants and capture slots
 - `bindingKey` capture keys
@@ -56,7 +56,7 @@ The highest-value next boundary remains IR ownership. `core/internal/ir` cannot 
 
 Status:
 
-- `core/internal/ir.Program` now exists for bytecode, constants count, slot counts, op metadata, and analysis.
+- `core/ir.Program` now exists for bytecode, constants count, slot counts, op metadata, and analysis.
 - diagnostics/export accessors, WASM lowering helpers, and native helper compilation consume the neutral model where appropriate.
 - root-only execution metadata remains in `core` until call/object contracts are explicit in code.
 

@@ -10,7 +10,7 @@ This is the R3 inventory for moving the current `core/ir*.go` grab-bag into an a
 
 Current files matching `core/ir*.go` include:
 
-- `core/ir.go` — cache and executable `IRProgram` envelope; opcode model has started moving to `core/internal/ir`
+- `core/ir.go` — cache and executable `IRProgram` envelope; opcode model has started moving to `core/ir`
 - `core/ir_analysis.go` — analysis summaries
 - `core/ir_call_dispatch.go` — call dispatch bridge from `Fn`/`Proc`
 - `core/ir_compile_fn.go` — function compilation
@@ -66,7 +66,7 @@ The IR layer currently depends on these core concepts:
 The IR split should be incremental and acyclic:
 
 1. **Model/diagnostics leaf first**
-   - Move opcode definitions, opcode naming, `IRProgram` shape, `IRAnalysis`, and diagnostic/export helpers into `core/internal/ir`.
+   - Move opcode definitions, opcode naming, `IRProgram` shape, `IRAnalysis`, and diagnostic/export helpers into `core/ir`.
    - Keep only adapters in `core` for APIs that must see `LoopExpr`/`FnExpr` initially.
 
 2. **Compiler boundary second**
@@ -83,7 +83,7 @@ The IR split should be incremental and acyclic:
 ## Draft target structure for IR
 
 ```text
-core/internal/ir/
+core/ir/
 ├── model.go              # opcodes, Program, constants/captures metadata
 ├── opcode.go             # opcode names, widths, iteration helpers
 ├── diagnostics/          # explain/export helpers once cycles are gone
@@ -97,7 +97,7 @@ core/internal/ir/
 
 ## First executable boundary candidate
 
-`irOpcodeName` and opcode-width/iteration helpers are the safest first move because they only depend on opcode constants. However, the opcode constants and `IRProgram` are currently in `core/ir.go`, so the actual first code move should extract a `core/internal/ir` package containing:
+`irOpcodeName` and opcode-width/iteration helpers are the safest first move because they only depend on opcode constants. However, the opcode constants and `IRProgram` are currently in `core/ir.go`, so the actual first code move should extract a `core/ir` package containing:
 
 - opcode constants
 - `OpcodeName(op byte) string`
@@ -107,7 +107,7 @@ Then `core/ir_diagnostics.go`, `core/ir_profile.go`, and render/export paths can
 
 ## IRProgram split note
 
-The next concrete R3 step is documented in `ir-program-split.md`. The planned shape is a package-neutral `core/internal/ir.Program` for bytecode/slot/analysis/arity metadata, while root `core.IRProgram` temporarily remains the executable envelope for `Object` constants, `bindingKey` captures, `FnExpr` references, native helpers, escape analysis, and execution failure caches.
+The next concrete R3 step is documented in `ir-program-split.md`. The planned shape is a package-neutral `core/ir.Program` for bytecode/slot/analysis/arity metadata, while root `core.IRProgram` temporarily remains the executable envelope for `Object` constants, `bindingKey` captures, `FnExpr` references, native helpers, escape analysis, and execution failure caches.
 
 ## Risks
 
@@ -122,4 +122,4 @@ The next concrete R3 step is documented in `ir-program-split.md`. The planned sh
 - [x] Move diagnostic/export helpers first, then compiler/executor (started with opcode naming, op counting, disassembly, and shape-analysis helpers; direct tests now cover the extracted IR helper package).
 - [x] Keep benchmark correctness tests before performance work.
 - [x] Document the `IRProgram` model/envelope split.
-- [x] Implement the initial `IRProgram` model/envelope split: `core/internal/ir.Program` now carries the package-neutral bytecode/slot/analysis shape while root `core.IRProgram` remains the executable envelope for core-owned runtime metadata.
+- [x] Implement the initial `IRProgram` model/envelope split: `core/ir.Program` now carries the package-neutral bytecode/slot/analysis shape while root `core.IRProgram` remains the executable envelope for core-owned runtime metadata.

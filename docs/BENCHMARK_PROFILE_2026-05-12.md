@@ -86,7 +86,7 @@ Top allocation-space profile from the CLBG/Eval/WASM profile:
 - `core.irExec`: 706.21MB cumulative
 - `core.irCompileMultiArity`: 1161.69MB cumulative
 - `core.newIRFrameStack`: 165.69MB flat
-- `core/internal/ir.NewProgram`: 133.52MB flat
+- `core/ir.NewProgram`: 133.52MB flat
 
 ## Interpretation
 

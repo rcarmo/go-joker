@@ -202,7 +202,7 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 
 | File | Lines | Purpose |
 |---|---:|---|
-| `ir.go` | ~100 | IR cache and root executable `IRProgram` envelope; neutral model lives in `core/internal/ir` |
+| `ir.go` | ~100 | IR cache and root executable `IRProgram` envelope; neutral model lives in `core/ir` |
 | `ir_compile_fn.go` | ~120 | Function compilation with capture resolution |
 | `ir_compiler.go` | ~780 | IR compiler (compileExpr, let/loop, frame detection) |
 | `ir_inline.go` | ~470 | Helper inlining + call compilation + >=/>/<= |

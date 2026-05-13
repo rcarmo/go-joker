@@ -6,7 +6,7 @@ Updated: 2026-05-13
 
 This note defines the contract that must exist before moving IR executors, escape analysis, evaluator/runtime frames, or collection implementations out of root `core`.
 
-The neutral `core/internal/ir.Program` now owns bytecode/slot/analysis shape. Root `core.IRProgram` still owns executable metadata because it depends on runtime objects, environments, call dispatch, and error behavior. That split is intentional until the runtime contract below is made concrete.
+The neutral `core/ir.Program` now owns bytecode/slot/analysis shape. Root `core.IRProgram` still owns executable metadata because it depends on runtime objects, environments, call dispatch, and error behavior. That split is intentional until the runtime contract below is made concrete.
 
 ## Root executable metadata that must remain in `core` for now
 
@@ -21,7 +21,7 @@ The neutral `core/internal/ir.Program` now owns bytecode/slot/analysis shape. Ro
 - `traceName`
 - arity/variadic executable envelopes
 
-These fields are not pure IR shape. Moving them into `core/internal/ir` would leak root runtime internals into the IR model.
+These fields are not pure IR shape. Moving them into `core/ir` would leak root runtime internals into the IR model.
 
 ## Runtime/channel concurrency contract
 
@@ -74,7 +74,7 @@ This is a sketch, not an implementation API. The important boundary is ownership
 
 ## Migration sequence
 
-1. Keep `core/internal/ir.Program` as the neutral bytecode/shape model.
+1. Keep `core/ir.Program` as the neutral bytecode/shape model.
 2. Keep root `core.IRProgram` as the executable envelope while executor metadata is root-coupled.
 3. Add focused tests for execution metadata behavior before moving code:
    - constants/captures (**started: `ir_execution_metadata_contract_test.go` covers constants, slots, captures, escape metadata, and neutral-model analysis handoff**)
@@ -96,7 +96,7 @@ This is a sketch, not an implementation API. The important boundary is ownership
 
 ## Current status
 
-- Neutral IR model: started and guarded by `core/internal/ir` tests.
+- Neutral IR model: started and guarded by `core/ir` tests.
 - Diagnostics/export/WASM/native helper readers: migrated to the neutral model where appropriate.
 - Runtime/execution-envelope tests, including WASM/native integer conversion, stable IR function-cache keys, and `RuntimeExecutionAdapter` error/function/capture/failure-flag contracts: gated by `make runtime-contract-check`, which is run by `make docs-check`.
 - Executors and escape analysis: intentionally root-bound pending this runtime execution contract becoming code.

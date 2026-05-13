@@ -14,11 +14,11 @@ This note narrows the next R3 step: split the root `core.IRProgram` into a small
 2. **Compiler/runtime captures** — `bindingKey`, captured `Object` values, capture slot indices, self-call metadata.
 3. **Execution caches and helpers** — typed/boxed failure bits, native helper functions, `FnExpr` references, trace naming, escape analysis.
 
-That prevents moving the program model into `core/internal/ir` without exporting broad root-core internals.
+That prevents moving the program model into `core/ir` without exporting broad root-core internals.
 
 ## Proposed split
 
-### `core/internal/ir.Program`
+### `core/ir.Program`
 
 Owns the package-neutral IR representation:
 
@@ -41,7 +41,7 @@ type Program struct {
 Notes:
 
 - `ConstantsLen` can be enough for diagnostics initially; moving actual `[]Object` constants waits on object boundaries.
-- `Analysis` should be the `core/internal/ir` shape-analysis type, not root `core.IRAnalysis`.
+- `Analysis` should be the `core/ir` shape-analysis type, not root `core.IRAnalysis`.
 - Fields should be exported only if root-core callers need direct access during migration; prefer constructor/accessor helpers once usage stabilizes.
 
 ### Root `core.IRProgram`
@@ -72,7 +72,7 @@ This lets the compiler/executor continue to use root-core object/runtime details
 
 ## Migration sequence
 
-1. Add `core/internal/ir.Program` and conversion/accessor helpers. **Done: initial neutral model exists in `core/internal/ir/model.go`.**
+1. Add `core/ir.Program` and conversion/accessor helpers. **Done: initial neutral model exists in `core/ir/model.go`.**
 2. Populate `IRProgram.model` during compilation while leaving old fields in place. **Done: root executable envelopes now refresh a neutral model.**
 3. Move analysis fields/helpers to the internal model. **Started: `AnalyzeIRProgram` writes analysis back into the neutral model.**
 4. Update diagnostics/export/profile/WASM eligibility to read the model. **Done for diagnostics, exported bytecode/slot accessors, native helper eligibility/lowering, and pure/imported/memory WASM eligibility/lowering. Profile paths are opcode-stream based and do not own program shape. Executor and escape-analysis paths stay on the root executable envelope until runtime/object execution metadata is split.**
