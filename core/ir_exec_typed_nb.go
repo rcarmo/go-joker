@@ -1,5 +1,7 @@
 package core
 
+import "github.com/rcarmo/go-joker/core/internal/noescape"
+
 // ir_exec_typed_nb.go — NaN-boxed typed IR executor.
 //
 // Uses []uint64 stack (8 bytes per entry) instead of []irValue (32 bytes).
@@ -286,7 +288,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 						sp--
 						f64buf[i] = nbToFloat(stackBuf[sp])
 					}
-					stackBuf[sp] = nbDouble(fnProg.nativeHelper(noescape64(f64buf[:nargs])))
+					stackBuf[sp] = nbDouble(fnProg.nativeHelper(noescape.Float64(f64buf[:nargs])))
 					sp++
 					continue
 				}

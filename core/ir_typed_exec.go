@@ -4,6 +4,8 @@ import (
 	"math"
 	"unicode/utf8"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/noescape"
 )
 
 func irExecTyped(prog *IRProgram, initSlots []Object) Object {
@@ -698,7 +700,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 							f64buf[i] = float64(v.i)
 						}
 					}
-					r := fnProg.nativeHelper(noescape64(f64buf[:nargs]))
+					r := fnProg.nativeHelper(noescape.Float64(f64buf[:nargs]))
 					stack = append(stack, irValue{tag: irValDouble, f: r})
 					continue
 				}
