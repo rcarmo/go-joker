@@ -11,6 +11,8 @@ import (
 	"strconv"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/rcarmo/go-joker/core/numutil"
 )
 
 type (
@@ -238,7 +240,7 @@ func readUnicodeCharacter(reader *Reader, length, base int) Object {
 	if len(str) != length {
 		panic(MakeReadError(reader, "Invalid unicode character: \\o"+str))
 	}
-	i, err := strconv.ParseInt(str, base, 32)
+	i, err := numutil.ParseInt(str, base, 32)
 	if err != nil {
 		panic(MakeReadError(reader, "Invalid unicode character: \\o"+str))
 	}
@@ -318,7 +320,7 @@ func scanBigFloat(orig, str string, reader *Reader) Object {
 }
 
 func scanInt(orig, str string, base int, reader *Reader) Object {
-	i, e := strconv.ParseInt(str, base, strconv.IntSize)
+	i, e := numutil.ParseInt(str, base, strconv.IntSize)
 	if e != nil {
 		return scanBigInt(orig, str, base, reader)
 	}
@@ -326,7 +328,7 @@ func scanInt(orig, str string, base int, reader *Reader) Object {
 }
 
 func scanFloat(str string, reader *Reader) Object {
-	dbl, e := strconv.ParseFloat(str, 64)
+	dbl, e := numutil.ParseFloat64(str)
 	if e != nil {
 		panic(invalidNumberError(reader, str))
 	}
@@ -363,7 +365,7 @@ func readNumber(reader *Reader) Object {
 	reader.Unget()
 	str := b.String()
 	if baseLen != 0 {
-		baseInt, err := strconv.ParseInt(str[0:baseLen], 0, 0)
+		baseInt, err := numutil.ParseInt(str[0:baseLen], 0, 0)
 		if err != nil {
 			panic(invalidNumberError(reader, str))
 		}
@@ -662,7 +664,7 @@ func readUnicodeCharacterInString(reader *Reader, initial rune, length, base int
 	if exactLength && len(str) != length {
 		panic(MakeReadError(reader, fmt.Sprintf("Invalid character length: %d, should be: %d", len(str), length)))
 	}
-	i, err := strconv.ParseInt(str, base, 32)
+	i, err := numutil.ParseInt(str, base, 32)
 	if err != nil {
 		panic(MakeReadError(reader, "Invalid unicode code: "+str))
 	}

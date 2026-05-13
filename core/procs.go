@@ -20,6 +20,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/rcarmo/go-joker/core/deps"
+	"github.com/rcarmo/go-joker/core/numutil"
 	"github.com/rcarmo/go-joker/core/osutil"
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
@@ -1933,7 +1934,7 @@ var procIsInfinite = func(args []Object) Object {
 
 var procParseDouble = func(args []Object) Object {
 	s := EnsureArgIsString(args, 0)
-	d, err := strconv.ParseFloat(s.S, 64)
+	d, err := numutil.ParseFloat64(s.S)
 	if err != nil {
 		return NIL
 	}
@@ -1942,7 +1943,7 @@ var procParseDouble = func(args []Object) Object {
 
 var procParseLong = func(args []Object) Object {
 	s := EnsureArgIsString(args, 0)
-	i, err := strconv.ParseInt(s.S, 10, 64)
+	i, err := numutil.ParseInt(s.S, 10, 64)
 	if err != nil {
 		return NIL
 	}
