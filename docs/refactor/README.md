@@ -14,7 +14,7 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 
 - Module identity is now `github.com/rcarmo/go-joker`; remaining `candid82` references should be attribution/upstream history or third-party dependencies only.
 - CLI entrypoint now lives under `cmd/joker`.
-- `std/*` is already package-oriented and increasingly guarded by focused native-boundary contracts.
+- `std/*` is already package-oriented and increasingly guarded by focused native-boundary contracts and explicit resource-layout rules.
 - `core` remains the main monolith, but leaf packages now exist under `core/internal`.
 - Generated `core/a_*.go` files dominate size and are tracked by `tests/generated_files.txt`; they remain in root only while they still require `package core` access. Moving them to a subdirectory must be a real package split, not a cosmetic file move.
 - IR/JIT/WASM compiler and executor files are still coupled to `core.Object`, `Fn`, `Expr`, `LocalEnv`, and unexported runtime helpers, but opcode/diagnostic helpers and WASM leaf helpers have been extracted.
@@ -36,6 +36,7 @@ This folder is the canonical refactor/audit document set:
 - `object-protocol-contracts.md` — object/protocol contracts blocking broad moves.
 - `runtime-execution-contract.md` — execution metadata contract required before moving IR executors/runtime frames.
 - `reader-construction-contract.md` — object construction/tagged literal contract required before moving reader/parser code.
+- `std-resource-layout.md` — repository layout rules for std namespace roots, Go packages, and pure Joker sub-namespace resources.
 
 ## Target package map
 

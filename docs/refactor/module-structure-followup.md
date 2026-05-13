@@ -20,7 +20,7 @@ Current package/file snapshot:
 | `core/runtime` | 1 | 0 | reserved package for evaluator/runtime extraction; currently a documented boundary marker only |
 | `core/collections` | 1 | 0 | reserved package for collection extraction; currently a documented boundary marker only |
 | `core/reader` | 1 | 0 | reserved package for reader/parser extraction; currently a documented boundary marker only |
-| `std/*` | many small packages | mixed | mostly namespace-oriented and healthy |
+| `std/*` | many small packages | mixed | namespace-oriented; now explicitly documented as `std/<namespace>.joke` + `std/<namespace>/*.go` + `std/<namespace>/<subns>/...` |
 | `benchmarks` | 5 | 0 | still mixes package stub and build-tagged report tools |
 
 Root `core` clustering remains the structural hotspot:
@@ -109,3 +109,4 @@ Improvement to plan:
 3. Define collection construction/adaptation contracts before moving collection implementations into the reserved `core/collections` target.
 4. Define reader object/expression construction contracts before moving reader/parser code into the reserved `core/reader` target.
 5. Keep WASM leaf extraction opportunistic, but avoid moving runtime/object-handle paths until execution metadata is explicit.
+6. Keep std resource namespaces under the documented `std/<namespace>/<subns>/...` tree and reject any return to loose `lib/` placement.

@@ -24,6 +24,17 @@ if [[ -d lib/joker/http ]]; then
   fail "loose HTTP libraries under lib/joker/http are not allowed; place joker.http.* resources under std/http/"
 fi
 
+while IFS= read -r joke; do
+  rel=${joke#std/}
+  ns=${rel%%/*}
+  if [[ ! -f "std/${ns}.joke" ]]; then
+    fail "nested std resource ${joke} requires root namespace file std/${ns}.joke"
+  fi
+  if [[ ${rel#*/} != */* ]]; then
+    fail "nested std resource ${joke} must live under std/${ns}/<subns>/..."
+  fi
+done < <(find std -mindepth 2 -type f -name '*.joke' | sort)
+
 if find . -maxdepth 1 -type f -name '*.go' | grep -q .; then
   find . -maxdepth 1 -type f -name '*.go' -print >&2
   fail "root package Go files are not allowed; CLI belongs in cmd/joker and runtime code belongs in packages"
