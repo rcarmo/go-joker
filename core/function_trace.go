@@ -2,14 +2,11 @@ package core
 
 import (
 	"fmt"
-	"os"
 
 	coretrace "github.com/rcarmo/go-joker/core/trace"
 )
 
-var functionTraceEnabled = os.Getenv("JOKER_FUNCTION_TRACE") != "" || os.Getenv("JOKER_FUNCTION_TRACE_OUT") != ""
-var functionTraceOut = os.Getenv("JOKER_FUNCTION_TRACE_OUT")
-var functionTracer = coretrace.NewFunctionTracer(functionTraceEnabled, functionTraceOut)
+var functionTracer = coretrace.NewFunctionTracerFromEnv()
 
 func traceFnCall(fn *Fn, argc int) func() {
 	if !functionTracer.Enabled() {

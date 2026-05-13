@@ -1,7 +1,6 @@
 package core
 
 import (
-	"os"
 	"time"
 
 	coreir "github.com/rcarmo/go-joker/core/ir"
@@ -9,7 +8,7 @@ import (
 )
 
 var zeroTime time.Time
-var irProfile = coretrace.NewIRProfile(os.Getenv("JOKER_IR_PROFILE") != "" || os.Getenv("JOKER_IR_PROFILE_OUT") != "", os.Getenv("JOKER_IR_PROFILE_OUT"))
+var irProfile = coretrace.NewIRProfileFromEnv()
 
 func irProfileExecStart() {
 	irProfile.ExecStart()

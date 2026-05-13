@@ -1,13 +1,8 @@
 package core
 
-import (
-	"os"
+import coretrace "github.com/rcarmo/go-joker/core/trace"
 
-	coretrace "github.com/rcarmo/go-joker/core/trace"
-)
-
-var symbolTraceEnabled = os.Getenv("JOKER_SYMBOL_TRACE") != "" || os.Getenv("JOKER_SYMBOL_TRACE_OUT") != ""
-var symbolTracer = coretrace.NewSymbolTracer(symbolTraceEnabled, os.Getenv("JOKER_SYMBOL_TRACE_OUT"))
+var symbolTracer = coretrace.NewSymbolTracerFromEnv()
 
 func traceSymbolResolve(ns *Namespace, sym Symbol, ok bool) {
 	if !symbolTracer.Enabled() || !ok {
