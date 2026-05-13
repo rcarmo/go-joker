@@ -1518,7 +1518,7 @@ func (k Keyword) Hash() uint32 {
 
 func (k Keyword) Compare(other Object) int {
 	k2 := EnsureObjectIsKeyword(other, "Cannot compare Keyword: %s")
-	return strings.Compare(k.ToString(false), k2.ToString(false))
+	return corestr.Compare(k.ToString(false), k2.ToString(false))
 }
 
 func (k Keyword) Call(args []Object) Object {
@@ -1594,7 +1594,7 @@ func (s Symbol) Hash() uint32 {
 
 func (s Symbol) Compare(other Object) int {
 	s2 := EnsureObjectIsSymbol(other, "Cannot compare Symbol: %s")
-	return strings.Compare(s.ToString(false), s2.ToString(false))
+	return corestr.Compare(s.ToString(false), s2.ToString(false))
 }
 
 func (s Symbol) Call(args []Object) Object {
@@ -1795,7 +1795,7 @@ func (s String) TryNth(i int, d Object) Object {
 
 func (s String) Compare(other Object) int {
 	s2 := EnsureObjectIsString(other, "Cannot compare String: %s")
-	return strings.Compare(s.S, s2.S)
+	return corestr.Compare(s.S, s2.S)
 }
 
 func IsSymbol(obj Object) bool {
