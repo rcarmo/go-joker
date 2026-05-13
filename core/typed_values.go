@@ -1,11 +1,12 @@
 package core
 
 import (
-	"os"
 	"strconv"
 	"sync"
 	"unicode/utf8"
 	"unsafe"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
 )
 
 // ir_typed.go — experimental typed IR executor (v2).
@@ -43,32 +44,6 @@ type irValue struct {
 	p   unsafe.Pointer // -> string | []byte | map[string]int | []int | Object
 }
 
-func irTypedEnabled() bool {
-	mode := os.Getenv("JOKER_IR_TYPED")
-	return mode != "0" && mode != "off" && mode != "false"
-}
-
-func irTypedMapMode() string {
-	mode := os.Getenv("JOKER_IR_TYPED_MAP")
-	if mode == "" {
-		return "auto"
-	}
-	return mode
-}
-func irTypedMapEnabled() bool {
-	mode := irTypedMapMode()
-	return mode != "0" && mode != "off" && mode != "false"
-}
-
-func irTypedVecEnabled() bool {
-	mode := os.Getenv("JOKER_IR_TYPED_VEC")
-	return mode == "1" || mode == "on" || mode == "true" || mode == "force"
-}
-func irTypedMapForce() bool {
-	mode := irTypedMapMode()
-	return mode == "1" || mode == "force" || mode == "all"
-}
-
 func irTypedEligible(a IRAnalysis) bool {
 	if a.NumOps == 0 || a.UsesTransient {
 		return false
@@ -86,14 +61,14 @@ func irTypedEligible(a IRAnalysis) bool {
 		return false
 	}
 	if a.UsesCollection && (a.HasMapOps || !a.HasGenericNth) {
-		if irTypedMapEnabled() && a.HasMapOps && a.UsesString {
+		if corert.IRTypedMapEnabled() && a.HasMapOps && a.UsesString {
 			return true
 		}
 		// Self-recursive tree builders/walkers (binary-trees pattern)
 		if a.HasSelfCall && !a.HasMapOps && !a.UsesString {
 			return true
 		}
-		return irTypedVecEnabled() && a.UsesCollection && !a.UsesString && !a.HasMapOps
+		return corert.IRTypedVecEnabled() && a.UsesCollection && !a.UsesString && !a.HasMapOps
 	}
 	// Accept: pure numeric loops (no strings, no collections, no call-slots)
 	if !a.UsesString && !a.UsesCollection && !a.HasCallSlot {
@@ -126,7 +101,7 @@ func objectToIRValue(obj Object) irValue {
 	case String:
 		return stringToIRValue(v.S)
 	case *ArrayVector:
-		if irTypedVecEnabled() {
+		if corert.IRTypedVecEnabled() {
 			iv := make([]int, len(v.arr))
 			for i, obj := range v.arr {
 				x, ok := obj.(Int)

@@ -6,6 +6,7 @@ import (
 
 	"github.com/rcarmo/go-joker/core/bufferpool"
 	"github.com/rcarmo/go-joker/core/hashutil"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
@@ -206,7 +207,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 				}
 				prog.memNthFailed = true
 			}
-			if irTypedEnabled() && !prog.typedFailed {
+			if corert.IRTypedEnabled() && !prog.typedFailed {
 				var typedResult Object
 				func() {
 					defer func() {
@@ -991,7 +992,7 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 			}
 			initSlots = full
 		}
-		if irTypedEnabled() && !prog.typedFailed {
+		if corert.IRTypedEnabled() && !prog.typedFailed {
 			var typedResult Object
 			func() {
 				defer func() {
