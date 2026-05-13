@@ -11,7 +11,7 @@ import (
 
 func ExternalHTTPSourceToPath(home, lib, url string) (string, error) {
 	localBase := filepath.Join(home, ".jokerd", "deps", strings.SplitN(url, "//", 2)[1])
-	libBase := filepath.Join(strings.Split(lib, ".")...) + ".joke"
+	libBase := LibNamePath(lib)
 	libPath := filepath.Join(localBase, libBase)
 	libPathDir := filepath.Dir(libPath)
 
@@ -54,5 +54,5 @@ func ExternalSourceToPath(home, lib, url string) (string, error) {
 	if strings.HasPrefix(url, "http://") || strings.HasPrefix(url, "https://") {
 		return ExternalHTTPSourceToPath(home, lib, url)
 	}
-	return filepath.Join(append([]string{url}, strings.Split(lib, ".")...)...) + ".joke", nil
+	return ResolveLibPath(url, lib), nil
 }

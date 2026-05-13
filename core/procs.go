@@ -1675,7 +1675,7 @@ var procLoadLibFromPath = func(args []Object) Object {
 		if s == "" {
 			filename = pathname
 		} else {
-			filename = filepath.Join(s, filepath.Join(strings.Split(libname, ".")...)) + ".joke" // could cache inner join....
+			filename = deps.ResolveLibPath(s, libname)
 		}
 		f, err = os.Open(filename)
 		if err == nil {
@@ -1777,7 +1777,7 @@ var procLibPath = func(args []Object) Object {
 			}
 			file = file[:len(file)-1]
 		}
-		path = filepath.Join(append([]string{file}, strings.Split(sym.Name(), ".")...)...) + ".joke"
+		path = deps.ResolveLibPath(file, sym.Name())
 	}
 	return String{S: path}
 }
