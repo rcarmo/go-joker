@@ -8,7 +8,6 @@ package core
 import (
 	"fmt"
 	"reflect"
-	"strings"
 
 	"github.com/rcarmo/go-joker/core/gen_go"
 	corestr "github.com/rcarmo/go-joker/core/string"
@@ -64,7 +63,7 @@ func symAsGo(sym Symbol) string {
 	if sym.name == nil {
 		return "EMPTY"
 	} else {
-		return StringAsGoName(strings.ReplaceAll(sym.ToString(false), "/", "_FW_"))
+		return corestr.SymbolGoName(sym.ToString(false))
 	}
 }
 
@@ -114,7 +113,7 @@ func (t *Type) AsGo() string {
 }
 
 func kwAsGo(kw Keyword) string {
-	return StringAsGoName(strings.ReplaceAll(strings.ReplaceAll(kw.ToString(false), "/", "_FW_"), ":", ""))
+	return corestr.KeywordGoName(kw.ToString(false))
 }
 
 func (kw Keyword) AsGo() string {
@@ -169,18 +168,17 @@ func (v *VarRefExpr) AsGo() string {
 	if res, ok := infoHolderAsGoName(*v); ok {
 		return "varRef_" + StringAsGoName(s) + "_" + res
 	}
-	return fmt.Sprintf("%s_%d_%d", strings.Replace(s, "var_", "varRefExpr_", 1), v.startLine, v.startColumn)
+	return fmt.Sprintf("%s_%d_%d", corestr.VarRefExprName(s), v.startLine, v.startColumn)
 }
 
 // Returns typename of object as it should be represented in package
 // core.
 func typeInCore(e interface{}) string {
-	return strings.Replace(fmt.Sprintf("%T", e), "core.", "", 1)
+	return corestr.TypeNameInCore(fmt.Sprintf("%T", e))
 }
 
 func typeInCoreAsGo(e interface{}) string {
-	s := strings.Replace(typeInCore(e), "*", "", 1)
-	return strings.ToLower(s[0:1]) + s[1:]
+	return corestr.TypeNameAsGo(typeInCore(e))
 }
 
 func infoHolderAsGoName(obj interface{}) (string, bool) {
