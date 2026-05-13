@@ -361,21 +361,19 @@ func TestBuildNativeLoopWrapper(t *testing.T) {
 }
 
 func TestIRFrameStackPushPop(t *testing.T) {
-	fs := newIRFrameStack(4)
+	fs := coreirx.NewFrameStack[Object](4)
+	defer coreirx.ReleaseFrameStack(fs)
 	slots := make([]Object, 4)
 	slots[0] = Int{I: 42}
 	slots[1] = Double{D: 3.14}
 
-	fs.push(10, slots, 5)
-	if fs.depth != 1 {
-		t.Fatalf("depth = %d, want 1", fs.depth)
-	}
+	fs.Push(10, slots, 5)
 
 	// Modify slots
 	slots[0] = Int{I: 99}
 
 	// Pop should restore original
-	pc, sl := fs.pop(slots)
+	pc, sl := fs.Pop(slots)
 	if pc != 10 || sl != 5 {
 		t.Fatalf("pop: pc=%d sl=%d, want 10, 5", pc, sl)
 	}

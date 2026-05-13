@@ -49,8 +49,8 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 	pc := 0
 
 	// Frame stack for irCallSelf — avoids recursive irExecTyped calls
-	var typedFrameStack *irTypedFrameStack
-	defer func() { releaseIRTypedFrameStack(typedFrameStack) }()
+	var typedFrameStack *coreirx.FrameStack[irValue]
+	defer func() { coreirx.ReleaseFrameStack(typedFrameStack) }()
 	var selfTraceStack []func()
 	var irProfPrev byte
 	var irProfHasPrev bool
@@ -432,14 +432,14 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			stack = stack[:0]
 		case irReturn:
 			if len(stack) == 0 {
-				if typedFrameStack != nil && typedFrameStack.depth > 0 {
+				if typedFrameStack != nil && typedFrameStack.Depth() > 0 {
 					if len(selfTraceStack) > 0 {
 						exit := selfTraceStack[len(selfTraceStack)-1]
 						selfTraceStack = selfTraceStack[:len(selfTraceStack)-1]
 						exit()
 					}
 					var sl int
-					pc, sl = typedFrameStack.pop(slots)
+					pc, sl = typedFrameStack.Pop(slots)
 					stack = stack[:sl]
 					stack = append(stack, irValue{tag: irValNil})
 					continue
@@ -447,14 +447,14 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				return NIL
 			}
 			result := stack[len(stack)-1]
-			if typedFrameStack != nil && typedFrameStack.depth > 0 {
+			if typedFrameStack != nil && typedFrameStack.Depth() > 0 {
 				if len(selfTraceStack) > 0 {
 					exit := selfTraceStack[len(selfTraceStack)-1]
 					selfTraceStack = selfTraceStack[:len(selfTraceStack)-1]
 					exit()
 				}
 				var sl int
-				pc, sl = typedFrameStack.pop(slots)
+				pc, sl = typedFrameStack.Pop(slots)
 				stack = stack[:sl]
 				stack = append(stack, result)
 				continue
@@ -842,12 +842,12 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			if typedFrameStack == nil {
-				typedFrameStack = newIRTypedFrameStack(prog.numSlots)
+				typedFrameStack = coreirx.NewFrameStack[irValue](prog.numSlots)
 			}
-			if typedFrameStack.depth < 256 {
+			if typedFrameStack.Depth() < 256 {
 				// Save current state and restart
 				selfTraceStack = append(selfTraceStack, traceIRProgramCall(prog, nargs))
-				typedFrameStack.push(pc, slots, len(stack)-nargs)
+				typedFrameStack.Push(pc, slots, len(stack)-nargs)
 				// Pop args directly into slots (no intermediate copy)
 				for i := nargs - 1; i >= 0; i-- {
 					slots[i] = stack[len(stack)-1]

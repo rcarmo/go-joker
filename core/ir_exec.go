@@ -71,8 +71,8 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 	pc := 0
 
 	// Frame stack for irCallSelf — avoids recursive irExec calls
-	var frameStack *irFrameStack
-	defer func() { releaseIRFrameStack(frameStack) }()
+	var frameStack *coreirx.FrameStack[Object]
+	defer func() { coreirx.ReleaseFrameStack(frameStack) }()
 	var selfTraceStack []func()
 
 	var irProfPrev byte
@@ -568,14 +568,14 @@ loop:
 
 		case irReturn:
 			if len(stack) == 0 {
-				if frameStack != nil && frameStack.depth > 0 {
+				if frameStack != nil && frameStack.Depth() > 0 {
 					if len(selfTraceStack) > 0 {
 						exit := selfTraceStack[len(selfTraceStack)-1]
 						selfTraceStack = selfTraceStack[:len(selfTraceStack)-1]
 						exit()
 					}
 					var sl int
-					pc, sl = frameStack.pop(slots)
+					pc, sl = frameStack.Pop(slots)
 					stack = stack[:sl]
 					stack = append(stack, NIL)
 					continue
@@ -583,7 +583,7 @@ loop:
 				return NIL
 			}
 			result := stack[len(stack)-1]
-			if frameStack != nil && frameStack.depth > 0 {
+			if frameStack != nil && frameStack.Depth() > 0 {
 				switch v := result.(type) {
 				case *TransientVector:
 					result = v.ToPersistent()
@@ -598,7 +598,7 @@ loop:
 					exit()
 				}
 				var sl int
-				pc, sl = frameStack.pop(slots)
+				pc, sl = frameStack.Pop(slots)
 				stack = stack[:sl]
 				stack = append(stack, result)
 				continue
@@ -809,11 +809,11 @@ loop:
 			// Use frame stack for bounded recursion, fall back to
 			// recursive irExec for deep/exponential recursion.
 			if frameStack == nil {
-				frameStack = newIRFrameStack(prog.numSlots)
+				frameStack = coreirx.NewFrameStack[Object](prog.numSlots)
 			}
-			if frameStack.depth < 512 {
+			if frameStack.Depth() < 512 {
 				selfTraceStack = append(selfTraceStack, traceIRProgramCall(prog, nargs))
-				frameStack.push(pc, slots, len(stack)-nargs)
+				frameStack.Push(pc, slots, len(stack)-nargs)
 				for i := nargs - 1; i >= 0; i-- {
 					slots[i] = stack[len(stack)-1]
 					stack = stack[:len(stack)-1]
