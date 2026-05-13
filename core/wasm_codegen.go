@@ -1,6 +1,6 @@
 package core
 
-import corewasm "github.com/rcarmo/go-joker/core/internal/wasm"
+import corewasm "github.com/rcarmo/go-joker/core/wasm"
 
 // wasm_codegen.go — translates IR bytecode to WASM function body.
 

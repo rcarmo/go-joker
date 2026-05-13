@@ -12,7 +12,7 @@ Recent feature work improved boundaries for new code (`std/transit`, `std/system
 ## Current package/module shape
 
 - `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
-- `core/trace`, `core/internal/ir`, and `core/internal/wasm` now own extracted leaf helpers with direct package tests.
+- `core/trace`, `core/internal/ir`, and `core/wasm` now own extracted leaf helpers with direct package tests.
 - `core/` is still the runtime kernel and contains:
   - object/type model (`object.go`, `types_*`)
   - persistent collection implementations
@@ -46,7 +46,7 @@ Recent `std/transit` and `std/system` match this pattern.
 ### IR/WASM/JIT contract
 
 - `core/internal/ir` owns opcode constants/names, bytecode counting/disassembly helpers, and IR shape analysis.
-- `core/internal/wasm` owns leaf WASM encoding/module/host metadata/value-type helpers.
+- `core/wasm` owns leaf WASM encoding/module/host metadata/value-type helpers.
 - Root `core` still owns `IRProgram`, lowering, execution, WASM emission orchestration and diagnostics adapters.
 - `std/jit` consumes only exported `core` bridge methods (`IrCompileFn`, `IrExec*`, `IrDisassemble`, `IrToWasmExported`, `WasmCompileBytesExported`).
 - Artifact export is correctly layered in `std/jit`; it does not reach into private `IRProgram` fields.

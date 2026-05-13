@@ -16,7 +16,7 @@ import (
 	"math"
 	"sync"
 
-	"github.com/rcarmo/go-joker/core/internal/wasm"
+	"github.com/rcarmo/go-joker/core/wasm"
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/api"
 )

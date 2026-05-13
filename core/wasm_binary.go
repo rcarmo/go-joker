@@ -3,7 +3,7 @@ package core
 // wasm_binary.go — low-level WASM binary format helpers.
 // Produces raw WASM module bytes from sections.
 
-import corewasm "github.com/rcarmo/go-joker/core/internal/wasm"
+import corewasm "github.com/rcarmo/go-joker/core/wasm"
 
 // wasmModule builds a minimal WASM module binary.
 type wasmModule struct{ inner *corewasm.Module }

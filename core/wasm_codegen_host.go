@@ -1,6 +1,6 @@
 package core
 
-import "github.com/rcarmo/go-joker/core/internal/wasm"
+import "github.com/rcarmo/go-joker/core/wasm"
 
 // wasm_codegen_host.go — WASM codegen with host function imports.
 //

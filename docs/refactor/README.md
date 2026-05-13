@@ -46,7 +46,7 @@ Planned package boundaries:
 |---|---|---|
 | `core/trace` | `function_trace.go`, `symbol_trace.go`, `ir_profile.go` state machinery | Extracted leaf package. No dependency on `core`; core passes names/events/op names in. |
 | `core/internal/ir` or `core/ir` | `ir*.go`, IR tests | Reserved/public extraction target should exist; requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. |
-| `core/internal/wasm` or `core/wasm` | `wasm*.go` leaf helpers first | Reserved/public extraction target should exist; encoding/module/host metadata are already partly extracted, but full lowering/runtime still depends on IR program shape and runtime contracts. |
+| `core/wasm` or `core/wasm` | `wasm*.go` leaf helpers first | Reserved/public extraction target should exist; encoding/module/host metadata are already partly extracted, but full lowering/runtime still depends on IR program shape and runtime contracts. |
 | `core/runtime` | goroutine runtime, eval frames, errors, tracing hooks | Reserved package exists; production moves require explicit object/call/error/frame contracts first. |
 | `core/collections` | vectors, maps, sets, seqs, transients | Reserved package should exist as the extraction target; move only after construction/adaptation contracts are explicit. |
 | `core/reader` | `reader.go`, `read.go`, tagged literals | Reserved package should exist as the extraction target; move only after object/expression construction contracts are explicit. |

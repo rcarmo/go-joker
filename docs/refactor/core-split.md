@@ -30,7 +30,7 @@ Do not split everything at once. Move leaf or low-cycle families first, then hig
 
 - `core/trace` owns tracing/profiling aggregation state.
 - `core/internal/ir` owns opcode names/constants, bytecode disassembly/counting, and shape analysis.
-- `core/internal/wasm` owns leaf WASM binary encoding helpers.
+- `core/wasm` owns leaf WASM binary encoding helpers.
 - `cmd/joker` owns the CLI entrypoint.
 
 ### 2. Runtime/object boundary
@@ -146,7 +146,7 @@ Risks:
 Candidate future package:
 
 ```text
-core/internal/wasm/
+core/wasm/
 ```
 
 Current candidate files:
@@ -163,10 +163,10 @@ Current candidate files:
 
 Current extraction:
 
-- `core/internal/wasm/encoding.go` owns ULEB/SLEB/f64 byte encoding helpers and direct tests.
-- `core/internal/wasm/module.go` owns generic WASM module section construction and direct tests.
-- `core/internal/wasm/host.go` owns host import names/module metadata and direct tests.
-- `core/internal/wasm/opcodes.go` owns shared WASM value-type/opcode constants and direct tests.
+- `core/wasm/encoding.go` owns ULEB/SLEB/f64 byte encoding helpers and direct tests.
+- `core/wasm/module.go` owns generic WASM module section construction and direct tests.
+- `core/wasm/host.go` owns host import names/module metadata and direct tests.
+- `core/wasm/opcodes.go` owns shared WASM value-type/opcode constants and direct tests.
 - `core/wasm_binary.go` remains as a compatibility adapter for the rest of the root-core WASM code while IR/WASM assembly flow is still coupled to `IRProgram` internals.
 
 Risks:

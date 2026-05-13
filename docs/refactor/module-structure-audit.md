@@ -22,7 +22,7 @@ core                              # runtime kernel; still the main monolith
 core/trace               # extracted trace/profile aggregation state
 core/generated           # data-only generated bootstrap payload contracts/source manifest
 core/internal/ir                  # extracted IR opcode/diagnostic/analysis helpers and neutral Program model
-core/internal/wasm                # extracted WASM encoding/module/host metadata helpers
+core/wasm                # extracted WASM encoding/module/host metadata helpers
 std/*                             # namespace-oriented standard library packages
 tests                             # integration/parity/Babashka fixture tests
 benchmarks                        # benchmark/report tooling
@@ -102,7 +102,7 @@ This is the highest-value next architectural move before broad collection/reader
 
 ### 4. WASM lowering/runtime still follows root execution metadata
 
-`core/internal/wasm` now owns leaf binary/module/host metadata, and most WASM eligibility/lowering paths read neutral IR shape. Runtime instantiation, constants, object handles, and memory/import bridges remain root-coupled.
+`core/wasm` now owns leaf binary/module/host metadata, and most WASM eligibility/lowering paths read neutral IR shape. Runtime instantiation, constants, object handles, and memory/import bridges remain root-coupled.
 
 Next improvement:
 
@@ -151,4 +151,4 @@ This is lower priority than `core`, but it would reduce package noise in `go lis
 
 - Old root-level refactor audit filenames have been removed in favor of `docs/refactor/*`.
 - Early statements that tracing was only a future extraction target are superseded by extracted `core/trace`.
-- Early `core/internal/wasm or core/wasm` ambiguity is superseded by `core/internal/wasm` for leaf helpers.
+- Early `core/wasm or core/wasm` ambiguity is superseded by `core/wasm` for leaf helpers.

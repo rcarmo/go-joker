@@ -5,7 +5,7 @@ import (
 	"os"
 	"sync"
 
-	corewasm "github.com/rcarmo/go-joker/core/internal/wasm"
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"github.com/tetratelabs/wazero"
 )
 

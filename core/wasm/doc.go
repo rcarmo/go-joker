@@ -1,6 +1,5 @@
-// Package wasm is reserved for future extraction of root WASM lowering/runtime code.
+// Package wasm owns extracted leaf helpers for WASM lowering/runtime support.
 //
-// Low-coupling WASM helpers already live in core/internal/wasm. This package is
-// the eventual extraction target for the remaining root-core WASM pipeline once
-// IR program shape and runtime object/call dependencies are explicit and acyclic.
+// Root-core WASM entrypoints still exist, but low-coupling encoding, module,
+// opcode, and host metadata helpers now live here as a real subpackage.
 package wasm

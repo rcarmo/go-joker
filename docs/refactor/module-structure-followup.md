@@ -16,12 +16,12 @@ Current package/file snapshot:
 | `core/generated` | 3 | 1 | data-only generated bootstrap contract and source manifest; package-level generated payloads only move here when they can be a true Go package boundary |
 | `core/internal/ir` | 6 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
 | `core/trace` | 4 | 1 | aggregation state with direct JSON-shape tests |
-| `core/internal/wasm` | 8 | 4 | encoding/module/host/opcode leaf helpers |
+| `core/wasm` | 8 | 4 | encoding/module/host/opcode leaf helpers |
 | `core/runtime` | 1 | 0 | reserved package for evaluator/runtime extraction; currently a documented boundary marker only |
 | `core/collections` | 1 | 0 | reserved package for collection extraction; currently a documented boundary marker only |
 | `core/reader` | 1 | 0 | reserved package for reader/parser extraction; currently a documented boundary marker only |
 | `core/ir` | 1 | 0 | reserved package for future IR compiler/executor extraction; neutral leaf model remains in `core/internal/ir` |
-| `core/wasm` | 1 | 0 | reserved package for future root WASM extraction; leaf helpers remain in `core/internal/wasm` |
+| `core/wasm` | 1 | 0 | reserved package for future root WASM extraction; leaf helpers remain in `core/wasm` |
 | `core/generated` | 1 | 0 | reserved package for future generated payload families that become real package boundaries |
 | `core/string` | 1 | 0 | reserved package for future extraction of root string support helpers |
 | `std/*` | many small packages | mixed | namespace-oriented; now explicitly documented as `std/<namespace>.joke` + `std/<namespace>/*.go` + `std/<namespace>/<subns>/...` |
