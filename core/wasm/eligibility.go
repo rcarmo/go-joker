@@ -70,6 +70,39 @@ func EligibleWithHelper(code []byte, helperSlot int) bool {
 	return true
 }
 
+// EligibleWithImports reports whether IR bytecode can target the host-import WASM backend.
+func EligibleWithImports(code []byte) bool {
+	pc := 0
+	for pc < len(code) {
+		op := code[pc]
+		pc++
+		switch op {
+		case coreir.Literal, coreir.LoadSlot, coreir.StoreSlot, coreir.NthStringASCII:
+			pc += 2
+		case coreir.Add, coreir.Sub, coreir.Mul, coreir.Div, coreir.Rem, coreir.Inc, coreir.Dec,
+			coreir.Lt, coreir.Gte, coreir.Gt, coreir.Lte, coreir.Eq, coreir.IsZero, coreir.Return, coreir.Sqrt,
+			coreir.Get, coreir.Get3, coreir.Assoc, coreir.Nth, coreir.Conj, coreir.First, coreir.Count:
+			// supported with imports
+		case coreir.CallSelf:
+			return false
+		case coreir.Str1, coreir.Str2, coreir.BuildVec, coreir.ToTransient, coreir.AssocBang, coreir.ToPersistent, coreir.CallSlot:
+			return false
+		case coreir.JumpIfNot, coreir.Jump:
+			pc += 2
+		case coreir.Recur:
+			pc += 4
+			tgt := int(code[pc-2])<<8 | int(code[pc-1])
+			if tgt != 0 {
+				pc += 2
+				return false
+			}
+		default:
+			return false
+		}
+	}
+	return true
+}
+
 // UsesFloat reports whether IR bytecode or constants require f64 mode.
 func UsesFloat(code []byte, hasFloatConsts bool) bool {
 	if hasFloatConsts {

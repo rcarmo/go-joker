@@ -1,7 +1,6 @@
 package core
 
 import (
-	"github.com/rcarmo/go-joker/core/wasm"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
 )
 
@@ -14,13 +13,13 @@ import (
 
 // standardHostImports lists the host functions in fixed order.
 // Their indices in the WASM module are 0..len-1.
-var standardHostImports = wasm.StandardHostImports
+var standardHostImports = corewasm.StandardHostImports
 
 // irToWasmWithImports compiles an IR program that uses collection ops
 // to a WASM module with host function imports.
 func irToWasmWithImports(prog *IRProgram) []byte {
 	model := prog.neutralModel()
-	if model == nil || !isWasmWithImportsEligible(prog) {
+	if model == nil || !corewasm.EligibleWithImports(model.Code) {
 		return nil
 	}
 
@@ -35,36 +34,36 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 	// All use i64 params and i64 result
 	numTypes := len(standardHostImports) + 1
 	var typeBody []byte
-	typeBody = wasm.AppendULEB(typeBody, numTypes)
+	typeBody = corewasm.AppendULEB(typeBody, numTypes)
 	// Import function types (index 0..6)
 	for _, imp := range standardHostImports {
 		typeBody = append(typeBody, 0x60) // functype
-		typeBody = wasm.AppendULEB(typeBody, imp.NumParams)
+		typeBody = corewasm.AppendULEB(typeBody, imp.NumParams)
 		for j := 0; j < imp.NumParams; j++ {
-			typeBody = append(typeBody, wasm.ValTypeI64)
+			typeBody = append(typeBody, corewasm.ValTypeI64)
 		}
-		typeBody = append(typeBody, 0x01, wasm.ValTypeI64)
+		typeBody = append(typeBody, 0x01, corewasm.ValTypeI64)
 	}
 	// Main function type (index 7)
 	typeBody = append(typeBody, 0x60)
-	typeBody = wasm.AppendULEB(typeBody, model.NumSlots)
+	typeBody = corewasm.AppendULEB(typeBody, model.NumSlots)
 	for i := 0; i < model.NumSlots; i++ {
-		typeBody = append(typeBody, wasm.ValTypeI64)
+		typeBody = append(typeBody, corewasm.ValTypeI64)
 	}
-	typeBody = append(typeBody, 0x01, wasm.ValTypeI64)
+	typeBody = append(typeBody, 0x01, corewasm.ValTypeI64)
 	m.AddSection(0x01, typeBody)
 
 	// Import section
 	var importBody []byte
-	importBody = wasm.AppendULEB(importBody, len(standardHostImports))
+	importBody = corewasm.AppendULEB(importBody, len(standardHostImports))
 	for i, imp := range standardHostImports {
 		modName := []byte(wasmHostModuleName)
-		importBody = wasm.AppendULEB(importBody, len(modName))
+		importBody = corewasm.AppendULEB(importBody, len(modName))
 		importBody = append(importBody, modName...)
-		importBody = wasm.AppendULEB(importBody, len(imp.Name))
+		importBody = corewasm.AppendULEB(importBody, len(imp.Name))
 		importBody = append(importBody, []byte(imp.Name)...)
-		importBody = append(importBody, 0x00)       // import kind: func
-		importBody = wasm.AppendULEB(importBody, i) // type index
+		importBody = append(importBody, 0x00)           // import kind: func
+		importBody = corewasm.AppendULEB(importBody, i) // type index
 	}
 	m.AddSection(0x02, importBody)
 
@@ -72,7 +71,7 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 	mainTypeIdx := len(standardHostImports)
 	var funcBody []byte
 	funcBody = append(funcBody, 0x01)
-	funcBody = wasm.AppendULEB(funcBody, mainTypeIdx)
+	funcBody = corewasm.AppendULEB(funcBody, mainTypeIdx)
 	m.AddSection(0x03, funcBody)
 
 	// Export section: export the main function
@@ -80,57 +79,16 @@ func irToWasmWithImports(prog *IRProgram) []byte {
 	name := []byte("exec")
 	var exportBody []byte
 	exportBody = append(exportBody, 0x01)
-	exportBody = wasm.AppendULEB(exportBody, len(name))
+	exportBody = corewasm.AppendULEB(exportBody, len(name))
 	exportBody = append(exportBody, name...)
 	exportBody = append(exportBody, 0x00) // func export
-	exportBody = wasm.AppendULEB(exportBody, mainFuncIdx)
+	exportBody = corewasm.AppendULEB(exportBody, mainFuncIdx)
 	m.AddSection(0x07, exportBody)
 
 	// Code section
 	m.AddCodeSection(body)
 
 	return m.Bytes()
-}
-
-// isWasmWithImportsEligible checks if the program can be compiled with host imports.
-func isWasmWithImportsEligible(prog *IRProgram) bool {
-	model := prog.neutralModel()
-	if model == nil {
-		return false
-	}
-	code := model.Code
-	pc := 0
-	for pc < len(code) {
-		op := code[pc]
-		pc++
-		switch op {
-		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
-			pc += 2
-		case irAdd, irSub, irMul, irDiv, irRem, irInc, irDec,
-			irLt, irGte, irGt, irLte, irEq, irIsZero, irReturn, irSqrt,
-			irGet, irGet3, irAssoc, irNth, irConj, irFirst, irCount:
-			// all supported with imports
-		case irCallSelf:
-			// Imported collection values are opaque handles, and recursive
-			// imported-WASM functions need a multi-function/handle-aware ABI to
-			// be safe. Keep recursive fns on the existing IR/tree path for now.
-			return false
-		case irStr1, irStr2, irBuildVec, irToTransient, irAssocBang, irToPersistent, irCallSlot:
-			return false // not supported in WASM yet
-		case irJumpIfNot, irJump:
-			pc += 2
-		case irRecur:
-			pc += 4
-			tgt := int(code[pc-2])<<8 | int(code[pc-1])
-			if tgt != 0 {
-				pc += 2
-				return false
-			}
-		default:
-			return false
-		}
-	}
-	return true
 }
 
 // compileWasmBodyWithImports generates function body with host call instructions.
@@ -142,8 +100,8 @@ func compileWasmBodyWithImports(prog *IRProgram) []byte {
 	var o []byte
 	o = append(o, 0x00) // 0 local decls
 
-	o = append(o, 0x02, wasm.ValTypeI64) // block $exit -> i64
-	o = append(o, 0x03, 0x40)            // loop $loop -> void
+	o = append(o, 0x02, corewasm.ValTypeI64) // block $exit -> i64
+	o = append(o, 0x03, 0x40)                // loop $loop -> void
 
 	mainFuncIdx := len(standardHostImports)
 	code := model.Code
@@ -162,27 +120,27 @@ func compileWasmBodyWithImports(prog *IRProgram) []byte {
 			switch v := c.(type) {
 			case Int:
 				o = append(o, 0x42)
-				o = wasm.AppendSLEB(o, int64(v.I))
+				o = corewasm.AppendSLEB(o, int64(v.I))
 			default:
 				// Non-Int constant: use a pre-computed handle.
 				// The handle value is: (1<<62) | constant_index
 				// wasmExec will pre-populate the object table with these.
 				handle := int64((1 << 62) | idx)
 				o = append(o, 0x42)
-				o = wasm.AppendSLEB(o, handle)
+				o = corewasm.AppendSLEB(o, handle)
 			}
 
 		case irLoadSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			o = append(o, 0x20)
-			o = wasm.AppendULEB(o, idx)
+			o = corewasm.AppendULEB(o, idx)
 
 		case irStoreSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			o = append(o, 0x21)
-			o = wasm.AppendULEB(o, idx)
+			o = corewasm.AppendULEB(o, idx)
 
 		case irAdd:
 			o = append(o, 0x7c)
@@ -211,26 +169,26 @@ func compileWasmBodyWithImports(prog *IRProgram) []byte {
 
 		// Collection operations → call imported host functions
 		case irGet:
-			o = append(o, 0x10)       // call
-			o = wasm.AppendULEB(o, 0) // import index 0 = get
+			o = append(o, 0x10)           // call
+			o = corewasm.AppendULEB(o, 0) // import index 0 = get
 		case irGet3:
 			o = append(o, 0x10)
-			o = wasm.AppendULEB(o, 1) // import index 1 = get3
+			o = corewasm.AppendULEB(o, 1) // import index 1 = get3
 		case irAssoc:
 			o = append(o, 0x10)
-			o = wasm.AppendULEB(o, 2) // import index 2 = assoc
+			o = corewasm.AppendULEB(o, 2) // import index 2 = assoc
 		case irNth:
 			o = append(o, 0x10)
-			o = wasm.AppendULEB(o, 3) // import index 3 = nth
+			o = corewasm.AppendULEB(o, 3) // import index 3 = nth
 		case irConj:
 			o = append(o, 0x10)
-			o = wasm.AppendULEB(o, 4) // import index 4 = conj
+			o = corewasm.AppendULEB(o, 4) // import index 4 = conj
 		case irCount:
 			o = append(o, 0x10)
-			o = wasm.AppendULEB(o, 5) // import index 5 = count
+			o = corewasm.AppendULEB(o, 5) // import index 5 = count
 		case irFirst:
 			o = append(o, 0x10)
-			o = wasm.AppendULEB(o, 6) // import index 6 = first
+			o = corewasm.AppendULEB(o, 6) // import index 6 = first
 
 		case irJumpIfNot:
 			pc += 2
@@ -244,25 +202,25 @@ func compileWasmBodyWithImports(prog *IRProgram) []byte {
 
 		case irReturn:
 			o = append(o, 0x0c)
-			o = wasm.AppendULEB(o, depth+1)
+			o = corewasm.AppendULEB(o, depth+1)
 			if depth > 0 && pc < len(code) && code[pc] != irJump {
 				o = append(o, 0x05)
 			}
 
 		case irCallSelf:
-			pc += 2                             // skip nargs
-			o = append(o, 0x10)                 // call
-			o = wasm.AppendULEB(o, mainFuncIdx) // self = main function index
+			pc += 2                                 // skip nargs
+			o = append(o, 0x10)                     // call
+			o = corewasm.AppendULEB(o, mainFuncIdx) // self = main function index
 
 		case irRecur:
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 4
 			for i := nargs - 1; i >= 0; i-- {
 				o = append(o, 0x21)
-				o = wasm.AppendULEB(o, i)
+				o = corewasm.AppendULEB(o, i)
 			}
 			o = append(o, 0x0c)
-			o = wasm.AppendULEB(o, depth)
+			o = corewasm.AppendULEB(o, depth)
 			pc = len(code) // dead code after recur
 
 		default:
