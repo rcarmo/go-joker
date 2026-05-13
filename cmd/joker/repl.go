@@ -15,6 +15,7 @@ import (
 
 	"github.com/candid82/liner"
 	. "github.com/rcarmo/go-joker/core"
+	"github.com/rcarmo/go-joker/core/osutil"
 )
 
 var qualifiedSymbolRe *regexp.Regexp = regexp.MustCompile(`([0-9A-Za-z_\-\+\*\'\.]+)/([0-9A-Za-z_\-\+\*\']*$)`)
@@ -87,7 +88,7 @@ func repl(phase Phase) {
 	if noReadline {
 		runeReader = bufio.NewReader(Stdin)
 	} else {
-		home := HomeDir()
+		home := osutil.HomeDir()
 		jokerd := filepath.Join(home, ".jokerd")
 		if _, err := os.Stat(jokerd); os.IsNotExist(err) {
 			if err := os.MkdirAll(jokerd, 0777); err != nil {

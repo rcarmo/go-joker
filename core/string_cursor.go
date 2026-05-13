@@ -1,6 +1,10 @@
 package core
 
-import "unicode/utf8"
+import (
+	"unicode/utf8"
+
+	corestr "github.com/rcarmo/go-joker/core/string"
+)
 
 // StringCursor is an efficient iterator over a string's runes.
 // It maintains byte offset and rune index for O(1) advance/char access.
@@ -95,7 +99,7 @@ func (c *StringCursor) GetInfo() *ObjectInfo {
 }
 
 func (c *StringCursor) Hash() uint32 {
-	return uint32(c.byteOff) ^ hashString(c.s)
+	return uint32(c.byteOff) ^ corestr.Hash(c.s)
 }
 
 func (c *StringCursor) WithInfo(info *ObjectInfo) Object {
@@ -108,12 +112,4 @@ func (c *StringCursor) GetType() *Type {
 
 var typeStringCursor = &Type{
 	name: "StringCursor",
-}
-
-func hashString(s string) uint32 {
-	h := uint32(0)
-	for i := 0; i < len(s) && i < 32; i++ {
-		h = h*31 + uint32(s[i])
-	}
-	return h
 }

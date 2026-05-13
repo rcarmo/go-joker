@@ -8,10 +8,12 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/rcarmo/go-joker/core/osutil"
 )
 
 func externalHttpSourceToPath(lib string, url string) (path string) {
-	home := HomeDir()
+	home := osutil.HomeDir()
 	localBase := filepath.Join(home, ".jokerd", "deps", strings.SplitN(url, "//", 2)[1])
 	libBase := filepath.Join(strings.Split(lib, ".")...) + ".joke"
 	libPath := filepath.Join(localBase, libBase)

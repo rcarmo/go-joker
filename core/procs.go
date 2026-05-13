@@ -18,6 +18,8 @@ import (
 	"strings"
 	"time"
 	"unicode/utf8"
+
+	"github.com/rcarmo/go-joker/core/osutil"
 )
 
 type (
@@ -2154,7 +2156,7 @@ func findConfigFile(filename string, workingDir string, findDir bool) string {
 		oldFilename := filename
 		filename = filepath.Dir(filename)
 		if filename == oldFilename {
-			home := HomeDir()
+			home := osutil.HomeDir()
 			if home == "" {
 				return ""
 			}
