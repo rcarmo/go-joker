@@ -1,6 +1,6 @@
-// Package string is reserved for future extraction of root string/runtime helpers.
+// Package string owns extracted leaf string-formatting and caching helpers.
 //
-// This package is the eventual extraction target for root-core string support
-// that can become a real package boundary without depending on unrelated object
-// internals.
+// Root-core string/object code still exists, but low-coupling char caching,
+// hash helpers, and small integer string formatting now live here as a real
+// subpackage.
 package string

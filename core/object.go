@@ -23,6 +23,7 @@ import (
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
 type (
@@ -1357,7 +1358,7 @@ func (d Double) Compare(other Object) int {
 func (i Int) GetInfo() *ObjectInfo { return nil }
 
 func (i Int) ToString(escape bool) string {
-	return intToString(i.I)
+	return corestr.Int(i.I)
 }
 
 func MakeInt(i int) Int {
