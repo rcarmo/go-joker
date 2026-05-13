@@ -1,6 +1,6 @@
-// Package generated is reserved for future extraction of generated root-core payload families.
+// Package generated owns data-only generated root-core payload families.
 //
-// Data-only generated bootstrap payloads already live in core/internal/generated.
-// This package is the eventual extraction target for generated families that can
-// become real package boundaries instead of root `package core` outputs.
+// It deliberately contains no runtime mutation logic; root core remains
+// responsible for consuming these inert payloads and installing them where
+// needed.
 package generated

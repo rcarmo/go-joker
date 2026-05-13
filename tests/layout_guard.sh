@@ -11,7 +11,7 @@ fail() { echo "layout guard: $*" >&2; status=1; }
 [[ -d core/internal/trace ]] || fail "missing core/internal/trace"
 [[ -d core/internal/ir ]] || fail "missing core/internal/ir"
 [[ -d core/internal/wasm ]] || fail "missing core/internal/wasm"
-[[ -d core/internal/generated ]] || fail "missing core/internal/generated"
+[[ -d core/generated ]] || fail "missing core/generated"
 [[ -d core/runtime ]] || fail "missing core/runtime"
 [[ -d core/collections ]] || fail "missing core/collections"
 [[ -d core/reader ]] || fail "missing core/reader"

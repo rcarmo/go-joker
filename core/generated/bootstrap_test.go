@@ -39,7 +39,7 @@ func TestCoreSourceManifestPathsExist(t *testing.T) {
 	if !ok {
 		t.Fatal("runtime.Caller failed")
 	}
-	dataDir := filepath.Clean(filepath.Join(filepath.Dir(file), "..", "..", "data"))
+	dataDir := filepath.Clean(filepath.Join(filepath.Dir(file), "..", "data"))
 	seen := map[string]bool{}
 	for _, src := range CoreSourceManifest() {
 		if seen[src.Path] {

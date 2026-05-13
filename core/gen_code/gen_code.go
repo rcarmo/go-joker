@@ -256,8 +256,8 @@ func CoreSourceManifest() []NamespaceSource {
 		rows = append(rows, fmt.Sprintf("\t\t{Name: %s, Path: %s},", strconv.Quote(CoreNameAsNamespaceName(f.Name)), strconv.Quote(f.Filename)))
 	}
 	content := strings.Replace(dataTemplate, "{sources}", strings.Join(rows, "\n"), 1)
-	PanicOnErr(os.MkdirAll("internal/generated", 0755))
-	PanicOnErr(os.WriteFile("internal/generated/core_sources_gen.go", []byte(content), 0644))
+	PanicOnErr(os.MkdirAll("generated", 0755))
+	PanicOnErr(os.WriteFile("generated/core_sources_gen.go", []byte(content), 0644))
 }
 
 func main() {

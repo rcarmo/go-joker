@@ -4,7 +4,7 @@ import (
 	"sort"
 	"testing"
 
-	coregenerated "github.com/rcarmo/go-joker/core/internal/generated"
+	coregenerated "github.com/rcarmo/go-joker/core/generated"
 )
 
 func TestGeneratedCoreNamespacesHelper(t *testing.T) {

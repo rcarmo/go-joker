@@ -6,7 +6,7 @@ package core
 import (
 	"sort"
 
-	coregenerated "github.com/rcarmo/go-joker/core/internal/generated"
+	coregenerated "github.com/rcarmo/go-joker/core/generated"
 )
 
 // generatedCoreNamespaces returns the namespace set represented by the

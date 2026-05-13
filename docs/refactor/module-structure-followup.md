@@ -13,7 +13,7 @@ Current package/file snapshot:
 | root | 0 | 0 | clean: no root package remains |
 | `cmd/joker` | 14 | 0 | startup/orchestration is now split across cohesive helper files; keep shrinking `main.go` rather than regrowing it |
 | `core` root | 201 | 64 | still the main monolith; contract tests grew intentionally before moves |
-| `core/internal/generated` | 3 | 1 | data-only generated bootstrap contract and source manifest; package-level generated payloads only move here when they can be a true Go package boundary |
+| `core/generated` | 3 | 1 | data-only generated bootstrap contract and source manifest; package-level generated payloads only move here when they can be a true Go package boundary |
 | `core/internal/ir` | 6 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
 | `core/internal/trace` | 4 | 1 | aggregation state with direct JSON-shape tests |
 | `core/internal/wasm` | 8 | 4 | encoding/module/host/opcode leaf helpers |
@@ -87,7 +87,7 @@ Status:
 
 ### 4. Keep generated runtime mutation root-bound until broader bootstrap equivalence exists
 
-Go packages are directory-scoped, so generated files that still declare `package core` cannot be moved to a subdirectory as a cosmetic cleanup without becoming a different package and breaking the build. The generated manifest guard is working and `core/internal/generated` now owns data-only bootstrap payload contracts plus the generated source manifest. Do not move root generated runtime mutation merely for tidiness until broader payload equivalence and runtime consumers exist.
+Go packages are directory-scoped, so generated files that still declare `package core` cannot be moved to a subdirectory as a cosmetic cleanup without becoming a different package and breaking the build. The generated manifest guard is working and `core/generated` now owns data-only bootstrap payload contracts plus the generated source manifest. Do not move root generated runtime mutation merely for tidiness until broader payload equivalence and runtime consumers exist.
 
 Status:
 
@@ -116,7 +116,7 @@ cmd/joker/
 
 core/
   *.go                         # only code that still genuinely belongs to root core
-  internal/generated/
+  generated/
   internal/ir/
   internal/trace/
   internal/wasm/
