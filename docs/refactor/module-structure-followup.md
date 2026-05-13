@@ -128,9 +128,10 @@ std/
 tools/
   benchmarks/
   scripts/
+  release/
 ```
 
-Where `tools/scripts/` owns auxiliary build/test/lint helper scripts that do not need to live in the repository root.
+Where `tools/scripts/` owns auxiliary build/test/lint helper scripts that do not need to live in the repository root, and `tools/release/` owns release automation that should not sit at top level.
 
 Staged migration order should remain:
 
@@ -139,7 +140,7 @@ Staged migration order should remain:
 3. Generated payload conversion into real generated packages when equivalence is proven.
 4. Collection construction adapters before `core/collections` moves.
 5. Reader construction adapters before `core/reader` moves.
-6. Low-priority tooling moves such as `tools/benchmarks` and `tools/scripts` last, once references and CI paths are updated.
+6. Low-priority tooling moves such as `tools/benchmarks`, `tools/scripts`, and `tools/release` last, once references and CI paths are updated.
 
 ## Recommended immediate next steps
 
