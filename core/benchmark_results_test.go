@@ -3,6 +3,8 @@ package core
 import (
 	"math"
 	"testing"
+
+	"github.com/rcarmo/go-joker/tests/clbgscripts"
 )
 
 func requireBenchInt(t *testing.T, script string, want int) {
@@ -34,17 +36,17 @@ func TestBenchmarkPortableResults(t *testing.T) {
 		script string
 		want   int
 	}{
-		{"mandelbrot", mandelbrotScript, 633},
+		{"mandelbrot", clbgscripts.MandelbrotScript, 633},
 		{"binary-trees", binaryTreesScript, 358401},
-		{"fannkuch", fannkuchScript, 8132},
-		{"fasta", fastaScript, 150034},
+		{"fannkuch", clbgscripts.FannkuchScript, 8132},
+		{"fasta", clbgscripts.FastaScript, 150034},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) { requireBenchInt(t, tt.script, tt.want) })
 	}
 	t.Run("spectral-norm", func(t *testing.T) { requireBenchDouble(t, spectralNormScript, 1.2741938369830932, 1e-12) })
 	t.Run("nbody", func(t *testing.T) { requireBenchDouble(t, nbodyScript, 0.5416305715146967, 1e-12) })
-	t.Run("pidigits", func(t *testing.T) { requireBenchDouble(t, pidigitsScript, 9.855316369115884e+11, 1e-3) })
+	t.Run("pidigits", func(t *testing.T) { requireBenchDouble(t, clbgscripts.PidigitsScript, 9.855316369115884e+11, 1e-3) })
 }
 
 func TestBenchmarkMicroResults(t *testing.T) {
@@ -78,9 +80,9 @@ func TestBenchmarkBestJokerResults(t *testing.T) {
 		{"binary-trees", `(bench-binary-trees 14)`, 358401},
 		{"fannkuch", `(bench-fannkuch 7)`, 16228},
 		{"map-update-loop", `(bench-map-update-loop 5000)`, 938},
-		{"knucleotide", knucleotideBestJokerScript, 27},
-		{"reverse-complement", reverseComplementBestJokerScript, 196},
-		{"regex-redux", regexReduxBestJokerScript, 8},
+		{"knucleotide", clbgscripts.KNucleotideBestJokerScript, 27},
+		{"reverse-complement", clbgscripts.ReverseComplementBestJokerScript, 196},
+		{"regex-redux", clbgscripts.RegexReduxBestJokerScript, 8},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) { requireBenchInt(t, tt.script, tt.want) })

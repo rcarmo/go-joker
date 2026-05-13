@@ -1,9 +1,13 @@
 package core
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/rcarmo/go-joker/tests/clbgscripts"
+)
 
 func BenchmarkCLBGFannkuchRedux(b *testing.B) {
-	expr := compileBenchExpr(b, fannkuchScript)
+	expr := compileBenchExpr(b, clbgscripts.FannkuchScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -21,7 +25,7 @@ func BenchmarkCLBGFannkuchReduxBestJoker(b *testing.B) {
 }
 
 func BenchmarkCLBGMandelbrot(b *testing.B) {
-	expr := compileBenchExpr(b, mandelbrotScript)
+	expr := compileBenchExpr(b, clbgscripts.MandelbrotScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -39,7 +43,7 @@ func BenchmarkCLBGMandelbrotBestJoker(b *testing.B) {
 }
 
 func BenchmarkCLBGFasta(b *testing.B) {
-	expr := compileBenchExpr(b, fastaScript)
+	expr := compileBenchExpr(b, clbgscripts.FastaScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -48,7 +52,7 @@ func BenchmarkCLBGFasta(b *testing.B) {
 }
 
 func BenchmarkCLBGPidigits(b *testing.B) {
-	expr := compileBenchExpr(b, pidigitsScript)
+	expr := compileBenchExpr(b, clbgscripts.PidigitsScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -57,7 +61,7 @@ func BenchmarkCLBGPidigits(b *testing.B) {
 }
 
 func BenchmarkCLBGKnucleotide(b *testing.B) {
-	expr := compileBenchExpr(b, knucleotideScript)
+	expr := compileBenchExpr(b, clbgscripts.KNucleotideScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -66,7 +70,7 @@ func BenchmarkCLBGKnucleotide(b *testing.B) {
 }
 
 func BenchmarkCLBGKnucleotideBestJoker(b *testing.B) {
-	expr := compileBenchExpr(b, knucleotideBestJokerScript)
+	expr := compileBenchExpr(b, clbgscripts.KNucleotideBestJokerScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -75,7 +79,7 @@ func BenchmarkCLBGKnucleotideBestJoker(b *testing.B) {
 }
 
 func BenchmarkCLBGReverseComplement(b *testing.B) {
-	expr := compileBenchExpr(b, reverseComplementScript)
+	expr := compileBenchExpr(b, clbgscripts.ReverseComplementScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -84,7 +88,7 @@ func BenchmarkCLBGReverseComplement(b *testing.B) {
 }
 
 func BenchmarkCLBGReverseComplementBestJoker(b *testing.B) {
-	expr := compileBenchExpr(b, reverseComplementBestJokerScript)
+	expr := compileBenchExpr(b, clbgscripts.ReverseComplementBestJokerScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -93,7 +97,7 @@ func BenchmarkCLBGReverseComplementBestJoker(b *testing.B) {
 }
 
 func BenchmarkCLBGRegexRedux(b *testing.B) {
-	expr := compileBenchExpr(b, regexReduxScript)
+	expr := compileBenchExpr(b, clbgscripts.RegexReduxScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -102,7 +106,7 @@ func BenchmarkCLBGRegexRedux(b *testing.B) {
 }
 
 func BenchmarkCLBGRegexReduxBestJoker(b *testing.B) {
-	expr := compileBenchExpr(b, regexReduxBestJokerScript)
+	expr := compileBenchExpr(b, clbgscripts.RegexReduxBestJokerScript)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {

@@ -3,6 +3,8 @@ package core
 import (
 	"testing"
 
+	"github.com/rcarmo/go-joker/tests/clbgscripts"
+
 	coreirx "github.com/rcarmo/go-joker/core/ir"
 )
 
@@ -10,7 +12,7 @@ import (
 
 func TestGuessFnParamFrameLetfnPixel(t *testing.T) {
 	clbgInit()
-	expr := compileBenchExpr(t, mandelbrotScript)
+	expr := compileBenchExpr(t, clbgscripts.MandelbrotScript)
 	loop := expr.(*LoopExpr)
 	le := (*LetExpr)(loop)
 	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
@@ -73,7 +75,7 @@ func TestFindLetFrameNestedLet(t *testing.T) {
 
 func TestIrCompileFnWithCaptures(t *testing.T) {
 	clbgInit()
-	expr := compileBenchExpr(t, mandelbrotScript)
+	expr := compileBenchExpr(t, clbgscripts.MandelbrotScript)
 	loop := expr.(*LoopExpr)
 	le := (*LetExpr)(loop)
 	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
@@ -98,7 +100,7 @@ func TestIrCompileFnWithCaptures(t *testing.T) {
 
 func TestIrCompileFnFlip(t *testing.T) {
 	clbgInit()
-	expr := compileBenchExpr(t, fannkuchScript)
+	expr := compileBenchExpr(t, clbgscripts.FannkuchScript)
 	le := expr.(*LetExpr)
 	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
 	for _, v := range le.values {
@@ -321,13 +323,13 @@ func TestCLBGCorrectness(t *testing.T) {
 		name   string
 		script string
 	}{
-		{"mandelbrot", mandelbrotScript},
+		{"mandelbrot", clbgscripts.MandelbrotScript},
 		{"spectral-norm", spectralNormScript},
 		{"binary-trees", binaryTreesScript},
-		{"fannkuch", fannkuchScript},
+		{"fannkuch", clbgscripts.FannkuchScript},
 		{"nbody", nbodyScript},
-		{"fasta", fastaScript},
-		{"pidigits", pidigitsScript},
+		{"fasta", clbgscripts.FastaScript},
+		{"pidigits", clbgscripts.PidigitsScript},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -436,7 +438,7 @@ func TestAdvanceFnCompiles(t *testing.T) {
 
 func TestHeapPermFnCompiles(t *testing.T) {
 	clbgInit()
-	expr := compileBenchExpr(t, fannkuchScript)
+	expr := compileBenchExpr(t, clbgscripts.FannkuchScript)
 	le := expr.(*LetExpr)
 	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
 	for _, v := range le.values {

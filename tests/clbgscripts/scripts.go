@@ -1,8 +1,8 @@
-package core
+package clbgscripts
 
 // --- fannkuch-redux (N=7) ---
 
-var fannkuchScript = `(let [n 7
+var FannkuchScript = `(let [n 7
       init-perm (loop [i 0 v []] (if (= i n) v (recur (+ i 1) (conj v i))))
       flip (fn [perm]
         (let [k (nth perm 0)]
@@ -42,7 +42,7 @@ var fannkuchScript = `(let [n 7
 
 // --- mandelbrot (N=200, max-iter=50) ---
 
-var mandelbrotScript = `(letfn [(pixel [cr ci]
+var MandelbrotScript = `(letfn [(pixel [cr ci]
     (loop [zr 0.0 zi 0.0 i 0]
       (if (= i 50)
         1
@@ -66,7 +66,7 @@ var mandelbrotScript = `(letfn [(pixel [cr ci]
 
 // --- fasta (N=1000) — sequence generation ---
 
-var fastaScript = `(let [im 139968
+var FastaScript = `(let [im 139968
       ia 3877
       ic 29573
       alu "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCGCCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAA"]
@@ -77,11 +77,8 @@ var fastaScript = `(let [im 139968
             idx (rem new-seed (count alu))]
         (recur (+ i 1) new-seed (+ checksum idx))))))`
 
-// --- pidigits (N=100) — big-integer-free approximation using Machin's formula terms ---
-// (This is a simplified version since Joker doesn't have arbitrary precision by default;
-//  we compute a bounded digit extraction instead.)
-
-var pidigitsScript = `(loop [i 0
+// --- pidigits (N=100) ---
+var PidigitsScript = `(loop [i 0
        q 1 r 0 t 1 k 1 n 3 l 3
        digits 0 checksum 0]
   (if (= digits 27)
@@ -98,9 +95,8 @@ var pidigitsScript = `(loop [i 0
             l2 (+ l 2)]
         (recur i q2 r2 t2 k2 n2 l2 digits checksum)))))`
 
-// --- k-nucleotide (simplified) — hash map frequency counting over a string ---
-
-var knucleotideScript = `(let [dna "GGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT"
+// --- k-nucleotide (simplified) ---
+var KNucleotideScript = `(let [dna "GGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT"
       len-dna (count dna)]
   (loop [frame 1 total 0]
     (if (= frame 4)
@@ -115,9 +111,8 @@ var knucleotideScript = `(let [dna "GGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATT
                        (recur (+ i 1) (assoc m k (+ 1 (get m k 0)))))))]
         (recur (+ frame 1) (+ total (count freq)))))))`
 
-// --- reverse-complement (simplified) — reverse and complement a DNA string ---
-
-var reverseComplementScript = `(let [dna "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAAT"
+// --- reverse-complement (simplified) ---
+var ReverseComplementScript = `(let [dna "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAAT"
       len-dna (count dna)]
   (loop [i 0 result ""]
     (if (= i len-dna)
@@ -129,17 +124,8 @@ var reverseComplementScript = `(let [dna "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACT
                    (if (= c \T) "A" (str c)))))]
         (recur (+ i 1) (str result comp-c))))))`
 
-// suppress unused
-var _ = fannkuchScript
-var _ = mandelbrotScript
-var _ = fastaScript
-var _ = pidigitsScript
-var _ = knucleotideScript
-var _ = reverseComplementScript
-
-// --- regex-redux (simplified) — regex match and replace on a DNA-like string ---
-
-var regexReduxScript = `(let [input "agggtaaa|tttaccct ggtattttaatttatagt aactatagtattttaatttatagtagtattttaatttatagt cattttaatttatagtaactatagtattttaatttatagt agggtaaa tttaccct agggtaaatttaccct agggtaaa|tttaccct"
+// --- regex-redux (simplified) ---
+var RegexReduxScript = `(let [input "agggtaaa|tttaccct ggtattttaatttatagt aactatagtattttaatttatagtagtattttaatttatagt cattttaatttatagtaactatagtattttaatttatagt agggtaaa tttaccct agggtaaatttaccct agggtaaa|tttaccct"
       patterns ["agggtaaa|tttaccct"
                 "[cgt]gggtaaa|tttaccc[acg]"
                 "a[act]ggtaaa|tttacc[agt]t"
@@ -157,11 +143,11 @@ var regexReduxScript = `(let [input "agggtaaa|tttaccct ggtattttaatttatagt aactat
             c (count matches)]
         (recur (+ i 1) (+ total c))))))`
 
-var knucleotideBestJokerScript = `(bench-kmer-distinct-total "GGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT" 3)`
+var KNucleotideBestJokerScript = `(bench-kmer-distinct-total "GGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT TATTTTAATTTATAGTATTTTAATTTATAGT" 3)`
 
-var reverseComplementBestJokerScript = `(bench-reverse-complement-count "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAAT")`
+var ReverseComplementBestJokerScript = `(bench-reverse-complement-count "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAAT")`
 
-var regexReduxBestJokerScript = `(bench-regex-count "agggtaaa|tttaccct ggtattttaatttatagt aactatagtattttaatttatagtagtattttaatttatagt cattttaatttatagtaactatagtattttaatttatagt agggtaaa tttaccct agggtaaatttaccct agggtaaa|tttaccct"
+var RegexReduxBestJokerScript = `(bench-regex-count "agggtaaa|tttaccct ggtattttaatttatagt aactatagtattttaatttatagtagtattttaatttatagt cattttaatttatagtaactatagtattttaatttatagt agggtaaa tttaccct agggtaaatttaccct agggtaaa|tttaccct"
   ["agggtaaa|tttaccct"
    "[cgt]gggtaaa|tttaccc[acg]"
    "a[act]ggtaaa|tttacc[agt]t"
