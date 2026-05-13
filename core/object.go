@@ -23,6 +23,7 @@ import (
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
+	"github.com/rcarmo/go-joker/core/numutil"
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
@@ -1160,55 +1161,6 @@ func (bi *BigInt) Compare(other Object) int {
 	return CompareNumbers(bi, EnsureObjectIsNumber(other, "Cannot compare BigInt: %s"))
 }
 
-// Determine the precision for a float-point constant, with float64
-// precision (53) being the minimum value. No need to be as strict
-// when parsing it as is math/big.(Float).Parse().
-func computePrecision(s string) (prec uint) {
-	prec = 53 // Default to precision for float64
-	if s == "" {
-		return
-	}
-	if s[0] == '-' || s[0] == '+' {
-		s = s[1:]
-	}
-	if s == "Inf" || s == "inf" || s == "NaN" {
-		return
-	}
-
-	bitsNeeded := 0.
-
-	// Assume base 10 at first.
-	bitsPerDigit := 3.33 // (joker.math/log-2 10) => 3.32192809488736
-	exponentUpper, exponentLower := 'E', 'e'
-
-	if len(s) > 2 && s[0] == '0' && strings.ContainsAny(s[1:2], "bBoOxX") {
-		switch s[1] {
-		case 'b', 'B':
-			bitsPerDigit = 1
-		case 'o', 'O':
-			bitsPerDigit = 3
-		case 'x', 'X':
-			bitsPerDigit = 4
-		default:
-			panic(fmt.Sprintf("internal error examining %q", s))
-		}
-		exponentUpper, exponentLower = 'P', 'p'
-		s = s[2:]
-	}
-
-	for _, c := range s {
-		if c == exponentUpper || c == exponentLower {
-			break
-		}
-		if ('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f') {
-			bitsNeeded += bitsPerDigit
-		}
-	}
-
-	bitsNeeded = math.Max(float64(prec), math.Ceil(bitsNeeded)) // Round up, then return >= 53
-	return uint(bitsNeeded)
-}
-
 func MakeBigFloat(b *big.Float) *BigFloat {
 	return &BigFloat{b: b}
 }
@@ -1217,7 +1169,7 @@ func MakeBigFloat(b *big.Float) *BigFloat {
 // any original string provided, and true if the string had the proper
 // format; nil and false otherwise.
 func MakeBigFloatWithOrig(s, orig string) (*BigFloat, bool) {
-	prec := computePrecision(s)
+	prec := numutil.ComputeFloatPrecision(s)
 	f := new(big.Float)
 	f.SetPrec(uint(prec))
 
@@ -1325,10 +1277,10 @@ func (d Double) ToString(escape bool) string {
 		return "##NaN"
 	}
 	res := fmt.Sprintf("%g", dbl)
-	if strings.ContainsAny(res, ".e") {
-		return res
+	if numutil.NeedsDecimalSuffix(res) {
+		return res + ".0"
 	}
-	return res + ".0"
+	return res
 }
 
 func (d Double) Equals(other interface{}) bool {
