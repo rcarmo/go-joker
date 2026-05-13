@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
 type (
@@ -1786,11 +1787,11 @@ func InternFakeSymbol(ns *Namespace, sym Symbol) *Var {
 }
 
 func isInteropSymbol(sym Symbol) bool {
-	return sym.ns == nil && (strings.HasPrefix(*sym.name, ".") || strings.HasSuffix(*sym.name, ".") || strings.Contains(*sym.name, "$"))
+	return sym.ns == nil && corestr.IsInteropName(*sym.name)
 }
 
 func isRecordConstructor(sym Symbol) bool {
-	return sym.ns == nil && (strings.HasPrefix(*sym.name, "->") || strings.HasPrefix(*sym.name, "map->"))
+	return sym.ns == nil && corestr.IsRecordConstructorName(*sym.name)
 }
 
 var fullClassNameRe = regexp.MustCompile(`.+\..+\.[A-Z].+`)
