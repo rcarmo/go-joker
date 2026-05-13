@@ -26,6 +26,7 @@ Current coverage:
 - `std/log` — level parsing and variadic logging arity contracts.
 - `std/csv` — writer flush/error propagation for CSV output.
 - `std/json` — lazy stream decode errors surface as runtime errors.
+- `std/filepath` — file tree walk errors surface with namespace context.
 
 ## Audit rules of thumb
 

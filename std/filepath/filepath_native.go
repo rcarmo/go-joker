@@ -17,6 +17,8 @@ func fileSeq(root string) *ArrayVector {
 		res.Append(m)
 		return nil
 	})
-	PanicOnErr(err)
+	if err != nil {
+		panic(RT.NewError("filepath/file-seq: " + err.Error()))
+	}
 	return res
 }
