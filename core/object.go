@@ -15,8 +15,6 @@ import (
 	"math/big"
 	"reflect"
 	"regexp"
-	"strconv"
-	"strings"
 	"sync"
 	"time"
 	"unicode/utf8"
@@ -378,16 +376,16 @@ func hashSymbol(ns, name *string) uint32 {
 }
 
 func MakeSymbol(nsname string) Symbol {
-	index := strings.IndexRune(nsname, '/')
-	if index == -1 || nsname == "/" {
+	ns, local, ok := corestr.SplitQualified(nsname)
+	if !ok {
 		return Symbol{
 			ns:   nil,
-			name: STRINGS.Intern(nsname),
+			name: STRINGS.Intern(local),
 		}
 	}
 	return Symbol{
-		ns:   STRINGS.Intern(nsname[0:index]),
-		name: STRINGS.Intern(nsname[index+1 : len(nsname)]),
+		ns:   STRINGS.Intern(ns),
+		name: STRINGS.Intern(local),
 	}
 }
 
@@ -406,17 +404,17 @@ func (s BySymbolName) Less(i, j int) bool {
 const KeywordHashMask uint32 = 0x7334c790
 
 func MakeKeyword(nsname string) Keyword {
-	index := strings.IndexRune(nsname, '/')
-	if index == -1 || nsname == "/" {
-		name := STRINGS.Intern(nsname)
+	nsName, local, ok := corestr.SplitQualified(nsname)
+	if !ok {
+		name := STRINGS.Intern(local)
 		return Keyword{
 			ns:   nil,
 			name: name,
 			hash: hashSymbol(nil, name) ^ KeywordHashMask,
 		}
 	}
-	ns := STRINGS.Intern(nsname[0:index])
-	name := STRINGS.Intern(nsname[index+1 : len(nsname)])
+	ns := STRINGS.Intern(nsName)
+	name := STRINGS.Intern(local)
 	return Keyword{
 		ns:   ns,
 		name: name,
@@ -435,22 +433,6 @@ func PanicArity(n int) {
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s", n, name)))
 }
 
-func rangeString(min, max int) string {
-	if min == max {
-		return strconv.Itoa(min)
-	}
-	if min+1 == max {
-		return strconv.Itoa(min) + " or " + strconv.Itoa(max)
-	}
-	if min+2 == max {
-		return strconv.Itoa(min) + ", " + strconv.Itoa(min+1) + ", or " + strconv.Itoa(max)
-	}
-	if max >= 999 {
-		return "at least " + strconv.Itoa(min)
-	}
-	return "between " + strconv.Itoa(min) + " and " + strconv.Itoa(max) + ", inclusive"
-}
-
 func PanicArityMinMax(n, min, max int) {
 	grt := currentGRT()
 	name := "<unknown>"
@@ -459,7 +441,7 @@ func PanicArityMinMax(n, min, max int) {
 			name = tr.Name()
 		}
 	}
-	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, name, rangeString(min, max))))
+	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, name, corestr.IntRangeLabel(min, max))))
 }
 
 func CheckArity(args []Object, min int, max int) {
