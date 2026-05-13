@@ -7,7 +7,6 @@ package core
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/gob"
 	"errors"
 	"fmt"
 	"io"
@@ -353,26 +352,11 @@ func newIteratorError() error {
 	return errors.New("Iterator reached the end of collection")
 }
 
-func uint32ToBytes(i uint32) []byte {
-	b := make([]byte, 4)
-	binary.LittleEndian.PutUint32(b, i)
-	return b
-}
-
 func getHash() interface {
 	Write([]byte) (int, error)
 	Sum32() uint32
 } {
 	return hashutil.New32()
-}
-
-func hashSymbol(ns, name *string) uint32 {
-	h := getHash()
-	if ns != nil {
-		h.Write([]byte(*ns))
-	}
-	h.Write([]byte("/" + *name))
-	return h.Sum32()
 }
 
 func MakeSymbol(nsname string) Symbol {
@@ -410,7 +394,7 @@ func MakeKeyword(nsname string) Keyword {
 		return Keyword{
 			ns:   nil,
 			name: name,
-			hash: hashSymbol(nil, name) ^ KeywordHashMask,
+			hash: hashutil.Symbol(nil, name) ^ KeywordHashMask,
 		}
 	}
 	ns := STRINGS.Intern(nsName)
@@ -418,7 +402,7 @@ func MakeKeyword(nsname string) Keyword {
 	return Keyword{
 		ns:   ns,
 		name: name,
-		hash: hashSymbol(ns, name) ^ KeywordHashMask,
+		hash: hashutil.Symbol(ns, name) ^ KeywordHashMask,
 	}
 }
 
@@ -476,14 +460,6 @@ func (s SortableSlice) Swap(i, j int) {
 
 func (s SortableSlice) Less(i, j int) bool {
 	return s.cmp.Compare(s.s[i], s.s[j]) == -1
-}
-
-func hashGobEncoder(e gob.GobEncoder) uint32 {
-	h := getHash()
-	b, err := e.GobEncode()
-	PanicOnErr(err)
-	h.Write(b)
-	return h.Sum32()
 }
 
 func equalsNumbers(x Number, y interface{}) bool {
@@ -1083,7 +1059,7 @@ func (rat *Ratio) GetType() *Type {
 }
 
 func (rat *Ratio) Hash() uint32 {
-	return hashGobEncoder(rat.r)
+	return hashutil.GobEncoder(rat.r)
 }
 
 func (rat *Ratio) Compare(other Object) int {
@@ -1136,7 +1112,7 @@ func (bi *BigInt) GetType() *Type {
 }
 
 func (bi *BigInt) Hash() uint32 {
-	return hashGobEncoder(bi.b)
+	return hashutil.GobEncoder(bi.b)
 }
 
 func (bi *BigInt) Compare(other Object) int {
@@ -1185,7 +1161,7 @@ func (bf *BigFloat) GetType() *Type {
 }
 
 func (bf *BigFloat) Hash() uint32 {
-	return hashGobEncoder(bf.b)
+	return hashutil.GobEncoder(bf.b)
 }
 
 func (bf *BigFloat) Compare(other Object) int {
@@ -1401,7 +1377,7 @@ func (t Time) Native() interface{} {
 }
 
 func (t Time) Hash() uint32 {
-	return hashGobEncoder(t.T)
+	return hashutil.GobEncoder(t.T)
 }
 
 func (t Time) Compare(other Object) int {
@@ -1523,7 +1499,7 @@ func (s Symbol) GetType() *Type {
 }
 
 func (s Symbol) Hash() uint32 {
-	return hashSymbol(s.ns, s.name) + 0x9e3779b9
+	return hashutil.Symbol(s.ns, s.name) + 0x9e3779b9
 }
 
 func (s Symbol) Compare(other Object) int {
@@ -1880,7 +1856,7 @@ func AreCountedIndexedEqual(v1, v2 CountedIndexed) bool {
 func CountedIndexedHash(v CountedIndexed) uint32 {
 	h := getHash()
 	for i := 0; i < v.Count(); i++ {
-		h.Write(uint32ToBytes(v.At(i).Hash()))
+		h.Write(hashutil.Uint32Bytes(v.At(i).Hash()))
 	}
 	return h.Sum32()
 }

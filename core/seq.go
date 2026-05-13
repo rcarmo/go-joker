@@ -5,6 +5,7 @@ import (
 	"io"
 
 	"github.com/rcarmo/go-joker/core/bufferpool"
+	"github.com/rcarmo/go-joker/core/hashutil"
 )
 
 type (
@@ -437,14 +438,14 @@ func hashUnordered(seq Seq, seed uint32) uint32 {
 		seq = seq.Rest()
 	}
 	h := getHash()
-	h.Write(uint32ToBytes(seed))
+	h.Write(hashutil.Uint32Bytes(seed))
 	return h.Sum32()
 }
 
 func hashOrdered(seq Seq) uint32 {
 	h := getHash()
 	for !seq.IsEmpty() {
-		h.Write(uint32ToBytes(seq.First().Hash()))
+		h.Write(hashutil.Uint32Bytes(seq.First().Hash()))
 		seq = seq.Rest()
 	}
 	return h.Sum32()

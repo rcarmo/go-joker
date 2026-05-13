@@ -20,6 +20,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/rcarmo/go-joker/core/deps"
+	"github.com/rcarmo/go-joker/core/hashutil"
 	"github.com/rcarmo/go-joker/core/numutil"
 	"github.com/rcarmo/go-joker/core/osutil"
 	corestr "github.com/rcarmo/go-joker/core/string"
@@ -869,7 +870,7 @@ var procKeyword = func(args []Object) Object {
 			return Keyword{
 				ns:   obj.ns,
 				name: obj.name,
-				hash: hashSymbol(obj.ns, obj.name) ^ KeywordHashMask,
+				hash: hashutil.Symbol(obj.ns, obj.name) ^ KeywordHashMask,
 			}
 		default:
 			return NIL
@@ -883,7 +884,7 @@ var procKeyword = func(args []Object) Object {
 	return Keyword{
 		ns:   ns,
 		name: name,
-		hash: hashSymbol(ns, name) ^ KeywordHashMask,
+		hash: hashutil.Symbol(ns, name) ^ KeywordHashMask,
 	}
 }
 
