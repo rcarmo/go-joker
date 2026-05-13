@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"sync"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 // core_async_ext.go — clojure.core.async compatibility namespace.
@@ -436,7 +438,7 @@ func procAsyncMult(args []Object) Object {
 	CheckArity(args, 1, 1)
 	src := channelFromArg(args, 0)
 	m := &asyncMult{src: src, taps: map[*Channel]bool{}}
-	m.hash = HashPtr(uintptr(unsafe.Pointer(m)))
+	m.hash = hashutil.Ptr(uintptr(unsafe.Pointer(m)))
 	go func() {
 		registerGoroutineRT()
 		for {
@@ -507,7 +509,7 @@ func procAsyncPub(args []Object) Object {
 	src := channelFromArg(args, 0)
 	tf := EnsureArgIsCallable(args, 1)
 	p := &asyncPub{src: src, topicFn: tf, subs: map[string][]*Channel{}}
-	p.hash = HashPtr(uintptr(unsafe.Pointer(p)))
+	p.hash = hashutil.Ptr(uintptr(unsafe.Pointer(p)))
 	go func() {
 		registerGoroutineRT()
 		for {

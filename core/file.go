@@ -3,6 +3,8 @@ package core
 import (
 	"os"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 type (
@@ -28,7 +30,7 @@ func (f *File) GetType() *Type {
 }
 
 func (f *File) Hash() uint32 {
-	return HashPtr(uintptr(unsafe.Pointer(f)))
+	return hashutil.Ptr(uintptr(unsafe.Pointer(f)))
 }
 
 func (f *File) WithInfo(info *ObjectInfo) Object {

@@ -9,6 +9,8 @@ package core
 import (
 	"sync"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 // Hierarchy represents a Clojure hierarchy.
@@ -32,7 +34,7 @@ func MakeHierarchy() *Hierarchy {
 func (h *Hierarchy) ToString(escape bool) string   { return "#object[Hierarchy]" }
 func (h *Hierarchy) Equals(other interface{}) bool { return h == other }
 func (h *Hierarchy) GetType() *Type                { return TYPE.Fn }
-func (h *Hierarchy) Hash() uint32                  { return HashPtr(uintptr(unsafe.Pointer(h))) }
+func (h *Hierarchy) Hash() uint32                  { return hashutil.Ptr(uintptr(unsafe.Pointer(h))) }
 func (h *Hierarchy) WithInfo(info *ObjectInfo) Object {
 	h.info = info
 	return h

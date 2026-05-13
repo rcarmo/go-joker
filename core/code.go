@@ -7,9 +7,10 @@ package core
 
 import (
 	"fmt"
-	"github.com/rcarmo/go-joker/core/gen_go"
 	"reflect"
 	"strings"
+
+	"github.com/rcarmo/go-joker/core/gen_go"
 )
 
 var tr = [][2]string{

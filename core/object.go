@@ -10,8 +10,6 @@ import (
 	"encoding/gob"
 	"errors"
 	"fmt"
-	"hash"
-	"hash/fnv"
 	"io"
 	"math"
 	"math/big"
@@ -23,6 +21,8 @@ import (
 	"time"
 	"unicode/utf8"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 type (
@@ -359,8 +359,11 @@ func uint32ToBytes(i uint32) []byte {
 	return b
 }
 
-func getHash() hash.Hash32 {
-	return fnv.New32a()
+func getHash() interface {
+	Write([]byte) (int, error)
+	Sum32() uint32
+} {
+	return hashutil.New32()
 }
 
 func hashSymbol(ns, name *string) uint32 {
@@ -492,20 +495,7 @@ func (s SortableSlice) Less(i, j int) bool {
 }
 
 func HashPtr(ptr uintptr) uint32 {
-	h := getHash()
-	b := make([]byte, unsafe.Sizeof(ptr))
-	b[0] = byte(ptr)
-	b[1] = byte(ptr >> 8)
-	b[2] = byte(ptr >> 16)
-	b[3] = byte(ptr >> 24)
-	if unsafe.Sizeof(ptr) == 8 {
-		b[4] = byte(ptr >> 32)
-		b[5] = byte(ptr >> 40)
-		b[6] = byte(ptr >> 48)
-		b[7] = byte(ptr >> 56)
-	}
-	h.Write(b)
-	return h.Sum32()
+	return hashutil.Ptr(ptr)
 }
 
 func hashGobEncoder(e gob.GobEncoder) uint32 {
@@ -542,7 +532,7 @@ func (a *Atom) GetType() *Type {
 }
 
 func (a *Atom) Hash() uint32 {
-	return HashPtr(uintptr(unsafe.Pointer(a)))
+	return hashutil.Ptr(uintptr(unsafe.Pointer(a)))
 }
 
 func (a *Atom) WithInfo(info *ObjectInfo) Object {
@@ -590,7 +580,7 @@ func (d *Delay) GetType() *Type {
 }
 
 func (d *Delay) Hash() uint32 {
-	return HashPtr(uintptr(unsafe.Pointer(d)))
+	return hashutil.Ptr(uintptr(unsafe.Pointer(d)))
 }
 
 func (d *Delay) WithInfo(info *ObjectInfo) Object {
@@ -629,7 +619,7 @@ func (t *Type) GetType() *Type {
 }
 
 func (t *Type) Hash() uint32 {
-	return HashPtr(uintptr(unsafe.Pointer(t)))
+	return hashutil.Ptr(uintptr(unsafe.Pointer(t)))
 }
 
 func (rb RecurBindings) ToString(escape bool) string {
@@ -665,7 +655,7 @@ func (exInfo *ExInfo) GetType() *Type {
 }
 
 func (exInfo *ExInfo) Hash() uint32 {
-	return HashPtr(uintptr(unsafe.Pointer(exInfo)))
+	return hashutil.Ptr(uintptr(unsafe.Pointer(exInfo)))
 }
 
 func (exInfo *ExInfo) Message() Object {
@@ -728,7 +718,7 @@ func clearArgs(args []Object) {
 }
 
 func (fn *Fn) Hash() uint32 {
-	return HashPtr(uintptr(unsafe.Pointer(fn)))
+	return hashutil.Ptr(uintptr(unsafe.Pointer(fn)))
 }
 
 func (fn *Fn) Call(args []Object) Object {
@@ -932,7 +922,7 @@ func (p Proc) GetType() *Type {
 }
 
 func (p Proc) Hash() uint32 {
-	return HashPtr(reflect.ValueOf(p.Fn).Pointer())
+	return hashutil.Ptr(reflect.ValueOf(p.Fn).Pointer())
 }
 
 func (i InfoHolder) GetInfo() *ObjectInfo {
@@ -992,7 +982,7 @@ func (v *Var) GetType() *Type {
 }
 
 func (v *Var) Hash() uint32 {
-	return HashPtr(uintptr(unsafe.Pointer(v)))
+	return hashutil.Ptr(uintptr(unsafe.Pointer(v)))
 }
 
 func (v *Var) Resolve() Object {
@@ -1567,7 +1557,7 @@ func (rx *Regex) GetType() *Type {
 }
 
 func (rx *Regex) Hash() uint32 {
-	return HashPtr(uintptr(unsafe.Pointer(rx.R)))
+	return hashutil.Ptr(uintptr(unsafe.Pointer(rx.R)))
 }
 
 func (s Symbol) ToString(escape bool) string {

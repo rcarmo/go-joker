@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"io"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 type (
@@ -15,7 +17,7 @@ type (
 
 func MakeBufferedReader(rd io.Reader) *BufferedReader {
 	res := &BufferedReader{bufio.NewReader(rd), 0}
-	res.hash = HashPtr(uintptr(unsafe.Pointer(res)))
+	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(res)))
 	return res
 }
 

@@ -5,8 +5,6 @@
 
 package core
 
-import ()
-
 func init() {
 	ns_joker_DOT_better_DASH_cond.Lazy = better_condLazyInit
 

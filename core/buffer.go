@@ -3,6 +3,8 @@ package core
 import (
 	"bytes"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 type (
@@ -14,7 +16,7 @@ type (
 
 func MakeBuffer(b *bytes.Buffer) *Buffer {
 	res := &Buffer{b, 0}
-	res.hash = HashPtr(uintptr(unsafe.Pointer(res)))
+	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(res)))
 	return res
 }
 

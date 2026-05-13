@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"sync"
 	"time"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 // concurrency_ext.go — Extended concurrency primitives: alts!, timeout, future, promise, pmap.
@@ -319,7 +321,7 @@ func (f *Future) Equals(other interface{}) bool { return f == other }
 func (f *Future) GetInfo() *ObjectInfo          { return nil }
 func (f *Future) GetType() *Type                { return TYPE.Fn } // Clojure: futures are IFn
 func (f *Future) Hash() uint32 {
-	return HashPtr(uintptr(reflect.ValueOf(f).Pointer()))
+	return hashutil.Ptr(uintptr(reflect.ValueOf(f).Pointer()))
 }
 func (f *Future) WithInfo(info *ObjectInfo) Object { return f }
 
@@ -355,7 +357,7 @@ func (p *Promise) Equals(other interface{}) bool { return p == other }
 func (p *Promise) GetInfo() *ObjectInfo          { return nil }
 func (p *Promise) GetType() *Type                { return TYPE.Fn }
 func (p *Promise) Hash() uint32 {
-	return HashPtr(uintptr(reflect.ValueOf(p).Pointer()))
+	return hashutil.Ptr(uintptr(reflect.ValueOf(p).Pointer()))
 }
 func (p *Promise) WithInfo(info *ObjectInfo) Object { return p }
 
@@ -428,7 +430,7 @@ func (a *Agent) Equals(other interface{}) bool { return a == other }
 func (a *Agent) GetInfo() *ObjectInfo          { return nil }
 func (a *Agent) GetType() *Type                { return TYPE.Fn }
 func (a *Agent) Hash() uint32 {
-	return HashPtr(uintptr(reflect.ValueOf(a).Pointer()))
+	return hashutil.Ptr(uintptr(reflect.ValueOf(a).Pointer()))
 }
 func (a *Agent) WithInfo(info *ObjectInfo) Object { return a }
 

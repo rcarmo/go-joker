@@ -7,6 +7,8 @@ import (
 	"sort"
 	"strings"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 type (
@@ -624,7 +626,7 @@ func (err *ParseError) GetType() *Type {
 }
 
 func (err *ParseError) Hash() uint32 {
-	return HashPtr(uintptr(unsafe.Pointer(err)))
+	return hashutil.Ptr(uintptr(unsafe.Pointer(err)))
 }
 
 func (err *ParseError) WithInfo(info *ObjectInfo) Object {

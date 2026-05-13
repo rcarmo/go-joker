@@ -1,6 +1,10 @@
 package core
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
+)
 
 // transducer_compat.go — Transducer runtime support with proper Reduced type.
 //
@@ -39,7 +43,7 @@ type XForm struct {
 func (xf *XForm) ToString(escape bool) string      { return "#object[XForm]" }
 func (xf *XForm) Equals(other interface{}) bool    { return xf == other }
 func (xf *XForm) GetType() *Type                   { return TYPE.Fn }
-func (xf *XForm) Hash() uint32                     { return HashPtr(uintptr(unsafe.Pointer(xf))) }
+func (xf *XForm) Hash() uint32                     { return hashutil.Ptr(uintptr(unsafe.Pointer(xf))) }
 func (xf *XForm) WithInfo(info *ObjectInfo) Object { res := *xf; res.info = info; return &res }
 func (xf *XForm) WithMeta(m Map) Object            { res := *xf; res.meta = SafeMerge(res.meta, m); return &res }
 

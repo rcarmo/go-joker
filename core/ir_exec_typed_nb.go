@@ -1,6 +1,10 @@
 package core
 
-import "github.com/rcarmo/go-joker/core/internal/noescape"
+import (
+	"math"
+
+	"github.com/rcarmo/go-joker/core/internal/noescape"
+)
 
 // ir_exec_typed_nb.go — NaN-boxed typed IR executor.
 //
@@ -10,8 +14,6 @@ import "github.com/rcarmo/go-joker/core/internal/noescape"
 //
 // This is the typed executor's hot path for numeric loops.
 // Falls back to nil (letting irExecTyped handle it) for unsupported patterns.
-
-import "math"
 
 func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 	analysis := AnalyzeIRProgram(prog)

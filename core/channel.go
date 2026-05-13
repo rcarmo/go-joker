@@ -3,6 +3,8 @@ package core
 import (
 	"sync"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 type (
@@ -56,7 +58,7 @@ func (ch *Channel) WithInfo(info *ObjectInfo) Object {
 
 func MakeChannel(ch chan FutureResult) *Channel {
 	res := &Channel{ch: ch, hash: 0}
-	res.hash = HashPtr(uintptr(unsafe.Pointer(res)))
+	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(res)))
 	return res
 }
 

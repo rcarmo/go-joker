@@ -5,8 +5,6 @@
 
 package core
 
-import ()
-
 func init() {
 	ns_joker_DOT_test.Lazy = testLazyInit
 

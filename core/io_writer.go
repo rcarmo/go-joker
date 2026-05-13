@@ -3,6 +3,8 @@ package core
 import (
 	"io"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 type (
@@ -14,7 +16,7 @@ type (
 
 func MakeIOWriter(w io.Writer) *IOWriter {
 	res := &IOWriter{w, 0}
-	res.hash = HashPtr(uintptr(unsafe.Pointer(res)))
+	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(res)))
 	return res
 }
 

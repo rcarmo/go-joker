@@ -14,6 +14,8 @@ import (
 	"fmt"
 	"sync"
 	"unsafe"
+
+	"github.com/rcarmo/go-joker/core/internal/hashutil"
 )
 
 // Protocol represents a Clojure-style protocol.
@@ -45,7 +47,7 @@ func (p *Protocol) Equals(other interface{}) bool {
 }
 
 func (p *Protocol) GetType() *Type { return TYPE.Fn }
-func (p *Protocol) Hash() uint32   { return HashPtr(uintptr(unsafe.Pointer(p))) }
+func (p *Protocol) Hash() uint32   { return hashutil.Ptr(uintptr(unsafe.Pointer(p))) }
 
 func (p *Protocol) WithInfo(info *ObjectInfo) Object {
 	res := *p
