@@ -1554,9 +1554,9 @@ var procBufferedReader = func(args []Object) Object {
 var procSlurp = func(args []Object) Object {
 	switch f := args[0].(type) {
 	case String:
-		b, err := os.ReadFile(f.S)
+		s, err := osutil.ReadFileString(f.S)
 		PanicOnErr(err)
-		return String{S: string(b)}
+		return String{S: s}
 	case io.Reader:
 		b, err := io.ReadAll(f)
 		PanicOnErr(err)
@@ -1574,20 +1574,10 @@ var procSpit = func(args []Object) Object {
 	if ok, append := opts.Get(MakeKeyword("append")); ok {
 		appendFile = ToBool(append)
 	}
-	flags := os.O_CREATE | os.O_WRONLY
-	if appendFile {
-		flags |= os.O_APPEND
-	} else {
-		flags |= os.O_TRUNC
-	}
 	switch f := f.(type) {
 	case String:
-		file, err := os.OpenFile(f.S, flags, 0644)
+		err := osutil.WriteFileString(f.S, str(content), appendFile)
 		PanicOnErr(err)
-		_, err = file.WriteString(str(content))
-		closeErr := file.Close()
-		PanicOnErr(err)
-		PanicOnErr(closeErr)
 	case io.Writer:
 		_, err := io.WriteString(f, str(content))
 		PanicOnErr(err)
@@ -2309,7 +2299,7 @@ func markJokerNamespacesAsUsed() {
 }
 
 func NewReaderFromFile(filename string) (*Reader, error) {
-	data, err := os.ReadFile(filename)
+	data, err := osutil.ReadFileBytes(filename)
 	if err != nil {
 		fmt.Fprintln(Stderr, "Error: ", err)
 		return nil, err
