@@ -8,7 +8,7 @@ These notes are intended for developers working on the internals of Joker itself
 
 As with Clojure, Joker supports "libraries" of code organized into _namespaces_. It offers a number of namespaces that are built-in to the Joker executable itself, as well as the ability to dynamically (at run time and on-demand) extend these namespaces via external Joker source files typically organized into directory trees and deployed alongside the Joker executable. (Currently, Joker does not support dynamic extension via non-Joker code, such as Go plugins.)
 
-Whether built-in (as described below) or separately deployed via source files written in Joker (as described in [Organizing Libraries (Namespaces)](LIBRARIES.md)), developers should be aware of the progression of any given namespace.
+Whether built-in (as described below) or separately deployed via source files written in Joker (as described in [Organizing Libraries (Namespaces)](docs/LIBRARIES.md)), developers should be aware of the progression of any given namespace.
 
 ## Namespace States
 

@@ -58,9 +58,9 @@ Dash docset: `dash-feed://https%3A%2F%2Fraw.githubusercontent.com%2Fcandid82%2Fj
 
 [Joker slack channel](https://clojurians.slack.com/messages/C9VURUUNL/)
 
-[Organizing libraries (namespaces)](LIBRARIES.md)
+[Organizing libraries (namespaces)](../LIBRARIES.md)
 
-[Developer notes](DEVELOPER.md)
+[Developer notes](../../DEVELOPER.md)
 
 ## Project goals
 
