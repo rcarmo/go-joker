@@ -1,7 +1,7 @@
 //go:build ignore
 
 // Cross-language benchmark: Goja (the JS engine used in gi)
-// Run with: go run benchmarks/cross_lang_bench_goja.go
+// Run with: go run tools/benchmarks/cross_lang_bench_goja.go
 
 package main
 

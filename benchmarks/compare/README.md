@@ -6,7 +6,7 @@ This sub-project provides two comparison workflows:
    - Joker (from `benchmarks/benchmark-history.json`, current series)
    - Python (`benchmarks/cross_lang_bench.py`)
    - Bun/Node (`benchmarks/cross_lang_bench.js`)
-   - Goja (`benchmarks/cross_lang_bench_goja.go`)
+   - Goja (`tools/benchmarks/cross_lang_bench_goja.go`)
    - let-go (`benchmarks/cross_lang_bench.clj`)
 
 2. let-go benchmark suite parity run (mirrored from `nooga/let-go/benchmark`):

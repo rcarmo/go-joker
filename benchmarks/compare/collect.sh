@@ -43,7 +43,7 @@ if command -v go >/dev/null 2>&1; then
   rm -rf "${GOJA_TMP}"
   mkdir -p "${GOJA_TMP}"
   # Remove build-ignore tag so the file can be run inside the temp module.
-  grep -v '^//go:build ignore$' "${ROOT_DIR}/benchmarks/cross_lang_bench_goja.go" > "${GOJA_TMP}/main.go"
+  grep -v '^//go:build ignore$' "${ROOT_DIR}/tools/benchmarks/cross_lang_bench_goja.go" > "${GOJA_TMP}/main.go"
   cat >"${GOJA_TMP}/go.mod" <<'EOF'
 module goja-compare-temp
 

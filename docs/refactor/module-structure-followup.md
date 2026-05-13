@@ -21,7 +21,8 @@ Current package/file snapshot:
 | `core/collections` | 1 | 0 | reserved package for collection extraction; currently a documented boundary marker only |
 | `core/reader` | 1 | 0 | reserved package for reader/parser extraction; currently a documented boundary marker only |
 | `std/*` | many small packages | mixed | namespace-oriented; now explicitly documented as `std/<namespace>.joke` + `std/<namespace>/*.go` + `std/<namespace>/<subns>/...` |
-| `benchmarks` | 5 | 0 | still mixes package stub and build-tagged report tools |
+| `benchmarks` | 1 | 0 | benchmark data/fixtures remain here; report generators should not live here anymore |
+| `tools/benchmarks` | 4 | 0 | build-ignore report/chart generators and Goja helper moved out of `benchmarks/` |
 
 Root `core` clustering remains the structural hotspot:
 
@@ -92,15 +93,7 @@ Status:
 
 ### 5. Move benchmark report generators later
 
-`benchmarks/` is lower priority but still noisy in `go list ./...`. Build-tagged report generators can eventually move to:
-
-```text
-tools/benchmarks/
-```
-
-Improvement to plan:
-
-- defer until core package boundaries settle.
+This cleanup has now started: build-ignore report generators and the Goja helper belong under `tools/benchmarks/`, while `benchmarks/` should keep benchmark data, fixtures, and documentation.
 
 ## Desired staged tree
 

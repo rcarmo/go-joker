@@ -134,7 +134,7 @@ python3 benchmarks/cross_lang_bench.py
 bun benchmarks/cross_lang_bench.js
 
 # Regenerate charts
-go run ./benchmarks/generate_svg.go ./benchmarks
+go run ./tools/benchmarks/generate_svg.go ./benchmarks
 
 # Check the same broad CI benchmark smoke ceilings used by GitHub Actions
 go test ./core -bench 'BenchmarkCall|BenchmarkFib|BenchmarkTak|BenchmarkLoop|BenchmarkReduce|BenchmarkClosure|BenchmarkMap|BenchmarkVector|BenchmarkTransduce' -benchmem -benchtime=1s -count=3 > bench-results.txt
