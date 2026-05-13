@@ -3,9 +3,10 @@ package core
 import (
 	"io"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/rcarmo/go-joker/core/osutil"
 )
 
 var (
@@ -67,13 +68,9 @@ This runs after invariant initialization, which includes calling
 	initializations must be reflected in gen_code/gen_code.go.
 */
 func (env *Env) SetClassPath(cp string) {
-	cpArray := filepath.SplitList(cp)
 	cpVec := EmptyArrayVector()
-	for _, cpelem := range cpArray {
+	for _, cpelem := range osutil.ClassPathElements(cp) {
 		cpVec.Append(MakeString(cpelem))
-	}
-	if cpVec.Count() == 0 {
-		cpVec.Append(MakeString(""))
 	}
 	env.classPath.Value = cpVec
 }
