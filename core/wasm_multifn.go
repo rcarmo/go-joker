@@ -152,7 +152,11 @@ func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRPro
 	if helperBody == nil {
 		return nil
 	}
-	bin := wasmModuleWithTwoFuncs(model.NumSlots, helperParams, useFloat, callerBody, helperBody)
+	valType := corewasm.ValTypeI64
+	if useFloat {
+		valType = corewasm.ValTypeF64
+	}
+	bin := corewasm.TwoFuncExecModule(model.NumSlots, helperParams, valType, callerBody, helperBody)
 
 	rt := getWasmRT()
 	ctx := context.Background()
@@ -169,33 +173,4 @@ func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRPro
 		return nil
 	}
 	return &WasmProgram{mod: mod, execFn: execFn, useFloat: useFloat, hasImports: false, constants: prog.constants}
-}
-
-func wasmModuleWithTwoFuncs(callerParams, helperParams int, useFloat bool, callerBody, helperBody []byte) []byte {
-	m := corewasm.NewModule()
-	valType := corewasm.ValTypeI64
-	if useFloat {
-		valType = corewasm.ValTypeF64
-	}
-	var typeBody []byte
-	typeBody = append(typeBody, 0x02)
-	for _, n := range []int{callerParams, helperParams} {
-		typeBody = append(typeBody, 0x60)
-		typeBody = corewasm.AppendULEB(typeBody, n)
-		for i := 0; i < n; i++ {
-			typeBody = append(typeBody, valType)
-		}
-		typeBody = append(typeBody, 0x01, valType)
-	}
-	m.AddSection(0x01, typeBody)
-	m.AddSection(0x03, []byte{0x02, 0x00, 0x01})
-	m.AddExportSection()
-	var codeBody []byte
-	codeBody = append(codeBody, 0x02)
-	codeBody = corewasm.AppendULEB(codeBody, len(callerBody))
-	codeBody = append(codeBody, callerBody...)
-	codeBody = corewasm.AppendULEB(codeBody, len(helperBody))
-	codeBody = append(codeBody, helperBody...)
-	m.AddSection(0x0a, codeBody)
-	return m.Bytes()
 }

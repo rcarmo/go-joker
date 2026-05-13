@@ -399,7 +399,7 @@ func buildMemNthModule(prog *IRProgram, helperSlot int, helperProg *IRProgram) *
 		}
 	}
 
-	bin := assembleMemNthModule(model.NumSlots, helperParams, callerBody, helperBody)
+	bin := corewasm.MemoryExportModule(model.NumSlots, helperParams, callerBody, helperBody)
 	ctx := context.Background()
 	compiled, err := rt.CompileModule(ctx, bin)
 	if err != nil {
@@ -575,60 +575,4 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 	o = append(o, 0x0b)
 	o = append(o, 0x0b)
 	return o
-}
-
-func assembleMemNthModule(callerParams, helperParams int, callerBody, helperBody []byte) []byte {
-	m := corewasm.NewModule()
-	numFuncs := 1
-	if helperBody != nil {
-		numFuncs = 2
-	}
-	// Type section
-	var typeBody []byte
-	typeBody = corewasm.AppendULEB(typeBody, numFuncs)
-	for _, n := range []int{callerParams, helperParams}[:numFuncs] {
-		typeBody = append(typeBody, 0x60)
-		typeBody = corewasm.AppendULEB(typeBody, n)
-		for i := 0; i < n; i++ {
-			typeBody = append(typeBody, 0x7c)
-		}
-		typeBody = append(typeBody, 0x01, 0x7c)
-	}
-	m.AddSection(0x01, typeBody)
-
-	// Function section
-	var funcBody []byte
-	funcBody = corewasm.AppendULEB(funcBody, numFuncs)
-	for i := 0; i < numFuncs; i++ {
-		funcBody = corewasm.AppendULEB(funcBody, i) // type index
-	}
-	m.AddSection(0x03, funcBody)
-
-	// Memory section: 1 page (64KB)
-	m.AddSection(0x05, []byte{0x01, 0x00, 0x01}) // 1 memory, min=1
-
-	// Export section
-	execName := []byte("exec")
-	memName := []byte("memory")
-	var expBody []byte
-	expBody = corewasm.AppendULEB(expBody, 2)
-	expBody = corewasm.AppendULEB(expBody, len(execName))
-	expBody = append(expBody, execName...)
-	expBody = append(expBody, 0x00, 0x00) // func, index 0
-	expBody = corewasm.AppendULEB(expBody, len(memName))
-	expBody = append(expBody, memName...)
-	expBody = append(expBody, 0x02, 0x00) // memory, index 0
-	m.AddSection(0x07, expBody)
-
-	// Code section
-	var codeBody []byte
-	codeBody = corewasm.AppendULEB(codeBody, numFuncs)
-	codeBody = corewasm.AppendULEB(codeBody, len(callerBody))
-	codeBody = append(codeBody, callerBody...)
-	if helperBody != nil {
-		codeBody = corewasm.AppendULEB(codeBody, len(helperBody))
-		codeBody = append(codeBody, helperBody...)
-	}
-	m.AddSection(0x0a, codeBody)
-	return m.Bytes()
 }
