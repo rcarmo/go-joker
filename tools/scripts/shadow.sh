@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$ROOT"
 
 # Check for shadowed variables.
-
 if which shadow >/dev/null 2>/dev/null; then
-    # Install via: go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow
     SHADOW="-vettool=$(which shadow)"
-elif $(go tool vet nonexistent.go 2>&1 | grep -q -v unsupported); then
+elif go tool vet nonexistent.go 2>&1 | grep -q -v unsupported; then
     SHADOW="-shadow=true"
+else
+    SHADOW=""
 fi
 
 if [ -n "$SHADOW" ]; then

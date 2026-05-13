@@ -23,13 +23,13 @@ jobs:
           command: go build -v ./cmd/joker
       - run:
           name: linter tests
-          command: ./linter-tests.sh
+          command: ./tools/scripts/linter-tests.sh
       - run:
           name: flag tests
-          command: ./flag-tests.sh
+          command: ./tools/scripts/flag-tests.sh
       - run:
           name: eval tests
-          command: ./eval-tests.sh
+          command: ./tools/scripts/eval-tests.sh
       - run:
           name: formatter tests
-          command: ./formatter-tests.sh
+          command: ./tools/scripts/formatter-tests.sh

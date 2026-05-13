@@ -86,13 +86,13 @@ Notes:
 
 ```bash
 # Run all tests
-./all-tests.sh
+./tools/scripts/all-tests.sh
 
 # Individual test suites
-./eval-tests.sh          # Core evaluation tests
-./linter-tests.sh        # Linter functionality tests
-./formatter-tests.sh     # Formatter tests
-./flag-tests.sh          # Command-line flag tests
+./tools/scripts/eval-tests.sh          # Core evaluation tests
+./tools/scripts/linter-tests.sh        # Linter functionality tests
+./tools/scripts/formatter-tests.sh     # Formatter tests
+./tools/scripts/flag-tests.sh          # Command-line flag tests
 
 # Run a single test file
 ./joker tests/run-eval-tests.joke tests/eval/<test-name>.joke
@@ -100,7 +100,7 @@ Notes:
 ./joker tests/run-eval-tests.joke tests/eval/core.joke
 
 # Lint Go code for shadowed variables
-./shadow.sh
+./tools/scripts/shadow.sh
 
 # Lint Clojure/Joker files
 ./joker --lint <file.clj>
@@ -232,7 +232,7 @@ go generate ./...                    # Regenerate core
 1. Create `core/data/<namespace>.joke`
 2. Add to `CoreSourceFiles` array in `core/gen_code/gen_code.go`
 3. Add tests in `tests/eval/`
-4. Run `./run.sh --build-only && ./all-tests.sh`
+4. Run `./run.sh --build-only && ./tools/scripts/all-tests.sh`
 
 ### Adding a Std Namespace
 

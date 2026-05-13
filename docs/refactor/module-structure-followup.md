@@ -127,6 +127,7 @@ std/
 
 tools/
   benchmarks/
+  scripts/
 ```
 
 Staged migration order should remain:
@@ -136,7 +137,7 @@ Staged migration order should remain:
 3. Generated payload conversion into real generated packages when equivalence is proven.
 4. Collection construction adapters before `core/collections` moves.
 5. Reader construction adapters before `core/reader` moves.
-6. Low-priority tooling moves such as `tools/benchmarks` last.
+6. Low-priority tooling moves such as `tools/benchmarks` and `tools/scripts` last.
 
 ## Recommended immediate next steps
 

@@ -226,7 +226,7 @@ Further, if the new namespace depends on any standard-library-wrapping namespace
 
 Create suitable tests, e.g. in `tests/eval/`.
 
-Finally, it's time to build as usual (e.g. via `./run.sh`), then run `./eval-tests.sh` or even `./all-tests.sh`.
+Finally, it's time to build as usual (e.g. via `./run.sh`), then run `./tools/scripts/eval-tests.sh` or even `./tools/scripts/all-tests.sh`.
 
 When Joker is run, the namespace is automatically added to `*core-namespaces*` as an "available" library; upon being loaded, it will be added to `*loaded-libs*`. (The fast-startup version of Joker will have already loaded all core libraries upon startup.)
 
@@ -290,7 +290,7 @@ Besides creating `std/foo.joke` with appropriate metadata (such as `:go`) for ea
 * Add the appropriate line to the `import` block at the top of `main.go`
 * Add tests to `tests/eval/`
 * Rebuild the Joker executable (via `run.sh` or equivalent)
-* Run the tests (via `./all-tests.sh` or just `./eval-tests.sh`)
+* Run the tests (via `./tools/scripts/all-tests.sh` or just `./tools/scripts/eval-tests.sh`)
 
 While some might object to the inclusion of generated files (`std/*/a_*.go`) in the repository, Joker currently depends on their presence in order to build, due to circular dependencies (related to the bootstrapping of Joker) as described below.
 
