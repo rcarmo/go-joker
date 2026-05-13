@@ -123,12 +123,12 @@ Default SSE headers are applied:
 
 ## 2) `joker.http.router` (Bottle-style routing)
 
-File: `lib/joker/http/router.joke`
+File: `std/http/router/router.joke`
 
-Load with classpath:
+Load with classpath pointing at `std/http/router` or package it with the HTTP namespace resources. The classpath root must contain `joker/http/router.joke`, so `std/http/router` is the root for this namespace:
 
 ```bash
-/workspace/tmp/go-joker --classpath lib your_app.clj
+/workspace/tmp/go-joker --classpath std/http/router your_app.clj
 ```
 
 Then:

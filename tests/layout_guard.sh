@@ -11,6 +11,12 @@ fail() { echo "layout guard: $*" >&2; status=1; }
 [[ -d core/internal/trace ]] || fail "missing core/internal/trace"
 [[ -d core/internal/ir ]] || fail "missing core/internal/ir"
 [[ -d core/internal/wasm ]] || fail "missing core/internal/wasm"
+[[ -d core/internal/generated ]] || fail "missing core/internal/generated"
+[[ -f std/http/router/router.joke ]] || fail "missing std/http/router/router.joke"
+
+if [[ -d lib/joker/http ]]; then
+  fail "loose HTTP libraries under lib/joker/http are not allowed; place joker.http.* resources under std/http/"
+fi
 
 if find . -maxdepth 1 -type f -name '*.go' | grep -q .; then
   find . -maxdepth 1 -type f -name '*.go' -print >&2

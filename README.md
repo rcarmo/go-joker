@@ -85,7 +85,7 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 - `joker.random` — random numbers (int, float, choice, shuffle, uuid, secure-bytes)
 - `joker.log` — leveled logging (debug, info, warn, error)
 - `joker.http` — persistent keep-alive HTTP client, Ring-style HTTP server, **WebSocket** and **SSE/streaming** response extensions
-- `joker.http.router` — Bottle-style HTTP routing with path params, middleware, CORS
+- `joker.http.router` — Bottle-style HTTP routing with path params, middleware, CORS (`std/http/router/router.joke`)
 
 ### Clojure parity surface now implemented
 - Protocols: public `defprotocol`, `extend-type`, `extend-protocol`, `satisfies?`, protocol method dispatch

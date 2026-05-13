@@ -16,7 +16,7 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 - CLI entrypoint now lives under `cmd/joker`.
 - `std/*` is already package-oriented and increasingly guarded by focused native-boundary contracts.
 - `core` remains the main monolith, but leaf packages now exist under `core/internal`.
-- Generated `core/a_*.go` files dominate size and are tracked by `tests/generated_files.txt`; they should eventually move behind a generated bootstrap package or clearly separated bootstrap module.
+- Generated `core/a_*.go` files dominate size and are tracked by `tests/generated_files.txt`; they remain in root only while they still require `package core` access. Moving them to a subdirectory must be a real package split, not a cosmetic file move.
 - IR/JIT/WASM compiler and executor files are still coupled to `core.Object`, `Fn`, `Expr`, `LocalEnv`, and unexported runtime helpers, but opcode/diagnostic helpers and WASM leaf helpers have been extracted.
 - Tracing/profiling aggregation state is extracted into `core/internal/trace`.
 
@@ -49,7 +49,7 @@ Planned package boundaries:
 | `core/runtime` | goroutine runtime, eval frames, errors, tracing hooks | Needs careful cycle avoidance with evaluator/object model. |
 | `core/collections` | vectors, maps, sets, seqs, transients | Large API surface; split only after IR/generated boundaries are stable. |
 | `core/reader` | `reader.go`, `read.go`, tagged literals | Candidate after object/collection API is stable. |
-| `core/generated` | `a_*.go`, `types_*_gen.go` | Needs generator updates and bootstrapping contract. |
+| `core/internal/generated` plus future generated packages | `a_*.go`, `types_*_gen.go` | Only move generated files when generator output can declare/import a real package with explicit contracts; do not place `package core` files in subdirectories. |
 | `tools/tracing` or skill scripts | pprof/IR/function trace renderers | External tooling can move independently of Go runtime packages. |
 
 ## Execution phases
@@ -61,7 +61,7 @@ Planned package boundaries:
 - [x] Guard module/import identity with `make import-identity-check` from `make docs-check`.
 - [x] Guard explicit Babashka/non-goal boundaries with `make non-goals-check` from `make docs-check`.
 - [x] Run extracted `core/internal/...` package tests from `make docs-check` via `make refactor-internals-check`.
-- [x] Guard top-level layout invariants with `make layout-check` from `make docs-check`.
+- [x] Guard top-level and extracted internal package layout invariants with `make layout-check` from `make docs-check`.
 
 ### R1 — Extract leaf tracing state
 

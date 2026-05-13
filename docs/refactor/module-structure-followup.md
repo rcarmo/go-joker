@@ -1,6 +1,6 @@
 # Module structure follow-up audit
 
-Updated: 2026-05-11
+Updated: 2026-05-13
 
 ## Snapshot
 
@@ -12,9 +12,9 @@ Current package/file snapshot:
 |---|---:|---:|---|
 | root | 0 | 0 | clean: no root package remains |
 | `cmd/joker` | 7 | 0 | CLI/REPL/standalone helpers are grouped correctly |
-| `core` root | 185 | 49 | still the main monolith |
-| `core/internal/generated` | 3 | 1 | data-only generated bootstrap contract and source manifest |
-| `core/internal/ir` | 5 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
+| `core` root | 201 | 64 | still the main monolith; contract tests grew intentionally before moves |
+| `core/internal/generated` | 3 | 1 | data-only generated bootstrap contract and source manifest; package-level generated payloads only move here when they can be a true Go package boundary |
+| `core/internal/ir` | 6 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
 | `core/internal/trace` | 4 | 1 | aggregation state with direct JSON-shape tests |
 | `core/internal/wasm` | 8 | 4 | encoding/module/host/opcode leaf helpers |
 | `std/*` | many small packages | mixed | mostly namespace-oriented and healthy |
@@ -24,9 +24,9 @@ Root `core` clustering remains the structural hotspot:
 
 | Family | Root files |
 |---|---:|
-| `ir*.go` | 42 |
-| `wasm*.go` | 14 |
-| generated `a_*.go` | 17 |
+| `ir*.go` | 46 |
+| `wasm*.go` | 15 |
+| generated `a_*.go` | 16 |
 | `types_*_gen.go` | 2 |
 | vector-related | 4 |
 | map-related | 7 |
@@ -79,7 +79,7 @@ Status:
 
 ### 4. Keep generated runtime mutation root-bound until broader bootstrap equivalence exists
 
-The generated manifest guard is working and `core/internal/generated` now owns data-only bootstrap payload contracts plus the generated source manifest. Do not move root generated runtime mutation merely for tidiness until broader payload equivalence and runtime consumers exist.
+Go packages are directory-scoped, so generated files that still declare `package core` cannot be moved to a subdirectory as a cosmetic cleanup without becoming a different package and breaking the build. The generated manifest guard is working and `core/internal/generated` now owns data-only bootstrap payload contracts plus the generated source manifest. Do not move root generated runtime mutation merely for tidiness until broader payload equivalence and runtime consumers exist.
 
 Status:
 
@@ -101,7 +101,8 @@ Improvement to plan:
 
 ## Recommended immediate next steps
 
-1. Keep executor/escape-analysis root-bound until the runtime execution contract becomes code.
+1. Continue moving nested-call, fallback, and execution-state access behind `RuntimeExecutionAdapter`; do not move executor files until those seams are explicit and tested.
 2. Extend generated bootstrap emission beyond the source manifest only with broader equivalence tests.
-3. Add construction/sorted collection contracts only if those types become migration candidates.
-4. Keep WASM leaf extraction opportunistic, but avoid moving runtime/object-handle paths until execution metadata is explicit.
+3. Define collection construction/adaptation contracts before moving collection implementations.
+4. Define reader object/expression construction contracts before moving reader/parser code.
+5. Keep WASM leaf extraction opportunistic, but avoid moving runtime/object-handle paths until execution metadata is explicit.
