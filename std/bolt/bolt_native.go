@@ -2,6 +2,7 @@ package bolt
 
 import (
 	"bytes"
+	"math/big"
 	"os"
 	"unsafe"
 
@@ -53,6 +54,9 @@ func (db BoltDB) WithInfo(info *ObjectInfo) Object {
 }
 
 func EnsureArgIsBoltDB(args []Object, index int) BoltDB {
+	if index < 0 || index >= len(args) {
+		panic(RT.NewError("Expected BoltDB argument"))
+	}
 	obj := args[index]
 	if c, yes := obj.(BoltDB); yes {
 		return c
@@ -110,7 +114,7 @@ func getBucket(tx *bolt.Tx, bucket string) *bolt.Bucket {
 	return b
 }
 
-func nextSequence(db *bolt.DB, bucket string) Int {
+func nextSequence(db *bolt.DB, bucket string) Object {
 	var id uint64
 	err := db.Update(func(tx *bolt.Tx) error {
 		b := getBucket(tx, bucket)
@@ -119,6 +123,10 @@ func nextSequence(db *bolt.DB, bucket string) Int {
 		return err
 	})
 	PanicOnErr(err)
+	maxNativeUint := uint64(int(^uint(0) >> 1))
+	if id > maxNativeUint {
+		return MakeBigInt(new(big.Int).SetUint64(id))
+	}
 	return MakeInt(int(id))
 }
 
