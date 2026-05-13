@@ -40,6 +40,12 @@ if find . -maxdepth 1 -type f -name '*.go' | grep -q .; then
   fail "root package Go files are not allowed; CLI belongs in cmd/joker and runtime code belongs in packages"
 fi
 
+for artifact in core.test joker transit.test; do
+  if [[ -e "$artifact" ]]; then
+    fail "stale root build artifact present: $artifact"
+  fi
+done
+
 if ! grep -qx 'module github.com/rcarmo/go-joker' go.mod; then
   fail "go.mod module path is not github.com/rcarmo/go-joker"
 fi

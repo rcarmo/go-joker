@@ -146,3 +146,4 @@ Staged migration order should remain:
 4. Define reader object/expression construction contracts before moving reader/parser code into the reserved `core/reader` target.
 5. Keep WASM leaf extraction opportunistic, but avoid moving runtime/object-handle paths until execution metadata is explicit.
 6. Keep std resource namespaces under the documented `std/<namespace>/<subns>/...` tree and reject any return to loose `lib/` placement.
+7. Keep transient root build artifacts (`core.test`, `joker`, `transit.test`) out of the repository root; `layout-check` should fail when they reappear.
