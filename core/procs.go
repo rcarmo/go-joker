@@ -2353,7 +2353,7 @@ func ReadConfig(filename string, workingDir string) {
 
 func RemoveJokerNamespaces() {
 	for k, ns := range GLOBAL_ENV.Namespaces {
-		if ns != GLOBAL_ENV.CoreNamespace && strings.HasPrefix(*k, "joker.") {
+		if ns != GLOBAL_ENV.CoreNamespace && corestr.HasJokerNamespacePrefix(*k) {
 			delete(GLOBAL_ENV.Namespaces, k)
 		}
 	}
@@ -2361,7 +2361,7 @@ func RemoveJokerNamespaces() {
 
 func markJokerNamespacesAsUsed() {
 	for k, ns := range GLOBAL_ENV.Namespaces {
-		if ns != GLOBAL_ENV.CoreNamespace && strings.HasPrefix(*k, "joker.") {
+		if ns != GLOBAL_ENV.CoreNamespace && corestr.HasJokerNamespacePrefix(*k) {
 			ns.isUsed = true
 			ns.isGloballyUsed = true
 		}

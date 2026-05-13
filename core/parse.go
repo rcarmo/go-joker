@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"regexp"
 	"sort"
-	"strings"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
@@ -1359,7 +1358,7 @@ func getTaggedTypes(obj Meta) []*Type {
 					res = append(res, t)
 				}
 			case String:
-				parts := strings.Split(typeDecl.S, "|")
+				parts := corestr.Split(typeDecl.S, '|')
 				for _, p := range parts {
 					if t := TYPES[MakeSymbol(p).name]; t != nil {
 						res = append(res, t)
