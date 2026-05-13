@@ -1,6 +1,10 @@
 package core
 
-import "testing"
+import (
+	"testing"
+
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
+)
 
 func TestWasmArithmeticLoopCorrectness(t *testing.T) {
 	expr := compileBenchExpr(t, `(loop [i 0 s 0]
@@ -14,7 +18,8 @@ func TestWasmArithmeticLoopCorrectness(t *testing.T) {
 	if prog == nil {
 		t.Skip("IR compilation failed")
 	}
-	if !isWasmEligible(prog) {
+	model := prog.neutralModel()
+	if model == nil || !corewasm.Eligible(model.Code) {
 		t.Skip("IR not WASM-eligible")
 	}
 	wp := wasmCompile(prog)
@@ -82,7 +87,8 @@ func TestWasmFloatLoop(t *testing.T) {
 	if prog == nil {
 		t.Skip("IR failed")
 	}
-	if !irProgramUsesFloat(prog) {
+	model := prog.neutralModel()
+	if model == nil || !corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0) {
 		t.Fatal("float loop should be detected as using float operations/constants")
 	}
 	if prog.model == nil {
@@ -92,7 +98,7 @@ func TestWasmFloatLoop(t *testing.T) {
 	if prog.model.Analysis == nil || !prog.model.Analysis.UsesFloat || !analysis.UsesFloat {
 		t.Fatalf("neutral model analysis should preserve float usage: model=%#v analysis=%#v", prog.model.Analysis, analysis)
 	}
-	t.Logf("float: %v, eligible: %v", irProgramUsesFloat(prog), isWasmEligible(prog))
+	t.Logf("float: %v, eligible: %v", corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0), corewasm.Eligible(model.Code))
 	wp := wasmCompile(prog)
 	if wp == nil {
 		t.Skip("WASM failed")

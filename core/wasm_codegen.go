@@ -6,10 +6,10 @@ import corewasm "github.com/rcarmo/go-joker/core/wasm"
 
 func irToWasm(prog *IRProgram) []byte {
 	model := prog.neutralModel()
-	if model == nil || !isWasmEligible(prog) {
+	if model == nil || !corewasm.Eligible(model.Code) {
 		return nil
 	}
-	useFloat := irProgramUsesFloat(prog)
+	useFloat := corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0)
 	body := compileWasmBody(prog, useFloat)
 	if body == nil {
 		return nil
@@ -28,82 +28,6 @@ func irToWasm(prog *IRProgram) []byte {
 	m.addExportSection()
 	m.addCodeSection(body)
 	return m.bytes()
-}
-
-// isWasmEligible checks if all IR opcodes can map to WASM.
-// Returns false for programs with non-numeric ops (collections, strings, fn calls).
-func isWasmEligible(prog *IRProgram) bool {
-	model := prog.neutralModel()
-	if model == nil {
-		return false
-	}
-	code := model.Code
-	pc := 0
-	for pc < len(code) {
-		op := code[pc]
-		pc++
-		switch op {
-		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
-			pc += 2
-		case irAdd, irSub, irMul, irRem, irInc, irDec,
-			irLt, irGte, irGt, irLte, irEq, irIsZero, irReturn:
-			// ok
-		case irCallSelf:
-			pc += 2 // nargs operand
-		case irDiv, irSqrt:
-			// ok — float ops, need f64 mode
-		case irJumpIfNot, irJump:
-			pc += 2
-		case irRecur:
-			pc += 4
-			tgt := int(code[pc-2])<<8 | int(code[pc-1])
-			if tgt != 0 {
-				pc += 2
-				return false // nested loops not yet
-			}
-		default:
-			return false
-		}
-	}
-	return true
-}
-
-// irProgramUsesFloat checks if the IR uses any float operations or double constants.
-func irProgramUsesFloat(prog *IRProgram) bool {
-	// Check constants
-	for _, c := range prog.constants {
-		if _, ok := c.(Double); ok {
-			return true
-		}
-	}
-	// Check opcodes
-	model := prog.neutralModel()
-	if model == nil {
-		return false
-	}
-	code := model.Code
-	pc := 0
-	for pc < len(code) {
-		op := code[pc]
-		pc++
-		switch op {
-		case irDiv, irSqrt:
-			return true
-		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
-			pc += 2
-		case irJumpIfNot, irJump:
-			pc += 2
-		case irRecur:
-			pc += 4
-			tgt := int(code[pc-2])<<8 | int(code[pc-1])
-			if tgt != 0 {
-				pc += 2
-			}
-		default:
-			// single-byte opcodes
-		}
-	}
-	return false
 }
 
 // compileWasmBody generates WASM instructions.

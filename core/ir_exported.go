@@ -1,6 +1,10 @@
 package core
 
-import "fmt"
+import (
+	"fmt"
+
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
+)
 
 // ir_exported.go — temporary test helpers for IR debugging.
 
@@ -100,8 +104,11 @@ func (e *LoopExpr) Values() []Expr    { return (*LetExpr)(e).values }
 func WasmCompileExported(prog *IRProgram) *WasmProgram        { return wasmCompile(prog) }
 func WasmExecExported(wp *WasmProgram, slots []Object) Object { return wasmExec(wp, slots) }
 
-func IsWasmEligibleExported(prog *IRProgram) bool { return isWasmEligible(prog) }
-func IrToWasmExported(prog *IRProgram) []byte     { return irToWasm(prog) }
+func IsWasmEligibleExported(prog *IRProgram) bool {
+	model := prog.neutralModel()
+	return model != nil && corewasm.Eligible(model.Code)
+}
+func IrToWasmExported(prog *IRProgram) []byte { return irToWasm(prog) }
 func WasmCompileBytesExported(prog *IRProgram) []byte {
 	wp := wasmCompile(prog)
 	if wp == nil {
@@ -110,7 +117,10 @@ func WasmCompileBytesExported(prog *IRProgram) []byte {
 	return append([]byte(nil), wp.bytes...)
 }
 
-func IsFloatExported(prog *IRProgram) bool { return irProgramUsesFloat(prog) }
+func IsFloatExported(prog *IRProgram) bool {
+	model := prog.neutralModel()
+	return model != nil && corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0)
+}
 func (p *IRProgram) CodeAt(i int) byte {
 	model := p.neutralModel()
 	return model.Code[i]

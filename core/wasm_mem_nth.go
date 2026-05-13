@@ -15,6 +15,7 @@ import (
 	"reflect"
 	"sync"
 
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"github.com/tetratelabs/wazero"
 )
 
@@ -82,7 +83,7 @@ func wasmMemNthEligible(prog *IRProgram, slots []Object) bool {
 		}
 	}
 	if !hasFloat {
-		hasFloat = irProgramUsesFloat(prog)
+		hasFloat = corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0)
 	}
 	if !hasFloat {
 		return false
@@ -359,7 +360,8 @@ func findHelperForMemNth(prog *IRProgram, slots []Object) (int, *IRProgram) {
 		return -1, nil
 	}
 	hp := irCompileFn(fn)
-	if hp == nil || !isWasmEligible(hp) {
+	hm := hp.neutralModel()
+	if hp == nil || hm == nil || !corewasm.Eligible(hm.Code) {
 		return -1, nil
 	}
 	return helperSlot, hp

@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	coreir "github.com/rcarmo/go-joker/core/ir"
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
 )
 
 // ir.go — tiny lowered IR for hot loop/arithmetic subsets.
@@ -148,7 +149,7 @@ func (p *IRProgram) refreshModel() *IRProgram {
 	model.FloatConsts = append([]float64(nil), p.floatConsts...)
 	model.WithCaptures(p.captureSlotIdxs, p.captureSlotSet)
 	if p.analysis != nil {
-		analysis := coreir.Analyze(p.code, p.numSlots, len(p.captureKeys), irProgramUsesFloat(p), p.analysis.StringAppendSlots, p.analysis.StringPrependSlots)
+		analysis := coreir.Analyze(p.code, p.numSlots, len(p.captureKeys), corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0), p.analysis.StringAppendSlots, p.analysis.StringPrependSlots)
 		model.Analysis = &analysis
 	}
 	if len(p.arityPrograms) > 0 || p.variadicProg != nil || p.variadicMinArgs != 0 {

@@ -1,6 +1,9 @@
 package core
 
-import coreir "github.com/rcarmo/go-joker/core/ir"
+import (
+	coreir "github.com/rcarmo/go-joker/core/ir"
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
+)
 
 // ir_analysis.go — centralized IR shape analysis.
 //
@@ -28,7 +31,7 @@ func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
 		model.Code,
 		model.NumSlots,
 		len(prog.captureKeys),
-		irProgramUsesFloat(prog),
+		corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0),
 		info.StringBuilderSlots,
 		info.StringPrependSlots,
 	)

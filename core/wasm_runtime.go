@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"sync"
 
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/api"
 )
@@ -107,12 +108,17 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 		closeWasmModule(ctx, mod)
 		return nil
 	}
+	model := prog.neutralModel()
+	if model == nil {
+		closeWasmModule(ctx, mod)
+		return nil
+	}
 
 	wp := &WasmProgram{
 		mod:        mod,
 		execFn:     execFn,
-		useFloat:   irProgramUsesFloat(prog),
-		hasImports: !isWasmEligible(prog),
+		useFloat:   corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0),
+		hasImports: !corewasm.Eligible(model.Code),
 		constants:  prog.constants,
 		bytes:      append([]byte(nil), bin...),
 	}

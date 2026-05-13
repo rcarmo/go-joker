@@ -1,6 +1,9 @@
 package core
 
-import coreir "github.com/rcarmo/go-joker/core/ir"
+import (
+	coreir "github.com/rcarmo/go-joker/core/ir"
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
+)
 
 // ir_diagnostics.go — lightweight IR/WASM compilation explanations.
 //
@@ -67,7 +70,7 @@ func explainWASMEligibility(prog *IRProgram) WASMDiagnostic {
 	model := prog.neutralModel()
 	code := model.Code
 	pc := 0
-	usesFloat := irProgramUsesFloat(prog)
+	usesFloat := corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0)
 	for pc < len(code) {
 		opPC := pc
 		op := code[pc]

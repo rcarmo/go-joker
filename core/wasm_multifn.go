@@ -115,10 +115,14 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 		return 0, nil, nil, 0, false
 	}
 	helperProg := irCompileFn(helperFn)
-	if helperProg == nil || helperProg.hasSelf || !isWasmEligible(helperProg) {
+	if helperProg == nil || helperProg.hasSelf {
 		return 0, nil, nil, 0, false
 	}
-	if !isWasmEligibleWithOneHelper(prog, helperSlot) {
+	helperModel := helperProg.neutralModel()
+	if helperModel == nil || !corewasm.Eligible(helperModel.Code) {
+		return 0, nil, nil, 0, false
+	}
+	if !corewasm.EligibleWithHelper(model.Code, helperSlot) {
 		return 0, nil, nil, 0, false
 	}
 	// Multi-function WASM: enable for both integer and float helpers.
@@ -130,52 +134,16 @@ func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram
 	return helperSlot, helperFn, helperProg, helperNArgs, true
 }
 
-func isWasmEligibleWithOneHelper(prog *IRProgram, helperSlot int) bool {
-	model := prog.neutralModel()
-	if model == nil {
-		return false
-	}
-	code := model.Code
-	pc := 0
-	for pc < len(code) {
-		op := code[pc]
-		pc++
-		switch op {
-		case irLiteral, irLoadSlot, irStoreSlot, irNthStringASCII:
-			pc += 2
-		case irAdd, irSub, irMul, irRem, irInc, irDec,
-			irLt, irGte, irGt, irLte, irEq, irIsZero, irReturn, irDiv, irSqrt:
-			// supported
-		case irCallSlot:
-			slot := int(code[pc])<<8 | int(code[pc+1])
-			pc += 4
-			if slot != helperSlot {
-				return false
-			}
-		case irCallSelf:
-			return false
-		case irJumpIfNot, irJump:
-			pc += 2
-		case irRecur:
-			pc += 4
-			tgt := int(code[pc-2])<<8 | int(code[pc-1])
-			if tgt != 0 {
-				pc += 2
-				return false
-			}
-		default:
-			return false
-		}
-	}
-	return true
-}
-
 func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRProgram, helperParams int) *WasmProgram {
 	model := prog.neutralModel()
-	if model == nil {
+	if helperProg == nil {
 		return nil
 	}
-	useFloat := irProgramUsesFloat(prog) || irProgramUsesFloat(helperProg)
+	helperModel := helperProg.neutralModel()
+	if model == nil || helperModel == nil {
+		return nil
+	}
+	useFloat := corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0) || corewasm.UsesFloat(helperModel.Code, len(helperModel.FloatConsts) > 0)
 	callerBody := compileWasmBodyWithHelper(prog, useFloat, helperSlot, 1)
 	if callerBody == nil {
 		return nil
