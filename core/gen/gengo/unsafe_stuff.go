@@ -1,4 +1,4 @@
-package gen_go
+package gengo
 
 // This module currently is needed only to give gen_code access to
 // private fields in Joker's core-package types.

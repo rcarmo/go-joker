@@ -1,4 +1,4 @@
-package gen_go
+package gengo
 
 // Implements the SortValues() function, used primarily to stabilize
 // (and, in some cases, ensure correct operation of) traversal of maps

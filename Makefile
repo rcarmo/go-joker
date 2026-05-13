@@ -138,7 +138,7 @@ error-handling-check:
 	tests/error_handling_guard.sh .
 
 refactor-internals-check:
-	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/stringpool ./core/string ./core/osutil ./core/bufferpool ./core/runewindow -count=$(TEST_COUNT)
+	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/string ./core/osutil ./core/bufferpool ./core/runewindow -count=$(TEST_COUNT)
 
 core-contract-check:
 	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestSortedCollectionContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics|TestBigIntInt|TestRatioOrInt|TestReadIntegerUsesNativeIntRange|TestFileInfoMapPromotesLargeSize|TestReaderConstructionContract' -count=$(TEST_COUNT) -timeout=120s

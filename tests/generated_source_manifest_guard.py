@@ -4,7 +4,7 @@ import re
 import sys
 
 root = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else ".")
-gen_code = root / "core" / "gen_code" / "gen_code.go"
+gen_code = root / "core" / "gen" / "codegen" / "main.go"
 manifest = root / "core" / "generated" / "core_sources_gen.go"
 
 src = gen_code.read_text()

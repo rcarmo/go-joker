@@ -19,7 +19,6 @@ import (
 	_ "github.com/rcarmo/go-joker/std/string"
 
 	. "github.com/rcarmo/go-joker/core"
-	"github.com/rcarmo/go-joker/core/gen_go"
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 

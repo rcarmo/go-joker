@@ -35,7 +35,7 @@ done < <(
   } | sort
 )
 
-for dir in core/gen core/gen_code core/gen_go core/generated; do
+for dir in core/gen core/gen/codegen core/gen/gengo core/generated; do
   test -d "$dir" || { echo "generated guard: missing generator directory: $dir" >&2; missing=1; }
 done
 

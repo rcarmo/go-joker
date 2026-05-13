@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/rcarmo/go-joker/core/gen_go"
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 

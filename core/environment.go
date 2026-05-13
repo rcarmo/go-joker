@@ -61,7 +61,7 @@ func (env *Env) SetEnvArgs(newArgs []string) {
 This runs after invariant initialization, which includes calling
 
 	NewEnv().  NOTE: Any changes to the list of run-time
-	initializations must be reflected in gen_code/gen_code.go.
+	initializations must be reflected in gen/codegen/main.go.
 */
 func (env *Env) SetClassPath(cp string) {
 	cpVec := EmptyArrayVector()
@@ -75,7 +75,7 @@ func (env *Env) SetClassPath(cp string) {
 This runs after invariant initialization, which includes calling
 
 	NewEnv().  NOTE: Any changes to the list of run-time
-	initializations must be reflected in gen_code/gen_code.go.
+	initializations must be reflected in gen/codegen/main.go.
 */
 func (env *Env) InitEnv(stdin io.Reader, stdout, stderr io.Writer, args []string) {
 	env.stdin.Value = MakeBufferedReader(stdin)
@@ -108,7 +108,7 @@ func (env *Env) StdIO() (stdin, stdout, stderr Object) {
 This runs after invariant initialization, which includes calling
 
 	NewEnv().  NOTE: Any changes to the list of run-time
-	initializations must be reflected in gen_code/gen_code.go.
+	initializations must be reflected in gen/codegen/main.go.
 */
 func (env *Env) SetMainFilename(filename string) {
 	env.MainFile.Value = MakeString(filename)
@@ -118,7 +118,7 @@ func (env *Env) SetMainFilename(filename string) {
 This runs after invariant initialization, which includes calling
 
 	NewEnv().  NOTE: Any changes to the list of run-time
-	initializations must be reflected in gen_code/gen_code.go.
+	initializations must be reflected in gen/codegen/main.go.
 */
 func (env *Env) SetFilename(obj Object) {
 	env.file.Value = obj

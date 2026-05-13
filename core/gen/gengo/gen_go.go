@@ -1,4 +1,4 @@
-package gen_go
+package gengo
 
 // Implements (*GenGo) Var(), which generates Go code that (mostly)
 // statically initializes the contents of the provided argument.

@@ -1,6 +1,6 @@
 //go:generate go run gen/gen_types.go assert Comparable Vec Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Reduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel CountedIndexed
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
-//go:generate go run -tags gen_code gen_code/gen_code.go
+//go:generate go run -tags gen_code gen/codegen/main.go
 
 package core
 

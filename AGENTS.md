@@ -24,8 +24,8 @@ git config --global user.email "rui.carmo@gmail.com"
 ```
 core/           # Core interpreter (parser, evaluator, data types)
 core/data/      # Core Joker libraries (.joke files: core.joke, test.joke, repl.joke)
-core/gen_code/  # Code generation for building Joker
-core/gen_go/    # Go code generation helpers
+core/gen/codegen/  # Code generation for building Joker
+core/gen/gengo/    # Go code generation helpers
 std/            # Standard library wrappers (.joke definitions + Go implementations)
 std/*/          # Go implementations for each std namespace
 tests/          # Test suites (eval, linter, formatter, flags)
@@ -230,7 +230,7 @@ go generate ./...                    # Regenerate core
 ### Adding a Core Namespace
 
 1. Create `core/data/<namespace>.joke`
-2. Add to `CoreSourceFiles` array in `core/gen_code/gen_code.go`
+2. Add to `CoreSourceFiles` array in `core/gen/codegen/gen_code.go`
 3. Add tests in `tests/eval/`
 4. Run `./run.sh --build-only && ./tools/scripts/all-tests.sh`
 
