@@ -3,7 +3,7 @@ package core
 import (
 	"io"
 
-	"github.com/rcarmo/go-joker/core/internal/runewindow"
+	"github.com/rcarmo/go-joker/core/runewindow"
 )
 
 type (

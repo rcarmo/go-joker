@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/rcarmo/go-joker/core/internal/bufferpool"
+	"github.com/rcarmo/go-joker/core/bufferpool"
 )
 
 type (
