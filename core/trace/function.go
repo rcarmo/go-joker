@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"runtime"
 	"sort"
-	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
 )
 
 type Frame struct {
@@ -61,7 +61,7 @@ func (t *FunctionTracer) Enter(name string) func() {
 	}
 	start := time.Now()
 	startRel := uint64(start.Sub(t.t0).Nanoseconds())
-	gid := goroutineID()
+	gid := uint64(corert.GoID())
 	t.total.Add(1)
 	t.mu.Lock()
 	stack := t.stacks[gid]
@@ -165,16 +165,4 @@ func (t *FunctionTracer) Write() {
 	if err := os.WriteFile(t.out, b, 0o644); err != nil {
 		fmt.Fprintln(os.Stderr, "function trace write error:", err)
 	}
-}
-
-func goroutineID() uint64 {
-	var buf [64]byte
-	n := runtime.Stack(buf[:], false)
-	start := len("goroutine ")
-	end := start
-	for end < n && buf[end] >= '0' && buf[end] <= '9' {
-		end++
-	}
-	id, _ := strconv.ParseUint(string(buf[start:end]), 10, 64)
-	return id
 }
