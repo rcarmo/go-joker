@@ -86,132 +86,132 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 		case irAdd:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if nbIsInt(a) && nbIsInt(b) {
-				stackBuf[sp-1] = nbInt(nbToInt(a) + nbToInt(b))
+			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+				stackBuf[sp-1] = coreirx.BoxInt(coreirx.ToInt(a) + coreirx.ToInt(b))
 			} else {
-				stackBuf[sp-1] = nbDouble(nbToFloat(a) + nbToFloat(b))
+				stackBuf[sp-1] = coreirx.BoxDouble(coreirx.ToFloat(a) + coreirx.ToFloat(b))
 			}
 
 		case irSub:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if nbIsInt(a) && nbIsInt(b) {
-				stackBuf[sp-1] = nbInt(nbToInt(a) - nbToInt(b))
+			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+				stackBuf[sp-1] = coreirx.BoxInt(coreirx.ToInt(a) - coreirx.ToInt(b))
 			} else {
-				stackBuf[sp-1] = nbDouble(nbToFloat(a) - nbToFloat(b))
+				stackBuf[sp-1] = coreirx.BoxDouble(coreirx.ToFloat(a) - coreirx.ToFloat(b))
 			}
 
 		case irMul:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if nbIsInt(a) && nbIsInt(b) {
-				stackBuf[sp-1] = nbInt(nbToInt(a) * nbToInt(b))
+			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+				stackBuf[sp-1] = coreirx.BoxInt(coreirx.ToInt(a) * coreirx.ToInt(b))
 			} else {
-				stackBuf[sp-1] = nbDouble(nbToFloat(a) * nbToFloat(b))
+				stackBuf[sp-1] = coreirx.BoxDouble(coreirx.ToFloat(a) * coreirx.ToFloat(b))
 			}
 
 		case irDiv:
 			sp--
-			stackBuf[sp-1] = nbDouble(nbToFloat(stackBuf[sp-1]) / nbToFloat(stackBuf[sp]))
+			stackBuf[sp-1] = coreirx.BoxDouble(coreirx.ToFloat(stackBuf[sp-1]) / coreirx.ToFloat(stackBuf[sp]))
 
 		case irRem:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if nbIsInt(a) && nbIsInt(b) {
-				bv := nbToInt(b)
+			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+				bv := coreirx.ToInt(b)
 				if bv == 0 {
 					return nil
 				}
-				stackBuf[sp-1] = nbInt(nbToInt(a) % bv)
+				stackBuf[sp-1] = coreirx.BoxInt(coreirx.ToInt(a) % bv)
 			} else {
 				return nil
 			}
 
 		case irSqrt:
-			stackBuf[sp-1] = nbDouble(math.Sqrt(nbToFloat(stackBuf[sp-1])))
+			stackBuf[sp-1] = coreirx.BoxDouble(math.Sqrt(coreirx.ToFloat(stackBuf[sp-1])))
 
 		case irInc:
 			v := stackBuf[sp-1]
-			if nbIsInt(v) {
-				stackBuf[sp-1] = nbInt(nbToInt(v) + 1)
+			if coreirx.IsInt(v) {
+				stackBuf[sp-1] = coreirx.BoxInt(coreirx.ToInt(v) + 1)
 			} else {
-				stackBuf[sp-1] = nbDouble(nbToFloat(v) + 1)
+				stackBuf[sp-1] = coreirx.BoxDouble(coreirx.ToFloat(v) + 1)
 			}
 
 		case irDec:
 			v := stackBuf[sp-1]
-			if nbIsInt(v) {
-				stackBuf[sp-1] = nbInt(nbToInt(v) - 1)
+			if coreirx.IsInt(v) {
+				stackBuf[sp-1] = coreirx.BoxInt(coreirx.ToInt(v) - 1)
 			} else {
-				stackBuf[sp-1] = nbDouble(nbToFloat(v) - 1)
+				stackBuf[sp-1] = coreirx.BoxDouble(coreirx.ToFloat(v) - 1)
 			}
 
 		case irLt:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if nbIsInt(a) && nbIsInt(b) {
-				stackBuf[sp-1] = nbBool(nbToInt(a) < nbToInt(b))
+			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToInt(a) < coreirx.ToInt(b))
 			} else {
-				stackBuf[sp-1] = nbBool(nbToFloat(a) < nbToFloat(b))
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToFloat(a) < coreirx.ToFloat(b))
 			}
 
 		case irGte:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if nbIsInt(a) && nbIsInt(b) {
-				stackBuf[sp-1] = nbBool(nbToInt(a) >= nbToInt(b))
+			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToInt(a) >= coreirx.ToInt(b))
 			} else {
-				stackBuf[sp-1] = nbBool(nbToFloat(a) >= nbToFloat(b))
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToFloat(a) >= coreirx.ToFloat(b))
 			}
 
 		case irGt:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if nbIsInt(a) && nbIsInt(b) {
-				stackBuf[sp-1] = nbBool(nbToInt(a) > nbToInt(b))
+			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToInt(a) > coreirx.ToInt(b))
 			} else {
-				stackBuf[sp-1] = nbBool(nbToFloat(a) > nbToFloat(b))
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToFloat(a) > coreirx.ToFloat(b))
 			}
 
 		case irLte:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if nbIsInt(a) && nbIsInt(b) {
-				stackBuf[sp-1] = nbBool(nbToInt(a) <= nbToInt(b))
+			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToInt(a) <= coreirx.ToInt(b))
 			} else {
-				stackBuf[sp-1] = nbBool(nbToFloat(a) <= nbToFloat(b))
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToFloat(a) <= coreirx.ToFloat(b))
 			}
 
 		case irEq:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
 			if a == b {
-				stackBuf[sp-1] = nbBool(true)
-			} else if nbIsInt(a) && nbIsInt(b) {
-				stackBuf[sp-1] = nbBool(false)
-			} else if nbIsDouble(a) || nbIsDouble(b) {
-				stackBuf[sp-1] = nbBool(nbToFloat(a) == nbToFloat(b))
+				stackBuf[sp-1] = coreirx.BoxBool(true)
+			} else if coreirx.IsInt(a) && coreirx.IsInt(b) {
+				stackBuf[sp-1] = coreirx.BoxBool(false)
+			} else if coreirx.IsDouble(a) || coreirx.IsDouble(b) {
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToFloat(a) == coreirx.ToFloat(b))
 			} else {
 				oa := nbToObject(a, objTable)
 				ob := nbToObject(b, objTable)
-				stackBuf[sp-1] = nbBool(oa.Equals(ob))
+				stackBuf[sp-1] = coreirx.BoxBool(oa.Equals(ob))
 			}
 
 		case irIsZero:
 			v := stackBuf[sp-1]
-			if nbIsInt(v) {
-				stackBuf[sp-1] = nbBool(nbToInt(v) == 0)
-			} else if nbIsDouble(v) {
-				stackBuf[sp-1] = nbBool(nbToDouble(v) == 0)
+			if coreirx.IsInt(v) {
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToInt(v) == 0)
+			} else if coreirx.IsDouble(v) {
+				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToDouble(v) == 0)
 			} else {
-				stackBuf[sp-1] = nbBool(false)
+				stackBuf[sp-1] = coreirx.BoxBool(false)
 			}
 
 		case irJumpIfNot:
 			target := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			sp--
-			if !nbTruthy(stackBuf[sp]) {
+			if !coreirx.Truthy(stackBuf[sp]) {
 				pc = target
 			}
 
@@ -252,10 +252,10 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 			coll := nbToObject(stackBuf[sp], objTable)
 			idxV := stackBuf[sp+1]
 			var idx int
-			if nbIsInt(idxV) {
-				idx = nbToInt(idxV)
+			if coreirx.IsInt(idxV) {
+				idx = coreirx.ToInt(idxV)
 			} else {
-				idx = int(nbToFloat(idxV))
+				idx = int(coreirx.ToFloat(idxV))
 			}
 			switch v := coll.(type) {
 			case *ArrayVector:
@@ -288,9 +288,9 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 					var f64buf [4]float64
 					for i := nargs - 1; i >= 0; i-- {
 						sp--
-						f64buf[i] = nbToFloat(stackBuf[sp])
+						f64buf[i] = coreirx.ToFloat(stackBuf[sp])
 					}
-					stackBuf[sp] = nbDouble(fnProg.nativeHelper(coreirx.Float64(f64buf[:nargs])))
+					stackBuf[sp] = coreirx.BoxDouble(fnProg.nativeHelper(coreirx.Float64(f64buf[:nargs])))
 					sp++
 					continue
 				}
@@ -334,10 +334,10 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 		case irCount:
 			sp--
 			v := stackBuf[sp]
-			if nbIsObj(v) {
+			if coreirx.IsObj(v) {
 				obj := nbToObject(v, objTable)
 				if c, ok := obj.(Counted); ok {
-					stackBuf[sp] = nbInt(c.Count())
+					stackBuf[sp] = coreirx.BoxInt(c.Count())
 					sp++
 				} else {
 					return nil
