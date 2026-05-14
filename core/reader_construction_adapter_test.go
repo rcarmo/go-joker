@@ -46,4 +46,12 @@ func TestReaderConstructionAdapterExpressionSurface(t *testing.T) {
 	if len(set.elements) != 3 || set.Position != pos {
 		t.Fatalf("SetExpr mismatch: %#v", set)
 	}
+	setFrom := adapter.SetExprFrom([]Expr{lit}, pos)
+	if len(setFrom.elements) != 1 || setFrom.elements[0] != lit || setFrom.Position != pos {
+		t.Fatalf("SetExprFrom mismatch: %#v", setFrom)
+	}
+	mapFrom := adapter.MapExprFrom([]Expr{lit}, []Expr{surrogate}, pos)
+	if len(mapFrom.keys) != 1 || mapFrom.keys[0] != lit || len(mapFrom.values) != 1 || mapFrom.values[0] != surrogate || mapFrom.Position != pos {
+		t.Fatalf("MapExprFrom mismatch: %#v", mapFrom)
+	}
 }

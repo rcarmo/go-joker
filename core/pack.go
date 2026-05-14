@@ -467,11 +467,7 @@ func unpackVectorExpr(p []byte, header *PackHeader) (*VectorExpr, []byte) {
 	p = p[1:]
 	pos, p := unpackPosition(p, header)
 	v, p := unpackSeq(p, header)
-	res := &VectorExpr{
-		Position: pos,
-		v:        v,
-	}
-	return res, p
+	return readerConstruction.VectorExpr(v, pos), p
 }
 
 func (expr *SetExpr) Pack(p []byte, env *PackEnv) []byte {
@@ -484,11 +480,7 @@ func unpackSetExpr(p []byte, header *PackHeader) (*SetExpr, []byte) {
 	p = p[1:]
 	pos, p := unpackPosition(p, header)
 	v, p := unpackSeq(p, header)
-	res := &SetExpr{
-		Position: pos,
-		elements: v,
-	}
-	return res, p
+	return readerConstruction.SetExprFrom(v, pos), p
 }
 
 func (expr *MapExpr) Pack(p []byte, env *PackEnv) []byte {
@@ -504,12 +496,7 @@ func unpackMapExpr(p []byte, header *PackHeader) (*MapExpr, []byte) {
 	pos, p := unpackPosition(p, header)
 	ks, p := unpackSeq(p, header)
 	vs, p := unpackSeq(p, header)
-	res := &MapExpr{
-		Position: pos,
-		keys:     ks,
-		values:   vs,
-	}
-	return res, p
+	return readerConstruction.MapExprFrom(ks, vs, pos), p
 }
 
 func (expr *IfExpr) Pack(p []byte, env *PackEnv) []byte {

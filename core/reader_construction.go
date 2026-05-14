@@ -41,3 +41,11 @@ func (ReaderConstructionAdapter) MapExpr(size int, pos Position) *MapExpr {
 func (ReaderConstructionAdapter) SetExpr(size int, pos Position) *SetExpr {
 	return &SetExpr{elements: make([]Expr, size), Position: pos}
 }
+
+func (ReaderConstructionAdapter) SetExprFrom(elements []Expr, pos Position) *SetExpr {
+	return &SetExpr{elements: elements, Position: pos}
+}
+
+func (ReaderConstructionAdapter) MapExprFrom(keys []Expr, values []Expr, pos Position) *MapExpr {
+	return &MapExpr{keys: keys, values: values, Position: pos}
+}
