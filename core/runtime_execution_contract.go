@@ -260,17 +260,25 @@ func (RuntimeExecutionAdapter) ToTransient(coll Object) (Object, bool) {
 }
 
 func (RuntimeExecutionAdapter) AssocBang(coll Object, key Object, val Object) (Object, bool) {
-	if tv, ok := coll.(*TransientVector); ok {
-		return tv.AssocInPlace(key, val), true
+	switch c := coll.(type) {
+	case *TransientVector:
+		return c.AssocInPlace(key, val), true
+	case *TransientMap:
+		return c.AssocInPlace(key, val), true
+	default:
+		return nil, false
 	}
-	return nil, false
 }
 
 func (RuntimeExecutionAdapter) ToPersistent(coll Object) (Object, bool) {
-	if tv, ok := coll.(*TransientVector); ok {
-		return tv.ToPersistent(), true
+	switch c := coll.(type) {
+	case *TransientVector:
+		return c.ToPersistent(), true
+	case *TransientMap:
+		return c.ToPersistent(), true
+	default:
+		return nil, false
 	}
-	return nil, false
 }
 
 func (RuntimeExecutionAdapter) Str1(obj Object) Object {

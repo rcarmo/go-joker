@@ -841,16 +841,14 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			val := stack[len(stack)-1]
 			coll := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			if coll.tag == irValObject {
-				if c, ok := coll.obj().(Conjable); ok {
-					result := c.Conj(val.object())
-					stack = append(stack, objectToIRValue(result))
-				} else {
-					return nil
-				}
-			} else {
+			if coll.tag != irValObject {
 				return nil
 			}
+			result, ok := runtimeExec.Conj(coll.obj(), val.object())
+			if !ok {
+				return nil
+			}
+			stack = append(stack, objectToIRValue(result))
 
 		case irCallSelf:
 			nargs := int(code[pc])<<8 | int(code[pc+1])
@@ -914,51 +912,40 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irToTransient:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			if a.tag == irValObject {
-				if av, ok := a.obj().(*ArrayVector); ok {
-					stack = append(stack, objectToIRValue(ToTransient(av)))
-				} else {
-					return nil
-				}
-			} else {
+			if a.tag != irValObject {
 				return nil
 			}
+			result, ok := runtimeExec.ToTransient(a.obj())
+			if !ok {
+				return nil
+			}
+			stack = append(stack, objectToIRValue(result))
 
 		case irAssocBang:
 			val := stack[len(stack)-1]
 			key := stack[len(stack)-2]
 			tv := stack[len(stack)-3]
 			stack = stack[:len(stack)-3]
-			if tv.tag == irValObject {
-				switch t := tv.obj().(type) {
-				case *TransientVector:
-					t.AssocInPlace(key.object(), val.object())
-					stack = append(stack, objectToIRValue(t))
-				case *TransientMap:
-					t.AssocInPlace(key.object(), val.object())
-					stack = append(stack, objectToIRValue(t))
-				default:
-					return nil
-				}
-			} else {
+			if tv.tag != irValObject {
 				return nil
 			}
+			result, ok := runtimeExec.AssocBang(tv.obj(), key.object(), val.object())
+			if !ok {
+				return nil
+			}
+			stack = append(stack, objectToIRValue(result))
 
 		case irToPersistent:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			if a.tag == irValObject {
-				switch t := a.obj().(type) {
-				case *TransientVector:
-					stack = append(stack, objectToIRValue(t.ToPersistent()))
-				case *TransientMap:
-					stack = append(stack, objectToIRValue(t.ToPersistent()))
-				default:
-					return nil
-				}
-			} else {
+			if a.tag != irValObject {
 				return nil
 			}
+			result, ok := runtimeExec.ToPersistent(a.obj())
+			if !ok {
+				return nil
+			}
+			stack = append(stack, objectToIRValue(result))
 
 		case irIntCast:
 			a := stack[len(stack)-1]
