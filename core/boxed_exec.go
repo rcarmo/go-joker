@@ -702,23 +702,21 @@ loop:
 			if baseProg, ok := runtimeExec.FnProgram(fnObj); ok {
 				// Try IR — typed executor first, skip if previously failed
 				if fnProg := runtimeExec.DispatchArityProgram(baseProg, nargs); runtimeExec.CanExecuteIR(fnProg) {
-					if fnProg != nil {
-						callArgs, ok := runtimeExec.FnCallSlots(fnObj, fnProg, args)
-						if !ok {
-							return nil
-						}
-						if runtimeExec.CanExecuteTypedIR(fnProg) {
-							if result := irExecTyped(fnProg, callArgs); result != nil {
-								stack = append(stack, result)
-								continue
-							}
-							runtimeExec.MarkTypedExecutionFailed(fnProg)
-						}
-						if result := irExec(fnProg, callArgs); result != nil {
+					callArgs, ok := runtimeExec.FnCallSlots(fnObj, fnProg, args)
+					if !ok {
+						return nil
+					}
+					if runtimeExec.CanExecuteTypedIR(fnProg) {
+						if result := irExecTyped(fnProg, callArgs); result != nil {
 							stack = append(stack, result)
 							continue
 						}
-					} // end if fnProg != nil
+						runtimeExec.MarkTypedExecutionFailed(fnProg)
+					}
+					if result := irExec(fnProg, callArgs); result != nil {
+						stack = append(stack, result)
+						continue
+					}
 				}
 			}
 			// Fallback to normal Fn.Call

@@ -742,6 +742,9 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 							var subBuf [16]irValue
 							var subSlots []irValue
 							numSlots := runtimeExec.ProgramNumSlots(fnProg)
+							if numSlots < nargs {
+								return nil
+							}
 							if numSlots <= 16 {
 								subSlots = subBuf[:numSlots]
 							} else {
@@ -762,26 +765,24 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 						}
 					}
 					// Fallback: box args
-					if fnProg != nil {
-						var argsBuf [4]Object
-						var args []Object
-						if nargs <= 4 {
-							args = argsBuf[:nargs]
-						} else {
-							args = make([]Object, nargs)
-						}
-						for i, v := range typedArgs {
-							args[i] = v.object()
-						}
-						callArgs, ok := runtimeExec.FnCallSlots(fnObj, fnProg, args)
-						if !ok {
-							return nil
-						}
-						if r := irExec(fnProg, callArgs); r != nil {
-							result = r
-						} else {
-							runtimeExec.MarkBoxedExecutionFailed(fnProg)
-						}
+					var argsBuf [4]Object
+					var args []Object
+					if nargs <= 4 {
+						args = argsBuf[:nargs]
+					} else {
+						args = make([]Object, nargs)
+					}
+					for i, v := range typedArgs {
+						args[i] = v.object()
+					}
+					callArgs, ok := runtimeExec.FnCallSlots(fnObj, fnProg, args)
+					if !ok {
+						return nil
+					}
+					if r := irExec(fnProg, callArgs); r != nil {
+						result = r
+					} else {
+						runtimeExec.MarkBoxedExecutionFailed(fnProg)
 					}
 				}
 				if result == nil {
