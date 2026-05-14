@@ -39,7 +39,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		slots[i] = v
 	}
 	// Pre-fill captured closure values into their assigned slots
-	if !(RuntimeExecutionAdapter{}).ApplyTypedCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
+	if !runtimeExec.ApplyTypedCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
 		return nil
 	}
 
@@ -304,7 +304,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 
 		case irThrow:
 			v := stack[len(stack)-1]
-			(RuntimeExecutionAdapter{}).Throw(v.object())
+			runtimeExec.Throw(v.object())
 
 		case irTryCatch:
 			pc += 4
@@ -325,7 +325,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			for i, v := range slots {
 				capturedSlots[i] = v.object()
 			}
-			fn := (RuntimeExecutionAdapter{}).MakeFn(prog.fnExprs[idx], capturedSlots)
+			fn := runtimeExec.MakeFn(prog.fnExprs[idx], capturedSlots)
 			stack = append(stack, objectToIRValue(fn))
 
 		case irBitAnd:
@@ -752,14 +752,14 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 							}
 							copy(subSlots[:nargs], typedArgs)
 							// Resolve captures
-							(RuntimeExecutionAdapter{}).InstallTypedEnvCaptures(fnProg, subSlots, fn.env)
+							runtimeExec.InstallTypedEnvCaptures(fnProg, subSlots, fn.env)
 							// Execute inline with typed slots
 							subResult := irExecTypedInline(fnProg, subSlots)
 							if subResult.tag != 0 || subResult.i != 0 || subResult.f != 0 {
 								stack = append(stack, subResult)
 								continue
 							}
-							(RuntimeExecutionAdapter{}).MarkTypedExecutionFailed(fnProg)
+							runtimeExec.MarkTypedExecutionFailed(fnProg)
 						}
 					}
 					// Fallback: box args
@@ -774,11 +774,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 						for i, v := range typedArgs {
 							args[i] = v.object()
 						}
-						callArgs := (RuntimeExecutionAdapter{}).PrepareCallSlots(fnProg, args, fn.env)
+						callArgs := runtimeExec.PrepareCallSlots(fnProg, args, fn.env)
 						if r := irExec(fnProg, callArgs); r != nil {
 							result = r
 						} else {
-							(RuntimeExecutionAdapter{}).MarkBoxedExecutionFailed(fnProg)
+							runtimeExec.MarkBoxedExecutionFailed(fnProg)
 						}
 					}
 				}

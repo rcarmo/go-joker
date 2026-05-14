@@ -22,7 +22,7 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 	}
 	copy(slots, initSlots)
 	// Pre-fill captured closure values into their assigned slots
-	if !(RuntimeExecutionAdapter{}).ApplyCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
+	if !runtimeExec.ApplyCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
 		return nil
 	}
 
@@ -392,7 +392,7 @@ loop:
 
 		case irThrow:
 			v := stack[len(stack)-1]
-			(RuntimeExecutionAdapter{}).Throw(v)
+			runtimeExec.Throw(v)
 
 		case irTryCatch:
 			pc += 4
@@ -409,7 +409,7 @@ loop:
 			if prog.fnExprs == nil || idx >= len(prog.fnExprs) {
 				return nil
 			}
-			fn := (RuntimeExecutionAdapter{}).MakeFn(prog.fnExprs[idx], slots)
+			fn := runtimeExec.MakeFn(prog.fnExprs[idx], slots)
 			stack = append(stack, fn)
 
 		case irBitAnd:
@@ -764,7 +764,7 @@ loop:
 					}
 				}
 				// Try IR — typed executor first, skip if previously failed
-				if fnProg := irGetFnProg(fn); (RuntimeExecutionAdapter{}).CanExecuteIR(fnProg) {
+				if fnProg := irGetFnProg(fn); runtimeExec.CanExecuteIR(fnProg) {
 					// Multi-arity dispatch
 					if fnProg.arityPrograms != nil {
 						if sub, ok := fnProg.arityPrograms[nargs]; ok {
@@ -776,13 +776,13 @@ loop:
 						}
 					}
 					if fnProg != nil {
-						callArgs := (RuntimeExecutionAdapter{}).PrepareCallSlots(fnProg, args, fn.env)
-						if (RuntimeExecutionAdapter{}).CanExecuteTypedIR(fnProg) {
+						callArgs := runtimeExec.PrepareCallSlots(fnProg, args, fn.env)
+						if runtimeExec.CanExecuteTypedIR(fnProg) {
 							if result := irExecTyped(fnProg, callArgs); result != nil {
 								stack = append(stack, result)
 								continue
 							}
-							(RuntimeExecutionAdapter{}).MarkTypedExecutionFailed(fnProg)
+							runtimeExec.MarkTypedExecutionFailed(fnProg)
 						}
 						if result := irExec(fnProg, callArgs); result != nil {
 							stack = append(stack, result)
@@ -824,7 +824,7 @@ loop:
 					for i := nargs; i < len(slots); i++ {
 						slots[i] = nil
 					}
-					if !(RuntimeExecutionAdapter{}).ApplyCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
+					if !runtimeExec.ApplyCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
 						return nil
 					}
 				}
