@@ -207,7 +207,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 				}
 				runtimeExec.MarkMemNthFailed(prog)
 			}
-			if corert.IRTypedEnabled() && !prog.typedFailed {
+			if corert.IRTypedEnabled() && runtimeExec.CanExecuteTypedIR(prog) {
 				var typedResult Object
 				func() {
 					defer func() {
@@ -223,7 +223,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 				if typedResult != nil {
 					return typedResult
 				}
-				prog.typedFailed = true
+				runtimeExec.MarkTypedExecutionFailed(prog)
 			}
 			if wp := wasmGetCachedWithOneHelper(prog, initSlots); wp != nil {
 				if result := wasmExec(wp, initSlots); result != nil {
@@ -992,7 +992,7 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 			}
 			initSlots = full
 		}
-		if corert.IRTypedEnabled() && !prog.typedFailed {
+		if corert.IRTypedEnabled() && runtimeExec.CanExecuteTypedIR(prog) {
 			var typedResult Object
 			func() {
 				defer func() {
@@ -1008,7 +1008,7 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 			if typedResult != nil {
 				return typedResult
 			}
-			prog.typedFailed = true
+			runtimeExec.MarkTypedExecutionFailed(prog)
 		}
 		if wp := wasmGetCachedWithOneHelper(prog, initSlots); wp != nil {
 			if result := wasmExec(wp, initSlots); result != nil {

@@ -732,7 +732,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 							fnProg = nil
 						}
 					}
-					if fnProg != nil && !fnProg.typedFailed {
+					if runtimeExec.CanExecuteTypedIR(fnProg) {
 						// FAST PATH: typed sub-call without Object boxing
 						// Only for pure numeric programs (no collections/strings)
 						var subAnalysis IRAnalysis
