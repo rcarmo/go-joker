@@ -767,15 +767,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 					}
 					// Fallback: box args
 					var argsBuf [4]Object
-					var args []Object
-					if nargs <= 4 {
-						args = argsBuf[:nargs]
-					} else {
-						args = make([]Object, nargs)
-					}
-					for i, v := range typedArgs {
-						args[i] = v.object()
-					}
+					args := runtimeExec.ObjectsFromTypedValues(typedArgs, argsBuf[:])
 					callArgs, ok := runtimeExec.FnCallSlots(fnObj, fnProg, args)
 					if !ok {
 						return nil
@@ -792,15 +784,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				}
 				if result == nil {
 					var args2 [4]Object
-					var a []Object
-					if nargs <= 4 {
-						a = args2[:nargs]
-					} else {
-						a = make([]Object, nargs)
-					}
-					for i, v := range typedArgs {
-						a[i] = v.object()
-					}
+					a := runtimeExec.ObjectsFromTypedValues(typedArgs, args2[:])
 					var ok bool
 					result, ok = runtimeExec.CallObject(fnObj, a)
 					if !ok {
@@ -809,15 +793,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				}
 			} else {
 				var args3 [4]Object
-				var a []Object
-				if nargs <= 4 {
-					a = args3[:nargs]
-				} else {
-					a = make([]Object, nargs)
-				}
-				for i, v := range typedArgs {
-					a[i] = v.object()
-				}
+				a := runtimeExec.ObjectsFromTypedValues(typedArgs, args3[:])
 				var ok bool
 				result, ok = runtimeExec.CallObject(fnObj, a)
 				if !ok {

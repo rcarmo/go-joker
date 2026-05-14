@@ -22,6 +22,10 @@ func TestRuntimeExecutionAdapterPrepareCallSlotsInstallsCaptures(t *testing.T) {
 
 func TestRuntimeExecutionAdapterInstallsTypedEnvCaptures(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
+	objects := adapter.ObjectsFromTypedValues([]irValue{objectToIRValue(MakeInt(1)), objectToIRValue(MakeString("x"))}, make([]Object, 2))
+	if len(objects) != 2 || !objects[0].Equals(MakeInt(1)) || !objects[1].Equals(MakeString("x")) {
+		t.Fatalf("ObjectsFromTypedValues = %#v", objects)
+	}
 	prog := &IRProgram{
 		numSlots:        2,
 		captureKeys:     []bindingKey{{index: 0}},

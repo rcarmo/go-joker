@@ -480,6 +480,19 @@ func (adapter RuntimeExecutionAdapter) InstallFnTypedEnvCaptures(fnObj Object, p
 	return true
 }
 
+func (RuntimeExecutionAdapter) ObjectsFromTypedValues(values []irValue, buf []Object) []Object {
+	var out []Object
+	if len(values) <= len(buf) {
+		out = buf[:len(values)]
+	} else {
+		out = make([]Object, len(values))
+	}
+	for i, v := range values {
+		out[i] = v.object()
+	}
+	return out
+}
+
 func (adapter RuntimeExecutionAdapter) DispatchArityProgram(prog *IRProgram, nargs int) *IRProgram {
 	if prog == nil {
 		return nil
