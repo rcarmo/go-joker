@@ -119,12 +119,14 @@ cmd/joker/
 core/
   *.go                         # only code that still genuinely belongs to root core
   generated/
-  internal/ir/
-  internal/trace/
-  internal/wasm/
+  ir/
+  trace/
+  wasm/
   runtime/
   collections/
   reader/
+  string/
+  cursor/
 
 std/
   <namespace>.joke
