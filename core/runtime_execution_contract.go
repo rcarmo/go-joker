@@ -116,6 +116,52 @@ func (RuntimeExecutionAdapter) MarkBoxedExecutionFailed(prog *IRProgram) {
 	}
 }
 
+func (RuntimeExecutionAdapter) ProgramNumSlots(prog *IRProgram) int {
+	if prog == nil {
+		return 0
+	}
+	return prog.numSlots
+}
+
+func (RuntimeExecutionAdapter) ProgramCode(prog *IRProgram) []byte {
+	if prog == nil {
+		return nil
+	}
+	return prog.code
+}
+
+func (RuntimeExecutionAdapter) ProgramConstant(prog *IRProgram, idx int) (Object, bool) {
+	if prog == nil || idx < 0 || idx >= len(prog.constants) {
+		return nil, false
+	}
+	return prog.constants[idx], true
+}
+
+func (RuntimeExecutionAdapter) ProgramFnExpr(prog *IRProgram, idx int) (*FnExpr, bool) {
+	if prog == nil || idx < 0 || idx >= len(prog.fnExprs) {
+		return nil, false
+	}
+	return prog.fnExprs[idx], true
+}
+
+func (RuntimeExecutionAdapter) ProgramHasCaptureSlots(prog *IRProgram) bool {
+	return prog != nil && len(prog.captureSlots) > 0
+}
+
+func (adapter RuntimeExecutionAdapter) ApplyProgramCaptureSlots(prog *IRProgram, slots []Object) bool {
+	if prog == nil {
+		return false
+	}
+	return adapter.ApplyCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots)
+}
+
+func (adapter RuntimeExecutionAdapter) ApplyProgramTypedCaptureSlots(prog *IRProgram, slots []irValue) bool {
+	if prog == nil {
+		return false
+	}
+	return adapter.ApplyTypedCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots)
+}
+
 func (RuntimeExecutionAdapter) CanExecuteIR(prog *IRProgram) bool {
 	return prog != nil && !prog.execFailed
 }

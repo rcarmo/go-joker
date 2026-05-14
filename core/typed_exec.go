@@ -39,7 +39,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		slots[i] = v
 	}
 	// Pre-fill captured closure values into their assigned slots
-	if !runtimeExec.ApplyTypedCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
+	if !runtimeExec.ApplyProgramTypedCaptureSlots(prog, slots) {
 		return nil
 	}
 

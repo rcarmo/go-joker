@@ -14,15 +14,15 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 	irProfileExecStart()
 	defer irProfileMaybeWrite()
 	var slots []Object
-	if prog.numSlots <= 16 {
+	if runtimeExec.ProgramNumSlots(prog) <= 16 {
 		var buf [16]Object
-		slots = buf[:prog.numSlots]
+		slots = buf[:runtimeExec.ProgramNumSlots(prog)]
 	} else {
-		slots = make([]Object, prog.numSlots)
+		slots = make([]Object, runtimeExec.ProgramNumSlots(prog))
 	}
 	copy(slots, initSlots)
 	// Pre-fill captured closure values into their assigned slots
-	if !runtimeExec.ApplyCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
+	if !runtimeExec.ApplyProgramCaptureSlots(prog, slots) {
 		return nil
 	}
 
@@ -68,7 +68,7 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 	var stack []Object
 	var stackBuf [16]Object
 	stack = stackBuf[:0]
-	code := prog.code
+	code := runtimeExec.ProgramCode(prog)
 	pc := 0
 
 	// Frame stack for irCallSelf — avoids recursive irExec calls
@@ -90,7 +90,11 @@ loop:
 		case irLiteral:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			stack = append(stack, prog.constants[idx])
+			constant, ok := runtimeExec.ProgramConstant(prog, idx)
+			if !ok {
+				return nil
+			}
+			stack = append(stack, constant)
 
 		case irLoadSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
@@ -406,10 +410,11 @@ loop:
 		case irMakeFn:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			if prog.fnExprs == nil || idx >= len(prog.fnExprs) {
+			fnExpr, ok := runtimeExec.ProgramFnExpr(prog, idx)
+			if !ok {
 				return nil
 			}
-			fn := runtimeExec.MakeFn(prog.fnExprs[idx], slots)
+			fn := runtimeExec.MakeFn(fnExpr, slots)
 			stack = append(stack, fn)
 
 		case irBitAnd:
@@ -810,7 +815,7 @@ loop:
 			// Use frame stack for bounded recursion, fall back to
 			// recursive irExec for deep/exponential recursion.
 			if frameStack == nil {
-				frameStack = coreirx.NewFrameStack[Object](prog.numSlots)
+				frameStack = coreirx.NewFrameStack[Object](runtimeExec.ProgramNumSlots(prog))
 			}
 			if frameStack.Depth() < 512 {
 				selfTraceStack = append(selfTraceStack, traceIRProgramCall(prog, nargs))
@@ -820,11 +825,11 @@ loop:
 					stack = stack[:len(stack)-1]
 				}
 				// Only clear slots beyond nargs if there are captures
-				if len(prog.captureSlots) > 0 {
+				if runtimeExec.ProgramHasCaptureSlots(prog) {
 					for i := nargs; i < len(slots); i++ {
 						slots[i] = nil
 					}
-					if !runtimeExec.ApplyCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots) {
+					if !runtimeExec.ApplyProgramCaptureSlots(prog, slots) {
 						return nil
 					}
 				}
@@ -909,7 +914,11 @@ loop:
 			if !ok {
 				return nil
 			}
-			s := prog.constants[idxConst].(String).S
+			constant, ok := runtimeExec.ProgramConstant(prog, idxConst)
+			if !ok {
+				return nil
+			}
+			s := constant.(String).S
 			if idx.I < 0 || idx.I >= len(s) {
 				return nil
 			}

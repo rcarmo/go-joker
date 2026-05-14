@@ -35,6 +35,51 @@ func TestRuntimeExecutionAdapterInstallsTypedEnvCaptures(t *testing.T) {
 	}
 }
 
+func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	fnExpr := &FnExpr{}
+	prog := &IRProgram{
+		numSlots:        3,
+		code:            []byte{1, 2, 3},
+		constants:       []Object{MakeInt(7)},
+		fnExprs:         []*FnExpr{fnExpr},
+		captureSlotIdxs: []int{2},
+		captureSlots:    []Object{MakeString("captured")},
+	}
+	if got := adapter.ProgramNumSlots(prog); got != 3 {
+		t.Fatalf("ProgramNumSlots = %d, want 3", got)
+	}
+	if got := adapter.ProgramCode(prog); len(got) != 3 || got[0] != 1 {
+		t.Fatalf("ProgramCode = %#v", got)
+	}
+	if got, ok := adapter.ProgramConstant(prog, 0); !ok || !got.Equals(MakeInt(7)) {
+		t.Fatalf("ProgramConstant = %#v, %v", got, ok)
+	}
+	if got, ok := adapter.ProgramFnExpr(prog, 0); !ok || got != fnExpr {
+		t.Fatalf("ProgramFnExpr = %#v, %v", got, ok)
+	}
+	if !adapter.ProgramHasCaptureSlots(prog) {
+		t.Fatal("ProgramHasCaptureSlots returned false")
+	}
+	objectSlots := []Object{NIL, NIL, NIL}
+	if !adapter.ApplyProgramCaptureSlots(prog, objectSlots) || !objectSlots[2].Equals(MakeString("captured")) {
+		t.Fatalf("ApplyProgramCaptureSlots = %#v", objectSlots)
+	}
+	typedSlots := make([]irValue, 3)
+	if !adapter.ApplyProgramTypedCaptureSlots(prog, typedSlots) || !typedSlots[2].object().Equals(MakeString("captured")) {
+		t.Fatalf("ApplyProgramTypedCaptureSlots = %#v", typedSlots)
+	}
+	if adapter.ProgramNumSlots(nil) != 0 || adapter.ProgramCode(nil) != nil {
+		t.Fatal("nil program metadata should be empty")
+	}
+	if _, ok := adapter.ProgramConstant(prog, 1); ok {
+		t.Fatal("ProgramConstant accepted out-of-range index")
+	}
+	if _, ok := adapter.ProgramFnExpr(prog, 1); ok {
+		t.Fatal("ProgramFnExpr accepted out-of-range index")
+	}
+}
+
 func TestRuntimeExecutionAdapterExecutionFailureFlags(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
 	prog := &IRProgram{}
