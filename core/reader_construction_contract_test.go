@@ -2,6 +2,7 @@ package core
 
 import (
 	"io"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -24,6 +25,19 @@ func requireReadErrorForContract(t *testing.T, src string) {
 	r := NewReader(strings.NewReader(src), "<reader-contract>")
 	if obj, err := TryRead(r); err == nil {
 		t.Fatalf("TryRead(%q) = %s, want read error", src, obj.ToString(false))
+	}
+}
+
+func TestReadIntegerUsesNativeIntRange(t *testing.T) {
+	got := readOneForContract(t, "1099511627776")
+	if strconv.IntSize == 32 {
+		if got.GetType() != TYPE.BigInt {
+			t.Fatalf("32-bit integer literal type = %s, want BigInt", got.GetType().ToString(false))
+		}
+		return
+	}
+	if got.GetType() != TYPE.Int {
+		t.Fatalf("64-bit integer literal type = %s, want Int", got.GetType().ToString(false))
 	}
 }
 
