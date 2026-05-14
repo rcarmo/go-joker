@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math/big"
 	"strings"
 	"testing"
 )
@@ -32,5 +33,22 @@ func TestBigDecimalArithmeticKeepsBigFloat(t *testing.T) {
 	got := procAdd([]Object{a, b})
 	if got.GetType() != TYPE.BigFloat || !strings.HasPrefix(got.ToString(false), "0.3") || !strings.HasSuffix(got.ToString(false), "M") {
 		t.Fatalf("big decimal add mismatch: %T %s", got, got.ToString(false))
+	}
+}
+
+func TestBigIntIntPanicsOutsideNativeRange(t *testing.T) {
+	tooLarge := MakeBigInt(new(big.Int).Add(maxIntBig, big.NewInt(1)))
+	defer func() {
+		if recover() == nil {
+			t.Fatal("BigInt.Int should panic outside native int range")
+		}
+	}()
+	_ = tooLarge.Int()
+}
+
+func TestBigIntIntConvertsWithinNativeRange(t *testing.T) {
+	got := MakeBigInt(big.NewInt(42)).Int()
+	if got.I != 42 {
+		t.Fatalf("BigInt.Int = %d, want 42", got.I)
 	}
 }
