@@ -365,7 +365,7 @@ func (expr *LiteralExpr) Eval(env *LocalEnv) Object {
 func (expr *VectorExpr) Eval(env *LocalEnv) Object {
 	n := len(expr.v)
 	if n == 0 {
-		return collections.EmptyArrayVector()
+		return collectionConstruction.EmptyArrayVector()
 	}
 	arr := make([]Object, n)
 	for i, e := range expr.v {
@@ -386,7 +386,7 @@ func (expr *MapExpr) Eval(env *LocalEnv) Object {
 		}
 		return res
 	}
-	res := collections.EmptyArrayMap()
+	res := collectionConstruction.EmptyArrayMap()
 	for i := range expr.keys {
 		key := Eval(expr.keys[i], env)
 		if !res.Add(key, Eval(expr.values[i], env)) {
@@ -397,7 +397,7 @@ func (expr *MapExpr) Eval(env *LocalEnv) Object {
 }
 
 func (expr *SetExpr) Eval(env *LocalEnv) Object {
-	res := collections.EmptySet()
+	res := collectionConstruction.EmptySet()
 	for _, elemExpr := range expr.elements {
 		el := Eval(elemExpr, env)
 		if !res.Add(el) {
@@ -415,7 +415,7 @@ func (expr *DefExpr) Eval(env *LocalEnv) Object {
 			fn.defVar = expr.vr
 		}
 	}
-	meta := collections.EmptyArrayMap()
+	meta := collectionConstruction.EmptyArrayMap()
 	meta.Add(KEYWORDS.line, Int{I: expr.startLine})
 	meta.Add(KEYWORDS.column, Int{I: expr.startColumn})
 	meta.Add(KEYWORDS.file, String{S: *expr.filename})

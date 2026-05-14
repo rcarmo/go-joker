@@ -37,7 +37,7 @@ type (
 )
 
 func versionMap() Map {
-	res := collections.EmptyArrayMap()
+	res := collectionConstruction.EmptyArrayMap()
 	major, minor, incremental := corestr.ParseVersionTriplet(VERSION)
 	res.Add(MakeKeyword("major"), Int{I: int(major)})
 	res.Add(MakeKeyword("minor"), Int{I: int(minor)})
@@ -46,7 +46,7 @@ func versionMap() Map {
 }
 
 func (env *Env) SetEnvArgs(newArgs []string) {
-	args := collections.EmptyArrayVector()
+	args := collectionConstruction.EmptyArrayVector()
 	for _, arg := range newArgs {
 		args.Append(MakeString(arg))
 	}
@@ -64,7 +64,7 @@ This runs after invariant initialization, which includes calling
 	initializations must be reflected in gen/codegen/main.go.
 */
 func (env *Env) SetClassPath(cp string) {
-	cpVec := collections.EmptyArrayVector()
+	cpVec := collectionConstruction.EmptyArrayVector()
 	for _, cpelem := range osutil.ClassPathElements(cp) {
 		cpVec.Append(MakeString(cpelem))
 	}

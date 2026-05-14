@@ -75,7 +75,7 @@ func installConcurrencyExt() {
 	installMacro(ns, "future", func(args []Object) Object {
 		// args: &form, &env, body...
 		body := args[2:]
-		fnForm := NewListFrom(append([]Object{MakeSymbol("fn"), collections.VectorFrom()}, body...)...)
+		fnForm := NewListFrom(append([]Object{MakeSymbol("fn"), collectionConstruction.VectorFrom()}, body...)...)
 		return NewListFrom(MakeSymbol("future-call"), fnForm)
 	})
 
@@ -258,7 +258,7 @@ func procAlts(args []Object) Object {
 				ch := EnsureObjectIsChannel(ci.At(0), "alts! put port first element must be a channel")
 				if ch.IsClosed() {
 					// Clojure-like semantics: put on closed channel returns false immediately.
-					return collections.VectorFrom(MakeBoolean(false), ch)
+					return collectionConstruction.VectorFrom(MakeBoolean(false), ch)
 				}
 				val := ci.At(1)
 				cases = append(cases, reflect.SelectCase{
@@ -287,24 +287,24 @@ func procAlts(args []Object) Object {
 
 	// Default case.
 	if hasDefault && chosen == len(cases)-1 {
-		return collections.VectorFrom(defaultVal, MakeKeyword("default"))
+		return collectionConstruction.VectorFrom(defaultVal, MakeKeyword("default"))
 	}
 
 	info := infos[chosen]
 	if info.isPut {
 		// Put completed.
-		return collections.VectorFrom(MakeBoolean(true), info.ch)
+		return collectionConstruction.VectorFrom(MakeBoolean(true), info.ch)
 	}
 	// Take completed.
 	if !recvOK {
 		// Channel closed.
-		return collections.VectorFrom(NIL, info.ch)
+		return collectionConstruction.VectorFrom(NIL, info.ch)
 	}
 	fr := recv.Interface().(FutureResult)
 	if fr.err != nil {
 		panic(fr.err)
 	}
-	return collections.VectorFrom(fr.value, info.ch)
+	return collectionConstruction.VectorFrom(fr.value, info.ch)
 }
 
 // --- Future type ---

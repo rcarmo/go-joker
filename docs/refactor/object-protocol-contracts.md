@@ -107,7 +107,7 @@ Safe moves before broad object extraction:
 - Continue moving pure helpers with no `core.Object` dependency into `core/ir` and `core/wasm`.
 - Add tests for extracted helpers before moving callers.
 - Keep root-core adapter functions temporary only while their surrounding subsystem is still coupled.
-- Use the construction boundary guard before moving collection or reader files; a failing guard means new direct root construction has drifted in and must be routed through `collections` or `readerConstruction` first.
+- Use the construction boundary guard before moving collection or reader files; a failing guard means new direct root construction has drifted in and must be routed through `collectionConstruction` or `readerConstruction` first.
 
 Do not yet move:
 

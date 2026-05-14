@@ -11,7 +11,7 @@ Called by parse_init.go in an outer var block, this runs before any
 	invocation.
 */
 func NewEnv() *Env {
-	features := collections.EmptySet()
+	features := collectionConstruction.EmptySet()
 	features.Add(MakeKeyword("default"))
 	features.Add(MakeKeyword("joker"))
 	res := &Env{
@@ -42,10 +42,10 @@ func NewEnv() *Env {
 		MakeMeta(nil, "true if Joker is running in repl mode", "1.5"))
 	res.CoreNamespace.InternVar("*linter-mode*", Boolean{B: LINTER_MODE},
 		MakeMeta(nil, "true if Joker is running in linter mode", "1.0"))
-	res.CoreNamespace.InternVar("*linter-config*", collections.EmptyArrayMap(),
+	res.CoreNamespace.InternVar("*linter-config*", collectionConstruction.EmptyArrayMap(),
 		MakeMeta(nil, "Map of configuration key/value pairs for linter mode", "1.0"))
 	res.libs = res.CoreNamespace.Intern(MakeSymbol("*loaded-libs*"))
-	res.libs.Value = collections.EmptySet()
+	res.libs.Value = collectionConstruction.EmptySet()
 	res.libs.isPrivate = true
 	return res
 }

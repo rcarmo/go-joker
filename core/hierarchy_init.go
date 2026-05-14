@@ -105,7 +105,7 @@ func registerHierarchyProcs() {
 		if len(ps) == 0 {
 			return NIL
 		}
-		s := collections.EmptySet()
+		s := collectionConstruction.EmptySet()
 		for _, p := range ps {
 			s = s.Conj(p).(*MapSet)
 		}
@@ -137,7 +137,7 @@ func registerHierarchyProcs() {
 		if len(as) == 0 {
 			return NIL
 		}
-		s := collections.EmptySet()
+		s := collectionConstruction.EmptySet()
 		for _, a := range as {
 			s = s.Conj(a).(*MapSet)
 		}
@@ -169,7 +169,7 @@ func registerHierarchyProcs() {
 		if len(ds) == 0 {
 			return NIL
 		}
-		s := collections.EmptySet()
+		s := collectionConstruction.EmptySet()
 		for _, d := range ds {
 			s = s.Conj(d).(*MapSet)
 		}

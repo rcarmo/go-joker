@@ -397,7 +397,7 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 			}
 			obj = res
 		} else {
-			res := collections.EmptyArrayMap()
+			res := collectionConstruction.EmptyArrayMap()
 			for i := range e.keys {
 				key := e.keys[i].(*LiteralExpr).obj
 				if !res.Add(key, e.values[i].(*LiteralExpr).obj) {

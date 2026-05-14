@@ -147,7 +147,7 @@ func (v irValue) object() Object {
 	case irValStringBuilder:
 		return String{S: string(v.bytes())}
 	case irValStringIntMap:
-		res := collections.EmptyArrayMap()
+		res := collectionConstruction.EmptyArrayMap()
 		for k, v := range v.stringIntMap() {
 			res.Add(String{S: k}, Int{I: v})
 		}

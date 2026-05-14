@@ -6,7 +6,7 @@ package core
 // evaluator code.
 type CollectionConstructionAdapter struct{}
 
-var collections CollectionConstructionAdapter
+var collectionConstruction CollectionConstructionAdapter
 
 func (CollectionConstructionAdapter) EmptyVector() *Vector {
 	return EmptyVector()

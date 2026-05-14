@@ -813,7 +813,7 @@ func readList(reader *Reader) Object {
 }
 
 func readVector(reader *Reader) Object {
-	res := collections.EmptyArrayVector()
+	res := collectionConstruction.EmptyArrayVector()
 	eatWhitespace(reader)
 	r := reader.Peek()
 	for r != ']' {
@@ -894,7 +894,7 @@ func readMapWithNamespace(reader *Reader, nsname string) Object {
 		panic(MakeReadError(reader, "Map literal must contain an even number of forms"))
 	}
 	if int64(len(objs)) >= HASHMAP_THRESHOLD {
-		hashMap := collections.HashMapFrom()
+		hashMap := collectionConstruction.HashMapFrom()
 		for i := 0; i < len(objs); i += 2 {
 			key := resolveKey(objs[i], nsname)
 			if hashMap.containsKey(key) {
@@ -904,7 +904,7 @@ func readMapWithNamespace(reader *Reader, nsname string) Object {
 		}
 		return MakeReadObject(reader, hashMap)
 	}
-	m := collections.EmptyArrayMap()
+	m := collectionConstruction.EmptyArrayMap()
 	for i := 0; i < len(objs); i += 2 {
 		key := resolveKey(objs[i], nsname)
 		if !m.Add(key, objs[i+1]) {
@@ -915,7 +915,7 @@ func readMapWithNamespace(reader *Reader, nsname string) Object {
 }
 
 func readSet(reader *Reader) Object {
-	set := collections.EmptySet()
+	set := collectionConstruction.EmptySet()
 	eatWhitespace(reader)
 	r := reader.Peek()
 	for r != '}' {
@@ -984,13 +984,13 @@ func makeFnForm(args map[int]Symbol, body Object) Object {
 		a[len(args)-1] = SYMBOLS.amp
 		a = append(a, v)
 	}
-	argVector := collections.EmptyVector()
+	argVector := collectionConstruction.EmptyVector()
 	for _, v := range a {
 		argVector = argVector.Conjoin(v)
 	}
 	if LINTER_MODE {
 		if meta, ok := body.(Meta); ok {
-			m := collections.EmptyArrayMap().Plus(MakeKeyword("skip-redundant-do"), Boolean{B: true})
+			m := collectionConstruction.EmptyArrayMap().Plus(MakeKeyword("skip-redundant-do"), Boolean{B: true})
 			body = meta.WithMeta(m)
 		}
 	}
@@ -1220,15 +1220,15 @@ func readConditional(reader *Reader) (Object, bool) {
 	}
 	v := readCondList(reader)
 	if v == nil {
-		return collections.EmptyVector(), true
+		return collectionConstruction.EmptyVector(), true
 	}
 	if isSplicing {
 		s, ok := v.(Seqable)
 		if !ok {
 			readError(reader, "Spliced form in reader conditional must be Seqable, got "+v.GetType().ToString(false))
-			return collections.EmptyVector(), true
+			return collectionConstruction.EmptyVector(), true
 		}
-		return DeriveReadObject(v, collections.VectorFromSeq(s.Seq())), true
+		return DeriveReadObject(v, collectionConstruction.VectorFromSeq(s.Seq())), true
 	}
 	return v, false
 }

@@ -152,7 +152,7 @@ func (r *Record) Get(key Object) (bool, Object) {
 // EntryAt returns a MapEntry for the given key.
 func (r *Record) EntryAt(key Object) *ArrayVector {
 	if ok, v := r.Get(key); ok {
-		av := collections.EmptyArrayVector().Conj(key).(*ArrayVector).Conj(v).(*ArrayVector)
+		av := collectionConstruction.EmptyArrayVector().Conj(key).(*ArrayVector).Conj(v).(*ArrayVector)
 		return av
 	}
 	return nil
@@ -171,7 +171,7 @@ func (r *Record) Assoc(key, val Object) Associative {
 	}
 	res := r.clone()
 	if res.ext == nil {
-		res.ext = collections.EmptyArrayMap()
+		res.ext = collectionConstruction.EmptyArrayMap()
 	}
 	res.ext = res.ext.Assoc(key, val).(*ArrayMap)
 	return res
@@ -190,12 +190,12 @@ func (r *Record) Count() int {
 func (r *Record) Seq() Seq {
 	entries := make([]Object, 0, r.Count())
 	for i, fname := range r.rtype.fields {
-		entries = append(entries, collections.VectorFrom(MakeKeyword(fname), r.bases[i]))
+		entries = append(entries, collectionConstruction.VectorFrom(MakeKeyword(fname), r.bases[i]))
 	}
 	if r.ext != nil {
 		for iter := r.ext.Iter(); iter.HasNext(); {
 			p := iter.Next()
-			entries = append(entries, collections.VectorFrom(p.Key, p.Value))
+			entries = append(entries, collectionConstruction.VectorFrom(p.Key, p.Value))
 		}
 	}
 	return &ArraySeq{arr: entries, index: 0}
@@ -282,7 +282,7 @@ func (r *Record) Without(key Object) Map {
 		name := kw.ToString(false)[1:]
 		if _, ok := r.rtype.fieldIdx[name]; ok {
 			// Dissoc base field → degrade to plain map
-			m := collections.EmptyArrayMap()
+			m := collectionConstruction.EmptyArrayMap()
 			for i, fname := range r.rtype.fields {
 				if fname != name {
 					m.Add(MakeKeyword(fname), r.bases[i])
