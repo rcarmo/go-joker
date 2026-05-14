@@ -18,22 +18,3 @@ type VarDoc struct {
 	Arglists  []string
 	Private   bool
 }
-
-// BinaryPayload is an inert generated binary payload such as serialized linter
-// data. Root core decides when and how to process the bytes.
-type BinaryPayload struct {
-	Path string
-	Data []byte
-}
-
-// LinterDataPayloads returns the generated linter data payload family in the
-// same path vocabulary used by CoreSourceManifest.
-func LinterDataPayloads() []BinaryPayload {
-	return []BinaryPayload{
-		{Path: "linter_all.joke", Data: LinterAllData},
-		{Path: "linter_joker.joke", Data: LinterJokerData},
-		{Path: "linter_cljx.joke", Data: LinterCljxData},
-		{Path: "linter_clj.joke", Data: LinterCljData},
-		{Path: "linter_cljs.joke", Data: LinterCljsData},
-	}
-}

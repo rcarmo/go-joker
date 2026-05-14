@@ -94,6 +94,10 @@ func TestLinterDataPayloadsMatchSourceManifest(t *testing.T) {
 		if !manifestLinterPaths[payload.Path] {
 			t.Fatalf("linter payload path %q not present in source manifest", payload.Path)
 		}
+		got, ok := LinterDataByPath(payload.Path)
+		if !ok || len(got) != len(payload.Data) {
+			t.Fatalf("LinterDataByPath(%q) length = %d ok=%v, want %d true", payload.Path, len(got), ok, len(payload.Data))
+		}
 	}
 	for path := range manifestLinterPaths {
 		if !seen[path] {

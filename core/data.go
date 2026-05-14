@@ -24,17 +24,25 @@ func ProcessLinterData(dialect Dialect) {
 		markJokerNamespacesAsUsed()
 		return
 	}
-	processData(coregenerated.LinterAllData)
+	processGeneratedLinterPayload("linter_all.joke")
 	if dialect == JOKER {
 		markJokerNamespacesAsUsed()
-		processData(coregenerated.LinterJokerData)
+		processGeneratedLinterPayload("linter_joker.joke")
 		return
 	}
-	processData(coregenerated.LinterCljxData)
+	processGeneratedLinterPayload("linter_cljx.joke")
 	switch dialect {
 	case CLJ:
-		processData(coregenerated.LinterCljData)
+		processGeneratedLinterPayload("linter_clj.joke")
 	case CLJS:
-		processData(coregenerated.LinterCljsData)
+		processGeneratedLinterPayload("linter_cljs.joke")
 	}
+}
+
+func processGeneratedLinterPayload(path string) {
+	data, ok := coregenerated.LinterDataByPath(path)
+	if !ok {
+		panic(RT.NewError("missing generated linter payload: " + path))
+	}
+	processData(data)
 }
