@@ -140,13 +140,29 @@ func (p *IRProgram) neutralModel() *coreir.Program {
 	return p.model
 }
 
+func (p *IRProgram) neutralFloatConsts() []float64 {
+	if p == nil {
+		return nil
+	}
+	if len(p.floatConsts) > 0 {
+		return append([]float64(nil), p.floatConsts...)
+	}
+	var floats []float64
+	for _, constant := range p.constants {
+		if v, ok := constant.(Double); ok {
+			floats = append(floats, v.D)
+		}
+	}
+	return floats
+}
+
 func (p *IRProgram) refreshModel() *IRProgram {
 	if p == nil {
 		return nil
 	}
 	model := coreir.NewProgram(p.code, p.numSlots, len(p.constants))
 	model.HasSelf = p.hasSelf
-	model.FloatConsts = append([]float64(nil), p.floatConsts...)
+	model.FloatConsts = p.neutralFloatConsts()
 	model.WithCaptures(p.captureSlotIdxs, p.captureSlotSet)
 	if p.analysis != nil {
 		analysis := coreir.Analyze(p.code, p.numSlots, len(p.captureKeys), corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0), p.analysis.StringAppendSlots, p.analysis.StringPrependSlots)
