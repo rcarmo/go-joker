@@ -169,6 +169,34 @@ func (adapter RuntimeExecutionAdapter) ApplyProgramTypedCaptureSlots(prog *IRPro
 	return adapter.ApplyTypedCaptureSlots(slots, prog.captureSlotIdxs, prog.captureSlots)
 }
 
+func (adapter RuntimeExecutionAdapter) ClearTypedNonCaptureSlots(prog *IRProgram, slots []irValue, keepArgs int) bool {
+	if keepArgs < 0 || keepArgs > len(slots) {
+		return false
+	}
+	if prog != nil && prog.captureSlotSet != nil {
+		for i := keepArgs; i < len(slots); i++ {
+			if !prog.captureSlotSet[i] {
+				slots[i] = irValue{}
+			}
+		}
+		return true
+	}
+	for i := keepArgs; i < len(slots); i++ {
+		slots[i] = irValue{}
+	}
+	if prog == nil || len(prog.captureSlots) == 0 {
+		return true
+	}
+	return adapter.ApplyProgramTypedCaptureSlots(prog, slots)
+}
+
+func (RuntimeExecutionAdapter) ProgramCaptureSlots(prog *IRProgram) ([]int, []Object) {
+	if prog == nil {
+		return nil, nil
+	}
+	return prog.captureSlotIdxs, prog.captureSlots
+}
+
 func (RuntimeExecutionAdapter) CanExecuteIR(prog *IRProgram) bool {
 	return prog != nil && !prog.execFailed
 }

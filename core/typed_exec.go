@@ -864,19 +864,8 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 					stack = stack[:len(stack)-1]
 				}
 				// Clear only non-capture working slots
-				if prog.captureSlotSet != nil {
-					for i := nargs; i < len(slots); i++ {
-						if !prog.captureSlotSet[i] {
-							slots[i] = irValue{}
-						}
-					}
-				} else {
-					for i := nargs; i < len(slots); i++ {
-						slots[i] = irValue{}
-					}
-					for i, obj := range prog.captureSlots {
-						slots[prog.captureSlotIdxs[i]] = objectToIRValue(obj)
-					}
+				if !runtimeExec.ClearTypedNonCaptureSlots(prog, slots, nargs) {
+					return nil
 				}
 				pc = 0
 			} else {

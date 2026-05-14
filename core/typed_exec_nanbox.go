@@ -28,7 +28,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 		return nil
 	}
 
-	numSlots := prog.numSlots
+	numSlots := runtimeExec.ProgramNumSlots(prog)
 	var slotBuf [16]uint64
 	var slots []uint64
 	if numSlots <= len(slotBuf) {
@@ -45,19 +45,24 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 		slots[i] = nbFromObject(initSlots[i], &objTable)
 	}
 	// Pre-fill captures
-	for i, obj := range prog.captureSlots {
-		slots[prog.captureSlotIdxs[i]] = nbFromObject(obj, &objTable)
+	captureIdxs, captureSlots := runtimeExec.ProgramCaptureSlots(prog)
+	for i, obj := range captureSlots {
+		if i >= len(captureIdxs) || captureIdxs[i] < 0 || captureIdxs[i] >= len(slots) {
+			return nil
+		}
+		slots[captureIdxs[i]] = nbFromObject(obj, &objTable)
 	}
 
 	// Pre-convert constants
-	consts := make([]uint64, len(prog.constants))
-	for i, c := range prog.constants {
+	constants := runtimeExec.ProgramConstants(prog)
+	consts := make([]uint64, len(constants))
+	for i, c := range constants {
 		consts[i] = nbFromObject(c, &objTable)
 	}
 
 	var stackBuf [32]uint64
 	sp := 0
-	code := prog.code
+	code := runtimeExec.ProgramCode(prog)
 	pc := 0
 
 	for pc < len(code) {

@@ -72,6 +72,14 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if !adapter.ApplyProgramTypedCaptureSlots(prog, typedSlots) || !typedSlots[2].object().Equals(MakeString("captured")) {
 		t.Fatalf("ApplyProgramTypedCaptureSlots = %#v", typedSlots)
 	}
+	typedSlots[1] = objectToIRValue(MakeInt(99))
+	if !adapter.ClearTypedNonCaptureSlots(prog, typedSlots, 1) || !typedSlots[2].object().Equals(MakeString("captured")) || typedSlots[1] != (irValue{}) {
+		t.Fatalf("ClearTypedNonCaptureSlots = %#v", typedSlots)
+	}
+	idxs, captures := adapter.ProgramCaptureSlots(prog)
+	if len(idxs) != 1 || idxs[0] != 2 || len(captures) != 1 || !captures[0].Equals(MakeString("captured")) {
+		t.Fatalf("ProgramCaptureSlots = %#v, %#v", idxs, captures)
+	}
 	if adapter.ProgramNumSlots(nil) != 0 || adapter.ProgramCode(nil) != nil {
 		t.Fatal("nil program metadata should be empty")
 	}
