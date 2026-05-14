@@ -1,11 +1,23 @@
 package core
 
 import (
+	"bytes"
 	"errors"
 	"io"
 
 	corereader "github.com/rcarmo/go-joker/core/reader"
 )
+
+type Buffer struct{ *corereader.Buffer }
+
+func MakeBuffer(b *bytes.Buffer) *Buffer { return &Buffer{Buffer: corereader.NewBuffer(b)} }
+
+func (b *Buffer) ToString(escape bool) string      { return b.String() }
+func (b *Buffer) Equals(other interface{}) bool    { return b == other }
+func (b *Buffer) GetInfo() *ObjectInfo             { return nil }
+func (b *Buffer) GetType() *Type                   { return TYPE.Buffer }
+func (b *Buffer) Hash() uint32                     { return b.Buffer.Hash() }
+func (b *Buffer) WithInfo(info *ObjectInfo) Object { return b }
 
 type BufferedReader struct{ *corereader.Buffered }
 

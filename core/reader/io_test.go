@@ -27,6 +27,16 @@ func (w *closeWriter) Close() error {
 	return nil
 }
 
+func TestBufferWrapsBytesBufferAndHashes(t *testing.T) {
+	buf := NewBuffer(bytes.NewBufferString("abc"))
+	if buf.Hash() == 0 {
+		t.Fatal("buffer hash should be initialized")
+	}
+	if got := buf.String(); got != "abc" {
+		t.Fatalf("String() = %q, want abc", got)
+	}
+}
+
 func TestBufferedWrapsReaderAndHashes(t *testing.T) {
 	br := NewBuffered(bytes.NewBufferString("abc"))
 	if br.Hash() == 0 {

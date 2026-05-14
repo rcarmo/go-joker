@@ -2,11 +2,25 @@ package reader
 
 import (
 	"bufio"
+	"bytes"
 	"io"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
 )
+
+type Buffer struct {
+	*bytes.Buffer
+	hash uint32
+}
+
+func NewBuffer(b *bytes.Buffer) *Buffer {
+	res := &Buffer{Buffer: b}
+	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(res)))
+	return res
+}
+
+func (b *Buffer) Hash() uint32 { return b.hash }
 
 type Buffered struct {
 	*bufio.Reader
