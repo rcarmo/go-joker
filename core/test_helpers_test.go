@@ -1,13 +1,29 @@
 package core
 
-// clbg_bench_test.go — Computer Language Benchmarks Game programs ported to Joker.
-// These provide realistic, well-known workloads for measuring interpreter performance.
-
 import (
+	"io"
 	"math"
+	"strings"
 	"sync"
 	"testing"
 )
+
+func compileBenchExpr(tb testing.TB, script string) Expr {
+	tb.Helper()
+	reader := NewReader(strings.NewReader(script), "<bench>")
+	obj, err := TryRead(reader)
+	if err != nil {
+		tb.Fatalf("read script: %v", err)
+	}
+	if _, err := TryRead(reader); err != io.EOF {
+		tb.Fatalf("benchmark script must contain exactly one form")
+	}
+	expr, err := TryParse(obj, &ParseContext{GlobalEnv: GLOBAL_ENV})
+	if err != nil {
+		tb.Fatalf("parse script: %v", err)
+	}
+	return expr
+}
 
 var clbgInitOnce sync.Once
 
@@ -17,92 +33,14 @@ func clbgInit() {
 			x := EnsureArgIsNumber(args, 0).Double().D
 			return Double{D: math.Sqrt(x)}
 		}, Name: "procSqrt"}
-		// Register in core namespace
 		vr := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol("sqrt"))
 		vr.Value = sqrtProc
-		vr.meta = EmptyArrayMap()
-		// Also map into user namespace so the parser can resolve it
 		ns := GLOBAL_ENV.CurrentNamespace()
 		uv := ns.Intern(MakeSymbol("sqrt"))
 		uv.Value = sqrtProc
-		uv.meta = EmptyArrayMap()
 	})
 }
 
-// BenchmarkCLBGNBody runs the n-body planetary simulation.
-// Reference: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/nbody.html
-func BenchmarkCLBGNBody(b *testing.B) {
-	clbgInit()
-	expr := compileBenchExpr(b, nbodyScript)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_ = Eval(expr, nil)
-	}
-}
-
-func BenchmarkCLBGNBodyBestJoker(b *testing.B) {
-	clbgInit()
-	expr := compileBenchExpr(b, `(bench-nbody-energy 100)`)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_ = Eval(expr, nil)
-	}
-}
-
-func BenchmarkCLBGSpectralNorm(b *testing.B) {
-	clbgInit()
-	expr := compileBenchExpr(b, spectralNormScript)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_ = Eval(expr, nil)
-	}
-}
-
-func BenchmarkCLBGSpectralNormBestJoker(b *testing.B) {
-	clbgInit()
-	expr := compileBenchExpr(b, `(bench-spectral-norm 50)`)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_ = Eval(expr, nil)
-	}
-}
-
-func BenchmarkCLBGBinaryTrees(b *testing.B) {
-	clbgInit()
-	expr := compileBenchExpr(b, binaryTreesScript)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_ = Eval(expr, nil)
-	}
-}
-
-func BenchmarkCLBGBinaryTreesParallel(b *testing.B) {
-	clbgInit()
-	expr := compileBenchExpr(b, binaryTreesParallelScript)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_ = Eval(expr, nil)
-	}
-}
-
-func BenchmarkCLBGBinaryTreesBestJoker(b *testing.B) {
-	clbgInit()
-	expr := compileBenchExpr(b, `(bench-binary-trees 14)`)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_ = Eval(expr, nil)
-	}
-}
-
-// n-body: simulate 5 bodies for 1000 steps, return final energy.
-// Scaled down from CLBG's 50M steps for benchmark harness practicality.
 const nbodyScript = `
 (let [pi 3.141592653589793
       solar-mass (* 4.0 (* pi pi))
@@ -280,3 +218,6 @@ const binaryTreesParallelScript = `
                 (recur (+ i 1) (+ c (check-tree (make-tree d))))))))]
   (reduce + 0 (pmap depth-check (range 4 15))))
 `
+
+const jsonSmall = `{"name":"John","age":30,"city":"New York","active":true,"scores":[95,87,92]}`
+const jsonMedium = `[{"id":1,"name":"Alice","email":"alice@test.com","tags":["admin","user"],"score":95},{"id":2,"name":"Bob","email":"bob@test.com","tags":["user"],"score":87},{"id":3,"name":"Charlie","email":"charlie@test.com","tags":["user","mod"],"score":92},{"id":4,"name":"Dave","email":"dave@test.com","tags":[],"score":78},{"id":5,"name":"Eve","email":"eve@test.com","tags":["admin"],"score":99}]`

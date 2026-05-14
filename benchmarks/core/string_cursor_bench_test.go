@@ -1,10 +1,12 @@
-package core
+package core_test
 
-import "testing"
+import (
+	. "github.com/rcarmo/go-joker/core"
+	"testing"
+)
 
 // Benchmark comparing string iteration with nth vs cursor
 func BenchmarkStringIterNth(b *testing.B) {
-	initStringCursorProcs() // ensure procs available
 	// Count chars in string using (loop [i 0 c 0] (if (= i len) c (recur (+ i 1) (+ c 1))))
 	// with nth to verify each char exists
 	script := `(let [s "The quick brown fox jumps over the lazy dog and does many other things"
@@ -22,7 +24,6 @@ func BenchmarkStringIterNth(b *testing.B) {
 }
 
 func BenchmarkStringIterCursor(b *testing.B) {
-	initStringCursorProcs()
 	// Same but with cursor
 	script := `(let [s "The quick brown fox jumps over the lazy dog and does many other things"
                   cur (string-cursor s)]

@@ -1,6 +1,9 @@
-package core
+package core_test
 
-import "testing"
+import (
+	. "github.com/rcarmo/go-joker/core"
+	"testing"
+)
 
 func BenchmarkIRStringAppendCharLoop(b *testing.B) {
 	expr := compileBenchExpr(b, `(let [dna "GGTATTTTAATTTATAGT"]

@@ -1,6 +1,9 @@
-package core
+package core_test
 
-import "testing"
+import (
+	. "github.com/rcarmo/go-joker/core"
+	"testing"
+)
 
 // Pure-Clojure JSON parser (integers only, no floats).
 // Split into small nested lets to avoid Go stack overflow.

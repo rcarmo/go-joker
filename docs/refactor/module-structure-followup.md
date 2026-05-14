@@ -133,6 +133,9 @@ std/
   <namespace>/*.go
   <namespace>/<subns>/...
 
+benchmarks/
+  core/                         # Go benchmark harnesses kept out of root core
+
 tools/
   benchmarks/
   codegen/

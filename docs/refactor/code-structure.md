@@ -28,6 +28,7 @@ Recent feature work improved boundaries for new code (`std/transit`, `std/system
   - `*_test.go`: native behavior tests
   - `<namespace>.joke`: public docs/API source for generated docs
 - `docs/` generation is runtime-driven and now fails on warning output.
+- `benchmarks/core/` owns Go benchmark harnesses; root `core` tests should not define `Benchmark*` functions.
 - `benchmarks/` and `tests/` are behavioral/performance guardrails rather than package-level unit tests.
 
 ## Boundaries and contracts that are clear

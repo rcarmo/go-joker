@@ -22,38 +22,3 @@ func TestWasmArrayF64(t *testing.T) {
 		t.Fatalf("expected length 10, got %d", arr.Length())
 	}
 }
-
-func BenchmarkWasmArrayF64Sum(b *testing.B) {
-	arr := MakeF64Array(10000)
-	if arr == nil {
-		b.Skip("WASM array failed")
-	}
-	for i := 0; i < 10000; i++ {
-		arr.SetF64(i, float64(i)*0.1)
-	}
-	b.ReportAllocs()
-	b.ResetTimer()
-	for n := 0; n < b.N; n++ {
-		sum := 0.0
-		for i := 0; i < 10000; i++ {
-			sum += arr.GetF64(i)
-		}
-		_ = sum
-	}
-}
-
-func BenchmarkGoSliceF64Sum(b *testing.B) {
-	arr := make([]float64, 10000)
-	for i := range arr {
-		arr[i] = float64(i) * 0.1
-	}
-	b.ReportAllocs()
-	b.ResetTimer()
-	for n := 0; n < b.N; n++ {
-		sum := 0.0
-		for i := 0; i < 10000; i++ {
-			sum += arr[i]
-		}
-		_ = sum
-	}
-}

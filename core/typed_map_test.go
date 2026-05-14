@@ -23,17 +23,3 @@ func TestIRTypedVectorNthForStringMap(t *testing.T) {
       (let [k (nth ks (rem i 2))]
         (recur (inc i) (assoc m k (inc (get m k 0))))))))`), 2)
 }
-
-func BenchmarkIRTypedStringIntMapLoop(b *testing.B) {
-	expr := compileBenchExpr(b, `(let [ks ["aa" "bb" "cc" "dd"]]
-  (loop [i 0 m {}]
-    (if (= i 1000)
-      (+ (get m "aa" 0) (get m "dd" 0))
-      (let [k (nth ks (rem i 4))]
-        (recur (inc i) (assoc m k (inc (get m k 0))))))))`)
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_ = Eval(expr, nil)
-	}
-}

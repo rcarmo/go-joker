@@ -58,26 +58,6 @@ func TestWasmSimpleLoop(t *testing.T) {
 	}
 }
 
-func BenchmarkWasmArithmeticLoop(b *testing.B) {
-	expr := compileBenchExpr(b, `(loop [i 0 s 0]
-  (if (= i 100000) s (recur (inc i) (+ s (rem (* i 7) 11)))))`)
-	loop := expr.(*LoopExpr)
-	prog := irCompile(loop)
-	if prog == nil {
-		b.Skip("IR failed")
-	}
-	wp := wasmCompile(prog)
-	if wp == nil {
-		b.Skip("WASM failed")
-	}
-	slots := []Object{Int{I: 0}, Int{I: 0}}
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		wasmExec(wp, slots)
-	}
-}
-
 func TestWasmFloatLoop(t *testing.T) {
 	expr := compileBenchExpr(t, `(loop [x 0.0 i 0]
   (if (= i 100) x (recur (+ x (* 0.5 0.5)) (inc i))))`)
@@ -111,25 +91,5 @@ func TestWasmFloatLoop(t *testing.T) {
 	// Allow small FP difference
 	if result.ToString(false) != expected.ToString(false) {
 		t.Fatalf("mismatch: WASM=%s IR=%s", result.ToString(false), expected.ToString(false))
-	}
-}
-
-func BenchmarkWasmFloatLoop(b *testing.B) {
-	expr := compileBenchExpr(b, `(loop [x 0.0 i 0]
-  (if (= i 100000) x (recur (+ x (* 0.5 0.5)) (inc i))))`)
-	loop := expr.(*LoopExpr)
-	prog := irCompile(loop)
-	if prog == nil {
-		b.Skip("IR failed")
-	}
-	wp := wasmCompile(prog)
-	if wp == nil {
-		b.Skip("WASM failed")
-	}
-	slots := []Object{Double{D: 0.0}, Int{I: 0}}
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		wasmExec(wp, slots)
 	}
 }

@@ -107,13 +107,3 @@ func TestTransientMapProcs(t *testing.T) {
 		t.Fatalf("missing persisted string key: %v %v", ok, got)
 	}
 }
-
-func BenchmarkTransientVectorLoop(b *testing.B) {
-	for b.Loop() {
-		tv := procTransient([]Object{NewArrayVectorFrom()}).(*TransientVector)
-		for i := 0; i < 100; i++ {
-			procConjBang([]Object{tv, Int{I: i}})
-		}
-		_ = procPersistentBang([]Object{tv})
-	}
-}

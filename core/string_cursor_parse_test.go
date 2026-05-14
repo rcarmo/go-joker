@@ -78,21 +78,3 @@ func TestCursorJSONCorrectness(t *testing.T) {
 	}
 	t.Logf("result type: %T", result)
 }
-
-func BenchmarkCursorParseJSONSmall(b *testing.B) {
-	parse := getCursorJSONParser(b)
-	input := String{S: jsonSmall}
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		parse.Call([]Object{input})
-	}
-}
-
-func BenchmarkCursorParseJSONMedium(b *testing.B) {
-	parse := getCursorJSONParser(b)
-	input := String{S: jsonMedium}
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		parse.Call([]Object{input})
-	}
-}

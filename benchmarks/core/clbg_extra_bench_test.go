@@ -1,6 +1,7 @@
-package core
+package core_test
 
 import (
+	. "github.com/rcarmo/go-joker/core"
 	"testing"
 
 	"github.com/rcarmo/go-joker/tests/clbgscripts"

@@ -42,6 +42,11 @@ while IFS= read -r file; do
   fi
 done < <(find core -mindepth 2 -type f -name '*.go' ! -path 'core/gen/*' | sort)
 
+if grep -R '^func Benchmark' core --include='*_test.go' >/dev/null; then
+  grep -R '^func Benchmark' core --include='*_test.go' >&2
+  fail "core package benchmark functions belong under benchmarks/core, not root core"
+fi
+
 for pkg in runtime collections reader cursor; do
   if grep -R 'github.com/rcarmo/go-joker/core"' "core/${pkg}" --include='*.go' >/dev/null; then
     fail "core/${pkg} must not import root core; define an adapter contract before moving coupled code"

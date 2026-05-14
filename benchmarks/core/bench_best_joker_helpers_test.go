@@ -1,6 +1,7 @@
-package core
+package core_test
 
 import (
+	. "github.com/rcarmo/go-joker/core"
 	"math"
 	"regexp"
 )
@@ -21,9 +22,10 @@ func init() {
 		{"bench-map-update-loop", procBenchMapUpdateLoop},
 		{"bench-binary-trees", procBenchBinaryTrees},
 	} {
-		vr := ns.Intern(MakeSymbol(p.name))
+		sym := MakeSymbol(p.name)
+		vr := ns.Intern(sym)
 		vr.Value = Proc{Name: "proc" + p.name, Fn: p.fn}
-		referToUser(MakeSymbol(p.name), vr)
+		GLOBAL_ENV.CurrentNamespace().Intern(sym).Value = vr.Value
 	}
 }
 
