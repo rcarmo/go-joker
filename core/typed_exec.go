@@ -729,34 +729,19 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if fn, ok := fnObj.(*Fn); ok {
 				if fnProg := irGetFnProg(fn); fnProg != nil && runtimeExec.HasNativeHelper(fnProg) {
 					// Already handled above
-				} else if fnProg := irGetFnProg(fn); runtimeExec.CanExecuteIR(fnProg) {
-					// Multi-arity dispatch
-					if fnProg.arityPrograms != nil {
-						if sub, ok := fnProg.arityPrograms[nargs]; ok {
-							fnProg = sub
-						} else if fnProg.variadicProg != nil && nargs >= fnProg.variadicMinArgs {
-							fnProg = fnProg.variadicProg
-						} else {
-							fnProg = nil
-						}
-					}
+				} else if fnProg := runtimeExec.DispatchArityProgram(irGetFnProg(fn), nargs); runtimeExec.CanExecuteIR(fnProg) {
 					if runtimeExec.CanExecuteTypedIR(fnProg) {
 						// FAST PATH: typed sub-call without Object boxing
 						// Only for pure numeric programs (no collections/strings)
-						var subAnalysis IRAnalysis
-						if fnProg.analysis != nil {
-							subAnalysis = *fnProg.analysis
-						} else {
-							subAnalysis = AnalyzeIRProgram(fnProg)
-							fnProg.analysis = &subAnalysis
-						}
+						subAnalysis := runtimeExec.ProgramAnalysis(fnProg)
 						if irTypedEligible(subAnalysis) && !subAnalysis.UsesCollection && !subAnalysis.UsesString && !subAnalysis.HasCallSlot {
 							var subBuf [16]irValue
 							var subSlots []irValue
-							if fnProg.numSlots <= 16 {
-								subSlots = subBuf[:fnProg.numSlots]
+							numSlots := runtimeExec.ProgramNumSlots(fnProg)
+							if numSlots <= 16 {
+								subSlots = subBuf[:numSlots]
 							} else {
-								subSlots = make([]irValue, fnProg.numSlots)
+								subSlots = make([]irValue, numSlots)
 							}
 							copy(subSlots[:nargs], typedArgs)
 							// Resolve captures

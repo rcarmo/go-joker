@@ -423,6 +423,22 @@ func (RuntimeExecutionAdapter) ProgramFnExpr(prog *IRProgram, idx int) (*FnExpr,
 	return prog.fnExprs[idx], true
 }
 
+func (RuntimeExecutionAdapter) DispatchArityProgram(prog *IRProgram, nargs int) *IRProgram {
+	if prog == nil {
+		return nil
+	}
+	if prog.arityPrograms == nil {
+		return prog
+	}
+	if sub, ok := prog.arityPrograms[nargs]; ok {
+		return sub
+	}
+	if prog.variadicProg != nil && nargs >= prog.variadicMinArgs {
+		return prog.variadicProg
+	}
+	return nil
+}
+
 func (RuntimeExecutionAdapter) ProgramHasCaptureSlots(prog *IRProgram) bool {
 	return prog != nil && len(prog.captureSlots) > 0
 }

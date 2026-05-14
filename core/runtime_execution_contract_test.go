@@ -61,6 +61,19 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if got, ok := adapter.ProgramFnExpr(prog, 0); !ok || got != fnExpr {
 		t.Fatalf("ProgramFnExpr = %#v, %v", got, ok)
 	}
+	subProg := &IRProgram{numSlots: 1}
+	prog.arityPrograms = map[int]*IRProgram{1: subProg}
+	if got := adapter.DispatchArityProgram(prog, 1); got != subProg {
+		t.Fatalf("DispatchArityProgram exact = %#v", got)
+	}
+	if got := adapter.DispatchArityProgram(prog, 2); got != nil {
+		t.Fatalf("DispatchArityProgram miss = %#v", got)
+	}
+	prog.variadicProg = subProg
+	prog.variadicMinArgs = 2
+	if got := adapter.DispatchArityProgram(prog, 3); got != subProg {
+		t.Fatalf("DispatchArityProgram variadic = %#v", got)
+	}
 	if !adapter.ProgramHasCaptureSlots(prog) {
 		t.Fatal("ProgramHasCaptureSlots returned false")
 	}

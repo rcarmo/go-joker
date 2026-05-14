@@ -699,17 +699,7 @@ loop:
 					}
 				}
 				// Try IR — typed executor first, skip if previously failed
-				if fnProg := irGetFnProg(fn); runtimeExec.CanExecuteIR(fnProg) {
-					// Multi-arity dispatch
-					if fnProg.arityPrograms != nil {
-						if sub, ok := fnProg.arityPrograms[nargs]; ok {
-							fnProg = sub
-						} else if fnProg.variadicProg != nil && nargs >= fnProg.variadicMinArgs {
-							fnProg = fnProg.variadicProg
-						} else {
-							fnProg = nil
-						}
-					}
+				if fnProg := runtimeExec.DispatchArityProgram(irGetFnProg(fn), nargs); runtimeExec.CanExecuteIR(fnProg) {
 					if fnProg != nil {
 						callArgs := runtimeExec.PrepareCallSlots(fnProg, args, fn.env)
 						if runtimeExec.CanExecuteTypedIR(fnProg) {
