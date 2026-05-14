@@ -18,3 +18,10 @@ type VarDoc struct {
 	Arglists  []string
 	Private   bool
 }
+
+// BinaryPayload is an inert generated binary payload such as serialized linter
+// data. Root core decides when and how to process the bytes.
+type BinaryPayload struct {
+	Path string
+	Data []byte
+}
