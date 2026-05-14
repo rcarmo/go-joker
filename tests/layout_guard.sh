@@ -42,6 +42,12 @@ while IFS= read -r file; do
   fi
 done < <(find core -mindepth 2 -type f -name '*.go' ! -path 'core/gen/*' | sort)
 
+for pkg in runtime collections reader; do
+  if grep -R 'github.com/rcarmo/go-joker/core"' "core/${pkg}" --include='*.go' >/dev/null; then
+    fail "core/${pkg} must not import root core; define an adapter contract before moving coupled code"
+  fi
+done
+
 for artifact in core.test joker transit.test; do
   if [[ -e "$artifact" ]]; then
     fail "stale root build artifact present: $artifact"
