@@ -14,5 +14,6 @@ core/generated/a_linter_clj_data.go
 core/generated/a_linter_cljs_data.go
 core/generated/a_linter_cljx_data.go
 core/generated/a_linter_joker_data.go
+core/generated/linter_payloads_gen.go
 core/types_assert_gen.go
 core/types_info_gen.go

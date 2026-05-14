@@ -12,7 +12,7 @@ if [[ ! -f "$manifest" ]]; then
 elif ! diff -u "$manifest" <(
   {
     find core -maxdepth 1 -type f \( -name 'a_*.go' -o -name 'types_*_gen.go' \);
-    find core/generated -maxdepth 1 -type f -name 'a_linter_*_data.go';
+    find core/generated -maxdepth 1 -type f \( -name 'a_linter_*_data.go' -o -name 'linter_payloads_gen.go' \);
   } | sort
 ); then
   echo "generated guard: generated file set changed; update $manifest intentionally" >&2
@@ -31,7 +31,7 @@ while IFS= read -r file; do
 done < <(
   {
     find core -maxdepth 1 -type f \( -name 'a_*.go' -o -name 'types_*_gen.go' \);
-    find core/generated -maxdepth 1 -type f -name 'a_linter_*_data.go';
+    find core/generated -maxdepth 1 -type f \( -name 'a_linter_*_data.go' -o -name 'linter_payloads_gen.go' \);
   } | sort
 )
 
