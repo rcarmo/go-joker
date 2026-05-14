@@ -108,8 +108,7 @@ Current candidate files:
 - `read.go`
 - `read_conditional_test.go`
 - `rune_window.go`
-- `line_runereader.go`
-- `buffered_reader.go`
+- line rune reader and raw buffered/IO reader mechanics now live in `core/reader`
 - `tagged_literals.go`
 - parser-adjacent pieces in `parse.go`, `parse_slow_init.go`
 

@@ -120,7 +120,7 @@ Planned package boundaries:
 - [x] Start generator emission under `core/generated` with core source manifest.
 - [x] Add equivalence test comparing generated source manifest with current root `coreNamespaces`.
 - [x] Guard generated bootstrap manifest equivalence with `make generated-bootstrap-check` from `make docs-check`.
-- [x] Start root runtime consumption of generated source manifest via guarded `generatedCoreNamespaces()` helper.
+- [x] Start root runtime consumption of generated source manifest via guarded `core/generated.CoreNamespaces()` helper.
 - [x] Switch `*core-namespaces*` bootstrap to generated source manifest plus always-present `user` namespace.
 - [x] Stop emitting/tracking root `core/a_data.go` after generated manifest equivalence.
 - [x] Guard generated source manifest paths against `core/data` files.

@@ -39,7 +39,7 @@ Generated from `go:generate` directives in `core/object.go`:
 
 ## Boundary decision for this batch
 
-Do not move the remaining generated files into a new package yet. They are deeply coupled to the current `core` package and moving them before IR/runtime/object boundaries are clean would create a large, low-signal churn. The completed exceptions are data-only payloads emitted under `core/generated`: the source manifest consumed by root `core` via `generatedCoreNamespaces()`, and the linter payload registry consumed by `ProcessLinterData` via `LinterDataByPath`.
+Do not move the remaining generated files into a new package yet. They are deeply coupled to the current `core` package and moving them before IR/runtime/object boundaries are clean would create a large, low-signal churn. The completed exceptions are data-only payloads emitted under `core/generated`: the source manifest and sorted namespace set consumed by root `core` via `CoreNamespaces()`, and the linter payload registry consumed by `ProcessLinterData` via `LinterDataByPath`.
 
 The generated boundary is guarded by:
 
