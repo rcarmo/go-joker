@@ -734,6 +734,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				if baseProg != nil && runtimeExec.HasNativeHelper(baseProg) {
 					// Already handled above
 				} else if fnProg := runtimeExec.DispatchArityProgram(baseProg, nargs); runtimeExec.CanExecuteIR(fnProg) {
+					routedToIR := false
 					if runtimeExec.CanExecuteTypedIR(fnProg) {
 						// FAST PATH: typed sub-call without Object boxing
 						// Only for pure numeric programs (no collections/strings)
@@ -781,8 +782,12 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 					}
 					if r := irExec(fnProg, callArgs); r != nil {
 						result = r
+						routedToIR = true
 					} else {
 						runtimeExec.MarkBoxedExecutionFailed(fnProg)
+					}
+					if !routedToIR && result == nil {
+						return nil
 					}
 				}
 				if result == nil {
