@@ -158,7 +158,7 @@ func registerUncheckedArithProcs() {
 				switch v := args[0].(type) {
 				case Int:
 					// (int-array n) — create vector of n nils
-					result := EmptyArrayVector()
+					result := collections.EmptyArrayVector()
 					for i := 0; i < v.I; i++ {
 						result = result.Conj(NIL).(*ArrayVector)
 					}
@@ -166,7 +166,7 @@ func registerUncheckedArithProcs() {
 				default:
 					// (int-array coll) — create vector from collection
 					s := EnsureObjectIsSeqable(args[0], "array constructor requires a number or seqable").Seq()
-					result := EmptyArrayVector()
+					result := collections.EmptyArrayVector()
 					for !s.IsEmpty() {
 						result = result.Conj(s.First()).(*ArrayVector)
 						s = s.Rest()
@@ -176,7 +176,7 @@ func registerUncheckedArithProcs() {
 			case 2:
 				// (int-array n init-val-or-seq)
 				n := EnsureArgIsInt(args, 0)
-				result := EmptyArrayVector()
+				result := collections.EmptyArrayVector()
 				if s, ok := args[1].(Seqable); ok {
 					seq := s.Seq()
 					for i := 0; i < n.I && !seq.IsEmpty(); i++ {
@@ -211,7 +211,7 @@ func registerUncheckedArithProcs() {
 		if len(args) >= 2 {
 			size = EnsureArgIsInt(args, 1).I
 		}
-		result := EmptyArrayVector()
+		result := collections.EmptyArrayVector()
 		for i := 0; i < size; i++ {
 			result = result.Conj(NIL).(*ArrayVector)
 		}

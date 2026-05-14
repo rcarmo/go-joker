@@ -14,7 +14,7 @@ func sortedCollMeta() Map {
 	if sortedMetaCache != nil {
 		return sortedMetaCache
 	}
-	m := EmptyArrayMap()
+	m := collections.EmptyArrayMap()
 	m.Add(MakeKeyword("sorted"), Boolean{B: true})
 	sortedMetaCache = m
 	return sortedMetaCache
@@ -49,7 +49,7 @@ func registerSortedCollProcs() {
 		sort.Slice(pairs, func(i, j int) bool {
 			return compareObjects(pairs[i].key, pairs[j].key) < 0
 		})
-		m := EmptyArrayMap()
+		m := collections.EmptyArrayMap()
 		for _, p := range pairs {
 			m.Add(p.key, p.val)
 		}
@@ -77,7 +77,7 @@ func registerSortedCollProcs() {
 		sort.Slice(pairs, func(i, j int) bool {
 			return compareWith(comp, pairs[i].key, pairs[j].key) < 0
 		})
-		m := EmptyArrayMap()
+		m := collections.EmptyArrayMap()
 		for _, p := range pairs {
 			m.Add(p.key, p.val)
 		}
@@ -157,7 +157,7 @@ func sortedSetFrom(values []Object, comp Callable) Object {
 		}
 		return compareObjects(sorted[i], sorted[j]) < 0
 	})
-	s := EmptySet()
+	s := collections.EmptySet()
 	for _, v := range sorted {
 		s = s.Conj(v).(*MapSet)
 	}
@@ -210,7 +210,7 @@ func sortedEntries(coll Object) []Object {
 	if m, ok := coll.(Map); ok {
 		for it := m.Iter(); it.HasNext(); {
 			p := it.Next()
-			out = append(out, NewArrayVectorFrom(p.Key, p.Value))
+			out = append(out, collections.ArrayVectorFrom(p.Key, p.Value))
 		}
 		if !preserveOrder {
 			sort.Slice(out, func(i, j int) bool { return compareObjects(rangeKey(out[i]), rangeKey(out[j])) < 0 })

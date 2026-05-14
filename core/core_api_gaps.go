@@ -55,7 +55,7 @@ func registerCoreAPIGaps() {
 				if len(matches) == 1 {
 					return String{S: matches[0]}
 				}
-				result := EmptyArrayVector()
+				result := collections.EmptyArrayVector()
 				for _, m := range matches {
 					result = result.Conj(String{S: m}).(*ArrayVector)
 				}

@@ -279,7 +279,7 @@ func procAsyncSplit(args []Object) Object {
 			}
 		}
 	}()
-	return NewVectorFrom(t, f)
+	return collections.VectorFrom(t, f)
 }
 
 func procAsyncMapFrom(args []Object) Object {

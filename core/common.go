@@ -84,7 +84,7 @@ func maybeNewLine(w io.Writer, obj, nextObj Object, baseIndent, currentIndent in
 }
 
 func FileInfoMap(name string, info os.FileInfo) Map {
-	m := EmptyArrayMap()
+	m := collections.EmptyArrayMap()
 	m.Add(MakeKeyword("name"), MakeString(name))
 	m.Add(MakeKeyword("size"), intOrBigInt(big.NewInt(info.Size())))
 	m.Add(MakeKeyword("mode"), MakeInt(int(info.Mode())))

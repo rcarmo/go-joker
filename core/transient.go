@@ -188,7 +188,7 @@ func (tm *TransientMap) Get(key Object) (bool, Object) {
 func (tm *TransientMap) ToPersistent() Object {
 	tm.frozen = true
 	if tm.count <= int(HASHMAP_THRESHOLD/2) {
-		res := EmptyArrayMap()
+		res := collections.EmptyArrayMap()
 		for k, v := range tm.sm {
 			res.Add(String{S: k}, v)
 		}

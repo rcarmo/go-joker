@@ -292,12 +292,12 @@ var (
 	IN_NS_VAR      *Var
 	WARNINGS       = Warnings{
 		fnWithEmptyBody: true,
-		entryPoints:     EmptySet(),
+		entryPoints:     collections.EmptySet(),
 	}
 )
 
 func (b *Bindings) ToMap() Map {
-	var res Map = EmptyArrayMap()
+	var res Map = collections.EmptyArrayMap()
 	for b != nil {
 		for _, v := range b.bindings {
 			res = res.Assoc(v.name, NIL).(Map)
@@ -778,7 +778,7 @@ func parseDef(obj Object, ctx *ParseContext, isForLinter bool) *DefExpr {
 				if meta != nil {
 					meta = meta.Assoc(KEYWORDS.doc, docstring).(Map)
 				} else {
-					meta = EmptyArrayMap().Assoc(KEYWORDS.doc, docstring).(Map)
+					meta = collections.EmptyArrayMap().Assoc(KEYWORDS.doc, docstring).(Map)
 				}
 			default:
 				panic(&ParseError{obj: docstring, msg: "Docstring must be a string"})
@@ -1286,7 +1286,7 @@ func fixInfo(obj Object, info *ObjectInfo) Object {
 		}
 		return res.WithInfo(info)
 	case Vec:
-		res := EmptyArrayVector()
+		res := collections.EmptyArrayVector()
 		res.meta = s.(Meta).GetMeta()
 		for i := 0; i < s.Count(); i++ {
 			t := fixInfo(s.At(i), info)
@@ -1297,7 +1297,7 @@ func fixInfo(obj Object, info *ObjectInfo) Object {
 		}
 		return res.WithInfo(info)
 	case Map:
-		res := EmptyArrayMap()
+		res := collections.EmptyArrayMap()
 		iter := s.Iter()
 		for iter.HasNext() {
 			p := iter.Next()
@@ -1445,7 +1445,7 @@ func checkArglist(arglist Seq, passedArgsCount int) bool {
 
 func setMacroMeta(vr *Var) {
 	if vr.meta == nil {
-		vr.meta = EmptyArrayMap().Assoc(KEYWORDS.macro, Boolean{B: true}).(Map)
+		vr.meta = collections.EmptyArrayMap().Assoc(KEYWORDS.macro, Boolean{B: true}).(Map)
 	} else {
 		vr.meta = vr.meta.Assoc(KEYWORDS.macro, Boolean{B: true}).(Map)
 	}

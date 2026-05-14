@@ -532,7 +532,7 @@ func installTransducerCompat() {
 		conjRF := Proc{Name: "procEductionConjRF", Fn: func(callArgs []Object) Object {
 			switch len(callArgs) {
 			case 0:
-				return EmptyArrayVector()
+				return collections.EmptyArrayVector()
 			case 1:
 				return callArgs[0]
 			case 2:
@@ -547,7 +547,7 @@ func installTransducerCompat() {
 			}
 		}}
 
-		return transduceInternal(xform, conjRF, EmptyArrayVector(), collObj)
+		return transduceInternal(xform, conjRF, collections.EmptyArrayVector(), collObj)
 	}}
 	referToUser(MakeSymbol("eduction"), eductionVr)
 
