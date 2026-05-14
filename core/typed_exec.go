@@ -3,7 +3,6 @@ package core
 import (
 	"math"
 	"unicode/utf8"
-	"unsafe"
 
 	coreirx "github.com/rcarmo/go-joker/core/ir"
 )
@@ -260,13 +259,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if v.tag != irValCursor {
 				return nil
 			}
-			cur := (*StringCursor)(v.p)
-			r := cur.Char()
-			if r < 0 {
-				stack = append(stack, irValue{tag: irValNil})
-			} else {
-				stack = append(stack, irMakeChar(r))
+			result, ok := runtimeExec.CursorChar(v.object())
+			if !ok {
+				return nil
 			}
+			stack = append(stack, objectToIRValue(result))
 
 		case irCursorNext:
 			v := stack[len(stack)-1]
@@ -274,9 +271,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if v.tag != irValCursor {
 				return nil
 			}
-			cur := (*StringCursor)(v.p)
-			next := cur.Next()
-			stack = append(stack, irValue{tag: irValCursor, p: unsafe.Pointer(next)})
+			result, ok := runtimeExec.CursorNext(v.object())
+			if !ok {
+				return nil
+			}
+			stack = append(stack, objectToIRValue(result))
 
 		case irCursorDone:
 			v := stack[len(stack)-1]
@@ -284,8 +283,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if v.tag != irValCursor {
 				return nil
 			}
-			cur := (*StringCursor)(v.p)
-			stack = append(stack, irMakeBool(cur.Done()))
+			result, ok := runtimeExec.CursorDone(v.object())
+			if !ok {
+				return nil
+			}
+			stack = append(stack, objectToIRValue(result))
 
 		case irApply:
 			argsVal := stack[len(stack)-1]

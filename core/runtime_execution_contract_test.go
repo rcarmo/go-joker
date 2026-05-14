@@ -219,6 +219,16 @@ func TestRuntimeExecutionAdapterStringOps(t *testing.T) {
 	if got, ok := adapter.NthASCIIStringConst(prog, 0, 1); !ok || !got.Equals(MakeChar('b')) {
 		t.Fatalf("NthASCIIStringConst = %#v, %v", got, ok)
 	}
+	cur := NewStringCursor("x")
+	if got, ok := adapter.CursorChar(cur); !ok || !got.Equals(MakeChar('x')) {
+		t.Fatalf("CursorChar = %#v, %v", got, ok)
+	}
+	if got, ok := adapter.CursorDone(cur); !ok || got.(Boolean).B {
+		t.Fatalf("CursorDone = %#v, %v", got, ok)
+	}
+	if got, ok := adapter.CursorNext(cur); !ok || got == cur {
+		t.Fatalf("CursorNext = %#v, %v", got, ok)
+	}
 }
 
 func TestRuntimeExecutionAdapterErrorf(t *testing.T) {

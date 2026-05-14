@@ -337,33 +337,31 @@ loop:
 			return nil
 
 		case irCursorChar:
-			cur, ok := stack[len(stack)-1].(*StringCursor)
+			cur := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
+			result, ok := runtimeExec.CursorChar(cur)
 			if !ok {
 				return nil
 			}
-			r := cur.Char()
-			if r < 0 {
-				stack = append(stack, NIL)
-			} else {
-				stack = append(stack, Char{Ch: r})
-			}
+			stack = append(stack, result)
 
 		case irCursorNext:
-			cur, ok := stack[len(stack)-1].(*StringCursor)
+			cur := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
+			result, ok := runtimeExec.CursorNext(cur)
 			if !ok {
 				return nil
 			}
-			stack = append(stack, cur.Next())
+			stack = append(stack, result)
 
 		case irCursorDone:
-			cur, ok := stack[len(stack)-1].(*StringCursor)
+			cur := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
+			result, ok := runtimeExec.CursorDone(cur)
 			if !ok {
 				return nil
 			}
-			stack = append(stack, Boolean{B: cur.Done()})
+			stack = append(stack, result)
 
 		case irApply:
 			argsSeq := stack[len(stack)-1]

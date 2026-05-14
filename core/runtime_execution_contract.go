@@ -341,6 +341,33 @@ func (RuntimeExecutionAdapter) NthASCIIStringConst(prog *IRProgram, constIdx int
 	return Char{Ch: rune(s.S[idx])}, true
 }
 
+func (RuntimeExecutionAdapter) CursorChar(obj Object) (Object, bool) {
+	cur, ok := obj.(*StringCursor)
+	if !ok {
+		return nil, false
+	}
+	if r := cur.Char(); r >= 0 {
+		return Char{Ch: r}, true
+	}
+	return NIL, true
+}
+
+func (RuntimeExecutionAdapter) CursorNext(obj Object) (Object, bool) {
+	cur, ok := obj.(*StringCursor)
+	if !ok {
+		return nil, false
+	}
+	return cur.Next(), true
+}
+
+func (RuntimeExecutionAdapter) CursorDone(obj Object) (Object, bool) {
+	cur, ok := obj.(*StringCursor)
+	if !ok {
+		return nil, false
+	}
+	return Boolean{B: cur.Done()}, true
+}
+
 func (RuntimeExecutionAdapter) MarkTypedExecutionFailed(prog *IRProgram) {
 	if prog != nil {
 		prog.typedFailed = true
