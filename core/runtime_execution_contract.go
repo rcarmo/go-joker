@@ -128,9 +128,8 @@ func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj Obj
 	grt := currentGRT()
 	prevExpr := grt.currentExpr
 	grt.currentExpr = &CallExpr{}
-	result, ok := adapter.CallObject(fnObj, args)
-	grt.currentExpr = prevExpr
-	return result, ok
+	defer func() { grt.currentExpr = prevExpr }()
+	return adapter.CallObject(fnObj, args)
 }
 
 func (RuntimeExecutionAdapter) MutableSlotObject(obj Object, escapeInfo *EscapeInfo, slot int) Object {
@@ -237,7 +236,7 @@ func (RuntimeExecutionAdapter) First(coll Object) (Object, bool) {
 		return NIL, true
 	case Seqable:
 		s := c.Seq()
-		if s.IsEmpty() {
+		if s == nil || s.IsEmpty() {
 			return NIL, true
 		}
 		return s.First(), true
@@ -337,8 +336,8 @@ func (RuntimeExecutionAdapter) Count(obj Object) (int, bool) {
 	}
 }
 
-func (RuntimeExecutionAdapter) NthASCIIStringConst(prog *IRProgram, constIdx int, idx int) (Object, bool) {
-	constant, ok := runtimeExec.ProgramConstant(prog, constIdx)
+func (adapter RuntimeExecutionAdapter) NthASCIIStringConst(prog *IRProgram, constIdx int, idx int) (Object, bool) {
+	constant, ok := adapter.ProgramConstant(prog, constIdx)
 	if !ok {
 		return nil, false
 	}
@@ -456,20 +455,20 @@ func (RuntimeExecutionAdapter) FnWasmExec(fnObj Object, args []Object) (Object, 
 	return result, result != nil
 }
 
-func (RuntimeExecutionAdapter) FnCallSlots(fnObj Object, prog *IRProgram, args []Object) ([]Object, bool) {
+func (adapter RuntimeExecutionAdapter) FnCallSlots(fnObj Object, prog *IRProgram, args []Object) ([]Object, bool) {
 	fn, ok := fnObj.(*Fn)
 	if !ok {
 		return nil, false
 	}
-	return runtimeExec.PrepareCallSlots(prog, args, fn.env), true
+	return adapter.PrepareCallSlots(prog, args, fn.env), true
 }
 
-func (RuntimeExecutionAdapter) InstallFnTypedEnvCaptures(fnObj Object, prog *IRProgram, slots []irValue) bool {
+func (adapter RuntimeExecutionAdapter) InstallFnTypedEnvCaptures(fnObj Object, prog *IRProgram, slots []irValue) bool {
 	fn, ok := fnObj.(*Fn)
 	if !ok {
 		return false
 	}
-	runtimeExec.InstallTypedEnvCaptures(prog, slots, fn.env)
+	adapter.InstallTypedEnvCaptures(prog, slots, fn.env)
 	return true
 }
 
