@@ -423,7 +423,57 @@ func (RuntimeExecutionAdapter) ProgramFnExpr(prog *IRProgram, idx int) (*FnExpr,
 	return prog.fnExprs[idx], true
 }
 
-func (RuntimeExecutionAdapter) DispatchArityProgram(prog *IRProgram, nargs int) *IRProgram {
+func (RuntimeExecutionAdapter) FnProgram(fnObj Object) (*IRProgram, bool) {
+	fn, ok := fnObj.(*Fn)
+	if !ok {
+		return nil, false
+	}
+	if fn.irProg != nil {
+		return fn.irProg, true
+	}
+	return irGetFnProg(fn), true
+}
+
+func (RuntimeExecutionAdapter) CompileFnProgram(fnObj Object) (*IRProgram, bool) {
+	fn, ok := fnObj.(*Fn)
+	if !ok {
+		return nil, false
+	}
+	prog := irCompileFn(fn)
+	return prog, prog != nil
+}
+
+func (RuntimeExecutionAdapter) FnWasmExec(fnObj Object, args []Object) (Object, bool) {
+	fn, ok := fnObj.(*Fn)
+	if !ok {
+		return nil, false
+	}
+	wp := wasmGetFn(fn)
+	if wp == nil {
+		return nil, false
+	}
+	result := wasmExec(wp, args)
+	return result, result != nil
+}
+
+func (RuntimeExecutionAdapter) FnCallSlots(fnObj Object, prog *IRProgram, args []Object) ([]Object, bool) {
+	fn, ok := fnObj.(*Fn)
+	if !ok {
+		return nil, false
+	}
+	return runtimeExec.PrepareCallSlots(prog, args, fn.env), true
+}
+
+func (RuntimeExecutionAdapter) InstallFnTypedEnvCaptures(fnObj Object, prog *IRProgram, slots []irValue) bool {
+	fn, ok := fnObj.(*Fn)
+	if !ok {
+		return false
+	}
+	runtimeExec.InstallTypedEnvCaptures(prog, slots, fn.env)
+	return true
+}
+
+func (adapter RuntimeExecutionAdapter) DispatchArityProgram(prog *IRProgram, nargs int) *IRProgram {
 	if prog == nil {
 		return nil
 	}

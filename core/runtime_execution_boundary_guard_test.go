@@ -27,6 +27,9 @@ func TestExecutorFilesUseRuntimeExecutionAdapterForProgramState(t *testing.T) {
 			if strings.Contains(line, "currentGRT()") || strings.Contains(line, ".Call(") || strings.Contains(line, "(Callable)") {
 				t.Fatalf("%s:%d performs call/runtime dispatch instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
 			}
+			if strings.Contains(line, "*Fn") || strings.Contains(line, "irGetFnProg") || strings.Contains(line, "wasmGetFn") || strings.Contains(line, ".env") {
+				t.Fatalf("%s:%d reaches into Fn internals instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
+			}
 			if strings.Contains(line, "ToSlice(") || strings.Contains(line, "(Seqable)") {
 				t.Fatalf("%s:%d prepares call args instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
 			}

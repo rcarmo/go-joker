@@ -695,8 +695,8 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				fnObj = slots[slotIdx].object()
 			}
 			// Fast path: native f64 closure (zero boxing)
-			if fn, ok := fnObj.(*Fn); ok {
-				if nativeHelper, ok := runtimeExec.NativeHelper(irGetFnProg(fn)); ok {
+			if fnProg, ok := runtimeExec.FnProgram(fnObj); ok {
+				if nativeHelper, ok := runtimeExec.NativeHelper(fnProg); ok {
 					// Call native helper with stack-allocated args
 					f64buf := [4]float64{}
 					for i := nargs - 1; i >= 0; i-- {
@@ -726,10 +726,10 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				stack = stack[:len(stack)-1]
 			}
 			var result Object
-			if fn, ok := fnObj.(*Fn); ok {
-				if fnProg := irGetFnProg(fn); fnProg != nil && runtimeExec.HasNativeHelper(fnProg) {
+			if baseProg, ok := runtimeExec.FnProgram(fnObj); ok {
+				if baseProg != nil && runtimeExec.HasNativeHelper(baseProg) {
 					// Already handled above
-				} else if fnProg := runtimeExec.DispatchArityProgram(irGetFnProg(fn), nargs); runtimeExec.CanExecuteIR(fnProg) {
+				} else if fnProg := runtimeExec.DispatchArityProgram(baseProg, nargs); runtimeExec.CanExecuteIR(fnProg) {
 					if runtimeExec.CanExecuteTypedIR(fnProg) {
 						// FAST PATH: typed sub-call without Object boxing
 						// Only for pure numeric programs (no collections/strings)
@@ -745,7 +745,9 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 							}
 							copy(subSlots[:nargs], typedArgs)
 							// Resolve captures
-							runtimeExec.InstallTypedEnvCaptures(fnProg, subSlots, fn.env)
+							if !runtimeExec.InstallFnTypedEnvCaptures(fnObj, fnProg, subSlots) {
+								return nil
+							}
 							// Execute inline with typed slots
 							subResult := irExecTypedInline(fnProg, subSlots)
 							if subResult.tag != 0 || subResult.i != 0 || subResult.f != 0 {
@@ -767,7 +769,10 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 						for i, v := range typedArgs {
 							args[i] = v.object()
 						}
-						callArgs := runtimeExec.PrepareCallSlots(fnProg, args, fn.env)
+						callArgs, ok := runtimeExec.FnCallSlots(fnObj, fnProg, args)
+						if !ok {
+							return nil
+						}
 						if r := irExec(fnProg, callArgs); r != nil {
 							result = r
 						} else {

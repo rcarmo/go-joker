@@ -656,8 +656,8 @@ loop:
 			pc += 2
 			fnObj := slots[slotIdx]
 			// Fast path: native f64 closure (fn-level or loop-level)
-			if fn, ok := fnObj.(*Fn); ok {
-				if nativeHelper, ok := runtimeExec.NativeHelper(irGetFnProg(fn)); ok {
+			if fnProg, ok := runtimeExec.FnProgram(fnObj); ok {
+				if nativeHelper, ok := runtimeExec.NativeHelper(fnProg); ok {
 					var f64buf [4]float64
 					f64args := f64buf[:nargs]
 					for i := nargs - 1; i >= 0; i-- {
@@ -690,18 +690,18 @@ loop:
 				}
 			}
 			// Try WASM fn dispatch first, then IR, then tree-walker
-			if fn, ok := fnObj.(*Fn); ok {
-				// Try WASM native
-				if wp := wasmGetFn(fn); wp != nil {
-					if result := wasmExec(wp, args); result != nil {
-						stack = append(stack, result)
-						continue
-					}
-				}
+			if result, ok := runtimeExec.FnWasmExec(fnObj, args); ok {
+				stack = append(stack, result)
+				continue
+			}
+			if baseProg, ok := runtimeExec.FnProgram(fnObj); ok {
 				// Try IR — typed executor first, skip if previously failed
-				if fnProg := runtimeExec.DispatchArityProgram(irGetFnProg(fn), nargs); runtimeExec.CanExecuteIR(fnProg) {
+				if fnProg := runtimeExec.DispatchArityProgram(baseProg, nargs); runtimeExec.CanExecuteIR(fnProg) {
 					if fnProg != nil {
-						callArgs := runtimeExec.PrepareCallSlots(fnProg, args, fn.env)
+						callArgs, ok := runtimeExec.FnCallSlots(fnObj, fnProg, args)
+						if !ok {
+							return nil
+						}
 						if runtimeExec.CanExecuteTypedIR(fnProg) {
 							if result := irExecTyped(fnProg, callArgs); result != nil {
 								stack = append(stack, result)

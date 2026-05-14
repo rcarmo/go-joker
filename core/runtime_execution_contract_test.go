@@ -74,6 +74,13 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if got := adapter.DispatchArityProgram(prog, 3); got != subProg {
 		t.Fatalf("DispatchArityProgram variadic = %#v", got)
 	}
+	fnObj := &Fn{irProg: prog, env: &LocalEnv{bindings: []Object{MakeInt(1)}}}
+	if got, ok := adapter.FnProgram(fnObj); !ok || got != prog {
+		t.Fatalf("FnProgram = %#v, %v", got, ok)
+	}
+	if slots, ok := adapter.FnCallSlots(fnObj, prog, []Object{MakeInt(2)}); !ok || len(slots) == 0 || !slots[0].Equals(MakeInt(2)) {
+		t.Fatalf("FnCallSlots = %#v, %v", slots, ok)
+	}
 	if !adapter.ProgramHasCaptureSlots(prog) {
 		t.Fatal("ProgramHasCaptureSlots returned false")
 	}

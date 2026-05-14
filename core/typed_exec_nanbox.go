@@ -288,8 +288,8 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 			pc += 2
 			fnObj := nbToObject(slots[slotIdx], objTable)
 			// Native f64 fast path
-			if fn, ok := fnObj.(*Fn); ok {
-				if nativeHelper, ok := runtimeExec.NativeHelper(irGetFnProg(fn)); ok {
+			if fnProg, ok := runtimeExec.FnProgram(fnObj); ok {
+				if nativeHelper, ok := runtimeExec.NativeHelper(fnProg); ok {
 					var f64buf [4]float64
 					for i := nargs - 1; i >= 0; i-- {
 						sp--
@@ -307,12 +307,10 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 				args[i] = nbToObject(stackBuf[sp], objTable)
 			}
 			var result Object
-			if fn, ok := fnObj.(*Fn); ok {
-				if fnProg := irCompileFn(fn); fnProg != nil {
-					result = irExecTyped(fnProg, args)
-					if result == nil {
-						result = irExec(fnProg, args)
-					}
+			if fnProg, ok := runtimeExec.CompileFnProgram(fnObj); ok {
+				result = irExecTyped(fnProg, args)
+				if result == nil {
+					result = irExec(fnProg, args)
 				}
 				if result == nil {
 					var ok bool
