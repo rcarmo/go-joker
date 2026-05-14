@@ -43,5 +43,5 @@ func procCursorIndex(args []Object) Object {
 	if !ok {
 		panic(RT.NewError("cursor-index expects a StringCursor"))
 	}
-	return Int{I: c.runeIndex}
+	return Int{I: c.Index()}
 }
