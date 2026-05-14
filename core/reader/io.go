@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"io"
+	"os"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
@@ -21,6 +22,19 @@ func NewBuffer(b *bytes.Buffer) *Buffer {
 }
 
 func (b *Buffer) Hash() uint32 { return b.hash }
+
+type File struct {
+	*os.File
+	hash uint32
+}
+
+func NewFile(f *os.File) *File {
+	res := &File{File: f}
+	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(res)))
+	return res
+}
+
+func (f *File) Hash() uint32 { return f.hash }
 
 type Buffered struct {
 	*bufio.Reader

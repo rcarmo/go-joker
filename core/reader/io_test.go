@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"io"
+	"os"
 	"testing"
 )
 
@@ -25,6 +26,16 @@ type closeWriter struct {
 func (w *closeWriter) Close() error {
 	w.closed = true
 	return nil
+}
+
+func TestFileWrapsOSFileAndHashes(t *testing.T) {
+	f := NewFile(os.Stdin)
+	if f.Hash() == 0 {
+		t.Fatal("file hash should be initialized")
+	}
+	if f.File != os.Stdin {
+		t.Fatal("file wrapper should expose wrapped file")
+	}
 }
 
 func TestBufferWrapsBytesBufferAndHashes(t *testing.T) {

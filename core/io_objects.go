@@ -4,9 +4,23 @@ import (
 	"bytes"
 	"errors"
 	"io"
+	"os"
 
 	corereader "github.com/rcarmo/go-joker/core/reader"
 )
+
+type File struct{ *corereader.File }
+
+func MakeFile(f *os.File) *File { return &File{File: corereader.NewFile(f)} }
+
+func (f *File) ToString(escape bool) string      { return "#object[File]" }
+func (f *File) Equals(other interface{}) bool    { return f == other }
+func (f *File) GetInfo() *ObjectInfo             { return nil }
+func (f *File) GetType() *Type                   { return TYPE.File }
+func (f *File) Hash() uint32                     { return f.File.Hash() }
+func (f *File) WithInfo(info *ObjectInfo) Object { return f }
+func (f *File) Namespace() string                { return "" }
+func ExtractFile(args []Object, index int) *File { return EnsureArgIsFile(args, index) }
 
 type Buffer struct{ *corereader.Buffer }
 
