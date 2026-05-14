@@ -591,14 +591,7 @@ loop:
 			}
 			result := stack[len(stack)-1]
 			if frameStack != nil && frameStack.Depth() > 0 {
-				switch v := result.(type) {
-				case *TransientVector:
-					result = v.ToPersistent()
-				case *TransientMap:
-					result = v.ToPersistent()
-				case *TransientString:
-					result = v.ToPersistent()
-				}
+				result = runtimeExec.PersistentResult(result)
 				if len(selfTraceStack) > 0 {
 					exit := selfTraceStack[len(selfTraceStack)-1]
 					selfTraceStack = selfTraceStack[:len(selfTraceStack)-1]
@@ -610,61 +603,33 @@ loop:
 				stack = append(stack, result)
 				continue
 			}
-			switch v := result.(type) {
-			case *TransientVector:
-				return v.ToPersistent()
-			case *TransientMap:
-				return v.ToPersistent()
-			case *TransientString:
-				return v.ToPersistent()
-			}
-			return result
+			return runtimeExec.PersistentResult(result)
 		case irGet:
 			key := stack[len(stack)-1]
 			coll := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			if g, ok := coll.(Gettable); ok {
-				ok, v := g.Get(key)
-				if ok {
-					stack = append(stack, v)
-				} else {
-					stack = append(stack, NIL)
-				}
-			} else {
+			if _, ok := coll.(Gettable); !ok {
 				return nil
 			}
+			stack = append(stack, runtimeExec.Get(coll, key, NIL))
 
 		case irGet3:
 			def := stack[len(stack)-1]
 			key := stack[len(stack)-2]
 			coll := stack[len(stack)-3]
 			stack = stack[:len(stack)-3]
-			if g, ok := coll.(Gettable); ok {
-				ok, v := g.Get(key)
-				if ok {
-					stack = append(stack, v)
-				} else {
-					stack = append(stack, def)
-				}
-			} else {
-				stack = append(stack, def)
-			}
+			stack = append(stack, runtimeExec.Get(coll, key, def))
 
 		case irAssoc:
 			val := stack[len(stack)-1]
 			key := stack[len(stack)-2]
 			coll := stack[len(stack)-3]
 			stack = stack[:len(stack)-3]
-			// Fast path: transient in-place mutation
-			if tv, ok := coll.(*TransientVector); ok {
-				stack = append(stack, tv.AssocInPlace(key, val))
-			} else if tm, ok := coll.(*TransientMap); ok {
-				stack = append(stack, tm.AssocInPlace(key, val))
-			} else if a, ok := coll.(Associative); ok {
-				stack = append(stack, a.Assoc(key, val))
-			} else {
+			result, ok := runtimeExec.Assoc(coll, key, val)
+			if !ok {
 				return nil
 			}
+			stack = append(stack, result)
 
 		case irNth:
 			idxObj := stack[len(stack)-1]
@@ -674,39 +639,21 @@ loop:
 			if !iok {
 				return nil
 			}
-			switch c := coll.(type) {
-			case *ArrayVector:
-				if idx.I >= 0 && idx.I < len(c.arr) {
-					stack = append(stack, c.arr[idx.I])
-				} else {
-					return nil
-				}
-			case *TransientVector:
-				if idx.I >= 0 && idx.I < len(c.arr) {
-					stack = append(stack, c.arr[idx.I])
-				} else {
-					return nil
-				}
-			case String:
-				stack = append(stack, stringNthFast(c.S, idx.I))
-			case Indexed:
-				stack = append(stack, c.Nth(idx.I))
-			default:
+			result, ok := runtimeExec.Nth(coll, idx.I)
+			if !ok {
 				return nil
 			}
+			stack = append(stack, result)
 
 		case irConj:
 			val := stack[len(stack)-1]
 			coll := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			switch c := coll.(type) {
-			case *TransientVector:
-				stack = append(stack, c.ConjInPlace(val))
-			case Conjable:
-				stack = append(stack, c.Conj(val))
-			default:
+			result, ok := runtimeExec.Conj(coll, val)
+			if !ok {
 				return nil
 			}
+			stack = append(stack, result)
 
 		case irSqrt:
 			a := stack[len(stack)-1]

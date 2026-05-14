@@ -121,6 +121,70 @@ func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj Obj
 	return result, ok
 }
 
+func (RuntimeExecutionAdapter) PersistentResult(result Object) Object {
+	switch v := result.(type) {
+	case *TransientVector:
+		return v.ToPersistent()
+	case *TransientMap:
+		return v.ToPersistent()
+	case *TransientString:
+		return v.ToPersistent()
+	default:
+		return result
+	}
+}
+
+func (RuntimeExecutionAdapter) Get(coll Object, key Object, def Object) Object {
+	if g, ok := coll.(Gettable); ok {
+		if ok, v := g.Get(key); ok {
+			return v
+		}
+	}
+	return def
+}
+
+func (RuntimeExecutionAdapter) Assoc(coll Object, key Object, val Object) (Object, bool) {
+	switch c := coll.(type) {
+	case *TransientVector:
+		return c.AssocInPlace(key, val), true
+	case *TransientMap:
+		return c.AssocInPlace(key, val), true
+	case Associative:
+		return c.Assoc(key, val), true
+	default:
+		return nil, false
+	}
+}
+
+func (RuntimeExecutionAdapter) Nth(coll Object, idx int) (Object, bool) {
+	switch c := coll.(type) {
+	case *ArrayVector:
+		if idx >= 0 && idx < len(c.arr) {
+			return c.arr[idx], true
+		}
+	case *TransientVector:
+		if idx >= 0 && idx < len(c.arr) {
+			return c.arr[idx], true
+		}
+	case String:
+		return stringNthFast(c.S, idx), true
+	case Indexed:
+		return c.Nth(idx), true
+	}
+	return nil, false
+}
+
+func (RuntimeExecutionAdapter) Conj(coll Object, val Object) (Object, bool) {
+	switch c := coll.(type) {
+	case *TransientVector:
+		return c.ConjInPlace(val), true
+	case Conjable:
+		return c.Conj(val), true
+	default:
+		return nil, false
+	}
+}
+
 func (RuntimeExecutionAdapter) MarkTypedExecutionFailed(prog *IRProgram) {
 	if prog != nil {
 		prog.typedFailed = true

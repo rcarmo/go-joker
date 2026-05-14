@@ -146,6 +146,36 @@ func TestRuntimeExecutionAdapterCallObject(t *testing.T) {
 	}
 }
 
+func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	vec := NewArrayVectorFrom(MakeInt(1), MakeInt(2))
+	if got, ok := adapter.Nth(vec, 1); !ok || !got.Equals(MakeInt(2)) {
+		t.Fatalf("Nth = %#v, %v", got, ok)
+	}
+	if _, ok := adapter.Nth(vec, 9); ok {
+		t.Fatal("Nth accepted out-of-range index")
+	}
+	mapObj := EmptyArrayMap().Assoc(MakeString("k"), MakeInt(7)).(Object)
+	if got := adapter.Get(mapObj, MakeString("k"), NIL); !got.Equals(MakeInt(7)) {
+		t.Fatalf("Get = %#v", got)
+	}
+	if got := adapter.Get(vec, MakeInt(9), MakeInt(42)); !got.Equals(MakeInt(42)) {
+		t.Fatalf("Get default = %#v", got)
+	}
+	if got, ok := adapter.Assoc(vec, MakeInt(0), MakeInt(9)); !ok {
+		t.Fatalf("Assoc returned %#v, %v", got, ok)
+	} else if ok, val := got.(Gettable).Get(MakeInt(0)); !ok || !val.Equals(MakeInt(9)) {
+		t.Fatalf("Assoc value = %#v, %v", val, ok)
+	}
+	if got, ok := adapter.Conj(vec, MakeInt(3)); !ok || got.(Counted).Count() != 3 {
+		t.Fatalf("Conj returned %#v, %v", got, ok)
+	}
+	transient := ToTransient(vec)
+	if got := adapter.PersistentResult(transient); got.(Counted).Count() != 2 {
+		t.Fatalf("PersistentResult = %#v", got)
+	}
+}
+
 func TestRuntimeExecutionAdapterErrorf(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
 	err := adapter.Errorf("contract %d", 42)
