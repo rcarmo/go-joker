@@ -388,12 +388,12 @@ loop:
 			argsSeq := stack[len(stack)-1]
 			fnObj := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			callable, ok := fnObj.(Callable)
+			args := ToSlice(argsSeq.(Seqable).Seq())
+			result, ok := runtimeExec.CallObject(fnObj, args)
 			if !ok {
 				return nil
 			}
-			args := ToSlice(argsSeq.(Seqable).Seq())
-			stack = append(stack, callable.Call(args))
+			stack = append(stack, result)
 
 		case irThrow:
 			v := stack[len(stack)-1]
@@ -798,17 +798,11 @@ loop:
 				}
 			}
 			// Fallback to normal Fn.Call
-			grt := currentGRT()
-			prevExpr := grt.currentExpr
-			grt.currentExpr = &CallExpr{}
-			switch fn := fnObj.(type) {
-			case Callable:
-				stack = append(stack, fn.Call(args))
-			default:
-				grt.currentExpr = prevExpr
+			result, ok := runtimeExec.CallObjectWithSyntheticCallExpr(fnObj, args)
+			if !ok {
 				return nil
 			}
-			grt.currentExpr = prevExpr
+			stack = append(stack, result)
 
 		case irCallSelf:
 			nargs := int(code[pc])<<8 | int(code[pc+1])

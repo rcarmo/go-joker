@@ -315,12 +315,18 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 					}
 				}
 				if result == nil {
-					result = fn.Call(args)
+					var ok bool
+					result, ok = runtimeExec.CallObject(fnObj, args)
+					if !ok {
+						return nil
+					}
 				}
-			} else if callable, ok := fnObj.(Callable); ok {
-				result = callable.Call(args)
 			} else {
-				return nil
+				var ok bool
+				result, ok = runtimeExec.CallObject(fnObj, args)
+				if !ok {
+					return nil
+				}
 			}
 			stackBuf[sp] = nbFromObject(result, &objTable)
 			sp++

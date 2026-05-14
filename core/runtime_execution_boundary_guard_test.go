@@ -24,6 +24,9 @@ func TestExecutorFilesUseRuntimeExecutionAdapterForProgramState(t *testing.T) {
 			if strings.Contains(line, "RuntimeExecutionAdapter{}") {
 				t.Fatalf("%s:%d constructs ad-hoc runtime adapter instead of shared runtimeExec: %s", file, lineNo+1, strings.TrimSpace(line))
 			}
+			if strings.Contains(line, "currentGRT()") || strings.Contains(line, ".Call(") || strings.Contains(line, "(Callable)") {
+				t.Fatalf("%s:%d performs call/runtime dispatch instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
+			}
 		}
 	}
 }

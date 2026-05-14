@@ -293,12 +293,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			stack = stack[:len(stack)-2]
 			fnObj := fnVal.object()
 			argsObj := argsVal.object()
-			callable, ok := fnObj.(Callable)
+			args := ToSlice(argsObj.(Seqable).Seq())
+			result, ok := runtimeExec.CallObject(fnObj, args)
 			if !ok {
 				return nil
 			}
-			args := ToSlice(argsObj.(Seqable).Seq())
-			result := callable.Call(args)
 			stack = append(stack, objectToIRValue(result))
 
 		case irThrow:
@@ -797,9 +796,13 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 					for i, v := range typedArgs {
 						a[i] = v.object()
 					}
-					result = fn.Call(a)
+					var ok bool
+					result, ok = runtimeExec.CallObject(fnObj, a)
+					if !ok {
+						return nil
+					}
 				}
-			} else if callable, ok := fnObj.(Callable); ok {
+			} else {
 				var args3 [4]Object
 				var a []Object
 				if nargs <= 4 {
@@ -810,9 +813,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				for i, v := range typedArgs {
 					a[i] = v.object()
 				}
-				result = callable.Call(a)
-			} else {
-				return nil
+				var ok bool
+				result, ok = runtimeExec.CallObject(fnObj, a)
+				if !ok {
+					return nil
+				}
 			}
 			stack = append(stack, objectToIRValue(result))
 

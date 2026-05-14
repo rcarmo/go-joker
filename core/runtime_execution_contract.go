@@ -104,6 +104,23 @@ func (RuntimeExecutionAdapter) MakeFn(fnExpr *FnExpr, slots []Object) Object {
 	return &Fn{fnExpr: fnExpr, env: fnEnv}
 }
 
+func (RuntimeExecutionAdapter) CallObject(fnObj Object, args []Object) (Object, bool) {
+	callable, ok := fnObj.(Callable)
+	if !ok {
+		return nil, false
+	}
+	return callable.Call(args), true
+}
+
+func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj Object, args []Object) (Object, bool) {
+	grt := currentGRT()
+	prevExpr := grt.currentExpr
+	grt.currentExpr = &CallExpr{}
+	result, ok := adapter.CallObject(fnObj, args)
+	grt.currentExpr = prevExpr
+	return result, ok
+}
+
 func (RuntimeExecutionAdapter) MarkTypedExecutionFailed(prog *IRProgram) {
 	if prog != nil {
 		prog.typedFailed = true

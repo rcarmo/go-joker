@@ -130,6 +130,22 @@ func TestRuntimeExecutionAdapterMakeFnCapturesSlots(t *testing.T) {
 	}
 }
 
+func TestRuntimeExecutionAdapterCallObject(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	fn := Proc{Name: "contract-call", Fn: func(args []Object) Object { return MakeInt(len(args)) }}
+	got, ok := adapter.CallObject(fn, []Object{MakeInt(1), MakeInt(2)})
+	if !ok || !got.Equals(MakeInt(2)) {
+		t.Fatalf("CallObject = %#v, %v", got, ok)
+	}
+	if _, ok := adapter.CallObject(MakeInt(1), nil); ok {
+		t.Fatal("CallObject accepted non-callable")
+	}
+	got, ok = adapter.CallObjectWithSyntheticCallExpr(fn, []Object{MakeInt(1)})
+	if !ok || !got.Equals(MakeInt(1)) {
+		t.Fatalf("CallObjectWithSyntheticCallExpr = %#v, %v", got, ok)
+	}
+}
+
 func TestRuntimeExecutionAdapterErrorf(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
 	err := adapter.Errorf("contract %d", 42)
