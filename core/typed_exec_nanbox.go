@@ -10,10 +10,49 @@ import (
 //
 // Uses []uint64 stack (8 bytes per entry) instead of []irValue (32 bytes).
 // Numeric operations are pure bit manipulation — zero allocation, zero copy.
-// Object operations convert at the boundary via the existing nb* helpers.
+// Object operations convert at the boundary via the local nb* helpers.
 //
 // This is the typed executor's hot path for numeric loops.
 // Falls back to nil (letting irExecTyped handle it) for unsupported patterns.
+
+func nbFromObject(obj Object, table *[]Object) uint64 {
+	switch v := obj.(type) {
+	case Int:
+		return coreirx.BoxInt(v.I)
+	case Double:
+		return coreirx.BoxDouble(v.D)
+	case Boolean:
+		return coreirx.BoxBool(v.B)
+	case Nil:
+		return coreirx.BoxNil()
+	default:
+		idx := len(*table)
+		*table = append(*table, obj)
+		return coreirx.BoxObj(idx)
+	}
+}
+
+func nbToObject(v uint64, table []Object) Object {
+	if coreirx.IsDouble(v) {
+		return Double{D: coreirx.ToDouble(v)}
+	}
+	if coreirx.IsInt(v) {
+		return Int{I: coreirx.ToInt(v)}
+	}
+	if coreirx.IsBool(v) {
+		return Boolean{B: coreirx.ToBool(v)}
+	}
+	if coreirx.IsNil(v) {
+		return NIL
+	}
+	if coreirx.IsObj(v) {
+		idx := coreirx.ToObjIdx(v)
+		if idx < len(table) {
+			return table[idx]
+		}
+	}
+	return NIL
+}
 
 func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 	analysis := AnalyzeIRProgram(prog)
