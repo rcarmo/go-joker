@@ -8,7 +8,7 @@ import (
 )
 
 func TestGeneratedCoreNamespacesHelper(t *testing.T) {
-	got := generatedCoreNamespaces()
+	got := coregenerated.CoreNamespaces()
 	if len(got) == 0 || got[0] != "joker.better-cond" {
 		t.Fatalf("unexpected generated core namespaces helper result: %v", got)
 	}
@@ -25,7 +25,7 @@ func TestGeneratedCoreSourceManifestRows(t *testing.T) {
 		}
 	}
 
-	got := generatedCoreNamespaces()
+	got := coregenerated.CoreNamespaces()
 	want := []string{"joker.better-cond", "joker.core", "joker.hiccup", "joker.pprint", "joker.repl", "joker.set", "joker.template", "joker.test", "joker.tools.cli", "joker.walk"}
 	sort.Strings(want)
 	if len(got) != len(want) {

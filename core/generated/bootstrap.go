@@ -3,6 +3,8 @@
 // core remains responsible for installing sources/docs into namespaces.
 package generated
 
+import "sort"
+
 // NamespaceSource is an inert generated source payload.
 type NamespaceSource struct {
 	Name   string
@@ -24,4 +26,21 @@ type VarDoc struct {
 type BinaryPayload struct {
 	Path string
 	Data []byte
+}
+
+// CoreNamespaces returns the sorted namespace set represented by the generated
+// bootstrap source manifest.
+func CoreNamespaces() []string {
+	seen := map[string]bool{}
+	for _, src := range CoreSourceManifest() {
+		if src.Name != "" {
+			seen[src.Name] = true
+		}
+	}
+	var names []string
+	for ns := range seen {
+		names = append(names, ns)
+	}
+	sort.Strings(names)
+	return names
 }

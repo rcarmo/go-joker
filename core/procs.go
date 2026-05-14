@@ -17,6 +17,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/rcarmo/go-joker/core/deps"
+	coregenerated "github.com/rcarmo/go-joker/core/generated"
 	"github.com/rcarmo/go-joker/core/hashutil"
 	"github.com/rcarmo/go-joker/core/numutil"
 	"github.com/rcarmo/go-joker/core/osutil"
@@ -2067,7 +2068,7 @@ func setCoreNamespaces() {
 
 	vr := ns.Resolve("*core-namespaces*")
 	set := vr.Value.(*MapSet)
-	for _, ns := range generatedCoreNamespaces() {
+	for _, ns := range coregenerated.CoreNamespaces() {
 		set = set.Conj(MakeSymbol(ns)).(*MapSet)
 	}
 	set = set.Conj(MakeSymbol("user")).(*MapSet)

@@ -1,6 +1,10 @@
 package core
 
-import "testing"
+import (
+	"testing"
+
+	coregenerated "github.com/rcarmo/go-joker/core/generated"
+)
 
 func TestGeneratedCoreNamespacesDriveCoreNamespaceVar(t *testing.T) {
 	ProcessCoreData()
@@ -12,7 +16,7 @@ func TestGeneratedCoreNamespacesDriveCoreNamespaceVar(t *testing.T) {
 	if !ok {
 		t.Fatalf("*core-namespaces* = %T, want *MapSet", vr.Value)
 	}
-	for _, ns := range generatedCoreNamespaces() {
+	for _, ns := range coregenerated.CoreNamespaces() {
 		if found, _ := set.Get(MakeSymbol(ns)); !found {
 			t.Fatalf("*core-namespaces* missing generated namespace %s", ns)
 		}
