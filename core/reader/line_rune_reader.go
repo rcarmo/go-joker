@@ -1,7 +1,7 @@
 //go:build !plan9
 // +build !plan9
 
-package core
+package reader
 
 import (
 	"io"
@@ -32,7 +32,7 @@ func (lrr *LineRuneReader) ReadRune() (rune, int, error) {
 	}
 	line, err := lrr.rl.Prompt(lrr.Prompt)
 	if err != nil {
-		return EOF, 0, io.EOF
+		return -1, 0, io.EOF
 	}
 	if strings.TrimSpace(line) != "" {
 		lrr.rl.AppendHistory(line)

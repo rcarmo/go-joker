@@ -16,6 +16,7 @@ import (
 	"github.com/candid82/liner"
 	. "github.com/rcarmo/go-joker/core"
 	"github.com/rcarmo/go-joker/core/osutil"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 )
 
 var qualifiedSymbolRe *regexp.Regexp = regexp.MustCompile(`([0-9A-Za-z_\-\+\*\'\.]+)/([0-9A-Za-z_\-\+\*\']*$)`)
@@ -115,7 +116,7 @@ func repl(phase Phase) {
 			}
 		}
 
-		runeReader = NewLineRuneReader(rl)
+		runeReader = corereader.NewLineRuneReader(rl)
 
 		for _, line := range strings.Split(string(dataRead), "\n") {
 			if strings.TrimSpace(line) != "" {
@@ -132,7 +133,7 @@ func repl(phase Phase) {
 		if noReadline {
 			print(namespace + "=> ")
 		} else {
-			runeReader.(*LineRuneReader).Prompt = (namespace + "=> ")
+			runeReader.(*corereader.LineRuneReader).Prompt = (namespace + "=> ")
 		}
 		if processReplCommand(reader, phase, parseContext, replContext) {
 			saveReplHistory(rl, historyFilename)
