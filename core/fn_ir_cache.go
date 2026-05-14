@@ -51,15 +51,14 @@ func irGetFnProg(fn *Fn) *IRProgram {
 			if len(arity.body) == 1 {
 				if loop, ok := arity.body[0].(*LoopExpr); ok {
 					loopProg := irCompile(loop)
-					if loopProg != nil && loopProg.nativeHelper != nil {
+					if runtimeExec.HasNativeHelper(loopProg) {
 						wrapper := buildNativeLoopWrapper(fn, arity, loop, loopProg)
 						if wrapper != nil {
 							prog = (&IRProgram{
-								numSlots:      len(arity.args),
-								nativeHelper:  wrapper,
-								nativeChecked: true,
-								traceName:     fn.fnExpr.traceName,
+								numSlots:  len(arity.args),
+								traceName: fn.fnExpr.traceName,
 							}).refreshModel()
+							runtimeExec.InstallNativeHelper(prog, wrapper)
 						}
 					}
 				}
@@ -162,7 +161,10 @@ func buildNativeLoopWrapper(fn *Fn, arity FnArityExpr, loop *LoopExpr, loopProg 
 		}
 	}
 
-	loopNative := loopProg.nativeHelper
+	loopNative, ok := runtimeExec.NativeHelper(loopProg)
+	if !ok {
+		return nil
+	}
 	return func(fnArgs []float64) float64 {
 		var buf [16]float64
 		var loopArgs []float64

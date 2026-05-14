@@ -21,10 +21,11 @@ func TestIRCompileFailureIsCachedOnFn(t *testing.T) {
 func TestNativeHelperEligibilityContract(t *testing.T) {
 	pure := evalTestScript(t, `(fn [x y] (+ (* x x) y))`).(*Fn)
 	pureProg := irGetFnProg(pure)
-	if pureProg == nil || pureProg.nativeHelper == nil || !pureProg.nativeChecked {
+	nativeHelper, ok := runtimeExec.NativeHelper(pureProg)
+	if pureProg == nil || !ok || !runtimeExec.NativeHelperChecked(pureProg) {
 		t.Fatalf("pure numeric helper should compile native helper: %#v", pureProg)
 	}
-	if got := pureProg.nativeHelper([]float64{3, 4}); got != 13 {
+	if got := nativeHelper([]float64{3, 4}); got != 13 {
 		t.Fatalf("native helper result = %f, want 13", got)
 	}
 
@@ -33,10 +34,10 @@ func TestNativeHelperEligibilityContract(t *testing.T) {
 	if impureProg == nil {
 		t.Fatal("vector-building fn should still compile to boxed IR")
 	}
-	if impureProg.nativeHelper != nil {
+	if runtimeExec.HasNativeHelper(impureProg) {
 		t.Fatal("collection-building fn must not get a numeric native helper")
 	}
-	if !impureProg.nativeChecked {
+	if !runtimeExec.NativeHelperChecked(impureProg) {
 		t.Fatal("native helper eligibility should be checked and cached")
 	}
 }

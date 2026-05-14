@@ -201,11 +201,11 @@ func Eval(expr Expr, env *LocalEnv) Object {
 				}
 				initSlots = full
 			}
-			if !prog.memNthFailed && wasmMemNthStaticEligible(prog) {
+			if runtimeExec.CanTryMemNth(prog) && wasmMemNthStaticEligible(prog) {
 				if result := wasmMemNthCompileAndExec(prog, initSlots); result != nil {
 					return result
 				}
-				prog.memNthFailed = true
+				runtimeExec.MarkMemNthFailed(prog)
 			}
 			if corert.IRTypedEnabled() && !prog.typedFailed {
 				var typedResult Object

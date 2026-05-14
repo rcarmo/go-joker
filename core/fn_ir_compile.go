@@ -139,8 +139,7 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 		}
 	}
 	prog.refreshModel()
-	prog.nativeHelper = irCompileNativeHelper(prog)
-	prog.nativeChecked = true
+	runtimeExec.InstallNativeHelper(prog, irCompileNativeHelper(prog))
 	return prog
 }
 

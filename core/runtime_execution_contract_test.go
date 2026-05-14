@@ -123,3 +123,38 @@ func TestRuntimeExecutionAdapterThrow(t *testing.T) {
 	}()
 	adapter.Throw(MakeString("boom"))
 }
+
+func TestRuntimeExecutionAdapterNativeHelperState(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	prog := &IRProgram{}
+	if adapter.HasNativeHelper(prog) || adapter.NativeHelperChecked(prog) {
+		t.Fatal("fresh program should not have a checked native helper")
+	}
+	if helper, ok := adapter.NativeHelper(prog); helper != nil || ok {
+		t.Fatalf("NativeHelper = %v, %v; want nil, false", helper, ok)
+	}
+	helper := nativeF64Fn(func(args []float64) float64 { return args[0] + 1 })
+	adapter.InstallNativeHelper(prog, helper)
+	got, ok := adapter.NativeHelper(prog)
+	if !ok || got([]float64{2}) != 3 {
+		t.Fatal("native helper was not installed through adapter")
+	}
+	if !adapter.HasNativeHelper(prog) || !adapter.NativeHelperChecked(prog) {
+		t.Fatal("adapter did not expose installed native helper state")
+	}
+}
+
+func TestRuntimeExecutionAdapterMemNthFallbackState(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	prog := &IRProgram{}
+	if !adapter.CanTryMemNth(prog) {
+		t.Fatal("fresh program should allow mem-nth attempt")
+	}
+	adapter.MarkMemNthFailed(prog)
+	if adapter.CanTryMemNth(prog) || !prog.memNthFailed {
+		t.Fatal("MarkMemNthFailed did not disable mem-nth attempts")
+	}
+	if adapter.CanTryMemNth(nil) {
+		t.Fatal("nil program must not allow mem-nth attempts")
+	}
+}

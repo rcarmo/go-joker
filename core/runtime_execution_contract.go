@@ -8,6 +8,8 @@ import "fmt"
 // operation.
 type RuntimeExecutionAdapter struct{}
 
+var runtimeExec RuntimeExecutionAdapter
+
 func (RuntimeExecutionAdapter) Errorf(format string, args ...any) Error {
 	return RT.NewError(fmt.Sprintf(format, args...))
 }
@@ -120,4 +122,36 @@ func (RuntimeExecutionAdapter) CanExecuteIR(prog *IRProgram) bool {
 
 func (RuntimeExecutionAdapter) CanExecuteTypedIR(prog *IRProgram) bool {
 	return prog != nil && !prog.typedFailed && !prog.execFailed
+}
+
+func (RuntimeExecutionAdapter) HasNativeHelper(prog *IRProgram) bool {
+	return prog != nil && prog.nativeHelper != nil
+}
+
+func (RuntimeExecutionAdapter) NativeHelper(prog *IRProgram) (nativeF64Fn, bool) {
+	if prog == nil || prog.nativeHelper == nil {
+		return nil, false
+	}
+	return prog.nativeHelper, true
+}
+
+func (RuntimeExecutionAdapter) InstallNativeHelper(prog *IRProgram, helper nativeF64Fn) {
+	if prog != nil {
+		prog.nativeHelper = helper
+		prog.nativeChecked = true
+	}
+}
+
+func (RuntimeExecutionAdapter) NativeHelperChecked(prog *IRProgram) bool {
+	return prog != nil && prog.nativeChecked
+}
+
+func (RuntimeExecutionAdapter) CanTryMemNth(prog *IRProgram) bool {
+	return prog != nil && !prog.memNthFailed
+}
+
+func (RuntimeExecutionAdapter) MarkMemNthFailed(prog *IRProgram) {
+	if prog != nil {
+		prog.memNthFailed = true
+	}
 }

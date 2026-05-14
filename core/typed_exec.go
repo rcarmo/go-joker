@@ -688,7 +688,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			}
 			// Fast path: native f64 closure (zero boxing)
 			if fn, ok := fnObj.(*Fn); ok {
-				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
+				if nativeHelper, ok := runtimeExec.NativeHelper(irGetFnProg(fn)); ok {
 					// Call native helper with stack-allocated args
 					f64buf := [4]float64{}
 					for i := nargs - 1; i >= 0; i-- {
@@ -700,7 +700,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 							f64buf[i] = float64(v.i)
 						}
 					}
-					r := fnProg.nativeHelper(coreirx.Float64(f64buf[:nargs]))
+					r := nativeHelper(coreirx.Float64(f64buf[:nargs]))
 					stack = append(stack, irValue{tag: irValDouble, f: r})
 					continue
 				}
@@ -719,9 +719,9 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			}
 			var result Object
 			if fn, ok := fnObj.(*Fn); ok {
-				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
+				if fnProg := irGetFnProg(fn); fnProg != nil && runtimeExec.HasNativeHelper(fnProg) {
 					// Already handled above
-				} else if fnProg := irGetFnProg(fn); fnProg != nil && !fnProg.execFailed {
+				} else if fnProg := irGetFnProg(fn); runtimeExec.CanExecuteIR(fnProg) {
 					// Multi-arity dispatch
 					if fnProg.arityPrograms != nil {
 						if sub, ok := fnProg.arityPrograms[nargs]; ok {

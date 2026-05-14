@@ -722,7 +722,7 @@ loop:
 			fnObj := slots[slotIdx]
 			// Fast path: native f64 closure (fn-level or loop-level)
 			if fn, ok := fnObj.(*Fn); ok {
-				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
+				if nativeHelper, ok := runtimeExec.NativeHelper(irGetFnProg(fn)); ok {
 					var f64buf [4]float64
 					f64args := f64buf[:nargs]
 					for i := nargs - 1; i >= 0; i-- {
@@ -736,7 +736,7 @@ loop:
 						}
 						stack = stack[:len(stack)-1]
 					}
-					stack = append(stack, Double{D: fnProg.nativeHelper(coreirx.Float64(f64args))})
+					stack = append(stack, Double{D: nativeHelper(coreirx.Float64(f64args))})
 					continue
 				}
 			}

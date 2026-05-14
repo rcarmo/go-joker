@@ -235,16 +235,17 @@ func TestNativeHelperSpectralA(t *testing.T) {
 	env.bindings = append(env.bindings, Eval(le.values[0], env)) // n
 	aFn := Eval(le.values[1], env).(*Fn)
 	prog := irCompileFn(aFn)
-	if prog == nil || prog.nativeHelper == nil {
+	nativeHelper, ok := runtimeExec.NativeHelper(prog)
+	if prog == nil || !ok {
 		t.Fatal("A fn should have native helper")
 	}
 	// A(0,0) = 1/(0+1) = 1.0
-	r := prog.nativeHelper([]float64{0, 0})
+	r := nativeHelper([]float64{0, 0})
 	if r != 1.0 {
 		t.Fatalf("A(0,0) = %f, want 1.0", r)
 	}
 	// A(1,0) = 1/((1+0)(2)/2 + 2) = 1/3
-	r2 := prog.nativeHelper([]float64{1, 0})
+	r2 := nativeHelper([]float64{1, 0})
 	if r2 < 0.333 || r2 > 0.334 {
 		t.Fatalf("A(1,0) = %f, want ~0.333", r2)
 	}
@@ -354,7 +355,7 @@ func TestBuildNativeLoopWrapper(t *testing.T) {
 	if fnProg == nil {
 		t.Fatal("irGetFnProg returned nil for A fn")
 	}
-	if fnProg.nativeHelper == nil {
+	if !runtimeExec.HasNativeHelper(fnProg) {
 		t.Fatal("A fn should have nativeHelper")
 	}
 	t.Logf("A fn: nativeHelper present, slots=%d", fnProg.numSlots)

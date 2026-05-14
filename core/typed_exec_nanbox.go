@@ -284,13 +284,13 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 			fnObj := nbToObject(slots[slotIdx], objTable)
 			// Native f64 fast path
 			if fn, ok := fnObj.(*Fn); ok {
-				if fnProg := irGetFnProg(fn); fnProg != nil && fnProg.nativeHelper != nil {
+				if nativeHelper, ok := runtimeExec.NativeHelper(irGetFnProg(fn)); ok {
 					var f64buf [4]float64
 					for i := nargs - 1; i >= 0; i-- {
 						sp--
 						f64buf[i] = coreirx.ToFloat(stackBuf[sp])
 					}
-					stackBuf[sp] = coreirx.BoxDouble(fnProg.nativeHelper(coreirx.Float64(f64buf[:nargs])))
+					stackBuf[sp] = coreirx.BoxDouble(nativeHelper(coreirx.Float64(f64buf[:nargs])))
 					sp++
 					continue
 				}

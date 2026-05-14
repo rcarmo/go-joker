@@ -135,8 +135,8 @@ func IrExec(prog *IRProgram, s []Object) Object      { return irExec(prog, s) }
 func (p *IRProgram) HasSelf() bool          { return p.hasSelf }
 func (p *IRProgram) CaptureSlots() []Object { return p.captureSlots }
 func (p *IRProgram) GetNativeHelper() func([]float64) float64 {
-	if p.nativeHelper != nil {
-		return func(args []float64) float64 { return p.nativeHelper(args) }
+	if nativeHelper, ok := runtimeExec.NativeHelper(p); ok {
+		return func(args []float64) float64 { return nativeHelper(args) }
 	}
 	return nil
 }
