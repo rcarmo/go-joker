@@ -31,3 +31,41 @@ func TestIRTypedUnicodeCount(t *testing.T) {
 	}
 	requireInt(t, irExecTyped(prog, []Object{Int{I: 0}, String{S: "é"}}), 3)
 }
+
+func TestIRTypedCountObjectVector(t *testing.T) {
+	requireInt(t, evalTestScript(t, `(let [xs ["a" "b" "c"]]
+  (loop [i 0 s ""]
+    (if (= i (count xs))
+      (count s)
+      (recur (inc i) (str s "x")))))`), 3)
+}
+
+func TestIRTypedEvalGate(t *testing.T) {
+	t.Setenv("JOKER_IR_TYPED", "1")
+	requireInt(t, evalTestScript(t, `(let [dna "ACGT"]
+  (loop [i 0 s ""]
+    (if (= i 4)
+      (count s)
+      (recur (inc i) (str s (nth dna i))))))`), 4)
+}
+
+func TestIRTypedMapRejectsNonStringKeysAndFallsBack(t *testing.T) {
+	requireInt(t, evalTestScript(t, `(let [ks [:k0 :k1]]
+  (loop [i 0 m {}]
+    (if (= i 4)
+      (+ (get m :k0 0) (get m :k1 0))
+      (let [k (nth ks (rem i 2))]
+        (recur (inc i) (assoc m k (inc (get m k 0))))))))`), 4)
+}
+
+func TestIRTypedNestedStringLoop(t *testing.T) {
+	requireInt(t, evalTestScript(t, `(let [dna "ACGT"]
+  (loop [i 0 total 0]
+    (if (= i 3)
+      total
+      (let [k (loop [j 0 s ""]
+                (if (= j 2)
+                  s
+                  (recur (inc j) (str s (nth dna (+ i j))))))]
+        (recur (inc i) (+ total (count k)))))))`), 6)
+}
