@@ -1,6 +1,6 @@
 # Repository architecture refactor plan
 
-Updated: 2026-05-13
+Updated: 2026-05-14
 
 ## Goal
 
@@ -15,8 +15,8 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 - Module identity is now `github.com/rcarmo/go-joker`; remaining `candid82` references should be attribution/upstream history or third-party dependencies only.
 - CLI entrypoint now lives under `cmd/joker`.
 - `std/*` is already package-oriented and increasingly guarded by focused native-boundary contracts and explicit resource-layout rules.
-- `core` remains the main monolith, but leaf packages now exist under `core/internal`.
-- Generated `core/a_*.go` files dominate size and are tracked by `tests/generated_files.txt`; they remain in root only while they still require `package core` access. Moving them to a subdirectory must be a real package split, not a cosmetic file move.
+- `core` remains the main monolith, but leaf packages now exist under `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, and data-only generated payloads under `core/generated`.
+- Generated `core/a_*.go` files still matter, but the root generated set has shrunk; `tests/generated_files.txt` now tracks root generated files plus data-only generated package artifacts such as `core/generated/linter_payloads_gen.go`. Remaining root generated files stay there only while they still require `package core` access. Moving them to a subdirectory must be a real package split, not a cosmetic file move.
 - IR/JIT/WASM compiler and executor files are still coupled to `core.Object`, `Fn`, `Expr`, `LocalEnv`, and unexported runtime helpers, but opcode/diagnostic helpers and WASM leaf helpers have been extracted.
 - Tracing/profiling aggregation state is extracted into `core/trace`.
 
@@ -45,13 +45,13 @@ Planned package boundaries:
 | Target | Current files/examples | Notes |
 |---|---|---|
 | `core/trace` | `function_trace.go`, `symbol_trace.go`, `ir_profile.go` state machinery | Extracted leaf package. No dependency on `core`; core passes names/events/op names in. |
-| `core/ir` or `core/ir` | `ir*.go`, IR tests | Reserved/public extraction target should exist; requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. |
-| `core/wasm` or `core/wasm` | `wasm*.go` leaf helpers first | Reserved/public extraction target should exist; encoding/module/host metadata are already partly extracted, but full lowering/runtime still depends on IR program shape and runtime contracts. |
-| `core/runtime` | goroutine runtime, eval frames, errors, tracing hooks | Reserved package exists; production moves require explicit object/call/error/frame contracts first. |
-| `core/collections` | vectors, maps, sets, seqs, transients | Reserved package should exist as the extraction target; move only after construction/adaptation contracts are explicit. |
-| `core/reader` | `reader.go`, `read.go`, tagged literals | Reserved package should exist as the extraction target; move only after object/expression construction contracts are explicit. |
+| `core/ir` | `ir*.go`, IR tests | Extracted neutral IR helpers/model exist; executor/compiler movement still requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. |
+| `core/wasm` | `wasm*.go` leaf helpers first | Extracted encoding/module/host metadata helpers exist, but full lowering/runtime still depends on IR program shape and runtime contracts. |
+| `core/runtime` | feature flags, goroutine IDs, future eval frames/errors/tracing hooks | Small runtime leaf helpers exist; production executor/runtime moves require explicit object/call/error/frame contracts first. |
+| `core/collections` | vectors, maps, sets, seqs, transients | Reserved package exists as the extraction target; current production constructor call sites route through `CollectionConstructionAdapter` and a guard rejects drift. Move only after object/protocol implementation dependencies are explicit and acyclic. |
+| `core/reader` | `reader.go`, `read.go`, tagged literals | Reserved package exists as the extraction target; current production reader/expression construction call sites route through `ReaderConstructionAdapter` and a guard rejects drift. Move only after object/tagged-literal/evaluator dependencies are explicit and acyclic. |
 | `core/string` | string caches and string-focused support helpers | Reserved package should exist as the extraction target for root string helpers that can become a real boundary. |
-| `core/generated` and `core/generated` | `a_*.go`, `types_*_gen.go` | Reserved/public extraction target should exist, but only move generated files when generator output can declare/import a real package with explicit contracts; do not place `package core` files in subdirectories. |
+| `core/generated` | source manifest, linter payload bytes/registry, future data-only payloads | Real generated package boundary exists for data-only payloads. Only move additional generated families when generator output can declare/import a real package with explicit contracts; do not place `package core` files in subdirectories. |
 | `tools/tracing` or skill scripts | pprof/IR/function trace renderers | External tooling can move independently of Go runtime packages. |
 
 ## Execution phases
@@ -97,6 +97,8 @@ Planned package boundaries:
 - [x] Add escape-analysis contract tests for call-argument unsafety and string-builder slots.
 - [x] Add `irMakeFn` execution-envelope contract tests for FnExpr retention and slot capture semantics.
 - [x] Add IR failure-cache and native-helper eligibility contract tests.
+- [x] Route native-helper and fallback execution state through `RuntimeExecutionAdapter` with contract tests.
+- [x] Split typed inline executor helper into a smaller cohesive root file while preserving package ownership.
 - [x] Add WASM host native-int conversion contract tests.
 - [x] Add initial root `RuntimeExecutionAdapter` code contract for error creation/throwing and `irMakeFn` closure construction.
 - [x] Route boxed/typed `irThrow`, capture-slot prefill, and `irMakeFn` execution through `RuntimeExecutionAdapter`.
@@ -122,8 +124,9 @@ Planned package boundaries:
 - [x] Stop emitting/tracking root `core/a_data.go` after generated manifest equivalence.
 - [x] Guard generated source manifest paths against `core/data` files.
 - [x] Guard generated source manifest sync with `CoreSourceFiles`.
-- [ ] Extend generated bootstrap emission beyond source manifest only after broader equivalence tests.
-- [ ] Move generated artifacts after runtime/object initialization boundaries are explicit.
+- [x] Extend generated bootstrap emission beyond source manifest only after broader equivalence tests.
+- [x] Generate and guard the linter payload registry under `core/generated`.
+- [ ] Move remaining generated artifacts after runtime/object initialization boundaries are explicit.
 
 ### R5 — Collections/reader/runtime follow-up
 
@@ -141,11 +144,13 @@ Planned package boundaries:
 - [x] Guard closed native-int audit TODOs with `make native-int-check` from `make docs-check`.
 - [x] Guard ignored close/process/write errors and raw `panic(err)` regressions with `make error-handling-check` from `make docs-check`.
 - [x] Confirm broad R5 moves should wait until IR/generated boundaries are stable and object/protocol contracts are explicit.
-- [ ] Move collections only after object/protocol contracts are explicit.
+- [x] Define and guard collection construction adapter before package moves.
+- [ ] Move collections only after object/protocol implementation contracts are explicit and acyclic.
 - [x] Document reader object-construction/tagged-literal contract requirements.
 - [x] Add reader construction contract tests for primitives, collections, metadata, tagged readers, conditionals, namespaced maps, and literal error paths.
 - [x] Run reader construction contract tests from `make core-contract-check`.
-- [ ] Move reader only after object construction and tagged literal contracts are explicit in code.
+- [x] Define and guard reader/expression construction adapter before package moves.
+- [ ] Move reader only after object construction, tagged literal, and evaluator handoff contracts are explicit and acyclic.
 - [x] Document runtime/evaluator call/error/frame contract requirements.
 - [x] Start root runtime execution adapter contract in code for error creation and function construction.
 - [ ] Move runtime/evaluator only after call/error/frame contracts are explicit in code and root execution metadata has a narrow adapter.
@@ -153,4 +158,4 @@ Planned package boundaries:
 
 ## Current execution status
 
-R3 has established the first IR boundary and extracted tested IR helper packages. A neutral `core/ir.Program` model now exists and root executable `IRProgram` envelopes populate it; diagnostics/export accessors, WASM lowering helpers, and native helper compilation read from that model where appropriate. Runtime/execution-envelope contracts now run from `make runtime-contract-check` inside `make docs-check`. R4 generated-code inventory/guardrails are in place; `core/a_data.go` has been removed in favor of the generated source manifest, while remaining generated artifacts still wait on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, sorted collections, transients, seqs, reader construction, native-int numeric promotion/conversion, std native-boundary returns and arity/shape checks, metadata/info behavior, and persistent-vector semantics. Recent std audits added `git`, `log`, `csv`, `json`, and `filepath` boundary coverage for argument guards, config shape, level parsing, write/flush propagation, decode wrapping, and walk error context. `make native-int-check`, `make error-handling-check`, and `make std-contract-check` guard recent audit closures. The CLI entrypoint lives in `cmd/joker`.
+R3 has established the first IR boundary and extracted tested IR helper packages. A neutral `core/ir.Program` model now exists and root executable `IRProgram` envelopes populate it; diagnostics/export accessors, WASM lowering helpers, and native helper compilation read from that model where appropriate. Runtime/execution-envelope contracts now run from `make runtime-contract-check` inside `make docs-check`; native-helper/fallback state now routes through `RuntimeExecutionAdapter`, and the typed inline executor helper has been split into a smaller root file. R4 generated-code inventory/guardrails are in place; `core/a_data.go` has been removed in favor of the generated source manifest, and the linter payload registry is now emitted and guarded under `core/generated` while root `core` consumes it through `LinterDataByPath`. Remaining root generated artifacts still wait on runtime/object initialization boundaries. R5 has extracted WASM leaf helpers and now has focused contract coverage for vectors, maps, sets, sorted collections, transients, seqs, reader construction, native-int numeric promotion/conversion, std native-boundary returns and arity/shape checks, metadata/info behavior, and persistent-vector semantics. Collection and reader construction adapters plus boundary guards are now in place before package moves. Recent std audits added `crypto`, `math`, `string`, and `uuid` minimal boundary coverage in addition to earlier native-boundary checks. `make native-int-check`, `make error-handling-check`, `make std-contract-check`, and the construction/generated guard tests protect recent closures. The CLI entrypoint lives in `cmd/joker` with focused command-package tests.

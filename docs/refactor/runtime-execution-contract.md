@@ -1,6 +1,6 @@
 # Runtime execution metadata contract
 
-Updated: 2026-05-13
+Updated: 2026-05-14
 
 ## Purpose
 
@@ -83,7 +83,7 @@ This is a sketch, not an implementation API. The important boundary is ownership
    - escape-analysis safe mutation slots (**started: `escape_analysis_contract_test.go` covers call-argument unsafety and string-builder slot classification**)
    - typed/boxed failure flags
    - WASM/native native-int conversion boundaries (**started: `wasm_host_contract_test.go` covers raw integer result promotion, host argument promotion, and index rejection**)
-4. Introduce a small runtime execution adapter in root `core`. **Started: `RuntimeExecutionAdapter` now codifies root-owned error creation/throwing, capture-slot installation, nested-call argument/capture preparation, typed env-capture installation, `FnExpr`/slot capture construction, and typed/boxed execution failure flags; boxed and typed executors use it for `irThrow`, capture prefill, `irMakeFn`, nested-call call-slot preparation, typed capture installation, and failure gating.**
+4. Introduce a small runtime execution adapter in root `core`. **Started: `RuntimeExecutionAdapter` now codifies root-owned error creation/throwing, capture-slot installation, nested-call argument/capture preparation, typed env-capture installation, `FnExpr`/slot capture construction, typed/boxed execution failure flags, native-helper state, and mem-nth fallback state; boxed and typed executors use it for `irThrow`, capture prefill, `irMakeFn`, nested-call call-slot preparation, typed capture installation, native helper dispatch, mem-nth retry gating, and failure gating.**
 5. Move escape-analysis helpers only after they depend on neutral model plus explicit runtime facts.
 6. Move boxed executor, then typed/nanbox executor, only after call/error/frame contracts are explicit.
 
@@ -98,5 +98,5 @@ This is a sketch, not an implementation API. The important boundary is ownership
 
 - Neutral IR model: started and guarded by `core/ir` tests.
 - Diagnostics/export/WASM/native helper readers: migrated to the neutral model where appropriate.
-- Runtime/execution-envelope tests, including WASM/native integer conversion, stable IR function-cache keys, and `RuntimeExecutionAdapter` error/function/capture/failure-flag contracts: gated by `make runtime-contract-check`, which is run by `make docs-check`.
-- Executors and escape analysis: intentionally root-bound pending this runtime execution contract becoming code.
+- Runtime/execution-envelope tests, including WASM/native integer conversion, stable IR function-cache keys, and `RuntimeExecutionAdapter` error/function/capture/failure/native-helper/fallback contracts: gated by `make runtime-contract-check`, which is run by `make docs-check`.
+- Executors and escape analysis: intentionally root-bound pending call/object/frame contracts becoming narrow enough for real package moves. The typed inline executor helper has been split to reduce file size, but it remains in root `core` because it still depends on `irValue` and object conversion internals.

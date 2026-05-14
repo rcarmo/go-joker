@@ -1,18 +1,18 @@
 # Code structure, module boundaries, and coverage audit
 
 Generated: 2026-05-10
-Updated: 2026-05-11
+Updated: 2026-05-14
 
 ## Executive summary
 
 The repository is functional and well-tested at the behavior/regression level, but it has a classic interpreter/runtime shape: a large `core` package owns most object model, evaluator, reader/parser, namespace, numeric, concurrency, IR, and WASM responsibilities. `std/*` packages are better bounded: each namespace has a small registration wrapper plus native implementation/tests.
 
-Recent feature work improved boundaries for new code (`std/transit`, `std/system`, `std/jit` export APIs), and the refactor pass has now moved the CLI to `cmd/joker` plus extracted leaf packages under `core/internal/{trace,ir,wasm}`. The older `core` package still needs gradual decomposition. The safest path is to keep defining internal contracts first and enforce them with small tests, docs, and Makefile targets.
+Recent feature work improved boundaries for new code (`std/transit`, `std/system`, `std/jit` export APIs), and the refactor pass has now moved the CLI to `cmd/joker`, extracted leaf packages under `core/{trace,ir,wasm,runtime}`, introduced data-only generated payloads under `core/generated`, and added construction adapters/guards for collection and reader boundaries. The older `core` package still needs gradual decomposition. The safest path is to keep defining internal contracts first and enforce them with small tests, docs, and Makefile targets.
 
 ## Current package/module shape
 
 - `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
-- `core/trace`, `core/ir`, and `core/wasm` now own extracted leaf helpers with direct package tests.
+- `core/trace`, `core/ir`, `core/wasm`, and small `core/runtime` leaf helpers now own extracted helpers with direct package tests.
 - `core/` is still the runtime kernel and contains:
   - object/type model (`object.go`, `types_*`)
   - persistent collection implementations
@@ -69,7 +69,7 @@ Recent `std/transit` and `std/system` match this pattern.
 - remaining `core/ir_*` / `core/wasm_*` — partially extracted, but compiler/executor/runtime pieces still depend on root-core object and call contracts.
 - `core/persistent_vector.go` — object semantics have been tightened (standard vector printing, counted/indexed equality/hash, `At`/`Seq`, info/meta helpers), making it a better template for eventual collection extraction.
 
-Recommendation: avoid broad collection/reader/evaluator moves until `docs/refactor/object-protocol-contracts.md` contracts are made concrete. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
+Recommendation: avoid broad collection/reader/evaluator moves until `docs/refactor/object-protocol-contracts.md` contracts are made concrete. Current production collection and reader construction call sites are routed through adapters and guarded against drift, but concrete implementations still depend on root object/evaluator internals. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
 
 ### 2. Runtime-installed Var metadata is implicit
 
@@ -84,7 +84,7 @@ Recommendation: all new Go-installed public vars should use `InternVar(..., Make
 - generated/runtime aggregate coverage for CI trend visibility
 - non-generated feature coverage for meaningful maintenance decisions
 
-Current guardrail: `tests/coverage_summary.sh` filters generated files (`a_*.go`, `types_*_gen.go`, `gen_code/`) and separately reports gap-closure package coverage for `std/pods`, `std/transit`, and `std/edn`.
+Current guardrail: `tests/generated_guard.sh` tracks generated root files plus generated data-package artifacts such as `core/generated/linter_payloads_gen.go`; `tests/coverage_summary.sh` filters generated files (`a_*.go`, `types_*_gen.go`, `gen_code/`) and separately reports gap-closure package coverage for `std/pods`, `std/transit`, and `std/edn`.
 
 ### 4. Some compatibility features need explicit contracts
 
@@ -121,7 +121,7 @@ Current aggregate result:
 
 ## Coverage gaps to prioritize
 
-1. `std` native namespace smoke tests for packages currently showing 0% direct coverage (`base64`, `crypto`, `csv`, `hex`, `html`, `json`, `url`, `yaml`). These can be small table tests around native helpers or CLI namespace calls.
+1. Continue adding `std` native namespace smoke tests for packages with low direct coverage. Minimal boundary tests now exist for `crypto`, `math`, `string`, and `uuid`; remaining candidates include packages whose behavior is still mostly covered through namespace/docs/integration paths.
 2. Numeric tower edge cases:
    - BigInt mixed with Ratio/Double/BigFloat
    - quotient/remainder semantics across sign combinations
@@ -148,6 +148,6 @@ Current aggregate result:
 ## Immediate follow-up recommendations
 
 - Add a generated-file-aware coverage summary target/script.
-- Add small direct tests for low-risk std namespaces currently at 0% Go coverage.
+- Keep adding small direct tests for low-risk std namespaces with low Go coverage, following the recent `crypto`/`math`/`string`/`uuid` boundary-test pattern.
 - Add WASM artifact execution test to close the loop on `jit/export-wasm`.
 - Consider splitting `numbers.go` tests into a dedicated numeric tower test suite as semantics deepen.

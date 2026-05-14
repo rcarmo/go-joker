@@ -1,6 +1,6 @@
 # Module structure follow-up audit
 
-Updated: 2026-05-13
+Updated: 2026-05-14
 
 ## Snapshot
 
@@ -11,13 +11,13 @@ Current package/file snapshot:
 | Package/area | Go files | Test files | Notes |
 |---|---:|---:|---|
 | root | 0 | 0 | clean: no root package remains |
-| `cmd/joker` | 14 | 0 | startup/orchestration is now split across cohesive helper files; keep shrinking `main.go` rather than regrowing it |
-| `core` root | 201 | 64 | still the main monolith; contract tests grew intentionally before moves |
-| `core/generated` | 3 | 1 | data-only generated bootstrap contract and source manifest; package-level generated payloads only move here when they can be a true Go package boundary |
+| `cmd/joker` | 19 | 3 | startup/orchestration is now split across cohesive helper files with focused arg/lint/compile tests; keep shrinking `main.go` rather than regrowing it |
+| `core` root | 126 | 65 | still the main monolith; generated files moved out of the root count and contract tests grew intentionally before moves |
+| `core/generated` | 9 | 2 | data-only generated bootstrap contract, source manifest, linter byte payloads, and generated linter payload registry |
 | `core/ir` | 6 | 2 | opcodes, disassembly/counting, shape analysis, neutral Program model |
 | `core/trace` | 4 | 1 | aggregation state with direct JSON-shape tests |
 | `core/wasm` | 8 | 4 | encoding/module/host/opcode leaf helpers |
-| `core/runtime` | 1 | 0 | reserved package for evaluator/runtime extraction; currently a documented boundary marker only |
+| `core/runtime` | 6 | 5 | feature flags and runtime leaf helpers live here; executor/object-bound runtime code remains in root `core` |
 | `core/collections` | 1 | 0 | reserved package for collection extraction; currently a documented boundary marker only |
 | `core/reader` | 1 | 0 | reserved package for reader/parser extraction; currently a documented boundary marker only |
 | `core/ir` | 1 | 0 | reserved package for future IR compiler/executor extraction; neutral leaf model remains in `core/ir` |
@@ -34,7 +34,7 @@ Root `core` clustering remains the structural hotspot:
 |---|---:|
 | `ir*.go` | 46 |
 | `wasm*.go` | 15 |
-| generated `a_*.go` | 16 |
+| generated `a_*.go` | 11 |
 | `types_*_gen.go` | 2 |
 | vector-related | 4 |
 | map-related | 7 |
@@ -92,8 +92,9 @@ Go packages are directory-scoped, so generated files that still declare `package
 Status:
 
 - generated bootstrap contract is documented;
-- source manifest emission has started;
-- `make generated-bootstrap-check` guards manifest equivalence with current root `coreNamespaces`.
+- source manifest emission and linter payload registry emission have started;
+- root `ProcessLinterData` consumes linter payloads through `core/generated.LinterDataByPath`;
+- `make generated-bootstrap-check` guards manifest equivalence with current root `coreNamespaces`, and generated package tests guard linter registry/manifest equivalence.
 
 ### 5. Move benchmark report generators later
 
@@ -144,17 +145,17 @@ Staged migration order should remain:
 
 1. `cmd/joker` split while staying in one package.
 2. Runtime/executor adapter narrowing for `core/runtime`.
-3. Generated payload conversion into real generated packages when equivalence is proven.
-4. Collection construction adapters before `core/collections` moves.
-5. Reader construction adapters before `core/reader` moves.
+3. Generated payload conversion into real generated packages when equivalence is proven. **In progress: source manifest plus linter registry now have real `core/generated` package boundaries.**
+4. Collection construction adapters before `core/collections` moves. **Done for current production callers: `CollectionConstructionAdapter` plus a boundary guard are in place.**
+5. Reader construction adapters before `core/reader` moves. **Done for current production callers and unpacked expression construction: `ReaderConstructionAdapter` plus a boundary guard are in place.**
 6. Low-priority tooling moves such as `tools/benchmarks`, `tools/codegen`, `tools/scripts`, and `tools/release` last, once references and CI paths are updated.
 
 ## Recommended immediate next steps
 
-1. Continue moving nested-call, fallback, and execution-state access behind `RuntimeExecutionAdapter`; keep `core/runtime` as the reserved extraction target, but do not move executor files until those seams are explicit and tested.
-2. Extend generated bootstrap emission beyond the source manifest only with broader equivalence tests.
-3. Define collection construction/adaptation contracts before moving collection implementations into the reserved `core/collections` target.
-4. Define reader object/expression construction contracts before moving reader/parser code into the reserved `core/reader` target.
+1. Continue narrowing runtime call/object/frame access behind `RuntimeExecutionAdapter`; keep `core/runtime` as the reserved extraction target, but do not move executor files until those seams are explicit and tested.
+2. Extend generated bootstrap emission beyond the source manifest and linter registry only with broader equivalence tests.
+3. Use the collection construction boundary guard before any `core/collections` move; direct constructor drift must be routed back through `collectionConstruction` first.
+4. Use the reader construction boundary guard before any `core/reader` move; direct reader/expression construction drift must be routed back through `readerConstruction` first.
 5. Keep WASM leaf extraction opportunistic, but avoid moving runtime/object-handle paths until execution metadata is explicit.
 6. Keep std resource namespaces under the documented `std/<namespace>/<subns>/...` tree and reject any return to loose `lib/` placement.
 7. Keep transient root build artifacts (`core.test`, `joker`, `transit.test`) out of the repository root; `layout-check` should fail when they reappear.

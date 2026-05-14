@@ -4,7 +4,7 @@ Updated: 2026-05-14
 
 ## Purpose
 
-This is a prerequisite audit for moving collections, reader, runtime, and evaluator code out of the root `core` package. The goal is to identify the contracts that must become explicit before concrete types can move into `core/internal/collections`, `core/internal/reader`, or `core/internal/runtime`.
+This is a prerequisite audit for moving collections, reader, runtime, and evaluator code out of the root `core` package. The goal is to identify the contracts that must become explicit before concrete types can move into `core/collections`, `core/reader`, or `core/runtime`.
 
 Breaking internal package paths are acceptable. Compatibility wrappers are not a goal. The risk to avoid is import cycles and vague cross-package reach-through.
 
@@ -40,7 +40,7 @@ Before moving concrete collection implementations, define or document:
 Candidate collection package should own concrete data structures, not the whole object universe:
 
 ```text
-core/internal/collections/
+core/collections/
 ├── vector.go
 ├── map.go
 ├── set.go
@@ -63,7 +63,7 @@ Before moving reader/parser code, define or document:
 Candidate reader package should not know evaluator internals:
 
 ```text
-core/internal/reader/
+core/reader/
 ├── lexer.go
 ├── reader.go
 ├── tagged.go
@@ -86,14 +86,14 @@ Before moving runtime/evaluator pieces, define or document:
 Candidate packages should avoid mutual imports with collections/reader:
 
 ```text
-core/internal/runtime/
+core/runtime/
 ├── calls.go
 ├── frames.go
 ├── errors.go
 ├── goroutines.go
 └── tracing_hooks.go
 
-core/internal/eval/
+core/eval/ (future target; not reserved yet)
 ├── eval.go
 ├── forms.go
 ├── tco.go

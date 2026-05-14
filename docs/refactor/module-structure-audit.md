@@ -1,6 +1,6 @@
 # Module structure audit
 
-Updated: 2026-05-11
+Updated: 2026-05-14
 
 ## Scope
 
@@ -20,8 +20,9 @@ Current major packages:
 cmd/joker                         # CLI, REPL, standalone helpers
 core                              # runtime kernel; still the main monolith
 core/trace               # extracted trace/profile aggregation state
-core/generated           # data-only generated bootstrap payload contracts/source manifest
+core/generated           # data-only generated bootstrap payload contracts/source manifest/linter registry
 core/ir                  # extracted IR opcode/diagnostic/analysis helpers and neutral Program model
+core/runtime             # extracted runtime feature flags and leaf helpers
 core/wasm                # extracted WASM encoding/module/host metadata helpers
 std/*                             # namespace-oriented standard library packages
 tests                             # integration/parity/Babashka fixture tests
@@ -33,10 +34,10 @@ Approximate Go file counts at this audit:
 
 | Area | Go files | Notes |
 |---|---:|---|
-| `core` total | ~205 | includes tests and extracted internals |
-| `core` root | ~185 | still too broad; largest remaining target |
-| `std` | ~116 | mostly healthy namespace-oriented packages |
-| `cmd/joker` | 7 | clean CLI package after root move |
+| `core` total | ~200 | includes tests and extracted packages |
+| `core` root | ~190 | still too broad; largest remaining target, but root generated files are shrinking |
+| `std` | ~116 | mostly healthy namespace-oriented packages, with more direct boundary tests |
+| `cmd/joker` | 22 | clean CLI package after root move, now split across cohesive files plus focused tests |
 | `tests` | 2 | integration harnesses and fixtures live under subdirs |
 | `benchmarks` | 7 | mixed benchmark helpers, most build-tagged ignore |
 
@@ -54,7 +55,8 @@ Approximate Go file counts at this audit:
   - `make refactor-internals-check`
   - `make core-contract-check`
 - Refactor documents consolidated under `docs/refactor/`.
-- Leaf packages extracted under `core/internal/{generated,trace,ir,wasm}`.
+- Leaf/data packages extracted under `core/{generated,trace,ir,runtime,wasm}`.
+- Collection and reader construction adapters plus boundary guards now prevent new direct construction drift before package moves.
 
 ## Remaining structural issues
 
@@ -85,9 +87,10 @@ Current progress:
 
 - `NamespaceSource` and `VarDoc` define the inert data-only bootstrap contract.
 - `core_sources_gen.go` is emitted under `core/generated`.
-- `make generated-bootstrap-check` compares the generated source manifest with current root `coreNamespaces`.
+- `linter_payloads_gen.go` is emitted under `core/generated` and root `ProcessLinterData` consumes it via `LinterDataByPath`.
+- `make generated-bootstrap-check` compares the generated source manifest with current root `coreNamespaces`; generated package tests compare the linter payload registry with manifest linter entries.
 
-Remaining prerequisites are in `generated-boundary.md` and `generated-bootstrap-contract.md`: broader equivalence tests, root runtime consumers for generated payloads, and generator import path updates that avoid exporting root runtime internals.
+Remaining prerequisites are in `generated-boundary.md` and `generated-bootstrap-contract.md`: broader equivalence tests for additional payload families, root runtime consumers for those payloads, and generator import path updates that avoid exporting root runtime internals.
 
 ### 3. IR package owns neutral shape, root owns execution metadata
 
@@ -95,8 +98,8 @@ Remaining prerequisites are in `generated-boundary.md` and `generated-bootstrap-
 
 Next improvement:
 
-- keep executor and escape-analysis root-bound until the runtime execution contract becomes code;
-- add focused tests for constants/captures, `irMakeFn`, failure caches, and escape-analysis metadata before moving executors.
+- keep executor and escape-analysis root-bound until the runtime execution contract becomes narrow enough for real package moves;
+- continue adding focused tests for call/object/frame behavior before moving executors. Constants/captures, `irMakeFn`, failure caches, native-helper/fallback state, and escape-analysis metadata already have contract coverage.
 
 This is the highest-value next architectural move before broad collection/reader splits.
 
@@ -111,12 +114,12 @@ Next improvement:
 
 ### 5. Collections need a public object/protocol contract before moving
 
-`core-contract-check` now covers vectors, associative maps, sets, transients, seqs, persistent-vector semantics, and info/meta behavior. The collection package still needs explicit construction APIs and any sorted-collection contracts before concrete files move.
+`core-contract-check` now covers vectors, associative maps, sets, transients, seqs, persistent-vector semantics, and info/meta behavior. The collection package now has an explicit construction adapter and guard for current production call sites, but concrete implementation moves still need acyclic object/protocol implementation boundaries.
 
 Next improvement:
 
-- add sorted collection/construction contracts if those types are migration candidates;
-- then move concrete collection files behind those tests.
+- keep construction and sorted collection contracts green;
+- then move concrete collection files only when object/protocol dependencies are explicit and acyclic.
 
 ### 6. Reader/parser/evaluator should move late
 
@@ -124,7 +127,7 @@ These layers are highly coupled to object construction, namespaces, errors, and 
 
 Next improvement:
 
-- keep reader/evaluator in root until object construction and tagged literal contracts are explicit;
+- keep reader/evaluator in root until object construction, expression construction, tagged literal, and evaluator handoff contracts are explicit and acyclic;
 - avoid new feature code in `parse.go`, `read.go`, or `eval.go` unless it is truly core language behavior.
 
 ### 7. Benchmark/tooling layout can be cleaner
@@ -141,11 +144,11 @@ This is lower priority than `core`, but it would reduce package noise in `go lis
 
 ## Recommended next actions
 
-1. Keep executor/escape-analysis root-bound until the runtime execution contract becomes code.
-2. Extend generated bootstrap emission beyond the source manifest only with broader equivalence tests.
-3. Add sorted collection/construction contracts if those types become migration candidates.
+1. Keep executor/escape-analysis root-bound until the runtime execution contract becomes narrow enough for real package moves.
+2. Extend generated bootstrap emission beyond the source manifest and linter registry only with broader equivalence tests.
+3. Keep collection and reader construction boundary guards green before attempting package moves.
 4. Keep extracting pure WASM helpers but avoid moving runtime/lowering until execution metadata and object handles are explicit.
-5. Consider moving build-tagged benchmark generators into `tools/benchmarks` after core refactor checkpoints.
+5. Continue low-priority tooling cleanup only after core/package boundary changes have updated references and CI paths.
 
 ## Outdated content removed or superseded
 

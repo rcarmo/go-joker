@@ -1,6 +1,6 @@
 # Std native-boundary contracts
 
-Updated: 2026-05-13
+Updated: 2026-05-14
 
 This note records the focused std namespace audit/guardrail work that supports the broader refactor plan. The goal is to keep Go-backed std namespaces from leaking raw Go panics, unchecked native integer conversions, ignored close/write errors, or unchecked argument indexing.
 
@@ -29,6 +29,10 @@ Current coverage:
 - `std/csv` — writer flush/error propagation for CSV output.
 - `std/json` — lazy stream decode errors surface as runtime errors.
 - `std/filepath` — file tree walk errors surface with namespace context.
+- `std/crypto` — HMAC helper boundary coverage for supported algorithm output.
+- `std/math` — native helper vector/error boundary coverage for `modf` and precision validation.
+- `std/string` — native helper boundary coverage for rune-width padding, blank detection, and whitespace splitting.
+- `std/uuid` — UUID v4 version/variant generation with deterministic random source coverage.
 
 ## Audit rules of thumb
 
@@ -40,4 +44,4 @@ Current coverage:
 
 ## Current status
 
-The std boundary work remains intentionally focused. It does not imply complete API parity with Babashka or Clojure library catalogs. New namespaces should be added to `std-contract-check` when audits find meaningful native-boundary contracts, not as broad smoke coverage.
+The std boundary work remains intentionally focused. It does not imply complete API parity with Babashka or Clojure library catalogs. New namespaces should be added to `std-contract-check` when audits find meaningful native-boundary contracts, not as broad smoke coverage. Minimal boundary tests for `crypto`, `math`, `string`, and `uuid` now provide a template for low-risk direct native-helper tests where full namespace smoke coverage would be excessive.

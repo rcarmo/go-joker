@@ -1,6 +1,6 @@
 # Generated bootstrap contract design note
 
-Updated: 2026-05-12
+Updated: 2026-05-14
 
 ## Purpose
 
@@ -41,9 +41,14 @@ type VarDoc struct {
     Private bool
 }
 
+type BinaryPayload struct {
+    Path string
+    Data []byte
+}
+
 func CoreSourceManifest() []NamespaceSource
-+func CoreSources() []NamespaceSource
-func CoreDocs() []VarDoc
+func LinterDataPayloads() []BinaryPayload
+func LinterDataByPath(path string) ([]byte, bool)
 ```
 
 Root `core` would then provide the only mutation/install API:
@@ -59,10 +64,10 @@ This keeps generated output data-oriented and avoids importing root `core` from 
 
 1. Keep existing root generated files guarded by `tests/generated_files.txt`.
 2. Define the data-only payload structs under `core/generated`. **Done: `NamespaceSource` and `VarDoc` are in place with direct tests.**
-3. Teach generators to emit data-only payloads under `core/generated` while still emitting the current root files. **Started: `core_sources_gen.go` now emits the core source manifest.**
-4. Add tests comparing data-only payloads with current root generated behavior. **Started: root-core tests compare generated source-manifest namespaces with current bootstrap behavior; internal generated tests verify manifest source paths exist; `tests/generated_source_manifest_guard.py` verifies the emitted manifest stays in sync with `CoreSourceFiles`; `make generated-bootstrap-check` and `make docs-check` guard this equivalence.**
+3. Teach generators to emit data-only payloads under `core/generated` while still emitting the current root files. **Started: `core_sources_gen.go` now emits the core source manifest, and `linter_payloads_gen.go` now emits the generated linter payload registry.**
+4. Add tests comparing data-only payloads with current root generated behavior. **Started: root-core tests compare generated source-manifest namespaces with current bootstrap behavior; internal generated tests verify manifest source paths exist and generated linter payloads match manifest linter entries; `tests/generated_source_manifest_guard.py` verifies the emitted manifest stays in sync with `CoreSourceFiles`; `tests/generated_guard.sh` now tracks the generated linter registry; `make generated-bootstrap-check` and `make docs-check` guard this equivalence.**
 5. Switch root bootstrap to consume `core/generated` payloads. **Done for `*core-namespaces*`: root `generatedCoreNamespaces()` consumes the generated source manifest, and `setCoreNamespaces` populates `*core-namespaces*` from that helper plus the always-present `user` namespace.**
-6. Remove root generated bootstrap files from `tests/generated_files.txt` only after equivalent behavior is proven. **Done for `core/a_data.go`; it is no longer emitted or tracked.**
+6. Remove root generated bootstrap files from `tests/generated_files.txt` only after equivalent behavior is proven. **Done for `core/a_data.go`; it is no longer emitted or tracked. The linter byte slices remain generated data files, but their registry is now emitted under `core/generated/linter_payloads_gen.go` and tracked by the generated-file guard.**
 7. Leave type assertion/info generation near the object model until object boundaries are explicit.
 
 ## Non-goals
@@ -77,4 +82,4 @@ This keeps generated output data-oriented and avoids importing root `core` from 
 - `make generated-check` remains mandatory from `make docs-check`.
 - Regenerated output must be reproducible.
 - Namespace/docs behavior must remain covered by docs generation and parity checks.
-- Generated payload accessors should return fresh data slices so callers cannot mutate package-level shared state; `core/generated` tests guard this for the source manifest.
+- Generated payload accessors should return fresh data slices where callers receive mutable structs; `core/generated` tests guard this for the source manifest. Binary payload data is currently exposed as read-only-by-contract byte slices consumed immediately by root `core`.

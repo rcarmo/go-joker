@@ -1,6 +1,6 @@
 # Core package split audit
 
-Updated: 2026-05-11
+Updated: 2026-05-14
 
 ## Purpose
 
@@ -38,7 +38,7 @@ Do not split everything at once. Move leaf or low-cycle families first, then hig
 Candidate future package:
 
 ```text
-core/internal/runtime/
+core/runtime/
 ```
 
 Likely contents or responsibilities:
@@ -64,7 +64,7 @@ Risks:
 Candidate future package:
 
 ```text
-core/internal/collections/
+core/collections/
 ```
 
 Current candidate files:
@@ -87,19 +87,19 @@ Current candidate files:
 Risks:
 
 - collection types are part of the public runtime object model.
-- reader/evaluator/std packages construct concrete collection types directly.
+- reader/evaluator/std packages used to construct concrete collection types directly; current production call sites now route through `CollectionConstructionAdapter`, guarded by `construction_boundary_guard_test.go`.
 - numeric/hash/equality/protocol behavior crosses package boundaries.
 
 Preferred prerequisite:
 
-- define object/protocol contracts first, then move concrete collections behind those contracts.
+- keep object/protocol contracts and the construction adapter guard green, then move concrete collections only when implementation dependencies are explicit and acyclic.
 
 ### 4. Reader/parser boundary
 
 Candidate future package:
 
 ```text
-core/internal/reader/
+core/reader/
 ```
 
 Current candidate files:
@@ -115,7 +115,7 @@ Current candidate files:
 
 Risks:
 
-- reader currently constructs concrete `core` objects directly.
+- reader/parser used to construct concrete `core` objects and expressions directly; current production call sites now route through `ReaderConstructionAdapter`, guarded by `construction_boundary_guard_test.go`.
 - tagged literal handling touches namespace/runtime metadata.
 - parse/eval boundaries are not yet clean.
 
@@ -124,7 +124,7 @@ Risks:
 Candidate future package:
 
 ```text
-core/internal/eval/
+core/eval/ (future target; not reserved yet)
 ```
 
 Current candidate files:
@@ -179,16 +179,18 @@ Risks:
 R5 should remain blocked on the rest of R3/R4:
 
 - IR compiler/executor still live in root `core`, although a neutral `core/ir.Program` model and initial `RuntimeExecutionAdapter` contract now reduce the boundary.
-- most generated bootstrap files still live in root `core`; only the source manifest has moved to `core/generated`.
-- object/runtime contracts are broader but still not explicit enough to move collections or reader cleanly.
+- most generated bootstrap files still live in root `core`; the source manifest and linter payload registry have moved to `core/generated` as data-only package boundaries.
+- object/runtime contracts are broader but still not explicit enough to move collections or reader cleanly, even though construction adapters now cover current production call sites.
 
-Therefore the next implementation work should continue reducing IR/WASM/generated coupling and codifying object/reader/runtime adapters before moving collections/reader/runtime.
+Therefore the next implementation work should continue reducing IR/WASM/generated coupling and codifying object/reader/runtime adapters before moving collections/reader/runtime implementations.
 
 ## R5 checklist status
 
 - [x] Inventory collection/reader/runtime/evaluator/WASM split candidates.
 - [x] Confirm that broad R5 moves should wait until IR/generated boundaries are stable.
 - [x] Add object/protocol, reader construction, std native-boundary, and runtime execution contract guardrails that make future split prerequisites explicit.
-- [ ] Move collections only after object/protocol contracts are explicit in code and narrow construction adapters exist.
-- [ ] Move reader only after object construction and expression/tagged-literal construction boundaries are explicit in code.
+- [x] Add narrow collection construction adapter and guard current production call sites.
+- [x] Add narrow reader/expression construction adapter and guard current production call sites.
+- [ ] Move collections only after object/protocol implementation contracts are explicit and acyclic.
+- [ ] Move reader only after object construction, expression/tagged-literal, and evaluator handoff boundaries are explicit and acyclic.
 - [ ] Move runtime/evaluator only after call/error/frame contracts are explicit in code and root execution metadata has a narrow adapter.
