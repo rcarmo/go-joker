@@ -80,6 +80,12 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if len(idxs) != 1 || idxs[0] != 2 || len(captures) != 1 || !captures[0].Equals(MakeString("captured")) {
 		t.Fatalf("ProgramCaptureSlots = %#v, %#v", idxs, captures)
 	}
+	if info := adapter.ProgramEscapeInfo(prog); info == nil || len(info.SafeMutableSlots) != 3 {
+		t.Fatalf("ProgramEscapeInfo = %#v", info)
+	}
+	if analysis := adapter.ProgramAnalysis(prog); analysis.NumOps == 0 {
+		t.Fatalf("ProgramAnalysis.NumOps = %d, want non-zero", analysis.NumOps)
+	}
 	if adapter.ProgramNumSlots(nil) != 0 || adapter.ProgramCode(nil) != nil {
 		t.Fatal("nil program metadata should be empty")
 	}

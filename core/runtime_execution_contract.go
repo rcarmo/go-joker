@@ -155,6 +155,20 @@ func (RuntimeExecutionAdapter) ProgramHasCaptureSlots(prog *IRProgram) bool {
 	return prog != nil && len(prog.captureSlots) > 0
 }
 
+func (RuntimeExecutionAdapter) ProgramEscapeInfo(prog *IRProgram) *EscapeInfo {
+	if prog == nil {
+		return nil
+	}
+	if prog.escapeInfo == nil {
+		prog.escapeInfo = analyzeEscapes(prog)
+	}
+	return prog.escapeInfo
+}
+
+func (RuntimeExecutionAdapter) ProgramAnalysis(prog *IRProgram) IRAnalysis {
+	return AnalyzeIRProgram(prog)
+}
+
 func (adapter RuntimeExecutionAdapter) ApplyProgramCaptureSlots(prog *IRProgram, slots []Object) bool {
 	if prog == nil {
 		return false

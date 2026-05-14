@@ -39,11 +39,12 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 		}
 	}
 	if hasMutableCandidate {
-		if prog.escapeInfo == nil {
-			prog.escapeInfo = analyzeEscapes(prog)
+		escapeInfo := runtimeExec.ProgramEscapeInfo(prog)
+		if escapeInfo == nil {
+			return nil
 		}
 		for i, s := range slots {
-			if !prog.escapeInfo.SafeMutableSlots[i] {
+			if !escapeInfo.SafeMutableSlots[i] {
 				continue
 			}
 			switch v := s.(type) {
@@ -55,9 +56,9 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 				slots[i] = MapToTransient(v)
 			case String:
 				if !corert.IRStringBuilderDisabled() {
-					if corert.IRStringBuilderForce() && (prog.escapeInfo.StringBuilderSlots[i] || prog.escapeInfo.StringPrependSlots[i]) {
+					if corert.IRStringBuilderForce() && (escapeInfo.StringBuilderSlots[i] || escapeInfo.StringPrependSlots[i]) {
 						slots[i] = ToTransientString(v)
-					} else if !corert.IRStringBuilderForce() && prog.escapeInfo.StringPrependSlots[i] {
+					} else if !corert.IRStringBuilderForce() && escapeInfo.StringPrependSlots[i] {
 						slots[i] = ToTransientString(v)
 					}
 				}

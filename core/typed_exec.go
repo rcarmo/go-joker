@@ -12,13 +12,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 	defer traceIRProgramCall(prog, len(initSlots))()
 	irProfileExecStart()
 	defer irProfileMaybeWrite()
-	var analysis IRAnalysis
-	if prog.analysis != nil {
-		analysis = *prog.analysis
-	} else {
-		analysis = AnalyzeIRProgram(prog)
-		prog.analysis = &analysis
-	}
+	analysis := runtimeExec.ProgramAnalysis(prog)
 	if !irTypedEligible(analysis) {
 		return nil
 	}
