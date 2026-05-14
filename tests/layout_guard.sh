@@ -8,10 +8,10 @@ status=0
 fail() { echo "layout guard: $*" >&2; status=1; }
 
 [[ -f cmd/joker/main.go ]] || fail "missing CLI entrypoint cmd/joker/main.go"
-for dir in trace ir wasm generated runtime collections reader string; do
+for dir in trace ir wasm generated runtime collections reader string cursor; do
   [[ -d "core/${dir}" ]] || fail "missing core/${dir}"
 done
-for dir in runtime collections reader ir wasm generated string; do
+for dir in runtime collections reader ir wasm generated string cursor; do
   [[ -f "core/${dir}/doc.go" ]] || fail "missing core/${dir}/doc.go"
 done
 [[ -f std/http/router/router.joke ]] || fail "missing std/http/router/router.joke"
@@ -42,7 +42,7 @@ while IFS= read -r file; do
   fi
 done < <(find core -mindepth 2 -type f -name '*.go' ! -path 'core/gen/*' | sort)
 
-for pkg in runtime collections reader; do
+for pkg in runtime collections reader cursor; do
   if grep -R 'github.com/rcarmo/go-joker/core"' "core/${pkg}" --include='*.go' >/dev/null; then
     fail "core/${pkg} must not import root core; define an adapter contract before moving coupled code"
   fi
