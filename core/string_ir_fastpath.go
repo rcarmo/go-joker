@@ -2,7 +2,8 @@ package core
 
 import (
 	"fmt"
-	"unicode/utf8"
+
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
 // stringNthFast returns the i-th rune of s with an ASCII-prefix fast path.
@@ -15,24 +16,9 @@ func stringNthFast(s string, i int) Object {
 	if i < 0 {
 		panic(RT.NewError(fmt.Sprintf("Negative index: %d", i)))
 	}
-	if i < len(s) {
-		asciiPrefix := true
-		for j := 0; j <= i; j++ {
-			if s[j] >= utf8.RuneSelf {
-				asciiPrefix = false
-				break
-			}
-		}
-		if asciiPrefix {
-			return Char{Ch: rune(s[i])}
-		}
+	if r, length, ok := corestr.NthRune(s, i); ok {
+		return Char{Ch: r}
+	} else {
+		panic(RT.NewError(fmt.Sprintf("Index %d exceeds string's length %d", i, length)))
 	}
-	idx := 0
-	for _, r := range s {
-		if idx == i {
-			return Char{Ch: r}
-		}
-		idx++
-	}
-	panic(RT.NewError(fmt.Sprintf("Index %d exceeds string's length %d", i, idx)))
 }
