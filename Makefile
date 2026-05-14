@@ -120,7 +120,7 @@ generated-check:
 	tests/generated_guard.sh .
 
 generated-bootstrap-check:
-	$(GO) test ./core -run 'TestGeneratedCoreSourceManifestRows|TestGeneratedCoreNamespacesHelper|TestGeneratedCoreNamespacesDriveCoreNamespaceVar' -count=$(TEST_COUNT)
+	$(GO) test ./core ./core/generated -run 'TestGeneratedCoreSourceManifestRows|TestGeneratedCoreNamespacesHelper|TestGeneratedCoreNamespacesDriveCoreNamespaceVar' -count=$(TEST_COUNT)
 
 import-identity-check:
 	tests/import_identity_guard.sh .
