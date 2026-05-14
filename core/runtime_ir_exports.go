@@ -33,4 +33,75 @@ func AnalyzeEscapesExported(prog *IRProgram) []bool {
 	return info.SafeMutableSlots
 }
 
-// IRProgram accessor methods for external packages
+// IRProgram accessor methods for external packages.
+func (p *IRProgram) CodeLen() int {
+	model := p.neutralModel()
+	return len(model.Code)
+}
+
+func (p *IRProgram) CodeBytes() []byte {
+	model := p.neutralModel()
+	return append([]byte(nil), model.Code...)
+}
+
+func (p *IRProgram) ConstLen() int       { return len(p.constants) }
+func (p *IRProgram) Constants() []Object { return append([]Object(nil), p.constants...) }
+func (p *IRProgram) NumSlots() int {
+	model := p.neutralModel()
+	return model.NumSlots
+}
+func (p *IRProgram) HasSelf() bool          { return p.hasSelf }
+func (p *IRProgram) CaptureSlots() []Object { return p.captureSlots }
+func (p *IRProgram) GetNativeHelper() func([]float64) float64 {
+	if nativeHelper, ok := runtimeExec.NativeHelper(p); ok {
+		return func(args []float64) float64 { return nativeHelper(args) }
+	}
+	return nil
+}
+
+// Exports for std/jit and std/runtime namespaces.
+func IrCompileFn(fn *Fn) *IRProgram                  { return irCompileFn(fn) }
+func IrExecTyped(prog *IRProgram, s []Object) Object { return irExecTyped(prog, s) }
+func IrExec(prog *IRProgram, s []Object) Object      { return irExec(prog, s) }
+
+func IsFloatExported(prog *IRProgram) bool {
+	model := prog.neutralModel()
+	return model != nil && corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0)
+}
+
+func IrToWasmExported(prog *IRProgram) []byte { return irToWasm(prog) }
+
+func WasmCompileBytesExported(prog *IRProgram) []byte {
+	wp := wasmCompile(prog)
+	if wp == nil {
+		return nil
+	}
+	return append([]byte(nil), wp.bytes...)
+}
+
+type IRAnalysisExported struct {
+	Eligible       bool
+	Path           string
+	HasCallSlot    bool
+	HasSelfCall    bool
+	UsesCollection bool
+	UsesString     bool
+	HasMapOps      bool
+	HasAssoc       bool
+	HasGenericNth  bool
+}
+
+func AnalyzeIRProgramExported(prog *IRProgram) IRAnalysisExported {
+	a := AnalyzeIRProgram(prog)
+	return IRAnalysisExported{
+		Eligible:       irTypedEligible(a),
+		Path:           a.SuggestedPath,
+		HasCallSlot:    a.HasCallSlot,
+		HasSelfCall:    a.HasSelfCall,
+		UsesCollection: a.UsesCollection,
+		UsesString:     a.UsesString,
+		HasMapOps:      a.HasMapOps,
+		HasAssoc:       a.HasAssoc,
+		HasGenericNth:  a.HasGenericNth,
+	}
+}
