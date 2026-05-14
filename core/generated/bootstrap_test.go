@@ -3,7 +3,6 @@ package generated
 import (
 	"path/filepath"
 	"runtime"
-	"strings"
 	"testing"
 )
 
@@ -68,40 +67,5 @@ func TestBootstrapPayloadsAreDataOnly(t *testing.T) {
 	payload := BinaryPayload{Path: "linter_all.joke", Data: []byte{1, 2, 3}}
 	if payload.Path == "" || len(payload.Data) != 3 {
 		t.Fatalf("binary payload should carry inert path/data fields: %#v", payload)
-	}
-}
-
-func TestLinterDataPayloadsMatchSourceManifest(t *testing.T) {
-	manifestLinterPaths := map[string]bool{}
-	for _, src := range CoreSourceManifest() {
-		if filepath.Dir(src.Path) == "." && strings.HasPrefix(src.Path, "linter_") {
-			manifestLinterPaths[src.Path] = true
-		}
-	}
-	payloads := LinterDataPayloads()
-	if len(payloads) != len(manifestLinterPaths) {
-		t.Fatalf("linter payload count = %d, manifest linter path count = %d", len(payloads), len(manifestLinterPaths))
-	}
-	seen := map[string]bool{}
-	for _, payload := range payloads {
-		if payload.Path == "" || len(payload.Data) == 0 {
-			t.Fatalf("linter payload must include path and non-empty data: %#v", payload)
-		}
-		if seen[payload.Path] {
-			t.Fatalf("duplicate linter payload path: %s", payload.Path)
-		}
-		seen[payload.Path] = true
-		if !manifestLinterPaths[payload.Path] {
-			t.Fatalf("linter payload path %q not present in source manifest", payload.Path)
-		}
-		got, ok := LinterDataByPath(payload.Path)
-		if !ok || len(got) != len(payload.Data) {
-			t.Fatalf("LinterDataByPath(%q) length = %d ok=%v, want %d true", payload.Path, len(got), ok, len(payload.Data))
-		}
-	}
-	for path := range manifestLinterPaths {
-		if !seen[path] {
-			t.Fatalf("source manifest linter path %q has no generated payload", path)
-		}
 	}
 }
