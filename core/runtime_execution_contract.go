@@ -137,6 +137,13 @@ func (RuntimeExecutionAdapter) ProgramConstant(prog *IRProgram, idx int) (Object
 	return prog.constants[idx], true
 }
 
+func (RuntimeExecutionAdapter) ProgramConstants(prog *IRProgram) []Object {
+	if prog == nil {
+		return nil
+	}
+	return prog.constants
+}
+
 func (RuntimeExecutionAdapter) ProgramFnExpr(prog *IRProgram, idx int) (*FnExpr, bool) {
 	if prog == nil || idx < 0 || idx >= len(prog.fnExprs) {
 		return nil, false

@@ -55,6 +55,9 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if got, ok := adapter.ProgramConstant(prog, 0); !ok || !got.Equals(MakeInt(7)) {
 		t.Fatalf("ProgramConstant = %#v, %v", got, ok)
 	}
+	if got := adapter.ProgramConstants(prog); len(got) != 1 || !got[0].Equals(MakeInt(7)) {
+		t.Fatalf("ProgramConstants = %#v", got)
+	}
 	if got, ok := adapter.ProgramFnExpr(prog, 0); !ok || got != fnExpr {
 		t.Fatalf("ProgramFnExpr = %#v, %v", got, ok)
 	}

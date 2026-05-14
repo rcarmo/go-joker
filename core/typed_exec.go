@@ -24,10 +24,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 	}
 	var slotBuf [16]irValue
 	var slots []irValue
-	if prog.numSlots <= len(slotBuf) {
-		slots = slotBuf[:prog.numSlots]
+	numSlots := runtimeExec.ProgramNumSlots(prog)
+	if numSlots <= len(slotBuf) {
+		slots = slotBuf[:numSlots]
 	} else {
-		slots = make([]irValue, prog.numSlots)
+		slots = make([]irValue, numSlots)
 	}
 	for i := 0; i < len(initSlots) && i < len(slots); i++ {
 		v := objectToIRValue(initSlots[i])
@@ -45,7 +46,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 
 	var stackBuf [32]irValue
 	stack := stackBuf[:0]
-	code := prog.code
+	code := runtimeExec.ProgramCode(prog)
 	pc := 0
 
 	// Frame stack for irCallSelf — avoids recursive irExecTyped calls
@@ -66,7 +67,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irLiteral:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			stack = append(stack, objectToIRValue(prog.constants[idx]))
+			constant, ok := runtimeExec.ProgramConstant(prog, idx)
+			if !ok {
+				return nil
+			}
+			stack = append(stack, objectToIRValue(constant))
 		case irLoadSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
@@ -318,14 +323,15 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irMakeFn:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			if prog.fnExprs == nil || idx >= len(prog.fnExprs) {
+			fnExpr, ok := runtimeExec.ProgramFnExpr(prog, idx)
+			if !ok {
 				return nil
 			}
 			capturedSlots := make([]Object, len(slots))
 			for i, v := range slots {
 				capturedSlots[i] = v.object()
 			}
-			fn := runtimeExec.MakeFn(prog.fnExprs[idx], capturedSlots)
+			fn := runtimeExec.MakeFn(fnExpr, capturedSlots)
 			stack = append(stack, objectToIRValue(fn))
 
 		case irBitAnd:
@@ -591,7 +597,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if idx.tag != irValInt {
 				return nil
 			}
-			s := prog.constants[idxConst].(String).S
+			constant, ok := runtimeExec.ProgramConstant(prog, idxConst)
+			if !ok {
+				return nil
+			}
+			s := constant.(String).S
 			if idx.i < 0 || idx.i >= len(s) {
 				return nil
 			}
@@ -842,7 +852,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			if typedFrameStack == nil {
-				typedFrameStack = coreirx.NewFrameStack[irValue](prog.numSlots)
+				typedFrameStack = coreirx.NewFrameStack[irValue](runtimeExec.ProgramNumSlots(prog))
 			}
 			if typedFrameStack.Depth() < 256 {
 				// Save current state and restart

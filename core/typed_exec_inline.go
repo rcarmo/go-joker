@@ -14,7 +14,7 @@ func irExecTypedIV(prog *IRProgram, initSlots []Object) (irValue, bool) {
 func irExecTypedInline(prog *IRProgram, slots []irValue) irValue {
 	var stackBuf [32]irValue
 	stack := stackBuf[:0]
-	code := prog.code
+	code := runtimeExec.ProgramCode(prog)
 	pc := 0
 
 	for pc < len(code) {
@@ -24,7 +24,11 @@ func irExecTypedInline(prog *IRProgram, slots []irValue) irValue {
 		case irLiteral:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			stack = append(stack, objectToIRValue(prog.constants[idx]))
+			constant, ok := runtimeExec.ProgramConstant(prog, idx)
+			if !ok {
+				return irValue{}
+			}
+			stack = append(stack, objectToIRValue(constant))
 		case irLoadSlot:
 			idx := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
