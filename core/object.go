@@ -1170,7 +1170,7 @@ func (bf *BigFloat) Compare(other Object) int {
 
 func (c Char) ToString(escape bool) string {
 	if escape {
-		return escapeRune(c.Ch)
+		return corestr.EscapeRune(c.Ch)
 	}
 	return charToStringFast(c.Ch)
 }
@@ -1533,7 +1533,7 @@ func (c Comment) Hash() uint32 {
 
 func (s String) ToString(escape bool) string {
 	if escape {
-		return escapeString(s.S)
+		return corestr.EscapeString(s.S)
 	}
 	return s.S
 }
