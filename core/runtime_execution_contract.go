@@ -529,6 +529,9 @@ func (adapter RuntimeExecutionAdapter) ClearTypedNonCaptureSlots(prog *IRProgram
 		return false
 	}
 	if prog != nil && prog.captureSlotSet != nil {
+		if len(prog.captureSlotSet) < len(slots) {
+			return false
+		}
 		for i := keepArgs; i < len(slots); i++ {
 			if !prog.captureSlotSet[i] {
 				slots[i] = irValue{}

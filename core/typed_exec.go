@@ -695,18 +695,24 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			// Fast path: native f64 closure (zero boxing)
 			if fnProg, ok := runtimeExec.FnProgram(fnObj); ok {
 				if nativeHelper, ok := runtimeExec.NativeHelper(fnProg); ok {
-					// Call native helper with stack-allocated args
-					f64buf := [4]float64{}
+					// Call native helper with stack-allocated args for common arities.
+					var f64buf [4]float64
+					var f64args []float64
+					if nargs <= len(f64buf) {
+						f64args = f64buf[:nargs]
+					} else {
+						f64args = make([]float64, nargs)
+					}
 					for i := nargs - 1; i >= 0; i-- {
 						v := stack[len(stack)-1]
 						stack = stack[:len(stack)-1]
 						if v.tag == irValDouble {
-							f64buf[i] = v.f
+							f64args[i] = v.f
 						} else if v.tag == irValInt {
-							f64buf[i] = float64(v.i)
+							f64args[i] = float64(v.i)
 						}
 					}
-					r := nativeHelper(coreirx.Float64(f64buf[:nargs]))
+					r := nativeHelper(coreirx.Float64(f64args))
 					stack = append(stack, irValue{tag: irValDouble, f: r})
 					continue
 				}

@@ -100,6 +100,11 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if !adapter.ClearTypedNonCaptureSlots(prog, typedSlots, 1) || !typedSlots[2].object().Equals(MakeString("captured")) || typedSlots[1] != (irValue{}) {
 		t.Fatalf("ClearTypedNonCaptureSlots = %#v", typedSlots)
 	}
+	prog.captureSlotSet = []bool{false}
+	if adapter.ClearTypedNonCaptureSlots(prog, typedSlots, 1) {
+		t.Fatal("ClearTypedNonCaptureSlots accepted short capture slot set")
+	}
+	prog.captureSlotSet = nil
 	idxs, captures := adapter.ProgramCaptureSlots(prog)
 	if len(idxs) != 1 || idxs[0] != 2 || len(captures) != 1 || !captures[0].Equals(MakeString("captured")) {
 		t.Fatalf("ProgramCaptureSlots = %#v, %#v", idxs, captures)

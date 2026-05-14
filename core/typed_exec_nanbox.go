@@ -291,11 +291,17 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 			if fnProg, ok := runtimeExec.FnProgram(fnObj); ok {
 				if nativeHelper, ok := runtimeExec.NativeHelper(fnProg); ok {
 					var f64buf [4]float64
+					var f64args []float64
+					if nargs <= len(f64buf) {
+						f64args = f64buf[:nargs]
+					} else {
+						f64args = make([]float64, nargs)
+					}
 					for i := nargs - 1; i >= 0; i-- {
 						sp--
-						f64buf[i] = coreirx.ToFloat(stackBuf[sp])
+						f64args[i] = coreirx.ToFloat(stackBuf[sp])
 					}
-					stackBuf[sp] = coreirx.BoxDouble(nativeHelper(coreirx.Float64(f64buf[:nargs])))
+					stackBuf[sp] = coreirx.BoxDouble(nativeHelper(coreirx.Float64(f64args)))
 					sp++
 					continue
 				}
