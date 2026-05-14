@@ -30,6 +30,9 @@ func TestExecutorFilesUseRuntimeExecutionAdapterForProgramState(t *testing.T) {
 			if strings.Contains(line, "ToSlice(") || strings.Contains(line, "(Seqable)") {
 				t.Fatalf("%s:%d prepares call args instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
 			}
+			if strings.Contains(line, "Seqable") || strings.Contains(line, "&ArrayVector") {
+				t.Fatalf("%s:%d performs collection construction/access instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
+			}
 		}
 	}
 }

@@ -783,29 +783,11 @@ loop:
 		case irFirst:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			switch v := a.(type) {
-			case *ArrayVector:
-				if len(v.arr) > 0 {
-					stack = append(stack, v.arr[0])
-				} else {
-					stack = append(stack, NIL)
-				}
-			case *TransientVector:
-				if len(v.arr) > 0 {
-					stack = append(stack, v.arr[0])
-				} else {
-					stack = append(stack, NIL)
-				}
-			case Seqable:
-				s := v.Seq()
-				if s.IsEmpty() {
-					stack = append(stack, NIL)
-				} else {
-					stack = append(stack, s.First())
-				}
-			default:
+			result, ok := runtimeExec.First(a)
+			if !ok {
 				return nil
 			}
+			stack = append(stack, result)
 
 		case irBuildVec:
 			n := int(code[pc])<<8 | int(code[pc+1])
@@ -815,7 +797,7 @@ loop:
 				arr[i] = stack[len(stack)-1]
 				stack = stack[:len(stack)-1]
 			}
-			stack = append(stack, &ArrayVector{arr: arr})
+			stack = append(stack, runtimeExec.BuildVector(arr))
 
 		case irStr1:
 			a := stack[len(stack)-1]

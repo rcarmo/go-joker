@@ -223,6 +223,35 @@ func (RuntimeExecutionAdapter) Conj(coll Object, val Object) (Object, bool) {
 	}
 }
 
+func (RuntimeExecutionAdapter) First(coll Object) (Object, bool) {
+	switch c := coll.(type) {
+	case *ArrayVector:
+		if len(c.arr) > 0 {
+			return c.arr[0], true
+		}
+		return NIL, true
+	case *TransientVector:
+		if len(c.arr) > 0 {
+			return c.arr[0], true
+		}
+		return NIL, true
+	case Seqable:
+		s := c.Seq()
+		if s.IsEmpty() {
+			return NIL, true
+		}
+		return s.First(), true
+	default:
+		return nil, false
+	}
+}
+
+func (RuntimeExecutionAdapter) BuildVector(items []Object) Object {
+	arr := make([]Object, len(items))
+	copy(arr, items)
+	return &ArrayVector{arr: arr}
+}
+
 func (RuntimeExecutionAdapter) ToTransient(coll Object) (Object, bool) {
 	if av, ok := coll.(*ArrayVector); ok {
 		return ToTransient(av), true

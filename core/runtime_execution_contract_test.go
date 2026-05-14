@@ -177,6 +177,15 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	if got, ok := adapter.Conj(vec, MakeInt(3)); !ok || got.(Counted).Count() != 3 {
 		t.Fatalf("Conj returned %#v, %v", got, ok)
 	}
+	if got, ok := adapter.First(vec); !ok || !got.Equals(MakeInt(1)) {
+		t.Fatalf("First returned %#v, %v", got, ok)
+	}
+	if got, ok := adapter.First(EmptyArrayVector()); !ok || got != NIL {
+		t.Fatalf("First empty returned %#v, %v", got, ok)
+	}
+	if got := adapter.BuildVector([]Object{MakeInt(4), MakeInt(5)}); got.(Counted).Count() != 2 {
+		t.Fatalf("BuildVector returned %#v", got)
+	}
 	transient := ToTransient(vec)
 	if got := adapter.MutableSlotObject(vec, &EscapeInfo{SafeMutableSlots: []bool{true}}, 0); got == vec {
 		t.Fatalf("MutableSlotObject did not convert vector: %#v", got)

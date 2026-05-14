@@ -890,33 +890,14 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irFirst:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			if a.tag == irValObject {
-				switch v := a.obj().(type) {
-				case *ArrayVector:
-					if len(v.arr) > 0 {
-						stack = append(stack, objectToIRValue(v.arr[0]))
-					} else {
-						stack = append(stack, irValue{tag: irValNil})
-					}
-				case *TransientVector:
-					if len(v.arr) > 0 {
-						stack = append(stack, objectToIRValue(v.arr[0]))
-					} else {
-						stack = append(stack, irValue{tag: irValNil})
-					}
-				case Seqable:
-					seq := v.Seq()
-					if seq == nil {
-						stack = append(stack, irValue{tag: irValNil})
-					} else {
-						stack = append(stack, objectToIRValue(seq.First()))
-					}
-				default:
-					return nil
-				}
-			} else {
+			if a.tag != irValObject {
 				return nil
 			}
+			result, ok := runtimeExec.First(a.obj())
+			if !ok {
+				return nil
+			}
+			stack = append(stack, objectToIRValue(result))
 
 		case irBuildVec:
 			n := int(code[pc])<<8 | int(code[pc+1])
@@ -926,7 +907,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				arr[i] = stack[len(stack)-1].object()
 				stack = stack[:len(stack)-1]
 			}
-			stack = append(stack, irMakeObject(&ArrayVector{arr: arr}))
+			stack = append(stack, irMakeObject(runtimeExec.BuildVector(arr)))
 
 		case irToTransient:
 			a := stack[len(stack)-1]
