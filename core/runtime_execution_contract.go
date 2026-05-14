@@ -428,9 +428,13 @@ func (RuntimeExecutionAdapter) FnProgram(fnObj Object) (*IRProgram, bool) {
 		return nil, false
 	}
 	if fn.irProg != nil {
+		if fn.irProg == irCompileFailed {
+			return nil, false
+		}
 		return fn.irProg, true
 	}
-	return irGetFnProg(fn), true
+	prog := irGetFnProg(fn)
+	return prog, prog != nil
 }
 
 func (RuntimeExecutionAdapter) CompileFnProgram(fnObj Object) (*IRProgram, bool) {

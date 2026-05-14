@@ -78,6 +78,10 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if got, ok := adapter.FnProgram(fnObj); !ok || got != prog {
 		t.Fatalf("FnProgram = %#v, %v", got, ok)
 	}
+	failedFn := &Fn{irProg: irCompileFailed}
+	if got, ok := adapter.FnProgram(failedFn); ok || got != nil {
+		t.Fatalf("FnProgram should hide compile-failed sentinel, got %#v, %v", got, ok)
+	}
 	if slots, ok := adapter.FnCallSlots(fnObj, prog, []Object{MakeInt(2)}); !ok || len(slots) == 0 || !slots[0].Equals(MakeInt(2)) {
 		t.Fatalf("FnCallSlots = %#v, %v", slots, ok)
 	}
