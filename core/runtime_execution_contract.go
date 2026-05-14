@@ -113,7 +113,11 @@ func (RuntimeExecutionAdapter) CallArgs(argsSeq Object) ([]Object, bool) {
 	if !ok {
 		return nil, false
 	}
-	return ToSlice(seqable.Seq()), true
+	seq := seqable.Seq()
+	if seq == nil {
+		return nil, true
+	}
+	return ToSlice(seq), true
 }
 
 func (RuntimeExecutionAdapter) CallObject(fnObj Object, args []Object) (Object, bool) {
@@ -481,6 +485,9 @@ func (adapter RuntimeExecutionAdapter) DispatchArityProgram(prog *IRProgram, nar
 		return nil
 	}
 	if prog.arityPrograms == nil {
+		if prog.variadicMinArgs > 0 && nargs < prog.variadicMinArgs {
+			return nil
+		}
 		return prog
 	}
 	if sub, ok := prog.arityPrograms[nargs]; ok {

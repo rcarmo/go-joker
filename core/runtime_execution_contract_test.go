@@ -74,6 +74,13 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if got := adapter.DispatchArityProgram(prog, 3); got != subProg {
 		t.Fatalf("DispatchArityProgram variadic = %#v", got)
 	}
+	variadicOnly := &IRProgram{numSlots: 2, variadicMinArgs: 2}
+	if got := adapter.DispatchArityProgram(variadicOnly, 1); got != nil {
+		t.Fatalf("DispatchArityProgram variadic-only under-arity = %#v", got)
+	}
+	if got := adapter.DispatchArityProgram(variadicOnly, 2); got != variadicOnly {
+		t.Fatalf("DispatchArityProgram variadic-only exact/min = %#v", got)
+	}
 	fnObj := &Fn{irProg: prog, env: &LocalEnv{bindings: []Object{MakeInt(1)}}}
 	if got, ok := adapter.FnProgram(fnObj); !ok || got != prog {
 		t.Fatalf("FnProgram = %#v, %v", got, ok)
