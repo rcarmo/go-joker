@@ -604,7 +604,7 @@ func NewLiteralExpr(obj Object) *LiteralExpr {
 }
 
 func NewSurrogateExpr(obj Object) *LiteralExpr {
-	res := NewLiteralExpr(obj)
+	res := readerConstruction.LiteralExpr(obj)
 	res.isSurrogate = true
 	return res
 }
@@ -660,18 +660,11 @@ func parseVector(v Vec, pos Position, ctx *ParseContext) Expr {
 	for i := 0; i < v.Count(); i++ {
 		r[i] = Parse(v.At(i), ctx)
 	}
-	return &VectorExpr{
-		v:        r,
-		Position: pos,
-	}
+	return readerConstruction.VectorExpr(r, pos)
 }
 
 func parseMap(m Map, pos Position, ctx *ParseContext) *MapExpr {
-	res := &MapExpr{
-		keys:     make([]Expr, m.Count()),
-		values:   make([]Expr, m.Count()),
-		Position: pos,
-	}
+	res := readerConstruction.MapExpr(m.Count(), pos)
 	for iter, i := m.Iter(), 0; iter.HasNext(); i++ {
 		p := iter.Next()
 		res.keys[i] = Parse(p.Key, ctx)
@@ -681,10 +674,7 @@ func parseMap(m Map, pos Position, ctx *ParseContext) *MapExpr {
 }
 
 func parseSet(s *MapSet, pos Position, ctx *ParseContext) Expr {
-	res := &SetExpr{
-		elements: make([]Expr, s.m.Count()),
-		Position: pos,
-	}
+	res := readerConstruction.SetExpr(s.m.Count(), pos)
 	for iter, i := iter(s.Seq()), 0; iter.HasNext(); i++ {
 		res.elements[i] = Parse(iter.Next(), ctx)
 	}
@@ -1599,7 +1589,7 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 	}
 	seq := obj.(Seq)
 	if seq.IsEmpty() {
-		return NewLiteralExpr(obj)
+		return readerConstruction.LiteralExpr(obj)
 	}
 
 	currentIsUnknownCallableScope := ctx.isUnknownCallableScope
@@ -1614,7 +1604,7 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 	if v, ok := first.(Symbol); ok && v.ns == nil {
 		switch v.name {
 		case STR.quote:
-			return NewLiteralExpr(Second(seq))
+			return readerConstruction.LiteralExpr(Second(seq))
 		case STR._if:
 			checkForm(obj, 3, 4)
 			if LINTER_MODE && SeqCount(seq) < 4 && WARNINGS.ifWithoutElse {
@@ -1843,7 +1833,7 @@ func parseSymbol(obj Object, ctx *ParseContext) Expr {
 		if ns != nil {
 			ns.isUsed = true
 			ns.isGloballyUsed = true
-			return NewSurrogateExpr(obj)
+			return readerConstruction.SurrogateExpr(obj)
 		}
 		// See if this is a JS interop (i.e. Math.PI)
 		parts := corestr.Split(sym.Name(), '.')
@@ -1860,7 +1850,7 @@ func parseSymbol(obj Object, ctx *ParseContext) Expr {
 	symNs := ctx.GlobalEnv.NamespaceFor(ctx.GlobalEnv.CurrentNamespace(), sym)
 	if symNs == nil || symNs == ctx.GlobalEnv.CurrentNamespace() {
 		if isInteropSymbol(sym) || isJavaSymbol(sym) {
-			return NewSurrogateExpr(sym)
+			return readerConstruction.SurrogateExpr(sym)
 		}
 		if !ctx.isUnknownCallableScope {
 			if ctx.linterBindings.GetBinding(sym) == nil {
@@ -1877,7 +1867,7 @@ func Parse(obj Object, ctx *ParseContext) Expr {
 	canHaveMeta := false
 	switch v := obj.(type) {
 	case Nil:
-		res = NewLiteralExpr(obj)
+		res = readerConstruction.LiteralExpr(obj)
 	case Vec:
 		canHaveMeta = true
 		res = parseVector(v, pos, ctx)
@@ -1892,7 +1882,7 @@ func Parse(obj Object, ctx *ParseContext) Expr {
 	case Symbol:
 		res = parseSymbol(obj, ctx)
 	default:
-		res = NewLiteralExpr(obj)
+		res = readerConstruction.LiteralExpr(obj)
 	}
 	if canHaveMeta {
 		meta := obj.(Meta).GetMeta()

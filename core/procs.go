@@ -1305,8 +1305,8 @@ var procFlush = func(args []Object) Object {
 }
 
 func readFromReader(reader io.RuneReader) Object {
-	r := NewReader(reader, "<>")
-	obj, err := TryRead(r)
+	r := readerConstruction.NewReader(reader, "<>")
+	obj, err := readerConstruction.TryRead(r)
 	PanicOnErr(err)
 	return obj
 }
@@ -1365,7 +1365,7 @@ func loadReader(reader *Reader) (Object, error) {
 	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
 	var lastObj Object = NIL
 	for {
-		obj, err := TryRead(reader)
+		obj, err := readerConstruction.TryRead(reader)
 		if err == io.EOF {
 			return lastObj, nil
 		}
@@ -1385,7 +1385,7 @@ func loadReader(reader *Reader) (Object, error) {
 
 var procLoadString = func(args []Object) Object {
 	s := EnsureArgIsString(args, 0)
-	obj, err := loadReader(NewReader(osutil.StringRuneReader(s.S), "<string>"))
+	obj, err := loadReader(readerConstruction.NewReader(osutil.StringRuneReader(s.S), "<string>"))
 	if err != nil {
 		panic(RT.NewError(err.Error()))
 	}
@@ -1619,7 +1619,7 @@ func loadFile(filename string) Object {
 	f, rr, err := osutil.OpenRuneFile(filename)
 	PanicOnErr(err)
 	defer func() { PanicOnErr(f.Close()) }()
-	reader = NewReader(rr, filename)
+	reader = readerConstruction.NewReader(rr, filename)
 	ProcessReaderFromEval(reader, filename)
 	return NIL
 }
@@ -1659,7 +1659,7 @@ var procLoadLibFromPath = func(args []Object) Object {
 	}
 	PanicOnErr(canonicalErr)
 	PanicOnErr(err)
-	reader := NewReader(osutil.AsRuneReader(f), filename)
+	reader := readerConstruction.NewReader(osutil.AsRuneReader(f), filename)
 	ProcessReaderFromEval(reader, filename)
 	return NIL
 }
@@ -1922,7 +1922,7 @@ func PackReader(reader *Reader, filename string) ([]byte, error) {
 		parseContext.GlobalEnv.SetFilename(MakeString(s))
 	}
 	for {
-		obj, err := TryRead(reader)
+		obj, err := readerConstruction.TryRead(reader)
 		if err == io.EOF {
 			var hp []byte
 			hp = packEnv.Pack(hp)
@@ -1968,7 +1968,7 @@ func ProcessReader(reader *Reader, filename string, phase Phase) error {
 	}
 	var prevObj Object
 	for {
-		obj, err := TryRead(reader)
+		obj, err := readerConstruction.TryRead(reader)
 		if err == io.EOF {
 			if FORMAT_MODE && prevObj != nil {
 				fmt.Fprint(Stdout, "\n")
@@ -2033,7 +2033,7 @@ func ProcessReaderFromEval(reader *Reader, filename string) {
 		parseContext.GlobalEnv.SetFilename(MakeString(s))
 	}
 	for {
-		obj, err := TryRead(reader)
+		obj, err := readerConstruction.TryRead(reader)
 		if err == io.EOF {
 			return
 		}
@@ -2148,8 +2148,8 @@ func ReadConfig(filename string, workingDir string) {
 			printConfigError(configFileName, closeErr.Error())
 		}
 	}()
-	r := NewReader(rr, configFileName)
-	config, err := TryRead(r)
+	r := readerConstruction.NewReader(rr, configFileName)
+	config, err := readerConstruction.TryRead(r)
 	if err != nil {
 		printConfigError(configFileName, err.Error())
 		return
@@ -2304,7 +2304,7 @@ func NewReaderFromFile(filename string) (*Reader, error) {
 		fmt.Fprintln(Stderr, "Error: ", err)
 		return nil, err
 	}
-	return NewReader(osutil.ByteRuneReader(data), filename), nil
+	return readerConstruction.NewReader(osutil.ByteRuneReader(data), filename), nil
 }
 
 func ProcessLinterFile(configDir string, filename string) {

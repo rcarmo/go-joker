@@ -221,7 +221,7 @@ func eatWhitespace(reader *Reader) {
 		}
 		if r == '#' && reader.Peek() == '_' && !FORMAT_MODE {
 			reader.Get()
-			Read(reader)
+			readerConstruction.Read(reader)
 			r = reader.Get()
 			continue
 		}
@@ -718,7 +718,7 @@ func readString(reader *Reader) Object {
 
 func readMulti(reader *Reader, previouslyRead []Object) (Object, []Object) {
 	for len(previouslyRead) == 0 {
-		obj, multi := Read(reader)
+		obj, multi := readerConstruction.Read(reader)
 		if !multi {
 			return obj, previouslyRead
 		}
@@ -791,7 +791,7 @@ func readList(reader *Reader) Object {
 	eatWhitespace(reader)
 	r := reader.Peek()
 	for r != ')' {
-		obj, multi := Read(reader)
+		obj, multi := readerConstruction.Read(reader)
 		if multi {
 			v := obj.(Vec)
 			for i := 0; i < v.Count(); i++ {
@@ -817,7 +817,7 @@ func readVector(reader *Reader) Object {
 	eatWhitespace(reader)
 	r := reader.Peek()
 	for r != ']' {
-		obj, multi := Read(reader)
+		obj, multi := readerConstruction.Read(reader)
 		if multi {
 			v := obj.(Vec)
 			for i := 0; i < v.Count(); i++ {
@@ -877,7 +877,7 @@ func readMapWithNamespace(reader *Reader, nsname string) Object {
 	r := reader.Peek()
 	objs := []Object{}
 	for r != '}' {
-		obj, multi := Read(reader)
+		obj, multi := readerConstruction.Read(reader)
 		if !multi {
 			objs = appendMapElement(objs, obj)
 		} else {
@@ -919,7 +919,7 @@ func readSet(reader *Reader) Object {
 	eatWhitespace(reader)
 	r := reader.Peek()
 	for r != '}' {
-		obj, multi := Read(reader)
+		obj, multi := readerConstruction.Read(reader)
 		if !multi {
 			if !set.Add(obj) {
 				panic(MakeReadError(reader, "Duplicate set element "+obj.ToString(false)))
@@ -1265,7 +1265,7 @@ func readNamespacedMap(reader *Reader) Object {
 		}
 	} else if r != '{' {
 		reader.Unget()
-		sym, _ = Read(reader)
+		sym, _ = readerConstruction.Read(reader)
 		r = reader.Get()
 		for isWhitespace(r) {
 			r = reader.Get()
@@ -1398,7 +1398,7 @@ func readWithMeta(reader *Reader) Object {
 }
 
 func readFirst(reader *Reader) Object {
-	obj, multi := Read(reader)
+	obj, multi := readerConstruction.Read(reader)
 	if !multi {
 		return obj
 	}
@@ -1543,7 +1543,7 @@ func TryRead(reader *Reader) (obj Object, err error) {
 		if reader.Peek() == EOF {
 			return NIL, io.EOF
 		}
-		obj, multi := Read(reader)
+		obj, multi := readerConstruction.Read(reader)
 		if !multi {
 			return obj, nil
 		}
