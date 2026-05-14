@@ -333,27 +333,25 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 			sp -= 2
 			coll := nbToObject(stackBuf[sp], objTable)
 			val := nbToObject(stackBuf[sp+1], objTable)
-			if c, ok := coll.(Conjable); ok {
-				stackBuf[sp] = nbFromObject(c.Conj(val), &objTable)
-				sp++
-			} else {
+			result, ok := runtimeExec.Conj(coll, val)
+			if !ok {
 				return nil
 			}
+			stackBuf[sp] = nbFromObject(result, &objTable)
+			sp++
 
 		case irCount:
 			sp--
 			v := stackBuf[sp]
-			if coreirx.IsObj(v) {
-				obj := nbToObject(v, objTable)
-				if c, ok := obj.(Counted); ok {
-					stackBuf[sp] = coreirx.BoxInt(c.Count())
-					sp++
-				} else {
-					return nil
-				}
-			} else {
+			if !coreirx.IsObj(v) {
 				return nil
 			}
+			count, ok := runtimeExec.Count(nbToObject(v, objTable))
+			if !ok {
+				return nil
+			}
+			stackBuf[sp] = coreirx.BoxInt(count)
+			sp++
 
 		default:
 			return nil // unsupported — fall back to irExecTyped

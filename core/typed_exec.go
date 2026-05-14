@@ -665,20 +665,18 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irCount:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			if a.tag == irValString {
-				stack = append(stack, irValue{tag: irValInt, i: a.i})
-			} else if a.tag == irValStringBuilder {
+			if a.tag == irValString || a.tag == irValStringBuilder {
 				stack = append(stack, irValue{tag: irValInt, i: a.i})
 			} else if a.tag == irValStringIntMap {
 				stack = append(stack, irValue{tag: irValInt, i: len(a.stringIntMap())})
 			} else if a.tag == irValIntVector {
 				stack = append(stack, irValue{tag: irValInt, i: len(a.intVec())})
 			} else if a.tag == irValObject {
-				if c, ok := a.obj().(Counted); ok {
-					stack = append(stack, irValue{tag: irValInt, i: c.Count()})
-				} else {
+				count, ok := runtimeExec.Count(a.obj())
+				if !ok {
 					return nil
 				}
+				stack = append(stack, irValue{tag: irValInt, i: count})
 			} else {
 				return nil
 			}
