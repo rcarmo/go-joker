@@ -273,6 +273,74 @@ func (RuntimeExecutionAdapter) ToPersistent(coll Object) (Object, bool) {
 	return nil, false
 }
 
+func (RuntimeExecutionAdapter) Str1(obj Object) Object {
+	switch v := obj.(type) {
+	case Nil:
+		return String{S: ""}
+	case String:
+		return v
+	case Char:
+		return charToStringObjectFast(v.Ch)
+	default:
+		return String{S: obj.ToString(false)}
+	}
+}
+
+func (RuntimeExecutionAdapter) Str2(a Object, b Object) Object {
+	switch av := a.(type) {
+	case *TransientString:
+		switch bv := b.(type) {
+		case Char:
+			return av.AppendChar(bv.Ch)
+		case String:
+			return av.AppendString(bv.S)
+		default:
+			return av.AppendString(b.ToString(false))
+		}
+	case String:
+		switch bv := b.(type) {
+		case Char:
+			return String{S: av.S + charToStringFast(bv.Ch)}
+		case String:
+			return String{S: av.S + bv.S}
+		case *TransientString:
+			return bv.PrependString(av.S)
+		default:
+			return String{S: av.S + b.ToString(false)}
+		}
+	case Char:
+		if bv, ok := b.(*TransientString); ok {
+			return bv.PrependChar(av.Ch)
+		}
+		return String{S: charToStringFast(av.Ch) + b.ToString(false)}
+	default:
+		return String{S: a.ToString(false) + b.ToString(false)}
+	}
+}
+
+func (RuntimeExecutionAdapter) Count(obj Object) (int, bool) {
+	switch v := obj.(type) {
+	case *TransientString:
+		return v.Count(), true
+	case Counted:
+		return v.Count(), true
+	default:
+		return 0, false
+	}
+}
+
+func (RuntimeExecutionAdapter) NthASCIIStringConst(prog *IRProgram, constIdx int, idx int) (Object, bool) {
+	constant, ok := runtimeExec.ProgramConstant(prog, constIdx)
+	if !ok {
+		return nil, false
+	}
+	s, ok := constant.(String)
+	if !ok || idx < 0 || idx >= len(s.S) {
+		return nil, false
+	}
+	return Char{Ch: rune(s.S[idx])}, true
+}
+
 func (RuntimeExecutionAdapter) MarkTypedExecutionFailed(prog *IRProgram) {
 	if prog != nil {
 		prog.typedFailed = true

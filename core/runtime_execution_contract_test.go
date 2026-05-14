@@ -204,6 +204,23 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	}
 }
 
+func TestRuntimeExecutionAdapterStringOps(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	if got := adapter.Str1(MakeChar('x')); !got.Equals(MakeString("x")) {
+		t.Fatalf("Str1 char = %#v", got)
+	}
+	if got := adapter.Str2(MakeString("a"), MakeChar('b')); !got.Equals(MakeString("ab")) {
+		t.Fatalf("Str2 = %#v", got)
+	}
+	if got, ok := adapter.Count(MakeString("abc")); !ok || got != 3 {
+		t.Fatalf("Count = %d, %v", got, ok)
+	}
+	prog := &IRProgram{constants: []Object{MakeString("abc")}}
+	if got, ok := adapter.NthASCIIStringConst(prog, 0, 1); !ok || !got.Equals(MakeChar('b')) {
+		t.Fatalf("NthASCIIStringConst = %#v, %v", got, ok)
+	}
+}
+
 func TestRuntimeExecutionAdapterErrorf(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
 	err := adapter.Errorf("contract %d", 42)

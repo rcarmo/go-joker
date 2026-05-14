@@ -802,16 +802,7 @@ loop:
 		case irStr1:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			switch av := a.(type) {
-			case Nil:
-				stack = append(stack, String{S: ""})
-			case String:
-				stack = append(stack, av)
-			case Char:
-				stack = append(stack, charToStringObjectFast(av.Ch))
-			default:
-				stack = append(stack, String{S: a.ToString(false)})
-			}
+			stack = append(stack, runtimeExec.Str1(a))
 
 		case irNthStringASCII:
 			idxConst := int(code[pc])<<8 | int(code[pc+1])
@@ -822,62 +813,26 @@ loop:
 			if !ok {
 				return nil
 			}
-			constant, ok := runtimeExec.ProgramConstant(prog, idxConst)
+			result, ok := runtimeExec.NthASCIIStringConst(prog, idxConst, idx.I)
 			if !ok {
 				return nil
 			}
-			s := constant.(String).S
-			if idx.I < 0 || idx.I >= len(s) {
-				return nil
-			}
-			stack = append(stack, Char{Ch: rune(s[idx.I])})
+			stack = append(stack, result)
 
 		case irStr2:
 			b := stack[len(stack)-1]
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			switch av := a.(type) {
-			case *TransientString:
-				switch bv := b.(type) {
-				case Char:
-					stack = append(stack, av.AppendChar(bv.Ch))
-				case String:
-					stack = append(stack, av.AppendString(bv.S))
-				default:
-					stack = append(stack, av.AppendString(b.ToString(false)))
-				}
-			case String:
-				switch bv := b.(type) {
-				case Char:
-					stack = append(stack, String{S: av.S + charToStringFast(bv.Ch)})
-				case String:
-					stack = append(stack, String{S: av.S + bv.S})
-				case *TransientString:
-					stack = append(stack, bv.PrependString(av.S))
-				default:
-					stack = append(stack, String{S: av.S + b.ToString(false)})
-				}
-			case Char:
-				if bv, ok := b.(*TransientString); ok {
-					stack = append(stack, bv.PrependChar(av.Ch))
-				} else {
-					stack = append(stack, String{S: charToStringFast(av.Ch) + b.ToString(false)})
-				}
-			default:
-				stack = append(stack, String{S: a.ToString(false) + b.ToString(false)})
-			}
+			stack = append(stack, runtimeExec.Str2(a, b))
 
 		case irCount:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			switch v := a.(type) {
-			case *TransientString:
-				stack = append(stack, Int{I: v.Count()})
-			case Counted:
-				stack = append(stack, Int{I: v.Count()})
-			default:
+			count, ok := runtimeExec.Count(a)
+			if !ok {
 				return nil
 			}
+			stack = append(stack, Int{I: count})
 
 		case irToTransient:
 			a := stack[len(stack)-1]
