@@ -171,8 +171,20 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 		t.Fatalf("Conj returned %#v, %v", got, ok)
 	}
 	transient := ToTransient(vec)
+	if got := adapter.MutableSlotObject(vec, &EscapeInfo{SafeMutableSlots: []bool{true}}, 0); got == vec {
+		t.Fatalf("MutableSlotObject did not convert vector: %#v", got)
+	}
 	if got := adapter.PersistentResult(transient); got.(Counted).Count() != 2 {
 		t.Fatalf("PersistentResult = %#v", got)
+	}
+	transientObj, ok := adapter.ToTransient(vec)
+	if !ok {
+		t.Fatal("ToTransient rejected vector")
+	}
+	if got, ok := adapter.AssocBang(transientObj, MakeInt(1), MakeInt(8)); !ok {
+		t.Fatalf("AssocBang returned %#v, %v", got, ok)
+	} else if got, ok := adapter.ToPersistent(got); !ok || got.(Indexed).Nth(1) != MakeInt(8) {
+		t.Fatalf("ToPersistent after AssocBang = %#v, %v", got, ok)
 	}
 }
 

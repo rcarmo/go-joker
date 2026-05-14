@@ -4,7 +4,6 @@ import (
 	"math"
 
 	coreirx "github.com/rcarmo/go-joker/core/ir"
-	corert "github.com/rcarmo/go-joker/core/runtime"
 )
 
 // ---------- Interpreter ----------
@@ -44,25 +43,7 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 			return nil
 		}
 		for i, s := range slots {
-			if !escapeInfo.SafeMutableSlots[i] {
-				continue
-			}
-			switch v := s.(type) {
-			case *ArrayVector:
-				slots[i] = ToTransient(v)
-			case *ArrayMap:
-				slots[i] = MapToTransient(v)
-			case *HashMap:
-				slots[i] = MapToTransient(v)
-			case String:
-				if !corert.IRStringBuilderDisabled() {
-					if corert.IRStringBuilderForce() && (escapeInfo.StringBuilderSlots[i] || escapeInfo.StringPrependSlots[i]) {
-						slots[i] = ToTransientString(v)
-					} else if !corert.IRStringBuilderForce() && escapeInfo.StringPrependSlots[i] {
-						slots[i] = ToTransientString(v)
-					}
-				}
-			}
+			slots[i] = runtimeExec.MutableSlotObject(s, escapeInfo, i)
 		}
 	}
 
@@ -916,31 +897,31 @@ loop:
 		case irToTransient:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			if av, ok := a.(*ArrayVector); ok {
-				stack = append(stack, ToTransient(av))
-			} else {
+			result, ok := runtimeExec.ToTransient(a)
+			if !ok {
 				return nil
 			}
+			stack = append(stack, result)
 
 		case irAssocBang:
 			val := stack[len(stack)-1]
 			key := stack[len(stack)-2]
 			coll := stack[len(stack)-3]
 			stack = stack[:len(stack)-3]
-			if tv, ok := coll.(*TransientVector); ok {
-				stack = append(stack, tv.AssocInPlace(key, val))
-			} else {
+			result, ok := runtimeExec.AssocBang(coll, key, val)
+			if !ok {
 				return nil
 			}
+			stack = append(stack, result)
 
 		case irToPersistent:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			if tv, ok := a.(*TransientVector); ok {
-				stack = append(stack, tv.ToPersistent())
-			} else {
+			result, ok := runtimeExec.ToPersistent(a)
+			if !ok {
 				return nil
 			}
+			stack = append(stack, result)
 		case irIntCast:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]

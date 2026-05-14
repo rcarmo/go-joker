@@ -1,6 +1,10 @@
 package core
 
-import "fmt"
+import (
+	"fmt"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
+)
 
 // RuntimeExecutionAdapter is the narrow root-owned runtime surface that future
 // extracted IR executors should target instead of reaching through all of core.
@@ -121,6 +125,32 @@ func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj Obj
 	return result, ok
 }
 
+func (RuntimeExecutionAdapter) MutableSlotObject(obj Object, escapeInfo *EscapeInfo, slot int) Object {
+	if escapeInfo == nil || slot < 0 || slot >= len(escapeInfo.SafeMutableSlots) || !escapeInfo.SafeMutableSlots[slot] {
+		return obj
+	}
+	switch v := obj.(type) {
+	case *ArrayVector:
+		return ToTransient(v)
+	case *ArrayMap:
+		return MapToTransient(v)
+	case *HashMap:
+		return MapToTransient(v)
+	case String:
+		if !corert.IRStringBuilderDisabled() && slot < len(escapeInfo.StringPrependSlots) {
+			builder := slot < len(escapeInfo.StringBuilderSlots) && escapeInfo.StringBuilderSlots[slot]
+			prepend := escapeInfo.StringPrependSlots[slot]
+			if corert.IRStringBuilderForce() && (builder || prepend) {
+				return ToTransientString(v)
+			}
+			if !corert.IRStringBuilderForce() && prepend {
+				return ToTransientString(v)
+			}
+		}
+	}
+	return obj
+}
+
 func (RuntimeExecutionAdapter) PersistentResult(result Object) Object {
 	switch v := result.(type) {
 	case *TransientVector:
@@ -183,6 +213,27 @@ func (RuntimeExecutionAdapter) Conj(coll Object, val Object) (Object, bool) {
 	default:
 		return nil, false
 	}
+}
+
+func (RuntimeExecutionAdapter) ToTransient(coll Object) (Object, bool) {
+	if av, ok := coll.(*ArrayVector); ok {
+		return ToTransient(av), true
+	}
+	return nil, false
+}
+
+func (RuntimeExecutionAdapter) AssocBang(coll Object, key Object, val Object) (Object, bool) {
+	if tv, ok := coll.(*TransientVector); ok {
+		return tv.AssocInPlace(key, val), true
+	}
+	return nil, false
+}
+
+func (RuntimeExecutionAdapter) ToPersistent(coll Object) (Object, bool) {
+	if tv, ok := coll.(*TransientVector); ok {
+		return tv.ToPersistent(), true
+	}
+	return nil, false
 }
 
 func (RuntimeExecutionAdapter) MarkTypedExecutionFailed(prog *IRProgram) {
