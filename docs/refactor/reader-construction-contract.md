@@ -1,6 +1,6 @@
 # Reader construction contract
 
-Updated: 2026-05-12
+Updated: 2026-05-14
 
 ## Purpose
 
@@ -59,9 +59,9 @@ This is a design sketch, not an implementation API. The important rule is that e
 ## Migration sequence
 
 1. Add focused contract tests for reader-created primitives, collections, metadata, tagged literals, and reader conditionals. **Started: `reader_construction_contract_test.go` covers primitive/collection construction, source info, metadata, namespaced maps, map/set literal errors, direct `*data-readers*` dispatch, tagged fallback behavior, and `#?`/`#?@` conditional selection/splicing.**
-2. Introduce a root adapter implementing the reader construction surface.
+2. Introduce a root adapter implementing the reader construction surface. **Done: `ReaderConstructionAdapter` now wraps reader creation/read APIs and literal/surrogate/vector/map/set expression construction.**
 3. Move pure lexical/token helpers first if they have no object dependency.
-4. Move reader construction only after all object creation goes through the adapter.
+4. Move reader construction only after all object creation goes through the adapter. **Started: production reader/parser call sites now route through `readerConstruction`, and `construction_boundary_guard_test.go` rejects new direct construction drift.**
 5. Keep parser/evaluator handoff in root until expression construction contracts are explicit.
 
 ## Non-goals
@@ -73,4 +73,4 @@ This is a design sketch, not an implementation API. The important rule is that e
 
 ## Current status
 
-Reader extraction remains blocked. Collection/object contracts are much stronger now, and reader construction contract tests now run from `make core-contract-check`. They cover source metadata, namespaced map construction, literal error handling, direct/fallback tagged literal behavior, and conditional reader selection/splicing, but an explicit construction adapter plus expression construction boundaries are still needed before package movement.
+Reader extraction remains blocked on object-model/package-cycle ownership, but the construction boundary is now code rather than a sketch. Collection/object contracts are much stronger now, reader construction contract tests run from `make core-contract-check`, `ReaderConstructionAdapter` owns the narrow root construction surface, and `construction_boundary_guard_test.go` prevents new production call sites from bypassing that adapter. The remaining blocker is moving concrete reader/parser implementation without exporting the whole root object/evaluator surface.

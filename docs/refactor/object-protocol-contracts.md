@@ -1,6 +1,6 @@
 # Object/protocol contract audit
 
-Updated: 2026-05-12
+Updated: 2026-05-14
 
 ## Purpose
 
@@ -34,7 +34,7 @@ Before moving concrete collection implementations, define or document:
 4. Transient mutation contract and ownership/lifetime rules.
 5. Metadata propagation rules.
 6. Printing/`ToString` contract.
-7. Construction API the reader/evaluator/std packages should use.
+7. Construction API the reader/evaluator/std packages should use. **Done for current root production callers: `CollectionConstructionAdapter` provides the construction surface, and `construction_boundary_guard_test.go` rejects new direct constructor drift outside implementation/adapter files.**
 8. Protocol dispatch surface required by moved concrete types.
 
 Candidate collection package should own concrete data structures, not the whole object universe:
@@ -107,6 +107,7 @@ Safe moves before broad object extraction:
 - Continue moving pure helpers with no `core.Object` dependency into `core/ir` and `core/wasm`.
 - Add tests for extracted helpers before moving callers.
 - Keep root-core adapter functions temporary only while their surrounding subsystem is still coupled.
+- Use the construction boundary guard before moving collection or reader files; a failing guard means new direct root construction has drifted in and must be routed through `collections` or `readerConstruction` first.
 
 Do not yet move:
 
