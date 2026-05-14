@@ -13,6 +13,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/rcarmo/go-joker/core/numutil"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 )
 
 type (
@@ -29,7 +30,7 @@ type (
 	}
 )
 
-const EOF = -1
+const EOF = corereader.EOF
 
 var (
 	LINTER_MODE   bool = false
@@ -95,13 +96,7 @@ func (err ReadError) Error() string {
 	return fmt.Sprintf("%s:%d:%d: Read error: %s", filename(err.filename), err.line, err.column, err.msg)
 }
 
-func isDelimiter(r rune) bool {
-	switch r {
-	case '(', ')', '[', ']', '{', '}', '"', ';', EOF, '\\':
-		return true
-	}
-	return isWhitespace(r)
-}
+func isDelimiter(r rune) bool { return corereader.IsDelimiter(r) }
 
 func eatString(reader *Reader, str string) {
 	for _, sr := range str {
@@ -124,25 +119,9 @@ func readSpecialCharacter(reader *Reader, ending string, r rune) Object {
 	return MakeReadObject(reader, Char{Ch: r})
 }
 
-func isJavaSpace(r rune) bool {
-	switch r {
-	case ' ', '\t', '\n', '\r': // Listed here purely for speed of common cases
-		return true
-	case 0xa0 /*&nbsp;*/, 0x85 /*NEL*/, 0x2007 /*&numsp;*/, 0x202f /*narrow non-break space*/ :
-		return false
-	case 0x1c /*FS*/, 0x1d /*GS*/, 0x1e /*RS*/, 0x1f /*US*/ :
-		return true
-	default:
-		if r > unicode.MaxLatin1 && unicode.In(r, unicode.Zl, unicode.Zp, unicode.Zs) {
-			return true
-		}
-	}
-	return unicode.IsSpace(r)
-}
+func isJavaSpace(r rune) bool { return corereader.IsJavaSpace(r) }
 
-func isWhitespace(r rune) bool {
-	return isJavaSpace(r) || r == ','
-}
+func isWhitespace(r rune) bool { return corereader.IsWhitespace(r) }
 
 func readComment(reader *Reader) Object {
 	var b bytes.Buffer
