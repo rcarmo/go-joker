@@ -34,10 +34,10 @@ The former `core/ir*.go` grab-bag has now been split into two categories:
 - `core/loop_frame_detect.go` — frame-detection helpers
 - `core/inline_rewrites.go` — inline compilation/fast paths
 - `core/loop_native_helpers.go` — native numeric helpers
-- `core/trace_ir_profile.go` — adapter only; state lives in `core/trace`
+- `core/trace_adapters.go` — symbol/IR trace adapters only; state lives in `core/trace`
 - `core/typed_values.go`, `core/typed_exec.go` — typed IR metadata/executor
 - `core/typed_value_accessors.go` — root-coupled typed value access helpers
-- `core/typed_object_nanbox.go` — root object/table bridge for the extracted NaN-box codec
+- `core/typed_exec_nanbox.go` — typed/nanbox execution path plus its local root object/table bridge
 - many renamed root tests that no longer use the stale `ir_*` prefix
 
 ## Coupling inventory

@@ -44,7 +44,7 @@ Planned package boundaries:
 
 | Target | Current files/examples | Notes |
 |---|---|---|
-| `core/trace` | `function_trace.go`, `symbol_trace.go`, `ir_profile.go` state machinery | Extracted leaf package. No dependency on `core`; core passes names/events/op names in. |
+| `core/trace` | function, symbol, and IR profile state machinery | Extracted leaf package. No dependency on `core`; root `trace_adapters.go` only passes names/events/op names in. |
 | `core/ir` | `ir*.go`, IR tests | Extracted neutral IR helpers/model exist; executor/compiler movement still requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. |
 | `core/wasm` | `wasm*.go` leaf helpers first | Extracted encoding/module/host metadata helpers exist, but full lowering/runtime still depends on IR program shape and runtime contracts. |
 | `core/runtime` | feature flags, goroutine IDs, future eval frames/errors/tracing hooks | Small runtime leaf helpers exist; production executor/runtime moves require explicit object/call/error/frame contracts first. |
