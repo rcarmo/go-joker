@@ -369,7 +369,10 @@ loop:
 			argsSeq := stack[len(stack)-1]
 			fnObj := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			args := ToSlice(argsSeq.(Seqable).Seq())
+			args, ok := runtimeExec.CallArgs(argsSeq)
+			if !ok {
+				return nil
+			}
 			result, ok := runtimeExec.CallObject(fnObj, args)
 			if !ok {
 				return nil

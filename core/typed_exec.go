@@ -293,7 +293,10 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			stack = stack[:len(stack)-2]
 			fnObj := fnVal.object()
 			argsObj := argsVal.object()
-			args := ToSlice(argsObj.(Seqable).Seq())
+			args, ok := runtimeExec.CallArgs(argsObj)
+			if !ok {
+				return nil
+			}
 			result, ok := runtimeExec.CallObject(fnObj, args)
 			if !ok {
 				return nil

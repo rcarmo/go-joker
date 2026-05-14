@@ -132,6 +132,13 @@ func TestRuntimeExecutionAdapterMakeFnCapturesSlots(t *testing.T) {
 
 func TestRuntimeExecutionAdapterCallObject(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
+	args, ok := adapter.CallArgs(NewArrayVectorFrom(MakeInt(1), MakeInt(2)))
+	if !ok || len(args) != 2 || !args[1].Equals(MakeInt(2)) {
+		t.Fatalf("CallArgs = %#v, %v", args, ok)
+	}
+	if _, ok := adapter.CallArgs(MakeInt(1)); ok {
+		t.Fatal("CallArgs accepted non-seqable")
+	}
 	fn := Proc{Name: "contract-call", Fn: func(args []Object) Object { return MakeInt(len(args)) }}
 	got, ok := adapter.CallObject(fn, []Object{MakeInt(1), MakeInt(2)})
 	if !ok || !got.Equals(MakeInt(2)) {

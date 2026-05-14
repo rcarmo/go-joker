@@ -108,6 +108,14 @@ func (RuntimeExecutionAdapter) MakeFn(fnExpr *FnExpr, slots []Object) Object {
 	return &Fn{fnExpr: fnExpr, env: fnEnv}
 }
 
+func (RuntimeExecutionAdapter) CallArgs(argsSeq Object) ([]Object, bool) {
+	seqable, ok := argsSeq.(Seqable)
+	if !ok {
+		return nil, false
+	}
+	return ToSlice(seqable.Seq()), true
+}
+
 func (RuntimeExecutionAdapter) CallObject(fnObj Object, args []Object) (Object, bool) {
 	callable, ok := fnObj.(Callable)
 	if !ok {
