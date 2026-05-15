@@ -13,6 +13,12 @@ func TestPadLeftRightUseRuneWidth(t *testing.T) {
 	if got := padLeft("å", "ab", 4); got != "babå" {
 		t.Fatalf("padLeft unicode result = %q, want babå", got)
 	}
+	if got := padRight("x", "", 3); got != "x" {
+		t.Fatalf("padRight empty pad = %q, want x", got)
+	}
+	if got := padLeft("x", "", 3); got != "x" {
+		t.Fatalf("padLeft empty pad = %q, want x", got)
+	}
 }
 
 func TestSplitOnEmptyStringUsesWhitespaceFields(t *testing.T) {
@@ -25,6 +31,21 @@ func TestSplitOnEmptyStringUsesWhitespaceFields(t *testing.T) {
 	}
 	if got.Nth(1).(String).S != "beta" {
 		t.Fatalf("second split field = %q, want beta", got.Nth(1))
+	}
+}
+
+func TestStringIndexBounds(t *testing.T) {
+	if got := indexOf("åbc", Char{Ch: 'b'}, -3); !got.Equals(MakeInt(1)) {
+		t.Fatalf("indexOf negative from = %v, want 1", got)
+	}
+	if got := indexOf("åbc", Char{Ch: 'b'}, 10); !got.Equals(NIL) {
+		t.Fatalf("indexOf oversized from = %v, want nil", got)
+	}
+	if got := lastIndexOf("ababa", String{S: "ba"}, 99); !got.Equals(MakeInt(3)) {
+		t.Fatalf("lastIndexOf oversized from = %v, want 3", got)
+	}
+	if got := lastIndexOf("ababa", String{S: "ba"}, -1); !got.Equals(NIL) {
+		t.Fatalf("lastIndexOf negative from = %v, want nil", got)
 	}
 }
 

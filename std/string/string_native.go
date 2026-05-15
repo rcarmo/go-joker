@@ -18,6 +18,9 @@ func padRight(s, pad string, n int) string {
 		return s
 	}
 	c := utf8.RuneCountInString(pad)
+	if c == 0 {
+		return s
+	}
 	d := toAdd / c
 	r := toAdd % c
 	for i := 0; i < d; i++ {
@@ -35,6 +38,9 @@ func padLeft(s, pad string, n int) string {
 		return s
 	}
 	c := utf8.RuneCountInString(pad)
+	if c == 0 {
+		return s
+	}
 	d := toAdd / c
 	r := toAdd % c
 	for i := 0; i < d; i++ {
@@ -138,8 +144,15 @@ func escape(s string, cmap Callable) string {
 
 func indexOf(s string, value Object, from int) Object {
 	var res int
+	if from < 0 {
+		from = 0
+	}
+	runes := []rune(s)
+	if from >= len(runes) {
+		return NIL
+	}
 	if from != 0 {
-		s = string([]rune(s)[from:])
+		s = string(runes[from:])
 	}
 	switch value := value.(type) {
 	case Char:
@@ -157,8 +170,15 @@ func indexOf(s string, value Object, from int) Object {
 
 func lastIndexOf(s string, value Object, from int) Object {
 	var res int
+	runes := []rune(s)
+	if from < 0 {
+		return NIL
+	}
+	if from > len(runes) {
+		from = len(runes)
+	}
 	if from != 0 {
-		s = string([]rune(s)[:from])
+		s = string(runes[:from])
 	}
 	switch value := value.(type) {
 	case Char:
