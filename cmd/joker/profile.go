@@ -32,7 +32,9 @@ func startProfiling() error {
 				runtime.SetCPUProfileRate(cpuProfileRate)
 			}
 			if err := pprof.StartCPUProfile(f); err != nil {
-				f.Close()
+				if closeErr := f.Close(); closeErr != nil {
+					fmt.Fprintf(Stderr, "Error: Could not close failed CPU profile `%s': %v\n", name, closeErr)
+				}
 				cpuProfileName = ""
 				return fmt.Errorf("could not start CPU profile `%s`: %w", name, err)
 			}

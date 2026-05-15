@@ -74,7 +74,11 @@ func parseRuntimeFile(path string) map[string]float64 {
 	if err != nil {
 		return m
 	}
-	defer f.Close()
+	defer func() {
+		if err := f.Close(); err != nil {
+			fmt.Fprintf(os.Stderr, "warning: could not close %s: %v\n", path, err)
+		}
+	}()
 
 	s := bufio.NewScanner(f)
 	for s.Scan() {
@@ -87,8 +91,14 @@ func parseRuntimeFile(path string) map[string]float64 {
 			continue
 		}
 		var v float64
-		_, _ = fmt.Sscanf(parts[2], "%f", &v)
+		if _, err := fmt.Sscanf(parts[2], "%f", &v); err != nil {
+			fmt.Fprintf(os.Stderr, "warning: could not parse runtime %q in %s: %v\n", parts[2], path, err)
+			continue
+		}
 		m[canonical(parts[1])] = v
+	}
+	if err := s.Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "warning: could not scan %s: %v\n", path, err)
 	}
 	return m
 }
