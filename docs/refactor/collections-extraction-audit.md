@@ -38,7 +38,7 @@ The safest first real package move is a root-independent mechanics helper, not a
 2. Add package-local tests for clone/append/assoc/pop or chunk indexing semantics.
 3. Make root `ArrayVector`/future adapters delegate only storage operations to that primitive while retaining `Object`, metadata, seq, printing, `TYPE`, `RT`, and callable behavior in root.
 
-A good first concrete candidate is an `Object`-agnostic generic slice helper for vector storage operations, e.g. clone/append/assoc/pop with tests. Once that seam is stable, the same pattern can be applied to persistent vector internals and then map/set buckets.
+A good first concrete candidate is an `Object`-agnostic generic slice helper for vector storage operations, e.g. clone/append/assoc/pop with tests. **Started:** `core/collections` now owns generic slice storage helpers and root `ArrayVector` delegates clone/append/assoc/pop/from-values mechanics to them while retaining Object/protocol behavior in root. Once that seam is stable, the same pattern can be applied to persistent vector internals and then map/set buckets.
 
 ## Explicit non-candidates for immediate move
 

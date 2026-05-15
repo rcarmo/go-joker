@@ -3,6 +3,8 @@ package core
 import (
 	"fmt"
 	"io"
+
+	corecollections "github.com/rcarmo/go-joker/core/collections"
 )
 
 var (
@@ -24,9 +26,8 @@ func (v *ArrayVector) WithMeta(meta Map) Object {
 }
 
 func (v *ArrayVector) Clone() *ArrayVector {
-	res := ArrayVector{arr: make([]Object, len(v.arr), cap(v.arr))}
+	res := ArrayVector{arr: corecollections.CloneSlice(v.arr)}
 	res.meta = v.meta
-	copy(res.arr, v.arr)
 	return &res
 }
 
@@ -37,9 +38,9 @@ func (v *ArrayVector) Conjoin(obj Object) Vec {
 		res.meta = v.meta
 		return res
 	}
-	res := v.Clone()
-	res.arr = append(res.arr, obj)
-	return res
+	res := *v
+	res.arr = corecollections.AppendCopy(v.arr, obj)
+	return &res
 }
 
 func (v *ArrayVector) Append(obj Object) {
@@ -118,9 +119,9 @@ func (v *ArrayVector) Pop() Stack {
 	if v.Count() == 0 {
 		panic(RT.NewError("Can't pop empty vector"))
 	}
-	res := v.Clone()
-	res.arr = res.arr[:len(res.arr)-1]
-	return res
+	res := *v
+	res.arr = corecollections.PopCopy(v.arr)
+	return &res
 }
 
 func (v *ArrayVector) Get(key Object) (bool, Object) {
@@ -143,9 +144,9 @@ func (v *ArrayVector) Assoc(key, val Object) Associative {
 	if i == v.Count() {
 		return v.Conjoin(val)
 	}
-	res := v.Clone()
-	res.arr[i] = val
-	return res
+	res := *v
+	res.arr = corecollections.AssocCopy(v.arr, i, val)
+	return &res
 }
 
 func (v *ArrayVector) Rseq() Seq {
@@ -183,11 +184,7 @@ func NewArrayVectorFrom(objs ...Object) *ArrayVector {
 	if n == 0 {
 		return EmptyArrayVector()
 	}
-	arr := make([]Object, n)
-	for i, o := range objs {
-		arr[i] = o
-	}
-	return &ArrayVector{arr: arr}
+	return &ArrayVector{arr: corecollections.FromValues(objs...)}
 }
 
 func (v *ArrayVector) reduce(c Callable) Object {
