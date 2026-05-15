@@ -34,3 +34,13 @@ func TestFillMissingArgIndexes(t *testing.T) {
 		t.Fatalf("FillMissingArgIndexes result = %#v, generated %d", args, n)
 	}
 }
+
+func TestPopLastForm(t *testing.T) {
+	last, rest, ok := PopLastForm([]int{1, 2, 3})
+	if !ok || last != 3 || len(rest) != 2 || rest[1] != 2 {
+		t.Fatalf("PopLastForm = %v/%#v/%v", last, rest, ok)
+	}
+	if _, rest, ok := PopLastForm([]int{}); ok || len(rest) != 0 {
+		t.Fatalf("PopLastForm empty ok=%v rest=%#v", ok, rest)
+	}
+}

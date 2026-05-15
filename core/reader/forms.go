@@ -48,3 +48,14 @@ func FillMissingArgIndexes[T any](args map[int]T, makeValue func() T) {
 		}
 	}
 }
+
+// PopLastForm removes and returns the last pending form. The bool result is
+// false when forms is empty.
+func PopLastForm[T any](forms []T) (T, []T, bool) {
+	var zero T
+	if len(forms) == 0 {
+		return zero, forms, false
+	}
+	last := forms[len(forms)-1]
+	return last, forms[:len(forms)-1], true
+}

@@ -430,8 +430,7 @@ func readMulti(reader *Reader, previouslyRead []Object) (Object, []Object) {
 		}
 		// If a splice produced no forms, keep reading.
 	}
-	obj := previouslyRead[len(previouslyRead)-1]
-	previouslyRead = previouslyRead[0 : len(previouslyRead)-1]
+	obj, previouslyRead, _ := corereader.PopLastForm(previouslyRead)
 	return obj, previouslyRead
 }
 
