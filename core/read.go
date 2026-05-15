@@ -99,16 +99,13 @@ func (err ReadError) Error() string {
 func isDelimiter(r rune) bool { return corereader.IsDelimiter(r) }
 
 func eatString(reader *Reader, str string) {
-	for _, sr := range str {
-		if r := reader.Get(); r != sr {
-			panic(MakeReadError(reader, fmt.Sprintf("Unexpected character %U", r)))
-		}
+	if r, ok := corereader.ConsumeExpected(reader, str); !ok {
+		panic(MakeReadError(reader, fmt.Sprintf("Unexpected character %U", r)))
 	}
 }
 
 func peekExpectedDelimiter(reader *Reader) {
-	r := reader.Peek()
-	if !isDelimiter(r) {
+	if !corereader.PeekDelimiter(reader) {
 		panic(MakeReadError(reader, "Character not followed by delimiter"))
 	}
 }
