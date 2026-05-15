@@ -27,7 +27,11 @@ func TestOpenRuneFile(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer f.Close()
+	defer func() {
+		if err := f.Close(); err != nil {
+			t.Fatalf("close file: %v", err)
+		}
+	}()
 	if _, _, err := r.ReadRune(); err != nil {
 		t.Fatal(err)
 	}
