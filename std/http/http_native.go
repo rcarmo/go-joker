@@ -188,7 +188,8 @@ func mapToResp(response Map, w http.ResponseWriter) {
 	if status != 0 {
 		w.WriteHeader(status)
 	}
-	io.WriteString(w, body)
+	_, err := io.WriteString(w, body)
+	PanicOnErr(err)
 }
 
 func clientFromRequest(request Map) *http.Client {
@@ -251,7 +252,9 @@ func startServer(addr string, handler Callable) Object {
 		defer func() {
 			if r := recover(); r != nil {
 				w.WriteHeader(500)
-				io.WriteString(w, "Internal server error")
+				if _, err := io.WriteString(w, "Internal server error"); err != nil {
+					fmt.Fprintln(os.Stderr, "failed writing internal server error response:", err)
+				}
 				fmt.Fprintln(os.Stderr, r)
 			}
 		}()

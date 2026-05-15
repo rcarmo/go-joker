@@ -55,6 +55,22 @@ func (w *failingStreamWriter) WriteHeader(statusCode int) {}
 
 func (w *failingStreamWriter) Flush() {}
 
+func TestMapToRespWriteErrorsSurface(t *testing.T) {
+	respMap := EmptyArrayMap()
+	respMap.Add(MakeKeyword("body"), MakeString("hello"))
+	defer func() {
+		r := recover()
+		err, ok := r.(Error)
+		if !ok {
+			t.Fatalf("panic = %T, want core Error", r)
+		}
+		if !strings.Contains(err.Error(), "write failed") {
+			t.Fatalf("unexpected write error: %s", err.Error())
+		}
+	}()
+	mapToResp(respMap, &failingStreamWriter{header: make(http.Header)})
+}
+
 func TestHandleStreamWriteErrorsSurface(t *testing.T) {
 	streamFn := Proc{Name: "test-stream", Fn: func(args []Object) Object {
 		send := EnsureArgIsCallable(args, 0)

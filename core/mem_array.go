@@ -61,7 +61,7 @@ func (a *WasmArray) SetF64(i int, v float64) {
 	offset := a.offset + uint32(i*8)
 	var buf [8]byte
 	binary.LittleEndian.PutUint64(buf[:], math.Float64bits(v))
-	a.mem.Write(offset, buf[:])
+	_ = a.mem.Write(offset, buf[:])
 }
 
 // GetI64 reads an int64 at index i.
@@ -85,7 +85,7 @@ func (a *WasmArray) SetI64(i int, v int64) {
 	offset := a.offset + uint32(i*8)
 	var buf [8]byte
 	binary.LittleEndian.PutUint64(buf[:], uint64(v))
-	a.mem.Write(offset, buf[:])
+	_ = a.mem.Write(offset, buf[:])
 }
 
 // Length returns the array size.
@@ -129,53 +129,45 @@ func initArrayModule(rt wazero.Runtime) {
 	})
 }
 
-// MakeF64Array allocates a new f64 array of the given size.
-func MakeF64Array(size int) *WasmArray {
+func makeWasmArray(size int, dtype byte) *WasmArray {
+	if size < 0 || size > int(^uint32(0)/8) {
+		return nil
+	}
 	rt := getWasmRT()
 	initArrayModule(rt)
 	if arrayMem == nil {
 		return nil
 	}
+	byteLen := uint32(size * 8)
+	zeros := make([]byte, byteLen)
 
 	arrayMu.Lock()
+	defer arrayMu.Unlock()
 	offset := nextOffset
-	nextOffset += uint32(size * 8)
-	arrayMu.Unlock()
-
-	// Zero the memory
-	zeros := make([]byte, size*8)
-	arrayMem.Write(offset, zeros)
+	if byteLen > ^uint32(0)-offset {
+		return nil
+	}
+	if !arrayMem.Write(offset, zeros) {
+		return nil
+	}
+	nextOffset += byteLen
 
 	return &WasmArray{
 		mem:    arrayMem,
 		offset: offset,
 		length: size,
-		dtype:  0, // f64
+		dtype:  dtype,
 	}
+}
+
+// MakeF64Array allocates a new f64 array of the given size.
+func MakeF64Array(size int) *WasmArray {
+	return makeWasmArray(size, 0)
 }
 
 // MakeI64Array allocates a new i64 array of the given size.
 func MakeI64Array(size int) *WasmArray {
-	rt := getWasmRT()
-	initArrayModule(rt)
-	if arrayMem == nil {
-		return nil
-	}
-
-	arrayMu.Lock()
-	offset := nextOffset
-	nextOffset += uint32(size * 8)
-	arrayMu.Unlock()
-
-	zeros := make([]byte, size*8)
-	arrayMem.Write(offset, zeros)
-
-	return &WasmArray{
-		mem:    arrayMem,
-		offset: offset,
-		length: size,
-		dtype:  1, // i64
-	}
+	return makeWasmArray(size, 1)
 }
 
 // --- Joker procs for array access ---

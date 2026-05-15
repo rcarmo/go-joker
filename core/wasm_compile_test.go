@@ -95,6 +95,15 @@ func TestWasmFloatLoop(t *testing.T) {
 	}
 }
 
+func TestWasmArrayRejectsInvalidSizes(t *testing.T) {
+	if arr := MakeF64Array(-1); arr != nil {
+		t.Fatalf("MakeF64Array(-1) = %#v, want nil", arr)
+	}
+	if arr := MakeI64Array(-1); arr != nil {
+		t.Fatalf("MakeI64Array(-1) = %#v, want nil", arr)
+	}
+}
+
 func TestWasmArrayF64(t *testing.T) {
 	arr := MakeF64Array(10)
 	if arr == nil {
