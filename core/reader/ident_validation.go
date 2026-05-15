@@ -33,7 +33,7 @@ func IsValidVisibleRune(r rune) bool {
 }
 
 func IsValidUnicodeRune(r rune) bool {
-	return r <= unicode.MaxRune
+	return r >= 0 && r <= unicode.MaxRune
 }
 
 func IsValidASCIIRune(r rune) bool {

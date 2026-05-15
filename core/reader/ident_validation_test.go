@@ -17,7 +17,7 @@ func TestIdentValidationHelpers(t *testing.T) {
 	if !IsValidSymbolRune('∑') || IsValidSymbolRune('_') {
 		t.Fatal("unexpected IsValidSymbolRune result")
 	}
-	if !IsValidVisibleRune('_') || !IsValidUnicodeRune('\U0010ffff') || !IsValidASCIIRune('A') || IsValidASCIIRune('λ') || !IsValidAnyRune(-1) {
+	if !IsValidVisibleRune('_') || !IsValidUnicodeRune('\U0010ffff') || IsValidUnicodeRune(-1) || !IsValidASCIIRune('A') || IsValidASCIIRune('λ') || !IsValidAnyRune(-1) {
 		t.Fatal("unexpected validation helper result")
 	}
 }

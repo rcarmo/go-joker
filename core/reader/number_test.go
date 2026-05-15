@@ -30,7 +30,7 @@ func TestAnalyzeNumberToken(t *testing.T) {
 }
 
 func TestAnalyzeNumberTokenInvalid(t *testing.T) {
-	for _, in := range []string{"1r1", "37r1", "1/2/3"} {
+	for _, in := range []string{"", "N", "M", "1r1", "37r1", "1/2/3"} {
 		if _, err := AnalyzeNumberToken(in); err == nil {
 			t.Fatalf("AnalyzeNumberToken(%q) succeeded, want error", in)
 		}

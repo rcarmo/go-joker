@@ -27,6 +27,9 @@ type NumberToken struct {
 // AnalyzeNumberToken classifies a reader number token and returns the string/base
 // to pass to the concrete numeric parser. Root core keeps Object construction.
 func AnalyzeNumberToken(str string) (NumberToken, error) {
+	if str == "" {
+		return NumberToken{}, errors.New("empty number token")
+	}
 	isDouble, isHex, isExp, isRatio, baseLen, nonDigits := false, false, false, false, 0, 0
 	var last rune
 	for i, r := range str {
@@ -75,9 +78,15 @@ func AnalyzeNumberToken(str string) (NumberToken, error) {
 		return NumberToken{Kind: NumberTokenRatio, Original: str, Digits: str}, nil
 	}
 	if last == 'N' {
+		if len(str) == 1 {
+			return NumberToken{}, errors.New("empty bigint token")
+		}
 		return NumberToken{Kind: NumberTokenBigInt, Original: str, Digits: str[:len(str)-1]}, nil
 	}
 	if last == 'M' {
+		if len(str) == 1 {
+			return NumberToken{}, errors.New("empty bigfloat token")
+		}
 		return NumberToken{Kind: NumberTokenBigFloat, Original: str, Digits: str[:len(str)-1]}, nil
 	}
 	if isDouble || (!isHex && isExp) {
