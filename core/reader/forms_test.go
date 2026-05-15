@@ -35,6 +35,18 @@ func TestFillMissingArgIndexes(t *testing.T) {
 	}
 }
 
+func TestConditionalSpliceHelpers(t *testing.T) {
+	if !IsConditionalSplice('@') || IsConditionalSplice('x') {
+		t.Fatal("IsConditionalSplice mismatch")
+	}
+	if got := ConditionalPrefix(true); got != "#?@" {
+		t.Fatalf("ConditionalPrefix splice = %q", got)
+	}
+	if got := ConditionalPrefix(false); got != "#?" {
+		t.Fatalf("ConditionalPrefix plain = %q", got)
+	}
+}
+
 func TestPopLastForm(t *testing.T) {
 	last, rest, ok := PopLastForm([]int{1, 2, 3})
 	if !ok || last != 3 || len(rest) != 2 || rest[1] != 2 {

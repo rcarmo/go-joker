@@ -33,6 +33,19 @@ func NeedsConditionalPair(pendingForms int, peek rune, closing rune) bool {
 	return pendingForms == 0 && peek == closing
 }
 
+// IsConditionalSplice reports whether a reader conditional uses #?@ splicing.
+func IsConditionalSplice(peek rune) bool {
+	return peek == '@'
+}
+
+// ConditionalPrefix returns the format-mode prefix for a reader conditional.
+func ConditionalPrefix(splicing bool) string {
+	if splicing {
+		return "#?@"
+	}
+	return "#?"
+}
+
 // FillMissingArgIndexes fills missing positive argument indexes from 1 through
 // max-1. The caller supplies fresh values to preserve root symbol generation.
 func FillMissingArgIndexes[T any](args map[int]T, makeValue func() T) {

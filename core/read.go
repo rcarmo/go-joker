@@ -862,10 +862,9 @@ func readTagged(reader *Reader) Object {
 }
 
 func readConditional(reader *Reader) (Object, bool) {
-	isSplicing := false
-	if reader.Peek() == '@' {
+	isSplicing := corereader.IsConditionalSplice(reader.Peek())
+	if isSplicing {
 		reader.Get()
-		isSplicing = true
 	}
 	eatWhitespace(reader)
 	r := reader.Get()
@@ -874,11 +873,7 @@ func readConditional(reader *Reader) (Object, bool) {
 	}
 	if FORMAT_MODE {
 		cond := readList(reader).(*List)
-		if isSplicing {
-			addPrefix(cond, "#?@")
-		} else {
-			addPrefix(cond, "#?")
-		}
+		addPrefix(cond, corereader.ConditionalPrefix(isSplicing))
 		return cond, false
 	}
 	v := readCondList(reader)
