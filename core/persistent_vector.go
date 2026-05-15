@@ -11,14 +11,12 @@ import corecollections "github.com/rcarmo/go-joker/core/collections"
 // - Path copying: assoc only copies nodes on the root-to-leaf path
 // - Structural sharing: unchanged subtrees are shared between versions
 
-const pvBranching = 32
+const pvBranching = corecollections.TrieBranching
 const pvShift = 5
 const pvMask = 0x1f
 
 // pvNode is a trie node — either internal (children) or leaf (values).
-type pvNode struct {
-	arr [pvBranching]interface{} // Object or *pvNode
-}
+type pvNode = corecollections.TrieNode
 
 // PersistentVector is an immutable vector backed by a 32-way trie.
 type PersistentVector struct {
@@ -30,7 +28,7 @@ type PersistentVector struct {
 	tail  []Object
 }
 
-var emptyPVNode = &pvNode{}
+var emptyPVNode = corecollections.NewTrieNode()
 
 // EmptyPersistentVector returns a new empty persistent vector.
 func EmptyPersistentVector() *PersistentVector {
@@ -71,7 +69,7 @@ func (v *PersistentVector) arrayFor(i int) []Object {
 	}
 	node := v.root
 	for level := v.shift; level > 0; level -= pvShift {
-		node = node.arr[(i>>level)&pvMask].(*pvNode)
+		node = node.Get((i >> level) & pvMask).(*pvNode)
 	}
 	// Convert leaf node to Object slice
 	leafStart := (i >> pvShift) << pvShift
@@ -81,7 +79,7 @@ func (v *PersistentVector) arrayFor(i int) []Object {
 	}
 	result := make([]Object, leafEnd-leafStart)
 	for j := range result {
-		result[j] = node.arr[j].(Object)
+		result[j] = node.Get(j).(Object)
 	}
 	return result
 }
@@ -96,9 +94,9 @@ func (v *PersistentVector) Nth(i int) Object {
 	}
 	node := v.root
 	for level := v.shift; level > 0; level -= pvShift {
-		node = node.arr[(i>>level)&pvMask].(*pvNode)
+		node = node.Get((i >> level) & pvMask).(*pvNode)
 	}
-	return node.arr[i&pvMask].(Object)
+	return node.Get(i & pvMask).(Object)
 }
 
 // Conj appends an element, returning a new vector.
@@ -116,16 +114,16 @@ func (v *PersistentVector) Conj(val Object) *PersistentVector {
 	// Tail is full — push tail into trie, start new tail
 	var newRoot *pvNode
 	newShift := v.shift
-	tailNode := &pvNode{}
+	tailNode := corecollections.NewTrieNode()
 	for i, obj := range v.tail {
-		tailNode.arr[i] = obj
+		tailNode.Set(i, obj)
 	}
 	// Is there room in the existing trie?
 	if (v.count >> pvShift) > (1 << v.shift) {
 		// Trie overflow — add a new level
-		newRoot = &pvNode{}
-		newRoot.arr[0] = v.root
-		newRoot.arr[1] = pvNewPath(v.shift, tailNode)
+		newRoot = corecollections.NewTrieNode()
+		newRoot.Set(0, v.root)
+		newRoot.Set(1, pvNewPath(v.shift, tailNode))
 		newShift += pvShift
 	} else {
 		newRoot = v.pushTail(v.shift, v.root, tailNode)
@@ -143,13 +141,13 @@ func (v *PersistentVector) pushTail(level uint, parent *pvNode, tailNode *pvNode
 	subIdx := ((v.count - 1) >> level) & pvMask
 	ret := cloneNode(parent)
 	if level == pvShift {
-		ret.arr[subIdx] = tailNode
+		ret.Set(subIdx, tailNode)
 	} else {
-		child := parent.arr[subIdx]
+		child := parent.Get(subIdx)
 		if child != nil {
-			ret.arr[subIdx] = v.pushTail(level-pvShift, child.(*pvNode), tailNode)
+			ret.Set(subIdx, v.pushTail(level-pvShift, child.(*pvNode), tailNode))
 		} else {
-			ret.arr[subIdx] = pvNewPath(level-pvShift, tailNode)
+			ret.Set(subIdx, pvNewPath(level-pvShift, tailNode))
 		}
 	}
 	return ret
@@ -184,10 +182,10 @@ func (v *PersistentVector) Assoc(i int, val Object) *PersistentVector {
 func (v *PersistentVector) assocNode(level uint, node *pvNode, i int, val Object) *pvNode {
 	ret := cloneNode(node)
 	if level == 0 {
-		ret.arr[i&pvMask] = val
+		ret.Set(i&pvMask, val)
 	} else {
 		subIdx := (i >> level) & pvMask
-		ret.arr[subIdx] = v.assocNode(level-pvShift, node.arr[subIdx].(*pvNode), i, val)
+		ret.Set(subIdx, v.assocNode(level-pvShift, node.Get(subIdx).(*pvNode), i, val))
 	}
 	return ret
 }
@@ -217,8 +215,8 @@ func (v *PersistentVector) Pop() *PersistentVector {
 	if newRoot == nil {
 		newRoot = emptyPVNode
 	}
-	if v.shift > pvShift && newRoot.arr[1] == nil {
-		newRoot = newRoot.arr[0].(*pvNode)
+	if v.shift > pvShift && newRoot.Get(1) == nil {
+		newRoot = newRoot.Get(0).(*pvNode)
 		newShift -= pvShift
 	}
 	return &PersistentVector{
@@ -232,18 +230,18 @@ func (v *PersistentVector) Pop() *PersistentVector {
 func (v *PersistentVector) popTail(level uint, node *pvNode) *pvNode {
 	subIdx := ((v.count - 2) >> level) & pvMask
 	if level > pvShift {
-		newChild := v.popTail(level-pvShift, node.arr[subIdx].(*pvNode))
+		newChild := v.popTail(level-pvShift, node.Get(subIdx).(*pvNode))
 		if newChild == nil && subIdx == 0 {
 			return nil
 		}
 		ret := cloneNode(node)
-		ret.arr[subIdx] = newChild
+		ret.Set(subIdx, newChild)
 		return ret
 	} else if subIdx == 0 {
 		return nil
 	} else {
 		ret := cloneNode(node)
-		ret.arr[subIdx] = nil
+		ret.Set(subIdx, nil)
 		return ret
 	}
 }
@@ -260,18 +258,11 @@ func (v *PersistentVector) ToSlice() []Object {
 // --- Helpers ---
 
 func cloneNode(node *pvNode) *pvNode {
-	ret := &pvNode{}
-	*ret = *node
-	return ret
+	return corecollections.CloneTrieNode(node)
 }
 
 func pvNewPath(level uint, node *pvNode) *pvNode {
-	if level == 0 {
-		return node
-	}
-	ret := &pvNode{}
-	ret.arr[0] = pvNewPath(level-pvShift, node)
-	return ret
+	return corecollections.NewTriePath(level, pvShift, node)
 }
 
 // --- Object interface ---
