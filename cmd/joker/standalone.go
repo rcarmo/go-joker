@@ -27,7 +27,7 @@ const standaloneFooterSize = 12 // 8 bytes length + 4 bytes magic
 
 // checkEmbeddedSource checks if the current executable has an embedded
 // Clojure source payload. Returns the source string and true if found.
-func checkEmbeddedSource() (string, bool) {
+func checkEmbeddedSource() (srcText string, ok bool) {
 	exe, err := os.Executable()
 	if err != nil {
 		return "", false
@@ -40,7 +40,12 @@ func checkEmbeddedSource() (string, bool) {
 	if err != nil {
 		return "", false
 	}
-	defer f.Close()
+	defer func() {
+		if err := f.Close(); err != nil {
+			srcText = ""
+			ok = false
+		}
+	}()
 
 	// Read the footer
 	fi, err := f.Stat()
