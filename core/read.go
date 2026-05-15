@@ -144,11 +144,8 @@ func eatWhitespace(reader *Reader) {
 
 func readUnicodeCharacter(reader *Reader, length, base int) Object {
 	str := corereader.ScanUntilDelimiter(reader)
-	if !corereader.HasExactLength(str, length) {
-		panic(MakeReadError(reader, "Invalid unicode character: \\o"+str))
-	}
-	r, err := corereader.ParseUnicodeCode(str, base)
-	if err != nil {
+	r, ok := corereader.ParseExactUnicodeCode(str, length, base)
+	if !ok {
 		panic(MakeReadError(reader, "Invalid unicode character: \\o"+str))
 	}
 	peekExpectedDelimiter(reader)

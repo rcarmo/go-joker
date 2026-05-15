@@ -120,6 +120,7 @@ Planned package boundaries:
 - [x] Move reader identifier rune classification into `core/reader`.
 - [x] Move reader identifier validation predicates/reasons/explanations into `core/reader` and remove stale root wrappers.
 - [x] Move reader unicode escape parsing helpers into `core/reader`.
+- [x] Move reader fixed-width unicode/octal parsing helper into `core/reader`.
 - [x] Move reader simple string escape decoding into `core/reader`.
 - [x] Move reader number token classification into `core/reader`.
 - [x] Move reader identifier token validation into `core/reader`.

@@ -2,6 +2,18 @@ package reader
 
 import "testing"
 
+func TestParseExactUnicodeCode(t *testing.T) {
+	if got, ok := ParseExactUnicodeCode("0041", 4, 16); !ok || got != 'A' {
+		t.Fatalf("ParseExactUnicodeCode valid = %q/%v", got, ok)
+	}
+	if _, ok := ParseExactUnicodeCode("041", 4, 16); ok {
+		t.Fatal("ParseExactUnicodeCode accepted short token")
+	}
+	if _, ok := ParseExactUnicodeCode("xxxx", 4, 16); ok {
+		t.Fatal("ParseExactUnicodeCode accepted invalid token")
+	}
+}
+
 func TestParseUnicodeCode(t *testing.T) {
 	tests := []struct {
 		str  string
