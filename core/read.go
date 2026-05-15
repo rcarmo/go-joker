@@ -1276,14 +1276,8 @@ func Read(reader *Reader) (Object, bool) {
 	case unicode.IsDigit(r):
 		reader.Unget()
 		return readNumber(reader), false
-	case r == '.':
-		if DIALECT == CLJS && unicode.IsDigit(reader.Peek()) {
-			reader.Unget()
-			return readNumber(reader), false
-		}
-		return readIdentFn(reader, r), false
-	case r == '-' || r == '+':
-		if unicode.IsDigit(reader.Peek()) {
+	case r == '.', r == '-' || r == '+':
+		if corereader.ClassifyInitialToken(r, reader.Peek(), DIALECT == CLJS) == corereader.InitialTokenNumber {
 			reader.Unget()
 			return readNumber(reader), false
 		}
