@@ -168,15 +168,15 @@ func readUnicodeCharacter(reader *Reader, length, base int) Object {
 	}
 	reader.Unget()
 	str := b.String()
-	if len(str) != length {
+	if !corereader.HasExactLength(str, length) {
 		panic(MakeReadError(reader, "Invalid unicode character: \\o"+str))
 	}
-	i, err := numutil.ParseInt(str, base, 32)
+	r, err := corereader.ParseUnicodeCode(str, base)
 	if err != nil {
 		panic(MakeReadError(reader, "Invalid unicode character: \\o"+str))
 	}
 	peekExpectedDelimiter(reader)
-	return MakeReadObject(reader, Char{Ch: rune(i)})
+	return MakeReadObject(reader, Char{Ch: r})
 }
 
 func readCharacter(reader *Reader) Object {
@@ -567,14 +567,14 @@ func readUnicodeCharacterInString(reader *Reader, initial rune, length, base int
 	}
 	reader.Unget()
 	str := b.String()
-	if exactLength && len(str) != length {
+	if exactLength && !corereader.HasExactLength(str, length) {
 		panic(MakeReadError(reader, fmt.Sprintf("Invalid character length: %d, should be: %d", len(str), length)))
 	}
-	i, err := numutil.ParseInt(str, base, 32)
+	r, err := corereader.ParseUnicodeCode(str, base)
 	if err != nil {
 		panic(MakeReadError(reader, "Invalid unicode code: "+str))
 	}
-	return rune(i)
+	return r
 }
 
 func readString(reader *Reader) Object {
