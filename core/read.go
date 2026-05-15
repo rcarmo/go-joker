@@ -128,10 +128,7 @@ func eatWhitespace(reader *Reader) {
 			continue
 		}
 		if (r == ';' || (r == '#' && corereader.IsCommentStart(r, reader.Peek()))) && !FORMAT_MODE {
-			for r != '\n' && r != EOF {
-				r = reader.Get()
-			}
-			r = reader.Get()
+			r = corereader.SkipLine(reader, r)
 			continue
 		}
 		if r == '#' && reader.Peek() == '_' && !FORMAT_MODE {

@@ -55,3 +55,14 @@ func TestReadCommentTextEOF(t *testing.T) {
 		t.Fatalf("remaining peek = %q, want EOF", got)
 	}
 }
+
+func TestSkipLine(t *testing.T) {
+	r := newCommentReader("ignored\nnext")
+	if got := SkipLine(r, 'i'); got != 'n' {
+		t.Fatalf("SkipLine = %q, want n", got)
+	}
+	r = newCommentReader("ignored")
+	if got := SkipLine(r, 'i'); got != EOF {
+		t.Fatalf("SkipLine EOF = %q, want EOF", got)
+	}
+}

@@ -19,3 +19,13 @@ func ReadCommentText(r RunePeekerGetter) string {
 	}
 	return b.String()
 }
+
+// SkipLine consumes through newline or EOF and returns the next rune after the
+// line terminator, matching root whitespace skipping behavior.
+func SkipLine(r interface{ Get() rune }, first rune) rune {
+	ch := first
+	for ch != '\n' && ch != EOF {
+		ch = r.Get()
+	}
+	return r.Get()
+}
