@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math"
 	"testing"
 
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
@@ -112,5 +113,31 @@ func TestWasmArrayF64(t *testing.T) {
 	}
 	if arr.Length() != 10 {
 		t.Fatalf("expected length 10, got %d", arr.Length())
+	}
+}
+
+func TestWasmRawIntObjectPromotesOutsideNativeRange(t *testing.T) {
+	got := wasmRawIntObject(uint64(math.MaxInt64))
+	if math.MaxInt64 > int64(maxInt) {
+		if got.GetType() != TYPE.BigInt {
+			t.Fatalf("wasm raw int object type = %s, want BigInt", got.GetType().ToString(false))
+		}
+		return
+	}
+	if got.GetType() != TYPE.Int {
+		t.Fatalf("wasm raw int object type = %s, want Int", got.GetType().ToString(false))
+	}
+}
+
+func TestWasmRawIntRejectsOutOfRangeIndex(t *testing.T) {
+	if _, ok := wasmRawInt(uint64(math.MaxInt64)); ok && math.MaxInt64 > int64(maxInt) {
+		t.Fatal("wasmRawInt should reject values outside native int range")
+	}
+}
+
+func TestWasmExecRawIntegerResultUsesNativeRange(t *testing.T) {
+	got := wasmRawIntObject(uint64(math.MaxInt64))
+	if math.MaxInt64 > int64(maxInt) && got.GetType() != TYPE.BigInt {
+		t.Fatalf("raw wasm result type = %s, want BigInt", got.GetType().ToString(false))
 	}
 }
