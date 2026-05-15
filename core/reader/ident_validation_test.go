@@ -17,6 +17,17 @@ func TestIdentValidationReason(t *testing.T) {
 	}
 }
 
+func TestFindIdentValidationIssues(t *testing.T) {
+	text := "a b"
+	issues := FindIdentValidationIssues(&text, IsValidCoreRune, ValidCoreReason, IsValidASCIIRune, ValidASCIIReason)
+	if len(issues) != 1 || issues[0].Rune != ' ' || issues[0].Index != 1 || issues[0].Reason == "" {
+		t.Fatalf("FindIdentValidationIssues = %#v", issues)
+	}
+	if got := FindIdentValidationIssues(nil, IsValidCoreRune, ValidCoreReason, IsValidASCIIRune, ValidASCIIReason); got != nil {
+		t.Fatalf("FindIdentValidationIssues nil = %#v", got)
+	}
+}
+
 func TestIdentValidationHelpers(t *testing.T) {
 	for _, r := range []rune{'a', 'Z', '0', '*', '+', '!', '-', '?', '=', '<', '>', '&', '_', '.', '\'', '#', '$', ':', '%'} {
 		if !IsCoreIdentRune(r) {

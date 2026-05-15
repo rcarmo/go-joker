@@ -59,3 +59,32 @@ func IdentValidationReason(r rune, setOK bool, setWhy string, rangeOK bool, rang
 	}
 	return setWhy + "; " + rangeWhy
 }
+
+type IdentValidationIssue struct {
+	Rune   rune
+	Index  int
+	Reason string
+}
+
+// FindIdentValidationIssues returns validation issues for lint-time identifier
+// text. Nil input has no issues because root Symbol/Keyword namespaces can be nil.
+func FindIdentValidationIssues(s *string, setFn func(rune) bool, setWhy string, rangeFn func(rune) bool, rangeWhy string) []IdentValidationIssue {
+	if s == nil {
+		return nil
+	}
+	var issues []IdentValidationIssue
+	k := 0
+	for _, r := range *s {
+		setOK := setFn(r)
+		rangeOK := rangeFn(r)
+		if !IsCoreIdentRune(r) && (!setOK || !rangeOK) {
+			issues = append(issues, IdentValidationIssue{
+				Rune:   r,
+				Index:  k,
+				Reason: IdentValidationReason(r, setOK, setWhy, rangeOK, rangeWhy),
+			})
+		}
+		k++
+	}
+	return issues
+}

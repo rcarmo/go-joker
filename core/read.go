@@ -297,20 +297,9 @@ var identValidationRangeFn = corereader.IsValidASCIIRune
 var identValidationRangeWhy = corereader.ValidASCIIReason
 
 func warnInvalidIdent(reader *Reader, s *string) {
-	if s == nil {
-		return
-	}
-
-	k := 0
-	for _, r := range *s {
-		setOK := identValidationSetFn(r)
-		rangeOK := identValidationRangeFn(r)
-		if !corereader.IsCoreIdentRune(r) && (!setOK || !rangeOK) {
-			explain := corereader.IdentValidationReason(r, setOK, identValidationSetWhy, rangeOK, identValidationRangeWhy)
-			msg := fmt.Sprintf("Impermissible character %q at %d in %q (%s)", r, k, *s, explain)
-			printReadWarning(reader, msg)
-		}
-		k++
+	for _, issue := range corereader.FindIdentValidationIssues(s, identValidationSetFn, identValidationSetWhy, identValidationRangeFn, identValidationRangeWhy) {
+		msg := fmt.Sprintf("Impermissible character %q at %d in %q (%s)", issue.Rune, issue.Index, *s, issue.Reason)
+		printReadWarning(reader, msg)
 	}
 }
 
