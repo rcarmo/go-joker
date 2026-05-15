@@ -488,20 +488,15 @@ func (n *HashCollisionNode) nodeSeq() Seq {
 }
 
 func bitCount(n int) int {
-	var count int
-	for n != 0 {
-		count++
-		n &= n - 1
-	}
-	return count
+	return corecollections.BitCount(n)
 }
 
 func mask(hash uint32, shift uint) uint32 {
-	return (hash >> shift) & 0x01f
+	return corecollections.HashMask(hash, shift)
 }
 
 func bitpos(hash uint32, shift uint) int {
-	return 1 << mask(hash, shift)
+	return corecollections.Bitpos(hash, shift)
 }
 
 func cloneAndSet(array []interface{}, i int, a interface{}) []interface{} {
