@@ -341,14 +341,7 @@ func readNumber(reader *Reader) Object {
 
 /* or keyword name.
 */
-func isIdentRune(r rune) bool {
-	switch r {
-	case '"', ';', '@', '^', '`', '~', '(', ')', '[', ']', '{', '}', '\\', ',', ' ', '\t', '\n', '\r', EOF:
-		// Whitespace listed above (' ', '\t', '\n', '\r') purely for speed of common cases
-		return false
-	}
-	return !isJavaSpace(r)
-}
+func isIdentRune(r rune) bool { return corereader.IsIdentRune(r) }
 
 /* Reads (lexes) a token and returns either a Symbol or Keyword. */
 func readIdent(reader *Reader, first rune) Object {

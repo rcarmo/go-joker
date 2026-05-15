@@ -19,6 +19,7 @@ Current root collection families are still strongly coupled to root `core` contr
 - Seqs/lists are evaluator-adjacent because they carry `Callable` reduce paths and root seq protocol behavior.
 - Transients are coupled both to concrete persistent collections and to root proc registration (`GLOBAL_ENV`, `Proc`, `referToUser`).
 - `map_filter_fast.go` is not a collection implementation move candidate yet; it is AST/evaluator optimization code and should stay root-bound until evaluator extraction.
+- Remaining hash-map packing/expansion code is now mostly coupled to root `Node`, `Object.Hash`, `Object.Equals`, and seq/protocol behavior; pause before forcing larger map moves.
 
 ## Minimal extraction interface candidates
 
