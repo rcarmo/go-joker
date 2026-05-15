@@ -61,7 +61,7 @@ Approximate Go file counts at this audit:
 - Refactor documents consolidated under `docs/refactor/`.
 - Leaf/data packages extracted under `core/{generated,trace,ir,runtime,wasm,collections,reader,string,cursor}`.
 - Collection and reader construction adapters plus boundary guards now prevent new direct construction drift before package moves.
-- Root-independent collection storage/bitmap/trie mechanics and reader lexical/token/IO mechanics have started moving to real packages without importing root `core`.
+- Root-independent collection storage/bitmap/trie mechanics and a broad set of reader lexical/token/scanning/form/IO mechanics have moved to real packages without importing root `core`.
 
 ## Remaining structural issues
 
@@ -78,7 +78,7 @@ Current root clustering by filename indicates the next logical seams:
 - runtime/calls: `call_fast`, `goroutine_rt`, frame and dispatch helpers.
 - generated bootstrap: `a_*.go`, `types_*_gen.go`.
 
-Recommendation: continue extracting pure leaf helpers and contracts before moving high-cycle packages.
+Recommendation: continue extracting pure leaf helpers and contracts before moving high-cycle packages. Current root `core` file counts are 136 total Go files, 107 non-test files, 10 generated root `a_*_code.go` files, and 97 hand-written non-test/non-generated root files.
 
 ### 2. Generated bootstrap remains partly root-coupled
 

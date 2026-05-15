@@ -32,7 +32,7 @@ Do not split everything at once. Move leaf or low-cycle families first, then hig
 - `core/ir` owns opcode names/constants, bytecode disassembly/counting, shape analysis, and the neutral program model.
 - `core/wasm` owns leaf WASM binary encoding/module/host helpers.
 - `core/collections` owns root-independent collection mechanics such as generic slice storage, pair arrays, bitmap/hash-index helpers, and opaque trie nodes.
-- `core/reader` owns root-independent reader mechanics such as char classes, identifier validation, escape parsing, number-token classification, line rune readers, and raw IO wrappers.
+- `core/reader` owns root-independent reader mechanics such as char classes, whitespace/comment/line decisions, identifier token scanning/validation issue enumeration, escape/unicode parsing, number-token classification, delimiter/dispatch/form helpers, line rune readers, and raw IO wrappers.
 - `core/string` and `core/cursor` own root-independent string/cache/cursor mechanics.
 - `cmd/joker` owns the CLI entrypoint.
 

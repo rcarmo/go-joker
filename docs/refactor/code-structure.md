@@ -70,7 +70,7 @@ Recent `std/transit` and `std/system` match this pattern.
 - remaining `core/ir_*` / `core/wasm_*` — partially extracted, but compiler/executor/runtime pieces still depend on root-core object and call contracts.
 - `core/persistent_vector.go` — object semantics have been tightened and storage/trie mechanics now delegate into `core/collections`, making it a better template for eventual collection extraction.
 
-Recommendation: avoid broad collection/reader/evaluator moves until `docs/refactor/object-protocol-contracts.md` contracts are made concrete. Current production collection and reader construction call sites are routed through adapters and guarded against drift, and pure mechanics/lexical helpers have started moving to `core/collections` and `core/reader`. Concrete implementations still depend on root object/evaluator internals. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
+Recommendation: avoid broad collection/reader/evaluator moves until `docs/refactor/object-protocol-contracts.md` contracts are made concrete. Current production collection and reader construction call sites are routed through adapters and guarded against drift. Pure collection mechanics have started moving to `core/collections`, and `core/reader` now owns a broad set of root-independent rune/token/scanning/form helpers. Concrete implementations still depend on root object/evaluator internals. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
 
 ### 2. Runtime-installed Var metadata is implicit
 
