@@ -3,7 +3,6 @@ package core
 import (
 	"fmt"
 	"io"
-	"math"
 	"math/big"
 	"math/rand"
 	"regexp"
@@ -999,17 +998,11 @@ func readNamespacedMap(reader *Reader) Object {
 	return readMapWithNamespace(reader, nsname)
 }
 
-var specials = map[string]float64{
-	"Inf":  math.Inf(1),
-	"-Inf": math.Inf(-1),
-	"NaN":  math.NaN(),
-}
-
 func readSymbolicValue(reader *Reader) Object {
 	obj := readFirst(reader)
 	switch o := obj.(type) {
 	case Symbol:
-		if v, found := specials[o.ToString(false)]; found {
+		if v, found := corereader.SymbolicValue(o.ToString(false)); found {
 			return Double{D: v}
 		}
 		panic(MakeReadError(reader, "Unknown symbolic value: ##"+o.ToString(false)))
