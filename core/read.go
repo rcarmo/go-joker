@@ -1,7 +1,6 @@
 package core
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"math"
@@ -478,34 +477,13 @@ func readUnicodeCharacterInString(reader *Reader, initial rune, length, base int
 }
 
 func readString(reader *Reader) Object {
-	var b bytes.Buffer
-	r := reader.Get()
-	for r != '"' {
-		if r == '\\' {
-			r = reader.Get()
-			if FORMAT_MODE {
-				b.WriteRune('\\')
-			} else {
-				switch corereader.ClassifyStringEscape(r) {
-				case corereader.StringEscapeSimple:
-					r, _ = corereader.DecodeSimpleStringEscape(r)
-				case corereader.StringEscapeUnicode:
-					n := reader.Get()
-					r = readUnicodeCharacterInString(reader, n, 4, 16, true)
-				case corereader.StringEscapeOctal:
-					r = readUnicodeCharacterInString(reader, r, 3, 8, false)
-				default:
-					panic(MakeReadError(reader, "Unsupported escape character: \\"+string(r)))
-				}
-			}
-		}
-		if r == EOF {
-			panic(MakeReadError(reader, "Non-terminated string literal"))
-		}
-		b.WriteRune(r)
-		r = reader.Get()
+	s, err := corereader.ScanStringLiteral(reader, FORMAT_MODE, func(initial rune, length, base int, exactLength bool) rune {
+		return readUnicodeCharacterInString(reader, initial, length, base, exactLength)
+	})
+	if err != nil {
+		panic(MakeReadError(reader, err.Error()))
 	}
-	return MakeReadObject(reader, String{S: b.String()})
+	return MakeReadObject(reader, String{S: s})
 }
 
 func readMulti(reader *Reader, previouslyRead []Object) (Object, []Object) {
