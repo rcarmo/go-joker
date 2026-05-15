@@ -76,7 +76,7 @@ func checkEmbeddedSource() (string, bool) {
 }
 
 // compileStandalone produces a standalone binary from a source file.
-func compileStandalone(sourceFile string, outputFile string) error {
+func compileStandalone(sourceFile string, outputFile string) (err error) {
 	// Read source
 	src, err := os.ReadFile(sourceFile)
 	if err != nil {
@@ -110,7 +110,11 @@ func compileStandalone(sourceFile string, outputFile string) error {
 	if err != nil {
 		return fmt.Errorf("cannot create output file: %w", err)
 	}
-	defer out.Close()
+	defer func() {
+		if closeErr := out.Close(); err == nil && closeErr != nil {
+			err = closeErr
+		}
+	}()
 
 	// Write runtime binary
 	if _, err := out.Write(runtimeBin); err != nil {
@@ -158,18 +162,26 @@ func stripEmbeddedPayload(bin []byte) []byte {
 }
 
 // copyFile copies src to dst, preserving permissions.
-func copyFile(src, dst string) error {
+func copyFile(src, dst string) (err error) {
 	in, err := os.Open(src)
 	if err != nil {
 		return err
 	}
-	defer in.Close()
+	defer func() {
+		if closeErr := in.Close(); err == nil && closeErr != nil {
+			err = closeErr
+		}
+	}()
 
 	out, err := os.Create(dst)
 	if err != nil {
 		return err
 	}
-	defer out.Close()
+	defer func() {
+		if closeErr := out.Close(); err == nil && closeErr != nil {
+			err = closeErr
+		}
+	}()
 
 	if _, err := io.Copy(out, in); err != nil {
 		return err

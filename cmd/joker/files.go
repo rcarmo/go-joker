@@ -29,13 +29,26 @@ func processFile(filename string, phase Phase) error {
 			Stdout = &b
 			defer func() {
 				Stdout = oldStdout
-				f.Close()
-				f, err := os.Create(filename)
-				if err != nil {
+				if err := f.Close(); err != nil {
 					fmt.Fprintln(Stderr, "Error: ", err)
 				}
-				f.WriteString(b.String())
-				f.Close()
+				out, err := os.Create(filename)
+				if err != nil {
+					fmt.Fprintln(Stderr, "Error: ", err)
+					return
+				}
+				if _, err := out.WriteString(b.String()); err != nil {
+					fmt.Fprintln(Stderr, "Error: ", err)
+				}
+				if err := out.Close(); err != nil {
+					fmt.Fprintln(Stderr, "Error: ", err)
+				}
+			}()
+		} else {
+			defer func() {
+				if err := f.Close(); err != nil {
+					fmt.Fprintln(Stderr, "Error: ", err)
+				}
 			}()
 		}
 	}

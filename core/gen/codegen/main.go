@@ -245,7 +245,7 @@ func init() {
 	PanicOnErr(err)
 	content, err := PackReader(NewReader(bufio.NewReader(file), f.Name), f.Filename)
 	PanicOnErr(err)
-	file.Close()
+	PanicOnErr(file.Close())
 
 	dst := packContent(content)
 
@@ -355,7 +355,7 @@ func main() {
 		PanicOnErr(err)
 		err = ProcessReader(NewReader(bufio.NewReader(file), f.Name), f.Filename, EVAL)
 		PanicOnErr(err)
-		file.Close()
+		PanicOnErr(file.Close())
 
 		ns := GLOBAL_ENV.Namespaces[nsNamePtr]
 
