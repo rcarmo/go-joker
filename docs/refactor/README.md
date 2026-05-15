@@ -131,6 +131,7 @@ Planned package boundaries:
 - [x] Move reader delimiter token scanning into `core/reader`.
 - [x] Reuse reader delimiter token scanning for character unicode literals.
 - [x] Move reader expected-token and delimiter peek mechanics into `core/reader`.
+- [x] Move reader whitespace-skip decisions into `core/reader`.
 - [x] Move reader string escape classification into `core/reader`.
 - [x] Move reader string literal body scanning into `core/reader`.
 - [x] Move reader terminating macro classification into `core/reader` and remove stale root wrappers.

@@ -119,7 +119,7 @@ func readComment(reader *Reader) Object {
 func eatWhitespace(reader *Reader) {
 	r := reader.Get()
 	for r != EOF {
-		if FORMAT_MODE && r == ',' {
+		if corereader.ShouldPreserveComma(FORMAT_MODE, r) {
 			reader.Unget()
 			break
 		}
@@ -127,11 +127,11 @@ func eatWhitespace(reader *Reader) {
 			r = reader.Get()
 			continue
 		}
-		if (r == ';' || (r == '#' && corereader.IsCommentStart(r, reader.Peek()))) && !FORMAT_MODE {
+		if r == ';' || r == '#' && corereader.ShouldSkipReaderComment(FORMAT_MODE, r, reader.Peek()) {
 			r = corereader.SkipLine(reader, r)
 			continue
 		}
-		if r == '#' && reader.Peek() == '_' && !FORMAT_MODE {
+		if r == '#' && corereader.ShouldDiscardNextForm(FORMAT_MODE, r, reader.Peek()) {
 			reader.Get()
 			readerConstruction.Read(reader)
 			r = reader.Get()
