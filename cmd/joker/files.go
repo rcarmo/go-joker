@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -12,41 +13,28 @@ import (
 
 func processFile(filename string, phase Phase) error {
 	var reader *Reader
+	var input *os.File
+	var formatBuf *bytes.Buffer
+	var oldStdout io.Writer
 	if filename == "-" {
 		reader = NewReader(bufio.NewReader(Stdin), "<stdin>")
 		filename = ""
 	} else {
 		var err error
-		f, err := os.Open(filename)
+		input, err = os.Open(filename)
 		if err != nil {
 			fmt.Fprintln(Stderr, "Error: ", err)
 			return err
 		}
-		reader = NewReader(bufio.NewReader(f), filename)
+		reader = NewReader(bufio.NewReader(input), filename)
 		if phase == FORMAT && writeFlag {
-			var b bytes.Buffer
-			oldStdout := Stdout
-			Stdout = &b
-			defer func() {
-				Stdout = oldStdout
-				if err := f.Close(); err != nil {
-					fmt.Fprintln(Stderr, "Error: ", err)
-				}
-				out, err := os.Create(filename)
-				if err != nil {
-					fmt.Fprintln(Stderr, "Error: ", err)
-					return
-				}
-				if _, err := out.WriteString(b.String()); err != nil {
-					fmt.Fprintln(Stderr, "Error: ", err)
-				}
-				if err := out.Close(); err != nil {
-					fmt.Fprintln(Stderr, "Error: ", err)
-				}
-			}()
+			formatBuf = &bytes.Buffer{}
+			oldStdout = Stdout
+			Stdout = formatBuf
+			defer func() { Stdout = oldStdout }()
 		} else {
 			defer func() {
-				if err := f.Close(); err != nil {
+				if err := input.Close(); err != nil {
 					fmt.Fprintln(Stderr, "Error: ", err)
 				}
 			}()
@@ -60,5 +48,34 @@ func processFile(filename string, phase Phase) error {
 	if saveForRepl {
 		reader = NewReader(&replayable{reader}, "<replay>")
 	}
-	return ProcessReader(reader, filename, phase)
+	processErr := ProcessReader(reader, filename, phase)
+	if formatBuf == nil {
+		return processErr
+	}
+	if err := input.Close(); err != nil {
+		fmt.Fprintln(Stderr, "Error: ", err)
+		if processErr == nil {
+			processErr = err
+		}
+	}
+	if processErr != nil {
+		return processErr
+	}
+	out, err := os.Create(filename)
+	if err != nil {
+		fmt.Fprintln(Stderr, "Error: ", err)
+		return err
+	}
+	if _, err := out.WriteString(formatBuf.String()); err != nil {
+		fmt.Fprintln(Stderr, "Error: ", err)
+		if closeErr := out.Close(); closeErr != nil {
+			fmt.Fprintln(Stderr, "Error: ", closeErr)
+		}
+		return err
+	}
+	if err := out.Close(); err != nil {
+		fmt.Fprintln(Stderr, "Error: ", err)
+		return err
+	}
+	return nil
 }
