@@ -260,14 +260,7 @@ func scanFloat(str string, reader *Reader) Object {
 }
 
 func readNumber(reader *Reader) Object {
-	var b bytes.Buffer
-	d := reader.Get()
-	for !isDelimiter(d) {
-		b.WriteRune(d)
-		d = reader.Get()
-	}
-	reader.Unget()
-	str := b.String()
+	str := corereader.ScanUntilDelimiter(reader)
 	token, err := corereader.AnalyzeNumberToken(str)
 	if err != nil {
 		panic(invalidNumberError(reader, str))

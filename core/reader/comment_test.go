@@ -5,12 +5,13 @@ import "testing"
 type commentReader struct {
 	runes []rune
 	pos   int
+	eof   bool
 }
 
 func newCommentReader(s string) *commentReader { return &commentReader{runes: []rune(s)} }
 
 func (r *commentReader) Peek() rune {
-	if r.pos >= len(r.runes) {
+	if r.eof || r.pos >= len(r.runes) {
 		return EOF
 	}
 	return r.runes[r.pos]
@@ -18,13 +19,18 @@ func (r *commentReader) Peek() rune {
 
 func (r *commentReader) Get() rune {
 	ch := r.Peek()
-	if ch != EOF {
-		r.pos++
+	if ch == EOF {
+		r.eof = true
+		return EOF
 	}
+	r.pos++
 	return ch
 }
 
 func (r *commentReader) Unget() {
+	if r.eof {
+		return
+	}
 	if r.pos > 0 {
 		r.pos--
 	}
