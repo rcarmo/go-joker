@@ -94,7 +94,7 @@ race:
 	$(GO) test -race ./core ./std/runtime ./std/http ./std/pdf
 
 bench-sanity:
-	$(GO) test ./core -run '^$$' -bench '$(BENCH_REGEX)' -benchmem -benchtime=1x -count=3
+	$(GO) test ./benchmarks/core -run '^$$' -bench '$(BENCH_REGEX)' -benchmem -benchtime=1x -count=3
 
 compare-bench:
 	bash benchmarks/compare/collect.sh $(COMPARE_OUT)

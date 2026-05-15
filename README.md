@@ -113,7 +113,7 @@ The repository layout is being split along architectural boundaries. The module 
 
 ```bash
 go test ./core              # run all tests
-go test ./core -bench .     # run all benchmarks
+go test ./benchmarks/core -bench .     # run all benchmarks
 make core-contract-check    # focused object/protocol split guardrails
 make runtime-contract-check # focused runtime/execution-envelope guardrails
 make std-contract-check     # focused std native-boundary guardrails
@@ -137,7 +137,7 @@ bun benchmarks/cross_lang_bench.js
 go run ./tools/benchmarks/generate_svg.go ./benchmarks
 
 # Check the same broad CI benchmark smoke ceilings used by GitHub Actions
-go test ./core -bench 'BenchmarkCall|BenchmarkFib|BenchmarkTak|BenchmarkLoop|BenchmarkReduce|BenchmarkClosure|BenchmarkMap|BenchmarkVector|BenchmarkTransduce' -benchmem -benchtime=1s -count=3 > bench-results.txt
+go test ./benchmarks/core -bench 'BenchmarkCall|BenchmarkFib|BenchmarkTak|BenchmarkLoop|BenchmarkReduce|BenchmarkClosure|BenchmarkMap|BenchmarkVector|BenchmarkTransduce' -benchmem -benchtime=1s -count=3 > bench-results.txt
 tests/benchmark_ci_check.sh bench-results.txt
 ```
 

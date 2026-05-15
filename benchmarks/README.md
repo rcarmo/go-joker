@@ -139,7 +139,7 @@ A full benchmark/profile pass was recorded in [`docs/BENCHMARK_PROFILE_2026-05-1
 python3 benchmarks/run_benchmarks.py --runs 5 --bench 'BenchmarkCLBG|BenchmarkEval' --benchtime 5x
 
 # Parser benchmarks
-go test ./core -bench 'BenchmarkParse|BenchmarkDecode' -benchmem -benchtime 100x
+go test ./benchmarks/core -bench 'BenchmarkParse|BenchmarkDecode' -benchmem -benchtime 100x
 
 # Native parser benchmarks
 go test ./std/json ./std/yaml ./std/html -bench 'BenchmarkNative' -benchmem

@@ -20,7 +20,7 @@ jobs:
         run: mkdir -p "$TMPDIR"
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.26.3'
+          go-version: '1.25.10'
       - name: Build
         run: go build -o joker ./cmd/joker
       - name: Run tests
@@ -43,16 +43,16 @@ jobs:
         run: mkdir -p "$TMPDIR"
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.26.3'
+          go-version: '1.25.10'
 
       - name: Run VM microbenchmarks
         run: |
-          go test ./core -bench 'BenchmarkCall|BenchmarkFib|BenchmarkTak|BenchmarkLoop|BenchmarkReduce|BenchmarkClosure|BenchmarkMap|BenchmarkVector|BenchmarkTransduce' \
+          go test ./benchmarks/core -bench 'BenchmarkCall|BenchmarkFib|BenchmarkTak|BenchmarkLoop|BenchmarkReduce|BenchmarkClosure|BenchmarkMap|BenchmarkVector|BenchmarkTransduce' \
             -benchmem -benchtime=1s -count=3 | tee bench-results.txt
 
       - name: Run CLBG benchmarks
         run: |
-          go test ./core -bench 'BenchmarkCLBG' -benchmem -benchtime=3x -count=1 | tee -a bench-results.txt
+          go test ./benchmarks/core -bench 'BenchmarkCLBG' -benchmem -benchtime=3x -count=1 | tee -a bench-results.txt
 
       - name: Upload benchmark results
         uses: actions/upload-artifact@v4
