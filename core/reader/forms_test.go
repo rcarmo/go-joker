@@ -22,3 +22,15 @@ func TestMapFormHelpers(t *testing.T) {
 		t.Fatal("unexpected conditional pair result")
 	}
 }
+
+func TestFillMissingArgIndexes(t *testing.T) {
+	args := map[int]string{1: "a", 3: "c", -1: "rest"}
+	n := 0
+	FillMissingArgIndexes(args, func() string {
+		n++
+		return "gen"
+	})
+	if args[2] != "gen" || args[1] != "a" || args[3] != "c" || args[-1] != "rest" || n != 1 {
+		t.Fatalf("FillMissingArgIndexes result = %#v, generated %d", args, n)
+	}
+}

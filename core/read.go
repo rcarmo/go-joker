@@ -669,17 +669,7 @@ func readMeta(reader *Reader) *ArrayMap {
 }
 
 func fillInMissingArgs(args map[int]Symbol) {
-	max := 0
-	for k := range args {
-		if k > max {
-			max = k
-		}
-	}
-	for i := 1; i < max; i++ {
-		if _, ok := args[i]; !ok {
-			args[i] = generateSymbol("p__")
-		}
-	}
+	corereader.FillMissingArgIndexes(args, func() Symbol { return generateSymbol("p__") })
 }
 
 func makeFnForm(args map[int]Symbol, body Object) Object {

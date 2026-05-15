@@ -32,3 +32,19 @@ func ContinueDelimitedForms(peek rune, closing rune, pendingForms int) bool {
 func NeedsConditionalPair(pendingForms int, peek rune, closing rune) bool {
 	return pendingForms == 0 && peek == closing
 }
+
+// FillMissingArgIndexes fills missing positive argument indexes from 1 through
+// max-1. The caller supplies fresh values to preserve root symbol generation.
+func FillMissingArgIndexes[T any](args map[int]T, makeValue func() T) {
+	max := 0
+	for k := range args {
+		if k > max {
+			max = k
+		}
+	}
+	for i := 1; i < max; i++ {
+		if _, ok := args[i]; !ok {
+			args[i] = makeValue()
+		}
+	}
+}
