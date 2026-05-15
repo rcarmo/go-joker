@@ -35,6 +35,19 @@ func TestFillMissingArgIndexes(t *testing.T) {
 	}
 }
 
+func TestOrderedArgValues(t *testing.T) {
+	got := OrderedArgValues(map[int]string{2: "b", 1: "a", -1: "rest"}, "&")
+	want := []string{"a", "b", "&", "rest"}
+	if len(got) != len(want) {
+		t.Fatalf("OrderedArgValues length = %d, want %d (%#v)", len(got), len(want), got)
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Fatalf("OrderedArgValues[%d] = %q, want %q (%#v)", i, got[i], want[i], got)
+		}
+	}
+}
+
 func TestConditionalSpliceHelpers(t *testing.T) {
 	if !IsConditionalSplice('@') || IsConditionalSplice('x') {
 		t.Fatal("IsConditionalSplice mismatch")

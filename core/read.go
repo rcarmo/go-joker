@@ -646,16 +646,7 @@ func fillInMissingArgs(args map[int]Symbol) {
 
 func makeFnForm(args map[int]Symbol, body Object) Object {
 	fillInMissingArgs(args)
-	a := make([]Symbol, len(args))
-	for key, value := range args {
-		if key != -1 {
-			a[key-1] = value
-		}
-	}
-	if v, ok := args[-1]; ok {
-		a[len(args)-1] = SYMBOLS.amp
-		a = append(a, v)
-	}
+	a := corereader.OrderedArgValues(args, SYMBOLS.amp)
 	argVector := collectionConstruction.EmptyVector()
 	for _, v := range a {
 		argVector = argVector.Conjoin(v)
