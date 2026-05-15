@@ -1660,6 +1660,7 @@ var procLoadLibFromPath = func(args []Object) Object {
 	}
 	PanicOnErr(canonicalErr)
 	PanicOnErr(err)
+	defer func() { PanicOnErr(f.Close()) }()
 	reader := readerConstruction.NewReader(osutil.AsRuneReader(f), filename)
 	ProcessReaderFromEval(reader, filename)
 	return NIL
