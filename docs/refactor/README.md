@@ -117,6 +117,7 @@ Planned package boundaries:
 - [x] Add a collections extraction audit (`collections-extraction-audit.md`) before the first real collection mechanics move.
 - [x] Start collection mechanics extraction with generic vector slice helpers in `core/collections`.
 - [x] Move reader identifier rune classification into `core/reader`.
+- [x] Move reader identifier validation predicates/reasons into `core/reader`.
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
 - [x] Design generated bootstrap contract before generator path changes.
 - [x] Add `core/generated` data-only bootstrap payload contract types.

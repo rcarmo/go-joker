@@ -415,49 +415,31 @@ func readIdent(reader *Reader, first rune) Object {
 /* identifier), linting can helpfully find and warn about characters
 /* outside of this set (as extended via configuration).
 */
-func isCoreIdentRune(r rune) bool {
-	switch r {
-	case '*', '+', '!', '-', '?', '=', '<', '>', '&', '_', '.', '\'', '#', '$', ':', '%': // Used in clojure.core, joker.core, etc.
-		return true
-	}
-	return ('a' <= r && r <= 'z') || ('A' <= r && r <= 'Z') || ('0' <= r && r <= '9')
-}
+func isCoreIdentRune(r rune) bool { return corereader.IsCoreIdentRune(r) }
 
-const isValidCoreReason = "not a Letter nor (Decimal) Digit (category L nor Nd)"
+const isValidCoreReason = corereader.ValidCoreReason
 
-func isValidCore(r rune) bool {
-	return unicode.IsLetter(r) || unicode.IsDigit(r)
-}
+func isValidCore(r rune) bool { return corereader.IsValidCoreRune(r) }
 
-const isValidSymbolReason = "not a Letter, (Decimal) Digit, nor Symbol (category L, Nd, nor S)"
+const isValidSymbolReason = corereader.ValidSymbolReason
 
-func isValidSymbol(r rune) bool {
-	return unicode.IsLetter(r) || unicode.IsDigit(r) || unicode.IsSymbol(r)
-}
+func isValidSymbol(r rune) bool { return corereader.IsValidSymbolRune(r) }
 
-const isValidVisibleReason = "not a Letter, (Decimal) Digit, Symbol, Punctuation, nor Mark (category L, Nd, S, P, nor M)"
+const isValidVisibleReason = corereader.ValidVisibleReason
 
-func isValidVisible(r rune) bool {
-	return unicode.IsLetter(r) || unicode.IsDigit(r) || unicode.IsSymbol(r) || unicode.IsPunct(r) || unicode.IsMark(r)
-}
+func isValidVisible(r rune) bool { return corereader.IsValidVisibleRune(r) }
 
-const isValidUnicodeReason = "not a Unicode character"
+const isValidUnicodeReason = corereader.ValidUnicodeReason
 
-func isValidUnicode(r rune) bool {
-	return r <= unicode.MaxRune
-}
+func isValidUnicode(r rune) bool { return corereader.IsValidUnicodeRune(r) }
 
-const isValidASCIIReason = "not a (7-bit) ASCII character"
+const isValidASCIIReason = corereader.ValidASCIIReason
 
-func isValidASCII(r rune) bool {
-	return r <= unicode.MaxASCII
-}
+func isValidASCII(r rune) bool { return corereader.IsValidASCIIRune(r) }
 
-const isValidAnyReason = "not anything!?"
+const isValidAnyReason = corereader.ValidAnyReason
 
-func isValidAny(r rune) bool {
-	return true
-}
+func isValidAny(r rune) bool { return corereader.IsValidAnyRune(r) }
 
 var identValidationSetFn = isValidCore
 var identValidationSetWhy = isValidCoreReason
