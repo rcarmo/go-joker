@@ -309,15 +309,10 @@ func warnInvalidIdent(reader *Reader, s *string) {
 
 	k := 0
 	for _, r := range *s {
-		if !corereader.IsCoreIdentRune(r) && (!identValidationSetFn(r) || !identValidationRangeFn(r)) {
-			var explain string
-			if identValidationSetFn(r) {
-				explain = identValidationRangeWhy
-			} else if identValidationRangeFn(r) {
-				explain = identValidationSetWhy
-			} else {
-				explain = identValidationSetWhy + "; " + identValidationRangeWhy
-			}
+		setOK := identValidationSetFn(r)
+		rangeOK := identValidationRangeFn(r)
+		if !corereader.IsCoreIdentRune(r) && (!setOK || !rangeOK) {
+			explain := corereader.IdentValidationReason(r, setOK, identValidationSetWhy, rangeOK, identValidationRangeWhy)
 			msg := fmt.Sprintf("Impermissible character %q at %d in %q (%s)", r, k, *s, explain)
 			printReadWarning(reader, msg)
 		}

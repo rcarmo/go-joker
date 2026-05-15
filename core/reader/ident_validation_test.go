@@ -2,6 +2,21 @@ package reader
 
 import "testing"
 
+func TestIdentValidationReason(t *testing.T) {
+	if got := IdentValidationReason('x', true, "set", true, "range"); got != "" {
+		t.Fatalf("IdentValidationReason pass = %q, want empty", got)
+	}
+	if got := IdentValidationReason('x', true, "set", false, "range"); got != "range" {
+		t.Fatalf("IdentValidationReason range fail = %q", got)
+	}
+	if got := IdentValidationReason('x', false, "set", true, "range"); got != "set" {
+		t.Fatalf("IdentValidationReason set fail = %q", got)
+	}
+	if got := IdentValidationReason('x', false, "set", false, "range"); got != "set; range" {
+		t.Fatalf("IdentValidationReason both fail = %q", got)
+	}
+}
+
 func TestIdentValidationHelpers(t *testing.T) {
 	for _, r := range []rune{'a', 'Z', '0', '*', '+', '!', '-', '?', '=', '<', '>', '&', '_', '.', '\'', '#', '$', ':', '%'} {
 		if !IsCoreIdentRune(r) {

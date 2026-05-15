@@ -118,7 +118,7 @@ Planned package boundaries:
 - [x] Add a collections extraction audit (`collections-extraction-audit.md`) before the first real collection mechanics move.
 - [x] Start collection mechanics extraction with generic vector slice helpers in `core/collections`.
 - [x] Move reader identifier rune classification into `core/reader`.
-- [x] Move reader identifier validation predicates/reasons into `core/reader` and remove stale root wrappers.
+- [x] Move reader identifier validation predicates/reasons/explanations into `core/reader` and remove stale root wrappers.
 - [x] Move reader unicode escape parsing helpers into `core/reader`.
 - [x] Move reader simple string escape decoding into `core/reader`.
 - [x] Move reader number token classification into `core/reader`.

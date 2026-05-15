@@ -43,3 +43,19 @@ func IsValidASCIIRune(r rune) bool {
 func IsValidAnyRune(r rune) bool {
 	return true
 }
+
+// IdentValidationReason returns the explanatory reason for a rune that failed
+// the configured set/range validation predicates. Empty string means the rune
+// passed both predicates.
+func IdentValidationReason(r rune, setOK bool, setWhy string, rangeOK bool, rangeWhy string) string {
+	if setOK && rangeOK {
+		return ""
+	}
+	if setOK {
+		return rangeWhy
+	}
+	if rangeOK {
+		return setWhy
+	}
+	return setWhy + "; " + rangeWhy
+}
