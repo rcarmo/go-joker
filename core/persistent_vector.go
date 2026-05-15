@@ -1,5 +1,7 @@
 package core
 
+import corecollections "github.com/rcarmo/go-joker/core/collections"
+
 // Persistent Vector — Clojure-style 32-way branching trie with tail optimization.
 // Provides O(log32 n) assoc and O(1) amortized conj via structural sharing.
 //
@@ -103,9 +105,7 @@ func (v *PersistentVector) Nth(i int) Object {
 func (v *PersistentVector) Conj(val Object) *PersistentVector {
 	// Room in tail?
 	if v.count-v.tailOffset() < pvBranching {
-		newTail := make([]Object, len(v.tail)+1)
-		copy(newTail, v.tail)
-		newTail[len(v.tail)] = val
+		newTail := corecollections.AppendCopy(v.tail, val)
 		return &PersistentVector{
 			count: v.count + 1,
 			shift: v.shift,
@@ -164,9 +164,7 @@ func (v *PersistentVector) Assoc(i int, val Object) *PersistentVector {
 		return v.Conj(val)
 	}
 	if i >= v.tailOffset() {
-		newTail := make([]Object, len(v.tail))
-		copy(newTail, v.tail)
-		newTail[i-v.tailOffset()] = val
+		newTail := corecollections.AssocCopy(v.tail, i-v.tailOffset(), val)
 		return &PersistentVector{
 			count: v.count,
 			shift: v.shift,
@@ -204,8 +202,7 @@ func (v *PersistentVector) Pop() *PersistentVector {
 	}
 	// More than one element in tail?
 	if v.count-v.tailOffset() > 1 {
-		newTail := make([]Object, len(v.tail)-1)
-		copy(newTail, v.tail[:len(v.tail)-1])
+		newTail := corecollections.PopCopy(v.tail)
 		return &PersistentVector{
 			count: v.count - 1,
 			shift: v.shift,
