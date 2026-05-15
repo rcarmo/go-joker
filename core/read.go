@@ -119,8 +119,6 @@ func readSpecialCharacter(reader *Reader, ending string, r rune) Object {
 	return MakeReadObject(reader, Char{Ch: r})
 }
 
-func isJavaSpace(r rune) bool { return corereader.IsJavaSpace(r) }
-
 func isWhitespace(r rune) bool { return corereader.IsWhitespace(r) }
 
 func readComment(reader *Reader) Object {
