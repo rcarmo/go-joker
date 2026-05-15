@@ -164,31 +164,10 @@ func readCharacter(reader *Reader) Object {
 	if r == EOF {
 		panic(MakeReadError(reader, "Incomplete character literal"))
 	}
+	if ending, value, ok := corereader.NamedCharacter(r, reader.Peek()); ok {
+		return readSpecialCharacter(reader, ending, value)
+	}
 	switch r {
-	case 's':
-		if reader.Peek() == 'p' {
-			return readSpecialCharacter(reader, "pace", ' ')
-		}
-	case 'n':
-		if reader.Peek() == 'e' {
-			return readSpecialCharacter(reader, "ewline", '\n')
-		}
-	case 't':
-		if reader.Peek() == 'a' {
-			return readSpecialCharacter(reader, "ab", '\t')
-		}
-	case 'f':
-		if reader.Peek() == 'o' {
-			return readSpecialCharacter(reader, "ormfeed", '\f')
-		}
-	case 'b':
-		if reader.Peek() == 'a' {
-			return readSpecialCharacter(reader, "ackspace", '\b')
-		}
-	case 'r':
-		if reader.Peek() == 'e' {
-			return readSpecialCharacter(reader, "eturn", '\r')
-		}
 	case 'u':
 		if !corereader.IsDelimiter(reader.Peek()) {
 			return readUnicodeCharacter(reader, 4, 16)
