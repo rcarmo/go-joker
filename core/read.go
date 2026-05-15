@@ -295,22 +295,10 @@ func isIdentRune(r rune) bool { return corereader.IsIdentRune(r) }
 
 /* Reads (lexes) a token and returns either a Symbol or Keyword. */
 func readIdent(reader *Reader, first rune) Object {
-	var b bytes.Buffer
-	if first != ':' {
-		b.WriteRune(first)
+	str, lastAdded, scanErr := corereader.ScanIdentToken(reader, first)
+	if scanErr != nil {
+		panic(MakeReadError(reader, scanErr.Error()))
 	}
-	var lastAdded rune
-	r := reader.Get()
-	for isIdentRune(r) {
-		if r == ':' && lastAdded == ':' {
-			panic(MakeReadError(reader, "Invalid use of ':' in symbol name"))
-		}
-		b.WriteRune(r)
-		lastAdded = r
-		r = reader.Get()
-	}
-	reader.Unget()
-	str := b.String()
 	if err := corereader.ValidateIdentToken(first, str, lastAdded); err != nil {
 		panic(MakeReadError(reader, err.Error()))
 	}

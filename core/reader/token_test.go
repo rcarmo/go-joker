@@ -2,6 +2,22 @@ package reader
 
 import "testing"
 
+func TestScanIdentToken(t *testing.T) {
+	r := newCommentReader("bc def")
+	token, last, err := ScanIdentToken(r, 'a')
+	if err != nil || token != "abc" || last != 'c' {
+		t.Fatalf("ScanIdentToken = %q/%q/%v, want abc/c/nil", token, last, err)
+	}
+	if got := r.Peek(); got != ' ' {
+		t.Fatalf("remaining peek = %q, want space", got)
+	}
+
+	r = newCommentReader("::bad")
+	if _, _, err := ScanIdentToken(r, 'a'); err == nil || err.Error() != "Invalid use of ':' in symbol name" {
+		t.Fatalf("ScanIdentToken double colon error = %v", err)
+	}
+}
+
 func TestValidateIdentToken(t *testing.T) {
 	valid := []struct {
 		first rune
