@@ -1,6 +1,6 @@
 # Core package split audit
 
-Updated: 2026-05-14
+Updated: 2026-05-15
 
 ## Purpose
 
@@ -18,7 +18,7 @@ This is the R5 inventory for splitting the remaining `core` monolith after the i
 - concurrency/channel runtime
 - namespace/bootstrap/generated code
 - tracing adapters
-- tests and benchmarks
+- tests (Go benchmarks now live under `benchmarks/core`)
 
 This makes it too easy for features to reach across layers through unexported state and makes architectural intent hard to see from the repository layout.
 
@@ -29,8 +29,11 @@ Do not split everything at once. Move leaf or low-cycle families first, then hig
 ### 1. Already started
 
 - `core/trace` owns tracing/profiling aggregation state.
-- `core/ir` owns opcode names/constants, bytecode disassembly/counting, and shape analysis.
-- `core/wasm` owns leaf WASM binary encoding helpers.
+- `core/ir` owns opcode names/constants, bytecode disassembly/counting, shape analysis, and the neutral program model.
+- `core/wasm` owns leaf WASM binary encoding/module/host helpers.
+- `core/collections` owns root-independent collection mechanics such as generic slice storage, pair arrays, bitmap/hash-index helpers, and opaque trie nodes.
+- `core/reader` owns root-independent reader mechanics such as char classes, identifier validation, escape parsing, number-token classification, line rune readers, and raw IO wrappers.
+- `core/string` and `core/cursor` own root-independent string/cache/cursor mechanics.
 - `cmd/joker` owns the CLI entrypoint.
 
 ### 2. Runtime/object boundary
@@ -84,9 +87,10 @@ Current candidate files:
 - `vector.go`
 - related fast paths such as `reduce_fast.go`, `seq_ops_fast.go`, `range_fast.go` once interfaces are clear
 
-Risks:
+Status and risks:
 
-- collection types are part of the public runtime object model.
+- `core/collections` now owns pure mechanics helpers used by `ArrayVector`, legacy `Vector`, `PersistentVector`, and `HashMap` where safe.
+- collection types remain part of the public runtime object model.
 - reader/evaluator/std packages used to construct concrete collection types directly; current production call sites now route through `CollectionConstructionAdapter`, guarded by `construction_boundary_guard_test.go`.
 - numeric/hash/equality/protocol behavior crosses package boundaries.
 
@@ -107,14 +111,13 @@ Current candidate files:
 - `reader.go`
 - `read.go`
 - `read_conditional_test.go`
-- `rune_window.go`
-- line rune reader and raw buffered/IO reader mechanics now live in `core/reader`
-- `tagged_literals.go`
+- tagged literal handling inside `read.go`
 - parser-adjacent pieces in `parse.go`, `parse_slow_init.go`
 
-Risks:
+Status and risks:
 
-- reader/parser used to construct concrete `core` objects and expressions directly; current production call sites now route through `ReaderConstructionAdapter`, guarded by `construction_boundary_guard_test.go`.
+- `core/reader` now owns leaf mechanics: line rune reader, raw file/buffer/buffered/IO wrappers, char classes, identifier checks/validation, unicode/string escape parsing, and number-token classification.
+- reader/parser still constructs concrete `core` objects and expressions directly; current production call sites now route through `ReaderConstructionAdapter`, guarded by `construction_boundary_guard_test.go`.
 - tagged literal handling touches namespace/runtime metadata.
 - parse/eval boundaries are not yet clean.
 

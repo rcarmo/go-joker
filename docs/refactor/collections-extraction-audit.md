@@ -1,6 +1,8 @@
 # Collections extraction audit
 
-Current root collection families are still strongly coupled to root `core` contracts. The next moves should split storage/mechanics from Object/protocol adapters before moving concrete implementations.
+Updated: 2026-05-15
+
+Current root collection families are still strongly coupled to root `core` contracts. The current safe path is to keep splitting storage/mechanics from Object/protocol adapters before moving concrete implementations.
 
 ## Root collection file groups
 
@@ -30,6 +32,17 @@ To move storage/mechanics without importing root `core`, `core/collections` need
 - Metadata/info stays root-side initially; moved mechanics should not own `InfoHolder`, `MetaHolder`, or `TYPE`.
 - Printing/formatting stays root-side initially.
 - Callable/proc registration stays root-side.
+
+## Mechanics extracted so far
+
+`core/collections` now owns root-independent mechanics with direct package tests:
+
+- `vector_storage.go`: generic clone/append/assoc/assoc2/pop/from-values slice helpers.
+- `trie_node.go`: opaque fixed-width trie node clone/path helpers used by persistent-vector trie mechanics.
+- `pair_storage.go`: generic pair-array append/insert/remove helpers used by hash-map node arrays.
+- `bitmap.go`: bit-count/hash-mask/bitmap-position helpers used by hash-map indexing.
+
+Root `ArrayVector`, legacy `Vector`, `PersistentVector`, and `HashMap` delegate to these helpers where safe. Concrete Object/protocol behavior remains in root.
 
 ## Safe first move candidate
 

@@ -1,18 +1,18 @@
 # Code structure, module boundaries, and coverage audit
 
 Generated: 2026-05-10
-Updated: 2026-05-14
+Updated: 2026-05-15
 
 ## Executive summary
 
 The repository is functional and well-tested at the behavior/regression level, but it has a classic interpreter/runtime shape: a large `core` package owns most object model, evaluator, reader/parser, namespace, numeric, concurrency, IR, and WASM responsibilities. `std/*` packages are better bounded: each namespace has a small registration wrapper plus native implementation/tests.
 
-Recent feature work improved boundaries for new code (`std/transit`, `std/system`, `std/jit` export APIs), and the refactor pass has now moved the CLI to `cmd/joker`, extracted leaf packages under `core/{trace,ir,wasm,runtime}`, introduced data-only generated payloads under `core/generated`, and added construction adapters/guards for collection and reader boundaries. The older `core` package still needs gradual decomposition. The safest path is to keep defining internal contracts first and enforce them with small tests, docs, and Makefile targets.
+Recent feature work improved boundaries for new code (`std/transit`, `std/system`, `std/jit` export APIs), and the refactor pass has now moved the CLI to `cmd/joker`, extracted leaf packages under `core/{trace,ir,wasm,runtime,collections,reader,string,cursor}`, introduced data-only generated payloads under `core/generated`, and added construction adapters/guards for collection and reader boundaries. The older `core` package still needs gradual decomposition. The safest path is to keep defining internal contracts first and enforce them with small tests, docs, and Makefile targets.
 
 ## Current package/module shape
 
 - `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
-- `core/trace`, `core/ir`, `core/wasm`, and small `core/runtime` leaf helpers now own extracted helpers with direct package tests.
+- `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/collections`, `core/reader`, `core/string`, and `core/cursor` own extracted helpers with direct package tests.
 - `core/` is still the runtime kernel and contains:
   - object/type model (`object.go`, `types_*`)
   - persistent collection implementations
@@ -68,9 +68,9 @@ Recent `std/transit` and `std/system` match this pattern.
 - `core/parse.go`, `core/read.go`, `core/eval.go` — acceptable for an interpreter but should remain isolated from feature-specific extensions.
 - `core/numbers.go` — numeric contracts are critical and now need focused tests after BigInt/BigDecimal changes.
 - remaining `core/ir_*` / `core/wasm_*` — partially extracted, but compiler/executor/runtime pieces still depend on root-core object and call contracts.
-- `core/persistent_vector.go` — object semantics have been tightened (standard vector printing, counted/indexed equality/hash, `At`/`Seq`, info/meta helpers), making it a better template for eventual collection extraction.
+- `core/persistent_vector.go` — object semantics have been tightened and storage/trie mechanics now delegate into `core/collections`, making it a better template for eventual collection extraction.
 
-Recommendation: avoid broad collection/reader/evaluator moves until `docs/refactor/object-protocol-contracts.md` contracts are made concrete. Current production collection and reader construction call sites are routed through adapters and guarded against drift, but concrete implementations still depend on root object/evaluator internals. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
+Recommendation: avoid broad collection/reader/evaluator moves until `docs/refactor/object-protocol-contracts.md` contracts are made concrete. Current production collection and reader construction call sites are routed through adapters and guarded against drift, and pure mechanics/lexical helpers have started moving to `core/collections` and `core/reader`. Concrete implementations still depend on root object/evaluator internals. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
 
 ### 2. Runtime-installed Var metadata is implicit
 

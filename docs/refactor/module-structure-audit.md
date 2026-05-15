@@ -1,6 +1,6 @@
 # Module structure audit
 
-Updated: 2026-05-14
+Updated: 2026-05-15
 
 ## Scope
 
@@ -24,6 +24,10 @@ core/generated           # data-only generated bootstrap payload contracts/sourc
 core/ir                  # extracted IR opcode/diagnostic/analysis helpers and neutral Program model
 core/runtime             # extracted runtime feature flags and leaf helpers
 core/wasm                # extracted WASM encoding/module/host metadata helpers
+core/collections         # extracted collection storage/bitmap/trie mechanics
+core/reader              # extracted reader lexical/token/IO mechanics
+core/string              # extracted string mechanics
+core/cursor              # extracted string cursor mechanics
 std/*                             # namespace-oriented standard library packages
 tests                             # integration/parity/Babashka fixture tests
 benchmarks                        # benchmark/report tooling
@@ -34,12 +38,12 @@ Approximate Go file counts at this audit:
 
 | Area | Go files | Notes |
 |---|---:|---|
-| `core` total | ~200 | includes tests and extracted packages |
-| `core` root | ~190 | still too broad; largest remaining target, but root generated files are shrinking |
+| `core` total | ~240 | includes tests and extracted packages |
+| `core` root | 136 | still too broad; generated files and still-coupled runtime/object code remain here |
 | `std` | ~116 | mostly healthy namespace-oriented packages, with more direct boundary tests |
 | `cmd/joker` | 22 | clean CLI package after root move, now split across cohesive files plus focused tests |
 | `tests` | 2 | integration harnesses and fixtures live under subdirs |
-| `benchmarks` | 7 | mixed benchmark helpers, most build-tagged ignore |
+| `benchmarks` | 7 | benchmark harnesses now live under `benchmarks/core`; report tooling should stay under `tools/benchmarks` |
 
 ## Improvements already made
 
@@ -55,14 +59,15 @@ Approximate Go file counts at this audit:
   - `make refactor-internals-check`
   - `make core-contract-check`
 - Refactor documents consolidated under `docs/refactor/`.
-- Leaf/data packages extracted under `core/{generated,trace,ir,runtime,wasm}`.
+- Leaf/data packages extracted under `core/{generated,trace,ir,runtime,wasm,collections,reader,string,cursor}`.
 - Collection and reader construction adapters plus boundary guards now prevent new direct construction drift before package moves.
+- Root-independent collection storage/bitmap/trie mechanics and reader lexical/token/IO mechanics have started moving to real packages without importing root `core`.
 
 ## Remaining structural issues
 
 ### 1. Root `core` is still too large
 
-`core` root still mixes object model, collections, reader/parser, evaluator, runtime, IR compiler/executor, WASM lowering/runtime, generated bootstrap, and benchmarks/tests.
+`core` root still mixes object model, concrete collections, reader/parser orchestration, evaluator, runtime, IR compiler/executor, WASM lowering/runtime, generated bootstrap, and tests. Go benchmarks have moved to `benchmarks/core` and are guarded against returning to root `core`.
 
 Current root clustering by filename indicates the next logical seams:
 
