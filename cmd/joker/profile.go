@@ -14,6 +14,8 @@ var runningProfile interface {
 	Stop()
 }
 
+var runningCPUProfileFile *os.File
+
 func startProfiling() error {
 	if cpuProfileName != "" {
 		switch profilerType {
@@ -29,7 +31,12 @@ func startProfiling() error {
 			if cpuProfileRateFlag {
 				runtime.SetCPUProfileRate(cpuProfileRate)
 			}
-			pprof.StartCPUProfile(f)
+			if err := pprof.StartCPUProfile(f); err != nil {
+				f.Close()
+				cpuProfileName = ""
+				return fmt.Errorf("could not start CPU profile `%s`: %w", name, err)
+			}
+			runningCPUProfileFile = f
 			fmt.Fprintf(Stderr, "Profiling started at rate=%d. See file `%s'.\n",
 				cpuProfileRate, cpuProfileName)
 		default:
@@ -45,6 +52,12 @@ func finish() {
 		runningProfile = nil
 	} else if cpuProfileName != "" {
 		pprof.StopCPUProfile()
+		if runningCPUProfileFile != nil {
+			if err := runningCPUProfileFile.Close(); err != nil {
+				fmt.Fprintf(Stderr, "Error: Could not close CPU profile `%s': %v\n", cpuProfileName, err)
+			}
+			runningCPUProfileFile = nil
+		}
 		fmt.Fprintf(Stderr, "Profiling stopped. See file `%s'.\n", cpuProfileName)
 		cpuProfileName = ""
 	}
@@ -54,13 +67,18 @@ func finish() {
 		if err != nil {
 			fmt.Fprintf(Stderr, "Error: Could not create memory profile `%s': %v\n",
 				memProfileName, err)
+			memProfileName = ""
+			return
 		}
 		runtime.GC() // get up-to-date statistics
 		if err := pprof.WriteHeapProfile(f); err != nil {
 			fmt.Fprintf(Stderr, "Error: Could not write memory profile `%s': %v\n",
 				memProfileName, err)
 		}
-		f.Close()
+		if err := f.Close(); err != nil {
+			fmt.Fprintf(Stderr, "Error: Could not close memory profile `%s': %v\n",
+				memProfileName, err)
+		}
 		fmt.Fprintf(Stderr, "Memory profile rate=%d written to `%s'.\n",
 			runtime.MemProfileRate, memProfileName)
 		memProfileName = ""
