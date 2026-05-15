@@ -463,7 +463,7 @@ func readCondList(reader *Reader) Object {
 	eatWhitespace(reader)
 	r := reader.Peek()
 	var res Object = nil
-	for r != ')' || len(forms) != 0 {
+	for corereader.ContinueDelimitedForms(r, ')', len(forms)) {
 		if res == nil {
 			var feature Object
 			feature, forms = readMulti(reader, forms)
@@ -474,7 +474,7 @@ func readCondList(reader *Reader) Object {
 				panic(MakeReadError(reader, "Feature should be a keyword"))
 			}
 			eatWhitespace(reader)
-			if len(forms) == 0 && reader.Peek() == ')' {
+			if corereader.NeedsConditionalPair(len(forms), reader.Peek(), ')') {
 				reader.Get()
 				readError(reader, "Reader conditional requires an even number of forms")
 				return feature

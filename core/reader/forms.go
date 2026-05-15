@@ -18,3 +18,17 @@ func HasEvenFormCount(count int) bool {
 func IsBareArgLiteral(peek rune) bool {
 	return IsWhitespace(peek) || IsTerminatingMacro(peek)
 }
+
+// ContinueDelimitedForms reports whether a delimited form reader should keep
+// reading because the closing delimiter has not been reached or because there
+// are pending spliced forms to drain.
+func ContinueDelimitedForms(peek rune, closing rune, pendingForms int) bool {
+	return peek != closing || pendingForms != 0
+}
+
+// NeedsConditionalPair reports whether reader conditional parsing hit a closing
+// delimiter immediately after a feature, which means the conditional has an odd
+// number of forms.
+func NeedsConditionalPair(pendingForms int, peek rune, closing rune) bool {
+	return pendingForms == 0 && peek == closing
+}

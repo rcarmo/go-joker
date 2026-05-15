@@ -15,4 +15,10 @@ func TestMapFormHelpers(t *testing.T) {
 	if !IsBareArgLiteral(' ') || !IsBareArgLiteral(')') || IsBareArgLiteral('1') {
 		t.Fatal("unexpected bare arg literal classification")
 	}
+	if !ContinueDelimitedForms('x', ')', 0) || !ContinueDelimitedForms(')', ')', 1) || ContinueDelimitedForms(')', ')', 0) {
+		t.Fatal("unexpected delimited form continuation result")
+	}
+	if !NeedsConditionalPair(0, ')', ')') || NeedsConditionalPair(1, ')', ')') || NeedsConditionalPair(0, 'x', ')') {
+		t.Fatal("unexpected conditional pair result")
+	}
 }
