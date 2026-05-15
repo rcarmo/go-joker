@@ -7,7 +7,10 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
+
+var externalHTTPClient = &http.Client{Timeout: 30 * time.Second}
 
 func ExternalHTTPSourceToPath(home, lib, url string) (string, error) {
 	localBase := filepath.Join(home, ".jokerd", "deps", strings.SplitN(url, "//", 2)[1])
@@ -23,13 +26,16 @@ func ExternalHTTPSourceToPath(home, lib, url string) (string, error) {
 		if !strings.HasSuffix(url, ".joke") {
 			url = url + libBase
 		}
-		resp, err := http.Get(url)
+		resp, err := externalHTTPClient.Get(url)
 		if err != nil {
 			return "", err
 		}
-		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
+			closeErr := resp.Body.Close()
+			if closeErr != nil {
+				return "", closeErr
+			}
 			return "", fmt.Errorf("unable to retrieve: %s\nserver response: %d", url, resp.StatusCode)
 		}
 
@@ -38,12 +44,16 @@ func ExternalHTTPSourceToPath(home, lib, url string) (string, error) {
 			return "", err
 		}
 		_, copyErr := io.Copy(out, resp.Body)
-		closeErr := out.Close()
+		bodyCloseErr := resp.Body.Close()
+		outCloseErr := out.Close()
 		if copyErr != nil {
 			return "", copyErr
 		}
-		if closeErr != nil {
-			return "", closeErr
+		if bodyCloseErr != nil {
+			return "", bodyCloseErr
+		}
+		if outCloseErr != nil {
+			return "", outCloseErr
 		}
 	}
 
