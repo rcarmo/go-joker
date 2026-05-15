@@ -461,23 +461,10 @@ func SetIdentRangeAny() {
 }
 
 func readRegex(reader *Reader) Object {
-	var b bytes.Buffer
-	r := reader.Get()
-	for r != '"' {
-		if r == EOF {
-			panic(MakeReadError(reader, "Non-terminated regex literal"))
-		}
-		b.WriteRune(r)
-		if r == '\\' {
-			r = reader.Get()
-			if r == EOF {
-				panic(MakeReadError(reader, "Non-terminated regex literal"))
-			}
-			b.WriteRune(r)
-		}
-		r = reader.Get()
+	s, ok := corereader.ScanRegexLiteral(reader)
+	if !ok {
+		panic(MakeReadError(reader, "Non-terminated regex literal"))
 	}
-	s := b.String()
 	regex, err := regexp.Compile(s)
 	if err != nil {
 		if LINTER_MODE {

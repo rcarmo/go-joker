@@ -127,6 +127,7 @@ Planned package boundaries:
 - [x] Move reader initial token classification into `core/reader`.
 - [x] Move reader comment scanning into `core/reader`.
 - [x] Move reader string unicode escape scanning into `core/reader`.
+- [x] Move reader regex literal body scanning into `core/reader`.
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
 - [x] Design generated bootstrap contract before generator path changes.
 - [x] Add `core/generated` data-only bootstrap payload contract types.
