@@ -268,70 +268,29 @@ func scanFloat(str string, reader *Reader) Object {
 
 func readNumber(reader *Reader) Object {
 	var b bytes.Buffer
-	isDouble, isHex, isExp, isRatio, baseLen, nonDigits := false, false, false, false, 0, 0
 	d := reader.Get()
-	last := d
 	for !isDelimiter(d) {
-		switch d {
-		case '.':
-			isDouble = true
-		case '/':
-			isRatio = true
-		case 'x', 'X':
-			isHex = true
-		case 'e', 'E':
-			isExp = true
-		case 'r', 'R':
-			if baseLen == 0 {
-				baseLen = b.Len()
-			}
-		}
-		if !unicode.IsDigit(d) {
-			nonDigits++
-		}
 		b.WriteRune(d)
-		last = d
 		d = reader.Get()
 	}
 	reader.Unget()
 	str := b.String()
-	if baseLen != 0 {
-		baseInt, err := numutil.ParseInt(str[0:baseLen], 0, 0)
-		if err != nil {
-			panic(invalidNumberError(reader, str))
-		}
-		negative := false
-		if baseInt < 0 {
-			baseInt = -baseInt
-			negative = true
-		}
-		if baseInt < 2 || baseInt > 36 {
-			panic(invalidNumberError(reader, str))
-		}
-		var number string
-		if negative {
-			number = "-" + str[baseLen+1:]
-		} else {
-			number = str[baseLen+1:] // Avoid an expensive catenation in positive/zero case
-		}
-		return scanInt(str, number, int(baseInt), reader)
+	token, err := corereader.AnalyzeNumberToken(str)
+	if err != nil {
+		panic(invalidNumberError(reader, str))
 	}
-	if isRatio {
-		if nonDigits > 2 || nonDigits > 1 && str[0] != '-' && str[0] != '+' {
-			panic(invalidNumberError(reader, str))
-		}
-		return scanRatio(str, reader)
+	switch token.Kind {
+	case corereader.NumberTokenRatio:
+		return scanRatio(token.Digits, reader)
+	case corereader.NumberTokenBigInt:
+		return scanBigInt(token.Original, token.Digits, token.Base, reader)
+	case corereader.NumberTokenBigFloat:
+		return scanBigFloat(token.Original, token.Digits, reader)
+	case corereader.NumberTokenFloat:
+		return scanFloat(token.Digits, reader)
+	default:
+		return scanInt(token.Original, token.Digits, token.Base, reader)
 	}
-	if last == 'N' {
-		return scanBigInt(str, str[:b.Len()-1], 0, reader)
-	}
-	if last == 'M' {
-		return scanBigFloat(str, str[:b.Len()-1], reader)
-	}
-	if isDouble || (!isHex && isExp) {
-		return scanFloat(str, reader)
-	}
-	return scanInt(str, str, 0, reader)
 }
 
 /*
