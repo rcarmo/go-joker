@@ -1036,10 +1036,10 @@ func readSymbolicValue(reader *Reader) Object {
 
 func readDispatch(reader *Reader) (Object, bool) {
 	r := reader.Get()
-	switch r {
-	case '"':
+	switch corereader.ClassifyDispatch(r) {
+	case corereader.DispatchRegex:
 		return readRegex(reader), false
-	case '\'':
+	case corereader.DispatchVar:
 		popPos()
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
@@ -1047,14 +1047,14 @@ func readDispatch(reader *Reader) (Object, bool) {
 			return nextObj, false
 		}
 		return DeriveReadObject(nextObj, NewListFrom(DeriveReadObject(nextObj, SYMBOLS._var), nextObj)), false
-	case '_':
+	case corereader.DispatchDiscard:
 		// Only possible in FORMAT mode, otherwise
 		// eatWhitespaces eats #_
 		popPos()
 		nextObj := readFirst(reader)
 		addPrefix(nextObj, "#_")
 		return nextObj, false
-	case '^':
+	case corereader.DispatchMeta:
 		popPos()
 		if FORMAT_MODE {
 			nextObj := readFirst(reader)
@@ -1062,9 +1062,9 @@ func readDispatch(reader *Reader) (Object, bool) {
 			return nextObj, false
 		}
 		return readWithMeta(reader), false
-	case '{':
+	case corereader.DispatchSet:
 		return readSet(reader), false
-	case '(':
+	case corereader.DispatchFn:
 		popPos()
 		reader.Unget()
 		if FORMAT_MODE {
@@ -1077,11 +1077,11 @@ func readDispatch(reader *Reader) (Object, bool) {
 		res := makeFnForm(ARGS, fn)
 		ARGS = nil
 		return res, false
-	case '?':
+	case corereader.DispatchConditional:
 		return readConditional(reader)
-	case ':':
+	case corereader.DispatchNamespacedMap:
 		return readNamespacedMap(reader), false
-	case '#':
+	case corereader.DispatchSymbolicValue:
 		return readSymbolicValue(reader), false
 	}
 	popPos()
