@@ -122,14 +122,7 @@ func readSpecialCharacter(reader *Reader, ending string, r rune) Object {
 func isWhitespace(r rune) bool { return corereader.IsWhitespace(r) }
 
 func readComment(reader *Reader) Object {
-	var b bytes.Buffer
-	r := reader.Peek()
-	for r != '\n' && r != EOF {
-		b.WriteRune(r)
-		reader.Get()
-		r = reader.Peek()
-	}
-	return MakeReadObject(reader, Comment{C: b.String()})
+	return MakeReadObject(reader, Comment{C: corereader.ReadCommentText(reader)})
 }
 
 func eatWhitespace(reader *Reader) {
