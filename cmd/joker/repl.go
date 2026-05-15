@@ -41,18 +41,18 @@ func completer(line string, pos int) (head string, c []string, tail string) {
 	if ns == nil {
 		return
 	}
-	for k, _ := range ns.Mappings() {
+	for k := range ns.Mappings() {
 		if strings.HasPrefix(*k, prefix) {
 			c = append(c, *k)
 		}
 	}
 	if addNamespaces {
-		for k, _ := range GLOBAL_ENV.Namespaces {
+		for k := range GLOBAL_ENV.Namespaces {
 			if strings.HasPrefix(*k, prefix) {
 				c = append(c, *k)
 			}
 		}
-		for k, _ := range ns.Aliases() {
+		for k := range ns.Aliases() {
 			if strings.HasPrefix(*k, prefix) {
 				c = append(c, *k)
 			}

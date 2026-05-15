@@ -438,7 +438,7 @@ func main() {
 
 	{
 		otherNs := []string{}
-		for nsNamePtr, _ := range GLOBAL_ENV.Namespaces {
+		for nsNamePtr := range GLOBAL_ENV.Namespaces {
 			nsName := *nsNamePtr
 			index, found := genEnv.Namespaces[nsName]
 			if !found {
@@ -528,7 +528,7 @@ func init() {
 		if runtimePtr, found := genEnv.Runtimes[ns]; found {
 			runtime := *runtimePtr
 			if requireds, yes := genEnv.Requireds[ns]; yes && requireds != nil {
-				for r, _ := range *requireds {
+				for r := range *requireds {
 					rqNsName := r.ToString(false)
 					filename := coreSourceFilename[rqNsName]
 					if filename == "" {
@@ -791,7 +791,7 @@ func AddImport(imports *Imports, local, full string, okToSubstitute bool) string
 
 func sortedImports(pi *Imports, f func(k string, v *Import)) {
 	var keys []string
-	for k, _ := range pi.FullNames {
+	for k := range pi.FullNames {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
