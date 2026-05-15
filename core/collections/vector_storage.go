@@ -23,6 +23,14 @@ func AssocCopy[T any](src []T, i int, val T) []T {
 	return dst
 }
 
+// Assoc2Copy returns a cloned slice with indexes i and j set to valI and valJ.
+func Assoc2Copy[T any](src []T, i int, valI T, j int, valJ T) []T {
+	dst := CloneSlice(src)
+	dst[i] = valI
+	dst[j] = valJ
+	return dst
+}
+
 // PopCopy returns a cloned slice with the last element removed.
 func PopCopy[T any](src []T) []T {
 	dst := CloneSlice(src)

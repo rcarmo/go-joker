@@ -500,22 +500,15 @@ func bitpos(hash uint32, shift uint) int {
 }
 
 func cloneAndSet(array []interface{}, i int, a interface{}) []interface{} {
-	res := clone(array)
-	res[i] = a
-	return res
+	return corecollections.AssocCopy(array, i, a)
 }
 
 func cloneAndSet2(array []interface{}, i int, a interface{}, j int, b interface{}) []interface{} {
-	res := clone(array)
-	res[i] = a
-	res[j] = b
-	return res
+	return corecollections.Assoc2Copy(array, i, a, j, b)
 }
 
 func cloneAndSetNode(array []Node, i int, a Node) []Node {
-	res := corecollections.CloneSlice(array)
-	res[i] = a
-	return res
+	return corecollections.AssocCopy(array, i, a)
 }
 
 func createNode(shift uint, key1 Object, val1 Object, key2hash uint32, key2 Object, val2 Object) Node {

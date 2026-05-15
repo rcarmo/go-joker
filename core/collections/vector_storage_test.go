@@ -30,6 +30,11 @@ func TestVectorStorageCopyOperations(t *testing.T) {
 		t.Fatalf("AssocCopy result/source = %#v / %#v", assoc, src)
 	}
 
+	assoc2 := Assoc2Copy(src, 0, "A", 2, "C")
+	if assoc2[0] != "A" || assoc2[2] != "C" || src[0] != "a" || src[2] != "c" {
+		t.Fatalf("Assoc2Copy result/source = %#v / %#v", assoc2, src)
+	}
+
 	popped := PopCopy(src)
 	if len(popped) != 2 || popped[1] != "b" || len(src) != 3 {
 		t.Fatalf("PopCopy result/source = %#v / %#v", popped, src)
