@@ -128,7 +128,7 @@ func eatWhitespace(reader *Reader) {
 			r = reader.Get()
 			continue
 		}
-		if (r == ';' || (r == '#' && reader.Peek() == '!')) && !FORMAT_MODE {
+		if (r == ';' || (r == '#' && corereader.IsCommentStart(r, reader.Peek()))) && !FORMAT_MODE {
 			for r != '\n' && r != EOF {
 				r = reader.Get()
 			}
@@ -1179,7 +1179,7 @@ func Read(reader *Reader) (Object, bool) {
 	if r == ',' {
 		return MakeReadObject(reader, Comment{C: ","}), false
 	}
-	if r == ';' || (r == '#' && reader.Peek() == '!') {
+	if r == ';' || (r == '#' && corereader.IsCommentStart(r, reader.Peek())) {
 		reader.Unget()
 		return readComment(reader), false
 	}
@@ -1264,7 +1264,7 @@ func Read(reader *Reader) (Object, bool) {
 		return readDispatch(reader)
 	case r == EOF:
 		panic(MakeReadError(reader, "Unexpected end of file"))
-	case r == ')' || r == ']' || r == '}':
+	case corereader.IsClosingDelimiter(r):
 		panic(MakeReadError(reader, "Unmatched delimiter: "+string(r)))
 	default:
 		return readIdentFn(reader, r), false

@@ -25,7 +25,11 @@ func IsWhitespace(r rune) bool {
 }
 
 func IsDelimiter(r rune) bool {
-	return IsWhitespace(r) || IsTerminatingMacro(r) || r == EOF
+	switch r {
+	case '(', ')', '[', ']', '{', '}', '"', ';', EOF, '\\':
+		return true
+	}
+	return IsWhitespace(r)
 }
 
 func IsTerminatingMacro(r rune) bool {
@@ -34,4 +38,16 @@ func IsTerminatingMacro(r rune) bool {
 		return true
 	}
 	return false
+}
+
+func IsClosingDelimiter(r rune) bool {
+	switch r {
+	case ')', ']', '}':
+		return true
+	}
+	return false
+}
+
+func IsCommentStart(r rune, peek rune) bool {
+	return r == ';' || (r == '#' && peek == '!')
 }

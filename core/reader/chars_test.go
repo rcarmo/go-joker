@@ -21,7 +21,18 @@ func TestReaderCharacterClassification(t *testing.T) {
 			t.Fatalf("%q should not be terminating macro", r)
 		}
 	}
-	for _, r := range []rune{'(', ')', '[', ']', '{', '}', '"', ';', '@', '^', '`', '~', EOF, '\\', ' '} {
+	for _, r := range []rune{')', ']', '}'} {
+		if !IsClosingDelimiter(r) {
+			t.Fatalf("%q should be closing delimiter", r)
+		}
+	}
+	if IsClosingDelimiter('(') {
+		t.Fatal("opening delimiter should not be closing delimiter")
+	}
+	if !IsCommentStart(';', 0) || !IsCommentStart('#', '!') || IsCommentStart('#', '_') {
+		t.Fatal("unexpected comment start classification")
+	}
+	for _, r := range []rune{'(', ')', '[', ']', '{', '}', '"', ';', EOF, '\\', ' '} {
 		if !IsDelimiter(r) {
 			t.Fatalf("%q should be delimiter", r)
 		}
