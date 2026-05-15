@@ -95,8 +95,6 @@ func (err ReadError) Error() string {
 	return fmt.Sprintf("%s:%d:%d: Read error: %s", filename(err.filename), err.line, err.column, err.msg)
 }
 
-func isDelimiter(r rune) bool { return corereader.IsDelimiter(r) }
-
 func eatString(reader *Reader, str string) {
 	if r, ok := corereader.ConsumeExpected(reader, str); !ok {
 		panic(MakeReadError(reader, fmt.Sprintf("Unexpected character %U", r)))
@@ -115,8 +113,6 @@ func readSpecialCharacter(reader *Reader, ending string, r rune) Object {
 	return MakeReadObject(reader, Char{Ch: r})
 }
 
-func isWhitespace(r rune) bool { return corereader.IsWhitespace(r) }
-
 func readComment(reader *Reader) Object {
 	return MakeReadObject(reader, Comment{C: corereader.ReadCommentText(reader)})
 }
@@ -128,7 +124,7 @@ func eatWhitespace(reader *Reader) {
 			reader.Unget()
 			break
 		}
-		if isWhitespace(r) {
+		if corereader.IsWhitespace(r) {
 			r = reader.Get()
 			continue
 		}
@@ -194,11 +190,11 @@ func readCharacter(reader *Reader) Object {
 			return readSpecialCharacter(reader, "eturn", '\r')
 		}
 	case 'u':
-		if !isDelimiter(reader.Peek()) {
+		if !corereader.IsDelimiter(reader.Peek()) {
 			return readUnicodeCharacter(reader, 4, 16)
 		}
 	case 'o':
-		if !isDelimiter(reader.Peek()) {
+		if !corereader.IsDelimiter(reader.Peek()) {
 			return readUnicodeCharacter(reader, 3, 8)
 		}
 	}
@@ -767,15 +763,6 @@ func makeFnForm(args map[int]Symbol, body Object) Object {
 	return DeriveReadObject(body, NewListFrom(MakeSymbol("joker.core/fn"), argVector, body))
 }
 
-func isTerminatingMacro(r rune) bool {
-	switch r {
-	case '"', ';', '@', '^', '`', '~', '(', ')', '[', ']', '{', '}', '\\':
-		return true
-	default:
-		return false
-	}
-}
-
 func genSym(prefix string, postfix string) Symbol {
 	GENSYM++
 	return MakeSymbol(fmt.Sprintf("%s%d%s", prefix, GENSYM, postfix))
@@ -795,7 +782,7 @@ func registerArg(index int) Symbol {
 
 func readArgSymbol(reader *Reader) Object {
 	r := reader.Peek()
-	if isWhitespace(r) || isTerminatingMacro(r) {
+	if corereader.IsWhitespace(r) || corereader.IsTerminatingMacro(r) {
 		return MakeReadObject(reader, registerArg(1))
 	}
 	obj := readFirst(reader)
@@ -1021,12 +1008,12 @@ func readNamespacedMap(reader *Reader) Object {
 	}
 	var sym Object
 	r := reader.Get()
-	if isWhitespace(r) {
+	if corereader.IsWhitespace(r) {
 		if !auto {
 			reader.Unget()
 			panic(MakeReadError(reader, "Namespaced map must specify a namespace"))
 		}
-		for isWhitespace(r) {
+		for corereader.IsWhitespace(r) {
 			r = reader.Get()
 		}
 		if r != '{' {
@@ -1037,7 +1024,7 @@ func readNamespacedMap(reader *Reader) Object {
 		reader.Unget()
 		sym, _ = readerConstruction.Read(reader)
 		r = reader.Get()
-		for isWhitespace(r) {
+		for corereader.IsWhitespace(r) {
 			r = reader.Get()
 		}
 	}
@@ -1222,7 +1209,7 @@ func Read(reader *Reader) (Object, bool) {
 		return readVector(reader), false
 	case r == '{':
 		return readMap(reader), false
-	case r == '/' && isDelimiter(reader.Peek()):
+	case r == '/' && corereader.IsDelimiter(reader.Peek()):
 		return MakeReadObject(reader, SYMBOLS.backslash), false
 	case r == '\'':
 		popPos()

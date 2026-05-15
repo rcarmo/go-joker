@@ -11,7 +11,17 @@ func TestReaderCharacterClassification(t *testing.T) {
 	if IsWhitespace('x') {
 		t.Fatal("x should not be whitespace")
 	}
-	for _, r := range []rune{'(', ')', '[', ']', '{', '}', '"', ';', EOF, '\\', ' '} {
+	for _, r := range []rune{'"', ';', '@', '^', '`', '~', '(', ')', '[', ']', '{', '}', '\\'} {
+		if !IsTerminatingMacro(r) {
+			t.Fatalf("%q should be terminating macro", r)
+		}
+	}
+	for _, r := range []rune{'a', ',', ' ', EOF} {
+		if IsTerminatingMacro(r) {
+			t.Fatalf("%q should not be terminating macro", r)
+		}
+	}
+	for _, r := range []rune{'(', ')', '[', ']', '{', '}', '"', ';', '@', '^', '`', '~', EOF, '\\', ' '} {
 		if !IsDelimiter(r) {
 			t.Fatalf("%q should be delimiter", r)
 		}

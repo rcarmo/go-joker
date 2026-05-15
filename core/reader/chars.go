@@ -25,9 +25,13 @@ func IsWhitespace(r rune) bool {
 }
 
 func IsDelimiter(r rune) bool {
+	return IsWhitespace(r) || IsTerminatingMacro(r) || r == EOF
+}
+
+func IsTerminatingMacro(r rune) bool {
 	switch r {
-	case '(', ')', '[', ']', '{', '}', '"', ';', EOF, '\\':
+	case '"', ';', '@', '^', '`', '~', '(', ')', '[', ']', '{', '}', '\\':
 		return true
 	}
-	return IsWhitespace(r)
+	return false
 }
