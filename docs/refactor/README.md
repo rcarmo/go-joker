@@ -138,6 +138,7 @@ Planned package boundaries:
 - [x] Move reader named character classification into `core/reader`.
 - [x] Move reader dispatch macro classification into `core/reader`.
 - [x] Move reader map form-count helpers into `core/reader`.
+- [x] Move reader bare arg-literal classification into `core/reader`.
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
 - [x] Design generated bootstrap contract before generator path changes.
 - [x] Add `core/generated` data-only bootstrap payload contract types.

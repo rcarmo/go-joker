@@ -12,3 +12,9 @@ func ShouldAppendMapCommentSurrogate(formatMode bool, isComment bool) bool {
 func HasEvenFormCount(count int) bool {
 	return count%2 == 0
 }
+
+// IsBareArgLiteral reports whether a % reader literal has no following arg
+// designator and should default to %1.
+func IsBareArgLiteral(peek rune) bool {
+	return IsWhitespace(peek) || IsTerminatingMacro(peek)
+}

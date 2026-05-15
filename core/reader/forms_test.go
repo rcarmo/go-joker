@@ -12,4 +12,7 @@ func TestMapFormHelpers(t *testing.T) {
 	if !HasEvenFormCount(0) || !HasEvenFormCount(2) || HasEvenFormCount(3) {
 		t.Fatal("unexpected even form count result")
 	}
+	if !IsBareArgLiteral(' ') || !IsBareArgLiteral(')') || IsBareArgLiteral('1') {
+		t.Fatal("unexpected bare arg literal classification")
+	}
 }

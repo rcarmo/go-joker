@@ -726,7 +726,7 @@ func registerArg(index int) Symbol {
 
 func readArgSymbol(reader *Reader) Object {
 	r := reader.Peek()
-	if corereader.IsWhitespace(r) || corereader.IsTerminatingMacro(r) {
+	if corereader.IsBareArgLiteral(r) {
 		return MakeReadObject(reader, registerArg(1))
 	}
 	obj := readFirst(reader)
