@@ -3,6 +3,8 @@ package core
 import (
 	"fmt"
 	"io"
+
+	corecollections "github.com/rcarmo/go-joker/core/collections"
 )
 
 type (
@@ -52,9 +54,7 @@ func (v *Vector) WithMeta(meta Map) Object {
 }
 
 func clone(s []interface{}) []interface{} {
-	result := make([]interface{}, len(s), cap(s))
-	copy(result, s)
-	return result
+	return corecollections.CloneSlice(s)
 }
 
 func (v *Vector) tailoff() int {

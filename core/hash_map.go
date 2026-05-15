@@ -2,6 +2,8 @@ package core
 
 import (
 	"io"
+
+	corecollections "github.com/rcarmo/go-joker/core/collections"
 )
 
 type (
@@ -521,8 +523,7 @@ func cloneAndSet2(array []interface{}, i int, a interface{}, j int, b interface{
 }
 
 func cloneAndSetNode(array []Node, i int, a Node) []Node {
-	res := make([]Node, len(array), cap(array))
-	copy(res, array)
+	res := corecollections.CloneSlice(array)
 	res[i] = a
 	return res
 }
