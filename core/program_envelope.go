@@ -77,6 +77,36 @@ const (
 	irBitShiftRight  = coreir.BitShiftRight  // pop 2, push a >> b (arithmetic)
 )
 
+type IRAnalysis = coreir.Analysis
+
+// AnalyzeIRProgram returns a conservative program-shape summary for diagnostics
+// and optimization gates.
+func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
+	if prog == nil {
+		return IRAnalysis{SuggestedPath: "none"}
+	}
+	if prog.analysis != nil {
+		return *prog.analysis
+	}
+	info := prog.escapeInfo
+	if info == nil {
+		info = analyzeEscapes(prog)
+		prog.escapeInfo = info
+	}
+	model := prog.neutralModel()
+	a := coreir.Analyze(
+		model.Code,
+		model.NumSlots,
+		len(prog.captureKeys),
+		corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0),
+		info.StringBuilderSlots,
+		info.StringPrependSlots,
+	)
+	prog.analysis = &a
+	model.Analysis = &a
+	return a
+}
+
 // ---------- Cache ----------
 
 var irCache sync.Map   // map[*LoopExpr]*IRProgram

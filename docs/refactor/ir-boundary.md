@@ -22,7 +22,7 @@ The former `core/ir*.go` grab-bag has now been split into two categories:
 ### Still-root-coupled files renamed out of the misleading `ir_*` prefix
 
 - `core/program_envelope.go` — cache and executable `IRProgram` envelope
-- `core/program_analysis.go` — root analysis adapter layer
+- `core/program_envelope.go` — root IR program envelope, cache, and analysis adapter layer
 - `core/fn_ir_dispatch.go` — call dispatch bridge from `Fn`/`Proc`
 - `core/fn_ir_compile.go` — function compilation
 - `core/loop_compiler.go` — loop/expression lowering
