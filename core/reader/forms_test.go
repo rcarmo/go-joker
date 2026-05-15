@@ -47,6 +47,18 @@ func TestConditionalSpliceHelpers(t *testing.T) {
 	}
 }
 
+func TestUnquoteSpliceHelpers(t *testing.T) {
+	if !IsUnquoteSplice('@') || IsUnquoteSplice('x') {
+		t.Fatal("IsUnquoteSplice mismatch")
+	}
+	if got := UnquotePrefix(true); got != "~@" {
+		t.Fatalf("UnquotePrefix splice = %q", got)
+	}
+	if got := UnquotePrefix(false); got != "~" {
+		t.Fatalf("UnquotePrefix plain = %q", got)
+	}
+}
+
 func TestPopLastForm(t *testing.T) {
 	last, rest, ok := PopLastForm([]int{1, 2, 3})
 	if !ok || last != 3 || len(rest) != 2 || rest[1] != 2 {

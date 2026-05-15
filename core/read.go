@@ -1124,19 +1124,17 @@ func Read(reader *Reader) (Object, bool) {
 		return DeriveReadObject(nextObj, NewListFrom(DeriveReadObject(nextObj, SYMBOLS.deref), nextObj)), false
 	case r == '~':
 		popPos()
-		if reader.Peek() == '@' {
+		isSplicing := corereader.IsUnquoteSplice(reader.Peek())
+		if isSplicing {
 			reader.Get()
-			nextObj := readFirst(reader)
-			if FORMAT_MODE {
-				addPrefix(nextObj, "~@")
-				return nextObj, false
-			}
-			return makeQuote(nextObj, SYMBOLS.unquoteSplicing), false
 		}
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
-			addPrefix(nextObj, "~")
+			addPrefix(nextObj, corereader.UnquotePrefix(isSplicing))
 			return nextObj, false
+		}
+		if isSplicing {
+			return makeQuote(nextObj, SYMBOLS.unquoteSplicing), false
 		}
 		return makeQuote(nextObj, SYMBOLS.unquote), false
 	case r == '`':

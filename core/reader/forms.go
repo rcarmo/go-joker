@@ -46,6 +46,19 @@ func ConditionalPrefix(splicing bool) string {
 	return "#?"
 }
 
+// IsUnquoteSplice reports whether an unquote form uses ~@ splicing.
+func IsUnquoteSplice(peek rune) bool {
+	return peek == '@'
+}
+
+// UnquotePrefix returns the format-mode prefix for an unquote form.
+func UnquotePrefix(splicing bool) string {
+	if splicing {
+		return "~@"
+	}
+	return "~"
+}
+
 // FillMissingArgIndexes fills missing positive argument indexes from 1 through
 // max-1. The caller supplies fresh values to preserve root symbol generation.
 func FillMissingArgIndexes[T any](args map[int]T, makeValue func() T) {

@@ -143,7 +143,7 @@ Planned package boundaries:
 - [x] Move reader dispatch macro classification into `core/reader`.
 - [x] Move reader map form-count helpers into `core/reader`.
 - [x] Move reader bare arg-literal classification into `core/reader`.
-- [x] Move reader conditional/delimited-form loop and prefix/splice helpers into `core/reader`.
+- [x] Move reader conditional/unquote/delimited-form loop and prefix/splice helpers into `core/reader`.
 - [x] Move reader arg-index gap filling into `core/reader`.
 - [x] Move reader pending-form pop helper into `core/reader`.
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
