@@ -2,6 +2,21 @@ package reader
 
 import "testing"
 
+func TestClassifyStringEscape(t *testing.T) {
+	if got := ClassifyStringEscape('n'); got != StringEscapeSimple {
+		t.Fatalf("ClassifyStringEscape('n') = %v, want simple", got)
+	}
+	if got := ClassifyStringEscape('u'); got != StringEscapeUnicode {
+		t.Fatalf("ClassifyStringEscape('u') = %v, want unicode", got)
+	}
+	if got := ClassifyStringEscape('7'); got != StringEscapeOctal {
+		t.Fatalf("ClassifyStringEscape('7') = %v, want octal", got)
+	}
+	if got := ClassifyStringEscape('x'); got != StringEscapeUnsupported {
+		t.Fatalf("ClassifyStringEscape('x') = %v, want unsupported", got)
+	}
+}
+
 func TestDecodeSimpleStringEscape(t *testing.T) {
 	tests := map[rune]rune{
 		'\\': '\\',

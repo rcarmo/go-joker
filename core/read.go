@@ -485,15 +485,18 @@ func readString(reader *Reader) Object {
 			r = reader.Get()
 			if FORMAT_MODE {
 				b.WriteRune('\\')
-			} else if decoded, ok := corereader.DecodeSimpleStringEscape(r); ok {
-				r = decoded
-			} else if r == 'u' {
-				n := reader.Get()
-				r = readUnicodeCharacterInString(reader, n, 4, 16, true)
-			} else if unicode.IsDigit(r) {
-				r = readUnicodeCharacterInString(reader, r, 3, 8, false)
 			} else {
-				panic(MakeReadError(reader, "Unsupported escape character: \\"+string(r)))
+				switch corereader.ClassifyStringEscape(r) {
+				case corereader.StringEscapeSimple:
+					r, _ = corereader.DecodeSimpleStringEscape(r)
+				case corereader.StringEscapeUnicode:
+					n := reader.Get()
+					r = readUnicodeCharacterInString(reader, n, 4, 16, true)
+				case corereader.StringEscapeOctal:
+					r = readUnicodeCharacterInString(reader, r, 3, 8, false)
+				default:
+					panic(MakeReadError(reader, "Unsupported escape character: \\"+string(r)))
+				}
 			}
 		}
 		if r == EOF {
