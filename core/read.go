@@ -585,32 +585,15 @@ func readString(reader *Reader) Object {
 			r = reader.Get()
 			if FORMAT_MODE {
 				b.WriteRune('\\')
+			} else if decoded, ok := corereader.DecodeSimpleStringEscape(r); ok {
+				r = decoded
+			} else if r == 'u' {
+				n := reader.Get()
+				r = readUnicodeCharacterInString(reader, n, 4, 16, true)
+			} else if unicode.IsDigit(r) {
+				r = readUnicodeCharacterInString(reader, r, 3, 8, false)
 			} else {
-				switch r {
-				case '\\':
-					r = '\\'
-				case '"':
-					r = '"'
-				case 'n':
-					r = '\n'
-				case 't':
-					r = '\t'
-				case 'r':
-					r = '\r'
-				case 'b':
-					r = '\b'
-				case 'f':
-					r = '\f'
-				case 'u':
-					n := reader.Get()
-					r = readUnicodeCharacterInString(reader, n, 4, 16, true)
-				default:
-					if unicode.IsDigit(r) {
-						r = readUnicodeCharacterInString(reader, r, 3, 8, false)
-					} else {
-						panic(MakeReadError(reader, "Unsupported escape character: \\"+string(r)))
-					}
-				}
+				panic(MakeReadError(reader, "Unsupported escape character: \\"+string(r)))
 			}
 		}
 		if r == EOF {
