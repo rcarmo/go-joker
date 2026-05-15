@@ -34,3 +34,13 @@ func TestHasExactLength(t *testing.T) {
 		t.Fatal("HasExactLength returned true for short escape")
 	}
 }
+
+func TestScanStringEscapeCode(t *testing.T) {
+	r := newCommentReader("3bb\"rest")
+	if got := ScanStringEscapeCode(r, '0', 4); got != "03bb" {
+		t.Fatalf("ScanStringEscapeCode = %q, want 03bb", got)
+	}
+	if got := r.Peek(); got != '"' {
+		t.Fatalf("remaining peek = %q, want quote", got)
+	}
+}

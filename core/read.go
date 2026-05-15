@@ -506,14 +506,7 @@ func readRegex(reader *Reader) Object {
 }
 
 func readUnicodeCharacterInString(reader *Reader, initial rune, length, base int, exactLength bool) rune {
-	n := initial
-	var b bytes.Buffer
-	for i := 0; i < length && n != '"'; i++ {
-		b.WriteRune(n)
-		n = reader.Get()
-	}
-	reader.Unget()
-	str := b.String()
+	str := corereader.ScanStringEscapeCode(reader, initial, length)
 	if exactLength && !corereader.HasExactLength(str, length) {
 		panic(MakeReadError(reader, fmt.Sprintf("Invalid character length: %d, should be: %d", len(str), length)))
 	}

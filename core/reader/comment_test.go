@@ -24,6 +24,12 @@ func (r *commentReader) Get() rune {
 	return ch
 }
 
+func (r *commentReader) Unget() {
+	if r.pos > 0 {
+		r.pos--
+	}
+}
+
 func TestReadCommentText(t *testing.T) {
 	r := newCommentReader("; hello\nnext")
 	if got := ReadCommentText(r); got != "; hello" {
