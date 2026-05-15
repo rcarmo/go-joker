@@ -239,6 +239,8 @@ func podMessageValue(v Object) any {
 		return x.I
 	case Boolean:
 		return x.B
+	case Nil:
+		return nil
 	case Map:
 		return objectMapToPodMessage(x)
 	case Seqable:
@@ -247,8 +249,6 @@ func podMessageValue(v Object) any {
 			vals = append(vals, podMessageValue(s.First()))
 		}
 		return vals
-	case Nil:
-		return nil
 	default:
 		return x.ToString(false)
 	}

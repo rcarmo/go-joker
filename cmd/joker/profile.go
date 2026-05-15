@@ -35,8 +35,6 @@ func startProfiling() error {
 		default:
 			return fmt.Errorf("unrecognized profiler: %s (use 'pkg/profile' or 'runtime/pprof')", profilerType)
 		}
-	} else if memProfileName != "" {
-		// finish() will emit the heap profile on exit.
 	}
 	return nil
 }

@@ -127,11 +127,6 @@ func macroExtendProtocol(args []Object) Object {
 		i++
 		call := []Object{MakeSymbol("__extend-type"), proto, String{S: typeName}}
 		for i < len(args) {
-			if _, isType := args[i].(Symbol); isType && i+1 < len(args) {
-				if _, nextIsMethod := args[i+1].(Seqable); nextIsMethod {
-					// Ambiguous with method, but method is a list and type is symbol.
-				}
-			}
 			method, ok := args[i].(Seqable)
 			if !ok {
 				break
