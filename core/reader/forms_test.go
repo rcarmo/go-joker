@@ -72,6 +72,18 @@ func TestUnquoteSpliceHelpers(t *testing.T) {
 	}
 }
 
+func TestNamespacedMapPrefix(t *testing.T) {
+	if got := NamespacedMapPrefix(false, "foo"); got != "#:foo" {
+		t.Fatalf("NamespacedMapPrefix explicit = %q", got)
+	}
+	if got := NamespacedMapPrefix(true, "foo"); got != "#::foo" {
+		t.Fatalf("NamespacedMapPrefix auto = %q", got)
+	}
+	if got := NamespacedMapPrefix(true, ""); got != "#::" {
+		t.Fatalf("NamespacedMapPrefix current = %q", got)
+	}
+}
+
 func TestPopLastForm(t *testing.T) {
 	last, rest, ok := PopLastForm([]int{1, 2, 3})
 	if !ok || last != 3 || len(rest) != 2 || rest[1] != 2 {

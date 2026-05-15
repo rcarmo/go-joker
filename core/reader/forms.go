@@ -59,6 +59,15 @@ func UnquotePrefix(splicing bool) string {
 	return "~"
 }
 
+// NamespacedMapPrefix returns the format-mode prefix for #:/#:: map literals.
+func NamespacedMapPrefix(auto bool, namespace string) string {
+	prefix := "#:"
+	if auto {
+		prefix += ":"
+	}
+	return prefix + namespace
+}
+
 // FillMissingArgIndexes fills missing positive argument indexes from 1 through
 // max-1. The caller supplies fresh values to preserve root symbol generation.
 func FillMissingArgIndexes[T any](args map[int]T, makeValue func() T) {

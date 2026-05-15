@@ -882,17 +882,6 @@ func readConditional(reader *Reader) (Object, bool) {
 	return v, false
 }
 
-func namespacedMapPrefix(auto bool, nsSym Object) string {
-	res := "#:"
-	if auto {
-		res += ":"
-	}
-	if nsSym != nil {
-		res += nsSym.ToString(false)
-	}
-	return res
-}
-
 func readNamespacedMap(reader *Reader) Object {
 	auto := reader.Get() == ':'
 	if !auto {
@@ -925,7 +914,11 @@ func readNamespacedMap(reader *Reader) Object {
 	}
 	if FORMAT_MODE {
 		obj := readMap(reader)
-		addPrefix(obj, namespacedMapPrefix(auto, sym))
+		namespace := ""
+		if sym != nil {
+			namespace = sym.ToString(false)
+		}
+		addPrefix(obj, corereader.NamespacedMapPrefix(auto, namespace))
 		return obj
 	}
 	var nsname string
