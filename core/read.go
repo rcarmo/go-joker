@@ -266,13 +266,6 @@ func readNumber(reader *Reader) Object {
 	}
 }
 
-/*
-	Returns whether the rune may be a non-initial character in a symbol
-
-/* or keyword name.
-*/
-func isIdentRune(r rune) bool { return corereader.IsIdentRune(r) }
-
 /* Reads (lexes) a token and returns either a Symbol or Keyword. */
 func readIdent(reader *Reader, first rune) Object {
 	str, lastAdded, scanErr := corereader.ScanIdentToken(reader, first)
@@ -330,36 +323,10 @@ func readIdent(reader *Reader, first rune) Object {
 /* identifier), linting can helpfully find and warn about characters
 /* outside of this set (as extended via configuration).
 */
-func isCoreIdentRune(r rune) bool { return corereader.IsCoreIdentRune(r) }
-
-const isValidCoreReason = corereader.ValidCoreReason
-
-func isValidCore(r rune) bool { return corereader.IsValidCoreRune(r) }
-
-const isValidSymbolReason = corereader.ValidSymbolReason
-
-func isValidSymbol(r rune) bool { return corereader.IsValidSymbolRune(r) }
-
-const isValidVisibleReason = corereader.ValidVisibleReason
-
-func isValidVisible(r rune) bool { return corereader.IsValidVisibleRune(r) }
-
-const isValidUnicodeReason = corereader.ValidUnicodeReason
-
-func isValidUnicode(r rune) bool { return corereader.IsValidUnicodeRune(r) }
-
-const isValidASCIIReason = corereader.ValidASCIIReason
-
-func isValidASCII(r rune) bool { return corereader.IsValidASCIIRune(r) }
-
-const isValidAnyReason = corereader.ValidAnyReason
-
-func isValidAny(r rune) bool { return corereader.IsValidAnyRune(r) }
-
-var identValidationSetFn = isValidCore
-var identValidationSetWhy = isValidCoreReason
-var identValidationRangeFn = isValidASCII
-var identValidationRangeWhy = isValidASCIIReason
+var identValidationSetFn = corereader.IsValidCoreRune
+var identValidationSetWhy = corereader.ValidCoreReason
+var identValidationRangeFn = corereader.IsValidASCIIRune
+var identValidationRangeWhy = corereader.ValidASCIIReason
 
 func warnInvalidIdent(reader *Reader, s *string) {
 	if s == nil {
@@ -368,7 +335,7 @@ func warnInvalidIdent(reader *Reader, s *string) {
 
 	k := 0
 	for _, r := range *s {
-		if !isCoreIdentRune(r) && (!identValidationSetFn(r) || !identValidationRangeFn(r)) {
+		if !corereader.IsCoreIdentRune(r) && (!identValidationSetFn(r) || !identValidationRangeFn(r)) {
 			var explain string
 			if identValidationSetFn(r) {
 				explain = identValidationRangeWhy
@@ -406,38 +373,38 @@ func EnableIdentValidation() {
 }
 
 func SetIdentSetCore() {
-	identValidationSetFn = isValidCore
-	identValidationSetWhy = isValidCoreReason
+	identValidationSetFn = corereader.IsValidCoreRune
+	identValidationSetWhy = corereader.ValidCoreReason
 }
 
 func SetIdentSetSymbol() {
-	identValidationSetFn = isValidSymbol
-	identValidationSetWhy = isValidSymbolReason
+	identValidationSetFn = corereader.IsValidSymbolRune
+	identValidationSetWhy = corereader.ValidSymbolReason
 }
 
 func SetIdentSetVisible() {
-	identValidationSetFn = isValidVisible
-	identValidationSetWhy = isValidVisibleReason
+	identValidationSetFn = corereader.IsValidVisibleRune
+	identValidationSetWhy = corereader.ValidVisibleReason
 }
 
 func SetIdentSetAny() {
-	identValidationSetFn = isValidAny
-	identValidationSetWhy = isValidAnyReason
+	identValidationSetFn = corereader.IsValidAnyRune
+	identValidationSetWhy = corereader.ValidAnyReason
 }
 
 func SetIdentRangeUnicode() {
-	identValidationRangeFn = isValidUnicode
-	identValidationRangeWhy = isValidUnicodeReason
+	identValidationRangeFn = corereader.IsValidUnicodeRune
+	identValidationRangeWhy = corereader.ValidUnicodeReason
 }
 
 func SetIdentRangeASCII() {
-	identValidationRangeFn = isValidASCII
-	identValidationRangeWhy = isValidASCIIReason
+	identValidationRangeFn = corereader.IsValidASCIIRune
+	identValidationRangeWhy = corereader.ValidASCIIReason
 }
 
 func SetIdentRangeAny() {
-	identValidationRangeFn = isValidAny
-	identValidationRangeWhy = isValidAnyReason
+	identValidationRangeFn = corereader.IsValidAnyRune
+	identValidationRangeWhy = corereader.ValidAnyReason
 }
 
 func readRegex(reader *Reader) Object {
