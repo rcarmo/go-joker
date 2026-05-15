@@ -155,12 +155,7 @@ func eatWhitespace(reader *Reader) {
 }
 
 func readUnicodeCharacter(reader *Reader, length, base int) Object {
-	var b bytes.Buffer
-	for n := reader.Get(); !isDelimiter(n); n = reader.Get() {
-		b.WriteRune(n)
-	}
-	reader.Unget()
-	str := b.String()
+	str := corereader.ScanUntilDelimiter(reader)
 	if !corereader.HasExactLength(str, length) {
 		panic(MakeReadError(reader, "Invalid unicode character: \\o"+str))
 	}
