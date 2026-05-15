@@ -2,7 +2,7 @@ module github.com/rcarmo/go-joker
 
 go 1.25.0
 
-toolchain go1.25.9
+toolchain go1.25.10
 
 require (
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
