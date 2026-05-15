@@ -18,7 +18,11 @@ func srepl(port string, phase Phase) {
 			replSocket, err.Error())
 		ExitJoker(12)
 	}
-	defer l.Close()
+	defer func() {
+		if err := l.Close(); err != nil {
+			fmt.Fprintf(Stderr, "WARNING: could not close srepl listener: %v\n", err)
+		}
+	}()
 
 	fmt.Printf("Joker repl listening at %s...\n", l.Addr())
 	conn, err := l.Accept() // Wait for a single connection
@@ -39,7 +43,9 @@ func srepl(port string, phase Phase) {
 	newOut := MakeIOWriter(conn)
 	GLOBAL_ENV.SetStdIO(newIn, newOut, newOut)
 	defer func() {
-		conn.Close()
+		if err := conn.Close(); err != nil {
+			fmt.Fprintf(Stderr, "WARNING: could not close srepl connection: %v\n", err)
+		}
 		Stdin = oldStdIn
 		Stdout = oldStdOut
 		Stderr = oldStdErr

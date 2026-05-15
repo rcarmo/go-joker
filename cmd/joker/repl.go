@@ -66,12 +66,19 @@ func completer(line string, pos int) (head string, c []string, tail string) {
 }
 
 func saveReplHistory(rl *liner.State, filename string) {
-	if filename == "" {
+	if filename == "" || rl == nil {
 		return
 	}
-	if f, err := os.Create(filename); err == nil {
-		rl.WriteHistory(f)
-		f.Close()
+	f, err := os.Create(filename)
+	if err != nil {
+		fmt.Fprintf(Stderr, "WARNING: could not create REPL history %s: %v\n", filename, err)
+		return
+	}
+	if _, err := rl.WriteHistory(f); err != nil {
+		fmt.Fprintf(Stderr, "WARNING: could not write REPL history %s: %v\n", filename, err)
+	}
+	if err := f.Close(); err != nil {
+		fmt.Fprintf(Stderr, "WARNING: could not close REPL history %s: %v\n", filename, err)
 	}
 }
 
@@ -104,15 +111,22 @@ func repl(phase Phase) {
 			saveReplHistory(rl, historyFilename)
 			rl.Close()
 		})
-		defer rl.Close()
+		defer func() {
+			saveReplHistory(rl, historyFilename)
+			rl.Close()
+		}()
 		rl.SetCtrlCAborts(true)
 		rl.SetWordCompleter(completer)
 		rl.SetTabCompletionStyle(liner.TabPrints)
 
 		if !noReplHistory {
 			if f, err := os.Open(historyFilename); err == nil {
-				rl.ReadHistory(f)
-				f.Close()
+				if _, err := rl.ReadHistory(f); err != nil {
+					fmt.Fprintf(Stderr, "WARNING: could not read REPL history %s: %v\n", historyFilename, err)
+				}
+				if err := f.Close(); err != nil {
+					fmt.Fprintf(Stderr, "WARNING: could not close REPL history %s: %v\n", historyFilename, err)
+				}
 			}
 		}
 
