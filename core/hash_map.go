@@ -443,12 +443,7 @@ func (n *HashCollisionNode) assoc(shift uint, hash uint32, key Object, val Objec
 				array: cloneAndSet(n.array, idx+1, val),
 			}
 		}
-		newArray := make([]interface{}, 2*(n.count+1))
-		for i := 0; i < 2*n.count; i++ {
-			newArray[i] = n.array[i]
-		}
-		newArray[2*n.count] = key
-		newArray[2*n.count+1] = val
+		newArray := corecollections.AppendPair[interface{}](n.array, key, val)
 		addedLeaf.val = addedLeaf
 		return &HashCollisionNode{
 			hash:  hash,
@@ -542,14 +537,7 @@ func createNode(shift uint, key1 Object, val1 Object, key2hash uint32, key2 Obje
 }
 
 func removePair(array []interface{}, n int) []interface{} {
-	newArray := make([]interface{}, len(array)-2)
-	for i := 0; i < 2*n; i++ {
-		newArray[i] = array[i]
-	}
-	for i := 2 * (n + 1); i < len(array); i++ {
-		newArray[i-2] = array[i]
-	}
-	return newArray
+	return corecollections.RemovePair(array, n)
 }
 
 func (b *BitmapIndexedNode) index(bit int) int {
@@ -615,16 +603,8 @@ func (b *BitmapIndexedNode) assoc(shift uint, hash uint32, key Object, val Objec
 				array: nodes,
 			}
 		} else {
-			newArray := make([]interface{}, 2*(n+1))
-			for i := 0; i < 2*idx; i++ {
-				newArray[i] = b.array[i]
-			}
-			newArray[2*idx] = key
+			newArray := corecollections.InsertPair[interface{}](b.array, idx, key, val)
 			addedLeaf.val = addedLeaf
-			newArray[2*idx+1] = val
-			for i := 2 * idx; i < 2*n; i++ {
-				newArray[i+2] = b.array[i]
-			}
 			return &BitmapIndexedNode{
 				bitmap: b.bitmap | bit,
 				array:  newArray,
