@@ -1,5 +1,25 @@
 package reader
 
+type CharacterLiteralKind int
+
+const (
+	CharacterLiteralPlain CharacterLiteralKind = iota
+	CharacterLiteralUnicode
+	CharacterLiteralOctal
+)
+
+// ClassifyCharacterLiteral classifies character literal continuations after
+// the first rune has been consumed.
+func ClassifyCharacterLiteral(first rune, peek rune) CharacterLiteralKind {
+	if first == 'u' && !IsDelimiter(peek) {
+		return CharacterLiteralUnicode
+	}
+	if first == 'o' && !IsDelimiter(peek) {
+		return CharacterLiteralOctal
+	}
+	return CharacterLiteralPlain
+}
+
 // NamedCharacter maps reader character literal prefixes to their remaining
 // token text and resulting rune. The first rune after '\\' has already been
 // consumed; peek is the next rune.

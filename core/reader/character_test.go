@@ -2,6 +2,21 @@ package reader
 
 import "testing"
 
+func TestClassifyCharacterLiteral(t *testing.T) {
+	if got := ClassifyCharacterLiteral('u', '0'); got != CharacterLiteralUnicode {
+		t.Fatalf("ClassifyCharacterLiteral unicode = %v", got)
+	}
+	if got := ClassifyCharacterLiteral('o', '1'); got != CharacterLiteralOctal {
+		t.Fatalf("ClassifyCharacterLiteral octal = %v", got)
+	}
+	if got := ClassifyCharacterLiteral('u', ' '); got != CharacterLiteralPlain {
+		t.Fatalf("ClassifyCharacterLiteral delimited unicode = %v", got)
+	}
+	if got := ClassifyCharacterLiteral('x', 'y'); got != CharacterLiteralPlain {
+		t.Fatalf("ClassifyCharacterLiteral plain = %v", got)
+	}
+}
+
 func TestNamedCharacter(t *testing.T) {
 	tests := []struct {
 		first  rune

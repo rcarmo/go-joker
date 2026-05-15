@@ -167,15 +167,11 @@ func readCharacter(reader *Reader) Object {
 	if ending, value, ok := corereader.NamedCharacter(r, reader.Peek()); ok {
 		return readSpecialCharacter(reader, ending, value)
 	}
-	switch r {
-	case 'u':
-		if !corereader.IsDelimiter(reader.Peek()) {
-			return readUnicodeCharacter(reader, 4, 16)
-		}
-	case 'o':
-		if !corereader.IsDelimiter(reader.Peek()) {
-			return readUnicodeCharacter(reader, 3, 8)
-		}
+	switch corereader.ClassifyCharacterLiteral(r, reader.Peek()) {
+	case corereader.CharacterLiteralUnicode:
+		return readUnicodeCharacter(reader, 4, 16)
+	case corereader.CharacterLiteralOctal:
+		return readUnicodeCharacter(reader, 3, 8)
 	}
 	peekExpectedDelimiter(reader)
 	return MakeReadObject(reader, Char{Ch: r})
