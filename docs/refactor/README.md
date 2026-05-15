@@ -114,6 +114,7 @@ Planned package boundaries:
 - [x] Inventory generated file families and generator source packages in `docs/refactor/generated-boundary.md`.
 - [x] Add `make generated-check` guardrail and run it from `make docs-check`.
 - [x] Track generated root-core file set in `tests/generated_files.txt`.
+- [x] Add a collections extraction audit (`collections-extraction-audit.md`) before the first real collection mechanics move.
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
 - [x] Design generated bootstrap contract before generator path changes.
 - [x] Add `core/generated` data-only bootstrap payload contract types.
