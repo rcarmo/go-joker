@@ -316,18 +316,13 @@ func readIdent(reader *Reader, first rune) Object {
 		lastAdded = r
 		r = reader.Get()
 	}
-	if lastAdded == ':' || (lastAdded == '/' && b.Len() > 1) {
-		panic(MakeReadError(reader, fmt.Sprintf("Invalid use of %c in symbol name", lastAdded)))
-	}
 	reader.Unget()
 	str := b.String()
+	if err := corereader.ValidateIdentToken(first, str, lastAdded); err != nil {
+		panic(MakeReadError(reader, err.Error()))
+	}
 	switch {
-	case str == "":
-		panic(MakeReadError(reader, "Invalid keyword: :"))
 	case first == ':':
-		if str[0] == '/' && len(str) > 1 {
-			panic(MakeReadError(reader, "Blank namespaces are not allowed"))
-		}
 		if str[0] == ':' {
 			if FORMAT_MODE {
 				return MakeReadObject(reader, MakeKeyword(str))
