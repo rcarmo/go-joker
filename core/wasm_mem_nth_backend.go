@@ -242,7 +242,9 @@ func wasmMemNthCompileAndExec(prog *IRProgram, slots []Object) Object {
 					return nil
 				}
 				binary.LittleEndian.PutUint64(c.buf8[:], math.Float64bits(fv))
-				mem.Write(uint32(base+i*8), c.buf8[:])
+				if !mem.Write(uint32(base+i*8), c.buf8[:]) {
+					return nil
+				}
 			}
 			c.lastVecPtr[vi] = vecPtr
 		}
