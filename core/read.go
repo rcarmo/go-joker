@@ -574,12 +574,10 @@ func readMap(reader *Reader) Object {
 
 func appendMapElement(objs []Object, obj Object) []Object {
 	objs = append(objs, obj)
-	if FORMAT_MODE {
-		if isComment(obj) {
-			// Add surrogate object to always have even number of elements in the map.
-			// Use rand to avoid duplicate keys.
-			objs = append(objs, MakeDouble(rand.Float64()))
-		}
+	if corereader.ShouldAppendMapCommentSurrogate(FORMAT_MODE, isComment(obj)) {
+		// Add surrogate object to always have even number of elements in the map.
+		// Use rand to avoid duplicate keys.
+		objs = append(objs, MakeDouble(rand.Float64()))
 	}
 	return objs
 }
@@ -602,7 +600,7 @@ func readMapWithNamespace(reader *Reader, nsname string) Object {
 		r = reader.Peek()
 	}
 	reader.Get()
-	if len(objs)%2 != 0 {
+	if !corereader.HasEvenFormCount(len(objs)) {
 		panic(MakeReadError(reader, "Map literal must contain an even number of forms"))
 	}
 	if int64(len(objs)) >= HASHMAP_THRESHOLD {
