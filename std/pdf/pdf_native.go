@@ -3,6 +3,7 @@ package pdf
 import (
 	"bytes"
 	"fmt"
+	"math"
 
 	"github.com/signintech/gopdf"
 
@@ -52,7 +53,15 @@ var pageSizes = map[string]*gopdf.Rect{
 
 // --- Creation ---
 
+func finitePDFNumber(v float64, name string) float64 {
+	if math.IsNaN(v) || math.IsInf(v, 0) {
+		panic(RT.NewError("pdf: " + name + " must be finite"))
+	}
+	return v
+}
+
 func positivePDFDimension(v float64, name string) float64 {
+	v = finitePDFNumber(v, name)
 	if v <= 0 {
 		panic(RT.NewError("pdf: " + name + " must be positive"))
 	}
@@ -60,6 +69,7 @@ func positivePDFDimension(v float64, name string) float64 {
 }
 
 func nonNegativePDFDimension(v float64, name string) float64 {
+	v = finitePDFNumber(v, name)
 	if v < 0 {
 		panic(RT.NewError("pdf: " + name + " must be non-negative"))
 	}

@@ -1,6 +1,7 @@
 package pdf
 
 import (
+	"math"
 	"os"
 	"path/filepath"
 	"testing"
@@ -69,6 +70,17 @@ func TestPDFColorRejectsOutOfRangeChannels(t *testing.T) {
 	})
 	expectPanic(t, func() {
 		procFillColor([]Object{doc, MakeInt(0), MakeInt(0), MakeInt(999)})
+	})
+}
+
+func TestPDFGeometryRejectsNonFiniteDimensions(t *testing.T) {
+	initPDFNamespace()
+	doc := procDocument(nil)
+	expectPanic(t, func() {
+		procRect([]Object{doc, Double{D: 10}, Double{D: 10}, Double{D: math.Inf(1)}, Double{D: 10}})
+	})
+	expectPanic(t, func() {
+		procMargins([]Object{doc, Double{D: 10}, Double{D: math.NaN()}, Double{D: 10}, Double{D: 10}})
 	})
 }
 
