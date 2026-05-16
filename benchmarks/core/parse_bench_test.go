@@ -202,19 +202,26 @@ func TestXMLParserCorrectness(t *testing.T) {
 	if r == nil {
 		t.Fatal("nil")
 	}
-	t.Logf("simple: %s", r.ToString(false))
+	if got, want := r.ToString(false), `[a {x 1} [hello]]`; got != want {
+		t.Fatalf("simple XML = %q, want %q", got, want)
+	}
 
 	r2 := parse.Call([]Object{String{S: xmlSmall}})
 	if r2 == nil {
 		t.Fatal("small nil")
 	}
-	t.Logf("small: %s", r2.ToString(false))
+	if got, want := r2.ToString(false), `[person {name John, age 30} [[city {} [New York]] [active {} [true]]]]`; got != want {
+		t.Fatalf("small XML = %q, want %q", got, want)
+	}
 
 	r3 := parse.Call([]Object{String{S: xmlMedium}})
 	if r3 == nil {
 		t.Fatal("medium nil")
 	}
-	t.Logf("medium: parsed")
+	v := EnsureObjectIsCountedIndexed(r3, "medium XML result: %s")
+	if v.Count() != 3 || v.At(0).ToString(false) != "users" {
+		t.Fatalf("medium XML root = %s, want users element", r3.ToString(false))
+	}
 }
 
 func BenchmarkParseXMLSmall(b *testing.B) {
@@ -296,17 +303,24 @@ func getYAMLParser(tb testing.TB) Callable {
 
 func TestYAMLParserCorrectness(t *testing.T) {
 	parse := getYAMLParser(t)
-	r := parse.Call([]Object{String{S: yamlSmall}})
-	if r == nil {
-		t.Fatal("nil")
+	r := EnsureObjectIsMap(parse.Call([]Object{String{S: yamlSmall}}), "small YAML result: %s")
+	if ok, got := r.Get(MakeString("age")); !ok || !got.Equals(MakeInt(30)) {
+		t.Fatalf("small YAML age = %v, want 30", got)
 	}
-	t.Logf("small: %s", r.ToString(false))
+	if ok, got := r.Get(MakeString("active")); !ok || !got.Equals(Boolean{B: true}) {
+		t.Fatalf("small YAML active = %v, want true", got)
+	}
+	if ok, got := r.Get(MakeString("city")); !ok || got.ToString(false) != "New York" {
+		t.Fatalf("small YAML city = %v, want New York", got)
+	}
 
-	r2 := parse.Call([]Object{String{S: yamlMedium}})
-	if r2 == nil {
-		t.Fatal("medium nil")
+	r2 := EnsureObjectIsMap(parse.Call([]Object{String{S: yamlMedium}}), "medium YAML result: %s")
+	if ok, got := r2.Get(MakeString("score2")); !ok || !got.Equals(MakeInt(87)) {
+		t.Fatalf("medium YAML score2 = %v, want 87", got)
 	}
-	t.Logf("medium: %s", r2.ToString(false))
+	if ok, got := r2.Get(MakeString("verified2")); !ok || !got.Equals(Boolean{B: false}) {
+		t.Fatalf("medium YAML verified2 = %v, want false", got)
+	}
 }
 
 func BenchmarkParseYAMLSmall(b *testing.B) {
@@ -359,16 +373,15 @@ func getHTMLDecoder(tb testing.TB) Callable {
 func TestHTMLDecodeCorrectness(t *testing.T) {
 	decode := getHTMLDecoder(t)
 	r := decode.Call([]Object{String{S: htmlSmall}})
-	if r == nil {
-		t.Fatal("nil")
+	if got, want := r.ToString(false), `Hello & welcome to <the> "world"`; got != want {
+		t.Fatalf("small HTML decode = %q, want %q", got, want)
 	}
-	t.Logf("small: %s", r.ToString(false))
 
 	r2 := decode.Call([]Object{String{S: htmlMedium}})
-	if r2 == nil {
-		t.Fatal("medium nil")
+	want := `<div class="container"><h1>Title & Subtitle</h1><p>This is <em>important</em> & <strong>bold</strong> text.</p><a href="https://example.com?a=1&b=2">Link</a></div>`
+	if got := r2.ToString(false); got != want {
+		t.Fatalf("medium HTML decode = %q, want %q", got, want)
 	}
-	t.Logf("medium: %s", r2.ToString(false))
 }
 
 func BenchmarkDecodeHTMLSmall(b *testing.B) {
