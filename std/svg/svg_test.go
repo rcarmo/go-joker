@@ -1,6 +1,7 @@
 package svg
 
 import (
+	"math"
 	"strings"
 	"testing"
 
@@ -46,6 +47,19 @@ func TestCanvasRejectsInvalidDimensions(t *testing.T) {
 	})
 	expectSVGPanic(t, func() {
 		procCanvasWithViewbox([]Object{MakeInt(100), MakeInt(100), MakeInt(-1), MakeInt(100)})
+	})
+}
+
+func TestTransformsRejectNonFiniteFloats(t *testing.T) {
+	canvas := procCanvas([]Object{MakeInt(100), MakeInt(100)})
+	expectSVGPanic(t, func() {
+		procScale([]Object{canvas, Double{D: math.Inf(1)}})
+	})
+	expectSVGPanic(t, func() {
+		procScale([]Object{canvas, Double{D: 1}, Double{D: math.NaN()}})
+	})
+	expectSVGPanic(t, func() {
+		procRotate([]Object{canvas, Double{D: math.Inf(-1)}})
 	})
 }
 

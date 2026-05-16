@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"math"
 	"os"
 	"strings"
 
@@ -88,6 +89,14 @@ func nonNegativeDimension(obj Object, context, name string) int {
 	v := EnsureObjectIsInt(obj, context+" "+name+": %s").I
 	if v < 0 {
 		panic(RT.NewError(context + ": " + name + " must be non-negative"))
+	}
+	return v
+}
+
+func finiteSVGFloat(obj Object, context, name string) float64 {
+	v := ExtractDouble([]Object{obj}, 0)
+	if math.IsNaN(v) || math.IsInf(v, 0) {
+		panic(RT.NewError(context + ": " + name + " must be finite"))
 	}
 	return v
 }
@@ -324,10 +333,10 @@ var procTranslate ProcFn = func(args []Object) Object {
 
 var procScale ProcFn = func(args []Object) Object {
 	c := extractCanvas(args, 0)
-	sx := ExtractDouble(args, 1)
+	sx := finiteSVGFloat(args[1], "svg/scale", "sx")
 	sy := sx
 	if len(args) > 2 {
-		sy = ExtractDouble(args, 2)
+		sy = finiteSVGFloat(args[2], "svg/scale", "sy")
 	}
 	c.svg.Gtransform(fmt.Sprintf("scale(%g,%g)", sx, sy))
 	return args[0]
@@ -335,7 +344,7 @@ var procScale ProcFn = func(args []Object) Object {
 
 var procRotate ProcFn = func(args []Object) Object {
 	c := extractCanvas(args, 0)
-	angle := ExtractDouble(args, 1)
+	angle := finiteSVGFloat(args[1], "svg/rotate", "angle")
 	c.svg.Gtransform(fmt.Sprintf("rotate(%g)", angle))
 	return args[0]
 }
