@@ -1180,7 +1180,7 @@ func TryRead(reader *Reader) (obj Object, err error) {
 		// Check for obj's info to distinguish between
 		// legitimate empty vector as read from the source
 		// and surrogate value that means "no object was read".
-		if obj.GetInfo() != nil {
+		if corereader.IsTopLevelSpliceSurrogate(obj.GetInfo() != nil) {
 			PROBLEM_COUNT++
 			return NIL, MakeReadError(reader, "Reader conditional splicing not allowed at the top level.")
 		}

@@ -119,3 +119,10 @@ func PopLastForm[T any](forms []T) (T, []T, bool) {
 	last := forms[len(forms)-1]
 	return last, forms[:len(forms)-1], true
 }
+
+// IsTopLevelSpliceSurrogate reports whether a multi-read surrogate should be
+// rejected at top level. Root keeps ObjectInfo ownership and passes only the
+// presence bit to avoid importing root core here.
+func IsTopLevelSpliceSurrogate(hasInfo bool) bool {
+	return hasInfo
+}

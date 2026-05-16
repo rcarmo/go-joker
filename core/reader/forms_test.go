@@ -90,6 +90,15 @@ func TestNamespacedMapPrefix(t *testing.T) {
 	}
 }
 
+func TestIsTopLevelSpliceSurrogate(t *testing.T) {
+	if !IsTopLevelSpliceSurrogate(true) {
+		t.Fatal("expected info-bearing surrogate to be rejected")
+	}
+	if IsTopLevelSpliceSurrogate(false) {
+		t.Fatal("expected info-less empty vector surrogate to be accepted")
+	}
+}
+
 func TestPopLastForm(t *testing.T) {
 	last, rest, ok := PopLastForm([]int{1, 2, 3})
 	if !ok || last != 3 || len(rest) != 2 || rest[1] != 2 {

@@ -145,7 +145,7 @@ Planned package boundaries:
 - [x] Move reader bare arg-literal classification into `core/reader`.
 - [x] Move reader conditional/unquote/namespaced-map/delimited-form loop and prefix/splice helpers into `core/reader`.
 - [x] Move reader arg-index gap filling/ordering into `core/reader`.
-- [x] Move reader pending-form pop helper into `core/reader`.
+- [x] Move reader pending-form pop and top-level splice-surrogate helpers into `core/reader`.
 - [x] Guard architecture/refactor assessment documents from accidental removal via `make docs-check`.
 - [x] Design generated bootstrap contract before generator path changes.
 - [x] Add `core/generated` data-only bootstrap payload contract types.
