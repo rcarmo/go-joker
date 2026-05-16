@@ -6,6 +6,7 @@ import (
 	"image"
 	"image/color"
 	"image/png"
+	"math"
 
 	"github.com/disintegration/imaging"
 
@@ -182,6 +183,38 @@ func positiveDimension(obj Object, name string) int {
 	return v
 }
 
+func finiteFloat(obj Object, name string) float64 {
+	v := ExtractDouble([]Object{obj}, 0)
+	if math.IsNaN(v) || math.IsInf(v, 0) {
+		panic(RT.NewError("imaging: " + name + " must be finite"))
+	}
+	return v
+}
+
+func nonNegativeFloat(obj Object, name string) float64 {
+	v := finiteFloat(obj, name)
+	if v < 0 {
+		panic(RT.NewError("imaging: " + name + " must be non-negative"))
+	}
+	return v
+}
+
+func positiveFloat(obj Object, name string) float64 {
+	v := finiteFloat(obj, name)
+	if v <= 0 {
+		panic(RT.NewError("imaging: " + name + " must be positive"))
+	}
+	return v
+}
+
+func opacityFloat(obj Object) float64 {
+	v := finiteFloat(obj, "opacity")
+	if v < 0 || v > 1 {
+		panic(RT.NewError("imaging: opacity must be in [0,1]"))
+	}
+	return v
+}
+
 var procResize ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
 	w := positiveDimension(args[1], "width")
@@ -226,7 +259,7 @@ var procCropCenter ProcFn = func(args []Object) Object {
 
 var procRotate ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	angle := ExtractDouble(args, 1)
+	angle := finiteFloat(args[1], "angle")
 	bg := color.NRGBA{0, 0, 0, 0}
 	return wrapImage(toNRGBA(imaging.Rotate(im.img, angle, bg)))
 }
@@ -265,32 +298,32 @@ var procInvert ProcFn = func(args []Object) Object {
 
 var procBrightness ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	p := ExtractDouble(args, 1) // -100 to 100
+	p := finiteFloat(args[1], "brightness") // -100 to 100
 	return wrapImage(toNRGBA(imaging.AdjustBrightness(im.img, p)))
 }
 
 var procContrast ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	p := ExtractDouble(args, 1) // -100 to 100
+	p := finiteFloat(args[1], "contrast") // -100 to 100
 	return wrapImage(toNRGBA(imaging.AdjustContrast(im.img, p)))
 }
 
 var procSaturation ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	p := ExtractDouble(args, 1) // -100 to 100
+	p := finiteFloat(args[1], "saturation") // -100 to 100
 	return wrapImage(toNRGBA(imaging.AdjustSaturation(im.img, p)))
 }
 
 var procGamma ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	g := ExtractDouble(args, 1)
+	g := positiveFloat(args[1], "gamma")
 	return wrapImage(toNRGBA(imaging.AdjustGamma(im.img, g)))
 }
 
 var procSigmoid ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	midpoint := ExtractDouble(args, 1)
-	factor := ExtractDouble(args, 2)
+	midpoint := finiteFloat(args[1], "midpoint")
+	factor := finiteFloat(args[2], "factor")
 	return wrapImage(toNRGBA(imaging.AdjustSigmoid(im.img, midpoint, factor)))
 }
 
@@ -298,13 +331,13 @@ var procSigmoid ProcFn = func(args []Object) Object {
 
 var procBlur ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	sigma := ExtractDouble(args, 1)
+	sigma := nonNegativeFloat(args[1], "sigma")
 	return wrapImage(toNRGBA(imaging.Blur(im.img, sigma)))
 }
 
 var procSharpen ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	sigma := ExtractDouble(args, 1)
+	sigma := nonNegativeFloat(args[1], "sigma")
 	return wrapImage(toNRGBA(imaging.Sharpen(im.img, sigma)))
 }
 
@@ -317,7 +350,7 @@ var procOverlay ProcFn = func(args []Object) Object {
 	y := ExtractInt(args, 3)
 	opacity := 1.0
 	if len(args) > 4 {
-		opacity = ExtractDouble(args, 4)
+		opacity = opacityFloat(args[4])
 	}
 	return wrapImage(toNRGBA(imaging.Overlay(base.img, overlay.img, image.Pt(x, y), opacity)))
 }

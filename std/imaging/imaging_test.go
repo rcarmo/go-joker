@@ -1,6 +1,7 @@
 package imaging
 
 import (
+	"math"
 	"testing"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -39,6 +40,22 @@ func TestResize(t *testing.T) {
 	}
 	assertImagingPanic(t, "zero resize width", func() {
 		procResize([]Object{img, MakeInt(0), MakeInt(25)})
+	})
+}
+
+func TestAdjustmentsRejectInvalidFloats(t *testing.T) {
+	img := procNewImage([]Object{MakeInt(8), MakeInt(8)})
+	assertImagingPanic(t, "non-finite rotate angle", func() {
+		procRotate([]Object{img, Double{D: math.Inf(1)}})
+	})
+	assertImagingPanic(t, "non-positive gamma", func() {
+		procGamma([]Object{img, Double{D: 0}})
+	})
+	assertImagingPanic(t, "negative blur sigma", func() {
+		procBlur([]Object{img, Double{D: -1}})
+	})
+	assertImagingPanic(t, "bad overlay opacity", func() {
+		procOverlay([]Object{img, img, MakeInt(0), MakeInt(0), Double{D: 2}})
 	})
 }
 
