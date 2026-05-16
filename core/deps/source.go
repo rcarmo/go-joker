@@ -10,10 +10,22 @@ import (
 	"time"
 )
 
+func externalURLCacheBase(url string) (string, error) {
+	parts := strings.SplitN(url, "//", 2)
+	if len(parts) != 2 || parts[1] == "" {
+		return "", fmt.Errorf("invalid external URL: %s", url)
+	}
+	return parts[1], nil
+}
+
 var externalHTTPClient = &http.Client{Timeout: 30 * time.Second}
 
 func ExternalHTTPSourceToPath(home, lib, url string) (string, error) {
-	localBase := filepath.Join(home, ".jokerd", "deps", strings.SplitN(url, "//", 2)[1])
+	cacheBase, err := externalURLCacheBase(url)
+	if err != nil {
+		return "", err
+	}
+	localBase := filepath.Join(home, ".jokerd", "deps", cacheBase)
 	libBase := LibNamePath(lib)
 	libPath := filepath.Join(localBase, libBase)
 	libPathDir := filepath.Dir(libPath)

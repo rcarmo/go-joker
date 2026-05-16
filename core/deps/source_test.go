@@ -5,6 +5,15 @@ import (
 	"testing"
 )
 
+func TestExternalURLCacheBaseRejectsMalformedURL(t *testing.T) {
+	if _, err := externalURLCacheBase("http:"); err == nil {
+		t.Fatal("externalURLCacheBase accepted malformed URL")
+	}
+	if got, err := externalURLCacheBase("https://example.test/lib/"); err != nil || got != "example.test/lib/" {
+		t.Fatalf("externalURLCacheBase = %q/%v", got, err)
+	}
+}
+
 func TestExternalSourceToPathForLocalSource(t *testing.T) {
 	got, err := ExternalSourceToPath("/tmp/home", "joker.core", "/repo/lib")
 	if err != nil {

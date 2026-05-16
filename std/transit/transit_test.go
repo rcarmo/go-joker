@@ -59,6 +59,15 @@ func TestTransitTaggedSetListQuoteCMap(t *testing.T) {
 	}
 }
 
+func TestTransitCMapRejectsOddEntries(t *testing.T) {
+	defer func() {
+		if recover() == nil {
+			t.Fatal("odd cmap entries did not panic")
+		}
+	}()
+	_ = readTransit(MakeString(`["~#cmap",["~:k",1,"~:dangling"]]`))
+}
+
 func TestTransitBigNumbersAndRatio(t *testing.T) {
 	big := readTransit(MakeString(`"~i9223372036854775808"`))
 	if big.GetType() != TYPE.BigInt || big.ToString(false) != "9223372036854775808N" {

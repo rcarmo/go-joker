@@ -267,8 +267,11 @@ func (d *transitDecoder) decodeTagged(tag string, payload interface{}) Object {
 		if !ok {
 			break
 		}
+		if len(items)%2 != 0 {
+			panic(RT.NewError("transit/read: cmap has odd number of entries"))
+		}
 		m := EmptyArrayMap()
-		for i := 0; i+1 < len(items); i += 2 {
+		for i := 0; i < len(items); i += 2 {
 			m.Add(d.decode(items[i], false), d.decode(items[i+1], false))
 		}
 		return m
