@@ -53,8 +53,13 @@ func handleCompile(args []string) {
 		ExitJoker(1)
 	}
 
-	// Report size
-	fi, _ := os.Stat(outputFile)
+	// Report size when available; do not panic if the output vanished or stat fails.
+	fi, err := os.Stat(outputFile)
+	if err != nil {
+		fmt.Fprintf(Stdout, "Compiled %s → %s\n", sourceFile, outputFile)
+		fmt.Fprintf(Stderr, "Warning: could not stat output file %s: %v\n", outputFile, err)
+		return
+	}
 	fmt.Fprintf(Stdout, "Compiled %s → %s (%s)\n", sourceFile, outputFile, humanSize(fi.Size()))
 }
 

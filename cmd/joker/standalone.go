@@ -80,6 +80,17 @@ func checkEmbeddedSource() (srcText string, ok bool) {
 	return string(src), true
 }
 
+func writeStandaloneChunk(w io.Writer, label string, data []byte) error {
+	n, err := w.Write(data)
+	if err != nil {
+		return fmt.Errorf("write %s: %w", label, err)
+	}
+	if n != len(data) {
+		return fmt.Errorf("write %s: short write: %d of %d bytes", label, n, len(data))
+	}
+	return nil
+}
+
 // compileStandalone produces a standalone binary from a source file.
 func compileStandalone(sourceFile string, outputFile string) (err error) {
 	// Read source
@@ -122,21 +133,21 @@ func compileStandalone(sourceFile string, outputFile string) (err error) {
 	}()
 
 	// Write runtime binary
-	if _, err := out.Write(runtimeBin); err != nil {
-		return fmt.Errorf("write runtime: %w", err)
+	if err := writeStandaloneChunk(out, "runtime", runtimeBin); err != nil {
+		return err
 	}
 
 	// Write source
-	if _, err := out.Write(src); err != nil {
-		return fmt.Errorf("write source: %w", err)
+	if err := writeStandaloneChunk(out, "source", src); err != nil {
+		return err
 	}
 
 	// Write footer: [8-byte LE source length][4-byte magic]
 	footer := make([]byte, standaloneFooterSize)
 	binary.LittleEndian.PutUint64(footer[0:8], uint64(len(src)))
 	copy(footer[8:12], standaloneMagic)
-	if _, err := out.Write(footer); err != nil {
-		return fmt.Errorf("write footer: %w", err)
+	if err := writeStandaloneChunk(out, "footer", footer); err != nil {
+		return err
 	}
 
 	// Make executable on Unix

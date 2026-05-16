@@ -1,6 +1,25 @@
 package main
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
+
+type shortWriter struct{}
+
+func (shortWriter) Write(p []byte) (int, error) {
+	if len(p) == 0 {
+		return 0, nil
+	}
+	return len(p) - 1, nil
+}
+
+func TestWriteStandaloneChunkDetectsShortWrite(t *testing.T) {
+	err := writeStandaloneChunk(shortWriter{}, "test", []byte("abc"))
+	if err == nil || !strings.Contains(err.Error(), "short write") {
+		t.Fatalf("writeStandaloneChunk error = %v, want short write", err)
+	}
+}
 
 func TestHumanSize(t *testing.T) {
 	tests := []struct {
