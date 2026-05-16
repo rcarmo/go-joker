@@ -36,6 +36,7 @@ This folder is the canonical refactor/audit document set:
 - `object-protocol-contracts.md` — object/protocol contracts blocking broad moves.
 - `runtime-execution-contract.md` — execution metadata contract required before moving IR executors/runtime frames.
 - `reader-construction-contract.md` — object construction/tagged literal contract required before moving reader/parser code.
+- `reader-parser-audit.md` — current remaining reader/parser root ownership, blockers, and next safe extraction seams.
 - `std-resource-layout.md` — repository layout rules for std namespace roots, Go packages, and pure Joker sub-namespace resources.
 - `collections-extraction-audit.md` — current collection family grouping, extracted mechanics seams, and blockers for concrete collection moves.
 
