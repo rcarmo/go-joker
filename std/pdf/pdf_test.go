@@ -58,6 +58,20 @@ func TestDocumentCreate(t *testing.T) {
 	os.Remove(path)
 }
 
+func TestPDFColorRejectsOutOfRangeChannels(t *testing.T) {
+	initPDFNamespace()
+	doc := procDocument(nil)
+	expectPanic(t, func() {
+		procColor([]Object{doc, MakeInt(256), MakeInt(0), MakeInt(0)})
+	})
+	expectPanic(t, func() {
+		procStrokeColor([]Object{doc, MakeInt(0), MakeInt(-1), MakeInt(0)})
+	})
+	expectPanic(t, func() {
+		procFillColor([]Object{doc, MakeInt(0), MakeInt(0), MakeInt(999)})
+	})
+}
+
 func TestImageMissingPathPanics(t *testing.T) {
 	initPDFNamespace()
 	doc := procDocument(nil)

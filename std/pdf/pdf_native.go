@@ -205,33 +205,41 @@ var procOval ProcFn = func(args []Object) Object {
 
 // --- Color ---
 
+func pdfColorChannel(obj Object, name string) uint8 {
+	v := EnsureObjectIsInt(obj, "pdf color "+name+": %s").I
+	if v < 0 || v > 255 {
+		panic(RT.NewError("pdf color " + name + " must be in [0,255]"))
+	}
+	return uint8(v)
+}
+
 var procColor ProcFn = func(args []Object) Object {
 	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
-	r := ExtractInt(args, 1)
-	g := ExtractInt(args, 2)
-	b := ExtractInt(args, 3)
-	d.pdf.SetTextColor(uint8(r), uint8(g), uint8(b))
+	r := pdfColorChannel(args[1], "r")
+	g := pdfColorChannel(args[2], "g")
+	b := pdfColorChannel(args[3], "b")
+	d.pdf.SetTextColor(r, g, b)
 	return args[0]
 }
 
 var procStrokeColor ProcFn = func(args []Object) Object {
 	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
-	r := ExtractInt(args, 1)
-	g := ExtractInt(args, 2)
-	b := ExtractInt(args, 3)
-	d.pdf.SetStrokeColor(uint8(r), uint8(g), uint8(b))
+	r := pdfColorChannel(args[1], "r")
+	g := pdfColorChannel(args[2], "g")
+	b := pdfColorChannel(args[3], "b")
+	d.pdf.SetStrokeColor(r, g, b)
 	return args[0]
 }
 
 var procFillColor ProcFn = func(args []Object) Object {
 	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
-	r := ExtractInt(args, 1)
-	g := ExtractInt(args, 2)
-	b := ExtractInt(args, 3)
-	d.pdf.SetFillColor(uint8(r), uint8(g), uint8(b))
+	r := pdfColorChannel(args[1], "r")
+	g := pdfColorChannel(args[2], "g")
+	b := pdfColorChannel(args[3], "b")
+	d.pdf.SetFillColor(r, g, b)
 	return args[0]
 }
 
