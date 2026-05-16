@@ -157,24 +157,30 @@ bench("binary_trees_14", binaryTrees);
 // --- Fannkuch-redux (N=7) ---
 function fannkuch() {
   const n = 7;
-  const perm = Array.from({length:n},(_,i)=>i);
-  let maxFlips=0, checksum=0, sign=1;
-  const c = new Array(n).fill(0);
+  const perm1 = Array.from({length:n},(_,i)=>i);
+  const count = new Array(n).fill(0);
+  let maxFlips = 0, checksum = 0, r = n, sign = 1;
   while (true) {
-    const p = perm.slice();
+    while (r !== 1) { count[r - 1] = r; r--; }
+    const perm = perm1.slice();
     let flips = 0;
-    while (p[0]!==0) { const k=p[0]; for(let lo=0,hi=k;lo<hi;lo++,hi--){const t=p[lo];p[lo]=p[hi];p[hi]=t;} flips++; }
-    if (flips>maxFlips) maxFlips=flips;
-    checksum += sign===1?flips:-flips;
-    let i=1; sign=-sign;
-    while (i<n) {
-      c[i]++;
-      if (c[i]<i+1) { if((i+1)%2===0){const t=perm[0];perm[0]=perm[i];perm[i]=t;}else{const t=perm[0];perm[0]=perm[1];perm[1]=t;} break; }
-      c[i]=0; i++;
+    while (perm[0] !== 0) {
+      const k = perm[0];
+      for (let i = 0, j = k; i < j; i++, j--) { const t = perm[i]; perm[i] = perm[j]; perm[j] = t; }
+      flips++;
     }
-    if (i>=n) break;
+    if (flips > maxFlips) maxFlips = flips;
+    checksum += sign * flips;
+    while (true) {
+      if (r === n) return maxFlips * 1000 + checksum;
+      const p0 = perm1[0];
+      for (let i = 0; i < r; i++) perm1[i] = perm1[i + 1];
+      perm1[r] = p0;
+      count[r]--;
+      if (count[r] > 0) { sign = -sign; break; }
+      r++;
+    }
   }
-  return maxFlips*1000+checksum;
 }
 
 // --- Mandelbrot (N=200, max_iter=50) ---
@@ -239,18 +245,18 @@ bench("regex_redux", regexRedux);
 
 // --- Pidigits (N=27) ---
 function pidigits() {
-  let q=1,r=0,t=1,k=1,n=3,l=3,digits=0,cs=0;
+  let q=1n,r=0n,t=1n,k=1n,n=3n,l=3n,digits=0,cs=0n;
   while (digits < 27) {
-    if (4*q+r-t < n*t) {
+    if (4n*q+r-t < n*t) {
       cs += n; digits++;
-      const nr = 10*(r-n*t); const nn = Math.floor((10*(3*q+r))/t) - 10*n;
-      q = q*10; r = nr; n = nn;
+      const nr = 10n*(r-n*t); const nn = (10n*(3n*q+r))/t - 10n*n;
+      q = q*10n; r = nr; n = nn;
     } else {
-      const q2=q*k, r2=(2*q+r)*l, t2=t*l, k2=k+1;
-      const n2=Math.floor((q*(7*k+2)+r*l)/t2), l2=l+2;
+      const q2=q*k, r2=(2n*q+r)*l, t2=t*l, k2=k+1n;
+      const n2=(q*(7n*k+2n)+r*l)/t2, l2=l+2n;
       q=q2;r=r2;t=t2;k=k2;n=n2;l=l2;
     }
   }
-  return cs;
+  return cs.toString();
 }
 bench("pidigits_27", pidigits);

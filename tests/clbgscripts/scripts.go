@@ -5,40 +5,44 @@ package clbgscripts
 var FannkuchScript = `(let [n 7
       init-perm (loop [i 0 v []] (if (= i n) v (recur (+ i 1) (conj v i))))
       flip (fn [perm]
-        (let [k (nth perm 0)]
-          (loop [lo 0 hi k p perm]
-            (if (< lo hi)
-              (let [tmp (nth p lo)]
-                (recur (+ lo 1) (- hi 1)
-                  (assoc (assoc p lo (nth p hi)) hi tmp)))
-              p))))
+        (loop [lo 0 hi (nth perm 0) p perm]
+          (if (< lo hi)
+            (let [tmp (nth p lo)]
+              (recur (+ lo 1) (- hi 1) (assoc (assoc p lo (nth p hi)) hi tmp)))
+            p)))
       count-flips (fn [perm]
-        (loop [p perm c 0]
+        (loop [p perm flips 0]
           (if (= (nth p 0) 0)
-            c
-            (recur (flip p) (+ c 1)))))]
-  (letfn [(heap-perm [perm c nn max-flips checksum sign]
-            (if (= nn 1)
-              (let [flips (count-flips perm)
-                    new-max (if (< max-flips flips) flips max-flips)
-                    new-cs (if (= sign 1) (+ checksum flips) (- checksum flips))]
-                [new-max new-cs])
-              (loop [i 0 p perm mf max-flips cs checksum sg sign]
-                (if (= i nn)
-                  [mf cs]
-                  (let [result (heap-perm p c (- nn 1) mf cs sg)
-                        mf2 (nth result 0)
-                        cs2 (nth result 1)
-                        p2 (if (= (rem nn 2) 0)
-                             (let [tmp (nth p 0)]
-                               (assoc (assoc p 0 (nth p (- nn 1))) (- nn 1) tmp))
-                             (let [tmp (nth p 0)]
-                               (assoc (assoc p 0 (nth p i)) i tmp)))]
-                    (recur (+ i 1) p2 mf2 cs2 (* sg -1)))))))]
-    (let [result (heap-perm init-perm
-                   (loop [i 0 v []] (if (= i n) v (recur (+ i 1) (conj v 0))))
-                   n 0 0 1)]
-      (+ (* (nth result 0) 1000) (nth result 1)))))`
+            flips
+            (recur (flip p) (+ flips 1)))))
+      init-count (loop [i 0 v []] (if (= i n) v (recur (+ i 1) (conj v 0))))
+      rotate-left (fn [perm r]
+        (let [p0 (nth perm 0)]
+          (loop [i 0 p perm]
+            (if (= i r)
+              (assoc p r p0)
+              (recur (+ i 1) (assoc p i (nth p (+ i 1))))))))]
+  (loop [perm1 init-perm count init-count max-flips 0 checksum 0 r n sign 1]
+    (let [prepared (loop [rr r c count]
+                     (if (not= rr 1)
+                       (recur (- rr 1) (assoc c (- rr 1) rr))
+                       [rr c]))
+          r1 (nth prepared 0)
+          count1 (nth prepared 1)
+          flips (count-flips perm1)
+          mf (if (< max-flips flips) flips max-flips)
+          cs (+ checksum (* sign flips))
+          next-state (loop [rr r1 p perm1 c count1]
+                       (if (= rr n)
+                         [:done p c rr sign]
+                         (let [p2 (rotate-left p rr)
+                               c2 (assoc c rr (- (nth c rr) 1))]
+                           (if (< 0 (nth c2 rr))
+                             [:next p2 c2 rr (* sign -1)]
+                             (recur (+ rr 1) p2 c2)))))]
+      (if (= (nth next-state 0) :done)
+        (+ (* mf 1000) cs)
+        (recur (nth next-state 1) (nth next-state 2) mf cs (nth next-state 3) (nth next-state 4))))))`
 
 // --- mandelbrot (N=200, max-iter=50) ---
 

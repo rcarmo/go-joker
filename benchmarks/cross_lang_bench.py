@@ -155,37 +155,33 @@ if __name__ == "__main__":
 # --- Fannkuch-redux (N=7) ---
 def fannkuch():
     n = 7
-    perm = list(range(n))
-    max_flips = 0
-    checksum = 0
-    c = [0] * n
-    sign = 1
+    perm1 = list(range(n))
+    count = [0] * n
+    max_flips, checksum, r, sign = 0, 0, n, 1
     while True:
-        # count flips
-        p = perm[:]
+        while r != 1:
+            count[r - 1] = r
+            r -= 1
+        perm = perm1[:]
         flips = 0
-        while p[0] != 0:
-            k = p[0]
-            p[:k+1] = p[k::-1]
+        while perm[0] != 0:
+            k = perm[0]
+            perm[:k+1] = reversed(perm[:k+1])
             flips += 1
-        if flips > max_flips: max_flips = flips
-        checksum += flips if sign == 1 else -flips
-        # next permutation (Heap's algorithm)
-        i = 1
-        sign = -sign
-        while i < n:
-            c[i] += 1
-            if c[i] < i + 1:
-                if (i + 1) % 2 == 0:
-                    perm[0], perm[i] = perm[i], perm[0]
-                else:
-                    perm[0], perm[1] = perm[1], perm[0]
+        max_flips = max(max_flips, flips)
+        checksum += sign * flips
+        while True:
+            if r == n:
+                return max_flips * 1000 + checksum
+            p0 = perm1[0]
+            for i in range(r):
+                perm1[i] = perm1[i + 1]
+            perm1[r] = p0
+            count[r] -= 1
+            if count[r] > 0:
+                sign = -sign
                 break
-            c[i] = 0
-            i += 1
-        else:
-            break
-    return max_flips * 1000 + checksum
+            r += 1
 
 # --- Mandelbrot (N=200, max_iter=50) ---
 def mandelbrot():

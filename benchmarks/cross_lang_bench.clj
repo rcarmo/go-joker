@@ -201,47 +201,45 @@
 ;; --- Fannkuch-redux (N=7) ---
 (defn fannkuch []
   (let [n 7
-        perm (int-array (range n))
-        c    (int-array n)]
-    (loop [max-flips 0 checksum 0 sign 1]
-      (let [;; count flips on a copy
-            p (let [a (int-array n)]
-                (dotimes [k n] (aset a k (aget perm k)))
-                a)
+        perm1 (int-array (range n))
+        cnt (int-array n)]
+    (loop [max-flips 0 checksum 0 r n sign 1]
+      (let [r1 (loop [rr r]
+                 (if (not= rr 1)
+                   (do (aset cnt (dec rr) rr) (recur (dec rr)))
+                   rr))
+            perm (let [a (int-array n)]
+                   (dotimes [i n] (aset a i (aget perm1 i)))
+                   a)
             flips (loop [f 0]
-                    (if (= (aget p 0) 0)
+                    (if (= (aget perm 0) 0)
                       f
-                      (let [k (aget p 0)
-                            ;; reverse p[0..k] inclusive
-                            _ (loop [a 0 b k]
-                                (when (< a b)
-                                  (let [tmp (aget p a)]
-                                    (aset p a (aget p b))
-                                    (aset p b tmp)
-                                    (recur (inc a) (dec b)))))]
+                      (let [k (aget perm 0)]
+                        (loop [i 0 j k]
+                          (when (< i j)
+                            (let [tmp (aget perm i)]
+                              (aset perm i (aget perm j))
+                              (aset perm j tmp)
+                              (recur (inc i) (dec j)))))
                         (recur (inc f)))))
             mf (if (> flips max-flips) flips max-flips)
-            cs (+ checksum (if (= sign 1) flips (- flips)))
-            ;; next permutation (Heap's algorithm)
-            done? (loop [i 1]
-                    (if (>= i n)
-                      true
-                      (do
-                        (aset c i (inc (aget c i)))
-                        (if (< (aget c i) (inc i))
-                          (do
-                            (if (= 0 (mod (inc i) 2))
-                              (let [t (aget perm 0)]
-                                (aset perm 0 (aget perm i))
-                                (aset perm i t))
-                              (let [t (aget perm 0)]
-                                (aset perm 0 (aget perm 1))
-                                (aset perm 1 t)))
-                            false)
-                          (do (aset c i 0) (recur (inc i)))))))]
-        (if done?
+            cs (+ checksum (* sign flips))
+            adv (loop [rr r1]
+                  (if (= rr n)
+                    [:done]
+                    (let [p0 (aget perm1 0)]
+                      (loop [i 0]
+                        (when (< i rr)
+                          (aset perm1 i (aget perm1 (inc i)))
+                          (recur (inc i))))
+                      (aset perm1 rr p0)
+                      (aset cnt rr (dec (aget cnt rr)))
+                      (if (> (aget cnt rr) 0)
+                        [:next rr (- sign)]
+                        (recur (inc rr))))))]
+        (if (= (nth adv 0) :done)
           (+ (* mf 1000) cs)
-          (recur mf cs (- sign)))))))
+          (recur mf cs (nth adv 1) (nth adv 2)))))))
 
 ;; --- Mandelbrot (N=40, max-iter=50) ---
 (defn mandelbrot []

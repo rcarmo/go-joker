@@ -435,7 +435,7 @@ func TestAdvanceFnCompiles(t *testing.T) {
 	t.Logf("advance: slots=%d caps=%d", prog.numSlots, len(prog.captureSlots))
 }
 
-func TestHeapPermFnCompiles(t *testing.T) {
+func TestFannkuchHelperFnCompiles(t *testing.T) {
 	clbgInit()
 	expr := compileBenchExpr(t, clbgscripts.FannkuchScript)
 	le := expr.(*LetExpr)
@@ -443,18 +443,12 @@ func TestHeapPermFnCompiles(t *testing.T) {
 	for _, v := range le.values {
 		env.bindings = append(env.bindings, Eval(v, env))
 	}
-	letfnLoop := le.body[0].(*LoopExpr)
-	letfnLe := (*LetExpr)(letfnLoop)
-	env2 := &LocalEnv{bindings: make([]Object, 0), frame: 0, parent: env}
-	for _, v := range letfnLe.values {
-		env2.bindings = append(env2.bindings, Eval(v, env2))
-	}
-	heapPermFn := env2.bindings[0].(*Fn)
-	prog := irCompileFn(heapPermFn)
+	countFlipsFn := env.bindings[3].(*Fn)
+	prog := irCompileFn(countFlipsFn)
 	if prog == nil {
-		t.Fatal("heap-perm fn should compile with depth limit 8")
+		t.Fatal("fannkuch count-flips fn should compile")
 	}
-	t.Logf("heap-perm: slots=%d caps=%d hasSelf=%v", prog.numSlots, len(prog.captureSlots), prog.hasSelf)
+	t.Logf("count-flips: slots=%d caps=%d hasSelf=%v", prog.numSlots, len(prog.captureSlots), prog.hasSelf)
 }
 
 // --- Transient ops in typed executor ---

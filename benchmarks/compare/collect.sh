@@ -74,6 +74,13 @@ else
 fi
 
 if command -v go >/dev/null 2>&1; then
+  echo "[compare] validating runtime result payloads"
+  go run "${ROOT_DIR}/benchmarks/compare/validate_results.go" \
+    "${OUT_DIR}/python.txt" \
+    "${OUT_DIR}/bun.txt" \
+    "${OUT_DIR}/goja.txt" \
+    "${OUT_DIR}/letgo.txt" | tee "${OUT_DIR}/result-validation.txt"
+
   run_capture report go run "${ROOT_DIR}/benchmarks/compare/render_table.go" \
     -history "${ROOT_DIR}/benchmarks/benchmark-history.json" \
     -python "${OUT_DIR}/python.txt" \

@@ -39,7 +39,7 @@ func TestBenchmarkPortableResults(t *testing.T) {
 	}{
 		{"mandelbrot", clbgscripts.MandelbrotScript, 633},
 		{"binary-trees", binaryTreesScript, 358401},
-		{"fannkuch", clbgscripts.FannkuchScript, 8132},
+		{"fannkuch", clbgscripts.FannkuchScript, 16228},
 		{"fasta", clbgscripts.FastaScript, 150034},
 	}
 	for _, tt := range tests {
