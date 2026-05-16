@@ -90,6 +90,24 @@ func TestReaderMacroPrefix(t *testing.T) {
 	}
 }
 
+func TestClassifyNamespacedMapStart(t *testing.T) {
+	cases := []struct {
+		r    rune
+		auto bool
+		want NamespacedMapStartKind
+	}{
+		{' ', true, NamespacedMapStartMap},
+		{' ', false, NamespacedMapStartMissingNamespace},
+		{'{', false, NamespacedMapStartMap},
+		{'f', false, NamespacedMapStartNamespace},
+	}
+	for _, tc := range cases {
+		if got := ClassifyNamespacedMapStart(tc.r, tc.auto); got != tc.want {
+			t.Fatalf("ClassifyNamespacedMapStart(%q, %v) = %v, want %v", tc.r, tc.auto, got, tc.want)
+		}
+	}
+}
+
 func TestNamespacedMapPrefix(t *testing.T) {
 	if got := NamespacedMapPrefix(false, "foo"); got != "#:foo" {
 		t.Fatalf("NamespacedMapPrefix explicit = %q", got)

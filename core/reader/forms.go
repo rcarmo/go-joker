@@ -60,6 +60,29 @@ func UnquotePrefix(splicing bool) string {
 }
 
 // NamespacedMapPrefix returns the format-mode prefix for #:/#:: map literals.
+type NamespacedMapStartKind int
+
+const (
+	NamespacedMapStartNamespace NamespacedMapStartKind = iota
+	NamespacedMapStartMap
+	NamespacedMapStartMissingNamespace
+)
+
+// ClassifyNamespacedMapStart reports what follows #:/#:: while reading a
+// namespaced map. Root owns concrete namespace symbol reading and errors.
+func ClassifyNamespacedMapStart(r rune, auto bool) NamespacedMapStartKind {
+	if IsWhitespace(r) {
+		if auto {
+			return NamespacedMapStartMap
+		}
+		return NamespacedMapStartMissingNamespace
+	}
+	if r == '{' {
+		return NamespacedMapStartMap
+	}
+	return NamespacedMapStartNamespace
+}
+
 func NamespacedMapPrefix(auto bool, namespace string) string {
 	prefix := "#:"
 	if auto {
