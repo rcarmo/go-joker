@@ -7,6 +7,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/dop251/goja"
@@ -116,8 +117,8 @@ func main() {
 	for _, bm := range benchmarks {
 		fn, ok := goja.AssertFunction(vm.Get(bm.fnName))
 		if !ok {
-			fmt.Printf("%-30s SKIP (not a function)\n", bm.label)
-			continue
+			fmt.Fprintf(os.Stderr, "%s: not a function\n", bm.fnName)
+			os.Exit(1)
 		}
 		var totalNs int64
 		var result goja.Value
@@ -126,8 +127,8 @@ func main() {
 			result, err = fn(goja.Undefined())
 			elapsed := time.Since(start).Nanoseconds()
 			if err != nil {
-				fmt.Printf("%-30s ERROR: %v\n", bm.label, err)
-				break
+				fmt.Fprintf(os.Stderr, "%s: %v\n", bm.label, err)
+				os.Exit(1)
 			}
 			totalNs += elapsed
 		}
