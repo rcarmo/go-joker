@@ -18,19 +18,19 @@ type Row struct {
 
 func main() {
 	data := []Row{
-		{"arith-loop", 189.78, 0.257},
-		{"rec-fib", 546.02, 0.942},
-		{"mandelbrot", 159.0, 0.083},
-		{"n-body", 34.2, 0.005},
-		{"spectral-norm", 70.0, 0.103},
-		{"binary-trees", 528.0, 3.96},
-		{"fannkuch", 94.1, 0.206},
-		{"fasta", 0.22, 0.047},
-		{"pidigits", 0.10, 0.020},
+		{"arith-loop", 189.78, 0.308},
+		{"rec-fib", 546.02, 1.22},
+		{"mandelbrot", 159.0, 0.116},
+		{"n-body", 34.2, 0.006},
+		{"spectral-norm", 70.0, 0.136},
+		{"binary-trees", 528.0, 4.24},
+		{"fannkuch", 94.1, 0.244},
+		{"fasta", 0.22, 0.139},
+		{"pidigits", 0.10, 0.047},
 		{"knucleotide", 0.41, 0.008},
 		{"rev-complement", 0.082, 0.001},
 		{"regex-redux", 0.12, 0.068},
-		{"word-frequency", 279.92, 0.329},
+		{"word-frequency", 279.92, 0.533},
 	}
 
 	sort.Slice(data, func(i, j int) bool {
@@ -62,7 +62,7 @@ svg{background:var(--bg);font-family:Inter,system-ui,sans-serif}
 `, w, h, w, h))
 
 	b.WriteString(`<text class="title" x="15" y="22">Speedup vs Original Joker</text>`)
-	b.WriteString(`<text class="subtitle" x="15" y="38">Before → After (ms) · bar shows improvement factor (log scale)</text>`)
+	b.WriteString(`<text class="subtitle" x="15" y="38">Before → current best-Joker 2026-05-16 (ms) · bar shows improvement factor (log scale)</text>`)
 
 	// Column headers
 	b.WriteString(fmt.Sprintf(`<text class="before" x="130" y="%d">Before</text>`, headerH-8))
@@ -115,7 +115,7 @@ svg{background:var(--bg);font-family:Inter,system-ui,sans-serif}
 	}
 
 	b.WriteString(`</svg>`)
-	os.WriteFile("/workspace/projects/go-joker/benchmarks/benchmark-speedup.svg", []byte(b.String()), 0644)
+	os.WriteFile("benchmarks/benchmark-speedup.svg", []byte(b.String()), 0644)
 	fmt.Println("wrote benchmark-speedup.svg")
 }
 

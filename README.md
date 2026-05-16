@@ -18,7 +18,7 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 
 ## Performance
 
-### Performance — Joker vs Python vs Goja (CLBG benchmarks)
+### Performance — Joker vs Python vs Bun/JSC vs Goja vs let-go
 
 <img src="benchmarks/benchmark-transposed.svg" alt="benchmark comparison" width="100%">
 
@@ -30,15 +30,15 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 
 | What | Result |
 |------|--------|
-| **Mandelbrot** | **~0.116 ms** best-Joker path — ~24× faster than Python (~2.74 ms) |
-| **N-body** | **~0.006 ms** best-Joker path — ~118× faster than Python and ~807× faster than let-go |
-| **Fannkuch** | **~0.244 ms** best-Joker path — ~8.6× faster than Python |
-| **Binary trees** | **~4.24 ms** best-Joker path — beats Python (~47.1 ms), Bun/JSC (~5.78 ms), Goja, and let-go |
-| **Pidigits** | **~0.047 ms** — faster than Python, Goja, and let-go |
+| **Mandelbrot** | **~0.116 ms** best-Joker path — ~25× faster than Python (~2.87 ms) and ~124× faster than let-go |
+| **N-body** | **~0.006 ms** best-Joker path — ~58× faster than Python and ~537× faster than let-go |
+| **Fannkuch** | **~0.244 ms** best-Joker path — ~10× faster than Python and ~61× faster than let-go |
+| **Binary trees** | **~4.24 ms** best-Joker path — beats Python (~26.7 ms), Bun/JSC (~4.83 ms), Goja, and let-go |
+| **Pidigits** | **~0.047 ms** — faster than Python, Bun/JSC, Goja, and let-go |
 | **Arithmetic loop** | **~0.308 ms** — faster than Goja, Python, and let-go; Bun/JSC edges this run |
 | **Benchmark validation** | portable, micro, and best-Joker/native helper outputs are pinned in `core/benchmark_results_test.go`; latest full profile shows allocation/GC cost dominates portable CLBG paths |
 | **Best-Joker suite** | beats Python on **13/15**, Goja on **15/15**, and let-go on **15/15** displayed workloads |
-| **let-go suite** | wins 5/7 let-go suite workloads (reduce 14.0×, loop-recur 8.5×, fib 1.5×, tak 1.1×, persistent-map 1.1×) |
+| **let-go suite** | current go-joker wins **2/7** mirrored let-go workloads (`reduce` ~15×, `loop-recur` ~10×); let-go still leads recursive/sequence-heavy cases |
 | **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
 | **Concurrency** | GIL-free — true parallel goroutines, futures, promises, agents, pmap |
 | **Namespaces** | 29+ namespaces including `clojure.core.async`, `joker.random`, `joker.log`, HTTP router |

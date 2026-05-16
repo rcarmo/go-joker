@@ -4,25 +4,25 @@
 
 13 CLBG benchmarks adapted from the [Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/), plus 2 additional runtime micro-workloads (`map_update_loop`, `word_frequency`). Scaled down for benchmark harness practicality.
 
-### Current Results (best-Joker, 5×5x median on i7-12700)
+### Current Results (best-Joker, latest local run on i7-12700)
 
 | Benchmark | Joker | Python 3.13 | Bun/JSC | Goja | let-go | Winner |
 |---|---:|---:|---:|---:|---:|---|
-| arithmetic-loop | 0.308ms | 8.39ms | 0.270ms | 19.2ms | 14.7ms | Bun/JSC |
-| recursive-fib | 1.22ms | 24.3ms | 1.09ms | 80.4ms | 51.4ms | Bun/JSC |
-| tail-recursive-sum | 0.077ms | 8.81ms | 0.260ms | 14.7ms | 7.80ms | Joker |
-| map-update-loop | 0.002ms | 0.250ms | 0.110ms | 1.66ms | 2.91ms | Joker |
-| word-frequency | 0.533ms | 0.460ms | 0.210ms | 3.51ms | 25.3ms | Bun/JSC |
-| nbody | 0.006ms | 0.710ms | 0.210ms | 6.27ms | 4.84ms | Joker |
-| spectral-norm | 0.136ms | 20.4ms | 0.620ms | 86.0ms | 54.3ms | Joker |
-| binary-trees | 4.24ms | 47.1ms | 5.78ms | 166.3ms | 120.5ms | Joker |
-| fannkuch | 0.244ms | 2.09ms | 0.480ms | 16.8ms | 14.2ms | Joker |
-| mandelbrot | 0.116ms | 2.74ms | 0.370ms | 33.3ms | 14.2ms | Joker |
-| fasta | 0.139ms | 0.070ms | 0.030ms | 0.530ms | 0.240ms | Bun/JSC |
-| knucleotide | 0.008ms | 0.030ms | 0.050ms | 0.470ms | 0.450ms | Joker |
-| reverse-complement | 0.001ms | 0.010ms | 0.020ms | 0.080ms | 0.070ms | Joker |
-| regex-redux | 0.068ms | 0.120ms | 0.080ms | 0.170ms | 0.100ms | Joker |
-| pidigits | 0.047ms | 0.060ms | 0.020ms | 0.180ms | 0.310ms | Bun/JSC |
+| arithmetic-loop | 0.308ms | 8.76ms | 0.270ms | 11.5ms | 13.5ms | Bun/JSC |
+| recursive-fib | 1.22ms | 17.9ms | 0.940ms | 42.6ms | 48.6ms | Bun/JSC |
+| tail-recursive-sum | 0.077ms | 4.23ms | 0.250ms | 8.95ms | 8.17ms | Joker |
+| map-update-loop | 0.002ms | 0.320ms | 0.110ms | 1.54ms | 2.68ms | Joker |
+| word-frequency | 0.533ms | 0.580ms | 0.220ms | 1.04ms | 24.6ms | Bun/JSC |
+| nbody | 0.006ms | 0.350ms | 0.250ms | 3.22ms | 3.22ms | Joker |
+| spectral-norm | 0.136ms | 10.3ms | 0.630ms | 53.2ms | 44.5ms | Joker |
+| binary-trees | 4.24ms | 26.7ms | 4.83ms | 213.0ms | 128.2ms | Joker |
+| fannkuch | 0.244ms | 2.46ms | 0.320ms | 18.2ms | 15.0ms | Joker |
+| mandelbrot | 0.116ms | 2.87ms | 0.250ms | 23.3ms | 14.4ms | Joker |
+| fasta | 0.139ms | 0.090ms | 0.020ms | 0.330ms | 0.220ms | Bun/JSC |
+| knucleotide | 0.008ms | 0.030ms | 0.060ms | 0.280ms | 0.560ms | Joker |
+| reverse-complement | 0.001ms | 0.010ms | 0.030ms | 0.070ms | 0.140ms | Joker |
+| regex-redux | 0.068ms | 0.140ms | 0.060ms | 0.150ms | 0.170ms | Bun/JSC |
+| pidigits | 0.047ms | 0.100ms | 0.160ms | 0.130ms | 0.310ms | Joker |
 
 **Best-Joker beats Python on 13/15, Goja on 15/15, and let-go on 15/15 displayed workloads.**
 
