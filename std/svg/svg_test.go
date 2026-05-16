@@ -70,6 +70,10 @@ func TestRenderSVG(t *testing.T) {
 		t.Fatal("render returned nil")
 	}
 	t.Logf("rendered: %s", img.ToString(false))
+
+	expectSVGPanic(t, func() {
+		procRender([]Object{MakeString(svgStr), MakeInt(0), MakeInt(100)})
+	})
 }
 
 func expectSVGPanic(t *testing.T, fn func()) {

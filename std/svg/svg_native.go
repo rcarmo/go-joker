@@ -377,10 +377,36 @@ var procRaw ProcFn = func(args []Object) Object {
 
 // --- Render SVG to raster Image ---
 
+func renderDimension(obj Object, name string) int {
+	v := EnsureObjectIsInt(obj, "svg/render "+name+": %s").I
+	if v <= 0 {
+		panic(RT.NewError("svg/render: " + name + " must be positive"))
+	}
+	return v
+}
+
+func rgbaToNRGBA(img *image.RGBA, w, h int) *image.NRGBA {
+	nrgba := image.NewNRGBA(img.Bounds())
+	for y := 0; y < h; y++ {
+		for x := 0; x < w; x++ {
+			r, g, b, a := img.At(x, y).RGBA()
+			if a > 0 {
+				nrgba.SetNRGBA(x, y, color.NRGBA{
+					R: uint8(r * 255 / a),
+					G: uint8(g * 255 / a),
+					B: uint8(b * 255 / a),
+					A: uint8(a >> 8),
+				})
+			}
+		}
+	}
+	return nrgba
+}
+
 var procRender ProcFn = func(args []Object) Object {
 	svgData := ExtractString(args, 0)
-	w := ExtractInt(args, 1)
-	h := ExtractInt(args, 2)
+	w := renderDimension(args[1], "width")
+	h := renderDimension(args[2], "height")
 
 	icon, err := oksvg.ReadIconStream(strings.NewReader(svgData))
 	if err != nil {
@@ -394,29 +420,15 @@ var procRender ProcFn = func(args []Object) Object {
 	icon.Draw(dasher, 1.0)
 
 	// Convert RGBA to NRGBA for imaging compatibility
-	nrgba := image.NewNRGBA(img.Bounds())
-	for y := 0; y < h; y++ {
-		for x := 0; x < w; x++ {
-			r, g, b, a := img.At(x, y).RGBA()
-			if a > 0 {
-				nrgba.SetNRGBA(x, y, color.NRGBA{
-					R: uint8(r * 255 / a),
-					G: uint8(g * 255 / a),
-					B: uint8(b * 255 / a),
-					A: uint8(a >> 8),
-				})
-			}
-		}
-	}
-	return imaging.WrapImage(nrgba)
+	return imaging.WrapImage(rgbaToNRGBA(img, w, h))
 }
 
 // --- Render SVG file to raster ---
 
 var procRenderFile ProcFn = func(args []Object) Object {
 	path := ExtractString(args, 0)
-	w := ExtractInt(args, 1)
-	h := ExtractInt(args, 2)
+	w := renderDimension(args[1], "width")
+	h := renderDimension(args[2], "height")
 
 	icon, err := oksvg.ReadIcon(path, oksvg.StrictErrorMode)
 	if err != nil {
@@ -429,21 +441,7 @@ var procRenderFile ProcFn = func(args []Object) Object {
 	dasher := rasterx.NewDasher(w, h, scanner)
 	icon.Draw(dasher, 1.0)
 
-	nrgba := image.NewNRGBA(img.Bounds())
-	for y := 0; y < h; y++ {
-		for x := 0; x < w; x++ {
-			r, g, b, a := img.At(x, y).RGBA()
-			if a > 0 {
-				nrgba.SetNRGBA(x, y, color.NRGBA{
-					R: uint8(r * 255 / a),
-					G: uint8(g * 255 / a),
-					B: uint8(b * 255 / a),
-					A: uint8(a >> 8),
-				})
-			}
-		}
-	}
-	return imaging.WrapImage(nrgba)
+	return imaging.WrapImage(rgbaToNRGBA(img, w, h))
 }
 
 // --- Helpers ---
