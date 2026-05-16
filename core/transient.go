@@ -160,6 +160,9 @@ func (tm *TransientMap) AssocInPlace(key, val Object) *TransientMap {
 		tm.sm[s.S] = val
 		return tm
 	}
+	if tm.m == nil {
+		tm.m = make(map[uint32][]mapEntry)
+	}
 	h := key.Hash()
 	bucket := tm.m[h]
 	for i, e := range bucket {

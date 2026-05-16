@@ -19,6 +19,14 @@ func TestTransientVector(t *testing.T) {
 	}
 }
 
+func TestTransientMapZeroValueAssoc(t *testing.T) {
+	tm := &TransientMap{}
+	tm.AssocInPlace(MakeKeyword("a"), Int{I: 1})
+	if ok, got := tm.Get(MakeKeyword("a")); !ok || !got.Equals(Int{I: 1}) {
+		t.Fatalf("zero-value transient map lookup = %v %v", ok, got)
+	}
+}
+
 func TestTransientMap(t *testing.T) {
 	m := EmptyArrayMap()
 	m.Add(MakeKeyword("a"), Int{I: 1})
