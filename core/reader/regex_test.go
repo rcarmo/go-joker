@@ -2,6 +2,18 @@ package reader
 
 import "testing"
 
+func TestClassifyInvalidRegexAction(t *testing.T) {
+	if got := ClassifyInvalidRegexAction(true, true); got != InvalidRegexPlaceholder {
+		t.Fatalf("linter invalid regex action = %v", got)
+	}
+	if got := ClassifyInvalidRegexAction(false, true); got != InvalidRegexPreserveString {
+		t.Fatalf("format invalid regex action = %v", got)
+	}
+	if got := ClassifyInvalidRegexAction(false, false); got != InvalidRegexError {
+		t.Fatalf("default invalid regex action = %v", got)
+	}
+}
+
 func TestScanRegexLiteral(t *testing.T) {
 	r := newCommentReader(`a\"b"tail`)
 	got, ok := ScanRegexLiteral(r)

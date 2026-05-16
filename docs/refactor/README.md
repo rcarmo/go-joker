@@ -131,7 +131,7 @@ Planned package boundaries:
 - [x] Move reader initial token classification into `core/reader`.
 - [x] Move reader comment and line-skip scanning into `core/reader`.
 - [x] Move reader string unicode escape scanning into `core/reader`.
-- [x] Move reader regex literal body scanning into `core/reader`.
+- [x] Move reader regex literal body scanning and invalid-regex mode classification into `core/reader`.
 - [x] Move reader delimiter token scanning into `core/reader`.
 - [x] Reuse reader delimiter token scanning for character unicode literals.
 - [x] Move reader expected-token and delimiter peek mechanics into `core/reader`.

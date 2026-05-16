@@ -369,15 +369,16 @@ func readRegex(reader *Reader) Object {
 	}
 	regex, err := regexp.Compile(s)
 	if err != nil {
-		if LINTER_MODE {
+		switch corereader.ClassifyInvalidRegexAction(LINTER_MODE, FORMAT_MODE) {
+		case corereader.InvalidRegexPlaceholder:
 			return MakeReadObject(reader, &Regex{})
-		}
-		if FORMAT_MODE {
+		case corereader.InvalidRegexPreserveString:
 			res := MakeReadObject(reader, MakeString(s))
 			addPrefix(res, "#")
 			return res
+		default:
+			panic(MakeReadError(reader, "Invalid regex: "+err.Error()))
 		}
-		panic(MakeReadError(reader, "Invalid regex: "+err.Error()))
 	}
 	return MakeReadObject(reader, &Regex{R: regex})
 }
