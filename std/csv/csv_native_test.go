@@ -21,6 +21,17 @@ func expectCSVPanic(t *testing.T, fn func()) {
 	fn()
 }
 
+func TestCSVOptionsRejectInvalidDelimiters(t *testing.T) {
+	opts := EmptyArrayMap()
+	opts.Add(MakeKeyword("comma"), Char{Ch: '\n'})
+	expectCSVPanic(t, func() { _ = writeString(NewVectorFrom(NewVectorFrom(MakeString("a"))), opts) })
+
+	readOpts := EmptyArrayMap()
+	readOpts.Add(MakeKeyword("comma"), Char{Ch: ';'})
+	readOpts.Add(MakeKeyword("comment"), Char{Ch: ';'})
+	expectCSVPanic(t, func() { _ = csvSeqOpts(MakeString("a;b\n"), readOpts) })
+}
+
 func TestWriteWriterSurfacesFlushErrors(t *testing.T) {
 	data := NewVectorFrom(NewVectorFrom(MakeString("a"), MakeString("b")))
 	expectCSVPanic(t, func() { writeWriter(failingWriter{}, data, EmptyArrayMap()) })

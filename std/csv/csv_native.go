@@ -4,9 +4,18 @@ import (
 	"encoding/csv"
 	"io"
 	"strings"
+	"unicode/utf8"
 
 	. "github.com/rcarmo/go-joker/core"
 )
+
+func csvDelimiter(obj Object, name string) rune {
+	r := EnsureObjectIsChar(obj, name+": %s").Ch
+	if r == '\n' || r == '\r' || r == 0 || r == utf8.RuneError {
+		panic(RT.NewError("csv/" + name + " must be a valid delimiter"))
+	}
+	return r
+}
 
 func csvLazySeq(rdr *csv.Reader) *LazySeq {
 	var c = func(args []Object) Object {
@@ -33,10 +42,13 @@ func csvSeqOpts(src Object, opts Map) Object {
 	csvReader := csv.NewReader(rdr)
 	csvReader.ReuseRecord = true
 	if ok, c := opts.Get(MakeKeyword("comma")); ok {
-		csvReader.Comma = EnsureObjectIsChar(c, "comma: %s").Ch
+		csvReader.Comma = csvDelimiter(c, "comma")
 	}
 	if ok, c := opts.Get(MakeKeyword("comment")); ok {
-		csvReader.Comment = EnsureObjectIsChar(c, "comment: %s").Ch
+		csvReader.Comment = csvDelimiter(c, "comment")
+		if csvReader.Comment == csvReader.Comma {
+			panic(RT.NewError("csv/comment must differ from comma"))
+		}
 	}
 	if ok, c := opts.Get(MakeKeyword("fields-per-record")); ok {
 		csvReader.FieldsPerRecord = EnsureObjectIsInt(c, "fields-per-record: %s").I
@@ -62,7 +74,7 @@ func sliceOfStrings(obj Object) (res []string) {
 func writeWriter(wr io.Writer, data Seqable, opts Map) {
 	csvWriter := csv.NewWriter(wr)
 	if ok, c := opts.Get(MakeKeyword("comma")); ok {
-		csvWriter.Comma = EnsureObjectIsChar(c, "comma: %s").Ch
+		csvWriter.Comma = csvDelimiter(c, "comma")
 	}
 	if ok, c := opts.Get(MakeKeyword("use-crlf")); ok {
 		csvWriter.UseCRLF = EnsureObjectIsBoolean(c, "use-crlf: %s").B
