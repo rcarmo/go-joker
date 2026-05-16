@@ -290,13 +290,10 @@ func readIdent(reader *Reader, first rune) Object {
 /* identifier), linting can helpfully find and warn about characters
 /* outside of this set (as extended via configuration).
 */
-var identValidationSetFn = corereader.IsValidCoreRune
-var identValidationSetWhy = corereader.ValidCoreReason
-var identValidationRangeFn = corereader.IsValidASCIIRune
-var identValidationRangeWhy = corereader.ValidASCIIReason
+var identValidationConfig = corereader.DefaultIdentValidationConfig()
 
 func warnInvalidIdent(reader *Reader, s *string) {
-	for _, issue := range corereader.FindIdentValidationIssues(s, identValidationSetFn, identValidationSetWhy, identValidationRangeFn, identValidationRangeWhy) {
+	for _, issue := range identValidationConfig.FindIssues(s) {
 		msg := fmt.Sprintf("Impermissible character %q at %d in %q (%s)", issue.Rune, issue.Index, *s, issue.Reason)
 		printReadWarning(reader, msg)
 	}
@@ -324,38 +321,31 @@ func EnableIdentValidation() {
 }
 
 func SetIdentSetCore() {
-	identValidationSetFn = corereader.IsValidCoreRune
-	identValidationSetWhy = corereader.ValidCoreReason
+	identValidationConfig = identValidationConfig.WithCoreSet()
 }
 
 func SetIdentSetSymbol() {
-	identValidationSetFn = corereader.IsValidSymbolRune
-	identValidationSetWhy = corereader.ValidSymbolReason
+	identValidationConfig = identValidationConfig.WithSymbolSet()
 }
 
 func SetIdentSetVisible() {
-	identValidationSetFn = corereader.IsValidVisibleRune
-	identValidationSetWhy = corereader.ValidVisibleReason
+	identValidationConfig = identValidationConfig.WithVisibleSet()
 }
 
 func SetIdentSetAny() {
-	identValidationSetFn = corereader.IsValidAnyRune
-	identValidationSetWhy = corereader.ValidAnyReason
+	identValidationConfig = identValidationConfig.WithAnySet()
 }
 
 func SetIdentRangeUnicode() {
-	identValidationRangeFn = corereader.IsValidUnicodeRune
-	identValidationRangeWhy = corereader.ValidUnicodeReason
+	identValidationConfig = identValidationConfig.WithUnicodeRange()
 }
 
 func SetIdentRangeASCII() {
-	identValidationRangeFn = corereader.IsValidASCIIRune
-	identValidationRangeWhy = corereader.ValidASCIIReason
+	identValidationConfig = identValidationConfig.WithASCIIRange()
 }
 
 func SetIdentRangeAny() {
-	identValidationRangeFn = corereader.IsValidAnyRune
-	identValidationRangeWhy = corereader.ValidAnyReason
+	identValidationConfig = identValidationConfig.WithAnyRange()
 }
 
 func readRegex(reader *Reader) Object {

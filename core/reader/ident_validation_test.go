@@ -28,6 +28,23 @@ func TestFindIdentValidationIssues(t *testing.T) {
 	}
 }
 
+func TestIdentValidationConfigPresets(t *testing.T) {
+	asciiOnly := DefaultIdentValidationConfig().WithVisibleSet()
+	text := "abc/λ"
+	issues := asciiOnly.FindIssues(&text)
+	if len(issues) != 1 || issues[0].Rune != 'λ' {
+		t.Fatalf("visible ASCII issues = %#v, want lambda only", issues)
+	}
+	unicodeVisible := asciiOnly.WithUnicodeRange()
+	issues = unicodeVisible.FindIssues(&text)
+	if len(issues) != 0 {
+		t.Fatalf("visible Unicode issues = %#v, want none", issues)
+	}
+	if got := unicodeVisible.WithAnySet().FindIssues(&text); len(got) != 0 {
+		t.Fatalf("any-set Unicode issues = %#v, want none", got)
+	}
+}
+
 func TestIdentValidationHelpers(t *testing.T) {
 	for _, r := range []rune{'a', 'Z', '0', '*', '+', '!', '-', '?', '=', '<', '>', '&', '_', '.', '\'', '#', '$', ':', '%'} {
 		if !IsCoreIdentRune(r) {

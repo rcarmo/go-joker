@@ -66,6 +66,61 @@ type IdentValidationIssue struct {
 	Reason string
 }
 
+type IdentValidationConfig struct {
+	SetFn    func(rune) bool
+	SetWhy   string
+	RangeFn  func(rune) bool
+	RangeWhy string
+}
+
+func DefaultIdentValidationConfig() IdentValidationConfig {
+	return IdentValidationConfig{
+		SetFn:    IsValidCoreRune,
+		SetWhy:   ValidCoreReason,
+		RangeFn:  IsValidASCIIRune,
+		RangeWhy: ValidASCIIReason,
+	}
+}
+
+func (c IdentValidationConfig) WithCoreSet() IdentValidationConfig {
+	c.SetFn, c.SetWhy = IsValidCoreRune, ValidCoreReason
+	return c
+}
+
+func (c IdentValidationConfig) WithSymbolSet() IdentValidationConfig {
+	c.SetFn, c.SetWhy = IsValidSymbolRune, ValidSymbolReason
+	return c
+}
+
+func (c IdentValidationConfig) WithVisibleSet() IdentValidationConfig {
+	c.SetFn, c.SetWhy = IsValidVisibleRune, ValidVisibleReason
+	return c
+}
+
+func (c IdentValidationConfig) WithAnySet() IdentValidationConfig {
+	c.SetFn, c.SetWhy = IsValidAnyRune, ValidAnyReason
+	return c
+}
+
+func (c IdentValidationConfig) WithUnicodeRange() IdentValidationConfig {
+	c.RangeFn, c.RangeWhy = IsValidUnicodeRune, ValidUnicodeReason
+	return c
+}
+
+func (c IdentValidationConfig) WithASCIIRange() IdentValidationConfig {
+	c.RangeFn, c.RangeWhy = IsValidASCIIRune, ValidASCIIReason
+	return c
+}
+
+func (c IdentValidationConfig) WithAnyRange() IdentValidationConfig {
+	c.RangeFn, c.RangeWhy = IsValidAnyRune, ValidAnyReason
+	return c
+}
+
+func (c IdentValidationConfig) FindIssues(s *string) []IdentValidationIssue {
+	return FindIdentValidationIssues(s, c.SetFn, c.SetWhy, c.RangeFn, c.RangeWhy)
+}
+
 // FindIdentValidationIssues returns validation issues for lint-time identifier
 // text. Nil input has no issues because root Symbol/Keyword namespaces can be nil.
 func FindIdentValidationIssues(s *string, setFn func(rune) bool, setWhy string, rangeFn func(rune) bool, rangeWhy string) []IdentValidationIssue {
