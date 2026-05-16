@@ -69,6 +69,15 @@ Current status: all above checks pass, and `govulncheck` reports no vulnerabilit
    - Transient vector assoc now reports bad key types as Joker argument errors.
    - Transient maps and `MapSet` have nil/zero-value-safe behavior where practical.
    - `alts!` now rejects odd option lists instead of ignoring dangling option keys.
+   - `(timeout ms)` now rejects negative values and millisecond values that would overflow `time.Duration`.
+
+8. **Std native argument/domain hardening**
+   - `std/imaging` constructors and geometry helpers now reject negative dimensions, zero/negative resize extents where appropriate, and out-of-range color components.
+   - `std/pdf` now validates custom page dimensions, line widths, color components, and related geometry/color bounds before passing values to native libraries.
+   - `std/svg` now validates canvas, viewbox, render, and basic shape dimensions/radii, and shares the render image conversion path.
+   - `std/http` now validates response/SSE status codes, rejects negative/overflowing client duration options, and parses IPv4/IPv6 listen and remote addresses with `net.SplitHostPort` rather than ad-hoc colon splitting.
+   - `std/pods` now validates `pods/invoke` `:timeout-ms` options instead of silently ignoring malformed values, and rejects overflow-prone millisecond durations.
+   - Additional boundary fixes reject malformed reader arg literal indexes, protocol extension method-pair arity mistakes, odd Transit cmap entries, invalid external source URLs, and short standalone compile writes.
 
 ## Refactor documentation state
 
