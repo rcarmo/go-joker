@@ -164,6 +164,26 @@ func TestSortedCollectionContract(t *testing.T) {
 	if len(mByEntries) != 3 || !rangeKey(mByEntries[0]).Equals(MakeInt(3)) || !rangeKey(mByEntries[2]).Equals(MakeInt(1)) {
 		t.Fatalf("sorted-map-by should preserve comparator order: %v", mByEntries)
 	}
+	byParity := Proc{Name: "parity", Fn: func(args []Object) Object {
+		CheckArity(args, 2, 2)
+		ai := args[0].(Int).I % 2
+		bi := args[1].(Int).I % 2
+		if ai < bi {
+			return Int{I: -1}
+		}
+		if ai > bi {
+			return Int{I: 1}
+		}
+		return Int{I: 0}
+	}}
+	mByDup := sortedMapByProc.Call([]Object{byParity, MakeInt(1), MakeString("one"), MakeInt(3), MakeString("three"), MakeInt(2), MakeString("two")}).(Map)
+	mByDupEntries := sortedEntries(mByDup)
+	if len(mByDupEntries) != 2 || !rangeKey(mByDupEntries[1]).Equals(MakeInt(3)) {
+		t.Fatalf("sorted-map-by comparator duplicate entries = %v", mByDupEntries)
+	}
+	if found, got := mByDup.Get(MakeInt(3)); !found || !got.Equals(MakeString("three")) {
+		t.Fatalf("sorted-map-by comparator duplicate lookup = %v %v", found, got)
+	}
 	sBy := sortedSetByProc.Call([]Object{desc, MakeInt(1), MakeInt(3), MakeInt(2)}).(*MapSet)
 	sByEntries := sortedEntries(sBy)
 	if len(sByEntries) != 3 || !sByEntries[0].Equals(MakeInt(3)) || !sByEntries[2].Equals(MakeInt(1)) {

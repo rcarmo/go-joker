@@ -39,7 +39,7 @@ func registerSortedCollProcs() {
 		pairs := sortedKeyValuePairs(args, nil)
 		m := collectionConstruction.EmptyArrayMap()
 		for _, p := range pairs {
-			addOrReplaceArrayMap(m, p.key, p.val)
+			addOrReplaceSortedMap(m, p.key, p.val, nil)
 		}
 		return m.WithMeta(sortedCollMeta())
 	}}
@@ -57,7 +57,7 @@ func registerSortedCollProcs() {
 		pairs := sortedKeyValuePairs(keyvals, comp)
 		m := collectionConstruction.EmptyArrayMap()
 		for _, p := range pairs {
-			addOrReplaceArrayMap(m, p.key, p.val)
+			addOrReplaceSortedMap(m, p.key, p.val, comp)
 		}
 		return m.WithMeta(sortedCollMeta())
 	}}
@@ -145,7 +145,18 @@ func sortedKeyValuePairs(keyvals []Object, comp Callable) []sortedKV {
 	return pairs
 }
 
-func addOrReplaceArrayMap(m *ArrayMap, key Object, val Object) {
+func addOrReplaceSortedMap(m *ArrayMap, key Object, val Object, comp Callable) {
+	if comp != nil {
+		for i := 0; i < len(m.arr); i += 2 {
+			if compareWith(comp, m.arr[i], key) == 0 {
+				m.arr[i] = key
+				m.arr[i+1] = val
+				return
+			}
+		}
+		m.Add(key, val)
+		return
+	}
 	if m.Add(key, val) {
 		return
 	}
