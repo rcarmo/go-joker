@@ -68,11 +68,14 @@ func canonical(name string) string {
 	}
 }
 
-func parseRuntimeFile(path string) map[string]float64 {
+func parseRuntimeFile(path string) (map[string]float64, error) {
 	m := map[string]float64{}
+	if path == "" {
+		return nil, fmt.Errorf("runtime output path is required")
+	}
 	f, err := os.Open(path)
 	if err != nil {
-		return m
+		return nil, err
 	}
 	defer func() {
 		if err := f.Close(); err != nil {
@@ -98,9 +101,9 @@ func parseRuntimeFile(path string) map[string]float64 {
 		m[canonical(parts[1])] = v
 	}
 	if err := s.Err(); err != nil {
-		fmt.Fprintf(os.Stderr, "warning: could not scan %s: %v\n", path, err)
+		return nil, err
 	}
-	return m
+	return m, nil
 }
 
 func format(v float64, ok bool) string {
@@ -150,10 +153,31 @@ func main() {
 		}
 	}
 
-	python := parseRuntimeFile(*pythonPath)
-	bun := parseRuntimeFile(*bunPath)
-	goja := parseRuntimeFile(*gojaPath)
-	letgo := parseRuntimeFile(*letgoPath)
+	if len(joker) == 0 {
+		fmt.Fprintln(os.Stderr, "benchmark history has no current Joker series")
+		os.Exit(1)
+	}
+
+	python, err := parseRuntimeFile(*pythonPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "parse python output: %v\n", err)
+		os.Exit(1)
+	}
+	bun, err := parseRuntimeFile(*bunPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "parse bun output: %v\n", err)
+		os.Exit(1)
+	}
+	goja, err := parseRuntimeFile(*gojaPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "parse goja output: %v\n", err)
+		os.Exit(1)
+	}
+	letgo, err := parseRuntimeFile(*letgoPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "parse let-go output: %v\n", err)
+		os.Exit(1)
+	}
 
 	keysMap := map[string]struct{}{}
 	for k := range joker {

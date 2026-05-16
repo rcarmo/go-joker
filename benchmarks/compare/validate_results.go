@@ -85,10 +85,15 @@ func validateFile(path string) error {
 	}
 	defer f.Close()
 	seen := map[string]bool{}
+	skippedFile := false
 	s := bufio.NewScanner(f)
 	for s.Scan() {
 		line := strings.TrimSpace(s.Text())
-		if line == "" || strings.HasPrefix(line, "# SKIPPED") {
+		if line == "" {
+			continue
+		}
+		if strings.HasPrefix(line, "# SKIPPED") {
+			skippedFile = true
 			continue
 		}
 		m := resultRE.FindStringSubmatch(line)
@@ -113,6 +118,9 @@ func validateFile(path string) error {
 	}
 	if err := s.Err(); err != nil {
 		return err
+	}
+	if skippedFile && len(seen) == 0 {
+		return nil
 	}
 	for name := range expectedResults {
 		if !seen[name] {
