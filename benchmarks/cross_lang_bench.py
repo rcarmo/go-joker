@@ -142,16 +142,6 @@ def word_frequency():
         counts[w] = counts.get(w, 0) + 1
     return counts.get("theta", 0) + counts.get("alpha", 0)
 
-if __name__ == "__main__":
-    print("Python 3.13 benchmarks (5 iterations each)")
-    print("=" * 60)
-    bench("arithmetic_loop", arithmetic_loop)
-    bench("recursive_fib", recursive_fib)
-    bench("tail_recursive_sum", tail_recursive_sum)
-    bench("nbody_100steps", nbody)
-    bench("spectral_norm_50", spectral_norm)
-    bench("binary_trees_14", binary_trees)
-
 # --- Fannkuch-redux (N=7) ---
 def fannkuch():
     n = 7
@@ -231,14 +221,6 @@ def reverse_complement():
     comp = {"A":"T","T":"A","G":"C","C":"G"," ":" "}
     return len("".join(comp.get(c, c) for c in reversed(dna)))
 
-bench("fannkuch_7", fannkuch)
-bench("mandelbrot_200", mandelbrot)
-bench("fasta_1000", fasta)
-bench("knucleotide", knucleotide)
-bench("reverse_complement", reverse_complement)
-bench("map_update_loop", map_update_loop)
-bench("word_frequency", word_frequency)
-
 # --- Regex-redux (simplified) ---
 import re
 def regex_redux():
@@ -259,8 +241,6 @@ def regex_redux():
         total += len(re.findall(pat, inp))
     return total
 
-bench("regex_redux", regex_redux)
-
 # --- Pidigits (N=27) ---
 def pidigits():
     q, r, t, k, n, l = 1, 0, 1, 1, 3, 3
@@ -280,4 +260,25 @@ def pidigits():
             q, r, t, k, n, l = q2, r2, t2, k2, n2, l2
     return checksum
 
-bench("pidigits_27", pidigits)
+def main():
+    print("Python 3.13 benchmarks (5 iterations each)")
+    print("=" * 60)
+    bench("arithmetic_loop", arithmetic_loop)
+    bench("recursive_fib", recursive_fib)
+    bench("tail_recursive_sum", tail_recursive_sum)
+    bench("nbody_100steps", nbody)
+    bench("spectral_norm_50", spectral_norm)
+    bench("binary_trees_14", binary_trees)
+    bench("fannkuch_7", fannkuch)
+    bench("mandelbrot_200", mandelbrot)
+    bench("fasta_1000", fasta)
+    bench("knucleotide", knucleotide)
+    bench("reverse_complement", reverse_complement)
+    bench("map_update_loop", map_update_loop)
+    bench("word_frequency", word_frequency)
+    bench("regex_redux", regex_redux)
+    bench("pidigits_27", pidigits)
+
+
+if __name__ == "__main__":
+    main()
