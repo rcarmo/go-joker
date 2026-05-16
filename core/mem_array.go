@@ -53,15 +53,16 @@ func (a *WasmArray) GetF64(i int) float64 {
 	return math.Float64frombits(binary.LittleEndian.Uint64(buf))
 }
 
-// SetF64 writes a float64 at index i.
-func (a *WasmArray) SetF64(i int, v float64) {
+// SetF64 writes a float64 at index i and reports whether the write reached
+// linear memory.
+func (a *WasmArray) SetF64(i int, v float64) bool {
 	if i < 0 || i >= a.length {
-		return
+		return false
 	}
 	offset := a.offset + uint32(i*8)
 	var buf [8]byte
 	binary.LittleEndian.PutUint64(buf[:], math.Float64bits(v))
-	_ = a.mem.Write(offset, buf[:])
+	return a.mem.Write(offset, buf[:])
 }
 
 // GetI64 reads an int64 at index i.
@@ -77,15 +78,16 @@ func (a *WasmArray) GetI64(i int) int64 {
 	return int64(binary.LittleEndian.Uint64(buf))
 }
 
-// SetI64 writes an int64 at index i.
-func (a *WasmArray) SetI64(i int, v int64) {
+// SetI64 writes an int64 at index i and reports whether the write reached
+// linear memory.
+func (a *WasmArray) SetI64(i int, v int64) bool {
 	if i < 0 || i >= a.length {
-		return
+		return false
 	}
 	offset := a.offset + uint32(i*8)
 	var buf [8]byte
 	binary.LittleEndian.PutUint64(buf[:], uint64(v))
-	_ = a.mem.Write(offset, buf[:])
+	return a.mem.Write(offset, buf[:])
 }
 
 // Length returns the array size.
@@ -199,7 +201,9 @@ var procAsetF64 = func(args []Object) Object {
 	}
 	i := EnsureArgIsNumber(args, 1).Int().I
 	v := EnsureArgIsNumber(args, 2).Double().D
-	arr.SetF64(i, v)
+	if !arr.SetF64(i, v) {
+		return NIL
+	}
 	return arr
 }
 

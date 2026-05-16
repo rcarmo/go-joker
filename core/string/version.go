@@ -2,6 +2,14 @@ package string
 
 import "strconv"
 
+func parseVersionPart(part string) int64 {
+	value, err := strconv.ParseInt(part, 10, 64)
+	if err != nil {
+		return 0
+	}
+	return value
+}
+
 // ParseVersionTriplet parses a dotted x.y.z version string and returns the
 // numeric major, minor, and incremental parts. A leading "v" is ignored.
 func ParseVersionTriplet(version string) (major, minor, incremental int64) {
@@ -10,13 +18,13 @@ func ParseVersionTriplet(version string) (major, minor, incremental int64) {
 	}
 	parts := Split(version, '.')
 	if len(parts) > 0 {
-		major, _ = strconv.ParseInt(parts[0], 10, 64)
+		major = parseVersionPart(parts[0])
 	}
 	if len(parts) > 1 {
-		minor, _ = strconv.ParseInt(parts[1], 10, 64)
+		minor = parseVersionPart(parts[1])
 	}
 	if len(parts) > 2 {
-		incremental, _ = strconv.ParseInt(parts[2], 10, 64)
+		incremental = parseVersionPart(parts[2])
 	}
 	return
 }
