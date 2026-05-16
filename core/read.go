@@ -157,7 +157,7 @@ func readUnicodeCharacter(reader *Reader, length, base int) Object {
 		panic(MakeReadError(reader, "Invalid unicode character: \\o"+str))
 	}
 	peekExpectedDelimiter(reader)
-	return MakeReadObject(reader, Char{Ch: r})
+	return MakeReadObject(reader, readerConstruction.Char(r))
 }
 
 func readCharacter(reader *Reader) Object {
@@ -548,7 +548,7 @@ func appendMapElement(objs []Object, obj Object) []Object {
 	if corereader.ShouldAppendMapCommentSurrogate(FORMAT_MODE, isComment(obj)) {
 		// Add surrogate object to always have even number of elements in the map.
 		// Use rand to avoid duplicate keys.
-		objs = append(objs, MakeDouble(rand.Float64()))
+		objs = append(objs, readerConstruction.Double(rand.Float64()))
 	}
 	return objs
 }
@@ -963,7 +963,7 @@ func readSymbolicValue(reader *Reader) Object {
 	switch o := obj.(type) {
 	case Symbol:
 		if v, found := corereader.SymbolicValue(o.ToString(false)); found {
-			return Double{D: v}
+			return readerConstruction.Double(v)
 		}
 		panic(MakeReadError(reader, "Unknown symbolic value: ##"+o.ToString(false)))
 	default:

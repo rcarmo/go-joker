@@ -62,6 +62,8 @@ func (ReaderConstructionAdapter) VectorFrom(values []Object) Object {
 	return collectionConstruction.ArrayVectorFrom(values...)
 }
 
+func (ReaderConstructionAdapter) Double(v float64) Object { return MakeDouble(v) }
+
 func (ReaderConstructionAdapter) NumberFromToken(reader *Reader, token corereader.NumberToken) Object {
 	return numberFromToken(reader, token)
 }
