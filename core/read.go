@@ -53,7 +53,7 @@ func popPos() corereader.Position {
 	return p
 }
 
-func MakeReadError(reader *Reader, msg string) ReadError {
+func makeReadError(reader *Reader, msg string) ReadError {
 	return ReadError{
 		line:     reader.Line(),
 		column:   reader.Column(),
@@ -62,7 +62,11 @@ func MakeReadError(reader *Reader, msg string) ReadError {
 	}
 }
 
-func MakeReadObject(reader *Reader, obj Object) Object {
+func MakeReadError(reader *Reader, msg string) ReadError {
+	return readerConstruction.ReadError(reader, msg)
+}
+
+func makeReadObject(reader *Reader, obj Object) Object {
 	p := popPos()
 	return obj.WithInfo(&ObjectInfo{Position: Position{
 		startColumn: p.Column,
@@ -73,13 +77,21 @@ func MakeReadObject(reader *Reader, obj Object) Object {
 	}})
 }
 
-func DeriveReadObject(base Object, obj Object) Object {
+func MakeReadObject(reader *Reader, obj Object) Object {
+	return readerConstruction.ReadObject(reader, obj)
+}
+
+func deriveReadObject(base Object, obj Object) Object {
 	baseInfo := base.GetInfo()
 	if baseInfo != nil {
 		bi := *baseInfo
 		return obj.WithInfo(&bi)
 	}
 	return obj
+}
+
+func DeriveReadObject(base Object, obj Object) Object {
+	return readerConstruction.DeriveReadObject(base, obj)
 }
 
 func (err ReadError) Message() Object {

@@ -22,6 +22,18 @@ func (ReaderConstructionAdapter) TryRead(reader *Reader) (Object, error) {
 	return TryRead(reader)
 }
 
+func (ReaderConstructionAdapter) ReadError(reader *Reader, msg string) ReadError {
+	return makeReadError(reader, msg)
+}
+
+func (ReaderConstructionAdapter) ReadObject(reader *Reader, obj Object) Object {
+	return makeReadObject(reader, obj)
+}
+
+func (ReaderConstructionAdapter) DeriveReadObject(base Object, obj Object) Object {
+	return deriveReadObject(base, obj)
+}
+
 func (ReaderConstructionAdapter) LiteralExpr(obj Object) *LiteralExpr {
 	return NewLiteralExpr(obj)
 }
