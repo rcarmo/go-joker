@@ -94,6 +94,12 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	requireReadErrorForContract(t, `#:#?@(:clj [foo]){:a 1}`)
 }
 
+func TestReaderConstructionContractRejectsInvalidArgLiteral(t *testing.T) {
+	if _, err := TryRead(NewReader(strings.NewReader(`#(%0)`), "<reader-contract>")); err == nil {
+		t.Fatal("expected invalid %0 arg literal to fail")
+	}
+}
+
 func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testing.T) {
 	metaObj := readOneForContract(t, `^:private [1 2]`)
 	meta, ok := metaObj.(Meta)

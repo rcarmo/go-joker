@@ -36,7 +36,10 @@ func TestFillMissingArgIndexes(t *testing.T) {
 }
 
 func TestOrderedArgValues(t *testing.T) {
-	got := OrderedArgValues(map[int]string{2: "b", 1: "a", -1: "rest"}, "&")
+	got, ok := OrderedArgValues(map[int]string{2: "b", 1: "a", -1: "rest"}, "&")
+	if !ok {
+		t.Fatal("OrderedArgValues rejected valid indexes")
+	}
 	want := []string{"a", "b", "&", "rest"}
 	if len(got) != len(want) {
 		t.Fatalf("OrderedArgValues length = %d, want %d (%#v)", len(got), len(want), got)
@@ -45,6 +48,9 @@ func TestOrderedArgValues(t *testing.T) {
 		if got[i] != want[i] {
 			t.Fatalf("OrderedArgValues[%d] = %q, want %q (%#v)", i, got[i], want[i], got)
 		}
+	}
+	if _, ok := OrderedArgValues(map[int]string{0: "zero"}, "&"); ok {
+		t.Fatal("OrderedArgValues accepted %0 index")
 	}
 }
 

@@ -85,19 +85,28 @@ func FillMissingArgIndexes[T any](args map[int]T, makeValue func() T) {
 }
 
 // OrderedArgValues returns positional function literal args, appending amp and
-// rest args when the %& sentinel (-1) is present.
-func OrderedArgValues[T any](args map[int]T, amp T) []T {
+// rest args when the %& sentinel (-1) is present. The bool result is false for
+// invalid indexes such as %0 or indexes outside the filled positional range.
+func OrderedArgValues[T any](args map[int]T, amp T) ([]T, bool) {
 	values := make([]T, len(args))
+	positionalCount := len(args)
+	if _, ok := args[-1]; ok {
+		positionalCount--
+	}
 	for key, value := range args {
-		if key != -1 {
-			values[key-1] = value
+		if key == -1 {
+			continue
 		}
+		if key <= 0 || key > positionalCount {
+			return nil, false
+		}
+		values[key-1] = value
 	}
 	if rest, ok := args[-1]; ok {
 		values[len(args)-1] = amp
 		values = append(values, rest)
 	}
-	return values
+	return values, true
 }
 
 // PopLastForm removes and returns the last pending form. The bool result is

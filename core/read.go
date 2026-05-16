@@ -646,7 +646,10 @@ func fillInMissingArgs(args map[int]Symbol) {
 
 func makeFnForm(args map[int]Symbol, body Object) Object {
 	fillInMissingArgs(args)
-	a := corereader.OrderedArgValues(args, SYMBOLS.amp)
+	a, ok := corereader.OrderedArgValues(args, SYMBOLS.amp)
+	if !ok {
+		panic(RT.NewError("Invalid arg literal index"))
+	}
 	argVector := collectionConstruction.EmptyVector()
 	for _, v := range a {
 		argVector = argVector.Conjoin(v)
