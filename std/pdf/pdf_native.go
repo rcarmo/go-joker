@@ -60,6 +60,10 @@ func finitePDFNumber(v float64, name string) float64 {
 	return v
 }
 
+func pdfNumber(obj Object, name string) float64 {
+	return finitePDFNumber(ExtractDouble([]Object{obj}, 0), name)
+}
+
 func positivePDFDimension(v float64, name string) float64 {
 	v = finitePDFNumber(v, name)
 	if v <= 0 {
@@ -113,7 +117,7 @@ var procFont ProcFn = func(args []Object) Object {
 	CheckArity(args, 3, 3)
 	d := extractDoc(args, 0)
 	name := ExtractString(args, 1)
-	size := ExtractDouble(args, 2)
+	size := positivePDFDimension(ExtractDouble(args, 2), "font size")
 
 	// Check if font already added, if not try to add it
 	err := d.pdf.SetFont(name, "", int(size))
@@ -138,7 +142,7 @@ var procFontFile ProcFn = func(args []Object) Object {
 	path := ExtractString(args, 2)
 	size := 12.0
 	if len(args) > 3 {
-		size = ExtractDouble(args, 3)
+		size = positivePDFDimension(ExtractDouble(args, 3), "font size")
 	}
 	err := d.pdf.AddTTFFont(name, path)
 	if err != nil {
@@ -154,7 +158,7 @@ var procFontFile ProcFn = func(args []Object) Object {
 var procFontSize ProcFn = func(args []Object) Object {
 	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
-	size := ExtractDouble(args, 1)
+	size := positivePDFDimension(ExtractDouble(args, 1), "font size")
 	if err := d.pdf.SetFontSize(size); err != nil {
 		panic(RT.NewError("pdf/font-size: " + err.Error()))
 	}
@@ -166,8 +170,8 @@ var procFontSize ProcFn = func(args []Object) Object {
 var procText ProcFn = func(args []Object) Object {
 	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
-	x := ExtractDouble(args, 1)
-	y := ExtractDouble(args, 2)
+	x := pdfNumber(args[1], "text x")
+	y := pdfNumber(args[2], "text y")
 	text := ExtractString(args, 3)
 	d.pdf.SetXY(x, y)
 	if err := d.pdf.Cell(nil, text); err != nil {
@@ -179,8 +183,8 @@ var procText ProcFn = func(args []Object) Object {
 var procTextWrap ProcFn = func(args []Object) Object {
 	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
-	x := ExtractDouble(args, 1)
-	y := ExtractDouble(args, 2)
+	x := pdfNumber(args[1], "text-wrap x")
+	y := pdfNumber(args[2], "text-wrap y")
 	w := positivePDFDimension(ExtractDouble(args, 3), "text width")
 	text := ExtractString(args, 4)
 	d.pdf.SetXY(x, y)
@@ -196,10 +200,10 @@ var procTextWrap ProcFn = func(args []Object) Object {
 var procLine ProcFn = func(args []Object) Object {
 	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
-	x1 := ExtractDouble(args, 1)
-	y1 := ExtractDouble(args, 2)
-	x2 := ExtractDouble(args, 3)
-	y2 := ExtractDouble(args, 4)
+	x1 := pdfNumber(args[1], "line x1")
+	y1 := pdfNumber(args[2], "line y1")
+	x2 := pdfNumber(args[3], "line x2")
+	y2 := pdfNumber(args[4], "line y2")
 	d.pdf.Line(x1, y1, x2, y2)
 	return args[0]
 }
@@ -207,8 +211,8 @@ var procLine ProcFn = func(args []Object) Object {
 var procRect ProcFn = func(args []Object) Object {
 	CheckArity(args, 5, 6)
 	d := extractDoc(args, 0)
-	x := ExtractDouble(args, 1)
-	y := ExtractDouble(args, 2)
+	x := pdfNumber(args[1], "rect x")
+	y := pdfNumber(args[2], "rect y")
 	w := positivePDFDimension(ExtractDouble(args, 3), "rect width")
 	h := positivePDFDimension(ExtractDouble(args, 4), "rect height")
 	style := "D" // draw border
@@ -222,8 +226,8 @@ var procRect ProcFn = func(args []Object) Object {
 var procOval ProcFn = func(args []Object) Object {
 	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
-	x := ExtractDouble(args, 1)
-	y := ExtractDouble(args, 2)
+	x := pdfNumber(args[1], "oval x")
+	y := pdfNumber(args[2], "oval y")
 	rx := positivePDFDimension(ExtractDouble(args, 3), "oval rx")
 	ry := positivePDFDimension(ExtractDouble(args, 4), "oval ry")
 	d.pdf.Oval(x, y, rx, ry)
@@ -284,8 +288,8 @@ var procImage ProcFn = func(args []Object) Object {
 	CheckArity(args, 4, 6)
 	d := extractDoc(args, 0)
 	path := ExtractString(args, 1)
-	x := ExtractDouble(args, 2)
-	y := ExtractDouble(args, 3)
+	x := pdfNumber(args[2], "image x")
+	y := pdfNumber(args[3], "image y")
 
 	opts := &gopdf.Rect{}
 	if len(args) > 4 {
@@ -306,8 +310,8 @@ var procImage ProcFn = func(args []Object) Object {
 var procMoveTo ProcFn = func(args []Object) Object {
 	CheckArity(args, 3, 3)
 	d := extractDoc(args, 0)
-	x := ExtractDouble(args, 1)
-	y := ExtractDouble(args, 2)
+	x := pdfNumber(args[1], "move-to x")
+	y := pdfNumber(args[2], "move-to y")
 	d.pdf.SetXY(x, y)
 	return args[0]
 }
@@ -330,8 +334,8 @@ var procLink ProcFn = func(args []Object) Object {
 	CheckArity(args, 6, 6)
 	d := extractDoc(args, 0)
 	url := ExtractString(args, 1)
-	x := ExtractDouble(args, 2)
-	y := ExtractDouble(args, 3)
+	x := pdfNumber(args[2], "link x")
+	y := pdfNumber(args[3], "link y")
 	w := positivePDFDimension(ExtractDouble(args, 4), "link width")
 	h := positivePDFDimension(ExtractDouble(args, 5), "link height")
 	d.pdf.AddExternalLink(url, x, y, w, h)

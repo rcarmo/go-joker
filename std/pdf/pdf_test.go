@@ -73,6 +73,20 @@ func TestPDFColorRejectsOutOfRangeChannels(t *testing.T) {
 	})
 }
 
+func TestPDFRejectsInvalidFiniteNumbers(t *testing.T) {
+	initPDFNamespace()
+	doc := procDocument(nil)
+	expectPanic(t, func() {
+		procFontSize([]Object{doc, Double{D: math.Inf(1)}})
+	})
+	expectPanic(t, func() {
+		procLine([]Object{doc, Double{D: math.NaN()}, Double{D: 0}, Double{D: 10}, Double{D: 10}})
+	})
+	expectPanic(t, func() {
+		procMoveTo([]Object{doc, Double{D: 10}, Double{D: math.Inf(-1)}})
+	})
+}
+
 func TestPDFGeometryRejectsNonFiniteDimensions(t *testing.T) {
 	initPDFNamespace()
 	doc := procDocument(nil)
