@@ -8,23 +8,23 @@
 
 | Benchmark | Joker | Python 3.13 | Bun/JSC | Goja | let-go | Winner |
 |---|---:|---:|---:|---:|---:|---|
-| arithmetic-loop | 0.308ms | 10.4ms | 0.370ms | 20.7ms | 9.87ms | Joker |
-| recursive-fib | 1.22ms | 18.9ms | 1.40ms | 65.7ms | 27.8ms | Joker |
-| tail-recursive-sum | 0.077ms | 3.84ms | 0.330ms | 12.2ms | 5.50ms | Joker |
-| map-update-loop | 0.002ms | 0.710ms | 0.110ms | 1.73ms | 2.25ms | Joker |
-| word-frequency | 0.533ms | 0.650ms | 0.170ms | 1.48ms | 22.2ms | Bun/JSC |
-| nbody | 0.006ms | 0.440ms | 0.380ms | 3.62ms | 1.65ms | Joker |
-| spectral-norm | 0.136ms | 14.7ms | 1.22ms | 70.2ms | 37.2ms | Joker |
-| binary-trees | 4.24ms | 33.5ms | 6.97ms | 161.5ms | 95.9ms | Joker |
-| fannkuch | 0.244ms | 9.45ms | 0.710ms | 17.1ms | 19.0ms | Joker |
-| mandelbrot | 0.116ms | 5.32ms | 0.270ms | 25.1ms | 9.25ms | Joker |
-| fasta | 0.139ms | 0.250ms | 0.030ms | 0.540ms | 0.190ms | Bun/JSC |
-| knucleotide | 0.008ms | 0.120ms | 0.060ms | 0.490ms | 0.470ms | Joker |
-| reverse-complement | 0.001ms | 0.030ms | 0.020ms | 0.060ms | 0.150ms | Joker |
-| regex-redux | 0.068ms | 0.200ms | 0.060ms | 0.080ms | 0.070ms | Bun/JSC |
-| pidigits | 0.047ms | 0.130ms | 0.160ms | 0.400ms | 0.260ms | Joker |
+| arithmetic-loop | 0.280ms | 6.34ms | 0.340ms | 11.0ms | 10.0ms | Joker |
+| recursive-fib | 1.02ms | 12.0ms | 0.840ms | 42.4ms | 30.0ms | Bun/JSC |
+| tail-recursive-sum | 0.067ms | 4.01ms | 0.250ms | 9.55ms | 5.84ms | Joker |
+| map-update-loop | 0.002ms | 0.380ms | 0.110ms | 1.04ms | 2.82ms | Joker |
+| word-frequency | 0.475ms | 0.630ms | 0.110ms | 0.870ms | 25.5ms | Bun/JSC |
+| nbody | 0.006ms | 0.280ms | 0.200ms | 4.18ms | 1.91ms | Joker |
+| spectral-norm | 0.151ms | 10.9ms | 0.610ms | 44.4ms | 34.6ms | Joker |
+| binary-trees | 4.79ms | 25.7ms | 4.26ms | 134.8ms | 120.3ms | Bun/JSC |
+| fannkuch | 0.174ms | 6.44ms | 0.480ms | 21.7ms | 20.4ms | Joker |
+| mandelbrot | 0.095ms | 3.13ms | 0.280ms | 30.5ms | 11.7ms | Joker |
+| fasta | 0.055ms | 0.160ms | 0.030ms | 0.310ms | 0.140ms | Bun/JSC |
+| knucleotide | 0.010ms | 0.030ms | 0.060ms | 0.280ms | 0.460ms | Joker |
+| reverse-complement | 0.000ms | 0.010ms | 0.020ms | 0.050ms | 0.120ms | Joker |
+| regex-redux | 0.086ms | 0.160ms | 0.060ms | 0.070ms | 0.090ms | Bun/JSC |
+| pidigits | 0.009ms | 0.050ms | 0.080ms | 0.140ms | 0.250ms | Joker |
 
-**Best-Joker beats Python on 13/15, Goja on 15/15, and let-go on 15/15 displayed workloads.**
+**Current validated run: Joker wins 10/15 displayed workloads; Bun/JSC wins 5/15; Python wins 0/15; Goja wins 0/15; let-go wins 0/15. Joker beats Python on 15/15, Goja on 14/15, and let-go on 15/15 displayed workloads.**
 
 ### Runtime micro-workloads
 
@@ -214,15 +214,15 @@ Direct head-to-head against [let-go](https://github.com/nooga/let-go)'s benchmar
 
 | Benchmark | let-go | go-joker | Winner |
 |---|---:|---:|---|
-| fib | 1934.9ms | 1269.6ms | **go-joker** (1.5×) |
-| loop-recur | 73.8ms | 8.70ms | **go-joker** (8.5×) |
-| map-filter | 5.37ms | 7.48ms | let-go (1.39×) |
-| persistent-map | 29.9ms | 26.2ms | **go-joker** (1.1×) |
-| reduce | 109.1ms | 7.81ms | **go-joker** (14.0×) |
-| tak | 2804.1ms | 2547.6ms | **go-joker** (1.1×) |
-| transducers | 3.15ms | 5.40ms | let-go (1.71×) |
+| fib | 2467.2ms | 2835.5ms | let-go (1.15×) |
+| loop-recur | 70.8ms | 7.88ms | **go-joker** (9.0×) |
+| map-filter | 3.47ms | 6.16ms | let-go (1.78×) |
+| persistent-map | 19.6ms | 18.9ms | **go-joker** (1.04×) |
+| reduce | 89.1ms | 6.27ms | **go-joker** (14.2×) |
+| tak | 2549.1ms | 3899.8ms | let-go (1.53×) |
+| transducers | 3.43ms | 7.91ms | let-go (2.31×) |
 
-**go-joker wins 5/7; remaining gaps are map-filter (~1.39×) and transducers (~1.71×).**
+**go-joker wins 3/7; remaining gaps are fib (~1.15×), map-filter (~1.78×), tak (~1.53×), and transducers (~2.31×).**
 
 For detailed analysis see [`docs/PARITY_STATUS.md`](../docs/PARITY_STATUS.md).
 

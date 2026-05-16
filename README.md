@@ -14,7 +14,7 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 - CLI entrypoint lives in `cmd/joker`; build with `go build -o joker ./cmd/joker`.
 - Portable Babashka fixture suite via `make bb-compat`.
 - Script-driven Babashka shim policy documented in `docs/BABASHKA_SHIM_ASSESSMENT.md`.
-- Tracing/profile tooling documented in `docs/TRACING.md`; latest benchmark/profile audit in `docs/BENCHMARK_PROFILE_2026-05-12.md`.
+- Tracing/profile tooling documented in `docs/TRACING.md`; latest validated benchmark rerun in `docs/BENCHMARK_RESULTS_2026-05-16.md`, with profile audit context in `docs/BENCHMARK_PROFILE_2026-05-12.md`.
 
 ## Performance
 
@@ -30,15 +30,15 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 
 | What | Result |
 |------|--------|
-| **Mandelbrot** | **~0.116 ms** best-Joker path — ~46× faster than Python (~5.32 ms) and ~80× faster than let-go |
-| **N-body** | **~0.006 ms** best-Joker path — ~73× faster than Python and ~275× faster than let-go |
-| **Fannkuch** | **~0.244 ms** best-Joker path — ~39× faster than Python and ~78× faster than let-go after output-equivalent audit |
-| **Binary trees** | **~4.24 ms** best-Joker path — beats Python (~33.5 ms), Bun/JSC (~6.97 ms), Goja, and let-go |
-| **Pidigits** | **~0.047 ms** — faster than Python, Bun/JSC, Goja, and let-go after JS BigInt correctness fix |
-| **Arithmetic loop** | **~0.308 ms** — fastest in the validated comparison table |
+| **Mandelbrot** | **~0.095 ms** best-Joker path — ~33× faster than Python (~3.13 ms) and ~123× faster than let-go |
+| **N-body** | **~0.006 ms** best-Joker path — ~47× faster than Python and ~318× faster than let-go |
+| **Fannkuch** | **~0.174 ms** best-Joker path — ~37× faster than Python and ~117× faster than let-go after output-equivalent audit |
+| **Binary trees** | **~4.79 ms** best-Joker path — beats Python, Goja, and let-go; Bun/JSC is slightly faster in this run (~4.26 ms) |
+| **Pidigits** | **~0.009 ms** — faster than Python, Bun/JSC, Goja, and let-go after JS BigInt correctness fix |
+| **Arithmetic loop** | **~0.280 ms** — fastest in the validated comparison table |
 | **Benchmark validation** | portable, micro, best-Joker/native helper, cross-runtime, and let-go-suite outputs are validated before timing reports/charts are accepted; latest full profile shows allocation/GC cost dominates portable CLBG paths |
-| **Best-Joker suite** | beats Python on **13/15**, Goja on **15/15**, and let-go on **15/15** displayed workloads |
-| **let-go suite** | current go-joker wins **2/7** mirrored let-go workloads (`reduce` ~15×, `loop-recur` ~10×); let-go still leads recursive/sequence-heavy cases |
+| **Best-Joker suite** | wins **10/15** displayed workloads; beats Python on **15/15**, Goja on **14/15**, and let-go on **15/15** |
+| **let-go suite** | current go-joker wins **3/7** mirrored let-go workloads (`reduce` ~14×, `loop-recur` ~9×, `persistent-map` slightly); let-go still leads recursive/sequence-heavy cases |
 | **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
 | **Concurrency** | GIL-free — true parallel goroutines, futures, promises, agents, pmap |
 | **Namespaces** | 29+ namespaces including `clojure.core.async`, `joker.random`, `joker.log`, HTTP router |

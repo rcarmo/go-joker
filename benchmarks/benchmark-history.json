@@ -3,7 +3,8 @@
     "project": "go-joker",
     "scope": "core interpreter optimization",
     "host": "12th Gen Intel(R) Core(TM) i7-12700",
-    "command": "go test ./benchmarks/core -run ^$ -bench . -benchmem -benchtime=1s -count=1 plus make compare-bench with let-go v1.7.4"
+    "command": "go benchmark median of 5 runs, benchtime=1s, plus make compare-bench result-validated runtimes",
+    "updated": "2026-05-16"
   },
   "series": [
     {
@@ -53,124 +54,124 @@
     },
     {
       "id": "current",
-      "label": "Current best-Joker (2026-05-16)",
+      "label": "Current best-Joker (2026-05-16 rerun)",
       "benchmarks": {
+        "arithmetic_loop": {
+          "ms_per_op": 0.28048
+        },
         "binary_trees": {
-          "ms_per_op": 4.24
+          "ms_per_op": 4.789087
         },
         "fannkuch": {
-          "ms_per_op": 0.244
+          "ms_per_op": 0.173599
         },
         "fasta": {
-          "ms_per_op": 0.139
+          "ms_per_op": 0.055414
         },
         "knucleotide": {
-          "ms_per_op": 0.008
+          "ms_per_op": 0.010269
         },
         "mandelbrot": {
-          "ms_per_op": 0.116
-        },
-        "nbody": {
-          "ms_per_op": 0.006
-        },
-        "pidigits": {
-          "ms_per_op": 0.047
-        },
-        "regex_redux": {
-          "ms_per_op": 0.068
-        },
-        "reverse_complement": {
-          "ms_per_op": 0.001
-        },
-        "spectral_norm": {
-          "ms_per_op": 0.136
-        },
-        "arithmetic_loop": {
-          "ms_per_op": 0.308
+          "ms_per_op": 0.095378
         },
         "map_update_loop": {
-          "ms_per_op": 0.002
+          "ms_per_op": 0.002153
+        },
+        "nbody": {
+          "ms_per_op": 0.006325
+        },
+        "pidigits": {
+          "ms_per_op": 0.008841
         },
         "recursive_fib": {
-          "ms_per_op": 1.22
+          "ms_per_op": 1.023891
+        },
+        "regex_redux": {
+          "ms_per_op": 0.08631
+        },
+        "reverse_complement": {
+          "ms_per_op": 0.000395
+        },
+        "spectral_norm": {
+          "ms_per_op": 0.150517
         },
         "tail_recursive_sum": {
-          "ms_per_op": 0.077
+          "ms_per_op": 0.067443
         },
         "word_frequency": {
-          "ms_per_op": 0.533
+          "ms_per_op": 0.475494
         }
       }
     }
   ],
   "cross_language": {
     "bun_jsc": {
-      "arithmetic_loop": 0.37,
-      "recursive_fib": 1.4,
-      "tail_recursive_sum": 0.33,
-      "nbody": 0.38,
-      "spectral_norm": 1.22,
-      "binary_trees": 6.97,
-      "fannkuch": 0.71,
-      "mandelbrot": 0.27,
+      "arithmetic_loop": 0.34,
+      "recursive_fib": 0.84,
+      "tail_recursive_sum": 0.25,
+      "nbody": 0.2,
+      "spectral_norm": 0.61,
+      "binary_trees": 4.26,
+      "fannkuch": 0.48,
+      "mandelbrot": 0.28,
       "fasta": 0.03,
       "knucleotide": 0.06,
       "reverse_complement": 0.02,
       "map_update_loop": 0.11,
-      "word_frequency": 0.17,
+      "word_frequency": 0.11,
       "regex_redux": 0.06,
-      "pidigits": 0.16
+      "pidigits": 0.08
     },
     "python_313": {
-      "arithmetic_loop": 10.4,
-      "recursive_fib": 18.9,
-      "tail_recursive_sum": 3.84,
-      "nbody": 0.44,
-      "spectral_norm": 14.7,
-      "binary_trees": 33.5,
-      "fannkuch": 9.45,
-      "mandelbrot": 5.32,
-      "fasta": 0.25,
-      "knucleotide": 0.12,
-      "reverse_complement": 0.03,
-      "map_update_loop": 0.71,
-      "word_frequency": 0.65,
-      "regex_redux": 0.2,
-      "pidigits": 0.13
+      "arithmetic_loop": 6.34,
+      "recursive_fib": 11.96,
+      "tail_recursive_sum": 4.01,
+      "nbody": 0.28,
+      "spectral_norm": 10.86,
+      "binary_trees": 25.7,
+      "fannkuch": 6.44,
+      "mandelbrot": 3.13,
+      "fasta": 0.16,
+      "knucleotide": 0.03,
+      "reverse_complement": 0.01,
+      "map_update_loop": 0.38,
+      "word_frequency": 0.63,
+      "regex_redux": 0.16,
+      "pidigits": 0.05
     },
     "goja": {
-      "arithmetic_loop": 20.7,
-      "recursive_fib": 65.7,
-      "tail_recursive_sum": 12.2,
-      "nbody": 3.62,
-      "spectral_norm": 70.2,
-      "binary_trees": 161.5,
-      "fannkuch": 17.1,
-      "mandelbrot": 25.1,
-      "fasta": 0.54,
-      "knucleotide": 0.49,
-      "reverse_complement": 0.06,
-      "map_update_loop": 1.73,
-      "word_frequency": 1.48,
-      "regex_redux": 0.08,
-      "pidigits": 0.4
+      "arithmetic_loop": 10.96,
+      "recursive_fib": 42.36,
+      "tail_recursive_sum": 9.55,
+      "nbody": 4.18,
+      "spectral_norm": 44.4,
+      "binary_trees": 134.77,
+      "fannkuch": 21.66,
+      "mandelbrot": 30.53,
+      "fasta": 0.31,
+      "knucleotide": 0.28,
+      "reverse_complement": 0.05,
+      "map_update_loop": 1.04,
+      "word_frequency": 0.87,
+      "regex_redux": 0.07,
+      "pidigits": 0.14
     },
     "letgo": {
-      "arithmetic_loop": 9.87,
-      "recursive_fib": 27.8,
-      "tail_recursive_sum": 5.5,
-      "nbody": 1.65,
-      "spectral_norm": 37.2,
-      "binary_trees": 95.9,
-      "fannkuch": 19.0,
-      "mandelbrot": 9.25,
-      "fasta": 0.19,
-      "knucleotide": 0.47,
-      "reverse_complement": 0.15,
-      "map_update_loop": 2.25,
-      "word_frequency": 22.2,
-      "regex_redux": 0.07,
-      "pidigits": 0.26
+      "arithmetic_loop": 10.03,
+      "recursive_fib": 29.96,
+      "tail_recursive_sum": 5.84,
+      "nbody": 1.91,
+      "spectral_norm": 34.65,
+      "binary_trees": 120.34,
+      "fannkuch": 20.35,
+      "mandelbrot": 11.71,
+      "fasta": 0.14,
+      "knucleotide": 0.46,
+      "reverse_complement": 0.12,
+      "map_update_loop": 2.82,
+      "word_frequency": 25.49,
+      "regex_redux": 0.09,
+      "pidigits": 0.25
     }
   }
 }
