@@ -156,10 +156,22 @@ func respToMap(resp *http.Response) Map {
 	return res
 }
 
+func validHTTPStatus(status int) bool {
+	return status >= 100 && status <= 999
+}
+
+func responseStatus(obj Object, context string) int {
+	status := EnsureObjectIsInt(obj, context+": %s").I
+	if !validHTTPStatus(status) {
+		panic(RT.NewError(context + " must be between 100 and 999"))
+	}
+	return status
+}
+
 func mapToResp(response Map, w http.ResponseWriter) {
 	status := 0
 	if ok, s := response.Get(MakeKeyword("status")); ok {
-		status = EnsureObjectIsInt(s, "HTTP response status: %s").I
+		status = responseStatus(s, "HTTP response status")
 	}
 	body := ""
 	if ok, b := response.Get(MakeKeyword("body")); ok {
@@ -416,7 +428,7 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
 	// Apply status
 	status := 200
 	if ok, s := respMap.Get(MakeKeyword("status")); ok {
-		status = EnsureObjectIsInt(s, "stream status: %s").I
+		status = responseStatus(s, "stream status")
 	}
 	w.WriteHeader(status)
 	flusher.Flush()

@@ -55,6 +55,17 @@ func (w *failingStreamWriter) WriteHeader(statusCode int) {}
 
 func (w *failingStreamWriter) Flush() {}
 
+func TestMapToRespRejectsInvalidStatus(t *testing.T) {
+	respMap := EmptyArrayMap()
+	respMap.Add(MakeKeyword("status"), MakeInt(99))
+	defer func() {
+		if recover() == nil {
+			t.Fatal("invalid response status did not panic")
+		}
+	}()
+	mapToResp(respMap, httptest.NewRecorder())
+}
+
 func TestMapToRespWriteErrorsSurface(t *testing.T) {
 	respMap := EmptyArrayMap()
 	respMap.Add(MakeKeyword("body"), MakeString("hello"))
@@ -69,6 +80,17 @@ func TestMapToRespWriteErrorsSurface(t *testing.T) {
 		}
 	}()
 	mapToResp(respMap, &failingStreamWriter{header: make(http.Header)})
+}
+
+func TestHandleStreamRejectsInvalidStatus(t *testing.T) {
+	respMap := EmptyArrayMap()
+	respMap.Add(MakeKeyword("status"), MakeInt(1000))
+	defer func() {
+		if recover() == nil {
+			t.Fatal("invalid stream status did not panic")
+		}
+	}()
+	handleStream(httptest.NewRecorder(), respMap, Proc{Name: "stream", Fn: func(args []Object) Object { return NIL }})
 }
 
 func TestHandleStreamWriteErrorsSurface(t *testing.T) {
