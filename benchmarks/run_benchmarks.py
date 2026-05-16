@@ -24,7 +24,7 @@ from typing import Dict, List
 
 BENCH_RE = re.compile(
     r"^(Benchmark\S+)-\d+\s+\d+\s+"
-    r"(?P<ns>\d+) ns/op"
+    r"(?P<ns>\d+(?:\.\d+)?) ns/op"
     r"(?:\s+(?P<bytes>\d+) B/op)?"
     r"(?:\s+(?P<allocs>\d+) allocs/op)?"
 )
@@ -32,7 +32,7 @@ BENCH_RE = re.compile(
 
 @dataclass
 class Sample:
-    ns_per_op: int
+    ns_per_op: float
     bytes_per_op: int | None = None
     allocs_per_op: int | None = None
 
@@ -58,7 +58,7 @@ def parse_output(output: str) -> Dict[str, Sample]:
             continue
         name = m.group(1)
         parsed[name] = Sample(
-            ns_per_op=int(m.group("ns")),
+            ns_per_op=float(m.group("ns")),
             bytes_per_op=int(m.group("bytes")) if m.group("bytes") else None,
             allocs_per_op=int(m.group("allocs")) if m.group("allocs") else None,
         )
@@ -76,7 +76,7 @@ def summarize(samples: Dict[str, List[Sample]]) -> List[Summary]:
     out: List[Summary] = []
     for name in sorted(samples):
         vals = samples[name]
-        ns = [s.ns_per_op for s in vals]
+        ns = [float(s.ns_per_op) for s in vals]
         med = float(statistics.median(ns))
         stdev_pct = 0.0
         if len(ns) > 1 and med:
@@ -159,6 +159,14 @@ def main() -> int:
         print(f"  parsed {len(parsed)} benchmarks in {elapsed:.1f}s", file=sys.stderr)
         for name, sample in parsed.items():
             samples.setdefault(name, []).append(sample)
+
+    missing_runs = {name: len(vals) for name, vals in samples.items() if len(vals) != args.runs}
+    if missing_runs:
+        print(f"missing benchmark samples: {missing_runs}", file=sys.stderr)
+        return 1
+    if not samples:
+        print("no benchmark samples parsed", file=sys.stderr)
+        return 1
 
     summaries = summarize(samples)
     print_markdown(summaries)

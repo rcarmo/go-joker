@@ -139,6 +139,7 @@ error-handling-check:
 
 benchmark-docs-check:
 	$(GO) run tools/benchmarks/validate_readme_table.go
+	cd benchmarks && python3 -m unittest run_benchmarks_test.py
 
 refactor-internals-check:
 	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/string ./core/osutil ./core/bufferpool ./core/reader -count=$(TEST_COUNT)
