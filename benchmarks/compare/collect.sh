@@ -89,7 +89,10 @@ if command -v go >/dev/null 2>&1; then
     -letgo "${OUT_DIR}/letgo.txt" \
     -out "${OUT_DIR}/direct-comparison.md"
 
-  run_capture letgo-suite-report go run "${ROOT_DIR}/benchmarks/compare/run_letgo_suite.go" \
+  GOJOKER_COMPARE_BIN="${OUT_DIR}/go-joker"
+  echo "[compare] building go-joker for let-go suite: ${GOJOKER_COMPARE_BIN}"
+  go build -o "${GOJOKER_COMPARE_BIN}" "${ROOT_DIR}/cmd/joker"
+  GOJOKER_BIN="${GOJOKER_COMPARE_BIN}" run_capture letgo-suite-report go run "${ROOT_DIR}/benchmarks/compare/run_letgo_suite.go" \
     -bench-dir "${ROOT_DIR}/benchmarks/compare/letgo_suite" \
     -out "${OUT_DIR}/letgo-suite-comparison.md" \
     -json "${OUT_DIR}/letgo-suite-results.json"

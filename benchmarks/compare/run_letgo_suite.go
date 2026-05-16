@@ -50,6 +50,16 @@ var benchmarkOrder = []string{
 	"transducers",
 }
 
+var expectedOutputs = map[string]string{
+	"fib":            "9227465",
+	"loop-recur":     "499999500000",
+	"map-filter":     "1313400",
+	"persistent-map": "10000",
+	"reduce":         "499999500000",
+	"tak":            "13",
+	"transducers":    "1313400",
+}
+
 func lookPath(candidates ...string) string {
 	for _, c := range candidates {
 		if c == "" {
@@ -95,6 +105,43 @@ func runOnce(bin, kind, benchPath string) (time.Duration, error) {
 		return dur, err
 	}
 	return dur, nil
+}
+
+func validateOutput(bin, kind, benchPath, benchName string) error {
+	want, ok := expectedOutputs[benchName]
+	if !ok {
+		return fmt.Errorf("missing expected output for %s", benchName)
+	}
+	src, err := os.ReadFile(benchPath)
+	if err != nil {
+		return err
+	}
+	tmp, err := os.CreateTemp("", "go-joker-letgo-suite-*.clj")
+	if err != nil {
+		return err
+	}
+	tmpPath := tmp.Name()
+	defer os.Remove(tmpPath)
+	wrapper := fmt.Sprintf("(let [r (do\n%s\n)] (println (if (map? r) (count r) r)))\n", string(src))
+	if _, err := tmp.WriteString(wrapper); err != nil {
+		_ = tmp.Close()
+		return err
+	}
+	if err := tmp.Close(); err != nil {
+		return err
+	}
+	cmd := exec.Command(bin, argsFor(kind, tmpPath)...)
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &out
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("%w: %s", err, strings.TrimSpace(out.String()))
+	}
+	got := strings.TrimSpace(out.String())
+	if got != want {
+		return fmt.Errorf("output = %q, want %q", got, want)
+	}
+	return nil
 }
 
 func meanStddev(vals []float64) (float64, float64) {
@@ -195,6 +242,10 @@ func main() {
 		for _, rt := range runtimes {
 			if rt.Skip[b] {
 				results[b][rt.Name] = benchStat{Skipped: true, Reason: "policy skip"}
+				continue
+			}
+			if err := validateOutput(rt.Bin, rt.Kind, benchPath, b); err != nil {
+				results[b][rt.Name] = benchStat{Skipped: true, Reason: fmt.Sprintf("output validation failed: %v", err)}
 				continue
 			}
 
