@@ -68,6 +68,16 @@ func NamespacedMapPrefix(auto bool, namespace string) string {
 	return prefix + namespace
 }
 
+// ReaderMacroPrefix returns the format-mode prefix for simple reader macros.
+func ReaderMacroPrefix(r rune) (string, bool) {
+	switch r {
+	case '\'', '@', '`', '^':
+		return string(r), true
+	default:
+		return "", false
+	}
+}
+
 // FillMissingArgIndexes fills missing positive argument indexes from 1 through
 // max-1. The caller supplies fresh values to preserve root symbol generation.
 func FillMissingArgIndexes[T any](args map[int]T, makeValue func() T) {

@@ -78,6 +78,18 @@ func TestUnquoteSpliceHelpers(t *testing.T) {
 	}
 }
 
+func TestReaderMacroPrefix(t *testing.T) {
+	for _, r := range []rune{'\'', '@', '`', '^'} {
+		got, ok := ReaderMacroPrefix(r)
+		if !ok || got != string(r) {
+			t.Fatalf("ReaderMacroPrefix(%q) = %q/%v", r, got, ok)
+		}
+	}
+	if got, ok := ReaderMacroPrefix('x'); ok || got != "" {
+		t.Fatalf("ReaderMacroPrefix(x) = %q/%v", got, ok)
+	}
+}
+
 func TestNamespacedMapPrefix(t *testing.T) {
 	if got := NamespacedMapPrefix(false, "foo"); got != "#:foo" {
 		t.Fatalf("NamespacedMapPrefix explicit = %q", got)

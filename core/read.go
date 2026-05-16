@@ -1096,7 +1096,8 @@ func Read(reader *Reader) (Object, bool) {
 		popPos()
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
-			addPrefix(nextObj, "'")
+			prefix, _ := corereader.ReaderMacroPrefix(r)
+			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
 		return makeQuote(nextObj, SYMBOLS.quote), false
@@ -1104,7 +1105,8 @@ func Read(reader *Reader) (Object, bool) {
 		popPos()
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
-			addPrefix(nextObj, "@")
+			prefix, _ := corereader.ReaderMacroPrefix(r)
+			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
 		return DeriveReadObject(nextObj, NewListFrom(DeriveReadObject(nextObj, SYMBOLS.deref), nextObj)), false
@@ -1127,7 +1129,8 @@ func Read(reader *Reader) (Object, bool) {
 		popPos()
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
-			addPrefix(nextObj, "`")
+			prefix, _ := corereader.ReaderMacroPrefix(r)
+			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
 		return makeSyntaxQuote(nextObj, make(map[*string]Symbol), reader), false
@@ -1135,7 +1138,8 @@ func Read(reader *Reader) (Object, bool) {
 		popPos()
 		if FORMAT_MODE {
 			nextObj := readFirst(reader)
-			addPrefix(nextObj, "^")
+			prefix, _ := corereader.ReaderMacroPrefix(r)
+			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
 		return readWithMeta(reader), false
