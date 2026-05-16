@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math/big"
 	"regexp"
 	"strings"
 	"testing"
@@ -75,6 +76,21 @@ func TestReaderConstructionAdapterMetadata(t *testing.T) {
 	}
 	if _, ok := readerConstruction.WithMeta(MakeInt(1), meta); ok {
 		t.Fatal("metadata applied to int")
+	}
+}
+
+func TestReaderConstructionAdapterNumericObjects(t *testing.T) {
+	bi := readerConstruction.BigInt(big.NewInt(42), "42")
+	if bi.GetType() != TYPE.BigInt || bi.ToString(false) != "42N" {
+		t.Fatalf("adapter BigInt = %s type=%s", bi.ToString(false), bi.GetType().ToString(false))
+	}
+	bf, ok := readerConstruction.BigFloatFromString("1.25", "1.25M")
+	if !ok || bf.GetType() != TYPE.BigFloat {
+		t.Fatalf("adapter BigFloat = %v %T", ok, bf)
+	}
+	r := readerConstruction.RatioOrInt("2/4", big.NewRat(2, 4))
+	if !r.Equals(MakeInt(0)) && r.GetType() != TYPE.Ratio && r.GetType() != TYPE.Int {
+		t.Fatalf("adapter RatioOrInt unexpected: %s type=%s", r.ToString(false), r.GetType().ToString(false))
 	}
 }
 

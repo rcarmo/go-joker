@@ -2,6 +2,7 @@ package core
 
 import (
 	"io"
+	"math/big"
 	"regexp"
 
 	corereader "github.com/rcarmo/go-joker/core/reader"
@@ -66,6 +67,18 @@ func (ReaderConstructionAdapter) VectorFrom(values []Object) Object {
 }
 
 func (ReaderConstructionAdapter) Double(v float64) Object { return MakeDouble(v) }
+
+func (ReaderConstructionAdapter) BigInt(v *big.Int, original string) Object {
+	return &BigInt{b: v, Original: original}
+}
+
+func (ReaderConstructionAdapter) BigFloatFromString(value string, original string) (Object, bool) {
+	return MakeBigFloatWithOrig(value, original)
+}
+
+func (ReaderConstructionAdapter) RatioOrInt(value string, ratio *big.Rat) Object {
+	return ratioOrIntWithOriginal(value, ratio)
+}
 
 func (ReaderConstructionAdapter) Comment(v string) Object { return Comment{C: v} }
 

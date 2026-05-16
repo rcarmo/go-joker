@@ -187,8 +187,7 @@ func scanBigInt(orig, str string, base int, reader *Reader) Object {
 	if _, ok := bi.SetString(str, base); !ok {
 		panic(invalidNumberError(reader, str))
 	}
-	res := BigInt{b: bi, Original: orig}
-	return MakeReadObject(reader, &res)
+	return MakeReadObject(reader, readerConstruction.BigInt(bi, orig))
 }
 
 func scanRatio(str string, reader *Reader) Object {
@@ -196,11 +195,11 @@ func scanRatio(str string, reader *Reader) Object {
 	if _, ok := rat.SetString(str); !ok {
 		panic(invalidNumberError(reader, str))
 	}
-	return MakeReadObject(reader, ratioOrIntWithOriginal(str, rat))
+	return MakeReadObject(reader, readerConstruction.RatioOrInt(str, rat))
 }
 
 func scanBigFloat(orig, str string, reader *Reader) Object {
-	if f, ok := MakeBigFloatWithOrig(str, orig); ok {
+	if f, ok := readerConstruction.BigFloatFromString(str, orig); ok {
 		return MakeReadObject(reader, f)
 	}
 	panic(invalidNumberError(reader, str))
