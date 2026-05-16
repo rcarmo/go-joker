@@ -1088,7 +1088,7 @@ func Read(reader *Reader) (Object, bool) {
 		return readVector(reader), false
 	case r == '{':
 		return readMap(reader), false
-	case r == '/' && corereader.IsDelimiter(reader.Peek()):
+	case r == '/' && corereader.IsStandaloneSlashSymbol(r, reader.Peek()):
 		return MakeReadObject(reader, SYMBOLS.backslash), false
 	case r == '\'':
 		popPos()

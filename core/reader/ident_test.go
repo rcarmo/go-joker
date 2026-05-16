@@ -2,6 +2,15 @@ package reader
 
 import "testing"
 
+func TestStandaloneSlashSymbol(t *testing.T) {
+	if !IsStandaloneSlashSymbol('/', ' ') || !IsStandaloneSlashSymbol('/', ')') {
+		t.Fatal("delimiter-terminated slash was not standalone")
+	}
+	if IsStandaloneSlashSymbol('/', 'a') || IsStandaloneSlashSymbol('x', ' ') {
+		t.Fatal("non-standalone slash was misclassified")
+	}
+}
+
 func TestKeywordIdentHelpers(t *testing.T) {
 	if !IsKeywordIdent(':') || IsKeywordIdent('a') {
 		t.Fatal("IsKeywordIdent mismatch")

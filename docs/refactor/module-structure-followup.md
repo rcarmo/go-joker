@@ -19,7 +19,7 @@ Current package/file snapshot:
 | `core/wasm` | 13 | 5 | encoding/module/host/opcode/value leaf helpers |
 | `core/runtime` | 11 | 5 | feature flags and runtime leaf helpers live here; executor/object-bound runtime code remains in root `core` |
 | `core/collections` | 9 | 4 | real mechanics package for generic slice storage, pair arrays, bitmap/hash-index helpers, and opaque trie nodes; root keeps Object/protocol adapters |
-| `core/reader` | 39 | 19 | reader leaf helpers now include chars, whitespace/comment/top-level-trivia/line decisions, identifier classification/token scanning/keyword and literal classification/validation issue scans, unicode/string escapes, number-token classification, dispatch/character/form helpers, rune-window history, line rune reader, and raw IO mechanics; parser/object implementation remains root-bound |
+| `core/reader` | 39 | 19 | reader leaf helpers now include chars, whitespace/comment/top-level-trivia/line decisions, identifier classification/token scanning/keyword, standalone-slash, and literal classification/validation issue scans, unicode/string escapes, number-token classification, dispatch/character/form helpers, rune-window history, line rune reader, and raw IO mechanics; parser/object implementation remains root-bound |
 | `core/string` | 39 | 19 | real helper package for root-independent string mechanics; root keeps Object/error wrappers |
 | `core/cursor` | 3 | 1 | real leaf package for string cursor mechanics; root keeps Object protocol adapter |
 | `std/*` | many small packages | mixed | namespace-oriented; now explicitly documented as `std/<namespace>.joke` + `std/<namespace>/*.go` + `std/<namespace>/<subns>/...` |

@@ -1,5 +1,11 @@
 package reader
 
+// IsStandaloneSlashSymbol reports whether / is followed by a delimiter and
+// should be read as the core slash symbol rather than as an identifier token.
+func IsStandaloneSlashSymbol(r rune, peek rune) bool {
+	return r == '/' && IsDelimiter(peek)
+}
+
 // IsKeywordIdent reports whether a scanned identifier token started as a keyword.
 func IsKeywordIdent(first rune) bool {
 	return first == ':'

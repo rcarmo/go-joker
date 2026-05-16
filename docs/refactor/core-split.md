@@ -32,7 +32,7 @@ Do not split everything at once. Move leaf or low-cycle families first, then hig
 - `core/ir` owns opcode names/constants, bytecode disassembly/counting, shape analysis, and the neutral program model.
 - `core/wasm` owns leaf WASM binary encoding/module/host helpers.
 - `core/collections` owns root-independent collection mechanics such as generic slice storage, pair arrays, bitmap/hash-index helpers, and opaque trie nodes.
-- `core/reader` owns root-independent reader mechanics such as char classes, whitespace/comment/top-level-trivia/line decisions, identifier token scanning/validation/keyword and literal classification/issue enumeration, escape/unicode parsing, number-token classification, delimiter/dispatch/form helpers, rune-window history, line rune readers, and raw IO wrappers.
+- `core/reader` owns root-independent reader mechanics such as char classes, whitespace/comment/top-level-trivia/line decisions, identifier token scanning/validation/keyword, standalone-slash, and literal classification/issue enumeration, escape/unicode parsing, number-token classification, delimiter/dispatch/form helpers, rune-window history, line rune readers, and raw IO wrappers.
 - `core/string` and `core/cursor` own root-independent string/cache/cursor mechanics.
 - `cmd/joker` owns the CLI entrypoint.
 
@@ -116,7 +116,7 @@ Current candidate files:
 
 Status and risks:
 
-- `core/reader` now owns leaf mechanics: rune-window history, line rune reader, raw file/buffer/buffered/IO wrappers, char classes, whitespace/comment/top-level-trivia/line scanning decisions/runs, identifier token scanning/checks/keyword and literal classification/validation issue enumeration, unicode/string escape parsing, number-token classification, dispatch/delimiter/form helpers, and conditional/unquote/namespaced-map prefix/splice decisions.
+- `core/reader` now owns leaf mechanics: rune-window history, line rune reader, raw file/buffer/buffered/IO wrappers, char classes, whitespace/comment/top-level-trivia/line scanning decisions/runs, identifier token scanning/checks/keyword, standalone-slash, and literal classification/validation issue enumeration, unicode/string escape parsing, number-token classification, dispatch/delimiter/form helpers, and conditional/unquote/namespaced-map prefix/splice decisions.
 - reader/parser still constructs concrete `core` objects and expressions directly; current production call sites now route through `ReaderConstructionAdapter`, guarded by `construction_boundary_guard_test.go`.
 - tagged literal handling touches namespace/runtime metadata.
 - parse/eval boundaries are not yet clean.
