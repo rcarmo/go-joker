@@ -3,6 +3,8 @@ package core
 import (
 	"strings"
 	"testing"
+
+	corereader "github.com/rcarmo/go-joker/core/reader"
 )
 
 func TestReaderConstructionAdapterReadObjectAndError(t *testing.T) {
@@ -38,6 +40,16 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 	}
 	if !readerConstruction.Keyword("x").Equals(MakeKeyword("x")) {
 		t.Fatal("adapter Keyword mismatch")
+	}
+}
+
+func TestReaderConstructionAdapterNumberFromToken(t *testing.T) {
+	r := readerConstruction.NewReader(strings.NewReader("42"), "<adapter-contract>")
+	pushPos(r)
+	_ = r.Get()
+	n := readerConstruction.NumberFromToken(r, corereader.NumberToken{Kind: corereader.NumberTokenInt, Original: "42", Digits: "42", Base: 10})
+	if !n.Equals(MakeInt(42)) {
+		t.Fatalf("adapter NumberFromToken = %s, want 42", n.ToString(false))
 	}
 }
 

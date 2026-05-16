@@ -222,12 +222,7 @@ func scanFloat(str string, reader *Reader) Object {
 	return MakeReadObject(reader, Double{D: dbl})
 }
 
-func readNumber(reader *Reader) Object {
-	str := corereader.ScanUntilDelimiter(reader)
-	token, err := corereader.AnalyzeNumberToken(str)
-	if err != nil {
-		panic(invalidNumberError(reader, str))
-	}
+func numberFromToken(reader *Reader, token corereader.NumberToken) Object {
 	switch token.Kind {
 	case corereader.NumberTokenRatio:
 		return scanRatio(token.Digits, reader)
@@ -240,6 +235,15 @@ func readNumber(reader *Reader) Object {
 	default:
 		return scanInt(token.Original, token.Digits, token.Base, reader)
 	}
+}
+
+func readNumber(reader *Reader) Object {
+	str := corereader.ScanUntilDelimiter(reader)
+	token, err := corereader.AnalyzeNumberToken(str)
+	if err != nil {
+		panic(invalidNumberError(reader, str))
+	}
+	return readerConstruction.NumberFromToken(reader, token)
 }
 
 /* Reads (lexes) a token and returns either a Symbol or Keyword. */

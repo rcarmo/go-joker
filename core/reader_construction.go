@@ -1,6 +1,10 @@
 package core
 
-import "io"
+import (
+	"io"
+
+	corereader "github.com/rcarmo/go-joker/core/reader"
+)
 
 // ReaderConstructionAdapter is the narrow root-owned construction surface for
 // reader/parser objects and expression nodes. Future core/reader extraction
@@ -56,6 +60,10 @@ func (ReaderConstructionAdapter) ListFrom(values []Object) Object {
 
 func (ReaderConstructionAdapter) VectorFrom(values []Object) Object {
 	return collectionConstruction.ArrayVectorFrom(values...)
+}
+
+func (ReaderConstructionAdapter) NumberFromToken(reader *Reader, token corereader.NumberToken) Object {
+	return numberFromToken(reader, token)
 }
 
 func (ReaderConstructionAdapter) LiteralExpr(obj Object) *LiteralExpr {
