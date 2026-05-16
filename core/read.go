@@ -381,12 +381,9 @@ func readRegex(reader *Reader) Object {
 
 func readUnicodeCharacterInString(reader *Reader, initial rune, length, base int, exactLength bool) rune {
 	str := corereader.ScanStringEscapeCode(reader, initial, length)
-	if exactLength && !corereader.HasExactLength(str, length) {
-		panic(MakeReadError(reader, fmt.Sprintf("Invalid character length: %d, should be: %d", len(str), length)))
-	}
-	r, err := corereader.ParseUnicodeCode(str, base)
+	r, err := corereader.DecodeStringEscapeCode(str, length, base, exactLength)
 	if err != nil {
-		panic(MakeReadError(reader, "Invalid unicode code: "+str))
+		panic(MakeReadError(reader, err.Error()))
 	}
 	return r
 }
