@@ -211,7 +211,7 @@ func scanInt(orig, str string, base int, reader *Reader) Object {
 	if e != nil {
 		return scanBigInt(orig, str, base, reader)
 	}
-	return MakeReadObject(reader, Int{I: int(i)})
+	return MakeReadObject(reader, readerConstruction.Int(int(i)))
 }
 
 func scanFloat(str string, reader *Reader) Object {
@@ -219,7 +219,7 @@ func scanFloat(str string, reader *Reader) Object {
 	if e != nil {
 		panic(invalidNumberError(reader, str))
 	}
-	return MakeReadObject(reader, Double{D: dbl})
+	return MakeReadObject(reader, readerConstruction.Double(dbl))
 }
 
 func numberFromToken(reader *Reader, token corereader.NumberToken) Object {

@@ -45,6 +45,8 @@ func (ReaderConstructionAdapter) Bool(v bool) Object { return Boolean{B: v} }
 
 func (ReaderConstructionAdapter) Char(v rune) Object { return Char{Ch: v} }
 
+func (ReaderConstructionAdapter) Int(v int) Object { return Int{I: v} }
+
 func (ReaderConstructionAdapter) String(v string) Object { return MakeString(v) }
 
 func (ReaderConstructionAdapter) Symbol(v string) Object { return MakeSymbol(v) }
