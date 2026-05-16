@@ -3,13 +3,13 @@ package core
 import (
 	"io"
 
-	"github.com/rcarmo/go-joker/core/runewindow"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 )
 
 type (
 	Reader struct {
 		runeReader     io.RuneReader
-		rw             *runewindow.Window
+		rw             *corereader.Window
 		line           int
 		prevLineLength int
 		column         int
@@ -23,7 +23,7 @@ func NewReader(runeReader io.RuneReader, filename string) *Reader {
 	return &Reader{
 		line:       1,
 		runeReader: runeReader,
-		rw:         &runewindow.Window{},
+		rw:         &corereader.Window{},
 		rewind:     -1,
 		filename:   STRINGS.Intern(filename),
 	}

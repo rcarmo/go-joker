@@ -1,4 +1,4 @@
-package runewindow
+package reader
 
 type Window struct {
 	arr   [5]rune

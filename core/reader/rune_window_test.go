@@ -1,4 +1,4 @@
-package runewindow
+package reader
 
 import "testing"
 
