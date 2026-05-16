@@ -265,13 +265,16 @@ func closeClient(c Object) Object {
 	return NIL
 }
 
-func startServer(addr string, handler Callable) Object {
-	i := strings.LastIndexByte(addr, byte(':'))
-	host, port := MakeString(addr), MakeString("")
-	if i != -1 {
-		host = MakeString(addr[:i])
-		port = MakeString(addr[i+1:])
+func listenHostPort(addr string) (String, String) {
+	host, port, err := net.SplitHostPort(addr)
+	if err == nil {
+		return MakeString(strings.Trim(host, "[]")), MakeString(port)
 	}
+	return MakeString(strings.Trim(addr, "[]")), MakeString("")
+}
+
+func startServer(addr string, handler Callable) Object {
+	host, port := listenHostPort(addr)
 	err := http.ListenAndServe(addr, http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		defer func() {
 			if r := recover(); r != nil {

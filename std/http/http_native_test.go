@@ -200,6 +200,20 @@ func TestHandleWebSocketCloseCallbackIsIdempotent(t *testing.T) {
 	}
 }
 
+func TestListenHostPortIPv6(t *testing.T) {
+	for addr, want := range map[string][2]string{
+		"[::1]:8080":        {"::1", "8080"},
+		"[2001:db8::1]:443": {"2001:db8::1", "443"},
+		":8080":             {"", "8080"},
+		"localhost:8080":    {"localhost", "8080"},
+	} {
+		host, port := listenHostPort(addr)
+		if host.S != want[0] || port.S != want[1] {
+			t.Fatalf("listenHostPort(%q) = (%q, %q), want (%q, %q)", addr, host.S, port.S, want[0], want[1])
+		}
+	}
+}
+
 func TestReqToMapRemoteAddrIPv6(t *testing.T) {
 	for remote, want := range map[string]string{
 		"[2001:db8::1]:8080": "2001:db8::1",
