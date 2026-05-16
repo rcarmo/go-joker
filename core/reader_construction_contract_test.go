@@ -91,6 +91,7 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	requireReadErrorForContract(t, `{:a 1 :a 2}`)
 	requireReadErrorForContract(t, `#{1 1}`)
 	requireReadErrorForContract(t, `{:a 1 :b}`)
+	requireReadErrorForContract(t, `#:#?@(:clj [foo]){:a 1}`)
 }
 
 func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testing.T) {

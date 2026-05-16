@@ -901,7 +901,11 @@ func readNamespacedMap(reader *Reader) Object {
 		}
 	} else if r != '{' {
 		reader.Unget()
-		sym, _ = readerConstruction.Read(reader)
+		var multi bool
+		sym, multi = readerConstruction.Read(reader)
+		if multi {
+			panic(MakeReadError(reader, "Namespaced map must specify a single namespace symbol"))
+		}
 		r = corereader.SkipWhitespaceRun(reader, reader.Get())
 	}
 	if r != '{' {
