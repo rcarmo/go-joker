@@ -7,6 +7,19 @@ func ShouldAppendMapCommentSurrogate(formatMode bool, isComment bool) bool {
 	return formatMode && isComment
 }
 
+// ShouldReportReadError reports whether a reader error should be emitted as a
+// linter error rather than raised as a read exception.
+func ShouldReportReadError(linterMode bool) bool {
+	return linterMode
+}
+
+// ShouldSuppressUnreadConditionalBranch reports whether a reader conditional
+// branch should be read with SUPPRESS_READ because a prior branch was selected
+// or the current feature is unavailable.
+func ShouldSuppressUnreadConditionalBranch(hasResult bool, featureEnabled bool) bool {
+	return hasResult || !featureEnabled
+}
+
 // HasEvenFormCount reports whether a delimited form sequence contains an even
 // number of forms.
 func HasEvenFormCount(count int) bool {

@@ -417,7 +417,7 @@ func readMulti(reader *Reader, previouslyRead []Object) (Object, []Object) {
 }
 
 func readError(reader *Reader, msg string) {
-	if LINTER_MODE {
+	if corereader.ShouldReportReadError(LINTER_MODE) {
 		printReadError(reader, msg)
 	} else {
 		panic(MakeReadError(reader, msg))
@@ -450,14 +450,15 @@ func readCondList(reader *Reader) Object {
 				readError(reader, "Reader conditional requires an even number of forms")
 				return feature
 			}
-			if ok, _ := GLOBAL_ENV.Features.Get(feature); ok {
+			featureEnabled, _ := GLOBAL_ENV.Features.Get(feature)
+			if !corereader.ShouldSuppressUnreadConditionalBranch(res != nil, featureEnabled) {
 				res, forms = readMulti(reader, forms)
 			} else {
 				SUPPRESS_READ = true
 				_, forms = readMulti(reader, forms)
 				SUPPRESS_READ = false
 			}
-		} else {
+		} else if corereader.ShouldSuppressUnreadConditionalBranch(res != nil, false) {
 			SUPPRESS_READ = true
 			_, forms = readMulti(reader, forms)
 			SUPPRESS_READ = false

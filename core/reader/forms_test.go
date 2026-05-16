@@ -2,6 +2,21 @@ package reader
 
 import "testing"
 
+func TestReaderErrorAndConditionalSuppressionDecisions(t *testing.T) {
+	if !ShouldReportReadError(true) || ShouldReportReadError(false) {
+		t.Fatal("ShouldReportReadError mismatch")
+	}
+	if !ShouldSuppressUnreadConditionalBranch(true, true) {
+		t.Fatal("selected branch should suppress later conditional forms")
+	}
+	if !ShouldSuppressUnreadConditionalBranch(false, false) {
+		t.Fatal("disabled feature should suppress conditional form")
+	}
+	if ShouldSuppressUnreadConditionalBranch(false, true) {
+		t.Fatal("enabled feature without result should not suppress conditional form")
+	}
+}
+
 func TestMapFormHelpers(t *testing.T) {
 	if !ShouldAppendMapCommentSurrogate(true, true) {
 		t.Fatal("format comment should append surrogate")
