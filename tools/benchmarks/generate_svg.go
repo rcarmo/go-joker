@@ -62,23 +62,19 @@ func main() {
 		panic(err)
 	}
 
-	var baseline, current Series
-	for _, s := range h.Series {
-		if s.ID == "baseline-stable" {
-			baseline = s
-		}
-		if s.ID == "current" {
-			current = s
-		}
-	}
+	baseline := findSeries(h, "baseline-stable")
+	current := findSeries(h, "current")
 
 	var rows []Row
 	for name, cur := range current.Benchmarks {
-		r := Row{
-			Name:      name,
-			CurrentMS: cur.MSPerOp,
+		if cur.MSPerOp <= 0 {
+			panic(fmt.Sprintf("current benchmark %s must be positive", name))
 		}
+		r := Row{Name: name, CurrentMS: cur.MSPerOp}
 		if base, ok := baseline.Benchmarks[name]; ok {
+			if base.MSPerOp <= 0 {
+				panic(fmt.Sprintf("baseline benchmark %s must be positive", name))
+			}
 			r.BaselineMS = base.MSPerOp
 			r.HasBaseline = true
 			r.DeltaPct = ((cur.MSPerOp - base.MSPerOp) / base.MSPerOp) * 100
@@ -90,14 +86,12 @@ func main() {
 				r.CurrentWidth = 10
 			}
 		}
-		if goja, ok := h.CrossLanguage.Goja[name]; ok && goja > 0 {
-			r.GojaMS = goja
-			r.GojaRatio = cur.MSPerOp / goja
-		}
+		goja := requiredCross(h.CrossLanguage.Goja, "goja", name)
+		r.GojaMS = goja
+		r.GojaRatio = cur.MSPerOp / goja
 		rows = append(rows, r)
 	}
 
-	// Sort: baseline comparisons first (by speedup), then CLBG (by goja ratio)
 	sort.Slice(rows, func(i, j int) bool {
 		if rows[i].HasBaseline != rows[j].HasBaseline {
 			return rows[i].HasBaseline
@@ -108,7 +102,6 @@ func main() {
 		return rows[i].GojaRatio < rows[j].GojaRatio
 	})
 
-	// Generate SVG
 	rowHeight := 62
 	headerHeight := 100
 	summaryHeight := 80
@@ -135,15 +128,11 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 		b.WriteString(fmt.Sprintf(`<g transform="translate(32,%d)">`, y))
 		b.WriteString(`<rect class="row" x="0" y="0" width="1136" height="54" rx="8"/>`)
 
-		// Name
 		displayName := strings.ReplaceAll(r.Name, "_", " ")
 		b.WriteString(fmt.Sprintf(`<text class="text label" x="10" y="20">%s</text>`, displayName))
-
-		// Current value
 		b.WriteString(fmt.Sprintf(`<text class="muted small" x="10" y="40">%.1f ms</text>`, r.CurrentMS))
 
 		if r.HasBaseline {
-			// Bar: baseline full width, current proportional
 			b.WriteString(`<rect class="track" x="180" y="10" width="600" height="14" rx="5"/>`)
 			b.WriteString(`<rect class="baseline" x="180" y="10" width="600" height="14" rx="5"/>`)
 			barClass := "win"
@@ -156,8 +145,7 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 			b.WriteString(fmt.Sprintf(`<rect class="%s" x="180" y="28" width="%d" height="14" rx="5"/>`, barClass, r.CurrentWidth))
 			b.WriteString(fmt.Sprintf(`<text class="muted tiny" x="800" y="20">baseline: %.1f ms</text>`, r.BaselineMS))
 			b.WriteString(fmt.Sprintf(`<text class="text label" x="800" y="40">%.1f%% %s</text>`, r.DeltaPct, speedupLabel(r.DeltaPct)))
-		} else if r.GojaMS > 0 {
-			// Show vs Goja
+		} else {
 			barWidth := 600
 			if r.GojaRatio > 0 && r.GojaRatio < 7 {
 				barWidth = int(math.Round(r.GojaRatio / 7.0 * 600))
@@ -190,11 +178,10 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 	}
 	fmt.Println("wrote", filepath.Join(baseDir, "benchmark-improvements.svg"))
 
-	// Generate cross-language comparison SVG
-	generateCrossLanguageSVG(baseDir, h)
+	generateCrossLanguageSVG(baseDir, h, current)
 }
 
-func generateCrossLanguageSVG(baseDir string, h History) {
+func generateCrossLanguageSVG(baseDir string, h History, current Series) {
 	type CLRow struct {
 		Name     string
 		JokerMS  float64
@@ -205,18 +192,13 @@ func generateCrossLanguageSVG(baseDir string, h History) {
 	}
 
 	var rows []CLRow
-	current := h.Series[len(h.Series)-1]
 	for name, bench := range current.Benchmarks {
-		r := CLRow{Name: name, JokerMS: bench.MSPerOp}
-		if py, ok := h.CrossLanguage.Python313[name]; ok {
-			r.PythonMS = py
-			r.VsPython = bench.MSPerOp / py
+		if bench.MSPerOp <= 0 {
+			panic(fmt.Sprintf("current benchmark %s must be positive", name))
 		}
-		if gj, ok := h.CrossLanguage.Goja[name]; ok {
-			r.GojaMS = gj
-			r.VsGoja = bench.MSPerOp / gj
-		}
-		rows = append(rows, r)
+		py := requiredCross(h.CrossLanguage.Python313, "python_313", name)
+		gj := requiredCross(h.CrossLanguage.Goja, "goja", name)
+		rows = append(rows, CLRow{Name: name, JokerMS: bench.MSPerOp, PythonMS: py, GojaMS: gj, VsPython: bench.MSPerOp / py, VsGoja: bench.MSPerOp / gj})
 	}
 	sort.Slice(rows, func(i, j int) bool {
 		return rows[i].VsPython < rows[j].VsPython
@@ -253,7 +235,6 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 	}
 	b.WriteString(fmt.Sprintf(`<text class="muted subtitle" x="40" y="76">Beat Python: %d/%d • Beat Goja: %d/%d</text>`, winsP, len(rows), winsG, len(rows)))
 
-	// Column headers
 	b.WriteString(`<text class="muted tiny" x="200" y="94">Joker ms</text>`)
 	b.WriteString(`<text class="muted tiny" x="280" y="94">Python ms</text>`)
 	b.WriteString(`<text class="muted tiny" x="370" y="94">Goja ms</text>`)
@@ -272,7 +253,6 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 		b.WriteString(fmt.Sprintf(`<text class="muted small" x="260" y="28">%.2f</text>`, r.PythonMS))
 		b.WriteString(fmt.Sprintf(`<text class="muted small" x="350" y="28">%.2f</text>`, r.GojaMS))
 
-		// vs Python ratio
 		pyClass := "win"
 		if r.VsPython >= 1 && r.VsPython < 2 {
 			pyClass = "close"
@@ -282,7 +262,6 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 		}
 		b.WriteString(fmt.Sprintf(`<text class="%s small" x="440" y="28">%.2f×</text>`, pyClass, r.VsPython))
 
-		// vs Goja ratio
 		gjClass := "win"
 		if r.VsGoja >= 1 && r.VsGoja < 2 {
 			gjClass = "close"
@@ -292,10 +271,8 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 		}
 		b.WriteString(fmt.Sprintf(`<text class="%s small" x="550" y="28">%.2f×</text>`, gjClass, r.VsGoja))
 
-		// Log-scale bar for vs Python ratio
 		barMax := 500.0
 		logRatio := math.Log2(math.Max(r.VsPython, 0.01))
-		// Map log2 range [-6, 5] to [0, barMax]
 		barWidth := int(math.Round((logRatio + 6) / 11.0 * barMax))
 		if barWidth < 2 {
 			barWidth = 2
@@ -303,10 +280,8 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 		if barWidth > int(barMax) {
 			barWidth = int(barMax)
 		}
-		// Midpoint at log2(1) = 0 -> pixel 273
 		b.WriteString(fmt.Sprintf(`<rect fill="var(--track)" x="640" y="14" width="%d" height="18" rx="4"/>`, int(barMax)))
 		b.WriteString(fmt.Sprintf(`<rect class="%s" x="640" y="14" width="%d" height="18" rx="4" opacity="0.8"/>`, pyClass, barWidth))
-		// 1× reference line
 		oneX := int(math.Round(6.0 / 11.0 * barMax))
 		b.WriteString(fmt.Sprintf(`<line x1="%d" y1="12" x2="%d" y2="34" stroke="var(--text)" stroke-width="1" opacity="0.3"/>`, 640+oneX, 640+oneX))
 
@@ -319,6 +294,26 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 		panic(err)
 	}
 	fmt.Println("wrote", filepath.Join(baseDir, "benchmark-cross-language.svg"))
+}
+
+func findSeries(h History, id string) Series {
+	for _, s := range h.Series {
+		if s.ID == id {
+			return s
+		}
+	}
+	panic("missing benchmark series: " + id)
+}
+
+func requiredCross(values map[string]float64, runtime string, name string) float64 {
+	if values == nil {
+		panic("missing cross-language runtime: " + runtime)
+	}
+	v, ok := values[name]
+	if !ok || v <= 0 {
+		panic(fmt.Sprintf("missing positive %s benchmark value for %s", runtime, name))
+	}
+	return v
 }
 
 func speedupLabel(pct float64) string {
