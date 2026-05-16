@@ -66,6 +66,10 @@ func (ReaderConstructionAdapter) VectorFrom(values []Object) Object {
 	return collectionConstruction.ArrayVectorFrom(values...)
 }
 
+func (ReaderConstructionAdapter) PersistentVectorFromSeq(seq Seq) Object {
+	return collectionConstruction.VectorFromSeq(seq)
+}
+
 func (ReaderConstructionAdapter) Double(v float64) Object { return MakeDouble(v) }
 
 func (ReaderConstructionAdapter) BigInt(v *big.Int, original string) Object {

@@ -113,6 +113,13 @@ func TestReaderConstructionAdapterCollectionObjects(t *testing.T) {
 	if vec.Count() != 2 || !vec.At(0).Equals(MakeKeyword("a")) || !vec.At(1).Equals(MakeKeyword("b")) {
 		t.Fatalf("adapter VectorFrom mismatch: %s", vec.(Object).ToString(false))
 	}
+	persistent := readerConstruction.PersistentVectorFromSeq(vec.(Seqable).Seq()).(CountedIndexed)
+	if persistent.Count() != 2 || !persistent.At(0).Equals(MakeKeyword("a")) || !persistent.At(1).Equals(MakeKeyword("b")) {
+		t.Fatalf("adapter PersistentVectorFromSeq mismatch: %s", persistent.(Object).ToString(false))
+	}
+	if readerConstruction.VectorFrom(nil).(Counted).Count() != 0 {
+		t.Fatal("adapter empty VectorFrom not empty")
+	}
 }
 
 func TestReaderConstructionAdapterDeriveReadObject(t *testing.T) {

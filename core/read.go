@@ -873,12 +873,12 @@ func readConditional(reader *Reader) (Object, bool) {
 	s, seqable := v.(Seqable)
 	switch corereader.ClassifyConditionalResult(v != nil, isSplicing, seqable) {
 	case corereader.ConditionalResultEmptySplice:
-		return collectionConstruction.EmptyVector(), true
+		return readerConstruction.VectorFrom(nil), true
 	case corereader.ConditionalResultSpliceSeq:
-		return DeriveReadObject(v, collectionConstruction.VectorFromSeq(s.Seq())), true
+		return DeriveReadObject(v, readerConstruction.PersistentVectorFromSeq(s.Seq())), true
 	case corereader.ConditionalResultSpliceError:
 		readError(reader, "Spliced form in reader conditional must be Seqable, got "+v.GetType().ToString(false))
-		return collectionConstruction.EmptyVector(), true
+		return readerConstruction.VectorFrom(nil), true
 	default:
 		return v, false
 	}
