@@ -36,22 +36,10 @@ func registerSortedCollProcs() {
 		if len(args)%2 != 0 {
 			panic(RT.NewError("sorted-map requires an even number of arguments"))
 		}
-		// Collect key-value pairs
-		type kv struct {
-			key Object
-			val Object
-		}
-		pairs := make([]kv, len(args)/2)
-		for i := 0; i < len(args); i += 2 {
-			pairs[i/2] = kv{args[i], args[i+1]}
-		}
-		// Sort by key
-		sort.Slice(pairs, func(i, j int) bool {
-			return compareObjects(pairs[i].key, pairs[j].key) < 0
-		})
+		pairs := sortedKeyValuePairs(args, nil)
 		m := collectionConstruction.EmptyArrayMap()
 		for _, p := range pairs {
-			m.Add(p.key, p.val)
+			addOrReplaceArrayMap(m, p.key, p.val)
 		}
 		return m.WithMeta(sortedCollMeta())
 	}}
@@ -66,20 +54,10 @@ func registerSortedCollProcs() {
 		if len(keyvals)%2 != 0 {
 			panic(RT.NewError("sorted-map-by requires an even number of key/value arguments"))
 		}
-		type kv struct {
-			key Object
-			val Object
-		}
-		pairs := make([]kv, len(keyvals)/2)
-		for i := 0; i < len(keyvals); i += 2 {
-			pairs[i/2] = kv{keyvals[i], keyvals[i+1]}
-		}
-		sort.Slice(pairs, func(i, j int) bool {
-			return compareWith(comp, pairs[i].key, pairs[j].key) < 0
-		})
+		pairs := sortedKeyValuePairs(keyvals, comp)
 		m := collectionConstruction.EmptyArrayMap()
 		for _, p := range pairs {
-			m.Add(p.key, p.val)
+			addOrReplaceArrayMap(m, p.key, p.val)
 		}
 		return m.WithMeta(sortedCollMeta())
 	}}
@@ -146,6 +124,34 @@ func registerSortedCollProcs() {
 		}}
 	}}
 	referToUser(MakeSymbol("comparator"), compVr)
+}
+
+type sortedKV struct {
+	key Object
+	val Object
+}
+
+func sortedKeyValuePairs(keyvals []Object, comp Callable) []sortedKV {
+	pairs := make([]sortedKV, len(keyvals)/2)
+	for i := 0; i < len(keyvals); i += 2 {
+		pairs[i/2] = sortedKV{key: keyvals[i], val: keyvals[i+1]}
+	}
+	sort.SliceStable(pairs, func(i, j int) bool {
+		if comp != nil {
+			return compareWith(comp, pairs[i].key, pairs[j].key) < 0
+		}
+		return compareObjects(pairs[i].key, pairs[j].key) < 0
+	})
+	return pairs
+}
+
+func addOrReplaceArrayMap(m *ArrayMap, key Object, val Object) {
+	if m.Add(key, val) {
+		return
+	}
+	if i := m.indexOf(key); i != -1 {
+		m.arr[i+1] = val
+	}
 }
 
 func sortedSetFrom(values []Object, comp Callable) Object {

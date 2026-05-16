@@ -134,6 +134,13 @@ func TestSortedCollectionContract(t *testing.T) {
 	if found, got := m.Get(MakeInt(1)); !found || !got.Equals(MakeString("a")) {
 		t.Fatalf("sorted-map lookup = %v %v", found, got)
 	}
+	dup := sortedMapProc.Call([]Object{MakeInt(1), MakeString("old"), MakeInt(1), MakeString("new")}).(Map)
+	if dup.Count() != 1 {
+		t.Fatalf("sorted-map duplicate count = %d, want 1", dup.Count())
+	}
+	if found, got := dup.Get(MakeInt(1)); !found || !got.Equals(MakeString("new")) {
+		t.Fatalf("sorted-map duplicate lookup = %v %v", found, got)
+	}
 
 	s := sortedSetProc.Call([]Object{MakeInt(3), MakeInt(1), MakeInt(2)}).(*MapSet)
 	if got := sortedQProc.Call([]Object{s}); !got.Equals(Boolean{B: true}) {
