@@ -2,6 +2,25 @@ package reader
 
 import "testing"
 
+func TestConditionalResultClassification(t *testing.T) {
+	cases := []struct {
+		hasValue bool
+		splicing bool
+		seqable  bool
+		want     ConditionalResultKind
+	}{
+		{false, false, false, ConditionalResultEmptySplice},
+		{true, false, false, ConditionalResultValue},
+		{true, true, true, ConditionalResultSpliceSeq},
+		{true, true, false, ConditionalResultSpliceError},
+	}
+	for _, tc := range cases {
+		if got := ClassifyConditionalResult(tc.hasValue, tc.splicing, tc.seqable); got != tc.want {
+			t.Fatalf("ClassifyConditionalResult(%v, %v, %v) = %v, want %v", tc.hasValue, tc.splicing, tc.seqable, got, tc.want)
+		}
+	}
+}
+
 func TestReaderErrorAndConditionalSuppressionDecisions(t *testing.T) {
 	if !ShouldReportReadError(true) || ShouldReportReadError(false) {
 		t.Fatal("ShouldReportReadError mismatch")

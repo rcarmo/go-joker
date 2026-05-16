@@ -13,6 +13,31 @@ func ShouldReportReadError(linterMode bool) bool {
 	return linterMode
 }
 
+type ConditionalResultKind int
+
+const (
+	ConditionalResultValue ConditionalResultKind = iota
+	ConditionalResultEmptySplice
+	ConditionalResultSpliceSeq
+	ConditionalResultSpliceError
+)
+
+// ClassifyConditionalResult reports how a selected reader-conditional form
+// should be returned. Root owns concrete Seqable checks, vector construction,
+// and error text that includes root object types.
+func ClassifyConditionalResult(hasValue bool, splicing bool, seqable bool) ConditionalResultKind {
+	if !hasValue {
+		return ConditionalResultEmptySplice
+	}
+	if !splicing {
+		return ConditionalResultValue
+	}
+	if seqable {
+		return ConditionalResultSpliceSeq
+	}
+	return ConditionalResultSpliceError
+}
+
 // ShouldSuppressUnreadConditionalBranch reports whether a reader conditional
 // branch should be read with SUPPRESS_READ because a prior branch was selected
 // or the current feature is unavailable.

@@ -864,18 +864,18 @@ func readConditional(reader *Reader) (Object, bool) {
 		return cond, false
 	}
 	v := readCondList(reader)
-	if v == nil {
+	s, seqable := v.(Seqable)
+	switch corereader.ClassifyConditionalResult(v != nil, isSplicing, seqable) {
+	case corereader.ConditionalResultEmptySplice:
 		return collectionConstruction.EmptyVector(), true
-	}
-	if isSplicing {
-		s, ok := v.(Seqable)
-		if !ok {
-			readError(reader, "Spliced form in reader conditional must be Seqable, got "+v.GetType().ToString(false))
-			return collectionConstruction.EmptyVector(), true
-		}
+	case corereader.ConditionalResultSpliceSeq:
 		return DeriveReadObject(v, collectionConstruction.VectorFromSeq(s.Seq())), true
+	case corereader.ConditionalResultSpliceError:
+		readError(reader, "Spliced form in reader conditional must be Seqable, got "+v.GetType().ToString(false))
+		return collectionConstruction.EmptyVector(), true
+	default:
+		return v, false
 	}
-	return v, false
 }
 
 func readNamespacedMap(reader *Reader) Object {
