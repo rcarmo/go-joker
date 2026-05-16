@@ -83,7 +83,11 @@ func validateFile(path string) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() {
+		if err := f.Close(); err != nil {
+			fmt.Fprintf(os.Stderr, "warning: close %s: %v\n", path, err)
+		}
+	}()
 	seen := map[string]bool{}
 	skippedFile := false
 	s := bufio.NewScanner(f)
@@ -93,14 +97,26 @@ func validateFile(path string) error {
 			continue
 		}
 		if strings.HasPrefix(line, "# SKIPPED") {
+			if len(seen) > 0 {
+				return fmt.Errorf("%s: skip marker after benchmark results", path)
+			}
 			skippedFile = true
 			continue
 		}
+		if skippedFile {
+			return fmt.Errorf("%s: benchmark output after skip marker: %q", path, line)
+		}
 		m := resultRE.FindStringSubmatch(line)
 		if len(m) == 0 {
+			if strings.Contains(line, "ms/op") || strings.Contains(line, "result:") {
+				return fmt.Errorf("%s: unvalidated benchmark line: %q", path, line)
+			}
 			continue
 		}
 		name := canonical(m[1])
+		if seen[name] {
+			return fmt.Errorf("%s: duplicate result for %s", path, name)
+		}
 		want, ok := expectedResults[name]
 		if !ok {
 			return fmt.Errorf("%s: no expected result for %s", path, name)
