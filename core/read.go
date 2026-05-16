@@ -117,7 +117,7 @@ func peekExpectedDelimiter(reader *Reader) {
 func readSpecialCharacter(reader *Reader, ending string, r rune) Object {
 	eatString(reader, ending)
 	peekExpectedDelimiter(reader)
-	return MakeReadObject(reader, Char{Ch: r})
+	return MakeReadObject(reader, readerConstruction.Char(r))
 }
 
 func readComment(reader *Reader) Object {
@@ -175,7 +175,7 @@ func readCharacter(reader *Reader) Object {
 		return readUnicodeCharacter(reader, 3, 8)
 	}
 	peekExpectedDelimiter(reader)
-	return MakeReadObject(reader, Char{Ch: r})
+	return MakeReadObject(reader, readerConstruction.Char(r))
 }
 
 func invalidNumberError(reader *Reader, str string) error {
@@ -255,7 +255,7 @@ func readIdent(reader *Reader, first rune) Object {
 	case corereader.IsKeywordIdent(first):
 		if corereader.IsAutoResolvedKeywordIdent(first, str) {
 			if FORMAT_MODE {
-				return MakeReadObject(reader, MakeKeyword(str))
+				return MakeReadObject(reader, readerConstruction.Keyword(str))
 			}
 			sym := MakeSymbol(str[1:])
 			ns := GLOBAL_ENV.NamespaceFor(GLOBAL_ENV.CurrentNamespace(), sym)
@@ -263,25 +263,25 @@ func readIdent(reader *Reader, first rune) Object {
 				msg := fmt.Sprintf("Unable to resolve namespace %s in keyword %s", *sym.ns, ":"+str)
 				if LINTER_MODE {
 					printReadWarning(reader, msg)
-					return MakeReadObject(reader, MakeKeyword(*sym.name))
+					return MakeReadObject(reader, readerConstruction.Keyword(*sym.name))
 				}
 				panic(MakeReadError(reader, msg))
 			}
 			ns.isUsed = true
 			ns.isGloballyUsed = true
-			return MakeReadObject(reader, MakeKeyword(*ns.Name.name+"/"+*sym.name))
+			return MakeReadObject(reader, readerConstruction.Keyword(*ns.Name.name+"/"+*sym.name))
 		}
-		return MakeReadObject(reader, MakeKeyword(str))
+		return MakeReadObject(reader, readerConstruction.Keyword(str))
 	default:
 		switch corereader.ClassifyIdentLiteral(str) {
 		case corereader.IdentLiteralNil:
-			return MakeReadObject(reader, NIL)
+			return MakeReadObject(reader, readerConstruction.Nil())
 		case corereader.IdentLiteralTrue:
-			return MakeReadObject(reader, Boolean{B: true})
+			return MakeReadObject(reader, readerConstruction.Bool(true))
 		case corereader.IdentLiteralFalse:
-			return MakeReadObject(reader, Boolean{B: false})
+			return MakeReadObject(reader, readerConstruction.Bool(false))
 		default:
-			return MakeReadObject(reader, MakeSymbol(str))
+			return MakeReadObject(reader, readerConstruction.Symbol(str))
 		}
 	}
 }
@@ -397,7 +397,7 @@ func readString(reader *Reader) Object {
 	if err != nil {
 		panic(MakeReadError(reader, err.Error()))
 	}
-	return MakeReadObject(reader, String{S: s})
+	return MakeReadObject(reader, readerConstruction.String(s))
 }
 
 func readMulti(reader *Reader, previouslyRead []Object) (Object, []Object) {

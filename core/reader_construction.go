@@ -34,6 +34,18 @@ func (ReaderConstructionAdapter) DeriveReadObject(base Object, obj Object) Objec
 	return deriveReadObject(base, obj)
 }
 
+func (ReaderConstructionAdapter) Nil() Object { return NIL }
+
+func (ReaderConstructionAdapter) Bool(v bool) Object { return Boolean{B: v} }
+
+func (ReaderConstructionAdapter) Char(v rune) Object { return Char{Ch: v} }
+
+func (ReaderConstructionAdapter) String(v string) Object { return MakeString(v) }
+
+func (ReaderConstructionAdapter) Symbol(v string) Object { return MakeSymbol(v) }
+
+func (ReaderConstructionAdapter) Keyword(v string) Object { return MakeKeyword(v) }
+
 func (ReaderConstructionAdapter) LiteralExpr(obj Object) *LiteralExpr {
 	return NewLiteralExpr(obj)
 }

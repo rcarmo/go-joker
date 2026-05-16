@@ -20,6 +20,27 @@ func TestReaderConstructionAdapterReadObjectAndError(t *testing.T) {
 	}
 }
 
+func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
+	if !readerConstruction.Nil().Equals(NIL) {
+		t.Fatal("adapter Nil mismatch")
+	}
+	if !readerConstruction.Bool(true).Equals(Boolean{B: true}) || !readerConstruction.Bool(false).Equals(Boolean{B: false}) {
+		t.Fatal("adapter Bool mismatch")
+	}
+	if !readerConstruction.Char('x').Equals(Char{Ch: 'x'}) {
+		t.Fatal("adapter Char mismatch")
+	}
+	if !readerConstruction.String("x").Equals(MakeString("x")) {
+		t.Fatal("adapter String mismatch")
+	}
+	if !readerConstruction.Symbol("x").Equals(MakeSymbol("x")) {
+		t.Fatal("adapter Symbol mismatch")
+	}
+	if !readerConstruction.Keyword("x").Equals(MakeKeyword("x")) {
+		t.Fatal("adapter Keyword mismatch")
+	}
+}
+
 func TestReaderConstructionAdapterDeriveReadObject(t *testing.T) {
 	r := readerConstruction.NewReader(strings.NewReader("x"), "<adapter-contract>")
 	pushPos(r)
