@@ -73,6 +73,19 @@ func TestAssociativeMapContract(t *testing.T) {
 	}
 }
 
+func TestMapSetZeroValueContract(t *testing.T) {
+	var set MapSet
+	if set.Count() != 0 || !set.Seq().IsEmpty() {
+		t.Fatalf("zero-value set should be empty")
+	}
+	if ok, got := set.Get(MakeInt(1)); ok || got != nil {
+		t.Fatalf("zero-value set get = %v %v", ok, got)
+	}
+	if !set.Add(MakeInt(1)) || set.Count() != 1 {
+		t.Fatalf("zero-value set add failed")
+	}
+}
+
 func TestSetContract(t *testing.T) {
 	set := EmptySet().Conj(MakeInt(1)).Conj(MakeInt(2)).(*MapSet)
 	if set.Count() != 2 {

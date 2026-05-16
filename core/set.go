@@ -29,8 +29,15 @@ func (set *MapSet) Disjoin(key Object) Set {
 	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.m.Without(key)}
 }
 
+func (set *MapSet) ensureMap() Map {
+	if set.m == nil {
+		set.m = EmptyArrayMap()
+	}
+	return set.m
+}
+
 func (set *MapSet) Add(obj Object) bool {
-	switch m := set.m.(type) {
+	switch m := set.ensureMap().(type) {
 	case *ArrayMap:
 		return m.Add(obj, Boolean{B: true})
 	case *HashMap:
@@ -45,7 +52,7 @@ func (set *MapSet) Add(obj Object) bool {
 }
 
 func (set *MapSet) Conj(obj Object) Conjable {
-	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.m.Assoc(obj, Boolean{B: true}).(Map)}
+	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.ensureMap().Assoc(obj, Boolean{B: true}).(Map)}
 }
 
 func EmptySet() *MapSet {
@@ -75,6 +82,9 @@ func (set *MapSet) Equals(other interface{}) bool {
 }
 
 func (set *MapSet) Get(key Object) (bool, Object) {
+	if set.m == nil {
+		return false, nil
+	}
 	if ok, _ := set.m.Get(key); ok {
 		return true, key
 	}
@@ -90,10 +100,16 @@ func (set *MapSet) Hash() uint32 {
 }
 
 func (set *MapSet) Seq() Seq {
+	if set.m == nil {
+		return EmptyList
+	}
 	return set.m.Keys()
 }
 
 func (set *MapSet) Count() int {
+	if set.m == nil {
+		return 0
+	}
 	return set.m.Count()
 }
 
