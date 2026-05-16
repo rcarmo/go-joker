@@ -488,16 +488,11 @@ func readList(reader *Reader) Object {
 		r = reader.Peek()
 	}
 	reader.Get()
-	list := EmptyList
-	for i := len(s) - 1; i >= 0; i-- {
-		list = list.conj(s[i])
-	}
-	res := MakeReadObject(reader, list)
-	return res
+	return MakeReadObject(reader, readerConstruction.ListFrom(s))
 }
 
 func readVector(reader *Reader) Object {
-	res := collectionConstruction.EmptyArrayVector()
+	items := make([]Object, 0, 10)
 	eatWhitespace(reader)
 	r := reader.Peek()
 	for r != ']' {
@@ -505,16 +500,16 @@ func readVector(reader *Reader) Object {
 		if multi {
 			v := obj.(Vec)
 			for i := 0; i < v.Count(); i++ {
-				res.Append(v.At(i))
+				items = append(items, v.At(i))
 			}
 		} else {
-			res.Append(obj)
+			items = append(items, obj)
 		}
 		eatWhitespace(reader)
 		r = reader.Peek()
 	}
 	reader.Get()
-	return MakeReadObject(reader, res)
+	return MakeReadObject(reader, readerConstruction.VectorFrom(items))
 }
 
 func resolveKey(key Object, nsname string) Object {

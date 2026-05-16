@@ -41,6 +41,17 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 	}
 }
 
+func TestReaderConstructionAdapterCollectionObjects(t *testing.T) {
+	list := readerConstruction.ListFrom([]Object{MakeInt(1), MakeInt(2)}).(Seq)
+	if SeqCount(list) != 2 || !list.First().Equals(MakeInt(1)) || !Second(list).Equals(MakeInt(2)) {
+		t.Fatalf("adapter ListFrom mismatch: %s", list.ToString(false))
+	}
+	vec := readerConstruction.VectorFrom([]Object{MakeKeyword("a"), MakeKeyword("b")}).(CountedIndexed)
+	if vec.Count() != 2 || !vec.At(0).Equals(MakeKeyword("a")) || !vec.At(1).Equals(MakeKeyword("b")) {
+		t.Fatalf("adapter VectorFrom mismatch: %s", vec.(Object).ToString(false))
+	}
+}
+
 func TestReaderConstructionAdapterDeriveReadObject(t *testing.T) {
 	r := readerConstruction.NewReader(strings.NewReader("x"), "<adapter-contract>")
 	pushPos(r)
