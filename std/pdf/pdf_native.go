@@ -59,6 +59,13 @@ func positivePDFDimension(v float64, name string) float64 {
 	return v
 }
 
+func nonNegativePDFDimension(v float64, name string) float64 {
+	if v < 0 {
+		panic(RT.NewError("pdf: " + name + " must be non-negative"))
+	}
+	return v
+}
+
 var procDocument ProcFn = func(args []Object) Object {
 	CheckArity(args, 0, 2)
 	w := 595.0 // A4 default
@@ -161,7 +168,7 @@ var procTextWrap ProcFn = func(args []Object) Object {
 	d := extractDoc(args, 0)
 	x := ExtractDouble(args, 1)
 	y := ExtractDouble(args, 2)
-	w := ExtractDouble(args, 3)
+	w := positivePDFDimension(ExtractDouble(args, 3), "text width")
 	text := ExtractString(args, 4)
 	d.pdf.SetXY(x, y)
 	rect := &gopdf.Rect{W: w, H: 0}
@@ -189,8 +196,8 @@ var procRect ProcFn = func(args []Object) Object {
 	d := extractDoc(args, 0)
 	x := ExtractDouble(args, 1)
 	y := ExtractDouble(args, 2)
-	w := ExtractDouble(args, 3)
-	h := ExtractDouble(args, 4)
+	w := positivePDFDimension(ExtractDouble(args, 3), "rect width")
+	h := positivePDFDimension(ExtractDouble(args, 4), "rect height")
 	style := "D" // draw border
 	if len(args) > 5 {
 		style = ExtractKeyword(args, 5)
@@ -204,8 +211,8 @@ var procOval ProcFn = func(args []Object) Object {
 	d := extractDoc(args, 0)
 	x := ExtractDouble(args, 1)
 	y := ExtractDouble(args, 2)
-	rx := ExtractDouble(args, 3)
-	ry := ExtractDouble(args, 4)
+	rx := positivePDFDimension(ExtractDouble(args, 3), "oval rx")
+	ry := positivePDFDimension(ExtractDouble(args, 4), "oval ry")
 	d.pdf.Oval(x, y, rx, ry)
 	return args[0]
 }
@@ -269,10 +276,10 @@ var procImage ProcFn = func(args []Object) Object {
 
 	opts := &gopdf.Rect{}
 	if len(args) > 4 {
-		opts.W = ExtractDouble(args, 4)
+		opts.W = positivePDFDimension(ExtractDouble(args, 4), "image width")
 	}
 	if len(args) > 5 {
-		opts.H = ExtractDouble(args, 5)
+		opts.H = positivePDFDimension(ExtractDouble(args, 5), "image height")
 	}
 
 	if err := d.pdf.Image(path, x, y, opts); err != nil {
@@ -312,8 +319,8 @@ var procLink ProcFn = func(args []Object) Object {
 	url := ExtractString(args, 1)
 	x := ExtractDouble(args, 2)
 	y := ExtractDouble(args, 3)
-	w := ExtractDouble(args, 4)
-	h := ExtractDouble(args, 5)
+	w := positivePDFDimension(ExtractDouble(args, 4), "link width")
+	h := positivePDFDimension(ExtractDouble(args, 5), "link height")
 	d.pdf.AddExternalLink(url, x, y, w, h)
 	return args[0]
 }
@@ -355,10 +362,10 @@ var procPageCount ProcFn = func(args []Object) Object {
 var procMargins ProcFn = func(args []Object) Object {
 	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
-	left := ExtractDouble(args, 1)
-	top := ExtractDouble(args, 2)
-	right := ExtractDouble(args, 3)
-	bottom := ExtractDouble(args, 4)
+	left := nonNegativePDFDimension(ExtractDouble(args, 1), "left margin")
+	top := nonNegativePDFDimension(ExtractDouble(args, 2), "top margin")
+	right := nonNegativePDFDimension(ExtractDouble(args, 3), "right margin")
+	bottom := nonNegativePDFDimension(ExtractDouble(args, 4), "bottom margin")
 	d.pdf.SetMargins(left, top, right, bottom)
 	return args[0]
 }

@@ -72,6 +72,29 @@ func TestPDFColorRejectsOutOfRangeChannels(t *testing.T) {
 	})
 }
 
+func TestPDFGeometryRejectsInvalidDimensions(t *testing.T) {
+	initPDFNamespace()
+	doc := procDocument(nil)
+	expectPanic(t, func() {
+		procTextWrap([]Object{doc, Double{D: 10}, Double{D: 10}, Double{D: 0}, MakeString("x")})
+	})
+	expectPanic(t, func() {
+		procRect([]Object{doc, Double{D: 10}, Double{D: 10}, Double{D: -1}, Double{D: 10}})
+	})
+	expectPanic(t, func() {
+		procOval([]Object{doc, Double{D: 10}, Double{D: 10}, Double{D: 1}, Double{D: 0}})
+	})
+	expectPanic(t, func() {
+		procImage([]Object{doc, MakeString(filepath.Join(t.TempDir(), "missing.png")), Double{D: 10}, Double{D: 10}, Double{D: -1}})
+	})
+	expectPanic(t, func() {
+		procLink([]Object{doc, MakeString("https://example.com"), Double{D: 10}, Double{D: 10}, Double{D: 0}, Double{D: 10}})
+	})
+	expectPanic(t, func() {
+		procMargins([]Object{doc, Double{D: 10}, Double{D: -1}, Double{D: 10}, Double{D: 10}})
+	})
+}
+
 func TestPDFLineWidthRejectsInvalidValue(t *testing.T) {
 	initPDFNamespace()
 	doc := procDocument(nil)
