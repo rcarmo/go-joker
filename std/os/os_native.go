@@ -65,8 +65,10 @@ func startProcess(name string, opts Map) int {
 
 	err := cmd.Start()
 	PanicOnErr(err)
+	pid := cmd.Process.Pid
+	PanicOnErr(cmd.Process.Release())
 
-	return cmd.Process.Pid
+	return pid
 }
 
 func sendSignal(pid, signal int) Object {

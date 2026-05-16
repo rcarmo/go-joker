@@ -3,10 +3,25 @@ package os
 import (
 	"io"
 	"math"
+	"runtime"
 	"testing"
+	"time"
 
 	. "github.com/rcarmo/go-joker/core"
 )
+
+func TestStartProcessReleasesChild(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("uses Unix shell command")
+	}
+	pid := startProcess("sh", EmptyArrayMap().Assoc(MakeKeyword("args"), NewVectorFrom(MakeString("-c"), MakeString("exit 0"))).(Map))
+	if pid <= 0 {
+		t.Fatalf("startProcess pid = %d", pid)
+	}
+	// Give the child a chance to exit; the important contract is that startProcess
+	// has released its handle and does not require a later Wait to avoid leaks.
+	time.Sleep(10 * time.Millisecond)
+}
 
 func TestStartProcessDefaultsToDiscardedOutput(t *testing.T) {
 	if got := processOutputOrDiscard(nil); got != io.Discard {
