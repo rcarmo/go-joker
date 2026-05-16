@@ -894,9 +894,7 @@ func readNamespacedMap(reader *Reader) Object {
 			reader.Unget()
 			panic(MakeReadError(reader, "Namespaced map must specify a namespace"))
 		}
-		for corereader.IsWhitespace(r) {
-			r = reader.Get()
-		}
+		r = corereader.SkipWhitespaceRun(reader, r)
 		if r != '{' {
 			reader.Unget()
 			panic(MakeReadError(reader, "Namespaced map must specify a namespace"))
@@ -904,10 +902,7 @@ func readNamespacedMap(reader *Reader) Object {
 	} else if r != '{' {
 		reader.Unget()
 		sym, _ = readerConstruction.Read(reader)
-		r = reader.Get()
-		for corereader.IsWhitespace(r) {
-			r = reader.Get()
-		}
+		r = corereader.SkipWhitespaceRun(reader, reader.Get())
 	}
 	if r != '{' {
 		panic(MakeReadError(reader, "Namespaced map must specify a map"))

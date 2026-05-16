@@ -2,6 +2,17 @@ package reader
 
 import "testing"
 
+func TestSkipWhitespaceRun(t *testing.T) {
+	r := newCommentReader(" \t\n{")
+	if got := SkipWhitespaceRun(r, ' '); got != '{' {
+		t.Fatalf("SkipWhitespaceRun = %q, want {", got)
+	}
+	r = newCommentReader("")
+	if got := SkipWhitespaceRun(r, 'x'); got != 'x' {
+		t.Fatalf("SkipWhitespaceRun non-space = %q, want x", got)
+	}
+}
+
 func TestWhitespaceSkipHelpers(t *testing.T) {
 	if !ShouldPreserveComma(true, ',') || ShouldPreserveComma(false, ',') || ShouldPreserveComma(true, 'x') {
 		t.Fatal("unexpected comma preservation result")

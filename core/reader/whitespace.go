@@ -17,3 +17,15 @@ func ShouldSkipReaderComment(formatMode bool, r rune, peek rune) bool {
 func ShouldDiscardNextForm(formatMode bool, r rune, peek rune) bool {
 	return !formatMode && r == '#' && peek == '_'
 }
+
+// SkipWhitespaceRun consumes whitespace starting at first and returns the first
+// non-whitespace rune. It does not handle comments or discard forms; callers
+// that need full reader whitespace semantics should use their orchestration
+// layer instead.
+func SkipWhitespaceRun(r interface{ Get() rune }, first rune) rune {
+	ch := first
+	for IsWhitespace(ch) {
+		ch = r.Get()
+	}
+	return ch
+}

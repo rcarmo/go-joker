@@ -1,7 +1,7 @@
 // Package reader is reserved for reader/parser extraction from root core.
 //
 // It contains root-independent reader mechanics such as character classes,
-// comment/line/regex/string scanning, whitespace-skip decisions, dispatch/named character classification, symbolic-value lookup, character unicode/octal classification, delimiter/comment/terminating macro classification, delimiter token scanning, delimited form-count/arg-literal/conditional/unquote/namespaced-map prefix/splice helpers, pending-form popping, arg-index gap filling/ordering, expected-token consumption, string escape classification, identifier rune checks/validation issue enumeration/explanations, identifier token scanning/validation, initial token classification, number/unicode token/escape scanning/parsing, string/unicode escape scanning/parsing, line rune readers,
+// comment/line/regex/string scanning, whitespace-skip decisions/runs, dispatch/named character classification, symbolic-value lookup, character unicode/octal classification, delimiter/comment/terminating macro classification, delimiter token scanning, delimited form-count/arg-literal/conditional/unquote/namespaced-map prefix/splice helpers, pending-form popping, arg-index gap filling/ordering, expected-token consumption, string escape classification, identifier rune checks/validation issue enumeration/explanations, identifier token scanning/validation, initial token classification, number/unicode token/escape scanning/parsing, string/unicode escape scanning/parsing, line rune readers,
 // and raw IO wrappers. Reader and parser
 // and expression construction call sites route through root core's
 // ReaderConstructionAdapter, and the layout guard rejects future files in this
