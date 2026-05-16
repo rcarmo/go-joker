@@ -46,7 +46,11 @@ func (tv *TransientVector) checkFrozen() {
 // AssocInPlace sets an element by index. Returns self.
 func (tv *TransientVector) AssocInPlace(key, val Object) *TransientVector {
 	tv.checkFrozen()
-	idx := key.(Int).I
+	idxObj, ok := key.(Int)
+	if !ok {
+		panic(RT.NewArgTypeError(1, key, "Int"))
+	}
+	idx := idxObj.I
 	if idx >= 0 && idx < len(tv.arr) {
 		tv.arr[idx] = val
 	} else if idx == len(tv.arr) {

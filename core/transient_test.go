@@ -70,6 +70,9 @@ func TestTransientVectorProcs(t *testing.T) {
 	if procAssocBang([]Object{tv, Int{I: 1}, Int{I: 20}}) != tv {
 		t.Fatal("assoc! should return the same transient vector")
 	}
+	assertPanics(t, "assoc! transient vector key type", func() {
+		procAssocBang([]Object{tv, MakeKeyword("bad"), Int{I: 0}})
+	})
 	if procConjBang([]Object{tv, Int{I: 3}}) != tv {
 		t.Fatal("conj! should return the same transient vector")
 	}
