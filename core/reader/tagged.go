@@ -1,5 +1,11 @@
 package reader
 
+// DefaultDataReaderFnVarName returns the root var name consulted for fallback
+// tagged literal handling.
+func DefaultDataReaderFnVarName() string {
+	return "*default-data-reader-fn*"
+}
+
 // DataReaderVarNames returns the root var names consulted for tagged literal
 // readers, in lookup order. Root owns namespace access and concrete Map lookup.
 func DataReaderVarNames() []string {

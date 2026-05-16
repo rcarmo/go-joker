@@ -819,7 +819,7 @@ func lookupDataReader(s Symbol) (Object, bool) {
 }
 
 func lookupDefaultDataReaderFn() (Callable, bool) {
-	vr := GLOBAL_ENV.CoreNamespace.Resolve("*default-data-reader-fn*")
+	vr := GLOBAL_ENV.CoreNamespace.Resolve(corereader.DefaultDataReaderFnVarName())
 	if vr == nil || vr.Value == nil || IsNil(vr.Value) {
 		return nil, false
 	}

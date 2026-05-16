@@ -2,6 +2,12 @@ package reader
 
 import "testing"
 
+func TestDefaultDataReaderFnVarName(t *testing.T) {
+	if got := DefaultDataReaderFnVarName(); got != "*default-data-reader-fn*" {
+		t.Fatalf("DefaultDataReaderFnVarName = %q", got)
+	}
+}
+
 func TestDataReaderVarNames(t *testing.T) {
 	names := DataReaderVarNames()
 	if len(names) != 2 || names[0] != "*data-readers*" || names[1] != "default-data-readers" {
