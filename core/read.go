@@ -121,7 +121,7 @@ func readSpecialCharacter(reader *Reader, ending string, r rune) Object {
 }
 
 func readComment(reader *Reader) Object {
-	return MakeReadObject(reader, Comment{C: corereader.ReadCommentText(reader)})
+	return MakeReadObject(reader, readerConstruction.Comment(corereader.ReadCommentText(reader)))
 }
 
 func eatWhitespace(reader *Reader) {
@@ -1069,7 +1069,7 @@ func Read(reader *Reader) (Object, bool) {
 	}
 	switch corereader.ClassifyTopLevelTrivia(r, peek) {
 	case corereader.TopLevelTriviaComma:
-		return MakeReadObject(reader, Comment{C: ","}), false
+		return MakeReadObject(reader, readerConstruction.Comment(",")), false
 	case corereader.TopLevelTriviaComment:
 		reader.Unget()
 		return readComment(reader), false

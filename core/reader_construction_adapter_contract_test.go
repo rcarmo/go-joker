@@ -35,6 +35,9 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 	if !readerConstruction.Double(1.5).Equals(MakeDouble(1.5)) {
 		t.Fatal("adapter Double mismatch")
 	}
+	if c, ok := readerConstruction.Comment(";").(Comment); !ok || c.C != ";" {
+		t.Fatalf("adapter Comment mismatch: %#v", c)
+	}
 	if !readerConstruction.String("x").Equals(MakeString("x")) {
 		t.Fatal("adapter String mismatch")
 	}
