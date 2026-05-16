@@ -7,7 +7,6 @@ import (
 	"math/rand"
 	"regexp"
 	"strconv"
-	"unicode"
 	"unicode/utf8"
 
 	"github.com/rcarmo/go-joker/core/numutil"
@@ -1068,34 +1067,29 @@ func Read(reader *Reader) (Object, bool) {
 		return readComment(reader), false
 	}
 
-	switch {
-	case r == '\\':
+	peek = 0
+	if corereader.NeedsReadFormPeek(r) {
+		peek = reader.Peek()
+	}
+	switch corereader.ClassifyReadForm(r, peek, ARGS != nil, FORMAT_MODE, DIALECT == CLJS) {
+	case corereader.ReadFormCharacter:
 		return readCharacter(reader), false
-	case unicode.IsDigit(r):
+	case corereader.ReadFormNumber:
 		reader.Unget()
 		return readNumber(reader), false
-	case r == '.', r == '-' || r == '+':
-		if corereader.ClassifyInitialToken(r, reader.Peek(), DIALECT == CLJS) == corereader.InitialTokenNumber {
-			reader.Unget()
-			return readNumber(reader), false
-		}
-		return readIdentFn(reader, r), false
-	case r == '%' && ARGS != nil:
-		if FORMAT_MODE {
-			return readIdentFn(reader, r), false
-		}
+	case corereader.ReadFormArgSymbol:
 		return readArgSymbol(reader), false
-	case r == '"':
+	case corereader.ReadFormString:
 		return readString(reader), false
-	case r == '(':
+	case corereader.ReadFormList:
 		return readList(reader), false
-	case r == '[':
+	case corereader.ReadFormVector:
 		return readVector(reader), false
-	case r == '{':
+	case corereader.ReadFormMap:
 		return readMap(reader), false
-	case r == '/' && corereader.IsStandaloneSlashSymbol(r, reader.Peek()):
+	case corereader.ReadFormStandaloneSlash:
 		return MakeReadObject(reader, SYMBOLS.backslash), false
-	case r == '\'':
+	case corereader.ReadFormQuote:
 		popPos()
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
@@ -1104,7 +1098,7 @@ func Read(reader *Reader) (Object, bool) {
 			return nextObj, false
 		}
 		return makeQuote(nextObj, SYMBOLS.quote), false
-	case r == '@':
+	case corereader.ReadFormDeref:
 		popPos()
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
@@ -1113,7 +1107,7 @@ func Read(reader *Reader) (Object, bool) {
 			return nextObj, false
 		}
 		return DeriveReadObject(nextObj, NewListFrom(DeriveReadObject(nextObj, SYMBOLS.deref), nextObj)), false
-	case r == '~':
+	case corereader.ReadFormUnquote:
 		popPos()
 		isSplicing := corereader.IsUnquoteSplice(reader.Peek())
 		if isSplicing {
@@ -1128,7 +1122,7 @@ func Read(reader *Reader) (Object, bool) {
 			return makeQuote(nextObj, SYMBOLS.unquoteSplicing), false
 		}
 		return makeQuote(nextObj, SYMBOLS.unquote), false
-	case r == '`':
+	case corereader.ReadFormSyntaxQuote:
 		popPos()
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
@@ -1137,7 +1131,7 @@ func Read(reader *Reader) (Object, bool) {
 			return nextObj, false
 		}
 		return makeSyntaxQuote(nextObj, make(map[*string]Symbol), reader), false
-	case r == '^':
+	case corereader.ReadFormMeta:
 		popPos()
 		if FORMAT_MODE {
 			nextObj := readFirst(reader)
@@ -1146,12 +1140,14 @@ func Read(reader *Reader) (Object, bool) {
 			return nextObj, false
 		}
 		return readWithMeta(reader), false
-	case r == '#':
+	case corereader.ReadFormDispatch:
 		return readDispatch(reader)
-	case r == EOF:
+	case corereader.ReadFormEOF:
 		panic(MakeReadError(reader, "Unexpected end of file"))
-	case corereader.IsClosingDelimiter(r):
+	case corereader.ReadFormClosingDelimiter:
 		panic(MakeReadError(reader, "Unmatched delimiter: "+string(r)))
+	case corereader.ReadFormIdent:
+		return readIdentFn(reader, r), false
 	default:
 		return readIdentFn(reader, r), false
 	}
