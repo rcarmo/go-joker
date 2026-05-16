@@ -164,6 +164,31 @@ func meanStddev(vals []float64) (float64, float64) {
 	return mean, math.Sqrt(ss / float64(len(vals)))
 }
 
+func validateSuiteResults(results map[string]map[string]benchStat, benchmarks []string, runtimes []runtimeSpec) error {
+	for _, b := range benchmarks {
+		anyRan := false
+		for _, rt := range runtimes {
+			st, ok := results[b][rt.Name]
+			if !ok {
+				return fmt.Errorf("%s/%s: missing result", b, rt.Name)
+			}
+			if rt.Name == "go-joker" && st.Skipped {
+				return fmt.Errorf("%s/go-joker skipped: %s", b, st.Reason)
+			}
+			if !st.Skipped {
+				if st.Runs <= 0 || st.MeanMS <= 0 || math.IsNaN(st.MeanMS) || math.IsInf(st.MeanMS, 0) {
+					return fmt.Errorf("%s/%s: invalid timing stats: %+v", b, rt.Name, st)
+				}
+				anyRan = true
+			}
+		}
+		if !anyRan {
+			return fmt.Errorf("%s: no runtime produced a validated result", b)
+		}
+	}
+	return nil
+}
+
 func fmtMS(v float64, ok bool) string {
 	if !ok {
 		return "-"
@@ -192,6 +217,14 @@ func main() {
 
 	if *outMD == "" {
 		fmt.Fprintln(os.Stderr, "-out is required")
+		os.Exit(2)
+	}
+	if *warmup < 0 {
+		fmt.Fprintln(os.Stderr, "-warmup must be non-negative")
+		os.Exit(2)
+	}
+	if *runs <= 0 {
+		fmt.Fprintln(os.Stderr, "-runs must be positive")
 		os.Exit(2)
 	}
 
@@ -226,13 +259,16 @@ func main() {
 	benchmarks := []string{}
 	for _, b := range benchmarkOrder {
 		p := filepath.Join(*benchDir, b+".clj")
-		if st, err := os.Stat(p); err == nil && !st.IsDir() {
-			benchmarks = append(benchmarks, b)
+		st, err := os.Stat(p)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "missing benchmark file %s: %v\n", p, err)
+			os.Exit(1)
 		}
-	}
-	if len(benchmarks) == 0 {
-		fmt.Fprintf(os.Stderr, "no benchmark files found in %s\n", *benchDir)
-		os.Exit(1)
+		if st.IsDir() {
+			fmt.Fprintf(os.Stderr, "benchmark path is a directory: %s\n", p)
+			os.Exit(1)
+		}
+		benchmarks = append(benchmarks, b)
 	}
 
 	results := map[string]map[string]benchStat{}
@@ -277,6 +313,11 @@ func main() {
 			m, s := meanStddev(times)
 			results[b][rt.Name] = benchStat{MeanMS: m, StddevMS: s, Runs: len(times)}
 		}
+	}
+
+	if err := validateSuiteResults(results, benchmarks, runtimes); err != nil {
+		fmt.Fprintln(os.Stderr, "let-go suite validation failed:", err)
+		os.Exit(1)
 	}
 
 	var md strings.Builder
