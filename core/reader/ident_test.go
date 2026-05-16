@@ -2,6 +2,21 @@ package reader
 
 import "testing"
 
+func TestClassifyIdentLiteral(t *testing.T) {
+	cases := map[string]IdentLiteralKind{
+		"nil":   IdentLiteralNil,
+		"true":  IdentLiteralTrue,
+		"false": IdentLiteralFalse,
+		"foo":   IdentLiteralSymbol,
+		"Nil":   IdentLiteralSymbol,
+	}
+	for token, want := range cases {
+		if got := ClassifyIdentLiteral(token); got != want {
+			t.Fatalf("ClassifyIdentLiteral(%q) = %v, want %v", token, got, want)
+		}
+	}
+}
+
 func TestIsIdentRune(t *testing.T) {
 	for _, r := range []rune{'a', 'Z', '0', '-', '_', ':', '/', '?', '!'} {
 		if !IsIdentRune(r) {

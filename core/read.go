@@ -264,14 +264,17 @@ func readIdent(reader *Reader, first rune) Object {
 			return MakeReadObject(reader, MakeKeyword(*ns.Name.name+"/"+*sym.name))
 		}
 		return MakeReadObject(reader, MakeKeyword(str))
-	case str == "nil":
-		return MakeReadObject(reader, NIL)
-	case str == "true":
-		return MakeReadObject(reader, Boolean{B: true})
-	case str == "false":
-		return MakeReadObject(reader, Boolean{B: false})
 	default:
-		return MakeReadObject(reader, MakeSymbol(str))
+		switch corereader.ClassifyIdentLiteral(str) {
+		case corereader.IdentLiteralNil:
+			return MakeReadObject(reader, NIL)
+		case corereader.IdentLiteralTrue:
+			return MakeReadObject(reader, Boolean{B: true})
+		case corereader.IdentLiteralFalse:
+			return MakeReadObject(reader, Boolean{B: false})
+		default:
+			return MakeReadObject(reader, MakeSymbol(str))
+		}
 	}
 }
 

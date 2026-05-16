@@ -126,6 +126,7 @@ Planned package boundaries:
 - [x] Move reader number token classification into `core/reader`.
 - [x] Move reader identifier token validation into `core/reader`.
 - [x] Move reader identifier token scanning into `core/reader`.
+- [x] Move reader identifier literal classification into `core/reader`.
 - [x] Move reader initial token classification into `core/reader`.
 - [x] Move reader comment and line-skip scanning into `core/reader`.
 - [x] Move reader string unicode escape scanning into `core/reader`.
