@@ -76,9 +76,17 @@ func parseStyle(args []Object, idx int) string {
 
 // --- Creation ---
 
+func positiveDimension(obj Object, context, name string) int {
+	v := EnsureObjectIsInt(obj, context+" "+name+": %s").I
+	if v <= 0 {
+		panic(RT.NewError(context + ": " + name + " must be positive"))
+	}
+	return v
+}
+
 var procCanvas ProcFn = func(args []Object) Object {
-	w := ExtractInt(args, 0)
-	h := ExtractInt(args, 1)
+	w := positiveDimension(args[0], "svg/canvas", "width")
+	h := positiveDimension(args[1], "svg/canvas", "height")
 	buf := &bytes.Buffer{}
 	s := svglib.New(buf)
 	s.Start(w, h)
@@ -86,10 +94,10 @@ var procCanvas ProcFn = func(args []Object) Object {
 }
 
 var procCanvasWithViewbox ProcFn = func(args []Object) Object {
-	w := ExtractInt(args, 0)
-	h := ExtractInt(args, 1)
-	vw := ExtractInt(args, 2)
-	vh := ExtractInt(args, 3)
+	w := positiveDimension(args[0], "svg/canvas", "width")
+	h := positiveDimension(args[1], "svg/canvas", "height")
+	vw := positiveDimension(args[2], "svg/canvas", "viewbox width")
+	vh := positiveDimension(args[3], "svg/canvas", "viewbox height")
 	buf := &bytes.Buffer{}
 	s := svglib.New(buf)
 	s.Startview(w, h, 0, 0, vw, vh)
@@ -378,11 +386,7 @@ var procRaw ProcFn = func(args []Object) Object {
 // --- Render SVG to raster Image ---
 
 func renderDimension(obj Object, name string) int {
-	v := EnsureObjectIsInt(obj, "svg/render "+name+": %s").I
-	if v <= 0 {
-		panic(RT.NewError("svg/render: " + name + " must be positive"))
-	}
-	return v
+	return positiveDimension(obj, "svg/render", name)
 }
 
 func rgbaToNRGBA(img *image.RGBA, w, h int) *image.NRGBA {

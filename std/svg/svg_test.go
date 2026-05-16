@@ -40,6 +40,15 @@ func TestCanvasGeneration(t *testing.T) {
 	t.Logf("SVG length: %d bytes", len(svg))
 }
 
+func TestCanvasRejectsInvalidDimensions(t *testing.T) {
+	expectSVGPanic(t, func() {
+		procCanvas([]Object{MakeInt(0), MakeInt(100)})
+	})
+	expectSVGPanic(t, func() {
+		procCanvasWithViewbox([]Object{MakeInt(100), MakeInt(100), MakeInt(-1), MakeInt(100)})
+	})
+}
+
 func TestCanvasWithStyle(t *testing.T) {
 	initSVGNamespace()
 
