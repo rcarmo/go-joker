@@ -222,6 +222,14 @@ func sendRequest(request Map) Map {
 	return respToMap(resp)
 }
 
+func nonNegativeHTTPOption(obj Object, name string) int {
+	v := EnsureObjectIsInt(obj, name+": %s").I
+	if v < 0 {
+		panic(RT.NewError(name + " must be non-negative"))
+	}
+	return v
+}
+
 func makeClient(args []Object) Object {
 	if len(args) > 1 {
 		panic(RT.NewError("client expects zero args or one options map"))
@@ -232,13 +240,13 @@ func makeClient(args []Object) Object {
 	if len(args) == 1 && !args[0].Equals(NIL) {
 		opts := EnsureObjectIsMap(args[0], "client options must be a map: %s")
 		if ok, v := opts.Get(MakeKeyword("max-idle-conns")); ok {
-			maxIdle = EnsureObjectIsInt(v, ":max-idle-conns: %s").I
+			maxIdle = nonNegativeHTTPOption(v, ":max-idle-conns")
 		}
 		if ok, v := opts.Get(MakeKeyword("max-idle-conns-per-host")); ok {
-			maxIdlePerHost = EnsureObjectIsInt(v, ":max-idle-conns-per-host: %s").I
+			maxIdlePerHost = nonNegativeHTTPOption(v, ":max-idle-conns-per-host")
 		}
 		if ok, v := opts.Get(MakeKeyword("idle-timeout-ms")); ok {
-			idleTimeoutMs = EnsureObjectIsInt(v, ":idle-timeout-ms: %s").I
+			idleTimeoutMs = nonNegativeHTTPOption(v, ":idle-timeout-ms")
 		}
 	}
 	return newHTTPClient(maxIdle, maxIdlePerHost, time.Duration(idleTimeoutMs)*time.Millisecond)

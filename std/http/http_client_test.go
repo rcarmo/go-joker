@@ -34,6 +34,17 @@ func TestPersistentClientReusesConnection(t *testing.T) {
 	}
 }
 
+func TestPersistentClientRejectsNegativeOptions(t *testing.T) {
+	opts := EmptyArrayMap()
+	opts.Add(MakeKeyword("idle-timeout-ms"), MakeInt(-1))
+	defer func() {
+		if recover() == nil {
+			t.Fatal("negative client option did not panic")
+		}
+	}()
+	_ = makeClient([]Object{opts})
+}
+
 func TestPersistentClientOptions(t *testing.T) {
 	opts := EmptyArrayMap()
 	opts.Add(MakeKeyword("max-idle-conns"), MakeInt(7))
