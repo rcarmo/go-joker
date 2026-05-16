@@ -2,6 +2,7 @@ package core
 
 import (
 	"io"
+	"regexp"
 
 	corereader "github.com/rcarmo/go-joker/core/reader"
 )
@@ -65,6 +66,8 @@ func (ReaderConstructionAdapter) VectorFrom(values []Object) Object {
 func (ReaderConstructionAdapter) Double(v float64) Object { return MakeDouble(v) }
 
 func (ReaderConstructionAdapter) Comment(v string) Object { return Comment{C: v} }
+
+func (ReaderConstructionAdapter) Regex(v *regexp.Regexp) Object { return &Regex{R: v} }
 
 func (ReaderConstructionAdapter) NumberFromToken(reader *Reader, token corereader.NumberToken) Object {
 	return numberFromToken(reader, token)

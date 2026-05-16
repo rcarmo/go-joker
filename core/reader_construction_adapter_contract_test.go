@@ -1,6 +1,7 @@
 package core
 
 import (
+	"regexp"
 	"strings"
 	"testing"
 
@@ -37,6 +38,10 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 	}
 	if c, ok := readerConstruction.Comment(";").(Comment); !ok || c.C != ";" {
 		t.Fatalf("adapter Comment mismatch: %#v", c)
+	}
+	rxObj, ok := readerConstruction.Regex(regexp.MustCompile("x+")).(*Regex)
+	if !ok || rxObj.R == nil || !rxObj.R.MatchString("xxx") {
+		t.Fatalf("adapter Regex mismatch: %#v", rxObj)
 	}
 	if !readerConstruction.String("x").Equals(MakeString("x")) {
 		t.Fatal("adapter String mismatch")

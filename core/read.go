@@ -373,16 +373,16 @@ func readRegex(reader *Reader) Object {
 	if err != nil {
 		switch corereader.ClassifyInvalidRegexAction(LINTER_MODE, FORMAT_MODE) {
 		case corereader.InvalidRegexPlaceholder:
-			return MakeReadObject(reader, &Regex{})
+			return MakeReadObject(reader, readerConstruction.Regex(nil))
 		case corereader.InvalidRegexPreserveString:
-			res := MakeReadObject(reader, MakeString(s))
+			res := MakeReadObject(reader, readerConstruction.String(s))
 			addPrefix(res, "#")
 			return res
 		default:
 			panic(MakeReadError(reader, "Invalid regex: "+err.Error()))
 		}
 	}
-	return MakeReadObject(reader, &Regex{R: regex})
+	return MakeReadObject(reader, readerConstruction.Regex(regex))
 }
 
 func readUnicodeCharacterInString(reader *Reader, initial rune, length, base int, exactLength bool) rune {
