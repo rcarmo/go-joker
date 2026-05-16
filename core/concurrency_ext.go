@@ -12,6 +12,18 @@ import (
 //
 // These require the GIL-free runtime (goroutine_rt.go).
 
+const maxMillisecondDuration = int64(1<<63-1) / int64(time.Millisecond)
+
+func checkedMillisecondDuration(ms int, context string) time.Duration {
+	if ms < 0 {
+		panic(RT.NewError(context + " requires a non-negative millisecond value"))
+	}
+	if int64(ms) > maxMillisecondDuration {
+		panic(RT.NewError(context + " millisecond value is too large"))
+	}
+	return time.Duration(ms) * time.Millisecond
+}
+
 // installConcurrencyExt registers alts!, timeout, future, promise, deliver,
 // future?, promise?, realized?, pmap, and pcalls.
 func installConcurrencyExt() {
@@ -25,13 +37,10 @@ func installConcurrencyExt() {
 	toVr := ns.Intern(MakeSymbol("timeout"))
 	toVr.Value = Proc{Name: "procTimeout", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
-		ms := EnsureArgIsInt(args, 0)
-		if ms.I < 0 {
-			panic(RT.NewError("timeout requires a non-negative millisecond value"))
-		}
+		delay := checkedMillisecondDuration(EnsureArgIsInt(args, 0).I, "timeout")
 		ch := MakeChannel(make(chan FutureResult, 1))
 		go func() {
-			time.Sleep(time.Duration(ms.I) * time.Millisecond)
+			time.Sleep(delay)
 			ch.Close()
 		}()
 		return ch

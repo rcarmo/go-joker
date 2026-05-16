@@ -13,6 +13,21 @@ func requireKeyword(tb testing.TB, obj Object, want string) {
 	}
 }
 
+func TestConcurrencyTimeoutRejectsTooLarge(t *testing.T) {
+	didPanic := false
+	func() {
+		defer func() {
+			if recover() != nil {
+				didPanic = true
+			}
+		}()
+		_ = checkedMillisecondDuration(int(^uint(0)>>1), "timeout")
+	}()
+	if !didPanic {
+		t.Fatal("timeout accepted overflowing millisecond value")
+	}
+}
+
 func TestConcurrencyTimeoutRejectsNegative(t *testing.T) {
 	didPanic := false
 	func() {
