@@ -28,3 +28,19 @@ func InsertPair[T any](pairs []T, pairIndex int, key T, val T) []T {
 	copy(newPairs[insert+2:], pairs[insert:])
 	return newPairs
 }
+
+// PackIndexedNodes compacts a sparse 32-way trie node array into bitmap-indexed
+// [nil, node] pairs, omitting skipIndex. present reports whether a node slot is
+// populated so callers can keep their node type private to the owning package.
+func PackIndexedNodes[T any](nodes []T, skipIndex uint, present func(T) bool) (int, []interface{}) {
+	packed := make([]interface{}, 0, 2*(len(nodes)-1))
+	bitmap := 0
+	for i, node := range nodes {
+		if uint(i) == skipIndex || !present(node) {
+			continue
+		}
+		packed = append(packed, nil, node)
+		bitmap |= 1 << uint(i)
+	}
+	return bitmap, packed
+}

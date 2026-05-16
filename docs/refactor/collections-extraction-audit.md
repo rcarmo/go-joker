@@ -1,6 +1,6 @@
 # Collections extraction audit
 
-Updated: 2026-05-15
+Updated: 2026-05-16
 
 Current root collection families are still strongly coupled to root `core` contracts. The current safe path is to keep splitting storage/mechanics from Object/protocol adapters before moving concrete implementations.
 
@@ -21,7 +21,7 @@ Current root collection families are still strongly coupled to root `core` contr
 - Seqs/lists are evaluator-adjacent because they carry `Callable` reduce paths and root seq protocol behavior.
 - Transients are coupled both to concrete persistent collections and to root proc registration (`GLOBAL_ENV`, `Proc`, `referToUser`).
 - `map_filter_fast.go` is not a collection implementation move candidate yet; it is AST/evaluator optimization code and should stay root-bound until evaluator extraction.
-- Remaining hash-map packing/expansion code is now mostly coupled to root `Node`, `Object.Hash`, `Object.Equals`, and seq/protocol behavior; pause before forcing larger map moves.
+- Remaining hash-map expansion/collision code is now mostly coupled to root `Node`, `Object.Hash`, `Object.Equals`, and seq/protocol behavior; pause before forcing larger map moves. Sparse `ArrayNode` compaction delegates to generic collection mechanics while preserving root node ownership.
 
 ## Minimal extraction interface candidates
 
@@ -39,7 +39,7 @@ To move storage/mechanics without importing root `core`, `core/collections` need
 
 - `vector_storage.go`: generic clone/append/assoc/assoc2/pop/from-values slice helpers.
 - `trie_node.go`: opaque fixed-width trie node clone/path helpers used by persistent-vector trie mechanics.
-- `pair_storage.go`: generic pair-array append/insert/remove helpers used by hash-map node arrays.
+- `pair_storage.go`: generic pair-array append/insert/remove helpers and sparse indexed-node compaction used by hash-map node arrays.
 - `bitmap.go`: bit-count/hash-mask/bitmap-position helpers used by hash-map indexing.
 
 Root `ArrayVector`, legacy `Vector`, `PersistentVector`, and `HashMap` delegate to these helpers where safe. Concrete Object/protocol behavior remains in root.
@@ -52,7 +52,7 @@ The safest first real package move is a root-independent mechanics helper, not a
 2. Add package-local tests for clone/append/assoc/pop or chunk indexing semantics.
 3. Make root `ArrayVector`/future adapters delegate only storage operations to that primitive while retaining `Object`, metadata, seq, printing, `TYPE`, `RT`, and callable behavior in root.
 
-A good first concrete candidate is an `Object`-agnostic generic slice helper for vector storage operations, e.g. clone/append/assoc/pop with tests. **Started:** `core/collections` now owns generic slice storage helpers, pair-array helpers, bitmap/hash-index helpers, and opaque trie node/path helpers; root `ArrayVector`, legacy `Vector`, `PersistentVector` tail/trie operations, and hash-map node/pair-array/bitmap mechanics delegate clone/append/assoc/pop/from-values/node-copy/path/pair insert/pair remove/bit count/hash mask/single-slot and double-slot assoc mechanics to them while retaining Object/protocol behavior in root. Once that seam is stable, the same pattern can be applied to more map/set bucket mechanics.
+A good first concrete candidate is an `Object`-agnostic generic slice helper for vector storage operations, e.g. clone/append/assoc/pop with tests. **Started:** `core/collections` now owns generic slice storage helpers, pair-array helpers, bitmap/hash-index helpers, sparse indexed-node packing, and opaque trie node/path helpers; root `ArrayVector`, legacy `Vector`, `PersistentVector` tail/trie operations, and hash-map node/pair-array/bitmap/packing mechanics delegate clone/append/assoc/pop/from-values/node-copy/path/pair insert/pair remove/bit count/hash mask/single-slot and double-slot assoc mechanics to them while retaining Object/protocol behavior in root. Once that seam is stable, the same pattern can be applied to more map/set bucket mechanics.
 
 ## Explicit non-candidates for immediate move
 

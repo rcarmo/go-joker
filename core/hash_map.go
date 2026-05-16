@@ -391,24 +391,7 @@ func (n *ArrayNode) nodeSeq() Seq {
 }
 
 func (n *ArrayNode) pack(idx uint) Node {
-	newArray := make([]interface{}, 2*(n.count-1))
-	j := 1
-	bitmap := 0
-	var i uint
-	for i = 0; i < idx; i++ {
-		if n.array[i] != nil {
-			newArray[j] = n.array[i]
-			bitmap |= 1 << i
-			j += 2
-		}
-	}
-	for i = idx + 1; i < uint(len(n.array)); i++ {
-		if n.array[i] != nil {
-			newArray[j] = n.array[i]
-			bitmap |= 1 << i
-			j += 2
-		}
-	}
+	bitmap, newArray := corecollections.PackIndexedNodes(n.array, idx, func(node Node) bool { return node != nil })
 	return &BitmapIndexedNode{
 		bitmap: bitmap,
 		array:  newArray,

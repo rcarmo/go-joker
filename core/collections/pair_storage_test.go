@@ -29,3 +29,20 @@ func TestPairStorageOperations(t *testing.T) {
 		}
 	}
 }
+
+func TestPackIndexedNodes(t *testing.T) {
+	nodes := []string{"", "a", "", "skip", "b"}
+	bitmap, packed := PackIndexedNodes(nodes, 3, func(s string) bool { return s != "" })
+	if bitmap != (1<<1)|(1<<4) {
+		t.Fatalf("bitmap = %b", bitmap)
+	}
+	want := []interface{}{nil, "a", nil, "b"}
+	if len(packed) != len(want) {
+		t.Fatalf("packed len = %d, want %d: %#v", len(packed), len(want), packed)
+	}
+	for i := range want {
+		if packed[i] != want[i] {
+			t.Fatalf("packed[%d] = %#v, want %#v (all %#v)", i, packed[i], want[i], packed)
+		}
+	}
+}
