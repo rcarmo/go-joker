@@ -144,7 +144,7 @@ Planned package boundaries:
 - [x] Move reader character unicode/octal classification into `core/reader`.
 - [x] Move reader symbolic-value lookup into `core/reader`.
 - [x] Move reader source filename fallback into `core/reader`.
-- [x] Move reader dispatch macro classification, format-prefix selection, and tagged-literal format-prefix construction into `core/reader`.
+- [x] Move reader dispatch macro classification, format-prefix selection, and tagged-literal format-prefix/missing-reader mode decisions into `core/reader`.
 - [x] Move reader map form-count helpers into `core/reader`.
 - [x] Move reader bare arg-literal classification into `core/reader`.
 - [x] Move reader conditional/unquote/namespaced-map/simple-macro/delimited-form loop and prefix/splice helpers into `core/reader`.

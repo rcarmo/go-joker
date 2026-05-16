@@ -788,16 +788,16 @@ func handleNoReaderError(reader *Reader, s Symbol) Object {
 }
 
 func handleNoReaderErrorValue(reader *Reader, s Symbol, value Object) Object {
-	if SUPPRESS_READ {
+	msg := "No reader function for tag " + s.ToString(false)
+	switch corereader.ClassifyMissingTaggedReaderAction(SUPPRESS_READ, LINTER_MODE, DIALECT == EDN) {
+	case corereader.MissingTaggedReaderReturnValue:
 		return value
-	}
-	if LINTER_MODE {
-		if DIALECT != EDN {
-			printReadWarning(reader, "No reader function for tag "+s.ToString(false))
-		}
+	case corereader.MissingTaggedReaderWarnAndReturnValue:
+		printReadWarning(reader, msg)
 		return value
+	default:
+		panic(MakeReadError(reader, msg))
 	}
-	panic(MakeReadError(reader, "No reader function for tag "+s.ToString(false)))
 }
 
 func lookupDataReader(s Symbol) (Object, bool) {
