@@ -620,7 +620,7 @@ func readSet(reader *Reader) Object {
 }
 
 func makeQuote(obj Object, quote Symbol) Object {
-	res := NewListFrom(quote, obj)
+	res := readerConstruction.ListFrom([]Object{quote, obj})
 	return DeriveReadObject(obj, res)
 }
 
@@ -984,7 +984,7 @@ func readDispatch(reader *Reader) (Object, bool) {
 			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
-		return DeriveReadObject(nextObj, NewListFrom(DeriveReadObject(nextObj, SYMBOLS._var), nextObj)), false
+		return DeriveReadObject(nextObj, readerConstruction.ListFrom([]Object{DeriveReadObject(nextObj, SYMBOLS._var), nextObj})), false
 	case corereader.DispatchDiscard:
 		// Only possible in FORMAT mode, otherwise
 		// eatWhitespaces eats #_
@@ -1113,7 +1113,7 @@ func Read(reader *Reader) (Object, bool) {
 			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
-		return DeriveReadObject(nextObj, NewListFrom(DeriveReadObject(nextObj, SYMBOLS.deref), nextObj)), false
+		return DeriveReadObject(nextObj, readerConstruction.ListFrom([]Object{DeriveReadObject(nextObj, SYMBOLS.deref), nextObj})), false
 	case corereader.ReadFormUnquote:
 		popPos()
 		isSplicing := corereader.IsUnquoteSplice(reader.Peek())
