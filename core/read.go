@@ -965,14 +965,16 @@ func readSymbolicValue(reader *Reader) Object {
 
 func readDispatch(reader *Reader) (Object, bool) {
 	r := reader.Get()
-	switch corereader.ClassifyDispatch(r) {
+	kind := corereader.ClassifyDispatch(r)
+	switch kind {
 	case corereader.DispatchRegex:
 		return readRegex(reader), false
 	case corereader.DispatchVar:
 		popPos()
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
-			addPrefix(nextObj, "#'")
+			prefix, _ := corereader.DispatchFormatPrefix(kind)
+			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
 		return DeriveReadObject(nextObj, NewListFrom(DeriveReadObject(nextObj, SYMBOLS._var), nextObj)), false
@@ -981,13 +983,15 @@ func readDispatch(reader *Reader) (Object, bool) {
 		// eatWhitespaces eats #_
 		popPos()
 		nextObj := readFirst(reader)
-		addPrefix(nextObj, "#_")
+		prefix, _ := corereader.DispatchFormatPrefix(kind)
+		addPrefix(nextObj, prefix)
 		return nextObj, false
 	case corereader.DispatchMeta:
 		popPos()
 		if FORMAT_MODE {
 			nextObj := readFirst(reader)
-			addPrefix(nextObj, "#^")
+			prefix, _ := corereader.DispatchFormatPrefix(kind)
+			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
 		return readWithMeta(reader), false
@@ -998,7 +1002,8 @@ func readDispatch(reader *Reader) (Object, bool) {
 		reader.Unget()
 		if FORMAT_MODE {
 			nextObj := readFirst(reader)
-			addPrefix(nextObj, "#")
+			prefix, _ := corereader.DispatchFormatPrefix(kind)
+			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
 		ARGS = make(map[int]Symbol)

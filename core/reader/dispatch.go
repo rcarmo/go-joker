@@ -15,6 +15,23 @@ const (
 	DispatchSymbolicValue
 )
 
+// DispatchFormatPrefix returns the source prefix to preserve for dispatch
+// macros whose format-mode representation is a prefix on the following form.
+func DispatchFormatPrefix(kind DispatchKind) (string, bool) {
+	switch kind {
+	case DispatchVar:
+		return "#'", true
+	case DispatchDiscard:
+		return "#_", true
+	case DispatchMeta:
+		return "#^", true
+	case DispatchFn:
+		return "#", true
+	default:
+		return "", false
+	}
+}
+
 func ClassifyDispatch(r rune) DispatchKind {
 	switch r {
 	case '"':
