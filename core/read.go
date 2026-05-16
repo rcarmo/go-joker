@@ -732,7 +732,7 @@ func syntaxQuoteSeq(seq Seq, env map[*string]Symbol, reader *Reader) Seq {
 			res = append(res, (obj).(Seq).Rest().First())
 		} else {
 			q := makeSyntaxQuote(obj, env, reader)
-			res = append(res, DeriveReadObject(q, NewListFrom(SYMBOLS.list, q)))
+			res = append(res, DeriveReadObject(q, readerConstruction.ListFrom([]Object{SYMBOLS.list, q})))
 		}
 	}
 	return &ArraySeq{arr: res}
@@ -741,10 +741,10 @@ func syntaxQuoteSeq(seq Seq, env map[*string]Symbol, reader *Reader) Seq {
 func syntaxQuoteColl(seq Seq, env map[*string]Symbol, reader *Reader, ctor Symbol, info *ObjectInfo) Object {
 	q := syntaxQuoteSeq(seq, env, reader)
 	concat := q.Cons(SYMBOLS.concat)
-	seqList := NewListFrom(SYMBOLS.seq, concat)
+	seqList := readerConstruction.ListFrom([]Object{SYMBOLS.seq, concat})
 	var res Object = seqList
 	if ctor != SYMBOLS.emptySymbol {
-		res = NewListFrom(ctor, seqList).Cons(SYMBOLS.apply)
+		res = readerConstruction.ListFrom([]Object{ctor, seqList}).(Seq).Cons(SYMBOLS.apply)
 	}
 	return res.WithInfo(info)
 }
