@@ -7,7 +7,6 @@ import (
 	"math/rand"
 	"regexp"
 	"strconv"
-	"unicode/utf8"
 
 	"github.com/rcarmo/go-joker/core/numutil"
 	corereader "github.com/rcarmo/go-joker/core/reader"
@@ -754,10 +753,10 @@ func makeSyntaxQuote(obj Object, env map[*string]Symbol, reader *Reader) Object 
 	switch s := obj.(type) {
 	case Symbol:
 		str := *s.name
-		if r, _ := utf8.DecodeLastRuneInString(str); r == '#' && s.ns == nil {
+		if corereader.IsAutoGensymSymbolName(str, s.ns != nil) {
 			sym, ok := env[s.name]
 			if !ok {
-				sym = generateSymbol(str[:len(str)-1] + "__")
+				sym = generateSymbol(corereader.AutoGensymPrefix(str))
 				env[s.name] = sym
 			}
 			obj = DeriveReadObject(obj, sym)
