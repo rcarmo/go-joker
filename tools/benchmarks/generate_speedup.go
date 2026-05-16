@@ -115,7 +115,9 @@ svg{background:var(--bg);font-family:Inter,system-ui,sans-serif}
 	}
 
 	b.WriteString(`</svg>`)
-	os.WriteFile("benchmarks/benchmark-speedup.svg", []byte(b.String()), 0644)
+	if err := os.WriteFile("benchmarks/benchmark-speedup.svg", []byte(b.String()), 0644); err != nil {
+		panic(err)
+	}
 	fmt.Println("wrote benchmark-speedup.svg")
 }
 

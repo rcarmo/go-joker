@@ -53,9 +53,14 @@ func main() {
 		baseDir = os.Args[1]
 	}
 
-	data, _ := os.ReadFile(filepath.Join(baseDir, "benchmark-history.json"))
+	data, err := os.ReadFile(filepath.Join(baseDir, "benchmark-history.json"))
+	if err != nil {
+		panic(err)
+	}
 	var h History
-	json.Unmarshal(data, &h)
+	if err := json.Unmarshal(data, &h); err != nil {
+		panic(err)
+	}
 
 	var baseline, current Series
 	for _, s := range h.Series {
@@ -180,7 +185,9 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 
 	b.WriteString(`</svg>`)
 
-	os.WriteFile(filepath.Join(baseDir, "benchmark-improvements.svg"), []byte(b.String()), 0644)
+	if err := os.WriteFile(filepath.Join(baseDir, "benchmark-improvements.svg"), []byte(b.String()), 0644); err != nil {
+		panic(err)
+	}
 	fmt.Println("wrote", filepath.Join(baseDir, "benchmark-improvements.svg"))
 
 	// Generate cross-language comparison SVG
@@ -308,7 +315,9 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 	}
 
 	b.WriteString(`</svg>`)
-	os.WriteFile(filepath.Join(baseDir, "benchmark-cross-language.svg"), []byte(b.String()), 0644)
+	if err := os.WriteFile(filepath.Join(baseDir, "benchmark-cross-language.svg"), []byte(b.String()), 0644); err != nil {
+		panic(err)
+	}
 	fmt.Println("wrote", filepath.Join(baseDir, "benchmark-cross-language.svg"))
 }
 
