@@ -55,12 +55,25 @@ Current status: all above checks pass, and `govulncheck` reports no vulnerabilit
 
 5. **Static-analysis/code-smell cleanup**
    - Removed redundant `for k, _ := range ...` patterns in CLI/codegen paths.
+   - Removed duplicate Go-name translation table entries.
    - Staticcheck SA and vet remain clean.
+
+6. **Native/std logic hardening**
+   - `std/string` padding and index helpers now handle empty pads and out-of-range `from` indexes without Go panics.
+   - Version parsing now handles malformed numeric components explicitly.
+   - `Transit` cmap decoding rejects odd payloads instead of silently dropping dangling entries.
+   - External source URL cache-path parsing now rejects malformed URLs instead of indexing a missing split component.
+
+7. **Collection/concurrency edge cases**
+   - `sorted-map` and `sorted-map-by` now replace duplicate keys deterministically, including comparator-equal keys.
+   - Transient vector assoc now reports bad key types as Joker argument errors.
+   - Transient maps and `MapSet` have nil/zero-value-safe behavior where practical.
+   - `alts!` now rejects odd option lists instead of ignoring dangling option keys.
 
 ## Refactor documentation state
 
 - `core/collections` is no longer only a marker package. It owns root-independent slice, pair-array, bitmap/hash-index, and opaque trie node/path mechanics.
-- `core/reader` owns root-independent character classes, identifier classification/validation, unicode/string escape parsing, number-token classification, line rune reader, and raw IO mechanics.
+- `core/reader` owns root-independent character classes, whitespace/comment/line scanning, identifier token scanning/validation/issue enumeration, unicode/string escape parsing, number-token classification, dispatch/form/prefix helpers, line rune reader, and raw IO mechanics.
 - Concrete collection Object/protocol behavior and concrete reader Object/tagged-literal/parser behavior remain root-bound until dependencies are explicit and acyclic.
 - Go benchmarks live under `benchmarks/core`; root `core` should not regain `Benchmark*` functions.
 

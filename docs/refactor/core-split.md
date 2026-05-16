@@ -116,7 +116,7 @@ Current candidate files:
 
 Status and risks:
 
-- `core/reader` now owns leaf mechanics: line rune reader, raw file/buffer/buffered/IO wrappers, char classes, identifier checks/validation, unicode/string escape parsing, and number-token classification.
+- `core/reader` now owns leaf mechanics: line rune reader, raw file/buffer/buffered/IO wrappers, char classes, whitespace/comment/line scanning decisions/runs, identifier token scanning/checks/validation issue enumeration, unicode/string escape parsing, number-token classification, dispatch/delimiter/form helpers, and conditional/unquote/namespaced-map prefix/splice decisions.
 - reader/parser still constructs concrete `core` objects and expressions directly; current production call sites now route through `ReaderConstructionAdapter`, guarded by `construction_boundary_guard_test.go`.
 - tagged literal handling touches namespace/runtime metadata.
 - parse/eval boundaries are not yet clean.

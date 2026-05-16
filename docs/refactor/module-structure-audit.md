@@ -25,7 +25,7 @@ core/ir                  # extracted IR opcode/diagnostic/analysis helpers and n
 core/runtime             # extracted runtime feature flags and leaf helpers
 core/wasm                # extracted WASM encoding/module/host metadata helpers
 core/collections         # extracted collection storage/bitmap/trie mechanics
-core/reader              # extracted reader lexical/token/IO mechanics
+core/reader              # extracted reader lexical/token/scanning/form/IO mechanics
 core/string              # extracted string mechanics
 core/cursor              # extracted string cursor mechanics
 std/*                             # namespace-oriented standard library packages
