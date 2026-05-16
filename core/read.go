@@ -20,10 +20,6 @@ type (
 		msg      string
 	}
 	ReadFunc func(reader *Reader) Object
-	pos      struct {
-		line   int
-		column int
-	}
 )
 
 const EOF = corereader.EOF
@@ -43,15 +39,17 @@ var (
 )
 
 var NIL = Nil{}
-var posStack = make([]pos, 0, 8)
+var posStack = corereader.NewPositionStack(8)
 
 func pushPos(reader *Reader) {
-	posStack = append(posStack, pos{line: reader.line, column: reader.column})
+	posStack.Push(corereader.Position{Line: reader.line, Column: reader.column})
 }
 
-func popPos() pos {
-	p := posStack[len(posStack)-1]
-	posStack = posStack[:len(posStack)-1]
+func popPos() corereader.Position {
+	p, ok := posStack.Pop()
+	if !ok {
+		panic("reader position stack underflow")
+	}
 	return p
 }
 
@@ -67,8 +65,8 @@ func MakeReadError(reader *Reader, msg string) ReadError {
 func MakeReadObject(reader *Reader, obj Object) Object {
 	p := popPos()
 	return obj.WithInfo(&ObjectInfo{Position: Position{
-		startColumn: p.column,
-		startLine:   p.line,
+		startColumn: p.Column,
+		startLine:   p.Line,
 		endLine:     reader.line,
 		endColumn:   reader.column,
 		filename:    reader.filename,
