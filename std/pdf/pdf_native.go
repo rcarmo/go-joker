@@ -52,6 +52,13 @@ var pageSizes = map[string]*gopdf.Rect{
 
 // --- Creation ---
 
+func positivePDFDimension(v float64, name string) float64 {
+	if v <= 0 {
+		panic(RT.NewError("pdf: " + name + " must be positive"))
+	}
+	return v
+}
+
 var procDocument ProcFn = func(args []Object) Object {
 	CheckArity(args, 0, 2)
 	w := 595.0 // A4 default
@@ -63,8 +70,8 @@ var procDocument ProcFn = func(args []Object) Object {
 				w, h = size.W, size.H
 			}
 		} else if len(args) >= 2 {
-			w = ExtractDouble(args, 0)
-			h = ExtractDouble(args, 1)
+			w = positivePDFDimension(ExtractDouble(args, 0), "width")
+			h = positivePDFDimension(ExtractDouble(args, 1), "height")
 		}
 	}
 	pdf := &gopdf.GoPdf{}
@@ -246,7 +253,7 @@ var procFillColor ProcFn = func(args []Object) Object {
 var procLineWidth ProcFn = func(args []Object) Object {
 	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
-	w := ExtractDouble(args, 1)
+	w := positivePDFDimension(ExtractDouble(args, 1), "line width")
 	d.pdf.SetLineWidth(w)
 	return args[0]
 }

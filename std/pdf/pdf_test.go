@@ -72,6 +72,24 @@ func TestPDFColorRejectsOutOfRangeChannels(t *testing.T) {
 	})
 }
 
+func TestPDFLineWidthRejectsInvalidValue(t *testing.T) {
+	initPDFNamespace()
+	doc := procDocument(nil)
+	expectPanic(t, func() {
+		procLineWidth([]Object{doc, Double{D: 0}})
+	})
+}
+
+func TestPDFDocumentRejectsInvalidDimensions(t *testing.T) {
+	initPDFNamespace()
+	expectPanic(t, func() {
+		procDocument([]Object{Double{D: 0}, Double{D: 100}})
+	})
+	expectPanic(t, func() {
+		procDocument([]Object{Double{D: 100}, Double{D: -1}})
+	})
+}
+
 func TestImageMissingPathPanics(t *testing.T) {
 	initPDFNamespace()
 	doc := procDocument(nil)
