@@ -139,7 +139,7 @@ Planned package boundaries:
 - [x] Move reader string escape classification into `core/reader`.
 - [x] Move reader string literal body scanning into `core/reader`.
 - [x] Move reader terminating macro classification into `core/reader` and remove stale root wrappers.
-- [x] Move reader comment-start and closing-delimiter classification into `core/reader`.
+- [x] Move reader comment-start, top-level trivia, and closing-delimiter classification into `core/reader`.
 - [x] Move reader named character classification into `core/reader`.
 - [x] Move reader character unicode/octal classification into `core/reader`.
 - [x] Move reader symbolic-value lookup into `core/reader`.

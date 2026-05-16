@@ -1051,10 +1051,14 @@ func Read(reader *Reader) (Object, bool) {
 	pushPos(reader)
 	// This is only possible in format mode, otherwise
 	// eatWhitespace eats comments.
-	if r == ',' {
-		return MakeReadObject(reader, Comment{C: ","}), false
+	peek := rune(0)
+	if r == '#' {
+		peek = reader.Peek()
 	}
-	if r == ';' || (r == '#' && corereader.IsCommentStart(r, reader.Peek())) {
+	switch corereader.ClassifyTopLevelTrivia(r, peek) {
+	case corereader.TopLevelTriviaComma:
+		return MakeReadObject(reader, Comment{C: ","}), false
+	case corereader.TopLevelTriviaComment:
 		reader.Unget()
 		return readComment(reader), false
 	}
