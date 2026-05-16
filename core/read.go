@@ -91,7 +91,7 @@ func (err ReadError) Message() Object {
 }
 
 func (err ReadError) Error() string {
-	return fmt.Sprintf("%s:%d:%d: Read error: %s", filename(err.filename), err.line, err.column, err.msg)
+	return fmt.Sprintf("%s:%d:%d: Read error: %s", corereader.FilenameOrDefault(err.filename), err.line, err.column, err.msg)
 }
 
 func eatString(reader *Reader, str string) {
@@ -782,13 +782,6 @@ func makeSyntaxQuote(obj Object, env map[*string]Symbol, reader *Reader) Object 
 	default:
 		return obj
 	}
-}
-
-func filename(f *string) string {
-	if f != nil {
-		return *f
-	}
-	return "<file>"
 }
 
 func handleNoReaderError(reader *Reader, s Symbol) Object {
