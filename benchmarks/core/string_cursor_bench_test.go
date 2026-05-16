@@ -5,6 +5,31 @@ import (
 	"testing"
 )
 
+func initBenchStringCursorProcs() {
+	ns := GLOBAL_ENV.CoreNamespace
+	for _, p := range []struct {
+		name string
+		fn   ProcFn
+	}{
+		{"string-cursor", func(args []Object) Object { return NewStringCursor(EnsureArgIsString(args, 0).S) }},
+		{"cursor-char", func(args []Object) Object {
+			c := args[0].(*StringCursor)
+			r := c.Char()
+			if r < 0 {
+				return NIL
+			}
+			return Char{Ch: r}
+		}},
+		{"cursor-next", func(args []Object) Object { return args[0].(*StringCursor).Next() }},
+		{"cursor-done?", func(args []Object) Object { return Boolean{B: args[0].(*StringCursor).Done()} }},
+	} {
+		sym := MakeSymbol(p.name)
+		vr := ns.Intern(sym)
+		vr.Value = Proc{Name: "bench-" + p.name, Fn: p.fn}
+		GLOBAL_ENV.CurrentNamespace().Intern(sym).Value = vr.Value
+	}
+}
+
 // Benchmark comparing string iteration with nth vs cursor
 func BenchmarkStringIterNth(b *testing.B) {
 	// Count chars in string using (loop [i 0 c 0] (if (= i len) c (recur (+ i 1) (+ c 1))))
@@ -24,6 +49,7 @@ func BenchmarkStringIterNth(b *testing.B) {
 }
 
 func BenchmarkStringIterCursor(b *testing.B) {
+	initBenchStringCursorProcs()
 	// Same but with cursor
 	script := `(let [s "The quick brown fox jumps over the lazy dog and does many other things"
                   cur (string-cursor s)]
