@@ -831,7 +831,7 @@ func readTagged(reader *Reader) Object {
 	obj := readFirst(reader)
 	if FORMAT_MODE {
 		next := readFirst(reader)
-		addPrefix(next, "#"+obj.ToString(false)+" ")
+		addPrefix(next, corereader.TaggedLiteralPrefix(obj.ToString(false)))
 		return next
 	}
 	switch s := obj.(type) {
