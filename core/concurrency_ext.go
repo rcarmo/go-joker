@@ -225,6 +225,9 @@ func procAlts(args []Object) Object {
 	ports := EnsureObjectIsSeqable(args[0], "alts! first arg must be a vector of ports").Seq()
 
 	// Parse options.
+	if len(args[1:])%2 != 0 {
+		panic(RT.NewError("alts! options must be key/value pairs"))
+	}
 	var defaultVal Object
 	hasDefault := false
 	for i := 1; i+1 < len(args); i += 2 {

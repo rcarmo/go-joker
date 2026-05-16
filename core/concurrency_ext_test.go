@@ -21,6 +21,21 @@ func TestConcurrencyTimeoutAndAltsDefault(t *testing.T) {
   (second (alts! [ch] :default 42)))`), ":default")
 }
 
+func TestConcurrencyAltsRejectsOddOptions(t *testing.T) {
+	didPanic := false
+	func() {
+		defer func() {
+			if recover() != nil {
+				didPanic = true
+			}
+		}()
+		_ = evalTestScript(t, `(let [ch (chan)] (alts! [ch] :default))`)
+	}()
+	if !didPanic {
+		t.Fatal("alts! accepted odd option list")
+	}
+}
+
 func TestConcurrencyAltsClosedPutReturnsFalse(t *testing.T) {
 	requireBool(t, evalTestScript(t, `(let [c (chan)]
   (close! c)
