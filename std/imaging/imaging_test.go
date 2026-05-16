@@ -37,6 +37,9 @@ func TestResize(t *testing.T) {
 	if w.(Int).I != 50 || h.(Int).I != 25 {
 		t.Fatalf("expected 50x25, got %vx%v", w, h)
 	}
+	assertImagingPanic(t, "zero resize width", func() {
+		procResize([]Object{img, MakeInt(0), MakeInt(25)})
+	})
 }
 
 func TestGrayscaleAndBlur(t *testing.T) {
@@ -69,6 +72,9 @@ func TestCropAndFlip(t *testing.T) {
 	if w2.(Int).I != 50 {
 		t.Fatal("flip changed width")
 	}
+	assertImagingPanic(t, "negative crop width", func() {
+		procCrop([]Object{img, MakeInt(0), MakeInt(0), MakeInt(-1), MakeInt(10)})
+	})
 }
 
 func assertImagingPanic(t *testing.T, name string, f func()) {

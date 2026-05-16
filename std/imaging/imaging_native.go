@@ -174,24 +174,32 @@ var procDecode ProcFn = func(args []Object) Object {
 
 // --- Geometry ---
 
+func positiveDimension(obj Object, name string) int {
+	v := EnsureObjectIsInt(obj, "imaging "+name+": %s").I
+	if v <= 0 {
+		panic(RT.NewError("imaging: " + name + " must be positive"))
+	}
+	return v
+}
+
 var procResize ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	w := ExtractInt(args, 1)
-	h := ExtractInt(args, 2)
+	w := positiveDimension(args[1], "width")
+	h := positiveDimension(args[2], "height")
 	return wrapImage(toNRGBA(imaging.Resize(im.img, w, h, imaging.Lanczos)))
 }
 
 var procFit ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	w := ExtractInt(args, 1)
-	h := ExtractInt(args, 2)
+	w := positiveDimension(args[1], "width")
+	h := positiveDimension(args[2], "height")
 	return wrapImage(toNRGBA(imaging.Fit(im.img, w, h, imaging.Lanczos)))
 }
 
 var procFill ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	w := ExtractInt(args, 1)
-	h := ExtractInt(args, 2)
+	w := positiveDimension(args[1], "width")
+	h := positiveDimension(args[2], "height")
 	anchor := "center"
 	if len(args) > 3 {
 		anchor = ExtractKeyword(args, 3)
@@ -203,16 +211,16 @@ var procCrop ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
 	x := ExtractInt(args, 1)
 	y := ExtractInt(args, 2)
-	w := ExtractInt(args, 3)
-	h := ExtractInt(args, 4)
+	w := positiveDimension(args[3], "width")
+	h := positiveDimension(args[4], "height")
 	rect := image.Rect(x, y, x+w, y+h)
 	return wrapImage(toNRGBA(imaging.Crop(im.img, rect)))
 }
 
 var procCropCenter ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
-	w := ExtractInt(args, 1)
-	h := ExtractInt(args, 2)
+	w := positiveDimension(args[1], "width")
+	h := positiveDimension(args[2], "height")
 	return wrapImage(toNRGBA(imaging.CropCenter(im.img, w, h)))
 }
 
