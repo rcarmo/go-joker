@@ -350,10 +350,21 @@ var procBounds ProcFn = func(args []Object) Object {
 
 // --- New blank image ---
 
+func colorChannel(obj Object, name string) uint8 {
+	v := EnsureObjectIsInt(obj, "imaging/new color "+name+": %s").I
+	if v < 0 || v > 255 {
+		panic(RT.NewError("imaging/new: color channel " + name + " must be in [0,255]"))
+	}
+	return uint8(v)
+}
+
 var procNewImage ProcFn = func(args []Object) Object {
 	CheckArity(args, 2, 3)
 	w := ExtractInt(args, 0)
 	h := ExtractInt(args, 1)
+	if w < 0 || h < 0 {
+		panic(RT.NewError("imaging/new: dimensions must be non-negative"))
+	}
 	var c color.NRGBA
 	if len(args) > 2 {
 		v, ok := args[2].(Indexed)
@@ -361,10 +372,10 @@ var procNewImage ProcFn = func(args []Object) Object {
 		if !ok || !countedOk || counted.Count() != 4 {
 			panic(RT.NewError("imaging/new: color must be a vector [r g b a]"))
 		}
-		c.R = uint8(EnsureObjectIsInt(v.Nth(0), "").I)
-		c.G = uint8(EnsureObjectIsInt(v.Nth(1), "").I)
-		c.B = uint8(EnsureObjectIsInt(v.Nth(2), "").I)
-		c.A = uint8(EnsureObjectIsInt(v.Nth(3), "").I)
+		c.R = colorChannel(v.Nth(0), "r")
+		c.G = colorChannel(v.Nth(1), "g")
+		c.B = colorChannel(v.Nth(2), "b")
+		c.A = colorChannel(v.Nth(3), "a")
 	}
 	return wrapImage(toNRGBA(imaging.New(w, h, c)))
 }

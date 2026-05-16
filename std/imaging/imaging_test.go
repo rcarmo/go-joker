@@ -71,13 +71,26 @@ func TestCropAndFlip(t *testing.T) {
 	}
 }
 
-func TestNewImageRejectsShortColorVector(t *testing.T) {
+func assertImagingPanic(t *testing.T, name string, f func()) {
+	t.Helper()
 	defer func() {
 		if recover() == nil {
-			t.Fatal("new image should reject short color vector")
+			t.Fatalf("%s should panic", name)
 		}
 	}()
-	procNewImage([]Object{MakeInt(1), MakeInt(1), NewVectorFrom(MakeInt(255))})
+	f()
+}
+
+func TestNewImageRejectsInvalidInputs(t *testing.T) {
+	assertImagingPanic(t, "short color vector", func() {
+		procNewImage([]Object{MakeInt(1), MakeInt(1), NewVectorFrom(MakeInt(255))})
+	})
+	assertImagingPanic(t, "negative dimension", func() {
+		procNewImage([]Object{MakeInt(-1), MakeInt(1)})
+	})
+	assertImagingPanic(t, "color overflow", func() {
+		procNewImage([]Object{MakeInt(1), MakeInt(1), NewVectorFrom(MakeInt(256), MakeInt(0), MakeInt(0), MakeInt(255))})
+	})
 }
 
 func TestImagingInfoArityChecks(t *testing.T) {
