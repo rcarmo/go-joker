@@ -1,5 +1,11 @@
 package reader
 
+// DataReaderVarNames returns the root var names consulted for tagged literal
+// readers, in lookup order. Root owns namespace access and concrete Map lookup.
+func DataReaderVarNames() []string {
+	return []string{"*data-readers*", "default-data-readers"}
+}
+
 // MissingTaggedReaderAction describes how root should handle a tagged literal
 // without a registered reader. Root owns concrete warning/error construction.
 type MissingTaggedReaderAction int

@@ -802,7 +802,7 @@ func handleNoReaderErrorValue(reader *Reader, s Symbol, value Object) Object {
 }
 
 func lookupDataReader(s Symbol) (Object, bool) {
-	for _, name := range []string{"*data-readers*", "default-data-readers"} {
+	for _, name := range corereader.DataReaderVarNames() {
 		vr := GLOBAL_ENV.CoreNamespace.Resolve(name)
 		if vr == nil {
 			continue
