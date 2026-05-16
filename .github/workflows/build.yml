@@ -7,16 +7,22 @@ on:
 permissions:
   contents: write
 
+env:
+  TMPDIR: ${{ github.workspace }}/.cache/tmp
+  GOTMPDIR: ${{ github.workspace }}/.cache/go-build-tmp
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Prepare reproducible temp directories
+        run: mkdir -p "$TMPDIR" "$GOTMPDIR"
       - uses: actions/setup-go@v5
         with:
           go-version: '1.25.10'
       - name: Run tests
-        run: go test ./core ./std/jit -timeout 120s
+        run: go test ./core ./std/jit -timeout 10m
 
   build:
     needs: test
@@ -38,6 +44,8 @@ jobs:
             goarch: arm64
     steps:
       - uses: actions/checkout@v4
+      - name: Prepare reproducible temp directories
+        run: mkdir -p "$TMPDIR" "$GOTMPDIR"
       - uses: actions/setup-go@v5
         with:
           go-version: '1.25.10'

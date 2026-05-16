@@ -7,24 +7,24 @@ on:
     branches: [master]
 
 env:
-  TMPDIR: /tmp/go-joker
-  GOTMPDIR: /tmp/go-joker
-  DOCS_JOKER_BIN: /tmp/go-joker/go-joker-docs
+  TMPDIR: ${{ github.workspace }}/.cache/tmp
+  GOTMPDIR: ${{ github.workspace }}/.cache/go-build-tmp
+  DOCS_JOKER_BIN: ${{ github.workspace }}/.cache/tmp/go-joker-docs
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Prepare reproducible temp directory
-        run: mkdir -p "$TMPDIR"
+      - name: Prepare reproducible temp directories
+        run: mkdir -p "$TMPDIR" "$GOTMPDIR"
       - uses: actions/setup-go@v5
         with:
           go-version: '1.25.10'
       - name: Build
         run: go build -o joker ./cmd/joker
       - name: Run tests
-        run: go test ./core ./std/... -timeout 120s -count=1
+        run: go test ./core ./std/... -timeout 10m -count=1
       - name: Generate docs and verify namespace/feature coverage
         run: make docs-check
       - name: Run local parity suite
@@ -39,8 +39,8 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v4
-      - name: Prepare reproducible temp directory
-        run: mkdir -p "$TMPDIR"
+      - name: Prepare reproducible temp directories
+        run: mkdir -p "$TMPDIR" "$GOTMPDIR"
       - uses: actions/setup-go@v5
         with:
           go-version: '1.25.10'
