@@ -42,7 +42,7 @@ var NIL = Nil{}
 var posStack = corereader.NewPositionStack(8)
 
 func pushPos(reader *Reader) {
-	posStack.Push(corereader.Position{Line: reader.line, Column: reader.column})
+	posStack.Push(corereader.Position{Line: reader.Line(), Column: reader.Column()})
 }
 
 func popPos() corereader.Position {
@@ -55,8 +55,8 @@ func popPos() corereader.Position {
 
 func MakeReadError(reader *Reader, msg string) ReadError {
 	return ReadError{
-		line:     reader.line,
-		column:   reader.column,
+		line:     reader.Line(),
+		column:   reader.Column(),
 		filename: reader.filename,
 		msg:      msg,
 	}
@@ -67,8 +67,8 @@ func MakeReadObject(reader *Reader, obj Object) Object {
 	return obj.WithInfo(&ObjectInfo{Position: Position{
 		startColumn: p.Column,
 		startLine:   p.Line,
-		endLine:     reader.line,
-		endColumn:   reader.column,
+		endLine:     reader.Line(),
+		endColumn:   reader.Column(),
 		filename:    reader.filename,
 	}})
 }

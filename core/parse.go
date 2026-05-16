@@ -486,8 +486,8 @@ func printParseError(pos Position, msg string) {
 func printReadWarning(reader *Reader, msg string) {
 	pos := Position{
 		filename:    reader.filename,
-		startColumn: reader.column,
-		startLine:   reader.line,
+		startColumn: reader.Column(),
+		startLine:   reader.Line(),
 	}
 	printError(pos, "Read warning: "+msg)
 }
@@ -495,8 +495,8 @@ func printReadWarning(reader *Reader, msg string) {
 func printReadError(reader *Reader, msg string) {
 	pos := Position{
 		filename:    reader.filename,
-		startColumn: reader.column,
-		startLine:   reader.line,
+		startColumn: reader.Column(),
+		startLine:   reader.Line(),
 	}
 	printError(pos, "Read error: "+msg)
 }
