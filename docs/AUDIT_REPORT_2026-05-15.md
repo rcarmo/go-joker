@@ -72,11 +72,13 @@ Current status: all above checks pass, and `govulncheck` reports no vulnerabilit
    - `(timeout ms)` now rejects negative values and millisecond values that would overflow `time.Duration`.
 
 8. **Std native argument/domain hardening**
-   - `std/imaging` constructors and geometry helpers now reject negative dimensions, zero/negative resize extents where appropriate, and out-of-range color components.
-   - `std/pdf` now validates custom page dimensions, line widths, color components, and related geometry/color bounds before passing values to native libraries.
-   - `std/svg` now validates canvas, viewbox, render, and basic shape dimensions/radii, and shares the render image conversion path.
+   - `std/imaging` constructors, geometry helpers, and float adjustment/filter/compositing parameters now reject invalid dimensions, non-finite values, bad gamma/sigma domains, invalid opacity, and out-of-range color components.
+   - `std/pdf` now validates custom page dimensions, page-size selection, font sizes, finite coordinates, line widths, color components, and related geometry/color bounds before passing values to native libraries.
+   - `std/svg` now validates canvas, viewbox, render, basic shape dimensions/radii, and finite transform floats, and shares the render image conversion path.
    - `std/http` now validates response/SSE status codes, rejects negative/overflowing client duration options, and parses IPv4/IPv6 listen and remote addresses with `net.SplitHostPort` rather than ad-hoc colon splitting.
    - `std/pods` now validates `pods/invoke` `:timeout-ms` options instead of silently ignoring malformed values, and rejects overflow-prone millisecond durations.
+   - `std/csv` now validates delimiter/comment options before configuring Go's CSV reader/writer.
+   - `std/os` process start now discards unused output streams and releases started process handles when no wait is expected.
    - Additional boundary fixes reject malformed reader arg literal indexes, protocol extension method-pair arity mistakes, odd Transit cmap entries, invalid external source URLs, and short standalone compile writes.
 
 ## Refactor documentation state
