@@ -113,6 +113,7 @@ Planned package boundaries:
 ### R4 — Generated code boundary
 
 - [x] Inventory generated file families and generator source packages in `docs/refactor/generated-boundary.md`.
+- [x] Classify remaining root generated artifacts as runtime-mutating bootstrap or object-model helper code before any next generated move.
 - [x] Add `make generated-check` guardrail and run it from `make docs-check`.
 - [x] Track generated root-core file set in `tests/generated_files.txt`.
 - [x] Add a collections extraction audit (`collections-extraction-audit.md`) before the first real collection mechanics move.
@@ -160,7 +161,7 @@ Planned package boundaries:
 - [x] Guard generated source manifest sync with `CoreSourceFiles`.
 - [x] Extend generated bootstrap emission beyond source manifest only after broader equivalence tests.
 - [x] Generate and guard the linter payload registry under `core/generated`.
-- [ ] Move remaining generated artifacts after runtime/object initialization boundaries are explicit.
+- [ ] Move remaining generated artifacts after runtime/object initialization boundaries are explicit. (Remaining root generated artifacts are classified in `generated-boundary.md` as runtime-mutating bootstrap or object-model helper code.)
 
 ### R5 — Collections/reader/runtime follow-up
 
