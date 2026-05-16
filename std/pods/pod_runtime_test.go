@@ -112,6 +112,24 @@ func TestInstallPodDescribeNamespaces(t *testing.T) {
 	}
 }
 
+func TestPodInvokeTimeoutOptionsRejectInvalidValues(t *testing.T) {
+	for name, opt := range map[string]Object{
+		"non-map":     MakeString("bad"),
+		"non-integer": func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), MakeString("bad")); return m }(),
+		"zero":        func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), MakeInt(0)); return m }(),
+		"negative":    func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), MakeInt(-1)); return m }(),
+	} {
+		t.Run(name, func(t *testing.T) {
+			defer func() {
+				if recover() == nil {
+					t.Fatal("invalid pod invoke timeout option did not panic")
+				}
+			}()
+			_ = podInvokeTimeoutFromOpts(opt, time.Second)
+		})
+	}
+}
+
 func TestPodInvokeTimeoutCleansPending(t *testing.T) {
 	shutdownAllPods()
 	p := newPod("pod-timeout", "timeout", "json", io.Discard, nil, nil)

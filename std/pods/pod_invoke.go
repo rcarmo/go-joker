@@ -9,6 +9,27 @@ import (
 
 const podInvokeTimeout = 30 * time.Second
 
+func podInvokeTimeoutFromOpts(opts Object, fallback time.Duration) time.Duration {
+	if opts == nil || opts.Equals(NIL) {
+		return fallback
+	}
+	m, ok := opts.(Map)
+	if !ok {
+		panic(RT.NewError("pods/invoke: opts must be a map"))
+	}
+	if found, v := m.Get(MakeKeyword("timeout-ms")); found {
+		i, ok := v.(Int)
+		if !ok {
+			panic(RT.NewError("pods/invoke: :timeout-ms must be an integer"))
+		}
+		if i.I <= 0 {
+			panic(RT.NewError("pods/invoke: :timeout-ms must be positive"))
+		}
+		return time.Duration(i.I) * time.Millisecond
+	}
+	return fallback
+}
+
 func invokePod(args []Object) Object {
 	if len(args) < 3 || len(args) > 4 {
 		panic(RT.NewError("pods/invoke expects pod-id, var symbol, args vector, and optional opts"))
@@ -29,13 +50,7 @@ func invokePod(args []Object) Object {
 	}
 	timeout := podInvokeTimeout
 	if len(args) == 4 {
-		if opts, ok := args[3].(Map); ok {
-			if found, v := opts.Get(MakeKeyword("timeout-ms")); found {
-				if i, ok := v.(Int); ok && i.I > 0 {
-					timeout = time.Duration(i.I) * time.Millisecond
-				}
-			}
-		}
+		timeout = podInvokeTimeoutFromOpts(args[3], timeout)
 	}
 	res, err := p.invokeWithTimeout(varSym, callArgs, timeout)
 	if err != nil {
