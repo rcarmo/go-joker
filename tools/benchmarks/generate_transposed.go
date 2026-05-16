@@ -40,7 +40,7 @@ func main() {
 	if err := json.Unmarshal(data, &h); err != nil {
 		panic(err)
 	}
-	current := h.Series[len(h.Series)-1].Benchmarks
+	current := findSeries(h, "current")
 	names := map[string]string{
 		"nbody": "n-body", "mandelbrot": "mandelbrot", "spectral_norm": "spectral", "binary_trees": "binary-trees",
 		"fannkuch": "fannkuch", "fasta": "fasta", "pidigits": "pidigits", "knucleotide": "k-nucleotide",
@@ -50,7 +50,15 @@ func main() {
 	order := []string{"nbody", "mandelbrot", "spectral_norm", "binary_trees", "fannkuch", "fasta", "pidigits", "knucleotide", "reverse_complement", "regex_redux", "arithmetic_loop", "recursive_fib", "tail_recursive_sum", "map_update_loop", "word_frequency"}
 	rows := make([]bench, 0, len(order))
 	for _, k := range order {
-		rows = append(rows, bench{k, names[k], current[k].MS, h.CrossLanguage["python_313"][k], h.CrossLanguage["bun_jsc"][k], h.CrossLanguage["goja"][k], h.CrossLanguage["letgo"][k]})
+		rows = append(rows, bench{
+			key:   k,
+			name:  names[k],
+			joker: requiredCurrent(current, k),
+			py:    requiredCross(h, "python_313", k),
+			bun:   requiredCross(h, "bun_jsc", k),
+			goja:  requiredCross(h, "goja", k),
+			letgo: requiredCross(h, "letgo", k),
+		})
 	}
 	sort.Slice(rows, func(i, j int) bool { return rows[i].joker < rows[j].joker })
 
@@ -106,6 +114,39 @@ svg{background:var(--bg);font-family:Inter,system-ui,sans-serif}.title{fill:var(
 		panic(err)
 	}
 	fmt.Println("wrote benchmarks/benchmark-transposed.svg")
+}
+
+func findSeries(h history, id string) map[string]struct {
+	MS float64 `json:"ms_per_op"`
+} {
+	for _, s := range h.Series {
+		if s.ID == id {
+			return s.Benchmarks
+		}
+	}
+	panic("missing benchmark series: " + id)
+}
+
+func requiredCurrent(current map[string]struct {
+	MS float64 `json:"ms_per_op"`
+}, key string) float64 {
+	v, ok := current[key]
+	if !ok || v.MS <= 0 {
+		panic(fmt.Sprintf("missing positive current benchmark value for %s", key))
+	}
+	return v.MS
+}
+
+func requiredCross(h history, runtime string, key string) float64 {
+	vals, ok := h.CrossLanguage[runtime]
+	if !ok {
+		panic("missing cross-language runtime: " + runtime)
+	}
+	v, ok := vals[key]
+	if !ok || v <= 0 {
+		panic(fmt.Sprintf("missing positive %s benchmark value for %s", runtime, key))
+	}
+	return v
 }
 
 func fmtMs(v float64) string {
