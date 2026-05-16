@@ -3,6 +3,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
 	"os"
@@ -10,27 +11,56 @@ import (
 	"strings"
 )
 
+type benchValue struct {
+	MSPerOp float64 `json:"ms_per_op"`
+}
+
+type benchSeries struct {
+	ID         string                `json:"id"`
+	Benchmarks map[string]benchValue `json:"benchmarks"`
+}
+
+type benchHistory struct {
+	Series []benchSeries `json:"series"`
+}
+
 type Row struct {
 	name   string
 	before float64
 	after  float64
 }
 
+var speedupOrder = []string{
+	"arithmetic_loop",
+	"recursive_fib",
+	"mandelbrot",
+	"nbody",
+	"spectral_norm",
+	"binary_trees",
+	"fannkuch",
+	"fasta",
+	"pidigits",
+	"knucleotide",
+	"reverse_complement",
+	"regex_redux",
+	"word_frequency",
+}
+
 func main() {
-	data := []Row{
-		{"arith-loop", 189.78, 0.308},
-		{"rec-fib", 546.02, 1.22},
-		{"mandelbrot", 159.0, 0.116},
-		{"n-body", 34.2, 0.006},
-		{"spectral-norm", 70.0, 0.136},
-		{"binary-trees", 528.0, 4.24},
-		{"fannkuch", 94.1, 0.244},
-		{"fasta", 0.22, 0.139},
-		{"pidigits", 0.10, 0.047},
-		{"knucleotide", 0.41, 0.008},
-		{"rev-complement", 0.082, 0.001},
-		{"regex-redux", 0.12, 0.068},
-		{"word-frequency", 279.92, 0.533},
+	history := readHistory("benchmarks/benchmark-history.json")
+	baseline := findSeries(history, "baseline-stable")
+	current := findSeries(history, "current")
+	data := make([]Row, 0, len(speedupOrder))
+	for _, key := range speedupOrder {
+		before, ok := baseline.Benchmarks[key]
+		if !ok || before.MSPerOp <= 0 {
+			panic(fmt.Sprintf("missing positive baseline benchmark value for %s", key))
+		}
+		after, ok := current.Benchmarks[key]
+		if !ok || after.MSPerOp <= 0 {
+			panic(fmt.Sprintf("missing positive current benchmark value for %s", key))
+		}
+		data = append(data, Row{name: displayName(key), before: before.MSPerOp, after: after.MSPerOp})
 	}
 
 	sort.Slice(data, func(i, j int) bool {
@@ -62,9 +92,8 @@ svg{background:var(--bg);font-family:Inter,system-ui,sans-serif}
 `, w, h, w, h))
 
 	b.WriteString(`<text class="title" x="15" y="22">Speedup vs Original Joker</text>`)
-	b.WriteString(`<text class="subtitle" x="15" y="38">Before → current best-Joker 2026-05-16 (ms) · bar shows improvement factor (log scale)</text>`)
+	b.WriteString(`<text class="subtitle" x="15" y="38">Before → current best-Joker 2026-05-16 (ms) · generated from benchmark-history.json</text>`)
 
-	// Column headers
 	b.WriteString(fmt.Sprintf(`<text class="before" x="130" y="%d">Before</text>`, headerH-8))
 	b.WriteString(fmt.Sprintf(`<text class="before" x="195" y="%d">After</text>`, headerH-8))
 	b.WriteString(fmt.Sprintf(`<text class="before" x="380" y="%d">Speedup</text>`, headerH-8))
@@ -75,29 +104,17 @@ svg{background:var(--bg);font-family:Inter,system-ui,sans-serif}
 		y := headerH + i*rowH
 		speedup := d.before / d.after
 
-		// Name
 		b.WriteString(fmt.Sprintf(`<text class="name" x="15" y="%d">%s</text>`, y+rowH/2+4, d.name))
-
-		// Before value
-		beforeStr := fmtMs(d.before)
-		b.WriteString(fmt.Sprintf(`<text class="before" x="130" y="%d">%s</text>`, y+rowH/2+4, beforeStr))
-
-		// Arrow
+		b.WriteString(fmt.Sprintf(`<text class="before" x="130" y="%d">%s</text>`, y+rowH/2+4, fmtMs(d.before)))
 		b.WriteString(fmt.Sprintf(`<text class="arrow" x="175" y="%d">→</text>`, y+rowH/2+4))
+		b.WriteString(fmt.Sprintf(`<text class="after" x="195" y="%d">%s</text>`, y+rowH/2+4, fmtMs(d.after)))
 
-		// After value
-		afterStr := fmtMs(d.after)
-		b.WriteString(fmt.Sprintf(`<text class="after" x="195" y="%d">%s</text>`, y+rowH/2+4, afterStr))
-
-		// Bar background
 		barX := 250
 		barY := y + 10
 		barH := rowH - 20
 		b.WriteString(fmt.Sprintf(`<rect class="bar-bg" x="%d" y="%d" width="%d" height="%d"/>`, barX, barY, barMaxW, barH))
 
-		// Bar foreground (log scale)
-		logSpeedup := math.Log10(speedup)
-		barW := int(logSpeedup / maxLog * float64(barMaxW))
+		barW := int(math.Log10(speedup) / maxLog * float64(barMaxW))
 		if barW < 4 {
 			barW = 4
 		}
@@ -106,7 +123,6 @@ svg{background:var(--bg);font-family:Inter,system-ui,sans-serif}
 		}
 		b.WriteString(fmt.Sprintf(`<rect class="bar-fg" x="%d" y="%d" width="%d" height="%d"/>`, barX, barY, barW, barH))
 
-		// Speedup label
 		deltaStr := fmt.Sprintf("%.0f×", speedup)
 		if speedup < 10 {
 			deltaStr = fmt.Sprintf("%.1f×", speedup)
@@ -119,6 +135,44 @@ svg{background:var(--bg);font-family:Inter,system-ui,sans-serif}
 		panic(err)
 	}
 	fmt.Println("wrote benchmark-speedup.svg")
+}
+
+func readHistory(path string) benchHistory {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+	var h benchHistory
+	if err := json.Unmarshal(data, &h); err != nil {
+		panic(err)
+	}
+	return h
+}
+
+func findSeries(h benchHistory, id string) benchSeries {
+	for _, s := range h.Series {
+		if s.ID == id {
+			return s
+		}
+	}
+	panic("missing benchmark series: " + id)
+}
+
+func displayName(key string) string {
+	switch key {
+	case "arithmetic_loop":
+		return "arith-loop"
+	case "recursive_fib":
+		return "rec-fib"
+	case "nbody":
+		return "n-body"
+	case "reverse_complement":
+		return "rev-complement"
+	case "regex_redux":
+		return "regex-redux"
+	default:
+		return strings.ReplaceAll(key, "_", "-")
+	}
 }
 
 func fmtMs(v float64) string {

@@ -11,13 +11,43 @@
       "label": "Baseline (before optimization)",
       "benchmarks": {
         "arithmetic_loop": {
-          "ms_per_op": 189.784
+          "ms_per_op": 189.78
         },
         "recursive_fib": {
           "ms_per_op": 546.02
         },
         "word_frequency": {
-          "ms_per_op": 279.922
+          "ms_per_op": 279.92
+        },
+        "mandelbrot": {
+          "ms_per_op": 159.0
+        },
+        "nbody": {
+          "ms_per_op": 34.2
+        },
+        "spectral_norm": {
+          "ms_per_op": 70.0
+        },
+        "binary_trees": {
+          "ms_per_op": 528.0
+        },
+        "fannkuch": {
+          "ms_per_op": 94.1
+        },
+        "fasta": {
+          "ms_per_op": 0.22
+        },
+        "pidigits": {
+          "ms_per_op": 0.1
+        },
+        "knucleotide": {
+          "ms_per_op": 0.41
+        },
+        "reverse_complement": {
+          "ms_per_op": 0.082
+        },
+        "regex_redux": {
+          "ms_per_op": 0.12
         }
       }
     },
