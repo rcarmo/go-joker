@@ -49,6 +49,22 @@ func TestCanvasRejectsInvalidDimensions(t *testing.T) {
 	})
 }
 
+func TestShapesRejectInvalidDimensions(t *testing.T) {
+	canvas := procCanvas([]Object{MakeInt(100), MakeInt(100)})
+	expectSVGPanic(t, func() {
+		procRect([]Object{canvas, MakeInt(0), MakeInt(0), MakeInt(0), MakeInt(10)})
+	})
+	expectSVGPanic(t, func() {
+		procRoundrect([]Object{canvas, MakeInt(0), MakeInt(0), MakeInt(10), MakeInt(10), MakeInt(-1), MakeInt(2)})
+	})
+	expectSVGPanic(t, func() {
+		procCircle([]Object{canvas, MakeInt(0), MakeInt(0), MakeInt(0)})
+	})
+	expectSVGPanic(t, func() {
+		procEllipse([]Object{canvas, MakeInt(0), MakeInt(0), MakeInt(10), MakeInt(-1)})
+	})
+}
+
 func TestCanvasWithStyle(t *testing.T) {
 	initSVGNamespace()
 

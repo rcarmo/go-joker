@@ -84,6 +84,14 @@ func positiveDimension(obj Object, context, name string) int {
 	return v
 }
 
+func nonNegativeDimension(obj Object, context, name string) int {
+	v := EnsureObjectIsInt(obj, context+" "+name+": %s").I
+	if v < 0 {
+		panic(RT.NewError(context + ": " + name + " must be non-negative"))
+	}
+	return v
+}
+
 var procCanvas ProcFn = func(args []Object) Object {
 	w := positiveDimension(args[0], "svg/canvas", "width")
 	h := positiveDimension(args[1], "svg/canvas", "height")
@@ -110,8 +118,8 @@ var procRect ProcFn = func(args []Object) Object {
 	c := extractCanvas(args, 0)
 	x := ExtractInt(args, 1)
 	y := ExtractInt(args, 2)
-	w := ExtractInt(args, 3)
-	h := ExtractInt(args, 4)
+	w := positiveDimension(args[3], "svg/rect", "width")
+	h := positiveDimension(args[4], "svg/rect", "height")
 	style := parseStyle(args, 5)
 	if style != "" {
 		c.svg.Rect(x, y, w, h, "style=\""+style+"\"")
@@ -125,10 +133,10 @@ var procRoundrect ProcFn = func(args []Object) Object {
 	c := extractCanvas(args, 0)
 	x := ExtractInt(args, 1)
 	y := ExtractInt(args, 2)
-	w := ExtractInt(args, 3)
-	h := ExtractInt(args, 4)
-	rx := ExtractInt(args, 5)
-	ry := ExtractInt(args, 6)
+	w := positiveDimension(args[3], "svg/roundrect", "width")
+	h := positiveDimension(args[4], "svg/roundrect", "height")
+	rx := nonNegativeDimension(args[5], "svg/roundrect", "rx")
+	ry := nonNegativeDimension(args[6], "svg/roundrect", "ry")
 	style := parseStyle(args, 7)
 	if style != "" {
 		c.svg.Roundrect(x, y, w, h, rx, ry, "style=\""+style+"\"")
@@ -142,7 +150,7 @@ var procCircle ProcFn = func(args []Object) Object {
 	c := extractCanvas(args, 0)
 	cx := ExtractInt(args, 1)
 	cy := ExtractInt(args, 2)
-	r := ExtractInt(args, 3)
+	r := positiveDimension(args[3], "svg/circle", "radius")
 	style := parseStyle(args, 4)
 	if style != "" {
 		c.svg.Circle(cx, cy, r, "style=\""+style+"\"")
@@ -156,8 +164,8 @@ var procEllipse ProcFn = func(args []Object) Object {
 	c := extractCanvas(args, 0)
 	cx := ExtractInt(args, 1)
 	cy := ExtractInt(args, 2)
-	rx := ExtractInt(args, 3)
-	ry := ExtractInt(args, 4)
+	rx := positiveDimension(args[3], "svg/ellipse", "rx")
+	ry := positiveDimension(args[4], "svg/ellipse", "ry")
 	style := parseStyle(args, 5)
 	if style != "" {
 		c.svg.Ellipse(cx, cy, rx, ry, "style=\""+style+"\"")
