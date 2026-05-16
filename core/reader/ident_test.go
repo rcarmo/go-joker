@@ -2,6 +2,18 @@ package reader
 
 import "testing"
 
+func TestKeywordIdentHelpers(t *testing.T) {
+	if !IsKeywordIdent(':') || IsKeywordIdent('a') {
+		t.Fatal("IsKeywordIdent mismatch")
+	}
+	if !IsAutoResolvedKeywordIdent(':', ":foo") {
+		t.Fatal("auto-resolved keyword was not detected")
+	}
+	if IsAutoResolvedKeywordIdent(':', "foo") || IsAutoResolvedKeywordIdent('a', ":foo") || IsAutoResolvedKeywordIdent(':', "") {
+		t.Fatal("non-auto-resolved keyword was misclassified")
+	}
+}
+
 func TestClassifyIdentLiteral(t *testing.T) {
 	cases := map[string]IdentLiteralKind{
 		"nil":   IdentLiteralNil,

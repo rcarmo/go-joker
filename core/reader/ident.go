@@ -1,5 +1,16 @@
 package reader
 
+// IsKeywordIdent reports whether a scanned identifier token started as a keyword.
+func IsKeywordIdent(first rune) bool {
+	return first == ':'
+}
+
+// IsAutoResolvedKeywordIdent reports whether a keyword token is the reader's
+// auto-resolved ::keyword form. The caller owns namespace resolution.
+func IsAutoResolvedKeywordIdent(first rune, token string) bool {
+	return IsKeywordIdent(first) && len(token) > 0 && token[0] == ':'
+}
+
 // IdentLiteralKind classifies identifier tokens that are reader literals rather
 // than symbols. The root reader keeps ownership of concrete Object construction.
 type IdentLiteralKind int

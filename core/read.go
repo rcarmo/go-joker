@@ -244,8 +244,8 @@ func readIdent(reader *Reader, first rune) Object {
 		panic(MakeReadError(reader, err.Error()))
 	}
 	switch {
-	case first == ':':
-		if str[0] == ':' {
+	case corereader.IsKeywordIdent(first):
+		if corereader.IsAutoResolvedKeywordIdent(first, str) {
 			if FORMAT_MODE {
 				return MakeReadObject(reader, MakeKeyword(str))
 			}
