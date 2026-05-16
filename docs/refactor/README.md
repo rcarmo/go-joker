@@ -1,6 +1,6 @@
 # Repository architecture refactor plan
 
-Updated: 2026-05-15
+Updated: 2026-05-16
 
 ## Goal
 
@@ -109,6 +109,7 @@ Planned package boundaries:
 - [x] Keep benchmark correctness tests before performance work.
 - [x] Record full benchmark/profile audit in `docs/BENCHMARK_PROFILE_2026-05-12.md` to guide future runtime work.
 - [x] Add stable IR function-cache key contract to prevent repeated compile/envelope allocation regressions.
+- [x] Harden benchmark comparison correctness: cross-runtime result payload validation, stale-output cleanup, strict chart/table input validation, decimal Go benchmark parsing, import-safe Python runner, Node-compatible JS timing, Goja fail-fast behavior, and required validated go-joker let-go suite results.
 
 ### R4 — Generated code boundary
 

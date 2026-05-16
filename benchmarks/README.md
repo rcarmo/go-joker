@@ -152,19 +152,23 @@ go test ./std/jit -bench 'BenchmarkJIT' -benchmem
 
 The `cross_lang_bench.{py,js,clj}` files are self-contained ports of the same
 15 workloads in different runtimes. Each prints `name | avg ms/op | result`
-for 5 iterations.
+for 5 iterations. The output payload is part of the contract: `make compare-bench`
+validates every reported `result` before using timings so table/chart updates cannot
+silently compare different computations.
 
 For reproducible direct comparison, use the `benchmarks/compare` sub-project:
 
 ```bash
 make compare-bench
+# validates python/bun-or-node/goja/let-go result payloads when those runtimes run
+# cleans stale comparison outputs before collecting new data
 # -> benchmarks/compare/out/latest/direct-comparison.md
 # -> benchmarks/compare/out/latest/letgo-suite-comparison.md
 ```
 
 ```bash
 python3 benchmarks/cross_lang_bench.py        # CPython 3.13
-bun     benchmarks/cross_lang_bench.js        # Bun (or node)
+bun     benchmarks/cross_lang_bench.js        # Bun; Node fallback is supported by collect.sh
 lg      benchmarks/cross_lang_bench.clj       # let-go
 ```
 
@@ -178,7 +182,14 @@ brew install let-go
 
 (Or build from source — `go install github.com/nooga/let-go@latest`.) The
 `.clj` file is a let-go port of the same algorithms, analogous to the `.py`
-and `.js` files — not portable Clojure source.
+and `.js` files — not portable Clojure source. Optional runtimes may produce a
+whole-file `# SKIPPED` marker, but malformed benchmark-looking lines, duplicate
+results, missing result payloads, and mixed skip/output files are rejected.
+
+Benchmark chart generators read from `benchmarks/benchmark-history.json` and fail
+fast on missing or non-positive required values. `make docs-check` also validates
+the README benchmark table and the Python summary parser, including decimal
+`ns/op` values from fast Go benchmarks.
 
 ## Optimization Session Progress
 

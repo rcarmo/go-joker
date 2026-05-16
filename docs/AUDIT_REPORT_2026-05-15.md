@@ -9,7 +9,8 @@ Follow-up audit pass during the `core` breakup work, focused on:
 - static-analysis and vulnerability posture;
 - resource lifecycle and unchecked write/close paths;
 - WASM memory bounds/write behavior;
-- CI/docs/benchmark path drift.
+- CI/docs/benchmark path drift;
+- benchmark correctness, cross-runtime output equivalence, and chart/table generator failure modes.
 
 ## Validation matrix
 
@@ -80,6 +81,16 @@ Current status: all above checks pass, and `govulncheck` reports no vulnerabilit
    - `std/csv` now validates delimiter/comment options before configuring Go's CSV reader/writer.
    - `std/os` process start now discards unused output streams and releases started process handles when no wait is expected.
    - Additional boundary fixes reject malformed reader arg literal indexes, protocol extension method-pair arity mistakes, odd Transit cmap entries, invalid external source URLs, and short standalone compile writes.
+
+9. **Benchmark correctness and reporting hardening**
+   - Cross-runtime benchmark output validation now checks semantic `result` payloads for Python, Bun/Node, Goja, and let-go outputs before timings are rendered.
+   - The validator rejects malformed benchmark-looking lines, duplicate results, mixed skip/output files, and missing required workload results while still allowing whole-runtime `# SKIPPED` files for optional runtimes.
+   - Direct comparison collection removes stale output artifacts before each run, so old `.err`, report, JSON, or built-binary files cannot masquerade as fresh data.
+   - `render_table.go` now fails on missing runtime output paths/files, scanner errors, and missing current Joker history data instead of silently producing empty table columns.
+   - Benchmark chart generators now fail fast on missing/non-positive required history or cross-language values, and the transposed chart looks up the `current` series by ID rather than assuming the last series is current.
+   - `run_benchmarks.py` now parses decimal `ns/op` values and fails when no samples or fewer-than-requested samples are parsed.
+   - Cross-language runners were made safer: Python has no import-time side effects, JS has a Node-compatible timing fallback, and the Goja runner exits non-zero on missing functions or execution errors.
+   - The let-go suite comparison now rejects invalid run counts, requires all expected suite files, requires validated go-joker results, and rejects invalid timing stats.
 
 ## Refactor documentation state
 

@@ -36,7 +36,7 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 | **Binary trees** | **~4.24 ms** best-Joker path — beats Python (~33.5 ms), Bun/JSC (~6.97 ms), Goja, and let-go |
 | **Pidigits** | **~0.047 ms** — faster than Python, Bun/JSC, Goja, and let-go after JS BigInt correctness fix |
 | **Arithmetic loop** | **~0.308 ms** — fastest in the validated comparison table |
-| **Benchmark validation** | portable, micro, and best-Joker/native helper outputs are pinned in `core/benchmark_results_test.go`; latest full profile shows allocation/GC cost dominates portable CLBG paths |
+| **Benchmark validation** | portable, micro, best-Joker/native helper, cross-runtime, and let-go-suite outputs are validated before timing reports/charts are accepted; latest full profile shows allocation/GC cost dominates portable CLBG paths |
 | **Best-Joker suite** | beats Python on **13/15**, Goja on **15/15**, and let-go on **15/15** displayed workloads |
 | **let-go suite** | current go-joker wins **2/7** mirrored let-go workloads (`reduce` ~15×, `loop-recur` ~10×); let-go still leads recursive/sequence-heavy cases |
 | **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
