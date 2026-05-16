@@ -66,6 +66,18 @@ func (ReaderConstructionAdapter) NumberFromToken(reader *Reader, token corereade
 	return numberFromToken(reader, token)
 }
 
+func (ReaderConstructionAdapter) MetadataFromObject(obj Object) (*ArrayMap, bool) {
+	return metadataFromObject(obj)
+}
+
+func (ReaderConstructionAdapter) WithMeta(obj Object, meta *ArrayMap) (Object, bool) {
+	v, ok := obj.(Meta)
+	if !ok {
+		return nil, false
+	}
+	return deriveReadObject(obj, v.WithMeta(meta)), true
+}
+
 func (ReaderConstructionAdapter) LiteralExpr(obj Object) *LiteralExpr {
 	return NewLiteralExpr(obj)
 }

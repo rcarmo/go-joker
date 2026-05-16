@@ -43,6 +43,27 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 	}
 }
 
+func TestReaderConstructionAdapterMetadata(t *testing.T) {
+	meta, ok := readerConstruction.MetadataFromObject(MakeKeyword("private"))
+	if !ok {
+		t.Fatal("keyword metadata not accepted")
+	}
+	if found, got := meta.Get(MakeKeyword("private")); !found || !got.Equals(Boolean{B: true}) {
+		t.Fatalf("keyword metadata entry = %v %v", found, got)
+	}
+	vec := collectionConstruction.ArrayVectorFrom(MakeInt(1))
+	withMeta, ok := readerConstruction.WithMeta(vec, meta)
+	if !ok || withMeta.(Meta).GetMeta() == nil {
+		t.Fatalf("WithMeta = %T %v", withMeta, ok)
+	}
+	if _, ok := readerConstruction.MetadataFromObject(MakeInt(1)); ok {
+		t.Fatal("integer metadata accepted")
+	}
+	if _, ok := readerConstruction.WithMeta(MakeInt(1), meta); ok {
+		t.Fatal("metadata applied to int")
+	}
+}
+
 func TestReaderConstructionAdapterNumberFromToken(t *testing.T) {
 	r := readerConstruction.NewReader(strings.NewReader("42"), "<adapter-contract>")
 	pushPos(r)

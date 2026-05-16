@@ -625,18 +625,26 @@ func makeQuote(obj Object, quote Symbol) Object {
 	return DeriveReadObject(obj, res)
 }
 
-func readMeta(reader *Reader) *ArrayMap {
-	obj := readFirst(reader)
+func metadataFromObject(obj Object) (*ArrayMap, bool) {
 	switch v := obj.(type) {
 	case *ArrayMap:
-		return v
+		return v, true
 	case String, Symbol:
-		return &ArrayMap{arr: []Object{DeriveReadObject(obj, KEYWORDS.tag), obj}}
+		return &ArrayMap{arr: []Object{DeriveReadObject(obj, KEYWORDS.tag), obj}}, true
 	case Keyword:
-		return &ArrayMap{arr: []Object{obj, DeriveReadObject(obj, Boolean{B: true})}}
+		return &ArrayMap{arr: []Object{obj, DeriveReadObject(obj, readerConstruction.Bool(true))}}, true
 	default:
+		return nil, false
+	}
+}
+
+func readMeta(reader *Reader) *ArrayMap {
+	obj := readFirst(reader)
+	meta, ok := readerConstruction.MetadataFromObject(obj)
+	if !ok {
 		panic(MakeReadError(reader, "Metadata must be Symbol, Keyword, String or Map"))
 	}
+	return meta
 }
 
 func fillInMissingArgs(args map[int]Symbol) {
@@ -1026,12 +1034,11 @@ func readDispatch(reader *Reader) (Object, bool) {
 func readWithMeta(reader *Reader) Object {
 	meta := readMeta(reader)
 	nextObj := readFirst(reader)
-	switch v := nextObj.(type) {
-	case Meta:
-		return DeriveReadObject(nextObj, v.WithMeta(meta))
-	default:
-		panic(MakeReadError(reader, "Metadata cannot be applied to "+v.ToString(false)))
+	obj, ok := readerConstruction.WithMeta(nextObj, meta)
+	if !ok {
+		panic(MakeReadError(reader, "Metadata cannot be applied to "+nextObj.ToString(false)))
 	}
+	return obj
 }
 
 func readFirst(reader *Reader) Object {
