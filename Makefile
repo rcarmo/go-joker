@@ -137,6 +137,9 @@ native-int-check:
 error-handling-check:
 	tests/error_handling_guard.sh .
 
+benchmark-docs-check:
+	$(GO) run tools/benchmarks/validate_readme_table.go
+
 refactor-internals-check:
 	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/string ./core/osutil ./core/bufferpool ./core/reader -count=$(TEST_COUNT)
 
@@ -149,7 +152,7 @@ runtime-contract-check:
 std-contract-check:
 	$(GO) test ./std/http ./std/io ./std/strconv ./std/time ./std/markdown ./std/os ./std/system ./std/runtime ./std/imaging ./std/pdf ./std/svg ./std/random ./std/bolt ./std/url ./std/git ./std/log ./std/csv ./std/json ./std/filepath ./std/crypto ./std/math ./std/string ./std/uuid -count=$(TEST_COUNT) -timeout=120s
 
-docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
+docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md
