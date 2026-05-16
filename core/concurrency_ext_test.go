@@ -13,6 +13,21 @@ func requireKeyword(tb testing.TB, obj Object, want string) {
 	}
 }
 
+func TestConcurrencyTimeoutRejectsNegative(t *testing.T) {
+	didPanic := false
+	func() {
+		defer func() {
+			if recover() != nil {
+				didPanic = true
+			}
+		}()
+		_ = evalTestScript(t, `(timeout -1)`)
+	}()
+	if !didPanic {
+		t.Fatal("timeout accepted negative milliseconds")
+	}
+}
+
 func TestConcurrencyTimeoutAndAltsDefault(t *testing.T) {
 	requireInt(t, evalTestScript(t, `(let [ch (chan)]
   (first (alts! [ch] :default 42)))`), 42)

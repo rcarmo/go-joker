@@ -26,6 +26,9 @@ func installConcurrencyExt() {
 	toVr.Value = Proc{Name: "procTimeout", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		ms := EnsureArgIsInt(args, 0)
+		if ms.I < 0 {
+			panic(RT.NewError("timeout requires a non-negative millisecond value"))
+		}
 		ch := MakeChannel(make(chan FutureResult, 1))
 		go func() {
 			time.Sleep(time.Duration(ms.I) * time.Millisecond)
