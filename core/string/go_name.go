@@ -22,7 +22,6 @@ var goNameTranslations = [][2]string{
 	{"#", "HASH"},
 	{".", "DOT"},
 	{"%", "PCT"},
-	{".", "DOT"},
 	{":", "COLON"},
 }
 
