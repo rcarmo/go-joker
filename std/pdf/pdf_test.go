@@ -111,6 +111,12 @@ func TestPDFDocumentRejectsInvalidDimensions(t *testing.T) {
 	expectPanic(t, func() {
 		procDocument([]Object{Double{D: 100}, Double{D: -1}})
 	})
+	expectPanic(t, func() {
+		procDocument([]Object{MakeKeyword("bogus")})
+	})
+	expectPanic(t, func() {
+		procDocument([]Object{Double{D: 100}})
+	})
 }
 
 func TestImageMissingPathPanics(t *testing.T) {

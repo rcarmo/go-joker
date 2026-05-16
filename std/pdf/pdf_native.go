@@ -73,12 +73,15 @@ var procDocument ProcFn = func(args []Object) Object {
 	if len(args) > 0 {
 		if kw, ok := args[0].(Keyword); ok {
 			size := pageSizes[kw.Name()]
-			if size != nil {
-				w, h = size.W, size.H
+			if size == nil {
+				panic(RT.NewError("pdf: unknown page size " + kw.ToString(false)))
 			}
+			w, h = size.W, size.H
 		} else if len(args) >= 2 {
 			w = positivePDFDimension(ExtractDouble(args, 0), "width")
 			h = positivePDFDimension(ExtractDouble(args, 1), "height")
+		} else {
+			panic(RT.NewError("pdf: document expects a page-size keyword or width and height"))
 		}
 	}
 	pdf := &gopdf.GoPdf{}
