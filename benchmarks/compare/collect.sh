@@ -5,6 +5,11 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 OUT_DIR="${1:-${ROOT_DIR}/benchmarks/compare/out/latest}"
 
 mkdir -p "${OUT_DIR}"
+rm -f \
+  "${OUT_DIR}"/{python,bun,goja,letgo,report,result-validation,letgo-suite-report}.{txt,err} \
+  "${OUT_DIR}"/{direct-comparison,letgo-suite-comparison}.md \
+  "${OUT_DIR}/letgo-suite-results.json" \
+  "${OUT_DIR}/go-joker"
 
 echo "[compare] output dir: ${OUT_DIR}"
 
