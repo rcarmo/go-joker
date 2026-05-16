@@ -34,6 +34,17 @@ func TestPersistentClientReusesConnection(t *testing.T) {
 	}
 }
 
+func TestPersistentClientRejectsOverflowingIdleTimeout(t *testing.T) {
+	opts := EmptyArrayMap()
+	opts.Add(MakeKeyword("idle-timeout-ms"), MakeInt(int(^uint(0)>>1)))
+	defer func() {
+		if recover() == nil {
+			t.Fatal("overflowing idle timeout option did not panic")
+		}
+	}()
+	_ = makeClient([]Object{opts})
+}
+
 func TestPersistentClientRejectsNegativeOptions(t *testing.T) {
 	opts := EmptyArrayMap()
 	opts.Add(MakeKeyword("idle-timeout-ms"), MakeInt(-1))

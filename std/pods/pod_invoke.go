@@ -9,6 +9,8 @@ import (
 
 const podInvokeTimeout = 30 * time.Second
 
+const maxPodInvokeMillisecondDuration = int64(1<<63-1) / int64(time.Millisecond)
+
 func podInvokeTimeoutFromOpts(opts Object, fallback time.Duration) time.Duration {
 	if opts == nil || opts.Equals(NIL) {
 		return fallback
@@ -24,6 +26,9 @@ func podInvokeTimeoutFromOpts(opts Object, fallback time.Duration) time.Duration
 		}
 		if i.I <= 0 {
 			panic(RT.NewError("pods/invoke: :timeout-ms must be positive"))
+		}
+		if int64(i.I) > maxPodInvokeMillisecondDuration {
+			panic(RT.NewError("pods/invoke: :timeout-ms is too large"))
 		}
 		return time.Duration(i.I) * time.Millisecond
 	}

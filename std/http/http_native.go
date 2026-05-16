@@ -226,12 +226,21 @@ func sendRequest(request Map) Map {
 	return respToMap(resp)
 }
 
+const maxHTTPMillisecondDuration = int64(1<<63-1) / int64(time.Millisecond)
+
 func nonNegativeHTTPOption(obj Object, name string) int {
 	v := EnsureObjectIsInt(obj, name+": %s").I
 	if v < 0 {
 		panic(RT.NewError(name + " must be non-negative"))
 	}
 	return v
+}
+
+func httpIdleTimeoutDuration(ms int) time.Duration {
+	if int64(ms) > maxHTTPMillisecondDuration {
+		panic(RT.NewError(":idle-timeout-ms is too large"))
+	}
+	return time.Duration(ms) * time.Millisecond
 }
 
 func makeClient(args []Object) Object {
@@ -253,7 +262,7 @@ func makeClient(args []Object) Object {
 			idleTimeoutMs = nonNegativeHTTPOption(v, ":idle-timeout-ms")
 		}
 	}
-	return newHTTPClient(maxIdle, maxIdlePerHost, time.Duration(idleTimeoutMs)*time.Millisecond)
+	return newHTTPClient(maxIdle, maxIdlePerHost, httpIdleTimeoutDuration(idleTimeoutMs))
 }
 
 func closeClient(c Object) Object {

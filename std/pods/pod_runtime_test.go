@@ -118,6 +118,11 @@ func TestPodInvokeTimeoutOptionsRejectInvalidValues(t *testing.T) {
 		"non-integer": func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), MakeString("bad")); return m }(),
 		"zero":        func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), MakeInt(0)); return m }(),
 		"negative":    func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), MakeInt(-1)); return m }(),
+		"too-large": func() Object {
+			m := EmptyArrayMap()
+			m.Add(MakeKeyword("timeout-ms"), MakeInt(int(^uint(0)>>1)))
+			return m
+		}(),
 	} {
 		t.Run(name, func(t *testing.T) {
 			defer func() {
