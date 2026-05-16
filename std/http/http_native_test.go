@@ -200,6 +200,23 @@ func TestHandleWebSocketCloseCallbackIsIdempotent(t *testing.T) {
 	}
 }
 
+func TestReqToMapRemoteAddrIPv6(t *testing.T) {
+	for remote, want := range map[string]string{
+		"[2001:db8::1]:8080": "2001:db8::1",
+		"2001:db8::1":        "2001:db8::1",
+		"[::1]:8080":         "::1",
+		"127.0.0.1:12345":    "127.0.0.1",
+	} {
+		req := httptest.NewRequest("GET", "http://example.com/path?q=1", nil)
+		req.RemoteAddr = remote
+		m := reqToMap(MakeString("host"), MakeString("8080"), req)
+		ok, got := m.Get(MakeKeyword("remote-addr"))
+		if !ok || got.ToString(false) != want {
+			t.Fatalf("remote %q mapped to %v, want %q", remote, got, want)
+		}
+	}
+}
+
 func FuzzReqToMapRemoteAddr(f *testing.F) {
 	f.Add("127.0.0.1:12345")
 	f.Add("127.0.0.1")
