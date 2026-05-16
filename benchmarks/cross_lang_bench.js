@@ -1,13 +1,20 @@
 // Cross-language benchmark suite matching the Joker CLBG benchmarks.
 // Run with: bun benchmarks/cross_lang_bench.js
 
+function nowNs() {
+  if (typeof Bun !== "undefined" && typeof Bun.nanoseconds === "function") {
+    return Bun.nanoseconds();
+  }
+  return Math.round(performance.now() * 1_000_000);
+}
+
 function bench(name, fn, iterations = 5) {
   const times = [];
   let result;
   for (let i = 0; i < iterations; i++) {
-    const start = Bun.nanoseconds();
+    const start = nowNs();
     result = fn();
-    times.push(Bun.nanoseconds() - start);
+    times.push(nowNs() - start);
   }
   const avg = times.reduce((a, b) => a + b, 0) / times.length / 1_000_000;
   console.log(`${name.padEnd(30)} ${avg.toFixed(2).padStart(10)} ms/op  (result: ${result})`);
@@ -145,15 +152,6 @@ function wordFrequency() {
   return (counts.theta || 0) + (counts.alpha || 0);
 }
 
-console.log("Bun/JSC benchmarks (5 iterations each)");
-console.log("=".repeat(60));
-bench("arithmetic_loop", arithmeticLoop);
-bench("recursive_fib", recursiveFib);
-bench("tail_recursive_sum", tailRecursiveSum);
-bench("nbody_100steps", nbody);
-bench("spectral_norm_50", spectralNorm);
-bench("binary_trees_14", binaryTrees);
-
 // --- Fannkuch-redux (N=7) ---
 function fannkuch() {
   const n = 7;
@@ -221,14 +219,6 @@ function reverseComplement() {
   return r.length;
 }
 
-bench("fannkuch_7", fannkuch);
-bench("mandelbrot_200", mandelbrot);
-bench("fasta_1000", fasta);
-bench("knucleotide", knucleotide);
-bench("reverse_complement", reverseComplement);
-bench("map_update_loop", mapUpdateLoop);
-bench("word_frequency", wordFrequency);
-
 // --- Regex-redux ---
 function regexRedux() {
   const inp = "agggtaaa|tttaccct ggtattttaatttatagt aactatagtattttaatttatagt cattttaatttatagtaactatagtattttaatttatagt agggtaaa tttaccct agggtaaatttaccct agggtaaa|tttaccct";
@@ -241,8 +231,6 @@ function regexRedux() {
   for (const p of patterns) { const m = inp.match(p); total += m ? m.length : 0; }
   return total;
 }
-bench("regex_redux", regexRedux);
-
 // --- Pidigits (N=27) ---
 function pidigits() {
   let q=1n,r=0n,t=1n,k=1n,n=3n,l=3n,digits=0,cs=0n;
@@ -259,4 +247,24 @@ function pidigits() {
   }
   return cs.toString();
 }
-bench("pidigits_27", pidigits);
+function main() {
+  console.log("Bun/JSC benchmarks (5 iterations each)");
+  console.log("=".repeat(60));
+  bench("arithmetic_loop", arithmeticLoop);
+  bench("recursive_fib", recursiveFib);
+  bench("tail_recursive_sum", tailRecursiveSum);
+  bench("nbody_100steps", nbody);
+  bench("spectral_norm_50", spectralNorm);
+  bench("binary_trees_14", binaryTrees);
+  bench("fannkuch_7", fannkuch);
+  bench("mandelbrot_200", mandelbrot);
+  bench("fasta_1000", fasta);
+  bench("knucleotide", knucleotide);
+  bench("reverse_complement", reverseComplement);
+  bench("map_update_loop", mapUpdateLoop);
+  bench("word_frequency", wordFrequency);
+  bench("regex_redux", regexRedux);
+  bench("pidigits_27", pidigits);
+}
+
+main();
