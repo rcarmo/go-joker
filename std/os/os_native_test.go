@@ -1,11 +1,18 @@
 package os
 
 import (
+	"io"
 	"math"
 	"testing"
 
 	. "github.com/rcarmo/go-joker/core"
 )
+
+func TestStartProcessDefaultsToDiscardedOutput(t *testing.T) {
+	if got := processOutputOrDiscard(nil); got != io.Discard {
+		t.Fatalf("nil process output = %T, want io.Discard", got)
+	}
+}
 
 func TestNativeIntObjectPromotesOutsideNativeRange(t *testing.T) {
 	got := nativeIntObject(math.MaxInt64)

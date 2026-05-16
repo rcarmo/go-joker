@@ -1,7 +1,6 @@
 package os
 
 import (
-	"bytes"
 	"io"
 	"math/big"
 	"os"
@@ -47,6 +46,13 @@ func commandArgs() Object {
 
 const defaultFailedCode = 127 // seen from 'sh no-such-file' on OS X and Ubuntu
 
+func processOutputOrDiscard(w io.Writer) io.Writer {
+	if w != nil {
+		return w
+	}
+	return io.Discard
+}
+
 func startProcess(name string, opts Map) int {
 	dir, args, stdin, stdout, stderr := parseExecOpts(opts)
 
@@ -54,17 +60,8 @@ func startProcess(name string, opts Map) int {
 	cmd.Dir = dir
 	cmd.Stdin = stdin
 
-	var stdoutBuffer, stderrBuffer bytes.Buffer
-	if stdout != nil {
-		cmd.Stdout = stdout
-	} else {
-		cmd.Stdout = &stdoutBuffer
-	}
-	if stderr != nil {
-		cmd.Stderr = stderr
-	} else {
-		cmd.Stderr = &stderrBuffer
-	}
+	cmd.Stdout = processOutputOrDiscard(stdout)
+	cmd.Stderr = processOutputOrDiscard(stderr)
 
 	err := cmd.Start()
 	PanicOnErr(err)
