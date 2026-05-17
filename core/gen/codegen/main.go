@@ -699,7 +699,7 @@ func (genEnv *GenEnv) emitPtrToRegexp(target string, v reflect.Value) string {
 
 func coreTypeString(s string) string {
 	s = strings.Replace(s, "core.", "", 1)
-	for _, moved := range []string{"Int", "Double", "Boolean", "Char", "Time", "Regex", "BigInt", "BigFloat", "Ratio", "Comment"} {
+	for _, moved := range []string{"Int", "Double", "Boolean", "Char", "Time", "Regex", "BigInt", "BigFloat", "Ratio", "Comment", "String"} {
 		if s == moved {
 			return "coretypes." + moved
 		}
