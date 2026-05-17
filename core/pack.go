@@ -322,7 +322,7 @@ func packType(t *coretypes.Type, p []byte, env *PackEnv) []byte {
 
 func unpackType(p []byte, header *PackHeader) (*coretypes.Type, []byte) {
 	s, p := unpackSymbol(p, header)
-	return TYPES[s.name], p
+	return TYPES.Lookup(s.name), p
 }
 
 func packObject(obj Object, p []byte, env *PackEnv) []byte {
@@ -733,7 +733,7 @@ func unpackFnArityExpr(p []byte, header *PackHeader) (*FnArityExpr, []byte) {
 		p = p[1:]
 		var i uint16
 		i, p = extractUInt16(p)
-		taggedType = TYPES[header.Strings[i]]
+		taggedType = TYPES.Lookup(header.Strings[i])
 	}
 	res := &FnArityExpr{
 		Position:   pos,
@@ -865,7 +865,7 @@ func unpackCatchExpr(p []byte, header *PackHeader) (*CatchExpr, []byte) {
 		Position:  pos,
 		excSymbol: excSymbol,
 		body:      body,
-		excType:   TYPES[typeName],
+		excType:   TYPES.Lookup(typeName),
 	}
 	return res, p
 }

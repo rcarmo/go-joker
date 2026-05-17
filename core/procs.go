@@ -1526,8 +1526,8 @@ var procVarSet = func(args []Object) Object {
 var procNsResolve = func(args []Object) Object {
 	ns := EnsureArgIsNamespace(args, 0)
 	sym := EnsureArgIsSymbol(args, 1)
-	if sym.ns == nil && TYPES[sym.name] != nil {
-		return TYPES[sym.name]
+	if sym.ns == nil && TYPES.Lookup(sym.name) != nil {
+		return TYPES.Lookup(sym.name)
 	}
 	if vr, ok := GLOBAL_ENV.ResolveIn(ns, sym); ok {
 		return vr

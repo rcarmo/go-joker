@@ -1363,7 +1363,7 @@ func getTaggedType(obj Meta) *coretypes.Type {
 	if m := obj.GetMeta(); m != nil {
 		if ok, typeName := m.Get(KEYWORDS.tag); ok {
 			if typeSym, ok := typeName.(Symbol); ok {
-				if t := TYPES[typeSym.name]; t != nil {
+				if t := TYPES.Lookup(typeSym.name); t != nil {
 					return t
 				}
 			}
@@ -1378,13 +1378,13 @@ func getTaggedTypes(obj Meta) []*coretypes.Type {
 		if ok, typeName := m.Get(KEYWORDS.tag); ok {
 			switch typeDecl := typeName.(type) {
 			case Symbol:
-				if t := TYPES[typeDecl.name]; t != nil {
+				if t := TYPES.Lookup(typeDecl.name); t != nil {
 					res = append(res, t)
 				}
 			case String:
 				parts := corestr.Split(typeDecl.S, '|')
 				for _, p := range parts {
-					if t := TYPES[MakeSymbol(p).name]; t != nil {
+					if t := TYPES.Lookup(MakeSymbol(p).name); t != nil {
 						res = append(res, t)
 					}
 				}
@@ -1849,10 +1849,10 @@ func parseSymbol(obj Object, ctx *ParseContext) Expr {
 	if vr, ok := ctx.GlobalEnv.Resolve(sym); ok {
 		return MakeVarRefExpr(vr, obj)
 	}
-	if sym.ns == nil && TYPES[sym.name] != nil {
+	if sym.ns == nil && TYPES.Lookup(sym.name) != nil {
 		return &LiteralExpr{
 			Position: GetPosition(obj),
-			obj:      TYPES[sym.name],
+			obj:      TYPES.Lookup(sym.name),
 		}
 	}
 	if !LINTER_MODE {
