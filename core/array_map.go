@@ -84,7 +84,7 @@ func (seq *ArrayMapSeq) Seq() Seq {
 
 func (seq *ArrayMapSeq) First() Object {
 	if seq.index < len(seq.m.arr) {
-		return NewVectorFrom(seq.m.arr[seq.index], seq.m.arr[seq.index+1])
+		return collectionConstruction.NewVectorFrom(seq.m.arr[seq.index], seq.m.arr[seq.index+1])
 	}
 	return NIL
 }
@@ -208,7 +208,7 @@ func (m *ArrayMap) Assoc(key Object, value Object) Associative {
 		return res
 	}
 	if int64(len(m.arr)) >= HASHMAP_THRESHOLD {
-		return NewHashMap(m.arr...).Assoc(key, value)
+		return collectionConstruction.NewHashMapFrom(m.arr...).Assoc(key, value)
 	}
 	res := m.Clone()
 	res.arr = append(res.arr, key)
@@ -219,7 +219,7 @@ func (m *ArrayMap) Assoc(key Object, value Object) Associative {
 func (m *ArrayMap) EntryAt(key Object) *ArrayVector {
 	i := m.indexOf(key)
 	if i != -1 {
-		return NewArrayVectorFrom(key, m.arr[i+1])
+		return collectionConstruction.NewArrayVectorFrom(key, m.arr[i+1])
 	}
 	return nil
 }
@@ -253,7 +253,7 @@ func (m *ArrayMap) Merge(other Map) Map {
 		p := iter.Next()
 		res.Set(p.Key, p.Value)
 		if int64(len(res.arr)) > HASHMAP_THRESHOLD {
-			return NewHashMap(m.arr...).Merge(other)
+			return collectionConstruction.NewHashMapFrom(m.arr...).Merge(other)
 		}
 	}
 	return res
@@ -310,7 +310,7 @@ func (m *ArrayMap) Call(args []Object) Object {
 }
 
 func (m *ArrayMap) Empty() Collection {
-	return EmptyArrayMap()
+	return collectionConstruction.NewEmptyArrayMap()
 }
 
 func (m *ArrayMap) Pprint(w io.Writer, indent int) int {
