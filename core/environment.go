@@ -45,6 +45,10 @@ func versionMap() Map {
 	return res
 }
 
+func (env *Env) ReferCoreToUser() {
+	// Nothing need be done; it's already "baked in" in the fast-startup version.
+}
+
 func (env *Env) SetEnvArgs(newArgs []string) {
 	args := collectionConstruction.EmptyArrayVector()
 	for _, arg := range newArgs {
