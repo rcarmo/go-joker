@@ -1,6 +1,6 @@
 # Repository architecture refactor plan
 
-Updated: 2026-05-16
+Updated: 2026-05-17
 
 ## Goal
 
@@ -17,7 +17,7 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 - `std/*` is already package-oriented and increasingly guarded by focused native-boundary contracts and explicit resource-layout rules.
 - `core` remains the main monolith, but leaf packages now exist under `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/collections`, `core/reader`, `core/string`, `core/cursor`, and data-only generated payloads under `core/generated`.
 - Generated `core/a_*.go` files still matter, but the root generated set has shrunk; `tests/generated_files.txt` now tracks root generated files plus data-only generated package artifacts such as `core/generated/linter_payloads_gen.go`. Remaining root generated files stay there only while they still require `package core` access. Moving them to a subdirectory must be a real package split, not a cosmetic file move.
-- IR/JIT/WASM compiler and executor files are still coupled to `core.Object`, `Fn`, `Expr`, `LocalEnv`, and unexported runtime helpers, but opcode/diagnostic helpers and WASM leaf helpers have been extracted.
+- IR/JIT/WASM compiler and executor files are still coupled to `core.Object`, `Fn`, `Expr`, `LocalEnv`, and unexported runtime helpers, but opcode/diagnostic helpers and WASM leaf helpers have been extracted. `RuntimeExecutionAdapter` now covers equality, mutable-slot candidate detection, object assoc/nth fallbacks, Fn/runtime call dispatch, and many executable-envelope seams, but executor loops remain root-owned until frame/object contracts are narrower.
 - Tracing/profiling aggregation state is extracted into `core/trace`.
 
 ## Refactor document set
@@ -52,7 +52,7 @@ Planned package boundaries:
 | `core/wasm` | `wasm*.go` leaf helpers first | Extracted encoding/module/host metadata helpers exist, but full lowering/runtime still depends on IR program shape and runtime contracts. |
 | `core/runtime` | feature flags, goroutine IDs, future eval frames/errors/tracing hooks | Small runtime leaf helpers exist; production executor/runtime moves require explicit object/call/error/frame contracts first. |
 | `core/collections` | vectors, maps, sets, seqs, transients | Real mechanics package exists: generic slice storage, pair-array helpers, bitmap/hash-index helpers, and opaque trie node/path helpers are extracted. Root collections delegate mechanics where safe while retaining Object/protocol behavior. Move concrete collection implementations only after object/protocol dependencies are explicit and acyclic. |
-| `core/reader` | `read.go`, tagged literals | Real reader mechanics package exists: rune-window history, line rune reading, rune-stream Get/Unget/Peek position mechanics, reader position-stack snapshots, character classification, whitespace/comment/line scanning, identifier token scanning/validation configuration/issue enumeration, unicode/string escape parsing, number-token classification, dispatch/form/prefix helpers, and raw file/buffer/buffered/IO mechanics have moved. Root reader still owns filename interning, errors, FORMAT/LINTER behavior, namespace/tagged-literal handling, concrete Object construction, and parser/evaluator handoff; the tiny root `reader.go` wrapper has been folded into `read.go`. |
+| `core/reader` | `read.go`, tagged literals | Real reader mechanics package exists: rune-window history, line rune reading, rune-stream Get/Unget/Peek position mechanics, reader position-stack snapshots, character classification, whitespace/comment/line scanning, identifier token scanning/validation configuration/issue enumeration, unicode/string escape parsing, number-token classification, dispatch/form/prefix helpers, and raw file/buffer/buffered/IO mechanics have moved. Root reader still owns filename interning, errors, FORMAT/LINTER behavior, namespace/tagged-literal handling, concrete Object construction, and parser/evaluator handoff; the tiny root `reader.go` wrapper has been folded into `read.go`. `ReaderConstructionAdapter` now covers read errors, source metadata, scalar/comment/regex/numeric literals, metadata, list/vector/map/set literal construction, conditional vectors, and expression constructors. |
 | `core/string` | string caches and string-focused support helpers | Real helper package owns root-independent string mechanics such as char/rune caching, escaping, and nth-rune lookup; root `core` keeps Object/error wrappers. |
 | `core/cursor` | string cursor mechanics | Real leaf package owns string cursor iteration mechanics; root `core.StringCursor` is only the Joker Object protocol adapter. |
 | `core/generated` | source manifest, linter payload bytes/registry, future data-only payloads | Real generated package boundary exists for data-only payloads. Only move additional generated families when generator output can declare/import a real package with explicit contracts; do not place `package core` files in subdirectories. |

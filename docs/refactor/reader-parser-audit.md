@@ -1,6 +1,6 @@
 # Reader/parser extraction audit
 
-Updated: 2026-05-16
+Updated: 2026-05-17
 
 ## Current extracted reader package ownership
 
@@ -28,21 +28,21 @@ Moving this wrapper completely requires a reader construction adapter for filena
 
 ## Remaining root-bound `core/read.go`
 
-`read.go` still owns concrete object construction and global reader behavior:
+`read.go` still owns concrete object semantics and global reader behavior, but most construction now goes through `ReaderConstructionAdapter`:
 
-- `ReadError`, root `ObjectInfo`, `MakeReadObject`, and `DeriveReadObject`;
+- `ReadError`, root `ObjectInfo`, `MakeReadObject`, and `DeriveReadObject` adapter seams;
 - `FORMAT_MODE`, `LINTER_MODE`, `DIALECT`, `SUPPRESS_READ`, `PROBLEM_COUNT`, and lint warning/error emission;
-- number parsing into `Int`, `BigInt`, `BigFloat`, `Ratio`, `Double`, and `Boolean`/`Nil` literals;
-- string/regex/character object construction;
-- list/vector/map/set construction via root collection adapters;
-- duplicate key/set reporting using root equality/printing semantics;
-- metadata construction and application through root `Meta`/`ArrayMap`;
+- number parsing into `Int`, `BigInt`, `BigFloat`, `Ratio`, `Double`, and `Boolean`/`Nil` literals through adapter seams;
+- string/regex/character/comment object construction through adapter seams;
+- list/vector/map/set construction via root reader/collection adapters;
+- duplicate key/set reporting using root equality/printing semantics through root-owned adapter methods;
+- metadata construction and application through root `Meta`/`ArrayMap` adapter seams;
 - arg-literal and syntax-quote construction through root `Symbol`, `Seq`, `Vec`, `List`, namespace resolution, and `GLOBAL_ENV`;
 - tagged literals, data-reader lookup, default data-reader calls, and reader conditional behavior;
 - namespaced map auto-resolution through current namespace aliases and namespace usage flags;
 - top-level read orchestration and conversion of reader/parser/eval exceptions.
 
-Safe next extractions from this file are limited to pure decision/configuration helpers. Concrete read-number/string/symbol parsing remains blocked until a root adapter can construct objects and errors.
+Safe next extractions from this file are limited to pure decision/configuration helpers or further adapterization of explicitly root-owned semantics. Concrete reader orchestration remains blocked by namespace/tagged-literal/runtime side effects even though scalar/collection construction is now mostly adapterized.
 
 ## Remaining parser-adjacent `core/parse.go` blockers
 
@@ -59,5 +59,5 @@ No parser orchestration should move to `core/reader` until `Object`, `Expr`, `Va
 ## Next safe reader steps
 
 1. Continue extracting pure decision/configuration helpers from `read.go` when they do not mention root `Object`, `Symbol`, `Seq`, `Meta`, `GLOBAL_ENV`, or root collection types.
-2. Define a `ReaderConstructionAdapter` extension for root-owned object/error construction before moving read-number, read-string, read-symbol, tagged literal, or top-level orchestration code.
+2. Continue extending `ReaderConstructionAdapter` only for stable root-owned semantics; do not move tagged literal or top-level orchestration while namespace/runtime side effects remain direct.
 3. Keep package guards ensuring `core/reader` never imports root `core`.

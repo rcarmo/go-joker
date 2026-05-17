@@ -13,8 +13,7 @@ This audit records the remaining root-owned executor/runtime families before any
 Files:
 
 - `boxed_exec.go`
-- `fn_ir_dispatch.go`
-- `fn_ir_cache.go`
+- `fn_ir_cache.go` (also owns the former tiny `fn_ir_dispatch.go` dispatch bridge)
 - `fn_ir_compile.go`
 
 Current state:

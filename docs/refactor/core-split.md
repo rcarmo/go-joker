@@ -108,7 +108,6 @@ core/reader/
 
 Current candidate files:
 
-- `reader.go`
 - `read.go`
 - `read_conditional_test.go`
 - tagged literal handling inside `read.go`
@@ -116,8 +115,8 @@ Current candidate files:
 
 Status and risks:
 
-- `core/reader` now owns leaf mechanics: rune-window history, line rune reader, raw file/buffer/buffered/IO wrappers, char classes, whitespace/comment/top-level-trivia/line scanning decisions/runs, identifier token scanning/checks/keyword, standalone-slash, and literal classification/validation issue enumeration, unicode/string escape parsing, top-level read-form and number-token classification, dispatch/format-prefix/delimiter/form helpers, and conditional read-error/suppression/result, conditional/unquote/namespaced-map start/prefix/splice, and syntax-quote auto-gensym name decisions.
-- reader/parser still constructs concrete `core` objects and expressions directly; current production call sites now route through `ReaderConstructionAdapter`, guarded by `construction_boundary_guard_test.go`.
+- `core/reader` now owns leaf mechanics: rune-window history, rune-stream Get/Unget/Peek position accounting, reader position stacks, line rune reader, raw file/buffer/buffered/IO wrappers, char classes, whitespace/comment/top-level-trivia/line scanning decisions/runs, identifier token scanning/checks/keyword, standalone-slash, and literal classification/validation issue enumeration, unicode/string escape parsing, top-level read-form and number-token classification, dispatch/format-prefix/delimiter/form helpers, and conditional read-error/suppression/result, conditional/unquote/namespaced-map start/prefix/splice, and syntax-quote auto-gensym name decisions.
+- reader/parser still owns namespace/tagged-literal/runtime side effects; current production call sites route construction through `ReaderConstructionAdapter`, guarded by `construction_boundary_guard_test.go`. The former tiny root `reader.go` wrapper has been folded into `read.go`.
 - tagged literal handling touches namespace/runtime metadata.
 - parse/eval boundaries are not yet clean.
 
