@@ -34,7 +34,7 @@ func (v *ArrayVector) Clone() *ArrayVector {
 
 func (v *ArrayVector) Conjoin(obj Object) Vec {
 	if v.Count() >= VECTOR_THRESHOLD {
-		res := NewVectorFrom(v.arr...)
+		res := collectionConstruction.NewVectorFrom(v.arr...)
 		res = res.Conjoin(obj)
 		res.meta = v.meta
 		return res
