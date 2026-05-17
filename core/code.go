@@ -10,6 +10,7 @@ import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"reflect"
 
+	gen_go "github.com/rcarmo/go-joker/core/gen/gengo"
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
@@ -105,7 +106,7 @@ func (kw Keyword) AsGo() string {
 	return "kw_" + name + pos
 }
 
-func (oi *coretypes.ObjectInfo) AsGo() string {
+func objectInfoAsGo(oi *coretypes.ObjectInfo) string {
 	if res, ok := infoHolderAsGoName(*oi); ok {
 		return "objectInfo_" + res
 	}
@@ -167,24 +168,24 @@ func infoHolderAsGoName(obj interface{}) (string, bool) {
 		return "", false
 	}
 	vt := v.Type()
-	sf, yes := vt.FieldByName("coretypes.InfoHolder")
+	sf, yes := vt.FieldByName("InfoHolder")
 	if yes {
 		if !sf.Anonymous {
 			return "", false
 		}
-		v = v.FieldByName("coretypes.InfoHolder")
+		v = v.FieldByName("InfoHolder")
 		vt = v.Type()
 		if vt.Kind() != reflect.Struct {
 			return "", false
 		}
-		sf, yes = vt.FieldByName("info")
+		sf, yes = vt.FieldByName("Info")
 		if !yes || sf.Anonymous {
 			return "", false
 		}
-		v = v.FieldByName("info")
+		v = v.FieldByName("Info")
 		vt = v.Type()
 		if vt.Kind() != reflect.Ptr {
-			panic("'info' field not a pointer")
+			panic("'Info' field not a pointer")
 		}
 		if v.IsNil() {
 			return "", false
@@ -192,31 +193,31 @@ func infoHolderAsGoName(obj interface{}) (string, bool) {
 		v = v.Elem()
 		vt = v.Type()
 	}
-	sf, yes = vt.FieldByName("coretypes.Position")
+	sf, yes = vt.FieldByName("Position")
 	if !yes || !sf.Anonymous {
 		return "", false
 	}
-	v = v.FieldByName("coretypes.Position")
+	v = v.FieldByName("Position")
 	vt = v.Type()
 	if vt.Kind() != reflect.Struct {
 		return "", false
 	}
-	sf, yes = vt.FieldByName("startLine")
+	sf, yes = vt.FieldByName("StartLine")
 	if !yes || sf.Anonymous {
 		return "", false
 	}
-	Filename := ""
-	filenamePtr := gen_go.UnsafeReflectValue(v.FieldByName("filename"))
+	filename := ""
+	filenamePtr := gen_go.UnsafeReflectValue(v.FieldByName("Filename"))
 	if !(filenamePtr.IsZero() || filenamePtr.IsNil()) {
 		filename = filenameAsGo(filenamePtr.Elem().Interface().(string))
 		if filename != "" && filename != "_" {
 			filename = filename + "_"
 		}
 	}
-	StartLine := gen_go.UnsafeReflectValue(v.FieldByName("startLine")).Interface().(int)
-	StartColumn := gen_go.UnsafeReflectValue(v.FieldByName("startColumn")).Interface().(int)
-	EndLine := gen_go.UnsafeReflectValue(v.FieldByName("endLine")).Interface().(int)
-	EndColumn := gen_go.UnsafeReflectValue(v.FieldByName("endColumn")).Interface().(int)
+	startLine := gen_go.UnsafeReflectValue(v.FieldByName("StartLine")).Interface().(int)
+	startColumn := gen_go.UnsafeReflectValue(v.FieldByName("StartColumn")).Interface().(int)
+	endLine := gen_go.UnsafeReflectValue(v.FieldByName("EndLine")).Interface().(int)
+	endColumn := gen_go.UnsafeReflectValue(v.FieldByName("EndColumn")).Interface().(int)
 	return "POS_" + positionAsGo(&filename, startLine, startColumn, endLine, endColumn), true
 }
 
