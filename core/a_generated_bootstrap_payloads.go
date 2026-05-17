@@ -205,7 +205,7 @@ var s_ParseError string = "ParseError"
 var s_Pending string = "Pending"
 var s_Proc string = "Proc"
 var s_Ratio string = "coretypes.Ratio"
-var s_RecurBindings string = "RecurBindings"
+var s_RecurBindings string = "coretypes.RecurBindings"
 var s_Reduce string = "coretypes.Reduce"
 var s_Ref string = "Ref"
 var s_Regex string = "coretypes.Regex"
@@ -1982,7 +1982,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"Pending":                    &s_Pending,
 	"Proc":                       &s_Proc,
 	"coretypes.Ratio":            &s_Ratio,
-	"RecurBindings":              &s_RecurBindings,
+	"coretypes.RecurBindings":    &s_RecurBindings,
 	"coretypes.Reduce":           &s_Reduce,
 	"Ref":                        &s_Ref,
 	"coretypes.Regex":            &s_Regex,
@@ -5919,7 +5919,7 @@ var arrayMap_NUM_61 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		coretypes.String{
-			S: "RecurBindings",
+			S: "coretypes.RecurBindings",
 		},
 	},
 }
@@ -5928,7 +5928,7 @@ var ty_RecurBindings coretypes.Type = coretypes.Type{
 		meta: &arrayMap_NUM_61,
 	},
 	Name:        "RecurBindings",
-	ReflectType: reflect.TypeOf((*RecurBindings)(nil)),
+	ReflectType: reflect.TypeOf((*coretypes.RecurBindings)(nil)),
 }
 var arrayMap_NUM_62 ArrayMap = ArrayMap{
 	arr: []Object{

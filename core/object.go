@@ -84,8 +84,7 @@ type (
 		ArrayMap
 		rt *goroutineRT
 	}
-	RecurBindings = coretypes.RecurBindings
-	Delay         struct {
+	Delay struct {
 		fn      coretypes.Callable
 		runtime *corert.Promise[Object]
 	}

@@ -915,7 +915,7 @@ loop:
 	switch res := res.(type) {
 	default:
 		return res
-	case RecurBindings:
+	case coretypes.RecurBindings:
 		env.bindings = res
 		goto loop
 	}
@@ -1039,31 +1039,31 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 func (expr *RecurExpr) Eval(env *LocalEnv) Object {
 	switch len(expr.args) {
 	case 0:
-		return RecurBindings(nil)
+		return coretypes.RecurBindings(nil)
 	case 1:
 		var args [1]Object
 		args[0] = Eval(expr.args[0], env)
-		return RecurBindings(args[:])
+		return coretypes.RecurBindings(args[:])
 	case 2:
 		var args [2]Object
 		args[0] = Eval(expr.args[0], env)
 		args[1] = Eval(expr.args[1], env)
-		return RecurBindings(args[:])
+		return coretypes.RecurBindings(args[:])
 	case 3:
 		var args [3]Object
 		args[0] = Eval(expr.args[0], env)
 		args[1] = Eval(expr.args[1], env)
 		args[2] = Eval(expr.args[2], env)
-		return RecurBindings(args[:])
+		return coretypes.RecurBindings(args[:])
 	case 4:
 		var args [4]Object
 		args[0] = Eval(expr.args[0], env)
 		args[1] = Eval(expr.args[1], env)
 		args[2] = Eval(expr.args[2], env)
 		args[3] = Eval(expr.args[3], env)
-		return RecurBindings(args[:])
+		return coretypes.RecurBindings(args[:])
 	default:
-		return RecurBindings(evalSeq(expr.args, env))
+		return coretypes.RecurBindings(evalSeq(expr.args, env))
 	}
 }
 

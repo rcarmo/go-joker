@@ -59,7 +59,7 @@ loop:
 	switch res := res.(type) {
 	default:
 		return res
-	case RecurBindings:
+	case coretypes.RecurBindings:
 		env.bindings = res
 		goto loop
 	}

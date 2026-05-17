@@ -90,7 +90,7 @@ func init() {
 		ParseError:    typeBuilder().RegisterReference("ParseError", (*ParseError)(nil), ""),
 		Proc:          typeBuilder().RegisterReference("Proc", (*Proc)(nil), "A callable function implemented via Go code"),
 		Ratio:         typeBuilder().RegisterReference("coretypes.Ratio", (*coretypes.Ratio)(nil), "Wraps the Go 'math.big/Rat' type"),
-		RecurBindings: typeBuilder().RegisterReference("RecurBindings", (*RecurBindings)(nil), ""),
+		RecurBindings: typeBuilder().RegisterReference("RecurBindings", (*coretypes.RecurBindings)(nil), ""),
 		Regex:         typeBuilder().RegisterReference("Regex", (*coretypes.Regex)(nil), "Wraps the Go 'regexp.Regexp' type"),
 		String:        typeBuilder().RegisterValue("String", (*coretypes.String)(nil), "Wraps the Go 'string' type"),
 		Symbol:        typeBuilder().RegisterValue("Symbol", (*Symbol)(nil), ""),
