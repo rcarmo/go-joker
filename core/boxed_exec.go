@@ -476,7 +476,7 @@ loop:
 					continue
 				}
 			}
-			stack = append(stack, Boolean{B: a.Equals(b)})
+			stack = append(stack, Boolean{B: runtimeExec.Equal(a, b)})
 
 		case irIsZero:
 			a := stack[len(stack)-1]

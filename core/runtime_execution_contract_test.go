@@ -2,6 +2,16 @@ package core
 
 import "testing"
 
+func TestRuntimeExecutionAdapterEquality(t *testing.T) {
+	adapter := RuntimeExecutionAdapter{}
+	if !adapter.Equal(MakeInt(1), MakeInt(1)) {
+		t.Fatal("Equal rejected matching ints")
+	}
+	if adapter.Equal(MakeInt(1), MakeInt(2)) {
+		t.Fatal("Equal accepted mismatched ints")
+	}
+}
+
 func TestRuntimeExecutionAdapterPrepareCallSlotsInstallsCaptures(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
 	prog := &IRProgram{

@@ -23,6 +23,10 @@ func (r RuntimeExecutionAdapter) Throw(obj Object) {
 	panic(r.Errorf("%s", obj.ToString(false)))
 }
 
+func (RuntimeExecutionAdapter) Equal(a Object, b Object) bool {
+	return a.Equals(b)
+}
+
 func (RuntimeExecutionAdapter) ApplyCaptureSlots(slots []Object, idxs []int, values []Object) bool {
 	if len(idxs) != len(values) {
 		return false

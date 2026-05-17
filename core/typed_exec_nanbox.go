@@ -238,7 +238,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 			} else {
 				oa := nbToObject(a, objTable)
 				ob := nbToObject(b, objTable)
-				stackBuf[sp-1] = coreirx.BoxBool(oa.Equals(ob))
+				stackBuf[sp-1] = coreirx.BoxBool(runtimeExec.Equal(oa, ob))
 			}
 
 		case irIsZero:
