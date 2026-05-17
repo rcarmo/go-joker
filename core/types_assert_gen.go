@@ -3,8 +3,9 @@
 package core
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 func EnsureObjectIsComparable(obj Object, pattern string) Comparable {
@@ -191,7 +192,7 @@ func EnsureObjectIsType(obj Object, pattern string) *coretypes.Type {
 	if c, yes := obj.(*coretypes.Type); yes {
 		return c
 	}
-	panic(FailObject(obj, "Type", pattern))
+	panic(FailObject(obj, "coretypes.Type", pattern))
 }
 
 func EnsureArgIsType(args []Object, index int) *coretypes.Type {
@@ -199,7 +200,7 @@ func EnsureArgIsType(args []Object, index int) *coretypes.Type {
 	if c, yes := obj.(*coretypes.Type); yes {
 		return c
 	}
-	panic(FailArg(obj, "Type", index))
+	panic(FailArg(obj, "coretypes.Type", index))
 }
 
 func EnsureObjectIsMeta(obj Object, pattern string) Meta {
@@ -326,7 +327,7 @@ func EnsureObjectIsNamed(obj Object, pattern string) coretypes.Named {
 	if c, yes := obj.(coretypes.Named); yes {
 		return c
 	}
-	panic(FailObject(obj, "Named", pattern))
+	panic(FailObject(obj, "coretypes.Named", pattern))
 }
 
 func EnsureArgIsNamed(args []Object, index int) coretypes.Named {
@@ -334,7 +335,7 @@ func EnsureArgIsNamed(args []Object, index int) coretypes.Named {
 	if c, yes := obj.(coretypes.Named); yes {
 		return c
 	}
-	panic(FailArg(obj, "Named", index))
+	panic(FailArg(obj, "coretypes.Named", index))
 }
 
 func EnsureObjectIsComparator(obj Object, pattern string) Comparator {
@@ -536,7 +537,7 @@ func EnsureObjectIsPending(obj Object, pattern string) coretypes.Pending {
 	if c, yes := obj.(coretypes.Pending); yes {
 		return c
 	}
-	panic(FailObject(obj, "Pending", pattern))
+	panic(FailObject(obj, "coretypes.Pending", pattern))
 }
 
 func EnsureArgIsPending(args []Object, index int) coretypes.Pending {
@@ -544,7 +545,7 @@ func EnsureArgIsPending(args []Object, index int) coretypes.Pending {
 	if c, yes := obj.(coretypes.Pending); yes {
 		return c
 	}
-	panic(FailArg(obj, "Pending", index))
+	panic(FailArg(obj, "coretypes.Pending", index))
 }
 
 func EnsureObjectIsFile(obj Object, pattern string) *File {

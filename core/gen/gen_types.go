@@ -22,6 +22,8 @@ package core
 var importFmt string = `
 import (
 	"io"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 `
 
@@ -82,8 +84,12 @@ func generateAssertions(types []string) {
 		if t[0] == '*' {
 			typeInfo.Name = t[1:]
 			typeInfo.ShowName = typeInfo.Name
-		} else if strings.ContainsRune(t, '.') {
-			typeInfo.Name = strings.ReplaceAll(t, ".", "_")
+		}
+		if strings.ContainsRune(typeInfo.Name, '.') {
+			typeInfo.Name = strings.ReplaceAll(typeInfo.Name, ".", "_")
+		}
+		if strings.HasPrefix(typeInfo.Name, "coretypes_") {
+			typeInfo.Name = strings.TrimPrefix(typeInfo.Name, "coretypes_")
 		}
 		checkError(ensureObjectIs.Execute(f, typeInfo))
 		checkError(ensureArgIs.Execute(f, typeInfo))
