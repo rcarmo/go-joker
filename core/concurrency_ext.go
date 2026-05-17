@@ -136,7 +136,7 @@ func installConcurrencyExt() {
 	}}
 	referToUser(MakeSymbol("promise?"), pqVr)
 
-	// realized? — true if a Future/Promise/Delay has been realized.
+	// realized? — true if a Future/Promise/coretypes.Delay has been realized.
 	rzVr := ns.Intern(MakeSymbol("realized?"))
 	rzVr.Value = Proc{Name: "procRealizedQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)

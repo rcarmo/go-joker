@@ -82,8 +82,7 @@ type (
 		ArrayMap
 		rt *goroutineRT
 	}
-	Delay = coretypes.Delay
-	Atom  struct {
+	Atom struct {
 		MetaHolder
 		mu    sync.Mutex
 		value coretypes.Object

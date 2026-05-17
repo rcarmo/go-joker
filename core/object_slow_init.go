@@ -69,7 +69,7 @@ func init() {
 		Buffer:         typeBuilder().RegisterReference("Buffer", (*Buffer)(nil), ""),
 		Char:           typeBuilder().RegisterValue("Char", (*coretypes.Char)(nil), "Wraps the Go 'rune' type"),
 		ConsSeq:        typeBuilder().RegisterReference("ConsSeq", (*ConsSeq)(nil), ""),
-		Delay:          typeBuilder().RegisterReference("Delay", (*coretypes.Delay)(nil), ""),
+		Delay:          typeBuilder().RegisterReference("coretypes.Delay", (*coretypes.Delay)(nil), ""),
 		Channel:        typeBuilder().RegisterReference("Channel", (*Channel)(nil), ""),
 		Double:         typeBuilder().RegisterValue("Double", (*coretypes.Double)(nil), "Wraps the Go 'float64' type"),
 		EvalError:      typeBuilder().RegisterReference("EvalError", (*EvalError)(nil), ""),

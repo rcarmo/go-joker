@@ -157,7 +157,7 @@ var s_Comparator string = "Comparator"
 var s_ConsSeq string = "ConsSeq"
 var s_Counted string = "Counted"
 var s_CountedIndexed string = "coretypes.CountedIndexed"
-var s_Delay string = "Delay"
+var s_Delay string = "coretypes.Delay"
 var s_Deref string = "coretypes.Deref"
 var s_Double string = "coretypes.Double"
 var s_Error string = "coretypes.Error"
@@ -1934,7 +1934,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"ConsSeq":                    &s_ConsSeq,
 	"Counted":                    &s_Counted,
 	"coretypes.CountedIndexed":   &s_CountedIndexed,
-	"Delay":                      &s_Delay,
+	"coretypes.Delay":            &s_Delay,
 	"coretypes.Deref":            &s_Deref,
 	"coretypes.Double":           &s_Double,
 	"coretypes.Error":            &s_Error,
@@ -5311,7 +5311,7 @@ var arrayMap_NUM_42 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		coretypes.String{
-			S: "Delay",
+			S: "coretypes.Delay",
 		},
 	},
 }
@@ -5319,7 +5319,7 @@ var ty_Delay coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_42,
 	},
-	Name:        "Delay",
+	Name:        "coretypes.Delay",
 	ReflectType: reflect.TypeOf((*coretypes.Delay)(nil)),
 }
 var arrayMap_NUM_43 ArrayMap = ArrayMap{
@@ -122068,7 +122068,7 @@ var bitmapIndexedNode_NUM_87 BitmapIndexedNode = BitmapIndexedNode{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "Takes a body of expressions and yields a Delay object that will\n  invoke the body only the first time it is forced (with force or deref/@), and\n  will cache the result and return it on all subsequent force\n  calls. See also - realized?",
+			S: "Takes a body of expressions and yields a coretypes.Delay object that will\n  invoke the body only the first time it is forced (with force or deref/@), and\n  will cache the result and return it on all subsequent force\n  calls. See also - realized?",
 		},
 		Keyword{
 			hash: 1196942594,
@@ -122433,7 +122433,7 @@ var arrayMap_NUM_644 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "returns true if x is a Delay created with delay",
+			S: "returns true if x is a coretypes.Delay created with delay",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -172727,7 +172727,7 @@ var arrayMap_NUM_762 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "If x is a Delay, returns the (possibly cached) value of its expression, else returns x",
+			S: "If x is a coretypes.Delay, returns the (possibly cached) value of its expression, else returns x",
 		},
 		Keyword{
 			hash: 3376861428,
