@@ -123,11 +123,11 @@ func (e *transitEncoder) encode(obj Object, asKey bool) interface{} {
 		return v.I
 	case coretypes.Double:
 		return v.D
-	case *BigInt:
+	case *coretypes.BigInt:
 		return e.cacheString("~i"+v.BigInt().String(), asKey)
-	case *BigFloat:
+	case *coretypes.BigFloat:
 		return e.cacheString("~f"+v.BigFloat().Text('g', -1), asKey)
-	case *Ratio:
+	case *coretypes.Ratio:
 		return e.cacheString("~r"+v.Ratio().String(), asKey)
 	case String:
 		return e.cacheString(transitEncodeString(v.S), asKey)

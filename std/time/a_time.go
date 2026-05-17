@@ -9,11 +9,11 @@ import (
 )
 
 var ansi_c_ String
-var hour_ *BigInt
+var hour_ *coretypes.BigInt
 var kitchen_ String
 var microsecond_ coretypes.Int
 var millisecond_ coretypes.Int
-var minute_ *BigInt
+var minute_ *coretypes.BigInt
 var nanosecond_ coretypes.Int
 var rfc1123_ String
 var rfc1123_z_ String
