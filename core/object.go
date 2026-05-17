@@ -1650,7 +1650,7 @@ func IsSpecialSymbol(obj Object) bool {
 }
 
 func MakeMeta(arglists Seq, docstring string, added string) *ArrayMap {
-	res := EmptyArrayMap()
+	res := collectionConstruction.NewEmptyArrayMap()
 	if arglists != nil {
 		res.Add(KEYWORDS.arglist, arglists)
 	}
