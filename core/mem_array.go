@@ -34,12 +34,12 @@ type WasmArray struct {
 	dtype  byte // 0 = f64, 1 = i64
 }
 
-func (a *WasmArray) ToString(escape bool) string           { return "#<wasm-array>" }
-func (a *WasmArray) Equals(other interface{}) bool         { return a == other }
-func (a *WasmArray) GetInfo() *coretypes.ObjectInfo        { return nil }
-func (a *WasmArray) WithInfo(*coretypes.ObjectInfo) Object { return a }
-func (a *WasmArray) GetType() *coretypes.Type              { return TYPE.ArrayVector }
-func (a *WasmArray) Hash() uint32                          { return 0 }
+func (a *WasmArray) ToString(escape bool) string                     { return "#<wasm-array>" }
+func (a *WasmArray) Equals(other interface{}) bool                   { return a == other }
+func (a *WasmArray) GetInfo() *coretypes.ObjectInfo                  { return nil }
+func (a *WasmArray) WithInfo(*coretypes.ObjectInfo) coretypes.Object { return a }
+func (a *WasmArray) GetType() *coretypes.Type                        { return TYPE.ArrayVector }
+func (a *WasmArray) Hash() uint32                                    { return 0 }
 
 // GetF64 reads a float64 at index i.
 func (a *WasmArray) GetF64(i int) float64 {
@@ -177,7 +177,7 @@ func MakeI64Array(size int) *WasmArray {
 
 // These can be registered as Joker procs for scripting access.
 
-var procMakeF64Array = func(args []Object) Object {
+var procMakeF64Array = func(args []coretypes.Object) coretypes.Object {
 	n := EnsureArgIsNumber(args, 0).Int().I
 	arr := MakeF64Array(n)
 	if arr == nil {
@@ -186,7 +186,7 @@ var procMakeF64Array = func(args []Object) Object {
 	return arr
 }
 
-var procAgetF64 = func(args []Object) Object {
+var procAgetF64 = func(args []coretypes.Object) coretypes.Object {
 	arr, ok := args[0].(*WasmArray)
 	if !ok {
 		return NIL
@@ -195,7 +195,7 @@ var procAgetF64 = func(args []Object) Object {
 	return coretypes.Double{D: arr.GetF64(i)}
 }
 
-var procAsetF64 = func(args []Object) Object {
+var procAsetF64 = func(args []coretypes.Object) coretypes.Object {
 	arr, ok := args[0].(*WasmArray)
 	if !ok {
 		return NIL
@@ -208,7 +208,7 @@ var procAsetF64 = func(args []Object) Object {
 	return arr
 }
 
-var procArrayLength = func(args []Object) Object {
+var procArrayLength = func(args []coretypes.Object) coretypes.Object {
 	arr, ok := args[0].(*WasmArray)
 	if !ok {
 		return NIL

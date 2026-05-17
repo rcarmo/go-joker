@@ -3979,7 +3979,7 @@ var KEYWORDS Keywords = Keywords{
 	},
 }
 var arrayMap_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4011,7 +4011,7 @@ var ty_Associative coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Associative)(nil)).Elem(),
 }
 var arrayMap_NUM_2 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4043,7 +4043,7 @@ var ty_Callable coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Callable)(nil)).Elem(),
 }
 var arrayMap_NUM_3 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4075,7 +4075,7 @@ var ty_Collection coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Collection)(nil)).Elem(),
 }
 var arrayMap_NUM_4 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4107,7 +4107,7 @@ var ty_Comparable coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Comparable)(nil)).Elem(),
 }
 var arrayMap_NUM_5 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4139,7 +4139,7 @@ var ty_Comparator coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Comparator)(nil)).Elem(),
 }
 var arrayMap_NUM_6 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4171,7 +4171,7 @@ var ty_Counted coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Counted)(nil)).Elem(),
 }
 var arrayMap_NUM_7 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4203,7 +4203,7 @@ var ty_CountedIndexed coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.CountedIndexed)(nil)).Elem(),
 }
 var arrayMap_NUM_8 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4235,7 +4235,7 @@ var ty_Deref coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Deref)(nil)).Elem(),
 }
 var arrayMap_NUM_9 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4267,7 +4267,7 @@ var ty_Channel coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Channel)(nil)),
 }
 var arrayMap_NUM_10 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4299,7 +4299,7 @@ var ty_Error coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Error)(nil)).Elem(),
 }
 var arrayMap_NUM_11 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4331,7 +4331,7 @@ var ty_Gettable coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Gettable)(nil)).Elem(),
 }
 var arrayMap_NUM_12 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4363,7 +4363,7 @@ var ty_Indexed coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Indexed)(nil)).Elem(),
 }
 var arrayMap_NUM_13 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4395,7 +4395,7 @@ var ty_IOReader coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*io.Reader)(nil)).Elem(),
 }
 var arrayMap_NUM_14 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4427,7 +4427,7 @@ var ty_IOWriter coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*io.Writer)(nil)).Elem(),
 }
 var arrayMap_NUM_15 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4459,7 +4459,7 @@ var ty_KVReduce coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.KVReduce)(nil)).Elem(),
 }
 var arrayMap_NUM_16 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4491,7 +4491,7 @@ var ty_Reduce coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Reduce)(nil)).Elem(),
 }
 var arrayMap_NUM_17 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4523,7 +4523,7 @@ var ty_Map coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Map)(nil)).Elem(),
 }
 var arrayMap_NUM_18 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4555,7 +4555,7 @@ var ty_Meta coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Meta)(nil)).Elem(),
 }
 var arrayMap_NUM_19 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4587,7 +4587,7 @@ var ty_Named coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Named)(nil)).Elem(),
 }
 var arrayMap_NUM_20 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4619,7 +4619,7 @@ var ty_Number coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Number)(nil)).Elem(),
 }
 var arrayMap_NUM_21 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4651,7 +4651,7 @@ var ty_Pending coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Pending)(nil)).Elem(),
 }
 var arrayMap_NUM_22 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4683,7 +4683,7 @@ var ty_Ref coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Ref)(nil)).Elem(),
 }
 var arrayMap_NUM_23 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4715,7 +4715,7 @@ var ty_Reversible coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Reversible)(nil)).Elem(),
 }
 var arrayMap_NUM_24 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4747,7 +4747,7 @@ var ty_Seq coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Seq)(nil)).Elem(),
 }
 var arrayMap_NUM_25 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4779,7 +4779,7 @@ var ty_Seqable coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Seqable)(nil)).Elem(),
 }
 var arrayMap_NUM_26 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4811,7 +4811,7 @@ var ty_Sequential coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Sequential)(nil)).Elem(),
 }
 var arrayMap_NUM_27 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4843,7 +4843,7 @@ var ty_Set coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Set)(nil)).Elem(),
 }
 var arrayMap_NUM_28 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4875,7 +4875,7 @@ var ty_Stack coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Stack)(nil)).Elem(),
 }
 var arrayMap_NUM_29 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4907,7 +4907,7 @@ var ty_ArrayMap coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*ArrayMap)(nil)),
 }
 var arrayMap_NUM_30 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4939,7 +4939,7 @@ var ty_ArrayMapSeq coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*ArrayMapSeq)(nil)),
 }
 var arrayMap_NUM_31 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -4971,7 +4971,7 @@ var ty_ArrayNodeSeq coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*ArrayNodeSeq)(nil)),
 }
 var arrayMap_NUM_32 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5003,7 +5003,7 @@ var ty_ArraySeq coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*ArraySeq)(nil)),
 }
 var arrayMap_NUM_33 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5035,7 +5035,7 @@ var ty_MapSet coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*MapSet)(nil)),
 }
 var arrayMap_NUM_34 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5067,7 +5067,7 @@ var ty_Atom coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Atom)(nil)),
 }
 var arrayMap_NUM_35 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5099,7 +5099,7 @@ var ty_BigFloat coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.BigFloat)(nil)),
 }
 var arrayMap_NUM_36 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5131,7 +5131,7 @@ var ty_BigInt coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.BigInt)(nil)),
 }
 var arrayMap_NUM_37 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5163,7 +5163,7 @@ var ty_Boolean coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Boolean)(nil)).Elem(),
 }
 var arrayMap_NUM_38 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5195,7 +5195,7 @@ var ty_Time coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Time)(nil)).Elem(),
 }
 var arrayMap_NUM_39 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5227,7 +5227,7 @@ var ty_Buffer coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Buffer)(nil)),
 }
 var arrayMap_NUM_40 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5259,7 +5259,7 @@ var ty_Char coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Char)(nil)).Elem(),
 }
 var arrayMap_NUM_41 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5291,7 +5291,7 @@ var ty_ConsSeq coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*ConsSeq)(nil)),
 }
 var arrayMap_NUM_42 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5323,7 +5323,7 @@ var ty_Delay coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Delay)(nil)),
 }
 var arrayMap_NUM_43 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5355,7 +5355,7 @@ var ty_Double coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Double)(nil)).Elem(),
 }
 var arrayMap_NUM_44 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5387,7 +5387,7 @@ var ty_EvalError coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*EvalError)(nil)),
 }
 var arrayMap_NUM_45 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5419,7 +5419,7 @@ var ty_ExInfo coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*ExInfo)(nil)),
 }
 var arrayMap_NUM_46 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5451,7 +5451,7 @@ var ty_Fn coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Fn)(nil)),
 }
 var arrayMap_NUM_47 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5483,7 +5483,7 @@ var ty_File coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*File)(nil)),
 }
 var arrayMap_NUM_48 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5515,7 +5515,7 @@ var ty_BufferedReader coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*BufferedReader)(nil)),
 }
 var arrayMap_NUM_49 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5547,7 +5547,7 @@ var ty_HashMap coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*HashMap)(nil)),
 }
 var arrayMap_NUM_50 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5579,7 +5579,7 @@ var ty_Int coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Int)(nil)).Elem(),
 }
 var arrayMap_NUM_51 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5611,7 +5611,7 @@ var ty_Keyword coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Keyword)(nil)).Elem(),
 }
 var arrayMap_NUM_52 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5643,7 +5643,7 @@ var ty_LazySeq coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*LazySeq)(nil)),
 }
 var arrayMap_NUM_53 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5675,7 +5675,7 @@ var ty_List coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*List)(nil)),
 }
 var arrayMap_NUM_54 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5707,7 +5707,7 @@ var ty_MappingSeq coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*MappingSeq)(nil)),
 }
 var arrayMap_NUM_55 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5739,7 +5739,7 @@ var ty_Namespace coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Namespace)(nil)),
 }
 var arrayMap_NUM_56 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5771,7 +5771,7 @@ var ty_Nil coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Nil)(nil)).Elem(),
 }
 var arrayMap_NUM_57 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5803,7 +5803,7 @@ var ty_NodeSeq coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*NodeSeq)(nil)),
 }
 var arrayMap_NUM_58 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5835,7 +5835,7 @@ var ty_ParseError coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*ParseError)(nil)),
 }
 var arrayMap_NUM_59 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5867,7 +5867,7 @@ var ty_Proc coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Proc)(nil)),
 }
 var arrayMap_NUM_60 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5899,7 +5899,7 @@ var ty_Ratio coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Ratio)(nil)),
 }
 var arrayMap_NUM_61 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5931,7 +5931,7 @@ var ty_RecurBindings coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.RecurBindings)(nil)),
 }
 var arrayMap_NUM_62 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5963,7 +5963,7 @@ var ty_Regex coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Regex)(nil)),
 }
 var arrayMap_NUM_63 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -5995,7 +5995,7 @@ var ty_String coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.String)(nil)).Elem(),
 }
 var arrayMap_NUM_64 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6027,7 +6027,7 @@ var ty_Symbol coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Symbol)(nil)).Elem(),
 }
 var arrayMap_NUM_65 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6059,7 +6059,7 @@ var ty_Type coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*coretypes.Type)(nil)),
 }
 var arrayMap_NUM_66 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6091,7 +6091,7 @@ var ty_Var coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Var)(nil)),
 }
 var arrayMap_NUM_67 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6123,7 +6123,7 @@ var ty_Vector coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Vector)(nil)),
 }
 var arrayMap_NUM_68 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6155,7 +6155,7 @@ var ty_Vec coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*Vec)(nil)).Elem(),
 }
 var arrayMap_NUM_69 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6187,7 +6187,7 @@ var ty_ArrayVector coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*ArrayVector)(nil)),
 }
 var arrayMap_NUM_70 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6219,7 +6219,7 @@ var ty_VectorRSeq coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*VectorRSeq)(nil)),
 }
 var arrayMap_NUM_71 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6251,7 +6251,7 @@ var ty_VectorSeq coretypes.Type = coretypes.Type{
 	ReflectType: reflect.TypeOf((*VectorSeq)(nil)),
 }
 var arrayMap_NUM_72 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6440,7 +6440,7 @@ func init() {
 var LINTER_TYPES map[*string]bool = map[*string]bool{}
 var GLOBAL_ENV *Env
 var arrayMap_NUM_73 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6519,7 +6519,7 @@ var list_NUM_1 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_74 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -6564,7 +6564,7 @@ var arrayMap_NUM_74 ArrayMap = ArrayMap{
 // package std/html defines an init() function that sets this to the same as its local var escape_:
 var STD_thunk_html_escape__var ProcFn
 
-func STD_thunk_html_escape_(a []Object) Object {
+func STD_thunk_html_escape_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_html_escape__var(a)
 }
 
@@ -6633,7 +6633,7 @@ var list_NUM_2 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_75 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -6678,7 +6678,7 @@ var arrayMap_NUM_75 ArrayMap = ArrayMap{
 // package std/html defines an init() function that sets this to the same as its local var unescape_:
 var STD_thunk_html_unescape__var ProcFn
 
-func STD_thunk_html_unescape_(a []Object) Object {
+func STD_thunk_html_unescape_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_html_unescape__var(a)
 }
 
@@ -6714,7 +6714,7 @@ var ns_joker_DOT_html Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_76 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -6780,7 +6780,7 @@ var list_NUM_3 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_77 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -6825,7 +6825,7 @@ var arrayMap_NUM_77 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var isblank_:
 var STD_thunk_string_isblank__var ProcFn
 
-func STD_thunk_string_isblank_(a []Object) Object {
+func STD_thunk_string_isblank_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_isblank__var(a)
 }
 
@@ -6893,7 +6893,7 @@ var list_NUM_4 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_78 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -6938,7 +6938,7 @@ var arrayMap_NUM_78 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var capitalize_:
 var STD_thunk_string_capitalize__var ProcFn
 
-func STD_thunk_string_capitalize_(a []Object) Object {
+func STD_thunk_string_capitalize_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_capitalize__var(a)
 }
 
@@ -7009,7 +7009,7 @@ var list_NUM_5 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_79 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -7054,7 +7054,7 @@ var arrayMap_NUM_79 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var isends_with_:
 var STD_thunk_string_isends_with__var ProcFn
 
-func STD_thunk_string_isends_with_(a []Object) Object {
+func STD_thunk_string_isends_with_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_isends_with__var(a)
 }
 
@@ -7125,7 +7125,7 @@ var list_NUM_6 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_80 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -7170,7 +7170,7 @@ var arrayMap_NUM_80 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var escape_:
 var STD_thunk_string_escape__var ProcFn
 
-func STD_thunk_string_escape_(a []Object) Object {
+func STD_thunk_string_escape_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_escape__var(a)
 }
 
@@ -7241,7 +7241,7 @@ var list_NUM_7 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_81 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -7286,7 +7286,7 @@ var arrayMap_NUM_81 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var isincludes_:
 var STD_thunk_string_isincludes__var ProcFn
 
-func STD_thunk_string_isincludes_(a []Object) Object {
+func STD_thunk_string_isincludes_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_isincludes__var(a)
 }
 
@@ -7412,7 +7412,7 @@ var list_NUM_8 List = List{
 	rest:  &list_NUM_9,
 }
 var arrayMap_NUM_82 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -7450,7 +7450,7 @@ var arrayMap_NUM_82 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var index_of_:
 var STD_thunk_string_index_of__var ProcFn
 
-func STD_thunk_string_index_of_(a []Object) Object {
+func STD_thunk_string_index_of_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_index_of__var(a)
 }
 
@@ -7569,7 +7569,7 @@ var list_NUM_10 List = List{
 	rest:  &list_NUM_11,
 }
 var arrayMap_NUM_83 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -7614,7 +7614,7 @@ var arrayMap_NUM_83 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var join_:
 var STD_thunk_string_join__var ProcFn
 
-func STD_thunk_string_join_(a []Object) Object {
+func STD_thunk_string_join_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_join__var(a)
 }
 
@@ -7740,7 +7740,7 @@ var list_NUM_12 List = List{
 	rest:  &list_NUM_13,
 }
 var arrayMap_NUM_84 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -7778,7 +7778,7 @@ var arrayMap_NUM_84 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var last_index_of_:
 var STD_thunk_string_last_index_of__var ProcFn
 
-func STD_thunk_string_last_index_of_(a []Object) Object {
+func STD_thunk_string_last_index_of_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_last_index_of__var(a)
 }
 
@@ -7846,7 +7846,7 @@ var list_NUM_14 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_85 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -7891,7 +7891,7 @@ var arrayMap_NUM_85 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var lower_case_:
 var STD_thunk_string_lower_case__var ProcFn
 
-func STD_thunk_string_lower_case_(a []Object) Object {
+func STD_thunk_string_lower_case_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_lower_case__var(a)
 }
 
@@ -7965,7 +7965,7 @@ var list_NUM_15 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_86 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -8010,7 +8010,7 @@ var arrayMap_NUM_86 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var pad_left_:
 var STD_thunk_string_pad_left__var ProcFn
 
-func STD_thunk_string_pad_left_(a []Object) Object {
+func STD_thunk_string_pad_left_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_pad_left__var(a)
 }
 
@@ -8084,7 +8084,7 @@ var list_NUM_16 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_87 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -8129,7 +8129,7 @@ var arrayMap_NUM_87 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var pad_right_:
 var STD_thunk_string_pad_right__var ProcFn
 
-func STD_thunk_string_pad_right_(a []Object) Object {
+func STD_thunk_string_pad_right_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_pad_right__var(a)
 }
 
@@ -8197,7 +8197,7 @@ var list_NUM_17 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_88 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -8242,7 +8242,7 @@ var arrayMap_NUM_88 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var re_quote_:
 var STD_thunk_string_re_quote__var ProcFn
 
-func STD_thunk_string_re_quote_(a []Object) Object {
+func STD_thunk_string_re_quote_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_re_quote__var(a)
 }
 
@@ -8316,7 +8316,7 @@ var list_NUM_18 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_89 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -8361,7 +8361,7 @@ var arrayMap_NUM_89 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var replace_:
 var STD_thunk_string_replace__var ProcFn
 
-func STD_thunk_string_replace_(a []Object) Object {
+func STD_thunk_string_replace_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_replace__var(a)
 }
 
@@ -8436,7 +8436,7 @@ var list_NUM_19 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_90 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -8481,7 +8481,7 @@ var arrayMap_NUM_90 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var replace_first_:
 var STD_thunk_string_replace_first__var ProcFn
 
-func STD_thunk_string_replace_first_(a []Object) Object {
+func STD_thunk_string_replace_first_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_replace_first__var(a)
 }
 
@@ -8549,7 +8549,7 @@ var list_NUM_20 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_91 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -8594,7 +8594,7 @@ var arrayMap_NUM_91 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var reverse_:
 var STD_thunk_string_reverse__var ProcFn
 
-func STD_thunk_string_reverse_(a []Object) Object {
+func STD_thunk_string_reverse_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_reverse__var(a)
 }
 
@@ -8719,7 +8719,7 @@ var list_NUM_21 List = List{
 	rest:  &list_NUM_22,
 }
 var arrayMap_NUM_92 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -8757,7 +8757,7 @@ var arrayMap_NUM_92 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var split_:
 var STD_thunk_string_split__var ProcFn
 
-func STD_thunk_string_split_(a []Object) Object {
+func STD_thunk_string_split_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_split__var(a)
 }
 
@@ -8826,7 +8826,7 @@ var list_NUM_23 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_93 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -8864,7 +8864,7 @@ var arrayMap_NUM_93 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var split_lines_:
 var STD_thunk_string_split_lines__var ProcFn
 
-func STD_thunk_string_split_lines_(a []Object) Object {
+func STD_thunk_string_split_lines_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_split_lines__var(a)
 }
 
@@ -8935,7 +8935,7 @@ var list_NUM_24 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_94 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -8980,7 +8980,7 @@ var arrayMap_NUM_94 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var isstarts_with_:
 var STD_thunk_string_isstarts_with__var ProcFn
 
-func STD_thunk_string_isstarts_with_(a []Object) Object {
+func STD_thunk_string_isstarts_with_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_isstarts_with__var(a)
 }
 
@@ -9048,7 +9048,7 @@ var list_NUM_25 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_95 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -9093,7 +9093,7 @@ var arrayMap_NUM_95 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var trim_:
 var STD_thunk_string_trim__var ProcFn
 
-func STD_thunk_string_trim_(a []Object) Object {
+func STD_thunk_string_trim_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_trim__var(a)
 }
 
@@ -9161,7 +9161,7 @@ var list_NUM_26 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_96 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -9206,7 +9206,7 @@ var arrayMap_NUM_96 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var trim_left_:
 var STD_thunk_string_trim_left__var ProcFn
 
-func STD_thunk_string_trim_left_(a []Object) Object {
+func STD_thunk_string_trim_left_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_trim_left__var(a)
 }
 
@@ -9274,7 +9274,7 @@ var list_NUM_27 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_97 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -9319,7 +9319,7 @@ var arrayMap_NUM_97 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var trim_newline_:
 var STD_thunk_string_trim_newline__var ProcFn
 
-func STD_thunk_string_trim_newline_(a []Object) Object {
+func STD_thunk_string_trim_newline_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_trim_newline__var(a)
 }
 
@@ -9387,7 +9387,7 @@ var list_NUM_28 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_98 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -9432,7 +9432,7 @@ var arrayMap_NUM_98 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var trim_right_:
 var STD_thunk_string_trim_right__var ProcFn
 
-func STD_thunk_string_trim_right_(a []Object) Object {
+func STD_thunk_string_trim_right_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_trim_right__var(a)
 }
 
@@ -9500,7 +9500,7 @@ var list_NUM_29 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_99 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -9545,7 +9545,7 @@ var arrayMap_NUM_99 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var triml_:
 var STD_thunk_string_triml__var ProcFn
 
-func STD_thunk_string_triml_(a []Object) Object {
+func STD_thunk_string_triml_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_triml__var(a)
 }
 
@@ -9613,7 +9613,7 @@ var list_NUM_30 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_100 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -9658,7 +9658,7 @@ var arrayMap_NUM_100 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var trimr_:
 var STD_thunk_string_trimr__var ProcFn
 
-func STD_thunk_string_trimr_(a []Object) Object {
+func STD_thunk_string_trimr_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_trimr__var(a)
 }
 
@@ -9727,7 +9727,7 @@ var list_NUM_31 List = List{
 	rest:  &list_POS_joker_DOT_core__3207_19__3207_20_NUM_1,
 }
 var arrayMap_NUM_101 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -9772,7 +9772,7 @@ var arrayMap_NUM_101 ArrayMap = ArrayMap{
 // package std/string defines an init() function that sets this to the same as its local var upper_case_:
 var STD_thunk_string_upper_case__var ProcFn
 
-func STD_thunk_string_upper_case_(a []Object) Object {
+func STD_thunk_string_upper_case_(a []coretypes.Object) coretypes.Object {
 	return STD_thunk_string_upper_case__var(a)
 }
 
@@ -9840,7 +9840,7 @@ var objectInfo_POS_joker_DOT_core__743_1__751_28 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_103 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -9903,7 +9903,7 @@ var objectInfo_POS_joker_DOT_core__737_5__737_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_105 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -9937,7 +9937,7 @@ var objectInfo_POS_joker_DOT_core__738_5__738_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_106 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -9966,7 +9966,7 @@ var objectInfo_POS_joker_DOT_core__738_14__738_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_107 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -9980,7 +9980,7 @@ var arrayVector_POS_joker_DOT_core__738_12__738_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_106,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_107,
@@ -10008,7 +10008,7 @@ var objectInfo_POS_joker_DOT_core__739_5__739_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_108 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -10037,7 +10037,7 @@ var objectInfo_POS_joker_DOT_core__739_14__739_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_109 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -10066,7 +10066,7 @@ var objectInfo_POS_joker_DOT_core__739_24__739_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_110 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -10080,7 +10080,7 @@ var arrayVector_POS_joker_DOT_core__739_12__739_32_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_108,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_109,
@@ -10114,7 +10114,7 @@ var objectInfo_POS_joker_DOT_core__740_5__740_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_111 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -10143,7 +10143,7 @@ var objectInfo_POS_joker_DOT_core__740_14__740_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_112 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -10172,7 +10172,7 @@ var objectInfo_POS_joker_DOT_core__740_24__740_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_113 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -10204,7 +10204,7 @@ var arrayVector_POS_joker_DOT_core__740_12__740_39_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_111,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_112,
@@ -10226,7 +10226,7 @@ var arrayVector_POS_joker_DOT_core__740_12__740_39_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__737_12__737_13_NUM_1,
 		&arrayVector_POS_joker_DOT_core__738_12__738_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__739_12__739_32_NUM_1,
@@ -10273,7 +10273,7 @@ var objectInfo_POS_joker_DOT_core__736_11__736_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_104 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -10395,7 +10395,7 @@ var objectInfo_POS_joker_DOT_core__264_5__264_8 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_115 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -10415,7 +10415,7 @@ var objectInfo_POS_joker_DOT_core__264_12__264_12 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__264_3__264_13_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_115,
@@ -10428,7 +10428,7 @@ var arrayVector_POS_joker_DOT_core__264_3__264_13_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_2 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__264_3__264_13_NUM_1,
 	},
 }
@@ -10463,7 +10463,7 @@ var objectInfo_POS_joker_DOT_core__263_11__263_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_114 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -10519,7 +10519,7 @@ var arrayMap_NUM_114 ArrayMap = ArrayMap{
 	},
 }
 var arrayMap_NUM_116 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2982761421,
 			name: &s_private,
@@ -10833,7 +10833,7 @@ var objectInfo_POS_joker_DOT_core__692_6__692_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_118 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -10853,7 +10853,7 @@ var objectInfo_POS_joker_DOT_core__692_17__692_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__692_4__692_21_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_118,
@@ -10893,7 +10893,7 @@ var objectInfo_POS_joker_DOT_core__699_6__699_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_119 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -10922,7 +10922,7 @@ var objectInfo_POS_joker_DOT_core__699_21__699_24 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__699_4__699_25_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_119,
@@ -10938,7 +10938,7 @@ var arrayVector_POS_joker_DOT_core__699_4__699_25_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_3 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__692_4__692_21_NUM_1,
 		&arrayVector_POS_joker_DOT_core__699_4__699_25_NUM_1,
 	},
@@ -10974,7 +10974,7 @@ var objectInfo_POS_joker_DOT_core__691_11__691_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_117 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -11121,7 +11121,7 @@ var objectInfo_POS_joker_DOT_core__111_23__111_23 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__111_20__111_24_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_c,
 		},
@@ -11480,7 +11480,7 @@ var objectInfo_POS_joker_DOT_core__104_21__104_24 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__104_20__104_25_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -11749,7 +11749,7 @@ var objectInfo_POS_joker_DOT_core__45_21__45_24 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__45_20__45_25_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -11797,7 +11797,7 @@ var objectInfo_POS_joker_DOT_core__48_15__48_19 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_120 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -12010,7 +12010,7 @@ var objectInfo_POS_joker_DOT_core__51_21__51_24 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__51_20__51_25_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -12992,7 +12992,7 @@ var objectInfo_POS_joker_DOT_core__3630_15__3630_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_121 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -13107,7 +13107,7 @@ var objectInfo_POS_joker_DOT_core__3634_15__3634_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_122 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -13222,7 +13222,7 @@ var objectInfo_POS_joker_DOT_core__3638_15__3638_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_123 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -13283,7 +13283,7 @@ var var_NS_joker_DOT_core_NAME__STAR_3_POS_joker_DOT_core_3637_1__3639_5 Var = V
 	ns: nil, /* joker.core: &ns_joker_DOT_core */
 }
 var arrayMap_NUM_124 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -13408,7 +13408,7 @@ var objectInfo_POS_joker_DOT_core__3760_19__3760_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_125 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
@@ -13503,7 +13503,7 @@ var objectInfo_POS_joker_DOT_core__3754_19__3754_37 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_126 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
@@ -13612,7 +13612,7 @@ var objectInfo_POS_joker_DOT_core__3199_11__3199_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_127 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -13753,7 +13753,7 @@ var objectInfo_POS_joker_DOT_core__3642_15__3642_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_129 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -13850,7 +13850,7 @@ var objectInfo_POS_joker_DOT_core__3796_19__3796_23 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_130 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
@@ -13927,7 +13927,7 @@ var objectInfo_POS_joker_DOT_core__3742_19__3742_24 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_131 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
@@ -14022,7 +14022,7 @@ var objectInfo_POS_joker_DOT_core__2113_15__2113_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_132 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -14145,7 +14145,7 @@ var objectInfo_POS_joker_DOT_core__3784_19__3784_22 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_133 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
@@ -14186,7 +14186,7 @@ var var_NS_joker_DOT_core_NAME__STAR_in_STAR_ Var = Var{
 	ns: nil, /* joker.core: &ns_joker_DOT_core */
 }
 var arrayMap_NUM_134 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -14216,7 +14216,7 @@ var arrayMap_NUM_134 ArrayMap = ArrayMap{
 	},
 }
 var arrayMap_NUM_135 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 14102651,
 			name: &s_major,
@@ -14252,7 +14252,7 @@ var var_NS_joker_DOT_core_NAME__STAR_joker_DASH_version_STAR_ Var = Var{
 	ns: nil, /* joker.core: &ns_joker_DOT_core */
 }
 var arrayMap_NUM_136 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -14295,7 +14295,7 @@ var var_NS_joker_DOT_core_NAME__STAR_linter_DASH_config_STAR_ Var = Var{
 	ns: nil, /* joker.core: &ns_joker_DOT_core */
 }
 var arrayMap_NUM_138 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -14409,7 +14409,7 @@ var objectInfo_POS_joker_DOT_core__3809_19__3809_31 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_139 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
@@ -14525,7 +14525,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__3_14__3_18 coretypes.ObjectInfo = co
 	},
 }
 var arrayMap_POS_joker_DOT_tools_DOT_cli__1_6__3_19_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
@@ -14642,7 +14642,7 @@ var objectInfo_POS_joker_DOT_test__233_14__233_18 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_POS_joker_DOT_test__17_6__233_19_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
@@ -14739,7 +14739,7 @@ var objectInfo_POS_joker_DOT_template__27_15__27_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_POS_joker_DOT_template__25_6__27_20_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -14836,7 +14836,7 @@ var objectInfo_POS_joker_DOT_walk__33_17__33_21 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_POS_joker_DOT_walk__22_4__33_22_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
@@ -14933,7 +14933,7 @@ var objectInfo_POS_joker_DOT_set__11_15__11_19 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayMap_POS_joker_DOT_set__9_6__11_20_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -15012,7 +15012,7 @@ var objectInfo_POS_joker_DOT_repl__3_12__3_16 coretypes.ObjectInfo = coretypes.O
 	},
 }
 var arrayMap_POS_joker_DOT_repl__2_4__3_17_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -15075,7 +15075,7 @@ var objectInfo_POS_joker_DOT_hiccup__5_11__5_15 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_140 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -15129,7 +15129,7 @@ var objectInfo_POS_joker_DOT_pprint__3_11__3_15 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_141 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -15201,7 +15201,7 @@ var objectInfo_POS_joker_DOT_better_DASH_cond__4_11__4_15 coretypes.ObjectInfo =
 	},
 }
 var arrayMap_NUM_142 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -15394,7 +15394,7 @@ var objectInfo_POS_joker_DOT_core__3185_11__3185_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_143 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -15522,7 +15522,7 @@ var objectInfo_POS_joker_DOT_core__3748_19__3748_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_144 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
@@ -15599,7 +15599,7 @@ var objectInfo_POS_joker_DOT_core__3780_19__3780_22 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_145 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
@@ -15704,7 +15704,7 @@ var objectInfo_POS_joker_DOT_core__3209_11__3209_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_146 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -15824,7 +15824,7 @@ var objectInfo_POS_joker_DOT_core__3790_19__3790_23 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_147 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
@@ -15928,7 +15928,7 @@ var objectInfo_POS_joker_DOT_core__3204_11__3204_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_148 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -16047,7 +16047,7 @@ var objectInfo_POS_joker_DOT_core__3802_19__3802_34 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_149 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
@@ -16091,7 +16091,7 @@ var var_NS_joker_DOT_core_NAME__STAR_print_DASH_readably_STAR_ Var = Var{
 	ns: nil, /* joker.core: &ns_joker_DOT_core */
 }
 var arrayMap_NUM_150 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -16168,7 +16168,7 @@ var objectInfo_POS_joker_DOT_core__727_5__727_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_152 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -16202,7 +16202,7 @@ var objectInfo_POS_joker_DOT_core__728_5__728_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_153 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -16231,7 +16231,7 @@ var objectInfo_POS_joker_DOT_core__728_14__728_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_154 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -16245,7 +16245,7 @@ var arrayVector_POS_joker_DOT_core__728_12__728_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_153,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_154,
@@ -16273,7 +16273,7 @@ var objectInfo_POS_joker_DOT_core__729_5__729_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_155 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -16302,7 +16302,7 @@ var objectInfo_POS_joker_DOT_core__729_14__729_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_156 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -16331,7 +16331,7 @@ var objectInfo_POS_joker_DOT_core__729_24__729_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_157 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -16345,7 +16345,7 @@ var arrayVector_POS_joker_DOT_core__729_12__729_32_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_155,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_156,
@@ -16379,7 +16379,7 @@ var objectInfo_POS_joker_DOT_core__730_5__730_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_158 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -16408,7 +16408,7 @@ var objectInfo_POS_joker_DOT_core__730_14__730_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_159 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -16437,7 +16437,7 @@ var objectInfo_POS_joker_DOT_core__730_24__730_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_160 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -16469,7 +16469,7 @@ var arrayVector_POS_joker_DOT_core__730_12__730_39_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_158,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_159,
@@ -16491,7 +16491,7 @@ var arrayVector_POS_joker_DOT_core__730_12__730_39_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_5 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__727_12__727_13_NUM_1,
 		&arrayVector_POS_joker_DOT_core__728_12__728_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__729_12__729_32_NUM_1,
@@ -16529,7 +16529,7 @@ var objectInfo_POS_joker_DOT_core__726_11__726_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_151 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -17007,7 +17007,7 @@ var objectInfo_POS_joker_DOT_core__717_5__717_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_162 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17041,7 +17041,7 @@ var objectInfo_POS_joker_DOT_core__718_5__718_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_163 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17070,7 +17070,7 @@ var objectInfo_POS_joker_DOT_core__718_14__718_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_164 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17084,7 +17084,7 @@ var arrayVector_POS_joker_DOT_core__718_12__718_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_163,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_164,
@@ -17112,7 +17112,7 @@ var objectInfo_POS_joker_DOT_core__719_5__719_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_165 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17141,7 +17141,7 @@ var objectInfo_POS_joker_DOT_core__719_14__719_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_166 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17170,7 +17170,7 @@ var objectInfo_POS_joker_DOT_core__719_24__719_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_167 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17184,7 +17184,7 @@ var arrayVector_POS_joker_DOT_core__719_12__719_32_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_165,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_166,
@@ -17218,7 +17218,7 @@ var objectInfo_POS_joker_DOT_core__720_5__720_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_168 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17247,7 +17247,7 @@ var objectInfo_POS_joker_DOT_core__720_14__720_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_169 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17276,7 +17276,7 @@ var objectInfo_POS_joker_DOT_core__720_24__720_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_170 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17308,7 +17308,7 @@ var arrayVector_POS_joker_DOT_core__720_12__720_39_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_168,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_169,
@@ -17330,7 +17330,7 @@ var arrayVector_POS_joker_DOT_core__720_12__720_39_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_6 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__717_12__717_13_NUM_1,
 		&arrayVector_POS_joker_DOT_core__718_12__718_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__719_12__719_32_NUM_1,
@@ -17368,7 +17368,7 @@ var objectInfo_POS_joker_DOT_core__716_11__716_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_161 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -17846,7 +17846,7 @@ var objectInfo_POS_joker_DOT_core__777_5__777_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_172 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17875,7 +17875,7 @@ var objectInfo_POS_joker_DOT_core__777_14__777_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_173 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17889,7 +17889,7 @@ var arrayVector_POS_joker_DOT_core__777_12__777_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_172,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_173,
@@ -17917,7 +17917,7 @@ var objectInfo_POS_joker_DOT_core__778_5__778_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_174 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17946,7 +17946,7 @@ var objectInfo_POS_joker_DOT_core__778_14__778_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_175 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17975,7 +17975,7 @@ var objectInfo_POS_joker_DOT_core__778_24__778_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_176 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -17989,7 +17989,7 @@ var arrayVector_POS_joker_DOT_core__778_12__778_32_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_174,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_175,
@@ -18023,7 +18023,7 @@ var objectInfo_POS_joker_DOT_core__779_5__779_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_177 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18052,7 +18052,7 @@ var objectInfo_POS_joker_DOT_core__779_14__779_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_178 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18081,7 +18081,7 @@ var objectInfo_POS_joker_DOT_core__779_24__779_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_179 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18113,7 +18113,7 @@ var arrayVector_POS_joker_DOT_core__779_12__779_39_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_177,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_178,
@@ -18135,7 +18135,7 @@ var arrayVector_POS_joker_DOT_core__779_12__779_39_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_7 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__777_12__777_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__778_12__778_32_NUM_1,
 		&arrayVector_POS_joker_DOT_core__779_12__779_39_NUM_1,
@@ -18172,7 +18172,7 @@ var objectInfo_POS_joker_DOT_core__776_11__776_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_171 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -18606,7 +18606,7 @@ var objectInfo_POS_joker_DOT_core__767_5__767_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_181 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18635,7 +18635,7 @@ var objectInfo_POS_joker_DOT_core__767_14__767_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_182 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18649,7 +18649,7 @@ var arrayVector_POS_joker_DOT_core__767_12__767_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_181,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_182,
@@ -18677,7 +18677,7 @@ var objectInfo_POS_joker_DOT_core__768_5__768_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_183 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18706,7 +18706,7 @@ var objectInfo_POS_joker_DOT_core__768_14__768_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_184 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18735,7 +18735,7 @@ var objectInfo_POS_joker_DOT_core__768_24__768_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_185 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18749,7 +18749,7 @@ var arrayVector_POS_joker_DOT_core__768_12__768_32_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_183,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_184,
@@ -18783,7 +18783,7 @@ var objectInfo_POS_joker_DOT_core__769_5__769_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_186 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18812,7 +18812,7 @@ var objectInfo_POS_joker_DOT_core__769_14__769_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_187 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18841,7 +18841,7 @@ var objectInfo_POS_joker_DOT_core__769_24__769_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_188 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -18873,7 +18873,7 @@ var arrayVector_POS_joker_DOT_core__769_12__769_39_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_186,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_187,
@@ -18895,7 +18895,7 @@ var arrayVector_POS_joker_DOT_core__769_12__769_39_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_8 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__767_12__767_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__768_12__768_32_NUM_1,
 		&arrayVector_POS_joker_DOT_core__769_12__769_39_NUM_1,
@@ -18932,7 +18932,7 @@ var objectInfo_POS_joker_DOT_core__766_11__766_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_180 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -19443,7 +19443,7 @@ var vector_NUM_32 Vector = Vector{
 	},
 }
 var arrayVector_NUM_9 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_32,
 	},
 }
@@ -19643,7 +19643,7 @@ var objectInfo_POS_joker_DOT_core__391_4__391_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_189 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -19666,14 +19666,14 @@ var arrayVector_POS_joker_DOT_core__391_12__391_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_189,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_10 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__391_12__391_14_NUM_1,
 	},
 }
@@ -20030,14 +20030,14 @@ var objectInfo_POS_joker_DOT_core__367_4__367_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__367_3__367_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_11 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__367_3__367_5_NUM_1,
 	},
 }
@@ -20509,7 +20509,7 @@ var objectInfo_POS_joker_DOT_core__2864_6__2864_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__2864_3__2864_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -20519,7 +20519,7 @@ var arrayVector_POS_joker_DOT_core__2864_3__2864_8_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_12 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2864_3__2864_8_NUM_1,
 	},
 }
@@ -20527,7 +20527,7 @@ var vectorSeq_NUM_11 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_12,
 }
 var arrayMap_NUM_190 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -20658,7 +20658,7 @@ var objectInfo_POS_joker_DOT_core__485_6__485_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_192 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -20687,7 +20687,7 @@ var objectInfo_POS_joker_DOT_core__485_18__485_24 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_193 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -20698,7 +20698,7 @@ var arrayMap_NUM_193 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__485_4__485_30_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_192,
@@ -20741,7 +20741,7 @@ var objectInfo_POS_joker_DOT_core__487_6__487_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_194 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -20779,7 +20779,7 @@ var objectInfo_POS_joker_DOT_core__487_20__487_26 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_195 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -20790,7 +20790,7 @@ var arrayMap_NUM_195 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__487_4__487_32_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_194,
@@ -20836,7 +20836,7 @@ var objectInfo_POS_joker_DOT_core__489_6__489_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_196 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -20883,7 +20883,7 @@ var objectInfo_POS_joker_DOT_core__489_22__489_28 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_197 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -20894,7 +20894,7 @@ var arrayMap_NUM_197 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__489_4__489_34_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_196,
@@ -20943,7 +20943,7 @@ var objectInfo_POS_joker_DOT_core__491_6__491_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_198 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -20999,7 +20999,7 @@ var objectInfo_POS_joker_DOT_core__491_24__491_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_199 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21010,7 +21010,7 @@ var arrayMap_NUM_199 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__491_4__491_36_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_198,
@@ -21062,7 +21062,7 @@ var objectInfo_POS_joker_DOT_core__493_6__493_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_200 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21127,7 +21127,7 @@ var objectInfo_POS_joker_DOT_core__493_27__493_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__493_4__493_31_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_200,
@@ -21155,7 +21155,7 @@ var arrayVector_POS_joker_DOT_core__493_4__493_31_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_13 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__485_4__485_30_NUM_1,
 		&arrayVector_POS_joker_DOT_core__487_4__487_32_NUM_1,
 		&arrayVector_POS_joker_DOT_core__489_4__489_34_NUM_1,
@@ -21194,7 +21194,7 @@ var objectInfo_POS_joker_DOT_core__484_11__484_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_191 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -21417,7 +21417,7 @@ var objectInfo_POS_joker_DOT_core__475_5__475_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_202 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21446,7 +21446,7 @@ var objectInfo_POS_joker_DOT_core__475_11__475_17 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_203 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21460,7 +21460,7 @@ var arrayVector_POS_joker_DOT_core__475_9__475_23_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_202,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_203,
@@ -21488,7 +21488,7 @@ var objectInfo_POS_joker_DOT_core__476_5__476_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_204 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21526,7 +21526,7 @@ var objectInfo_POS_joker_DOT_core__476_13__476_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_205 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21540,7 +21540,7 @@ var arrayVector_POS_joker_DOT_core__476_9__476_25_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_204,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_a,
 		},
@@ -21571,7 +21571,7 @@ var objectInfo_POS_joker_DOT_core__477_5__477_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_206 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21618,7 +21618,7 @@ var objectInfo_POS_joker_DOT_core__477_15__477_21 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_207 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21632,7 +21632,7 @@ var arrayVector_POS_joker_DOT_core__477_9__477_27_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_206,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_a,
 		},
@@ -21666,7 +21666,7 @@ var objectInfo_POS_joker_DOT_core__478_5__478_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_208 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21722,7 +21722,7 @@ var objectInfo_POS_joker_DOT_core__478_17__478_23 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_209 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21736,7 +21736,7 @@ var arrayVector_POS_joker_DOT_core__478_9__478_29_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_208,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_a,
 		},
@@ -21773,7 +21773,7 @@ var objectInfo_POS_joker_DOT_core__479_5__479_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_210 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -21841,7 +21841,7 @@ var arrayVector_POS_joker_DOT_core__479_9__479_24_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_210,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_a,
 		},
@@ -21863,7 +21863,7 @@ var arrayVector_POS_joker_DOT_core__479_9__479_24_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_14 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__475_9__475_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__476_9__476_25_NUM_1,
 		&arrayVector_POS_joker_DOT_core__477_9__477_27_NUM_1,
@@ -21902,7 +21902,7 @@ var objectInfo_POS_joker_DOT_core__474_11__474_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_201 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -22091,7 +22091,7 @@ var objectInfo_POS_joker_DOT_core__19_23__19_25 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__19_20__19_26_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -22685,14 +22685,14 @@ var objectInfo_POS_joker_DOT_core__465_4__465_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_core__465_3__465_11_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_arglist,
 		},
 	},
 }
 var arrayVector_NUM_15 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__465_3__465_11_NUM_1,
 	},
 }
@@ -22718,7 +22718,7 @@ var objectInfo_POS_joker_DOT_core__464_13__464_16 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_211 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -22822,14 +22822,14 @@ var objectInfo_POS_joker_DOT_core__298_4__298_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__298_3__298_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_16 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__298_3__298_5_NUM_1,
 	},
 }
@@ -24507,7 +24507,7 @@ var objectInfo_POS_joker_DOT_core__2859_4__2859_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_213 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -24539,7 +24539,7 @@ var arrayVector_POS_joker_DOT_core__2859_8__2859_13_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_213,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -24549,7 +24549,7 @@ var arrayVector_POS_joker_DOT_core__2859_8__2859_13_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_17 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2859_8__2859_13_NUM_1,
 	},
 }
@@ -24584,7 +24584,7 @@ var objectInfo_POS_joker_DOT_core__2858_11__2858_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_212 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -24685,7 +24685,7 @@ var objectInfo_POS_joker_DOT_core__1370_5__1370_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_215 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -24714,7 +24714,7 @@ var objectInfo_POS_joker_DOT_core__1370_22__1370_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_216 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -24743,7 +24743,7 @@ var objectInfo_POS_joker_DOT_core__1370_35__1370_38 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1370_3__1370_39_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_215,
@@ -24765,7 +24765,7 @@ var arrayVector_POS_joker_DOT_core__1370_3__1370_39_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_18 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1370_3__1370_39_NUM_1,
 	},
 }
@@ -24800,7 +24800,7 @@ var objectInfo_POS_joker_DOT_core__1369_11__1369_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_214 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -24910,14 +24910,14 @@ var objectInfo_POS_joker_DOT_core__1357_4__1357_14 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_core__1357_3__1357_15_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_binding_DASH_map,
 		},
 	},
 }
 var arrayVector_NUM_19 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1357_3__1357_15_NUM_1,
 	},
 }
@@ -24925,7 +24925,7 @@ var vectorSeq_NUM_18 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_19,
 }
 var arrayMap_NUM_217 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -25019,7 +25019,7 @@ var objectInfo_POS_joker_DOT_core__1335_6__1335_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_219 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -25048,7 +25048,7 @@ var objectInfo_POS_joker_DOT_core__1335_22__1335_25 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1335_4__1335_26_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_219,
@@ -25064,7 +25064,7 @@ var arrayVector_POS_joker_DOT_core__1335_4__1335_26_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_20 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1335_4__1335_26_NUM_1,
 	},
 }
@@ -25099,7 +25099,7 @@ var objectInfo_POS_joker_DOT_core__1333_11__1333_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_218 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -25505,7 +25505,7 @@ var objectInfo_POS_joker_DOT_core__78_21__78_21 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__78_20__78_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -25535,7 +25535,7 @@ var objectInfo_POS_joker_DOT_core__79_15__79_19 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_220 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -25609,7 +25609,7 @@ var objectInfo_POS_joker_DOT_core__80_23__80_29 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_221 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -25722,7 +25722,7 @@ var fnExpr_POS_joker_DOT_core_80_10__80_50_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_1 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_second_POS_joker_DOT_core_80_10__80_50_NUM_1 */
 	},
 }
@@ -25964,7 +25964,7 @@ var objectInfo_POS_joker_DOT_core__143_25__143_27 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__143_20__143_28_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_msg,
 		},
@@ -26010,7 +26010,7 @@ var objectInfo_POS_joker_DOT_core__143_39__143_43 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__143_30__143_44_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_msg,
 		},
@@ -26267,7 +26267,7 @@ var objectInfo_POS_joker_DOT_core__399_23__399_24 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__399_20__399_25_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -26482,7 +26482,7 @@ var objectInfo_POS_joker_DOT_core__1323_4__1323_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_223 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -26505,14 +26505,14 @@ var arrayVector_POS_joker_DOT_core__1323_9__1323_11_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_223,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_21 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1323_9__1323_11_NUM_1,
 	},
 }
@@ -26547,7 +26547,7 @@ var objectInfo_POS_joker_DOT_core__1322_11__1322_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_222 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -26657,7 +26657,7 @@ var objectInfo_POS_joker_DOT_core__1055_9__1055_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_core__1055_4__1055_12_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_map,
 		},
@@ -26703,7 +26703,7 @@ var objectInfo_POS_joker_DOT_core__1057_13__1057_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1057_4__1057_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_map,
 		},
@@ -26716,7 +26716,7 @@ var arrayVector_POS_joker_DOT_core__1057_4__1057_22_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_22 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1055_4__1055_12_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1057_4__1057_22_NUM_1,
 	},
@@ -26752,7 +26752,7 @@ var objectInfo_POS_joker_DOT_core__1054_11__1054_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_224 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -27118,7 +27118,7 @@ var objectInfo_POS_joker_DOT_core__165_21__165_23 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__165_20__165_24_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_obj,
 		},
@@ -27763,7 +27763,7 @@ var objectInfo_POS_joker_DOT_core__1349_5__1349_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_226 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -27774,7 +27774,7 @@ var arrayMap_NUM_226 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__1349_3__1349_10_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_226,
@@ -27784,7 +27784,7 @@ var arrayVector_POS_joker_DOT_core__1349_3__1349_10_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_23 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1349_3__1349_10_NUM_1,
 	},
 }
@@ -27819,7 +27819,7 @@ var objectInfo_POS_joker_DOT_core__1348_11__1348_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_225 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -28066,7 +28066,7 @@ var objectInfo_POS_joker_DOT_core__1354_5__1354_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_228 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -28086,7 +28086,7 @@ var objectInfo_POS_joker_DOT_core__1354_11__1354_13 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1354_3__1354_14_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_228,
@@ -28099,7 +28099,7 @@ var arrayVector_POS_joker_DOT_core__1354_3__1354_14_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_24 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1354_3__1354_14_NUM_1,
 	},
 }
@@ -28134,7 +28134,7 @@ var objectInfo_POS_joker_DOT_core__1353_11__1353_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_227 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -28440,7 +28440,7 @@ var objectInfo_POS_joker_DOT_core__149_29__149_31 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__149_20__149_32_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_map,
 		},
@@ -28507,7 +28507,7 @@ var objectInfo_POS_joker_DOT_core__149_49__149_51 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__149_34__149_52_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_map,
 		},
@@ -28572,7 +28572,7 @@ var objectInfo_POS_joker_DOT_core__154_15__154_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_229 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -28646,7 +28646,7 @@ var objectInfo_POS_joker_DOT_core__156_21__156_31 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_230 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -28790,7 +28790,7 @@ var objectInfo_POS_joker_DOT_core__157_13__157_23 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_231 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -29134,7 +29134,7 @@ var objectInfo_POS_joker_DOT_core__99_21__99_21 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__99_20__99_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -29254,7 +29254,7 @@ var objectInfo_POS_joker_DOT_core__102_21__102_27 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_232 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -29367,7 +29367,7 @@ var fnExpr_POS_joker_DOT_core_102_9__102_47_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_2 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_nnext_POS_joker_DOT_core_102_9__102_47_NUM_1 */
 	},
 }
@@ -29639,7 +29639,7 @@ var fnExpr_POS_joker_DOT_core_156_3__163_16_NUM_1 FnExpr = FnExpr{
 	variadic: &fnArityExpr_POS_joker_DOT_core__157_5__163_15_NUM_1,
 }
 var localEnv_NUM_3 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_assoc_POS_joker_DOT_core_156_3__163_16_NUM_1 */
 	},
 }
@@ -30199,7 +30199,7 @@ var objectInfo_POS_joker_DOT_core__279_23__279_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__279_20__279_30_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -30437,7 +30437,7 @@ var objectInfo_POS_joker_DOT_core__2136_4__2136_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_234 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -30469,7 +30469,7 @@ var arrayVector_POS_joker_DOT_core__2136_8__2136_15_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_234,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -30479,7 +30479,7 @@ var arrayVector_POS_joker_DOT_core__2136_8__2136_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_25 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2136_8__2136_15_NUM_1,
 	},
 }
@@ -30514,7 +30514,7 @@ var objectInfo_POS_joker_DOT_core__2135_11__2135_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_233 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -30659,7 +30659,7 @@ var objectInfo_POS_joker_DOT_core__2119_4__2119_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_236 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -30691,7 +30691,7 @@ var arrayVector_POS_joker_DOT_core__2119_8__2119_15_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_236,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -30701,7 +30701,7 @@ var arrayVector_POS_joker_DOT_core__2119_8__2119_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_26 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2119_8__2119_15_NUM_1,
 	},
 }
@@ -30736,7 +30736,7 @@ var objectInfo_POS_joker_DOT_core__2118_11__2118_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_235 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -30893,7 +30893,7 @@ var objectInfo_POS_joker_DOT_core__2080_23__2080_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__2080_20__2080_27_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -31117,7 +31117,7 @@ var objectInfo_POS_joker_DOT_core__2098_4__2098_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_238 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -31133,7 +31133,7 @@ var arrayVector_POS_joker_DOT_core__2098_8__2098_9_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_27 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2098_8__2098_9_NUM_1,
 	},
 }
@@ -31168,7 +31168,7 @@ var objectInfo_POS_joker_DOT_core__2097_11__2097_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_237 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -31369,7 +31369,7 @@ var objectInfo_POS_joker_DOT_core__2105_4__2105_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_240 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -31385,7 +31385,7 @@ var arrayVector_POS_joker_DOT_core__2105_8__2105_9_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_28 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2105_8__2105_9_NUM_1,
 	},
 }
@@ -31420,7 +31420,7 @@ var objectInfo_POS_joker_DOT_core__2104_11__2104_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_239 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -32353,7 +32353,7 @@ var objectInfo_POS_joker_DOT_core__118_21__118_21 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__118_20__118_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -32401,7 +32401,7 @@ var objectInfo_POS_joker_DOT_core__120_15__120_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_241 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -32551,7 +32551,7 @@ var fnExpr_POS_joker_DOT_core_121_8__121_47_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_4 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_seq_Q__POS_joker_DOT_core_121_8__121_47_NUM_1 */
 	},
 }
@@ -32676,7 +32676,7 @@ var objectInfo_POS_joker_DOT_core__171_25__171_25 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__171_20__171_26_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_obj,
 		},
@@ -32727,7 +32727,7 @@ var objectInfo_POS_joker_DOT_core__174_15__174_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_242 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -32874,7 +32874,7 @@ var objectInfo_POS_joker_DOT_core__521_5__521_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_244 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -32908,7 +32908,7 @@ var objectInfo_POS_joker_DOT_core__522_5__522_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_245 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -32937,7 +32937,7 @@ var objectInfo_POS_joker_DOT_core__522_11__522_17 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_246 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -32951,7 +32951,7 @@ var arrayVector_POS_joker_DOT_core__522_9__522_20_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_245,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_246,
@@ -32979,7 +32979,7 @@ var objectInfo_POS_joker_DOT_core__523_5__523_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_247 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -33008,7 +33008,7 @@ var objectInfo_POS_joker_DOT_core__523_11__523_17 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_248 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -33037,7 +33037,7 @@ var objectInfo_POS_joker_DOT_core__523_22__523_28 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_249 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -33051,7 +33051,7 @@ var arrayVector_POS_joker_DOT_core__523_9__523_31_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_247,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_248,
@@ -33085,7 +33085,7 @@ var objectInfo_POS_joker_DOT_core__529_5__529_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_250 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -33114,7 +33114,7 @@ var objectInfo_POS_joker_DOT_core__529_11__529_17 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_251 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -33143,7 +33143,7 @@ var objectInfo_POS_joker_DOT_core__529_22__529_28 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_252 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -33175,7 +33175,7 @@ var arrayVector_POS_joker_DOT_core__529_9__529_36_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_250,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_251,
@@ -33197,7 +33197,7 @@ var arrayVector_POS_joker_DOT_core__529_9__529_36_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_29 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__521_9__521_10_NUM_1,
 		&arrayVector_POS_joker_DOT_core__522_9__522_20_NUM_1,
 		&arrayVector_POS_joker_DOT_core__523_9__523_31_NUM_1,
@@ -33235,7 +33235,7 @@ var objectInfo_POS_joker_DOT_core__520_11__520_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_243 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -33618,7 +33618,7 @@ var objectInfo_POS_joker_DOT_core__58_21__58_24 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__58_20__58_25_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -34713,7 +34713,7 @@ var objectInfo_POS_joker_DOT_core__13_23__13_27 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__13_20__13_28_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -35406,7 +35406,7 @@ var vector_NUM_33 Vector = Vector{
 	},
 }
 var arrayVector_NUM_30 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_33,
 	},
 }
@@ -36631,7 +36631,7 @@ var objectInfo_POS_joker_DOT_core__757_5__757_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_254 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -36660,7 +36660,7 @@ var objectInfo_POS_joker_DOT_core__757_14__757_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_255 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -36674,7 +36674,7 @@ var arrayVector_POS_joker_DOT_core__757_12__757_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_254,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_255,
@@ -36702,7 +36702,7 @@ var objectInfo_POS_joker_DOT_core__758_5__758_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_256 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -36731,7 +36731,7 @@ var objectInfo_POS_joker_DOT_core__758_14__758_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_257 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -36760,7 +36760,7 @@ var objectInfo_POS_joker_DOT_core__758_24__758_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_258 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -36774,7 +36774,7 @@ var arrayVector_POS_joker_DOT_core__758_12__758_32_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_256,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_257,
@@ -36808,7 +36808,7 @@ var objectInfo_POS_joker_DOT_core__759_5__759_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_259 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -36837,7 +36837,7 @@ var objectInfo_POS_joker_DOT_core__759_14__759_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_260 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -36866,7 +36866,7 @@ var objectInfo_POS_joker_DOT_core__759_24__759_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_261 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -36898,7 +36898,7 @@ var arrayVector_POS_joker_DOT_core__759_12__759_39_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_259,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_260,
@@ -36920,7 +36920,7 @@ var arrayVector_POS_joker_DOT_core__759_12__759_39_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_31 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__757_12__757_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__758_12__758_32_NUM_1,
 		&arrayVector_POS_joker_DOT_core__759_12__759_39_NUM_1,
@@ -36957,7 +36957,7 @@ var objectInfo_POS_joker_DOT_core__756_11__756_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_253 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -37413,7 +37413,7 @@ var objectInfo_POS_joker_DOT_core__660_5__660_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_263 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -37442,7 +37442,7 @@ var objectInfo_POS_joker_DOT_core__660_15__660_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_264 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -37456,7 +37456,7 @@ var arrayVector_POS_joker_DOT_core__660_13__660_23_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_263,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_264,
@@ -37484,7 +37484,7 @@ var objectInfo_POS_joker_DOT_core__661_5__661_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_265 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -37513,7 +37513,7 @@ var objectInfo_POS_joker_DOT_core__661_15__661_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_266 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -37542,7 +37542,7 @@ var objectInfo_POS_joker_DOT_core__661_25__661_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_267 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -37556,7 +37556,7 @@ var arrayVector_POS_joker_DOT_core__661_13__661_33_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_265,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_266,
@@ -37590,7 +37590,7 @@ var objectInfo_POS_joker_DOT_core__662_5__662_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_268 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -37619,7 +37619,7 @@ var objectInfo_POS_joker_DOT_core__662_15__662_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_269 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -37648,7 +37648,7 @@ var objectInfo_POS_joker_DOT_core__662_25__662_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_270 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -37680,7 +37680,7 @@ var arrayVector_POS_joker_DOT_core__662_13__662_40_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_268,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_269,
@@ -37702,7 +37702,7 @@ var arrayVector_POS_joker_DOT_core__662_13__662_40_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_32 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__660_13__660_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__661_13__661_33_NUM_1,
 		&arrayVector_POS_joker_DOT_core__662_13__662_40_NUM_1,
@@ -37739,7 +37739,7 @@ var objectInfo_POS_joker_DOT_core__659_11__659_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_262 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -38349,7 +38349,7 @@ var objectInfo_POS_joker_DOT_core__4504_5__4504_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_272 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -38360,7 +38360,7 @@ var arrayMap_NUM_272 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__4504_3__4504_15_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_272,
@@ -38370,7 +38370,7 @@ var arrayVector_POS_joker_DOT_core__4504_3__4504_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_33 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4504_3__4504_15_NUM_1,
 	},
 }
@@ -38405,7 +38405,7 @@ var objectInfo_POS_joker_DOT_core__4503_11__4503_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_271 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -38601,7 +38601,7 @@ var objectInfo_POS_joker_DOT_core__786_5__786_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_274 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -38630,7 +38630,7 @@ var objectInfo_POS_joker_DOT_core__786_15__786_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_275 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -38644,7 +38644,7 @@ var arrayVector_POS_joker_DOT_core__786_13__786_23_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_274,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_275,
@@ -38672,7 +38672,7 @@ var objectInfo_POS_joker_DOT_core__787_5__787_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_276 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -38701,7 +38701,7 @@ var objectInfo_POS_joker_DOT_core__787_15__787_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_277 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -38730,7 +38730,7 @@ var objectInfo_POS_joker_DOT_core__787_25__787_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_278 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -38744,7 +38744,7 @@ var arrayVector_POS_joker_DOT_core__787_13__787_33_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_276,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_277,
@@ -38778,7 +38778,7 @@ var objectInfo_POS_joker_DOT_core__788_5__788_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_279 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -38807,7 +38807,7 @@ var objectInfo_POS_joker_DOT_core__788_15__788_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_280 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -38836,7 +38836,7 @@ var objectInfo_POS_joker_DOT_core__788_25__788_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_281 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -38868,7 +38868,7 @@ var arrayVector_POS_joker_DOT_core__788_13__788_40_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_279,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_280,
@@ -38890,7 +38890,7 @@ var arrayVector_POS_joker_DOT_core__788_13__788_40_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_34 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__786_13__786_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__787_13__787_33_NUM_1,
 		&arrayVector_POS_joker_DOT_core__788_13__788_40_NUM_1,
@@ -38927,7 +38927,7 @@ var objectInfo_POS_joker_DOT_core__785_11__785_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_273 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -39528,7 +39528,7 @@ var objectInfo_POS_joker_DOT_core__580_5__580_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_283 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -39551,7 +39551,7 @@ var arrayVector_POS_joker_DOT_core__580_13__580_15_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_283,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -39576,7 +39576,7 @@ var objectInfo_POS_joker_DOT_core__581_5__581_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_284 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -39608,7 +39608,7 @@ var arrayVector_POS_joker_DOT_core__581_13__581_17_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_284,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -39636,7 +39636,7 @@ var objectInfo_POS_joker_DOT_core__582_5__582_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_285 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -39686,7 +39686,7 @@ var arrayVector_POS_joker_DOT_core__582_13__582_24_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_285,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -39702,7 +39702,7 @@ var arrayVector_POS_joker_DOT_core__582_13__582_24_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_35 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__580_13__580_15_NUM_1,
 		&arrayVector_POS_joker_DOT_core__581_13__581_17_NUM_1,
 		&arrayVector_POS_joker_DOT_core__582_13__582_24_NUM_1,
@@ -39739,7 +39739,7 @@ var objectInfo_POS_joker_DOT_core__579_11__579_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_282 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -40297,7 +40297,7 @@ var objectInfo_POS_joker_DOT_core__825_5__825_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_287 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -40326,7 +40326,7 @@ var objectInfo_POS_joker_DOT_core__825_15__825_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_288 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -40340,7 +40340,7 @@ var arrayVector_POS_joker_DOT_core__825_13__825_23_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_287,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_288,
@@ -40368,7 +40368,7 @@ var objectInfo_POS_joker_DOT_core__826_5__826_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_289 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -40397,7 +40397,7 @@ var objectInfo_POS_joker_DOT_core__826_15__826_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_290 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -40426,7 +40426,7 @@ var objectInfo_POS_joker_DOT_core__826_25__826_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_291 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -40440,7 +40440,7 @@ var arrayVector_POS_joker_DOT_core__826_13__826_33_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_289,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_290,
@@ -40474,7 +40474,7 @@ var objectInfo_POS_joker_DOT_core__827_5__827_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_292 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -40503,7 +40503,7 @@ var objectInfo_POS_joker_DOT_core__827_15__827_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_293 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -40532,7 +40532,7 @@ var objectInfo_POS_joker_DOT_core__827_25__827_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_294 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -40564,7 +40564,7 @@ var arrayVector_POS_joker_DOT_core__827_13__827_40_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_292,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_293,
@@ -40586,7 +40586,7 @@ var arrayVector_POS_joker_DOT_core__827_13__827_40_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_36 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__825_13__825_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__826_13__826_33_NUM_1,
 		&arrayVector_POS_joker_DOT_core__827_13__827_40_NUM_1,
@@ -40623,7 +40623,7 @@ var objectInfo_POS_joker_DOT_core__824_11__824_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_286 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -41224,7 +41224,7 @@ var objectInfo_POS_joker_DOT_core__799_5__799_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_296 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -41253,7 +41253,7 @@ var objectInfo_POS_joker_DOT_core__799_15__799_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_297 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -41267,7 +41267,7 @@ var arrayVector_POS_joker_DOT_core__799_13__799_23_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_296,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_297,
@@ -41295,7 +41295,7 @@ var objectInfo_POS_joker_DOT_core__800_5__800_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_298 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -41324,7 +41324,7 @@ var objectInfo_POS_joker_DOT_core__800_15__800_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_299 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -41353,7 +41353,7 @@ var objectInfo_POS_joker_DOT_core__800_25__800_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_300 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -41367,7 +41367,7 @@ var arrayVector_POS_joker_DOT_core__800_13__800_33_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_298,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_299,
@@ -41401,7 +41401,7 @@ var objectInfo_POS_joker_DOT_core__801_5__801_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_301 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -41430,7 +41430,7 @@ var objectInfo_POS_joker_DOT_core__801_15__801_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_302 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -41459,7 +41459,7 @@ var objectInfo_POS_joker_DOT_core__801_25__801_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_303 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -41491,7 +41491,7 @@ var arrayVector_POS_joker_DOT_core__801_13__801_40_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_301,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_302,
@@ -41513,7 +41513,7 @@ var arrayVector_POS_joker_DOT_core__801_13__801_40_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_37 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__799_13__799_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__800_13__800_33_NUM_1,
 		&arrayVector_POS_joker_DOT_core__801_13__801_40_NUM_1,
@@ -41550,7 +41550,7 @@ var objectInfo_POS_joker_DOT_core__798_11__798_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_295 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -42160,7 +42160,7 @@ var objectInfo_POS_joker_DOT_core__4513_5__4513_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_305 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -42180,7 +42180,7 @@ var objectInfo_POS_joker_DOT_core__4513_16__4513_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__4513_3__4513_19_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_305,
@@ -42193,7 +42193,7 @@ var arrayVector_POS_joker_DOT_core__4513_3__4513_19_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_38 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4513_3__4513_19_NUM_1,
 	},
 }
@@ -42228,7 +42228,7 @@ var objectInfo_POS_joker_DOT_core__4512_11__4512_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_304 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -42445,7 +42445,7 @@ var objectInfo_POS_joker_DOT_core__812_5__812_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_307 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -42474,7 +42474,7 @@ var objectInfo_POS_joker_DOT_core__812_15__812_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_308 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -42488,7 +42488,7 @@ var arrayVector_POS_joker_DOT_core__812_13__812_23_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_307,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_308,
@@ -42516,7 +42516,7 @@ var objectInfo_POS_joker_DOT_core__813_5__813_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_309 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -42545,7 +42545,7 @@ var objectInfo_POS_joker_DOT_core__813_15__813_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_310 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -42574,7 +42574,7 @@ var objectInfo_POS_joker_DOT_core__813_25__813_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_311 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -42588,7 +42588,7 @@ var arrayVector_POS_joker_DOT_core__813_13__813_33_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_309,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_310,
@@ -42622,7 +42622,7 @@ var objectInfo_POS_joker_DOT_core__814_5__814_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_312 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -42651,7 +42651,7 @@ var objectInfo_POS_joker_DOT_core__814_15__814_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_313 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -42680,7 +42680,7 @@ var objectInfo_POS_joker_DOT_core__814_25__814_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_314 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -42712,7 +42712,7 @@ var arrayVector_POS_joker_DOT_core__814_13__814_40_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_312,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_313,
@@ -42734,7 +42734,7 @@ var arrayVector_POS_joker_DOT_core__814_13__814_40_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_39 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__812_13__812_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__813_13__813_33_NUM_1,
 		&arrayVector_POS_joker_DOT_core__814_13__814_40_NUM_1,
@@ -42771,7 +42771,7 @@ var objectInfo_POS_joker_DOT_core__811_11__811_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_306 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -43372,7 +43372,7 @@ var objectInfo_POS_joker_DOT_core__4569_4__4569_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_316 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -43401,7 +43401,7 @@ var objectInfo_POS_joker_DOT_core__4569_14__4569_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_317 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -43415,7 +43415,7 @@ var arrayVector_POS_joker_DOT_core__4569_12__4569_22_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_316,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_317,
@@ -43425,7 +43425,7 @@ var arrayVector_POS_joker_DOT_core__4569_12__4569_22_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_40 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4569_12__4569_22_NUM_1,
 	},
 }
@@ -43460,7 +43460,7 @@ var objectInfo_POS_joker_DOT_core__4568_11__4568_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_315 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -43657,7 +43657,7 @@ var objectInfo_POS_joker_DOT_core__4575_4__4575_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_319 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -43686,7 +43686,7 @@ var objectInfo_POS_joker_DOT_core__4575_13__4575_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_320 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -43700,7 +43700,7 @@ var arrayVector_POS_joker_DOT_core__4575_11__4575_21_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_319,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_320,
@@ -43710,7 +43710,7 @@ var arrayVector_POS_joker_DOT_core__4575_11__4575_21_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_41 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4575_11__4575_21_NUM_1,
 	},
 }
@@ -43745,7 +43745,7 @@ var objectInfo_POS_joker_DOT_core__4574_11__4574_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_318 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -44000,7 +44000,7 @@ var vector_NUM_34 Vector = Vector{
 	},
 }
 var arrayVector_NUM_42 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_34,
 	},
 }
@@ -44026,7 +44026,7 @@ var objectInfo_POS_joker_DOT_core__3739_38__3739_41 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_321 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -44715,7 +44715,7 @@ var objectInfo_POS_joker_DOT_core__2404_4__2404_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_323 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -44744,7 +44744,7 @@ var objectInfo_POS_joker_DOT_core__2404_10__2404_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_324 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -44767,7 +44767,7 @@ var arrayVector_POS_joker_DOT_core__2404_8__2404_36_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_323,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_324,
@@ -44780,7 +44780,7 @@ var arrayVector_POS_joker_DOT_core__2404_8__2404_36_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_43 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2404_8__2404_36_NUM_1,
 	},
 }
@@ -44815,7 +44815,7 @@ var objectInfo_POS_joker_DOT_core__2403_11__2403_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_322 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -44962,7 +44962,7 @@ var objectInfo_POS_joker_DOT_core__2267_4__2267_12 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_326 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -44985,14 +44985,14 @@ var arrayVector_POS_joker_DOT_core__2267_14__2267_16_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_326,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_44 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2267_14__2267_16_NUM_1,
 	},
 }
@@ -45027,7 +45027,7 @@ var objectInfo_POS_joker_DOT_core__2266_11__2266_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_325 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -45179,7 +45179,7 @@ var objectInfo_POS_joker_DOT_core__2242_4__2242_12 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_328 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -45208,7 +45208,7 @@ var objectInfo_POS_joker_DOT_core__2242_16__2242_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_329 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -45222,7 +45222,7 @@ var arrayVector_POS_joker_DOT_core__2242_14__2242_26_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_328,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_329,
@@ -45232,7 +45232,7 @@ var arrayVector_POS_joker_DOT_core__2242_14__2242_26_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_45 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2242_14__2242_26_NUM_1,
 	},
 }
@@ -45267,7 +45267,7 @@ var objectInfo_POS_joker_DOT_core__2241_11__2241_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_327 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -46179,7 +46179,7 @@ var objectInfo_POS_joker_DOT_core__2260_4__2260_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_331 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -46195,7 +46195,7 @@ var arrayVector_POS_joker_DOT_core__2260_8__2260_9_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_46 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2260_8__2260_9_NUM_1,
 	},
 }
@@ -46230,7 +46230,7 @@ var objectInfo_POS_joker_DOT_core__2259_11__2259_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_330 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -46409,7 +46409,7 @@ var objectInfo_POS_joker_DOT_core__1475_5__1475_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_333 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -46438,7 +46438,7 @@ var objectInfo_POS_joker_DOT_core__1475_14__1475_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_334 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -46467,7 +46467,7 @@ var objectInfo_POS_joker_DOT_core__1475_27__1475_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1475_3__1475_31_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_333,
@@ -46489,7 +46489,7 @@ var arrayVector_POS_joker_DOT_core__1475_3__1475_31_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_47 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1475_3__1475_31_NUM_1,
 	},
 }
@@ -46524,7 +46524,7 @@ var objectInfo_POS_joker_DOT_core__1474_11__1474_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_332 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -46946,7 +46946,7 @@ var vector_NUM_37 Vector = Vector{
 	},
 }
 var arrayVector_NUM_48 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_35,
 		&vector_NUM_36,
 		&vector_NUM_37,
@@ -47151,7 +47151,7 @@ var objectInfo_POS_joker_DOT_core__276_4__276_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_336 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -47183,7 +47183,7 @@ var arrayVector_POS_joker_DOT_core__276_8__276_15_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_336,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -47193,7 +47193,7 @@ var arrayVector_POS_joker_DOT_core__276_8__276_15_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_49 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__276_8__276_15_NUM_1,
 	},
 }
@@ -47228,7 +47228,7 @@ var objectInfo_POS_joker_DOT_core__275_11__275_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_335 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -47366,7 +47366,7 @@ var objectInfo_POS_joker_DOT_core__267_21__267_24 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__267_20__267_25_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -48124,14 +48124,14 @@ var objectInfo_POS_joker_DOT_core__385_4__385_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__385_3__385_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_50 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__385_3__385_5_NUM_1,
 	},
 }
@@ -48385,7 +48385,7 @@ var objectInfo_POS_joker_DOT_core__2466_23__2466_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__2466_20__2466_30_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -48657,7 +48657,7 @@ var vector_NUM_38 Vector = Vector{
 	},
 }
 var arrayVector_NUM_51 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_38,
 	},
 }
@@ -49384,7 +49384,7 @@ var objectInfo_POS_joker_DOT_core__2433_5__2433_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_338 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -49418,7 +49418,7 @@ var objectInfo_POS_joker_DOT_core__2434_5__2434_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_339 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -49447,7 +49447,7 @@ var objectInfo_POS_joker_DOT_core__2434_11__2434_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_340 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -49461,7 +49461,7 @@ var arrayVector_POS_joker_DOT_core__2434_9__2434_21_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_339,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_340,
@@ -49489,7 +49489,7 @@ var objectInfo_POS_joker_DOT_core__2435_5__2435_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_341 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -49518,7 +49518,7 @@ var objectInfo_POS_joker_DOT_core__2435_11__2435_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_342 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -49547,7 +49547,7 @@ var objectInfo_POS_joker_DOT_core__2435_23__2435_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_343 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -49561,7 +49561,7 @@ var arrayVector_POS_joker_DOT_core__2435_9__2435_33_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_341,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_342,
@@ -49595,7 +49595,7 @@ var objectInfo_POS_joker_DOT_core__2441_5__2441_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_344 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -49624,7 +49624,7 @@ var objectInfo_POS_joker_DOT_core__2441_11__2441_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_345 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -49653,7 +49653,7 @@ var objectInfo_POS_joker_DOT_core__2441_23__2441_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_346 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -49685,7 +49685,7 @@ var arrayVector_POS_joker_DOT_core__2441_9__2441_41_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_344,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_345,
@@ -49707,7 +49707,7 @@ var arrayVector_POS_joker_DOT_core__2441_9__2441_41_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_52 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2433_9__2433_10_NUM_1,
 		&arrayVector_POS_joker_DOT_core__2434_9__2434_21_NUM_1,
 		&arrayVector_POS_joker_DOT_core__2435_9__2435_33_NUM_1,
@@ -49745,7 +49745,7 @@ var objectInfo_POS_joker_DOT_core__2432_11__2432_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_337 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -50382,7 +50382,7 @@ var objectInfo_POS_joker_DOT_core__1622_5__1622_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_348 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50411,7 +50411,7 @@ var objectInfo_POS_joker_DOT_core__1622_11__1622_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_349 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50440,7 +50440,7 @@ var objectInfo_POS_joker_DOT_core__1622_23__1622_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_350 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50454,7 +50454,7 @@ var arrayVector_POS_joker_DOT_core__1622_9__1622_35_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_348,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_349,
@@ -50488,7 +50488,7 @@ var objectInfo_POS_joker_DOT_core__1626_5__1626_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_351 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50517,7 +50517,7 @@ var objectInfo_POS_joker_DOT_core__1626_11__1626_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_352 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50546,7 +50546,7 @@ var objectInfo_POS_joker_DOT_core__1626_23__1626_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_353 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50575,7 +50575,7 @@ var objectInfo_POS_joker_DOT_core__1626_35__1626_41 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_354 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50589,7 +50589,7 @@ var arrayVector_POS_joker_DOT_core__1626_9__1626_45_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_351,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_352,
@@ -50629,7 +50629,7 @@ var objectInfo_POS_joker_DOT_core__1632_5__1632_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_355 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50658,7 +50658,7 @@ var objectInfo_POS_joker_DOT_core__1632_11__1632_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_356 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50687,7 +50687,7 @@ var objectInfo_POS_joker_DOT_core__1632_23__1632_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_357 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50716,7 +50716,7 @@ var objectInfo_POS_joker_DOT_core__1632_35__1632_41 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_358 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50745,7 +50745,7 @@ var objectInfo_POS_joker_DOT_core__1632_47__1632_53 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_359 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50759,7 +50759,7 @@ var arrayVector_POS_joker_DOT_core__1632_9__1632_57_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_355,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_356,
@@ -50805,7 +50805,7 @@ var objectInfo_POS_joker_DOT_core__1638_5__1638_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_360 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50834,7 +50834,7 @@ var objectInfo_POS_joker_DOT_core__1638_11__1638_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_361 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50863,7 +50863,7 @@ var objectInfo_POS_joker_DOT_core__1638_23__1638_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_362 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50892,7 +50892,7 @@ var objectInfo_POS_joker_DOT_core__1638_35__1638_41 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_363 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50921,7 +50921,7 @@ var objectInfo_POS_joker_DOT_core__1638_47__1638_53 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_364 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -50953,7 +50953,7 @@ var arrayVector_POS_joker_DOT_core__1638_9__1638_65_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_360,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_361,
@@ -50987,7 +50987,7 @@ var arrayVector_POS_joker_DOT_core__1638_9__1638_65_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_53 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1622_9__1622_35_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1626_9__1626_45_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1632_9__1632_57_NUM_1,
@@ -51025,7 +51025,7 @@ var objectInfo_POS_joker_DOT_core__1621_11__1621_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_347 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -52735,7 +52735,7 @@ var objectInfo_POS_joker_DOT_core__1585_4__1585_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_366 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -52764,7 +52764,7 @@ var objectInfo_POS_joker_DOT_core__1585_14__1585_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_367 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -52793,7 +52793,7 @@ var objectInfo_POS_joker_DOT_core__1585_29__1585_35 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_368 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -52807,7 +52807,7 @@ var arrayVector_POS_joker_DOT_core__1585_12__1585_41_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_366,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_367,
@@ -52823,7 +52823,7 @@ var arrayVector_POS_joker_DOT_core__1585_12__1585_41_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_54 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1585_12__1585_41_NUM_1,
 	},
 }
@@ -52858,7 +52858,7 @@ var objectInfo_POS_joker_DOT_core__1584_11__1584_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_365 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -53309,14 +53309,14 @@ var objectInfo_POS_joker_DOT_core__1027_4__1027_4 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__1027_3__1027_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_55 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1027_3__1027_5_NUM_1,
 	},
 }
@@ -53351,7 +53351,7 @@ var objectInfo_POS_joker_DOT_core__1026_11__1026_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_369 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -53926,7 +53926,7 @@ var objectInfo_POS_joker_DOT_core__65_26__65_26 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__65_20__65_27_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -53981,7 +53981,7 @@ var objectInfo_POS_joker_DOT_core__65_39__65_40 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__65_29__65_41_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -54043,7 +54043,7 @@ var objectInfo_POS_joker_DOT_core__69_15__69_19 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_370 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -54501,7 +54501,7 @@ var fnExpr_POS_joker_DOT_core_71_8__75_30_NUM_1 FnExpr = FnExpr{
 	variadic: &fnArityExpr_POS_joker_DOT_core__72_10__75_29_NUM_1,
 }
 var localEnv_NUM_5 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_conj_POS_joker_DOT_core_71_8__75_30_NUM_1 */
 	},
 }
@@ -55392,7 +55392,7 @@ var objectInfo_POS_joker_DOT_core__1754_5__1754_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_372 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -55415,7 +55415,7 @@ var arrayVector_POS_joker_DOT_core__1754_9__1754_11_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_372,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -55440,7 +55440,7 @@ var objectInfo_POS_joker_DOT_core__1755_5__1755_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_373 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -55469,7 +55469,7 @@ var objectInfo_POS_joker_DOT_core__1755_11__1755_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_374 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -55492,7 +55492,7 @@ var arrayVector_POS_joker_DOT_core__1755_9__1755_21_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_373,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_374,
@@ -55505,7 +55505,7 @@ var arrayVector_POS_joker_DOT_core__1755_9__1755_21_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_56 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1754_9__1754_11_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1755_9__1755_21_NUM_1,
 	},
@@ -55541,7 +55541,7 @@ var objectInfo_POS_joker_DOT_core__1753_11__1753_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_371 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -55736,7 +55736,7 @@ var objectInfo_POS_joker_DOT_core__1676_4__1676_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_376 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -55765,7 +55765,7 @@ var objectInfo_POS_joker_DOT_core__1676_10__1676_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_377 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -55794,7 +55794,7 @@ var objectInfo_POS_joker_DOT_core__1676_20__1676_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_378 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -55808,7 +55808,7 @@ var arrayVector_POS_joker_DOT_core__1676_8__1676_32_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_376,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_377,
@@ -55824,7 +55824,7 @@ var arrayVector_POS_joker_DOT_core__1676_8__1676_32_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_57 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1676_8__1676_32_NUM_1,
 	},
 }
@@ -55859,7 +55859,7 @@ var objectInfo_POS_joker_DOT_core__1675_11__1675_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_375 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -55951,7 +55951,7 @@ var objectInfo_POS_joker_DOT_core__865_4__865_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_380 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -55980,7 +55980,7 @@ var objectInfo_POS_joker_DOT_core__865_14__865_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_381 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -55994,7 +55994,7 @@ var arrayVector_POS_joker_DOT_core__865_12__865_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_380,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_381,
@@ -56004,7 +56004,7 @@ var arrayVector_POS_joker_DOT_core__865_12__865_22_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_58 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__865_12__865_22_NUM_1,
 	},
 }
@@ -56039,7 +56039,7 @@ var objectInfo_POS_joker_DOT_core__864_11__864_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_379 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -56418,7 +56418,7 @@ var objectInfo_POS_joker_DOT_core__860_4__860_9 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_383 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -56447,7 +56447,7 @@ var objectInfo_POS_joker_DOT_core__860_13__860_18 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_384 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -56461,7 +56461,7 @@ var arrayVector_POS_joker_DOT_core__860_11__860_21_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_383,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_384,
@@ -56471,7 +56471,7 @@ var arrayVector_POS_joker_DOT_core__860_11__860_21_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_59 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__860_11__860_21_NUM_1,
 	},
 }
@@ -56506,7 +56506,7 @@ var objectInfo_POS_joker_DOT_core__859_11__859_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_382 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -57169,7 +57169,7 @@ var objectInfo_POS_joker_DOT_core__212_21__212_24 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__212_20__212_25_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -57217,7 +57217,7 @@ var objectInfo_POS_joker_DOT_core__214_15__214_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_385 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -57291,7 +57291,7 @@ var objectInfo_POS_joker_DOT_core__215_30__215_36 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_386 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -57617,7 +57617,7 @@ var fnExpr_POS_joker_DOT_core_215_11__219_28_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_6 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_butlast_POS_joker_DOT_core_215_11__219_28_NUM_1 */
 	},
 }
@@ -57777,7 +57777,7 @@ var objectInfo_POS_joker_DOT_core__3691_4__3691_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_388 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -57806,7 +57806,7 @@ var objectInfo_POS_joker_DOT_core__3691_14__3691_20 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_389 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -57820,7 +57820,7 @@ var arrayVector_POS_joker_DOT_core__3691_12__3691_26_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_388,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_389,
@@ -57830,7 +57830,7 @@ var arrayVector_POS_joker_DOT_core__3691_12__3691_26_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_60 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3691_12__3691_26_NUM_1,
 	},
 }
@@ -57865,7 +57865,7 @@ var objectInfo_POS_joker_DOT_core__3690_11__3690_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_387 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -58131,7 +58131,7 @@ var objectInfo_POS_joker_DOT_core__204_21__204_24 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__204_20__204_25_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -58179,7 +58179,7 @@ var objectInfo_POS_joker_DOT_core__206_15__206_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_390 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -58253,7 +58253,7 @@ var objectInfo_POS_joker_DOT_core__207_19__207_25 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_391 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -58433,7 +58433,7 @@ var fnExpr_POS_joker_DOT_core_207_8__210_22_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_7 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_last_POS_joker_DOT_core_207_8__210_22_NUM_1 */
 	},
 }
@@ -58752,7 +58752,7 @@ var vector_NUM_40 Vector = Vector{
 	},
 }
 var arrayVector_NUM_61 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_39,
 		&vector_NUM_40,
 	},
@@ -60247,7 +60247,7 @@ var vector_NUM_41 Vector = Vector{
 	},
 }
 var arrayVector_NUM_62 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_41,
 	},
 }
@@ -60255,7 +60255,7 @@ var vectorSeq_NUM_61 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_62,
 }
 var arrayMap_NUM_392 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -61345,7 +61345,7 @@ var objectInfo_POS_joker_DOT_core__4148_9__4148_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_core__4148_3__4148_14_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_form,
 		},
@@ -61355,7 +61355,7 @@ var arrayVector_POS_joker_DOT_core__4148_3__4148_14_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_63 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4148_3__4148_14_NUM_1,
 	},
 }
@@ -62144,7 +62144,7 @@ var objectInfo_POS_joker_DOT_core__1669_4__1669_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_394 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -62173,7 +62173,7 @@ var objectInfo_POS_joker_DOT_core__1669_10__1669_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_395 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -62202,7 +62202,7 @@ var objectInfo_POS_joker_DOT_core__1669_25__1669_31 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_396 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -62216,7 +62216,7 @@ var arrayVector_POS_joker_DOT_core__1669_8__1669_37_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_394,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_395,
@@ -62232,7 +62232,7 @@ var arrayVector_POS_joker_DOT_core__1669_8__1669_37_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_64 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1669_8__1669_37_NUM_1,
 	},
 }
@@ -62267,7 +62267,7 @@ var objectInfo_POS_joker_DOT_core__1668_11__1668_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_393 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -62359,7 +62359,7 @@ var objectInfo_POS_joker_DOT_core__1657_5__1657_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_398 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -62388,7 +62388,7 @@ var objectInfo_POS_joker_DOT_core__1657_11__1657_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_399 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -62417,7 +62417,7 @@ var objectInfo_POS_joker_DOT_core__1657_26__1657_32 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_400 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -62431,7 +62431,7 @@ var arrayVector_POS_joker_DOT_core__1657_9__1657_38_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_398,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_399,
@@ -62447,7 +62447,7 @@ var arrayVector_POS_joker_DOT_core__1657_9__1657_38_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_65 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1657_9__1657_38_NUM_1,
 	},
 }
@@ -62482,7 +62482,7 @@ var objectInfo_POS_joker_DOT_core__1656_11__1656_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_397 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -63115,7 +63115,7 @@ var objectInfo_POS_joker_DOT_core__1011_4__1011_5 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_402 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -63144,7 +63144,7 @@ var objectInfo_POS_joker_DOT_core__1011_9__1011_16 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_403 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -63158,7 +63158,7 @@ var arrayVector_POS_joker_DOT_core__1011_7__1011_19_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_402,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_403,
@@ -63168,7 +63168,7 @@ var arrayVector_POS_joker_DOT_core__1011_7__1011_19_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_66 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1011_7__1011_19_NUM_1,
 	},
 }
@@ -63203,7 +63203,7 @@ var objectInfo_POS_joker_DOT_core__1010_11__1010_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_401 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -63950,7 +63950,7 @@ var objectInfo_POS_joker_DOT_core__138_21__138_21 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__138_20__138_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -63998,7 +63998,7 @@ var objectInfo_POS_joker_DOT_core__140_15__140_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_404 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -64148,7 +64148,7 @@ var fnExpr_POS_joker_DOT_core_141_11__141_53_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_8 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_vector_Q__POS_joker_DOT_core_141_11__141_53_NUM_1 */
 	},
 }
@@ -64613,7 +64613,7 @@ var objectInfo_POS_joker_DOT_core__3540_4__3540_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_406 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -64642,7 +64642,7 @@ var objectInfo_POS_joker_DOT_core__3540_10__3540_20 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_407 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -64671,7 +64671,7 @@ var objectInfo_POS_joker_DOT_core__3540_25__3540_31 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_408 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -64694,7 +64694,7 @@ var arrayVector_POS_joker_DOT_core__3540_8__3540_37_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_406,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_407,
@@ -64713,7 +64713,7 @@ var arrayVector_POS_joker_DOT_core__3540_8__3540_37_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_67 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3540_8__3540_37_NUM_1,
 	},
 }
@@ -64748,7 +64748,7 @@ var objectInfo_POS_joker_DOT_core__3539_11__3539_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_405 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -65333,7 +65333,7 @@ var objectInfo_POS_joker_DOT_core__3607_4__3607_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_410 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -65356,14 +65356,14 @@ var arrayVector_POS_joker_DOT_core__3607_12__3607_17_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_410,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_68 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3607_12__3607_17_NUM_1,
 	},
 }
@@ -65398,7 +65398,7 @@ var objectInfo_POS_joker_DOT_core__3606_11__3606_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_409 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -65584,7 +65584,7 @@ var objectInfo_POS_joker_DOT_core__1434_4__1434_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_412 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -65625,7 +65625,7 @@ var arrayVector_POS_joker_DOT_core__1434_9__1434_21_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_412,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -65638,7 +65638,7 @@ var arrayVector_POS_joker_DOT_core__1434_9__1434_21_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_69 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1434_9__1434_21_NUM_1,
 	},
 }
@@ -65673,7 +65673,7 @@ var objectInfo_POS_joker_DOT_core__1433_11__1433_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_411 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -65896,7 +65896,7 @@ var objectInfo_POS_joker_DOT_core__2076_4__2076_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_414 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -65919,14 +65919,14 @@ var arrayVector_POS_joker_DOT_core__2076_13__2076_15_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_414,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_70 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2076_13__2076_15_NUM_1,
 	},
 }
@@ -65961,7 +65961,7 @@ var objectInfo_POS_joker_DOT_core__2075_11__2075_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_413 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -66152,7 +66152,7 @@ var objectInfo_POS_joker_DOT_core__2052_4__2052_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_416 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -66175,14 +66175,14 @@ var arrayVector_POS_joker_DOT_core__2052_12__2052_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_416,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
 	},
 }
 var arrayVector_NUM_71 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2052_12__2052_14_NUM_1,
 	},
 }
@@ -66217,7 +66217,7 @@ var objectInfo_POS_joker_DOT_core__2051_11__2051_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_415 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -66403,7 +66403,7 @@ var objectInfo_POS_joker_DOT_core__2069_4__2069_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_418 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -66426,14 +66426,14 @@ var arrayVector_POS_joker_DOT_core__2069_11__2069_13_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_418,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_72 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2069_11__2069_13_NUM_1,
 	},
 }
@@ -66468,7 +66468,7 @@ var objectInfo_POS_joker_DOT_core__2068_11__2068_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_417 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -66736,7 +66736,7 @@ var vector_NUM_42 Vector = Vector{
 	},
 }
 var arrayVector_NUM_73 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_42,
 	},
 }
@@ -67103,7 +67103,7 @@ var objectInfo_POS_joker_DOT_core__963_4__963_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_420 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -67126,14 +67126,14 @@ var arrayVector_POS_joker_DOT_core__963_12__963_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_420,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
 	},
 }
 var arrayVector_NUM_74 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__963_12__963_14_NUM_1,
 	},
 }
@@ -67168,7 +67168,7 @@ var objectInfo_POS_joker_DOT_core__961_11__961_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_419 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -67260,7 +67260,7 @@ var objectInfo_POS_joker_DOT_core__955_4__955_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_422 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -67283,14 +67283,14 @@ var arrayVector_POS_joker_DOT_core__955_12__955_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_422,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
 	},
 }
 var arrayVector_NUM_75 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__955_12__955_14_NUM_1,
 	},
 }
@@ -67325,7 +67325,7 @@ var objectInfo_POS_joker_DOT_core__954_11__954_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_421 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -67654,7 +67654,7 @@ var objectInfo_POS_joker_DOT_core__632_4__632_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_424 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -67683,7 +67683,7 @@ var objectInfo_POS_joker_DOT_core__632_14__632_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_425 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -67697,7 +67697,7 @@ var arrayVector_POS_joker_DOT_core__632_12__632_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_424,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_425,
@@ -67707,7 +67707,7 @@ var arrayVector_POS_joker_DOT_core__632_12__632_22_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_76 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__632_12__632_22_NUM_1,
 	},
 }
@@ -67742,7 +67742,7 @@ var objectInfo_POS_joker_DOT_core__631_11__631_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_423 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -67950,7 +67950,7 @@ var objectInfo_POS_joker_DOT_core__892_5__892_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_427 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -67979,7 +67979,7 @@ var objectInfo_POS_joker_DOT_core__892_11__892_13 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_428 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -68008,7 +68008,7 @@ var objectInfo_POS_joker_DOT_core__892_18__892_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_429 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -68022,7 +68022,7 @@ var arrayVector_POS_joker_DOT_core__892_9__892_23_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_427,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_428,
@@ -68056,7 +68056,7 @@ var objectInfo_POS_joker_DOT_core__893_5__893_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_430 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -68085,7 +68085,7 @@ var objectInfo_POS_joker_DOT_core__893_11__893_13 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_431 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -68114,7 +68114,7 @@ var objectInfo_POS_joker_DOT_core__893_18__893_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_432 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -68146,7 +68146,7 @@ var arrayVector_POS_joker_DOT_core__893_9__893_30_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_430,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_431,
@@ -68168,7 +68168,7 @@ var arrayVector_POS_joker_DOT_core__893_9__893_30_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_77 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__892_9__892_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__893_9__893_30_NUM_1,
 	},
@@ -68204,7 +68204,7 @@ var objectInfo_POS_joker_DOT_core__891_11__891_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_426 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -68849,7 +68849,7 @@ var objectInfo_POS_joker_DOT_core__639_4__639_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_434 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -68872,14 +68872,14 @@ var arrayVector_POS_joker_DOT_core__639_8__639_13_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_434,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_78 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__639_8__639_13_NUM_1,
 	},
 }
@@ -68914,7 +68914,7 @@ var objectInfo_POS_joker_DOT_core__637_11__637_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_433 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -70083,7 +70083,7 @@ var objectInfo_POS_joker_DOT_core__913_5__913_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_436 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -70112,7 +70112,7 @@ var objectInfo_POS_joker_DOT_core__913_11__913_13 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_437 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -70141,7 +70141,7 @@ var objectInfo_POS_joker_DOT_core__913_18__913_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_438 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -70155,7 +70155,7 @@ var arrayVector_POS_joker_DOT_core__913_9__913_23_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_436,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_437,
@@ -70189,7 +70189,7 @@ var objectInfo_POS_joker_DOT_core__914_5__914_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_439 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -70218,7 +70218,7 @@ var objectInfo_POS_joker_DOT_core__914_11__914_13 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_440 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -70247,7 +70247,7 @@ var objectInfo_POS_joker_DOT_core__914_18__914_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_441 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -70279,7 +70279,7 @@ var arrayVector_POS_joker_DOT_core__914_9__914_30_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_439,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_440,
@@ -70301,7 +70301,7 @@ var arrayVector_POS_joker_DOT_core__914_9__914_30_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_79 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__913_9__913_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__914_9__914_30_NUM_1,
 	},
@@ -70337,7 +70337,7 @@ var objectInfo_POS_joker_DOT_core__912_11__912_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_435 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -70708,7 +70708,7 @@ var objectInfo_POS_joker_DOT_core__920_4__920_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_443 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -70737,7 +70737,7 @@ var objectInfo_POS_joker_DOT_core__920_10__920_12 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_444 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -70766,7 +70766,7 @@ var objectInfo_POS_joker_DOT_core__920_17__920_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_445 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -70780,7 +70780,7 @@ var arrayVector_POS_joker_DOT_core__920_8__920_22_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_443,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_444,
@@ -70796,7 +70796,7 @@ var arrayVector_POS_joker_DOT_core__920_8__920_22_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_80 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__920_8__920_22_NUM_1,
 	},
 }
@@ -70831,7 +70831,7 @@ var objectInfo_POS_joker_DOT_core__919_11__919_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_442 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -71055,7 +71055,7 @@ var objectInfo_POS_joker_DOT_core__930_4__930_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_447 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71084,7 +71084,7 @@ var objectInfo_POS_joker_DOT_core__930_10__930_12 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_448 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71113,7 +71113,7 @@ var objectInfo_POS_joker_DOT_core__930_17__930_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_449 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71127,7 +71127,7 @@ var arrayVector_POS_joker_DOT_core__930_8__930_22_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_447,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_448,
@@ -71143,7 +71143,7 @@ var arrayVector_POS_joker_DOT_core__930_8__930_22_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_81 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__930_8__930_22_NUM_1,
 	},
 }
@@ -71178,7 +71178,7 @@ var objectInfo_POS_joker_DOT_core__929_11__929_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_446 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -71402,7 +71402,7 @@ var objectInfo_POS_joker_DOT_core__887_4__887_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_451 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71431,7 +71431,7 @@ var objectInfo_POS_joker_DOT_core__887_10__887_12 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_452 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71445,7 +71445,7 @@ var arrayVector_POS_joker_DOT_core__887_8__887_15_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_451,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_452,
@@ -71455,7 +71455,7 @@ var arrayVector_POS_joker_DOT_core__887_8__887_15_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_82 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__887_8__887_15_NUM_1,
 	},
 }
@@ -71490,7 +71490,7 @@ var objectInfo_POS_joker_DOT_core__886_11__886_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_450 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -71687,7 +71687,7 @@ var objectInfo_POS_joker_DOT_core__899_5__899_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_454 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71716,7 +71716,7 @@ var objectInfo_POS_joker_DOT_core__899_11__899_13 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_455 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71745,7 +71745,7 @@ var objectInfo_POS_joker_DOT_core__899_18__899_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_456 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71759,7 +71759,7 @@ var arrayVector_POS_joker_DOT_core__899_9__899_23_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_454,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_455,
@@ -71793,7 +71793,7 @@ var objectInfo_POS_joker_DOT_core__900_5__900_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_457 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71822,7 +71822,7 @@ var objectInfo_POS_joker_DOT_core__900_11__900_13 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_458 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71851,7 +71851,7 @@ var objectInfo_POS_joker_DOT_core__900_18__900_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_459 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -71883,7 +71883,7 @@ var arrayVector_POS_joker_DOT_core__900_9__900_30_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_457,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_458,
@@ -71905,7 +71905,7 @@ var arrayVector_POS_joker_DOT_core__900_9__900_30_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_83 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__899_9__899_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__900_9__900_30_NUM_1,
 	},
@@ -71941,7 +71941,7 @@ var objectInfo_POS_joker_DOT_core__898_11__898_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_453 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -72312,7 +72312,7 @@ var objectInfo_POS_joker_DOT_core__925_4__925_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_461 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -72341,7 +72341,7 @@ var objectInfo_POS_joker_DOT_core__925_10__925_12 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_462 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -72370,7 +72370,7 @@ var objectInfo_POS_joker_DOT_core__925_17__925_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_463 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -72384,7 +72384,7 @@ var arrayVector_POS_joker_DOT_core__925_8__925_22_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_461,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_462,
@@ -72400,7 +72400,7 @@ var arrayVector_POS_joker_DOT_core__925_8__925_22_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_84 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__925_8__925_22_NUM_1,
 	},
 }
@@ -72435,7 +72435,7 @@ var objectInfo_POS_joker_DOT_core__924_11__924_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_460 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -72659,7 +72659,7 @@ var objectInfo_POS_joker_DOT_core__940_4__940_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_465 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -72688,7 +72688,7 @@ var objectInfo_POS_joker_DOT_core__940_10__940_12 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_466 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -72717,7 +72717,7 @@ var objectInfo_POS_joker_DOT_core__940_17__940_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_467 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -72731,7 +72731,7 @@ var arrayVector_POS_joker_DOT_core__940_8__940_22_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_465,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_466,
@@ -72747,7 +72747,7 @@ var arrayVector_POS_joker_DOT_core__940_8__940_22_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_85 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__940_8__940_22_NUM_1,
 	},
 }
@@ -72782,7 +72782,7 @@ var objectInfo_POS_joker_DOT_core__939_11__939_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_464 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -73006,7 +73006,7 @@ var objectInfo_POS_joker_DOT_core__945_4__945_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_469 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73035,7 +73035,7 @@ var objectInfo_POS_joker_DOT_core__945_10__945_12 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_470 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73064,7 +73064,7 @@ var objectInfo_POS_joker_DOT_core__945_17__945_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_471 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73078,7 +73078,7 @@ var arrayVector_POS_joker_DOT_core__945_8__945_22_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_469,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_470,
@@ -73094,7 +73094,7 @@ var arrayVector_POS_joker_DOT_core__945_8__945_22_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_86 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__945_8__945_22_NUM_1,
 	},
 }
@@ -73129,7 +73129,7 @@ var objectInfo_POS_joker_DOT_core__944_11__944_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_468 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -73353,7 +73353,7 @@ var objectInfo_POS_joker_DOT_core__935_4__935_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_473 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73382,7 +73382,7 @@ var objectInfo_POS_joker_DOT_core__935_14__935_16 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_474 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73411,7 +73411,7 @@ var objectInfo_POS_joker_DOT_core__935_21__935_23 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_475 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73425,7 +73425,7 @@ var arrayVector_POS_joker_DOT_core__935_12__935_26_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_473,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_474,
@@ -73441,7 +73441,7 @@ var arrayVector_POS_joker_DOT_core__935_12__935_26_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_87 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__935_12__935_26_NUM_1,
 	},
 }
@@ -73476,7 +73476,7 @@ var objectInfo_POS_joker_DOT_core__934_11__934_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_472 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -73700,7 +73700,7 @@ var objectInfo_POS_joker_DOT_core__906_5__906_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_477 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73729,7 +73729,7 @@ var objectInfo_POS_joker_DOT_core__906_11__906_13 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_478 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73758,7 +73758,7 @@ var objectInfo_POS_joker_DOT_core__906_18__906_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_479 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73772,7 +73772,7 @@ var arrayVector_POS_joker_DOT_core__906_9__906_23_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_477,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_478,
@@ -73806,7 +73806,7 @@ var objectInfo_POS_joker_DOT_core__907_5__907_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_480 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73835,7 +73835,7 @@ var objectInfo_POS_joker_DOT_core__907_11__907_13 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_481 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73864,7 +73864,7 @@ var objectInfo_POS_joker_DOT_core__907_18__907_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_482 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -73896,7 +73896,7 @@ var arrayVector_POS_joker_DOT_core__907_9__907_30_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_480,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_481,
@@ -73918,7 +73918,7 @@ var arrayVector_POS_joker_DOT_core__907_9__907_30_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_88 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__906_9__906_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__907_9__907_30_NUM_1,
 	},
@@ -73954,7 +73954,7 @@ var objectInfo_POS_joker_DOT_core__905_11__905_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_476 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -74325,7 +74325,7 @@ var objectInfo_POS_joker_DOT_core__2015_4__2015_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_484 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -74348,14 +74348,14 @@ var arrayVector_POS_joker_DOT_core__2015_12__2015_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_484,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_89 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2015_12__2015_14_NUM_1,
 	},
 }
@@ -74390,7 +74390,7 @@ var objectInfo_POS_joker_DOT_core__2014_11__2014_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_483 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -74601,14 +74601,14 @@ var objectInfo_POS_joker_DOT_core__379_4__379_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__379_3__379_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_90 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__379_3__379_5_NUM_1,
 	},
 }
@@ -74836,7 +74836,7 @@ var objectInfo_POS_joker_DOT_core__3092_4__3092_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_486 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -74868,7 +74868,7 @@ var arrayVector_POS_joker_DOT_core__3092_12__3092_19_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_486,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -74878,7 +74878,7 @@ var arrayVector_POS_joker_DOT_core__3092_12__3092_19_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_91 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3092_12__3092_19_NUM_1,
 	},
 }
@@ -74913,7 +74913,7 @@ var objectInfo_POS_joker_DOT_core__3091_11__3091_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_485 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -75173,7 +75173,7 @@ var objectInfo_POS_joker_DOT_core__4066_4__4066_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_488 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -75202,7 +75202,7 @@ var objectInfo_POS_joker_DOT_core__4066_10__4066_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_489 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -75225,7 +75225,7 @@ var arrayVector_POS_joker_DOT_core__4066_8__4066_23_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_488,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_489,
@@ -75238,7 +75238,7 @@ var arrayVector_POS_joker_DOT_core__4066_8__4066_23_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_92 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4066_8__4066_23_NUM_1,
 	},
 }
@@ -75273,7 +75273,7 @@ var objectInfo_POS_joker_DOT_core__4065_11__4065_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_487 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -75365,7 +75365,7 @@ var objectInfo_POS_joker_DOT_core__3617_4__3617_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_491 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -75388,14 +75388,14 @@ var arrayVector_POS_joker_DOT_core__3617_12__3617_17_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_491,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_93 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3617_12__3617_17_NUM_1,
 	},
 }
@@ -75430,7 +75430,7 @@ var objectInfo_POS_joker_DOT_core__3616_11__3616_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_490 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -75897,7 +75897,7 @@ var objectInfo_POS_joker_DOT_core__679_4__679_9 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_493 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -75926,7 +75926,7 @@ var objectInfo_POS_joker_DOT_core__679_13__679_18 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_494 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -75940,7 +75940,7 @@ var arrayVector_POS_joker_DOT_core__679_11__679_21_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_493,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_494,
@@ -75950,7 +75950,7 @@ var arrayVector_POS_joker_DOT_core__679_11__679_21_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_94 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__679_11__679_21_NUM_1,
 	},
 }
@@ -75985,7 +75985,7 @@ var objectInfo_POS_joker_DOT_core__678_11__678_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_492 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -76402,7 +76402,7 @@ var objectInfo_POS_joker_DOT_core__3597_4__3597_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_496 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -76425,14 +76425,14 @@ var arrayVector_POS_joker_DOT_core__3597_12__3597_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_496,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_95 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3597_12__3597_14_NUM_1,
 	},
 }
@@ -76467,7 +76467,7 @@ var objectInfo_POS_joker_DOT_core__3596_11__3596_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_495 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -76730,7 +76730,7 @@ var vector_NUM_43 Vector = Vector{
 	},
 }
 var arrayVector_NUM_96 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_43,
 	},
 }
@@ -76903,7 +76903,7 @@ var objectInfo_POS_joker_DOT_core__1915_5__1915_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_498 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -76932,7 +76932,7 @@ var objectInfo_POS_joker_DOT_core__1915_11__1915_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_499 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -76961,7 +76961,7 @@ var objectInfo_POS_joker_DOT_core__1915_21__1915_27 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_500 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -76975,7 +76975,7 @@ var arrayVector_POS_joker_DOT_core__1915_9__1915_33_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_498,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_499,
@@ -77009,7 +77009,7 @@ var objectInfo_POS_joker_DOT_core__1917_5__1917_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_501 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77038,7 +77038,7 @@ var objectInfo_POS_joker_DOT_core__1917_11__1917_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_502 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77067,7 +77067,7 @@ var objectInfo_POS_joker_DOT_core__1917_21__1917_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_503 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77096,7 +77096,7 @@ var objectInfo_POS_joker_DOT_core__1917_34__1917_40 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_504 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77110,7 +77110,7 @@ var arrayVector_POS_joker_DOT_core__1917_9__1917_46_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_501,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_502,
@@ -77150,7 +77150,7 @@ var objectInfo_POS_joker_DOT_core__1923_5__1923_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_505 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77179,7 +77179,7 @@ var objectInfo_POS_joker_DOT_core__1923_11__1923_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_506 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77208,7 +77208,7 @@ var objectInfo_POS_joker_DOT_core__1923_21__1923_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_507 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77237,7 +77237,7 @@ var objectInfo_POS_joker_DOT_core__1923_34__1923_40 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_508 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77266,7 +77266,7 @@ var objectInfo_POS_joker_DOT_core__1923_47__1923_53 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_509 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77280,7 +77280,7 @@ var arrayVector_POS_joker_DOT_core__1923_9__1923_59_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_505,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_506,
@@ -77308,7 +77308,7 @@ var arrayVector_POS_joker_DOT_core__1923_9__1923_59_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_97 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1915_9__1915_33_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1917_9__1917_46_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1923_9__1923_59_NUM_1,
@@ -77345,7 +77345,7 @@ var objectInfo_POS_joker_DOT_core__1914_11__1914_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_497 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -77599,7 +77599,7 @@ var objectInfo_POS_joker_DOT_core__1883_5__1883_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_511 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77628,7 +77628,7 @@ var objectInfo_POS_joker_DOT_core__1883_11__1883_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_512 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77642,7 +77642,7 @@ var arrayVector_POS_joker_DOT_core__1883_9__1883_23_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_511,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_512,
@@ -77670,7 +77670,7 @@ var objectInfo_POS_joker_DOT_core__1886_5__1886_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_513 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77699,7 +77699,7 @@ var objectInfo_POS_joker_DOT_core__1886_11__1886_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_514 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77728,7 +77728,7 @@ var objectInfo_POS_joker_DOT_core__1886_21__1886_27 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_515 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77742,7 +77742,7 @@ var arrayVector_POS_joker_DOT_core__1886_9__1886_33_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_513,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_514,
@@ -77758,7 +77758,7 @@ var arrayVector_POS_joker_DOT_core__1886_9__1886_33_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_98 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1883_9__1883_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1886_9__1886_33_NUM_1,
 	},
@@ -77794,7 +77794,7 @@ var objectInfo_POS_joker_DOT_core__1882_11__1882_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_510 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -77886,7 +77886,7 @@ var objectInfo_POS_joker_DOT_core__1868_5__1868_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_517 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77915,7 +77915,7 @@ var objectInfo_POS_joker_DOT_core__1868_11__1868_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_518 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77929,7 +77929,7 @@ var arrayVector_POS_joker_DOT_core__1868_9__1868_23_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_517,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_518,
@@ -77957,7 +77957,7 @@ var objectInfo_POS_joker_DOT_core__1871_5__1871_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_519 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -77986,7 +77986,7 @@ var objectInfo_POS_joker_DOT_core__1871_11__1871_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_520 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -78015,7 +78015,7 @@ var objectInfo_POS_joker_DOT_core__1871_21__1871_27 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_521 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -78029,7 +78029,7 @@ var arrayVector_POS_joker_DOT_core__1871_9__1871_33_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_519,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_520,
@@ -78045,7 +78045,7 @@ var arrayVector_POS_joker_DOT_core__1871_9__1871_33_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_99 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1868_9__1868_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1871_9__1871_33_NUM_1,
 	},
@@ -78081,7 +78081,7 @@ var objectInfo_POS_joker_DOT_core__1867_11__1867_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_516 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -79021,7 +79021,7 @@ var objectInfo_POS_joker_DOT_core__1902_4__1902_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_523 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -79050,7 +79050,7 @@ var objectInfo_POS_joker_DOT_core__1902_10__1902_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_524 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -79079,7 +79079,7 @@ var objectInfo_POS_joker_DOT_core__1902_24__1902_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_525 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -79093,7 +79093,7 @@ var arrayVector_POS_joker_DOT_core__1902_8__1902_32_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_523,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_524,
@@ -79109,7 +79109,7 @@ var arrayVector_POS_joker_DOT_core__1902_8__1902_32_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_100 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1902_8__1902_32_NUM_1,
 	},
 }
@@ -79144,7 +79144,7 @@ var objectInfo_POS_joker_DOT_core__1901_11__1901_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_522 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -80735,7 +80735,7 @@ var objectInfo_POS_joker_DOT_core__653_11__653_16 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_527 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -80746,7 +80746,7 @@ var arrayMap_NUM_527 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__653_4__653_23_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -80795,7 +80795,7 @@ var objectInfo_POS_joker_DOT_core__654_11__654_16 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_528 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -80815,7 +80815,7 @@ var objectInfo_POS_joker_DOT_core__654_24__654_32 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__654_4__654_33_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
@@ -80831,7 +80831,7 @@ var arrayVector_POS_joker_DOT_core__654_4__654_33_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_101 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__653_4__653_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__654_4__654_33_NUM_1,
 	},
@@ -80867,7 +80867,7 @@ var objectInfo_POS_joker_DOT_core__651_11__651_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_526 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -81547,7 +81547,7 @@ var objectInfo_POS_joker_DOT_core__3584_4__3584_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_530 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -81570,14 +81570,14 @@ var arrayVector_POS_joker_DOT_core__3584_12__3584_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_530,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_102 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3584_12__3584_14_NUM_1,
 	},
 }
@@ -81612,7 +81612,7 @@ var objectInfo_POS_joker_DOT_core__3583_11__3583_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_529 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -81832,7 +81832,7 @@ var objectInfo_POS_joker_DOT_core__2225_4__2225_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_532 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -81861,7 +81861,7 @@ var objectInfo_POS_joker_DOT_core__2225_13__2225_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_533 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -81875,7 +81875,7 @@ var arrayVector_POS_joker_DOT_core__2225_11__2225_25_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_532,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_533,
@@ -81885,7 +81885,7 @@ var arrayVector_POS_joker_DOT_core__2225_11__2225_25_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_103 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2225_11__2225_25_NUM_1,
 	},
 }
@@ -81920,7 +81920,7 @@ var objectInfo_POS_joker_DOT_core__2224_11__2224_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_531 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -82012,7 +82012,7 @@ var objectInfo_POS_joker_DOT_core__2220_4__2220_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_535 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -82035,14 +82035,14 @@ var arrayVector_POS_joker_DOT_core__2220_12__2220_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_535,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_104 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2220_12__2220_14_NUM_1,
 	},
 }
@@ -82077,7 +82077,7 @@ var objectInfo_POS_joker_DOT_core__2219_11__2219_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_534 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -82573,7 +82573,7 @@ var objectInfo_POS_joker_DOT_core__1604_5__1604_12 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_537 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -82602,7 +82602,7 @@ var objectInfo_POS_joker_DOT_core__1604_20__1604_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_538 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -82613,7 +82613,7 @@ var arrayMap_NUM_538 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__1604_3__1604_32_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_537,
@@ -82629,7 +82629,7 @@ var arrayVector_POS_joker_DOT_core__1604_3__1604_32_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_105 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1604_3__1604_32_NUM_1,
 	},
 }
@@ -82664,7 +82664,7 @@ var objectInfo_POS_joker_DOT_core__1603_11__1603_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_536 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -83425,7 +83425,7 @@ var objectInfo_POS_joker_DOT_core__3869_7__3869_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_core__3869_3__3869_11_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_to,
 		},
@@ -83435,7 +83435,7 @@ var arrayVector_POS_joker_DOT_core__3869_3__3869_11_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_106 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3869_3__3869_11_NUM_1,
 	},
 }
@@ -83470,7 +83470,7 @@ var objectInfo_POS_joker_DOT_core__3868_11__3868_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_539 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -83954,7 +83954,7 @@ var objectInfo_POS_joker_DOT_core__3857_5__3857_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_541 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -83983,7 +83983,7 @@ var objectInfo_POS_joker_DOT_core__3857_11__3857_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_542 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -84012,7 +84012,7 @@ var objectInfo_POS_joker_DOT_core__3857_21__3857_27 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_543 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -84026,7 +84026,7 @@ var arrayVector_POS_joker_DOT_core__3857_9__3857_33_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_541,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_542,
@@ -84060,7 +84060,7 @@ var objectInfo_POS_joker_DOT_core__3859_5__3859_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_544 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -84089,7 +84089,7 @@ var objectInfo_POS_joker_DOT_core__3859_11__3859_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_545 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -84118,7 +84118,7 @@ var objectInfo_POS_joker_DOT_core__3859_21__3859_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_546 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -84147,7 +84147,7 @@ var objectInfo_POS_joker_DOT_core__3859_34__3859_40 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_547 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -84161,7 +84161,7 @@ var arrayVector_POS_joker_DOT_core__3859_9__3859_46_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_544,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_545,
@@ -84183,7 +84183,7 @@ var arrayVector_POS_joker_DOT_core__3859_9__3859_46_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_107 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3857_9__3857_33_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3859_9__3859_46_NUM_1,
 	},
@@ -84219,7 +84219,7 @@ var objectInfo_POS_joker_DOT_core__3856_11__3856_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_540 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -86191,7 +86191,7 @@ var objectInfo_POS_joker_DOT_core__4496_5__4496_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_549 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -86225,7 +86225,7 @@ var objectInfo_POS_joker_DOT_core__4497_5__4497_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_550 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -86254,7 +86254,7 @@ var objectInfo_POS_joker_DOT_core__4497_15__4497_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_551 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -86268,7 +86268,7 @@ var arrayVector_POS_joker_DOT_core__4497_13__4497_20_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_550,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_551,
@@ -86278,7 +86278,7 @@ var arrayVector_POS_joker_DOT_core__4497_13__4497_20_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_108 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4496_13__4496_14_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4497_13__4497_20_NUM_1,
 	},
@@ -86314,7 +86314,7 @@ var objectInfo_POS_joker_DOT_core__4495_11__4495_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_548 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -86567,7 +86567,7 @@ var objectInfo_POS_joker_DOT_core__2010_4__2010_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_553 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -86590,14 +86590,14 @@ var arrayVector_POS_joker_DOT_core__2010_9__2010_11_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_553,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_109 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2010_9__2010_11_NUM_1,
 	},
 }
@@ -86632,7 +86632,7 @@ var objectInfo_POS_joker_DOT_core__2008_11__2008_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_552 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -86841,7 +86841,7 @@ var objectInfo_POS_joker_DOT_core__123_21__123_21 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__123_20__123_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -86889,7 +86889,7 @@ var objectInfo_POS_joker_DOT_core__125_15__125_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_554 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -87039,7 +87039,7 @@ var fnExpr_POS_joker_DOT_core_126_9__126_50_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_9 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_char_Q__POS_joker_DOT_core_126_9__126_50_NUM_1 */
 	},
 }
@@ -87105,7 +87105,7 @@ var objectInfo_POS_joker_DOT_core__3391_9__3391_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_core__3391_3__3391_12_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_path,
 		},
@@ -87115,7 +87115,7 @@ var arrayVector_POS_joker_DOT_core__3391_3__3391_12_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_110 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3391_3__3391_12_NUM_1,
 	},
 }
@@ -87132,7 +87132,7 @@ var objectInfo_POS_joker_DOT_core__3387_3__3390_18 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_555 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -87593,7 +87593,7 @@ var objectInfo_POS_joker_DOT_core__3079_4__3079_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_557 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -87631,7 +87631,7 @@ var objectInfo_POS_joker_DOT_core__3079_14__3079_20 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_558 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -87645,7 +87645,7 @@ var arrayVector_POS_joker_DOT_core__3079_8__3079_26_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_557,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_sep,
 		},
@@ -87658,7 +87658,7 @@ var arrayVector_POS_joker_DOT_core__3079_8__3079_26_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_111 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3079_8__3079_26_NUM_1,
 	},
 }
@@ -87693,7 +87693,7 @@ var objectInfo_POS_joker_DOT_core__3078_11__3078_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_556 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -87785,7 +87785,7 @@ var objectInfo_POS_joker_DOT_core__1695_4__1695_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_560 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -87814,7 +87814,7 @@ var objectInfo_POS_joker_DOT_core__1695_10__1695_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_561 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -87843,7 +87843,7 @@ var objectInfo_POS_joker_DOT_core__1695_20__1695_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_562 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -87857,7 +87857,7 @@ var arrayVector_POS_joker_DOT_core__1695_8__1695_32_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_560,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_561,
@@ -87873,7 +87873,7 @@ var arrayVector_POS_joker_DOT_core__1695_8__1695_32_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_112 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1695_8__1695_32_NUM_1,
 	},
 }
@@ -87908,7 +87908,7 @@ var objectInfo_POS_joker_DOT_core__1694_11__1694_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_559 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -88803,7 +88803,7 @@ var objectInfo_POS_joker_DOT_core__3221_20__3221_23 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3221_3__3221_24_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_pred,
 		},
@@ -88822,7 +88822,7 @@ var arrayVector_POS_joker_DOT_core__3221_3__3221_24_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_113 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3221_3__3221_24_NUM_1,
 	},
 }
@@ -88839,7 +88839,7 @@ var objectInfo_POS_joker_DOT_core__3220_3__3220_54 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_563 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -88929,7 +88929,7 @@ var objectInfo_POS_joker_DOT_core__3223_12__3223_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_564 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -88995,7 +88995,7 @@ var objectInfo_POS_joker_DOT_core__3118_4__3118_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_566 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -89024,7 +89024,7 @@ var objectInfo_POS_joker_DOT_core__3118_13__3118_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_567 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -89056,7 +89056,7 @@ var arrayVector_POS_joker_DOT_core__3118_11__3118_30_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_566,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_567,
@@ -89072,7 +89072,7 @@ var arrayVector_POS_joker_DOT_core__3118_11__3118_30_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_114 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3118_11__3118_30_NUM_1,
 	},
 }
@@ -89107,7 +89107,7 @@ var objectInfo_POS_joker_DOT_core__3117_11__3117_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_565 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -89838,7 +89838,7 @@ var objectInfo_POS_joker_DOT_core__4324_14__4324_23 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__4324_3__4324_24_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_options,
 		},
@@ -89851,7 +89851,7 @@ var arrayVector_POS_joker_DOT_core__4324_3__4324_24_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_115 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4324_3__4324_24_NUM_1,
 	},
 }
@@ -89868,7 +89868,7 @@ var objectInfo_POS_joker_DOT_core__4322_3__4323_30 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_568 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -89980,7 +89980,7 @@ var objectInfo_POS_joker_DOT_core__1077_5__1077_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_570 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -90009,7 +90009,7 @@ var objectInfo_POS_joker_DOT_core__1077_14__1077_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_571 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -90023,7 +90023,7 @@ var arrayVector_POS_joker_DOT_core__1077_12__1077_21_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_570,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_571,
@@ -90051,7 +90051,7 @@ var objectInfo_POS_joker_DOT_core__1078_5__1078_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_572 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -90080,7 +90080,7 @@ var objectInfo_POS_joker_DOT_core__1078_14__1078_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_573 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -90103,7 +90103,7 @@ var arrayVector_POS_joker_DOT_core__1078_12__1078_25_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_572,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_573,
@@ -90134,7 +90134,7 @@ var objectInfo_POS_joker_DOT_core__1080_5__1080_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_574 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -90163,7 +90163,7 @@ var objectInfo_POS_joker_DOT_core__1080_14__1080_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_575 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -90204,7 +90204,7 @@ var arrayVector_POS_joker_DOT_core__1080_12__1080_30_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_574,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_575,
@@ -90223,7 +90223,7 @@ var arrayVector_POS_joker_DOT_core__1080_12__1080_30_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_116 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1077_12__1077_21_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1078_12__1078_25_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1080_12__1080_30_NUM_1,
@@ -90260,7 +90260,7 @@ var objectInfo_POS_joker_DOT_core__1076_11__1076_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_569 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -90879,7 +90879,7 @@ var objectInfo_POS_joker_DOT_core__287_23__287_26 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__287_20__287_27_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -91073,7 +91073,7 @@ var objectInfo_POS_joker_DOT_core__1109_4__1109_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_577 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -91102,7 +91102,7 @@ var objectInfo_POS_joker_DOT_core__1109_10__1109_12 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_578 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -91116,7 +91116,7 @@ var arrayVector_POS_joker_DOT_core__1109_8__1109_17_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_577,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_578,
@@ -91126,7 +91126,7 @@ var arrayVector_POS_joker_DOT_core__1109_8__1109_17_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_117 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1109_8__1109_17_NUM_1,
 	},
 }
@@ -91161,7 +91161,7 @@ var objectInfo_POS_joker_DOT_core__1108_11__1108_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_576 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -91808,7 +91808,7 @@ var objectInfo_POS_joker_DOT_core__515_4__515_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_580 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -91831,14 +91831,14 @@ var arrayVector_POS_joker_DOT_core__515_12__515_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_580,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s,
 		},
 	},
 }
 var arrayVector_NUM_118 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__515_12__515_14_NUM_1,
 	},
 }
@@ -91873,7 +91873,7 @@ var objectInfo_POS_joker_DOT_core__514_11__514_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_579 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -92028,7 +92028,7 @@ var objectInfo_POS_joker_DOT_core__1317_4__1317_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_582 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -92051,14 +92051,14 @@ var arrayVector_POS_joker_DOT_core__1317_9__1317_11_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_582,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_119 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1317_9__1317_11_NUM_1,
 	},
 }
@@ -92093,7 +92093,7 @@ var objectInfo_POS_joker_DOT_core__1316_11__1316_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_581 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -92278,7 +92278,7 @@ var objectInfo_POS_joker_DOT_core__4526_5__4526_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_584 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -92289,7 +92289,7 @@ var arrayMap_NUM_584 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__4526_3__4526_15_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_584,
@@ -92299,7 +92299,7 @@ var arrayVector_POS_joker_DOT_core__4526_3__4526_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_120 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4526_3__4526_15_NUM_1,
 	},
 }
@@ -92334,7 +92334,7 @@ var objectInfo_POS_joker_DOT_core__4525_11__4525_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_583 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -92530,7 +92530,7 @@ var objectInfo_POS_joker_DOT_core__3579_4__3579_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_586 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -92553,14 +92553,14 @@ var arrayVector_POS_joker_DOT_core__3579_12__3579_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_586,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_121 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3579_12__3579_14_NUM_1,
 	},
 }
@@ -92595,7 +92595,7 @@ var objectInfo_POS_joker_DOT_core__3578_11__3578_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_585 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -92847,7 +92847,7 @@ var vector_NUM_44 Vector = Vector{
 	},
 }
 var arrayVector_NUM_122 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_44,
 	},
 }
@@ -93023,7 +93023,7 @@ var objectInfo_POS_joker_DOT_core__1495_5__1495_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_588 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93057,7 +93057,7 @@ var objectInfo_POS_joker_DOT_core__1496_5__1496_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_589 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93086,7 +93086,7 @@ var objectInfo_POS_joker_DOT_core__1496_10__1496_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_590 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93100,7 +93100,7 @@ var arrayVector_POS_joker_DOT_core__1496_8__1496_20_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_589,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_590,
@@ -93128,7 +93128,7 @@ var objectInfo_POS_joker_DOT_core__1497_5__1497_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_591 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93157,7 +93157,7 @@ var objectInfo_POS_joker_DOT_core__1497_10__1497_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_592 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93186,7 +93186,7 @@ var objectInfo_POS_joker_DOT_core__1497_22__1497_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_593 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93200,7 +93200,7 @@ var arrayVector_POS_joker_DOT_core__1497_8__1497_32_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_591,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_592,
@@ -93234,7 +93234,7 @@ var objectInfo_POS_joker_DOT_core__1504_5__1504_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_594 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93263,7 +93263,7 @@ var objectInfo_POS_joker_DOT_core__1504_10__1504_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_595 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93292,7 +93292,7 @@ var objectInfo_POS_joker_DOT_core__1504_22__1504_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_596 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93321,7 +93321,7 @@ var objectInfo_POS_joker_DOT_core__1504_34__1504_41 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_597 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93335,7 +93335,7 @@ var arrayVector_POS_joker_DOT_core__1504_8__1504_44_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_594,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_595,
@@ -93375,7 +93375,7 @@ var objectInfo_POS_joker_DOT_core__1511_5__1511_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_598 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93404,7 +93404,7 @@ var objectInfo_POS_joker_DOT_core__1511_10__1511_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_599 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93433,7 +93433,7 @@ var objectInfo_POS_joker_DOT_core__1511_23__1511_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_600 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93462,7 +93462,7 @@ var objectInfo_POS_joker_DOT_core__1511_36__1511_43 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_601 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -93494,7 +93494,7 @@ var arrayVector_POS_joker_DOT_core__1511_8__1511_52_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_598,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_599,
@@ -93522,7 +93522,7 @@ var arrayVector_POS_joker_DOT_core__1511_8__1511_52_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_123 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1495_8__1495_9_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1496_8__1496_20_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1497_8__1497_32_NUM_1,
@@ -93561,7 +93561,7 @@ var objectInfo_POS_joker_DOT_core__1494_11__1494_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_587 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -95098,7 +95098,7 @@ var objectInfo_POS_joker_DOT_core__710_4__710_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_603 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -95127,7 +95127,7 @@ var objectInfo_POS_joker_DOT_core__710_17__710_23 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_604 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -95141,7 +95141,7 @@ var arrayVector_POS_joker_DOT_core__710_15__710_29_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_603,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_604,
@@ -95151,7 +95151,7 @@ var arrayVector_POS_joker_DOT_core__710_15__710_29_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_124 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__710_15__710_29_NUM_1,
 	},
 }
@@ -95186,7 +95186,7 @@ var objectInfo_POS_joker_DOT_core__709_11__709_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_602 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -96028,7 +96028,7 @@ var objectInfo_POS_joker_DOT_core__603_4__603_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_606 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -96060,7 +96060,7 @@ var arrayVector_POS_joker_DOT_core__603_8__603_12_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_606,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -96070,7 +96070,7 @@ var arrayVector_POS_joker_DOT_core__603_8__603_12_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_125 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__603_8__603_12_NUM_1,
 	},
 }
@@ -96105,7 +96105,7 @@ var objectInfo_POS_joker_DOT_core__602_11__602_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_605 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -96383,7 +96383,7 @@ var vector_NUM_45 Vector = Vector{
 	},
 }
 var arrayVector_NUM_126 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_45,
 	},
 }
@@ -97328,7 +97328,7 @@ var vector_NUM_46 Vector = Vector{
 	},
 }
 var arrayVector_NUM_127 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_46,
 	},
 }
@@ -98531,7 +98531,7 @@ var objectInfo_POS_joker_DOT_core__429_5__429_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_608 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -98565,7 +98565,7 @@ var objectInfo_POS_joker_DOT_core__430_5__430_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_609 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -98594,7 +98594,7 @@ var objectInfo_POS_joker_DOT_core__430_14__430_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_610 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -98608,7 +98608,7 @@ var arrayVector_POS_joker_DOT_core__430_12__430_34_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_609,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_610,
@@ -98618,7 +98618,7 @@ var arrayVector_POS_joker_DOT_core__430_12__430_34_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_128 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__429_12__429_13_NUM_1,
 		&arrayVector_POS_joker_DOT_core__430_12__430_34_NUM_1,
 	},
@@ -98654,7 +98654,7 @@ var objectInfo_POS_joker_DOT_core__428_11__428_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_607 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -99953,7 +99953,7 @@ var vector_NUM_47 Vector = Vector{
 	},
 }
 var arrayVector_NUM_129 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_47,
 	},
 }
@@ -102191,7 +102191,7 @@ var vector_NUM_48 Vector = Vector{
 	},
 }
 var arrayVector_NUM_130 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_48,
 	},
 }
@@ -103048,7 +103048,7 @@ var objectInfo_POS_joker_DOT_core__1742_4__1742_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_612 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -103077,7 +103077,7 @@ var objectInfo_POS_joker_DOT_core__1742_10__1742_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_613 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -103106,7 +103106,7 @@ var objectInfo_POS_joker_DOT_core__1742_20__1742_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_614 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -103120,7 +103120,7 @@ var arrayVector_POS_joker_DOT_core__1742_8__1742_32_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_612,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_613,
@@ -103136,7 +103136,7 @@ var arrayVector_POS_joker_DOT_core__1742_8__1742_32_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_131 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1742_8__1742_32_NUM_1,
 	},
 }
@@ -103171,7 +103171,7 @@ var objectInfo_POS_joker_DOT_core__1741_11__1741_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_611 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -105669,7 +105669,7 @@ var objectInfo_POS_joker_DOT_core__1021_4__1021_5 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_616 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -105692,14 +105692,14 @@ var arrayVector_POS_joker_DOT_core__1021_7__1021_9_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_616,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_132 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1021_7__1021_9_NUM_1,
 	},
 }
@@ -105734,7 +105734,7 @@ var objectInfo_POS_joker_DOT_core__1020_11__1020_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_615 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -105915,7 +105915,7 @@ var objectInfo_POS_joker_DOT_core__1050_4__1050_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_618 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -105944,7 +105944,7 @@ var objectInfo_POS_joker_DOT_core__1050_14__1050_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_619 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -105967,7 +105967,7 @@ var arrayVector_POS_joker_DOT_core__1050_12__1050_31_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_618,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_619,
@@ -105980,7 +105980,7 @@ var arrayVector_POS_joker_DOT_core__1050_12__1050_31_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_133 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1050_12__1050_31_NUM_1,
 	},
 }
@@ -106015,7 +106015,7 @@ var objectInfo_POS_joker_DOT_core__1049_11__1049_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_617 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -106234,7 +106234,7 @@ var objectInfo_POS_joker_DOT_core__2249_4__2249_12 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_621 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -106263,7 +106263,7 @@ var objectInfo_POS_joker_DOT_core__2249_16__2249_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_622 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -106277,7 +106277,7 @@ var arrayVector_POS_joker_DOT_core__2249_14__2249_26_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_621,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_622,
@@ -106287,7 +106287,7 @@ var arrayVector_POS_joker_DOT_core__2249_14__2249_26_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_134 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2249_14__2249_26_NUM_1,
 	},
 }
@@ -106322,7 +106322,7 @@ var objectInfo_POS_joker_DOT_core__2248_11__2248_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_620 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -106504,7 +106504,7 @@ var objectInfo_POS_joker_DOT_core__1734_4__1734_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_624 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -106533,7 +106533,7 @@ var objectInfo_POS_joker_DOT_core__1734_10__1734_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_625 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -106547,7 +106547,7 @@ var arrayVector_POS_joker_DOT_core__1734_8__1734_22_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_624,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_625,
@@ -106557,7 +106557,7 @@ var arrayVector_POS_joker_DOT_core__1734_8__1734_22_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_135 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1734_8__1734_22_NUM_1,
 	},
 }
@@ -106592,7 +106592,7 @@ var objectInfo_POS_joker_DOT_core__1733_11__1733_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_623 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -106976,7 +106976,7 @@ var objectInfo_POS_joker_DOT_core__854_4__854_9 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_627 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -107005,7 +107005,7 @@ var objectInfo_POS_joker_DOT_core__854_13__854_18 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_628 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -107019,7 +107019,7 @@ var arrayVector_POS_joker_DOT_core__854_11__854_21_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_627,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_628,
@@ -107029,7 +107029,7 @@ var arrayVector_POS_joker_DOT_core__854_11__854_21_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_136 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__854_11__854_21_NUM_1,
 	},
 }
@@ -107064,7 +107064,7 @@ var objectInfo_POS_joker_DOT_core__853_11__853_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_626 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -107326,7 +107326,7 @@ var vector_NUM_49 Vector = Vector{
 	},
 }
 var arrayVector_NUM_137 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_49,
 	},
 }
@@ -107620,7 +107620,7 @@ var objectInfo_POS_joker_DOT_core__500_9__500_16 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_630 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -107649,7 +107649,7 @@ var objectInfo_POS_joker_DOT_core__500_22__500_25 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__500_3__500_26_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_obj,
 		},
@@ -107668,7 +107668,7 @@ var arrayVector_POS_joker_DOT_core__500_3__500_26_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_138 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__500_3__500_26_NUM_1,
 	},
 }
@@ -107703,7 +107703,7 @@ var objectInfo_POS_joker_DOT_core__499_11__499_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_629 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -108224,7 +108224,7 @@ var objectInfo_POS_joker_DOT_core__4267_4__4267_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_632 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -108253,7 +108253,7 @@ var objectInfo_POS_joker_DOT_core__4267_10__4267_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_633 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -108267,7 +108267,7 @@ var arrayVector_POS_joker_DOT_core__4267_8__4267_22_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_632,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_633,
@@ -108277,7 +108277,7 @@ var arrayVector_POS_joker_DOT_core__4267_8__4267_22_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_139 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4267_8__4267_22_NUM_1,
 	},
 }
@@ -108312,7 +108312,7 @@ var objectInfo_POS_joker_DOT_core__4266_11__4266_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_631 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -108499,7 +108499,7 @@ var objectInfo_POS_joker_DOT_core__1723_4__1723_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_635 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -108528,7 +108528,7 @@ var objectInfo_POS_joker_DOT_core__1723_10__1723_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_636 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -108557,7 +108557,7 @@ var objectInfo_POS_joker_DOT_core__1723_25__1723_31 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_637 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -108571,7 +108571,7 @@ var arrayVector_POS_joker_DOT_core__1723_8__1723_37_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_635,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_636,
@@ -108587,7 +108587,7 @@ var arrayVector_POS_joker_DOT_core__1723_8__1723_37_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_140 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1723_8__1723_37_NUM_1,
 	},
 }
@@ -108622,7 +108622,7 @@ var objectInfo_POS_joker_DOT_core__1722_11__1722_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_634 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -109528,7 +109528,7 @@ var objectInfo_POS_joker_DOT_core__4289_3__4290_40 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_638 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -109721,7 +109721,7 @@ var objectInfo_POS_joker_DOT_core__303_49__303_55 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__303_48__303_56_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_params_STAR_,
 		},
@@ -109737,7 +109737,7 @@ var objectInfo_POS_joker_DOT_core__303_58__303_61 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__303_20__303_62_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
@@ -109817,7 +109817,7 @@ var objectInfo_POS_joker_DOT_core__304_50__304_56 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__304_49__304_57_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_params_STAR_,
 		},
@@ -109863,7 +109863,7 @@ var objectInfo_POS_joker_DOT_core__304_67__304_75 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__304_20__304_76_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
@@ -110254,7 +110254,7 @@ var objectInfo_POS_joker_DOT_core__128_21__128_21 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__128_20__128_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -110302,7 +110302,7 @@ var objectInfo_POS_joker_DOT_core__130_15__130_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_640 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -110452,7 +110452,7 @@ var fnExpr_POS_joker_DOT_core_131_11__131_56_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_10 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_string_Q__POS_joker_DOT_core_131_11__131_56_NUM_1 */
 	},
 }
@@ -110665,7 +110665,7 @@ var objectInfo_POS_joker_DOT_core__133_21__133_21 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__133_20__133_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -110713,7 +110713,7 @@ var objectInfo_POS_joker_DOT_core__135_15__135_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_641 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -110863,7 +110863,7 @@ var fnExpr_POS_joker_DOT_core_136_8__136_47_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_11 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_map_Q__POS_joker_DOT_core_136_8__136_47_NUM_1 */
 	},
 }
@@ -112892,7 +112892,7 @@ var vector_NUM_50 Vector = Vector{
 	},
 }
 var arrayVector_NUM_141 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_50,
 	},
 }
@@ -113649,7 +113649,7 @@ var objectInfo_POS_joker_DOT_core__4376_57__4376_63 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__4376_16__4376_64_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
@@ -116241,7 +116241,7 @@ var objectInfo_POS_joker_DOT_core__1140_4__1140_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_642 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -116264,14 +116264,14 @@ var arrayVector_POS_joker_DOT_core__1140_11__1140_13_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_642,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_142 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1140_11__1140_13_NUM_1,
 	},
 }
@@ -117257,7 +117257,7 @@ var objectInfo_POS_joker_DOT_core__225_49__225_55 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__225_48__225_56_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_params_STAR_,
 		},
@@ -117282,7 +117282,7 @@ var objectInfo_POS_joker_DOT_core__225_71__225_74 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__225_20__225_75_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
@@ -117365,7 +117365,7 @@ var objectInfo_POS_joker_DOT_core__226_50__226_56 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__226_49__226_57_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_params_STAR_,
 		},
@@ -117427,7 +117427,7 @@ var objectInfo_POS_joker_DOT_core__226_80__226_88 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__226_20__226_89_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
@@ -118853,7 +118853,7 @@ var objectInfo_POS_joker_DOT_core__180_17__180_20 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_643 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -120640,7 +120640,7 @@ var fnExpr_POS_joker_DOT_core_228_8__257_36_NUM_1 FnExpr = FnExpr{
 	variadic: &fnArityExpr_POS_0_0__0_0_NUM_4,
 }
 var localEnv_NUM_12 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_defn_POS_joker_DOT_core_228_8__257_36_NUM_1 */
 	},
 }
@@ -120777,7 +120777,7 @@ var vector_NUM_51 Vector = Vector{
 	},
 }
 var arrayVector_NUM_143 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_51,
 	},
 }
@@ -121211,7 +121211,7 @@ var vector_NUM_52 Vector = Vector{
 	},
 }
 var arrayVector_NUM_144 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_52,
 	},
 }
@@ -122026,7 +122026,7 @@ var vector_NUM_53 Vector = Vector{
 	},
 }
 var arrayVector_NUM_145 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_53,
 	},
 }
@@ -122323,7 +122323,7 @@ var objectInfo_POS_joker_DOT_core__551_4__551_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_645 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -122346,14 +122346,14 @@ var arrayVector_POS_joker_DOT_core__551_12__551_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_645,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_146 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__551_12__551_14_NUM_1,
 	},
 }
@@ -122388,7 +122388,7 @@ var objectInfo_POS_joker_DOT_core__550_11__550_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_644 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -122588,7 +122588,7 @@ var objectInfo_POS_joker_DOT_core__2046_4__2046_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_647 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -122617,7 +122617,7 @@ var objectInfo_POS_joker_DOT_core__2046_13__2046_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_648 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -122631,7 +122631,7 @@ var arrayVector_POS_joker_DOT_core__2046_11__2046_20_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_647,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_648,
@@ -122641,7 +122641,7 @@ var arrayVector_POS_joker_DOT_core__2046_11__2046_20_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_147 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2046_11__2046_20_NUM_1,
 	},
 }
@@ -122676,7 +122676,7 @@ var objectInfo_POS_joker_DOT_core__2045_11__2045_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_646 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -122882,7 +122882,7 @@ var objectInfo_POS_joker_DOT_core__1422_5__1422_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_650 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -122893,7 +122893,7 @@ var arrayMap_NUM_650 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__1422_3__1422_14_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_650,
@@ -122903,7 +122903,7 @@ var arrayVector_POS_joker_DOT_core__1422_3__1422_14_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_148 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1422_3__1422_14_NUM_1,
 	},
 }
@@ -122938,7 +122938,7 @@ var objectInfo_POS_joker_DOT_core__1421_11__1421_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_649 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -123160,14 +123160,14 @@ var objectInfo_POS_joker_DOT_core__2485_30__2485_37 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__2485_29__2485_38_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_bindings,
 		},
 	},
 }
 var arrayVector_NUM_149 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2485_29__2485_38_NUM_1,
 	},
 }
@@ -123175,7 +123175,7 @@ var vectorSeq_NUM_148 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_149,
 }
 var arrayMap_NUM_651 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -123314,14 +123314,14 @@ var objectInfo_POS_joker_DOT_core__2474_4__2474_12 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_core__2474_3__2474_13_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_rule_DASH_name,
 		},
 	},
 }
 var arrayVector_NUM_150 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2474_3__2474_13_NUM_1,
 	},
 }
@@ -123329,7 +123329,7 @@ var vectorSeq_NUM_149 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_150,
 }
 var arrayMap_NUM_652 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -124627,14 +124627,14 @@ var objectInfo_POS_joker_DOT_core__2481_4__2481_4 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__2481_3__2481_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s,
 		},
 	},
 }
 var arrayVector_NUM_151 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2481_3__2481_5_NUM_1,
 	},
 }
@@ -124642,7 +124642,7 @@ var vectorSeq_NUM_150 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_151,
 }
 var arrayMap_NUM_653 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -127938,7 +127938,7 @@ var objectInfo_POS_joker_DOT_core__415_4__415_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_655 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -127961,14 +127961,14 @@ var arrayVector_POS_joker_DOT_core__415_12__415_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_655,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_152 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__415_12__415_14_NUM_1,
 	},
 }
@@ -128003,7 +128003,7 @@ var objectInfo_POS_joker_DOT_core__414_11__414_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_654 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -128268,7 +128268,7 @@ var objectInfo_POS_joker_DOT_core__1147_4__1147_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_656 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -128297,7 +128297,7 @@ var objectInfo_POS_joker_DOT_core__1147_13__1147_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_657 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -128311,7 +128311,7 @@ var arrayVector_POS_joker_DOT_core__1147_11__1147_20_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_656,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_657,
@@ -128321,7 +128321,7 @@ var arrayVector_POS_joker_DOT_core__1147_11__1147_20_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_153 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1147_11__1147_20_NUM_1,
 	},
 }
@@ -128747,7 +128747,7 @@ var objectInfo_POS_joker_DOT_core__458_5__458_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_658 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -128770,7 +128770,7 @@ var arrayVector_POS_joker_DOT_core__458_13__458_18_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_658,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
@@ -128795,7 +128795,7 @@ var objectInfo_POS_joker_DOT_core__461_5__461_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_659 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -128827,7 +128827,7 @@ var arrayVector_POS_joker_DOT_core__461_13__461_21_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_659,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
@@ -128837,7 +128837,7 @@ var arrayVector_POS_joker_DOT_core__461_13__461_21_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_154 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__458_13__458_18_NUM_1,
 		&arrayVector_POS_joker_DOT_core__461_13__461_21_NUM_1,
 	},
@@ -129021,7 +129021,7 @@ var objectInfo_POS_joker_DOT_core__410_4__410_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_661 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -129044,14 +129044,14 @@ var arrayVector_POS_joker_DOT_core__410_12__410_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_661,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_155 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__410_12__410_14_NUM_1,
 	},
 }
@@ -129086,7 +129086,7 @@ var objectInfo_POS_joker_DOT_core__409_11__409_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_660 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -129916,7 +129916,7 @@ var objectInfo_POS_joker_DOT_core__421_5__421_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_663 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -129939,7 +129939,7 @@ var arrayVector_POS_joker_DOT_core__421_12__421_17_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_663,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
@@ -129964,7 +129964,7 @@ var objectInfo_POS_joker_DOT_core__422_5__422_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_664 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -129996,7 +129996,7 @@ var arrayVector_POS_joker_DOT_core__422_12__422_20_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_664,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
@@ -130006,7 +130006,7 @@ var arrayVector_POS_joker_DOT_core__422_12__422_20_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_156 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__421_12__421_17_NUM_1,
 		&arrayVector_POS_joker_DOT_core__422_12__422_20_NUM_1,
 	},
@@ -130042,7 +130042,7 @@ var objectInfo_POS_joker_DOT_core__419_11__419_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_662 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -130995,14 +130995,14 @@ var objectInfo_POS_joker_DOT_core__1125_4__1125_4 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__1125_3__1125_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_e,
 		},
 	},
 }
 var arrayVector_NUM_157 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1125_3__1125_5_NUM_1,
 	},
 }
@@ -131037,7 +131037,7 @@ var objectInfo_POS_joker_DOT_core__1124_11__1124_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_665 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -131315,7 +131315,7 @@ var objectInfo_POS_joker_DOT_core__1064_5__1064_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_667 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -131344,7 +131344,7 @@ var objectInfo_POS_joker_DOT_core__1064_11__1064_13 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_668 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -131358,7 +131358,7 @@ var arrayVector_POS_joker_DOT_core__1064_9__1064_18_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_667,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_668,
@@ -131386,7 +131386,7 @@ var objectInfo_POS_joker_DOT_core__1065_5__1065_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_669 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -131415,7 +131415,7 @@ var objectInfo_POS_joker_DOT_core__1065_11__1065_13 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_670 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -131438,7 +131438,7 @@ var arrayVector_POS_joker_DOT_core__1065_9__1065_22_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_669,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_670,
@@ -131469,7 +131469,7 @@ var objectInfo_POS_joker_DOT_core__1067_5__1067_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_671 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -131498,7 +131498,7 @@ var objectInfo_POS_joker_DOT_core__1067_11__1067_13 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_672 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -131539,7 +131539,7 @@ var arrayVector_POS_joker_DOT_core__1067_9__1067_27_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_671,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_672,
@@ -131558,7 +131558,7 @@ var arrayVector_POS_joker_DOT_core__1067_9__1067_27_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_158 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1064_9__1064_18_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1065_9__1065_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1067_9__1067_27_NUM_1,
@@ -131595,7 +131595,7 @@ var objectInfo_POS_joker_DOT_core__1063_11__1063_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_666 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -132134,14 +132134,14 @@ var objectInfo_POS_joker_DOT_core__1119_4__1119_4 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__1119_3__1119_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_e,
 		},
 	},
 }
 var arrayVector_NUM_159 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1119_3__1119_5_NUM_1,
 	},
 }
@@ -132176,7 +132176,7 @@ var objectInfo_POS_joker_DOT_core__1118_11__1118_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_673 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -133332,7 +133332,7 @@ var objectInfo_POS_joker_DOT_core__1153_4__1153_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_675 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -133355,14 +133355,14 @@ var arrayVector_POS_joker_DOT_core__1153_12__1153_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_675,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_160 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1153_12__1153_14_NUM_1,
 	},
 }
@@ -133397,7 +133397,7 @@ var objectInfo_POS_joker_DOT_core__1152_11__1152_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_674 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -135085,7 +135085,7 @@ var objectInfo_POS_joker_DOT_core__3042_4__3042_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_677 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -135114,7 +135114,7 @@ var objectInfo_POS_joker_DOT_core__3042_10__3042_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_678 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -135128,7 +135128,7 @@ var arrayVector_POS_joker_DOT_core__3042_8__3042_22_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_677,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_678,
@@ -135138,7 +135138,7 @@ var arrayVector_POS_joker_DOT_core__3042_8__3042_22_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_161 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3042_8__3042_22_NUM_1,
 	},
 }
@@ -135173,7 +135173,7 @@ var objectInfo_POS_joker_DOT_core__3041_11__3041_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_676 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -136108,7 +136108,7 @@ var objectInfo_POS_joker_DOT_core__3103_5__3103_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_680 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -136131,7 +136131,7 @@ var arrayVector_POS_joker_DOT_core__3103_13__3103_15_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_680,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -136156,7 +136156,7 @@ var objectInfo_POS_joker_DOT_core__3104_5__3104_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_681 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -136188,7 +136188,7 @@ var arrayVector_POS_joker_DOT_core__3104_13__3104_17_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_681,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -136216,7 +136216,7 @@ var objectInfo_POS_joker_DOT_core__3105_5__3105_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_682 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -136266,7 +136266,7 @@ var arrayVector_POS_joker_DOT_core__3105_13__3105_24_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_682,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -136282,7 +136282,7 @@ var arrayVector_POS_joker_DOT_core__3105_13__3105_24_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_162 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3103_13__3103_15_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3104_13__3104_17_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3105_13__3105_24_NUM_1,
@@ -136319,7 +136319,7 @@ var objectInfo_POS_joker_DOT_core__3102_11__3102_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_679 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -136512,7 +136512,7 @@ var objectInfo_POS_joker_DOT_core__592_5__592_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_684 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -136535,7 +136535,7 @@ var arrayVector_POS_joker_DOT_core__592_13__592_15_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_684,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -136560,7 +136560,7 @@ var objectInfo_POS_joker_DOT_core__593_5__593_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_685 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -136592,7 +136592,7 @@ var arrayVector_POS_joker_DOT_core__593_13__593_17_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_685,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -136620,7 +136620,7 @@ var objectInfo_POS_joker_DOT_core__594_5__594_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_686 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -136670,7 +136670,7 @@ var arrayVector_POS_joker_DOT_core__594_13__594_24_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_686,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -136686,7 +136686,7 @@ var arrayVector_POS_joker_DOT_core__594_13__594_24_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_163 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__592_13__592_15_NUM_1,
 		&arrayVector_POS_joker_DOT_core__593_13__593_17_NUM_1,
 		&arrayVector_POS_joker_DOT_core__594_13__594_24_NUM_1,
@@ -136723,7 +136723,7 @@ var objectInfo_POS_joker_DOT_core__591_11__591_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_683 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -138033,7 +138033,7 @@ var vector_NUM_54 Vector = Vector{
 	},
 }
 var arrayVector_NUM_164 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_54,
 	},
 }
@@ -141872,7 +141872,7 @@ var vector_NUM_55 Vector = Vector{
 	},
 }
 var arrayVector_NUM_165 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_55,
 	},
 }
@@ -143559,7 +143559,7 @@ var vector_NUM_56 Vector = Vector{
 	},
 }
 var arrayVector_NUM_166 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_56,
 	},
 }
@@ -144317,7 +144317,7 @@ var objectInfo_POS_joker_DOT_core__2004_4__2004_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_688 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -144346,7 +144346,7 @@ var objectInfo_POS_joker_DOT_core__2004_13__2004_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_689 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -144360,7 +144360,7 @@ var arrayVector_POS_joker_DOT_core__2004_11__2004_21_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_688,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_689,
@@ -144370,7 +144370,7 @@ var arrayVector_POS_joker_DOT_core__2004_11__2004_21_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_167 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2004_11__2004_21_NUM_1,
 	},
 }
@@ -144405,7 +144405,7 @@ var objectInfo_POS_joker_DOT_core__2003_11__2003_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_687 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -144622,7 +144622,7 @@ var objectInfo_POS_joker_DOT_core__1005_4__1005_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_690 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -144645,14 +144645,14 @@ var arrayVector_POS_joker_DOT_core__1005_12__1005_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_690,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_168 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1005_12__1005_14_NUM_1,
 	},
 }
@@ -144881,7 +144881,7 @@ var objectInfo_POS_joker_DOT_core__1706_5__1706_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_692 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -144910,7 +144910,7 @@ var objectInfo_POS_joker_DOT_core__1706_11__1706_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_693 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -144924,7 +144924,7 @@ var arrayVector_POS_joker_DOT_core__1706_9__1706_20_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_692,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_693,
@@ -144952,7 +144952,7 @@ var objectInfo_POS_joker_DOT_core__1707_5__1707_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_694 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -144981,7 +144981,7 @@ var objectInfo_POS_joker_DOT_core__1707_11__1707_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_695 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -145010,7 +145010,7 @@ var objectInfo_POS_joker_DOT_core__1707_21__1707_27 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_696 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -145024,7 +145024,7 @@ var arrayVector_POS_joker_DOT_core__1707_9__1707_30_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_694,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_695,
@@ -145040,7 +145040,7 @@ var arrayVector_POS_joker_DOT_core__1707_9__1707_30_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_169 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1706_9__1706_20_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1707_9__1707_30_NUM_1,
 	},
@@ -145076,7 +145076,7 @@ var objectInfo_POS_joker_DOT_core__1705_11__1705_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_691 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -145464,7 +145464,7 @@ var objectInfo_POS_joker_DOT_core__3085_4__3085_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_698 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -145487,14 +145487,14 @@ var arrayVector_POS_joker_DOT_core__3085_15__3085_20_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_698,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_170 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3085_15__3085_20_NUM_1,
 	},
 }
@@ -145529,7 +145529,7 @@ var objectInfo_POS_joker_DOT_core__3084_11__3084_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_697 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -145721,14 +145721,14 @@ var objectInfo_POS_joker_DOT_core__1934_4__1934_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__1934_3__1934_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_form,
 		},
 	},
 }
 var arrayVector_NUM_171 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1934_3__1934_8_NUM_1,
 	},
 }
@@ -145763,7 +145763,7 @@ var objectInfo_POS_joker_DOT_core__1933_11__1933_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_699 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -145953,7 +145953,7 @@ var objectInfo_POS_joker_DOT_core__4080_5__4080_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_701 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -145982,7 +145982,7 @@ var objectInfo_POS_joker_DOT_core__4080_10__4080_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_702 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -145996,7 +145996,7 @@ var arrayVector_POS_joker_DOT_core__4080_8__4080_20_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_701,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_702,
@@ -146024,7 +146024,7 @@ var objectInfo_POS_joker_DOT_core__4087_5__4087_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_703 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146053,7 +146053,7 @@ var objectInfo_POS_joker_DOT_core__4087_10__4087_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_704 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146082,7 +146082,7 @@ var objectInfo_POS_joker_DOT_core__4087_23__4087_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_705 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146096,7 +146096,7 @@ var arrayVector_POS_joker_DOT_core__4087_8__4087_34_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_703,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_704,
@@ -146130,7 +146130,7 @@ var objectInfo_POS_joker_DOT_core__4094_5__4094_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_706 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146159,7 +146159,7 @@ var objectInfo_POS_joker_DOT_core__4094_10__4094_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_707 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146188,7 +146188,7 @@ var objectInfo_POS_joker_DOT_core__4094_23__4094_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_708 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146217,7 +146217,7 @@ var objectInfo_POS_joker_DOT_core__4094_36__4094_43 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_709 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146231,7 +146231,7 @@ var arrayVector_POS_joker_DOT_core__4094_8__4094_47_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_706,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_707,
@@ -146271,7 +146271,7 @@ var objectInfo_POS_joker_DOT_core__4101_5__4101_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_710 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146300,7 +146300,7 @@ var objectInfo_POS_joker_DOT_core__4101_10__4101_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_711 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146329,7 +146329,7 @@ var objectInfo_POS_joker_DOT_core__4101_23__4101_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_712 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146358,7 +146358,7 @@ var objectInfo_POS_joker_DOT_core__4101_36__4101_43 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_713 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -146390,7 +146390,7 @@ var arrayVector_POS_joker_DOT_core__4101_8__4101_52_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_710,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_711,
@@ -146418,7 +146418,7 @@ var arrayVector_POS_joker_DOT_core__4101_8__4101_52_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_172 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4080_8__4080_20_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4087_8__4087_34_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4094_8__4094_47_NUM_1,
@@ -146456,7 +146456,7 @@ var objectInfo_POS_joker_DOT_core__4079_11__4079_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_700 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -152910,7 +152910,7 @@ var objectInfo_POS_joker_DOT_core__2880_4__2880_8 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_715 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -152933,14 +152933,14 @@ var arrayVector_POS_joker_DOT_core__2880_10__2880_13_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_715,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ex,
 		},
 	},
 }
 var arrayVector_NUM_173 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2880_10__2880_13_NUM_1,
 	},
 }
@@ -152975,7 +152975,7 @@ var objectInfo_POS_joker_DOT_core__2879_11__2879_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_714 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -153232,7 +153232,7 @@ var objectInfo_POS_joker_DOT_core__2872_4__2872_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_717 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -153255,14 +153255,14 @@ var arrayVector_POS_joker_DOT_core__2872_8__2872_11_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_717,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ex,
 		},
 	},
 }
 var arrayVector_NUM_174 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2872_8__2872_11_NUM_1,
 	},
 }
@@ -153297,7 +153297,7 @@ var objectInfo_POS_joker_DOT_core__2871_11__2871_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_716 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -153554,7 +153554,7 @@ var objectInfo_POS_joker_DOT_core__2888_4__2888_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_719 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -153577,14 +153577,14 @@ var arrayVector_POS_joker_DOT_core__2888_11__2888_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_719,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ex,
 		},
 	},
 }
 var arrayVector_NUM_175 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2888_11__2888_14_NUM_1,
 	},
 }
@@ -153619,7 +153619,7 @@ var objectInfo_POS_joker_DOT_core__2887_11__2887_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_718 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -153896,7 +153896,7 @@ var objectInfo_POS_joker_DOT_core__4563_6__4563_8 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_721 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -153907,7 +153907,7 @@ var arrayMap_NUM_721 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__4563_4__4563_14_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_721,
@@ -153917,7 +153917,7 @@ var arrayVector_POS_joker_DOT_core__4563_4__4563_14_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_176 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4562_4__4562_5_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4563_4__4563_14_NUM_1,
 	},
@@ -153953,7 +153953,7 @@ var objectInfo_POS_joker_DOT_core__4561_11__4561_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_720 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -154241,7 +154241,7 @@ var objectInfo_POS_joker_DOT_core__83_21__83_21 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__83_20__83_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -154271,7 +154271,7 @@ var objectInfo_POS_joker_DOT_core__84_15__84_19 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_722 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -154345,7 +154345,7 @@ var objectInfo_POS_joker_DOT_core__85_23__85_29 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_723 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -154458,7 +154458,7 @@ var fnExpr_POS_joker_DOT_core_85_10__85_51_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_13 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_ffirst_POS_joker_DOT_core_85_10__85_51_NUM_1 */
 	},
 }
@@ -154542,7 +154542,7 @@ var objectInfo_POS_joker_DOT_core__2231_15__2231_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__2231_3__2231_19_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_keyfn,
 		},
@@ -154555,7 +154555,7 @@ var arrayVector_POS_joker_DOT_core__2231_3__2231_19_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_177 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2231_3__2231_19_NUM_1,
 	},
 }
@@ -154563,7 +154563,7 @@ var vectorSeq_NUM_176 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_177,
 }
 var arrayMap_NUM_724 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -155192,7 +155192,7 @@ var objectInfo_POS_joker_DOT_core__3928_4__3928_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_726 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -155221,7 +155221,7 @@ var objectInfo_POS_joker_DOT_core__3928_10__3928_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_727 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -155244,7 +155244,7 @@ var arrayVector_POS_joker_DOT_core__3928_8__3928_28_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_726,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_727,
@@ -155257,7 +155257,7 @@ var arrayVector_POS_joker_DOT_core__3928_8__3928_28_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_178 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3928_8__3928_28_NUM_1,
 	},
 }
@@ -155292,7 +155292,7 @@ var objectInfo_POS_joker_DOT_core__3927_11__3927_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_725 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -155667,7 +155667,7 @@ var objectInfo_POS_joker_DOT_core__1090_5__1090_15 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_729 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -155687,7 +155687,7 @@ var objectInfo_POS_joker_DOT_core__1090_21__1090_23 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1090_3__1090_24_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_729,
@@ -155700,7 +155700,7 @@ var arrayVector_POS_joker_DOT_core__1090_3__1090_24_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_179 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1090_3__1090_24_NUM_1,
 	},
 }
@@ -155735,7 +155735,7 @@ var objectInfo_POS_joker_DOT_core__1089_11__1089_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_728 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -155953,7 +155953,7 @@ var objectInfo_POS_joker_DOT_core__1487_4__1487_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_731 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -155982,7 +155982,7 @@ var objectInfo_POS_joker_DOT_core__1487_10__1487_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_732 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -155996,7 +155996,7 @@ var arrayVector_POS_joker_DOT_core__1487_8__1487_20_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_731,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_732,
@@ -156006,7 +156006,7 @@ var arrayVector_POS_joker_DOT_core__1487_8__1487_20_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_180 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1487_8__1487_20_NUM_1,
 	},
 }
@@ -156041,7 +156041,7 @@ var objectInfo_POS_joker_DOT_core__1486_11__1486_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_730 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -156239,7 +156239,7 @@ var objectInfo_POS_joker_DOT_core__3955_4__3955_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_734 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -156262,14 +156262,14 @@ var arrayVector_POS_joker_DOT_core__3955_8__3955_10_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_734,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_181 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3955_8__3955_10_NUM_1,
 	},
 }
@@ -156304,7 +156304,7 @@ var objectInfo_POS_joker_DOT_core__3954_11__3954_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_733 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -156416,7 +156416,7 @@ var objectInfo_POS_joker_DOT_core__3612_4__3612_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_736 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -156439,14 +156439,14 @@ var arrayVector_POS_joker_DOT_core__3612_12__3612_17_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_736,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_182 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3612_12__3612_17_NUM_1,
 	},
 }
@@ -156481,7 +156481,7 @@ var objectInfo_POS_joker_DOT_core__3611_11__3611_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_735 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -156701,7 +156701,7 @@ var objectInfo_POS_joker_DOT_core__2978_4__2978_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_738 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -156730,7 +156730,7 @@ var objectInfo_POS_joker_DOT_core__2978_10__2978_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_739 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -156759,7 +156759,7 @@ var objectInfo_POS_joker_DOT_core__2978_28__2978_35 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_740 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -156782,7 +156782,7 @@ var arrayVector_POS_joker_DOT_core__2978_8__2978_50_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_738,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_739,
@@ -156801,7 +156801,7 @@ var arrayVector_POS_joker_DOT_core__2978_8__2978_50_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_183 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2978_8__2978_50_NUM_1,
 	},
 }
@@ -156836,7 +156836,7 @@ var objectInfo_POS_joker_DOT_core__2977_11__2977_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_737 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -157015,7 +157015,7 @@ var objectInfo_POS_joker_DOT_core__1650_4__1650_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_742 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -157044,7 +157044,7 @@ var objectInfo_POS_joker_DOT_core__1650_10__1650_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_743 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -157076,7 +157076,7 @@ var arrayVector_POS_joker_DOT_core__1650_8__1650_28_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_742,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_743,
@@ -157092,7 +157092,7 @@ var arrayVector_POS_joker_DOT_core__1650_8__1650_28_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_184 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1650_8__1650_28_NUM_1,
 	},
 }
@@ -157127,7 +157127,7 @@ var objectInfo_POS_joker_DOT_core__1649_11__1649_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_741 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -157827,7 +157827,7 @@ var objectInfo_POS_joker_DOT_core__2057_4__2057_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_745 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -157850,14 +157850,14 @@ var arrayVector_POS_joker_DOT_core__2057_12__2057_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_745,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
 	},
 }
 var arrayVector_NUM_185 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2057_12__2057_14_NUM_1,
 	},
 }
@@ -157892,7 +157892,7 @@ var objectInfo_POS_joker_DOT_core__2056_11__2056_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_744 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -158161,7 +158161,7 @@ var vector_NUM_57 Vector = Vector{
 	},
 }
 var arrayVector_NUM_186 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_57,
 	},
 }
@@ -158241,7 +158241,7 @@ var objectInfo_POS_joker_DOT_core__2627_24__2627_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__2627_23__2627_31_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_params_STAR_,
 		},
@@ -158337,7 +158337,7 @@ var objectInfo_POS_joker_DOT_core__2627_53__2627_59 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__2627_52__2627_60_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_params_STAR_,
 		},
@@ -158400,7 +158400,7 @@ var list_POS_joker_DOT_core__2627_41__2627_71_NUM_1 List = List{
 	rest: &list_NUM_47,
 }
 var arrayVector_POS_joker_DOT_core__2627_12__2627_72_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_core__2627_13__2627_39_NUM_1,
 		&list_POS_joker_DOT_core__2627_41__2627_71_NUM_1,
 	},
@@ -161464,7 +161464,7 @@ var objectInfo_POS_joker_DOT_core__2602_11__2602_14 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__2602_3__2602_15_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_params,
 		},
@@ -161474,7 +161474,7 @@ var arrayVector_POS_joker_DOT_core__2602_3__2602_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_187 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2602_3__2602_15_NUM_1,
 	},
 }
@@ -161482,7 +161482,7 @@ var vectorSeq_NUM_186 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_187,
 }
 var arrayMap_NUM_746 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -163055,7 +163055,7 @@ var objectInfo_POS_joker_DOT_core__3602_4__3602_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_748 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -163078,14 +163078,14 @@ var arrayVector_POS_joker_DOT_core__3602_12__3602_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_748,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_188 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3602_12__3602_14_NUM_1,
 	},
 }
@@ -163120,7 +163120,7 @@ var objectInfo_POS_joker_DOT_core__3601_11__3601_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_747 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -163343,7 +163343,7 @@ var objectInfo_POS_joker_DOT_core__94_21__94_21 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__94_20__94_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -163373,7 +163373,7 @@ var objectInfo_POS_joker_DOT_core__95_15__95_19 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_749 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -163447,7 +163447,7 @@ var objectInfo_POS_joker_DOT_core__96_21__96_27 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_750 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -163560,7 +163560,7 @@ var fnExpr_POS_joker_DOT_core_96_9__96_48_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_14 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_fnext_POS_joker_DOT_core_96_9__96_48_NUM_1 */
 	},
 }
@@ -163617,7 +163617,7 @@ var objectInfo_POS_joker_DOT_core__3836_5__3836_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_752 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -163646,7 +163646,7 @@ var objectInfo_POS_joker_DOT_core__3836_10__3836_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_753 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -163669,7 +163669,7 @@ var arrayVector_POS_joker_DOT_core__3836_8__3836_22_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_752,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_753,
@@ -163700,7 +163700,7 @@ var objectInfo_POS_joker_DOT_core__3842_5__3842_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_754 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -163729,7 +163729,7 @@ var objectInfo_POS_joker_DOT_core__3842_10__3842_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_755 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -163761,7 +163761,7 @@ var arrayVector_POS_joker_DOT_core__3842_8__3842_24_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_754,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_755,
@@ -163795,7 +163795,7 @@ var objectInfo_POS_joker_DOT_core__3847_5__3847_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_756 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -163824,7 +163824,7 @@ var objectInfo_POS_joker_DOT_core__3847_10__3847_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_757 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -163865,7 +163865,7 @@ var arrayVector_POS_joker_DOT_core__3847_8__3847_26_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_756,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_757,
@@ -163884,7 +163884,7 @@ var arrayVector_POS_joker_DOT_core__3847_8__3847_26_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_189 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3836_8__3836_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3842_8__3842_24_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3847_8__3847_26_NUM_1,
@@ -163921,7 +163921,7 @@ var objectInfo_POS_joker_DOT_core__3835_11__3835_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_751 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -166532,7 +166532,7 @@ var vector_NUM_58 Vector = Vector{
 	},
 }
 var arrayVector_NUM_190 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_58,
 	},
 }
@@ -167322,7 +167322,7 @@ var objectInfo_POS_joker_DOT_core__1041_5__1041_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_759 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -167333,7 +167333,7 @@ var arrayMap_NUM_759 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__1041_3__1041_15_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_759,
@@ -167343,7 +167343,7 @@ var arrayVector_POS_joker_DOT_core__1041_3__1041_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_191 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1041_3__1041_15_NUM_1,
 	},
 }
@@ -167378,7 +167378,7 @@ var objectInfo_POS_joker_DOT_core__1040_11__1040_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_758 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -167634,7 +167634,7 @@ var objectInfo_POS_joker_DOT_core__1033_5__1033_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_761 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -167645,7 +167645,7 @@ var arrayMap_NUM_761 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__1033_3__1033_15_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_761,
@@ -167655,7 +167655,7 @@ var arrayVector_POS_joker_DOT_core__1033_3__1033_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_192 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1033_3__1033_15_NUM_1,
 	},
 }
@@ -167690,7 +167690,7 @@ var objectInfo_POS_joker_DOT_core__1032_11__1032_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_760 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -172640,14 +172640,14 @@ var objectInfo_POS_joker_DOT_core__557_4__557_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__557_3__557_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_193 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__557_3__557_5_NUM_1,
 	},
 }
@@ -172682,7 +172682,7 @@ var objectInfo_POS_joker_DOT_core__556_11__556_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_762 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -172872,7 +172872,7 @@ var objectInfo_POS_joker_DOT_core__3987_4__3987_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_764 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -172895,14 +172895,14 @@ var arrayVector_POS_joker_DOT_core__3987_8__3987_13_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_764,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_194 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3987_8__3987_13_NUM_1,
 	},
 }
@@ -172937,7 +172937,7 @@ var objectInfo_POS_joker_DOT_core__3986_11__3986_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_763 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -173339,7 +173339,7 @@ var objectInfo_POS_joker_DOT_core__3522_8__3522_14 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_766 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -173350,7 +173350,7 @@ var arrayMap_NUM_766 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__3522_4__3522_18_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_m,
 		},
@@ -173399,7 +173399,7 @@ var objectInfo_POS_joker_DOT_core__3524_8__3524_14 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_767 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -173419,7 +173419,7 @@ var objectInfo_POS_joker_DOT_core__3524_19__3524_27 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3524_4__3524_28_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_m,
 		},
@@ -173435,7 +173435,7 @@ var arrayVector_POS_joker_DOT_core__3524_4__3524_28_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_195 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3522_4__3522_18_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3524_4__3524_28_NUM_1,
 	},
@@ -173471,7 +173471,7 @@ var objectInfo_POS_joker_DOT_core__3521_11__3521_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_765 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -173851,7 +173851,7 @@ var objectInfo_POS_joker_DOT_core__571_4__571_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_769 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -173883,7 +173883,7 @@ var arrayVector_POS_joker_DOT_core__571_12__571_16_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_769,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -173893,7 +173893,7 @@ var arrayVector_POS_joker_DOT_core__571_12__571_16_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_196 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__571_12__571_16_NUM_1,
 	},
 }
@@ -173928,7 +173928,7 @@ var objectInfo_POS_joker_DOT_core__570_11__570_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_768 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -174433,7 +174433,7 @@ var objectInfo_POS_joker_DOT_core__4455_4__4455_5 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_771 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -174465,7 +174465,7 @@ var arrayVector_POS_joker_DOT_core__4455_7__4455_28_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_771,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_multifn,
 		},
@@ -174475,7 +174475,7 @@ var arrayVector_POS_joker_DOT_core__4455_7__4455_28_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_197 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4455_7__4455_28_NUM_1,
 	},
 }
@@ -174510,7 +174510,7 @@ var objectInfo_POS_joker_DOT_core__4454_11__4454_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_770 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -175007,14 +175007,14 @@ var objectInfo_POS_joker_DOT_core__2326_4__2326_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__2326_3__2326_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_opts,
 		},
 	},
 }
 var arrayVector_NUM_198 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2326_3__2326_8_NUM_1,
 	},
 }
@@ -175022,7 +175022,7 @@ var vectorSeq_NUM_197 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_198,
 }
 var arrayMap_NUM_772 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -175268,7 +175268,7 @@ var vector_NUM_59 Vector = Vector{
 	},
 }
 var arrayVector_NUM_199 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_59,
 	},
 }
@@ -175671,7 +175671,7 @@ var objectInfo_POS_joker_DOT_core__4542_5__4542_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_773 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -175694,7 +175694,7 @@ var arrayVector_POS_joker_DOT_core__4542_13__4542_15_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_773,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_o,
 		},
@@ -175719,7 +175719,7 @@ var objectInfo_POS_joker_DOT_core__4544_5__4544_11 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_774 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -175757,7 +175757,7 @@ var objectInfo_POS_joker_DOT_core__4544_17__4544_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_775 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -175771,7 +175771,7 @@ var arrayVector_POS_joker_DOT_core__4544_13__4544_24_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_774,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_o,
 		},
@@ -175784,7 +175784,7 @@ var arrayVector_POS_joker_DOT_core__4544_13__4544_24_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_200 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4542_13__4542_15_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4544_13__4544_24_NUM_1,
 	},
@@ -176118,7 +176118,7 @@ var objectInfo_POS_joker_DOT_core__3964_4__3964_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_777 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -176147,7 +176147,7 @@ var objectInfo_POS_joker_DOT_core__3964_10__3964_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_778 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -176170,7 +176170,7 @@ var arrayVector_POS_joker_DOT_core__3964_8__3964_25_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_777,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_778,
@@ -176183,7 +176183,7 @@ var arrayVector_POS_joker_DOT_core__3964_8__3964_25_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_201 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3964_8__3964_25_NUM_1,
 	},
 }
@@ -176218,7 +176218,7 @@ var objectInfo_POS_joker_DOT_core__3963_11__3963_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_776 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -176690,7 +176690,7 @@ var objectInfo_POS_joker_DOT_core__2895_4__2895_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_780 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -176713,14 +176713,14 @@ var arrayVector_POS_joker_DOT_core__2895_8__2895_10_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_780,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_202 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2895_8__2895_10_NUM_1,
 	},
 }
@@ -176755,7 +176755,7 @@ var objectInfo_POS_joker_DOT_core__2894_11__2894_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_779 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -177111,7 +177111,7 @@ var vector_NUM_61 Vector = Vector{
 	},
 }
 var arrayVector_NUM_203 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_60,
 		&vector_NUM_61,
 	},
@@ -180080,7 +180080,7 @@ var vector_NUM_63 Vector = Vector{
 	},
 }
 var arrayVector_NUM_204 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_62,
 		&vector_NUM_63,
 	},
@@ -180846,7 +180846,7 @@ var vector_NUM_65 Vector = Vector{
 	},
 }
 var arrayVector_NUM_205 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_64,
 		&vector_NUM_65,
 	},
@@ -182715,7 +182715,7 @@ var objectInfo_POS_joker_DOT_core__3193_4__3193_12 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_782 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -182744,7 +182744,7 @@ var objectInfo_POS_joker_DOT_core__3193_16__3193_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_783 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -182758,7 +182758,7 @@ var arrayVector_POS_joker_DOT_core__3193_14__3193_27_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_782,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_783,
@@ -182768,7 +182768,7 @@ var arrayVector_POS_joker_DOT_core__3193_14__3193_27_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_206 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3193_14__3193_27_NUM_1,
 	},
 }
@@ -182803,7 +182803,7 @@ var objectInfo_POS_joker_DOT_core__3192_11__3192_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_781 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -182956,7 +182956,7 @@ var objectInfo_POS_joker_DOT_core__3124_4__3124_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_785 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -182985,7 +182985,7 @@ var objectInfo_POS_joker_DOT_core__3124_10__3124_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_786 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -183017,7 +183017,7 @@ var arrayVector_POS_joker_DOT_core__3124_8__3124_27_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_785,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_786,
@@ -183033,7 +183033,7 @@ var arrayVector_POS_joker_DOT_core__3124_8__3124_27_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_207 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3124_8__3124_27_NUM_1,
 	},
 }
@@ -183068,7 +183068,7 @@ var objectInfo_POS_joker_DOT_core__3123_11__3123_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_784 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -183160,7 +183160,7 @@ var objectInfo_POS_joker_DOT_core__2129_4__2129_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_788 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -183192,7 +183192,7 @@ var arrayVector_POS_joker_DOT_core__2129_8__2129_15_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_788,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -183202,7 +183202,7 @@ var arrayVector_POS_joker_DOT_core__2129_8__2129_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_208 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2129_8__2129_15_NUM_1,
 	},
 }
@@ -183237,7 +183237,7 @@ var objectInfo_POS_joker_DOT_core__2128_11__2128_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_787 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -183884,7 +183884,7 @@ var objectInfo_POS_joker_DOT_core__673_4__673_9 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_790 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -183913,7 +183913,7 @@ var objectInfo_POS_joker_DOT_core__673_13__673_18 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_791 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -183927,7 +183927,7 @@ var arrayVector_POS_joker_DOT_core__673_11__673_21_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_790,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_791,
@@ -183937,7 +183937,7 @@ var arrayVector_POS_joker_DOT_core__673_11__673_21_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_209 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__673_11__673_21_NUM_1,
 	},
 }
@@ -183972,7 +183972,7 @@ var objectInfo_POS_joker_DOT_core__672_11__672_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_789 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -184185,7 +184185,7 @@ var objectInfo_POS_joker_DOT_core__3627_4__3627_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_793 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -184208,14 +184208,14 @@ var arrayVector_POS_joker_DOT_core__3627_12__3627_17_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_793,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_210 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3627_12__3627_17_NUM_1,
 	},
 }
@@ -184250,7 +184250,7 @@ var objectInfo_POS_joker_DOT_core__3626_11__3626_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_792 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -184436,7 +184436,7 @@ var objectInfo_POS_joker_DOT_core__4581_4__4581_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_795 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -184465,7 +184465,7 @@ var objectInfo_POS_joker_DOT_core__4581_14__4581_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_796 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -184479,7 +184479,7 @@ var arrayVector_POS_joker_DOT_core__4581_12__4581_22_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_795,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_796,
@@ -184489,7 +184489,7 @@ var arrayVector_POS_joker_DOT_core__4581_12__4581_22_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_211 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4581_12__4581_22_NUM_1,
 	},
 }
@@ -184524,7 +184524,7 @@ var objectInfo_POS_joker_DOT_core__4580_11__4580_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_794 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -184749,7 +184749,7 @@ var objectInfo_POS_joker_DOT_core__645_4__645_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_798 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -184772,14 +184772,14 @@ var arrayVector_POS_joker_DOT_core__645_8__645_10_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_798,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_212 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__645_8__645_10_NUM_1,
 	},
 }
@@ -184814,7 +184814,7 @@ var objectInfo_POS_joker_DOT_core__643_11__643_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_797 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -185009,7 +185009,7 @@ var objectInfo_POS_joker_DOT_core__978_4__978_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_799 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -185032,14 +185032,14 @@ var arrayVector_POS_joker_DOT_core__978_12__978_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_799,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_213 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__978_12__978_14_NUM_1,
 	},
 }
@@ -185269,7 +185269,7 @@ var objectInfo_POS_joker_DOT_core__2335_5__2335_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_801 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -185307,7 +185307,7 @@ var objectInfo_POS_joker_DOT_core__2335_14__2335_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_802 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -185321,7 +185321,7 @@ var arrayVector_POS_joker_DOT_core__2335_9__2335_25_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_801,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
@@ -185352,7 +185352,7 @@ var objectInfo_POS_joker_DOT_core__2340_5__2340_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_803 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -185390,7 +185390,7 @@ var objectInfo_POS_joker_DOT_core__2340_14__2340_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_804 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -185413,7 +185413,7 @@ var arrayVector_POS_joker_DOT_core__2340_9__2340_29_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_803,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
@@ -185429,7 +185429,7 @@ var arrayVector_POS_joker_DOT_core__2340_9__2340_29_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_214 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2335_9__2335_25_NUM_1,
 		&arrayVector_POS_joker_DOT_core__2340_9__2340_29_NUM_1,
 	},
@@ -185465,7 +185465,7 @@ var objectInfo_POS_joker_DOT_core__2334_11__2334_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_800 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -186204,7 +186204,7 @@ var objectInfo_POS_joker_DOT_core__1760_4__1760_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_806 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -186233,7 +186233,7 @@ var objectInfo_POS_joker_DOT_core__1760_10__1760_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_807 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -186256,7 +186256,7 @@ var arrayVector_POS_joker_DOT_core__1760_8__1760_22_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_806,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_807,
@@ -186269,7 +186269,7 @@ var arrayVector_POS_joker_DOT_core__1760_8__1760_22_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_215 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1760_8__1760_22_NUM_1,
 	},
 }
@@ -186304,7 +186304,7 @@ var objectInfo_POS_joker_DOT_core__1759_11__1759_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_805 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -186594,7 +186594,7 @@ var objectInfo_POS_joker_DOT_core__4318_4__4318_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_809 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -186610,7 +186610,7 @@ var arrayVector_POS_joker_DOT_core__4318_11__4318_12_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_216 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4318_11__4318_12_NUM_1,
 	},
 }
@@ -186645,7 +186645,7 @@ var objectInfo_POS_joker_DOT_core__4317_11__4317_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_808 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -186814,7 +186814,7 @@ var objectInfo_POS_joker_DOT_core__1526_5__1526_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_811 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -186843,7 +186843,7 @@ var objectInfo_POS_joker_DOT_core__1526_10__1526_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_812 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -186857,7 +186857,7 @@ var arrayVector_POS_joker_DOT_core__1526_8__1526_20_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_811,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_812,
@@ -186885,7 +186885,7 @@ var objectInfo_POS_joker_DOT_core__1533_5__1533_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_813 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -186914,7 +186914,7 @@ var objectInfo_POS_joker_DOT_core__1533_10__1533_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_814 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -186943,7 +186943,7 @@ var objectInfo_POS_joker_DOT_core__1533_22__1533_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_815 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -186957,7 +186957,7 @@ var arrayVector_POS_joker_DOT_core__1533_8__1533_32_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_813,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_814,
@@ -186991,7 +186991,7 @@ var objectInfo_POS_joker_DOT_core__1540_5__1540_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_816 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -187020,7 +187020,7 @@ var objectInfo_POS_joker_DOT_core__1540_10__1540_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_817 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -187049,7 +187049,7 @@ var objectInfo_POS_joker_DOT_core__1540_22__1540_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_818 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -187078,7 +187078,7 @@ var objectInfo_POS_joker_DOT_core__1540_34__1540_41 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_819 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -187092,7 +187092,7 @@ var arrayVector_POS_joker_DOT_core__1540_8__1540_44_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_816,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_817,
@@ -187132,7 +187132,7 @@ var objectInfo_POS_joker_DOT_core__1547_5__1547_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_820 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -187161,7 +187161,7 @@ var objectInfo_POS_joker_DOT_core__1547_10__1547_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_821 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -187190,7 +187190,7 @@ var objectInfo_POS_joker_DOT_core__1547_22__1547_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_822 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -187219,7 +187219,7 @@ var objectInfo_POS_joker_DOT_core__1547_34__1547_41 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_823 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -187251,7 +187251,7 @@ var arrayVector_POS_joker_DOT_core__1547_8__1547_49_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_820,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_821,
@@ -187279,7 +187279,7 @@ var arrayVector_POS_joker_DOT_core__1547_8__1547_49_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_217 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1526_8__1526_20_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1533_8__1533_32_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1540_8__1540_44_NUM_1,
@@ -187317,7 +187317,7 @@ var objectInfo_POS_joker_DOT_core__1525_11__1525_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_810 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -191252,7 +191252,7 @@ var objectInfo_POS_joker_DOT_core__4039_4__4039_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_825 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -191281,7 +191281,7 @@ var objectInfo_POS_joker_DOT_core__4039_10__4039_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_826 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -191310,7 +191310,7 @@ var objectInfo_POS_joker_DOT_core__4039_22__4039_28 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_827 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -191324,7 +191324,7 @@ var arrayVector_POS_joker_DOT_core__4039_8__4039_34_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_825,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_826,
@@ -191340,7 +191340,7 @@ var arrayVector_POS_joker_DOT_core__4039_8__4039_34_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_218 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4039_8__4039_34_NUM_1,
 	},
 }
@@ -191375,7 +191375,7 @@ var objectInfo_POS_joker_DOT_core__4038_11__4038_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_824 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -192020,7 +192020,7 @@ var objectInfo_POS_joker_DOT_core__4052_4__4052_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_829 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -192049,7 +192049,7 @@ var objectInfo_POS_joker_DOT_core__4052_10__4052_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_830 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -192078,7 +192078,7 @@ var objectInfo_POS_joker_DOT_core__4052_22__4052_28 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_831 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -192092,7 +192092,7 @@ var arrayVector_POS_joker_DOT_core__4052_8__4052_34_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_829,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_830,
@@ -192108,7 +192108,7 @@ var arrayVector_POS_joker_DOT_core__4052_8__4052_34_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_219 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4052_8__4052_34_NUM_1,
 	},
 }
@@ -192143,7 +192143,7 @@ var objectInfo_POS_joker_DOT_core__4051_11__4051_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_828 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -193081,7 +193081,7 @@ var vector_NUM_66 Vector = Vector{
 	},
 }
 var arrayVector_NUM_220 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_66,
 	},
 }
@@ -193518,7 +193518,7 @@ var vector_NUM_67 Vector = Vector{
 	},
 }
 var arrayVector_NUM_221 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_67,
 	},
 }
@@ -193910,7 +193910,7 @@ var vector_NUM_68 Vector = Vector{
 	},
 }
 var arrayVector_NUM_222 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_68,
 	},
 }
@@ -193981,7 +193981,7 @@ var objectInfo_POS_joker_DOT_core__2593_53__2593_61 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__2593_52__2593_62_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_bindings_STAR_,
 		},
@@ -194016,7 +194016,7 @@ var list_POS_joker_DOT_core__2593_47__2593_70_NUM_1 List = List{
 	rest: &list_NUM_51,
 }
 var arrayVector_POS_joker_DOT_core__2593_46__2593_71_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_core__2593_47__2593_70_NUM_1,
 	},
 }
@@ -194868,7 +194868,7 @@ var vector_NUM_69 Vector = Vector{
 	},
 }
 var arrayVector_NUM_223 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_69,
 	},
 }
@@ -194939,7 +194939,7 @@ var objectInfo_POS_joker_DOT_core__3822_21__3822_28 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3822_20__3822_29_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_fnspecs_STAR_,
 		},
@@ -194974,7 +194974,7 @@ var list_POS_joker_DOT_core__3822_13__3822_37_NUM_1 List = List{
 	rest: &list_NUM_53,
 }
 var arrayVector_POS_joker_DOT_core__3822_12__3822_38_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_core__3822_13__3822_37_NUM_1,
 	},
 }
@@ -195470,14 +195470,14 @@ var objectInfo_POS_joker_DOT_core__3299_4__3299_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__3299_3__3299_7_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_lib,
 		},
 	},
 }
 var arrayVector_NUM_224 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3299_3__3299_7_NUM_1,
 	},
 }
@@ -195485,7 +195485,7 @@ var vectorSeq_NUM_223 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_224,
 }
 var arrayMap_NUM_832 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -195647,14 +195647,14 @@ var objectInfo_POS_joker_DOT_core__3229_4__3229_4 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__3229_3__3229_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_225 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3229_3__3229_5_NUM_1,
 	},
 }
@@ -195671,7 +195671,7 @@ var objectInfo_POS_joker_DOT_core__3228_3__3228_34 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_833 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -196169,14 +196169,14 @@ var objectInfo_POS_joker_DOT_core__1829_4__1829_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__1829_3__1829_7_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_rdr,
 		},
 	},
 }
 var arrayVector_NUM_226 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1829_3__1829_7_NUM_1,
 	},
 }
@@ -196211,7 +196211,7 @@ var objectInfo_POS_joker_DOT_core__1828_11__1828_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_834 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -196362,14 +196362,14 @@ var objectInfo_POS_joker_DOT_core__1821_4__1821_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__1821_3__1821_7_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_rdr,
 		},
 	},
 }
 var arrayVector_NUM_227 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1821_3__1821_7_NUM_1,
 	},
 }
@@ -196377,7 +196377,7 @@ var vectorSeq_NUM_226 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_227,
 }
 var arrayMap_NUM_835 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -196952,7 +196952,7 @@ var objectInfo_POS_joker_DOT_core__3503_4__3503_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_837 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -196984,7 +196984,7 @@ var arrayVector_POS_joker_DOT_core__3503_8__3503_15_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_837,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -196994,7 +196994,7 @@ var arrayVector_POS_joker_DOT_core__3503_8__3503_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_228 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3503_8__3503_15_NUM_1,
 	},
 }
@@ -197029,7 +197029,7 @@ var objectInfo_POS_joker_DOT_core__3502_11__3502_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_836 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -197152,7 +197152,7 @@ var objectInfo_POS_joker_DOT_core__3504_12__3504_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_838 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -197207,7 +197207,7 @@ var objectInfo_POS_joker_DOT_core__3505_12__3505_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_839 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -198050,7 +198050,7 @@ var objectInfo_POS_joker_DOT_core__3289_16__3289_22 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3289_3__3289_23_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_lib,
 		},
@@ -198063,7 +198063,7 @@ var arrayVector_POS_joker_DOT_core__3289_3__3289_23_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_229 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3289_3__3289_23_NUM_1,
 	},
 }
@@ -198080,7 +198080,7 @@ var objectInfo_POS_joker_DOT_core__3285_3__3288_18 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_840 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -198233,7 +198233,7 @@ var objectInfo_POS_joker_DOT_core__3275_16__3275_22 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3275_3__3275_23_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_lib,
 		},
@@ -198246,7 +198246,7 @@ var arrayVector_POS_joker_DOT_core__3275_3__3275_23_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_230 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3275_3__3275_23_NUM_1,
 	},
 }
@@ -198263,7 +198263,7 @@ var objectInfo_POS_joker_DOT_core__3272_3__3274_34 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_841 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -199088,7 +199088,7 @@ var objectInfo_POS_joker_DOT_core__3496_4__3496_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_843 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -199117,7 +199117,7 @@ var objectInfo_POS_joker_DOT_core__3496_10__3496_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_844 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -199131,7 +199131,7 @@ var arrayVector_POS_joker_DOT_core__3496_8__3496_18_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_843,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_844,
@@ -199141,7 +199141,7 @@ var arrayVector_POS_joker_DOT_core__3496_8__3496_18_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_231 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3496_8__3496_18_NUM_1,
 	},
 }
@@ -199176,7 +199176,7 @@ var objectInfo_POS_joker_DOT_core__3495_11__3495_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_842 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -199400,7 +199400,7 @@ var objectInfo_POS_joker_DOT_core__3308_17__3308_23 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3308_3__3308_24_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_prefix,
 		},
@@ -199416,7 +199416,7 @@ var arrayVector_POS_joker_DOT_core__3308_3__3308_24_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_232 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3308_3__3308_24_NUM_1,
 	},
 }
@@ -199433,7 +199433,7 @@ var objectInfo_POS_joker_DOT_core__3307_3__3307_28 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_845 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -200186,7 +200186,7 @@ var objectInfo_POS_joker_DOT_core__3303_3__3303_4 coretypes.ObjectInfo = coretyp
 }
 var arrayVector_POS_joker_DOT_core__3303_3__3303_4_NUM_1 ArrayVector = ArrayVector{}
 var arrayVector_NUM_233 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3303_3__3303_4_NUM_1,
 	},
 }
@@ -200194,7 +200194,7 @@ var vectorSeq_NUM_232 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_233,
 }
 var arrayMap_NUM_846 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -201649,7 +201649,7 @@ var objectInfo_POS_joker_DOT_core__1095_4__1095_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_848 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -201678,7 +201678,7 @@ var objectInfo_POS_joker_DOT_core__1095_10__1095_20 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_849 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -201707,7 +201707,7 @@ var objectInfo_POS_joker_DOT_core__1095_27__1095_33 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_850 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -201721,7 +201721,7 @@ var arrayVector_POS_joker_DOT_core__1095_8__1095_41_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_848,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_849,
@@ -201737,7 +201737,7 @@ var arrayVector_POS_joker_DOT_core__1095_8__1095_41_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_234 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1095_8__1095_41_NUM_1,
 	},
 }
@@ -201772,7 +201772,7 @@ var objectInfo_POS_joker_DOT_core__1094_11__1094_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_847 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -202363,7 +202363,7 @@ var objectInfo_POS_joker_DOT_core__3295_7__3295_14 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_851 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -202443,7 +202443,7 @@ var objectInfo_POS_joker_DOT_core__3296_27__3296_32 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_NUM_235 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1650210408,
 			name: &s_exclude,
@@ -203174,7 +203174,7 @@ var objectInfo_POS_joker_DOT_core__2255_4__2255_12 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_853 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -203203,7 +203203,7 @@ var objectInfo_POS_joker_DOT_core__2255_16__2255_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_854 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -203217,7 +203217,7 @@ var arrayVector_POS_joker_DOT_core__2255_14__2255_26_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_853,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_854,
@@ -203227,7 +203227,7 @@ var arrayVector_POS_joker_DOT_core__2255_14__2255_26_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_236 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2255_14__2255_26_NUM_1,
 	},
 }
@@ -203262,7 +203262,7 @@ var objectInfo_POS_joker_DOT_core__2254_11__2254_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_852 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -203888,7 +203888,7 @@ var objectInfo_POS_joker_DOT_core__2282_4__2282_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_856 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -203911,14 +203911,14 @@ var arrayVector_POS_joker_DOT_core__2282_11__2282_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_856,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
 	},
 }
 var arrayVector_NUM_237 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2282_11__2282_14_NUM_1,
 	},
 }
@@ -203953,7 +203953,7 @@ var objectInfo_POS_joker_DOT_core__2281_11__2281_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_855 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -204917,7 +204917,7 @@ var objectInfo_POS_joker_DOT_core__2824_4__2824_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_858 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -204949,7 +204949,7 @@ var arrayVector_POS_joker_DOT_core__2824_11__2824_16_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_858,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -204959,7 +204959,7 @@ var arrayVector_POS_joker_DOT_core__2824_11__2824_16_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_238 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2824_11__2824_16_NUM_1,
 	},
 }
@@ -204994,7 +204994,7 @@ var objectInfo_POS_joker_DOT_core__2823_11__2823_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_857 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -205550,7 +205550,7 @@ var objectInfo_POS_joker_DOT_core__2362_4__2362_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_860 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -205579,7 +205579,7 @@ var objectInfo_POS_joker_DOT_core__2362_10__2362_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_861 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -205611,7 +205611,7 @@ var arrayVector_POS_joker_DOT_core__2362_8__2362_33_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_860,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_861,
@@ -205627,7 +205627,7 @@ var arrayVector_POS_joker_DOT_core__2362_8__2362_33_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_239 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2362_8__2362_33_NUM_1,
 	},
 }
@@ -205662,7 +205662,7 @@ var objectInfo_POS_joker_DOT_core__2361_11__2361_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_859 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -206096,7 +206096,7 @@ var objectInfo_POS_joker_DOT_core__2307_4__2307_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_863 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -206119,14 +206119,14 @@ var arrayVector_POS_joker_DOT_core__2307_8__2307_11_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_863,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
 	},
 }
 var arrayVector_NUM_240 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2307_8__2307_11_NUM_1,
 	},
 }
@@ -206161,7 +206161,7 @@ var objectInfo_POS_joker_DOT_core__2306_11__2306_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_862 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -206303,7 +206303,7 @@ var objectInfo_POS_joker_DOT_core__2310_27__2310_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_864 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -206537,14 +206537,14 @@ var objectInfo_POS_joker_DOT_core__2301_4__2301_4 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__2301_3__2301_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_v,
 		},
 	},
 }
 var arrayVector_NUM_241 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2301_3__2301_5_NUM_1,
 	},
 }
@@ -206552,7 +206552,7 @@ var vectorSeq_NUM_239 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_241,
 }
 var arrayMap_NUM_865 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -206920,7 +206920,7 @@ var objectInfo_POS_joker_DOT_core__2289_4__2289_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_867 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -206943,14 +206943,14 @@ var arrayVector_POS_joker_DOT_core__2289_8__2289_11_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_867,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
 	},
 }
 var arrayVector_NUM_242 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2289_8__2289_11_NUM_1,
 	},
 }
@@ -206985,7 +206985,7 @@ var objectInfo_POS_joker_DOT_core__2288_11__2288_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_866 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -208447,7 +208447,7 @@ var objectInfo_POS_joker_DOT_core__2318_4__2318_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_869 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -208470,14 +208470,14 @@ var arrayVector_POS_joker_DOT_core__2318_8__2318_11_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_869,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
 	},
 }
 var arrayVector_NUM_243 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2318_8__2318_11_NUM_1,
 	},
 }
@@ -208512,7 +208512,7 @@ var objectInfo_POS_joker_DOT_core__2317_11__2317_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_868 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -208654,7 +208654,7 @@ var objectInfo_POS_joker_DOT_core__2321_27__2321_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_870 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -210251,7 +210251,7 @@ var objectInfo_POS_joker_DOT_core__3365_6__3365_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__3365_3__3365_10_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -210261,7 +210261,7 @@ var arrayVector_POS_joker_DOT_core__3365_3__3365_10_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_244 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3365_3__3365_10_NUM_1,
 	},
 }
@@ -210278,7 +210278,7 @@ var objectInfo_POS_joker_DOT_core__3363_3__3364_25 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_871 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -211189,7 +211189,7 @@ var objectInfo_POS_joker_DOT_core__3238_6__3238_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__3238_3__3238_10_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -211199,7 +211199,7 @@ var arrayVector_POS_joker_DOT_core__3238_3__3238_10_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_245 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3238_3__3238_10_NUM_1,
 	},
 }
@@ -211216,7 +211216,7 @@ var objectInfo_POS_joker_DOT_core__3237_3__3237_38 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_872 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -212259,7 +212259,7 @@ var objectInfo_POS_joker_DOT_core__2214_5__2214_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_874 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -212270,7 +212270,7 @@ var arrayMap_NUM_874 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__2214_3__2214_13_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_874,
@@ -212280,7 +212280,7 @@ var arrayVector_POS_joker_DOT_core__2214_3__2214_13_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_246 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2214_3__2214_13_NUM_1,
 	},
 }
@@ -212315,7 +212315,7 @@ var objectInfo_POS_joker_DOT_core__2213_11__2213_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_873 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -212511,7 +212511,7 @@ var objectInfo_POS_joker_DOT_core__3490_4__3490_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_876 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -212527,7 +212527,7 @@ var arrayVector_POS_joker_DOT_core__3490_11__3490_12_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_247 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3490_11__3490_12_NUM_1,
 	},
 }
@@ -212562,7 +212562,7 @@ var objectInfo_POS_joker_DOT_core__3489_11__3489_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_875 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -212799,7 +212799,7 @@ var vector_NUM_70 Vector = Vector{
 	},
 }
 var arrayVector_NUM_248 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_70,
 	},
 }
@@ -212870,7 +212870,7 @@ var objectInfo_POS_joker_DOT_core__2688_54__2688_62 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__2688_53__2688_63_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_bindings_STAR_,
 		},
@@ -212905,7 +212905,7 @@ var list_POS_joker_DOT_core__2688_47__2688_71_NUM_1 List = List{
 	rest: &list_NUM_55,
 }
 var arrayVector_POS_joker_DOT_core__2688_46__2688_72_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_core__2688_47__2688_71_NUM_1,
 	},
 }
@@ -213713,7 +213713,7 @@ var objectInfo_POS_joker_DOT_core__2425_4__2425_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_878 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -213742,7 +213742,7 @@ var objectInfo_POS_joker_DOT_core__2425_10__2425_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_879 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -213771,7 +213771,7 @@ var objectInfo_POS_joker_DOT_core__2425_20__2425_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_880 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -213785,7 +213785,7 @@ var arrayVector_POS_joker_DOT_core__2425_8__2425_32_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_878,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_879,
@@ -213801,7 +213801,7 @@ var arrayVector_POS_joker_DOT_core__2425_8__2425_32_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_249 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2425_8__2425_32_NUM_1,
 	},
 }
@@ -213836,7 +213836,7 @@ var objectInfo_POS_joker_DOT_core__2424_11__2424_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_877 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -215861,14 +215861,14 @@ var objectInfo_POS_joker_DOT_core__2204_4__2204_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__2204_3__2204_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_form,
 		},
 	},
 }
 var arrayVector_NUM_250 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2204_3__2204_8_NUM_1,
 	},
 }
@@ -215903,7 +215903,7 @@ var objectInfo_POS_joker_DOT_core__2203_11__2203_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_881 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -216004,14 +216004,14 @@ var objectInfo_POS_joker_DOT_core__2196_4__2196_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__2196_3__2196_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_form,
 		},
 	},
 }
 var arrayVector_NUM_251 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2196_3__2196_8_NUM_1,
 	},
 }
@@ -216046,7 +216046,7 @@ var objectInfo_POS_joker_DOT_core__2195_11__2195_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_882 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -216446,7 +216446,7 @@ var objectInfo_POS_joker_DOT_core__4027_4__4027_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_884 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -216475,7 +216475,7 @@ var objectInfo_POS_joker_DOT_core__4027_10__4027_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_885 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -216504,7 +216504,7 @@ var objectInfo_POS_joker_DOT_core__4027_22__4027_28 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_886 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -216518,7 +216518,7 @@ var arrayVector_POS_joker_DOT_core__4027_8__4027_34_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_884,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_885,
@@ -216534,7 +216534,7 @@ var arrayVector_POS_joker_DOT_core__4027_8__4027_34_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_252 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4027_8__4027_34_NUM_1,
 	},
 }
@@ -216569,7 +216569,7 @@ var objectInfo_POS_joker_DOT_core__4026_11__4026_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_883 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -217261,7 +217261,7 @@ var objectInfo_POS_joker_DOT_core__3915_5__3915_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_888 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -217290,7 +217290,7 @@ var objectInfo_POS_joker_DOT_core__3915_11__3915_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_889 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -217313,7 +217313,7 @@ var arrayVector_POS_joker_DOT_core__3915_9__3915_26_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_888,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_889,
@@ -217344,7 +217344,7 @@ var objectInfo_POS_joker_DOT_core__3917_5__3917_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_890 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -217373,7 +217373,7 @@ var objectInfo_POS_joker_DOT_core__3917_11__3917_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_891 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -217405,7 +217405,7 @@ var arrayVector_POS_joker_DOT_core__3917_9__3917_27_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_890,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_891,
@@ -217439,7 +217439,7 @@ var objectInfo_POS_joker_DOT_core__3919_5__3919_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_892 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -217468,7 +217468,7 @@ var objectInfo_POS_joker_DOT_core__3919_11__3919_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_893 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -217509,7 +217509,7 @@ var arrayVector_POS_joker_DOT_core__3919_9__3919_30_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_892,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_893,
@@ -217546,7 +217546,7 @@ var objectInfo_POS_joker_DOT_core__3921_5__3921_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_894 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -217575,7 +217575,7 @@ var objectInfo_POS_joker_DOT_core__3921_11__3921_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_895 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -217634,7 +217634,7 @@ var arrayVector_POS_joker_DOT_core__3921_9__3921_38_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_894,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_895,
@@ -217659,7 +217659,7 @@ var arrayVector_POS_joker_DOT_core__3921_9__3921_38_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_253 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3915_9__3915_26_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3917_9__3917_27_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3919_9__3919_30_NUM_1,
@@ -217697,7 +217697,7 @@ var objectInfo_POS_joker_DOT_core__3914_11__3914_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_887 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -218523,7 +218523,7 @@ var objectInfo_POS_joker_DOT_core__837_5__837_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_897 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -218552,7 +218552,7 @@ var objectInfo_POS_joker_DOT_core__837_14__837_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_898 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -218566,7 +218566,7 @@ var arrayVector_POS_joker_DOT_core__837_12__837_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_897,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_898,
@@ -218594,7 +218594,7 @@ var objectInfo_POS_joker_DOT_core__838_5__838_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_899 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -218623,7 +218623,7 @@ var objectInfo_POS_joker_DOT_core__838_14__838_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_900 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -218652,7 +218652,7 @@ var objectInfo_POS_joker_DOT_core__838_24__838_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_901 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -218666,7 +218666,7 @@ var arrayVector_POS_joker_DOT_core__838_12__838_32_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_899,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_900,
@@ -218700,7 +218700,7 @@ var objectInfo_POS_joker_DOT_core__839_5__839_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_902 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -218729,7 +218729,7 @@ var objectInfo_POS_joker_DOT_core__839_14__839_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_903 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -218758,7 +218758,7 @@ var objectInfo_POS_joker_DOT_core__839_24__839_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_904 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -218790,7 +218790,7 @@ var arrayVector_POS_joker_DOT_core__839_12__839_39_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_902,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_903,
@@ -218812,7 +218812,7 @@ var arrayVector_POS_joker_DOT_core__839_12__839_39_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_254 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__837_12__837_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__838_12__838_32_NUM_1,
 		&arrayVector_POS_joker_DOT_core__839_12__839_39_NUM_1,
@@ -218849,7 +218849,7 @@ var objectInfo_POS_joker_DOT_core__836_11__836_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_896 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -219269,7 +219269,7 @@ var objectInfo_POS_joker_DOT_core__3026_6__3026_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_906 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -219289,7 +219289,7 @@ var objectInfo_POS_joker_DOT_core__3026_17__3026_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3026_4__3026_18_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_906,
@@ -219329,7 +219329,7 @@ var objectInfo_POS_joker_DOT_core__3027_6__3027_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_907 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -219358,7 +219358,7 @@ var objectInfo_POS_joker_DOT_core__3027_19__3027_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3027_4__3027_20_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_907,
@@ -219401,7 +219401,7 @@ var objectInfo_POS_joker_DOT_core__3028_6__3028_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_908 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -219448,7 +219448,7 @@ var objectInfo_POS_joker_DOT_core__3028_23__3028_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3028_4__3028_27_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_908,
@@ -219470,7 +219470,7 @@ var arrayVector_POS_joker_DOT_core__3028_4__3028_27_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_255 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3026_4__3026_18_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3027_4__3027_20_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3028_4__3028_27_NUM_1,
@@ -219507,7 +219507,7 @@ var objectInfo_POS_joker_DOT_core__3025_11__3025_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_905 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -220088,7 +220088,7 @@ var objectInfo_POS_joker_DOT_core__3678_4__3678_5 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_910 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -220117,7 +220117,7 @@ var objectInfo_POS_joker_DOT_core__3678_9__3678_16 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_911 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -220131,7 +220131,7 @@ var arrayVector_POS_joker_DOT_core__3678_7__3678_19_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_910,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_911,
@@ -220141,7 +220141,7 @@ var arrayVector_POS_joker_DOT_core__3678_7__3678_19_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_256 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3678_7__3678_19_NUM_1,
 	},
 }
@@ -220176,7 +220176,7 @@ var objectInfo_POS_joker_DOT_core__3677_11__3677_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_909 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -220590,7 +220590,7 @@ var objectInfo_POS_joker_DOT_core__1442_5__1442_8 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_913 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -220619,7 +220619,7 @@ var objectInfo_POS_joker_DOT_core__1442_16__1442_23 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_914 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -220648,7 +220648,7 @@ var objectInfo_POS_joker_DOT_core__1442_29__1442_32 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1442_3__1442_33_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_913,
@@ -220670,7 +220670,7 @@ var arrayVector_POS_joker_DOT_core__1442_3__1442_33_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_257 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1442_3__1442_33_NUM_1,
 	},
 }
@@ -220705,7 +220705,7 @@ var objectInfo_POS_joker_DOT_core__1441_11__1441_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_912 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -221190,7 +221190,7 @@ var objectInfo_POS_joker_DOT_core__1786_4__1786_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_916 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -221222,7 +221222,7 @@ var arrayVector_POS_joker_DOT_core__1786_8__1786_15_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_916,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -221232,7 +221232,7 @@ var arrayVector_POS_joker_DOT_core__1786_8__1786_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_258 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1786_8__1786_15_NUM_1,
 	},
 }
@@ -221267,7 +221267,7 @@ var objectInfo_POS_joker_DOT_core__1785_11__1785_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_915 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -221662,7 +221662,7 @@ var objectInfo_POS_joker_DOT_core__1796_4__1796_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_918 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -221691,7 +221691,7 @@ var objectInfo_POS_joker_DOT_core__1796_10__1796_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_919 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -221723,7 +221723,7 @@ var arrayVector_POS_joker_DOT_core__1796_8__1796_27_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_918,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_919,
@@ -221739,7 +221739,7 @@ var arrayVector_POS_joker_DOT_core__1796_8__1796_27_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_259 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1796_8__1796_27_NUM_1,
 	},
 }
@@ -221774,7 +221774,7 @@ var objectInfo_POS_joker_DOT_core__1795_11__1795_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_917 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -222718,7 +222718,7 @@ var objectInfo_POS_joker_DOT_core__4446_4__4446_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_921 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -222741,14 +222741,14 @@ var arrayVector_POS_joker_DOT_core__4446_8__4446_16_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_921,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_multifn,
 		},
 	},
 }
 var arrayVector_NUM_260 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4446_8__4446_16_NUM_1,
 	},
 }
@@ -222783,7 +222783,7 @@ var objectInfo_POS_joker_DOT_core__4445_11__4445_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_920 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -223093,7 +223093,7 @@ var objectInfo_POS_joker_DOT_core__845_5__845_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_923 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -223122,7 +223122,7 @@ var objectInfo_POS_joker_DOT_core__845_14__845_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_924 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -223136,7 +223136,7 @@ var arrayVector_POS_joker_DOT_core__845_12__845_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_923,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_924,
@@ -223164,7 +223164,7 @@ var objectInfo_POS_joker_DOT_core__846_5__846_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_925 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -223193,7 +223193,7 @@ var objectInfo_POS_joker_DOT_core__846_14__846_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_926 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -223222,7 +223222,7 @@ var objectInfo_POS_joker_DOT_core__846_24__846_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_927 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -223236,7 +223236,7 @@ var arrayVector_POS_joker_DOT_core__846_12__846_32_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_925,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_926,
@@ -223270,7 +223270,7 @@ var objectInfo_POS_joker_DOT_core__847_5__847_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_928 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -223299,7 +223299,7 @@ var objectInfo_POS_joker_DOT_core__847_14__847_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_929 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -223328,7 +223328,7 @@ var objectInfo_POS_joker_DOT_core__847_24__847_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_930 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -223360,7 +223360,7 @@ var arrayVector_POS_joker_DOT_core__847_12__847_39_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_928,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_929,
@@ -223382,7 +223382,7 @@ var arrayVector_POS_joker_DOT_core__847_12__847_39_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_261 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__845_12__845_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__846_12__846_32_NUM_1,
 		&arrayVector_POS_joker_DOT_core__847_12__847_39_NUM_1,
@@ -223419,7 +223419,7 @@ var objectInfo_POS_joker_DOT_core__844_11__844_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_922 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -223839,7 +223839,7 @@ var objectInfo_POS_joker_DOT_core__3034_6__3034_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_932 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -223859,7 +223859,7 @@ var objectInfo_POS_joker_DOT_core__3034_17__3034_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3034_4__3034_18_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_932,
@@ -223899,7 +223899,7 @@ var objectInfo_POS_joker_DOT_core__3035_6__3035_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_933 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -223928,7 +223928,7 @@ var objectInfo_POS_joker_DOT_core__3035_19__3035_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3035_4__3035_20_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_933,
@@ -223971,7 +223971,7 @@ var objectInfo_POS_joker_DOT_core__3036_6__3036_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_934 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -224018,7 +224018,7 @@ var objectInfo_POS_joker_DOT_core__3036_23__3036_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3036_4__3036_27_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_934,
@@ -224040,7 +224040,7 @@ var arrayVector_POS_joker_DOT_core__3036_4__3036_27_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_262 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3034_4__3034_18_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3035_4__3035_20_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3036_4__3036_27_NUM_1,
@@ -224077,7 +224077,7 @@ var objectInfo_POS_joker_DOT_core__3033_11__3033_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_931 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -224658,7 +224658,7 @@ var objectInfo_POS_joker_DOT_core__2026_4__2026_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_936 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -224687,7 +224687,7 @@ var objectInfo_POS_joker_DOT_core__2026_13__2026_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_937 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -224716,7 +224716,7 @@ var objectInfo_POS_joker_DOT_core__2026_25__2026_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_938 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -224730,7 +224730,7 @@ var arrayVector_POS_joker_DOT_core__2026_11__2026_35_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_936,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_937,
@@ -224746,7 +224746,7 @@ var arrayVector_POS_joker_DOT_core__2026_11__2026_35_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_263 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2026_11__2026_35_NUM_1,
 	},
 }
@@ -224781,7 +224781,7 @@ var objectInfo_POS_joker_DOT_core__2025_11__2025_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_935 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -224882,7 +224882,7 @@ var objectInfo_POS_joker_DOT_core__881_4__881_9 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_940 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -224911,7 +224911,7 @@ var objectInfo_POS_joker_DOT_core__881_13__881_18 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_941 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -224940,7 +224940,7 @@ var objectInfo_POS_joker_DOT_core__881_25__881_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_942 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -224954,7 +224954,7 @@ var arrayVector_POS_joker_DOT_core__881_11__881_35_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_940,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_941,
@@ -224970,7 +224970,7 @@ var arrayVector_POS_joker_DOT_core__881_11__881_35_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_264 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__881_11__881_35_NUM_1,
 	},
 }
@@ -225005,7 +225005,7 @@ var objectInfo_POS_joker_DOT_core__880_11__880_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_939 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -225649,7 +225649,7 @@ var objectInfo_POS_joker_DOT_core__4335_29__4335_37 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__4335_3__4335_38_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
@@ -225665,7 +225665,7 @@ var arrayVector_POS_joker_DOT_core__4335_3__4335_38_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_265 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4335_3__4335_38_NUM_1,
 	},
 }
@@ -225673,7 +225673,7 @@ var vectorSeq_NUM_263 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_265,
 }
 var arrayMap_NUM_943 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -226194,7 +226194,7 @@ var objectInfo_POS_joker_DOT_core__2810_4__2810_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_945 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -226226,7 +226226,7 @@ var arrayVector_POS_joker_DOT_core__2810_11__2810_16_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_945,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -226236,7 +226236,7 @@ var arrayVector_POS_joker_DOT_core__2810_11__2810_16_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_266 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2810_11__2810_16_NUM_1,
 	},
 }
@@ -226271,7 +226271,7 @@ var objectInfo_POS_joker_DOT_core__2809_11__2809_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_944 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -227042,7 +227042,7 @@ var objectInfo_POS_joker_DOT_core__998_4__998_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_946 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -227065,14 +227065,14 @@ var arrayVector_POS_joker_DOT_core__998_12__998_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_946,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_267 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__998_12__998_14_NUM_1,
 	},
 }
@@ -227272,7 +227272,7 @@ var objectInfo_POS_joker_DOT_core__870_4__870_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_948 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -227301,7 +227301,7 @@ var objectInfo_POS_joker_DOT_core__870_14__870_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_949 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -227315,7 +227315,7 @@ var arrayVector_POS_joker_DOT_core__870_12__870_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_948,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_949,
@@ -227325,7 +227325,7 @@ var arrayVector_POS_joker_DOT_core__870_12__870_22_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_268 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__870_12__870_22_NUM_1,
 	},
 }
@@ -227360,7 +227360,7 @@ var objectInfo_POS_joker_DOT_core__869_11__869_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_947 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -227710,7 +227710,7 @@ var objectInfo_POS_joker_DOT_core__991_4__991_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_950 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -227733,14 +227733,14 @@ var arrayVector_POS_joker_DOT_core__991_12__991_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_950,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_269 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__991_12__991_14_NUM_1,
 	},
 }
@@ -228096,7 +228096,7 @@ var objectInfo_POS_joker_DOT_core__88_21__88_21 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__88_20__88_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
@@ -228216,7 +228216,7 @@ var objectInfo_POS_joker_DOT_core__91_23__91_29 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_951 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -228329,7 +228329,7 @@ var fnExpr_POS_joker_DOT_core_91_10__91_50_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_15 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.core: &fn_nfirst_POS_joker_DOT_core_91_10__91_50_NUM_1 */
 	},
 }
@@ -228442,7 +228442,7 @@ var objectInfo_POS_joker_DOT_core__1611_26__1611_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1611_20__1611_30_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_pred,
 		},
@@ -228547,7 +228547,7 @@ var hashMap_NUM_66 HashMap = HashMap{
 	root:  &bitmapIndexedNode_NUM_134,
 }
 var localEnv_NUM_16 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		&fn_EMPTY_POS_joker_DOT_core_387_1__391_33_NUM_1,
 		&fn_EMPTY_POS_joker_DOT_core_1598_1__1606_55_NUM_1,
 	},
@@ -228651,7 +228651,7 @@ var objectInfo_POS_joker_DOT_core__3098_4__3098_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_953 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -228680,7 +228680,7 @@ var objectInfo_POS_joker_DOT_core__3098_14__3098_20 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_954 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -228694,7 +228694,7 @@ var arrayVector_POS_joker_DOT_core__3098_12__3098_26_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_953,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_954,
@@ -228704,7 +228704,7 @@ var arrayVector_POS_joker_DOT_core__3098_12__3098_26_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_270 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3098_12__3098_26_NUM_1,
 	},
 }
@@ -228739,7 +228739,7 @@ var objectInfo_POS_joker_DOT_core__3097_11__3097_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_952 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -229007,7 +229007,7 @@ var objectInfo_POS_joker_DOT_core__1594_26__1594_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1594_20__1594_30_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_pred,
 		},
@@ -229112,7 +229112,7 @@ var hashMap_NUM_67 HashMap = HashMap{
 	root:  &bitmapIndexedNode_NUM_136,
 }
 var localEnv_NUM_17 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		&fn_EMPTY_POS_joker_DOT_core_387_1__391_33_NUM_1,
 		&fn_EMPTY_POS_joker_DOT_core_1581_1__1589_17_NUM_1,
 	},
@@ -229270,7 +229270,7 @@ var objectInfo_POS_joker_DOT_core__3139_43__3139_53 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3139_16__3139_54_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
@@ -232579,7 +232579,7 @@ var objectInfo_POS_joker_DOT_core__2411_4__2411_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_956 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -232602,14 +232602,14 @@ var arrayVector_POS_joker_DOT_core__2411_8__2411_11_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_956,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
 	},
 }
 var arrayVector_NUM_271 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2411_8__2411_11_NUM_1,
 	},
 }
@@ -232644,7 +232644,7 @@ var objectInfo_POS_joker_DOT_core__2410_11__2410_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_955 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -232878,7 +232878,7 @@ var objectInfo_POS_joker_DOT_core__4556_4__4556_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_957 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -232907,7 +232907,7 @@ var objectInfo_POS_joker_DOT_core__4556_14__4556_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_958 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -232921,7 +232921,7 @@ var arrayVector_POS_joker_DOT_core__4556_12__4556_22_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_957,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_958,
@@ -232931,7 +232931,7 @@ var arrayVector_POS_joker_DOT_core__4556_12__4556_22_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_272 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4556_12__4556_22_NUM_1,
 	},
 }
@@ -233170,7 +233170,7 @@ var objectInfo_POS_joker_DOT_core__2391_4__2391_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_960 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -233193,14 +233193,14 @@ var arrayVector_POS_joker_DOT_core__2391_8__2391_11_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_960,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
 	},
 }
 var arrayVector_NUM_273 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2391_8__2391_11_NUM_1,
 	},
 }
@@ -233235,7 +233235,7 @@ var objectInfo_POS_joker_DOT_core__2390_11__2390_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_959 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -233377,7 +233377,7 @@ var objectInfo_POS_joker_DOT_core__2394_27__2394_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_961 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -233747,7 +233747,7 @@ var objectInfo_POS_joker_DOT_core__2454_5__2454_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_963 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -233785,7 +233785,7 @@ var objectInfo_POS_joker_DOT_core__2454_14__2454_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_964 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -233799,7 +233799,7 @@ var arrayVector_POS_joker_DOT_core__2454_9__2454_24_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_963,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
@@ -233830,7 +233830,7 @@ var objectInfo_POS_joker_DOT_core__2456_5__2456_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_965 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -233868,7 +233868,7 @@ var objectInfo_POS_joker_DOT_core__2456_14__2456_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_966 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -233897,7 +233897,7 @@ var objectInfo_POS_joker_DOT_core__2456_28__2456_33 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_967 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -233911,7 +233911,7 @@ var arrayVector_POS_joker_DOT_core__2456_9__2456_38_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_965,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
@@ -233930,7 +233930,7 @@ var arrayVector_POS_joker_DOT_core__2456_9__2456_38_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_274 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2454_9__2454_24_NUM_1,
 		&arrayVector_POS_joker_DOT_core__2456_9__2456_38_NUM_1,
 	},
@@ -233966,7 +233966,7 @@ var objectInfo_POS_joker_DOT_core__2452_11__2452_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_962 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -234394,7 +234394,7 @@ var objectInfo_POS_joker_DOT_core__3258_4__3258_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_969 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -234423,7 +234423,7 @@ var objectInfo_POS_joker_DOT_core__3258_10__3258_12 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_970 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -234437,7 +234437,7 @@ var arrayVector_POS_joker_DOT_core__3258_8__3258_21_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_969,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_970,
@@ -234447,7 +234447,7 @@ var arrayVector_POS_joker_DOT_core__3258_8__3258_21_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_275 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3258_8__3258_21_NUM_1,
 	},
 }
@@ -234482,7 +234482,7 @@ var objectInfo_POS_joker_DOT_core__3257_11__3257_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_968 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -235786,7 +235786,7 @@ var objectInfo_POS_joker_DOT_core__2418_4__2418_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_972 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -235824,7 +235824,7 @@ var objectInfo_POS_joker_DOT_core__2418_13__2418_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_973 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -235838,7 +235838,7 @@ var arrayVector_POS_joker_DOT_core__2418_8__2418_23_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_972,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
@@ -235851,7 +235851,7 @@ var arrayVector_POS_joker_DOT_core__2418_8__2418_23_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_276 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2418_8__2418_23_NUM_1,
 	},
 }
@@ -235886,7 +235886,7 @@ var objectInfo_POS_joker_DOT_core__2417_11__2417_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_971 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -236127,7 +236127,7 @@ var objectInfo_POS_joker_DOT_core__2296_4__2296_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_975 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -236165,7 +236165,7 @@ var objectInfo_POS_joker_DOT_core__2296_13__2296_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_976 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -236179,7 +236179,7 @@ var arrayVector_POS_joker_DOT_core__2296_8__2296_23_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_975,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
@@ -236192,7 +236192,7 @@ var arrayVector_POS_joker_DOT_core__2296_8__2296_23_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_277 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2296_8__2296_23_NUM_1,
 	},
 }
@@ -236227,7 +236227,7 @@ var objectInfo_POS_joker_DOT_core__2295_11__2295_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_974 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -236468,7 +236468,7 @@ var objectInfo_POS_joker_DOT_core__1893_4__1893_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_978 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -236497,7 +236497,7 @@ var objectInfo_POS_joker_DOT_core__1893_10__1893_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_979 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -236526,7 +236526,7 @@ var objectInfo_POS_joker_DOT_core__1893_24__1893_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_980 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -236540,7 +236540,7 @@ var arrayVector_POS_joker_DOT_core__1893_8__1893_32_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_978,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_979,
@@ -236556,7 +236556,7 @@ var arrayVector_POS_joker_DOT_core__1893_8__1893_32_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_278 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1893_8__1893_32_NUM_1,
 	},
 }
@@ -236591,7 +236591,7 @@ var objectInfo_POS_joker_DOT_core__1892_11__1892_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_977 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -237059,7 +237059,7 @@ var objectInfo_POS_joker_DOT_core__1999_4__1999_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_982 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -237088,7 +237088,7 @@ var objectInfo_POS_joker_DOT_core__1999_13__1999_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_983 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -237102,7 +237102,7 @@ var arrayVector_POS_joker_DOT_core__1999_11__1999_21_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_982,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_983,
@@ -237112,7 +237112,7 @@ var arrayVector_POS_joker_DOT_core__1999_11__1999_21_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_279 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1999_11__1999_21_NUM_1,
 	},
 }
@@ -237147,7 +237147,7 @@ var objectInfo_POS_joker_DOT_core__1998_11__1998_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_981 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -237344,7 +237344,7 @@ var objectInfo_POS_joker_DOT_core__2020_4__2020_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_985 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -237367,14 +237367,14 @@ var arrayVector_POS_joker_DOT_core__2020_12__2020_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_985,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_280 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2020_12__2020_14_NUM_1,
 	},
 }
@@ -237409,7 +237409,7 @@ var objectInfo_POS_joker_DOT_core__2019_11__2019_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_984 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -237596,7 +237596,7 @@ var objectInfo_POS_joker_DOT_core__2040_4__2040_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_987 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -237625,7 +237625,7 @@ var objectInfo_POS_joker_DOT_core__2040_13__2040_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_988 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -237639,7 +237639,7 @@ var arrayVector_POS_joker_DOT_core__2040_11__2040_20_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_987,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_988,
@@ -237649,7 +237649,7 @@ var arrayVector_POS_joker_DOT_core__2040_11__2040_20_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_281 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2040_11__2040_20_NUM_1,
 	},
 }
@@ -237684,7 +237684,7 @@ var objectInfo_POS_joker_DOT_core__2039_11__2039_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_986 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -237881,7 +237881,7 @@ var objectInfo_POS_joker_DOT_core__972_4__972_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_990 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -237904,14 +237904,14 @@ var arrayVector_POS_joker_DOT_core__972_12__972_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_990,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
 	},
 }
 var arrayVector_NUM_282 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__972_12__972_14_NUM_1,
 	},
 }
@@ -237946,7 +237946,7 @@ var objectInfo_POS_joker_DOT_core__970_11__970_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_989 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -238311,7 +238311,7 @@ var vector_NUM_73 Vector = Vector{
 	},
 }
 var arrayVector_NUM_283 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_71,
 		&vector_NUM_72,
 		&vector_NUM_73,
@@ -238983,7 +238983,7 @@ var objectInfo_POS_joker_DOT_core__4587_4__4587_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_992 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -239012,7 +239012,7 @@ var objectInfo_POS_joker_DOT_core__4587_14__4587_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_993 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -239026,7 +239026,7 @@ var arrayVector_POS_joker_DOT_core__4587_12__4587_22_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_992,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_993,
@@ -239036,7 +239036,7 @@ var arrayVector_POS_joker_DOT_core__4587_12__4587_22_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_284 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4587_12__4587_22_NUM_1,
 	},
 }
@@ -239071,7 +239071,7 @@ var objectInfo_POS_joker_DOT_core__4586_11__4586_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_991 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -239208,7 +239208,7 @@ var objectInfo_POS_joker_DOT_core__4590_7__4590_12 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_994 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		coretypes.String{
 			S: "true",
 		},
@@ -239282,7 +239282,7 @@ var objectInfo_POS_joker_DOT_core__4591_7__4591_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_995 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		coretypes.String{
 			S: "false",
 		},
@@ -239596,7 +239596,7 @@ var objectInfo_POS_joker_DOT_core__4598_4__4598_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_997 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -239625,7 +239625,7 @@ var objectInfo_POS_joker_DOT_core__4598_13__4598_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_998 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -239639,7 +239639,7 @@ var arrayVector_POS_joker_DOT_core__4598_11__4598_21_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_997,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_998,
@@ -239649,7 +239649,7 @@ var arrayVector_POS_joker_DOT_core__4598_11__4598_21_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_285 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4598_11__4598_21_NUM_1,
 	},
 }
@@ -239684,7 +239684,7 @@ var objectInfo_POS_joker_DOT_core__4597_11__4597_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_996 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -239881,7 +239881,7 @@ var objectInfo_POS_joker_DOT_core__4604_4__4604_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1000 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -239910,7 +239910,7 @@ var objectInfo_POS_joker_DOT_core__4604_13__4604_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1001 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -239924,7 +239924,7 @@ var arrayVector_POS_joker_DOT_core__4604_11__4604_21_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1000,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1001,
@@ -239934,7 +239934,7 @@ var arrayVector_POS_joker_DOT_core__4604_11__4604_21_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_286 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4604_11__4604_21_NUM_1,
 	},
 }
@@ -239969,7 +239969,7 @@ var objectInfo_POS_joker_DOT_core__4603_11__4603_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_999 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -240180,7 +240180,7 @@ var objectInfo_POS_joker_DOT_core__1561_5__1561_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1003 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -240209,7 +240209,7 @@ var objectInfo_POS_joker_DOT_core__1561_10__1561_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1004 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -240223,7 +240223,7 @@ var arrayVector_POS_joker_DOT_core__1561_8__1561_20_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1003,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1004,
@@ -240251,7 +240251,7 @@ var objectInfo_POS_joker_DOT_core__1562_5__1562_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1005 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -240280,7 +240280,7 @@ var objectInfo_POS_joker_DOT_core__1562_10__1562_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1006 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -240303,7 +240303,7 @@ var arrayVector_POS_joker_DOT_core__1562_8__1562_25_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1005,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1006,
@@ -240334,7 +240334,7 @@ var objectInfo_POS_joker_DOT_core__1564_5__1564_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1007 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -240363,7 +240363,7 @@ var objectInfo_POS_joker_DOT_core__1564_10__1564_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1008 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -240395,7 +240395,7 @@ var arrayVector_POS_joker_DOT_core__1564_8__1564_30_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1007,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1008,
@@ -240429,7 +240429,7 @@ var objectInfo_POS_joker_DOT_core__1566_5__1566_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1009 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -240458,7 +240458,7 @@ var objectInfo_POS_joker_DOT_core__1566_10__1566_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1010 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -240499,7 +240499,7 @@ var arrayVector_POS_joker_DOT_core__1566_8__1566_35_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1009,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1010,
@@ -240536,7 +240536,7 @@ var objectInfo_POS_joker_DOT_core__1568_5__1568_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1011 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -240565,7 +240565,7 @@ var objectInfo_POS_joker_DOT_core__1568_10__1568_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1012 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -240624,7 +240624,7 @@ var arrayVector_POS_joker_DOT_core__1568_8__1568_42_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1011,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1012,
@@ -240649,7 +240649,7 @@ var arrayVector_POS_joker_DOT_core__1568_8__1568_42_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_287 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1561_8__1561_20_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1562_8__1562_25_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1564_8__1564_30_NUM_1,
@@ -240688,7 +240688,7 @@ var objectInfo_POS_joker_DOT_core__1560_11__1560_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1002 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -241521,7 +241521,7 @@ var objectInfo_POS_joker_DOT_core__3975_4__3975_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1014 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -241550,7 +241550,7 @@ var objectInfo_POS_joker_DOT_core__3975_10__3975_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1015 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -241579,7 +241579,7 @@ var objectInfo_POS_joker_DOT_core__3975_22__3975_28 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1016 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -241593,7 +241593,7 @@ var arrayVector_POS_joker_DOT_core__3975_8__3975_34_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1014,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1015,
@@ -241609,7 +241609,7 @@ var arrayVector_POS_joker_DOT_core__3975_8__3975_34_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_288 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3975_8__3975_34_NUM_1,
 	},
 }
@@ -241644,7 +241644,7 @@ var objectInfo_POS_joker_DOT_core__3974_11__3974_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1013 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -241951,7 +241951,7 @@ var objectInfo_POS_joker_DOT_core__1686_4__1686_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1018 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -241980,7 +241980,7 @@ var objectInfo_POS_joker_DOT_core__1686_10__1686_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1019 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -242009,7 +242009,7 @@ var objectInfo_POS_joker_DOT_core__1686_25__1686_31 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1020 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -242023,7 +242023,7 @@ var arrayVector_POS_joker_DOT_core__1686_8__1686_37_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1018,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1019,
@@ -242039,7 +242039,7 @@ var arrayVector_POS_joker_DOT_core__1686_8__1686_37_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_289 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1686_8__1686_37_NUM_1,
 	},
 }
@@ -242074,7 +242074,7 @@ var objectInfo_POS_joker_DOT_core__1685_11__1685_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1017 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -243146,7 +243146,7 @@ var objectInfo_POS_joker_DOT_core__4614_7__4614_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_core__4614_4__4614_11_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
@@ -243192,7 +243192,7 @@ var objectInfo_POS_joker_DOT_core__4616_12__4616_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__4616_4__4616_16_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
@@ -243250,7 +243250,7 @@ var objectInfo_POS_joker_DOT_core__4622_16__4622_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__4622_4__4622_20_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
@@ -243266,7 +243266,7 @@ var arrayVector_POS_joker_DOT_core__4622_4__4622_20_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_290 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4614_4__4614_11_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4616_4__4616_16_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4622_4__4622_20_NUM_1,
@@ -243303,7 +243303,7 @@ var objectInfo_POS_joker_DOT_core__4613_11__4613_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1021 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -244753,7 +244753,7 @@ var objectInfo_POS_joker_DOT_core__4634_7__4634_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_core__4634_4__4634_11_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
@@ -244799,7 +244799,7 @@ var objectInfo_POS_joker_DOT_core__4636_12__4636_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__4636_4__4636_16_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
@@ -244812,7 +244812,7 @@ var arrayVector_POS_joker_DOT_core__4636_4__4636_16_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_291 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4634_4__4634_11_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4636_4__4636_16_NUM_1,
 	},
@@ -244848,7 +244848,7 @@ var objectInfo_POS_joker_DOT_core__4633_11__4633_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1022 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -245529,7 +245529,7 @@ var objectInfo_POS_joker_DOT_core__984_4__984_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1023 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -245552,14 +245552,14 @@ var arrayVector_POS_joker_DOT_core__984_12__984_14_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1023,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_292 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__984_12__984_14_NUM_1,
 	},
 }
@@ -245869,7 +245869,7 @@ var objectInfo_POS_joker_DOT_core__2092_4__2092_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1025 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -245892,14 +245892,14 @@ var arrayVector_POS_joker_DOT_core__2092_8__2092_10_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1025,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_293 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2092_8__2092_10_NUM_1,
 	},
 }
@@ -245934,7 +245934,7 @@ var objectInfo_POS_joker_DOT_core__2091_11__2091_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1024 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -246125,7 +246125,7 @@ var objectInfo_POS_joker_DOT_core__2838_4__2838_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1027 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -246157,7 +246157,7 @@ var arrayVector_POS_joker_DOT_core__2838_8__2838_13_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1027,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -246167,7 +246167,7 @@ var arrayVector_POS_joker_DOT_core__2838_8__2838_13_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_294 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2838_8__2838_13_NUM_1,
 	},
 }
@@ -246202,7 +246202,7 @@ var objectInfo_POS_joker_DOT_core__2837_11__2837_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1026 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -246477,7 +246477,7 @@ var objectInfo_POS_joker_DOT_core__4440_27__4440_40 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__4440_3__4440_41_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_multifn,
 		},
@@ -246490,7 +246490,7 @@ var arrayVector_POS_joker_DOT_core__4440_3__4440_41_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_295 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4440_3__4440_41_NUM_1,
 	},
 }
@@ -246525,7 +246525,7 @@ var objectInfo_POS_joker_DOT_core__4439_11__4439_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1028 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -246732,7 +246732,7 @@ var objectInfo_POS_joker_DOT_core__4466_4__4466_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1030 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -246755,14 +246755,14 @@ var arrayVector_POS_joker_DOT_core__4466_8__4466_16_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1030,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_multifn,
 		},
 	},
 }
 var arrayVector_NUM_296 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4466_8__4466_16_NUM_1,
 	},
 }
@@ -246797,7 +246797,7 @@ var objectInfo_POS_joker_DOT_core__4465_11__4465_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1029 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -246999,7 +246999,7 @@ var objectInfo_POS_joker_DOT_core__2852_4__2852_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1032 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -247031,7 +247031,7 @@ var arrayVector_POS_joker_DOT_core__2852_8__2852_13_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1032,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -247041,7 +247041,7 @@ var arrayVector_POS_joker_DOT_core__2852_8__2852_13_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_297 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2852_8__2852_13_NUM_1,
 	},
 }
@@ -247076,7 +247076,7 @@ var objectInfo_POS_joker_DOT_core__2851_11__2851_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1031 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -247333,7 +247333,7 @@ var objectInfo_POS_joker_DOT_core__2831_4__2831_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1034 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -247365,7 +247365,7 @@ var arrayVector_POS_joker_DOT_core__2831_11__2831_16_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1034,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -247375,7 +247375,7 @@ var arrayVector_POS_joker_DOT_core__2831_11__2831_16_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_298 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2831_11__2831_16_NUM_1,
 	},
 }
@@ -247410,7 +247410,7 @@ var objectInfo_POS_joker_DOT_core__2830_11__2830_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1033 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -247682,7 +247682,7 @@ var objectInfo_POS_joker_DOT_core__2845_4__2845_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1036 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -247714,7 +247714,7 @@ var arrayVector_POS_joker_DOT_core__2845_8__2845_13_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1036,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -247724,7 +247724,7 @@ var arrayVector_POS_joker_DOT_core__2845_8__2845_13_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_299 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2845_8__2845_13_NUM_1,
 	},
 }
@@ -247759,7 +247759,7 @@ var objectInfo_POS_joker_DOT_core__2844_11__2844_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1035 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -248016,7 +248016,7 @@ var objectInfo_POS_joker_DOT_core__2817_4__2817_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1038 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -248048,7 +248048,7 @@ var arrayVector_POS_joker_DOT_core__2817_11__2817_16_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1038,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -248058,7 +248058,7 @@ var arrayVector_POS_joker_DOT_core__2817_11__2817_16_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_300 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2817_11__2817_16_NUM_1,
 	},
 }
@@ -248093,7 +248093,7 @@ var objectInfo_POS_joker_DOT_core__2816_11__2816_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1037 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -248365,7 +248365,7 @@ var objectInfo_POS_joker_DOT_core__1164_4__1164_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1040 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -248388,14 +248388,14 @@ var arrayVector_POS_joker_DOT_core__1164_12__1164_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1040,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_301 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1164_12__1164_14_NUM_1,
 	},
 }
@@ -248430,7 +248430,7 @@ var objectInfo_POS_joker_DOT_core__1163_11__1163_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1039 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -248777,7 +248777,7 @@ var objectInfo_POS_joker_DOT_core__1184_4__1184_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1042 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -248800,14 +248800,14 @@ var arrayVector_POS_joker_DOT_core__1184_12__1184_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1042,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_302 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1184_12__1184_14_NUM_1,
 	},
 }
@@ -248842,7 +248842,7 @@ var objectInfo_POS_joker_DOT_core__1183_11__1183_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1041 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -249189,7 +249189,7 @@ var objectInfo_POS_joker_DOT_core__1174_4__1174_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1044 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -249212,14 +249212,14 @@ var arrayVector_POS_joker_DOT_core__1174_12__1174_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1044,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_303 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1174_12__1174_14_NUM_1,
 	},
 }
@@ -249254,7 +249254,7 @@ var objectInfo_POS_joker_DOT_core__1173_11__1173_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1043 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -249602,7 +249602,7 @@ var objectInfo_POS_joker_DOT_core__875_4__875_9 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_1046 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -249631,7 +249631,7 @@ var objectInfo_POS_joker_DOT_core__875_13__875_18 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1047 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -249660,7 +249660,7 @@ var objectInfo_POS_joker_DOT_core__875_25__875_30 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1048 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -249674,7 +249674,7 @@ var arrayVector_POS_joker_DOT_core__875_11__875_35_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1046,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1047,
@@ -249690,7 +249690,7 @@ var arrayVector_POS_joker_DOT_core__875_11__875_35_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_304 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__875_11__875_35_NUM_1,
 	},
 }
@@ -249725,7 +249725,7 @@ var objectInfo_POS_joker_DOT_core__874_11__874_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1045 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -249949,7 +249949,7 @@ var objectInfo_POS_joker_DOT_core__2956_5__2956_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1050 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -249983,7 +249983,7 @@ var objectInfo_POS_joker_DOT_core__2957_5__2957_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1051 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -250012,7 +250012,7 @@ var objectInfo_POS_joker_DOT_core__2957_14__2957_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1052 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -250026,7 +250026,7 @@ var arrayVector_POS_joker_DOT_core__2957_12__2957_22_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1051,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1052,
@@ -250036,7 +250036,7 @@ var arrayVector_POS_joker_DOT_core__2957_12__2957_22_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_305 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2956_12__2956_13_NUM_1,
 		&arrayVector_POS_joker_DOT_core__2957_12__2957_22_NUM_1,
 	},
@@ -250072,7 +250072,7 @@ var objectInfo_POS_joker_DOT_core__2955_11__2955_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1049 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -250327,7 +250327,7 @@ var objectInfo_POS_joker_DOT_core__2962_4__2962_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1054 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -250356,7 +250356,7 @@ var objectInfo_POS_joker_DOT_core__2962_10__2962_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1055 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -250370,7 +250370,7 @@ var arrayVector_POS_joker_DOT_core__2962_8__2962_18_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1054,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1055,
@@ -250380,7 +250380,7 @@ var arrayVector_POS_joker_DOT_core__2962_8__2962_18_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_306 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2962_8__2962_18_NUM_1,
 	},
 }
@@ -250415,7 +250415,7 @@ var objectInfo_POS_joker_DOT_core__2961_11__2961_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1053 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -250620,14 +250620,14 @@ var objectInfo_POS_joker_DOT_core__4012_4__4012_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__4012_3__4012_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_307 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4012_3__4012_8_NUM_1,
 	},
 }
@@ -250662,7 +250662,7 @@ var objectInfo_POS_joker_DOT_core__4011_11__4011_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1056 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -250893,7 +250893,7 @@ var objectInfo_POS_joker_DOT_core__4277_4__4277_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1058 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -250922,7 +250922,7 @@ var objectInfo_POS_joker_DOT_core__4277_10__4277_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1059 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -250951,7 +250951,7 @@ var objectInfo_POS_joker_DOT_core__4277_23__4277_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1060 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -250965,7 +250965,7 @@ var arrayVector_POS_joker_DOT_core__4277_8__4277_35_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1058,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1059,
@@ -250981,7 +250981,7 @@ var arrayVector_POS_joker_DOT_core__4277_8__4277_35_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_308 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4277_8__4277_35_NUM_1,
 	},
 }
@@ -251016,7 +251016,7 @@ var objectInfo_POS_joker_DOT_core__4276_11__4276_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1057 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -251306,7 +251306,7 @@ var objectInfo_POS_joker_DOT_core__1768_5__1768_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1062 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -251340,7 +251340,7 @@ var objectInfo_POS_joker_DOT_core__1769_5__1769_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1063 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -251369,7 +251369,7 @@ var objectInfo_POS_joker_DOT_core__1769_11__1769_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1064 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -251383,7 +251383,7 @@ var arrayVector_POS_joker_DOT_core__1769_9__1769_21_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1063,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1064,
@@ -251411,7 +251411,7 @@ var objectInfo_POS_joker_DOT_core__1770_5__1770_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1065 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -251440,7 +251440,7 @@ var objectInfo_POS_joker_DOT_core__1770_11__1770_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1066 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -251469,7 +251469,7 @@ var objectInfo_POS_joker_DOT_core__1770_25__1770_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1067 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -251483,7 +251483,7 @@ var arrayVector_POS_joker_DOT_core__1770_9__1770_35_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1065,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1066,
@@ -251517,7 +251517,7 @@ var objectInfo_POS_joker_DOT_core__1771_5__1771_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1068 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -251546,7 +251546,7 @@ var objectInfo_POS_joker_DOT_core__1771_11__1771_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1069 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -251575,7 +251575,7 @@ var objectInfo_POS_joker_DOT_core__1771_25__1771_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1070 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -251604,7 +251604,7 @@ var objectInfo_POS_joker_DOT_core__1771_37__1771_42 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1071 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -251618,7 +251618,7 @@ var arrayVector_POS_joker_DOT_core__1771_9__1771_48_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1068,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1069,
@@ -251640,7 +251640,7 @@ var arrayVector_POS_joker_DOT_core__1771_9__1771_48_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_309 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1768_9__1768_10_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1769_9__1769_21_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1770_9__1770_35_NUM_1,
@@ -251678,7 +251678,7 @@ var objectInfo_POS_joker_DOT_core__1767_11__1767_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1061 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -252676,7 +252676,7 @@ var objectInfo_POS_joker_DOT_core__2035_4__2035_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1073 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -252699,14 +252699,14 @@ var arrayVector_POS_joker_DOT_core__2035_12__2035_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1073,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
 	},
 }
 var arrayVector_NUM_310 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2035_12__2035_14_NUM_1,
 	},
 }
@@ -252741,7 +252741,7 @@ var objectInfo_POS_joker_DOT_core__2034_11__2034_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1072 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -252928,7 +252928,7 @@ var objectInfo_POS_joker_DOT_core__2063_4__2063_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1075 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -252951,14 +252951,14 @@ var arrayVector_POS_joker_DOT_core__2063_12__2063_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1075,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
 	},
 }
 var arrayVector_NUM_311 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2063_12__2063_14_NUM_1,
 	},
 }
@@ -252993,7 +252993,7 @@ var objectInfo_POS_joker_DOT_core__2062_11__2062_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1074 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -253269,7 +253269,7 @@ var objectInfo_POS_joker_DOT_core__2938_5__2938_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1077 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -253298,7 +253298,7 @@ var objectInfo_POS_joker_DOT_core__2938_15__2938_20 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1078 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -253309,7 +253309,7 @@ var arrayMap_NUM_1078 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__2938_3__2938_23_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1077,
@@ -253325,7 +253325,7 @@ var arrayVector_POS_joker_DOT_core__2938_3__2938_23_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_312 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2938_3__2938_23_NUM_1,
 	},
 }
@@ -253360,7 +253360,7 @@ var objectInfo_POS_joker_DOT_core__2937_11__2937_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1076 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -253593,7 +253593,7 @@ var objectInfo_POS_joker_DOT_core__2944_5__2944_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1080 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -253622,7 +253622,7 @@ var objectInfo_POS_joker_DOT_core__2944_15__2944_20 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1081 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -253633,7 +253633,7 @@ var arrayMap_NUM_1081 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__2944_3__2944_23_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1080,
@@ -253649,7 +253649,7 @@ var arrayVector_POS_joker_DOT_core__2944_3__2944_23_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_313 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2944_3__2944_23_NUM_1,
 	},
 }
@@ -253684,7 +253684,7 @@ var objectInfo_POS_joker_DOT_core__2943_11__2943_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1079 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -254193,7 +254193,7 @@ var objectInfo_POS_joker_DOT_core__2924_4__2924_8 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1083 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -254216,14 +254216,14 @@ var arrayVector_POS_joker_DOT_core__2924_10__2924_12_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1083,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s,
 		},
 	},
 }
 var arrayVector_NUM_314 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2924_10__2924_12_NUM_1,
 	},
 }
@@ -254258,7 +254258,7 @@ var objectInfo_POS_joker_DOT_core__2922_11__2922_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1082 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -254515,7 +254515,7 @@ var objectInfo_POS_joker_DOT_core__2932_4__2932_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1085 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -254544,7 +254544,7 @@ var objectInfo_POS_joker_DOT_core__2932_10__2932_14 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1086 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -254573,7 +254573,7 @@ var objectInfo_POS_joker_DOT_core__2932_20__2932_25 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1087 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -254587,7 +254587,7 @@ var arrayVector_POS_joker_DOT_core__2932_8__2932_28_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1085,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1086,
@@ -254603,7 +254603,7 @@ var arrayVector_POS_joker_DOT_core__2932_8__2932_28_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_315 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2932_8__2932_28_NUM_1,
 	},
 }
@@ -254638,7 +254638,7 @@ var objectInfo_POS_joker_DOT_core__2931_11__2931_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1084 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -254873,14 +254873,14 @@ var objectInfo_POS_joker_DOT_core__2144_5__2144_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_core__2144_4__2144_11_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_reader,
 		},
 	},
 }
 var arrayVector_NUM_316 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2143_4__2143_5_NUM_1,
 		&arrayVector_POS_joker_DOT_core__2144_4__2144_11_NUM_1,
 	},
@@ -254916,7 +254916,7 @@ var objectInfo_POS_joker_DOT_core__2142_11__2142_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1088 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -255382,7 +255382,7 @@ var objectInfo_POS_joker_DOT_core__2152_21__2152_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__2152_20__2152_22_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s,
 		},
@@ -255430,7 +255430,7 @@ var objectInfo_POS_joker_DOT_core__2154_15__2154_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1089 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -255563,7 +255563,7 @@ var objectInfo_POS_joker_DOT_core__4172_4__4172_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1091 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -255592,7 +255592,7 @@ var objectInfo_POS_joker_DOT_core__4172_14__4172_20 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1092 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -255606,7 +255606,7 @@ var arrayVector_POS_joker_DOT_core__4172_12__4172_23_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1091,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1092,
@@ -255616,7 +255616,7 @@ var arrayVector_POS_joker_DOT_core__4172_12__4172_23_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_317 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4172_12__4172_23_NUM_1,
 	},
 }
@@ -255651,7 +255651,7 @@ var objectInfo_POS_joker_DOT_core__4171_11__4171_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1090 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -255848,7 +255848,7 @@ var objectInfo_POS_joker_DOT_core__3996_5__3996_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1094 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -255877,7 +255877,7 @@ var objectInfo_POS_joker_DOT_core__3996_11__3996_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1095 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -255906,7 +255906,7 @@ var objectInfo_POS_joker_DOT_core__3996_23__3996_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1096 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -255920,7 +255920,7 @@ var arrayVector_POS_joker_DOT_core__3996_9__3996_35_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1094,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1095,
@@ -255954,7 +255954,7 @@ var objectInfo_POS_joker_DOT_core__4001_5__4001_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1097 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -255983,7 +255983,7 @@ var objectInfo_POS_joker_DOT_core__4001_11__4001_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1098 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -256021,7 +256021,7 @@ var objectInfo_POS_joker_DOT_core__4001_28__4001_34 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1099 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -256035,7 +256035,7 @@ var arrayVector_POS_joker_DOT_core__4001_9__4001_40_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1097,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1098,
@@ -256054,7 +256054,7 @@ var arrayVector_POS_joker_DOT_core__4001_9__4001_40_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_318 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3996_9__3996_35_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4001_9__4001_40_NUM_1,
 	},
@@ -256090,7 +256090,7 @@ var objectInfo_POS_joker_DOT_core__3995_11__3995_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1093 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -257052,7 +257052,7 @@ var vector_NUM_74 Vector = Vector{
 	},
 }
 var arrayVector_NUM_319 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_74,
 	},
 }
@@ -257402,14 +257402,14 @@ var objectInfo_POS_joker_DOT_core__4424_4__4424_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_core__4424_3__4424_11_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_multifn,
 		},
 	},
 }
 var arrayVector_NUM_320 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4424_3__4424_11_NUM_1,
 	},
 }
@@ -257444,7 +257444,7 @@ var objectInfo_POS_joker_DOT_core__4423_11__4423_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1100 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -257654,7 +257654,7 @@ var objectInfo_POS_joker_DOT_core__1458_5__1458_8 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1102 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -257674,7 +257674,7 @@ var objectInfo_POS_joker_DOT_core__1458_15__1458_20 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1458_3__1458_21_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1102,
@@ -257687,7 +257687,7 @@ var arrayVector_POS_joker_DOT_core__1458_3__1458_21_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_321 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1458_3__1458_21_NUM_1,
 	},
 }
@@ -257722,7 +257722,7 @@ var objectInfo_POS_joker_DOT_core__1457_11__1457_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1101 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -258080,7 +258080,7 @@ var objectInfo_POS_joker_DOT_core__4433_12__4433_23 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__4433_3__4433_24_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_multifn,
 		},
@@ -258090,7 +258090,7 @@ var arrayVector_POS_joker_DOT_core__4433_3__4433_24_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_322 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4433_3__4433_24_NUM_1,
 	},
 }
@@ -258125,7 +258125,7 @@ var objectInfo_POS_joker_DOT_core__4432_11__4432_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1103 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -258329,7 +258329,7 @@ var objectInfo_POS_joker_DOT_core__3072_5__3072_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1105 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -258358,7 +258358,7 @@ var objectInfo_POS_joker_DOT_core__3072_11__3072_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1106 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -258372,7 +258372,7 @@ var arrayVector_POS_joker_DOT_core__3072_9__3072_21_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1105,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1106,
@@ -258400,7 +258400,7 @@ var objectInfo_POS_joker_DOT_core__3073_5__3073_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1107 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -258429,7 +258429,7 @@ var objectInfo_POS_joker_DOT_core__3073_11__3073_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1108 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -258458,7 +258458,7 @@ var objectInfo_POS_joker_DOT_core__3073_21__3073_28 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1109 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -258472,7 +258472,7 @@ var arrayVector_POS_joker_DOT_core__3073_9__3073_31_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1107,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1108,
@@ -258488,7 +258488,7 @@ var arrayVector_POS_joker_DOT_core__3073_9__3073_31_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_323 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3072_9__3072_21_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3073_9__3073_31_NUM_1,
 	},
@@ -258524,7 +258524,7 @@ var objectInfo_POS_joker_DOT_core__3071_11__3071_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1104 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -258910,7 +258910,7 @@ var objectInfo_POS_joker_DOT_core__3058_5__3058_15 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1111 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -258939,7 +258939,7 @@ var objectInfo_POS_joker_DOT_core__3058_23__3058_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1112 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -258950,7 +258950,7 @@ var arrayMap_NUM_1112 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__3058_3__3058_35_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1111,
@@ -258966,7 +258966,7 @@ var arrayVector_POS_joker_DOT_core__3058_3__3058_35_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_324 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3058_3__3058_35_NUM_1,
 	},
 }
@@ -259001,7 +259001,7 @@ var objectInfo_POS_joker_DOT_core__3057_11__3057_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1110 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -259920,7 +259920,7 @@ var objectInfo_POS_joker_DOT_core__3462_4__3462_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1114 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -259952,7 +259952,7 @@ var arrayVector_POS_joker_DOT_core__3462_8__3462_15_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1114,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -259962,7 +259962,7 @@ var arrayVector_POS_joker_DOT_core__3462_8__3462_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_325 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3462_8__3462_15_NUM_1,
 	},
 }
@@ -259997,7 +259997,7 @@ var objectInfo_POS_joker_DOT_core__3460_11__3460_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1113 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -260206,7 +260206,7 @@ var objectInfo_POS_joker_DOT_core__3469_4__3469_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1116 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -260229,14 +260229,14 @@ var arrayVector_POS_joker_DOT_core__3469_8__3469_12_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1116,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_sym,
 		},
 	},
 }
 var arrayVector_NUM_326 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3469_8__3469_12_NUM_1,
 	},
 }
@@ -260271,7 +260271,7 @@ var objectInfo_POS_joker_DOT_core__3468_11__3468_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1115 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -260402,7 +260402,7 @@ var objectInfo_POS_joker_DOT_core__2463_5__2463_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1118 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -260431,7 +260431,7 @@ var objectInfo_POS_joker_DOT_core__2463_11__2463_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1119 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -260445,7 +260445,7 @@ var arrayVector_POS_joker_DOT_core__2463_9__2463_21_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1118,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1119,
@@ -260473,7 +260473,7 @@ var objectInfo_POS_joker_DOT_core__2464_5__2464_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1120 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -260502,7 +260502,7 @@ var objectInfo_POS_joker_DOT_core__2464_11__2464_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1121 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -260531,7 +260531,7 @@ var objectInfo_POS_joker_DOT_core__2464_25__2464_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1122 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -260545,7 +260545,7 @@ var arrayVector_POS_joker_DOT_core__2464_9__2464_35_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1120,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1121,
@@ -260561,7 +260561,7 @@ var arrayVector_POS_joker_DOT_core__2464_9__2464_35_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_327 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2463_9__2463_21_NUM_1,
 		&arrayVector_POS_joker_DOT_core__2464_9__2464_35_NUM_1,
 	},
@@ -260597,7 +260597,7 @@ var objectInfo_POS_joker_DOT_core__2462_11__2462_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1117 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -261274,7 +261274,7 @@ var objectInfo_POS_joker_DOT_core__1481_5__1481_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1124 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -261303,7 +261303,7 @@ var objectInfo_POS_joker_DOT_core__1481_14__1481_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1125 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -261314,7 +261314,7 @@ var arrayMap_NUM_1125 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__1481_3__1481_30_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1124,
@@ -261330,7 +261330,7 @@ var arrayVector_POS_joker_DOT_core__1481_3__1481_30_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_328 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1481_3__1481_30_NUM_1,
 	},
 }
@@ -261365,7 +261365,7 @@ var objectInfo_POS_joker_DOT_core__1480_11__1480_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1123 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -261589,7 +261589,7 @@ var objectInfo_POS_joker_DOT_core__1465_4__1465_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1127 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -261618,7 +261618,7 @@ var objectInfo_POS_joker_DOT_core__1465_10__1465_13 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1128 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -261641,7 +261641,7 @@ var arrayVector_POS_joker_DOT_core__1465_8__1465_26_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1127,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1128,
@@ -261654,7 +261654,7 @@ var arrayVector_POS_joker_DOT_core__1465_8__1465_26_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_329 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1465_8__1465_26_NUM_1,
 	},
 }
@@ -261689,7 +261689,7 @@ var objectInfo_POS_joker_DOT_core__1464_11__1464_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1126 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -261907,7 +261907,7 @@ var objectInfo_POS_joker_DOT_core__3622_4__3622_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1130 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -261930,14 +261930,14 @@ var arrayVector_POS_joker_DOT_core__3622_12__3622_17_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1130,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_330 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3622_12__3622_17_NUM_1,
 	},
 }
@@ -261972,7 +261972,7 @@ var objectInfo_POS_joker_DOT_core__3621_11__3621_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1129 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -262158,7 +262158,7 @@ var objectInfo_POS_joker_DOT_core__1132_4__1132_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1132 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -262187,7 +262187,7 @@ var objectInfo_POS_joker_DOT_core__1132_10__1132_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1133 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -262201,7 +262201,7 @@ var arrayVector_POS_joker_DOT_core__1132_8__1132_24_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1132,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1133,
@@ -262211,7 +262211,7 @@ var arrayVector_POS_joker_DOT_core__1132_8__1132_24_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_331 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1132_8__1132_24_NUM_1,
 	},
 }
@@ -262246,7 +262246,7 @@ var objectInfo_POS_joker_DOT_core__1131_11__1131_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1131 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -262443,7 +262443,7 @@ var objectInfo_POS_joker_DOT_core__4284_4__4284_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1135 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -262472,7 +262472,7 @@ var objectInfo_POS_joker_DOT_core__4284_10__4284_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1136 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -262495,7 +262495,7 @@ var arrayVector_POS_joker_DOT_core__4284_8__4284_28_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1135,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1136,
@@ -262508,7 +262508,7 @@ var arrayVector_POS_joker_DOT_core__4284_8__4284_28_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_332 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4284_8__4284_28_NUM_1,
 	},
 }
@@ -262543,7 +262543,7 @@ var objectInfo_POS_joker_DOT_core__4283_11__4283_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1134 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -262847,7 +262847,7 @@ var objectInfo_POS_joker_DOT_core__3589_4__3589_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1138 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -262870,14 +262870,14 @@ var arrayVector_POS_joker_DOT_core__3589_12__3589_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1138,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_333 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3589_12__3589_14_NUM_1,
 	},
 }
@@ -262912,7 +262912,7 @@ var objectInfo_POS_joker_DOT_core__3588_11__3588_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1137 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -263190,7 +263190,7 @@ var objectInfo_POS_joker_DOT_core__1576_4__1576_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1140 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -263213,14 +263213,14 @@ var arrayVector_POS_joker_DOT_core__1576_8__1576_13_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1140,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_334 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1576_8__1576_13_NUM_1,
 	},
 }
@@ -263255,7 +263255,7 @@ var objectInfo_POS_joker_DOT_core__1574_11__1574_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1139 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -263554,7 +263554,7 @@ var objectInfo_POS_joker_DOT_core__4018_4__4018_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1142 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -263577,14 +263577,14 @@ var arrayVector_POS_joker_DOT_core__4018_8__4018_13_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1142,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_335 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4018_8__4018_13_NUM_1,
 	},
 }
@@ -263619,7 +263619,7 @@ var objectInfo_POS_joker_DOT_core__4017_11__4017_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1141 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -263810,7 +263810,7 @@ var objectInfo_POS_joker_DOT_core__1159_4__1159_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1144 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -263833,14 +263833,14 @@ var arrayVector_POS_joker_DOT_core__1159_12__1159_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1144,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_336 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1159_12__1159_14_NUM_1,
 	},
 }
@@ -263875,7 +263875,7 @@ var objectInfo_POS_joker_DOT_core__1158_11__1158_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1143 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -264165,7 +264165,7 @@ var objectInfo_POS_joker_DOT_core__1179_4__1179_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1146 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -264188,14 +264188,14 @@ var arrayVector_POS_joker_DOT_core__1179_12__1179_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1146,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_337 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1179_12__1179_14_NUM_1,
 	},
 }
@@ -264230,7 +264230,7 @@ var objectInfo_POS_joker_DOT_core__1178_11__1178_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1145 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -264520,7 +264520,7 @@ var objectInfo_POS_joker_DOT_core__1169_4__1169_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1148 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -264543,14 +264543,14 @@ var arrayVector_POS_joker_DOT_core__1169_12__1169_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1148,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_338 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1169_12__1169_14_NUM_1,
 	},
 }
@@ -264585,7 +264585,7 @@ var objectInfo_POS_joker_DOT_core__1168_11__1168_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1147 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -264875,7 +264875,7 @@ var objectInfo_POS_joker_DOT_core__3938_4__3938_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1150 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -264898,14 +264898,14 @@ var arrayVector_POS_joker_DOT_core__3938_11__3938_13_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1150,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_f,
 		},
 	},
 }
 var arrayVector_NUM_339 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3938_11__3938_13_NUM_1,
 	},
 }
@@ -264940,7 +264940,7 @@ var objectInfo_POS_joker_DOT_core__3937_11__3937_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1149 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -265208,7 +265208,7 @@ var vector_NUM_75 Vector = Vector{
 	},
 }
 var arrayVector_NUM_340 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_75,
 	},
 }
@@ -266810,7 +266810,7 @@ var vector_NUM_76 Vector = Vector{
 	},
 }
 var arrayVector_NUM_341 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_76,
 	},
 }
@@ -268335,7 +268335,7 @@ var objectInfo_POS_joker_DOT_core__4116_5__4116_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1152 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268364,7 +268364,7 @@ var objectInfo_POS_joker_DOT_core__4116_10__4116_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1153 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268378,7 +268378,7 @@ var arrayVector_POS_joker_DOT_core__4116_8__4116_20_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1152,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1153,
@@ -268406,7 +268406,7 @@ var objectInfo_POS_joker_DOT_core__4123_5__4123_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1154 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268435,7 +268435,7 @@ var objectInfo_POS_joker_DOT_core__4123_10__4123_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1155 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268464,7 +268464,7 @@ var objectInfo_POS_joker_DOT_core__4123_23__4123_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1156 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268478,7 +268478,7 @@ var arrayVector_POS_joker_DOT_core__4123_8__4123_34_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1154,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1155,
@@ -268512,7 +268512,7 @@ var objectInfo_POS_joker_DOT_core__4130_5__4130_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1157 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268541,7 +268541,7 @@ var objectInfo_POS_joker_DOT_core__4130_10__4130_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1158 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268570,7 +268570,7 @@ var objectInfo_POS_joker_DOT_core__4130_23__4130_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1159 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268599,7 +268599,7 @@ var objectInfo_POS_joker_DOT_core__4130_36__4130_43 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1160 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268613,7 +268613,7 @@ var arrayVector_POS_joker_DOT_core__4130_8__4130_47_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1157,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1158,
@@ -268653,7 +268653,7 @@ var objectInfo_POS_joker_DOT_core__4137_5__4137_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1161 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268682,7 +268682,7 @@ var objectInfo_POS_joker_DOT_core__4137_10__4137_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1162 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268711,7 +268711,7 @@ var objectInfo_POS_joker_DOT_core__4137_23__4137_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1163 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268740,7 +268740,7 @@ var objectInfo_POS_joker_DOT_core__4137_36__4137_43 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1164 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -268772,7 +268772,7 @@ var arrayVector_POS_joker_DOT_core__4137_8__4137_52_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1161,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1162,
@@ -268800,7 +268800,7 @@ var arrayVector_POS_joker_DOT_core__4137_8__4137_52_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_342 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4116_8__4116_20_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4123_8__4123_34_NUM_1,
 		&arrayVector_POS_joker_DOT_core__4130_8__4130_47_NUM_1,
@@ -268838,7 +268838,7 @@ var objectInfo_POS_joker_DOT_core__4115_11__4115_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1151 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -275004,14 +275004,14 @@ var objectInfo_POS_joker_DOT_core__397_4__397_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__397_3__397_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_343 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__397_3__397_5_NUM_1,
 	},
 }
@@ -275252,7 +275252,7 @@ var objectInfo_POS_joker_DOT_core__1846_5__1846_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1166 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275281,7 +275281,7 @@ var objectInfo_POS_joker_DOT_core__1846_11__1846_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1167 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275295,7 +275295,7 @@ var arrayVector_POS_joker_DOT_core__1846_9__1846_23_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1166,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1167,
@@ -275323,7 +275323,7 @@ var objectInfo_POS_joker_DOT_core__1848_5__1848_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1168 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275352,7 +275352,7 @@ var objectInfo_POS_joker_DOT_core__1848_11__1848_20 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1169 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275381,7 +275381,7 @@ var objectInfo_POS_joker_DOT_core__1848_28__1848_34 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1170 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275395,7 +275395,7 @@ var arrayVector_POS_joker_DOT_core__1848_9__1848_40_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1168,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1169,
@@ -275411,7 +275411,7 @@ var arrayVector_POS_joker_DOT_core__1848_9__1848_40_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_344 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1846_9__1846_23_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1848_9__1848_40_NUM_1,
 	},
@@ -275447,7 +275447,7 @@ var objectInfo_POS_joker_DOT_core__1845_11__1845_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1165 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -275746,7 +275746,7 @@ var objectInfo_POS_joker_DOT_core__1856_5__1856_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1172 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275775,7 +275775,7 @@ var objectInfo_POS_joker_DOT_core__1856_11__1856_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1173 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275804,7 +275804,7 @@ var objectInfo_POS_joker_DOT_core__1856_27__1856_33 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1174 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275818,7 +275818,7 @@ var arrayVector_POS_joker_DOT_core__1856_9__1856_39_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1172,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1173,
@@ -275852,7 +275852,7 @@ var objectInfo_POS_joker_DOT_core__1858_5__1858_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1175 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275881,7 +275881,7 @@ var objectInfo_POS_joker_DOT_core__1858_11__1858_18 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1176 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275910,7 +275910,7 @@ var objectInfo_POS_joker_DOT_core__1858_27__1858_36 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1177 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275939,7 +275939,7 @@ var objectInfo_POS_joker_DOT_core__1858_44__1858_50 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1178 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -275953,7 +275953,7 @@ var arrayVector_POS_joker_DOT_core__1858_9__1858_56_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1175,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1176,
@@ -275975,7 +275975,7 @@ var arrayVector_POS_joker_DOT_core__1858_9__1858_56_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_345 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1856_9__1856_39_NUM_1,
 		&arrayVector_POS_joker_DOT_core__1858_9__1858_56_NUM_1,
 	},
@@ -276011,7 +276011,7 @@ var objectInfo_POS_joker_DOT_core__1855_11__1855_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1171 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -276474,7 +276474,7 @@ var objectInfo_POS_joker_DOT_core__3008_4__3008_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1180 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -276497,14 +276497,14 @@ var arrayVector_POS_joker_DOT_core__3008_12__3008_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1180,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s,
 		},
 	},
 }
 var arrayVector_NUM_346 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3008_12__3008_14_NUM_1,
 	},
 }
@@ -276539,7 +276539,7 @@ var objectInfo_POS_joker_DOT_core__3007_11__3007_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1179 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -276730,7 +276730,7 @@ var objectInfo_POS_joker_DOT_core__3947_4__3947_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1182 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -276780,7 +276780,7 @@ var arrayVector_POS_joker_DOT_core__3947_8__3947_28_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1182,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_f,
 		},
@@ -276796,7 +276796,7 @@ var arrayVector_POS_joker_DOT_core__3947_8__3947_28_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_347 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3947_8__3947_28_NUM_1,
 	},
 }
@@ -276831,7 +276831,7 @@ var objectInfo_POS_joker_DOT_core__3946_11__3946_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1181 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -277097,7 +277097,7 @@ var objectInfo_POS_joker_DOT_core__1748_4__1748_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1184 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -277126,7 +277126,7 @@ var objectInfo_POS_joker_DOT_core__1748_10__1748_17 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1185 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -277155,7 +277155,7 @@ var objectInfo_POS_joker_DOT_core__1748_25__1748_31 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1186 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -277169,7 +277169,7 @@ var arrayVector_POS_joker_DOT_core__1748_8__1748_37_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1184,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1185,
@@ -277185,7 +277185,7 @@ var arrayVector_POS_joker_DOT_core__1748_8__1748_37_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_348 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1748_8__1748_37_NUM_1,
 	},
 }
@@ -277220,7 +277220,7 @@ var objectInfo_POS_joker_DOT_core__1747_11__1747_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1183 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -277494,7 +277494,7 @@ var objectInfo_POS_joker_DOT_core__4645_6__4645_9 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_core__4645_3__4645_10_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
@@ -277504,7 +277504,7 @@ var arrayVector_POS_joker_DOT_core__4645_3__4645_10_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_349 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4645_3__4645_10_NUM_1,
 	},
 }
@@ -277539,7 +277539,7 @@ var objectInfo_POS_joker_DOT_core__4644_11__4644_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1187 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -277825,7 +277825,7 @@ var objectInfo_POS_joker_DOT_core__3020_5__3020_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1189 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -277854,7 +277854,7 @@ var objectInfo_POS_joker_DOT_core__3020_14__3020_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1190 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -277883,7 +277883,7 @@ var objectInfo_POS_joker_DOT_core__3020_24__3020_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1191 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -277897,7 +277897,7 @@ var arrayVector_POS_joker_DOT_core__3020_12__3020_36_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1189,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1190,
@@ -277931,7 +277931,7 @@ var objectInfo_POS_joker_DOT_core__3021_5__3021_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1192 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -277960,7 +277960,7 @@ var objectInfo_POS_joker_DOT_core__3021_14__3021_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1193 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -277989,7 +277989,7 @@ var objectInfo_POS_joker_DOT_core__3021_24__3021_29 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1194 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -278018,7 +278018,7 @@ var objectInfo_POS_joker_DOT_core__3021_38__3021_43 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1195 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -278032,7 +278032,7 @@ var arrayVector_POS_joker_DOT_core__3021_12__3021_48_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1192,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1193,
@@ -278054,7 +278054,7 @@ var arrayVector_POS_joker_DOT_core__3021_12__3021_48_NUM_1 ArrayVector = ArrayVe
 	},
 }
 var arrayVector_NUM_350 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3020_12__3020_36_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3021_12__3021_48_NUM_1,
 	},
@@ -278090,7 +278090,7 @@ var objectInfo_POS_joker_DOT_core__3019_11__3019_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1188 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -278431,7 +278431,7 @@ var objectInfo_POS_joker_DOT_core__2164_5__2164_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1197 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -278460,7 +278460,7 @@ var objectInfo_POS_joker_DOT_core__2164_11__2164_13 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1198 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -278489,7 +278489,7 @@ var objectInfo_POS_joker_DOT_core__2164_18__2164_23 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1199 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -278503,7 +278503,7 @@ var arrayVector_POS_joker_DOT_core__2164_9__2164_30_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1197,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1198,
@@ -278537,7 +278537,7 @@ var objectInfo_POS_joker_DOT_core__2166_5__2166_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1200 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -278566,7 +278566,7 @@ var objectInfo_POS_joker_DOT_core__2166_11__2166_13 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1201 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -278595,7 +278595,7 @@ var objectInfo_POS_joker_DOT_core__2166_18__2166_23 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1202 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -278624,7 +278624,7 @@ var objectInfo_POS_joker_DOT_core__2166_32__2166_37 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1203 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -278638,7 +278638,7 @@ var arrayVector_POS_joker_DOT_core__2166_9__2166_42_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1200,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1201,
@@ -278660,7 +278660,7 @@ var arrayVector_POS_joker_DOT_core__2166_9__2166_42_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_351 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2164_9__2164_30_NUM_1,
 		&arrayVector_POS_joker_DOT_core__2166_9__2166_42_NUM_1,
 	},
@@ -278696,7 +278696,7 @@ var objectInfo_POS_joker_DOT_core__2163_11__2163_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1196 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -279056,7 +279056,7 @@ var objectInfo_POS_joker_DOT_core__1451_4__1451_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1205 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -279085,7 +279085,7 @@ var objectInfo_POS_joker_DOT_core__1451_10__1451_13 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1206 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -279114,7 +279114,7 @@ var objectInfo_POS_joker_DOT_core__1451_21__1451_28 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1207 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -279146,7 +279146,7 @@ var arrayVector_POS_joker_DOT_core__1451_8__1451_38_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1205,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1206,
@@ -279168,7 +279168,7 @@ var arrayVector_POS_joker_DOT_core__1451_8__1451_38_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_352 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1451_8__1451_38_NUM_1,
 	},
 }
@@ -279203,7 +279203,7 @@ var objectInfo_POS_joker_DOT_core__1450_11__1450_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1204 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -279459,7 +279459,7 @@ var objectInfo_POS_joker_DOT_core__1713_4__1713_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1209 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -279488,7 +279488,7 @@ var objectInfo_POS_joker_DOT_core__1713_10__1713_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1210 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -279517,7 +279517,7 @@ var objectInfo_POS_joker_DOT_core__1713_20__1713_26 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1211 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -279531,7 +279531,7 @@ var arrayVector_POS_joker_DOT_core__1713_8__1713_32_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1209,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1210,
@@ -279547,7 +279547,7 @@ var arrayVector_POS_joker_DOT_core__1713_8__1713_32_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_353 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1713_8__1713_32_NUM_1,
 	},
 }
@@ -279582,7 +279582,7 @@ var objectInfo_POS_joker_DOT_core__1712_11__1712_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1208 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -280014,7 +280014,7 @@ var objectInfo_POS_joker_DOT_core__2914_4__2914_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1213 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -280037,14 +280037,14 @@ var arrayVector_POS_joker_DOT_core__2914_12__2914_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1213,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_v,
 		},
 	},
 }
 var arrayVector_NUM_354 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2914_12__2914_14_NUM_1,
 	},
 }
@@ -280079,7 +280079,7 @@ var objectInfo_POS_joker_DOT_core__2913_11__2913_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1212 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -280479,7 +280479,7 @@ var vector_NUM_77 Vector = Vector{
 	},
 }
 var arrayVector_NUM_355 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_77,
 	},
 }
@@ -281582,7 +281582,7 @@ var objectInfo_POS_joker_DOT_core__3654_6__3654_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1215 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -281593,7 +281593,7 @@ var arrayMap_NUM_1215 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_core__3654_4__3654_16_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1215,
@@ -281630,7 +281630,7 @@ var objectInfo_POS_joker_DOT_core__3659_6__3659_13 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1216 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -281659,7 +281659,7 @@ var objectInfo_POS_joker_DOT_core__3659_19__3659_22 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__3659_4__3659_23_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1216,
@@ -281675,7 +281675,7 @@ var arrayVector_POS_joker_DOT_core__3659_4__3659_23_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_356 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3654_4__3654_16_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3659_4__3659_23_NUM_1,
 	},
@@ -281711,7 +281711,7 @@ var objectInfo_POS_joker_DOT_core__3653_11__3653_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1214 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -282143,14 +282143,14 @@ var objectInfo_POS_joker_DOT_core__373_4__373_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_core__373_3__373_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_357 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__373_3__373_5_NUM_1,
 	},
 }
@@ -282572,7 +282572,7 @@ var objectInfo_POS_joker_DOT_core__950_4__950_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_1218 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -282601,7 +282601,7 @@ var objectInfo_POS_joker_DOT_core__950_10__950_12 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1219 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -282630,7 +282630,7 @@ var objectInfo_POS_joker_DOT_core__950_17__950_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1220 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -282644,7 +282644,7 @@ var arrayVector_POS_joker_DOT_core__950_8__950_22_NUM_1 ArrayVector = ArrayVecto
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1218,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1219,
@@ -282660,7 +282660,7 @@ var arrayVector_POS_joker_DOT_core__950_8__950_22_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_358 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__950_8__950_22_NUM_1,
 	},
 }
@@ -282695,7 +282695,7 @@ var objectInfo_POS_joker_DOT_core__949_11__949_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1217 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -282919,7 +282919,7 @@ var objectInfo_POS_joker_DOT_core__3565_5__3565_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1222 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -282948,7 +282948,7 @@ var objectInfo_POS_joker_DOT_core__3565_11__3565_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1223 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -282986,7 +282986,7 @@ var objectInfo_POS_joker_DOT_core__3565_28__3565_35 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1224 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283000,7 +283000,7 @@ var arrayVector_POS_joker_DOT_core__3565_9__3565_38_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1222,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1223,
@@ -283037,7 +283037,7 @@ var objectInfo_POS_joker_DOT_core__3567_5__3567_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1225 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283066,7 +283066,7 @@ var objectInfo_POS_joker_DOT_core__3567_11__3567_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1226 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283104,7 +283104,7 @@ var objectInfo_POS_joker_DOT_core__3567_28__3567_35 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1227 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283127,7 +283127,7 @@ var arrayVector_POS_joker_DOT_core__3567_9__3567_40_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1225,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1226,
@@ -283167,7 +283167,7 @@ var objectInfo_POS_joker_DOT_core__3569_5__3569_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1228 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283196,7 +283196,7 @@ var objectInfo_POS_joker_DOT_core__3569_11__3569_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1229 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283234,7 +283234,7 @@ var objectInfo_POS_joker_DOT_core__3569_28__3569_35 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1230 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283266,7 +283266,7 @@ var arrayVector_POS_joker_DOT_core__3569_9__3569_42_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1228,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1229,
@@ -283309,7 +283309,7 @@ var objectInfo_POS_joker_DOT_core__3571_5__3571_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1231 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283338,7 +283338,7 @@ var objectInfo_POS_joker_DOT_core__3571_11__3571_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1232 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283376,7 +283376,7 @@ var objectInfo_POS_joker_DOT_core__3571_28__3571_35 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1233 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283417,7 +283417,7 @@ var arrayVector_POS_joker_DOT_core__3571_9__3571_44_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1231,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1232,
@@ -283463,7 +283463,7 @@ var objectInfo_POS_joker_DOT_core__3573_5__3573_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1234 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283492,7 +283492,7 @@ var objectInfo_POS_joker_DOT_core__3573_11__3573_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1235 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283530,7 +283530,7 @@ var objectInfo_POS_joker_DOT_core__3573_28__3573_35 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1236 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -283589,7 +283589,7 @@ var arrayVector_POS_joker_DOT_core__3573_9__3573_51_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1234,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1235,
@@ -283623,7 +283623,7 @@ var arrayVector_POS_joker_DOT_core__3573_9__3573_51_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_359 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3565_9__3565_38_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3567_9__3567_40_NUM_1,
 		&arrayVector_POS_joker_DOT_core__3569_9__3569_42_NUM_1,
@@ -283662,7 +283662,7 @@ var objectInfo_POS_joker_DOT_core__3564_11__3564_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1221 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -284842,7 +284842,7 @@ var objectInfo_POS_joker_DOT_core__3553_5__3553_7 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1238 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -284871,7 +284871,7 @@ var objectInfo_POS_joker_DOT_core__3553_11__3553_21 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1239 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -284900,7 +284900,7 @@ var objectInfo_POS_joker_DOT_core__3553_26__3553_32 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1240 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -284929,7 +284929,7 @@ var objectInfo_POS_joker_DOT_core__3553_38__3553_45 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1241 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -284961,7 +284961,7 @@ var arrayVector_POS_joker_DOT_core__3553_9__3553_55_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1238,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1239,
@@ -284989,7 +284989,7 @@ var arrayVector_POS_joker_DOT_core__3553_9__3553_55_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_360 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3553_9__3553_55_NUM_1,
 	},
 }
@@ -285024,7 +285024,7 @@ var objectInfo_POS_joker_DOT_core__3552_11__3552_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1237 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -285695,7 +285695,7 @@ var objectInfo_POS_joker_DOT_core__4300_4__4300_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1243 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -285733,7 +285733,7 @@ var objectInfo_POS_joker_DOT_core__4300_12__4300_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1244 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -285747,7 +285747,7 @@ var arrayVector_POS_joker_DOT_core__4300_8__4300_22_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1243,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_m,
 		},
@@ -285760,7 +285760,7 @@ var arrayVector_POS_joker_DOT_core__4300_8__4300_22_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_361 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4300_8__4300_22_NUM_1,
 	},
 }
@@ -285795,7 +285795,7 @@ var objectInfo_POS_joker_DOT_core__4299_11__4299_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1242 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -286218,7 +286218,7 @@ var objectInfo_POS_joker_DOT_core__4310_4__4310_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1246 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -286256,7 +286256,7 @@ var objectInfo_POS_joker_DOT_core__4310_12__4310_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1247 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -286270,7 +286270,7 @@ var arrayVector_POS_joker_DOT_core__4310_8__4310_22_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1246,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_m,
 		},
@@ -286283,7 +286283,7 @@ var arrayVector_POS_joker_DOT_core__4310_8__4310_22_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_362 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4310_8__4310_22_NUM_1,
 	},
 }
@@ -286318,7 +286318,7 @@ var objectInfo_POS_joker_DOT_core__4309_11__4309_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1245 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -286741,7 +286741,7 @@ var objectInfo_POS_joker_DOT_core__3485_4__3485_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1249 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -286773,7 +286773,7 @@ var arrayVector_POS_joker_DOT_core__3485_8__3485_15_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1249,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -286783,7 +286783,7 @@ var arrayVector_POS_joker_DOT_core__3485_8__3485_15_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_363 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3485_8__3485_15_NUM_1,
 	},
 }
@@ -286818,7 +286818,7 @@ var objectInfo_POS_joker_DOT_core__3484_11__3484_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1248 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -287049,7 +287049,7 @@ var objectInfo_POS_joker_DOT_core__1114_4__1114_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1251 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -287078,7 +287078,7 @@ var objectInfo_POS_joker_DOT_core__1114_10__1114_12 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1252 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -287092,7 +287092,7 @@ var arrayVector_POS_joker_DOT_core__1114_8__1114_17_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1251,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1252,
@@ -287102,7 +287102,7 @@ var arrayVector_POS_joker_DOT_core__1114_8__1114_17_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_364 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1114_8__1114_17_NUM_1,
 	},
 }
@@ -287137,7 +287137,7 @@ var objectInfo_POS_joker_DOT_core__1113_11__1113_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1250 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -287335,7 +287335,7 @@ var objectInfo_POS_joker_DOT_core__3014_4__3014_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayMap_NUM_1254 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -287358,14 +287358,14 @@ var arrayVector_POS_joker_DOT_core__3014_12__3014_14_NUM_1 ArrayVector = ArrayVe
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1254,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_v,
 		},
 	},
 }
 var arrayVector_NUM_365 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__3014_12__3014_14_NUM_1,
 	},
 }
@@ -287400,7 +287400,7 @@ var objectInfo_POS_joker_DOT_core__3013_11__3013_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1253 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -287597,7 +287597,7 @@ var objectInfo_POS_joker_DOT_core__4550_3__4550_4 coretypes.ObjectInfo = coretyp
 }
 var arrayVector_POS_joker_DOT_core__4550_3__4550_4_NUM_1 ArrayVector = ArrayVector{}
 var arrayVector_NUM_366 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__4550_3__4550_4_NUM_1,
 	},
 }
@@ -287884,7 +287884,7 @@ var vector_NUM_78 Vector = Vector{
 	},
 }
 var arrayVector_NUM_367 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_78,
 	},
 }
@@ -288447,7 +288447,7 @@ var vector_NUM_79 Vector = Vector{
 	},
 }
 var arrayVector_NUM_368 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_79,
 	},
 }
@@ -289847,7 +289847,7 @@ var vector_NUM_80 Vector = Vector{
 	},
 }
 var arrayVector_NUM_369 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_80,
 	},
 }
@@ -291200,7 +291200,7 @@ var vector_NUM_81 Vector = Vector{
 	},
 }
 var arrayVector_NUM_370 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_81,
 	},
 }
@@ -291763,7 +291763,7 @@ var vector_NUM_82 Vector = Vector{
 	},
 }
 var arrayVector_NUM_371 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_82,
 	},
 }
@@ -293237,7 +293237,7 @@ var vector_NUM_83 Vector = Vector{
 	},
 }
 var arrayVector_NUM_372 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_83,
 	},
 }
@@ -293806,7 +293806,7 @@ var vector_NUM_84 Vector = Vector{
 	},
 }
 var arrayVector_NUM_373 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_84,
 	},
 }
@@ -294301,7 +294301,7 @@ var vector_NUM_85 Vector = Vector{
 	},
 }
 var arrayVector_NUM_374 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_85,
 	},
 }
@@ -294821,7 +294821,7 @@ var vector_NUM_86 Vector = Vector{
 	},
 }
 var arrayVector_NUM_375 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_86,
 	},
 }
@@ -295430,7 +295430,7 @@ var vector_NUM_87 Vector = Vector{
 	},
 }
 var arrayVector_NUM_376 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_87,
 	},
 }
@@ -295784,7 +295784,7 @@ var objectInfo_POS_joker_DOT_core__1378_37__1378_40 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_core__1378_20__1378_41_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_binding_DASH_map,
 		},
@@ -295823,7 +295823,7 @@ var objectInfo_POS_joker_DOT_core__1379_15__1379_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1255 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -295937,7 +295937,7 @@ var objectInfo_POS_joker_DOT_core__2999_4__2999_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1257 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -295960,14 +295960,14 @@ var arrayVector_POS_joker_DOT_core__2999_8__2999_13_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1257,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_root,
 		},
 	},
 }
 var arrayVector_NUM_377 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__2999_8__2999_13_NUM_1,
 	},
 }
@@ -296002,7 +296002,7 @@ var objectInfo_POS_joker_DOT_core__2998_11__2998_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1256 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -296268,7 +296268,7 @@ var objectInfo_POS_joker_DOT_core__1810_4__1810_6 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1259 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -296297,7 +296297,7 @@ var objectInfo_POS_joker_DOT_core__1810_10__1810_16 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1260 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -296326,7 +296326,7 @@ var objectInfo_POS_joker_DOT_core__1810_24__1810_30 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1261 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -296340,7 +296340,7 @@ var arrayVector_POS_joker_DOT_core__1810_8__1810_36_NUM_1 ArrayVector = ArrayVec
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1259,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1260,
@@ -296356,7 +296356,7 @@ var arrayVector_POS_joker_DOT_core__1810_8__1810_36_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_378 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__1810_8__1810_36_NUM_1,
 	},
 }
@@ -296391,7 +296391,7 @@ var objectInfo_POS_joker_DOT_core__1809_11__1809_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1258 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -297614,7 +297614,7 @@ var objectInfo_POS_joker_DOT_core__747_5__747_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1262 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -297648,7 +297648,7 @@ var objectInfo_POS_joker_DOT_core__748_5__748_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1263 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -297677,7 +297677,7 @@ var objectInfo_POS_joker_DOT_core__748_14__748_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1264 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -297691,7 +297691,7 @@ var arrayVector_POS_joker_DOT_core__748_12__748_22_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1263,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1264,
@@ -297719,7 +297719,7 @@ var objectInfo_POS_joker_DOT_core__749_5__749_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1265 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -297748,7 +297748,7 @@ var objectInfo_POS_joker_DOT_core__749_14__749_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1266 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -297777,7 +297777,7 @@ var objectInfo_POS_joker_DOT_core__749_24__749_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1267 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -297791,7 +297791,7 @@ var arrayVector_POS_joker_DOT_core__749_12__749_32_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1265,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1266,
@@ -297825,7 +297825,7 @@ var objectInfo_POS_joker_DOT_core__750_5__750_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1268 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -297854,7 +297854,7 @@ var objectInfo_POS_joker_DOT_core__750_14__750_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1269 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -297883,7 +297883,7 @@ var objectInfo_POS_joker_DOT_core__750_24__750_29 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1270 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
@@ -297915,7 +297915,7 @@ var arrayVector_POS_joker_DOT_core__750_12__750_39_NUM_1 ArrayVector = ArrayVect
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1268,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			MetaHolder: MetaHolder{
 				meta: &arrayMap_NUM_1269,
@@ -297937,7 +297937,7 @@ var arrayVector_POS_joker_DOT_core__750_12__750_39_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_379 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_core__747_12__747_13_NUM_1,
 		&arrayVector_POS_joker_DOT_core__748_12__748_22_NUM_1,
 		&arrayVector_POS_joker_DOT_core__749_12__749_32_NUM_1,
@@ -297975,7 +297975,7 @@ var objectInfo_POS_joker_DOT_core__746_11__746_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_102 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -298819,7 +298819,7 @@ var ns_user Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_1271 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -298873,14 +298873,14 @@ var objectInfo_POS_joker_DOT_repl__99_4__99_17 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayVector_POS_joker_DOT_repl__99_3__99_18_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_str_DASH_or_DASH_pattern,
 		},
 	},
 }
 var arrayVector_NUM_380 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_repl__99_3__99_18_NUM_1,
 	},
 }
@@ -298915,7 +298915,7 @@ var objectInfo_POS_joker_DOT_repl__98_11__98_15 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_1272 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -299825,7 +299825,7 @@ var vector_NUM_88 Vector = Vector{
 	},
 }
 var arrayVector_NUM_381 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_88,
 	},
 }
@@ -300427,14 +300427,14 @@ var objectInfo_POS_joker_DOT_repl__113_4__113_5 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_repl__113_3__113_6_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
 	},
 }
 var arrayVector_NUM_382 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_repl__113_3__113_6_NUM_1,
 	},
 }
@@ -300469,7 +300469,7 @@ var objectInfo_POS_joker_DOT_repl__112_11__112_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1273 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -300845,7 +300845,7 @@ var vector_NUM_89 Vector = Vector{
 	},
 }
 var arrayVector_NUM_383 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_89,
 	},
 }
@@ -300999,7 +300999,7 @@ var objectInfo_POS_joker_DOT_repl__79_51__79_53 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_POS_joker_DOT_repl__79_27__79_54_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -301521,7 +301521,7 @@ var objectInfo_POS_joker_DOT_repl__6_7__6_14 coretypes.ObjectInfo = coretypes.Ob
 	},
 }
 var arrayMap_NUM_1274 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -301683,7 +301683,7 @@ var list_POS_joker_DOT_repl__29_18__29_58_NUM_1 List = List{
 	rest: &list_NUM_57,
 }
 var arrayVector_POS_joker_DOT_repl__29_17__29_59_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_repl__29_18__29_58_NUM_1,
 	},
 }
@@ -301706,7 +301706,7 @@ var objectInfo_POS_joker_DOT_repl__30_15__34_80 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_POS_joker_DOT_repl__29_9__34_81_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1459006865,
 			name: &s_forms,
@@ -301831,7 +301831,7 @@ var list_POS_joker_DOT_repl__16_17__16_36_NUM_1 List = List{
 	rest: &list_NUM_60,
 }
 var arrayVector_POS_joker_DOT_repl__16_16__16_37_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_repl__16_17__16_36_NUM_1,
 	},
 }
@@ -301854,7 +301854,7 @@ var objectInfo_POS_joker_DOT_repl__17_14__19_43 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_POS_joker_DOT_repl__16_8__19_44_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1459006865,
 			name: &s_forms,
@@ -301947,7 +301947,7 @@ var list_POS_joker_DOT_repl__35_18__35_29_NUM_1 List = List{
 	rest: &list_NUM_63,
 }
 var arrayVector_POS_joker_DOT_repl__35_17__35_30_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_repl__35_18__35_29_NUM_1,
 	},
 }
@@ -301970,7 +301970,7 @@ var objectInfo_POS_joker_DOT_repl__36_15__37_79 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_POS_joker_DOT_repl__35_9__37_80_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1459006865,
 			name: &s_forms,
@@ -302063,7 +302063,7 @@ var list_POS_joker_DOT_repl__26_20__26_31_NUM_1 List = List{
 	rest: &list_NUM_64,
 }
 var arrayVector_POS_joker_DOT_repl__26_19__26_32_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_repl__26_20__26_31_NUM_1,
 	},
 }
@@ -302086,7 +302086,7 @@ var objectInfo_POS_joker_DOT_repl__27_17__28_80 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_POS_joker_DOT_repl__26_11__28_81_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1459006865,
 			name: &s_forms,
@@ -302179,7 +302179,7 @@ var list_POS_joker_DOT_repl__13_17__13_27_NUM_1 List = List{
 	rest: &list_NUM_65,
 }
 var arrayVector_POS_joker_DOT_repl__13_16__13_28_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_repl__13_17__13_27_NUM_1,
 	},
 }
@@ -302202,7 +302202,7 @@ var objectInfo_POS_joker_DOT_repl__14_14__15_57 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_POS_joker_DOT_repl__13_8__15_58_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1459006865,
 			name: &s_forms,
@@ -302327,7 +302327,7 @@ var list_POS_joker_DOT_repl__7_18__7_47_NUM_1 List = List{
 	rest: &list_NUM_66,
 }
 var arrayVector_POS_joker_DOT_repl__7_17__7_48_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_repl__7_18__7_47_NUM_1,
 	},
 }
@@ -302350,7 +302350,7 @@ var objectInfo_POS_joker_DOT_repl__8_15__12_59 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayMap_POS_joker_DOT_repl__7_9__12_60_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1459006865,
 			name: &s_forms,
@@ -302443,7 +302443,7 @@ var list_POS_joker_DOT_repl__22_20__22_33_NUM_1 List = List{
 	rest: &list_NUM_69,
 }
 var arrayVector_POS_joker_DOT_repl__22_19__22_34_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_repl__22_20__22_33_NUM_1,
 	},
 }
@@ -302466,7 +302466,7 @@ var objectInfo_POS_joker_DOT_repl__23_17__25_73 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_POS_joker_DOT_repl__22_11__25_74_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1459006865,
 			name: &s_forms,
@@ -302559,7 +302559,7 @@ var list_POS_joker_DOT_repl__20_20__20_31_NUM_1 List = List{
 	rest: &list_NUM_70,
 }
 var arrayVector_POS_joker_DOT_repl__20_19__20_32_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_repl__20_20__20_31_NUM_1,
 	},
 }
@@ -302582,7 +302582,7 @@ var objectInfo_POS_joker_DOT_repl__21_17__21_46 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_POS_joker_DOT_repl__20_11__21_47_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1459006865,
 			name: &s_forms,
@@ -304276,14 +304276,14 @@ var objectInfo_POS_joker_DOT_repl__44_23__44_28 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_repl__44_22__44_29_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_nspace,
 		},
 	},
 }
 var arrayVector_NUM_384 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_repl__44_22__44_29_NUM_1,
 	},
 }
@@ -304291,7 +304291,7 @@ var vectorSeq_NUM_382 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_384,
 }
 var arrayMap_NUM_1275 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -304657,7 +304657,7 @@ var objectInfo_POS_joker_DOT_repl__49_69__49_72 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_repl__49_26__49_73_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_forms,
 		},
@@ -304700,7 +304700,7 @@ var objectInfo_POS_joker_DOT_repl__50_24__50_24 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_POS_joker_DOT_repl__47_19__50_25_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_n,
 		},
@@ -304730,12 +304730,12 @@ var arrayMap_POS_joker_DOT_repl__47_19__50_25_NUM_1 ArrayMap = ArrayMap{
 	},
 }
 var arrayVector_POS_joker_DOT_repl__47_18__50_26_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayMap_POS_joker_DOT_repl__47_19__50_25_NUM_1,
 	},
 }
 var arrayVector_NUM_385 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_repl__47_18__50_26_NUM_1,
 	},
 }
@@ -304743,7 +304743,7 @@ var vectorSeq_NUM_383 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_385,
 }
 var arrayMap_NUM_1276 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -306575,14 +306575,14 @@ var objectInfo_POS_joker_DOT_repl__39_21__39_31 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_repl__39_20__39_32_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name_DASH_symbol,
 		},
 	},
 }
 var arrayVector_NUM_386 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_repl__39_20__39_32_NUM_1,
 	},
 }
@@ -306590,7 +306590,7 @@ var vectorSeq_NUM_384 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_386,
 }
 var arrayMap_NUM_1277 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -307371,7 +307371,7 @@ var ns_joker_DOT_repl Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_1278 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
@@ -307432,14 +307432,14 @@ var objectInfo_POS_joker_DOT_walk__100_4__100_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_walk__100_3__100_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_m,
 		},
 	},
 }
 var arrayVector_NUM_387 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_walk__100_3__100_5_NUM_1,
 	},
 }
@@ -307474,7 +307474,7 @@ var objectInfo_POS_joker_DOT_walk__99_11__99_15 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_1279 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -307896,7 +307896,7 @@ var objectInfo_POS_joker_DOT_walk__61_6__61_9 coretypes.ObjectInfo = coretypes.O
 	},
 }
 var arrayVector_POS_joker_DOT_walk__61_3__61_10_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_f,
 		},
@@ -307906,7 +307906,7 @@ var arrayVector_POS_joker_DOT_walk__61_3__61_10_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_388 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_walk__61_3__61_10_NUM_1,
 	},
 }
@@ -307941,7 +307941,7 @@ var objectInfo_POS_joker_DOT_walk__60_11__60_15 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_1280 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -308051,7 +308051,7 @@ var objectInfo_POS_joker_DOT_walk__43_16__43_19 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_walk__43_3__43_20_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_inner,
 		},
@@ -308064,7 +308064,7 @@ var arrayVector_POS_joker_DOT_walk__43_3__43_20_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_389 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_walk__43_3__43_20_NUM_1,
 	},
 }
@@ -308099,7 +308099,7 @@ var objectInfo_POS_joker_DOT_walk__42_11__42_15 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_1281 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -309225,14 +309225,14 @@ var objectInfo_POS_joker_DOT_walk__132_4__132_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_walk__132_3__132_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_form,
 		},
 	},
 }
 var arrayVector_NUM_390 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_walk__132_3__132_8_NUM_1,
 	},
 }
@@ -309267,7 +309267,7 @@ var objectInfo_POS_joker_DOT_walk__131_11__131_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1282 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -309368,7 +309368,7 @@ var objectInfo_POS_joker_DOT_walk__67_6__67_9 coretypes.ObjectInfo = coretypes.O
 	},
 }
 var arrayVector_POS_joker_DOT_walk__67_3__67_10_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_f,
 		},
@@ -309378,7 +309378,7 @@ var arrayVector_POS_joker_DOT_walk__67_3__67_10_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_391 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_walk__67_3__67_10_NUM_1,
 	},
 }
@@ -309413,7 +309413,7 @@ var objectInfo_POS_joker_DOT_walk__66_11__66_15 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_1283 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -309892,14 +309892,14 @@ var objectInfo_POS_joker_DOT_walk__87_4__87_7 coretypes.ObjectInfo = coretypes.O
 	},
 }
 var arrayVector_POS_joker_DOT_walk__87_3__87_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_form,
 		},
 	},
 }
 var arrayVector_NUM_392 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_walk__87_3__87_8_NUM_1,
 	},
 }
@@ -309934,7 +309934,7 @@ var objectInfo_POS_joker_DOT_walk__86_11__86_15 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_1284 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -310251,7 +310251,7 @@ var objectInfo_POS_joker_DOT_walk__126_9__126_12 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_walk__126_3__126_13_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_smap,
 		},
@@ -310261,7 +310261,7 @@ var arrayVector_POS_joker_DOT_walk__126_3__126_13_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_393 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_walk__126_3__126_13_NUM_1,
 	},
 }
@@ -310296,7 +310296,7 @@ var objectInfo_POS_joker_DOT_walk__125_11__125_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1285 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -310625,14 +310625,14 @@ var objectInfo_POS_joker_DOT_walk__94_4__94_7 coretypes.ObjectInfo = coretypes.O
 	},
 }
 var arrayVector_POS_joker_DOT_walk__94_3__94_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_form,
 		},
 	},
 }
 var arrayVector_NUM_394 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_walk__94_3__94_8_NUM_1,
 	},
 }
@@ -310667,7 +310667,7 @@ var objectInfo_POS_joker_DOT_walk__93_11__93_15 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_1286 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -310984,7 +310984,7 @@ var objectInfo_POS_joker_DOT_walk__118_9__118_12 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_walk__118_3__118_13_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_smap,
 		},
@@ -310994,7 +310994,7 @@ var arrayVector_POS_joker_DOT_walk__118_3__118_13_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_395 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_walk__118_3__118_13_NUM_1,
 	},
 }
@@ -311029,7 +311029,7 @@ var objectInfo_POS_joker_DOT_walk__117_11__117_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1287 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -311357,14 +311357,14 @@ var objectInfo_POS_joker_DOT_walk__108_4__108_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_walk__108_3__108_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_m,
 		},
 	},
 }
 var arrayVector_NUM_396 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_walk__108_3__108_5_NUM_1,
 	},
 }
@@ -311399,7 +311399,7 @@ var objectInfo_POS_joker_DOT_walk__107_11__107_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1288 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -312497,7 +312497,7 @@ var ns_joker_DOT_walk Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_1289 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -312576,7 +312576,7 @@ var objectInfo_POS_joker_DOT_template__42_14__42_19 coretypes.ObjectInfo = coret
 	},
 }
 var arrayVector_POS_joker_DOT_template__42_3__42_20_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_argv,
 		},
@@ -312589,7 +312589,7 @@ var arrayVector_POS_joker_DOT_template__42_3__42_20_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_397 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_template__42_3__42_20_NUM_1,
 	},
 }
@@ -312624,7 +312624,7 @@ var objectInfo_POS_joker_DOT_template__41_11__41_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1290 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -313397,7 +313397,7 @@ var vector_NUM_90 Vector = Vector{
 	},
 }
 var arrayVector_NUM_398 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_90,
 	},
 }
@@ -314290,7 +314290,7 @@ var ns_joker_DOT_template Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_1291 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
@@ -314387,7 +314387,7 @@ var objectInfo_POS_joker_DOT_test__265_12__265_16 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1292 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -314517,7 +314517,7 @@ var objectInfo_POS_joker_DOT_test__266_64__266_64 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1293 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 415146070,
 			name: &s_test,
@@ -314730,7 +314730,7 @@ var objectInfo_POS_joker_DOT_test__238_11__238_18 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1294 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -315249,7 +315249,7 @@ var objectInfo_POS_joker_DOT_test__278_7__278_14 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1295 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -315394,7 +315394,7 @@ var objectInfo_POS_joker_DOT_test__273_7__273_14 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1296 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -315550,7 +315550,7 @@ var objectInfo_POS_joker_DOT_test__268_7__268_14 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1297 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -315707,7 +315707,7 @@ var objectInfo_POS_joker_DOT_test__659_8__659_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_test__659_3__659_12_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_key,
 		},
@@ -315717,7 +315717,7 @@ var arrayVector_POS_joker_DOT_test__659_3__659_12_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_399 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__659_3__659_12_NUM_1,
 	},
 }
@@ -316067,7 +316067,7 @@ var vector_NUM_91 Vector = Vector{
 	},
 }
 var arrayVector_NUM_400 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_91,
 	},
 }
@@ -317126,7 +317126,7 @@ var objectInfo_POS_joker_DOT_test__449_8__449_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_test__449_3__449_12_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_msg,
 		},
@@ -317136,7 +317136,7 @@ var arrayVector_POS_joker_DOT_test__449_3__449_12_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_401 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__449_3__449_12_NUM_1,
 	},
 }
@@ -317171,7 +317171,7 @@ var objectInfo_POS_joker_DOT_test__448_11__448_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1298 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -318547,7 +318547,7 @@ var objectInfo_POS_joker_DOT_test__467_3__467_58 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1299 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -318866,12 +318866,12 @@ var fnExpr_POS_joker_DOT_test_469_3__473_22_NUM_1 FnExpr = FnExpr{
 	},
 }
 var localEnv_NUM_19 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.test: &var_NAME_assert_DASH_expr_POS_joker_DOT_test_466_1__473_23 */
 	},
 }
 var localEnv_NUM_18 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.test: &fn_EMPTY_POS_joker_DOT_core_4340_7__4350_31_NUM_1 */
 	},
 	frame:  1,
@@ -319315,14 +319315,14 @@ var objectInfo_POS_joker_DOT_test__418_4__418_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__418_3__418_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_x,
 		},
 	},
 }
 var arrayVector_NUM_402 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__418_3__418_5_NUM_1,
 	},
 }
@@ -319357,7 +319357,7 @@ var objectInfo_POS_joker_DOT_test__417_11__417_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1302 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -319557,14 +319557,14 @@ var objectInfo_POS_joker_DOT_test__409_4__409_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__409_3__409_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_v,
 		},
 	},
 }
 var arrayVector_NUM_403 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__409_3__409_5_NUM_1,
 	},
 }
@@ -319599,7 +319599,7 @@ var objectInfo_POS_joker_DOT_test__408_11__408_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1303 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -320419,7 +320419,7 @@ var objectInfo_POS_joker_DOT_test__433_8__433_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_test__433_3__433_12_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_msg,
 		},
@@ -320429,7 +320429,7 @@ var arrayVector_POS_joker_DOT_test__433_3__433_12_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_404 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__433_3__433_12_NUM_1,
 	},
 }
@@ -320464,7 +320464,7 @@ var objectInfo_POS_joker_DOT_test__432_11__432_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1304 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -328355,7 +328355,7 @@ var fn_EMPTY_POS_joker_DOT_test_510_1__527_18_NUM_1 Fn = Fn{
 	fnExpr: &fnExpr_POS_joker_DOT_test_510_1__527_18_NUM_1,
 }
 var arrayMap_NUM_1301 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3368889618,
 			name: &s_always_DASH_fail,
@@ -328384,7 +328384,7 @@ var atom_NUM_1 Atom = Atom{
 	value: &arrayMap_NUM_1301,
 }
 var arrayMap_NUM_1300 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2440160063,
 			name: &s_dispatch_DASH_fn,
@@ -328406,7 +328406,7 @@ var arrayMap_NUM_1300 ArrayMap = ArrayMap{
 	},
 }
 var localEnv_NUM_21 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		coretypes.String{
 			S: "assert-expr",
 		},
@@ -328419,7 +328419,7 @@ var localEnv_NUM_21 LocalEnv = LocalEnv{
 	},
 }
 var localEnv_NUM_20 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		&atom_NUM_1,
 	},
 	frame:  1,
@@ -328508,7 +328508,7 @@ var objectInfo_POS_joker_DOT_test__685_7__685_8 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__685_3__685_9_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_f1,
 		},
@@ -328518,7 +328518,7 @@ var arrayVector_POS_joker_DOT_test__685_3__685_9_NUM_1 ArrayVector = ArrayVector
 	},
 }
 var arrayVector_NUM_405 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__685_3__685_9_NUM_1,
 	},
 }
@@ -328553,7 +328553,7 @@ var objectInfo_POS_joker_DOT_test__684_11__684_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1305 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -328848,14 +328848,14 @@ var objectInfo_POS_joker_DOT_test__678_4__678_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__678_3__678_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_f,
 		},
 	},
 }
 var arrayVector_NUM_406 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__678_3__678_5_NUM_1,
 	},
 }
@@ -329138,7 +329138,7 @@ var vector_NUM_92 Vector = Vector{
 	},
 }
 var arrayVector_NUM_407 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_92,
 	},
 }
@@ -330008,7 +330008,7 @@ var vector_NUM_93 Vector = Vector{
 	},
 }
 var arrayVector_NUM_408 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_93,
 	},
 }
@@ -330846,14 +330846,14 @@ var objectInfo_POS_joker_DOT_test__346_4__346_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__346_3__346_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_m,
 		},
 	},
 }
 var arrayVector_NUM_409 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__346_3__346_5_NUM_1,
 	},
 }
@@ -330888,7 +330888,7 @@ var objectInfo_POS_joker_DOT_test__345_11__345_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1306 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -331016,7 +331016,7 @@ var objectInfo_POS_joker_DOT_test__329_20__329_24 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1307 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -331742,14 +331742,14 @@ var objectInfo_POS_joker_DOT_test__316_4__316_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__316_3__316_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
 	},
 }
 var arrayVector_NUM_410 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__316_3__316_8_NUM_1,
 	},
 }
@@ -331784,7 +331784,7 @@ var objectInfo_POS_joker_DOT_test__315_11__315_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1309 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -332200,14 +332200,14 @@ var objectInfo_POS_joker_DOT_test__297_4__297_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__297_3__297_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_m,
 		},
 	},
 }
 var arrayVector_NUM_411 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__297_3__297_5_NUM_1,
 	},
 }
@@ -332242,7 +332242,7 @@ var objectInfo_POS_joker_DOT_test__296_11__296_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1310 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -332941,7 +332941,7 @@ var objectInfo_POS_joker_DOT_test__309_3__309_4 coretypes.ObjectInfo = coretypes
 }
 var arrayVector_POS_joker_DOT_test__309_3__309_4_NUM_1 ArrayVector = ArrayVector{}
 var arrayVector_NUM_412 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__309_3__309_4_NUM_1,
 	},
 }
@@ -332976,7 +332976,7 @@ var objectInfo_POS_joker_DOT_test__308_11__308_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1311 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -335270,7 +335270,7 @@ var atom_NUM_2 Atom = Atom{
 	value: &hashMap_NUM_101,
 }
 var arrayMap_NUM_1308 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2440160063,
 			name: &s_dispatch_DASH_fn,
@@ -335295,7 +335295,7 @@ var arrayMap_NUM_1308 ArrayMap = ArrayMap{
 	},
 }
 var localEnv_NUM_23 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		coretypes.String{
 			S: "report",
 		},
@@ -335311,7 +335311,7 @@ var localEnv_NUM_23 LocalEnv = LocalEnv{
 	},
 }
 var localEnv_NUM_22 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		&atom_NUM_2,
 	},
 	frame:  1,
@@ -335592,7 +335592,7 @@ var vector_NUM_95 Vector = Vector{
 	},
 }
 var arrayVector_NUM_413 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_94,
 		&vector_NUM_95,
 	},
@@ -336051,14 +336051,14 @@ var objectInfo_POS_joker_DOT_test__692_4__692_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_test__692_3__692_12_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_fixtures,
 		},
 	},
 }
 var arrayVector_NUM_414 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__692_3__692_12_NUM_1,
 	},
 }
@@ -336093,7 +336093,7 @@ var objectInfo_POS_joker_DOT_test__691_11__691_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1312 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -336300,14 +336300,14 @@ var objectInfo_POS_joker_DOT_test__779_5__779_6 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__779_4__779_7_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_re,
 		},
 	},
 }
 var arrayVector_NUM_415 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__778_4__778_5_NUM_1,
 		&arrayVector_POS_joker_DOT_test__779_4__779_7_NUM_1,
 	},
@@ -336343,7 +336343,7 @@ var objectInfo_POS_joker_DOT_test__777_11__777_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1313 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -336464,7 +336464,7 @@ var objectInfo_POS_joker_DOT_test__766_7__766_16 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_test__766_4__766_17_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -336474,7 +336474,7 @@ var arrayVector_POS_joker_DOT_test__766_4__766_17_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_416 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__765_4__765_5_NUM_1,
 		&arrayVector_POS_joker_DOT_test__766_4__766_17_NUM_1,
 	},
@@ -336510,7 +336510,7 @@ var objectInfo_POS_joker_DOT_test__764_11__764_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1314 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -336694,14 +336694,14 @@ var objectInfo_POS_joker_DOT_test__744_4__744_5 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__744_3__744_6_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
 	},
 }
 var arrayVector_NUM_417 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__744_3__744_6_NUM_1,
 	},
 }
@@ -336736,7 +336736,7 @@ var objectInfo_POS_joker_DOT_test__743_11__743_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1315 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -337309,14 +337309,14 @@ var objectInfo_POS_joker_DOT_test__732_4__732_5 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__732_3__732_6_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ns,
 		},
 	},
 }
 var arrayVector_NUM_418 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__732_3__732_6_NUM_1,
 	},
 }
@@ -337351,7 +337351,7 @@ var objectInfo_POS_joker_DOT_test__731_11__731_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1316 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -337443,14 +337443,14 @@ var objectInfo_POS_joker_DOT_test__719_4__719_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__719_3__719_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_vars,
 		},
 	},
 }
 var arrayVector_NUM_419 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__719_3__719_8_NUM_1,
 	},
 }
@@ -337485,7 +337485,7 @@ var objectInfo_POS_joker_DOT_test__718_11__718_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1317 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -338231,14 +338231,14 @@ var objectInfo_POS_joker_DOT_test__704_4__704_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_test__704_3__704_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_v,
 		},
 	},
 }
 var arrayVector_NUM_420 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__704_3__704_5_NUM_1,
 	},
 }
@@ -340720,7 +340720,7 @@ var vector_NUM_96 Vector = Vector{
 	},
 }
 var arrayVector_NUM_421 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_96,
 	},
 }
@@ -341316,14 +341316,14 @@ var objectInfo_POS_joker_DOT_test__335_4__335_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_test__335_3__335_14_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_stacktrace,
 		},
 	},
 }
 var arrayVector_NUM_422 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__335_3__335_14_NUM_1,
 	},
 }
@@ -341331,7 +341331,7 @@ var vectorSeq_NUM_420 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_422,
 }
 var arrayMap_NUM_1318 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -341559,14 +341559,14 @@ var objectInfo_POS_joker_DOT_test__785_4__785_10 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_test__785_3__785_11_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_summary,
 		},
 	},
 }
 var arrayVector_NUM_423 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_test__785_3__785_11_NUM_1,
 	},
 }
@@ -341601,7 +341601,7 @@ var objectInfo_POS_joker_DOT_test__784_11__784_15 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1319 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -342054,7 +342054,7 @@ var vector_NUM_97 Vector = Vector{
 	},
 }
 var arrayVector_NUM_424 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_97,
 	},
 }
@@ -342610,7 +342610,7 @@ var vector_NUM_98 Vector = Vector{
 	},
 }
 var arrayVector_NUM_425 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_98,
 	},
 }
@@ -343515,7 +343515,7 @@ var objectInfo_POS_joker_DOT_test__663_3__665_70 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1320 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -343631,12 +343631,12 @@ var fnExpr_POS_joker_DOT_test_667_3__667_41_NUM_1 FnExpr = FnExpr{
 	variadic: &fnArityExpr_POS_joker_DOT_test__667_3__667_41_NUM_1,
 }
 var localEnv_NUM_25 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.test: &var_NAME_use_DASH_fixtures_POS_joker_DOT_test_662_1__667_42 */
 	},
 }
 var localEnv_NUM_24 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		nil, /* joker.test: &fn_EMPTY_POS_joker_DOT_core_4340_7__4350_31_NUM_3 */
 	},
 	frame:  1,
@@ -343895,7 +343895,7 @@ var fn_EMPTY_POS_joker_DOT_test_672_1__673_37_NUM_1 Fn = Fn{
 	fnExpr: &fnExpr_POS_joker_DOT_test_672_1__673_37_NUM_1,
 }
 var arrayMap_NUM_1322 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1955102643,
 			name: &s_each,
@@ -343912,7 +343912,7 @@ var atom_NUM_3 Atom = Atom{
 	value: &arrayMap_NUM_1322,
 }
 var arrayMap_NUM_1321 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2440160063,
 			name: &s_dispatch_DASH_fn,
@@ -343934,7 +343934,7 @@ var arrayMap_NUM_1321 ArrayMap = ArrayMap{
 	},
 }
 var localEnv_NUM_27 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		coretypes.String{
 			S: "use-fixtures",
 		},
@@ -343947,7 +343947,7 @@ var localEnv_NUM_27 LocalEnv = LocalEnv{
 	},
 }
 var localEnv_NUM_26 LocalEnv = LocalEnv{
-	bindings: []Object{
+	bindings: []coretypes.Object{
 		&atom_NUM_3,
 	},
 	frame:  1,
@@ -344104,7 +344104,7 @@ var vector_NUM_99 Vector = Vector{
 	},
 }
 var arrayVector_NUM_426 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_99,
 	},
 }
@@ -344766,7 +344766,7 @@ var vector_NUM_100 Vector = Vector{
 	},
 }
 var arrayVector_NUM_427 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_100,
 	},
 }
@@ -345577,7 +345577,7 @@ var ns_joker_DOT_test Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_1323 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -345647,7 +345647,7 @@ var objectInfo_POS_joker_DOT_set__17_6__17_9 coretypes.ObjectInfo = coretypes.Ob
 	},
 }
 var arrayVector_POS_joker_DOT_set__17_3__17_10_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_k,
 		},
@@ -345657,7 +345657,7 @@ var arrayVector_POS_joker_DOT_set__17_3__17_10_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_428 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__17_3__17_10_NUM_1,
 	},
 }
@@ -345674,7 +345674,7 @@ var objectInfo_POS_joker_DOT_set__15_3__16_32 coretypes.ObjectInfo = coretypes.O
 	},
 }
 var arrayMap_NUM_1324 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -346065,7 +346065,7 @@ var objectInfo_POS_joker_DOT_set__53_5__53_6 coretypes.ObjectInfo = coretypes.Ob
 	},
 }
 var arrayVector_POS_joker_DOT_set__53_4__53_7_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s1,
 		},
@@ -346099,7 +346099,7 @@ var objectInfo_POS_joker_DOT_set__54_8__54_9 coretypes.ObjectInfo = coretypes.Ob
 	},
 }
 var arrayVector_POS_joker_DOT_set__54_4__54_10_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s1,
 		},
@@ -346154,7 +346154,7 @@ var objectInfo_POS_joker_DOT_set__62_13__62_16 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayVector_POS_joker_DOT_set__62_4__62_17_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s1,
 		},
@@ -346170,7 +346170,7 @@ var arrayVector_POS_joker_DOT_set__62_4__62_17_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_429 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__53_4__53_7_NUM_1,
 		&arrayVector_POS_joker_DOT_set__54_4__54_10_NUM_1,
 		&arrayVector_POS_joker_DOT_set__62_4__62_17_NUM_1,
@@ -346207,7 +346207,7 @@ var objectInfo_POS_joker_DOT_set__52_11__52_15 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayMap_NUM_1325 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -346910,7 +346910,7 @@ var objectInfo_POS_joker_DOT_set__100_9__100_10 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_set__100_3__100_11_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_xrel,
 		},
@@ -346920,7 +346920,7 @@ var arrayVector_POS_joker_DOT_set__100_3__100_11_NUM_1 ArrayVector = ArrayVector
 	},
 }
 var arrayVector_NUM_430 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__100_3__100_11_NUM_1,
 	},
 }
@@ -346955,7 +346955,7 @@ var objectInfo_POS_joker_DOT_set__99_11__99_15 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayMap_NUM_1326 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -347431,7 +347431,7 @@ var objectInfo_POS_joker_DOT_set__37_5__37_6 coretypes.ObjectInfo = coretypes.Ob
 	},
 }
 var arrayVector_POS_joker_DOT_set__37_4__37_7_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s1,
 		},
@@ -347465,7 +347465,7 @@ var objectInfo_POS_joker_DOT_set__38_8__38_9 coretypes.ObjectInfo = coretypes.Ob
 	},
 }
 var arrayVector_POS_joker_DOT_set__38_4__38_10_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s1,
 		},
@@ -347520,7 +347520,7 @@ var objectInfo_POS_joker_DOT_set__46_13__46_16 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayVector_POS_joker_DOT_set__46_4__46_17_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s1,
 		},
@@ -347536,7 +347536,7 @@ var arrayVector_POS_joker_DOT_set__46_4__46_17_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_431 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__37_4__37_7_NUM_1,
 		&arrayVector_POS_joker_DOT_set__38_4__38_10_NUM_1,
 		&arrayVector_POS_joker_DOT_set__46_4__46_17_NUM_1,
@@ -347573,7 +347573,7 @@ var objectInfo_POS_joker_DOT_set__36_11__36_15 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayMap_NUM_1327 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -348472,7 +348472,7 @@ var objectInfo_POS_joker_DOT_set__117_10__117_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_set__117_4__117_14_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_xrel,
 		},
@@ -348518,7 +348518,7 @@ var objectInfo_POS_joker_DOT_set__131_15__131_16 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_set__131_4__131_17_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_xrel,
 		},
@@ -348531,7 +348531,7 @@ var arrayVector_POS_joker_DOT_set__131_4__131_17_NUM_1 ArrayVector = ArrayVector
 	},
 }
 var arrayVector_NUM_432 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__117_4__117_14_NUM_1,
 		&arrayVector_POS_joker_DOT_set__131_4__131_17_NUM_1,
 	},
@@ -348567,7 +348567,7 @@ var objectInfo_POS_joker_DOT_set__116_11__116_15 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1328 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -349967,14 +349967,14 @@ var objectInfo_POS_joker_DOT_set__110_4__110_4 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayVector_POS_joker_DOT_set__110_3__110_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_m,
 		},
 	},
 }
 var arrayVector_NUM_433 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__110_3__110_5_NUM_1,
 	},
 }
@@ -350009,7 +350009,7 @@ var objectInfo_POS_joker_DOT_set__109_11__109_15 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1329 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -350818,7 +350818,7 @@ var objectInfo_POS_joker_DOT_set__82_8__82_11 coretypes.ObjectInfo = coretypes.O
 	},
 }
 var arrayVector_POS_joker_DOT_set__82_3__82_12_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_map,
 		},
@@ -350828,7 +350828,7 @@ var arrayVector_POS_joker_DOT_set__82_3__82_12_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_434 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__82_3__82_12_NUM_1,
 	},
 }
@@ -350863,7 +350863,7 @@ var objectInfo_POS_joker_DOT_set__81_11__81_15 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayMap_NUM_1330 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -352026,7 +352026,7 @@ var objectInfo_POS_joker_DOT_set__76_9__76_10 coretypes.ObjectInfo = coretypes.O
 	},
 }
 var arrayVector_POS_joker_DOT_set__76_3__76_11_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_xrel,
 		},
@@ -352036,7 +352036,7 @@ var arrayVector_POS_joker_DOT_set__76_3__76_11_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_435 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__76_3__76_11_NUM_1,
 	},
 }
@@ -352071,7 +352071,7 @@ var objectInfo_POS_joker_DOT_set__75_11__75_15 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayMap_NUM_1331 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -352424,7 +352424,7 @@ var objectInfo_POS_joker_DOT_set__93_9__93_12 coretypes.ObjectInfo = coretypes.O
 	},
 }
 var arrayVector_POS_joker_DOT_set__93_3__93_13_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_xrel,
 		},
@@ -352434,7 +352434,7 @@ var arrayVector_POS_joker_DOT_set__93_3__93_13_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_436 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__93_3__93_13_NUM_1,
 	},
 }
@@ -352469,7 +352469,7 @@ var objectInfo_POS_joker_DOT_set__92_11__92_15 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayMap_NUM_1332 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -352822,7 +352822,7 @@ var objectInfo_POS_joker_DOT_set__69_9__69_12 coretypes.ObjectInfo = coretypes.O
 	},
 }
 var arrayVector_POS_joker_DOT_set__69_3__69_13_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_pred,
 		},
@@ -352832,7 +352832,7 @@ var arrayVector_POS_joker_DOT_set__69_3__69_13_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_437 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__69_3__69_13_NUM_1,
 	},
 }
@@ -352867,7 +352867,7 @@ var objectInfo_POS_joker_DOT_set__68_11__68_15 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayMap_NUM_1333 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -353254,7 +353254,7 @@ var objectInfo_POS_joker_DOT_set__147_9__147_12 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_set__147_3__147_13_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_set1,
 		},
@@ -353264,7 +353264,7 @@ var arrayVector_POS_joker_DOT_set__147_3__147_13_NUM_1 ArrayVector = ArrayVector
 	},
 }
 var arrayVector_NUM_438 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__147_3__147_13_NUM_1,
 	},
 }
@@ -353748,7 +353748,7 @@ var objectInfo_POS_joker_DOT_set__155_9__155_12 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_set__155_3__155_13_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_set1,
 		},
@@ -353758,7 +353758,7 @@ var arrayVector_POS_joker_DOT_set__155_3__155_13_NUM_1 ArrayVector = ArrayVector
 	},
 }
 var arrayVector_NUM_439 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__155_3__155_13_NUM_1,
 	},
 }
@@ -354224,7 +354224,7 @@ var objectInfo_POS_joker_DOT_set__25_5__25_6 coretypes.ObjectInfo = coretypes.Ob
 	},
 }
 var arrayVector_POS_joker_DOT_set__25_4__25_7_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s1,
 		},
@@ -354258,7 +354258,7 @@ var objectInfo_POS_joker_DOT_set__26_8__26_9 coretypes.ObjectInfo = coretypes.Ob
 	},
 }
 var arrayVector_POS_joker_DOT_set__26_4__26_10_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s1,
 		},
@@ -354313,7 +354313,7 @@ var objectInfo_POS_joker_DOT_set__30_13__30_16 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayVector_POS_joker_DOT_set__30_4__30_17_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_s1,
 		},
@@ -354329,7 +354329,7 @@ var arrayVector_POS_joker_DOT_set__30_4__30_17_NUM_1 ArrayVector = ArrayVector{
 	},
 }
 var arrayVector_NUM_440 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_set__24_4__24_5_NUM_1,
 		&arrayVector_POS_joker_DOT_set__25_4__25_7_NUM_1,
 		&arrayVector_POS_joker_DOT_set__26_4__26_10_NUM_1,
@@ -354367,7 +354367,7 @@ var objectInfo_POS_joker_DOT_set__23_11__23_15 coretypes.ObjectInfo = coretypes.
 	},
 }
 var arrayMap_NUM_1334 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -355456,7 +355456,7 @@ var ns_joker_DOT_set Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_1335 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
@@ -356374,7 +356374,7 @@ var list_POS_joker_DOT_tools_DOT_cli__164_11__165_54_NUM_1 List = List{
 	rest: &list_NUM_96,
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__159_10__165_55_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&list_POS_joker_DOT_tools_DOT_cli__159_11__159_24_NUM_1,
 		&list_POS_joker_DOT_tools_DOT_cli__160_11__160_52_NUM_1,
 		&list_POS_joker_DOT_tools_DOT_cli__161_11__161_55_NUM_1,
@@ -356384,7 +356384,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__159_10__165_55_NUM_1 ArrayVector = 
 	},
 }
 var arrayMap_POS_joker_DOT_tools_DOT_cli__159_3__165_56_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 3143359104,
 			name: &s_post,
@@ -356405,14 +356405,14 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__158_3__158_16_NUM_1 ArrayVector = A
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_POS_joker_DOT_tools_DOT_cli__159_3__165_56_NUM_1,
 	},
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_option_DASH_specs,
 		},
 	},
 }
 var arrayVector_NUM_441 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__158_3__158_16_NUM_1,
 	},
 }
@@ -356429,7 +356429,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__118_3__157_49 coretypes.ObjectInfo =
 	},
 }
 var arrayMap_NUM_1336 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -356480,7 +356480,7 @@ var arrayMap_NUM_1336 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "Map a sequence of option specification vectors to a sequence of:\n\n  {:id           Keyword  ; :server\n   :short-opt    String   ; \"-s\"\n   :long-opt     String   ; \"--server\"\n   :required     String   ; \"HOSTNAME\"\n   :desc         String   ; \"Remote server\"\n   :default      Object   ; #<Inet4Address example.com/93.184.216.119>\n   :default-desc String   ; \"example.com\"\n   :default-fn   IFn      ; (constantly 0)\n   :parse-fn     IFn      ; #(InetAddress/getByName %)\n   :assoc-fn     IFn      ; assoc\n   :update-fn    IFn      ; identity\n   :validate-fn  [IFn]    ; [#(instance? Inet4Address %)\n                          ;  #(not (.isMulticastAddress %)]\n   :validate-msg [String] ; [\"Must be an IPv4 host\"\n                          ;  \"Must not be a multicast address\"]\n   :missing      String   ; \"server must be specified\"\n   }\n\n  :id defaults to the keywordized name of long-opt without leading dashes, but\n  may be overridden in the option spec.\n\n  The option spec entry `:validate [fn msg ...]` desugars into the two vector\n  entries :validate-fn and :validate-msg. Multiple pairs of validation\n  functions and error messages may be provided.\n\n  A :default(-fn) entry will not be included in the compiled spec unless\n  specified. The :default is applied before options are parsed, the :default-fn\n  is applied after options are parsed (only where an option was not specified,\n  and is passed the whole options map as its single argument, so defaults can\n  be computed from other options if needed).\n\n  An option spec may also be passed as a map containing the entries above,\n  in which case that subset of the map is transferred directly to the result\n  vector.\n\n  An assertion error is thrown if any :id values are unset, or if there exist\n  any duplicate :id, :short-opt, or :long-opt values, or if both :assoc-fn and\n  :update-fn are provided for any single option.",
+			S: "Map a sequence of option specification vectors to a sequence of:\n\n  {:id           Keyword  ; :server\n   :short-opt    String   ; \"-s\"\n   :long-opt     String   ; \"--server\"\n   :required     String   ; \"HOSTNAME\"\n   :desc         String   ; \"Remote server\"\n   :default      coretypes.Object   ; #<Inet4Address example.com/93.184.216.119>\n   :default-desc String   ; \"example.com\"\n   :default-fn   IFn      ; (constantly 0)\n   :parse-fn     IFn      ; #(InetAddress/getByName %)\n   :assoc-fn     IFn      ; assoc\n   :update-fn    IFn      ; identity\n   :validate-fn  [IFn]    ; [#(instance? Inet4Address %)\n                          ;  #(not (.isMulticastAddress %)]\n   :validate-msg [String] ; [\"Must be an IPv4 host\"\n                          ;  \"Must not be a multicast address\"]\n   :missing      String   ; \"server must be specified\"\n   }\n\n  :id defaults to the keywordized name of long-opt without leading dashes, but\n  may be overridden in the option spec.\n\n  The option spec entry `:validate [fn msg ...]` desugars into the two vector\n  entries :validate-fn and :validate-msg. Multiple pairs of validation\n  functions and error messages may be provided.\n\n  A :default(-fn) entry will not be included in the compiled spec unless\n  specified. The :default is applied before options are parsed, the :default-fn\n  is applied after options are parsed (only where an option was not specified,\n  and is passed the whole options map as its single argument, so defaults can\n  be computed from other options if needed).\n\n  An option spec may also be passed as a map containing the entries above,\n  in which case that subset of the map is transferred directly to the result\n  vector.\n\n  An assertion error is thrown if any :id values are unset, or if there exist\n  any duplicate :id, :short-opt, or :long-opt values, or if both :assoc-fn and\n  :update-fn are provided for any single option.",
 		},
 	},
 }
@@ -356549,7 +356549,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__110_22__110_24 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__110_17__110_25_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_map,
 		},
@@ -356559,7 +356559,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__110_17__110_25_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_442 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__110_17__110_25_NUM_1,
 	},
 }
@@ -356567,7 +356567,7 @@ var vectorSeq_NUM_440 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_442,
 }
 var arrayMap_NUM_1337 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -357116,14 +357116,14 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__73_4__73_6 coretypes.ObjectInfo = co
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__73_3__73_7_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_map,
 		},
 	},
 }
 var arrayVector_NUM_443 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__73_3__73_7_NUM_1,
 	},
 }
@@ -357140,7 +357140,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__71_3__72_32 coretypes.ObjectInfo = c
 	},
 }
 var arrayMap_NUM_1338 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -357297,7 +357297,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__66_17__66_20 coretypes.ObjectInfo = 
 	},
 }
 var arrayMap_NUM_1339 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -357467,7 +357467,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__68_62__68_69 coretypes.ObjectInfo = 
 	},
 }
 var arrayVector_NUM_444 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2157710323,
 			name: &s_id,
@@ -358244,14 +358244,14 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__83_22__83_25 coretypes.ObjectInfo = 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__83_21__83_26_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_spec,
 		},
 	},
 }
 var arrayVector_NUM_445 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__83_21__83_26_NUM_1,
 	},
 }
@@ -358259,7 +358259,7 @@ var vectorSeq_NUM_442 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_445,
 }
 var arrayMap_NUM_1340 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -360647,14 +360647,14 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__105_20__105_23 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__105_19__105_24_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_coll,
 		},
 	},
 }
 var arrayVector_NUM_446 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__105_19__105_24_NUM_1,
 	},
 }
@@ -360662,7 +360662,7 @@ var vectorSeq_NUM_443 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_446,
 }
 var arrayMap_NUM_1341 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -362857,7 +362857,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__174_34__174_44 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__174_27__174_45_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_specs,
 		},
@@ -362867,7 +362867,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__174_27__174_45_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_447 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__174_27__174_45_NUM_1,
 	},
 }
@@ -362875,7 +362875,7 @@ var vectorSeq_NUM_444 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_447,
 }
 var arrayMap_NUM_1342 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -363328,7 +363328,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__190_34__190_36 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__190_18__190_37_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_specs,
 		},
@@ -363341,7 +363341,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__190_18__190_37_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_448 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__190_18__190_37_NUM_1,
 	},
 }
@@ -363349,7 +363349,7 @@ var vectorSeq_NUM_445 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_448,
 }
 var arrayMap_NUM_1343 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -364129,7 +364129,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__335_9__335_13 coretypes.ObjectInfo =
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__335_3__335_14_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_lens,
 		},
@@ -364139,7 +364139,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__335_3__335_14_NUM_1 ArrayVector = A
 	},
 }
 var arrayVector_NUM_449 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__335_3__335_14_NUM_1,
 	},
 }
@@ -364156,7 +364156,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__331_3__334_24 coretypes.ObjectInfo =
 	},
 }
 var arrayMap_NUM_1344 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -364257,14 +364257,14 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__59_4__59_7 coretypes.ObjectInfo = co
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__59_3__59_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_lens,
 		},
 	},
 }
 var arrayVector_NUM_450 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__59_3__59_8_NUM_1,
 	},
 }
@@ -364281,7 +364281,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__57_3__58_59 coretypes.ObjectInfo = c
 	},
 }
 var arrayMap_NUM_1345 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -364984,14 +364984,14 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__368_4__368_15 coretypes.ObjectInfo =
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__368_3__368_16_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_option_DASH_specs,
 		},
 	},
 }
 var arrayVector_NUM_451 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__368_3__368_16_NUM_1,
 	},
 }
@@ -365008,7 +365008,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__365_3__367_58 coretypes.ObjectInfo =
 	},
 }
 var arrayMap_NUM_1346 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -365767,7 +365767,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__309_19__309_22 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__309_3__309_23_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_show_DASH_defaults_Q_,
 		},
@@ -365777,7 +365777,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__309_3__309_23_NUM_1 ArrayVector = A
 	},
 }
 var arrayVector_NUM_452 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__309_3__309_23_NUM_1,
 	},
 }
@@ -365794,7 +365794,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__307_3__308_51 coretypes.ObjectInfo =
 	},
 }
 var arrayMap_NUM_1347 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -367620,14 +367620,14 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__183_4__183_8 coretypes.ObjectInfo = 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__183_3__183_9_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_specs,
 		},
 	},
 }
 var arrayVector_NUM_453 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__183_3__183_9_NUM_1,
 	},
 }
@@ -367644,7 +367644,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__182_3__182_70 coretypes.ObjectInfo =
 	},
 }
 var arrayMap_NUM_1348 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -368098,7 +368098,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__205_36__205_51 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__205_31__205_52_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_opt,
 		},
@@ -368108,7 +368108,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__205_31__205_52_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_454 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__205_31__205_52_NUM_1,
 	},
 }
@@ -368116,7 +368116,7 @@ var vectorSeq_NUM_451 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_454,
 }
 var arrayMap_NUM_1349 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -368241,7 +368241,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__202_19__202_20 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__202_16__202_21_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -368251,7 +368251,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__202_16__202_21_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_455 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__202_16__202_21_NUM_1,
 	},
 }
@@ -368259,7 +368259,7 @@ var vectorSeq_NUM_452 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_455,
 }
 var arrayMap_NUM_1350 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -368600,7 +368600,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__236_24__236_26 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__236_18__236_27_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_spec,
 		},
@@ -368610,7 +368610,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__236_18__236_27_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_456 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__236_18__236_27_NUM_1,
 	},
 }
@@ -368618,7 +368618,7 @@ var vectorSeq_NUM_453 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_456,
 }
 var arrayMap_NUM_1351 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -369092,7 +369092,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__208_32__208_34 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__208_20__208_35_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_opt,
 		},
@@ -369105,7 +369105,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__208_20__208_35_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_457 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__208_20__208_35_NUM_1,
 	},
 }
@@ -369113,7 +369113,7 @@ var vectorSeq_NUM_454 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_457,
 }
 var arrayMap_NUM_1352 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -369409,7 +369409,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__241_31__241_36 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__241_21__241_37_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_spec,
 		},
@@ -369422,7 +369422,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__241_21__241_37_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_458 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__241_21__241_37_NUM_1,
 	},
 }
@@ -369430,7 +369430,7 @@ var vectorSeq_NUM_455 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_458,
 }
 var arrayMap_NUM_1353 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -369978,7 +369978,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__224_36__224_41 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__224_20__224_42_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_value,
 		},
@@ -369994,7 +369994,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__224_20__224_42_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_459 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__224_20__224_42_NUM_1,
 	},
 }
@@ -370002,7 +370002,7 @@ var vectorSeq_NUM_456 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_459,
 }
 var arrayMap_NUM_1354 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -370714,7 +370714,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__215_33__215_38 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__215_17__215_39_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_value,
 		},
@@ -370730,7 +370730,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__215_17__215_39_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_460 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__215_17__215_39_NUM_1,
 	},
 }
@@ -370738,7 +370738,7 @@ var vectorSeq_NUM_457 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_460,
 }
 var arrayMap_NUM_1355 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -371628,7 +371628,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__211_37__211_39 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__211_25__211_40_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_opt,
 		},
@@ -371641,7 +371641,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__211_25__211_40_NUM_1 ArrayVector = 
 	},
 }
 var arrayVector_NUM_461 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__211_25__211_40_NUM_1,
 	},
 }
@@ -371649,7 +371649,7 @@ var vectorSeq_NUM_458 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_461,
 }
 var arrayMap_NUM_1356 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -372853,7 +372853,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__266_19__266_25 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__266_3__266_26_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_specs,
 		},
@@ -372869,7 +372869,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__266_3__266_26_NUM_1 ArrayVector = A
 	},
 }
 var arrayVector_NUM_462 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__266_3__266_26_NUM_1,
 	},
 }
@@ -372886,7 +372886,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__251_3__265_46 coretypes.ObjectInfo =
 	},
 }
 var arrayMap_NUM_1357 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -377333,7 +377333,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__540_24__540_30 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__540_3__540_31_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_args,
 		},
@@ -377349,7 +377349,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__540_3__540_31_NUM_1 ArrayVector = A
 	},
 }
 var arrayVector_NUM_463 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__540_3__540_31_NUM_1,
 	},
 }
@@ -377366,7 +377366,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__380_3__539_3 coretypes.ObjectInfo = 
 	},
 }
 var arrayMap_NUM_1358 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -377807,14 +377807,14 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__339_28__339_32 coretypes.ObjectInfo 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__339_27__339_33_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_specs,
 		},
 	},
 }
 var arrayVector_NUM_464 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__339_27__339_33_NUM_1,
 	},
 }
@@ -377822,7 +377822,7 @@ var vectorSeq_NUM_461 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_464,
 }
 var arrayMap_NUM_1359 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -378494,7 +378494,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__22_24__22_30 coretypes.ObjectInfo = 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__22_3__22_31_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_required_DASH_set,
 		},
@@ -378510,7 +378510,7 @@ var arrayVector_POS_joker_DOT_tools_DOT_cli__22_3__22_31_NUM_1 ArrayVector = Arr
 	},
 }
 var arrayVector_NUM_465 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__22_3__22_31_NUM_1,
 	},
 }
@@ -378527,7 +378527,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__8_3__21_76 coretypes.ObjectInfo = co
 	},
 }
 var arrayMap_NUM_1360 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -382676,14 +382676,14 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__353_4__353_8 coretypes.ObjectInfo = 
 	},
 }
 var arrayVector_POS_joker_DOT_tools_DOT_cli__353_3__353_9_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_specs,
 		},
 	},
 }
 var arrayVector_NUM_466 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_tools_DOT_cli__353_3__353_9_NUM_1,
 	},
 }
@@ -382700,7 +382700,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__348_3__352_71 coretypes.ObjectInfo =
 	},
 }
 var arrayMap_NUM_1361 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -384386,7 +384386,7 @@ var ns_joker_DOT_tools_DOT_cli Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_1362 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -384449,14 +384449,14 @@ var objectInfo_POS_joker_DOT_hiccup__17_4__17_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__17_3__17_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_v,
 		},
 	},
 }
 var arrayVector_NUM_467 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__17_3__17_5_NUM_1,
 	},
 }
@@ -384464,7 +384464,7 @@ var vectorSeq_NUM_464 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_467,
 }
 var arrayMap_NUM_1363 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -384558,14 +384558,14 @@ var objectInfo_POS_joker_DOT_hiccup__11_4__11_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__11_3__11_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_v,
 		},
 	},
 }
 var arrayVector_NUM_468 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__11_3__11_5_NUM_1,
 	},
 }
@@ -384573,7 +384573,7 @@ var vectorSeq_NUM_465 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_468,
 }
 var arrayMap_NUM_1364 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -385301,7 +385301,7 @@ var objectInfo_POS_joker_DOT_hiccup__79_13__79_19 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__79_3__79_20_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_mode,
 		},
@@ -385314,7 +385314,7 @@ var arrayVector_POS_joker_DOT_hiccup__79_3__79_20_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_469 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__79_3__79_20_NUM_1,
 	},
 }
@@ -385322,7 +385322,7 @@ var vectorSeq_NUM_466 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_469,
 }
 var arrayMap_NUM_1365 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -385460,14 +385460,14 @@ var objectInfo_POS_joker_DOT_hiccup__36_4__36_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__36_3__36_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_mode,
 		},
 	},
 }
 var arrayVector_NUM_470 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__36_3__36_8_NUM_1,
 	},
 }
@@ -385475,7 +385475,7 @@ var vectorSeq_NUM_467 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_470,
 }
 var arrayMap_NUM_1366 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -385757,7 +385757,7 @@ var objectInfo_POS_joker_DOT_hiccup__74_3__74_62 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1367 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -385952,7 +385952,7 @@ var objectInfo_POS_joker_DOT_hiccup__76_37__76_41 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayMap_NUM_1368 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		coretypes.String{
 			S: "area",
 		},
@@ -386511,14 +386511,14 @@ var objectInfo_POS_joker_DOT_hiccup__40_4__40_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__40_3__40_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_mode,
 		},
 	},
 }
 var arrayVector_NUM_471 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__40_3__40_8_NUM_1,
 	},
 }
@@ -386526,7 +386526,7 @@ var vectorSeq_NUM_468 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_471,
 }
 var arrayMap_NUM_1369 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -386620,14 +386620,14 @@ var objectInfo_POS_joker_DOT_hiccup__32_4__32_7 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__32_3__32_8_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_mode,
 		},
 	},
 }
 var arrayVector_NUM_472 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__32_3__32_8_NUM_1,
 	},
 }
@@ -386635,7 +386635,7 @@ var vectorSeq_NUM_469 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_472,
 }
 var arrayMap_NUM_1370 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -386998,14 +386998,14 @@ var objectInfo_POS_joker_DOT_hiccup__44_4__44_4 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__44_3__44_5_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_v,
 		},
 	},
 }
 var arrayVector_NUM_473 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__44_3__44_5_NUM_1,
 	},
 }
@@ -387013,7 +387013,7 @@ var vectorSeq_NUM_470 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_473,
 }
 var arrayMap_NUM_1371 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -387214,7 +387214,7 @@ var objectInfo_POS_joker_DOT_hiccup__160_6__160_12 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__160_3__160_13_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s__AMP_,
 		},
@@ -387224,7 +387224,7 @@ var arrayVector_POS_joker_DOT_hiccup__160_3__160_13_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_474 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__160_3__160_13_NUM_1,
 	},
 }
@@ -387259,7 +387259,7 @@ var objectInfo_POS_joker_DOT_hiccup__159_11__159_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1372 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -387807,7 +387807,7 @@ var objectInfo_POS_joker_DOT_hiccup__107_9__107_15 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__107_3__107_16_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_mode,
 		},
@@ -387817,7 +387817,7 @@ var arrayVector_POS_joker_DOT_hiccup__107_3__107_16_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_475 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__107_3__107_16_NUM_1,
 	},
 }
@@ -387825,7 +387825,7 @@ var vectorSeq_NUM_472 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_475,
 }
 var arrayMap_NUM_1373 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -388086,7 +388086,7 @@ var objectInfo_POS_joker_DOT_hiccup__132_9__132_15 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__132_3__132_16_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_mode,
 		},
@@ -388096,7 +388096,7 @@ var arrayVector_POS_joker_DOT_hiccup__132_3__132_16_NUM_1 ArrayVector = ArrayVec
 	},
 }
 var arrayVector_NUM_476 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__132_3__132_16_NUM_1,
 	},
 }
@@ -388104,7 +388104,7 @@ var vectorSeq_NUM_473 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_476,
 }
 var arrayMap_NUM_1374 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -388390,7 +388390,7 @@ var objectInfo_POS_joker_DOT_hiccup__93_11__93_17 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__93_4__93_18_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_tag,
 		},
@@ -388403,12 +388403,12 @@ var arrayVector_POS_joker_DOT_hiccup__93_4__93_18_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__93_3__93_19_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__93_4__93_18_NUM_1,
 	},
 }
 var arrayVector_NUM_477 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__93_3__93_19_NUM_1,
 	},
 }
@@ -388425,7 +388425,7 @@ var objectInfo_POS_joker_DOT_hiccup__92_3__92_69 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1375 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -388888,7 +388888,7 @@ var objectInfo_POS_joker_DOT_hiccup__89_7__89_14 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayMap_NUM_1376 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -389546,7 +389546,7 @@ var objectInfo_POS_joker_DOT_hiccup__83_46__83_50 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__83_42__83_51_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_id,
 		},
@@ -389556,7 +389556,7 @@ var arrayVector_POS_joker_DOT_hiccup__83_42__83_51_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayMap_POS_joker_DOT_hiccup__83_35__83_52_NUM_1 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2483898514,
 			name: &s_keys,
@@ -389574,7 +389574,7 @@ var objectInfo_POS_joker_DOT_hiccup__83_54__83_62 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__83_34__83_63_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayMap_POS_joker_DOT_hiccup__83_35__83_52_NUM_1,
 		Symbol{
 			name: &s_map_DASH_attrs,
@@ -389582,7 +389582,7 @@ var arrayVector_POS_joker_DOT_hiccup__83_34__83_63_NUM_1 ArrayVector = ArrayVect
 	},
 }
 var arrayVector_NUM_478 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__83_34__83_63_NUM_1,
 	},
 }
@@ -389590,7 +389590,7 @@ var vectorSeq_NUM_475 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_478,
 }
 var arrayMap_NUM_1377 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -390717,7 +390717,7 @@ var objectInfo_POS_joker_DOT_hiccup__66_9__66_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__66_3__66_14_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_mode,
 		},
@@ -390727,7 +390727,7 @@ var arrayVector_POS_joker_DOT_hiccup__66_3__66_14_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_479 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__66_3__66_14_NUM_1,
 	},
 }
@@ -390735,7 +390735,7 @@ var vectorSeq_NUM_476 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_479,
 }
 var arrayMap_NUM_1378 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -390983,7 +390983,7 @@ var objectInfo_POS_joker_DOT_hiccup__52_14__52_18 coretypes.ObjectInfo = coretyp
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__52_3__52_19_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_mode,
 		},
@@ -390996,7 +390996,7 @@ var arrayVector_POS_joker_DOT_hiccup__52_3__52_19_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_480 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__52_3__52_19_NUM_1,
 	},
 }
@@ -391004,7 +391004,7 @@ var vectorSeq_NUM_477 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_480,
 }
 var arrayMap_NUM_1379 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -391186,7 +391186,7 @@ var objectInfo_POS_joker_DOT_hiccup__48_9__48_13 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__48_3__48_14_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_name,
 		},
@@ -391196,7 +391196,7 @@ var arrayVector_POS_joker_DOT_hiccup__48_3__48_14_NUM_1 ArrayVector = ArrayVecto
 	},
 }
 var arrayVector_NUM_481 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__48_3__48_14_NUM_1,
 	},
 }
@@ -391204,7 +391204,7 @@ var vectorSeq_NUM_478 VectorSeq = VectorSeq{
 	vector: &arrayVector_NUM_481,
 }
 var arrayMap_NUM_1380 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -393317,14 +393317,14 @@ var objectInfo_POS_joker_DOT_hiccup__149_4__149_10 coretypes.ObjectInfo = corety
 	},
 }
 var arrayVector_POS_joker_DOT_hiccup__149_3__149_11_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_content,
 		},
 	},
 }
 var arrayVector_NUM_482 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_hiccup__149_3__149_11_NUM_1,
 	},
 }
@@ -393359,7 +393359,7 @@ var objectInfo_POS_joker_DOT_hiccup__148_11__148_15 coretypes.ObjectInfo = coret
 	},
 }
 var arrayMap_NUM_1381 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -393954,7 +393954,7 @@ var ns_joker_DOT_hiccup Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_1382 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -394017,7 +394017,7 @@ var objectInfo_POS_joker_DOT_pprint__10_8__10_11 coretypes.ObjectInfo = coretype
 	},
 }
 var arrayVector_POS_joker_DOT_pprint__10_4__10_12_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_ks,
 		},
@@ -394045,14 +394045,14 @@ var objectInfo_POS_joker_DOT_pprint__29_5__29_8 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayVector_POS_joker_DOT_pprint__29_4__29_9_NUM_1 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Symbol{
 			name: &s_rows,
 		},
 	},
 }
 var arrayVector_NUM_483 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&arrayVector_POS_joker_DOT_pprint__10_4__10_12_NUM_1,
 		&arrayVector_POS_joker_DOT_pprint__29_4__29_9_NUM_1,
 	},
@@ -394088,7 +394088,7 @@ var objectInfo_POS_joker_DOT_pprint__9_11__9_15 coretypes.ObjectInfo = coretypes
 	},
 }
 var arrayMap_NUM_1383 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1214236516,
 			name: &s_line,
@@ -397066,7 +397066,7 @@ var ns_joker_DOT_pprint Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_1384 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
@@ -397192,7 +397192,7 @@ var vector_NUM_101 Vector = Vector{
 	},
 }
 var arrayVector_NUM_484 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_101,
 	},
 }
@@ -399886,7 +399886,7 @@ var vector_NUM_103 Vector = Vector{
 	},
 }
 var arrayVector_NUM_485 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_102,
 		&vector_NUM_103,
 	},
@@ -401775,7 +401775,7 @@ var vector_NUM_105 Vector = Vector{
 	},
 }
 var arrayVector_NUM_486 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_104,
 		&vector_NUM_105,
 	},
@@ -403684,7 +403684,7 @@ var vector_NUM_106 Vector = Vector{
 	},
 }
 var arrayVector_NUM_487 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_106,
 	},
 }
@@ -404126,7 +404126,7 @@ var vector_NUM_107 Vector = Vector{
 	},
 }
 var arrayVector_NUM_488 ArrayVector = ArrayVector{
-	arr: []Object{
+	arr: []coretypes.Object{
 		&vector_NUM_107,
 	},
 }
@@ -404878,7 +404878,7 @@ var ns_joker_DOT_better_DASH_cond Namespace = Namespace{
 	},
 }
 var arrayMap_NUM_1385 ArrayMap = ArrayMap{
-	arr: []Object{
+	arr: []coretypes.Object{
 		Keyword{
 			hash: 1590785587,
 			name: &s_default,

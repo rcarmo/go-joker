@@ -5,6 +5,6 @@ package core
 
 import coretypes "github.com/rcarmo/go-joker/core/types"
 
-var procGoSpew = func(args []Object) (res Object) {
+var procGoSpew = func(args []coretypes.Object) (res coretypes.Object) {
 	return coretypes.MakeBoolean(false)
 }

@@ -28,17 +28,17 @@ import (
 
 // TransientVector is a mutable vector backed by a Go slice.
 type TransientVector struct {
-	arr    []Object
+	arr    []coretypes.Object
 	frozen bool
 }
 
-func (tv *TransientVector) ToString(escape bool) string           { return "#<transient-vector>" }
-func (tv *TransientVector) Equals(other interface{}) bool         { return tv == other }
-func (tv *TransientVector) GetInfo() *coretypes.ObjectInfo        { return nil }
-func (tv *TransientVector) WithInfo(*coretypes.ObjectInfo) Object { return tv }
-func (tv *TransientVector) GetType() *coretypes.Type              { return TYPE.ArrayVector }
-func (tv *TransientVector) Hash() uint32                          { return 0 }
-func (tv *TransientVector) Count() int                            { return len(tv.arr) }
+func (tv *TransientVector) ToString(escape bool) string                     { return "#<transient-vector>" }
+func (tv *TransientVector) Equals(other interface{}) bool                   { return tv == other }
+func (tv *TransientVector) GetInfo() *coretypes.ObjectInfo                  { return nil }
+func (tv *TransientVector) WithInfo(*coretypes.ObjectInfo) coretypes.Object { return tv }
+func (tv *TransientVector) GetType() *coretypes.Type                        { return TYPE.ArrayVector }
+func (tv *TransientVector) Hash() uint32                                    { return 0 }
+func (tv *TransientVector) Count() int                                      { return len(tv.arr) }
 
 func (tv *TransientVector) checkFrozen() {
 	if tv.frozen {
@@ -47,7 +47,7 @@ func (tv *TransientVector) checkFrozen() {
 }
 
 // AssocInPlace sets an element by index. Returns self.
-func (tv *TransientVector) AssocInPlace(key, val Object) *TransientVector {
+func (tv *TransientVector) AssocInPlace(key, val coretypes.Object) *TransientVector {
 	tv.checkFrozen()
 	idxObj, ok := key.(coretypes.Int)
 	if !ok {
@@ -63,7 +63,7 @@ func (tv *TransientVector) AssocInPlace(key, val Object) *TransientVector {
 }
 
 // ConjInPlace appends an element. Returns self.
-func (tv *TransientVector) ConjInPlace(val Object) *TransientVector {
+func (tv *TransientVector) ConjInPlace(val coretypes.Object) *TransientVector {
 	tv.checkFrozen()
 	tv.arr = append(tv.arr, val)
 	return tv
@@ -79,17 +79,17 @@ func (tv *TransientVector) PopInPlace() *TransientVector {
 }
 
 // At returns the element at index for coretypes.CountedIndexed compatibility.
-func (tv *TransientVector) At(i int) Object { return tv.Nth(i) }
+func (tv *TransientVector) At(i int) coretypes.Object { return tv.Nth(i) }
 
 // Nth returns the element at index.
-func (tv *TransientVector) Nth(i int) Object {
+func (tv *TransientVector) Nth(i int) coretypes.Object {
 	if i >= 0 && i < len(tv.arr) {
 		return tv.arr[i]
 	}
 	return NIL
 }
 
-func (tv *TransientVector) TryNth(i int, d Object) Object {
+func (tv *TransientVector) TryNth(i int, d coretypes.Object) coretypes.Object {
 	if i >= 0 && i < len(tv.arr) {
 		return tv.arr[i]
 	}
@@ -97,7 +97,7 @@ func (tv *TransientVector) TryNth(i int, d Object) Object {
 }
 
 // Get implements coretypes.Gettable for transient vectors.
-func (tv *TransientVector) Get(key Object) (bool, Object) {
+func (tv *TransientVector) Get(key coretypes.Object) (bool, coretypes.Object) {
 	if idx, ok := key.(coretypes.Int); ok {
 		if idx.I >= 0 && idx.I < len(tv.arr) {
 			return true, tv.arr[idx.I]
@@ -109,14 +109,14 @@ func (tv *TransientVector) Get(key Object) (bool, Object) {
 // ToPersistent freezes the transient and returns a persistent vector.
 func (tv *TransientVector) ToPersistent() *ArrayVector {
 	tv.frozen = true
-	arr := make([]Object, len(tv.arr))
+	arr := make([]coretypes.Object, len(tv.arr))
 	copy(arr, tv.arr)
 	return &ArrayVector{arr: arr}
 }
 
 // ToTransient creates a mutable copy from an ArrayVector.
 func ToTransient(v *ArrayVector) *TransientVector {
-	arr := make([]Object, len(v.arr))
+	arr := make([]coretypes.Object, len(v.arr))
 	copy(arr, v.arr)
 	return &TransientVector{arr: arr}
 }
@@ -126,23 +126,23 @@ func ToTransient(v *ArrayVector) *TransientVector {
 // TransientMap is a mutable map backed by a Go map.
 type TransientMap struct {
 	m      map[uint32][]mapEntry
-	sm     map[string]Object // fast side table for String keys
+	sm     map[string]coretypes.Object // fast side table for String keys
 	count  int
 	frozen bool
 }
 
 type mapEntry struct {
-	key Object
-	val Object
+	key coretypes.Object
+	val coretypes.Object
 }
 
-func (tm *TransientMap) ToString(escape bool) string           { return "#<transient-map>" }
-func (tm *TransientMap) Equals(other interface{}) bool         { return tm == other }
-func (tm *TransientMap) GetInfo() *coretypes.ObjectInfo        { return nil }
-func (tm *TransientMap) WithInfo(*coretypes.ObjectInfo) Object { return tm }
-func (tm *TransientMap) GetType() *coretypes.Type              { return TYPE.ArrayMap }
-func (tm *TransientMap) Hash() uint32                          { return 0 }
-func (tm *TransientMap) Count() int                            { return tm.count }
+func (tm *TransientMap) ToString(escape bool) string                     { return "#<transient-map>" }
+func (tm *TransientMap) Equals(other interface{}) bool                   { return tm == other }
+func (tm *TransientMap) GetInfo() *coretypes.ObjectInfo                  { return nil }
+func (tm *TransientMap) WithInfo(*coretypes.ObjectInfo) coretypes.Object { return tm }
+func (tm *TransientMap) GetType() *coretypes.Type                        { return TYPE.ArrayMap }
+func (tm *TransientMap) Hash() uint32                                    { return 0 }
+func (tm *TransientMap) Count() int                                      { return tm.count }
 
 func (tm *TransientMap) checkFrozen() {
 	if tm.frozen {
@@ -151,11 +151,11 @@ func (tm *TransientMap) checkFrozen() {
 }
 
 // AssocInPlace sets a key-value pair. Returns self.
-func (tm *TransientMap) AssocInPlace(key, val Object) *TransientMap {
+func (tm *TransientMap) AssocInPlace(key, val coretypes.Object) *TransientMap {
 	tm.checkFrozen()
 	if s, ok := key.(coretypes.String); ok {
 		if tm.sm == nil {
-			tm.sm = make(map[string]Object)
+			tm.sm = make(map[string]coretypes.Object)
 		}
 		if _, exists := tm.sm[s.S]; !exists {
 			tm.count++
@@ -180,7 +180,7 @@ func (tm *TransientMap) AssocInPlace(key, val Object) *TransientMap {
 }
 
 // Get implements coretypes.Gettable for transient maps.
-func (tm *TransientMap) Get(key Object) (bool, Object) {
+func (tm *TransientMap) Get(key coretypes.Object) (bool, coretypes.Object) {
 	if s, ok := key.(coretypes.String); ok && tm.sm != nil {
 		v, ok := tm.sm[s.S]
 		if ok {
@@ -197,7 +197,7 @@ func (tm *TransientMap) Get(key Object) (bool, Object) {
 }
 
 // ToPersistent freezes and returns a persistent ArrayMap or HashMap.
-func (tm *TransientMap) ToPersistent() Object {
+func (tm *TransientMap) ToPersistent() coretypes.Object {
 	tm.frozen = true
 	if tm.count <= int(HASHMAP_THRESHOLD/2) {
 		res := collectionConstruction.NewEmptyArrayMap()
@@ -265,7 +265,7 @@ func initTransientProcs() {
 		ns := GLOBAL_ENV.CoreNamespace
 		procs := []struct {
 			name  string
-			fn    func([]Object) Object
+			fn    func([]coretypes.Object) coretypes.Object
 			pname string
 		}{
 			{"transient", procTransient, "procTransient"},
@@ -294,7 +294,7 @@ func initTransientProcs() {
 	})
 }
 
-var procTransient = func(args []Object) Object {
+var procTransient = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	switch coll := args[0].(type) {
 	case *ArrayVector:
@@ -306,7 +306,7 @@ var procTransient = func(args []Object) Object {
 	}
 }
 
-var procAssocBang = func(args []Object) Object {
+var procAssocBang = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 3)
 	switch coll := args[0].(type) {
 	case *TransientVector:
@@ -318,7 +318,7 @@ var procAssocBang = func(args []Object) Object {
 	}
 }
 
-var procConjBang = func(args []Object) Object {
+var procConjBang = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 3)
 	switch coll := args[0].(type) {
 	case *TransientVector:
@@ -332,7 +332,7 @@ var procConjBang = func(args []Object) Object {
 	}
 }
 
-var procPopBang = func(args []Object) Object {
+var procPopBang = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	switch coll := args[0].(type) {
 	case *TransientVector:
@@ -342,7 +342,7 @@ var procPopBang = func(args []Object) Object {
 	}
 }
 
-var procPersistentBang = func(args []Object) Object {
+var procPersistentBang = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	switch coll := args[0].(type) {
 	case *TransientVector:
@@ -354,7 +354,7 @@ var procPersistentBang = func(args []Object) Object {
 	}
 }
 
-var procIsTransient = func(args []Object) Object {
+var procIsTransient = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	switch args[0].(type) {
 	case *TransientVector, *TransientMap:

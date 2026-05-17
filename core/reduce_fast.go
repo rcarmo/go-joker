@@ -9,7 +9,7 @@ import (
 // ---- reduce_fast.go ----
 // reduce_fast.go — Seq-walking reduce fallback + IntRange creation at reduce time.
 
-func seqReduceInit(s Seq, f coretypes.Callable, init Object) Object {
+func seqReduceInit(s Seq, f coretypes.Callable, init coretypes.Object) coretypes.Object {
 	acc := init
 	for !s.IsEmpty() {
 		acc = call2(f, acc, s.First())
@@ -21,7 +21,7 @@ func seqReduceInit(s Seq, f coretypes.Callable, init Object) Object {
 	return acc
 }
 
-func seqReduce(s Seq, f coretypes.Callable) Object {
+func seqReduce(s Seq, f coretypes.Callable) coretypes.Object {
 	if s.IsEmpty() {
 		return f.Call(nil)
 	}
@@ -38,25 +38,25 @@ func seqReduce(s Seq, f coretypes.Callable) Object {
 }
 
 // LazySeq coretypes.Reduce support — implements the coretypes.Reduce interface so (reduce f init lazy-seq) works.
-func (seq *LazySeq) Reduce(f coretypes.Callable) Object {
+func (seq *LazySeq) Reduce(f coretypes.Callable) coretypes.Object {
 	return seqReduce(seq.Seq(), f)
 }
 
-func (seq *LazySeq) ReduceInit(f coretypes.Callable, init Object) Object {
+func (seq *LazySeq) ReduceInit(f coretypes.Callable, init coretypes.Object) coretypes.Object {
 	return seqReduceInit(seq.Seq(), f, init)
 }
 
 // ConsSeq coretypes.Reduce support
-func (seq *ConsSeq) Reduce(f coretypes.Callable) Object {
+func (seq *ConsSeq) Reduce(f coretypes.Callable) coretypes.Object {
 	return seqReduce(seq, f)
 }
 
-func (seq *ConsSeq) ReduceInit(f coretypes.Callable, init Object) Object {
+func (seq *ConsSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) coretypes.Object {
 	return seqReduceInit(seq, f, init)
 }
 
 // MappingSeq coretypes.Reduce support
-func (seq *MappingSeq) Reduce(f coretypes.Callable) Object {
+func (seq *MappingSeq) Reduce(f coretypes.Callable) coretypes.Object {
 	if seq.seq.IsEmpty() {
 		return call0(f)
 	}
@@ -72,7 +72,7 @@ func (seq *MappingSeq) Reduce(f coretypes.Callable) Object {
 	return acc
 }
 
-func (seq *MappingSeq) ReduceInit(f coretypes.Callable, init Object) Object {
+func (seq *MappingSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) coretypes.Object {
 	acc := init
 	cur := seq.seq
 	for !cur.IsEmpty() {
@@ -122,7 +122,7 @@ type reducibleRangePipeline struct {
 	steps []reducibleStep
 }
 
-func evalReducePipelineFast(expr *CallExpr, env *LocalEnv) (Object, bool) {
+func evalReducePipelineFast(expr *CallExpr, env *LocalEnv) (coretypes.Object, bool) {
 	if !callableName(expr.callable, "reduce") || (len(expr.args) != 2 && len(expr.args) != 3) {
 		return nil, false
 	}
@@ -133,7 +133,7 @@ func evalReducePipelineFast(expr *CallExpr, env *LocalEnv) (Object, bool) {
 		return nil, false
 	}
 
-	var init Object
+	var init coretypes.Object
 	var collExpr Expr
 	if len(expr.args) == 3 {
 		init = Eval(expr.args[1], env)
@@ -220,10 +220,10 @@ func compileReducibleRangePipeline(expr Expr, env *LocalEnv) (reducibleRangePipe
 	return reducibleRangePipeline{}, false
 }
 
-func reducePipelineNoInit(reducer coretypes.Callable, p reducibleRangePipeline) (Object, bool) {
+func reducePipelineNoInit(reducer coretypes.Callable, p reducibleRangePipeline) (coretypes.Object, bool) {
 	seen := false
-	var acc Object
-	_, stopped := walkReducibleRangePipeline(p, func(v Object) bool {
+	var acc coretypes.Object
+	_, stopped := walkReducibleRangePipeline(p, func(v coretypes.Object) bool {
 		if !seen {
 			acc = v
 			seen = true
@@ -241,10 +241,10 @@ func reducePipelineNoInit(reducer coretypes.Callable, p reducibleRangePipeline) 
 	return acc, true
 }
 
-func reducePipelineInit(reducer coretypes.Callable, init Object, p reducibleRangePipeline) Object {
+func reducePipelineInit(reducer coretypes.Callable, init coretypes.Object, p reducibleRangePipeline) coretypes.Object {
 	acc := init
 	reducerName := hotReducerName(reducer)
-	_, stopped := walkReducibleRangePipeline(p, func(v Object) bool {
+	_, stopped := walkReducibleRangePipeline(p, func(v coretypes.Object) bool {
 		acc = reduceStepFastByName(reducer, reducerName, acc, v)
 		return IsReduced(acc)
 	})
@@ -254,7 +254,7 @@ func reducePipelineInit(reducer coretypes.Callable, init Object, p reducibleRang
 	return acc
 }
 
-func walkReducibleRangePipeline(p reducibleRangePipeline, emit func(Object) bool) (emitted int, stopped bool) {
+func walkReducibleRangePipeline(p reducibleRangePipeline, emit func(coretypes.Object) bool) (emitted int, stopped bool) {
 	takeRemaining := make([]int, len(p.steps))
 	for i, step := range p.steps {
 		if step.kind == reducibleTake {
@@ -263,7 +263,7 @@ func walkReducibleRangePipeline(p reducibleRangePipeline, emit func(Object) bool
 	}
 
 	for i := p.start; (p.step > 0 && i < p.end) || (p.step < 0 && i > p.end); i += p.step {
-		v := Object(coretypes.Int{I: i})
+		v := coretypes.Object(coretypes.Int{I: i})
 		alive := true
 		stopAfterCurrent := false
 
@@ -414,22 +414,22 @@ type TakeSeq struct {
 
 func (s *FilteringSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
 func (s *FilteringSeq) Equals(other interface{}) bool { return IsSeqEqual(s, other) }
-func (s *FilteringSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+func (s *FilteringSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *s
 	res.Info = info
 	return &res
 }
 func (s *FilteringSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
 func (s *FilteringSeq) Hash() uint32             { return hashOrdered(s) }
-func (s *FilteringSeq) WithMeta(m Map) Object {
+func (s *FilteringSeq) WithMeta(m Map) coretypes.Object {
 	res := *s
 	res.meta = SafeMerge(res.meta, m)
 	return &res
 }
-func (s *FilteringSeq) Seq() Seq          { return s }
-func (s *FilteringSeq) SequentialMarker() {}
-func (s *FilteringSeq) IsEmpty() bool     { return s.nextSeq().IsEmpty() }
-func (s *FilteringSeq) First() Object     { return s.nextSeq().First() }
+func (s *FilteringSeq) Seq() Seq                { return s }
+func (s *FilteringSeq) SequentialMarker()       {}
+func (s *FilteringSeq) IsEmpty() bool           { return s.nextSeq().IsEmpty() }
+func (s *FilteringSeq) First() coretypes.Object { return s.nextSeq().First() }
 func (s *FilteringSeq) Rest() Seq {
 	ns := s.nextSeq()
 	if ns.IsEmpty() {
@@ -437,7 +437,7 @@ func (s *FilteringSeq) Rest() Seq {
 	}
 	return &FilteringSeq{seq: ns.Rest(), pred: s.pred}
 }
-func (s *FilteringSeq) Cons(obj Object) Seq { return &ConsSeq{first: obj, rest: s} }
+func (s *FilteringSeq) Cons(obj coretypes.Object) Seq { return &ConsSeq{first: obj, rest: s} }
 
 func (s *FilteringSeq) nextSeq() Seq {
 	cur := s.seq
@@ -450,7 +450,7 @@ func (s *FilteringSeq) nextSeq() Seq {
 	return EmptyList
 }
 
-func (s *FilteringSeq) Reduce(f coretypes.Callable) Object {
+func (s *FilteringSeq) Reduce(f coretypes.Callable) coretypes.Object {
 	cur := s.seq
 	for !cur.IsEmpty() {
 		v := cur.First()
@@ -474,7 +474,7 @@ func (s *FilteringSeq) Reduce(f coretypes.Callable) Object {
 	return call0(f)
 }
 
-func (s *FilteringSeq) ReduceInit(f coretypes.Callable, init Object) Object {
+func (s *FilteringSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) coretypes.Object {
 	acc := init
 	cur := s.seq
 	for !cur.IsEmpty() {
@@ -492,27 +492,31 @@ func (s *FilteringSeq) ReduceInit(f coretypes.Callable, init Object) Object {
 
 func (s *TakeSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
 func (s *TakeSeq) Equals(other interface{}) bool { return IsSeqEqual(s, other) }
-func (s *TakeSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+func (s *TakeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *s
 	res.Info = info
 	return &res
 }
 func (s *TakeSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
 func (s *TakeSeq) Hash() uint32             { return hashOrdered(s) }
-func (s *TakeSeq) WithMeta(m Map) Object    { res := *s; res.meta = SafeMerge(res.meta, m); return &res }
-func (s *TakeSeq) Seq() Seq                 { return s }
-func (s *TakeSeq) SequentialMarker()        {}
-func (s *TakeSeq) IsEmpty() bool            { return s.n <= 0 || s.seq.IsEmpty() }
-func (s *TakeSeq) First() Object            { return s.seq.First() }
+func (s *TakeSeq) WithMeta(m Map) coretypes.Object {
+	res := *s
+	res.meta = SafeMerge(res.meta, m)
+	return &res
+}
+func (s *TakeSeq) Seq() Seq                { return s }
+func (s *TakeSeq) SequentialMarker()       {}
+func (s *TakeSeq) IsEmpty() bool           { return s.n <= 0 || s.seq.IsEmpty() }
+func (s *TakeSeq) First() coretypes.Object { return s.seq.First() }
 func (s *TakeSeq) Rest() Seq {
 	if s.n <= 1 {
 		return EmptyList
 	}
 	return &TakeSeq{seq: s.seq.Rest(), n: s.n - 1}
 }
-func (s *TakeSeq) Cons(obj Object) Seq { return &ConsSeq{first: obj, rest: s} }
+func (s *TakeSeq) Cons(obj coretypes.Object) Seq { return &ConsSeq{first: obj, rest: s} }
 
-func (s *TakeSeq) Reduce(f coretypes.Callable) Object {
+func (s *TakeSeq) Reduce(f coretypes.Callable) coretypes.Object {
 	if result, ok := s.reduceFused(f); ok {
 		return result
 	}
@@ -531,11 +535,11 @@ func (s *TakeSeq) Reduce(f coretypes.Callable) Object {
 	return acc
 }
 
-func (s *TakeSeq) reduceFused(f coretypes.Callable) (Object, bool) {
+func (s *TakeSeq) reduceFused(f coretypes.Callable) (coretypes.Object, bool) {
 	return nil, false
 }
 
-func (s *TakeSeq) ReduceInit(f coretypes.Callable, init Object) Object {
+func (s *TakeSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) coretypes.Object {
 	acc := init
 	cur := s.seq
 	for i := 0; i < s.n && !cur.IsEmpty(); i++ {
@@ -552,7 +556,7 @@ func chunkedMapSeq(f coretypes.Callable, src Seq) Seq {
 	if src == nil || src.IsEmpty() {
 		return EmptyList
 	}
-	buf := make([]Object, 0, 32)
+	buf := make([]coretypes.Object, 0, 32)
 	cur := src
 	for len(buf) < 32 && !cur.IsEmpty() {
 		buf = append(buf, call1(f, cur.First()))
@@ -562,7 +566,7 @@ func chunkedMapSeq(f coretypes.Callable, src Seq) Seq {
 	var rest Seq
 	if !cur.IsEmpty() {
 		restCur := cur
-		rest = &LazySeq{fn: Proc{Name: "procChunkedMapRest", Fn: func(args []Object) Object {
+		rest = &LazySeq{fn: Proc{Name: "procChunkedMapRest", Fn: func(args []coretypes.Object) coretypes.Object {
 			return chunkedMapSeq(f, restCur)
 		}}}
 	}
@@ -575,7 +579,7 @@ func chunkedFilterSeq(pred coretypes.Callable, src Seq) Seq {
 		if cur == nil || cur.IsEmpty() {
 			return EmptyList
 		}
-		buf := make([]Object, 0, 32)
+		buf := make([]coretypes.Object, 0, 32)
 		for len(buf) < 32 && !cur.IsEmpty() {
 			v := cur.First()
 			if ToBool(call1(pred, v)) {
@@ -588,7 +592,7 @@ func chunkedFilterSeq(pred coretypes.Callable, src Seq) Seq {
 			var rest Seq
 			if !cur.IsEmpty() {
 				restCur := cur
-				rest = &LazySeq{fn: Proc{Name: "procChunkedFilterRest", Fn: func(args []Object) Object {
+				rest = &LazySeq{fn: Proc{Name: "procChunkedFilterRest", Fn: func(args []coretypes.Object) coretypes.Object {
 					return chunkedFilterSeq(pred, restCur)
 				}}}
 			}
@@ -616,7 +620,7 @@ func maybeOverrideSeqOps() {
 		return
 	}
 
-	mapVr.Value = Proc{Name: "procMapSeqFast", Fn: func(args []Object) Object {
+	mapVr.Value = Proc{Name: "procMapSeqFast", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
 			return makeMapTransducer(EnsureArgIsCallable(args, 0))
 		}
@@ -626,11 +630,11 @@ func maybeOverrideSeqOps() {
 			if _, ok := s.(*ChunkedCons); ok {
 				return chunkedMapSeq(f, s)
 			}
-			return &MappingSeq{seq: s, fn: func(o Object) Object { return call1(f, o) }}
+			return &MappingSeq{seq: s, fn: func(o coretypes.Object) coretypes.Object { return call1(f, o) }}
 		}
 		return mapOrig.Call(args)
 	}}
-	filterVr.Value = Proc{Name: "procFilterSeqFast", Fn: func(args []Object) Object {
+	filterVr.Value = Proc{Name: "procFilterSeqFast", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
 			return makeFilterTransducer(EnsureArgIsCallable(args, 0))
 		}
@@ -644,7 +648,7 @@ func maybeOverrideSeqOps() {
 		}
 		return filterOrig.Call(args)
 	}}
-	takeVr.Value = Proc{Name: "procTakeSeqFast", Fn: func(args []Object) Object {
+	takeVr.Value = Proc{Name: "procTakeSeqFast", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
 			return makeTakeTransducer(EnsureObjectIsNumber(args[0], "").Int().I)
 		}
@@ -668,7 +672,7 @@ func init() {
 	referToUser(MakeSymbol("split-whitespace"), sw)
 }
 
-var procSplitWhitespace ProcFn = func(args []Object) Object {
+var procSplitWhitespace ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	return splitWhitespaceVector(EnsureArgIsString(args, 0).S)
 }
@@ -681,7 +685,7 @@ func splitWhitespaceVector(s string) *ArrayVector {
 	return res
 }
 
-var procFrequencies ProcFn = func(args []Object) Object {
+var procFrequencies ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	seq := EnsureObjectIsSeqable(args[0], "frequencies requires a seqable collection").Seq()
 	if seq.IsEmpty() {
@@ -689,7 +693,7 @@ var procFrequencies ProcFn = func(args []Object) Object {
 	}
 
 	// Specialize the common text-token case: String keys and integer counts.
-	// Avoids persistent map churn and repeated Object hash calculation in the
+	// Avoids persistent map churn and repeated coretypes.Object hash calculation in the
 	// hot loop, then emits a normal persistent map at the boundary.
 	stringCounts := make(map[string]int)
 	var tm *TransientMap
@@ -750,13 +754,21 @@ func NewIntRange(start, end, step int) *IntRange {
 	return &IntRange{start: start, end: end, step: step}
 }
 
-func (r *IntRange) ToString(escape bool) string             { return SeqToString(r.Seq(), escape) }
-func (r *IntRange) Equals(other interface{}) bool           { return IsSeqEqual(r.Seq(), other) }
-func (r *IntRange) WithInfo(i *coretypes.ObjectInfo) Object { res := *r; res.Info = i; return &res }
-func (r *IntRange) GetType() *coretypes.Type                { return TYPE.LazySeq }
-func (r *IntRange) Hash() uint32                            { return hashOrdered(r.Seq()) }
-func (r *IntRange) WithMeta(m Map) Object                   { res := *r; res.meta = SafeMerge(res.meta, m); return &res }
-func (r *IntRange) SequentialMarker()                       {}
+func (r *IntRange) ToString(escape bool) string   { return SeqToString(r.Seq(), escape) }
+func (r *IntRange) Equals(other interface{}) bool { return IsSeqEqual(r.Seq(), other) }
+func (r *IntRange) WithInfo(i *coretypes.ObjectInfo) coretypes.Object {
+	res := *r
+	res.Info = i
+	return &res
+}
+func (r *IntRange) GetType() *coretypes.Type { return TYPE.LazySeq }
+func (r *IntRange) Hash() uint32             { return hashOrdered(r.Seq()) }
+func (r *IntRange) WithMeta(m Map) coretypes.Object {
+	res := *r
+	res.meta = SafeMerge(res.meta, m)
+	return &res
+}
+func (r *IntRange) SequentialMarker() {}
 
 func (r *IntRange) Seq() Seq {
 	if r.step > 0 && r.start >= r.end {
@@ -772,7 +784,7 @@ func (r *IntRange) chunkedSeqFrom(cur int) Seq {
 	if !r.contains(cur) {
 		return EmptyList
 	}
-	buf := make([]Object, 0, 32)
+	buf := make([]coretypes.Object, 0, 32)
 	v := cur
 	for len(buf) < 32 && r.contains(v) {
 		buf = append(buf, coretypes.Int{I: v})
@@ -781,7 +793,7 @@ func (r *IntRange) chunkedSeqFrom(cur int) Seq {
 	chunk := &ArrayChunk{arr: buf, off: 0, end: len(buf)}
 	var rest Seq
 	if r.contains(v) {
-		rest = &LazySeq{fn: Proc{Name: "procIntRangeChunkRest", Fn: func(args []Object) Object {
+		rest = &LazySeq{fn: Proc{Name: "procIntRangeChunkRest", Fn: func(args []coretypes.Object) coretypes.Object {
 			return r.chunkedSeqFrom(v)
 		}}}
 	}
@@ -809,14 +821,14 @@ func (r *IntRange) Count() int {
 	return 0
 }
 
-func (r *IntRange) Reduce(f coretypes.Callable) Object {
+func (r *IntRange) Reduce(f coretypes.Callable) coretypes.Object {
 	if r.isEmpty() {
 		return f.Call(nil)
 	}
 	if result, ok := r.reduceFast(f); ok {
 		return result
 	}
-	acc := Object(coretypes.Int{I: r.start})
+	acc := coretypes.Object(coretypes.Int{I: r.start})
 	for i := r.start + r.step; r.contains(i); i += r.step {
 		acc = call2(f, acc, coretypes.Int{I: i})
 		if IsReduced(acc) {
@@ -826,7 +838,7 @@ func (r *IntRange) Reduce(f coretypes.Callable) Object {
 	return acc
 }
 
-func (r *IntRange) ReduceInit(f coretypes.Callable, init Object) Object {
+func (r *IntRange) ReduceInit(f coretypes.Callable, init coretypes.Object) coretypes.Object {
 	if result, ok := r.reduceInitFast(f, init); ok {
 		return result
 	}
@@ -848,7 +860,7 @@ func (r *IntRange) contains(i int) bool {
 	return (r.step > 0 && i < r.end) || (r.step < 0 && i > r.end)
 }
 
-func (r *IntRange) reduceFast(f coretypes.Callable) (Object, bool) {
+func (r *IntRange) reduceFast(f coretypes.Callable) (coretypes.Object, bool) {
 	name := hotReducerName(f)
 	switch name {
 	case "procAdd", "procunchecked-add", "procunchecked-add-int":
@@ -883,7 +895,7 @@ func (r *IntRange) reduceFast(f coretypes.Callable) (Object, bool) {
 	return nil, false
 }
 
-func (r *IntRange) reduceInitFast(f coretypes.Callable, init Object) (Object, bool) {
+func (r *IntRange) reduceInitFast(f coretypes.Callable, init coretypes.Object) (coretypes.Object, bool) {
 	if result, ok := r.reduceMapAssocFast(f, init); ok {
 		return result, true
 	}
@@ -951,7 +963,7 @@ func (r *IntRange) reduceInitFast(f coretypes.Callable, init Object) (Object, bo
 	return nil, false
 }
 
-func (r *IntRange) reduceMapAssocFast(f coretypes.Callable, init Object) (Object, bool) {
+func (r *IntRange) reduceMapAssocFast(f coretypes.Callable, init coretypes.Object) (coretypes.Object, bool) {
 	fn, ok := f.(*Fn)
 	if !ok || fn == nil || fn.fnExpr == nil || len(fn.fnExpr.arities) != 1 || fn.fnExpr.variadic != nil {
 		return nil, false
@@ -1106,21 +1118,21 @@ type intRangeSeq struct {
 
 func (s *intRangeSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
 func (s *intRangeSeq) Equals(other interface{}) bool { return IsSeqEqual(s, other) }
-func (s *intRangeSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+func (s *intRangeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *s
 	res.Info = info
 	return &res
 }
 func (s *intRangeSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
 func (s *intRangeSeq) Hash() uint32             { return hashOrdered(s) }
-func (s *intRangeSeq) WithMeta(m Map) Object {
+func (s *intRangeSeq) WithMeta(m Map) coretypes.Object {
 	res := *s
 	res.meta = SafeMerge(res.meta, m)
 	return &res
 }
-func (s *intRangeSeq) Seq() Seq          { return s }
-func (s *intRangeSeq) SequentialMarker() {}
-func (s *intRangeSeq) First() Object     { return coretypes.Int{I: s.cur} }
+func (s *intRangeSeq) Seq() Seq                { return s }
+func (s *intRangeSeq) SequentialMarker()       {}
+func (s *intRangeSeq) First() coretypes.Object { return coretypes.Int{I: s.cur} }
 func (s *intRangeSeq) Rest() Seq {
 	next := s.cur + s.r.step
 	if s.r.step > 0 && next >= s.r.end {
@@ -1140,7 +1152,7 @@ func (s *intRangeSeq) IsEmpty() bool {
 	}
 	return s.cur <= s.r.end
 }
-func (s *intRangeSeq) Cons(obj Object) Seq { return &ConsSeq{first: obj, rest: s} }
+func (s *intRangeSeq) Cons(obj coretypes.Object) Seq { return &ConsSeq{first: obj, rest: s} }
 
 // maybeOverrideRange installs the IntRange-backed range wrapper after core.joke is loaded.
 // It may be called multiple times; it only wraps the original range once.
@@ -1161,7 +1173,7 @@ func maybeOverrideRange() {
 		return
 	}
 
-	rangeVr.Value = Proc{Name: "procRangeFast", Fn: func(args []Object) Object {
+	rangeVr.Value = Proc{Name: "procRangeFast", Fn: func(args []coretypes.Object) coretypes.Object {
 		switch len(args) {
 		case 1:
 			if end, ok := args[0].(coretypes.Int); ok {

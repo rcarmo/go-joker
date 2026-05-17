@@ -12,7 +12,7 @@ type (
 	ChannelReceiveStatus = corert.ChannelReceiveStatus
 
 	FutureResult struct {
-		value Object
+		value coretypes.Object
 		err   coretypes.Error
 	}
 	Channel struct {
@@ -27,7 +27,7 @@ const (
 	ChannelReceiveDone   = corert.ChannelReceiveDone
 )
 
-func MakeFutureResult(value Object, err coretypes.Error) FutureResult {
+func MakeFutureResult(value coretypes.Object, err coretypes.Error) FutureResult {
 	return FutureResult{value: value, err: err}
 }
 
@@ -51,7 +51,7 @@ func (ch *Channel) Hash() uint32 {
 	return ch.hash
 }
 
-func (ch *Channel) WithInfo(info *coretypes.ObjectInfo) Object {
+func (ch *Channel) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return ch
 }
 
@@ -61,7 +61,7 @@ func MakeChannel(ch chan FutureResult) *Channel {
 	return res
 }
 
-func ExtractChannel(args []Object, index int) *Channel {
+func ExtractChannel(args []coretypes.Object, index int) *Channel {
 	return EnsureArgIsChannel(args, index)
 }
 
@@ -77,7 +77,7 @@ func (ch *Channel) raw() chan FutureResult {
 	return ch.runtime.Raw()
 }
 
-func (ch *Channel) Send(value Object) bool {
+func (ch *Channel) Send(value coretypes.Object) bool {
 	return ch.SendResult(MakeFutureResult(value, nil))
 }
 
@@ -85,7 +85,7 @@ func (ch *Channel) SendResult(result FutureResult) bool {
 	return ch.runtime.Send(result)
 }
 
-func (ch *Channel) Receive(done <-chan struct{}) (Object, ChannelReceiveStatus, coretypes.Error) {
+func (ch *Channel) Receive(done <-chan struct{}) (coretypes.Object, ChannelReceiveStatus, coretypes.Error) {
 	res, status := ch.runtime.Receive(done)
 	if status != ChannelReceiveValue {
 		return NIL, status, nil

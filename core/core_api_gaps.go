@@ -21,13 +21,13 @@ func registerCoreAPIGaps() {
 
 	// alter-var-root — (alter-var-root var fn & args)
 	avrVr := ns.Intern(MakeSymbol("alter-var-root"))
-	avrVr.Value = Proc{Name: "procAlterVarRoot", Fn: func(args []Object) Object {
+	avrVr.Value = Proc{Name: "procAlterVarRoot", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
 			PanicArityMinMax(len(args), 2, 999)
 		}
 		vr := EnsureObjectIsVar(args[0], "alter-var-root requires a var, got %s")
 		fn := EnsureObjectIsCallable(args[1], "alter-var-root requires a function, got %s")
-		fnArgs := make([]Object, 1+len(args)-2)
+		fnArgs := make([]coretypes.Object, 1+len(args)-2)
 		fnArgs[0] = vr.Value
 		for i := 2; i < len(args); i++ {
 			fnArgs[i-1] = args[i]
@@ -40,7 +40,7 @@ func registerCoreAPIGaps() {
 	// re-groups — (re-groups matcher) — returns groups from last regex match
 	// In Joker, re-find already returns groups. Provide re-groups for compat.
 	rgVr := ns.Intern(MakeSymbol("re-groups"))
-	rgVr.Value = Proc{Name: "procReGroups", Fn: func(args []Object) Object {
+	rgVr.Value = Proc{Name: "procReGroups", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		// re-groups expects a Matcher, but Joker doesn't have Matcher objects.
 		// Instead, accept [pattern string] and return groups.
@@ -69,10 +69,10 @@ func registerCoreAPIGaps() {
 
 	// file-seq — (file-seq dir) — returns a lazy seq of files
 	fsVr := ns.Intern(MakeSymbol("file-seq"))
-	fsVr.Value = Proc{Name: "procFileSeq", Fn: func(args []Object) Object {
+	fsVr.Value = Proc{Name: "procFileSeq", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		dir := EnsureObjectIsString(args[0], "file-seq requires a string path, got %s")
-		var files []Object
+		var files []coretypes.Object
 		filepath.Walk(dir.S, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				return nil
@@ -89,7 +89,7 @@ func registerCoreAPIGaps() {
 
 	// var-get — (var-get var)
 	vgVr := ns.Intern(MakeSymbol("var-get"))
-	vgVr.Value = Proc{Name: "procVarGet", Fn: func(args []Object) Object {
+	vgVr.Value = Proc{Name: "procVarGet", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		vr := EnsureObjectIsVar(args[0], "var-get requires a var, got %s")
 		if vr.Value == nil {
@@ -101,7 +101,7 @@ func registerCoreAPIGaps() {
 
 	// var-set — (var-set var val)
 	vsVr := ns.Intern(MakeSymbol("var-set"))
-	vsVr.Value = Proc{Name: "procVarSet", Fn: func(args []Object) Object {
+	vsVr.Value = Proc{Name: "procVarSet", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		vr := EnsureObjectIsVar(args[0], "var-set requires a var, got %s")
 		vr.Value = args[1]
@@ -111,7 +111,7 @@ func registerCoreAPIGaps() {
 
 	// var? — (var? x)
 	vqVr := ns.Intern(MakeSymbol("var?"))
-	vqVr.Value = Proc{Name: "procVarQ", Fn: func(args []Object) Object {
+	vqVr.Value = Proc{Name: "procVarQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		_, ok := args[0].(*Var)
 		return coretypes.MakeBoolean(ok)

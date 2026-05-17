@@ -21,7 +21,7 @@ func (f *File) GetType() *coretypes.Type                             { return TY
 func (f *File) Hash() uint32                                         { return f.File.Hash() }
 func (f *File) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return f }
 func (f *File) Namespace() string                                    { return "" }
-func ExtractFile(args []Object, index int) *File                     { return EnsureArgIsFile(args, index) }
+func ExtractFile(args []coretypes.Object, index int) *File           { return EnsureArgIsFile(args, index) }
 
 type Buffer struct{ *corereader.Buffer }
 
@@ -60,7 +60,7 @@ func (ior *IOReader) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { ret
 func (ior *IOReader) Close() error {
 	if err := ior.IOReader.Close(); err != nil {
 		if errors.Is(err, corereader.ErrNotClosable) {
-			return RT.NewError("Object is not closable: " + ior.ToString(false))
+			return RT.NewError("coretypes.Object is not closable: " + ior.ToString(false))
 		}
 		return err
 	}
@@ -80,7 +80,7 @@ func (iow *IOWriter) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { ret
 func (iow *IOWriter) Close() error {
 	if err := iow.IOWriter.Close(); err != nil {
 		if errors.Is(err, corereader.ErrNotClosable) {
-			return RT.NewError("Object is not closable: " + iow.ToString(false))
+			return RT.NewError("coretypes.Object is not closable: " + iow.ToString(false))
 		}
 		return err
 	}

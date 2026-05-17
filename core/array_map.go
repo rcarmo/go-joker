@@ -10,7 +10,7 @@ type (
 	ArrayMap struct {
 		coretypes.InfoHolder
 		MetaHolder
-		arr []Object
+		arr []coretypes.Object
 	}
 	ArrayMapIterator struct {
 		m       *ArrayMap
@@ -64,7 +64,7 @@ func (seq *ArrayMapSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *ArrayMapSeq) WithMeta(meta Map) Object {
+func (seq *ArrayMapSeq) WithMeta(meta Map) coretypes.Object {
 	res := *seq
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -82,7 +82,7 @@ func (seq *ArrayMapSeq) Seq() Seq {
 	return seq
 }
 
-func (seq *ArrayMapSeq) First() Object {
+func (seq *ArrayMapSeq) First() coretypes.Object {
 	if seq.index < len(seq.m.arr) {
 		return collectionConstruction.NewVectorFrom(seq.m.arr[seq.index], seq.m.arr[seq.index+1])
 	}
@@ -100,7 +100,7 @@ func (seq *ArrayMapSeq) IsEmpty() bool {
 	return seq.index >= len(seq.m.arr)
 }
 
-func (seq *ArrayMapSeq) Cons(obj Object) Seq {
+func (seq *ArrayMapSeq) Cons(obj coretypes.Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
@@ -117,13 +117,13 @@ func (iter *ArrayMapIterator) HasNext() bool {
 	return iter.current < len(iter.m.arr)
 }
 
-func (v *ArrayMap) WithMeta(meta Map) Object {
+func (v *ArrayMap) WithMeta(meta Map) coretypes.Object {
 	res := *v
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
 }
 
-func (m *ArrayMap) indexOf(key Object) int {
+func (m *ArrayMap) indexOf(key coretypes.Object) int {
 	for i := 0; i < len(m.arr); i += 2 {
 		if m.arr[i].Equals(key) {
 			return i
@@ -151,7 +151,7 @@ func arrayMapEquals(m, other *ArrayMap) bool {
 	return true
 }
 
-func (m *ArrayMap) Get(key Object) (bool, Object) {
+func (m *ArrayMap) Get(key coretypes.Object) (bool, coretypes.Object) {
 	i := m.indexOf(key)
 	if i != -1 {
 		return true, m.arr[i+1]
@@ -159,7 +159,7 @@ func (m *ArrayMap) Get(key Object) (bool, Object) {
 	return false, nil
 }
 
-func (m *ArrayMap) Set(key Object, value Object) {
+func (m *ArrayMap) Set(key coretypes.Object, value coretypes.Object) {
 	i := m.indexOf(key)
 	if i != -1 {
 		m.arr[i+1] = value
@@ -169,7 +169,7 @@ func (m *ArrayMap) Set(key Object, value Object) {
 	}
 }
 
-func (m *ArrayMap) Add(key Object, value Object) bool {
+func (m *ArrayMap) Add(key coretypes.Object, value coretypes.Object) bool {
 	i := m.indexOf(key)
 	if i != -1 {
 		return false
@@ -179,7 +179,7 @@ func (m *ArrayMap) Add(key Object, value Object) bool {
 	return true
 }
 
-func (m *ArrayMap) Plus(key Object, value Object) *ArrayMap {
+func (m *ArrayMap) Plus(key coretypes.Object, value coretypes.Object) *ArrayMap {
 	i := m.indexOf(key)
 	if i != -1 {
 		return m
@@ -194,13 +194,13 @@ func (m *ArrayMap) Count() int {
 }
 
 func (m *ArrayMap) Clone() *ArrayMap {
-	result := ArrayMap{arr: make([]Object, len(m.arr), cap(m.arr))}
+	result := ArrayMap{arr: make([]coretypes.Object, len(m.arr), cap(m.arr))}
 	result.meta = m.meta
 	copy(result.arr, m.arr)
 	return &result
 }
 
-func (m *ArrayMap) Assoc(key Object, value Object) Associative {
+func (m *ArrayMap) Assoc(key coretypes.Object, value coretypes.Object) Associative {
 	i := m.indexOf(key)
 	if i != -1 {
 		res := m.Clone()
@@ -216,7 +216,7 @@ func (m *ArrayMap) Assoc(key Object, value Object) Associative {
 	return res
 }
 
-func (m *ArrayMap) EntryAt(key Object) *ArrayVector {
+func (m *ArrayMap) EntryAt(key coretypes.Object) *ArrayVector {
 	i := m.indexOf(key)
 	if i != -1 {
 		return collectionConstruction.NewArrayVectorFrom(key, m.arr[i+1])
@@ -224,8 +224,8 @@ func (m *ArrayMap) EntryAt(key Object) *ArrayVector {
 	return nil
 }
 
-func (m *ArrayMap) Without(key Object) Map {
-	result := ArrayMap{arr: make([]Object, len(m.arr), cap(m.arr))}
+func (m *ArrayMap) Without(key coretypes.Object) Map {
+	result := ArrayMap{arr: make([]coretypes.Object, len(m.arr), cap(m.arr))}
 	var i, j int
 	for i, j = 0, 0; i < len(m.arr); i += 2 {
 		if m.arr[i].Equals(key) {
@@ -261,7 +261,7 @@ func (m *ArrayMap) Merge(other Map) Map {
 
 func (m *ArrayMap) Keys() Seq {
 	mlen := len(m.arr) / 2
-	res := make([]Object, mlen)
+	res := make([]coretypes.Object, mlen)
 	for i := 0; i < mlen; i++ {
 		res[i] = m.arr[i*2]
 	}
@@ -270,7 +270,7 @@ func (m *ArrayMap) Keys() Seq {
 
 func (m *ArrayMap) Vals() Seq {
 	mlen := len(m.arr) / 2
-	res := make([]Object, mlen)
+	res := make([]coretypes.Object, mlen)
 	for i := 0; i < mlen; i++ {
 		res[i] = m.arr[i*2+1]
 	}
@@ -281,7 +281,7 @@ func (m *ArrayMap) Iter() MapIterator {
 	return &ArrayMapIterator{m: m}
 }
 
-func (m *ArrayMap) Conj(obj Object) coretypes.Conjable {
+func (m *ArrayMap) Conj(obj coretypes.Object) coretypes.Conjable {
 	return mapConj(m, obj)
 }
 
@@ -305,7 +305,7 @@ func (m *ArrayMap) Seq() Seq {
 	return &ArrayMapSeq{m: m, index: 0}
 }
 
-func (m *ArrayMap) Call(args []Object) Object {
+func (m *ArrayMap) Call(args []coretypes.Object) coretypes.Object {
 	return callMap(m, args)
 }
 
@@ -318,7 +318,7 @@ func (m *ArrayMap) Pprint(w io.Writer, indent int) int {
 }
 
 func (m *ArrayMap) Format(w io.Writer, indent int) int {
-	var arr []Object
+	var arr []coretypes.Object
 	for i := 0; i < len(m.arr); i++ {
 		arr = append(arr, m.arr[i])
 		if isComment(m.arr[i]) {

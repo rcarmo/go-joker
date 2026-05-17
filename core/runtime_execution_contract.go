@@ -21,15 +21,15 @@ func (RuntimeExecutionAdapter) Errorf(format string, args ...any) coretypes.Erro
 	return RT.NewError(fmt.Sprintf(format, args...))
 }
 
-func (r RuntimeExecutionAdapter) Throw(obj Object) {
+func (r RuntimeExecutionAdapter) Throw(obj coretypes.Object) {
 	panic(r.Errorf("%s", obj.ToString(false)))
 }
 
-func (RuntimeExecutionAdapter) Equal(a Object, b Object) bool {
+func (RuntimeExecutionAdapter) Equal(a coretypes.Object, b coretypes.Object) bool {
 	return a.Equals(b)
 }
 
-func (RuntimeExecutionAdapter) ApplyCaptureSlots(slots []Object, idxs []int, values []Object) bool {
+func (RuntimeExecutionAdapter) ApplyCaptureSlots(slots []coretypes.Object, idxs []int, values []coretypes.Object) bool {
 	if len(idxs) != len(values) {
 		return false
 	}
@@ -43,7 +43,7 @@ func (RuntimeExecutionAdapter) ApplyCaptureSlots(slots []Object, idxs []int, val
 	return true
 }
 
-func (RuntimeExecutionAdapter) ApplyTypedCaptureSlots(slots []irValue, idxs []int, values []Object) bool {
+func (RuntimeExecutionAdapter) ApplyTypedCaptureSlots(slots []irValue, idxs []int, values []coretypes.Object) bool {
 	if len(idxs) != len(values) {
 		return false
 	}
@@ -57,17 +57,17 @@ func (RuntimeExecutionAdapter) ApplyTypedCaptureSlots(slots []irValue, idxs []in
 	return true
 }
 
-func (r RuntimeExecutionAdapter) PrepareCallSlots(prog *IRProgram, args []Object, env *LocalEnv) []Object {
+func (r RuntimeExecutionAdapter) PrepareCallSlots(prog *IRProgram, args []coretypes.Object, env *LocalEnv) []coretypes.Object {
 	if prog == nil || len(prog.captureKeys) == 0 {
 		return args
 	}
-	full := make([]Object, prog.numSlots)
+	full := make([]coretypes.Object, prog.numSlots)
 	copy(full, args)
 	r.InstallEnvCaptures(prog, full, env)
 	return full
 }
 
-func (RuntimeExecutionAdapter) InstallEnvCaptures(prog *IRProgram, slots []Object, env *LocalEnv) {
+func (RuntimeExecutionAdapter) InstallEnvCaptures(prog *IRProgram, slots []coretypes.Object, env *LocalEnv) {
 	if prog == nil {
 		return
 	}
@@ -109,13 +109,13 @@ func (RuntimeExecutionAdapter) InstallTypedEnvCaptures(prog *IRProgram, slots []
 	}
 }
 
-func (RuntimeExecutionAdapter) MakeFn(fnExpr *FnExpr, slots []Object) Object {
-	fnEnv := &LocalEnv{bindings: make([]Object, len(slots))}
+func (RuntimeExecutionAdapter) MakeFn(fnExpr *FnExpr, slots []coretypes.Object) coretypes.Object {
+	fnEnv := &LocalEnv{bindings: make([]coretypes.Object, len(slots))}
 	copy(fnEnv.bindings, slots)
 	return &Fn{fnExpr: fnExpr, env: fnEnv}
 }
 
-func (RuntimeExecutionAdapter) CallArgs(argsSeq Object) ([]Object, bool) {
+func (RuntimeExecutionAdapter) CallArgs(argsSeq coretypes.Object) ([]coretypes.Object, bool) {
 	seqable, ok := argsSeq.(Seqable)
 	if !ok {
 		return nil, false
@@ -127,7 +127,7 @@ func (RuntimeExecutionAdapter) CallArgs(argsSeq Object) ([]Object, bool) {
 	return ToSlice(seq), true
 }
 
-func (RuntimeExecutionAdapter) CallObject(fnObj Object, args []Object) (Object, bool) {
+func (RuntimeExecutionAdapter) CallObject(fnObj coretypes.Object, args []coretypes.Object) (coretypes.Object, bool) {
 	callable, ok := fnObj.(coretypes.Callable)
 	if !ok {
 		return nil, false
@@ -135,7 +135,7 @@ func (RuntimeExecutionAdapter) CallObject(fnObj Object, args []Object) (Object, 
 	return callable.Call(args), true
 }
 
-func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj Object, args []Object) (Object, bool) {
+func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj coretypes.Object, args []coretypes.Object) (coretypes.Object, bool) {
 	grt := currentGRT()
 	prevExpr := grt.currentExpr
 	grt.currentExpr = &CallExpr{}
@@ -143,7 +143,7 @@ func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj Obj
 	return adapter.CallObject(fnObj, args)
 }
 
-func (RuntimeExecutionAdapter) HasMutableSlotCandidate(slots []Object) bool {
+func (RuntimeExecutionAdapter) HasMutableSlotCandidate(slots []coretypes.Object) bool {
 	for _, s := range slots {
 		switch s.(type) {
 		case *ArrayVector, *ArrayMap, *HashMap, coretypes.String:
@@ -153,7 +153,7 @@ func (RuntimeExecutionAdapter) HasMutableSlotCandidate(slots []Object) bool {
 	return false
 }
 
-func (RuntimeExecutionAdapter) MutableSlotObject(obj Object, escapeInfo *EscapeInfo, slot int) Object {
+func (RuntimeExecutionAdapter) MutableSlotObject(obj coretypes.Object, escapeInfo *EscapeInfo, slot int) coretypes.Object {
 	if escapeInfo == nil || slot < 0 || slot >= len(escapeInfo.SafeMutableSlots) || !escapeInfo.SafeMutableSlots[slot] {
 		return obj
 	}
@@ -179,7 +179,7 @@ func (RuntimeExecutionAdapter) MutableSlotObject(obj Object, escapeInfo *EscapeI
 	return obj
 }
 
-func (RuntimeExecutionAdapter) PersistentResult(result Object) Object {
+func (RuntimeExecutionAdapter) PersistentResult(result coretypes.Object) coretypes.Object {
 	switch v := result.(type) {
 	case *TransientVector:
 		return v.ToPersistent()
@@ -192,7 +192,7 @@ func (RuntimeExecutionAdapter) PersistentResult(result Object) Object {
 	}
 }
 
-func (RuntimeExecutionAdapter) Get(coll Object, key Object, def Object) Object {
+func (RuntimeExecutionAdapter) Get(coll coretypes.Object, key coretypes.Object, def coretypes.Object) coretypes.Object {
 	if g, ok := coll.(coretypes.Gettable); ok {
 		if ok, v := g.Get(key); ok {
 			return v
@@ -201,7 +201,7 @@ func (RuntimeExecutionAdapter) Get(coll Object, key Object, def Object) Object {
 	return def
 }
 
-func (RuntimeExecutionAdapter) Assoc(coll Object, key Object, val Object) (Object, bool) {
+func (RuntimeExecutionAdapter) Assoc(coll coretypes.Object, key coretypes.Object, val coretypes.Object) (coretypes.Object, bool) {
 	switch c := coll.(type) {
 	case *TransientVector:
 		return c.AssocInPlace(key, val), true
@@ -220,7 +220,7 @@ func (RuntimeExecutionAdapter) Assoc(coll Object, key Object, val Object) (Objec
 // offsets are identical, which covers the common CLBG/gi text-processing hot
 // path without changing Unicode semantics. If a non-ASCII byte appears before
 // the requested index, this falls back to the Unicode-correct range walk.
-func stringNthFast(s string, i int) Object {
+func stringNthFast(s string, i int) coretypes.Object {
 	if i < 0 {
 		panic(RT.NewError(fmt.Sprintf("Negative index: %d", i)))
 	}
@@ -231,7 +231,7 @@ func stringNthFast(s string, i int) Object {
 	}
 }
 
-func (RuntimeExecutionAdapter) Nth(coll Object, idx int) (Object, bool) {
+func (RuntimeExecutionAdapter) Nth(coll coretypes.Object, idx int) (coretypes.Object, bool) {
 	switch c := coll.(type) {
 	case *ArrayVector:
 		if idx >= 0 && idx < len(c.arr) {
@@ -249,7 +249,7 @@ func (RuntimeExecutionAdapter) Nth(coll Object, idx int) (Object, bool) {
 	return nil, false
 }
 
-func (RuntimeExecutionAdapter) Conj(coll Object, val Object) (Object, bool) {
+func (RuntimeExecutionAdapter) Conj(coll coretypes.Object, val coretypes.Object) (coretypes.Object, bool) {
 	switch c := coll.(type) {
 	case *TransientVector:
 		return c.ConjInPlace(val), true
@@ -260,7 +260,7 @@ func (RuntimeExecutionAdapter) Conj(coll Object, val Object) (Object, bool) {
 	}
 }
 
-func (RuntimeExecutionAdapter) First(coll Object) (Object, bool) {
+func (RuntimeExecutionAdapter) First(coll coretypes.Object) (coretypes.Object, bool) {
 	switch c := coll.(type) {
 	case *ArrayVector:
 		if len(c.arr) > 0 {
@@ -283,20 +283,20 @@ func (RuntimeExecutionAdapter) First(coll Object) (Object, bool) {
 	}
 }
 
-func (RuntimeExecutionAdapter) BuildVector(items []Object) Object {
-	arr := make([]Object, len(items))
+func (RuntimeExecutionAdapter) BuildVector(items []coretypes.Object) coretypes.Object {
+	arr := make([]coretypes.Object, len(items))
 	copy(arr, items)
 	return &ArrayVector{arr: arr}
 }
 
-func (RuntimeExecutionAdapter) ToTransient(coll Object) (Object, bool) {
+func (RuntimeExecutionAdapter) ToTransient(coll coretypes.Object) (coretypes.Object, bool) {
 	if av, ok := coll.(*ArrayVector); ok {
 		return ToTransient(av), true
 	}
 	return nil, false
 }
 
-func (RuntimeExecutionAdapter) AssocBang(coll Object, key Object, val Object) (Object, bool) {
+func (RuntimeExecutionAdapter) AssocBang(coll coretypes.Object, key coretypes.Object, val coretypes.Object) (coretypes.Object, bool) {
 	switch c := coll.(type) {
 	case *TransientVector:
 		return c.AssocInPlace(key, val), true
@@ -307,7 +307,7 @@ func (RuntimeExecutionAdapter) AssocBang(coll Object, key Object, val Object) (O
 	}
 }
 
-func (RuntimeExecutionAdapter) ToPersistent(coll Object) (Object, bool) {
+func (RuntimeExecutionAdapter) ToPersistent(coll coretypes.Object) (coretypes.Object, bool) {
 	switch c := coll.(type) {
 	case *TransientVector:
 		return c.ToPersistent(), true
@@ -318,7 +318,7 @@ func (RuntimeExecutionAdapter) ToPersistent(coll Object) (Object, bool) {
 	}
 }
 
-func (RuntimeExecutionAdapter) Str1(obj Object) Object {
+func (RuntimeExecutionAdapter) Str1(obj coretypes.Object) coretypes.Object {
 	switch v := obj.(type) {
 	case Nil:
 		return coretypes.String{S: ""}
@@ -331,7 +331,7 @@ func (RuntimeExecutionAdapter) Str1(obj Object) Object {
 	}
 }
 
-func (RuntimeExecutionAdapter) Str2(a Object, b Object) Object {
+func (RuntimeExecutionAdapter) Str2(a coretypes.Object, b coretypes.Object) coretypes.Object {
 	switch av := a.(type) {
 	case *TransientString:
 		switch bv := b.(type) {
@@ -363,7 +363,7 @@ func (RuntimeExecutionAdapter) Str2(a Object, b Object) Object {
 	}
 }
 
-func (RuntimeExecutionAdapter) Count(obj Object) (int, bool) {
+func (RuntimeExecutionAdapter) Count(obj coretypes.Object) (int, bool) {
 	switch v := obj.(type) {
 	case *TransientString:
 		return v.Count(), true
@@ -374,7 +374,7 @@ func (RuntimeExecutionAdapter) Count(obj Object) (int, bool) {
 	}
 }
 
-func (adapter RuntimeExecutionAdapter) NthASCIIStringConst(prog *IRProgram, constIdx int, idx int) (Object, bool) {
+func (adapter RuntimeExecutionAdapter) NthASCIIStringConst(prog *IRProgram, constIdx int, idx int) (coretypes.Object, bool) {
 	constant, ok := adapter.ProgramConstant(prog, constIdx)
 	if !ok {
 		return nil, false
@@ -386,7 +386,7 @@ func (adapter RuntimeExecutionAdapter) NthASCIIStringConst(prog *IRProgram, cons
 	return coretypes.Char{Ch: rune(s.S[idx])}, true
 }
 
-func (RuntimeExecutionAdapter) CursorChar(obj Object) (Object, bool) {
+func (RuntimeExecutionAdapter) CursorChar(obj coretypes.Object) (coretypes.Object, bool) {
 	cur, ok := obj.(*StringCursor)
 	if !ok {
 		return nil, false
@@ -397,7 +397,7 @@ func (RuntimeExecutionAdapter) CursorChar(obj Object) (Object, bool) {
 	return NIL, true
 }
 
-func (RuntimeExecutionAdapter) CursorNext(obj Object) (Object, bool) {
+func (RuntimeExecutionAdapter) CursorNext(obj coretypes.Object) (coretypes.Object, bool) {
 	cur, ok := obj.(*StringCursor)
 	if !ok {
 		return nil, false
@@ -405,7 +405,7 @@ func (RuntimeExecutionAdapter) CursorNext(obj Object) (Object, bool) {
 	return cur.Next(), true
 }
 
-func (RuntimeExecutionAdapter) CursorDone(obj Object) (Object, bool) {
+func (RuntimeExecutionAdapter) CursorDone(obj coretypes.Object) (coretypes.Object, bool) {
 	cur, ok := obj.(*StringCursor)
 	if !ok {
 		return nil, false
@@ -446,14 +446,14 @@ func (RuntimeExecutionAdapter) ProgramModel(prog *IRProgram) *coreir.Program {
 	return prog.neutralModel()
 }
 
-func (RuntimeExecutionAdapter) ProgramConstant(prog *IRProgram, idx int) (Object, bool) {
+func (RuntimeExecutionAdapter) ProgramConstant(prog *IRProgram, idx int) (coretypes.Object, bool) {
 	if prog == nil || idx < 0 || idx >= len(prog.constants) {
 		return nil, false
 	}
 	return prog.constants[idx], true
 }
 
-func (RuntimeExecutionAdapter) ProgramConstants(prog *IRProgram) []Object {
+func (RuntimeExecutionAdapter) ProgramConstants(prog *IRProgram) []coretypes.Object {
 	if prog == nil {
 		return nil
 	}
@@ -467,7 +467,7 @@ func (RuntimeExecutionAdapter) ProgramFnExpr(prog *IRProgram, idx int) (*FnExpr,
 	return prog.fnExprs[idx], true
 }
 
-func (RuntimeExecutionAdapter) FnProgram(fnObj Object) (*IRProgram, bool) {
+func (RuntimeExecutionAdapter) FnProgram(fnObj coretypes.Object) (*IRProgram, bool) {
 	fn, ok := fnObj.(*Fn)
 	if !ok {
 		return nil, false
@@ -482,7 +482,7 @@ func (RuntimeExecutionAdapter) FnProgram(fnObj Object) (*IRProgram, bool) {
 	return prog, prog != nil
 }
 
-func (RuntimeExecutionAdapter) CompileFnProgram(fnObj Object) (*IRProgram, bool) {
+func (RuntimeExecutionAdapter) CompileFnProgram(fnObj coretypes.Object) (*IRProgram, bool) {
 	fn, ok := fnObj.(*Fn)
 	if !ok {
 		return nil, false
@@ -491,7 +491,7 @@ func (RuntimeExecutionAdapter) CompileFnProgram(fnObj Object) (*IRProgram, bool)
 	return prog, prog != nil
 }
 
-func (RuntimeExecutionAdapter) FnWasmExec(fnObj Object, args []Object) (Object, bool) {
+func (RuntimeExecutionAdapter) FnWasmExec(fnObj coretypes.Object, args []coretypes.Object) (coretypes.Object, bool) {
 	fn, ok := fnObj.(*Fn)
 	if !ok {
 		return nil, false
@@ -504,7 +504,7 @@ func (RuntimeExecutionAdapter) FnWasmExec(fnObj Object, args []Object) (Object, 
 	return result, result != nil
 }
 
-func (adapter RuntimeExecutionAdapter) FnCallSlots(fnObj Object, prog *IRProgram, args []Object) ([]Object, bool) {
+func (adapter RuntimeExecutionAdapter) FnCallSlots(fnObj coretypes.Object, prog *IRProgram, args []coretypes.Object) ([]coretypes.Object, bool) {
 	fn, ok := fnObj.(*Fn)
 	if !ok {
 		return nil, false
@@ -512,7 +512,7 @@ func (adapter RuntimeExecutionAdapter) FnCallSlots(fnObj Object, prog *IRProgram
 	return adapter.PrepareCallSlots(prog, args, fn.env), true
 }
 
-func (adapter RuntimeExecutionAdapter) InstallFnTypedEnvCaptures(fnObj Object, prog *IRProgram, slots []irValue) bool {
+func (adapter RuntimeExecutionAdapter) InstallFnTypedEnvCaptures(fnObj coretypes.Object, prog *IRProgram, slots []irValue) bool {
 	fn, ok := fnObj.(*Fn)
 	if !ok {
 		return false
@@ -521,12 +521,12 @@ func (adapter RuntimeExecutionAdapter) InstallFnTypedEnvCaptures(fnObj Object, p
 	return true
 }
 
-func (RuntimeExecutionAdapter) ObjectsFromTypedValues(values []irValue, buf []Object) []Object {
-	var out []Object
+func (RuntimeExecutionAdapter) ObjectsFromTypedValues(values []irValue, buf []coretypes.Object) []coretypes.Object {
+	var out []coretypes.Object
 	if len(values) <= len(buf) {
 		out = buf[:len(values)]
 	} else {
-		out = make([]Object, len(values))
+		out = make([]coretypes.Object, len(values))
 	}
 	for i, v := range values {
 		out[i] = v.object()
@@ -571,7 +571,7 @@ func (RuntimeExecutionAdapter) ProgramAnalysis(prog *IRProgram) coreir.Analysis 
 	return AnalyzeIRProgram(prog)
 }
 
-func (adapter RuntimeExecutionAdapter) ApplyProgramCaptureSlots(prog *IRProgram, slots []Object) bool {
+func (adapter RuntimeExecutionAdapter) ApplyProgramCaptureSlots(prog *IRProgram, slots []coretypes.Object) bool {
 	if prog == nil {
 		return false
 	}
@@ -609,7 +609,7 @@ func (adapter RuntimeExecutionAdapter) ClearTypedNonCaptureSlots(prog *IRProgram
 	return adapter.ApplyProgramTypedCaptureSlots(prog, slots)
 }
 
-func (RuntimeExecutionAdapter) ProgramCaptureSlots(prog *IRProgram) ([]int, []Object) {
+func (RuntimeExecutionAdapter) ProgramCaptureSlots(prog *IRProgram) ([]int, []coretypes.Object) {
 	if prog == nil {
 		return nil, nil
 	}

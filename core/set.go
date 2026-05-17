@@ -12,7 +12,7 @@ type (
 	Set interface {
 		coretypes.Conjable
 		coretypes.Gettable
-		Disjoin(key Object) Set
+		Disjoin(key coretypes.Object) Set
 	}
 	MapSet struct {
 		coretypes.InfoHolder
@@ -21,13 +21,13 @@ type (
 	}
 )
 
-func (v *MapSet) WithMeta(meta Map) Object {
+func (v *MapSet) WithMeta(meta Map) coretypes.Object {
 	res := *v
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
 }
 
-func (set *MapSet) Disjoin(key Object) Set {
+func (set *MapSet) Disjoin(key coretypes.Object) Set {
 	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.m.Without(key)}
 }
 
@@ -38,7 +38,7 @@ func (set *MapSet) ensureMap() Map {
 	return set.m
 }
 
-func (set *MapSet) Add(obj Object) bool {
+func (set *MapSet) Add(obj coretypes.Object) bool {
 	switch m := set.ensureMap().(type) {
 	case *ArrayMap:
 		return m.Add(obj, coretypes.Boolean{B: true})
@@ -53,7 +53,7 @@ func (set *MapSet) Add(obj Object) bool {
 	}
 }
 
-func (set *MapSet) Conj(obj Object) coretypes.Conjable {
+func (set *MapSet) Conj(obj coretypes.Object) coretypes.Conjable {
 	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.ensureMap().Assoc(obj, coretypes.Boolean{B: true}).(Map)}
 }
 
@@ -80,7 +80,7 @@ func (set *MapSet) Equals(other interface{}) bool {
 	}
 }
 
-func (set *MapSet) Get(key Object) (bool, Object) {
+func (set *MapSet) Get(key coretypes.Object) (bool, coretypes.Object) {
 	if set.m == nil {
 		return false, nil
 	}
@@ -112,7 +112,7 @@ func (set *MapSet) Count() int {
 	return set.m.Count()
 }
 
-func (set *MapSet) Call(args []Object) Object {
+func (set *MapSet) Call(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	if ok, _ := set.Get(args[0]); ok {
 		return args[0]
@@ -150,7 +150,7 @@ func (set *MapSet) Pprint(w io.Writer, indent int) int {
 func (set *MapSet) Format(w io.Writer, indent int) int {
 	i := indent + 2
 	fmt.Fprint(w, "#{")
-	var prevObj Object
+	var prevObj coretypes.Object
 	for iter := iter(set.m.Keys()); iter.HasNext(); {
 		obj := iter.Next()
 		if prevObj != nil {

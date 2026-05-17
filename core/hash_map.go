@@ -12,9 +12,9 @@ type (
 		val interface{}
 	}
 	Node interface {
-		assoc(shift uint, hash uint32, key Object, val Object, addedLeaf *Box) Node
-		without(shift uint, hash uint32, key Object) Node
-		find(shift uint, hash uint32, key Object) *Pair
+		assoc(shift uint, hash uint32, key coretypes.Object, val coretypes.Object, addedLeaf *Box) Node
+		without(shift uint, hash uint32, key coretypes.Object) Node
+		find(shift uint, hash uint32, key coretypes.Object) *Pair
 		nodeSeq() Seq
 		iter() MapIterator
 	}
@@ -103,7 +103,7 @@ func (iter *NodeIterator) advance() bool {
 		nodeOrVal := iter.array[iter.i+1]
 		iter.i += 2
 		if key != nil {
-			iter.nextEntry = &Pair{Key: key.(Object), Value: nodeOrVal.(Object)}
+			iter.nextEntry = &Pair{Key: key.(coretypes.Object), Value: nodeOrVal.(coretypes.Object)}
 			return true
 		} else if nodeOrVal != nil {
 			iter1 := nodeOrVal.(Node).iter()
@@ -163,7 +163,7 @@ func newArrayNodeSeq(nodes []Node, i int, s Seq) Seq {
 	return nil
 }
 
-func (s *ArrayNodeSeq) WithMeta(meta Map) Object {
+func (s *ArrayNodeSeq) WithMeta(meta Map) coretypes.Object {
 	res := *s
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -197,7 +197,7 @@ func (s *ArrayNodeSeq) Hash() uint32 {
 	return hashOrdered(s)
 }
 
-func (s *ArrayNodeSeq) First() Object {
+func (s *ArrayNodeSeq) First() coretypes.Object {
 	return s.s.First()
 }
 
@@ -220,7 +220,7 @@ func (s *ArrayNodeSeq) IsEmpty() bool {
 	return false
 }
 
-func (s *ArrayNodeSeq) Cons(obj Object) Seq {
+func (s *ArrayNodeSeq) Cons(obj coretypes.Object) Seq {
 	return &ConsSeq{first: obj, rest: s}
 }
 
@@ -256,7 +256,7 @@ func newNodeSeq(array []interface{}, i int, s Seq) Seq {
 	return nil
 }
 
-func (s *NodeSeq) WithMeta(meta Map) Object {
+func (s *NodeSeq) WithMeta(meta Map) coretypes.Object {
 	res := *s
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -290,11 +290,11 @@ func (s *NodeSeq) Hash() uint32 {
 	return hashOrdered(s)
 }
 
-func (s *NodeSeq) First() Object {
+func (s *NodeSeq) First() coretypes.Object {
 	if s.s != nil {
 		return s.s.First()
 	}
-	return collectionConstruction.NewVectorFrom(s.array[s.i].(Object), s.array[s.i+1].(Object))
+	return collectionConstruction.NewVectorFrom(s.array[s.i].(coretypes.Object), s.array[s.i+1].(coretypes.Object))
 }
 
 func (s *NodeSeq) Rest() Seq {
@@ -321,7 +321,7 @@ func (s *NodeSeq) IsEmpty() bool {
 	return false
 }
 
-func (s *NodeSeq) Cons(obj Object) Seq {
+func (s *NodeSeq) Cons(obj coretypes.Object) Seq {
 	return &ConsSeq{first: obj, rest: s}
 }
 
@@ -333,7 +333,7 @@ func (n *ArrayNode) iter() MapIterator {
 	}
 }
 
-func (n *ArrayNode) assoc(shift uint, hash uint32, key Object, val Object, addedLeaf *Box) Node {
+func (n *ArrayNode) assoc(shift uint, hash uint32, key coretypes.Object, val coretypes.Object, addedLeaf *Box) Node {
 	idx := mask(hash, shift)
 	node := n.array[idx]
 	if node == nil {
@@ -352,7 +352,7 @@ func (n *ArrayNode) assoc(shift uint, hash uint32, key Object, val Object, added
 	}
 }
 
-func (n *ArrayNode) without(shift uint, hash uint32, key Object) Node {
+func (n *ArrayNode) without(shift uint, hash uint32, key coretypes.Object) Node {
 	idx := mask(hash, shift)
 	node := n.array[idx]
 	if node == nil {
@@ -378,7 +378,7 @@ func (n *ArrayNode) without(shift uint, hash uint32, key Object) Node {
 	}
 }
 
-func (n *ArrayNode) find(shift uint, hash uint32, key Object) *Pair {
+func (n *ArrayNode) find(shift uint, hash uint32, key coretypes.Object) *Pair {
 	idx := mask(hash, shift)
 	node := n.array[idx]
 	if node == nil {
@@ -399,7 +399,7 @@ func (n *ArrayNode) pack(idx uint) Node {
 	}
 }
 
-func (n *HashCollisionNode) findIndex(key Object) int {
+func (n *HashCollisionNode) findIndex(key coretypes.Object) int {
 	for i := 0; i < 2*n.count; i += 2 {
 		if key.Equals(n.array[i]) {
 			return i
@@ -414,7 +414,7 @@ func (n *HashCollisionNode) iter() MapIterator {
 	}
 }
 
-func (n *HashCollisionNode) assoc(shift uint, hash uint32, key Object, val Object, addedLeaf *Box) Node {
+func (n *HashCollisionNode) assoc(shift uint, hash uint32, key coretypes.Object, val coretypes.Object, addedLeaf *Box) Node {
 	if hash == n.hash {
 		idx := n.findIndex(key)
 		if idx != -1 {
@@ -441,7 +441,7 @@ func (n *HashCollisionNode) assoc(shift uint, hash uint32, key Object, val Objec
 	}).assoc(shift, hash, key, val, addedLeaf)
 }
 
-func (n *HashCollisionNode) without(shift uint, hash uint32, key Object) Node {
+func (n *HashCollisionNode) without(shift uint, hash uint32, key coretypes.Object) Node {
 	idx := n.findIndex(key)
 	if idx == -1 {
 		return n
@@ -456,14 +456,14 @@ func (n *HashCollisionNode) without(shift uint, hash uint32, key Object) Node {
 	}
 }
 
-func (n *HashCollisionNode) find(shift uint, hash uint32, key Object) *Pair {
+func (n *HashCollisionNode) find(shift uint, hash uint32, key coretypes.Object) *Pair {
 	idx := n.findIndex(key)
 	if idx == -1 {
 		return nil
 	}
 	return &Pair{
-		Key:   n.array[idx].(Object),
-		Value: n.array[idx+1].(Object),
+		Key:   n.array[idx].(coretypes.Object),
+		Value: n.array[idx+1].(coretypes.Object),
 	}
 }
 
@@ -495,7 +495,7 @@ func cloneAndSetNode(array []Node, i int, a Node) []Node {
 	return corecollections.AssocCopy(array, i, a)
 }
 
-func createNode(shift uint, key1 Object, val1 Object, key2hash uint32, key2 Object, val2 Object) Node {
+func createNode(shift uint, key1 coretypes.Object, val1 coretypes.Object, key2hash uint32, key2 coretypes.Object, val2 coretypes.Object) Node {
 	key1hash := key1.Hash()
 	if key1hash == key2hash {
 		return &HashCollisionNode{
@@ -522,7 +522,7 @@ func (b *BitmapIndexedNode) iter() MapIterator {
 	}
 }
 
-func (b *BitmapIndexedNode) assoc(shift uint, hash uint32, key Object, val Object, addedLeaf *Box) Node {
+func (b *BitmapIndexedNode) assoc(shift uint, hash uint32, key coretypes.Object, val coretypes.Object, addedLeaf *Box) Node {
 	bit := bitpos(hash, shift)
 	idx := b.index(bit)
 	if b.bitmap&bit != 0 {
@@ -550,7 +550,7 @@ func (b *BitmapIndexedNode) assoc(shift uint, hash uint32, key Object, val Objec
 		addedLeaf.val = addedLeaf
 		return &BitmapIndexedNode{
 			bitmap: b.bitmap,
-			array:  cloneAndSet2(b.array, 2*idx, nil, 2*idx+1, createNode(shift+5, keyOrNull.(Object), valOrNode.(Object), hash, key, val)),
+			array:  cloneAndSet2(b.array, 2*idx, nil, 2*idx+1, createNode(shift+5, keyOrNull.(coretypes.Object), valOrNode.(coretypes.Object), hash, key, val)),
 		}
 	} else {
 		n := bitCount(b.bitmap)
@@ -565,7 +565,7 @@ func (b *BitmapIndexedNode) assoc(shift uint, hash uint32, key Object, val Objec
 					if b.array[j] == nil {
 						nodes[i] = b.array[j+1].(Node)
 					} else {
-						nodes[i] = emptyIndexedNode.assoc(shift+5, b.array[j].(Object).Hash(), b.array[j].(Object), b.array[j+1].(Object), addedLeaf)
+						nodes[i] = emptyIndexedNode.assoc(shift+5, b.array[j].(coretypes.Object).Hash(), b.array[j].(coretypes.Object), b.array[j+1].(coretypes.Object), addedLeaf)
 					}
 					j += 2
 				}
@@ -585,7 +585,7 @@ func (b *BitmapIndexedNode) assoc(shift uint, hash uint32, key Object, val Objec
 	}
 }
 
-func (b *BitmapIndexedNode) without(shift uint, hash uint32, key Object) Node {
+func (b *BitmapIndexedNode) without(shift uint, hash uint32, key coretypes.Object) Node {
 	bit := bitpos(hash, shift)
 	if (b.bitmap & bit) == 0 {
 		return b
@@ -621,7 +621,7 @@ func (b *BitmapIndexedNode) without(shift uint, hash uint32, key Object) Node {
 	return b
 }
 
-func (b *BitmapIndexedNode) find(shift uint, hash uint32, key Object) *Pair {
+func (b *BitmapIndexedNode) find(shift uint, hash uint32, key coretypes.Object) *Pair {
 	bit := bitpos(hash, shift)
 	if (b.bitmap & bit) == 0 {
 		return nil
@@ -634,8 +634,8 @@ func (b *BitmapIndexedNode) find(shift uint, hash uint32, key Object) *Pair {
 	}
 	if key.Equals(keyOrNull) {
 		return &Pair{
-			Key:   keyOrNull.(Object),
-			Value: valOrNode.(Object),
+			Key:   keyOrNull.(coretypes.Object),
+			Value: valOrNode.(coretypes.Object),
 		}
 	}
 	return nil
@@ -645,7 +645,7 @@ func (b *BitmapIndexedNode) nodeSeq() Seq {
 	return newNodeSeq(b.array, 0, nil)
 }
 
-func (m *HashMap) WithMeta(meta Map) Object {
+func (m *HashMap) WithMeta(meta Map) coretypes.Object {
 	res := *m
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -681,7 +681,7 @@ func (m *HashMap) Count() int {
 	return m.count
 }
 
-func (m *HashMap) containsKey(key Object) bool {
+func (m *HashMap) containsKey(key coretypes.Object) bool {
 	if m.root != nil {
 		return m.root.find(0, key.Hash(), key) != nil
 	} else {
@@ -689,7 +689,7 @@ func (m *HashMap) containsKey(key Object) bool {
 	}
 }
 
-func (m *HashMap) Assoc(key, val Object) Associative {
+func (m *HashMap) Assoc(key, val coretypes.Object) Associative {
 	addedLeaf := &Box{}
 	var newroot, t Node
 	if m.root == nil {
@@ -713,7 +713,7 @@ func (m *HashMap) Assoc(key, val Object) Associative {
 	return res
 }
 
-func (m *HashMap) EntryAt(key Object) *ArrayVector {
+func (m *HashMap) EntryAt(key coretypes.Object) *ArrayVector {
 	if m.root != nil {
 		p := m.root.find(0, key.Hash(), key)
 		if p != nil {
@@ -723,7 +723,7 @@ func (m *HashMap) EntryAt(key Object) *ArrayVector {
 	return nil
 }
 
-func (m *HashMap) Get(key Object) (bool, Object) {
+func (m *HashMap) Get(key coretypes.Object) (bool, coretypes.Object) {
 	if m.root != nil {
 		if res := m.root.find(0, key.Hash(), key); res != nil {
 			return true, res.Value
@@ -732,7 +732,7 @@ func (m *HashMap) Get(key Object) (bool, Object) {
 	return false, nil
 }
 
-func (m *HashMap) Conj(obj Object) coretypes.Conjable {
+func (m *HashMap) Conj(obj coretypes.Object) coretypes.Conjable {
 	return mapConj(m, obj)
 }
 
@@ -746,7 +746,7 @@ func (m *HashMap) Iter() MapIterator {
 func (m *HashMap) Keys() Seq {
 	return &MappingSeq{
 		seq: m.Seq(),
-		fn: func(obj Object) Object {
+		fn: func(obj coretypes.Object) coretypes.Object {
 			return obj.(Vec).Nth(0)
 		},
 	}
@@ -755,7 +755,7 @@ func (m *HashMap) Keys() Seq {
 func (m *HashMap) Vals() Seq {
 	return &MappingSeq{
 		seq: m.Seq(),
-		fn: func(obj Object) Object {
+		fn: func(obj coretypes.Object) coretypes.Object {
 			return obj.(Vec).Nth(1)
 		},
 	}
@@ -776,7 +776,7 @@ func (m *HashMap) Merge(other Map) Map {
 	return res.(Map)
 }
 
-func (m *HashMap) Without(key Object) Map {
+func (m *HashMap) Without(key coretypes.Object) Map {
 	if m.root == nil {
 		return m
 	}
@@ -792,11 +792,11 @@ func (m *HashMap) Without(key Object) Map {
 	return res
 }
 
-func (m *HashMap) Call(args []Object) Object {
+func (m *HashMap) Call(args []coretypes.Object) coretypes.Object {
 	return callMap(m, args)
 }
 
-func NewHashMap(keyvals ...Object) *HashMap {
+func NewHashMap(keyvals ...coretypes.Object) *HashMap {
 	var res Associative = EmptyHashMap
 	for i := 0; i < len(keyvals); i += 2 {
 		res = res.Assoc(keyvals[i], keyvals[i+1])
@@ -812,7 +812,7 @@ func (m *HashMap) Pprint(w io.Writer, indent int) int {
 	return pprintMap(m, w, indent)
 }
 
-func (m *HashMap) KVReduce(c coretypes.Callable, init Object) Object {
+func (m *HashMap) KVReduce(c coretypes.Callable, init coretypes.Object) coretypes.Object {
 	res := init
 	iter := m.Iter()
 	for iter.HasNext() {

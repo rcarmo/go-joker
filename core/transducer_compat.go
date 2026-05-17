@@ -45,17 +45,21 @@ func (xf *XForm) ToString(escape bool) string   { return "#object[XForm]" }
 func (xf *XForm) Equals(other interface{}) bool { return xf == other }
 func (xf *XForm) GetType() *coretypes.Type      { return TYPE.Fn }
 func (xf *XForm) Hash() uint32                  { return hashutil.Ptr(uintptr(unsafe.Pointer(xf))) }
-func (xf *XForm) WithInfo(info *coretypes.ObjectInfo) Object {
+func (xf *XForm) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *xf
 	res.Info = info
 	return &res
 }
-func (xf *XForm) WithMeta(m Map) Object { res := *xf; res.meta = SafeMerge(res.meta, m); return &res }
+func (xf *XForm) WithMeta(m Map) coretypes.Object {
+	res := *xf
+	res.meta = SafeMerge(res.meta, m)
+	return &res
+}
 
-func (xf *XForm) Call(args []Object) Object {
+func (xf *XForm) Call(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	rf := EnsureArgIsCallable(args, 0)
-	return buildXFormRF(xf.steps, rf).(Object)
+	return buildXFormRF(xf.steps, rf).(coretypes.Object)
 }
 
 func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
@@ -66,7 +70,7 @@ func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
 		case xformMap:
 			f := step.fn
 			downstream := wrapped
-			wrapped = Proc{Name: "procMapXfRF", Fn: func(callArgs []Object) Object {
+			wrapped = Proc{Name: "procMapXfRF", Fn: func(callArgs []coretypes.Object) coretypes.Object {
 				switch len(callArgs) {
 				case 0:
 					return call0(downstream)
@@ -82,7 +86,7 @@ func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
 		case xformFilter:
 			pred := step.fn
 			downstream := wrapped
-			wrapped = Proc{Name: "procFilterXfRF", Fn: func(callArgs []Object) Object {
+			wrapped = Proc{Name: "procFilterXfRF", Fn: func(callArgs []coretypes.Object) coretypes.Object {
 				switch len(callArgs) {
 				case 0:
 					return call0(downstream)
@@ -102,7 +106,7 @@ func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
 			limit := step.n
 			downstream := wrapped
 			remaining := limit
-			wrapped = Proc{Name: "procTakeXfRF", Fn: func(callArgs []Object) Object {
+			wrapped = Proc{Name: "procTakeXfRF", Fn: func(callArgs []coretypes.Object) coretypes.Object {
 				switch len(callArgs) {
 				case 0:
 					return call0(downstream)
@@ -128,7 +132,7 @@ func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
 	return wrapped
 }
 
-func completeReducingFn(rf coretypes.Callable, res Object) Object {
+func completeReducingFn(rf coretypes.Callable, res coretypes.Object) coretypes.Object {
 	completed := res
 	func() {
 		defer func() {
@@ -141,7 +145,7 @@ func completeReducingFn(rf coretypes.Callable, res Object) Object {
 	return DerefReduced(completed)
 }
 
-func transduceInternal(xform coretypes.Callable, reducingFnObj Object, init Object, collObj Object) Object {
+func transduceInternal(xform coretypes.Callable, reducingFnObj coretypes.Object, init coretypes.Object, collObj coretypes.Object) coretypes.Object {
 	if xf, ok := xform.(*XForm); ok {
 		return transducePipeline(xf, reducingFnObj, init, collObj)
 	}
@@ -162,7 +166,7 @@ func transduceInternal(xform coretypes.Callable, reducingFnObj Object, init Obje
 	return completeReducingFn(rf, res)
 }
 
-func transducePipeline(xf *XForm, reducingFnObj Object, init Object, collObj Object) Object {
+func transducePipeline(xf *XForm, reducingFnObj coretypes.Object, init coretypes.Object, collObj coretypes.Object) coretypes.Object {
 	rf := EnsureObjectIsCallable(reducingFnObj, "transduce reducing function must be coretypes.Callable, got %s")
 	if r, ok := collObj.(*IntRange); ok {
 		return transducePipelineRange(xf, rf, init, r)
@@ -217,7 +221,7 @@ func transducePipeline(xf *XForm, reducingFnObj Object, init Object, collObj Obj
 	return completeReducingFn(rf, res)
 }
 
-func transducePipelineRange(xf *XForm, rf coretypes.Callable, init Object, r *IntRange) Object {
+func transducePipelineRange(xf *XForm, rf coretypes.Callable, init coretypes.Object, r *IntRange) coretypes.Object {
 	res := init
 	reducerName := hotReducerName(rf)
 	takeRemaining := -1
@@ -228,7 +232,7 @@ func transducePipelineRange(xf *XForm, rf coretypes.Callable, init Object, r *In
 		}
 	}
 	for i := r.start; r.contains(i); i += r.step {
-		val := Object(coretypes.Int{I: i})
+		val := coretypes.Object(coretypes.Int{I: i})
 		include := true
 		stopAfter := false
 		for _, step := range xf.steps {
@@ -266,7 +270,7 @@ func transducePipelineRange(xf *XForm, rf coretypes.Callable, init Object, r *In
 	return completeReducingFn(rf, res)
 }
 
-func applyXFormMapStep(step xformStep, val Object) Object {
+func applyXFormMapStep(step xformStep, val coretypes.Object) coretypes.Object {
 	if step.intrinsic == reducibleSquareInt {
 		if iv, ok := val.(coretypes.Int); ok {
 			return coretypes.Int{I: iv.I * iv.I}
@@ -275,7 +279,7 @@ func applyXFormMapStep(step xformStep, val Object) Object {
 	return call1(step.fn, val)
 }
 
-func applyXFormFilterStep(step xformStep, val Object) bool {
+func applyXFormFilterStep(step xformStep, val coretypes.Object) bool {
 	if step.intrinsic == reducibleEvenInt {
 		if iv, ok := val.(coretypes.Int); ok {
 			return iv.I%2 == 0
@@ -285,11 +289,11 @@ func applyXFormFilterStep(step xformStep, val Object) bool {
 	return ToBool(call1(step.fn, val))
 }
 
-func reduceStepFast(rf coretypes.Callable, acc Object, val Object) Object {
+func reduceStepFast(rf coretypes.Callable, acc coretypes.Object, val coretypes.Object) coretypes.Object {
 	return reduceStepFastByName(rf, hotReducerName(rf), acc, val)
 }
 
-func reduceStepFastByName(rf coretypes.Callable, name string, acc Object, val Object) Object {
+func reduceStepFastByName(rf coretypes.Callable, name string, acc coretypes.Object, val coretypes.Object) coretypes.Object {
 	switch name {
 	case "procAdd", "procunchecked-add", "procunchecked-add-int":
 		if a, ok := acc.(coretypes.Int); ok {
@@ -307,7 +311,7 @@ func reduceStepFastByName(rf coretypes.Callable, name string, acc Object, val Ob
 	return call2(rf, acc, val)
 }
 
-func makeMapTransducer(f coretypes.Callable) Object {
+func makeMapTransducer(f coretypes.Callable) coretypes.Object {
 	step := xformStep{kind: xformMap, fn: f}
 	if fn, ok := f.(*Fn); ok && isSquareFnExpr(fn.fnExpr) {
 		step.intrinsic = reducibleSquareInt
@@ -315,7 +319,7 @@ func makeMapTransducer(f coretypes.Callable) Object {
 	return &XForm{steps: []xformStep{step}}
 }
 
-func makeFilterTransducer(pred coretypes.Callable) Object {
+func makeFilterTransducer(pred coretypes.Callable) coretypes.Object {
 	step := xformStep{kind: xformFilter, fn: pred}
 	if findFnVarNameCallable(pred) == "even?" {
 		step.intrinsic = reducibleEvenInt
@@ -323,7 +327,7 @@ func makeFilterTransducer(pred coretypes.Callable) Object {
 	return &XForm{steps: []xformStep{step}}
 }
 
-func makeTakeTransducer(n int) Object {
+func makeTakeTransducer(n int) coretypes.Object {
 	if n < 0 {
 		n = 0
 	}
@@ -348,7 +352,7 @@ func installTransducerCompat() {
 	if rkvVr != nil {
 		origRKV, ok := rkvVr.Value.(coretypes.Callable)
 		if ok {
-			rkvVr.Value = Proc{Name: "procReduceKvNilSafe", Fn: func(args []Object) Object {
+			rkvVr.Value = Proc{Name: "procReduceKvNilSafe", Fn: func(args []coretypes.Object) coretypes.Object {
 				if len(args) >= 3 {
 					coll := args[2]
 					if coll == nil {
@@ -365,7 +369,7 @@ func installTransducerCompat() {
 
 	// reduced — wraps value in Reduced box
 	reducedVr := ns.Intern(MakeSymbol("reduced"))
-	reducedVr.Value = Proc{Name: "procReduced", Fn: func(args []Object) Object {
+	reducedVr.Value = Proc{Name: "procReduced", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return MakeReduced(args[0])
 	}}
@@ -373,7 +377,7 @@ func installTransducerCompat() {
 
 	// reduced? — type check, no map lookup
 	reducedQVr := ns.Intern(MakeSymbol("reduced?"))
-	reducedQVr.Value = Proc{Name: "procReducedQ", Fn: func(args []Object) Object {
+	reducedQVr.Value = Proc{Name: "procReducedQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeBoolean(IsReduced(args[0]))
 	}}
@@ -381,7 +385,7 @@ func installTransducerCompat() {
 
 	// ensure-reduced
 	ensureReducedVr := ns.Intern(MakeSymbol("ensure-reduced"))
-	ensureReducedVr.Value = Proc{Name: "procEnsureReduced", Fn: func(args []Object) Object {
+	ensureReducedVr.Value = Proc{Name: "procEnsureReduced", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return EnsureReduced(args[0])
 	}}
@@ -389,7 +393,7 @@ func installTransducerCompat() {
 
 	// unreduced — deref a Reduced box (identity if not reduced)
 	unreducedVr := ns.Intern(MakeSymbol("unreduced"))
-	unreducedVr.Value = Proc{Name: "procUnreduced", Fn: func(args []Object) Object {
+	unreducedVr.Value = Proc{Name: "procUnreduced", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return DerefReduced(args[0])
 	}}
@@ -397,7 +401,7 @@ func installTransducerCompat() {
 
 	// completing — wraps a reducing fn with optional completion step
 	completingVr := ns.Intern(MakeSymbol("completing"))
-	completingVr.Value = Proc{Name: "procCompleting", Fn: func(args []Object) Object {
+	completingVr.Value = Proc{Name: "procCompleting", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) != 1 && len(args) != 2 {
 			PanicArityMinMax(len(args), 1, 2)
 		}
@@ -406,12 +410,12 @@ func installTransducerCompat() {
 		if len(args) == 2 {
 			cf = EnsureArgIsCallable(args, 1)
 		} else {
-			cf = Proc{Name: "procCompletingIdentity", Fn: func(callArgs []Object) Object {
+			cf = Proc{Name: "procCompletingIdentity", Fn: func(callArgs []coretypes.Object) coretypes.Object {
 				CheckArity(callArgs, 1, 1)
 				return callArgs[0]
 			}}
 		}
-		return Proc{Name: "procCompletingRF", Fn: func(callArgs []Object) Object {
+		return Proc{Name: "procCompletingRF", Fn: func(callArgs []coretypes.Object) coretypes.Object {
 			switch len(callArgs) {
 			case 0:
 				return f.Call(nil)
@@ -446,7 +450,7 @@ func installTransducerCompat() {
 	}
 
 	// map transducer arity: (map f) returns a transducer
-	mapVr.Value = Proc{Name: "procMapXfCompat", Fn: func(args []Object) Object {
+	mapVr.Value = Proc{Name: "procMapXfCompat", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
 			f := EnsureArgIsCallable(args, 0)
 			return makeMapTransducer(f)
@@ -455,7 +459,7 @@ func installTransducerCompat() {
 	}}
 
 	// filter transducer arity: (filter pred) returns a transducer
-	filterVr.Value = Proc{Name: "procFilterXfCompat", Fn: func(args []Object) Object {
+	filterVr.Value = Proc{Name: "procFilterXfCompat", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
 			pred := EnsureArgIsCallable(args, 0)
 			return makeFilterTransducer(pred)
@@ -464,7 +468,7 @@ func installTransducerCompat() {
 	}}
 
 	// take transducer arity: (take n) returns a transducer when used with transduce
-	takeVr.Value = Proc{Name: "procTakeXfCompat", Fn: func(args []Object) Object {
+	takeVr.Value = Proc{Name: "procTakeXfCompat", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
 			n := EnsureArgIsNumber(args, 0).Int().I
 			return makeTakeTransducer(n)
@@ -473,7 +477,7 @@ func installTransducerCompat() {
 	}}
 
 	// comp of internal xforms returns a fused pipeline.
-	compVr.Value = Proc{Name: "procCompXfCompat", Fn: func(args []Object) Object {
+	compVr.Value = Proc{Name: "procCompXfCompat", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) > 0 {
 			steps := make([]xformStep, 0)
 			for _, arg := range args {
@@ -489,7 +493,7 @@ func installTransducerCompat() {
 	}}
 
 	// transduce — full 3 and 4-arity support
-	transduceProc := Proc{Name: "procTransduce", Fn: func(args []Object) Object {
+	transduceProc := Proc{Name: "procTransduce", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) != 3 && len(args) != 4 {
 			PanicArityMinMax(len(args), 3, 4)
 		}
@@ -498,8 +502,8 @@ func installTransducerCompat() {
 		reducingFnObj := args[1]
 		f := EnsureArgIsCallable(args, 1)
 
-		var init Object
-		var collObj Object
+		var init coretypes.Object
+		var collObj coretypes.Object
 		if len(args) == 4 {
 			init = args[2]
 			collObj = args[3]
@@ -516,12 +520,12 @@ func installTransducerCompat() {
 
 	// eduction — materializes transducer pipeline into a vector
 	eductionVr := ns.Intern(MakeSymbol("eduction"))
-	eductionVr.Value = Proc{Name: "procEduction", Fn: func(args []Object) Object {
+	eductionVr.Value = Proc{Name: "procEduction", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
 			PanicArityMinMax(len(args), 2, 999)
 		}
 		collObj := args[len(args)-1]
-		var xformObj Object
+		var xformObj coretypes.Object
 		if len(args) == 2 {
 			xformObj = args[0]
 		} else {
@@ -534,7 +538,7 @@ func installTransducerCompat() {
 		}
 		xform := EnsureObjectIsCallable(xformObj, "eduction expected callable xform, got %s")
 
-		conjRF := Proc{Name: "procEductionConjRF", Fn: func(callArgs []Object) Object {
+		conjRF := Proc{Name: "procEductionConjRF", Fn: func(callArgs []coretypes.Object) coretypes.Object {
 			switch len(callArgs) {
 			case 0:
 				return collectionConstruction.NewEmptyArrayVector()
@@ -545,7 +549,7 @@ func installTransducerCompat() {
 				if !ok {
 					panic(FailArg(callArgs[0], "coretypes.Conjable", 0))
 				}
-				return acc.Conj(callArgs[1]).(Object)
+				return acc.Conj(callArgs[1]).(coretypes.Object)
 			default:
 				PanicArityMinMax(len(callArgs), 0, 2)
 				return NIL
@@ -557,7 +561,7 @@ func installTransducerCompat() {
 	referToUser(MakeSymbol("eduction"), eductionVr)
 
 	// sequence 2-arity: (sequence xform coll) → lazy seq of eduction result
-	sequenceVr.Value = Proc{Name: "procSequenceCompat", Fn: func(args []Object) Object {
+	sequenceVr.Value = Proc{Name: "procSequenceCompat", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 2 {
 			res := eductionVr.Value.(coretypes.Callable).Call(args)
 			if s, ok := res.(Seqable); ok {

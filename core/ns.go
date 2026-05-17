@@ -37,7 +37,7 @@ func (ns *Namespace) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (ns *Namespace) WithInfo(info *coretypes.ObjectInfo) Object {
+func (ns *Namespace) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return ns
 }
 
@@ -45,7 +45,7 @@ func (ns *Namespace) GetType() *coretypes.Type {
 	return TYPE.Namespace
 }
 
-func (ns *Namespace) WithMeta(meta Map) Object {
+func (ns *Namespace) WithMeta(meta Map) coretypes.Object {
 	res := *ns
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -56,7 +56,7 @@ func (ns *Namespace) ResetMeta(newMeta Map) Map {
 	return ns.meta
 }
 
-func (ns *Namespace) AlterMeta(fn *Fn, args []Object) Map {
+func (ns *Namespace) AlterMeta(fn *Fn, args []coretypes.Object) Map {
 	return AlterMeta(&ns.MetaHolder, fn, args)
 }
 
@@ -173,7 +173,7 @@ func isDeclaredInConfig(vr *Var) bool {
 	return corestr.IsJokerdPath(s.S)
 }
 
-func (ns *Namespace) InternVar(name string, val Object, meta *ArrayMap) *Var {
+func (ns *Namespace) InternVar(name string, val coretypes.Object, meta *ArrayMap) *Var {
 	vr := ns.Intern(MakeSymbol(name))
 	vr.Value = val
 	meta.Add(KEYWORDS.ns, ns)

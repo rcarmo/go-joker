@@ -12,7 +12,7 @@ import (
 type atomExtras struct {
 	validator coretypes.Callable
 	watches   map[string]struct {
-		key Object
+		key coretypes.Object
 		fn  coretypes.Callable
 	} // key.ToString → watch
 }
@@ -31,7 +31,7 @@ func getOrCreateAtomExtras(a *Atom) *atomExtras {
 		return v.(*atomExtras)
 	}
 	ext := &atomExtras{watches: make(map[string]struct {
-		key Object
+		key coretypes.Object
 		fn  coretypes.Callable
 	})}
 	atomExtrasMap.Store(a, ext)
@@ -39,7 +39,7 @@ func getOrCreateAtomExtras(a *Atom) *atomExtras {
 }
 
 // notifyWatches calls all watch functions with (key atom old-val new-val).
-func notifyWatches(a *Atom, oldVal, newVal Object) {
+func notifyWatches(a *Atom, oldVal, newVal coretypes.Object) {
 	ext := getAtomExtras(a)
 	if ext == nil || len(ext.watches) == 0 {
 		return
@@ -50,7 +50,7 @@ func notifyWatches(a *Atom, oldVal, newVal Object) {
 }
 
 // validateAtom checks the validator, panics if invalid.
-func validateAtom(a *Atom, newVal Object) {
+func validateAtom(a *Atom, newVal coretypes.Object) {
 	ext := getAtomExtras(a)
 	if ext == nil || ext.validator == nil {
 		return
@@ -73,7 +73,7 @@ func registerAtomExtProcs() {
 
 	// set-validator! — (set-validator! atom fn)
 	svVr := ns.Intern(MakeSymbol("set-validator!"))
-	svVr.Value = Proc{Name: "procSetValidator", Fn: func(args []Object) Object {
+	svVr.Value = Proc{Name: "procSetValidator", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		a := EnsureObjectIsAtom(args[0], "set-validator! requires an atom, got %s")
 		ext := getOrCreateAtomExtras(a)
@@ -94,27 +94,27 @@ func registerAtomExtProcs() {
 
 	// get-validator — (get-validator atom)
 	gvVr := ns.Intern(MakeSymbol("get-validator"))
-	gvVr.Value = Proc{Name: "procGetValidator", Fn: func(args []Object) Object {
+	gvVr.Value = Proc{Name: "procGetValidator", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		a := EnsureObjectIsAtom(args[0], "get-validator requires an atom, got %s")
 		ext := getAtomExtras(a)
 		if ext == nil || ext.validator == nil {
 			return NIL
 		}
-		return ext.validator.(Object)
+		return ext.validator.(coretypes.Object)
 	}}
 	referToUser(MakeSymbol("get-validator"), gvVr)
 
 	// add-watch — (add-watch atom key fn)
 	awVr := ns.Intern(MakeSymbol("add-watch"))
-	awVr.Value = Proc{Name: "procAddWatch", Fn: func(args []Object) Object {
+	awVr.Value = Proc{Name: "procAddWatch", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 3, 3)
 		a := EnsureObjectIsAtom(args[0], "add-watch requires an atom, got %s")
 		key := args[1]
 		fn := EnsureObjectIsCallable(args[2], "watch function must be callable, got %s")
 		ext := getOrCreateAtomExtras(a)
 		ext.watches[key.ToString(false)] = struct {
-			key Object
+			key coretypes.Object
 			fn  coretypes.Callable
 		}{key, fn}
 		return a
@@ -123,7 +123,7 @@ func registerAtomExtProcs() {
 
 	// remove-watch — (remove-watch atom key)
 	rwVr := ns.Intern(MakeSymbol("remove-watch"))
-	rwVr.Value = Proc{Name: "procRemoveWatch", Fn: func(args []Object) Object {
+	rwVr.Value = Proc{Name: "procRemoveWatch", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		a := EnsureObjectIsAtom(args[0], "remove-watch requires an atom, got %s")
 		key := args[1]
@@ -137,7 +137,7 @@ func registerAtomExtProcs() {
 
 	// compare-and-set! — (compare-and-set! atom oldval newval)
 	casVr := ns.Intern(MakeSymbol("compare-and-set!"))
-	casVr.Value = Proc{Name: "procCompareAndSet", Fn: func(args []Object) Object {
+	casVr.Value = Proc{Name: "procCompareAndSet", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 3, 3)
 		a := EnsureObjectIsAtom(args[0], "compare-and-set! requires an atom, got %s")
 		oldVal := args[1]
@@ -157,8 +157,8 @@ func registerAtomExtProcs() {
 	referToUser(MakeSymbol("compare-and-set!"), casVr)
 }
 
-// IsNil checks if an Object is nil or Nil.
-func IsNil(obj Object) bool {
+// IsNil checks if an coretypes.Object is nil or Nil.
+func IsNil(obj coretypes.Object) bool {
 	if obj == nil {
 		return true
 	}

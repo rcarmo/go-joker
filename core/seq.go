@@ -12,11 +12,11 @@ import (
 type (
 	Seq interface {
 		Seqable
-		Object
-		First() Object
+		coretypes.Object
+		First() coretypes.Object
 		Rest() Seq
 		IsEmpty() bool
-		Cons(obj Object) Seq
+		Cons(obj coretypes.Object) Seq
 	}
 	Seqable interface {
 		Seq() Seq
@@ -27,13 +27,13 @@ type (
 	ConsSeq struct {
 		coretypes.InfoHolder
 		MetaHolder
-		first Object
+		first coretypes.Object
 		rest  Seq
 	}
 	ArraySeq struct {
 		coretypes.InfoHolder
 		MetaHolder
-		arr   []Object
+		arr   []coretypes.Object
 		index int
 	}
 	LazySeq struct {
@@ -46,7 +46,7 @@ type (
 		coretypes.InfoHolder
 		MetaHolder
 		seq Seq
-		fn  func(obj Object) Object
+		fn  func(obj coretypes.Object) coretypes.Object
 	}
 )
 
@@ -94,7 +94,7 @@ func (seq *MappingSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *MappingSeq) WithMeta(meta Map) Object {
+func (seq *MappingSeq) WithMeta(meta Map) coretypes.Object {
 	res := *seq
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -108,7 +108,7 @@ func (seq *MappingSeq) Hash() uint32 {
 	return hashOrdered(seq)
 }
 
-func (seq *MappingSeq) First() Object {
+func (seq *MappingSeq) First() coretypes.Object {
 	return seq.fn(seq.seq.First())
 }
 
@@ -123,7 +123,7 @@ func (seq *MappingSeq) IsEmpty() bool {
 	return seq.seq.IsEmpty()
 }
 
-func (seq *MappingSeq) Cons(obj Object) Seq {
+func (seq *MappingSeq) Cons(obj coretypes.Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
@@ -159,7 +159,7 @@ func (seq *LazySeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *LazySeq) WithMeta(meta Map) Object {
+func (seq *LazySeq) WithMeta(meta Map) coretypes.Object {
 	res := *seq
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -173,7 +173,7 @@ func (seq *LazySeq) Hash() uint32 {
 	return hashOrdered(seq)
 }
 
-func (seq *LazySeq) First() Object {
+func (seq *LazySeq) First() coretypes.Object {
 	seq.realize()
 	return seq.seq.First()
 }
@@ -188,7 +188,7 @@ func (seq *LazySeq) IsEmpty() bool {
 	return seq.seq.IsEmpty()
 }
 
-func (seq *LazySeq) Cons(obj Object) Seq {
+func (seq *LazySeq) Cons(obj coretypes.Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
@@ -218,7 +218,7 @@ func (seq *ArraySeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *ArraySeq) WithMeta(meta Map) Object {
+func (seq *ArraySeq) WithMeta(meta Map) coretypes.Object {
 	res := *seq
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -232,7 +232,7 @@ func (seq *ArraySeq) Hash() uint32 {
 	return hashOrdered(seq)
 }
 
-func (seq *ArraySeq) First() Object {
+func (seq *ArraySeq) First() coretypes.Object {
 	if seq.IsEmpty() {
 		return NIL
 	}
@@ -258,7 +258,7 @@ func (seq *ArraySeq) Count() int {
 	return n
 }
 
-func (seq *ArraySeq) Cons(obj Object) Seq {
+func (seq *ArraySeq) Cons(obj coretypes.Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
@@ -278,7 +278,7 @@ func SeqToString(seq Seq, escape bool) string {
 	return b.String()
 }
 
-func (seq *ConsSeq) WithMeta(meta Map) Object {
+func (seq *ConsSeq) WithMeta(meta Map) coretypes.Object {
 	res := *seq
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -312,7 +312,7 @@ func (seq *ConsSeq) Hash() uint32 {
 	return hashOrdered(seq)
 }
 
-func (seq *ConsSeq) First() Object {
+func (seq *ConsSeq) First() coretypes.Object {
 	return seq.first
 }
 
@@ -324,13 +324,13 @@ func (seq *ConsSeq) IsEmpty() bool {
 	return false
 }
 
-func (seq *ConsSeq) Cons(obj Object) Seq {
+func (seq *ConsSeq) Cons(obj coretypes.Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
 func (seq *ConsSeq) SequentialMarker() {}
 
-func NewConsSeq(first Object, rest Seq) *ConsSeq {
+func NewConsSeq(first coretypes.Object, rest Seq) *ConsSeq {
 	return &ConsSeq{
 		first: first,
 		rest:  rest,
@@ -341,7 +341,7 @@ func iter(seq Seq) *SeqIterator {
 	return &SeqIterator{seq: seq}
 }
 
-func (iter *SeqIterator) Next() Object {
+func (iter *SeqIterator) Next() coretypes.Object {
 	res := iter.seq.First()
 	iter.seq = iter.seq.Rest()
 	return res
@@ -351,20 +351,20 @@ func (iter *SeqIterator) HasNext() bool {
 	return !iter.seq.IsEmpty()
 }
 
-func Second(seq Seq) Object {
+func Second(seq Seq) coretypes.Object {
 	return seq.Rest().First()
 }
 
-func Third(seq Seq) Object {
+func Third(seq Seq) coretypes.Object {
 	return seq.Rest().Rest().First()
 }
 
-func Fourth(seq Seq) Object {
+func Fourth(seq Seq) coretypes.Object {
 	return seq.Rest().Rest().Rest().First()
 }
 
-func ToSlice(seq Seq) []Object {
-	res := make([]Object, 0)
+func ToSlice(seq Seq) []coretypes.Object {
+	res := make([]coretypes.Object, 0)
 	for !seq.IsEmpty() {
 		res = append(res, seq.First())
 		seq = seq.Rest()
@@ -387,7 +387,7 @@ func SeqCount(seq Seq) int {
 	return n
 }
 
-func SeqNth(seq Seq, n int) Object {
+func SeqNth(seq Seq, n int) coretypes.Object {
 	if n < 0 {
 		panic(RT.NewError(fmt.Sprintf("Negative index: %d", n)))
 	}
@@ -410,7 +410,7 @@ func SeqNth(seq Seq, n int) Object {
 	panic(RT.NewError(fmt.Sprintf("Index %d exceeds seq's length %d", n, (n - i))))
 }
 
-func SeqTryNth(seq Seq, n int, d Object) Object {
+func SeqTryNth(seq Seq, n int, d coretypes.Object) coretypes.Object {
 	if n < 0 {
 		return d
 	}

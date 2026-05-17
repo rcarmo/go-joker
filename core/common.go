@@ -29,7 +29,7 @@ func writeIndent(w io.Writer, n int) {
 	}
 }
 
-func pprintObject(obj Object, indent int, w io.Writer) int {
+func pprintObject(obj coretypes.Object, indent int, w io.Writer) int {
 	switch obj := obj.(type) {
 	case coretypes.Pprinter:
 		return obj.Pprint(w, indent)
@@ -40,7 +40,7 @@ func pprintObject(obj Object, indent int, w io.Writer) int {
 	}
 }
 
-func formatObject(obj Object, indent int, w io.Writer) int {
+func formatObject(obj coretypes.Object, indent int, w io.Writer) int {
 	if info := obj.GetInfo(); info != nil {
 		fmt.Fprint(w, info.Prefix)
 		indent += utf8.RuneCountInString(info.Prefix)
@@ -55,7 +55,7 @@ func formatObject(obj Object, indent int, w io.Writer) int {
 	}
 }
 
-func isComment(obj Object) bool {
+func isComment(obj coretypes.Object) bool {
 	if _, ok := obj.(coretypes.Comment); ok {
 		return true
 	}
@@ -66,14 +66,14 @@ func isComment(obj Object) bool {
 	return info.Prefix == "^" || info.Prefix == "#^" || info.Prefix == "#_"
 }
 
-func isComma(obj Object) bool {
+func isComma(obj coretypes.Object) bool {
 	if c, ok := obj.(coretypes.Comment); ok && c.C == "," {
 		return true
 	}
 	return false
 }
 
-func maybeNewLine(w io.Writer, obj, nextObj Object, baseIndent, currentIndent int) int {
+func maybeNewLine(w io.Writer, obj, nextObj coretypes.Object, baseIndent, currentIndent int) int {
 	if writeNewLines(w, obj, nextObj) > 0 {
 		writeIndent(w, baseIndent)
 		return baseIndent
@@ -94,7 +94,7 @@ func FileInfoMap(name string, info os.FileInfo) Map {
 	return m
 }
 
-func ToBool(obj Object) bool {
+func ToBool(obj coretypes.Object) bool {
 	switch obj := obj.(type) {
 	case Nil:
 		return false

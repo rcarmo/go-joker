@@ -14,20 +14,20 @@ import coretypes "github.com/rcarmo/go-joker/core/types"
 // recursive calls are not in tail position.
 
 // TailCall is a marker returned by evalTailCall when a self-call in
-// tail position is detected. It is NOT a valid Joker Object — it is
+// tail position is detected. It is NOT a valid Joker coretypes.Object — it is
 // only used internally between evalLoop and Fn.Call.
 type TailCall struct {
 	fn   *Fn
-	args []Object
+	args []coretypes.Object
 }
 
-// Object interface stubs — TailCall should never escape to user code.
-func (tc *TailCall) ToString(escape bool) string           { return "#<tail-call>" }
-func (tc *TailCall) Equals(other interface{}) bool         { return false }
-func (tc *TailCall) GetInfo() *coretypes.ObjectInfo        { return nil }
-func (tc *TailCall) WithInfo(*coretypes.ObjectInfo) Object { return tc }
-func (tc *TailCall) GetType() *coretypes.Type              { return TYPE.Fn }
-func (tc *TailCall) Hash() uint32                          { return 0 }
+// coretypes.Object interface stubs — TailCall should never escape to user code.
+func (tc *TailCall) ToString(escape bool) string                     { return "#<tail-call>" }
+func (tc *TailCall) Equals(other interface{}) bool                   { return false }
+func (tc *TailCall) GetInfo() *coretypes.ObjectInfo                  { return nil }
+func (tc *TailCall) WithInfo(*coretypes.ObjectInfo) coretypes.Object { return tc }
+func (tc *TailCall) GetType() *coretypes.Type                        { return TYPE.Fn }
+func (tc *TailCall) Hash() uint32                                    { return 0 }
 
 // activeFn tracks the currently executing Fn for TCO detection.
 // This is stored on the Runtime (single-threaded evaluator).
@@ -36,7 +36,7 @@ var activeFn *Fn
 // evalBodyTCO evaluates a body and, for the last expression, checks
 // if it's a self-call in tail position. If so, returns a *TailCall
 // instead of actually calling.
-func evalBodyTCO(body []Expr, env *LocalEnv, self *Fn) Object {
+func evalBodyTCO(body []Expr, env *LocalEnv, self *Fn) coretypes.Object {
 	if len(body) == 0 {
 		return NIL
 	}
@@ -50,8 +50,8 @@ func evalBodyTCO(body []Expr, env *LocalEnv, self *Fn) Object {
 }
 
 // evalLoopTCO is like evalLoop but with TCO awareness.
-func evalLoopTCO(body []Expr, env *LocalEnv, self *Fn) Object {
-	var res Object = NIL
+func evalLoopTCO(body []Expr, env *LocalEnv, self *Fn) coretypes.Object {
+	var res coretypes.Object = NIL
 loop:
 	for _, expr := range body {
 		res = Eval(expr, env)
@@ -66,7 +66,7 @@ loop:
 }
 
 // evalTailExpr evaluates an expression in tail position with self-call detection.
-func evalTailExpr(expr Expr, env *LocalEnv, self *Fn) Object {
+func evalTailExpr(expr Expr, env *LocalEnv, self *Fn) coretypes.Object {
 	switch e := expr.(type) {
 	case *IfExpr:
 		if ToBool(Eval(e.cond, env)) {
@@ -95,7 +95,7 @@ func evalTailExpr(expr Expr, env *LocalEnv, self *Fn) Object {
 		return evalBodyTCO(e.body, env, self)
 
 	case *LetExpr:
-		childEnv := LocalEnv{bindings: make([]Object, 0, len(e.names)), parent: env}
+		childEnv := LocalEnv{bindings: make([]coretypes.Object, 0, len(e.names)), parent: env}
 		if env != nil {
 			childEnv.frame = env.frame + 1
 		}

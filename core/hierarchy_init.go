@@ -16,7 +16,7 @@ func registerHierarchyProcs() {
 
 	// make-hierarchy
 	mhVr := ns.Intern(MakeSymbol("make-hierarchy"))
-	mhVr.Value = Proc{Name: "procMakeHierarchy", Fn: func(args []Object) Object {
+	mhVr.Value = Proc{Name: "procMakeHierarchy", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 0, 0)
 		return MakeHierarchy()
 	}}
@@ -24,7 +24,7 @@ func registerHierarchyProcs() {
 
 	// derive — (derive child parent) or (derive h child parent)
 	deriveVr := ns.Intern(MakeSymbol("derive"))
-	deriveVr.Value = Proc{Name: "procDerive", Fn: func(args []Object) Object {
+	deriveVr.Value = Proc{Name: "procDerive", Fn: func(args []coretypes.Object) coretypes.Object {
 		switch len(args) {
 		case 2:
 			globalHierarchy.Derive(args[0], args[1])
@@ -45,7 +45,7 @@ func registerHierarchyProcs() {
 
 	// underive — (underive child parent) or (underive h child parent)
 	underiveVr := ns.Intern(MakeSymbol("underive"))
-	underiveVr.Value = Proc{Name: "procUnderive", Fn: func(args []Object) Object {
+	underiveVr.Value = Proc{Name: "procUnderive", Fn: func(args []coretypes.Object) coretypes.Object {
 		switch len(args) {
 		case 2:
 			globalHierarchy.Underive(args[0], args[1])
@@ -66,7 +66,7 @@ func registerHierarchyProcs() {
 
 	// isa? — (isa? child parent) or (isa? h child parent)
 	isaVr := ns.Intern(MakeSymbol("isa?"))
-	isaVr.Value = Proc{Name: "procIsaQ", Fn: func(args []Object) Object {
+	isaVr.Value = Proc{Name: "procIsaQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		switch len(args) {
 		case 2:
 			return coretypes.MakeBoolean(globalHierarchy.IsA(args[0], args[1]))
@@ -85,9 +85,9 @@ func registerHierarchyProcs() {
 
 	// parents — (parents tag) or (parents h tag)
 	parentsVr := ns.Intern(MakeSymbol("parents"))
-	parentsVr.Value = Proc{Name: "procParents", Fn: func(args []Object) Object {
+	parentsVr.Value = Proc{Name: "procParents", Fn: func(args []coretypes.Object) coretypes.Object {
 		var h *Hierarchy
-		var tag Object
+		var tag coretypes.Object
 		switch len(args) {
 		case 1:
 			h = globalHierarchy
@@ -117,9 +117,9 @@ func registerHierarchyProcs() {
 
 	// ancestors — (ancestors tag) or (ancestors h tag)
 	ancestorsVr := ns.Intern(MakeSymbol("ancestors"))
-	ancestorsVr.Value = Proc{Name: "procAncestors", Fn: func(args []Object) Object {
+	ancestorsVr.Value = Proc{Name: "procAncestors", Fn: func(args []coretypes.Object) coretypes.Object {
 		var h *Hierarchy
-		var tag Object
+		var tag coretypes.Object
 		switch len(args) {
 		case 1:
 			h = globalHierarchy
@@ -149,9 +149,9 @@ func registerHierarchyProcs() {
 
 	// descendants — (descendants tag) or (descendants h tag)
 	descendantsVr := ns.Intern(MakeSymbol("descendants"))
-	descendantsVr.Value = Proc{Name: "procDescendants", Fn: func(args []Object) Object {
+	descendantsVr.Value = Proc{Name: "procDescendants", Fn: func(args []coretypes.Object) coretypes.Object {
 		var h *Hierarchy
-		var tag Object
+		var tag coretypes.Object
 		switch len(args) {
 		case 1:
 			h = globalHierarchy

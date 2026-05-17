@@ -20,7 +20,7 @@ type (
 		filename *string
 		msg      string
 	}
-	ReadFunc func(reader *Reader) Object
+	ReadFunc func(reader *Reader) coretypes.Object
 	Reader   struct {
 		*corereader.RuneStream
 		filename *string
@@ -80,7 +80,7 @@ func MakeReadError(reader *Reader, msg string) ReadError {
 	return readerConstruction.ReadError(reader, msg)
 }
 
-func makeReadObject(reader *Reader, obj Object) Object {
+func makeReadObject(reader *Reader, obj coretypes.Object) coretypes.Object {
 	p := popPos()
 	return withInfo(obj, &coretypes.ObjectInfo{Position: coretypes.Position{
 		StartColumn: p.Column,
@@ -91,11 +91,11 @@ func makeReadObject(reader *Reader, obj Object) Object {
 	}})
 }
 
-func MakeReadObject(reader *Reader, obj Object) Object {
+func MakeReadObject(reader *Reader, obj coretypes.Object) coretypes.Object {
 	return readerConstruction.ReadObject(reader, obj)
 }
 
-func deriveReadObject(base Object, obj Object) Object {
+func deriveReadObject(base coretypes.Object, obj coretypes.Object) coretypes.Object {
 	baseInfo := base.GetInfo()
 	if baseInfo != nil {
 		bi := *baseInfo
@@ -104,7 +104,7 @@ func deriveReadObject(base Object, obj Object) Object {
 	return obj
 }
 
-func DeriveReadObject(base Object, obj Object) Object {
+func DeriveReadObject(base coretypes.Object, obj coretypes.Object) coretypes.Object {
 	return readerConstruction.DeriveReadObject(base, obj)
 }
 
@@ -128,13 +128,13 @@ func peekExpectedDelimiter(reader *Reader) {
 	}
 }
 
-func readSpecialCharacter(reader *Reader, ending string, r rune) Object {
+func readSpecialCharacter(reader *Reader, ending string, r rune) coretypes.Object {
 	eatString(reader, ending)
 	peekExpectedDelimiter(reader)
 	return MakeReadObject(reader, readerConstruction.Char(r))
 }
 
-func readComment(reader *Reader) Object {
+func readComment(reader *Reader) coretypes.Object {
 	return MakeReadObject(reader, readerConstruction.Comment(corereader.ReadCommentText(reader)))
 }
 
@@ -164,7 +164,7 @@ func eatWhitespace(reader *Reader) {
 	}
 }
 
-func readUnicodeCharacter(reader *Reader, length, base int) Object {
+func readUnicodeCharacter(reader *Reader, length, base int) coretypes.Object {
 	str := corereader.ScanUntilDelimiter(reader)
 	r, ok := corereader.ParseExactUnicodeCode(str, length, base)
 	if !ok {
@@ -174,7 +174,7 @@ func readUnicodeCharacter(reader *Reader, length, base int) Object {
 	return MakeReadObject(reader, readerConstruction.Char(r))
 }
 
-func readCharacter(reader *Reader) Object {
+func readCharacter(reader *Reader) coretypes.Object {
 	r := reader.Get()
 	if r == EOF {
 		panic(MakeReadError(reader, "Incomplete character literal"))
@@ -196,7 +196,7 @@ func invalidNumberError(reader *Reader, str string) error {
 	return MakeReadError(reader, fmt.Sprintf("Invalid number: %s", str))
 }
 
-func scanBigInt(orig, str string, base int, reader *Reader) Object {
+func scanBigInt(orig, str string, base int, reader *Reader) coretypes.Object {
 	var bi = &big.Int{}
 	if _, ok := bi.SetString(str, base); !ok {
 		panic(invalidNumberError(reader, str))
@@ -204,7 +204,7 @@ func scanBigInt(orig, str string, base int, reader *Reader) Object {
 	return MakeReadObject(reader, readerConstruction.BigInt(bi, orig))
 }
 
-func scanRatio(str string, reader *Reader) Object {
+func scanRatio(str string, reader *Reader) coretypes.Object {
 	var rat = &big.Rat{}
 	if _, ok := rat.SetString(str); !ok {
 		panic(invalidNumberError(reader, str))
@@ -212,14 +212,14 @@ func scanRatio(str string, reader *Reader) Object {
 	return MakeReadObject(reader, readerConstruction.RatioOrInt(str, rat))
 }
 
-func scanBigFloat(orig, str string, reader *Reader) Object {
+func scanBigFloat(orig, str string, reader *Reader) coretypes.Object {
 	if f, ok := readerConstruction.BigFloatFromString(str, orig); ok {
 		return MakeReadObject(reader, f)
 	}
 	panic(invalidNumberError(reader, str))
 }
 
-func scanInt(orig, str string, base int, reader *Reader) Object {
+func scanInt(orig, str string, base int, reader *Reader) coretypes.Object {
 	i, e := numutil.ParseInt(str, base, strconv.IntSize)
 	if e != nil {
 		return scanBigInt(orig, str, base, reader)
@@ -227,7 +227,7 @@ func scanInt(orig, str string, base int, reader *Reader) Object {
 	return MakeReadObject(reader, readerConstruction.Int(int(i)))
 }
 
-func scanFloat(str string, reader *Reader) Object {
+func scanFloat(str string, reader *Reader) coretypes.Object {
 	dbl, e := numutil.ParseFloat64(str)
 	if e != nil {
 		panic(invalidNumberError(reader, str))
@@ -235,7 +235,7 @@ func scanFloat(str string, reader *Reader) Object {
 	return MakeReadObject(reader, readerConstruction.Double(dbl))
 }
 
-func numberFromToken(reader *Reader, token corereader.NumberToken) Object {
+func numberFromToken(reader *Reader, token corereader.NumberToken) coretypes.Object {
 	switch token.Kind {
 	case corereader.NumberTokenRatio:
 		return scanRatio(token.Digits, reader)
@@ -250,7 +250,7 @@ func numberFromToken(reader *Reader, token corereader.NumberToken) Object {
 	}
 }
 
-func readNumber(reader *Reader) Object {
+func readNumber(reader *Reader) coretypes.Object {
 	str := corereader.ScanUntilDelimiter(reader)
 	token, err := corereader.AnalyzeNumberToken(str)
 	if err != nil {
@@ -260,7 +260,7 @@ func readNumber(reader *Reader) Object {
 }
 
 /* Reads (lexes) a token and returns either a Symbol or Keyword. */
-func readIdent(reader *Reader, first rune) Object {
+func readIdent(reader *Reader, first rune) coretypes.Object {
 	str, lastAdded, scanErr := corereader.ScanIdentToken(reader, first)
 	if scanErr != nil {
 		panic(MakeReadError(reader, scanErr.Error()))
@@ -328,7 +328,7 @@ func warnInvalidIdent(reader *Reader, s *string) {
 	}
 }
 
-func readValidatedIdent(reader *Reader, first rune) Object {
+func readValidatedIdent(reader *Reader, first rune) coretypes.Object {
 	obj := readIdent(reader, first)
 	switch o := obj.(type) {
 	case Keyword:
@@ -377,7 +377,7 @@ func SetIdentRangeAny() {
 	identValidationConfig = identValidationConfig.WithAnyRange()
 }
 
-func readRegex(reader *Reader) Object {
+func readRegex(reader *Reader) coretypes.Object {
 	s, ok := corereader.ScanRegexLiteral(reader)
 	if !ok {
 		panic(MakeReadError(reader, "Non-terminated regex literal"))
@@ -407,7 +407,7 @@ func readUnicodeCharacterInString(reader *Reader, initial rune, length, base int
 	return r
 }
 
-func readString(reader *Reader) Object {
+func readString(reader *Reader) coretypes.Object {
 	s, err := corereader.ScanStringLiteral(reader, FORMAT_MODE, func(initial rune, length, base int, exactLength bool) rune {
 		return readUnicodeCharacterInString(reader, initial, length, base, exactLength)
 	})
@@ -417,7 +417,7 @@ func readString(reader *Reader) Object {
 	return MakeReadObject(reader, readerConstruction.String(s))
 }
 
-func readMulti(reader *Reader, previouslyRead []Object) (Object, []Object) {
+func readMulti(reader *Reader, previouslyRead []coretypes.Object) (coretypes.Object, []coretypes.Object) {
 	for len(previouslyRead) == 0 {
 		obj, multi := readerConstruction.Read(reader)
 		if !multi {
@@ -441,19 +441,19 @@ func readError(reader *Reader, msg string) {
 	}
 }
 
-func readCondList(reader *Reader) Object {
+func readCondList(reader *Reader) coretypes.Object {
 	previousSuppressRead := SUPPRESS_READ
 	defer func() {
 		SUPPRESS_READ = previousSuppressRead
 	}()
 
-	var forms []Object
+	var forms []coretypes.Object
 	eatWhitespace(reader)
 	r := reader.Peek()
-	var res Object = nil
+	var res coretypes.Object = nil
 	for corereader.ContinueDelimitedForms(r, ')', len(forms)) {
 		if res == nil {
-			var feature Object
+			var feature coretypes.Object
 			feature, forms = readMulti(reader, forms)
 			if feature.Equals(KEYWORDS.none) || feature.Equals(KEYWORDS.else_) {
 				panic(MakeReadError(reader, "Feature name "+feature.ToString(false)+" is reserved"))
@@ -487,8 +487,8 @@ func readCondList(reader *Reader) Object {
 	return res
 }
 
-func readList(reader *Reader) Object {
-	s := make([]Object, 0, 10)
+func readList(reader *Reader) coretypes.Object {
+	s := make([]coretypes.Object, 0, 10)
 	eatWhitespace(reader)
 	r := reader.Peek()
 	for r != ')' {
@@ -508,8 +508,8 @@ func readList(reader *Reader) Object {
 	return MakeReadObject(reader, readerConstruction.ListFrom(s))
 }
 
-func readVector(reader *Reader) Object {
-	items := make([]Object, 0, 10)
+func readVector(reader *Reader) coretypes.Object {
+	items := make([]coretypes.Object, 0, 10)
 	eatWhitespace(reader)
 	r := reader.Peek()
 	for r != ']' {
@@ -529,7 +529,7 @@ func readVector(reader *Reader) Object {
 	return MakeReadObject(reader, readerConstruction.VectorFrom(items))
 }
 
-func resolveKey(key Object, nsname string) Object {
+func resolveKey(key coretypes.Object, nsname string) coretypes.Object {
 	if nsname == "" {
 		return key
 	}
@@ -552,11 +552,11 @@ func resolveKey(key Object, nsname string) Object {
 	return key
 }
 
-func readMap(reader *Reader) Object {
+func readMap(reader *Reader) coretypes.Object {
 	return readMapWithNamespace(reader, "")
 }
 
-func appendMapElement(objs []Object, obj Object) []Object {
+func appendMapElement(objs []coretypes.Object, obj coretypes.Object) []coretypes.Object {
 	objs = append(objs, obj)
 	if corereader.ShouldAppendMapCommentSurrogate(FORMAT_MODE, isComment(obj)) {
 		// Add surrogate object to always have even number of elements in the map.
@@ -566,10 +566,10 @@ func appendMapElement(objs []Object, obj Object) []Object {
 	return objs
 }
 
-func readMapWithNamespace(reader *Reader, nsname string) Object {
+func readMapWithNamespace(reader *Reader, nsname string) coretypes.Object {
 	eatWhitespace(reader)
 	r := reader.Peek()
-	objs := []Object{}
+	objs := []coretypes.Object{}
 	for r != '}' {
 		obj, multi := readerConstruction.Read(reader)
 		if !multi {
@@ -590,8 +590,8 @@ func readMapWithNamespace(reader *Reader, nsname string) Object {
 	return MakeReadObject(reader, readerConstruction.MapLiteral(reader, objs, nsname))
 }
 
-func readSet(reader *Reader) Object {
-	items := make([]Object, 0, 8)
+func readSet(reader *Reader) coretypes.Object {
+	items := make([]coretypes.Object, 0, 8)
 	eatWhitespace(reader)
 	r := reader.Peek()
 	for r != '}' {
@@ -611,19 +611,19 @@ func readSet(reader *Reader) Object {
 	return MakeReadObject(reader, readerConstruction.SetLiteral(reader, items))
 }
 
-func makeQuote(obj Object, quote Symbol) Object {
-	res := readerConstruction.ListFrom([]Object{quote, obj})
+func makeQuote(obj coretypes.Object, quote Symbol) coretypes.Object {
+	res := readerConstruction.ListFrom([]coretypes.Object{quote, obj})
 	return DeriveReadObject(obj, res)
 }
 
-func metadataFromObject(obj Object) (*ArrayMap, bool) {
+func metadataFromObject(obj coretypes.Object) (*ArrayMap, bool) {
 	switch v := obj.(type) {
 	case *ArrayMap:
 		return v, true
 	case coretypes.String, Symbol:
-		return &ArrayMap{arr: []Object{DeriveReadObject(obj, KEYWORDS.tag), obj}}, true
+		return &ArrayMap{arr: []coretypes.Object{DeriveReadObject(obj, KEYWORDS.tag), obj}}, true
 	case Keyword:
-		return &ArrayMap{arr: []Object{obj, DeriveReadObject(obj, readerConstruction.Bool(true))}}, true
+		return &ArrayMap{arr: []coretypes.Object{obj, DeriveReadObject(obj, readerConstruction.Bool(true))}}, true
 	default:
 		return nil, false
 	}
@@ -642,13 +642,13 @@ func fillInMissingArgs(args map[int]Symbol) {
 	corereader.FillMissingArgIndexes(args, func() Symbol { return generateSymbol("p__") })
 }
 
-func makeFnForm(args map[int]Symbol, body Object) Object {
+func makeFnForm(args map[int]Symbol, body coretypes.Object) coretypes.Object {
 	fillInMissingArgs(args)
 	a, ok := corereader.OrderedArgValues(args, SYMBOLS.amp)
 	if !ok {
 		panic(RT.NewError("Invalid arg literal index"))
 	}
-	argObjects := make([]Object, 0, len(a))
+	argObjects := make([]coretypes.Object, 0, len(a))
 	for _, v := range a {
 		argObjects = append(argObjects, v)
 	}
@@ -658,7 +658,7 @@ func makeFnForm(args map[int]Symbol, body Object) Object {
 			body, _ = readerConstruction.WithMeta(body, readerConstruction.SkipRedundantDoMeta())
 		}
 	}
-	return DeriveReadObject(body, readerConstruction.ListFrom([]Object{readerConstruction.Symbol("joker.core/fn"), argVector, body}))
+	return DeriveReadObject(body, readerConstruction.ListFrom([]coretypes.Object{readerConstruction.Symbol("joker.core/fn"), argVector, body}))
 }
 
 func genSym(prefix string, postfix string) Symbol {
@@ -678,7 +678,7 @@ func registerArg(index int) Symbol {
 	return ARGS[index]
 }
 
-func readArgSymbol(reader *Reader) Object {
+func readArgSymbol(reader *Reader) coretypes.Object {
 	r := reader.Peek()
 	if corereader.IsBareArgLiteral(r) {
 		return MakeReadObject(reader, registerArg(1))
@@ -695,7 +695,7 @@ func readArgSymbol(reader *Reader) Object {
 	}
 }
 
-func isSelfEvaluating(obj Object) bool {
+func isSelfEvaluating(obj coretypes.Object) bool {
 	if obj == EmptyList {
 		return true
 	}
@@ -707,7 +707,7 @@ func isSelfEvaluating(obj Object) bool {
 	}
 }
 
-func isCall(obj Object, name Symbol) bool {
+func isCall(obj coretypes.Object, name Symbol) bool {
 	switch seq := obj.(type) {
 	case Seq:
 		return seq.First().Equals(name)
@@ -717,31 +717,31 @@ func isCall(obj Object, name Symbol) bool {
 }
 
 func syntaxQuoteSeq(seq Seq, env map[*string]Symbol, reader *Reader) Seq {
-	res := make([]Object, 0)
+	res := make([]coretypes.Object, 0)
 	for iter := iter(seq); iter.HasNext(); {
 		obj := iter.Next()
 		if isCall(obj, SYMBOLS.unquoteSplicing) {
 			res = append(res, (obj).(Seq).Rest().First())
 		} else {
 			q := makeSyntaxQuote(obj, env, reader)
-			res = append(res, DeriveReadObject(q, readerConstruction.ListFrom([]Object{SYMBOLS.list, q})))
+			res = append(res, DeriveReadObject(q, readerConstruction.ListFrom([]coretypes.Object{SYMBOLS.list, q})))
 		}
 	}
 	return &ArraySeq{arr: res}
 }
 
-func syntaxQuoteColl(seq Seq, env map[*string]Symbol, reader *Reader, ctor Symbol, info *coretypes.ObjectInfo) Object {
+func syntaxQuoteColl(seq Seq, env map[*string]Symbol, reader *Reader, ctor Symbol, info *coretypes.ObjectInfo) coretypes.Object {
 	q := syntaxQuoteSeq(seq, env, reader)
 	concat := q.Cons(SYMBOLS.concat)
-	seqList := readerConstruction.ListFrom([]Object{SYMBOLS.seq, concat})
-	var res Object = seqList
+	seqList := readerConstruction.ListFrom([]coretypes.Object{SYMBOLS.seq, concat})
+	var res coretypes.Object = seqList
 	if ctor != SYMBOLS.emptySymbol {
-		res = readerConstruction.ListFrom([]Object{ctor, seqList}).(Seq).Cons(SYMBOLS.apply)
+		res = readerConstruction.ListFrom([]coretypes.Object{ctor, seqList}).(Seq).Cons(SYMBOLS.apply)
 	}
 	return withInfo(res, info)
 }
 
-func makeSyntaxQuote(obj Object, env map[*string]Symbol, reader *Reader) Object {
+func makeSyntaxQuote(obj coretypes.Object, env map[*string]Symbol, reader *Reader) coretypes.Object {
 	if isSelfEvaluating(obj) {
 		return obj
 	}
@@ -782,11 +782,11 @@ func makeSyntaxQuote(obj Object, env map[*string]Symbol, reader *Reader) Object 
 	}
 }
 
-func handleNoReaderError(reader *Reader, s Symbol) Object {
+func handleNoReaderError(reader *Reader, s Symbol) coretypes.Object {
 	return handleNoReaderErrorValue(reader, s, readFirst(reader))
 }
 
-func handleNoReaderErrorValue(reader *Reader, s Symbol, value Object) Object {
+func handleNoReaderErrorValue(reader *Reader, s Symbol, value coretypes.Object) coretypes.Object {
 	msg := "No reader function for tag " + s.ToString(false)
 	switch corereader.ClassifyMissingTaggedReaderAction(SUPPRESS_READ, LINTER_MODE, DIALECT == corereader.EDNDialect) {
 	case corereader.MissingTaggedReaderReturnValue:
@@ -799,7 +799,7 @@ func handleNoReaderErrorValue(reader *Reader, s Symbol, value Object) Object {
 	}
 }
 
-func lookupDataReader(s Symbol) (Object, bool) {
+func lookupDataReader(s Symbol) (coretypes.Object, bool) {
 	for _, name := range corereader.DataReaderVarNames() {
 		vr := GLOBAL_ENV.CoreNamespace.Resolve(name)
 		if vr == nil {
@@ -824,7 +824,7 @@ func lookupDefaultDataReaderFn() (coretypes.Callable, bool) {
 	return EnsureObjectIsCallable(vr.Value, "*default-data-reader-fn* must be callable, got %s"), true
 }
 
-func readTagged(reader *Reader) Object {
+func readTagged(reader *Reader) coretypes.Object {
 	obj := readFirst(reader)
 	if FORMAT_MODE {
 		next := readFirst(reader)
@@ -846,7 +846,7 @@ func readTagged(reader *Reader) Object {
 	}
 }
 
-func readConditional(reader *Reader) (Object, bool) {
+func readConditional(reader *Reader) (coretypes.Object, bool) {
 	isSplicing := corereader.IsConditionalSplice(reader.Peek())
 	if isSplicing {
 		reader.Get()
@@ -876,12 +876,12 @@ func readConditional(reader *Reader) (Object, bool) {
 	}
 }
 
-func readNamespacedMap(reader *Reader) Object {
+func readNamespacedMap(reader *Reader) coretypes.Object {
 	auto := reader.Get() == ':'
 	if !auto {
 		reader.Unget()
 	}
-	var sym Object
+	var sym coretypes.Object
 	r := reader.Get()
 	switch corereader.ClassifyNamespacedMapStart(r, auto) {
 	case corereader.NamespacedMapStartMissingNamespace:
@@ -949,7 +949,7 @@ func readNamespacedMap(reader *Reader) Object {
 	return readMapWithNamespace(reader, nsname)
 }
 
-func readSymbolicValue(reader *Reader) Object {
+func readSymbolicValue(reader *Reader) coretypes.Object {
 	obj := readFirst(reader)
 	switch o := obj.(type) {
 	case Symbol:
@@ -962,7 +962,7 @@ func readSymbolicValue(reader *Reader) Object {
 	}
 }
 
-func readDispatch(reader *Reader) (Object, bool) {
+func readDispatch(reader *Reader) (coretypes.Object, bool) {
 	r := reader.Get()
 	kind := corereader.ClassifyDispatch(r)
 	switch kind {
@@ -976,7 +976,7 @@ func readDispatch(reader *Reader) (Object, bool) {
 			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
-		return DeriveReadObject(nextObj, readerConstruction.ListFrom([]Object{DeriveReadObject(nextObj, SYMBOLS._var), nextObj})), false
+		return DeriveReadObject(nextObj, readerConstruction.ListFrom([]coretypes.Object{DeriveReadObject(nextObj, SYMBOLS._var), nextObj})), false
 	case corereader.DispatchDiscard:
 		// Only possible in FORMAT mode, otherwise
 		// eatWhitespaces eats #_
@@ -1022,7 +1022,7 @@ func readDispatch(reader *Reader) (Object, bool) {
 	return readTagged(reader), false
 }
 
-func readWithMeta(reader *Reader) Object {
+func readWithMeta(reader *Reader) coretypes.Object {
 	meta := readMeta(reader)
 	nextObj := readFirst(reader)
 	obj, ok := readerConstruction.WithMeta(nextObj, meta)
@@ -1032,7 +1032,7 @@ func readWithMeta(reader *Reader) Object {
 	return obj
 }
 
-func readFirst(reader *Reader) Object {
+func readFirst(reader *Reader) coretypes.Object {
 	obj, multi := readerConstruction.Read(reader)
 	if !multi {
 		return obj
@@ -1044,11 +1044,11 @@ func readFirst(reader *Reader) Object {
 	return v.At(0)
 }
 
-func addPrefix(obj Object, prefix string) {
+func addPrefix(obj coretypes.Object, prefix string) {
 	obj.GetInfo().Prefix = prefix + obj.GetInfo().Prefix
 }
 
-func Read(reader *Reader) (Object, bool) {
+func Read(reader *Reader) (coretypes.Object, bool) {
 	eatWhitespace(reader)
 	r := reader.Get()
 	pushPos(reader)
@@ -1105,7 +1105,7 @@ func Read(reader *Reader) (Object, bool) {
 			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
-		return DeriveReadObject(nextObj, readerConstruction.ListFrom([]Object{DeriveReadObject(nextObj, SYMBOLS.deref), nextObj})), false
+		return DeriveReadObject(nextObj, readerConstruction.ListFrom([]coretypes.Object{DeriveReadObject(nextObj, SYMBOLS.deref), nextObj})), false
 	case corereader.ReadFormUnquote:
 		popPos()
 		isSplicing := corereader.IsUnquoteSplice(reader.Peek())
@@ -1152,7 +1152,7 @@ func Read(reader *Reader) (Object, bool) {
 	}
 }
 
-func TryRead(reader *Reader) (obj Object, err error) {
+func TryRead(reader *Reader) (obj coretypes.Object, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			PROBLEM_COUNT++

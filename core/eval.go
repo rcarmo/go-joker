@@ -54,7 +54,7 @@ func (rt *Runtime) NewError(msg string) *EvalError {
 	return res
 }
 
-func (rt *Runtime) NewArgTypeError(index int, obj Object, expectedType string) *EvalError {
+func (rt *Runtime) NewArgTypeError(index int, obj coretypes.Object, expectedType string) *EvalError {
 	grt := currentGRT()
 	name := "<unknown>"
 	if grt.currentExpr != nil {
@@ -120,7 +120,7 @@ func restoreCurrentExpr(expr Expr) {
 	currentGRT().currentExpr = expr
 }
 
-func Eval(expr Expr, env *LocalEnv) Object {
+func Eval(expr Expr, env *LocalEnv) coretypes.Object {
 	switch expr := expr.(type) {
 	case *LiteralExpr:
 		return expr.obj
@@ -151,7 +151,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 	case *FnExpr:
 		res := &Fn{fnExpr: expr}
 		if expr.self.name != nil {
-			selfEnv := LocalEnv{bindings: []Object{res}, parent: env}
+			selfEnv := LocalEnv{bindings: []coretypes.Object{res}, parent: env}
 			if env != nil {
 				selfEnv.frame = env.frame + 1
 			}
@@ -161,7 +161,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 		res.env = env
 		return res
 	case *LetExpr:
-		childEnv := LocalEnv{bindings: make([]Object, 0, len(expr.names)), parent: env}
+		childEnv := LocalEnv{bindings: make([]coretypes.Object, 0, len(expr.names)), parent: env}
 		if env != nil {
 			childEnv.frame = env.frame + 1
 		}
@@ -170,7 +170,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 		}
 		return evalBody(expr.body, &childEnv)
 	case *LoopExpr:
-		childEnv := LocalEnv{bindings: make([]Object, 0, len(expr.names)), parent: env}
+		childEnv := LocalEnv{bindings: make([]coretypes.Object, 0, len(expr.names)), parent: env}
 		if env != nil {
 			childEnv.frame = env.frame + 1
 		}
@@ -188,7 +188,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 			initSlots := childEnv.bindings
 			// Resolve captured outer bindings
 			if len(prog.captureKeys) > 0 {
-				full := make([]Object, prog.numSlots)
+				full := make([]coretypes.Object, prog.numSlots)
 				copy(full, initSlots)
 				for i, key := range prog.captureKeys {
 					slot := len(initSlots) + i
@@ -209,7 +209,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 				runtimeExec.MarkMemNthFailed(prog)
 			}
 			if corert.IRTypedEnabled() && runtimeExec.CanExecuteTypedIR(prog) {
-				var typedResult Object
+				var typedResult coretypes.Object
 				func() {
 					defer func() {
 						if r := recover(); r != nil {
@@ -234,7 +234,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 			if result := wasmMemNthCompileAndExec(prog, initSlots); result != nil {
 				return result
 			}
-			var result Object
+			var result coretypes.Object
 			func() {
 				defer func() {
 					if r := recover(); r != nil {
@@ -308,7 +308,7 @@ func (err *EvalError) Hash() uint32 {
 	return err.hash
 }
 
-func (err *EvalError) WithInfo(info *coretypes.ObjectInfo) Object {
+func (err *EvalError) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return err
 }
 
@@ -328,11 +328,11 @@ func (err *EvalError) Error() string {
 	}
 }
 
-func (expr *VarRefExpr) Eval(env *LocalEnv) Object {
+func (expr *VarRefExpr) Eval(env *LocalEnv) coretypes.Object {
 	return expr.vr.Resolve()
 }
 
-func (expr *SetMacroExpr) Eval(env *LocalEnv) Object {
+func (expr *SetMacroExpr) Eval(env *LocalEnv) coretypes.Object {
 	expr.vr.isMacro = true
 	expr.vr.isUsed = false
 	if fn, ok := expr.vr.Value.(*Fn); ok {
@@ -342,7 +342,7 @@ func (expr *SetMacroExpr) Eval(env *LocalEnv) Object {
 	return expr.vr
 }
 
-func resolveBinding(env *LocalEnv, binding *Binding) Object {
+func resolveBinding(env *LocalEnv, binding *Binding) coretypes.Object {
 	if env.frame == binding.frame {
 		return env.bindings[binding.index]
 	}
@@ -355,27 +355,27 @@ func resolveBinding(env *LocalEnv, binding *Binding) Object {
 	return env.bindings[binding.index]
 }
 
-func (expr *BindingExpr) Eval(env *LocalEnv) Object {
+func (expr *BindingExpr) Eval(env *LocalEnv) coretypes.Object {
 	return resolveBinding(env, expr.binding)
 }
 
-func (expr *LiteralExpr) Eval(env *LocalEnv) Object {
+func (expr *LiteralExpr) Eval(env *LocalEnv) coretypes.Object {
 	return expr.obj
 }
 
-func (expr *VectorExpr) Eval(env *LocalEnv) Object {
+func (expr *VectorExpr) Eval(env *LocalEnv) coretypes.Object {
 	n := len(expr.v)
 	if n == 0 {
 		return collectionConstruction.NewEmptyArrayVector()
 	}
-	arr := make([]Object, n)
+	arr := make([]coretypes.Object, n)
 	for i, e := range expr.v {
 		arr[i] = Eval(e, env)
 	}
 	return &ArrayVector{arr: arr}
 }
 
-func (expr *MapExpr) Eval(env *LocalEnv) Object {
+func (expr *MapExpr) Eval(env *LocalEnv) coretypes.Object {
 	if int64(len(expr.keys)) > HASHMAP_THRESHOLD/2 {
 		res := EmptyHashMap
 		for i := range expr.keys {
@@ -397,7 +397,7 @@ func (expr *MapExpr) Eval(env *LocalEnv) Object {
 	return res
 }
 
-func (expr *SetExpr) Eval(env *LocalEnv) Object {
+func (expr *SetExpr) Eval(env *LocalEnv) coretypes.Object {
 	res := collectionConstruction.NewEmptySet()
 	for _, elemExpr := range expr.elements {
 		el := Eval(elemExpr, env)
@@ -408,7 +408,7 @@ func (expr *SetExpr) Eval(env *LocalEnv) Object {
 	return res
 }
 
-func (expr *DefExpr) Eval(env *LocalEnv) Object {
+func (expr *DefExpr) Eval(env *LocalEnv) coretypes.Object {
 	if expr.value != nil {
 		expr.vr.Value = Eval(expr.value, env)
 		// Track the def var on Fn values for var-based self-recursive IR dispatch
@@ -433,27 +433,27 @@ func (expr *DefExpr) Eval(env *LocalEnv) Object {
 	return expr.vr
 }
 
-func (expr *MetaExpr) Eval(env *LocalEnv) Object {
+func (expr *MetaExpr) Eval(env *LocalEnv) coretypes.Object {
 	meta := Eval(expr.meta, env)
 	res := Eval(expr.expr, env)
 	return res.(Meta).WithMeta(meta.(Map))
 }
 
-func evalSeq(exprs []Expr, env *LocalEnv) []Object {
-	res := make([]Object, len(exprs))
+func evalSeq(exprs []Expr, env *LocalEnv) []coretypes.Object {
+	res := make([]coretypes.Object, len(exprs))
 	for i, expr := range exprs {
 		res[i] = Eval(expr, env)
 	}
 	return res
 }
 
-func (expr *CallExpr) Eval(env *LocalEnv) Object {
+func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 	if result, ok := evalReducePipelineFast(expr, env); ok {
 		return result
 	}
 	// Fast path: if callable is a VarRefExpr, inline the var resolution
 	// to avoid the full Eval dispatch overhead on hot recursive paths.
-	var callable Object
+	var callable coretypes.Object
 	if vref, ok := expr.callable.(*VarRefExpr); ok {
 		callable = vref.vr.Value
 		if callable == nil {
@@ -515,7 +515,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 					return coretypes.Double{D: -x.D}
 				}
 			}
-			var args [1]Object
+			var args [1]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			return callable.Fn(args[:])
 		case 2:
@@ -717,7 +717,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 					}
 				}
 			}
-			var args [2]Object
+			var args [2]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			return callable.Fn(args[:])
@@ -741,13 +741,13 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				val := Eval(expr.args[2], env)
 				return EnsureObjectIsAssociative(coll, "").Assoc(key, val)
 			}
-			var args [3]Object
+			var args [3]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			args[2] = Eval(expr.args[2], env)
 			return callable.Fn(args[:])
 		case 4:
-			var args [4]Object
+			var args [4]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			args[2] = Eval(expr.args[2], env)
@@ -779,22 +779,22 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 		case 0:
 			return irDispatchFnCall(callable, nil)
 		case 1:
-			var args [1]Object
+			var args [1]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			return irDispatchFnCall(callable, args[:])
 		case 2:
-			var args [2]Object
+			var args [2]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			return irDispatchFnCall(callable, args[:])
 		case 3:
-			var args [3]Object
+			var args [3]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			args[2] = Eval(expr.args[2], env)
 			return irDispatchFnCall(callable, args[:])
 		case 4:
-			var args [4]Object
+			var args [4]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			args[2] = Eval(expr.args[2], env)
@@ -809,22 +809,22 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 		case 0:
 			return callable.Call(nil)
 		case 1:
-			var args [1]Object
+			var args [1]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			return callable.Call(args[:])
 		case 2:
-			var args [2]Object
+			var args [2]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			return callable.Call(args[:])
 		case 3:
-			var args [3]Object
+			var args [3]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			args[2] = Eval(expr.args[2], env)
 			return callable.Call(args[:])
 		case 4:
-			var args [4]Object
+			var args [4]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
 			args[1] = Eval(expr.args[1], env)
 			args[2] = Eval(expr.args[2], env)
@@ -859,7 +859,7 @@ func (expr *CallExpr) Name() string {
 	}
 }
 
-func (expr *ThrowExpr) Eval(env *LocalEnv) Object {
+func (expr *ThrowExpr) Eval(env *LocalEnv) coretypes.Object {
 	e := Eval(expr.e, env)
 	switch e.(type) {
 	case coretypes.Error:
@@ -869,7 +869,7 @@ func (expr *ThrowExpr) Eval(env *LocalEnv) Object {
 	}
 }
 
-func (expr *TryExpr) Eval(env *LocalEnv) (obj Object) {
+func (expr *TryExpr) Eval(env *LocalEnv) (obj coretypes.Object) {
 	defer func() {
 		defer func() {
 			if expr.finallyExpr != nil {
@@ -881,7 +881,7 @@ func (expr *TryExpr) Eval(env *LocalEnv) (obj Object) {
 			case coretypes.Error:
 				for _, catchExpr := range expr.catches {
 					if IsInstance(catchExpr.excType, r) {
-						obj = evalBody(catchExpr.body, env.addFrame([]Object{r}))
+						obj = evalBody(catchExpr.body, env.addFrame([]coretypes.Object{r}))
 						return
 					}
 				}
@@ -894,20 +894,20 @@ func (expr *TryExpr) Eval(env *LocalEnv) (obj Object) {
 	return evalBody(expr.body, env)
 }
 
-func (expr *CatchExpr) Eval(env *LocalEnv) (obj Object) {
+func (expr *CatchExpr) Eval(env *LocalEnv) (obj coretypes.Object) {
 	panic(RT.NewError("This should never happen!"))
 }
 
-func evalBody(body []Expr, env *LocalEnv) Object {
-	var res Object = NIL
+func evalBody(body []Expr, env *LocalEnv) coretypes.Object {
+	var res coretypes.Object = NIL
 	for _, expr := range body {
 		res = Eval(expr, env)
 	}
 	return res
 }
 
-func evalLoop(body []Expr, env *LocalEnv) Object {
-	var res Object = NIL
+func evalLoop(body []Expr, env *LocalEnv) coretypes.Object {
+	var res coretypes.Object = NIL
 loop:
 	for _, expr := range body {
 		res = Eval(expr, env)
@@ -921,21 +921,21 @@ loop:
 	}
 }
 
-func (doExpr *DoExpr) Eval(env *LocalEnv) Object {
+func (doExpr *DoExpr) Eval(env *LocalEnv) coretypes.Object {
 	return evalBody(doExpr.body, env)
 }
 
-func (expr *IfExpr) Eval(env *LocalEnv) Object {
+func (expr *IfExpr) Eval(env *LocalEnv) coretypes.Object {
 	if ToBool(Eval(expr.cond, env)) {
 		return Eval(expr.positive, env)
 	}
 	return Eval(expr.negative, env)
 }
 
-func (expr *FnExpr) Eval(env *LocalEnv) Object {
+func (expr *FnExpr) Eval(env *LocalEnv) coretypes.Object {
 	res := &Fn{fnExpr: expr}
 	if expr.self.name != nil {
-		selfEnv := LocalEnv{bindings: []Object{res}, parent: env}
+		selfEnv := LocalEnv{bindings: []coretypes.Object{res}, parent: env}
 		if env != nil {
 			selfEnv.frame = env.frame + 1
 		}
@@ -946,12 +946,12 @@ func (expr *FnExpr) Eval(env *LocalEnv) Object {
 	return res
 }
 
-func (expr *FnArityExpr) Eval(env *LocalEnv) Object {
+func (expr *FnArityExpr) Eval(env *LocalEnv) coretypes.Object {
 	panic(RT.NewError("This should never happen!"))
 }
 
-func (expr *LetExpr) Eval(env *LocalEnv) Object {
-	childEnv := LocalEnv{bindings: make([]Object, 0, len(expr.names)), parent: env}
+func (expr *LetExpr) Eval(env *LocalEnv) coretypes.Object {
+	childEnv := LocalEnv{bindings: make([]coretypes.Object, 0, len(expr.names)), parent: env}
 	if env != nil {
 		childEnv.frame = env.frame + 1
 	}
@@ -961,8 +961,8 @@ func (expr *LetExpr) Eval(env *LocalEnv) Object {
 	return evalBody(expr.body, &childEnv)
 }
 
-func (expr *LoopExpr) Eval(env *LocalEnv) Object {
-	childEnv := LocalEnv{bindings: make([]Object, 0, len(expr.names)), parent: env}
+func (expr *LoopExpr) Eval(env *LocalEnv) coretypes.Object {
+	childEnv := LocalEnv{bindings: make([]coretypes.Object, 0, len(expr.names)), parent: env}
 	if env != nil {
 		childEnv.frame = env.frame + 1
 	}
@@ -979,7 +979,7 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 		// Try IR fast path
 		initSlots := childEnv.bindings
 		if len(prog.captureKeys) > 0 {
-			full := make([]Object, prog.numSlots)
+			full := make([]coretypes.Object, prog.numSlots)
 			copy(full, initSlots)
 			for i, key := range prog.captureKeys {
 				slot := len(initSlots) + i
@@ -994,7 +994,7 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 			initSlots = full
 		}
 		if corert.IRTypedEnabled() && runtimeExec.CanExecuteTypedIR(prog) {
-			var typedResult Object
+			var typedResult coretypes.Object
 			func() {
 				defer func() {
 					if r := recover(); r != nil {
@@ -1019,7 +1019,7 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 		if result := wasmMemNthCompileAndExec(prog, initSlots); result != nil {
 			return result
 		}
-		var result Object
+		var result coretypes.Object
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
@@ -1036,27 +1036,27 @@ func (expr *LoopExpr) Eval(env *LocalEnv) Object {
 	return evalLoop(expr.body, &childEnv)
 }
 
-func (expr *RecurExpr) Eval(env *LocalEnv) Object {
+func (expr *RecurExpr) Eval(env *LocalEnv) coretypes.Object {
 	switch len(expr.args) {
 	case 0:
 		return coretypes.RecurBindings(nil)
 	case 1:
-		var args [1]Object
+		var args [1]coretypes.Object
 		args[0] = Eval(expr.args[0], env)
 		return coretypes.RecurBindings(args[:])
 	case 2:
-		var args [2]Object
+		var args [2]coretypes.Object
 		args[0] = Eval(expr.args[0], env)
 		args[1] = Eval(expr.args[1], env)
 		return coretypes.RecurBindings(args[:])
 	case 3:
-		var args [3]Object
+		var args [3]coretypes.Object
 		args[0] = Eval(expr.args[0], env)
 		args[1] = Eval(expr.args[1], env)
 		args[2] = Eval(expr.args[2], env)
 		return coretypes.RecurBindings(args[:])
 	case 4:
-		var args [4]Object
+		var args [4]coretypes.Object
 		args[0] = Eval(expr.args[0], env)
 		args[1] = Eval(expr.args[1], env)
 		args[2] = Eval(expr.args[2], env)
@@ -1067,7 +1067,7 @@ func (expr *RecurExpr) Eval(env *LocalEnv) Object {
 	}
 }
 
-func (expr *MacroCallExpr) Eval(env *LocalEnv) Object {
+func (expr *MacroCallExpr) Eval(env *LocalEnv) coretypes.Object {
 	return expr.macro.Call(expr.args)
 }
 
@@ -1075,7 +1075,7 @@ func (expr *MacroCallExpr) Name() string {
 	return expr.name
 }
 
-func TryEval(expr Expr) (obj Object, err error) {
+func TryEval(expr Expr) (obj coretypes.Object, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			switch r.(type) {

@@ -10,14 +10,14 @@ import (
 type List struct {
 	coretypes.InfoHolder
 	MetaHolder
-	first Object
+	first coretypes.Object
 	rest  *List
 	count int
-	node  *corecollections.ListNode[Object]
+	node  *corecollections.ListNode[coretypes.Object]
 }
 
-func NewList(first Object, rest *List) *List {
-	var restNode *corecollections.ListNode[Object]
+func NewList(first coretypes.Object, rest *List) *List {
+	var restNode *corecollections.ListNode[coretypes.Object]
 	if rest != nil {
 		restNode = rest.listNode()
 	}
@@ -25,15 +25,15 @@ func NewList(first Object, rest *List) *List {
 	return &List{first: first, rest: rest, count: node.Count(), node: node}
 }
 
-func (list *List) listNode() *corecollections.ListNode[Object] {
+func (list *List) listNode() *corecollections.ListNode[coretypes.Object] {
 	if list.node != nil {
 		return list.node
 	}
 	if list.count == 0 {
-		list.node = corecollections.NewEmptyListNode[Object](list.first)
+		list.node = corecollections.NewEmptyListNode[coretypes.Object](list.first)
 		return list.node
 	}
-	var restNode *corecollections.ListNode[Object]
+	var restNode *corecollections.ListNode[coretypes.Object]
 	if list.rest != nil {
 		restNode = list.rest.listNode()
 	}
@@ -41,7 +41,7 @@ func (list *List) listNode() *corecollections.ListNode[Object] {
 	return list.node
 }
 
-func NewListFrom(objs ...Object) *List {
+func NewListFrom(objs ...coretypes.Object) *List {
 	res := EmptyList
 	for i := len(objs) - 1; i >= 0; i-- {
 		res = res.conj(objs[i])
@@ -49,17 +49,17 @@ func NewListFrom(objs ...Object) *List {
 	return res
 }
 
-func (list *List) WithMeta(meta Map) Object {
+func (list *List) WithMeta(meta Map) coretypes.Object {
 	res := *list
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
 }
 
-func (list *List) conj(obj Object) *List {
+func (list *List) conj(obj coretypes.Object) *List {
 	return NewList(obj, list)
 }
 
-func (list *List) Conj(obj Object) coretypes.Conjable {
+func (list *List) Conj(obj coretypes.Object) coretypes.Conjable {
 	return list.conj(obj)
 }
 
@@ -87,7 +87,7 @@ func (list *List) Hash() uint32 {
 	return hashOrdered(list)
 }
 
-func (list *List) First() Object {
+func (list *List) First() coretypes.Object {
 	return list.listNode().First()
 }
 
@@ -102,7 +102,7 @@ func (list *List) IsEmpty() bool {
 	return list.listNode().IsEmpty()
 }
 
-func (list *List) Cons(obj Object) Seq {
+func (list *List) Cons(obj coretypes.Object) Seq {
 	return list.conj(obj)
 }
 
@@ -110,15 +110,15 @@ func (list *List) Seq() Seq {
 	return list
 }
 
-func (list *List) Second() Object {
+func (list *List) Second() coretypes.Object {
 	return list.listNode().Rest().First()
 }
 
-func (list *List) Third() Object {
+func (list *List) Third() coretypes.Object {
 	return list.listNode().Rest().Rest().First()
 }
 
-func (list *List) Forth() Object {
+func (list *List) Forth() coretypes.Object {
 	return list.listNode().Rest().Rest().Rest().First()
 }
 
@@ -130,7 +130,7 @@ func (list *List) Empty() Collection {
 	return EmptyList
 }
 
-func (list *List) Peek() Object {
+func (list *List) Peek() coretypes.Object {
 	return list.first
 }
 
@@ -143,7 +143,7 @@ func (list *List) Pop() coretypes.Stack {
 
 func (list *List) SequentialMarker() {}
 
-var EmptyList = &List{first: Nil{}, node: corecollections.NewEmptyListNode[Object](Nil{})}
+var EmptyList = &List{first: Nil{}, node: corecollections.NewEmptyListNode[coretypes.Object](Nil{})}
 
 func init() {
 	EmptyList.rest = EmptyList

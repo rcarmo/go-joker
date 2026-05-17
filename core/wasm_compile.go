@@ -601,7 +601,7 @@ type wasmMultiKey struct {
 var wasmMultiFnCache sync.Map    // map[wasmMultiKey]*WasmProgram
 var wasmMultiFnProgFail sync.Map // map[*IRProgram]bool for no-helper/auto-rejected callers
 
-func wasmGetCachedWithOneHelper(prog *IRProgram, slots []Object) *WasmProgram {
+func wasmGetCachedWithOneHelper(prog *IRProgram, slots []coretypes.Object) *WasmProgram {
 	if !corert.WasmMultiFnEnabled() {
 		return nil
 	}
@@ -630,7 +630,7 @@ func wasmGetCachedWithOneHelper(prog *IRProgram, slots []Object) *WasmProgram {
 	return wp
 }
 
-func findSingleWasmHelper(prog *IRProgram, slots []Object) (int, *Fn, *IRProgram, int, bool) {
+func findSingleWasmHelper(prog *IRProgram, slots []coretypes.Object) (int, *Fn, *IRProgram, int, bool) {
 	model := prog.neutralModel()
 	if model == nil {
 		return 0, nil, nil, 0, false
@@ -748,12 +748,12 @@ func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRPro
 
 // objectTable holds Joker Objects referenced by WASM code via handles.
 type objectTable struct {
-	objects []Object
+	objects []coretypes.Object
 	mu      sync.Mutex
 }
 
 // store adds an object and returns its handle.
-func (t *objectTable) store(obj Object) uint64 {
+func (t *objectTable) store(obj coretypes.Object) uint64 {
 	t.mu.Lock()
 	defer t.mu.Unlock()
 	idx := len(t.objects)
@@ -763,7 +763,7 @@ func (t *objectTable) store(obj Object) uint64 {
 }
 
 // load retrieves an object by handle.
-func (t *objectTable) load(handle uint64) Object {
+func (t *objectTable) load(handle uint64) coretypes.Object {
 	idx := int(handle &^ (1 << 62))
 	if idx >= 0 && idx < len(t.objects) {
 		return t.objects[idx]
@@ -784,7 +784,7 @@ func wasmRawInt(v uint64) (int, bool) {
 	return int(i), true
 }
 
-func wasmRawIntObject(v uint64) Object {
+func wasmRawIntObject(v uint64) coretypes.Object {
 	if i, ok := wasmRawInt(v); ok {
 		return coretypes.Int{I: i}
 	}
@@ -824,7 +824,7 @@ func registerWasmHost(rt wazero.Runtime) {
 					return 0
 				}
 				coll := t.load(collHandle)
-				var keyObj Object
+				var keyObj coretypes.Object
 				if isHandle(key) {
 					keyObj = t.load(key)
 				} else {
@@ -847,7 +847,7 @@ func registerWasmHost(rt wazero.Runtime) {
 					return def
 				}
 				coll := t.load(collHandle)
-				var keyObj Object
+				var keyObj coretypes.Object
 				if isHandle(key) {
 					keyObj = t.load(key)
 				} else {
@@ -958,8 +958,8 @@ func registerWasmHost(rt wazero.Runtime) {
 	})
 }
 
-// objToWasm converts a Joker Object to a WASM uint64 (handle or direct value).
-func objToWasm(t *objectTable, obj Object) uint64 {
+// objToWasm converts a Joker coretypes.Object to a WASM uint64 (handle or direct value).
+func objToWasm(t *objectTable, obj coretypes.Object) uint64 {
 	switch v := obj.(type) {
 	case coretypes.Int:
 		return uint64(v.I)
@@ -970,8 +970,8 @@ func objToWasm(t *objectTable, obj Object) uint64 {
 	}
 }
 
-// wasmToObj converts a WASM uint64 back to a Joker Object.
-func wasmToObj(t *objectTable, v uint64) Object {
+// wasmToObj converts a WASM uint64 back to a Joker coretypes.Object.
+func wasmToObj(t *objectTable, v uint64) coretypes.Object {
 	if isHandle(v) {
 		return t.load(v)
 	}
@@ -1040,7 +1040,7 @@ func wasmMemNthStaticEligible(prog *IRProgram) bool {
 }
 
 // Requires: f64 arithmetic, irNth on captured vectors, optional irCallSlot.
-func wasmMemNthEligible(prog *IRProgram, slots []Object) bool {
+func wasmMemNthEligible(prog *IRProgram, slots []coretypes.Object) bool {
 	if prog == nil {
 		return false
 	}
@@ -1151,7 +1151,7 @@ type wasmMemNthCached struct {
 }
 
 // wasmMemNthCompileAndExec compiles and executes the loop with linear memory nth.
-func wasmMemNthCompileAndExec(prog *IRProgram, slots []Object) Object {
+func wasmMemNthCompileAndExec(prog *IRProgram, slots []coretypes.Object) coretypes.Object {
 	if !wasmMemNthEligible(prog, slots) {
 		return nil
 	}
@@ -1254,7 +1254,7 @@ type vecSlotInfo struct {
 	vec  *ArrayVector
 }
 
-func findVecSlots(prog *IRProgram, slots []Object) []vecSlotInfo {
+func findVecSlots(prog *IRProgram, slots []coretypes.Object) []vecSlotInfo {
 	// Find slots loaded before irNth
 	model := prog.neutralModel()
 	if model == nil {
@@ -1296,7 +1296,7 @@ func findVecSlots(prog *IRProgram, slots []Object) []vecSlotInfo {
 	return result
 }
 
-func findHelperForMemNth(prog *IRProgram, slots []Object) (int, *IRProgram) {
+func findHelperForMemNth(prog *IRProgram, slots []coretypes.Object) (int, *IRProgram) {
 	model := prog.neutralModel()
 	if model == nil {
 		return -1, nil

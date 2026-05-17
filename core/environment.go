@@ -86,22 +86,22 @@ func (env *Env) InitEnv(stdin io.Reader, stdout, stderr io.Writer, args []string
 	// call fast paths are active; the core.joke closure shape is sensitive to
 	// local frame reuse in this optimized fork.
 	if vr := env.CoreNamespace.Resolve("constantly"); vr != nil {
-		vr.Value = Proc{Name: "procConstantly", Fn: func(args []Object) Object {
+		vr.Value = Proc{Name: "procConstantly", Fn: func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			x := args[0]
-			return Proc{Name: "procConstantlyValue", Fn: func(_ []Object) Object { return x }}
+			return Proc{Name: "procConstantlyValue", Fn: func(_ []coretypes.Object) coretypes.Object { return x }}
 		}}
 	}
 	env.SetEnvArgs(args)
 }
 
-func (env *Env) SetStdIO(stdin, stdout, stderr Object) {
+func (env *Env) SetStdIO(stdin, stdout, stderr coretypes.Object) {
 	env.stdin.Value = stdin
 	env.stdout.Value = stdout
 	env.stderr.Value = stderr
 }
 
-func (env *Env) StdIO() (stdin, stdout, stderr Object) {
+func (env *Env) StdIO() (stdin, stdout, stderr coretypes.Object) {
 	return env.stdin.Value, env.stdout.Value, env.stderr.Value
 }
 
@@ -121,11 +121,11 @@ This runs after invariant initialization, which includes calling
 	NewEnv().  NOTE: Any changes to the list of run-time
 	initializations must be reflected in gen/codegen/main.go.
 */
-func (env *Env) SetFilename(obj Object) {
+func (env *Env) SetFilename(obj coretypes.Object) {
 	env.file.Value = obj
 }
 
-func (env *Env) IsStdIn(obj Object) bool {
+func (env *Env) IsStdIn(obj coretypes.Object) bool {
 	return env.stdin.Value == obj
 }
 

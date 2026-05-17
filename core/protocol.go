@@ -50,26 +50,26 @@ func (p *Protocol) Equals(other interface{}) bool {
 func (p *Protocol) GetType() *coretypes.Type { return TYPE.Fn }
 func (p *Protocol) Hash() uint32             { return hashutil.Ptr(uintptr(unsafe.Pointer(p))) }
 
-func (p *Protocol) WithInfo(info *coretypes.ObjectInfo) Object {
+func (p *Protocol) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *p
 	res.Info = info
 	return &res
 }
 
-func (p *Protocol) WithMeta(m Map) Object {
+func (p *Protocol) WithMeta(m Map) coretypes.Object {
 	res := *p
 	res.meta = SafeMerge(res.meta, m)
 	return &res
 }
 
 // lookupMethod finds the implementation of a method for a given object.
-func (pm *ProtocolMethod) lookupMethod(obj Object) coretypes.Callable {
+func (pm *ProtocolMethod) lookupMethod(obj coretypes.Object) coretypes.Callable {
 	typeName := typeNameOf(obj)
 	if fn, ok := pm.dispatch.Load(typeName); ok {
 		return fn.(coretypes.Callable)
 	}
-	// Try "Object" catch-all
-	if fn, ok := pm.dispatch.Load("Object"); ok {
+	// Try "coretypes.Object" catch-all
+	if fn, ok := pm.dispatch.Load("coretypes.Object"); ok {
 		return fn.(coretypes.Callable)
 	}
 	if pm.defaultImpl != nil {
@@ -79,7 +79,7 @@ func (pm *ProtocolMethod) lookupMethod(obj Object) coretypes.Callable {
 }
 
 // typeNameOf returns the dispatch type name for an object.
-func typeNameOf(obj Object) string {
+func typeNameOf(obj coretypes.Object) string {
 	if obj == nil {
 		return "nil"
 	}
@@ -139,7 +139,7 @@ func typeNameOf(obj Object) string {
 func makeProtocolMethodProc(proto *Protocol, methodName string, pm *ProtocolMethod) Proc {
 	return Proc{
 		Name: proto.name.ToString(false) + "/" + methodName,
-		Fn: func(args []Object) Object {
+		Fn: func(args []coretypes.Object) coretypes.Object {
 			if len(args) == 0 {
 				panic(RT.NewError(fmt.Sprintf("Protocol method %s/%s called with no arguments",
 					proto.name.ToString(false), methodName)))
@@ -202,11 +202,11 @@ func ExtendType(proto *Protocol, typeName string, impls map[string]coretypes.Cal
 }
 
 // Satisfies checks if an object satisfies a protocol (has implementations for all methods).
-func Satisfies(proto *Protocol, obj Object) bool {
+func Satisfies(proto *Protocol, obj coretypes.Object) bool {
 	typeName := typeNameOf(obj)
 	for _, pm := range proto.methods {
 		if _, ok := pm.dispatch.Load(typeName); !ok {
-			if _, ok := pm.dispatch.Load("Object"); !ok {
+			if _, ok := pm.dispatch.Load("coretypes.Object"); !ok {
 				if pm.defaultImpl == nil {
 					return false
 				}

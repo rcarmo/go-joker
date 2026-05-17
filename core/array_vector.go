@@ -16,11 +16,11 @@ type (
 	ArrayVector struct {
 		coretypes.InfoHolder
 		MetaHolder
-		arr []Object
+		arr []coretypes.Object
 	}
 )
 
-func (v *ArrayVector) WithMeta(meta Map) Object {
+func (v *ArrayVector) WithMeta(meta Map) coretypes.Object {
 	res := *v
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -32,7 +32,7 @@ func (v *ArrayVector) Clone() *ArrayVector {
 	return &res
 }
 
-func (v *ArrayVector) Conjoin(obj Object) Vec {
+func (v *ArrayVector) Conjoin(obj coretypes.Object) Vec {
 	if v.Count() >= VECTOR_THRESHOLD {
 		res := collectionConstruction.NewVectorFrom(v.arr...)
 		res = res.Conjoin(obj)
@@ -44,11 +44,11 @@ func (v *ArrayVector) Conjoin(obj Object) Vec {
 	return &res
 }
 
-func (v *ArrayVector) Append(obj Object) {
+func (v *ArrayVector) Append(obj coretypes.Object) {
 	v.arr = append(v.arr, obj)
 }
 
-func (v *ArrayVector) At(i int) Object {
+func (v *ArrayVector) At(i int) coretypes.Object {
 	return v.arr[i]
 }
 
@@ -80,7 +80,7 @@ func (v *ArrayVector) Seq() Seq {
 	return &VectorSeq{vector: v, index: 0}
 }
 
-func (v *ArrayVector) Conj(obj Object) coretypes.Conjable {
+func (v *ArrayVector) Conj(obj coretypes.Object) coretypes.Conjable {
 	return v.Conjoin(obj)
 }
 
@@ -88,14 +88,14 @@ func (v *ArrayVector) Count() int {
 	return len(v.arr)
 }
 
-func (v *ArrayVector) Nth(i int) Object {
+func (v *ArrayVector) Nth(i int) coretypes.Object {
 	if i < 0 || i >= v.Count() {
 		panic(RT.NewError(fmt.Sprintf("Index %d is out of bounds [0..%d]", i, v.Count()-1)))
 	}
 	return v.At(i)
 }
 
-func (v *ArrayVector) TryNth(i int, d Object) Object {
+func (v *ArrayVector) TryNth(i int, d coretypes.Object) coretypes.Object {
 	if i < 0 || i >= v.Count() {
 		return d
 	}
@@ -109,7 +109,7 @@ func (v *ArrayVector) Compare(other coretypes.Object) int {
 	return CountedIndexedCompare(v, v2)
 }
 
-func (v *ArrayVector) Peek() Object {
+func (v *ArrayVector) Peek() coretypes.Object {
 	if v.Count() > 0 {
 		return v.At(v.Count() - 1)
 	}
@@ -125,11 +125,11 @@ func (v *ArrayVector) Pop() coretypes.Stack {
 	return &res
 }
 
-func (v *ArrayVector) Get(key Object) (bool, Object) {
+func (v *ArrayVector) Get(key coretypes.Object) (bool, coretypes.Object) {
 	return CountedIndexedGet(v, key)
 }
 
-func (v *ArrayVector) EntryAt(key Object) *ArrayVector {
+func (v *ArrayVector) EntryAt(key coretypes.Object) *ArrayVector {
 	ok, val := v.Get(key)
 	if ok {
 		return collectionConstruction.NewArrayVectorFrom(key, val)
@@ -137,7 +137,7 @@ func (v *ArrayVector) EntryAt(key Object) *ArrayVector {
 	return nil
 }
 
-func (v *ArrayVector) Assoc(key, val Object) Associative {
+func (v *ArrayVector) Assoc(key, val coretypes.Object) Associative {
 	i := assertInteger(key)
 	if i < 0 || i > v.Count() {
 		panic(RT.NewError((fmt.Sprintf("Index %d is out of bounds [0..%d]", i, v.Count()))))
@@ -154,7 +154,7 @@ func (v *ArrayVector) Rseq() Seq {
 	return &VectorRSeq{vector: v, index: v.Count() - 1}
 }
 
-func (v *ArrayVector) Call(args []Object) Object {
+func (v *ArrayVector) Call(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	i := assertInteger(args[0])
 	return v.Nth(i)
@@ -168,7 +168,7 @@ func (v *ArrayVector) Empty() Collection {
 	return collectionConstruction.NewEmptyArrayVector()
 }
 
-func (v *ArrayVector) KVReduce(c coretypes.Callable, init Object) Object {
+func (v *ArrayVector) KVReduce(c coretypes.Callable, init coretypes.Object) coretypes.Object {
 	return CountedIndexedKvreduce(v, c, init)
 }
 
@@ -180,7 +180,7 @@ func (v *ArrayVector) Format(w io.Writer, indent int) int {
 	return CountedIndexedFormat(v, w, indent)
 }
 
-func NewArrayVectorFrom(objs ...Object) *ArrayVector {
+func NewArrayVectorFrom(objs ...coretypes.Object) *ArrayVector {
 	n := len(objs)
 	if n == 0 {
 		return EmptyArrayVector()
@@ -188,10 +188,10 @@ func NewArrayVectorFrom(objs ...Object) *ArrayVector {
 	return &ArrayVector{arr: corecollections.FromValues(objs...)}
 }
 
-func (v *ArrayVector) Reduce(c coretypes.Callable) Object {
+func (v *ArrayVector) Reduce(c coretypes.Callable) coretypes.Object {
 	return CountedIndexedReduce(v, c)
 }
 
-func (v *ArrayVector) ReduceInit(c coretypes.Callable, init Object) Object {
+func (v *ArrayVector) ReduceInit(c coretypes.Callable, init coretypes.Object) coretypes.Object {
 	return CountedIndexedReduceInit(v, c, init)
 }

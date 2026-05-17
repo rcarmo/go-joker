@@ -19,16 +19,16 @@ import (
 // ---- boxed_exec.go ----
 // ---------- Interpreter ----------
 
-func irExec(prog *IRProgram, initSlots []Object) Object {
+func irExec(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object {
 	defer traceIRProgramCall(prog, len(initSlots))()
 	irProfileExecStart()
 	defer irProfileMaybeWrite()
-	var slots []Object
+	var slots []coretypes.Object
 	if runtimeExec.ProgramNumSlots(prog) <= 16 {
-		var buf [16]Object
+		var buf [16]coretypes.Object
 		slots = buf[:runtimeExec.ProgramNumSlots(prog)]
 	} else {
-		slots = make([]Object, runtimeExec.ProgramNumSlots(prog))
+		slots = make([]coretypes.Object, runtimeExec.ProgramNumSlots(prog))
 	}
 	copy(slots, initSlots)
 	// Pre-fill captured closure values into their assigned slots
@@ -48,14 +48,14 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 		}
 	}
 
-	var stack []Object
-	var stackBuf [16]Object
+	var stack []coretypes.Object
+	var stackBuf [16]coretypes.Object
 	stack = stackBuf[:0]
 	code := runtimeExec.ProgramCode(prog)
 	pc := 0
 
 	// Frame stack for irCallSelf — avoids recursive irExec calls
-	var frameStack *coreirx.FrameStack[Object]
+	var frameStack *coreirx.FrameStack[coretypes.Object]
 	defer func() { coreirx.ReleaseFrameStack(frameStack) }()
 	var selfTraceStack []func()
 
@@ -682,13 +682,13 @@ loop:
 				}
 			}
 			// Slow path
-			var args []Object
-			var argsBuf [4]Object
+			var args []coretypes.Object
+			var argsBuf [4]coretypes.Object
 			if nargs > 0 {
 				if nargs <= len(argsBuf) {
 					args = argsBuf[:nargs]
 				} else {
-					args = make([]Object, nargs)
+					args = make([]coretypes.Object, nargs)
 				}
 				for i := nargs - 1; i >= 0; i-- {
 					args[i] = stack[len(stack)-1]
@@ -733,7 +733,7 @@ loop:
 			// Use frame stack for bounded recursion, fall back to
 			// recursive irExec for deep/exponential recursion.
 			if frameStack == nil {
-				frameStack = coreirx.NewFrameStack[Object](runtimeExec.ProgramNumSlots(prog))
+				frameStack = coreirx.NewFrameStack[coretypes.Object](runtimeExec.ProgramNumSlots(prog))
 			}
 			if frameStack.Depth() < 512 {
 				selfTraceStack = append(selfTraceStack, traceIRProgramCall(prog, nargs))
@@ -754,12 +754,12 @@ loop:
 				pc = 0
 			} else {
 				// Deep recursion: fall back to recursive call
-				var args []Object
-				var argsBuf [4]Object
+				var args []coretypes.Object
+				var argsBuf [4]coretypes.Object
 				if nargs <= len(argsBuf) {
 					args = argsBuf[:nargs]
 				} else {
-					args = make([]Object, nargs)
+					args = make([]coretypes.Object, nargs)
 				}
 				for i := nargs - 1; i >= 0; i-- {
 					args[i] = stack[len(stack)-1]
@@ -784,7 +784,7 @@ loop:
 		case irBuildVec:
 			n := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			arr := make([]Object, n)
+			arr := make([]coretypes.Object, n)
 			for i := n - 1; i >= 0; i-- {
 				arr[i] = stack[len(stack)-1]
 				stack = stack[:len(stack)-1]
@@ -913,7 +913,7 @@ loop:
 }
 
 // ---- typed_exec.go ----
-func irExecTyped(prog *IRProgram, initSlots []Object) Object {
+func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object {
 	defer traceIRProgramCall(prog, len(initSlots))()
 	irProfileExecStart()
 	defer irProfileMaybeWrite()
@@ -1231,7 +1231,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if !ok {
 				return nil
 			}
-			capturedSlots := make([]Object, len(slots))
+			capturedSlots := make([]coretypes.Object, len(slots))
 			for i, v := range slots {
 				capturedSlots[i] = v.object()
 			}
@@ -1431,7 +1431,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				coll.setIntVec(iv)
 				stack = append(stack, coll)
 			} else {
-				// General assoc path for Object types (vector of doubles, etc.)
+				// General assoc path for coretypes.Object types (vector of doubles, etc.)
 				result, ok := runtimeExec.Assoc(coll.object(), key.object(), val.object())
 				if !ok {
 					return nil
@@ -1579,7 +1579,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			// Load fn from typed slots (supports captures beyond initSlots)
-			var fnObj Object
+			var fnObj coretypes.Object
 			if slotIdx < len(initSlots) {
 				fnObj = initSlots[slotIdx]
 			} else {
@@ -1622,14 +1622,14 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				typedArgs[i] = stack[len(stack)-1]
 				stack = stack[:len(stack)-1]
 			}
-			var result Object
+			var result coretypes.Object
 			if baseProg, ok := runtimeExec.FnProgram(fnObj); ok {
 				if baseProg != nil && runtimeExec.HasNativeHelper(baseProg) {
 					// Already handled above
 				} else if fnProg := runtimeExec.DispatchArityProgram(baseProg, nargs); runtimeExec.CanExecuteIR(fnProg) {
 					routedToIR := false
 					if runtimeExec.CanExecuteTypedIR(fnProg) {
-						// FAST PATH: typed sub-call without Object boxing
+						// FAST PATH: typed sub-call without coretypes.Object boxing
 						// Only for pure numeric programs (no collections/strings)
 						subAnalysis := runtimeExec.ProgramAnalysis(fnProg)
 						if irTypedEligible(subAnalysis) && !subAnalysis.UsesCollection && !subAnalysis.UsesString && !subAnalysis.HasCallSlot {
@@ -1659,7 +1659,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 						}
 					}
 					// Fallback: box args
-					var argsBuf [4]Object
+					var argsBuf [4]coretypes.Object
 					args := runtimeExec.ObjectsFromTypedValues(typedArgs, argsBuf[:])
 					callArgs, ok := runtimeExec.FnCallSlots(fnObj, fnProg, args)
 					if !ok {
@@ -1676,7 +1676,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 					}
 				}
 				if result == nil {
-					var args2 [4]Object
+					var args2 [4]coretypes.Object
 					a := runtimeExec.ObjectsFromTypedValues(typedArgs, args2[:])
 					var ok bool
 					result, ok = runtimeExec.CallObject(fnObj, a)
@@ -1685,7 +1685,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 					}
 				}
 			} else {
-				var args3 [4]Object
+				var args3 [4]coretypes.Object
 				a := runtimeExec.ObjectsFromTypedValues(typedArgs, args3[:])
 				var ok bool
 				result, ok = runtimeExec.CallObject(fnObj, a)
@@ -1741,7 +1741,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				pc = 0
 			} else {
 				// Deep recursion: box args and fall back
-				args := make([]Object, nargs)
+				args := make([]coretypes.Object, nargs)
 				for i := nargs - 1; i >= 0; i-- {
 					args[i] = stack[len(stack)-1].object()
 					stack = stack[:len(stack)-1]
@@ -1771,7 +1771,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 		case irBuildVec:
 			n := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			arr := make([]Object, n)
+			arr := make([]coretypes.Object, n)
 			for i := n - 1; i >= 0; i-- {
 				arr[i] = stack[len(stack)-1].object()
 				stack = stack[:len(stack)-1]
@@ -1880,11 +1880,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 }
 
 // irExecTypedIV runs the typed executor and returns the result as irValue
-// directly, avoiding the Object boxing/unboxing at callSlot boundaries.
+// directly, avoiding the coretypes.Object boxing/unboxing at callSlot boundaries.
 // Returns (result, true) on success, (zero, false) on failure.
 
 // ---- typed_exec_inline.go ----
-func irExecTypedIV(prog *IRProgram, initSlots []Object) (irValue, bool) {
+func irExecTypedIV(prog *IRProgram, initSlots []coretypes.Object) (irValue, bool) {
 	result := irExecTyped(prog, initSlots)
 	if result == nil {
 		return irValue{}, false
@@ -1893,7 +1893,7 @@ func irExecTypedIV(prog *IRProgram, initSlots []Object) (irValue, bool) {
 }
 
 // irExecTypedInline executes a typed IR program with pre-filled irValue slots.
-// Returns the result as irValue directly (no Object boxing).
+// Returns the result as irValue directly (no coretypes.Object boxing).
 // Returns zero irValue on failure.
 func irExecTypedInline(prog *IRProgram, slots []irValue) irValue {
 	var stackBuf [32]irValue
@@ -2111,12 +2111,12 @@ func irExecTypedInline(prog *IRProgram, slots []irValue) irValue {
 //
 // Uses []uint64 stack (8 bytes per entry) instead of []irValue (32 bytes).
 // Numeric operations are pure bit manipulation — zero allocation, zero copy.
-// Object operations convert at the boundary via the local nb* helpers.
+// coretypes.Object operations convert at the boundary via the local nb* helpers.
 //
 // This is the typed executor's hot path for numeric loops.
 // Falls back to nil (letting irExecTyped handle it) for unsupported patterns.
 
-func nbFromObject(obj Object, table *[]Object) uint64 {
+func nbFromObject(obj coretypes.Object, table *[]coretypes.Object) uint64 {
 	switch v := obj.(type) {
 	case coretypes.Int:
 		return coreirx.BoxInt(v.I)
@@ -2133,7 +2133,7 @@ func nbFromObject(obj Object, table *[]Object) uint64 {
 	}
 }
 
-func nbToObject(v uint64, table []Object) Object {
+func nbToObject(v uint64, table []coretypes.Object) coretypes.Object {
 	if coreirx.IsDouble(v) {
 		return coretypes.Double{D: coreirx.ToDouble(v)}
 	}
@@ -2155,14 +2155,14 @@ func nbToObject(v uint64, table []Object) Object {
 	return NIL
 }
 
-func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
+func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object {
 	analysis := AnalyzeIRProgram(prog)
 	// Only handle numeric-dominant programs without complex collection ops
 	if !irTypedEligible(analysis) {
 		return nil
 	}
 	// Only handle pure numeric programs — no collections, no self-calls,
-	// no strings, no fn calls (which allocate []Object args).
+	// no strings, no fn calls (which allocate []coretypes.Object args).
 	if analysis.HasSelfCall || analysis.UsesString || analysis.UsesTransient ||
 		analysis.UsesCollection || analysis.HasCallSlot {
 		return nil
@@ -2177,8 +2177,8 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 		slots = make([]uint64, numSlots)
 	}
 
-	// Object side-table for non-numeric values
-	var objTable []Object
+	// coretypes.Object side-table for non-numeric values
+	var objTable []coretypes.Object
 
 	// Convert init slots
 	for i := 0; i < numSlots && i < len(initSlots); i++ {
@@ -2435,12 +2435,12 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 				}
 			}
 			// Box args and call
-			args := make([]Object, nargs)
+			args := make([]coretypes.Object, nargs)
 			for i := nargs - 1; i >= 0; i-- {
 				sp--
 				args[i] = nbToObject(stackBuf[sp], objTable)
 			}
-			var result Object
+			var result coretypes.Object
 			if fnProg, ok := runtimeExec.CompileFnProgram(fnObj); ok {
 				result = irExecTyped(fnProg, args)
 				if result == nil {
@@ -2607,11 +2607,11 @@ func (v *irValue) setIntVec(iv []int) {
 	v.p = unsafe.Pointer(&iv)
 }
 
-// --- Object ---
+// --- coretypes.Object ---
 
-func irMakeObject(obj Object) irValue {
+func irMakeObject(obj coretypes.Object) irValue {
 	// For common concrete pointer types, store directly to avoid
-	// allocating an Object interface box. Use i field as sub-tag.
+	// allocating an coretypes.Object interface box. Use i field as sub-tag.
 	switch v := obj.(type) {
 	case *ArrayVector:
 		return irValue{tag: irValObject, i: 1, p: unsafe.Pointer(v)}
@@ -2620,13 +2620,13 @@ func irMakeObject(obj Object) irValue {
 	case *Fn:
 		return irValue{tag: irValObject, i: 3, p: unsafe.Pointer(v)}
 	default:
-		p := new(Object)
+		p := new(coretypes.Object)
 		*p = obj
 		return irValue{tag: irValObject, i: 0, p: unsafe.Pointer(p)}
 	}
 }
 
-func (v irValue) obj() Object {
+func (v irValue) obj() coretypes.Object {
 	if v.p == nil {
 		return NIL
 	}
@@ -2638,14 +2638,14 @@ func (v irValue) obj() Object {
 	case 3:
 		return (*Fn)(v.p)
 	default:
-		return *(*Object)(v.p)
+		return *(*coretypes.Object)(v.p)
 	}
 }
 
 // ---- typed_values.go ----
 // ir_typed.go — experimental typed IR executor (v2).
 //
-// This is the first incremental step away from the boxed []Object stack used by
+// This is the first incremental step away from the boxed []coretypes.Object stack used by
 // irExec. It is intentionally small and gated: primitive/string-only loops can
 // be executed with tagged values, while unsupported opcodes return nil and let
 // the normal IR/tree path handle them.
@@ -2675,7 +2675,7 @@ type irValue struct {
 	tag irValueTag
 	i   int            // int value, bool (0/1), rune, rune count for strings
 	f   float64        // double value, or ASCII flag (nonzero = ASCII) for strings
-	p   unsafe.Pointer // -> string | []byte | map[string]int | []int | Object
+	p   unsafe.Pointer // -> string | []byte | map[string]int | []int | coretypes.Object
 }
 
 func irTypedEligible(a coreirx.Analysis) bool {
@@ -2722,7 +2722,7 @@ func stringToIRValue(s string) irValue {
 	return irMakeString(s, len(s), ascii)
 }
 
-func objectToIRValue(obj Object) irValue {
+func objectToIRValue(obj coretypes.Object) irValue {
 	switch v := obj.(type) {
 	case coretypes.Int:
 		return irValue{tag: irValInt, i: v.I}
@@ -2766,7 +2766,7 @@ func objectToIRValue(obj Object) irValue {
 	return irMakeObject(obj)
 }
 
-func (v irValue) object() Object {
+func (v irValue) object() coretypes.Object {
 	switch v.tag {
 	case irValInt:
 		return coretypes.Int{I: v.i}
@@ -2787,7 +2787,7 @@ func (v irValue) object() Object {
 		}
 		return res
 	case irValIntVector:
-		arr := make([]Object, len(v.intVec()))
+		arr := make([]coretypes.Object, len(v.intVec()))
 		for i, x := range v.intVec() {
 			arr[i] = coretypes.Int{I: x}
 		}
@@ -2895,23 +2895,23 @@ func irValueEq(a, b irValue) (irValue, bool) {
 }
 
 // keywordObjectCache caches Keyword Objects by name pointer to avoid
-// repeated heap allocation when converting irValKeyword → Object.
-var keywordObjectCache sync.Map // *string → Object (Keyword)
+// repeated heap allocation when converting irValKeyword → coretypes.Object.
+var keywordObjectCache sync.Map // *string → coretypes.Object (Keyword)
 
-func keywordObjectFromName(name *string) Object {
+func keywordObjectFromName(name *string) coretypes.Object {
 	if v, ok := keywordObjectCache.Load(name); ok {
-		return v.(Object)
+		return v.(coretypes.Object)
 	}
 	kw := Keyword{name: name}
-	// Store as Object interface to avoid re-boxing
-	var obj Object = kw
+	// Store as coretypes.Object interface to avoid re-boxing
+	var obj coretypes.Object = kw
 	keywordObjectCache.Store(name, obj)
 	return obj
 }
 
 // ---- wasm_exec_runtime.go ----
 // wasm_runtime.go — wazero-based WASM execution engine.
-// Compiles WASM modules and caches them. Handles Object ↔ WASM i64 conversion.
+// Compiles WASM modules and caches them. Handles coretypes.Object ↔ WASM i64 conversion.
 
 // WasmProgram is a compiled, ready-to-execute WASM module.
 type WasmProgram struct {
@@ -2919,8 +2919,8 @@ type WasmProgram struct {
 	execFn     api.Function
 	useFloat   bool
 	hasImports bool
-	constants  []Object // pre-stored constants for handle references
-	bytes      []byte   // raw wasm module for export/debugging
+	constants  []coretypes.Object // pre-stored constants for handle references
+	bytes      []byte             // raw wasm module for export/debugging
 }
 
 var (
@@ -3013,9 +3013,9 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 	return wp
 }
 
-func wasmExec(wp *WasmProgram, slots []Object) Object {
+func wasmExec(wp *WasmProgram, slots []coretypes.Object) coretypes.Object {
 	// Create object table for this execution
-	table := &objectTable{objects: make([]Object, 0, 16)}
+	table := &objectTable{objects: make([]coretypes.Object, 0, 16)}
 
 	// Pre-populate with IR program constants (for handle references)
 	if wp.hasImports && len(wp.constants) > 0 {

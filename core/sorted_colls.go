@@ -35,7 +35,7 @@ func registerSortedCollProcs() {
 
 	// sorted-map — (sorted-map k1 v1 k2 v2 ...)
 	smVr := ns.Intern(MakeSymbol("sorted-map"))
-	smVr.Value = Proc{Name: "procSortedMap", Fn: func(args []Object) Object {
+	smVr.Value = Proc{Name: "procSortedMap", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args)%2 != 0 {
 			panic(RT.NewError("sorted-map requires an even number of arguments"))
 		}
@@ -50,7 +50,7 @@ func registerSortedCollProcs() {
 
 	// sorted-map-by — (sorted-map-by comparator k1 v1 k2 v2 ...)
 	smbVr := ns.Intern(MakeSymbol("sorted-map-by"))
-	smbVr.Value = Proc{Name: "procSortedMapBy", Fn: func(args []Object) Object {
+	smbVr.Value = Proc{Name: "procSortedMapBy", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 999)
 		comp := EnsureArgIsCallable(args, 0)
 		keyvals := args[1:]
@@ -68,14 +68,14 @@ func registerSortedCollProcs() {
 
 	// sorted-set — (sorted-set v1 v2 ...)
 	ssVr := ns.Intern(MakeSymbol("sorted-set"))
-	ssVr.Value = Proc{Name: "procSortedSet", Fn: func(args []Object) Object {
+	ssVr.Value = Proc{Name: "procSortedSet", Fn: func(args []coretypes.Object) coretypes.Object {
 		return sortedSetFrom(args, nil)
 	}}
 	referToUser(MakeSymbol("sorted-set"), ssVr)
 
 	// sorted-set-by — (sorted-set-by comparator v1 v2 ...)
 	ssbVr := ns.Intern(MakeSymbol("sorted-set-by"))
-	ssbVr.Value = Proc{Name: "procSortedSetBy", Fn: func(args []Object) Object {
+	ssbVr.Value = Proc{Name: "procSortedSetBy", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 999)
 		return sortedSetFrom(args[1:], EnsureArgIsCallable(args, 0))
 	}}
@@ -83,7 +83,7 @@ func registerSortedCollProcs() {
 
 	// sorted? — (sorted? coll)
 	sortedQVr := ns.Intern(MakeSymbol("sorted?"))
-	sortedQVr.Value = Proc{Name: "procSortedQ", Fn: func(args []Object) Object {
+	sortedQVr.Value = Proc{Name: "procSortedQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		if m, ok := args[0].(Meta); ok {
 			meta := m.GetMeta()
@@ -99,23 +99,23 @@ func registerSortedCollProcs() {
 
 	// subseq/rsubseq — range queries over sorted coll API.
 	subseqVr := ns.Intern(MakeSymbol("subseq"))
-	subseqVr.Value = Proc{Name: "procSubseq", Fn: func(args []Object) Object {
+	subseqVr.Value = Proc{Name: "procSubseq", Fn: func(args []coretypes.Object) coretypes.Object {
 		return sortedSubseq(args, false)
 	}}
 	referToUser(MakeSymbol("subseq"), subseqVr)
 
 	rsubseqVr := ns.Intern(MakeSymbol("rsubseq"))
-	rsubseqVr.Value = Proc{Name: "procRsubseq", Fn: func(args []Object) Object {
+	rsubseqVr.Value = Proc{Name: "procRsubseq", Fn: func(args []coretypes.Object) coretypes.Object {
 		return sortedSubseq(args, true)
 	}}
 	referToUser(MakeSymbol("rsubseq"), rsubseqVr)
 
 	// comparator — (comparator pred) — wraps a boolean predicate into a comparator fn
 	compVr := ns.Intern(MakeSymbol("comparator"))
-	compVr.Value = Proc{Name: "procComparator", Fn: func(args []Object) Object {
+	compVr.Value = Proc{Name: "procComparator", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		pred := EnsureArgIsCallable(args, 0)
-		return Proc{Name: "procComparatorFn", Fn: func(cArgs []Object) Object {
+		return Proc{Name: "procComparatorFn", Fn: func(cArgs []coretypes.Object) coretypes.Object {
 			CheckArity(cArgs, 2, 2)
 			if ToBool(pred.Call(cArgs)) {
 				return coretypes.Int{I: -1}
@@ -130,11 +130,11 @@ func registerSortedCollProcs() {
 }
 
 type sortedKV struct {
-	key Object
-	val Object
+	key coretypes.Object
+	val coretypes.Object
 }
 
-func sortedKeyValuePairs(keyvals []Object, comp coretypes.Callable) []sortedKV {
+func sortedKeyValuePairs(keyvals []coretypes.Object, comp coretypes.Callable) []sortedKV {
 	pairs := make([]sortedKV, len(keyvals)/2)
 	for i := 0; i < len(keyvals); i += 2 {
 		pairs[i/2] = sortedKV{key: keyvals[i], val: keyvals[i+1]}
@@ -148,7 +148,7 @@ func sortedKeyValuePairs(keyvals []Object, comp coretypes.Callable) []sortedKV {
 	return pairs
 }
 
-func addOrReplaceSortedMap(m *ArrayMap, key Object, val Object, comp coretypes.Callable) {
+func addOrReplaceSortedMap(m *ArrayMap, key coretypes.Object, val coretypes.Object, comp coretypes.Callable) {
 	if comp != nil {
 		for i := 0; i < len(m.arr); i += 2 {
 			if compareWith(comp, m.arr[i], key) == 0 {
@@ -168,8 +168,8 @@ func addOrReplaceSortedMap(m *ArrayMap, key Object, val Object, comp coretypes.C
 	}
 }
 
-func sortedSetFrom(values []Object, comp coretypes.Callable) Object {
-	sorted := make([]Object, len(values))
+func sortedSetFrom(values []coretypes.Object, comp coretypes.Callable) coretypes.Object {
+	sorted := make([]coretypes.Object, len(values))
 	copy(sorted, values)
 	sort.Slice(sorted, func(i, j int) bool {
 		if comp != nil {
@@ -184,11 +184,11 @@ func sortedSetFrom(values []Object, comp coretypes.Callable) Object {
 	return s.WithMeta(sortedCollMeta())
 }
 
-func compareWith(comp coretypes.Callable, a, b Object) int {
+func compareWith(comp coretypes.Callable, a, b coretypes.Object) int {
 	return compare(comp, a, b)
 }
 
-func sortedSubseq(args []Object, reverse bool) Object {
+func sortedSubseq(args []coretypes.Object, reverse bool) coretypes.Object {
 	if len(args) != 3 && len(args) != 5 {
 		PanicArityMinMax(len(args), 3, 5)
 	}
@@ -202,12 +202,12 @@ func sortedSubseq(args []Object, reverse bool) Object {
 	startPred := EnsureObjectIsCallable(args[1], "subseq predicate must be callable, got %s")
 	startKey := args[2]
 	var endPred coretypes.Callable
-	var endKey Object
+	var endKey coretypes.Object
 	if len(args) == 5 {
 		endPred = EnsureObjectIsCallable(args[3], "subseq predicate must be callable, got %s")
 		endKey = args[4]
 	}
-	out := make([]Object, 0)
+	out := make([]coretypes.Object, 0)
 	for _, e := range entries {
 		k := rangeKey(e)
 		if !rangePred(startPred, k, startKey) {
@@ -224,8 +224,8 @@ func sortedSubseq(args []Object, reverse bool) Object {
 	return &ArraySeq{arr: out, index: 0}
 }
 
-func sortedEntries(coll Object) []Object {
-	out := make([]Object, 0)
+func sortedEntries(coll coretypes.Object) []coretypes.Object {
+	out := make([]coretypes.Object, 0)
 	preserveOrder := isSortedColl(coll)
 	if m, ok := coll.(Map); ok {
 		for it := m.Iter(); it.HasNext(); {
@@ -248,7 +248,7 @@ func sortedEntries(coll Object) []Object {
 	return out
 }
 
-func isSortedColl(coll Object) bool {
+func isSortedColl(coll coretypes.Object) bool {
 	m, ok := coll.(Meta)
 	if !ok || m.GetMeta() == nil {
 		return false
@@ -257,14 +257,14 @@ func isSortedColl(coll Object) bool {
 	return ok && ToBool(v)
 }
 
-func rangeKey(entry Object) Object {
+func rangeKey(entry coretypes.Object) coretypes.Object {
 	if v, ok := entry.(Vec); ok && v.Count() >= 1 {
 		return v.Nth(0)
 	}
 	return entry
 }
 
-func rangePred(pred coretypes.Callable, a, b Object) bool {
+func rangePred(pred coretypes.Callable, a, b coretypes.Object) bool {
 	if name := hotReducerName(pred); name != "" {
 		switch name {
 		case "procLt":
@@ -281,7 +281,7 @@ func rangePred(pred coretypes.Callable, a, b Object) bool {
 }
 
 // compareObjects provides a default ordering for Clojure values.
-func compareObjects(a, b Object) int {
+func compareObjects(a, b coretypes.Object) int {
 	// Same type comparisons
 	switch av := a.(type) {
 	case coretypes.Int:

@@ -10,7 +10,7 @@ import (
 
 type (
 	Vec interface {
-		Object
+		coretypes.Object
 		coretypes.CountedIndexed
 		coretypes.Gettable
 		Associative
@@ -48,7 +48,7 @@ type (
 
 var empty_node = make([]interface{}, 32)
 
-func (v *Vector) WithMeta(meta Map) Object {
+func (v *Vector) WithMeta(meta Map) coretypes.Object {
 	res := *v
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -76,18 +76,18 @@ func (v *Vector) arrayFor(i int) []interface{} {
 	return node
 }
 
-func (v *Vector) at(i int) Object {
+func (v *Vector) at(i int) coretypes.Object {
 	if i >= v.count || i < 0 {
 		panic(RT.NewError(fmt.Sprintf("Index %d is out of bounds [0..%d]", i, v.count-1)))
 	}
-	return v.arrayFor(i)[i&0x01F].(Object)
+	return v.arrayFor(i)[i&0x01F].(coretypes.Object)
 }
 
-func (v *Vector) uncheckedAt(i int) Object {
-	return v.arrayFor(i)[i&0x01F].(Object)
+func (v *Vector) uncheckedAt(i int) coretypes.Object {
+	return v.arrayFor(i)[i&0x01F].(coretypes.Object)
 }
 
-func (v *Vector) At(i int) Object {
+func (v *Vector) At(i int) coretypes.Object {
 	return v.uncheckedAt(i)
 }
 
@@ -117,7 +117,7 @@ func (v *Vector) pushTail(level uint, parent []interface{}, tailNode []interface
 	return result
 }
 
-func (v *Vector) Conjoin(obj Object) *Vector {
+func (v *Vector) Conjoin(obj coretypes.Object) *Vector {
 	var newTail []interface{}
 	if v.count-v.tailoff() < 32 {
 		newTail = append(clone(v.tail), obj)
@@ -182,7 +182,7 @@ func (seq *VectorSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *VectorSeq) WithMeta(meta Map) Object {
+func (seq *VectorSeq) WithMeta(meta Map) coretypes.Object {
 	res := *seq
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -196,7 +196,7 @@ func (seq *VectorSeq) Hash() uint32 {
 	return hashOrdered(seq)
 }
 
-func (seq *VectorSeq) First() Object {
+func (seq *VectorSeq) First() coretypes.Object {
 	if seq.index < seq.vector.Count() {
 		return seq.vector.At(seq.index)
 	}
@@ -222,7 +222,7 @@ func (seq *VectorSeq) Count() int {
 	return n
 }
 
-func (seq *VectorSeq) Cons(obj Object) Seq {
+func (seq *VectorSeq) Cons(obj coretypes.Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
@@ -248,7 +248,7 @@ func (seq *VectorRSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *VectorRSeq) WithMeta(meta Map) Object {
+func (seq *VectorRSeq) WithMeta(meta Map) coretypes.Object {
 	res := *seq
 	res.meta = SafeMerge(res.meta, meta)
 	return &res
@@ -262,7 +262,7 @@ func (seq *VectorRSeq) Hash() uint32 {
 	return hashOrdered(seq)
 }
 
-func (seq *VectorRSeq) First() Object {
+func (seq *VectorRSeq) First() coretypes.Object {
 	if seq.index >= 0 {
 		return seq.vector.At(seq.index)
 	}
@@ -287,7 +287,7 @@ func (seq *VectorRSeq) Count() int {
 	return seq.index + 1
 }
 
-func (seq *VectorRSeq) Cons(obj Object) Seq {
+func (seq *VectorRSeq) Cons(obj coretypes.Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
@@ -297,7 +297,7 @@ func (v *Vector) Seq() Seq {
 	return &VectorSeq{vector: v, index: 0}
 }
 
-func (v *Vector) Conj(obj Object) coretypes.Conjable {
+func (v *Vector) Conj(obj coretypes.Object) coretypes.Conjable {
 	return v.Conjoin(obj)
 }
 
@@ -305,11 +305,11 @@ func (v *Vector) Count() int {
 	return v.count
 }
 
-func (v *Vector) Nth(i int) Object {
+func (v *Vector) Nth(i int) coretypes.Object {
 	return v.at(i)
 }
 
-func (v *Vector) TryNth(i int, d Object) Object {
+func (v *Vector) TryNth(i int, d coretypes.Object) coretypes.Object {
 	if i < 0 || i >= v.count {
 		return d
 	}
@@ -323,7 +323,7 @@ func (v *Vector) Compare(other coretypes.Object) int {
 	return CountedIndexedCompare(v, v2)
 }
 
-func (v *Vector) Peek() Object {
+func (v *Vector) Peek() coretypes.Object {
 	if v.count > 0 {
 		return v.Nth(v.count - 1)
 	}
@@ -378,11 +378,11 @@ func (v *Vector) Pop() coretypes.Stack {
 	return res
 }
 
-func (v *Vector) Get(key Object) (bool, Object) {
+func (v *Vector) Get(key coretypes.Object) (bool, coretypes.Object) {
 	return CountedIndexedGet(v, key)
 }
 
-func (v *Vector) EntryAt(key Object) *ArrayVector {
+func (v *Vector) EntryAt(key coretypes.Object) *ArrayVector {
 	ok, val := v.Get(key)
 	if ok {
 		return collectionConstruction.NewArrayVectorFrom(key, val)
@@ -390,7 +390,7 @@ func (v *Vector) EntryAt(key Object) *ArrayVector {
 	return nil
 }
 
-func doAssoc(level uint, node []interface{}, i int, val Object) []interface{} {
+func doAssoc(level uint, node []interface{}, i int, val coretypes.Object) []interface{} {
 	ret := clone(node)
 	if level == 0 {
 		ret[i&0x01f] = val
@@ -401,7 +401,7 @@ func doAssoc(level uint, node []interface{}, i int, val Object) []interface{} {
 	return ret
 }
 
-func (v *Vector) assocN(i int, val Object) *Vector {
+func (v *Vector) assocN(i int, val coretypes.Object) *Vector {
 	if i < 0 || i > v.count {
 		panic(RT.NewError((fmt.Sprintf("Index %d is out of bounds [0..%d]", i, v.count))))
 	}
@@ -420,7 +420,7 @@ func (v *Vector) assocN(i int, val Object) *Vector {
 	return res
 }
 
-func assertInteger(obj Object) int {
+func assertInteger(obj coretypes.Object) int {
 	var i int
 	switch obj := obj.(type) {
 	case coretypes.Int:
@@ -433,7 +433,7 @@ func assertInteger(obj Object) int {
 	return i
 }
 
-func (v *Vector) Assoc(key, val Object) Associative {
+func (v *Vector) Assoc(key, val coretypes.Object) Associative {
 	i := assertInteger(key)
 	return v.assocN(i, val)
 }
@@ -442,7 +442,7 @@ func (v *Vector) Rseq() Seq {
 	return &VectorRSeq{vector: v, index: v.count - 1}
 }
 
-func (v *Vector) Call(args []Object) Object {
+func (v *Vector) Call(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	i := assertInteger(args[0])
 	return v.at(i)
@@ -457,7 +457,7 @@ func EmptyVector() *Vector {
 	}
 }
 
-func NewVectorFrom(objs ...Object) *Vector {
+func NewVectorFrom(objs ...coretypes.Object) *Vector {
 	n := len(objs)
 	if n == 0 {
 		return EmptyVector()
@@ -487,7 +487,7 @@ func NewVectorFromSeq(seq Seq) *Vector {
 		if n == 0 {
 			return EmptyVector()
 		}
-		objs := make([]Object, n)
+		objs := make([]coretypes.Object, n)
 		for i := 0; i < n; i++ {
 			objs[i] = seq.First()
 			seq = seq.Rest()
@@ -506,7 +506,7 @@ func (v *Vector) Empty() Collection {
 	return collectionConstruction.NewEmptyVector()
 }
 
-func (v *Vector) KVReduce(c coretypes.Callable, init Object) Object {
+func (v *Vector) KVReduce(c coretypes.Callable, init coretypes.Object) coretypes.Object {
 	return CountedIndexedKvreduce(v, c, init)
 }
 
@@ -518,10 +518,10 @@ func (v *Vector) Format(w io.Writer, indent int) int {
 	return CountedIndexedFormat(v, w, indent)
 }
 
-func (v *Vector) Reduce(c coretypes.Callable) Object {
+func (v *Vector) Reduce(c coretypes.Callable) coretypes.Object {
 	return CountedIndexedReduce(v, c)
 }
 
-func (v *Vector) ReduceInit(c coretypes.Callable, init Object) Object {
+func (v *Vector) ReduceInit(c coretypes.Callable, init coretypes.Object) coretypes.Object {
 	return CountedIndexedReduceInit(v, c, init)
 }

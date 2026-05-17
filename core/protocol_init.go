@@ -17,7 +17,7 @@ func registerProtocolProcs() {
 
 	// satisfies? — checks if an object satisfies a protocol
 	satVr := ns.Intern(MakeSymbol("satisfies?"))
-	satVr.Value = Proc{Name: "procSatisfiesQ", Fn: func(args []Object) Object {
+	satVr.Value = Proc{Name: "procSatisfiesQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		proto, ok := args[0].(*Protocol)
 		if !ok {
@@ -29,7 +29,7 @@ func registerProtocolProcs() {
 
 	// extends? — checks if a type extends a protocol
 	extVr := ns.Intern(MakeSymbol("extends?"))
-	extVr.Value = Proc{Name: "procExtendsQ", Fn: func(args []Object) Object {
+	extVr.Value = Proc{Name: "procExtendsQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		proto, ok := args[0].(*Protocol)
 		if !ok {
@@ -42,7 +42,7 @@ func registerProtocolProcs() {
 	// __defprotocol — internal helper called by defprotocol macro
 	// Args: [protocol-name-string method1-name arity1 method2-name arity2 ...]
 	defProtoVr := ns.Intern(MakeSymbol("__defprotocol"))
-	defProtoVr.Value = Proc{Name: "procDefProtocolInternal", Fn: func(args []Object) Object {
+	defProtoVr.Value = Proc{Name: "procDefProtocolInternal", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 1 {
 			panic(RT.NewError("__defprotocol requires at least a name"))
 		}
@@ -74,7 +74,7 @@ func registerProtocolProcs() {
 	// __extend-type — internal helper called by extend-type macro
 	// Args: [protocol type-name-string method1-name fn1 method2-name fn2 ...]
 	extTypeVr := ns.Intern(MakeSymbol("__extend-type"))
-	extTypeVr.Value = Proc{Name: "procExtendTypeInternal", Fn: func(args []Object) Object {
+	extTypeVr.Value = Proc{Name: "procExtendTypeInternal", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
 			panic(RT.NewError("__extend-type requires protocol and type-name"))
 		}

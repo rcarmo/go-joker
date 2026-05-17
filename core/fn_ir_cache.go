@@ -199,12 +199,12 @@ func buildNativeLoopWrapper(fn *Fn, arity FnArityExpr, loop *LoopExpr, loopProg 
 // This eliminates environment frame allocation and enables irValue-based
 // execution for compiled functions called from non-IR code paths.
 
-func irDispatchFnCall(fn *Fn, args []Object) Object {
+func irDispatchFnCall(fn *Fn, args []coretypes.Object) coretypes.Object {
 	// Only try IR dispatch for self-recursive fns (proven correct patterns)
 	// and fns with native helpers. Other fns may have subtle correctness
 	// differences between IR and tree-walker evaluation.
 	if fnProg := irCompileFn(fn); fnProg != nil && (fnProg.hasSelf || runtimeExec.HasNativeHelper(fnProg)) {
-		var result Object
+		var result coretypes.Object
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
@@ -225,7 +225,7 @@ func irDispatchFnCall(fn *Fn, args []Object) Object {
 		// fn.Call stores the argument slice in the lexical environment, so a
 		// closure returned from that call must not retain stack-backed storage
 		// that a later call can overwrite.
-		stableArgs := make([]Object, len(args))
+		stableArgs := make([]coretypes.Object, len(args))
 		copy(stableArgs, args)
 		args = stableArgs
 	}
@@ -584,11 +584,11 @@ func irGetCached(loop *LoopExpr) *IRProgram {
 type IRProgram struct {
 	model           *coreir.Program
 	code            []byte
-	constants       []Object
+	constants       []coretypes.Object
 	numSlots        int
 	captureKeys     []bindingKey
-	captureSlots    []Object // resolved capture values from fn.env
-	captureSlotIdxs []int    // slot indices for each capture
+	captureSlots    []coretypes.Object // resolved capture values from fn.env
+	captureSlotIdxs []int              // slot indices for each capture
 	hasSelf         bool
 	escapeInfo      *EscapeInfo
 	analysis        *coreir.Analysis
@@ -928,14 +928,16 @@ func (p *IRProgram) CodeBytes() []byte {
 	return append([]byte(nil), model.Code...)
 }
 
-func (p *IRProgram) ConstLen() int       { return len(p.constants) }
-func (p *IRProgram) Constants() []Object { return append([]Object(nil), p.constants...) }
+func (p *IRProgram) ConstLen() int { return len(p.constants) }
+func (p *IRProgram) Constants() []coretypes.Object {
+	return append([]coretypes.Object(nil), p.constants...)
+}
 func (p *IRProgram) NumSlots() int {
 	model := p.neutralModel()
 	return model.NumSlots
 }
-func (p *IRProgram) HasSelf() bool          { return p.hasSelf }
-func (p *IRProgram) CaptureSlots() []Object { return p.captureSlots }
+func (p *IRProgram) HasSelf() bool                    { return p.hasSelf }
+func (p *IRProgram) CaptureSlots() []coretypes.Object { return p.captureSlots }
 func (p *IRProgram) GetNativeHelper() func([]float64) float64 {
 	if nativeHelper, ok := runtimeExec.NativeHelper(p); ok {
 		return func(args []float64) float64 { return nativeHelper(args) }
@@ -944,9 +946,9 @@ func (p *IRProgram) GetNativeHelper() func([]float64) float64 {
 }
 
 // Exports for std/jit and std/runtime namespaces.
-func IrCompileFn(fn *Fn) *IRProgram                  { return irCompileFn(fn) }
-func IrExecTyped(prog *IRProgram, s []Object) Object { return irExecTyped(prog, s) }
-func IrExec(prog *IRProgram, s []Object) Object      { return irExec(prog, s) }
+func IrCompileFn(fn *Fn) *IRProgram                                      { return irCompileFn(fn) }
+func IrExecTyped(prog *IRProgram, s []coretypes.Object) coretypes.Object { return irExecTyped(prog, s) }
+func IrExec(prog *IRProgram, s []coretypes.Object) coretypes.Object      { return irExec(prog, s) }
 
 func IsFloatExported(prog *IRProgram) bool {
 	model := prog.neutralModel()

@@ -22,45 +22,45 @@ func registerUncheckedArithProcs() {
 	// All unchecked ops delegate to regular arithmetic since Go wraps on overflow.
 	ops := []struct {
 		name string
-		fn   func([]Object) Object
+		fn   func([]coretypes.Object) coretypes.Object
 	}{
-		{"unchecked-add", func(args []Object) Object {
+		{"unchecked-add", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 2, 2)
 			a := EnsureArgIsInt(args, 0)
 			b := EnsureArgIsInt(args, 1)
 			return coretypes.Int{I: a.I + b.I}
 		}},
-		{"unchecked-add-int", func(args []Object) Object {
+		{"unchecked-add-int", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 2, 2)
 			a := EnsureArgIsInt(args, 0)
 			b := EnsureArgIsInt(args, 1)
 			return coretypes.Int{I: a.I + b.I}
 		}},
-		{"unchecked-subtract", func(args []Object) Object {
+		{"unchecked-subtract", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 2, 2)
 			a := EnsureArgIsInt(args, 0)
 			b := EnsureArgIsInt(args, 1)
 			return coretypes.Int{I: a.I - b.I}
 		}},
-		{"unchecked-subtract-int", func(args []Object) Object {
+		{"unchecked-subtract-int", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 2, 2)
 			a := EnsureArgIsInt(args, 0)
 			b := EnsureArgIsInt(args, 1)
 			return coretypes.Int{I: a.I - b.I}
 		}},
-		{"unchecked-multiply", func(args []Object) Object {
+		{"unchecked-multiply", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 2, 2)
 			a := EnsureArgIsInt(args, 0)
 			b := EnsureArgIsInt(args, 1)
 			return coretypes.Int{I: a.I * b.I}
 		}},
-		{"unchecked-multiply-int", func(args []Object) Object {
+		{"unchecked-multiply-int", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 2, 2)
 			a := EnsureArgIsInt(args, 0)
 			b := EnsureArgIsInt(args, 1)
 			return coretypes.Int{I: a.I * b.I}
 		}},
-		{"unchecked-divide-int", func(args []Object) Object {
+		{"unchecked-divide-int", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 2, 2)
 			a := EnsureArgIsInt(args, 0)
 			b := EnsureArgIsInt(args, 1)
@@ -69,7 +69,7 @@ func registerUncheckedArithProcs() {
 			}
 			return coretypes.Int{I: a.I / b.I}
 		}},
-		{"unchecked-remainder-int", func(args []Object) Object {
+		{"unchecked-remainder-int", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 2, 2)
 			a := EnsureArgIsInt(args, 0)
 			b := EnsureArgIsInt(args, 1)
@@ -78,64 +78,64 @@ func registerUncheckedArithProcs() {
 			}
 			return coretypes.Int{I: a.I % b.I}
 		}},
-		{"unchecked-negate", func(args []Object) Object {
+		{"unchecked-negate", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			a := EnsureArgIsInt(args, 0)
 			return coretypes.Int{I: -a.I}
 		}},
-		{"unchecked-negate-int", func(args []Object) Object {
+		{"unchecked-negate-int", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			a := EnsureArgIsInt(args, 0)
 			return coretypes.Int{I: -a.I}
 		}},
-		{"unchecked-inc", func(args []Object) Object {
+		{"unchecked-inc", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			a := EnsureArgIsInt(args, 0)
 			return coretypes.Int{I: a.I + 1}
 		}},
-		{"unchecked-inc-int", func(args []Object) Object {
+		{"unchecked-inc-int", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			a := EnsureArgIsInt(args, 0)
 			return coretypes.Int{I: a.I + 1}
 		}},
-		{"unchecked-dec", func(args []Object) Object {
+		{"unchecked-dec", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			a := EnsureArgIsInt(args, 0)
 			return coretypes.Int{I: a.I - 1}
 		}},
-		{"unchecked-dec-int", func(args []Object) Object {
+		{"unchecked-dec-int", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			a := EnsureArgIsInt(args, 0)
 			return coretypes.Int{I: a.I - 1}
 		}},
 		// Type conversion (identity in go-joker since all ints are int)
-		{"unchecked-int", func(args []Object) Object {
+		{"unchecked-int", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			return EnsureArgIsNumber(args, 0).Int()
 		}},
-		{"unchecked-long", func(args []Object) Object {
+		{"unchecked-long", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			return EnsureArgIsNumber(args, 0).Int()
 		}},
-		{"unchecked-short", func(args []Object) Object {
+		{"unchecked-short", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			return EnsureArgIsNumber(args, 0).Int()
 		}},
-		{"unchecked-byte", func(args []Object) Object {
+		{"unchecked-byte", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			n := EnsureArgIsNumber(args, 0).Int()
 			return coretypes.Int{I: n.I & 0xFF}
 		}},
-		{"unchecked-char", func(args []Object) Object {
+		{"unchecked-char", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			n := EnsureArgIsNumber(args, 0).Int()
 			return coretypes.Char{Ch: rune(n.I)}
 		}},
-		{"unchecked-float", func(args []Object) Object {
+		{"unchecked-float", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			return EnsureArgIsNumber(args, 0).Double()
 		}},
-		{"unchecked-double", func(args []Object) Object {
+		{"unchecked-double", func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 1, 1)
 			return EnsureArgIsNumber(args, 0).Double()
 		}},
@@ -154,7 +154,7 @@ func registerUncheckedArithProcs() {
 	for _, name := range arrayOps {
 		sym := MakeSymbol(name)
 		vr := ns.Intern(sym)
-		vr.Value = Proc{Name: "proc" + name, Fn: func(args []Object) Object {
+		vr.Value = Proc{Name: "proc" + name, Fn: func(args []coretypes.Object) coretypes.Object {
 			switch len(args) {
 			case 1:
 				switch v := args[0].(type) {
@@ -204,7 +204,7 @@ func registerUncheckedArithProcs() {
 
 	// make-array — (make-array type size)
 	maVr := ns.Intern(MakeSymbol("make-array"))
-	maVr.Value = Proc{Name: "procMakeArray", Fn: func(args []Object) Object {
+	maVr.Value = Proc{Name: "procMakeArray", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 1 {
 			PanicArityMinMax(len(args), 1, 999)
 		}
@@ -223,7 +223,7 @@ func registerUncheckedArithProcs() {
 
 	// aclone — (aclone arr) — clone array (vector in go-joker)
 	acVr := ns.Intern(MakeSymbol("aclone"))
-	acVr.Value = Proc{Name: "procAclone", Fn: func(args []Object) Object {
+	acVr.Value = Proc{Name: "procAclone", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return args[0] // vectors are already persistent/immutable
 	}}
@@ -231,18 +231,18 @@ func registerUncheckedArithProcs() {
 
 	// aset — (aset arr idx val) — set array element
 	asVr := ns.Intern(MakeSymbol("aset"))
-	asVr.Value = Proc{Name: "procAset", Fn: func(args []Object) Object {
+	asVr.Value = Proc{Name: "procAset", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 3, 3)
 		v := EnsureObjectIsAssociative(args[0], "aset requires an associative collection")
 		idx := args[1]
 		val := args[2]
-		return v.Assoc(idx, val).(Object)
+		return v.Assoc(idx, val).(coretypes.Object)
 	}}
 	referToUser(MakeSymbol("aset"), asVr)
 
 	// aget — (aget arr idx) — get array element
 	agVr := ns.Intern(MakeSymbol("aget"))
-	agVr.Value = Proc{Name: "procAget", Fn: func(args []Object) Object {
+	agVr.Value = Proc{Name: "procAget", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		g, ok := args[0].(coretypes.Gettable)
 		if !ok {
@@ -257,7 +257,7 @@ func registerUncheckedArithProcs() {
 
 	// alength — (alength arr)
 	alVr := ns.Intern(MakeSymbol("alength"))
-	alVr.Value = Proc{Name: "procAlength", Fn: func(args []Object) Object {
+	alVr.Value = Proc{Name: "procAlength", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		c, ok := args[0].(coretypes.Counted)
 		if !ok {

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"regexp"
 	"sort"
@@ -18,8 +19,8 @@ func seqFirst(seq Seq, w io.Writer, indent int) (Seq, int) {
 
 // TODO: maybe merge it with seqFirstAfterBreak
 // or extract common part into a separate function
-func seqFirstAfterSpace(seq Seq, w io.Writer, indent int, insideDefRecord bool) (Seq, Object, int) {
-	var obj Object
+func seqFirstAfterSpace(seq Seq, w io.Writer, indent int, insideDefRecord bool) (Seq, coretypes.Object, int) {
+	var obj coretypes.Object
 	if !seq.IsEmpty() {
 		fmt.Fprint(w, " ")
 		obj = seq.First()
@@ -39,7 +40,7 @@ func seqFirstAfterSpace(seq Seq, w io.Writer, indent int, insideDefRecord bool) 
 	return seq, obj, indent
 }
 
-func writeNewLines(w io.Writer, prevObj Object, obj Object) int {
+func writeNewLines(w io.Writer, prevObj coretypes.Object, obj coretypes.Object) int {
 	cnt := newLineCount(prevObj, obj)
 	for i := 0; i < cnt; i++ {
 		fmt.Fprint(w, "\n")
@@ -47,8 +48,8 @@ func writeNewLines(w io.Writer, prevObj Object, obj Object) int {
 	return cnt
 }
 
-func seqFirstAfterBreak(prevObj Object, seq Seq, w io.Writer, indent int, insideDefRecord bool) (Seq, Object, int) {
-	var obj Object
+func seqFirstAfterBreak(prevObj coretypes.Object, seq Seq, w io.Writer, indent int, insideDefRecord bool) (Seq, coretypes.Object, int) {
+	var obj coretypes.Object
 	if !seq.IsEmpty() {
 		obj = seq.First()
 		writeNewLines(w, prevObj, obj)
@@ -69,8 +70,8 @@ func seqFirstAfterBreak(prevObj Object, seq Seq, w io.Writer, indent int, inside
 	return seq, obj, indent
 }
 
-func seqFirstAfterForcedBreak(seq Seq, w io.Writer, indent int) (Seq, Object, int) {
-	var obj Object
+func seqFirstAfterForcedBreak(seq Seq, w io.Writer, indent int) (Seq, coretypes.Object, int) {
+	var obj coretypes.Object
 	if !seq.IsEmpty() {
 		obj = seq.First()
 		fmt.Fprint(w, "\n")
@@ -119,7 +120,7 @@ var bodyIndentRegexes []*regexp.Regexp = []*regexp.Regexp{
 	regexp.MustCompile("^(handler-case|handle|dotrace|deftrace|match)$"),
 }
 
-func isOneAndBodyExpr(obj Object) bool {
+func isOneAndBodyExpr(obj coretypes.Object) bool {
 	switch s := obj.(type) {
 	case Symbol:
 		return defRegex.MatchString(*s.name) ||
@@ -130,7 +131,7 @@ func isOneAndBodyExpr(obj Object) bool {
 	}
 }
 
-func isDoIndent(obj Object) bool {
+func isDoIndent(obj coretypes.Object) bool {
 	switch s := obj.(type) {
 	case Symbol:
 		return doIndentRegex.MatchString(*s.name)
@@ -139,7 +140,7 @@ func isDoIndent(obj Object) bool {
 	}
 }
 
-func isBodyIndent(obj Object) bool {
+func isBodyIndent(obj coretypes.Object) bool {
 	switch s := obj.(type) {
 	case Symbol:
 		for _, re := range bodyIndentRegexes {
@@ -153,12 +154,12 @@ func isBodyIndent(obj Object) bool {
 	}
 }
 
-func isNewLine(obj, nextObj Object) bool {
+func isNewLine(obj, nextObj coretypes.Object) bool {
 	info, nextInfo := obj.GetInfo(), nextObj.GetInfo()
 	return !(info == nil || nextInfo == nil || info.EndLine == nextInfo.StartLine)
 }
 
-func newLineCount(obj, nextObj Object) int {
+func newLineCount(obj, nextObj coretypes.Object) int {
 	info, nextInfo := obj.GetInfo(), nextObj.GetInfo()
 	if info == nil || nextInfo == nil {
 		return 0
@@ -173,7 +174,7 @@ func formatSeq(seq Seq, w io.Writer, indent int) int {
 func formatSeqSimple(seq Seq, w io.Writer, indent int) int {
 	ind := indent + 1
 	fmt.Fprint(w, "(")
-	var prevObj Object
+	var prevObj coretypes.Object
 	for !seq.IsEmpty() {
 		obj := seq.First()
 		if prevObj != nil {
@@ -196,7 +197,7 @@ func formatSeqSimple(seq Seq, w io.Writer, indent int) int {
 	return ind + 1
 }
 
-type RequireSort []Object
+type RequireSort []coretypes.Object
 
 func (rs RequireSort) Len() int      { return len(rs) }
 func (rs RequireSort) Swap(i, j int) { rs[i], rs[j] = rs[j], rs[i] }

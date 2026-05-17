@@ -16,7 +16,7 @@ func registerRecordProcs() {
 
 	// record? — always available
 	recordQVr := ns.Intern(MakeSymbol("record?"))
-	recordQVr.Value = Proc{Name: "procRecordQ", Fn: func(args []Object) Object {
+	recordQVr.Value = Proc{Name: "procRecordQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		_, ok := args[0].(*Record)
 		return coretypes.MakeBoolean(ok)
@@ -29,7 +29,7 @@ func registerRecordProcs() {
 	//   - ->RecordName constructor fn
 	//   - map->RecordName factory fn
 	defRecordVr := ns.Intern(MakeSymbol("__defrecord"))
-	defRecordVr.Value = Proc{Name: "procDefRecordInternal", Fn: func(args []Object) Object {
+	defRecordVr.Value = Proc{Name: "procDefRecordInternal", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 1 {
 			panic(RT.NewError("__defrecord requires at least a name"))
 		}
@@ -48,17 +48,17 @@ func registerRecordProcs() {
 		// Install positional constructor: (->RecordName field1 field2 ...)
 		ctorName := "->" + nameStr
 		ctorVr := currentNs.Intern(MakeSymbol(ctorName))
-		ctorVr.Value = Proc{Name: "proc" + ctorName, Fn: func(ctorArgs []Object) Object {
+		ctorVr.Value = Proc{Name: "proc" + ctorName, Fn: func(ctorArgs []coretypes.Object) coretypes.Object {
 			return NewRecord(rtype, ctorArgs)
 		}}
 
 		// Install map factory: (map->RecordName {:field1 v1 :field2 v2})
 		mapCtorName := "map->" + nameStr
 		mapCtorVr := currentNs.Intern(MakeSymbol(mapCtorName))
-		mapCtorVr.Value = Proc{Name: "proc" + mapCtorName, Fn: func(ctorArgs []Object) Object {
+		mapCtorVr.Value = Proc{Name: "proc" + mapCtorName, Fn: func(ctorArgs []coretypes.Object) coretypes.Object {
 			CheckArity(ctorArgs, 1, 1)
 			m := EnsureObjectIsMap(ctorArgs[0], "map->"+nameStr+" requires a map argument")
-			vals := make([]Object, len(fields))
+			vals := make([]coretypes.Object, len(fields))
 			for i, fname := range fields {
 				kw := MakeKeyword(fname)
 				if ok, v := m.Get(kw); ok {

@@ -19,16 +19,16 @@ type Hierarchy struct {
 	coretypes.InfoHolder
 	MetaHolder
 	mu         sync.RWMutex
-	parents    map[string]map[string]bool // child key → set of parent keys
-	parentKeys map[string]Object          // key → object (for iteration)
-	childKeys  map[string]Object
+	parents    map[string]map[string]bool  // child key → set of parent keys
+	parentKeys map[string]coretypes.Object // key → object (for iteration)
+	childKeys  map[string]coretypes.Object
 }
 
 func MakeHierarchy() *Hierarchy {
 	return &Hierarchy{
 		parents:    make(map[string]map[string]bool),
-		parentKeys: make(map[string]Object),
-		childKeys:  make(map[string]Object),
+		parentKeys: make(map[string]coretypes.Object),
+		childKeys:  make(map[string]coretypes.Object),
 	}
 }
 
@@ -36,16 +36,16 @@ func (h *Hierarchy) ToString(escape bool) string   { return "#object[Hierarchy]"
 func (h *Hierarchy) Equals(other interface{}) bool { return h == other }
 func (h *Hierarchy) GetType() *coretypes.Type      { return TYPE.Fn }
 func (h *Hierarchy) Hash() uint32                  { return hashutil.Ptr(uintptr(unsafe.Pointer(h))) }
-func (h *Hierarchy) WithInfo(info *coretypes.ObjectInfo) Object {
+func (h *Hierarchy) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	h.Info = info
 	return h
 }
-func (h *Hierarchy) WithMeta(m Map) Object {
+func (h *Hierarchy) WithMeta(m Map) coretypes.Object {
 	h.meta = SafeMerge(h.meta, m)
 	return h
 }
 
-func objKey(obj Object) string {
+func objKey(obj coretypes.Object) string {
 	if obj == nil {
 		return "nil"
 	}
@@ -53,7 +53,7 @@ func objKey(obj Object) string {
 }
 
 // Derive adds a parent relationship: child isa? parent
-func (h *Hierarchy) Derive(child, parent Object) {
+func (h *Hierarchy) Derive(child, parent coretypes.Object) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
@@ -69,7 +69,7 @@ func (h *Hierarchy) Derive(child, parent Object) {
 }
 
 // Underive removes a parent relationship.
-func (h *Hierarchy) Underive(child, parent Object) {
+func (h *Hierarchy) Underive(child, parent coretypes.Object) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
@@ -85,7 +85,7 @@ func (h *Hierarchy) Underive(child, parent Object) {
 }
 
 // IsA checks if child isa? parent (direct or transitive).
-func (h *Hierarchy) IsA(child, parent Object) bool {
+func (h *Hierarchy) IsA(child, parent coretypes.Object) bool {
 	if child.Equals(parent) {
 		return true
 	}
@@ -119,7 +119,7 @@ func (h *Hierarchy) isALocked(ck, pk string, visited map[string]bool) bool {
 }
 
 // Parents returns direct parents of tag.
-func (h *Hierarchy) Parents(tag Object) []Object {
+func (h *Hierarchy) Parents(tag coretypes.Object) []coretypes.Object {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 
@@ -128,7 +128,7 @@ func (h *Hierarchy) Parents(tag Object) []Object {
 	if !ok {
 		return nil
 	}
-	result := make([]Object, 0, len(ps))
+	result := make([]coretypes.Object, 0, len(ps))
 	for pk := range ps {
 		if obj, ok := h.parentKeys[pk]; ok {
 			result = append(result, obj)
@@ -138,17 +138,17 @@ func (h *Hierarchy) Parents(tag Object) []Object {
 }
 
 // Ancestors returns all transitive ancestors of tag.
-func (h *Hierarchy) Ancestors(tag Object) []Object {
+func (h *Hierarchy) Ancestors(tag coretypes.Object) []coretypes.Object {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 
-	result := make([]Object, 0)
+	result := make([]coretypes.Object, 0)
 	visited := make(map[string]bool)
 	h.collectAncestors(objKey(tag), &result, visited)
 	return result
 }
 
-func (h *Hierarchy) collectAncestors(tk string, result *[]Object, visited map[string]bool) {
+func (h *Hierarchy) collectAncestors(tk string, result *[]coretypes.Object, visited map[string]bool) {
 	ps, ok := h.parents[tk]
 	if !ok {
 		return
@@ -165,12 +165,12 @@ func (h *Hierarchy) collectAncestors(tk string, result *[]Object, visited map[st
 }
 
 // Descendants returns all transitive descendants of tag.
-func (h *Hierarchy) Descendants(tag Object) []Object {
+func (h *Hierarchy) Descendants(tag coretypes.Object) []coretypes.Object {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 
 	pk := objKey(tag)
-	result := make([]Object, 0)
+	result := make([]coretypes.Object, 0)
 	visited := make(map[string]bool)
 
 	for ck, ps := range h.parents {
@@ -185,7 +185,7 @@ func (h *Hierarchy) Descendants(tag Object) []Object {
 	return result
 }
 
-func (h *Hierarchy) collectDescendants(pk string, result *[]Object, visited map[string]bool) {
+func (h *Hierarchy) collectDescendants(pk string, result *[]coretypes.Object, visited map[string]bool) {
 	for ck, ps := range h.parents {
 		if ps[pk] && !visited[ck] {
 			visited[ck] = true

@@ -72,31 +72,31 @@ func installAsyncProc(ns *Namespace, name, doc string, fn ProcFn) {
 	ns.InternVar(name, Proc{Name: "procCoreAsync" + name, Fn: fn}, MakeMeta(nil, doc, "1.0"))
 }
 
-func installAsyncMacro(ns *Namespace, name, doc string, fn func([]Object) Object) {
+func installAsyncMacro(ns *Namespace, name, doc string, fn func([]coretypes.Object) coretypes.Object) {
 	vr := ns.InternVar(name, Proc{Name: "macro" + name, Fn: fn}, MakeMeta(nil, doc, "1.0"))
 	vr.isMacro = true
 }
 
-func macroCoreAsyncGoLoop(args []Object) Object {
+func macroCoreAsyncGoLoop(args []coretypes.Object) coretypes.Object {
 	if len(args) < 3 {
 		panic(RT.NewError("go-loop requires bindings and body"))
 	}
-	return listObjs(MakeSymbol("go"), collectionConstruction.NewListFrom(append([]Object{MakeSymbol("loop"), args[2]}, args[3:]...)...))
+	return listObjs(MakeSymbol("go"), collectionConstruction.NewListFrom(append([]coretypes.Object{MakeSymbol("loop"), args[2]}, args[3:]...)...))
 }
-func macroCoreAsyncThread(args []Object) Object {
+func macroCoreAsyncThread(args []coretypes.Object) coretypes.Object {
 	if len(args) < 2 {
 		panic(RT.NewError("thread requires body"))
 	}
 	return listObjs(MakeSymbol("future"), doObj(args[2:]...))
 }
-func macroCoreAsyncThreadCall(args []Object) Object {
+func macroCoreAsyncThreadCall(args []coretypes.Object) coretypes.Object {
 	if len(args) != 3 {
 		panic(RT.NewError("thread-call requires one fn"))
 	}
 	return listObjs(MakeSymbol("future-call"), args[2])
 }
 
-func asyncBufferSize(o Object) int {
+func asyncBufferSize(o coretypes.Object) int {
 	if o == nil || o.Equals(NIL) {
 		return 0
 	}
@@ -107,22 +107,25 @@ func asyncBufferSize(o Object) int {
 		panic(RT.NewError("buffer size must be an integer"))
 	}
 }
-func procAsyncBuffer(args []Object) Object { CheckArity(args, 1, 1); return EnsureArgIsInt(args, 0) }
-func procAsyncPromiseChan(args []Object) Object {
+func procAsyncBuffer(args []coretypes.Object) coretypes.Object {
+	CheckArity(args, 1, 1)
+	return EnsureArgIsInt(args, 0)
+}
+func procAsyncPromiseChan(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
 	return MakeChannel(make(chan FutureResult, 1))
 }
 
-func channelFromArg(args []Object, i int) *Channel {
+func channelFromArg(args []coretypes.Object, i int) *Channel {
 	return EnsureObjectIsChannel(args[i], fmt.Sprintf("arg %d must be a channel", i))
 }
-func asyncSend(ch *Channel, v Object) bool {
+func asyncSend(ch *Channel, v coretypes.Object) bool {
 	if v == nil || v.Equals(NIL) {
 		panic(RT.NewError("Can't put nil on channel"))
 	}
 	return ch.Send(v)
 }
-func asyncRecv(ch *Channel) Object {
+func asyncRecv(ch *Channel) coretypes.Object {
 	v, _, err := ch.Receive(nil)
 	if err != nil {
 		panic(RT.NewError(err.Error()))
@@ -130,7 +133,7 @@ func asyncRecv(ch *Channel) Object {
 	return v
 }
 
-func procAsyncPutBang(args []Object) Object {
+func procAsyncPutBang(args []coretypes.Object) coretypes.Object {
 	if len(args) != 2 && len(args) != 3 {
 		panic(RT.NewError("put! requires channel, value, optional callback"))
 	}
@@ -150,7 +153,7 @@ func procAsyncPutBang(args []Object) Object {
 	return coretypes.MakeBoolean(!ch.IsClosed())
 }
 
-func procAsyncTakeBang(args []Object) Object {
+func procAsyncTakeBang(args []coretypes.Object) coretypes.Object {
 	if len(args) != 2 && len(args) != 3 {
 		panic(RT.NewError("take! requires channel, callback, optional on-caller?"))
 	}
@@ -160,7 +163,7 @@ func procAsyncTakeBang(args []Object) Object {
 	return NIL
 }
 
-func procAsyncToChan(args []Object) Object {
+func procAsyncToChan(args []coretypes.Object) coretypes.Object {
 	if len(args) < 1 || len(args) > 2 {
 		panic(RT.NewError("to-chan requires coll and optional close?"))
 	}
@@ -183,7 +186,7 @@ func procAsyncToChan(args []Object) Object {
 	return ch
 }
 
-func procAsyncOntoChan(args []Object) Object {
+func procAsyncOntoChan(args []coretypes.Object) coretypes.Object {
 	if len(args) < 2 || len(args) > 3 {
 		panic(RT.NewError("onto-chan requires channel, coll, optional close?"))
 	}
@@ -206,7 +209,7 @@ func procAsyncOntoChan(args []Object) Object {
 	return ch
 }
 
-func procAsyncPipe(args []Object) Object {
+func procAsyncPipe(args []coretypes.Object) coretypes.Object {
 	if len(args) < 2 || len(args) > 3 {
 		panic(RT.NewError("pipe requires from, to, optional close?"))
 	}
@@ -231,7 +234,7 @@ func procAsyncPipe(args []Object) Object {
 	return to
 }
 
-func procAsyncMerge(args []Object) Object {
+func procAsyncMerge(args []coretypes.Object) coretypes.Object {
 	if len(args) < 1 || len(args) > 2 {
 		panic(RT.NewError("merge requires channels and optional buffer"))
 	}
@@ -258,7 +261,7 @@ func procAsyncMerge(args []Object) Object {
 	return out
 }
 
-func procAsyncSplit(args []Object) Object {
+func procAsyncSplit(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	pred := EnsureArgIsCallable(args, 0)
 	in := channelFromArg(args, 1)
@@ -283,7 +286,7 @@ func procAsyncSplit(args []Object) Object {
 	return collectionConstruction.NewVectorFrom(t, f)
 }
 
-func procAsyncMapFrom(args []Object) Object {
+func procAsyncMapFrom(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	xf := EnsureArgIsCallable(args, 0)
 	in := channelFromArg(args, 1)
@@ -301,7 +304,7 @@ func procAsyncMapFrom(args []Object) Object {
 	}()
 	return out
 }
-func procAsyncFilterFrom(args []Object) Object {
+func procAsyncFilterFrom(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	pred := EnsureArgIsCallable(args, 0)
 	in := channelFromArg(args, 1)
@@ -321,7 +324,7 @@ func procAsyncFilterFrom(args []Object) Object {
 	}()
 	return out
 }
-func procAsyncMapTo(args []Object) Object {
+func procAsyncMapTo(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	xf := EnsureArgIsCallable(args, 0)
 	ch := channelFromArg(args, 1)
@@ -339,7 +342,7 @@ func procAsyncMapTo(args []Object) Object {
 	}()
 	return out
 }
-func procAsyncFilterTo(args []Object) Object {
+func procAsyncFilterTo(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	pred := EnsureArgIsCallable(args, 0)
 	ch := channelFromArg(args, 1)
@@ -360,7 +363,7 @@ func procAsyncFilterTo(args []Object) Object {
 	return out
 }
 
-func procAsyncReduce(args []Object) Object {
+func procAsyncReduce(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 3)
 	f := EnsureArgIsCallable(args, 0)
 	acc := args[1]
@@ -380,7 +383,7 @@ func procAsyncReduce(args []Object) Object {
 	}()
 	return out
 }
-func procAsyncInto(args []Object) Object {
+func procAsyncInto(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	init := args[0]
 	ch := channelFromArg(args, 1)
@@ -396,7 +399,7 @@ func procAsyncInto(args []Object) Object {
 				return
 			}
 			if c, ok := acc.(coretypes.Conjable); ok {
-				acc = c.Conj(v).(Object)
+				acc = c.Conj(v).(coretypes.Object)
 			} else {
 				panic(RT.NewError("into init is not conjable"))
 			}
@@ -412,13 +415,13 @@ type asyncMult struct {
 	hash uint32
 }
 
-func (m *asyncMult) ToString(bool) string                  { return "#object[core.async.Mult]" }
-func (m *asyncMult) Print(w fmt.State, printReadably bool) {}
-func (m *asyncMult) Equals(o interface{}) bool             { return m == o }
-func (m *asyncMult) GetInfo() *coretypes.ObjectInfo        { return nil }
-func (m *asyncMult) WithInfo(*coretypes.ObjectInfo) Object { return m }
-func (m *asyncMult) GetType() *coretypes.Type              { return TYPE.Proc }
-func (m *asyncMult) Hash() uint32                          { return m.hash }
+func (m *asyncMult) ToString(bool) string                            { return "#object[core.async.Mult]" }
+func (m *asyncMult) Print(w fmt.State, printReadably bool)           {}
+func (m *asyncMult) Equals(o interface{}) bool                       { return m == o }
+func (m *asyncMult) GetInfo() *coretypes.ObjectInfo                  { return nil }
+func (m *asyncMult) WithInfo(*coretypes.ObjectInfo) coretypes.Object { return m }
+func (m *asyncMult) GetType() *coretypes.Type                        { return TYPE.Proc }
+func (m *asyncMult) Hash() uint32                                    { return m.hash }
 
 type asyncPub struct {
 	mu      sync.Mutex
@@ -428,14 +431,14 @@ type asyncPub struct {
 	hash    uint32
 }
 
-func (p *asyncPub) ToString(bool) string                  { return "#object[core.async.Pub]" }
-func (p *asyncPub) Equals(o interface{}) bool             { return p == o }
-func (p *asyncPub) GetInfo() *coretypes.ObjectInfo        { return nil }
-func (p *asyncPub) WithInfo(*coretypes.ObjectInfo) Object { return p }
-func (p *asyncPub) GetType() *coretypes.Type              { return TYPE.Proc }
-func (p *asyncPub) Hash() uint32                          { return p.hash }
+func (p *asyncPub) ToString(bool) string                            { return "#object[core.async.Pub]" }
+func (p *asyncPub) Equals(o interface{}) bool                       { return p == o }
+func (p *asyncPub) GetInfo() *coretypes.ObjectInfo                  { return nil }
+func (p *asyncPub) WithInfo(*coretypes.ObjectInfo) coretypes.Object { return p }
+func (p *asyncPub) GetType() *coretypes.Type                        { return TYPE.Proc }
+func (p *asyncPub) Hash() uint32                                    { return p.hash }
 
-func procAsyncMult(args []Object) Object {
+func procAsyncMult(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	src := channelFromArg(args, 0)
 	m := &asyncMult{src: src, taps: map[*Channel]bool{}}
@@ -463,7 +466,7 @@ func procAsyncMult(args []Object) Object {
 	}()
 	return m
 }
-func procAsyncTap(args []Object) Object {
+func procAsyncTap(args []coretypes.Object) coretypes.Object {
 	if len(args) < 2 || len(args) > 3 {
 		panic(RT.NewError("tap requires mult, channel, optional close?"))
 	}
@@ -481,7 +484,7 @@ func procAsyncTap(args []Object) Object {
 	m.mu.Unlock()
 	return ch
 }
-func procAsyncUntap(args []Object) Object {
+func procAsyncUntap(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	m, ok := args[0].(*asyncMult)
 	if !ok {
@@ -493,7 +496,7 @@ func procAsyncUntap(args []Object) Object {
 	m.mu.Unlock()
 	return NIL
 }
-func procAsyncUntapAll(args []Object) Object {
+func procAsyncUntapAll(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	m, ok := args[0].(*asyncMult)
 	if !ok {
@@ -505,7 +508,7 @@ func procAsyncUntapAll(args []Object) Object {
 	return NIL
 }
 
-func procAsyncPub(args []Object) Object {
+func procAsyncPub(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	src := channelFromArg(args, 0)
 	tf := EnsureArgIsCallable(args, 1)
@@ -535,7 +538,7 @@ func procAsyncPub(args []Object) Object {
 	}()
 	return p
 }
-func procAsyncSub(args []Object) Object {
+func procAsyncSub(args []coretypes.Object) coretypes.Object {
 	if len(args) < 3 || len(args) > 4 {
 		panic(RT.NewError("sub requires pub, topic, channel, optional close?"))
 	}
@@ -550,7 +553,7 @@ func procAsyncSub(args []Object) Object {
 	p.mu.Unlock()
 	return ch
 }
-func procAsyncUnsub(args []Object) Object {
+func procAsyncUnsub(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 3)
 	p, ok := args[0].(*asyncPub)
 	if !ok {
@@ -574,7 +577,7 @@ func procAsyncUnsub(args []Object) Object {
 	p.mu.Unlock()
 	return NIL
 }
-func procAsyncUnsubAll(args []Object) Object {
+func procAsyncUnsubAll(args []coretypes.Object) coretypes.Object {
 	if len(args) < 1 || len(args) > 2 {
 		panic(RT.NewError("unsub-all requires pub and optional topic"))
 	}

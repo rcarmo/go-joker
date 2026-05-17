@@ -13,7 +13,7 @@ type (
 		Associative
 		Seqable
 		coretypes.Counted
-		Without(key Object) Map
+		Without(key coretypes.Object) Map
 		Keys() Seq
 		Vals() Seq
 		Merge(m Map) Map
@@ -26,8 +26,8 @@ type (
 	EmptyMapIterator struct {
 	}
 	Pair struct {
-		Key   Object
-		Value Object
+		Key   coretypes.Object
+		Value coretypes.Object
 	}
 )
 
@@ -43,7 +43,7 @@ func (iter *EmptyMapIterator) Next() *Pair {
 	panic(newIteratorError())
 }
 
-func mapConj(m Map, obj Object) coretypes.Conjable {
+func mapConj(m Map, obj coretypes.Object) coretypes.Conjable {
 	switch obj := obj.(type) {
 	case Vec:
 		if obj.Count() != 2 {
@@ -89,19 +89,19 @@ func mapEquals(m Map, other interface{}) bool {
 		return corecollections.EqualMaps(
 			m.Count(),
 			otherMap.Count(),
-			func(yield func(corecollections.Pair[Object, Object]) bool) {
+			func(yield func(corecollections.Pair[coretypes.Object, coretypes.Object]) bool) {
 				for iter := m.Iter(); iter.HasNext(); {
 					p := iter.Next()
-					if !yield(corecollections.Pair[Object, Object]{Key: p.Key, Value: p.Value}) {
+					if !yield(corecollections.Pair[coretypes.Object, coretypes.Object]{Key: p.Key, Value: p.Value}) {
 						return
 					}
 				}
 			},
-			func(key Object) (Object, bool) {
+			func(key coretypes.Object) (coretypes.Object, bool) {
 				found, value := otherMap.Get(key)
 				return value, found
 			},
-			func(a Object, b Object) bool {
+			func(a coretypes.Object, b coretypes.Object) bool {
 				return b.Equals(a)
 			},
 		)
@@ -116,20 +116,20 @@ func mapToString(m Map, escape bool) string {
 		"}",
 		" ",
 		", ",
-		func(yield func(corecollections.Pair[Object, Object]) bool) {
+		func(yield func(corecollections.Pair[coretypes.Object, coretypes.Object]) bool) {
 			for iter := m.Iter(); iter.HasNext(); {
 				p := iter.Next()
-				if !yield(corecollections.Pair[Object, Object]{Key: p.Key, Value: p.Value}) {
+				if !yield(corecollections.Pair[coretypes.Object, coretypes.Object]{Key: p.Key, Value: p.Value}) {
 					return
 				}
 			}
 		},
-		func(key Object) string { return key.ToString(escape) },
-		func(value Object) string { return value.ToString(escape) },
+		func(key coretypes.Object) string { return key.ToString(escape) },
+		func(value coretypes.Object) string { return value.ToString(escape) },
 	)
 }
 
-func callMap(m Map, args []Object) Object {
+func callMap(m Map, args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 2)
 	if ok, v := m.Get(args[0]); ok {
 		return v

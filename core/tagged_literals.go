@@ -20,7 +20,7 @@ func registerTaggedLiterals() {
 
 	// Register #inst reader — parses ISO 8601 date strings to Time
 	instReaderVr := ns.Intern(MakeSymbol("__read-inst"))
-	instReaderVr.Value = Proc{Name: "procReadInst", Fn: func(args []Object) Object {
+	instReaderVr.Value = Proc{Name: "procReadInst", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		s := EnsureObjectIsString(args[0], "#inst argument must be a string, got %s")
 		// Try RFC3339 first, then other common formats
@@ -42,7 +42,7 @@ func registerTaggedLiterals() {
 
 	// Register #uuid reader — stores as string (no java.util.UUID equivalent)
 	uuidReaderVr := ns.Intern(MakeSymbol("__read-uuid"))
-	uuidReaderVr.Value = Proc{Name: "procReadUuid", Fn: func(args []Object) Object {
+	uuidReaderVr.Value = Proc{Name: "procReadUuid", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		s := EnsureObjectIsString(args[0], "#uuid argument must be a string, got %s")
 		// Basic UUID format validation

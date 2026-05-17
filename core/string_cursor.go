@@ -8,7 +8,7 @@ import (
 
 // ---- string_cursor.go ----
 // StringCursor wraps the extracted string cursor implementation with core's
-// Object protocol. Runtime cursor mechanics live in core/cursor; this file is
+// coretypes.Object protocol. Runtime cursor mechanics live in core/cursor; this file is
 // only the root object/protocol adapter required by existing Joker objects.
 type StringCursor struct {
 	coretypes.InfoHolder
@@ -33,7 +33,7 @@ func (c *StringCursor) Next() *StringCursor {
 
 func (c *StringCursor) Index() int { return c.cur.Index() }
 
-// --- Object interface ---
+// --- coretypes.Object interface ---
 
 func (c *StringCursor) ToString(escape bool) string { return c.cur.String() }
 
@@ -65,7 +65,7 @@ func initStringCursorProcs() {
 		ns := GLOBAL_ENV.CoreNamespace
 		procs := []struct {
 			name  string
-			fn    func([]Object) Object
+			fn    func([]coretypes.Object) coretypes.Object
 			pname string
 		}{
 			{"string-cursor", procStringCursor, "procStringCursor"},
@@ -87,7 +87,7 @@ func initStringCursorProcs() {
 	})
 }
 
-func procStringCursor(args []Object) Object {
+func procStringCursor(args []coretypes.Object) coretypes.Object {
 	s, ok := args[0].(coretypes.String)
 	if !ok {
 		panic(RT.NewError("string-cursor expects a string argument"))
@@ -95,7 +95,7 @@ func procStringCursor(args []Object) Object {
 	return NewStringCursor(s.S)
 }
 
-func procCursorChar(args []Object) Object {
+func procCursorChar(args []coretypes.Object) coretypes.Object {
 	c, ok := args[0].(*StringCursor)
 	if !ok {
 		panic(RT.NewError("cursor-char expects a StringCursor"))
@@ -107,7 +107,7 @@ func procCursorChar(args []Object) Object {
 	return coretypes.Char{Ch: r}
 }
 
-func procCursorNext(args []Object) Object {
+func procCursorNext(args []coretypes.Object) coretypes.Object {
 	c, ok := args[0].(*StringCursor)
 	if !ok {
 		panic(RT.NewError("cursor-next expects a StringCursor"))
@@ -115,7 +115,7 @@ func procCursorNext(args []Object) Object {
 	return c.Next()
 }
 
-func procCursorDone(args []Object) Object {
+func procCursorDone(args []coretypes.Object) coretypes.Object {
 	c, ok := args[0].(*StringCursor)
 	if !ok {
 		panic(RT.NewError("cursor-done? expects a StringCursor"))
@@ -123,7 +123,7 @@ func procCursorDone(args []Object) Object {
 	return coretypes.Boolean{B: c.Done()}
 }
 
-func procCursorIndex(args []Object) Object {
+func procCursorIndex(args []coretypes.Object) coretypes.Object {
 	c, ok := args[0].(*StringCursor)
 	if !ok {
 		panic(RT.NewError("cursor-index expects a StringCursor"))
@@ -154,11 +154,11 @@ func (ts *TransientString) Equals(other interface{}) bool {
 		return false
 	}
 }
-func (ts *TransientString) GetInfo() *coretypes.ObjectInfo        { return nil }
-func (ts *TransientString) WithInfo(*coretypes.ObjectInfo) Object { return ts }
-func (ts *TransientString) GetType() *coretypes.Type              { return TYPE.String }
-func (ts *TransientString) Hash() uint32                          { return coretypes.String{S: string(ts.buf)}.Hash() }
-func (ts *TransientString) Count() int                            { return stringRuneCountFastCompat(string(ts.buf)) }
+func (ts *TransientString) GetInfo() *coretypes.ObjectInfo                  { return nil }
+func (ts *TransientString) WithInfo(*coretypes.ObjectInfo) coretypes.Object { return ts }
+func (ts *TransientString) GetType() *coretypes.Type                        { return TYPE.String }
+func (ts *TransientString) Hash() uint32                                    { return coretypes.String{S: string(ts.buf)}.Hash() }
+func (ts *TransientString) Count() int                                      { return stringRuneCountFastCompat(string(ts.buf)) }
 
 func stringRuneCountFastCompat(s string) int {
 	// Avoid importing utf8 in this tiny helper file; String.Count has the fully

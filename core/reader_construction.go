@@ -21,11 +21,11 @@ func (ReaderConstructionAdapter) NewReader(runeReader io.RuneReader, filename st
 	return NewReader(runeReader, filename)
 }
 
-func (ReaderConstructionAdapter) Read(reader *Reader) (Object, bool) {
+func (ReaderConstructionAdapter) Read(reader *Reader) (coretypes.Object, bool) {
 	return Read(reader)
 }
 
-func (ReaderConstructionAdapter) TryRead(reader *Reader) (Object, error) {
+func (ReaderConstructionAdapter) TryRead(reader *Reader) (coretypes.Object, error) {
 	return TryRead(reader)
 }
 
@@ -33,41 +33,41 @@ func (ReaderConstructionAdapter) ReadError(reader *Reader, msg string) ReadError
 	return makeReadError(reader, msg)
 }
 
-func (ReaderConstructionAdapter) ReadObject(reader *Reader, obj Object) Object {
+func (ReaderConstructionAdapter) ReadObject(reader *Reader, obj coretypes.Object) coretypes.Object {
 	return makeReadObject(reader, obj)
 }
 
-func (ReaderConstructionAdapter) DeriveReadObject(base Object, obj Object) Object {
+func (ReaderConstructionAdapter) DeriveReadObject(base coretypes.Object, obj coretypes.Object) coretypes.Object {
 	return deriveReadObject(base, obj)
 }
 
-func (ReaderConstructionAdapter) Nil() Object { return NIL }
+func (ReaderConstructionAdapter) Nil() coretypes.Object { return NIL }
 
-func (ReaderConstructionAdapter) Bool(v bool) Object { return coretypes.Boolean{B: v} }
+func (ReaderConstructionAdapter) Bool(v bool) coretypes.Object { return coretypes.Boolean{B: v} }
 
-func (ReaderConstructionAdapter) Char(v rune) Object { return coretypes.Char{Ch: v} }
+func (ReaderConstructionAdapter) Char(v rune) coretypes.Object { return coretypes.Char{Ch: v} }
 
-func (ReaderConstructionAdapter) Int(v int) Object { return coretypes.Int{I: v} }
+func (ReaderConstructionAdapter) Int(v int) coretypes.Object { return coretypes.Int{I: v} }
 
-func (ReaderConstructionAdapter) String(v string) Object { return coretypes.MakeString(v) }
+func (ReaderConstructionAdapter) String(v string) coretypes.Object { return coretypes.MakeString(v) }
 
-func (ReaderConstructionAdapter) Symbol(v string) Object { return MakeSymbol(v) }
+func (ReaderConstructionAdapter) Symbol(v string) coretypes.Object { return MakeSymbol(v) }
 
-func (ReaderConstructionAdapter) Keyword(v string) Object { return MakeKeyword(v) }
+func (ReaderConstructionAdapter) Keyword(v string) coretypes.Object { return MakeKeyword(v) }
 
-func (ReaderConstructionAdapter) ListFrom(values []Object) Object {
+func (ReaderConstructionAdapter) ListFrom(values []coretypes.Object) coretypes.Object {
 	return collectionConstruction.NewListFrom(values...)
 }
 
-func (ReaderConstructionAdapter) VectorFrom(values []Object) Object {
+func (ReaderConstructionAdapter) VectorFrom(values []coretypes.Object) coretypes.Object {
 	return collectionConstruction.NewArrayVectorFrom(values...)
 }
 
-func (ReaderConstructionAdapter) PersistentVectorFromSeq(seq Seq) Object {
+func (ReaderConstructionAdapter) PersistentVectorFromSeq(seq Seq) coretypes.Object {
 	return collectionConstruction.NewVectorFromSeq(seq)
 }
 
-func (ReaderConstructionAdapter) MapLiteral(reader *Reader, values []Object, nsname string) Object {
+func (ReaderConstructionAdapter) MapLiteral(reader *Reader, values []coretypes.Object, nsname string) coretypes.Object {
 	if int64(len(values)) >= HASHMAP_THRESHOLD {
 		hashMap := collectionConstruction.NewHashMapFrom()
 		for i := 0; i < len(values); i += 2 {
@@ -89,7 +89,7 @@ func (ReaderConstructionAdapter) MapLiteral(reader *Reader, values []Object, nsn
 	return m
 }
 
-func (ReaderConstructionAdapter) SetLiteral(reader *Reader, values []Object) Object {
+func (ReaderConstructionAdapter) SetLiteral(reader *Reader, values []coretypes.Object) coretypes.Object {
 	set := collectionConstruction.NewEmptySet()
 	for _, obj := range values {
 		if !set.Add(obj) {
@@ -99,33 +99,35 @@ func (ReaderConstructionAdapter) SetLiteral(reader *Reader, values []Object) Obj
 	return set
 }
 
-func (ReaderConstructionAdapter) Double(v float64) Object { return coretypes.MakeDouble(v) }
+func (ReaderConstructionAdapter) Double(v float64) coretypes.Object { return coretypes.MakeDouble(v) }
 
-func (ReaderConstructionAdapter) BigInt(v *big.Int, original string) Object {
+func (ReaderConstructionAdapter) BigInt(v *big.Int, original string) coretypes.Object {
 	return &coretypes.BigInt{B: v, Original: original}
 }
 
-func (ReaderConstructionAdapter) BigFloatFromString(value string, original string) (Object, bool) {
+func (ReaderConstructionAdapter) BigFloatFromString(value string, original string) (coretypes.Object, bool) {
 	return coretypes.MakeBigFloatWithOrig(value, original)
 }
 
-func (ReaderConstructionAdapter) RatioOrInt(value string, ratio *big.Rat) Object {
+func (ReaderConstructionAdapter) RatioOrInt(value string, ratio *big.Rat) coretypes.Object {
 	return coretypes.RatioOrIntWithOriginal(value, ratio)
 }
 
-func (ReaderConstructionAdapter) Comment(v string) Object { return coretypes.Comment{C: v} }
+func (ReaderConstructionAdapter) Comment(v string) coretypes.Object { return coretypes.Comment{C: v} }
 
-func (ReaderConstructionAdapter) Regex(v *regexp.Regexp) Object { return coretypes.MakeRegex(v) }
+func (ReaderConstructionAdapter) Regex(v *regexp.Regexp) coretypes.Object {
+	return coretypes.MakeRegex(v)
+}
 
-func (ReaderConstructionAdapter) NumberFromToken(reader *Reader, token corereader.NumberToken) Object {
+func (ReaderConstructionAdapter) NumberFromToken(reader *Reader, token corereader.NumberToken) coretypes.Object {
 	return numberFromToken(reader, token)
 }
 
-func (ReaderConstructionAdapter) MetadataFromObject(obj Object) (*ArrayMap, bool) {
+func (ReaderConstructionAdapter) MetadataFromObject(obj coretypes.Object) (*ArrayMap, bool) {
 	return metadataFromObject(obj)
 }
 
-func (ReaderConstructionAdapter) WithMeta(obj Object, meta *ArrayMap) (Object, bool) {
+func (ReaderConstructionAdapter) WithMeta(obj coretypes.Object, meta *ArrayMap) (coretypes.Object, bool) {
 	v, ok := obj.(Meta)
 	if !ok {
 		return nil, false
@@ -137,11 +139,11 @@ func (ReaderConstructionAdapter) SkipRedundantDoMeta() *ArrayMap {
 	return collectionConstruction.NewEmptyArrayMap().Plus(MakeKeyword("skip-redundant-do"), coretypes.Boolean{B: true})
 }
 
-func (ReaderConstructionAdapter) LiteralExpr(obj Object) *LiteralExpr {
+func (ReaderConstructionAdapter) LiteralExpr(obj coretypes.Object) *LiteralExpr {
 	return NewLiteralExpr(obj)
 }
 
-func (ReaderConstructionAdapter) SurrogateExpr(obj Object) *LiteralExpr {
+func (ReaderConstructionAdapter) SurrogateExpr(obj coretypes.Object) *LiteralExpr {
 	return NewSurrogateExpr(obj)
 }
 

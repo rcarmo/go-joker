@@ -23,7 +23,7 @@ import (
 )
 
 // ---- concurrency_ext_test.go ----
-func requireKeyword(tb testing.TB, obj Object, want string) {
+func requireKeyword(tb testing.TB, obj coretypes.Object, want string) {
 	tb.Helper()
 	got, ok := obj.(Keyword)
 	if !ok {
@@ -218,7 +218,7 @@ func TestConcurrencyPcallsPanicPropagates(t *testing.T) {
 // ---- construction_boundary_guard_test.go ----
 func TestCollectionConstructionAdapterVectors(t *testing.T) {
 	adapter := collectionConstruction
-	items := []Object{coretypes.MakeInt(1), coretypes.MakeString("two")}
+	items := []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeString("two")}
 
 	vector := adapter.VectorFrom(items...)
 	if vector.Count() != 2 || !vector.At(1).Equals(items[1]) {
@@ -401,7 +401,7 @@ func TestGuessFnParamFrameLetfnPixel(t *testing.T) {
 	expr := compileBenchExpr(t, clbgscripts.MandelbrotScript)
 	loop := expr.(*LoopExpr)
 	le := (*LetExpr)(loop)
-	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	env := &LocalEnv{bindings: make([]coretypes.Object, 0), frame: 0}
 	for _, v := range le.values {
 		env.bindings = append(env.bindings, Eval(v, env))
 	}
@@ -418,7 +418,7 @@ func TestGuessFnParamFrameSimpleFn(t *testing.T) {
 	clbgInit()
 	expr := compileBenchExpr(t, `(let [f (fn [x y] (+ x y))] (f 1 2))`)
 	le := expr.(*LetExpr)
-	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	env := &LocalEnv{bindings: make([]coretypes.Object, 0), frame: 0}
 	fn := Eval(le.values[0], env).(*Fn)
 	arity := fn.fnExpr.arities[0]
 	f := guessFnParamFrame(arity.body, len(arity.args))
@@ -464,7 +464,7 @@ func TestIrCompileFnWithCaptures(t *testing.T) {
 	expr := compileBenchExpr(t, clbgscripts.MandelbrotScript)
 	loop := expr.(*LoopExpr)
 	le := (*LetExpr)(loop)
-	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	env := &LocalEnv{bindings: make([]coretypes.Object, 0), frame: 0}
 	for _, v := range le.values {
 		env.bindings = append(env.bindings, Eval(v, env))
 	}
@@ -474,11 +474,11 @@ func TestIrCompileFnWithCaptures(t *testing.T) {
 		t.Fatal("irCompileFn failed for pixel fn")
 	}
 	// Verify correctness
-	r := irExec(prog, []Object{coretypes.Double{D: 0}, coretypes.Double{D: 0}})
+	r := irExec(prog, []coretypes.Object{coretypes.Double{D: 0}, coretypes.Double{D: 0}})
 	if r == nil || r.(coretypes.Number).Int().I != 1 {
 		t.Fatalf("pixel(0,0) = %v, want 1", r)
 	}
-	r2 := irExec(prog, []Object{coretypes.Double{D: 2}, coretypes.Double{D: 0}})
+	r2 := irExec(prog, []coretypes.Object{coretypes.Double{D: 2}, coretypes.Double{D: 0}})
 	if r2 == nil || r2.(coretypes.Number).Int().I != 0 {
 		t.Fatalf("pixel(2,0) = %v, want 0", r2)
 	}
@@ -488,7 +488,7 @@ func TestIrCompileFnFlip(t *testing.T) {
 	clbgInit()
 	expr := compileBenchExpr(t, clbgscripts.FannkuchScript)
 	le := expr.(*LetExpr)
-	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	env := &LocalEnv{bindings: make([]coretypes.Object, 0), frame: 0}
 	for _, v := range le.values {
 		env.bindings = append(env.bindings, Eval(v, env))
 	}
@@ -497,8 +497,8 @@ func TestIrCompileFnFlip(t *testing.T) {
 	if prog == nil {
 		t.Fatal("irCompileFn failed for flip fn")
 	}
-	perm := &ArrayVector{arr: []Object{coretypes.Int{I: 1}, coretypes.Int{I: 0}, coretypes.Int{I: 2}}}
-	r := irExec(prog, []Object{perm})
+	perm := &ArrayVector{arr: []coretypes.Object{coretypes.Int{I: 1}, coretypes.Int{I: 0}, coretypes.Int{I: 2}}}
+	r := irExec(prog, []coretypes.Object{perm})
 	if r == nil {
 		t.Fatal("flip returned nil")
 	}
@@ -572,7 +572,7 @@ func TestIrValueStringRoundtrip(t *testing.T) {
 
 func TestIrValueObjectRoundtrip(t *testing.T) {
 	clbgInit()
-	vec := &ArrayVector{arr: []Object{coretypes.Int{I: 1}, coretypes.Int{I: 2}}}
+	vec := &ArrayVector{arr: []coretypes.Object{coretypes.Int{I: 1}, coretypes.Int{I: 2}}}
 	v := irMakeObject(vec)
 	got := v.obj()
 	if got == nil {
@@ -617,7 +617,7 @@ func TestNativeHelperSpectralA(t *testing.T) {
 	clbgInit()
 	expr := compileBenchExpr(t, spectralNormScript)
 	le := expr.(*LetExpr)
-	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	env := &LocalEnv{bindings: make([]coretypes.Object, 0), frame: 0}
 	env.bindings = append(env.bindings, Eval(le.values[0], env)) // n
 	aFn := Eval(le.values[1], env).(*Fn)
 	prog := irCompileFn(aFn)
@@ -659,7 +659,7 @@ func TestTypedIREligibleCallSlotWithNth(t *testing.T) {
 	// Call-slot + nth pattern (spectral-norm j-loop)
 	expr := compileBenchExpr(t, spectralNormScript)
 	le := expr.(*LetExpr)
-	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	env := &LocalEnv{bindings: make([]coretypes.Object, 0), frame: 0}
 	for _, v := range le.values[:3] {
 		env.bindings = append(env.bindings, Eval(v, env))
 	}
@@ -734,7 +734,7 @@ func TestBuildNativeLoopWrapper(t *testing.T) {
 	// spectral-norm's A fn has a native helper that can be wrapped
 	expr := compileBenchExpr(t, spectralNormScript)
 	le := expr.(*LetExpr)
-	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	env := &LocalEnv{bindings: make([]coretypes.Object, 0), frame: 0}
 	env.bindings = append(env.bindings, Eval(le.values[0], env))
 	aFn := Eval(le.values[1], env).(*Fn)
 	fnProg := irGetFnProg(aFn)
@@ -748,9 +748,9 @@ func TestBuildNativeLoopWrapper(t *testing.T) {
 }
 
 func TestIRFrameStackPushPop(t *testing.T) {
-	fs := coreirx.NewFrameStack[Object](4)
+	fs := coreirx.NewFrameStack[coretypes.Object](4)
 	defer coreirx.ReleaseFrameStack(fs)
-	slots := make([]Object, 4)
+	slots := make([]coretypes.Object, 4)
 	slots[0] = coretypes.Int{I: 42}
 	slots[1] = coretypes.Double{D: 3.14}
 
@@ -809,7 +809,7 @@ func TestAdvanceFnCompiles(t *testing.T) {
 	clbgInit()
 	expr := compileBenchExpr(t, nbodyScript)
 	le := expr.(*LetExpr)
-	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	env := &LocalEnv{bindings: make([]coretypes.Object, 0), frame: 0}
 	for _, v := range le.values {
 		env.bindings = append(env.bindings, Eval(v, env))
 	}
@@ -825,7 +825,7 @@ func TestFannkuchHelperFnCompiles(t *testing.T) {
 	clbgInit()
 	expr := compileBenchExpr(t, clbgscripts.FannkuchScript)
 	le := expr.(*LetExpr)
-	env := &LocalEnv{bindings: make([]Object, 0), frame: 0}
+	env := &LocalEnv{bindings: make([]coretypes.Object, 0), frame: 0}
 	for _, v := range le.values {
 		env.bindings = append(env.bindings, Eval(v, env))
 	}
@@ -1025,28 +1025,28 @@ func requirePanic(t *testing.T, name string, fn func()) {
 }
 
 func TestBitOpsRejectInvalidIndexesAndShifts(t *testing.T) {
-	requirePanic(t, "negative bit index", func() { procBitSet([]Object{coretypes.MakeInt(0), coretypes.MakeInt(-1)}) })
-	requirePanic(t, "too-large bit index", func() { procBitTest([]Object{coretypes.MakeInt(0), coretypes.MakeInt(strconv.IntSize)}) })
-	requirePanic(t, "negative shift count", func() { procBitShiftLeft([]Object{coretypes.MakeInt(1), coretypes.MakeInt(-1)}) })
+	requirePanic(t, "negative bit index", func() { procBitSet([]coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(-1)}) })
+	requirePanic(t, "too-large bit index", func() { procBitTest([]coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(strconv.IntSize)}) })
+	requirePanic(t, "negative shift count", func() { procBitShiftLeft([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(-1)}) })
 }
 
 func TestIntArithmeticPromotesToBigIntOnOverflow(t *testing.T) {
-	if got := procAdd([]Object{coretypes.Int{I: coretypes.MaxInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "9223372036854775808N" {
+	if got := procAdd([]coretypes.Object{coretypes.Int{I: coretypes.MaxInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "9223372036854775808N" {
 		t.Fatalf("add promotion mismatch: %T %s", got, got.ToString(false))
 	}
-	if got := procSubtract([]Object{coretypes.Int{I: coretypes.MinInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "-9223372036854775809N" {
+	if got := procSubtract([]coretypes.Object{coretypes.Int{I: coretypes.MinInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "-9223372036854775809N" {
 		t.Fatalf("subtract promotion mismatch: %T %s", got, got.ToString(false))
 	}
-	if got := procMultiply([]Object{coretypes.Int{I: coretypes.MaxInt}, coretypes.Int{I: 2}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "18446744073709551614N" {
+	if got := procMultiply([]coretypes.Object{coretypes.Int{I: coretypes.MaxInt}, coretypes.Int{I: 2}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "18446744073709551614N" {
 		t.Fatalf("multiply promotion mismatch: %T %s", got, got.ToString(false))
 	}
 }
 
 func TestIncDecPromoteToBigIntOnOverflow(t *testing.T) {
-	if got := procInc([]Object{coretypes.Int{I: coretypes.MaxInt}}); got.GetType() != TYPE.BigInt {
+	if got := procInc([]coretypes.Object{coretypes.Int{I: coretypes.MaxInt}}); got.GetType() != TYPE.BigInt {
 		t.Fatalf("inc did not promote: %T %s", got, got.ToString(false))
 	}
-	if got := procDec([]Object{coretypes.Int{I: coretypes.MinInt}}); got.GetType() != TYPE.BigInt {
+	if got := procDec([]coretypes.Object{coretypes.Int{I: coretypes.MinInt}}); got.GetType() != TYPE.BigInt {
 		t.Fatalf("dec did not promote: %T %s", got, got.ToString(false))
 	}
 }
@@ -1054,7 +1054,7 @@ func TestIncDecPromoteToBigIntOnOverflow(t *testing.T) {
 func TestBigDecimalArithmeticKeepsBigFloat(t *testing.T) {
 	a, _ := coretypes.MakeBigFloatWithOrig("0.1", "0.1M")
 	b, _ := coretypes.MakeBigFloatWithOrig("0.2", "0.2M")
-	got := procAdd([]Object{a, b})
+	got := procAdd([]coretypes.Object{a, b})
 	if got.GetType() != TYPE.BigFloat || !strings.HasPrefix(got.ToString(false), "0.3") || !strings.HasSuffix(got.ToString(false), "M") {
 		t.Fatalf("big decimal add mismatch: %T %s", got, got.ToString(false))
 	}
@@ -1152,15 +1152,15 @@ func TestExtendTypeInternalRejectsOddMethodPairs(t *testing.T) {
 		t.Fatalf("__extend-type value = %T, want Proc", extendType.Value)
 	}
 	assertPanics(t, "odd __extend-type method pairs", func() {
-		proc.Call([]Object{proto, coretypes.MakeString("AuditType"), coretypes.MakeString("method")})
+		proc.Call([]coretypes.Object{proto, coretypes.MakeString("AuditType"), coretypes.MakeString("method")})
 	})
 }
 
 func TestCountedIndexedVectorContract(t *testing.T) {
-	items := []Object{coretypes.MakeInt(1), coretypes.MakeString("two"), MakeKeyword("three")}
+	items := []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeString("two"), MakeKeyword("three")}
 	vectors := []struct {
 		name string
-		v    Object
+		v    coretypes.Object
 	}{
 		{name: "array", v: NewArrayVectorFrom(items...)},
 		{name: "vector", v: NewVectorFrom(items...)},
@@ -1196,7 +1196,7 @@ func TestCountedIndexedVectorContract(t *testing.T) {
 }
 
 func TestAssociativeMapContract(t *testing.T) {
-	entries := []Object{MakeKeyword("a"), coretypes.MakeInt(1), MakeKeyword("b"), coretypes.MakeString("two")}
+	entries := []coretypes.Object{MakeKeyword("a"), coretypes.MakeInt(1), MakeKeyword("b"), coretypes.MakeString("two")}
 	maps := []struct {
 		name string
 		m    Map
@@ -1248,10 +1248,10 @@ func TestSetContract(t *testing.T) {
 	if found, got := set.Get(coretypes.MakeInt(1)); !found || !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("Get(1) = %v %v", found, got)
 	}
-	if got := set.Call([]Object{coretypes.MakeInt(2)}); !got.Equals(coretypes.MakeInt(2)) {
+	if got := set.Call([]coretypes.Object{coretypes.MakeInt(2)}); !got.Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("Call(2) = %s", got.ToString(false))
 	}
-	if got := set.Call([]Object{coretypes.MakeInt(3)}); got != NIL {
+	if got := set.Call([]coretypes.Object{coretypes.MakeInt(3)}); got != NIL {
 		t.Fatalf("Call(3) = %s, want nil", got.ToString(false))
 	}
 	removed := set.Disjoin(coretypes.MakeInt(1)).(*MapSet)
@@ -1285,13 +1285,13 @@ func TestSortedCollectionContract(t *testing.T) {
 	rsubseqProc := GLOBAL_ENV.CoreNamespace.Resolve("rsubseq").Value.(Proc)
 	sortedMapByProc := GLOBAL_ENV.CoreNamespace.Resolve("sorted-map-by").Value.(Proc)
 	sortedSetByProc := GLOBAL_ENV.CoreNamespace.Resolve("sorted-set-by").Value.(Proc)
-	desc := Proc{Name: "desc", Fn: func(args []Object) Object {
+	desc := Proc{Name: "desc", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		return coretypes.MakeBoolean(compareObjects(args[0], args[1]) > 0)
 	}}
 
-	m := sortedMapProc.Call([]Object{coretypes.MakeInt(2), coretypes.MakeString("b"), coretypes.MakeInt(1), coretypes.MakeString("a")}).(Map)
-	if got := sortedQProc.Call([]Object{m}); !got.Equals(coretypes.Boolean{B: true}) {
+	m := sortedMapProc.Call([]coretypes.Object{coretypes.MakeInt(2), coretypes.MakeString("b"), coretypes.MakeInt(1), coretypes.MakeString("a")}).(Map)
+	if got := sortedQProc.Call([]coretypes.Object{m}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("sorted? sorted-map = %s", got.ToString(false))
 	}
 	entries := sortedEntries(m)
@@ -1301,7 +1301,7 @@ func TestSortedCollectionContract(t *testing.T) {
 	if found, got := m.Get(coretypes.MakeInt(1)); !found || !got.Equals(coretypes.MakeString("a")) {
 		t.Fatalf("sorted-map lookup = %v %v", found, got)
 	}
-	dup := sortedMapProc.Call([]Object{coretypes.MakeInt(1), coretypes.MakeString("old"), coretypes.MakeInt(1), coretypes.MakeString("new")}).(Map)
+	dup := sortedMapProc.Call([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeString("old"), coretypes.MakeInt(1), coretypes.MakeString("new")}).(Map)
 	if dup.Count() != 1 {
 		t.Fatalf("sorted-map duplicate count = %d, want 1", dup.Count())
 	}
@@ -1309,8 +1309,8 @@ func TestSortedCollectionContract(t *testing.T) {
 		t.Fatalf("sorted-map duplicate lookup = %v %v", found, got)
 	}
 
-	s := sortedSetProc.Call([]Object{coretypes.MakeInt(3), coretypes.MakeInt(1), coretypes.MakeInt(2)}).(*MapSet)
-	if got := sortedQProc.Call([]Object{s}); !got.Equals(coretypes.Boolean{B: true}) {
+	s := sortedSetProc.Call([]coretypes.Object{coretypes.MakeInt(3), coretypes.MakeInt(1), coretypes.MakeInt(2)}).(*MapSet)
+	if got := sortedQProc.Call([]coretypes.Object{s}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("sorted? sorted-set = %s", got.ToString(false))
 	}
 	setEntries := sortedEntries(s)
@@ -1318,20 +1318,20 @@ func TestSortedCollectionContract(t *testing.T) {
 		t.Fatalf("sorted-set entries not ordered: %#v", setEntries)
 	}
 
-	sub := subseqProc.Call([]Object{s, Proc{Fn: procGte, Name: "procGte"}, coretypes.MakeInt(2)}).(Seq)
+	sub := subseqProc.Call([]coretypes.Object{s, Proc{Fn: procGte, Name: "procGte"}, coretypes.MakeInt(2)}).(Seq)
 	if SeqCount(sub) != 2 || !sub.First().Equals(coretypes.MakeInt(2)) || !Second(sub).Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("subseq contract failed: %s", sub.ToString(false))
 	}
-	rsub := rsubseqProc.Call([]Object{s, Proc{Fn: procGte, Name: "procGte"}, coretypes.MakeInt(2)}).(Seq)
+	rsub := rsubseqProc.Call([]coretypes.Object{s, Proc{Fn: procGte, Name: "procGte"}, coretypes.MakeInt(2)}).(Seq)
 	if SeqCount(rsub) != 2 || !rsub.First().Equals(coretypes.MakeInt(3)) || !Second(rsub).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("rsubseq contract failed: %s", rsub.ToString(false))
 	}
-	mBy := sortedMapByProc.Call([]Object{desc, coretypes.MakeInt(1), coretypes.MakeString("a"), coretypes.MakeInt(3), coretypes.MakeString("c"), coretypes.MakeInt(2), coretypes.MakeString("b")}).(Map)
+	mBy := sortedMapByProc.Call([]coretypes.Object{desc, coretypes.MakeInt(1), coretypes.MakeString("a"), coretypes.MakeInt(3), coretypes.MakeString("c"), coretypes.MakeInt(2), coretypes.MakeString("b")}).(Map)
 	mByEntries := sortedEntries(mBy)
 	if len(mByEntries) != 3 || !rangeKey(mByEntries[0]).Equals(coretypes.MakeInt(3)) || !rangeKey(mByEntries[2]).Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("sorted-map-by should preserve comparator order: %v", mByEntries)
 	}
-	byParity := Proc{Name: "parity", Fn: func(args []Object) Object {
+	byParity := Proc{Name: "parity", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		ai := args[0].(coretypes.Int).I % 2
 		bi := args[1].(coretypes.Int).I % 2
@@ -1343,7 +1343,7 @@ func TestSortedCollectionContract(t *testing.T) {
 		}
 		return coretypes.Int{I: 0}
 	}}
-	mByDup := sortedMapByProc.Call([]Object{byParity, coretypes.MakeInt(1), coretypes.MakeString("one"), coretypes.MakeInt(3), coretypes.MakeString("three"), coretypes.MakeInt(2), coretypes.MakeString("two")}).(Map)
+	mByDup := sortedMapByProc.Call([]coretypes.Object{byParity, coretypes.MakeInt(1), coretypes.MakeString("one"), coretypes.MakeInt(3), coretypes.MakeString("three"), coretypes.MakeInt(2), coretypes.MakeString("two")}).(Map)
 	mByDupEntries := sortedEntries(mByDup)
 	if len(mByDupEntries) != 2 || !rangeKey(mByDupEntries[1]).Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("sorted-map-by comparator duplicate entries = %v", mByDupEntries)
@@ -1351,7 +1351,7 @@ func TestSortedCollectionContract(t *testing.T) {
 	if found, got := mByDup.Get(coretypes.MakeInt(3)); !found || !got.Equals(coretypes.MakeString("three")) {
 		t.Fatalf("sorted-map-by comparator duplicate lookup = %v %v", found, got)
 	}
-	sBy := sortedSetByProc.Call([]Object{desc, coretypes.MakeInt(1), coretypes.MakeInt(3), coretypes.MakeInt(2)}).(*MapSet)
+	sBy := sortedSetByProc.Call([]coretypes.Object{desc, coretypes.MakeInt(1), coretypes.MakeInt(3), coretypes.MakeInt(2)}).(*MapSet)
 	sByEntries := sortedEntries(sBy)
 	if len(sByEntries) != 3 || !sByEntries[0].Equals(coretypes.MakeInt(3)) || !sByEntries[2].Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("sorted-set-by should preserve comparator order: %v", sByEntries)
@@ -1397,17 +1397,17 @@ func TestTransientContract(t *testing.T) {
 		t.Fatalf("persistent map string get = %v %v", found, got)
 	}
 	assertPanics(t, "mutating frozen transient map", func() { tm.AssocInPlace(MakeKeyword("z"), coretypes.MakeInt(0)) })
-	if got := procIsTransient([]Object{ToTransient(NewArrayVectorFrom())}); !got.Equals(coretypes.Boolean{B: true}) {
+	if got := procIsTransient([]coretypes.Object{ToTransient(NewArrayVectorFrom())}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatal("transient? should recognize transient vectors")
 	}
-	if got := procIsTransient([]Object{MapToTransient(nil)}); !got.Equals(coretypes.Boolean{B: true}) {
+	if got := procIsTransient([]coretypes.Object{MapToTransient(nil)}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatal("transient? should recognize transient maps")
 	}
-	if got := procIsTransient([]Object{NewArrayVectorFrom()}); !got.Equals(coretypes.Boolean{B: false}) {
+	if got := procIsTransient([]coretypes.Object{NewArrayVectorFrom()}); !got.Equals(coretypes.Boolean{B: false}) {
 		t.Fatal("transient? should reject persistent collections")
 	}
-	assertPanics(t, "assoc! arity", func() { procAssocBang([]Object{MapToTransient(nil), MakeKeyword("k")}) })
-	assertPanics(t, "conj! map arity", func() { procConjBang([]Object{MapToTransient(nil), MakeKeyword("k")}) })
+	assertPanics(t, "assoc! arity", func() { procAssocBang([]coretypes.Object{MapToTransient(nil), MakeKeyword("k")}) })
+	assertPanics(t, "conj! map arity", func() { procConjBang([]coretypes.Object{MapToTransient(nil), MakeKeyword("k")}) })
 }
 
 func assertPanics(t *testing.T, name string, f func()) {
@@ -1427,11 +1427,11 @@ func TestSeqContract(t *testing.T) {
 		seq  Seq
 	}{
 		{name: "list", seq: base},
-		{name: "array", seq: &ArraySeq{arr: []Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)}}},
+		{name: "array", seq: &ArraySeq{arr: []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)}}},
 		{name: "vector", seq: NewVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)).Seq()},
 		{name: "cons", seq: NewConsSeq(coretypes.MakeInt(1), NewListFrom(coretypes.MakeInt(2), coretypes.MakeInt(3)).Seq())},
 		{name: "take", seq: (&TakeSeq{seq: base, n: 3}).Seq()},
-		{name: "filter", seq: (&FilteringSeq{seq: base, pred: Proc{Fn: func(args []Object) Object { return coretypes.Boolean{B: true} }}}).Seq()},
+		{name: "filter", seq: (&FilteringSeq{seq: base, pred: Proc{Fn: func(args []coretypes.Object) coretypes.Object { return coretypes.Boolean{B: true} }}}).Seq()},
 	}
 	for _, tc := range seqs {
 		if tc.seq.IsEmpty() {
@@ -1469,10 +1469,10 @@ func TestSeqContract(t *testing.T) {
 func TestInfoAndMetaContract(t *testing.T) {
 	info := &coretypes.ObjectInfo{Position: coretypes.Position{StartLine: 42}}
 	meta := EmptyArrayMap().Assoc(MakeKeyword("doc"), coretypes.MakeString("sample")).(Map)
-	values := []Object{
+	values := []coretypes.Object{
 		NewArrayVectorFrom(coretypes.MakeInt(1)),
 		NewVectorFrom(coretypes.MakeInt(1)),
-		PersistentVectorFrom([]Object{coretypes.MakeInt(1)}),
+		PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1)}),
 	}
 	for _, v := range values {
 		withInfo := withInfo(v, info)
@@ -1513,12 +1513,12 @@ func compileTestExpr(tb testing.TB, script string) Expr {
 	return expr
 }
 
-func evalTestScript(tb testing.TB, script string) Object {
+func evalTestScript(tb testing.TB, script string) coretypes.Object {
 	tb.Helper()
 	return Eval(compileTestExpr(tb, script), nil)
 }
 
-func requireInt(tb testing.TB, obj Object, want int) {
+func requireInt(tb testing.TB, obj coretypes.Object, want int) {
 	tb.Helper()
 	got, ok := obj.(coretypes.Int)
 	if !ok {
@@ -1529,7 +1529,7 @@ func requireInt(tb testing.TB, obj Object, want int) {
 	}
 }
 
-func requireDouble(tb testing.TB, obj Object, want float64) {
+func requireDouble(tb testing.TB, obj coretypes.Object, want float64) {
 	tb.Helper()
 	got, ok := obj.(coretypes.Double)
 	if !ok {
@@ -1540,7 +1540,7 @@ func requireDouble(tb testing.TB, obj Object, want float64) {
 	}
 }
 
-func requireBool(tb testing.TB, obj Object, want bool) {
+func requireBool(tb testing.TB, obj coretypes.Object, want bool) {
 	tb.Helper()
 	got, ok := obj.(coretypes.Boolean)
 	if !ok {
@@ -1551,7 +1551,7 @@ func requireBool(tb testing.TB, obj Object, want bool) {
 	}
 }
 
-func requireString(tb testing.TB, obj Object, want string) {
+func requireString(tb testing.TB, obj coretypes.Object, want string) {
 	tb.Helper()
 	got, ok := obj.(coretypes.String)
 	if !ok {
@@ -1736,7 +1736,7 @@ func TestGeneratedCoreNamespacesDriveCoreNamespaceVar(t *testing.T) {
 
 // ---- persistent_vector_test.go ----
 func TestPVObjectSemantics(t *testing.T) {
-	pv := PersistentVectorFrom([]Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
+	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
 	av := NewArrayVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3))
 	if got := pv.ToString(false); got != "[1 2 3]" {
 		t.Fatalf("ToString = %q", got)
@@ -1812,7 +1812,7 @@ func TestPVConjLarge(t *testing.T) {
 }
 
 func TestPVAssocTail(t *testing.T) {
-	pv := PersistentVectorFrom([]Object{coretypes.MakeInt(0), coretypes.MakeInt(1), coretypes.MakeInt(2)})
+	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(1), coretypes.MakeInt(2)})
 	pv2 := pv.Assoc(1, coretypes.MakeInt(99))
 	// Original unchanged
 	if pv.Nth(1).(coretypes.Int).I != 1 {
@@ -1854,7 +1854,7 @@ func TestPVAssocInTrie(t *testing.T) {
 }
 
 func TestPVAssocAtEnd(t *testing.T) {
-	pv := PersistentVectorFrom([]Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
+	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
 	// Assoc at count = conj
 	pv2 := pv.Assoc(3, coretypes.MakeInt(4))
 	if pv2.Count() != 4 {
@@ -1893,7 +1893,7 @@ func TestPVStructuralSharing(t *testing.T) {
 }
 
 func TestPVPop(t *testing.T) {
-	pv := PersistentVectorFrom([]Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
+	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
 	pv2 := pv.Pop()
 	if pv2.Count() != 2 {
 		t.Fatalf("expected 2, got %d", pv2.Count())
@@ -1926,7 +1926,7 @@ func TestPVPopLarge(t *testing.T) {
 }
 
 func TestPVToSlice(t *testing.T) {
-	items := []Object{coretypes.MakeInt(10), coretypes.MakeInt(20), coretypes.MakeInt(30)}
+	items := []coretypes.Object{coretypes.MakeInt(10), coretypes.MakeInt(20), coretypes.MakeInt(30)}
 	pv := PersistentVectorFrom(items)
 	s := pv.ToSlice()
 	if len(s) != 3 {
@@ -1940,7 +1940,7 @@ func TestPVToSlice(t *testing.T) {
 }
 
 func TestPVNthOutOfBounds(t *testing.T) {
-	pv := PersistentVectorFrom([]Object{coretypes.MakeInt(1)})
+	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1)})
 	defer func() {
 		if r := recover(); r == nil {
 			t.Fatal("expected panic for out-of-bounds nth")
@@ -1950,7 +1950,7 @@ func TestPVNthOutOfBounds(t *testing.T) {
 }
 
 func TestPVAssocOutOfBounds(t *testing.T) {
-	pv := PersistentVectorFrom([]Object{coretypes.MakeInt(1)})
+	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1)})
 	defer func() {
 		if r := recover(); r == nil {
 			t.Fatal("expected panic for out-of-bounds assoc")
@@ -2037,7 +2037,7 @@ func TestIRConstantCountFoldsStringBinding(t *testing.T) {
 }
 
 // ---- reader_construction_contract_test.go ----
-func readOneForContract(t *testing.T, src string) Object {
+func readOneForContract(t *testing.T, src string) coretypes.Object {
 	t.Helper()
 	r := NewReader(strings.NewReader(src), "<reader-contract>")
 	obj, err := TryRead(r)
@@ -2124,7 +2124,7 @@ func TestReadIntegerUsesNativeIntRange(t *testing.T) {
 func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	cases := []struct {
 		src  string
-		want Object
+		want coretypes.Object
 	}{
 		{`nil`, NIL},
 		{`true`, coretypes.Boolean{B: true}},
@@ -2146,7 +2146,7 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	}
 	vec := vecObj.(coretypes.CountedIndexed)
 	if vec.Count() != 3 || !vec.At(0).Equals(coretypes.MakeInt(1)) || !vec.At(1).Equals(MakeKeyword("two")) || !vec.At(2).Equals(coretypes.MakeString("three")) {
-		t.Fatalf("vector construction mismatch: %s", vec.(Object).ToString(false))
+		t.Fatalf("vector construction mismatch: %s", vec.(coretypes.Object).ToString(false))
 	}
 	m := readOneForContract(t, `{:a 1 "b" 2}`).(Map)
 	if m.Count() != 2 {
@@ -2199,7 +2199,7 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 	}
 	oldDataReaders := dataReadersVar.Value
 	readers := EmptyArrayMap()
-	readers.Add(MakeSymbol("contract/direct"), Proc{Name: "readerContractDirect", Fn: func(args []Object) Object {
+	readers.Add(MakeSymbol("contract/direct"), Proc{Name: "readerContractDirect", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return NewArrayVectorFrom(MakeKeyword("direct"), args[0])
 	}})
@@ -2208,7 +2208,7 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 
 	direct := readOneForContract(t, `#contract/direct 7`).(coretypes.CountedIndexed)
 	if direct.Count() != 2 || !direct.At(0).Equals(MakeKeyword("direct")) || !direct.At(1).Equals(coretypes.MakeInt(7)) {
-		t.Fatalf("direct tagged reader mismatch: %s", direct.(Object).ToString(false))
+		t.Fatalf("direct tagged reader mismatch: %s", direct.(coretypes.Object).ToString(false))
 	}
 
 	fallbackVar := GLOBAL_ENV.CoreNamespace.Resolve("*default-data-reader-fn*")
@@ -2216,7 +2216,7 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 		t.Fatal("*default-data-reader-fn* var not found")
 	}
 	oldFallback := fallbackVar.Value
-	fallbackVar.Value = Proc{Name: "readerContractFallback", Fn: func(args []Object) Object {
+	fallbackVar.Value = Proc{Name: "readerContractFallback", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		return NewArrayVectorFrom(args[0], args[1])
 	}}
@@ -2224,7 +2224,7 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 
 	tagged := readOneForContract(t, `#contract/tag {:x 1}`).(coretypes.CountedIndexed)
 	if tagged.Count() != 2 || !tagged.At(0).Equals(MakeSymbol("contract/tag")) {
-		t.Fatalf("tagged fallback mismatch: %s", tagged.(Object).ToString(false))
+		t.Fatalf("tagged fallback mismatch: %s", tagged.(coretypes.Object).ToString(false))
 	}
 	payload, ok := tagged.At(1).(Map)
 	if !ok {
@@ -2329,7 +2329,7 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 func TestReaderConstructionAdapterSetLiteral(t *testing.T) {
 	r := readerConstruction.NewReader(strings.NewReader("#{}"), "<adapter-contract>")
 	pushPos(r)
-	set := readerConstruction.SetLiteral(r, []Object{coretypes.MakeInt(1), coretypes.MakeInt(2)}).(*MapSet)
+	set := readerConstruction.SetLiteral(r, []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2)}).(*MapSet)
 	if set.Count() != 2 {
 		t.Fatalf("SetLiteral count = %d, want 2", set.Count())
 	}
@@ -2342,7 +2342,7 @@ func TestReaderConstructionAdapterSetLiteral(t *testing.T) {
 func TestReaderConstructionAdapterMapLiteral(t *testing.T) {
 	r := readerConstruction.NewReader(strings.NewReader("{}"), "<adapter-contract>")
 	pushPos(r)
-	m := readerConstruction.MapLiteral(r, []Object{MakeKeyword("a"), coretypes.MakeInt(1)}, "").(Map)
+	m := readerConstruction.MapLiteral(r, []coretypes.Object{MakeKeyword("a"), coretypes.MakeInt(1)}, "").(Map)
 	if found, got := m.Get(MakeKeyword("a")); !found || !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("MapLiteral entry = %v %v", found, got)
 	}
@@ -2403,17 +2403,17 @@ func TestReaderConstructionAdapterNumberFromToken(t *testing.T) {
 }
 
 func TestReaderConstructionAdapterCollectionObjects(t *testing.T) {
-	list := readerConstruction.ListFrom([]Object{coretypes.MakeInt(1), coretypes.MakeInt(2)}).(Seq)
+	list := readerConstruction.ListFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2)}).(Seq)
 	if SeqCount(list) != 2 || !list.First().Equals(coretypes.MakeInt(1)) || !Second(list).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("adapter ListFrom mismatch: %s", list.ToString(false))
 	}
-	vec := readerConstruction.VectorFrom([]Object{MakeKeyword("a"), MakeKeyword("b")}).(coretypes.CountedIndexed)
+	vec := readerConstruction.VectorFrom([]coretypes.Object{MakeKeyword("a"), MakeKeyword("b")}).(coretypes.CountedIndexed)
 	if vec.Count() != 2 || !vec.At(0).Equals(MakeKeyword("a")) || !vec.At(1).Equals(MakeKeyword("b")) {
-		t.Fatalf("adapter VectorFrom mismatch: %s", vec.(Object).ToString(false))
+		t.Fatalf("adapter VectorFrom mismatch: %s", vec.(coretypes.Object).ToString(false))
 	}
 	persistent := readerConstruction.PersistentVectorFromSeq(vec.(Seqable).Seq()).(coretypes.CountedIndexed)
 	if persistent.Count() != 2 || !persistent.At(0).Equals(MakeKeyword("a")) || !persistent.At(1).Equals(MakeKeyword("b")) {
-		t.Fatalf("adapter PersistentVectorFromSeq mismatch: %s", persistent.(Object).ToString(false))
+		t.Fatalf("adapter PersistentVectorFromSeq mismatch: %s", persistent.(coretypes.Object).ToString(false))
 	}
 	if readerConstruction.VectorFrom(nil).(coretypes.Counted).Count() != 0 {
 		t.Fatal("adapter empty VectorFrom not empty")
@@ -2504,8 +2504,8 @@ func TestRuntimeExecutionAdapterPrepareCallSlotsInstallsCaptures(t *testing.T) {
 		captureKeys:     []bindingKey{{index: 0}},
 		captureSlotIdxs: []int{2},
 	}
-	env := &LocalEnv{bindings: []Object{coretypes.MakeString("captured")}}
-	args := []Object{coretypes.MakeInt(1)}
+	env := &LocalEnv{bindings: []coretypes.Object{coretypes.MakeString("captured")}}
+	args := []coretypes.Object{coretypes.MakeInt(1)}
 	full := adapter.PrepareCallSlots(prog, args, env)
 	if len(full) != 3 || full[0] != args[0] || full[2].(coretypes.String).S != "captured" {
 		t.Fatalf("prepared call slots mismatch: %#v", full)
@@ -2517,7 +2517,7 @@ func TestRuntimeExecutionAdapterPrepareCallSlotsInstallsCaptures(t *testing.T) {
 
 func TestRuntimeExecutionAdapterInstallsTypedEnvCaptures(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
-	objects := adapter.ObjectsFromTypedValues([]irValue{objectToIRValue(coretypes.MakeInt(1)), objectToIRValue(coretypes.MakeString("x"))}, make([]Object, 2))
+	objects := adapter.ObjectsFromTypedValues([]irValue{objectToIRValue(coretypes.MakeInt(1)), objectToIRValue(coretypes.MakeString("x"))}, make([]coretypes.Object, 2))
 	if len(objects) != 2 || !objects[0].Equals(coretypes.MakeInt(1)) || !objects[1].Equals(coretypes.MakeString("x")) {
 		t.Fatalf("ObjectsFromTypedValues = %#v", objects)
 	}
@@ -2526,7 +2526,7 @@ func TestRuntimeExecutionAdapterInstallsTypedEnvCaptures(t *testing.T) {
 		captureKeys:     []bindingKey{{index: 0}},
 		captureSlotIdxs: []int{1},
 	}
-	env := &LocalEnv{bindings: []Object{coretypes.MakeInt(42)}}
+	env := &LocalEnv{bindings: []coretypes.Object{coretypes.MakeInt(42)}}
 	slots := make([]irValue, 2)
 	adapter.InstallTypedEnvCaptures(prog, slots, env)
 	if slots[1].tag != irValInt || slots[1].i != 42 {
@@ -2540,10 +2540,10 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	prog := &IRProgram{
 		numSlots:        3,
 		code:            []byte{1, 2, 3},
-		constants:       []Object{coretypes.MakeInt(7)},
+		constants:       []coretypes.Object{coretypes.MakeInt(7)},
 		fnExprs:         []*FnExpr{fnExpr},
 		captureSlotIdxs: []int{2},
-		captureSlots:    []Object{coretypes.MakeString("captured")},
+		captureSlots:    []coretypes.Object{coretypes.MakeString("captured")},
 	}
 	if got := adapter.ProgramNumSlots(prog); got != 3 {
 		t.Fatalf("ProgramNumSlots = %d, want 3", got)
@@ -2580,7 +2580,7 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if got := adapter.DispatchArityProgram(variadicOnly, 2); got != variadicOnly {
 		t.Fatalf("DispatchArityProgram variadic-only exact/min = %#v", got)
 	}
-	fnObj := &Fn{irProg: prog, env: &LocalEnv{bindings: []Object{coretypes.MakeInt(1)}}}
+	fnObj := &Fn{irProg: prog, env: &LocalEnv{bindings: []coretypes.Object{coretypes.MakeInt(1)}}}
 	if got, ok := adapter.FnProgram(fnObj); !ok || got != prog {
 		t.Fatalf("FnProgram = %#v, %v", got, ok)
 	}
@@ -2588,13 +2588,13 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if got, ok := adapter.FnProgram(failedFn); ok || got != nil {
 		t.Fatalf("FnProgram should hide compile-failed sentinel, got %#v, %v", got, ok)
 	}
-	if slots, ok := adapter.FnCallSlots(fnObj, prog, []Object{coretypes.MakeInt(2)}); !ok || len(slots) == 0 || !slots[0].Equals(coretypes.MakeInt(2)) {
+	if slots, ok := adapter.FnCallSlots(fnObj, prog, []coretypes.Object{coretypes.MakeInt(2)}); !ok || len(slots) == 0 || !slots[0].Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("FnCallSlots = %#v, %v", slots, ok)
 	}
 	if !adapter.ProgramHasCaptureSlots(prog) {
 		t.Fatal("ProgramHasCaptureSlots returned false")
 	}
-	objectSlots := []Object{NIL, NIL, NIL}
+	objectSlots := []coretypes.Object{NIL, NIL, NIL}
 	if !adapter.ApplyProgramCaptureSlots(prog, objectSlots) || !objectSlots[2].Equals(coretypes.MakeString("captured")) {
 		t.Fatalf("ApplyProgramCaptureSlots = %#v", objectSlots)
 	}
@@ -2655,7 +2655,7 @@ func TestRuntimeExecutionAdapterMakeFnCapturesSlots(t *testing.T) {
 	expr := compileBenchExpr(t, `(fn [y] y)`)
 	fnExpr := expr.(*FnExpr)
 	adapter := RuntimeExecutionAdapter{}
-	fnObj := adapter.MakeFn(fnExpr, []Object{coretypes.MakeInt(10)})
+	fnObj := adapter.MakeFn(fnExpr, []coretypes.Object{coretypes.MakeInt(10)})
 	fn, ok := fnObj.(*Fn)
 	if !ok {
 		t.Fatalf("MakeFn returned %T, want *Fn", fnObj)
@@ -2674,21 +2674,21 @@ func TestRuntimeExecutionAdapterCallObject(t *testing.T) {
 	if _, ok := adapter.CallArgs(coretypes.MakeInt(1)); ok {
 		t.Fatal("CallArgs accepted non-seqable")
 	}
-	fn := Proc{Name: "contract-call", Fn: func(args []Object) Object { return coretypes.MakeInt(len(args)) }}
-	got, ok := adapter.CallObject(fn, []Object{coretypes.MakeInt(1), coretypes.MakeInt(2)})
+	fn := Proc{Name: "contract-call", Fn: func(args []coretypes.Object) coretypes.Object { return coretypes.MakeInt(len(args)) }}
+	got, ok := adapter.CallObject(fn, []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2)})
 	if !ok || !got.Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("CallObject = %#v, %v", got, ok)
 	}
 	if _, ok := adapter.CallObject(coretypes.MakeInt(1), nil); ok {
 		t.Fatal("CallObject accepted non-callable")
 	}
-	got, ok = adapter.CallObjectWithSyntheticCallExpr(fn, []Object{coretypes.MakeInt(1)})
+	got, ok = adapter.CallObjectWithSyntheticCallExpr(fn, []coretypes.Object{coretypes.MakeInt(1)})
 	if !ok || !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("CallObjectWithSyntheticCallExpr = %#v, %v", got, ok)
 	}
 	grt := currentGRT()
 	prevExpr := grt.currentExpr
-	panicking := Proc{Name: "contract-panic", Fn: func(args []Object) Object { panic("boom") }}
+	panicking := Proc{Name: "contract-panic", Fn: func(args []coretypes.Object) coretypes.Object { panic("boom") }}
 	func() {
 		defer func() {
 			if recover() == nil {
@@ -2711,7 +2711,7 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	if _, ok := adapter.Nth(vec, 9); ok {
 		t.Fatal("Nth accepted out-of-range index")
 	}
-	mapObj := EmptyArrayMap().Assoc(coretypes.MakeString("k"), coretypes.MakeInt(7)).(Object)
+	mapObj := EmptyArrayMap().Assoc(coretypes.MakeString("k"), coretypes.MakeInt(7)).(coretypes.Object)
 	if got := adapter.Get(mapObj, coretypes.MakeString("k"), NIL); !got.Equals(coretypes.MakeInt(7)) {
 		t.Fatalf("Get = %#v", got)
 	}
@@ -2732,14 +2732,14 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	if got, ok := adapter.First(EmptyArrayVector()); !ok || got != NIL {
 		t.Fatalf("First empty returned %#v, %v", got, ok)
 	}
-	if got := adapter.BuildVector([]Object{coretypes.MakeInt(4), coretypes.MakeInt(5)}); got.(coretypes.Counted).Count() != 2 {
+	if got := adapter.BuildVector([]coretypes.Object{coretypes.MakeInt(4), coretypes.MakeInt(5)}); got.(coretypes.Counted).Count() != 2 {
 		t.Fatalf("BuildVector returned %#v", got)
 	}
 	transient := ToTransient(vec)
-	if !adapter.HasMutableSlotCandidate([]Object{coretypes.MakeInt(1), vec}) {
+	if !adapter.HasMutableSlotCandidate([]coretypes.Object{coretypes.MakeInt(1), vec}) {
 		t.Fatal("HasMutableSlotCandidate missed vector")
 	}
-	if adapter.HasMutableSlotCandidate([]Object{coretypes.MakeInt(1), MakeSymbol("x")}) {
+	if adapter.HasMutableSlotCandidate([]coretypes.Object{coretypes.MakeInt(1), MakeSymbol("x")}) {
 		t.Fatal("HasMutableSlotCandidate should ignore non-candidate objects")
 	}
 	if got := adapter.MutableSlotObject(vec, &EscapeInfo{SafeMutableSlots: []bool{true}}, 0); got == vec {
@@ -2770,7 +2770,7 @@ func TestRuntimeExecutionAdapterStringOps(t *testing.T) {
 	if got, ok := adapter.Count(coretypes.MakeString("abc")); !ok || got != 3 {
 		t.Fatalf("Count = %d, %v", got, ok)
 	}
-	prog := &IRProgram{constants: []Object{coretypes.MakeString("abc")}}
+	prog := &IRProgram{constants: []coretypes.Object{coretypes.MakeString("abc")}}
 	if got, ok := adapter.NthASCIIStringConst(prog, 0, 1); !ok || !got.Equals(coretypes.MakeChar('b')) {
 		t.Fatalf("NthASCIIStringConst = %#v, %v", got, ok)
 	}
@@ -2797,17 +2797,17 @@ func TestRuntimeExecutionAdapterErrorf(t *testing.T) {
 
 func TestRuntimeExecutionAdapterApplyCaptureSlots(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
-	slots := []Object{NIL, NIL, NIL}
-	if !adapter.ApplyCaptureSlots(slots, []int{2, 0}, []Object{coretypes.MakeInt(20), coretypes.MakeInt(10)}) {
+	slots := []coretypes.Object{NIL, NIL, NIL}
+	if !adapter.ApplyCaptureSlots(slots, []int{2, 0}, []coretypes.Object{coretypes.MakeInt(20), coretypes.MakeInt(10)}) {
 		t.Fatal("ApplyCaptureSlots returned false for valid captures")
 	}
 	if !slots[0].Equals(coretypes.MakeInt(10)) || !slots[2].Equals(coretypes.MakeInt(20)) {
 		t.Fatalf("capture slots = %#v", slots)
 	}
-	if adapter.ApplyCaptureSlots(slots, []int{3}, []Object{coretypes.MakeInt(1)}) {
+	if adapter.ApplyCaptureSlots(slots, []int{3}, []coretypes.Object{coretypes.MakeInt(1)}) {
 		t.Fatal("ApplyCaptureSlots accepted out-of-range slot")
 	}
-	if adapter.ApplyCaptureSlots(slots, []int{1, 2}, []Object{coretypes.MakeInt(1)}) {
+	if adapter.ApplyCaptureSlots(slots, []int{1, 2}, []coretypes.Object{coretypes.MakeInt(1)}) {
 		t.Fatal("ApplyCaptureSlots accepted mismatched metadata")
 	}
 }
@@ -2815,13 +2815,13 @@ func TestRuntimeExecutionAdapterApplyCaptureSlots(t *testing.T) {
 func TestRuntimeExecutionAdapterApplyTypedCaptureSlots(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
 	slots := make([]irValue, 2)
-	if !adapter.ApplyTypedCaptureSlots(slots, []int{1}, []Object{coretypes.MakeInt(42)}) {
+	if !adapter.ApplyTypedCaptureSlots(slots, []int{1}, []coretypes.Object{coretypes.MakeInt(42)}) {
 		t.Fatal("ApplyTypedCaptureSlots returned false for valid captures")
 	}
 	if slots[1].tag != irValInt || slots[1].i != 42 {
 		t.Fatalf("typed capture slot = %#v", slots[1])
 	}
-	if adapter.ApplyTypedCaptureSlots(slots, []int{-1}, []Object{coretypes.MakeInt(1)}) {
+	if adapter.ApplyTypedCaptureSlots(slots, []int{-1}, []coretypes.Object{coretypes.MakeInt(1)}) {
 		t.Fatal("ApplyTypedCaptureSlots accepted out-of-range slot")
 	}
 }
@@ -2971,7 +2971,7 @@ func TestIRMakeFnCapturesCurrentSlots(t *testing.T) {
 	if model == nil || model.ConstantsLen != len(prog.constants) {
 		t.Fatalf("neutral model mismatch: model=%#v constants=%d", model, len(prog.constants))
 	}
-	fnObj := irExec(prog, []Object{coretypes.MakeInt(10)})
+	fnObj := irExec(prog, []coretypes.Object{coretypes.MakeInt(10)})
 	fn, ok := fnObj.(*Fn)
 	if !ok {
 		t.Fatalf("irMakeFn result = %T, want *Fn", fnObj)
@@ -2979,7 +2979,7 @@ func TestIRMakeFnCapturesCurrentSlots(t *testing.T) {
 	if fn.env == nil || len(fn.env.bindings) == 0 || !fn.env.bindings[0].Equals(coretypes.MakeInt(10)) {
 		t.Fatalf("irMakeFn did not capture current slots: %#v", fn.env)
 	}
-	got := fn.Call([]Object{coretypes.MakeInt(5)})
+	got := fn.Call([]coretypes.Object{coretypes.MakeInt(5)})
 	if !got.Equals(coretypes.MakeInt(15)) {
 		t.Fatalf("captured fn result = %s, want 15", got.ToString(false))
 	}
@@ -3009,7 +3009,7 @@ func TestIRExecutionEnvelopeKeepsRuntimeMetadata(t *testing.T) {
 	if model.Analysis == nil || model.Analysis.NumOps != analysis.NumOps {
 		t.Fatalf("neutral model analysis not populated from execution analysis: model=%#v analysis=%#v", model.Analysis, analysis)
 	}
-	got := irExec(prog, []Object{coretypes.MakeInt(0), coretypes.MakeInt(0)})
+	got := irExec(prog, []coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(0)})
 	if !got.Equals(coretypes.MakeInt(10)) {
 		t.Fatalf("irExec result = %s, want 10", got.ToString(false))
 	}
@@ -3032,7 +3032,7 @@ func TestIRFunctionEnvelopeKeepsCaptureMetadata(t *testing.T) {
 	if len(model.CaptureSlotIdxs) != len(prog.captureSlotIdxs) {
 		t.Fatalf("model capture idxs = %d, envelope capture idxs = %d", len(model.CaptureSlotIdxs), len(prog.captureSlotIdxs))
 	}
-	got := fn.Call([]Object{coretypes.MakeInt(5)})
+	got := fn.Call([]coretypes.Object{coretypes.MakeInt(5)})
 	if !got.Equals(coretypes.MakeInt(15)) {
 		t.Fatalf("captured fn result = %s, want 15", got.ToString(false))
 	}
@@ -3109,7 +3109,7 @@ func getCursorJSONParser(tb testing.TB) coretypes.Callable {
 
 func TestCursorJSONCorrectness(t *testing.T) {
 	parse := getCursorJSONParser(t)
-	result := parse.Call([]Object{coretypes.String{S: jsonSmall}})
+	result := parse.Call([]coretypes.Object{coretypes.String{S: jsonSmall}})
 	if result == nil || result == NIL {
 		t.Fatal("returned nil")
 	}
@@ -3197,7 +3197,7 @@ var clbgInitOnce sync.Once
 
 func clbgInit() {
 	clbgInitOnce.Do(func() {
-		sqrtProc := Proc{Fn: func(args []Object) Object {
+		sqrtProc := Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 			x := EnsureArgIsNumber(args, 0).Double().D
 			return coretypes.Double{D: math.Sqrt(x)}
 		}, Name: "procSqrt"}
@@ -3392,7 +3392,7 @@ const jsonMedium = `[{"id":1,"name":"Alice","email":"alice@test.com","tags":["ad
 
 // ---- transient_test.go ----
 func TestTransientVector(t *testing.T) {
-	v := &ArrayVector{arr: []Object{coretypes.Int{I: 1}, coretypes.Int{I: 2}, coretypes.Int{I: 3}}}
+	v := &ArrayVector{arr: []coretypes.Object{coretypes.Int{I: 1}, coretypes.Int{I: 2}, coretypes.Int{I: 3}}}
 	tv := ToTransient(v)
 	tv.AssocInPlace(coretypes.Int{I: 1}, coretypes.Int{I: 99})
 	tv.ConjInPlace(coretypes.Int{I: 4})
@@ -3457,49 +3457,49 @@ func TestTransientMapStringKeys(t *testing.T) {
 
 func TestTransientVectorProcs(t *testing.T) {
 	vec := NewArrayVectorFrom(coretypes.Int{I: 1}, coretypes.Int{I: 2})
-	tv, ok := procTransient([]Object{vec}).(*TransientVector)
+	tv, ok := procTransient([]coretypes.Object{vec}).(*TransientVector)
 	if !ok {
 		t.Fatalf("transient vector proc returned %T", tv)
 	}
-	if got := procIsTransient([]Object{tv}); !got.Equals(coretypes.Boolean{B: true}) {
+	if got := procIsTransient([]coretypes.Object{tv}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("transient? returned %s", got.ToString(false))
 	}
-	if procAssocBang([]Object{tv, coretypes.Int{I: 1}, coretypes.Int{I: 20}}) != tv {
+	if procAssocBang([]coretypes.Object{tv, coretypes.Int{I: 1}, coretypes.Int{I: 20}}) != tv {
 		t.Fatal("assoc! should return the same transient vector")
 	}
 	assertPanics(t, "assoc! transient vector key type", func() {
-		procAssocBang([]Object{tv, MakeKeyword("bad"), coretypes.Int{I: 0}})
+		procAssocBang([]coretypes.Object{tv, MakeKeyword("bad"), coretypes.Int{I: 0}})
 	})
-	if procConjBang([]Object{tv, coretypes.Int{I: 3}}) != tv {
+	if procConjBang([]coretypes.Object{tv, coretypes.Int{I: 3}}) != tv {
 		t.Fatal("conj! should return the same transient vector")
 	}
 	if tv.Count() != 3 || !tv.At(1).Equals(coretypes.Int{I: 20}) || !tv.At(2).Equals(coretypes.Int{I: 3}) {
 		t.Fatalf("unexpected transient vector state: count=%d", tv.Count())
 	}
-	if procPopBang([]Object{tv}) != tv {
+	if procPopBang([]coretypes.Object{tv}) != tv {
 		t.Fatal("pop! should return the same transient vector")
 	}
-	persisted := procPersistentBang([]Object{tv}).(*ArrayVector)
+	persisted := procPersistentBang([]coretypes.Object{tv}).(*ArrayVector)
 	if persisted.Count() != 2 || !persisted.At(1).Equals(coretypes.Int{I: 20}) {
 		t.Fatalf("unexpected persistent vector: %s", persisted.ToString(false))
 	}
 }
 
 func TestTransientMapProcs(t *testing.T) {
-	tm, ok := procTransient([]Object{EmptyArrayMap()}).(*TransientMap)
+	tm, ok := procTransient([]coretypes.Object{EmptyArrayMap()}).(*TransientMap)
 	if !ok {
 		t.Fatalf("transient map proc returned %T", tm)
 	}
-	if got := procIsTransient([]Object{tm}); !got.Equals(coretypes.Boolean{B: true}) {
+	if got := procIsTransient([]coretypes.Object{tm}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("transient? returned %s", got.ToString(false))
 	}
-	if procAssocBang([]Object{tm, MakeKeyword("a"), coretypes.Int{I: 1}}) != tm {
+	if procAssocBang([]coretypes.Object{tm, MakeKeyword("a"), coretypes.Int{I: 1}}) != tm {
 		t.Fatal("assoc! should return the same transient map")
 	}
-	if procConjBang([]Object{tm, coretypes.String{S: "b"}, coretypes.Int{I: 2}}) != tm {
+	if procConjBang([]coretypes.Object{tm, coretypes.String{S: "b"}, coretypes.Int{I: 2}}) != tm {
 		t.Fatal("conj! should return the same transient map")
 	}
-	persisted := procPersistentBang([]Object{tm}).(Map)
+	persisted := procPersistentBang([]coretypes.Object{tm}).(Map)
 	if persisted.Count() != 2 {
 		t.Fatalf("persistent map count = %d", persisted.Count())
 	}
@@ -3553,7 +3553,7 @@ func TestIRTypedUnicodeCount(t *testing.T) {
 	if prog == nil {
 		t.Fatal("expected IR")
 	}
-	requireInt(t, irExecTyped(prog, []Object{coretypes.Int{I: 0}, coretypes.String{S: "é"}}), 3)
+	requireInt(t, irExecTyped(prog, []coretypes.Object{coretypes.Int{I: 0}, coretypes.String{S: "é"}}), 3)
 }
 
 func TestIRTypedCountObjectVector(t *testing.T) {
@@ -3611,7 +3611,7 @@ func TestIRTypedGenericStringNth(t *testing.T) {
 	if prog == nil {
 		t.Fatal("expected IR")
 	}
-	got := irExecTyped(prog, []Object{coretypes.Int{I: 0}, coretypes.String{S: "ACGT"}, coretypes.String{S: ""}})
+	got := irExecTyped(prog, []coretypes.Object{coretypes.Int{I: 0}, coretypes.String{S: "ACGT"}, coretypes.String{S: ""}})
 	requireString(t, got, "ACGT")
 }
 
@@ -3648,7 +3648,7 @@ func TestIRTypedStringLoop(t *testing.T) {
 	if prog == nil {
 		t.Fatal("expected IR")
 	}
-	got := irExecTyped(prog, []Object{coretypes.Int{I: 0}, coretypes.String{S: ""}})
+	got := irExecTyped(prog, []coretypes.Object{coretypes.Int{I: 0}, coretypes.String{S: ""}})
 	requireInt(t, got, 4)
 }
 
@@ -3663,7 +3663,7 @@ func TestIRTypedStringBuilderSlot(t *testing.T) {
 	if prog == nil {
 		t.Fatal("expected IR")
 	}
-	got := irExecTyped(prog, []Object{coretypes.Int{I: 0}, coretypes.String{S: ""}})
+	got := irExecTyped(prog, []coretypes.Object{coretypes.Int{I: 0}, coretypes.String{S: ""}})
 	requireString(t, got, "ACGT")
 }
 
@@ -3688,7 +3688,7 @@ func TestWasmArithmeticLoopCorrectness(t *testing.T) {
 	if wp == nil {
 		t.Skip("WASM compilation failed")
 	}
-	result := wasmExec(wp, []Object{coretypes.Int{I: 0}, coretypes.Int{I: 0}})
+	result := wasmExec(wp, []coretypes.Object{coretypes.Int{I: 0}, coretypes.Int{I: 0}})
 	if result == nil {
 		t.Fatal("WASM execution returned nil")
 	}
@@ -3711,7 +3711,7 @@ func TestWasmSimpleLoop(t *testing.T) {
 	if wp == nil {
 		t.Skip("WASM failed")
 	}
-	result := wasmExec(wp, []Object{coretypes.Int{I: 0}, coretypes.Int{I: 0}})
+	result := wasmExec(wp, []coretypes.Object{coretypes.Int{I: 0}, coretypes.Int{I: 0}})
 	if result == nil {
 		t.Fatal("nil result")
 	}
@@ -3745,7 +3745,7 @@ func TestWasmFloatLoop(t *testing.T) {
 	if wp == nil {
 		t.Skip("WASM failed")
 	}
-	result := wasmExec(wp, []Object{coretypes.Double{D: 0.0}, coretypes.Int{I: 0}})
+	result := wasmExec(wp, []coretypes.Object{coretypes.Double{D: 0.0}, coretypes.Int{I: 0}})
 	if result == nil {
 		t.Fatal("nil")
 	}
@@ -3858,7 +3858,7 @@ func TestWasmOneHelperModule(t *testing.T) {
 	if prog == nil {
 		t.Fatal("expected loop IR")
 	}
-	slots := make([]Object, prog.numSlots)
+	slots := make([]coretypes.Object, prog.numSlots)
 	slots[0] = coretypes.Int{I: 0}
 	slots[1] = coretypes.Int{I: 0}
 	slots[2] = fnObj
@@ -3882,7 +3882,7 @@ func TestWasmOneHelperFloatRequiresForce(t *testing.T) {
 	if prog == nil {
 		t.Fatal("expected loop IR")
 	}
-	slots := make([]Object, prog.numSlots)
+	slots := make([]coretypes.Object, prog.numSlots)
 	slots[0] = coretypes.Int{I: 0}
 	slots[1] = coretypes.Double{D: 0}
 	slots[2] = fnObj

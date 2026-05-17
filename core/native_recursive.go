@@ -4,7 +4,7 @@ package core
 //
 // When a fn body contains only integer arithmetic, comparisons, and self-recursive
 // calls (no collections, strings, or other types), we compile to fixed-arity
-// native Go functions that run without Object boxing, interface dispatch, or
+// native Go functions that run without coretypes.Object boxing, interface dispatch, or
 // slice allocation per call.
 
 import (
@@ -90,7 +90,7 @@ func compileNativeRecursive(fn *Fn) *nativeRecursiveEntry {
 	return entry
 }
 
-func callNativeRecursive(entry *nativeRecursiveEntry, args []Object) Object {
+func callNativeRecursive(entry *nativeRecursiveEntry, args []coretypes.Object) coretypes.Object {
 	switch entry.arity {
 	case 1:
 		a, ok := args[0].(coretypes.Int)

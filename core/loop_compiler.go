@@ -19,10 +19,10 @@ type bindingKey struct {
 
 type irCompiler struct {
 	code             []byte
-	constants        []Object
+	constants        []coretypes.Object
 	bindingMap       map[bindingKey]int
 	captureKeys      []bindingKey
-	captureSlots     []Object
+	captureSlots     []coretypes.Object
 	captureSlotIdxs  []int
 	numSlots         int
 	loopFrame        int
@@ -275,7 +275,7 @@ func (c *irCompiler) patchJump(pos int, target int) {
 	c.code[pos+2] = byte(target)
 }
 
-func (c *irCompiler) addConstant(obj Object) int {
+func (c *irCompiler) addConstant(obj coretypes.Object) int {
 	for i, existing := range c.constants {
 		if existing.Equals(obj) {
 			return i
@@ -356,7 +356,7 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 			}
 		}
 		if allLiteral {
-			arr := make([]Object, len(e.v))
+			arr := make([]coretypes.Object, len(e.v))
 			for i, elem := range e.v {
 				arr[i] = elem.(*LiteralExpr).obj
 			}
@@ -391,7 +391,7 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 		if !allLiteral {
 			return c.reject("unsupported dynamic map literal in IR")
 		}
-		var obj Object
+		var obj coretypes.Object
 		if int64(len(e.keys)) > HASHMAP_THRESHOLD/2 {
 			res := EmptyHashMap
 			for i := range e.keys {
@@ -990,7 +990,7 @@ func findLetFrame(body []Expr, nBinds int, known map[bindingKey]int) int {
 //
 // When a loop calls a pure arithmetic helper via irCallSlot, this path
 // compiles the helper's IR to a native Go function that operates on
-// float64 values directly, eliminating WASM/IR dispatch and Object boxing.
+// float64 values directly, eliminating WASM/IR dispatch and coretypes.Object boxing.
 
 // nativeF64Fn is a compiled Go closure for a pure arithmetic helper.
 type nativeF64Fn func(args []float64) float64

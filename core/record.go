@@ -27,8 +27,8 @@ type Record struct {
 	coretypes.InfoHolder
 	MetaHolder
 	rtype *RecordType
-	bases []Object  // values for base fields (same order as rtype.fields)
-	ext   *ArrayMap // extension fields (nil if none)
+	bases []coretypes.Object // values for base fields (same order as rtype.fields)
+	ext   *ArrayMap          // extension fields (nil if none)
 }
 
 func (r *Record) ToString(escape bool) string {
@@ -106,20 +106,20 @@ func (r *Record) Hash() uint32 {
 	return h
 }
 
-func (r *Record) WithInfo(info *coretypes.ObjectInfo) Object {
+func (r *Record) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := r.clone()
 	res.Info = info
 	return res
 }
 
-func (r *Record) WithMeta(m Map) Object {
+func (r *Record) WithMeta(m Map) coretypes.Object {
 	res := r.clone()
 	res.meta = SafeMerge(res.meta, m)
 	return res
 }
 
 func (r *Record) clone() *Record {
-	bases := make([]Object, len(r.bases))
+	bases := make([]coretypes.Object, len(r.bases))
 	copy(bases, r.bases)
 	var ext *ArrayMap
 	if r.ext != nil {
@@ -137,7 +137,7 @@ func (r *Record) clone() *Record {
 // --- Map interface ---
 
 // Get implements coretypes.Gettable for keyword access.
-func (r *Record) Get(key Object) (bool, Object) {
+func (r *Record) Get(key coretypes.Object) (bool, coretypes.Object) {
 	if kw, ok := key.(Keyword); ok {
 		name := kw.ToString(false)[1:] // strip leading ":"
 		if idx, ok := r.rtype.fieldIdx[name]; ok {
@@ -151,7 +151,7 @@ func (r *Record) Get(key Object) (bool, Object) {
 }
 
 // EntryAt returns a MapEntry for the given key.
-func (r *Record) EntryAt(key Object) *ArrayVector {
+func (r *Record) EntryAt(key coretypes.Object) *ArrayVector {
 	if ok, v := r.Get(key); ok {
 		av := collectionConstruction.NewEmptyArrayVector().Conj(key).(*ArrayVector).Conj(v).(*ArrayVector)
 		return av
@@ -161,7 +161,7 @@ func (r *Record) EntryAt(key Object) *ArrayVector {
 
 // Assoc returns a new record with the key set to val.
 // If key is a base field, returns a new record. Otherwise extends.
-func (r *Record) Assoc(key, val Object) Associative {
+func (r *Record) Assoc(key, val coretypes.Object) Associative {
 	if kw, ok := key.(Keyword); ok {
 		name := kw.ToString(false)[1:]
 		if idx, ok := r.rtype.fieldIdx[name]; ok {
@@ -189,7 +189,7 @@ func (r *Record) Count() int {
 
 // Seq returns a sequence of MapEntry pairs.
 func (r *Record) Seq() Seq {
-	entries := make([]Object, 0, r.Count())
+	entries := make([]coretypes.Object, 0, r.Count())
 	for i, fname := range r.rtype.fields {
 		entries = append(entries, collectionConstruction.NewVectorFrom(MakeKeyword(fname), r.bases[i]))
 	}
@@ -204,7 +204,7 @@ func (r *Record) Seq() Seq {
 
 // Keys returns all keys.
 func (r *Record) Keys() Seq {
-	keys := make([]Object, 0, r.Count())
+	keys := make([]coretypes.Object, 0, r.Count())
 	for _, fname := range r.rtype.fields {
 		keys = append(keys, MakeKeyword(fname))
 	}
@@ -219,7 +219,7 @@ func (r *Record) Keys() Seq {
 
 // Vals returns all values.
 func (r *Record) Vals() Seq {
-	vals := make([]Object, 0, r.Count())
+	vals := make([]coretypes.Object, 0, r.Count())
 	vals = append(vals, r.bases...)
 	if r.ext != nil {
 		for iter := r.ext.Iter(); iter.HasNext(); {
@@ -231,7 +231,7 @@ func (r *Record) Vals() Seq {
 }
 
 // Conj adds a map entry to the record.
-func (r *Record) Conj(obj Object) coretypes.Conjable {
+func (r *Record) Conj(obj coretypes.Object) coretypes.Conjable {
 	switch v := obj.(type) {
 	case *Vector:
 		if v.count != 2 {
@@ -243,7 +243,7 @@ func (r *Record) Conj(obj Object) coretypes.Conjable {
 }
 
 // Call implements keyword-style access: (record :field)
-func (r *Record) Call(args []Object) Object {
+func (r *Record) Call(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 2)
 	ok, v := r.Get(args[0])
 	if ok {
@@ -272,13 +272,13 @@ func (r *Record) Iter() MapIterator {
 }
 
 // Containskey
-func (r *Record) ContainsKey(key Object) bool {
+func (r *Record) ContainsKey(key coretypes.Object) bool {
 	ok, _ := r.Get(key)
 	return ok
 }
 
 // Without (dissoc) — dissoc of a base field returns a plain map
-func (r *Record) Without(key Object) Map {
+func (r *Record) Without(key coretypes.Object) Map {
 	if kw, ok := key.(Keyword); ok {
 		name := kw.ToString(false)[1:]
 		if _, ok := r.rtype.fieldIdx[name]; ok {
@@ -341,12 +341,12 @@ func (it *recordIterator) Next() *Pair {
 }
 
 // NewRecord creates a new record instance.
-func NewRecord(rtype *RecordType, fields []Object) *Record {
+func NewRecord(rtype *RecordType, fields []coretypes.Object) *Record {
 	if len(fields) != len(rtype.fields) {
 		panic(RT.NewError(fmt.Sprintf("Wrong number of fields for record %s: expected %d, got %d",
 			rtype.name, len(rtype.fields), len(fields))))
 	}
-	bases := make([]Object, len(fields))
+	bases := make([]coretypes.Object, len(fields))
 	copy(bases, fields)
 	return &Record{rtype: rtype, bases: bases}
 }

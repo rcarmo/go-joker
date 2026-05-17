@@ -7,7 +7,7 @@ import (
 	corecollections "github.com/rcarmo/go-joker/core/collections"
 )
 
-type CollectionConstructionAdapter = corecollections.ConstructionAdapter[Object, Seq, *List, *Vector, *ArrayVector, *ArrayMap, *HashMap, *MapSet]
+type CollectionConstructionAdapter = corecollections.ConstructionAdapter[coretypes.Object, Seq, *List, *Vector, *ArrayVector, *ArrayMap, *HashMap, *MapSet]
 
 var collectionConstruction = CollectionConstructionAdapter{
 	EmptyList:        func() *List { return EmptyList },
@@ -24,54 +24,54 @@ var collectionConstruction = CollectionConstructionAdapter{
 }
 
 func CountedIndexedToString(v coretypes.CountedIndexed, escape bool) string {
-	return corecollections.IndexedToString[Object](v, escape)
+	return corecollections.IndexedToString[coretypes.Object](v, escape)
 }
 
 func AreCountedIndexedEqual(v1, v2 coretypes.CountedIndexed) bool {
-	return corecollections.IndexedEqual[Object](v1, v2)
+	return corecollections.IndexedEqual[coretypes.Object](v1, v2)
 }
 
 func CountedIndexedHash(v coretypes.CountedIndexed) uint32 {
-	return corecollections.IndexedHash[Object](v)
+	return corecollections.IndexedHash[coretypes.Object](v)
 }
 
-func CountedIndexedGet(v coretypes.CountedIndexed, key Object) (bool, Object) {
+func CountedIndexedGet(v coretypes.CountedIndexed, key coretypes.Object) (bool, coretypes.Object) {
 	switch key := key.(type) {
 	case coretypes.Int:
-		value, ok := corecollections.IndexedGet[Object](v, key.I)
+		value, ok := corecollections.IndexedGet[coretypes.Object](v, key.I)
 		return ok, value
 	}
 	return false, nil
 }
 
 func CountedIndexedCompare(v1, v2 coretypes.CountedIndexed) int {
-	return corecollections.IndexedCompare[Object](v1, v2, func(a, b Object) int {
+	return corecollections.IndexedCompare[coretypes.Object](v1, v2, func(a, b coretypes.Object) int {
 		return EnsureObjectIsComparable(a, "").Compare(b)
 	})
 }
 
-func CountedIndexedKvreduce(v coretypes.CountedIndexed, c coretypes.Callable, init Object) Object {
-	return corecollections.IndexedKVReduce[Object](v, init, func(res Object, i int, value Object) Object {
+func CountedIndexedKvreduce(v coretypes.CountedIndexed, c coretypes.Callable, init coretypes.Object) coretypes.Object {
+	return corecollections.IndexedKVReduce[coretypes.Object](v, init, func(res coretypes.Object, i int, value coretypes.Object) coretypes.Object {
 		return call3(c, res, coretypes.Int{I: i}, value)
 	})
 }
 
 func CountedIndexedPprint(v coretypes.CountedIndexed, w io.Writer, indent int) int {
-	return corecollections.IndexedPprint[Object](v, w, indent, pprintObject, writeIndent)
+	return corecollections.IndexedPprint[coretypes.Object](v, w, indent, pprintObject, writeIndent)
 }
 
 func CountedIndexedFormat(v coretypes.CountedIndexed, w io.Writer, indent int) int {
-	return corecollections.IndexedFormat[Object](v, w, indent, formatObject, maybeNewLine, isComment, writeIndent)
+	return corecollections.IndexedFormat[coretypes.Object](v, w, indent, formatObject, maybeNewLine, isComment, writeIndent)
 }
 
-func CountedIndexedReduce(v coretypes.CountedIndexed, c coretypes.Callable) Object {
-	return corecollections.IndexedReduce[Object](v, func() Object { return call0(c) }, func(acc Object, value Object) Object {
-		return c.Call([]Object{acc, value})
+func CountedIndexedReduce(v coretypes.CountedIndexed, c coretypes.Callable) coretypes.Object {
+	return corecollections.IndexedReduce[coretypes.Object](v, func() coretypes.Object { return call0(c) }, func(acc coretypes.Object, value coretypes.Object) coretypes.Object {
+		return c.Call([]coretypes.Object{acc, value})
 	})
 }
 
-func CountedIndexedReduceInit(v coretypes.CountedIndexed, c coretypes.Callable, init Object) Object {
-	return corecollections.IndexedReduceInit[Object](v, init, func(acc Object, value Object) Object {
-		return c.Call([]Object{acc, value})
+func CountedIndexedReduceInit(v coretypes.CountedIndexed, c coretypes.Callable, init coretypes.Object) coretypes.Object {
+	return corecollections.IndexedReduceInit[coretypes.Object](v, init, func(acc coretypes.Object, value coretypes.Object) coretypes.Object {
+		return c.Call([]coretypes.Object{acc, value})
 	})
 }

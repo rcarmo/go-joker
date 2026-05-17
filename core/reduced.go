@@ -12,7 +12,7 @@ import coretypes "github.com/rcarmo/go-joker/core/types"
 type Reduced struct {
 	coretypes.InfoHolder
 	MetaHolder
-	Val Object
+	Val coretypes.Object
 }
 
 func (r *Reduced) ToString(escape bool) string {
@@ -34,32 +34,32 @@ func (r *Reduced) Hash() uint32 {
 	return r.Val.Hash() ^ 0xDEADBEEF
 }
 
-func (r *Reduced) WithInfo(info *coretypes.ObjectInfo) Object {
+func (r *Reduced) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *r
 	res.Info = info
 	return &res
 }
 
-func (r *Reduced) WithMeta(m Map) Object {
+func (r *Reduced) WithMeta(m Map) coretypes.Object {
 	res := *r
 	res.meta = SafeMerge(res.meta, m)
 	return &res
 }
 
 // MakeReduced wraps a value in a Reduced box.
-func MakeReduced(val Object) *Reduced {
+func MakeReduced(val coretypes.Object) *Reduced {
 	return &Reduced{Val: val}
 }
 
 // IsReduced checks if an object is a Reduced box (type assertion, no map lookup).
-func IsReduced(obj Object) bool {
+func IsReduced(obj coretypes.Object) bool {
 	_, ok := obj.(*Reduced)
 	return ok
 }
 
 // DerefReduced unwraps a Reduced box, returning the inner value.
 // If not reduced, returns the value as-is.
-func DerefReduced(obj Object) Object {
+func DerefReduced(obj coretypes.Object) coretypes.Object {
 	if r, ok := obj.(*Reduced); ok {
 		return r.Val
 	}
@@ -67,7 +67,7 @@ func DerefReduced(obj Object) Object {
 }
 
 // EnsureReduced wraps a value in Reduced if it isn't already.
-func EnsureReduced(obj Object) *Reduced {
+func EnsureReduced(obj coretypes.Object) *Reduced {
 	if r, ok := obj.(*Reduced); ok {
 		return r
 	}

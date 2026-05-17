@@ -273,7 +273,7 @@ func unpackObjectInfo(p []byte, header *PackHeader) (*coretypes.ObjectInfo, []by
 	return &coretypes.ObjectInfo{Position: pos}, p
 }
 
-func PackObjectOrNull(obj Object, p []byte, env *PackEnv) []byte {
+func PackObjectOrNull(obj coretypes.Object, p []byte, env *PackEnv) []byte {
 	if obj == nil {
 		return append(p, NULL)
 	}
@@ -281,7 +281,7 @@ func PackObjectOrNull(obj Object, p []byte, env *PackEnv) []byte {
 	return packObject(obj, p, env)
 }
 
-func UnpackObjectOrNull(p []byte, header *PackHeader) (Object, []byte) {
+func UnpackObjectOrNull(p []byte, header *PackHeader) (coretypes.Object, []byte) {
 	if p[0] == NULL {
 		return nil, p[1:]
 	}
@@ -325,7 +325,7 @@ func unpackType(p []byte, header *PackHeader) (*coretypes.Type, []byte) {
 	return TYPES.Lookup(s.name), p
 }
 
-func packObject(obj Object, p []byte, env *PackEnv) []byte {
+func packObject(obj coretypes.Object, p []byte, env *PackEnv) []byte {
 	switch obj := obj.(type) {
 	case Symbol:
 		p = append(p, SYMBOL_OBJ)
@@ -349,7 +349,7 @@ func packObject(obj Object, p []byte, env *PackEnv) []byte {
 	}
 }
 
-func unpackObject(p []byte, header *PackHeader) (Object, []byte) {
+func unpackObject(p []byte, header *PackHeader) (coretypes.Object, []byte) {
 	switch p[0] {
 	case SYMBOL_OBJ:
 		return unpackSymbol(p[1:], header)
