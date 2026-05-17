@@ -49,7 +49,7 @@ func macroDefProtocol(args []coretypes.Object) coretypes.Object {
 	}
 	forms := []coretypes.Object{MakeSymbol("__defprotocol"), quoteObj(name)}
 	for _, raw := range args[3:] {
-		seqable, ok := raw.(Seqable)
+		seqable, ok := raw.(coretypes.Seqable)
 		if !ok {
 			continue // docstrings/options are ignored by the compact runtime protocol helper
 		}
@@ -88,11 +88,11 @@ func macroExtendType(args []coretypes.Object) coretypes.Object {
 		call := []coretypes.Object{MakeSymbol("__extend-type"), proto, coretypes.String{S: typeName}}
 		for i < len(args) {
 			if _, isProto := args[i].(Symbol); isProto && i+1 < len(args) {
-				if _, nextIsMethod := args[i+1].(Seqable); nextIsMethod {
+				if _, nextIsMethod := args[i+1].(coretypes.Seqable); nextIsMethod {
 					break
 				}
 			}
-			method, ok := args[i].(Seqable)
+			method, ok := args[i].(coretypes.Seqable)
 			if !ok {
 				break
 			}
@@ -129,7 +129,7 @@ func macroExtendProtocol(args []coretypes.Object) coretypes.Object {
 		i++
 		call := []coretypes.Object{MakeSymbol("__extend-type"), proto, coretypes.String{S: typeName}}
 		for i < len(args) {
-			method, ok := args[i].(Seqable)
+			method, ok := args[i].(coretypes.Seqable)
 			if !ok {
 				break
 			}
@@ -150,7 +150,7 @@ func macroExtendProtocol(args []coretypes.Object) coretypes.Object {
 			// Stop if the next form looks like a type followed by methods. In practice
 			// a new type is a symbol/string/keyword and a method implementation is a list.
 			if i < len(args) {
-				if _, ok := args[i].(Seqable); !ok {
+				if _, ok := args[i].(coretypes.Seqable); !ok {
 					break
 				}
 			}
@@ -169,7 +169,7 @@ func macroDefRecord(args []coretypes.Object) coretypes.Object {
 	if !ok {
 		panic(RT.NewError("defrecord name must be a symbol"))
 	}
-	fieldsSeq, ok := args[3].(Seqable)
+	fieldsSeq, ok := args[3].(coretypes.Seqable)
 	if !ok {
 		panic(RT.NewError("defrecord fields must be seqable"))
 	}

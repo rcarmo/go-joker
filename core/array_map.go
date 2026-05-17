@@ -78,7 +78,7 @@ func (seq *ArrayMapSeq) Hash() uint32 {
 	return hashOrdered(seq)
 }
 
-func (seq *ArrayMapSeq) Seq() Seq {
+func (seq *ArrayMapSeq) Seq() coretypes.Seq {
 	return seq
 }
 
@@ -89,7 +89,7 @@ func (seq *ArrayMapSeq) First() coretypes.Object {
 	return NIL
 }
 
-func (seq *ArrayMapSeq) Rest() Seq {
+func (seq *ArrayMapSeq) Rest() coretypes.Seq {
 	if seq.index < len(seq.m.arr) {
 		return &ArrayMapSeq{m: seq.m, index: seq.index + 2}
 	}
@@ -100,7 +100,7 @@ func (seq *ArrayMapSeq) IsEmpty() bool {
 	return seq.index >= len(seq.m.arr)
 }
 
-func (seq *ArrayMapSeq) Cons(obj coretypes.Object) Seq {
+func (seq *ArrayMapSeq) Cons(obj coretypes.Object) coretypes.Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
@@ -259,7 +259,7 @@ func (m *ArrayMap) Merge(other Map) Map {
 	return res
 }
 
-func (m *ArrayMap) Keys() Seq {
+func (m *ArrayMap) Keys() coretypes.Seq {
 	mlen := len(m.arr) / 2
 	res := make([]coretypes.Object, mlen)
 	for i := 0; i < mlen; i++ {
@@ -268,7 +268,7 @@ func (m *ArrayMap) Keys() Seq {
 	return &ArraySeq{arr: res}
 }
 
-func (m *ArrayMap) Vals() Seq {
+func (m *ArrayMap) Vals() coretypes.Seq {
 	mlen := len(m.arr) / 2
 	res := make([]coretypes.Object, mlen)
 	for i := 0; i < mlen; i++ {
@@ -301,7 +301,7 @@ func (m *ArrayMap) Hash() uint32 {
 	return hashUnordered(m.Seq(), 1)
 }
 
-func (m *ArrayMap) Seq() Seq {
+func (m *ArrayMap) Seq() coretypes.Seq {
 	return &ArrayMapSeq{m: m, index: 0}
 }
 

@@ -237,7 +237,7 @@ func sortedEntries(coll coretypes.Object) []coretypes.Object {
 		}
 		return out
 	}
-	if s, ok := coll.(Seqable); ok {
+	if s, ok := coll.(coretypes.Seqable); ok {
 		for seq := s.Seq(); !seq.IsEmpty(); seq = seq.Rest() {
 			out = append(out, seq.First())
 		}

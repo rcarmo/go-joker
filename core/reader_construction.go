@@ -63,7 +63,7 @@ func (ReaderConstructionAdapter) VectorFrom(values []coretypes.Object) coretypes
 	return collectionConstruction.NewArrayVectorFrom(values...)
 }
 
-func (ReaderConstructionAdapter) PersistentVectorFromSeq(seq Seq) coretypes.Object {
+func (ReaderConstructionAdapter) PersistentVectorFromSeq(seq coretypes.Seq) coretypes.Object {
 	return collectionConstruction.NewVectorFromSeq(seq)
 }
 

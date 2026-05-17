@@ -210,8 +210,8 @@ var s_Reduce string = "coretypes.Reduce"
 var s_Ref string = "Ref"
 var s_Regex string = "coretypes.Regex"
 var s_Reversible string = "Reversible"
-var s_Seq string = "Seq"
-var s_Seqable string = "Seqable"
+var s_Seq string = "coretypes.Seq"
+var s_Seqable string = "coretypes.Seqable"
 var s_Sequential string = "Sequential"
 var s_Set string = "Set"
 var s_Stack string = "coretypes.Stack"
@@ -1987,8 +1987,8 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"Ref":                        &s_Ref,
 	"coretypes.Regex":            &s_Regex,
 	"Reversible":                 &s_Reversible,
-	"Seq":                        &s_Seq,
-	"Seqable":                    &s_Seqable,
+	"coretypes.Seq":              &s_Seq,
+	"coretypes.Seqable":          &s_Seqable,
 	"Sequential":                 &s_Sequential,
 	"Set":                        &s_Set,
 	"coretypes.Stack":            &s_Stack,
@@ -4735,7 +4735,7 @@ var arrayMap_NUM_24 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		coretypes.String{
-			S: "Seq",
+			S: "coretypes.Seq",
 		},
 	},
 }
@@ -4743,8 +4743,8 @@ var ty_Seq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_24,
 	},
-	Name:        "Seq",
-	ReflectType: reflect.TypeOf((*Seq)(nil)).Elem(),
+	Name:        "coretypes.Seq",
+	ReflectType: reflect.TypeOf((*coretypes.Seq)(nil)).Elem(),
 }
 var arrayMap_NUM_25 ArrayMap = ArrayMap{
 	arr: []coretypes.Object{
@@ -4767,7 +4767,7 @@ var arrayMap_NUM_25 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		coretypes.String{
-			S: "Seqable",
+			S: "coretypes.Seqable",
 		},
 	},
 }
@@ -4775,8 +4775,8 @@ var ty_Seqable coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_25,
 	},
-	Name:        "Seqable",
-	ReflectType: reflect.TypeOf((*Seqable)(nil)).Elem(),
+	Name:        "coretypes.Seqable",
+	ReflectType: reflect.TypeOf((*coretypes.Seqable)(nil)).Elem(),
 }
 var arrayMap_NUM_26 ArrayMap = ArrayMap{
 	arr: []coretypes.Object{
@@ -193559,7 +193559,7 @@ var bitmapIndexedNode_NUM_120 BitmapIndexedNode = BitmapIndexedNode{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "Takes a body of expressions that returns an ISeq or nil, and yields\n  a Seqable object that will invoke the body only the first time seq\n  is called, and will cache the result and return it on all subsequent\n  seq calls. See also - realized?",
+			S: "Takes a body of expressions that returns an ISeq or nil, and yields\n  a coretypes.Seqable object that will invoke the body only the first time seq\n  is called, and will cache the result and return it on all subsequent\n  seq calls. See also - realized?",
 		},
 		Keyword{
 			hash: 1196942594,

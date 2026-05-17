@@ -91,7 +91,7 @@ func (list *List) First() coretypes.Object {
 	return list.listNode().First()
 }
 
-func (list *List) Rest() Seq {
+func (list *List) Rest() coretypes.Seq {
 	if list.rest != nil {
 		return list.rest
 	}
@@ -102,11 +102,11 @@ func (list *List) IsEmpty() bool {
 	return list.listNode().IsEmpty()
 }
 
-func (list *List) Cons(obj coretypes.Object) Seq {
+func (list *List) Cons(obj coretypes.Object) coretypes.Seq {
 	return list.conj(obj)
 }
 
-func (list *List) Seq() Seq {
+func (list *List) Seq() coretypes.Seq {
 	return list
 }
 

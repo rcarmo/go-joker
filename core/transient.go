@@ -235,7 +235,7 @@ func MapToTransient(m Map) *TransientMap {
 	for !s.IsEmpty() {
 		pair := s.First()
 		// Map entries are seqable pairs (key val)
-		if seq, ok := pair.(Seqable); ok {
+		if seq, ok := pair.(coretypes.Seqable); ok {
 			ps := seq.Seq()
 			if !ps.IsEmpty() {
 				key := ps.First()

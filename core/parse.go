@@ -678,7 +678,7 @@ func (err ParseError) Error() string {
 	return fmt.Sprintf("%s:%d:%d: Parse error: %s", filename, line, column, err.msg)
 }
 
-func parseSeq(seq Seq, ctx *ParseContext) []Expr {
+func parseSeq(seq coretypes.Seq, ctx *ParseContext) []Expr {
 	res := make([]Expr, 0)
 	for !seq.IsEmpty() {
 		res = append(res, Parse(seq.First(), ctx))
@@ -714,7 +714,7 @@ func parseSet(s *MapSet, pos coretypes.Position, ctx *ParseContext) Expr {
 }
 
 func checkForm(obj coretypes.Object, min int, max int) int {
-	seq := obj.(Seq)
+	seq := obj.(coretypes.Seq)
 	c := SeqCount(seq)
 	if c < min {
 		panic(&ParseError{obj: obj, msg: "Too few arguments to " + seq.First().ToString(false)})
@@ -748,7 +748,7 @@ func updateVar(vr *Var, info *coretypes.ObjectInfo, valueExpr Expr, sym Symbol) 
 	}
 }
 
-func isCreatedByMacro(formSeq Seq) bool {
+func isCreatedByMacro(formSeq coretypes.Seq) bool {
 	if formSeq == nil || formSeq.IsEmpty() {
 		return false
 	}
@@ -765,7 +765,7 @@ func isCreatedByMacro(formSeq Seq) bool {
 
 func parseDef(obj coretypes.Object, ctx *ParseContext, isForLinter bool) *DefExpr {
 	count := checkForm(obj, 2, 4)
-	seq := obj.(Seq)
+	seq := obj.(coretypes.Seq)
 	s := Second(seq)
 	var meta Map
 	switch sym := s.(type) {
@@ -827,7 +827,7 @@ func skipRedundantDo(obj coretypes.Object) bool {
 	return false
 }
 
-func parseBody(seq Seq, ctx *ParseContext) []Expr {
+func parseBody(seq coretypes.Seq, ctx *ParseContext) []Expr {
 	recur := ctx.recur
 	ctx.recur = false
 	defer func() { ctx.recur = recur }()
@@ -895,7 +895,7 @@ func needsUnusedWarning(b *Binding) bool {
 		!isSkipUnused(b.name)
 }
 
-func addArity(fn *FnExpr, sig Seq, ctx *ParseContext) {
+func addArity(fn *FnExpr, sig coretypes.Seq, ctx *ParseContext) {
 	params := sig.First()
 	body := sig.Rest()
 	args, isVariadic := parseParams(params)
@@ -978,7 +978,7 @@ func wrapWithMeta(fnExpr *FnExpr, obj coretypes.Object, ctx *ParseContext) Expr 
 //	([a & b] a b))
 func parseFn(obj coretypes.Object, ctx *ParseContext) Expr {
 	res := &FnExpr{Position: GetPosition(obj)}
-	bodies := obj.(Seq).Rest()
+	bodies := obj.(coretypes.Seq).Rest()
 	p := bodies.First()
 	if IsSymbol(p) { // self reference
 		res.self = p.(Symbol)
@@ -999,7 +999,7 @@ func parseFn(obj coretypes.Object, ctx *ParseContext) Expr {
 	for !bodies.IsEmpty() {
 		body := bodies.First()
 		switch s := body.(type) {
-		case Seq:
+		case coretypes.Seq:
 			params := s.First()
 			if !IsVector(params) {
 				panic(&ParseError{obj: params, msg: "Parameter declaration must be a vector. Got: " + params.ToString(false)})
@@ -1014,11 +1014,11 @@ func parseFn(obj coretypes.Object, ctx *ParseContext) Expr {
 }
 
 func isCatch(obj coretypes.Object) bool {
-	return IsSeq(obj) && obj.(Seq).First().Equals(SYMBOLS.catch)
+	return IsSeq(obj) && obj.(coretypes.Seq).First().Equals(SYMBOLS.catch)
 }
 
 func isFinally(obj coretypes.Object) bool {
-	return IsSeq(obj) && obj.(Seq).First().Equals(SYMBOLS.finally)
+	return IsSeq(obj) && obj.(coretypes.Seq).First().Equals(SYMBOLS.finally)
 }
 
 func resolveType(obj coretypes.Object, ctx *ParseContext) *coretypes.Type {
@@ -1037,7 +1037,7 @@ func resolveType(obj coretypes.Object, ctx *ParseContext) *coretypes.Type {
 }
 
 func parseCatch(obj coretypes.Object, ctx *ParseContext) *CatchExpr {
-	seq := obj.(Seq).Rest()
+	seq := obj.(coretypes.Seq).Rest()
 	if seq.IsEmpty() || seq.Rest().IsEmpty() {
 		panic(&ParseError{obj: obj, msg: "catch requires at least two arguments: type symbol and binding symbol"})
 	}
@@ -1056,7 +1056,7 @@ func parseCatch(obj coretypes.Object, ctx *ParseContext) *CatchExpr {
 	}
 }
 
-func parseFinally(body Seq, ctx *ParseContext) []Expr {
+func parseFinally(body coretypes.Seq, ctx *ParseContext) []Expr {
 	return parseBody(body, ctx)
 }
 
@@ -1068,7 +1068,7 @@ func parseTry(obj coretypes.Object, ctx *ParseContext) *TryExpr {
 	)
 	res := &TryExpr{Position: GetPosition(obj)}
 	lastType := Regular
-	seq := obj.(Seq).Rest()
+	seq := obj.(coretypes.Seq).Rest()
 
 	noRecurAllowed := ctx.noRecurAllowed
 	ctx.noRecurAllowed = true
@@ -1083,7 +1083,7 @@ func parseTry(obj coretypes.Object, ctx *ParseContext) *TryExpr {
 			res.catches = append(res.catches, parseCatch(obj, ctx))
 			lastType = Catch
 		} else if isFinally(obj) {
-			res.finallyExpr = parseFinally(obj.(Seq).Rest(), ctx)
+			res.finallyExpr = parseFinally(obj.(coretypes.Seq).Rest(), ctx)
 			lastType = Finally
 		} else {
 			if lastType == Catch {
@@ -1132,7 +1132,7 @@ func parseLetLoop(obj coretypes.Object, formName string, ctx *ParseContext) *Let
 	res := &LetExpr{
 		Position: GetPosition(obj),
 	}
-	bindings := Second(obj.(Seq))
+	bindings := Second(obj.(coretypes.Seq))
 	switch b := bindings.(type) {
 	case Vec:
 		cnt := b.Count()
@@ -1210,7 +1210,7 @@ func parseLetLoop(obj coretypes.Object, formName string, ctx *ParseContext) *Let
 			defer func() { ctx.noRecurAllowed = noRecurAllowed }()
 		}
 
-		res.body = parseBody(obj.(Seq).Rest().Rest(), ctx)
+		res.body = parseBody(obj.(coretypes.Seq).Rest().Rest(), ctx)
 
 		if LINTER_MODE {
 			if len(res.body) == 0 {
@@ -1246,7 +1246,7 @@ func parseRecur(obj coretypes.Object, ctx *ParseContext) *RecurExpr {
 	if loopBindings == nil {
 		panic(&ParseError{obj: obj, msg: "No recursion point for recur"})
 	}
-	seq := obj.(Seq)
+	seq := obj.(coretypes.Seq)
 	args := parseSeq(seq.Rest(), ctx)
 	if len(loopBindings) != len(args) {
 		panic(&ParseError{obj: obj, msg: fmt.Sprintf("Mismatched argument count to recur, expected: %d args, got: %d", len(loopBindings), len(args))})
@@ -1292,7 +1292,7 @@ func fixInfo(obj coretypes.Object, info *coretypes.ObjectInfo) coretypes.Object 
 	switch s := obj.(type) {
 	case Nil:
 		return obj
-	case Seq:
+	case coretypes.Seq:
 		objs := make([]coretypes.Object, 0, 8)
 		for !s.IsEmpty() {
 			t := fixInfo(s.First(), info)
@@ -1337,7 +1337,7 @@ func fixInfo(obj coretypes.Object, info *coretypes.ObjectInfo) coretypes.Object 
 	}
 }
 
-func macroexpand1(seq Seq, ctx *ParseContext) coretypes.Object {
+func macroexpand1(seq coretypes.Seq, ctx *ParseContext) coretypes.Object {
 	op := seq.First()
 	vr := resolveMacro(op, ctx)
 	if vr != nil {
@@ -1452,7 +1452,7 @@ func reportWrongArity(expr *FnExpr, isMacro bool, call *CallExpr, pos coretypes.
 	return true
 }
 
-func checkArglist(arglist Seq, passedArgsCount int) bool {
+func checkArglist(arglist coretypes.Seq, passedArgsCount int) bool {
 	for !arglist.IsEmpty() {
 		if v, ok := arglist.First().(Vec); ok {
 			if v.Count() == passedArgsCount ||
@@ -1474,7 +1474,7 @@ func setMacroMeta(vr *Var) {
 }
 
 func parseSetMacro(obj coretypes.Object, ctx *ParseContext) Expr {
-	expr := Parse(Second(obj.(Seq)), ctx)
+	expr := Parse(Second(obj.(coretypes.Seq)), ctx)
 	switch expr := expr.(type) {
 	case *LiteralExpr:
 		switch vr := expr.obj.(type) {
@@ -1489,7 +1489,7 @@ func parseSetMacro(obj coretypes.Object, ctx *ParseContext) Expr {
 	panic(&ParseError{obj: obj, msg: "set-macro__ argument must be a var"})
 }
 
-func isKnownMacros(sym Symbol) (bool, Seq) {
+func isKnownMacros(sym Symbol) (bool, coretypes.Seq) {
 	if KNOWN_MACROS == nil {
 		knownMacros := GLOBAL_ENV.CoreNamespace.Resolve("*known-macros*")
 		if knownMacros == nil {
@@ -1499,7 +1499,7 @@ func isKnownMacros(sym Symbol) (bool, Seq) {
 	}
 	if ok, v := KNOWN_MACROS.Value.(Map).Get(sym); ok {
 		switch v := v.(type) {
-		case Seqable:
+		case coretypes.Seqable:
 			return true, v.Seq()
 		default:
 			return true, nil
@@ -1508,7 +1508,7 @@ func isKnownMacros(sym Symbol) (bool, Seq) {
 	return false, nil
 }
 
-func isUnknownCallable(expr Expr) (bool, Seq) {
+func isUnknownCallable(expr Expr) (bool, coretypes.Seq) {
 	if !LINTER_MODE {
 		return false, nil
 	}
@@ -1615,11 +1615,11 @@ func checkCall(expr Expr, isMacro bool, call *CallExpr, pos coretypes.Position) 
 }
 
 func parseList(obj coretypes.Object, ctx *ParseContext) Expr {
-	expanded := macroexpand1(obj.(Seq), ctx)
+	expanded := macroexpand1(obj.(coretypes.Seq), ctx)
 	if expanded != obj {
 		return Parse(expanded, ctx)
 	}
-	seq := obj.(Seq)
+	seq := obj.(coretypes.Seq)
 	if seq.IsEmpty() {
 		return readerConstruction.LiteralExpr(obj)
 	}
@@ -1769,7 +1769,7 @@ func parseList(obj coretypes.Object, ctx *ParseContext) Expr {
 				case coretypes.Callable:
 					if m := c.vr.GetMeta(); m != nil {
 						if ok, arglist := m.Get(KEYWORDS.arglist); ok {
-							if arglist, ok := arglist.(Seq); ok {
+							if arglist, ok := arglist.(coretypes.Seq); ok {
 								if !checkArglist(arglist, len(res.args)) {
 									printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to %s", len(res.args), res.Name()))
 								}
@@ -1909,7 +1909,7 @@ func Parse(obj coretypes.Object, ctx *ParseContext) Expr {
 	case *MapSet:
 		canHaveMeta = true
 		res = parseSet(v, pos, ctx)
-	case Seq:
+	case coretypes.Seq:
 		res = parseList(obj, ctx)
 	case Symbol:
 		res = parseSymbol(obj, ctx)

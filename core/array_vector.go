@@ -76,7 +76,7 @@ func (v *ArrayVector) Hash() uint32 {
 	return CountedIndexedHash(v)
 }
 
-func (v *ArrayVector) Seq() Seq {
+func (v *ArrayVector) Seq() coretypes.Seq {
 	return &VectorSeq{vector: v, index: 0}
 }
 
@@ -150,7 +150,7 @@ func (v *ArrayVector) Assoc(key, val coretypes.Object) Associative {
 	return &res
 }
 
-func (v *ArrayVector) Rseq() Seq {
+func (v *ArrayVector) Rseq() coretypes.Seq {
 	return &VectorRSeq{vector: v, index: v.Count() - 1}
 }
 

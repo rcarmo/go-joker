@@ -64,7 +64,7 @@ type ChunkedCons struct {
 	coretypes.InfoHolder
 	MetaHolder
 	chunk *ArrayChunk
-	rest  Seq
+	rest  coretypes.Seq
 	idx   int
 }
 
@@ -82,14 +82,14 @@ func (cc *ChunkedCons) WithMeta(m Map) coretypes.Object {
 	res.meta = SafeMerge(res.meta, m)
 	return &res
 }
-func (cc *ChunkedCons) Seq() Seq          { return cc }
-func (cc *ChunkedCons) SequentialMarker() {}
+func (cc *ChunkedCons) Seq() coretypes.Seq { return cc }
+func (cc *ChunkedCons) SequentialMarker()  {}
 
 func (cc *ChunkedCons) First() coretypes.Object {
 	return cc.chunk.Nth(cc.idx)
 }
 
-func (cc *ChunkedCons) Rest() Seq {
+func (cc *ChunkedCons) Rest() coretypes.Seq {
 	if cc.idx+1 < cc.chunk.Count() {
 		return &ChunkedCons{chunk: cc.chunk, rest: cc.rest, idx: cc.idx + 1}
 	}
@@ -103,7 +103,7 @@ func (cc *ChunkedCons) IsEmpty() bool {
 	return false // ChunkedCons always has at least one element
 }
 
-func (cc *ChunkedCons) Cons(obj coretypes.Object) Seq {
+func (cc *ChunkedCons) Cons(obj coretypes.Object) coretypes.Seq {
 	return &ConsSeq{first: obj, rest: cc}
 }
 
@@ -210,14 +210,14 @@ func registerChunkedSeqProcs() {
 			if args[1] == nil || IsNil(args[1]) {
 				return EmptyList
 			}
-			if s, ok := args[1].(Seqable); ok {
+			if s, ok := args[1].(coretypes.Seqable); ok {
 				return s.Seq()
 			}
 			return EmptyList
 		}
-		var rest Seq
+		var rest coretypes.Seq
 		if args[1] != nil && !IsNil(args[1]) {
-			if s, ok := args[1].(Seqable); ok {
+			if s, ok := args[1].(coretypes.Seqable); ok {
 				rest = s.Seq()
 			}
 		}

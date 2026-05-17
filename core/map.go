@@ -11,11 +11,11 @@ import (
 type (
 	Map interface {
 		Associative
-		Seqable
+		coretypes.Seqable
 		coretypes.Counted
 		Without(key coretypes.Object) Map
-		Keys() Seq
-		Vals() Seq
+		Keys() coretypes.Seq
+		Vals() coretypes.Seq
 		Merge(m Map) Map
 		Iter() MapIterator
 	}

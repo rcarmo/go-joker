@@ -269,7 +269,7 @@ func pvNewPath(level uint, node *corecollections.TrieNode) *corecollections.Trie
 
 func (v *PersistentVector) At(i int) coretypes.Object { return v.Nth(i) }
 
-func (v *PersistentVector) Seq() Seq { return NewVectorFrom(v.ToSlice()...).Seq() }
+func (v *PersistentVector) Seq() coretypes.Seq { return NewVectorFrom(v.ToSlice()...).Seq() }
 
 func (v *PersistentVector) ToString(escape bool) string {
 	return CountedIndexedToString(v, escape)

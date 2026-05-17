@@ -112,7 +112,7 @@ func ExtractRegex(args []coretypes.Object, index int) *regexp.Regexp {
 	return EnsureArgIsRegex(args, index).R
 }
 
-func ExtractSeqable(args []coretypes.Object, index int) Seqable {
+func ExtractSeqable(args []coretypes.Object, index int) coretypes.Seqable {
 	return EnsureArgIsSeqable(args, index)
 }
 
@@ -697,7 +697,7 @@ var procConj = func(args []coretypes.Object) coretypes.Object {
 	switch c := args[0].(type) {
 	case coretypes.Conjable:
 		return c.Conj(args[1])
-	case Seq:
+	case coretypes.Seq:
 		return c.Cons(args[1])
 	default:
 		panic(RT.NewError("conj's first argument must be a collection, got " + c.GetType().ToString(false)))
@@ -1021,7 +1021,7 @@ var procNth = func(args []coretypes.Object) coretypes.Object {
 		return NIL
 	case coretypes.Sequential:
 		switch coll := args[0].(type) {
-		case Seqable:
+		case coretypes.Seqable:
 			if len(args) == 3 {
 				return SeqTryNth(coll.Seq(), n, args[2])
 			}
@@ -1343,7 +1343,7 @@ var procNanoTime = func(args []coretypes.Object) coretypes.Object {
 
 var procMacroexpand1 = func(args []coretypes.Object) coretypes.Object {
 	switch s := args[0].(type) {
-	case Seq:
+	case coretypes.Seq:
 		parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
 		return macroexpand1(s, parseContext)
 	default:
@@ -2138,7 +2138,7 @@ func printConfigError(filename, msg string) {
 }
 
 func knownMacrosToMap(km coretypes.Object) (Map, error) {
-	s := km.(Seqable).Seq()
+	s := km.(coretypes.Seqable).Seq()
 	res := collectionConstruction.NewEmptyArrayMap()
 	for !s.IsEmpty() {
 		obj := s.First()
@@ -2188,7 +2188,7 @@ func ReadConfig(filename string, workingDir string) {
 	}
 	ok, ignoredUnusedNamespaces := configMap.Get(MakeKeyword("ignored-unused-namespaces"))
 	if ok {
-		seq, ok1 := ignoredUnusedNamespaces.(Seqable)
+		seq, ok1 := ignoredUnusedNamespaces.(coretypes.Seqable)
 		if ok1 {
 			WARNINGS.ignoredUnusedNamespaces = collectionConstruction.NewSetFromSeq(seq.Seq())
 		} else {
@@ -2198,7 +2198,7 @@ func ReadConfig(filename string, workingDir string) {
 	}
 	ok, ignoredFileRegexes := configMap.Get(MakeKeyword("ignored-file-regexes"))
 	if ok {
-		seq, ok1 := ignoredFileRegexes.(Seqable)
+		seq, ok1 := ignoredFileRegexes.(coretypes.Seqable)
 		if ok1 {
 			s := seq.Seq()
 			for !s.IsEmpty() {
@@ -2217,7 +2217,7 @@ func ReadConfig(filename string, workingDir string) {
 	}
 	ok, entryPoints := configMap.Get(MakeKeyword("entry-points"))
 	if ok {
-		seq, ok1 := entryPoints.(Seqable)
+		seq, ok1 := entryPoints.(coretypes.Seqable)
 		if ok1 {
 			WARNINGS.entryPoints = collectionConstruction.NewSetFromSeq(seq.Seq())
 		} else {
@@ -2227,21 +2227,21 @@ func ReadConfig(filename string, workingDir string) {
 	}
 	ok, knownNamespaces := configMap.Get(MakeKeyword("known-namespaces"))
 	if ok {
-		if _, ok1 := knownNamespaces.(Seqable); !ok1 {
+		if _, ok1 := knownNamespaces.(coretypes.Seqable); !ok1 {
 			printConfigError(configFileName, ":known-namespaces value must be a vector, got "+knownNamespaces.GetType().ToString(false))
 			return
 		}
 	}
 	ok, knownTags := configMap.Get(MakeKeyword("known-tags"))
 	if ok {
-		if _, ok1 := knownTags.(Seqable); !ok1 {
+		if _, ok1 := knownTags.(coretypes.Seqable); !ok1 {
 			printConfigError(configFileName, ":known-tags value must be a vector, got "+knownTags.GetType().ToString(false))
 			return
 		}
 	}
 	ok, knownMacros := configMap.Get(KEYWORDS.knownMacros)
 	if ok {
-		_, ok1 := knownMacros.(Seqable)
+		_, ok1 := knownMacros.(coretypes.Seqable)
 		if !ok1 {
 			printConfigError(configFileName, ":known-macros value must be a vector, got "+knownMacros.GetType().ToString(false))
 			return

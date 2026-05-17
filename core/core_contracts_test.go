@@ -1318,11 +1318,11 @@ func TestSortedCollectionContract(t *testing.T) {
 		t.Fatalf("sorted-set entries not ordered: %#v", setEntries)
 	}
 
-	sub := subseqProc.Call([]coretypes.Object{s, Proc{Fn: procGte, Name: "procGte"}, coretypes.MakeInt(2)}).(Seq)
+	sub := subseqProc.Call([]coretypes.Object{s, Proc{Fn: procGte, Name: "procGte"}, coretypes.MakeInt(2)}).(coretypes.Seq)
 	if SeqCount(sub) != 2 || !sub.First().Equals(coretypes.MakeInt(2)) || !Second(sub).Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("subseq contract failed: %s", sub.ToString(false))
 	}
-	rsub := rsubseqProc.Call([]coretypes.Object{s, Proc{Fn: procGte, Name: "procGte"}, coretypes.MakeInt(2)}).(Seq)
+	rsub := rsubseqProc.Call([]coretypes.Object{s, Proc{Fn: procGte, Name: "procGte"}, coretypes.MakeInt(2)}).(coretypes.Seq)
 	if SeqCount(rsub) != 2 || !rsub.First().Equals(coretypes.MakeInt(3)) || !Second(rsub).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("rsubseq contract failed: %s", rsub.ToString(false))
 	}
@@ -1424,7 +1424,7 @@ func TestSeqContract(t *testing.T) {
 	base := NewListFrom(coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)).Seq()
 	seqs := []struct {
 		name string
-		seq  Seq
+		seq  coretypes.Seq
 	}{
 		{name: "list", seq: base},
 		{name: "array", seq: &ArraySeq{arr: []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)}}},
@@ -1751,7 +1751,7 @@ func TestPVObjectSemantics(t *testing.T) {
 		t.Fatalf("At(1) = %s", pv.At(1).ToString(false))
 	}
 	if pv.Seq().IsEmpty() || !pv.Seq().First().Equals(coretypes.MakeInt(1)) {
-		t.Fatal("Seq did not expose first element")
+		t.Fatal("coretypes.Seq did not expose first element")
 	}
 }
 
@@ -2163,7 +2163,7 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	if found, got := namespaced.Get(MakeKeyword("contract/a")); !found || !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("namespaced map keyword entry = %v %v", found, got)
 	}
-	list := readOneForContract(t, `(1 2 3)`).(Seq)
+	list := readOneForContract(t, `(1 2 3)`).(coretypes.Seq)
 	if SeqCount(list) != 3 || !list.First().Equals(coretypes.MakeInt(1)) || !Third(list).Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("list construction mismatch: %s", list.ToString(false))
 	}
@@ -2239,7 +2239,7 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 	if !ok || selectedVec.Count() != 2 || !selectedVec.At(0).Equals(coretypes.MakeInt(1)) || !selectedVec.At(1).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("reader conditional selected wrong form: %s", selected.ToString(false))
 	}
-	spliced := readOneForContract(t, `(#?@(:missing [:no] :joker [1 2]) 3)`).(Seq)
+	spliced := readOneForContract(t, `(#?@(:missing [:no] :joker [1 2]) 3)`).(coretypes.Seq)
 	if SeqCount(spliced) != 3 || !spliced.First().Equals(coretypes.MakeInt(1)) || !Second(spliced).Equals(coretypes.MakeInt(2)) || !Third(spliced).Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("reader conditional splice mismatch: %s", spliced.ToString(false))
 	}
@@ -2403,7 +2403,7 @@ func TestReaderConstructionAdapterNumberFromToken(t *testing.T) {
 }
 
 func TestReaderConstructionAdapterCollectionObjects(t *testing.T) {
-	list := readerConstruction.ListFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2)}).(Seq)
+	list := readerConstruction.ListFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2)}).(coretypes.Seq)
 	if SeqCount(list) != 2 || !list.First().Equals(coretypes.MakeInt(1)) || !Second(list).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("adapter ListFrom mismatch: %s", list.ToString(false))
 	}
@@ -2411,7 +2411,7 @@ func TestReaderConstructionAdapterCollectionObjects(t *testing.T) {
 	if vec.Count() != 2 || !vec.At(0).Equals(MakeKeyword("a")) || !vec.At(1).Equals(MakeKeyword("b")) {
 		t.Fatalf("adapter VectorFrom mismatch: %s", vec.(coretypes.Object).ToString(false))
 	}
-	persistent := readerConstruction.PersistentVectorFromSeq(vec.(Seqable).Seq()).(coretypes.CountedIndexed)
+	persistent := readerConstruction.PersistentVectorFromSeq(vec.(coretypes.Seqable).Seq()).(coretypes.CountedIndexed)
 	if persistent.Count() != 2 || !persistent.At(0).Equals(MakeKeyword("a")) || !persistent.At(1).Equals(MakeKeyword("b")) {
 		t.Fatalf("adapter PersistentVectorFromSeq mismatch: %s", persistent.(coretypes.Object).ToString(false))
 	}
@@ -2466,14 +2466,14 @@ func TestExecutorFilesUseRuntimeExecutionAdapterForProgramState(t *testing.T) {
 			if strings.Contains(line, ".Equals(") {
 				t.Fatalf("%s:%d performs equality instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
 			}
-			if strings.Contains(line, "ToSlice(") || strings.Contains(line, "(Seqable)") {
+			if strings.Contains(line, "ToSlice(") || strings.Contains(line, "(coretypes.Seqable)") {
 				t.Fatalf("%s:%d prepares call args instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
 			}
 			lineText = strings.TrimSpace(line)
 			if lineText == "case *ArrayVector:" || lineText == "case *TransientVector:" || lineText == "return (*ArrayVector)(v.p)" || lineText == "return (*TransientVector)(v.p)" {
 				continue
 			}
-			if strings.Contains(line, "Seqable") || strings.Contains(line, "coretypes.Conjable") || strings.Contains(line, "Counted") || strings.Contains(line, "Associative") || strings.Contains(line, "*TransientVector") || strings.Contains(line, "*ArrayVector") || strings.Contains(line, "&ArrayVector") {
+			if strings.Contains(line, "coretypes.Seqable") || strings.Contains(line, "coretypes.Conjable") || strings.Contains(line, "Counted") || strings.Contains(line, "Associative") || strings.Contains(line, "*TransientVector") || strings.Contains(line, "*ArrayVector") || strings.Contains(line, "&ArrayVector") {
 				t.Fatalf("%s:%d performs collection construction/access instead of runtimeExec adapter: %s", file, lineNo+1, lineText)
 			}
 			if lineText == "case *StringCursor:" || lineText == "return (*StringCursor)(v.p)" {

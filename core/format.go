@@ -9,7 +9,7 @@ import (
 	"unicode/utf8"
 )
 
-func seqFirst(seq Seq, w io.Writer, indent int) (Seq, int) {
+func seqFirst(seq coretypes.Seq, w io.Writer, indent int) (coretypes.Seq, int) {
 	if !seq.IsEmpty() {
 		indent = formatObject(seq.First(), indent, w)
 		seq = seq.Rest()
@@ -19,14 +19,14 @@ func seqFirst(seq Seq, w io.Writer, indent int) (Seq, int) {
 
 // TODO: maybe merge it with seqFirstAfterBreak
 // or extract common part into a separate function
-func seqFirstAfterSpace(seq Seq, w io.Writer, indent int, insideDefRecord bool) (Seq, coretypes.Object, int) {
+func seqFirstAfterSpace(seq coretypes.Seq, w io.Writer, indent int, insideDefRecord bool) (coretypes.Seq, coretypes.Object, int) {
 	var obj coretypes.Object
 	if !seq.IsEmpty() {
 		fmt.Fprint(w, " ")
 		obj = seq.First()
-		// Seq handling here is needed to properly format methods
+		// coretypes.Seq handling here is needed to properly format methods
 		// inside defrecord
-		if s, ok := obj.(Seq); ok && !obj.Equals(NIL) {
+		if s, ok := obj.(coretypes.Seq); ok && !obj.Equals(NIL) {
 			if info := obj.GetInfo(); info != nil {
 				fmt.Fprint(w, info.Prefix)
 				indent += utf8.RuneCountInString(info.Prefix)
@@ -48,15 +48,15 @@ func writeNewLines(w io.Writer, prevObj coretypes.Object, obj coretypes.Object) 
 	return cnt
 }
 
-func seqFirstAfterBreak(prevObj coretypes.Object, seq Seq, w io.Writer, indent int, insideDefRecord bool) (Seq, coretypes.Object, int) {
+func seqFirstAfterBreak(prevObj coretypes.Object, seq coretypes.Seq, w io.Writer, indent int, insideDefRecord bool) (coretypes.Seq, coretypes.Object, int) {
 	var obj coretypes.Object
 	if !seq.IsEmpty() {
 		obj = seq.First()
 		writeNewLines(w, prevObj, obj)
 		writeIndent(w, indent)
-		// Seq handling here is needed to properly format methods
+		// coretypes.Seq handling here is needed to properly format methods
 		// inside defrecord
-		if s, ok := obj.(Seq); ok && !obj.Equals(NIL) {
+		if s, ok := obj.(coretypes.Seq); ok && !obj.Equals(NIL) {
 			if info := obj.GetInfo(); info != nil {
 				fmt.Fprint(w, info.Prefix)
 				indent += utf8.RuneCountInString(info.Prefix)
@@ -70,7 +70,7 @@ func seqFirstAfterBreak(prevObj coretypes.Object, seq Seq, w io.Writer, indent i
 	return seq, obj, indent
 }
 
-func seqFirstAfterForcedBreak(seq Seq, w io.Writer, indent int) (Seq, coretypes.Object, int) {
+func seqFirstAfterForcedBreak(seq coretypes.Seq, w io.Writer, indent int) (coretypes.Seq, coretypes.Object, int) {
 	var obj coretypes.Object
 	if !seq.IsEmpty() {
 		obj = seq.First()
@@ -167,11 +167,11 @@ func newLineCount(obj, nextObj coretypes.Object) int {
 	return nextInfo.StartLine - info.EndLine
 }
 
-func formatSeq(seq Seq, w io.Writer, indent int) int {
+func formatSeq(seq coretypes.Seq, w io.Writer, indent int) int {
 	return formatSeqEx(seq, w, indent, false)
 }
 
-func formatSeqSimple(seq Seq, w io.Writer, indent int) int {
+func formatSeqSimple(seq coretypes.Seq, w io.Writer, indent int) int {
 	ind := indent + 1
 	fmt.Fprint(w, "(")
 	var prevObj coretypes.Object
@@ -203,23 +203,23 @@ func (rs RequireSort) Len() int      { return len(rs) }
 func (rs RequireSort) Swap(i, j int) { rs[i], rs[j] = rs[j], rs[i] }
 func (rs RequireSort) Less(i, j int) bool {
 	a := rs[i]
-	if s, ok := a.(Seqable); ok {
+	if s, ok := a.(coretypes.Seqable); ok {
 		a = s.Seq().First()
 	}
 	b := rs[j]
-	if s, ok := b.(Seqable); ok {
+	if s, ok := b.(coretypes.Seqable); ok {
 		b = s.Seq().First()
 	}
 	return a.ToString(false) < b.ToString(false)
 }
 
-func sortRequire(seq Seq) Seq {
+func sortRequire(seq coretypes.Seq) coretypes.Seq {
 	s := RequireSort(ToSlice(seq))
 	sort.Sort(s)
 	return &ArraySeq{arr: s}
 }
 
-func formatSeqEx(seq Seq, w io.Writer, indent int, formatAsDef bool) int {
+func formatSeqEx(seq coretypes.Seq, w io.Writer, indent int, formatAsDef bool) int {
 	if info := seq.GetInfo(); info != nil {
 		if info.Prefix == "#?" || info.Prefix == "#?@" {
 			return formatSeqSimple(seq, w, indent)

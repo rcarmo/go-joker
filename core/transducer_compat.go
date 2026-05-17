@@ -152,7 +152,7 @@ func transduceInternal(xform coretypes.Callable, reducingFnObj coretypes.Object,
 	rfObj := call1(xform, reducingFnObj)
 	rf := EnsureObjectIsCallable(rfObj, "transduce xform must produce a reducing function, got %s")
 
-	s := EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be Seqable, got %s").Seq()
+	s := EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be coretypes.Seqable, got %s").Seq()
 	res := init
 	for !s.IsEmpty() {
 		step := call2(rf, res, s.First())
@@ -171,7 +171,7 @@ func transducePipeline(xf *XForm, reducingFnObj coretypes.Object, init coretypes
 	if r, ok := collObj.(*IntRange); ok {
 		return transducePipelineRange(xf, rf, init, r)
 	}
-	s := EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be Seqable, got %s").Seq()
+	s := EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be coretypes.Seqable, got %s").Seq()
 	res := init
 	reducerName := hotReducerName(rf)
 	takeRemaining := -1
@@ -564,7 +564,7 @@ func installTransducerCompat() {
 	sequenceVr.Value = Proc{Name: "procSequenceCompat", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 2 {
 			res := eductionVr.Value.(coretypes.Callable).Call(args)
-			if s, ok := res.(Seqable); ok {
+			if s, ok := res.(coretypes.Seqable); ok {
 				return s.Seq()
 			}
 			return NIL

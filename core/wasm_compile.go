@@ -930,7 +930,7 @@ func registerWasmHost(rt wazero.Runtime) {
 					if len(v.arr) > 0 {
 						return objToWasm(t, v.arr[0])
 					}
-				case Seqable:
+				case coretypes.Seqable:
 					s := v.Seq()
 					if !s.IsEmpty() {
 						return objToWasm(t, s.First())

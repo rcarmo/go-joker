@@ -179,7 +179,7 @@ func registerUncheckedArithProcs() {
 				// (int-array n init-val-or-seq)
 				n := EnsureArgIsInt(args, 0)
 				result := collectionConstruction.NewEmptyArrayVector()
-				if s, ok := args[1].(Seqable); ok {
+				if s, ok := args[1].(coretypes.Seqable); ok {
 					seq := s.Seq()
 					for i := 0; i < n.I && !seq.IsEmpty(); i++ {
 						result = result.Conj(seq.First()).(*ArrayVector)

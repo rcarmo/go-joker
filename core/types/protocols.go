@@ -94,6 +94,19 @@ type Reduce interface {
 	Reduce(c Callable) Object
 }
 
+type Seqable interface {
+	Seq() Seq
+}
+
+type Seq interface {
+	Seqable
+	Object
+	First() Object
+	Rest() Seq
+	IsEmpty() bool
+	Cons(obj Object) Seq
+}
+
 type Sequential interface {
 	SequentialMarker()
 }

@@ -98,7 +98,7 @@ func (set *MapSet) Hash() uint32 {
 	return hashUnordered(set.Seq(), 2)
 }
 
-func (set *MapSet) Seq() Seq {
+func (set *MapSet) Seq() coretypes.Seq {
 	if set.m == nil {
 		return EmptyList
 	}
@@ -124,7 +124,7 @@ func (set *MapSet) Empty() Collection {
 	return collectionConstruction.NewEmptySet()
 }
 
-func NewSetFromSeq(s Seq) *MapSet {
+func NewSetFromSeq(s coretypes.Seq) *MapSet {
 	res := EmptySet()
 	for !s.IsEmpty() {
 		res.Add(s.First())

@@ -15,7 +15,7 @@ type (
 		assoc(shift uint, hash uint32, key coretypes.Object, val coretypes.Object, addedLeaf *Box) Node
 		without(shift uint, hash uint32, key coretypes.Object) Node
 		find(shift uint, hash uint32, key coretypes.Object) *Pair
-		nodeSeq() Seq
+		nodeSeq() coretypes.Seq
 		iter() MapIterator
 	}
 	HashMap struct {
@@ -42,14 +42,14 @@ type (
 		MetaHolder
 		array []interface{}
 		i     int
-		s     Seq
+		s     coretypes.Seq
 	}
 	ArrayNodeSeq struct {
 		coretypes.InfoHolder
 		MetaHolder
 		nodes []Node
 		i     int
-		s     Seq
+		s     coretypes.Seq
 	}
 	NodeIterator struct {
 		array     []interface{}
@@ -140,7 +140,7 @@ func (iter *NodeIterator) Next() *Pair {
 	panic(newIteratorError())
 }
 
-func newArrayNodeSeq(nodes []Node, i int, s Seq) Seq {
+func newArrayNodeSeq(nodes []Node, i int, s coretypes.Seq) coretypes.Seq {
 	if s != nil {
 		return &ArrayNodeSeq{
 			nodes: nodes,
@@ -169,7 +169,7 @@ func (s *ArrayNodeSeq) WithMeta(meta Map) coretypes.Object {
 	return &res
 }
 
-func (s *ArrayNodeSeq) Seq() Seq {
+func (s *ArrayNodeSeq) Seq() coretypes.Seq {
 	return s
 }
 
@@ -201,7 +201,7 @@ func (s *ArrayNodeSeq) First() coretypes.Object {
 	return s.s.First()
 }
 
-func (s *ArrayNodeSeq) Rest() Seq {
+func (s *ArrayNodeSeq) Rest() coretypes.Seq {
 	next := s.s.Rest()
 	if next.IsEmpty() {
 		next = nil
@@ -220,13 +220,13 @@ func (s *ArrayNodeSeq) IsEmpty() bool {
 	return false
 }
 
-func (s *ArrayNodeSeq) Cons(obj coretypes.Object) Seq {
+func (s *ArrayNodeSeq) Cons(obj coretypes.Object) coretypes.Seq {
 	return &ConsSeq{first: obj, rest: s}
 }
 
 func (s *ArrayNodeSeq) SequentialMarker() {}
 
-func newNodeSeq(array []interface{}, i int, s Seq) Seq {
+func newNodeSeq(array []interface{}, i int, s coretypes.Seq) coretypes.Seq {
 	if s != nil {
 		return &NodeSeq{
 			array: array,
@@ -262,7 +262,7 @@ func (s *NodeSeq) WithMeta(meta Map) coretypes.Object {
 	return &res
 }
 
-func (s *NodeSeq) Seq() Seq {
+func (s *NodeSeq) Seq() coretypes.Seq {
 	return s
 }
 
@@ -297,8 +297,8 @@ func (s *NodeSeq) First() coretypes.Object {
 	return collectionConstruction.NewVectorFrom(s.array[s.i].(coretypes.Object), s.array[s.i+1].(coretypes.Object))
 }
 
-func (s *NodeSeq) Rest() Seq {
-	var res Seq
+func (s *NodeSeq) Rest() coretypes.Seq {
+	var res coretypes.Seq
 	if s.s != nil {
 		next := s.s.Rest()
 		if next.IsEmpty() {
@@ -321,7 +321,7 @@ func (s *NodeSeq) IsEmpty() bool {
 	return false
 }
 
-func (s *NodeSeq) Cons(obj coretypes.Object) Seq {
+func (s *NodeSeq) Cons(obj coretypes.Object) coretypes.Seq {
 	return &ConsSeq{first: obj, rest: s}
 }
 
@@ -387,7 +387,7 @@ func (n *ArrayNode) find(shift uint, hash uint32, key coretypes.Object) *Pair {
 	return node.find(shift+5, hash, key)
 }
 
-func (n *ArrayNode) nodeSeq() Seq {
+func (n *ArrayNode) nodeSeq() coretypes.Seq {
 	return newArrayNodeSeq(n.array, 0, nil)
 }
 
@@ -467,7 +467,7 @@ func (n *HashCollisionNode) find(shift uint, hash uint32, key coretypes.Object) 
 	}
 }
 
-func (n *HashCollisionNode) nodeSeq() Seq {
+func (n *HashCollisionNode) nodeSeq() coretypes.Seq {
 	return newNodeSeq(n.array, 0, nil)
 }
 
@@ -641,7 +641,7 @@ func (b *BitmapIndexedNode) find(shift uint, hash uint32, key coretypes.Object) 
 	return nil
 }
 
-func (b *BitmapIndexedNode) nodeSeq() Seq {
+func (b *BitmapIndexedNode) nodeSeq() coretypes.Seq {
 	return newNodeSeq(b.array, 0, nil)
 }
 
@@ -667,7 +667,7 @@ func (m *HashMap) Hash() uint32 {
 	return hashUnordered(m.Seq(), 1)
 }
 
-func (m *HashMap) Seq() Seq {
+func (m *HashMap) Seq() coretypes.Seq {
 	if m.root != nil {
 		s := m.root.nodeSeq()
 		if s != nil {
@@ -743,7 +743,7 @@ func (m *HashMap) Iter() MapIterator {
 	return m.root.iter()
 }
 
-func (m *HashMap) Keys() Seq {
+func (m *HashMap) Keys() coretypes.Seq {
 	return &MappingSeq{
 		seq: m.Seq(),
 		fn: func(obj coretypes.Object) coretypes.Object {
@@ -752,7 +752,7 @@ func (m *HashMap) Keys() Seq {
 	}
 }
 
-func (m *HashMap) Vals() Seq {
+func (m *HashMap) Vals() coretypes.Seq {
 	return &MappingSeq{
 		seq: m.Seq(),
 		fn: func(obj coretypes.Object) coretypes.Object {

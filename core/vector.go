@@ -20,7 +20,7 @@ type (
 		coretypes.Stack
 		Reversible
 		Meta
-		Seqable
+		coretypes.Seqable
 		coretypes.Formatter
 		coretypes.Callable
 	}
@@ -162,7 +162,7 @@ func (v *Vector) Hash() uint32 {
 	return CountedIndexedHash(v)
 }
 
-func (seq *VectorSeq) Seq() Seq {
+func (seq *VectorSeq) Seq() coretypes.Seq {
 	return seq
 }
 
@@ -203,7 +203,7 @@ func (seq *VectorSeq) First() coretypes.Object {
 	return NIL
 }
 
-func (seq *VectorSeq) Rest() Seq {
+func (seq *VectorSeq) Rest() coretypes.Seq {
 	if seq.index+1 < seq.vector.Count() {
 		return &VectorSeq{vector: seq.vector, index: seq.index + 1}
 	}
@@ -222,13 +222,13 @@ func (seq *VectorSeq) Count() int {
 	return n
 }
 
-func (seq *VectorSeq) Cons(obj coretypes.Object) Seq {
+func (seq *VectorSeq) Cons(obj coretypes.Object) coretypes.Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
 func (seq *VectorSeq) SequentialMarker() {}
 
-func (seq *VectorRSeq) Seq() Seq {
+func (seq *VectorRSeq) Seq() coretypes.Seq {
 	return seq
 }
 
@@ -269,7 +269,7 @@ func (seq *VectorRSeq) First() coretypes.Object {
 	return NIL
 }
 
-func (seq *VectorRSeq) Rest() Seq {
+func (seq *VectorRSeq) Rest() coretypes.Seq {
 	if seq.index-1 >= 0 {
 		return &VectorRSeq{vector: seq.vector, index: seq.index - 1}
 	}
@@ -287,13 +287,13 @@ func (seq *VectorRSeq) Count() int {
 	return seq.index + 1
 }
 
-func (seq *VectorRSeq) Cons(obj coretypes.Object) Seq {
+func (seq *VectorRSeq) Cons(obj coretypes.Object) coretypes.Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
 func (seq *VectorRSeq) SequentialMarker() {}
 
-func (v *Vector) Seq() Seq {
+func (v *Vector) Seq() coretypes.Seq {
 	return &VectorSeq{vector: v, index: 0}
 }
 
@@ -438,7 +438,7 @@ func (v *Vector) Assoc(key, val coretypes.Object) Associative {
 	return v.assocN(i, val)
 }
 
-func (v *Vector) Rseq() Seq {
+func (v *Vector) Rseq() coretypes.Seq {
 	return &VectorRSeq{vector: v, index: v.count - 1}
 }
 
@@ -481,7 +481,7 @@ func NewVectorFrom(objs ...coretypes.Object) *Vector {
 	return res
 }
 
-func NewVectorFromSeq(seq Seq) *Vector {
+func NewVectorFromSeq(seq coretypes.Seq) *Vector {
 	if c, ok := seq.(coretypes.Counted); ok {
 		n := c.Count()
 		if n == 0 {

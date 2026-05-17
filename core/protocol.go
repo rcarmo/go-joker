@@ -117,11 +117,11 @@ func typeNameOf(obj coretypes.Object) string {
 	case *LazySeq:
 		return "LazySeq"
 	case *ConsSeq:
-		return "Seq"
+		return "coretypes.Seq"
 	case *ArraySeq:
-		return "Seq"
+		return "coretypes.Seq"
 	case *MappingSeq:
-		return "Seq"
+		return "coretypes.Seq"
 	case *Fn:
 		return "Fn"
 	case Proc:

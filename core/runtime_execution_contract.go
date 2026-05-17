@@ -116,7 +116,7 @@ func (RuntimeExecutionAdapter) MakeFn(fnExpr *FnExpr, slots []coretypes.Object) 
 }
 
 func (RuntimeExecutionAdapter) CallArgs(argsSeq coretypes.Object) ([]coretypes.Object, bool) {
-	seqable, ok := argsSeq.(Seqable)
+	seqable, ok := argsSeq.(coretypes.Seqable)
 	if !ok {
 		return nil, false
 	}
@@ -272,7 +272,7 @@ func (RuntimeExecutionAdapter) First(coll coretypes.Object) (coretypes.Object, b
 			return c.arr[0], true
 		}
 		return NIL, true
-	case Seqable:
+	case coretypes.Seqable:
 		s := c.Seq()
 		if s == nil || s.IsEmpty() {
 			return NIL, true

@@ -652,7 +652,7 @@ func makeFnForm(args map[int]Symbol, body coretypes.Object) coretypes.Object {
 	for _, v := range a {
 		argObjects = append(argObjects, v)
 	}
-	argVector := readerConstruction.PersistentVectorFromSeq(readerConstruction.VectorFrom(argObjects).(Seqable).Seq())
+	argVector := readerConstruction.PersistentVectorFromSeq(readerConstruction.VectorFrom(argObjects).(coretypes.Seqable).Seq())
 	if LINTER_MODE {
 		if _, ok := body.(Meta); ok {
 			body, _ = readerConstruction.WithMeta(body, readerConstruction.SkipRedundantDoMeta())
@@ -709,19 +709,19 @@ func isSelfEvaluating(obj coretypes.Object) bool {
 
 func isCall(obj coretypes.Object, name Symbol) bool {
 	switch seq := obj.(type) {
-	case Seq:
+	case coretypes.Seq:
 		return seq.First().Equals(name)
 	default:
 		return false
 	}
 }
 
-func syntaxQuoteSeq(seq Seq, env map[*string]Symbol, reader *Reader) Seq {
+func syntaxQuoteSeq(seq coretypes.Seq, env map[*string]Symbol, reader *Reader) coretypes.Seq {
 	res := make([]coretypes.Object, 0)
 	for iter := iter(seq); iter.HasNext(); {
 		obj := iter.Next()
 		if isCall(obj, SYMBOLS.unquoteSplicing) {
-			res = append(res, (obj).(Seq).Rest().First())
+			res = append(res, (obj).(coretypes.Seq).Rest().First())
 		} else {
 			q := makeSyntaxQuote(obj, env, reader)
 			res = append(res, DeriveReadObject(q, readerConstruction.ListFrom([]coretypes.Object{SYMBOLS.list, q})))
@@ -730,13 +730,13 @@ func syntaxQuoteSeq(seq Seq, env map[*string]Symbol, reader *Reader) Seq {
 	return &ArraySeq{arr: res}
 }
 
-func syntaxQuoteColl(seq Seq, env map[*string]Symbol, reader *Reader, ctor Symbol, info *coretypes.ObjectInfo) coretypes.Object {
+func syntaxQuoteColl(seq coretypes.Seq, env map[*string]Symbol, reader *Reader, ctor Symbol, info *coretypes.ObjectInfo) coretypes.Object {
 	q := syntaxQuoteSeq(seq, env, reader)
 	concat := q.Cons(SYMBOLS.concat)
 	seqList := readerConstruction.ListFrom([]coretypes.Object{SYMBOLS.seq, concat})
 	var res coretypes.Object = seqList
 	if ctor != SYMBOLS.emptySymbol {
-		res = readerConstruction.ListFrom([]coretypes.Object{ctor, seqList}).(Seq).Cons(SYMBOLS.apply)
+		res = readerConstruction.ListFrom([]coretypes.Object{ctor, seqList}).(coretypes.Seq).Cons(SYMBOLS.apply)
 	}
 	return withInfo(res, info)
 }
@@ -763,7 +763,7 @@ func makeSyntaxQuote(obj coretypes.Object, env map[*string]Symbol, reader *Reade
 			obj = DeriveReadObject(obj, GLOBAL_ENV.ResolveSymbol(s))
 		}
 		return makeQuote(obj, SYMBOLS.quote)
-	case Seq:
+	case coretypes.Seq:
 		if isCall(obj, SYMBOLS.unquote) {
 			return Second(s)
 		}
@@ -862,14 +862,14 @@ func readConditional(reader *Reader) (coretypes.Object, bool) {
 		return cond, false
 	}
 	v := readCondList(reader)
-	s, seqable := v.(Seqable)
+	s, seqable := v.(coretypes.Seqable)
 	switch corereader.ClassifyConditionalResult(v != nil, isSplicing, seqable) {
 	case corereader.ConditionalResultEmptySplice:
 		return readerConstruction.VectorFrom(nil), true
 	case corereader.ConditionalResultSpliceSeq:
 		return DeriveReadObject(v, readerConstruction.PersistentVectorFromSeq(s.Seq())), true
 	case corereader.ConditionalResultSpliceError:
-		readError(reader, "Spliced form in reader conditional must be Seqable, got "+v.GetType().ToString(false))
+		readError(reader, "Spliced form in reader conditional must be coretypes.Seqable, got "+v.GetType().ToString(false))
 		return readerConstruction.VectorFrom(nil), true
 	default:
 		return v, false

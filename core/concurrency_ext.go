@@ -153,7 +153,7 @@ func installConcurrencyExt() {
 	pmapVr.Value = Proc{Name: "procPmap", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		f := EnsureArgIsCallable(args, 0)
-		coll := EnsureObjectIsSeqable(args[1], "pmap requires a Seqable collection").Seq()
+		coll := EnsureObjectIsSeqable(args[1], "pmap requires a coretypes.Seqable collection").Seq()
 		// Collect all elements first (pmap is not lazy in this impl).
 		var elems []coretypes.Object
 		for s := coll; !s.IsEmpty(); s = s.Rest() {

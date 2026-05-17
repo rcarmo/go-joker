@@ -187,8 +187,8 @@ func (r *Record) Count() int {
 	return n
 }
 
-// Seq returns a sequence of MapEntry pairs.
-func (r *Record) Seq() Seq {
+// coretypes.Seq returns a sequence of MapEntry pairs.
+func (r *Record) Seq() coretypes.Seq {
 	entries := make([]coretypes.Object, 0, r.Count())
 	for i, fname := range r.rtype.fields {
 		entries = append(entries, collectionConstruction.NewVectorFrom(MakeKeyword(fname), r.bases[i]))
@@ -203,7 +203,7 @@ func (r *Record) Seq() Seq {
 }
 
 // Keys returns all keys.
-func (r *Record) Keys() Seq {
+func (r *Record) Keys() coretypes.Seq {
 	keys := make([]coretypes.Object, 0, r.Count())
 	for _, fname := range r.rtype.fields {
 		keys = append(keys, MakeKeyword(fname))
@@ -218,7 +218,7 @@ func (r *Record) Keys() Seq {
 }
 
 // Vals returns all values.
-func (r *Record) Vals() Seq {
+func (r *Record) Vals() coretypes.Seq {
 	vals := make([]coretypes.Object, 0, r.Count())
 	vals = append(vals, r.bases...)
 	if r.ext != nil {
