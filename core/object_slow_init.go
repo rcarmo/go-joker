@@ -11,7 +11,7 @@ import (
 )
 
 var STRINGS corestr.Pool = corestr.Pool{}
-var TYPES = map[*string]*coretypes.Type{}
+var TYPES = coretypes.Registry{}
 var TYPE coretypes.Types
 var LINTER_TYPES = map[*string]bool{}
 

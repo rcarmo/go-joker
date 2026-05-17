@@ -1,5 +1,7 @@
 package types
 
+type Registry map[*string]*Type
+
 type Types struct {
 	Associative    *Type
 	Callable       *Type

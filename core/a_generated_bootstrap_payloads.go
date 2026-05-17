@@ -6356,7 +6356,7 @@ var TYPE coretypes.Types = coretypes.Types{
 	VectorRSeq:     &ty_VectorRSeq,
 	VectorSeq:      &ty_VectorSeq,
 }
-var TYPES map[*string]*coretypes.Type = map[*string]*coretypes.Type{
+var TYPES coretypes.Registry = coretypes.Registry{
 	&s_ArrayMap:       &ty_ArrayMap,
 	&s_ArrayMapSeq:    &ty_ArrayMapSeq,
 	&s_ArrayNodeSeq:   &ty_ArrayNodeSeq,
