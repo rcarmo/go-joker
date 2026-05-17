@@ -7,21 +7,6 @@ import (
 )
 
 type (
-	Ops interface {
-		Combine(ops Ops) Ops
-		Add(coretypes.Number, coretypes.Number) coretypes.Number
-		Subtract(coretypes.Number, coretypes.Number) coretypes.Number
-		Multiply(coretypes.Number, coretypes.Number) coretypes.Number
-		Divide(coretypes.Number, coretypes.Number) coretypes.Number
-		IsZero(coretypes.Number) bool
-		Lt(coretypes.Number, coretypes.Number) bool
-		Lte(coretypes.Number, coretypes.Number) bool
-		Gt(coretypes.Number, coretypes.Number) bool
-		Gte(coretypes.Number, coretypes.Number) bool
-		Eq(coretypes.Number, coretypes.Number) bool
-		Quotient(coretypes.Number, coretypes.Number) coretypes.Number
-		Rem(coretypes.Number, coretypes.Number) coretypes.Number
-	}
 	IntOps      struct{}
 	DoubleOps   struct{}
 	BigIntOps   struct{}
@@ -96,11 +81,11 @@ func ratioOrIntWithOriginal(orig string, r *big.Rat) coretypes.Number {
 	return &Ratio{r: r, Original: orig}
 }
 
-func (ops IntOps) Combine(other Ops) Ops {
+func (ops IntOps) Combine(other coretypes.Ops) coretypes.Ops {
 	return other
 }
 
-func (ops DoubleOps) Combine(other Ops) Ops {
+func (ops DoubleOps) Combine(other coretypes.Ops) coretypes.Ops {
 	switch other.(type) {
 	case BigFloatOps:
 		return other
@@ -109,7 +94,7 @@ func (ops DoubleOps) Combine(other Ops) Ops {
 	}
 }
 
-func (ops BigIntOps) Combine(other Ops) Ops {
+func (ops BigIntOps) Combine(other coretypes.Ops) coretypes.Ops {
 	switch other.(type) {
 	case IntOps:
 		return ops
@@ -118,11 +103,11 @@ func (ops BigIntOps) Combine(other Ops) Ops {
 	}
 }
 
-func (ops BigFloatOps) Combine(other Ops) Ops {
+func (ops BigFloatOps) Combine(other coretypes.Ops) coretypes.Ops {
 	return ops
 }
 
-func (ops RatioOps) Combine(other Ops) Ops {
+func (ops RatioOps) Combine(other coretypes.Ops) coretypes.Ops {
 	switch other.(type) {
 	case DoubleOps, BigFloatOps:
 		return other
@@ -131,7 +116,7 @@ func (ops RatioOps) Combine(other Ops) Ops {
 	}
 }
 
-func GetOps(obj Object) Ops {
+func GetOps(obj Object) coretypes.Ops {
 	switch obj.(type) {
 	case coretypes.Double:
 		return DOUBLE_OPS
@@ -227,7 +212,7 @@ func (r *Ratio) Ratio() *big.Rat {
 	return r.r
 }
 
-// Ops
+// coretypes.Ops
 
 // Add
 
@@ -328,7 +313,7 @@ func (ops RatioOps) Multiply(x, y coretypes.Number) coretypes.Number {
 	return ratioOrInt(&r)
 }
 
-func panicOnZero(ops Ops, n coretypes.Number) {
+func panicOnZero(ops coretypes.Ops, n coretypes.Number) {
 	if ops.IsZero(n) {
 		panic(RT.NewError("Division by zero"))
 	}
