@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert coretypes.Comparable Vec coretypes.Char String Symbol Keyword *coretypes.Regex coretypes.Boolean coretypes.Time Number Seqable Callable *coretypes.Type Meta coretypes.Int coretypes.Double Stack Map Set Associative Reversible coretypes.Named coretypes.Comparator *Ratio *BigFloat *BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel CountedIndexed
+//go:generate go run gen/gen_types.go assert coretypes.Comparable Vec coretypes.Char String Symbol Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number Seqable Callable *coretypes.Type Meta coretypes.Int coretypes.Double Stack Map Set Associative Reversible coretypes.Named coretypes.Comparator *Ratio *BigFloat *BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel CountedIndexed
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Keyword Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
 //go:generate go run -tags gen_code gen/codegen/main.go
 
@@ -299,9 +299,9 @@ func (s SortableSlice) Less(i, j int) bool {
 	return s.cmp.Compare(s.s[i], s.s[j]) == -1
 }
 
-func equalsNumbers(x Number, y interface{}) bool {
+func equalsNumbers(x coretypes.Number, y interface{}) bool {
 	switch y := y.(type) {
-	case Number:
+	case coretypes.Number:
 		return category(x) == category(y) && numbersEq(x, y)
 	default:
 		return false

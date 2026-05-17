@@ -47,7 +47,7 @@ func init() {
 		Map:            typeBuilder().RegisterInterface("Map", (*Map)(nil), ""),
 		Meta:           typeBuilder().RegisterInterface("Meta", (*Meta)(nil), ""),
 		Named:          typeBuilder().RegisterInterface("Named", (*coretypes.Named)(nil), ""),
-		Number:         typeBuilder().RegisterInterface("Number", (*Number)(nil), ""),
+		Number:         typeBuilder().RegisterInterface("Number", (*coretypes.Number)(nil), ""),
 		Pending:        typeBuilder().RegisterInterface("Pending", (*coretypes.Pending)(nil), ""),
 		Ref:            typeBuilder().RegisterInterface("Ref", (*Ref)(nil), ""),
 		Reversible:     typeBuilder().RegisterInterface("Reversible", (*Reversible)(nil), ""),

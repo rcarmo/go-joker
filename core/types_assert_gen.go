@@ -143,19 +143,19 @@ func EnsureArgIsTime(args []Object, index int) coretypes.Time {
 	panic(FailArg(obj, "coretypes.Time", index))
 }
 
-func EnsureObjectIsNumber(obj Object, pattern string) Number {
-	if c, yes := obj.(Number); yes {
+func EnsureObjectIsNumber(obj Object, pattern string) coretypes.Number {
+	if c, yes := obj.(coretypes.Number); yes {
 		return c
 	}
-	panic(FailObject(obj, "Number", pattern))
+	panic(FailObject(obj, "coretypes.Number", pattern))
 }
 
-func EnsureArgIsNumber(args []Object, index int) Number {
+func EnsureArgIsNumber(args []Object, index int) coretypes.Number {
 	obj := args[index]
-	if c, yes := obj.(Number); yes {
+	if c, yes := obj.(coretypes.Number); yes {
 		return c
 	}
-	panic(FailArg(obj, "Number", index))
+	panic(FailArg(obj, "coretypes.Number", index))
 }
 
 func EnsureObjectIsSeqable(obj Object, pattern string) Seqable {

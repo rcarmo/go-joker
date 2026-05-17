@@ -4616,7 +4616,7 @@ var ty_Number coretypes.Type = coretypes.Type{
 		meta: &arrayMap_NUM_20,
 	},
 	Name:        "Number",
-	ReflectType: reflect.TypeOf((*Number)(nil)).Elem(),
+	ReflectType: reflect.TypeOf((*coretypes.Number)(nil)).Elem(),
 }
 var arrayMap_NUM_21 ArrayMap = ArrayMap{
 	arr: []Object{

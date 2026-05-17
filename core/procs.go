@@ -61,10 +61,10 @@ func ExtractInt(args []Object, index int) int {
 
 func ExtractInteger(args []Object, index int) int {
 	switch c := args[index].(type) {
-	case Number:
+	case coretypes.Number:
 		return c.Int().I
 	default:
-		panic(RT.NewArgTypeError(index, c, "Number"))
+		panic(RT.NewArgTypeError(index, c, "coretypes.Number"))
 	}
 }
 
@@ -96,7 +96,7 @@ func ExtractDouble(args []Object, index int) float64 {
 	return EnsureArgIsDouble(args, index).D
 }
 
-func ExtractNumber(args []Object, index int) Number {
+func ExtractNumber(args []Object, index int) coretypes.Number {
 	return EnsureArgIsNumber(args, index)
 }
 
@@ -932,7 +932,7 @@ var procInt = func(args []Object) Object {
 	switch obj := args[0].(type) {
 	case coretypes.Char:
 		return coretypes.Int{I: int(obj.Ch)}
-	case Number:
+	case coretypes.Number:
 		return obj.Int()
 	default:
 		panic(RT.NewError(fmt.Sprintf("Cannot cast %s (type: %s) to Int", obj.ToString(true), obj.GetType().ToString(false))))
@@ -952,7 +952,7 @@ var procChar = func(args []Object) Object {
 	switch c := args[0].(type) {
 	case coretypes.Char:
 		return c
-	case Number:
+	case coretypes.Number:
 		i := c.Int().I
 		if i < MIN_RUNE || i > MAX_RUNE {
 			panic(RT.NewError(fmt.Sprintf("Value out of range for char: %d", i)))
@@ -979,7 +979,7 @@ var procDenominator = func(args []Object) Object {
 
 var procBigInt = func(args []Object) Object {
 	switch n := args[0].(type) {
-	case Number:
+	case coretypes.Number:
 		return &BigInt{b: n.BigInt()}
 	case String:
 		bi := &big.Int{}
@@ -994,7 +994,7 @@ var procBigInt = func(args []Object) Object {
 
 var procBigFloat = func(args []Object) Object {
 	switch n := args[0].(type) {
-	case Number:
+	case coretypes.Number:
 		return &BigFloat{b: n.BigFloat()}
 	case String:
 		b := &big.Float{}
@@ -1864,7 +1864,7 @@ var procAbs = func(args []Object) Object {
 		}
 		return coretypes.Int{I: x}
 	}
-	panic(FailArg(n, "Number", 0))
+	panic(FailArg(n, "coretypes.Number", 0))
 }
 
 var procIsInfinite = func(args []Object) Object {

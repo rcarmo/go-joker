@@ -505,7 +505,7 @@ const (
 	irAssocBang      = coreir.AssocBang      // pop 3 (tv, key, val), mutate in place, push tv
 	irToPersistent   = coreir.ToPersistent   // pop 1 (TransientVector), push ArrayVector
 	irFallback       = coreir.Fallback       // cannot execute in IR; fall back to tree Eval
-	irIntCast        = coreir.IntCast        // pop 1 (Char or Number), push Int
+	irIntCast        = coreir.IntCast        // pop 1 (Char or coretypes.Number), push Int
 	irSubs           = coreir.Subs           // pop 2 or 3 (string, start [, end]), push substring
 	irGte            = coreir.Gte            // pop 2, push a >= b
 	irGt             = coreir.Gt             // pop 2, push a > b
