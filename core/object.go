@@ -1688,11 +1688,9 @@ func CountedIndexedCompare(v1, v2 CountedIndexed) int {
 }
 
 func CountedIndexedKvreduce(v CountedIndexed, c Callable, init Object) Object {
-	res := init
-	for i := 0; i < v.Count(); i++ {
-		res = call3(c, res, Int{I: i}, v.At(i))
-	}
-	return res
+	return corecollections.IndexedKVReduce[Object](v, init, func(res Object, i int, value Object) Object {
+		return call3(c, res, Int{I: i}, value)
+	})
 }
 
 func CountedIndexedPprint(v CountedIndexed, w io.Writer, indent int) int {
@@ -1733,41 +1731,15 @@ func CountedIndexedFormat(v CountedIndexed, w io.Writer, indent int) int {
 }
 
 func CountedIndexedReduce(v CountedIndexed, c Callable) Object {
-	switch v.Count() {
-	case 0:
-		return call0(c)
-	case 1:
-		return v.At(0)
-	default:
-		args := make([]Object, 2)
-		args[0] = v.At(0)
-		args[1] = v.At(1)
-		acc := c.Call(args)
-		for i := 2; i < v.Count(); i++ {
-			args[0] = acc
-			args[1] = v.At(i)
-			acc = c.Call(args)
-		}
-		return acc
-	}
+	return corecollections.IndexedReduce[Object](v, func() Object { return call0(c) }, func(acc Object, value Object) Object {
+		return c.Call([]Object{acc, value})
+	})
 }
 
 func CountedIndexedReduceInit(v CountedIndexed, c Callable, init Object) Object {
-	switch v.Count() {
-	case 0:
-		return init
-	default:
-		args := make([]Object, 2)
-		args[0] = init
-		args[1] = v.At(0)
-		acc := c.Call(args)
-		for i := 1; i < v.Count(); i++ {
-			args[0] = acc
-			args[1] = v.At(i)
-			acc = c.Call(args)
-		}
-		return acc
-	}
+	return corecollections.IndexedReduceInit[Object](v, init, func(acc Object, value Object) Object {
+		return c.Call([]Object{acc, value})
+	})
 }
 
 func withInfo(obj Object, info *coretypes.ObjectInfo) Object {

@@ -54,6 +54,37 @@ func IndexedHash[T coretypes.Object](v IndexedView[T]) uint32 {
 	return h.Sum32()
 }
 
+func IndexedKVReduce[T coretypes.Object, R any](v IndexedView[T], init R, reduce func(R, int, T) R) R {
+	res := init
+	for i := 0; i < v.Count(); i++ {
+		res = reduce(res, i, v.At(i))
+	}
+	return res
+}
+
+func IndexedReduce[T coretypes.Object, R any](v IndexedView[T], zero func() R, reduce func(R, T) R) R {
+	switch v.Count() {
+	case 0:
+		return zero()
+	case 1:
+		return any(v.At(0)).(R)
+	default:
+		acc := reduce(any(v.At(0)).(R), v.At(1))
+		for i := 2; i < v.Count(); i++ {
+			acc = reduce(acc, v.At(i))
+		}
+		return acc
+	}
+}
+
+func IndexedReduceInit[T coretypes.Object, R any](v IndexedView[T], init R, reduce func(R, T) R) R {
+	acc := init
+	for i := 0; i < v.Count(); i++ {
+		acc = reduce(acc, v.At(i))
+	}
+	return acc
+}
+
 func IndexedCompare[T coretypes.Object](v1, v2 IndexedView[T], compare func(T, T) int) int {
 	if v1.Count() > v2.Count() {
 		return 1
