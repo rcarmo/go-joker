@@ -12,11 +12,11 @@ import (
 
 var STRINGS corestr.Pool = corestr.Pool{}
 var TYPES = map[*string]*Type{}
-var TYPE Types
+var TYPE coretypes.Types
 var LINTER_TYPES = map[*string]bool{}
 
 func init() {
-	TYPE = Types{
+	TYPE = coretypes.Types{
 		Associative:    RegInterface("Associative", (*Associative)(nil), ""),
 		Callable:       RegInterface("Callable", (*Callable)(nil), ""),
 		Collection:     RegInterface("Collection", (*Collection)(nil), ""),

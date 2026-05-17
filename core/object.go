@@ -213,7 +213,6 @@ type (
 		reduceInit(c Callable, init Object) Object
 		reduce(c Callable) Object
 	}
-	Types = coretypes.Types
 )
 
 // stringSeq is a lazy seq over a string's runes; yields Chars on demand.

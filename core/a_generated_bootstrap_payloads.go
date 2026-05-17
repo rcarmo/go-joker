@@ -6282,7 +6282,7 @@ var ty_StringSeq Type = Type{
 	Name:        "StringSeq",
 	ReflectType: reflect.TypeOf((*stringSeq)(nil)),
 }
-var TYPE Types = Types{
+var TYPE coretypes.Types = coretypes.Types{
 	ArrayMap:       &ty_ArrayMap,
 	ArrayMapSeq:    &ty_ArrayMapSeq,
 	ArrayNodeSeq:   &ty_ArrayNodeSeq,
