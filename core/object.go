@@ -1660,18 +1660,6 @@ func MakeMeta(arglists Seq, docstring string, added string) *ArrayMap {
 	return res
 }
 
-func typeBuilder() coretypes.Builder {
-	return coretypes.Builder{
-		Registry: TYPES,
-		Intern:   STRINGS.Intern,
-		MetaFactory: func(kind coretypes.Kind, name string, doc string) any {
-			meta := MakeMeta(nil, coretypes.TypeMetadataDoc(kind, doc), "1.0")
-			meta.Add(KEYWORDS.name, MakeString(name))
-			return MetaHolder{meta}
-		},
-	}
-}
-
 func CountedIndexedToString(v CountedIndexed, escape bool) string {
 	var b bytes.Buffer
 	b.WriteRune('[')
