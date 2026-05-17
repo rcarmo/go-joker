@@ -141,7 +141,7 @@ func (list *List) Pop() Stack {
 	return list.rest
 }
 
-func (list *List) sequential() {}
+func (list *List) SequentialMarker() {}
 
 var EmptyList = &List{first: Nil{}, node: corecollections.NewEmptyListNode[Object](Nil{})}
 

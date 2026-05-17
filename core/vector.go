@@ -14,7 +14,7 @@ type (
 		CountedIndexed
 		Gettable
 		Associative
-		Sequential
+		coretypes.Sequential
 		coretypes.Comparable
 		Indexed
 		Stack
@@ -226,7 +226,7 @@ func (seq *VectorSeq) Cons(obj Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
-func (seq *VectorSeq) sequential() {}
+func (seq *VectorSeq) SequentialMarker() {}
 
 func (seq *VectorRSeq) Seq() Seq {
 	return seq
@@ -291,7 +291,7 @@ func (seq *VectorRSeq) Cons(obj Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
-func (seq *VectorRSeq) sequential() {}
+func (seq *VectorRSeq) SequentialMarker() {}
 
 func (v *Vector) Seq() Seq {
 	return &VectorSeq{vector: v, index: 0}
@@ -316,7 +316,7 @@ func (v *Vector) TryNth(i int, d Object) Object {
 	return v.at(i)
 }
 
-func (v *Vector) sequential() {}
+func (v *Vector) SequentialMarker() {}
 
 func (v *Vector) Compare(other coretypes.Object) int {
 	v2 := EnsureObjectIsCountedIndexed(rootObject(other), "Cannot compare Vector: %s")

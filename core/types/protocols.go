@@ -42,3 +42,7 @@ type Native interface {
 type Pending interface {
 	IsRealized() bool
 }
+
+type Sequential interface {
+	SequentialMarker()
+}

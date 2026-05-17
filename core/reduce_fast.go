@@ -426,10 +426,10 @@ func (s *FilteringSeq) WithMeta(m Map) Object {
 	res.meta = SafeMerge(res.meta, m)
 	return &res
 }
-func (s *FilteringSeq) Seq() Seq      { return s }
-func (s *FilteringSeq) sequential()   {}
-func (s *FilteringSeq) IsEmpty() bool { return s.nextSeq().IsEmpty() }
-func (s *FilteringSeq) First() Object { return s.nextSeq().First() }
+func (s *FilteringSeq) Seq() Seq          { return s }
+func (s *FilteringSeq) SequentialMarker() {}
+func (s *FilteringSeq) IsEmpty() bool     { return s.nextSeq().IsEmpty() }
+func (s *FilteringSeq) First() Object     { return s.nextSeq().First() }
 func (s *FilteringSeq) Rest() Seq {
 	ns := s.nextSeq()
 	if ns.IsEmpty() {
@@ -501,7 +501,7 @@ func (s *TakeSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
 func (s *TakeSeq) Hash() uint32             { return hashOrdered(s) }
 func (s *TakeSeq) WithMeta(m Map) Object    { res := *s; res.meta = SafeMerge(res.meta, m); return &res }
 func (s *TakeSeq) Seq() Seq                 { return s }
-func (s *TakeSeq) sequential()              {}
+func (s *TakeSeq) SequentialMarker()        {}
 func (s *TakeSeq) IsEmpty() bool            { return s.n <= 0 || s.seq.IsEmpty() }
 func (s *TakeSeq) First() Object            { return s.seq.First() }
 func (s *TakeSeq) Rest() Seq {
@@ -756,7 +756,7 @@ func (r *IntRange) WithInfo(i *coretypes.ObjectInfo) Object { res := *r; res.Inf
 func (r *IntRange) GetType() *coretypes.Type                { return TYPE.LazySeq }
 func (r *IntRange) Hash() uint32                            { return hashOrdered(r.Seq()) }
 func (r *IntRange) WithMeta(m Map) Object                   { res := *r; res.meta = SafeMerge(res.meta, m); return &res }
-func (r *IntRange) sequential()                             {}
+func (r *IntRange) SequentialMarker()                       {}
 
 func (r *IntRange) Seq() Seq {
 	if r.step > 0 && r.start >= r.end {
@@ -1118,9 +1118,9 @@ func (s *intRangeSeq) WithMeta(m Map) Object {
 	res.meta = SafeMerge(res.meta, m)
 	return &res
 }
-func (s *intRangeSeq) Seq() Seq      { return s }
-func (s *intRangeSeq) sequential()   {}
-func (s *intRangeSeq) First() Object { return Int{I: s.cur} }
+func (s *intRangeSeq) Seq() Seq          { return s }
+func (s *intRangeSeq) SequentialMarker() {}
+func (s *intRangeSeq) First() Object     { return Int{I: s.cur} }
 func (s *intRangeSeq) Rest() Seq {
 	next := s.cur + s.r.step
 	if s.r.step > 0 && next >= s.r.end {

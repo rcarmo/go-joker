@@ -224,7 +224,7 @@ func (s *ArrayNodeSeq) Cons(obj Object) Seq {
 	return &ConsSeq{first: obj, rest: s}
 }
 
-func (s *ArrayNodeSeq) sequential() {}
+func (s *ArrayNodeSeq) SequentialMarker() {}
 
 func newNodeSeq(array []interface{}, i int, s Seq) Seq {
 	if s != nil {
@@ -325,7 +325,7 @@ func (s *NodeSeq) Cons(obj Object) Seq {
 	return &ConsSeq{first: obj, rest: s}
 }
 
-func (s *NodeSeq) sequential() {}
+func (s *NodeSeq) SequentialMarker() {}
 
 func (n *ArrayNode) iter() MapIterator {
 	return &ArrayNodeIterator{

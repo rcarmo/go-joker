@@ -158,9 +158,6 @@ type (
 		fn      Callable
 		runtime *corert.Promise[Object]
 	}
-	Sequential interface {
-		sequential()
-	}
 	Indexed interface {
 		Nth(i int) Object
 		TryNth(i int, d Object) Object
@@ -1475,8 +1472,8 @@ func (s String) Seq() Seq {
 	return &stringSeq{s: s.S, off: 0}
 }
 
-func (seq *stringSeq) Seq() Seq    { return seq }
-func (seq *stringSeq) sequential() {}
+func (seq *stringSeq) Seq() Seq          { return seq }
+func (seq *stringSeq) SequentialMarker() {}
 
 func (seq *stringSeq) First() Object {
 	if seq.off >= len(seq.s) {

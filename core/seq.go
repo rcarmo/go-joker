@@ -65,7 +65,7 @@ func IsSeqEqual(seq Seq, other interface{}) bool {
 		return true
 	}
 	switch other := other.(type) {
-	case Sequential:
+	case coretypes.Sequential:
 		switch other := other.(type) {
 		case Seqable:
 			return SeqsEqual(seq, other.Seq())
@@ -127,7 +127,7 @@ func (seq *MappingSeq) Cons(obj Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
-func (seq *MappingSeq) sequential() {}
+func (seq *MappingSeq) SequentialMarker() {}
 
 func (seq *LazySeq) Seq() Seq {
 	return seq
@@ -192,7 +192,7 @@ func (seq *LazySeq) Cons(obj Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
-func (seq *LazySeq) sequential() {}
+func (seq *LazySeq) SequentialMarker() {}
 
 func NewLazySeq(c Callable) *LazySeq {
 	return &LazySeq{fn: c}
@@ -262,7 +262,7 @@ func (seq *ArraySeq) Cons(obj Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
-func (seq *ArraySeq) sequential() {}
+func (seq *ArraySeq) SequentialMarker() {}
 
 func SeqToString(seq Seq, escape bool) string {
 	b := bufferpool.Get()
@@ -328,7 +328,7 @@ func (seq *ConsSeq) Cons(obj Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
-func (seq *ConsSeq) sequential() {}
+func (seq *ConsSeq) SequentialMarker() {}
 
 func NewConsSeq(first Object, rest Seq) *ConsSeq {
 	return &ConsSeq{

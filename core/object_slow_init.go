@@ -41,7 +41,7 @@ func init() {
 		Reversible:     RegInterface("Reversible", (*Reversible)(nil), ""),
 		Seq:            RegInterface("Seq", (*Seq)(nil), ""),
 		Seqable:        RegInterface("Seqable", (*Seqable)(nil), ""),
-		Sequential:     RegInterface("Sequential", (*Sequential)(nil), ""),
+		Sequential:     RegInterface("Sequential", (*coretypes.Sequential)(nil), ""),
 		Set:            RegInterface("Set", (*Set)(nil), ""),
 		Stack:          RegInterface("Stack", (*Stack)(nil), ""),
 		ArrayMap:       RegRefType("ArrayMap", (*ArrayMap)(nil), ""),

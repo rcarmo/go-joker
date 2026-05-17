@@ -102,7 +102,7 @@ func (v *ArrayVector) TryNth(i int, d Object) Object {
 	return v.At(i)
 }
 
-func (v *ArrayVector) sequential() {}
+func (v *ArrayVector) SequentialMarker() {}
 
 func (v *ArrayVector) Compare(other coretypes.Object) int {
 	v2 := EnsureObjectIsCountedIndexed(rootObject(other), "Cannot compare Vector: %s")

@@ -46,7 +46,7 @@ func SafeMerge(m1, m2 Map) Map {
 	return m1.Merge(m2)
 }
 
-func (seq *ArrayMapSeq) sequential() {}
+func (seq *ArrayMapSeq) SequentialMarker() {}
 
 func (seq *ArrayMapSeq) Equals(other interface{}) bool {
 	return IsSeqEqual(seq, other)

@@ -1043,7 +1043,7 @@ var procNth = func(args []Object) Object {
 		return coll.Nth(n)
 	case Nil:
 		return NIL
-	case Sequential:
+	case coretypes.Sequential:
 		switch coll := args[0].(type) {
 		case Seqable:
 			if len(args) == 3 {

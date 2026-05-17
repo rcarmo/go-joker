@@ -4808,7 +4808,7 @@ var ty_Sequential coretypes.Type = coretypes.Type{
 		meta: &arrayMap_NUM_26,
 	},
 	Name:        "Sequential",
-	ReflectType: reflect.TypeOf((*Sequential)(nil)).Elem(),
+	ReflectType: reflect.TypeOf((*coretypes.Sequential)(nil)).Elem(),
 }
 var arrayMap_NUM_27 ArrayMap = ArrayMap{
 	arr: []Object{

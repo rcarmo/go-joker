@@ -82,8 +82,8 @@ func (cc *ChunkedCons) WithMeta(m Map) Object {
 	res.meta = SafeMerge(res.meta, m)
 	return &res
 }
-func (cc *ChunkedCons) Seq() Seq    { return cc }
-func (cc *ChunkedCons) sequential() {}
+func (cc *ChunkedCons) Seq() Seq          { return cc }
+func (cc *ChunkedCons) SequentialMarker() {}
 
 func (cc *ChunkedCons) First() Object {
 	return cc.chunk.Nth(cc.idx)
