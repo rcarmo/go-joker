@@ -5,8 +5,11 @@ package core
 
 import (
 	"io"
+
+	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
+var STRINGS corestr.Pool = corestr.Pool{}
 var TYPES = map[*string]*Type{}
 var TYPE Types
 var LINTER_TYPES = map[*string]bool{}
