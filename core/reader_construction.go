@@ -56,11 +56,7 @@ func (ReaderConstructionAdapter) Symbol(v string) Object { return MakeSymbol(v) 
 func (ReaderConstructionAdapter) Keyword(v string) Object { return MakeKeyword(v) }
 
 func (ReaderConstructionAdapter) ListFrom(values []Object) Object {
-	list := EmptyList
-	for i := len(values) - 1; i >= 0; i-- {
-		list = list.conj(values[i])
-	}
-	return list
+	return collectionConstruction.NewListFrom(values...)
 }
 
 func (ReaderConstructionAdapter) VectorFrom(values []Object) Object {
