@@ -23,6 +23,7 @@ import (
 	"github.com/rcarmo/go-joker/core/numutil"
 	corert "github.com/rcarmo/go-joker/core/runtime"
 	corestr "github.com/rcarmo/go-joker/core/string"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 type (
@@ -33,10 +34,8 @@ type (
 		startColumn int
 		filename    *string
 	}
-	Equality interface {
-		Equals(interface{}) bool
-	}
-	Type struct {
+	Equality = coretypes.Equality
+	Type     struct {
 		MetaHolder
 		name        string
 		reflectType reflect.Type
@@ -53,9 +52,7 @@ type (
 		Object
 		Conj(obj Object) Conjable
 	}
-	Counted interface {
-		Count() int
-	}
+	Counted        = coretypes.Counted
 	CountedIndexed interface {
 		Counted
 		At(int) Object
@@ -212,10 +209,7 @@ type (
 	Reversible interface {
 		Rseq() Seq
 	}
-	Named interface {
-		Name() string
-		Namespace() string
-	}
+	Named      = coretypes.Named
 	Comparator interface {
 		Compare(a, b Object) int
 	}
@@ -223,15 +217,9 @@ type (
 		s   []Object
 		cmp Comparator
 	}
-	Printer interface {
-		Print(writer io.Writer, printReadably bool)
-	}
-	Pprinter interface {
-		Pprint(writer io.Writer, indent int) int
-	}
-	Formatter interface {
-		Format(writer io.Writer, indent int) int
-	}
+	Printer    = coretypes.Printer
+	Pprinter   = coretypes.Pprinter
+	Formatter  = coretypes.Formatter
 	Collection interface {
 		Object
 		Counted
@@ -246,9 +234,7 @@ type (
 	Deref interface {
 		Deref() Object
 	}
-	Native interface {
-		Native() interface{}
-	}
+	Native   = coretypes.Native
 	KVReduce interface {
 		kvreduce(c Callable, init Object) Object
 	}
@@ -256,10 +242,8 @@ type (
 		reduceInit(c Callable, init Object) Object
 		reduce(c Callable) Object
 	}
-	Pending interface {
-		IsRealized() bool
-	}
-	Types struct {
+	Pending = coretypes.Pending
+	Types   struct {
 		Associative    *Type
 		Callable       *Type
 		Collection     *Type
