@@ -39,7 +39,7 @@ Approximate Go file counts at this audit:
 | Area | Go files | Notes |
 |---|---:|---|
 | `core` total | ~240 | includes tests and extracted packages |
-| `core` root | 94 | still too broad; generated bootstrap is grouped and root contract tests are mechanically grouped; generated files and still-coupled runtime/object code remain here |
+| `core` root | 70 | still too broad; generated bootstrap, root contract tests, executor/IR/WASM families, and fast-path helper families are mechanically grouped; generated files and still-coupled runtime/object code remain here |
 | `std` | ~116 | mostly healthy namespace-oriented packages, with more direct boundary tests |
 | `cmd/joker` | 22 | clean CLI package after root move, now split across cohesive files plus focused tests |
 | `tests` | 2 | integration harnesses and fixtures live under subdirs |
@@ -78,7 +78,7 @@ Current root clustering by filename indicates the next logical seams:
 - runtime/calls: `call_fast`, `goroutine_rt`, frame and dispatch helpers.
 - generated bootstrap: grouped `a_generated_bootstrap_payloads.go`, `types_*_gen.go`.
 
-Recommendation: continue extracting pure leaf helpers and contracts before moving high-cycle packages, but use mechanical grouping where root-coupled files cannot yet move to a real package. Current root `core` file counts are 94 total Go files, 93 non-test files, 3 generated root files, and 90 hand-written non-test/non-generated root files.
+Recommendation: continue extracting pure leaf helpers and contracts before moving high-cycle packages, but use mechanical grouping where root-coupled files cannot yet move to a real package. Current root `core` file counts are 70 total Go files, 69 non-test files, 3 generated root files, and 66 hand-written non-test/non-generated root files.
 
 ### 2. Generated bootstrap remains partly root-coupled
 
