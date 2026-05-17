@@ -225,7 +225,7 @@ func stringNthFast(s string, i int) Object {
 		panic(RT.NewError(fmt.Sprintf("Negative index: %d", i)))
 	}
 	if r, length, ok := corestr.NthRune(s, i); ok {
-		return Char{Ch: r}
+		return coretypes.Char{Ch: r}
 	} else {
 		panic(RT.NewError(fmt.Sprintf("Index %d exceeds string's length %d", i, length)))
 	}
@@ -383,7 +383,7 @@ func (adapter RuntimeExecutionAdapter) NthASCIIStringConst(prog *IRProgram, cons
 	if !ok || idx < 0 || idx >= len(s.S) {
 		return nil, false
 	}
-	return Char{Ch: rune(s.S[idx])}, true
+	return coretypes.Char{Ch: rune(s.S[idx])}, true
 }
 
 func (RuntimeExecutionAdapter) CursorChar(obj Object) (Object, bool) {
@@ -392,7 +392,7 @@ func (RuntimeExecutionAdapter) CursorChar(obj Object) (Object, bool) {
 		return nil, false
 	}
 	if r := cur.Char(); r >= 0 {
-		return Char{Ch: r}, true
+		return coretypes.Char{Ch: r}, true
 	}
 	return NIL, true
 }
@@ -410,7 +410,7 @@ func (RuntimeExecutionAdapter) CursorDone(obj Object) (Object, bool) {
 	if !ok {
 		return nil, false
 	}
-	return Boolean{B: cur.Done()}, true
+	return coretypes.Boolean{B: cur.Done()}, true
 }
 
 func (RuntimeExecutionAdapter) MarkTypedExecutionFailed(prog *IRProgram) {

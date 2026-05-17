@@ -417,8 +417,8 @@ func (expr *DefExpr) Eval(env *LocalEnv) Object {
 		}
 	}
 	meta := collectionConstruction.NewEmptyArrayMap()
-	meta.Add(KEYWORDS.line, Int{I: expr.StartLine})
-	meta.Add(KEYWORDS.column, Int{I: expr.StartColumn})
+	meta.Add(KEYWORDS.line, coretypes.Int{I: expr.StartLine})
+	meta.Add(KEYWORDS.column, coretypes.Int{I: expr.StartColumn})
 	meta.Add(KEYWORDS.file, String{S: *expr.Filename})
 	meta.Add(KEYWORDS.ns, expr.vr.ns)
 	meta.Add(KEYWORDS.name, expr.vr.name)
@@ -428,7 +428,7 @@ func (expr *DefExpr) Eval(env *LocalEnv) Object {
 	}
 	// isMacro can be set by set-macro__ during parse stage
 	if expr.vr.isMacro {
-		expr.vr.meta = expr.vr.meta.Assoc(KEYWORDS.macro, Boolean{B: true}).(Map)
+		expr.vr.meta = expr.vr.meta.Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(Map)
 	}
 	return expr.vr
 }
@@ -489,30 +489,30 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 			case "procInc":
 				switch x := Eval(expr.args[0], env).(type) {
 				case Int:
-					return Int{I: x.I + 1}
+					return coretypes.Int{I: x.I + 1}
 				case Double:
-					return Double{D: x.D + 1}
+					return coretypes.Double{D: x.D + 1}
 				}
 			case "procDec":
 				switch x := Eval(expr.args[0], env).(type) {
 				case Int:
-					return Int{I: x.I - 1}
+					return coretypes.Int{I: x.I - 1}
 				case Double:
-					return Double{D: x.D - 1}
+					return coretypes.Double{D: x.D - 1}
 				}
 			case "procIsZero":
 				switch x := Eval(expr.args[0], env).(type) {
 				case Int:
-					return Boolean{B: x.I == 0}
+					return coretypes.Boolean{B: x.I == 0}
 				case Double:
-					return Boolean{B: x.D == 0}
+					return coretypes.Boolean{B: x.D == 0}
 				}
 			case "procSubtract":
 				switch x := Eval(expr.args[0], env).(type) {
 				case Int:
-					return Int{I: -x.I}
+					return coretypes.Int{I: -x.I}
 				case Double:
-					return Double{D: -x.D}
+					return coretypes.Double{D: -x.D}
 				}
 			}
 			var args [1]Object
@@ -538,16 +538,16 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				case Int:
 					switch b := bx.(type) {
 					case Int:
-						return Int{I: a.I + b.I}
+						return coretypes.Int{I: a.I + b.I}
 					case Double:
-						return Double{D: float64(a.I) + b.D}
+						return coretypes.Double{D: float64(a.I) + b.D}
 					}
 				case Double:
 					switch b := bx.(type) {
 					case Int:
-						return Double{D: a.D + float64(b.I)}
+						return coretypes.Double{D: a.D + float64(b.I)}
 					case Double:
-						return Double{D: a.D + b.D}
+						return coretypes.Double{D: a.D + b.D}
 					}
 				}
 			case "procSubtract":
@@ -557,16 +557,16 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				case Int:
 					switch b := bx.(type) {
 					case Int:
-						return Int{I: a.I - b.I}
+						return coretypes.Int{I: a.I - b.I}
 					case Double:
-						return Double{D: float64(a.I) - b.D}
+						return coretypes.Double{D: float64(a.I) - b.D}
 					}
 				case Double:
 					switch b := bx.(type) {
 					case Int:
-						return Double{D: a.D - float64(b.I)}
+						return coretypes.Double{D: a.D - float64(b.I)}
 					case Double:
-						return Double{D: a.D - b.D}
+						return coretypes.Double{D: a.D - b.D}
 					}
 				}
 			case "procMultiply":
@@ -576,16 +576,16 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				case Int:
 					switch b := bx.(type) {
 					case Int:
-						return Int{I: a.I * b.I}
+						return coretypes.Int{I: a.I * b.I}
 					case Double:
-						return Double{D: float64(a.I) * b.D}
+						return coretypes.Double{D: float64(a.I) * b.D}
 					}
 				case Double:
 					switch b := bx.(type) {
 					case Int:
-						return Double{D: a.D * float64(b.I)}
+						return coretypes.Double{D: a.D * float64(b.I)}
 					case Double:
-						return Double{D: a.D * b.D}
+						return coretypes.Double{D: a.D * b.D}
 					}
 				}
 			case "procRem":
@@ -596,7 +596,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 						if b.I == 0 {
 							panicOnZero(INT_OPS, b)
 						}
-						return Int{I: a.I % b.I}
+						return coretypes.Int{I: a.I % b.I}
 					}
 				}
 			case "procDivide":
@@ -609,16 +609,16 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 						if b.I == 0 {
 							panicOnZero(INT_OPS, b)
 						}
-						return Double{D: float64(a.I) / float64(b.I)}
+						return coretypes.Double{D: float64(a.I) / float64(b.I)}
 					case Double:
-						return Double{D: float64(a.I) / b.D}
+						return coretypes.Double{D: float64(a.I) / b.D}
 					}
 				case Double:
 					switch b := bx.(type) {
 					case Int:
-						return Double{D: a.D / float64(b.I)}
+						return coretypes.Double{D: a.D / float64(b.I)}
 					case Double:
-						return Double{D: a.D / b.D}
+						return coretypes.Double{D: a.D / b.D}
 					}
 				}
 			case "procLt":
@@ -628,16 +628,16 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				case Int:
 					switch b := bx.(type) {
 					case Int:
-						return Boolean{B: a.I < b.I}
+						return coretypes.Boolean{B: a.I < b.I}
 					case Double:
-						return Boolean{B: float64(a.I) < b.D}
+						return coretypes.Boolean{B: float64(a.I) < b.D}
 					}
 				case Double:
 					switch b := bx.(type) {
 					case Int:
-						return Boolean{B: a.D < float64(b.I)}
+						return coretypes.Boolean{B: a.D < float64(b.I)}
 					case Double:
-						return Boolean{B: a.D < b.D}
+						return coretypes.Boolean{B: a.D < b.D}
 					}
 				}
 			case "procEq":
@@ -647,16 +647,16 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				case Int:
 					switch b := bx.(type) {
 					case Int:
-						return Boolean{B: a.I == b.I}
+						return coretypes.Boolean{B: a.I == b.I}
 					case Double:
-						return Boolean{B: float64(a.I) == b.D}
+						return coretypes.Boolean{B: float64(a.I) == b.D}
 					}
 				case Double:
 					switch b := bx.(type) {
 					case Int:
-						return Boolean{B: a.D == float64(b.I)}
+						return coretypes.Boolean{B: a.D == float64(b.I)}
 					case Double:
-						return Boolean{B: a.D == b.D}
+						return coretypes.Boolean{B: a.D == b.D}
 					}
 				}
 			case "procGt":
@@ -666,16 +666,16 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				case Int:
 					switch b := bx.(type) {
 					case Int:
-						return Boolean{B: a.I > b.I}
+						return coretypes.Boolean{B: a.I > b.I}
 					case Double:
-						return Boolean{B: float64(a.I) > b.D}
+						return coretypes.Boolean{B: float64(a.I) > b.D}
 					}
 				case Double:
 					switch b := bx.(type) {
 					case Int:
-						return Boolean{B: a.D > float64(b.I)}
+						return coretypes.Boolean{B: a.D > float64(b.I)}
 					case Double:
-						return Boolean{B: a.D > b.D}
+						return coretypes.Boolean{B: a.D > b.D}
 					}
 				}
 			case "procGte":
@@ -685,16 +685,16 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				case Int:
 					switch b := bx.(type) {
 					case Int:
-						return Boolean{B: a.I >= b.I}
+						return coretypes.Boolean{B: a.I >= b.I}
 					case Double:
-						return Boolean{B: float64(a.I) >= b.D}
+						return coretypes.Boolean{B: float64(a.I) >= b.D}
 					}
 				case Double:
 					switch b := bx.(type) {
 					case Int:
-						return Boolean{B: a.D >= float64(b.I)}
+						return coretypes.Boolean{B: a.D >= float64(b.I)}
 					case Double:
-						return Boolean{B: a.D >= b.D}
+						return coretypes.Boolean{B: a.D >= b.D}
 					}
 				}
 			case "procLte":
@@ -704,16 +704,16 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				case Int:
 					switch b := bx.(type) {
 					case Int:
-						return Boolean{B: a.I <= b.I}
+						return coretypes.Boolean{B: a.I <= b.I}
 					case Double:
-						return Boolean{B: float64(a.I) <= b.D}
+						return coretypes.Boolean{B: float64(a.I) <= b.D}
 					}
 				case Double:
 					switch b := bx.(type) {
 					case Int:
-						return Boolean{B: a.D <= float64(b.I)}
+						return coretypes.Boolean{B: a.D <= float64(b.I)}
 					case Double:
-						return Boolean{B: a.D <= b.D}
+						return coretypes.Boolean{B: a.D <= b.D}
 					}
 				}
 			}

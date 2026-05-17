@@ -1237,7 +1237,7 @@ func (seq *stringSeq) First() Object {
 		return NIL
 	}
 	r, _ := utf8.DecodeRuneInString(seq.s[seq.off:])
-	return Char{Ch: r}
+	return coretypes.Char{Ch: r}
 }
 
 func (seq *stringSeq) Rest() Seq {
@@ -1282,13 +1282,13 @@ func (s String) Nth(i int) Object {
 	// Fast path: for pure ASCII strings, byte index == rune index.
 	// Check: if len(s) matches byte count, all chars are single-byte.
 	if i < len(s.S) && stringIsASCII(s.S) {
-		return Char{Ch: rune(s.S[i])}
+		return coretypes.Char{Ch: rune(s.S[i])}
 	}
 	// Slow path: UTF-8 rune iteration
 	n := 0
 	for _, r := range s.S {
 		if n == i {
-			return Char{Ch: r}
+			return coretypes.Char{Ch: r}
 		}
 		n++
 	}
@@ -1327,12 +1327,12 @@ func (s String) TryNth(i int, d Object) Object {
 		return d
 	}
 	if i < len(s.S) && stringIsASCII(s.S) {
-		return Char{Ch: rune(s.S[i])}
+		return coretypes.Char{Ch: rune(s.S[i])}
 	}
 	n := 0
 	for _, r := range s.S {
 		if n == i {
-			return Char{Ch: r}
+			return coretypes.Char{Ch: r}
 		}
 		n++
 	}

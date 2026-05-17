@@ -1,5 +1,7 @@
 package core
 
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
 // z_doc_meta.go — metadata hygiene for native/runtime-installed Vars.
 //
 // Most public vars are generated from .joke sources and carry rich metadata.
@@ -45,7 +47,7 @@ func fillNativeVarMetadata() {
 			}
 			if vr.isPrivate {
 				if ok, _ := m.Get(KEYWORDS.private); !ok {
-					m.Add(KEYWORDS.private, Boolean{B: true})
+					m.Add(KEYWORDS.private, coretypes.Boolean{B: true})
 				}
 				continue
 			}

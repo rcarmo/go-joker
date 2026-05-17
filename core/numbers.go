@@ -164,7 +164,7 @@ func (b *BigInt) Int() Int {
 	if bi.Cmp(minIntBig) < 0 || bi.Cmp(maxIntBig) > 0 {
 		panic(RT.NewError("BigInt value out of native int range: " + b.ToString(false)))
 	}
-	return Int{I: int(bi.Int64())}
+	return coretypes.Int{I: int(bi.Int64())}
 }
 
 func (b *BigInt) BigInt() *big.Int {
@@ -173,7 +173,7 @@ func (b *BigInt) BigInt() *big.Int {
 
 func (b *BigInt) Double() Double {
 	f, _ := new(big.Float).SetInt(b.BigInt()).Float64()
-	return Double{D: f}
+	return coretypes.Double{D: f}
 }
 
 func (b *BigInt) BigFloat() *big.Float {
@@ -190,7 +190,7 @@ func (b *BigInt) Ratio() *big.Rat {
 
 func (b *BigFloat) Int() Int {
 	f, _ := b.BigFloat().Float64()
-	return Int{I: int(f)}
+	return coretypes.Int{I: int(f)}
 }
 
 func (b *BigFloat) BigInt() *big.Int {
@@ -200,7 +200,7 @@ func (b *BigFloat) BigInt() *big.Int {
 
 func (b *BigFloat) Double() Double {
 	f, _ := b.BigFloat().Float64()
-	return Double{D: f}
+	return coretypes.Double{D: f}
 }
 
 func (b *BigFloat) BigFloat() *big.Float {
@@ -216,7 +216,7 @@ func (b *BigFloat) Ratio() *big.Rat {
 
 func (r *Ratio) Int() Int {
 	f, _ := r.Ratio().Float64()
-	return Int{I: int(f)}
+	return coretypes.Int{I: int(f)}
 }
 
 func (r *Ratio) BigInt() *big.Int {
@@ -226,7 +226,7 @@ func (r *Ratio) BigInt() *big.Int {
 
 func (r *Ratio) Double() Double {
 	f, _ := r.Ratio().Float64()
-	return Double{D: f}
+	return coretypes.Double{D: f}
 }
 
 func (r *Ratio) BigFloat() *big.Float {
@@ -248,11 +248,11 @@ func (ops IntOps) Add(x, y Number) Number {
 		b := new(big.Int).Add(big.NewInt(int64(xi)), big.NewInt(int64(yi)))
 		return &BigInt{b: b}
 	}
-	return Int{I: xi + yi}
+	return coretypes.Int{I: xi + yi}
 }
 
 func (ops DoubleOps) Add(x, y Number) Number {
-	return Double{D: x.Double().D + y.Double().D}
+	return coretypes.Double{D: x.Double().D + y.Double().D}
 }
 
 func (ops BigIntOps) Add(x, y Number) Number {
@@ -282,11 +282,11 @@ func (ops IntOps) Subtract(x, y Number) Number {
 		b := new(big.Int).Sub(big.NewInt(int64(xi)), big.NewInt(int64(yi)))
 		return &BigInt{b: b}
 	}
-	return Int{I: xi - yi}
+	return coretypes.Int{I: xi - yi}
 }
 
 func (ops DoubleOps) Subtract(x, y Number) Number {
-	return Double{D: x.Double().D - y.Double().D}
+	return coretypes.Double{D: x.Double().D - y.Double().D}
 }
 
 func (ops BigIntOps) Subtract(x, y Number) Number {
@@ -317,7 +317,7 @@ func (ops IntOps) Multiply(x, y Number) Number {
 }
 
 func (ops DoubleOps) Multiply(x, y Number) Number {
-	return Double{D: x.Double().D * y.Double().D}
+	return coretypes.Double{D: x.Double().D * y.Double().D}
 }
 
 func (ops BigIntOps) Multiply(x, y Number) Number {
@@ -354,7 +354,7 @@ func (ops IntOps) Divide(x, y Number) Number {
 }
 
 func (ops DoubleOps) Divide(x, y Number) Number {
-	return Double{D: x.Double().D / y.Double().D}
+	return coretypes.Double{D: x.Double().D / y.Double().D}
 }
 
 func (ops BigIntOps) Divide(x, y Number) Number {
@@ -389,13 +389,13 @@ func (ops RatioOps) Divide(x, y Number) Number {
 
 func (ops IntOps) Quotient(x, y Number) Number {
 	panicOnZero(ops, y)
-	return Int{I: x.Int().I / y.Int().I}
+	return coretypes.Int{I: x.Int().I / y.Int().I}
 }
 
 func (ops DoubleOps) Quotient(x, y Number) Number {
 	panicOnZero(ops, y)
 	z := x.Double().D / y.Double().D
-	return Double{D: float64(int64(z))}
+	return coretypes.Double{D: float64(int64(z))}
 }
 
 func (ops BigIntOps) Quotient(x, y Number) Number {
@@ -423,7 +423,7 @@ func (ops RatioOps) Quotient(x, y Number) Number {
 
 func (ops IntOps) Rem(x, y Number) Number {
 	panicOnZero(ops, y)
-	return Int{I: x.Int().I % y.Int().I}
+	return coretypes.Int{I: x.Int().I % y.Int().I}
 }
 
 func (ops DoubleOps) Rem(x, y Number) Number {
@@ -431,7 +431,7 @@ func (ops DoubleOps) Rem(x, y Number) Number {
 	n := x.Double().D
 	d := y.Double().D
 	z := n / d
-	return Double{D: n - float64(int64(z))*d}
+	return coretypes.Double{D: n - float64(int64(z))*d}
 }
 
 func (ops BigIntOps) Rem(x, y Number) Number {

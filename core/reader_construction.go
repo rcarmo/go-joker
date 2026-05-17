@@ -43,11 +43,11 @@ func (ReaderConstructionAdapter) DeriveReadObject(base Object, obj Object) Objec
 
 func (ReaderConstructionAdapter) Nil() Object { return NIL }
 
-func (ReaderConstructionAdapter) Bool(v bool) Object { return Boolean{B: v} }
+func (ReaderConstructionAdapter) Bool(v bool) Object { return coretypes.Boolean{B: v} }
 
-func (ReaderConstructionAdapter) Char(v rune) Object { return Char{Ch: v} }
+func (ReaderConstructionAdapter) Char(v rune) Object { return coretypes.Char{Ch: v} }
 
-func (ReaderConstructionAdapter) Int(v int) Object { return Int{I: v} }
+func (ReaderConstructionAdapter) Int(v int) Object { return coretypes.Int{I: v} }
 
 func (ReaderConstructionAdapter) String(v string) Object { return MakeString(v) }
 
@@ -134,7 +134,7 @@ func (ReaderConstructionAdapter) WithMeta(obj Object, meta *ArrayMap) (Object, b
 }
 
 func (ReaderConstructionAdapter) SkipRedundantDoMeta() *ArrayMap {
-	return collectionConstruction.NewEmptyArrayMap().Plus(MakeKeyword("skip-redundant-do"), Boolean{B: true})
+	return collectionConstruction.NewEmptyArrayMap().Plus(MakeKeyword("skip-redundant-do"), coretypes.Boolean{B: true})
 }
 
 func (ReaderConstructionAdapter) LiteralExpr(obj Object) *LiteralExpr {

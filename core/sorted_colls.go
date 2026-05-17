@@ -18,7 +18,7 @@ func sortedCollMeta() Map {
 		return sortedMetaCache
 	}
 	m := collectionConstruction.NewEmptyArrayMap()
-	m.Add(MakeKeyword("sorted"), Boolean{B: true})
+	m.Add(MakeKeyword("sorted"), coretypes.Boolean{B: true})
 	sortedMetaCache = m
 	return sortedMetaCache
 }
@@ -93,7 +93,7 @@ func registerSortedCollProcs() {
 				}
 			}
 		}
-		return Boolean{B: false}
+		return coretypes.Boolean{B: false}
 	}}
 	referToUser(MakeSymbol("sorted?"), sortedQVr)
 
@@ -118,12 +118,12 @@ func registerSortedCollProcs() {
 		return Proc{Name: "procComparatorFn", Fn: func(cArgs []Object) Object {
 			CheckArity(cArgs, 2, 2)
 			if ToBool(pred.Call(cArgs)) {
-				return Int{I: -1}
+				return coretypes.Int{I: -1}
 			}
 			if ToBool(call2(pred, cArgs[1], cArgs[0])) {
-				return Int{I: 1}
+				return coretypes.Int{I: 1}
 			}
-			return Int{I: 0}
+			return coretypes.Int{I: 0}
 		}}
 	}}
 	referToUser(MakeSymbol("comparator"), compVr)

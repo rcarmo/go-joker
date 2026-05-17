@@ -69,7 +69,7 @@ func macroDefProtocol(args []Object) Object {
 		if !ok {
 			continue
 		}
-		forms = append(forms, String{S: mname.ToString(false)}, Int{I: argv.Count()})
+		forms = append(forms, String{S: mname.ToString(false)}, coretypes.Int{I: argv.Count()})
 	}
 	return collectionConstruction.NewListFrom(forms...)
 }

@@ -7,7 +7,10 @@ package core
 // native Go functions that run without Object boxing, interface dispatch, or
 // slice allocation per call.
 
-import "sync"
+import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	"sync"
+)
 
 // nativeIntFn1 through nativeIntFn3 are typed native function signatures.
 type nativeIntFn1 func(a int) int
@@ -94,14 +97,14 @@ func callNativeRecursive(entry *nativeRecursiveEntry, args []Object) Object {
 		if !ok {
 			return nil
 		}
-		return Int{I: entry.fn1(a.I)}
+		return coretypes.Int{I: entry.fn1(a.I)}
 	case 2:
 		a, aok := args[0].(Int)
 		b, bok := args[1].(Int)
 		if !aok || !bok {
 			return nil
 		}
-		return Int{I: entry.fn2(a.I, b.I)}
+		return coretypes.Int{I: entry.fn2(a.I, b.I)}
 	case 3:
 		a, aok := args[0].(Int)
 		b, bok := args[1].(Int)
@@ -109,7 +112,7 @@ func callNativeRecursive(entry *nativeRecursiveEntry, args []Object) Object {
 		if !aok || !bok || !cok {
 			return nil
 		}
-		return Int{I: entry.fn3(a.I, b.I, c.I)}
+		return coretypes.Int{I: entry.fn3(a.I, b.I, c.I)}
 	}
 	return nil
 }

@@ -104,7 +104,7 @@ func procCursorChar(args []Object) Object {
 	if r < 0 {
 		return NIL
 	}
-	return Char{Ch: r}
+	return coretypes.Char{Ch: r}
 }
 
 func procCursorNext(args []Object) Object {
@@ -120,7 +120,7 @@ func procCursorDone(args []Object) Object {
 	if !ok {
 		panic(RT.NewError("cursor-done? expects a StringCursor"))
 	}
-	return Boolean{B: c.Done()}
+	return coretypes.Boolean{B: c.Done()}
 }
 
 func procCursorIndex(args []Object) Object {
@@ -128,7 +128,7 @@ func procCursorIndex(args []Object) Object {
 	if !ok {
 		panic(RT.NewError("cursor-index expects a StringCursor"))
 	}
-	return Int{I: c.Index()}
+	return coretypes.Int{I: c.Index()}
 }
 
 // ---- transient_string.go ----

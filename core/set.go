@@ -41,12 +41,12 @@ func (set *MapSet) ensureMap() Map {
 func (set *MapSet) Add(obj Object) bool {
 	switch m := set.ensureMap().(type) {
 	case *ArrayMap:
-		return m.Add(obj, Boolean{B: true})
+		return m.Add(obj, coretypes.Boolean{B: true})
 	case *HashMap:
 		if m.containsKey(obj) {
 			return false
 		}
-		set.m = set.m.Assoc(obj, Boolean{B: true}).(Map)
+		set.m = set.m.Assoc(obj, coretypes.Boolean{B: true}).(Map)
 		return true
 	default:
 		return false
@@ -54,7 +54,7 @@ func (set *MapSet) Add(obj Object) bool {
 }
 
 func (set *MapSet) Conj(obj Object) Conjable {
-	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.ensureMap().Assoc(obj, Boolean{B: true}).(Map)}
+	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.ensureMap().Assoc(obj, coretypes.Boolean{B: true}).(Map)}
 }
 
 func EmptySet() *MapSet {

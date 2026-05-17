@@ -228,7 +228,7 @@ func transducePipelineRange(xf *XForm, rf Callable, init Object, r *IntRange) Ob
 		}
 	}
 	for i := r.start; r.contains(i); i += r.step {
-		val := Object(Int{I: i})
+		val := Object(coretypes.Int{I: i})
 		include := true
 		stopAfter := false
 		for _, step := range xf.steps {
@@ -269,7 +269,7 @@ func transducePipelineRange(xf *XForm, rf Callable, init Object, r *IntRange) Ob
 func applyXFormMapStep(step xformStep, val Object) Object {
 	if step.intrinsic == reducibleSquareInt {
 		if iv, ok := val.(Int); ok {
-			return Int{I: iv.I * iv.I}
+			return coretypes.Int{I: iv.I * iv.I}
 		}
 	}
 	return call1(step.fn, val)
@@ -294,13 +294,13 @@ func reduceStepFastByName(rf Callable, name string, acc Object, val Object) Obje
 	case "procAdd", "procunchecked-add", "procunchecked-add-int":
 		if a, ok := acc.(Int); ok {
 			if b, ok := val.(Int); ok {
-				return Int{I: a.I + b.I}
+				return coretypes.Int{I: a.I + b.I}
 			}
 		}
 	case "procMultiply", "procunchecked-multiply", "procunchecked-multiply-int":
 		if a, ok := acc.(Int); ok {
 			if b, ok := val.(Int); ok {
-				return Int{I: a.I * b.I}
+				return coretypes.Int{I: a.I * b.I}
 			}
 		}
 	}

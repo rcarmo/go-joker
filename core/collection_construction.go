@@ -1,6 +1,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	corecollections "github.com/rcarmo/go-joker/core/collections"
@@ -51,7 +52,7 @@ func CountedIndexedCompare(v1, v2 CountedIndexed) int {
 
 func CountedIndexedKvreduce(v CountedIndexed, c Callable, init Object) Object {
 	return corecollections.IndexedKVReduce[Object](v, init, func(res Object, i int, value Object) Object {
-		return call3(c, res, Int{I: i}, value)
+		return call3(c, res, coretypes.Int{I: i}, value)
 	})
 }
 

@@ -1729,7 +1729,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			return c.reject("%s expects 1 arg, got %d", procName, len(expr.args))
 		}
 		if n, ok := c.constantCount(expr.args[0]); ok {
-			idx := c.addConstant(Int{I: n})
+			idx := c.addConstant(coretypes.Int{I: n})
 			c.emitWithOperand(irLiteral, idx)
 		} else {
 			if !c.compileExpr(expr.args[0], false) {

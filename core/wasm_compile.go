@@ -786,7 +786,7 @@ func wasmRawInt(v uint64) (int, bool) {
 
 func wasmRawIntObject(v uint64) Object {
 	if i, ok := wasmRawInt(v); ok {
-		return Int{I: i}
+		return coretypes.Int{I: i}
 	}
 	return MakeBigInt(MakeMathBigIntFromInt64(int64(v)))
 }
@@ -977,7 +977,7 @@ func wasmToObj(t *objectTable, v uint64) Object {
 	}
 	if v&(1<<63) != 0 {
 		// Float tagged value
-		return Double{D: math.Float64frombits(v &^ (1 << 63))}
+		return coretypes.Double{D: math.Float64frombits(v &^ (1 << 63))}
 	}
 	return wasmRawIntObject(v)
 }
@@ -1246,7 +1246,7 @@ func wasmMemNthCompileAndExec(prog *IRProgram, slots []Object) Object {
 	if err := c.wp.execFn.CallWithStack(ctx, c.paramsBuf); err != nil {
 		return nil
 	}
-	return Double{D: math.Float64frombits(c.paramsBuf[0])}
+	return coretypes.Double{D: math.Float64frombits(c.paramsBuf[0])}
 }
 
 type vecSlotInfo struct {

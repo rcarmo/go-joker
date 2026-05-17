@@ -4,6 +4,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"time"
 )
 
@@ -32,7 +33,7 @@ func registerTaggedLiterals() {
 		}
 		for _, f := range formats {
 			if t, err := time.Parse(f, s.S); err == nil {
-				return Time{T: t}
+				return coretypes.Time{T: t}
 			}
 		}
 		panic(RT.NewError(fmt.Sprintf("Cannot parse #inst \"%s\"", s.S)))

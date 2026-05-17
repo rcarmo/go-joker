@@ -3,6 +3,8 @@
 
 package core
 
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
 /*
 Called by parse_init.go in an outer var block, this runs before any
 
@@ -37,10 +39,10 @@ func NewEnv() *Env {
 	res.classPath.Value = NIL
 	res.classPath.isPrivate = true
 	res.printReadably = res.CoreNamespace.Intern(MakeSymbol("*print-readably*"))
-	res.printReadably.Value = Boolean{B: true}
-	res.CoreNamespace.InternVar("*repl*", Boolean{B: false},
+	res.printReadably.Value = coretypes.Boolean{B: true}
+	res.CoreNamespace.InternVar("*repl*", coretypes.Boolean{B: false},
 		MakeMeta(nil, "true if Joker is running in repl mode", "1.5"))
-	res.CoreNamespace.InternVar("*linter-mode*", Boolean{B: LINTER_MODE},
+	res.CoreNamespace.InternVar("*linter-mode*", coretypes.Boolean{B: LINTER_MODE},
 		MakeMeta(nil, "true if Joker is running in linter mode", "1.0"))
 	res.CoreNamespace.InternVar("*linter-config*", collectionConstruction.NewEmptyArrayMap(),
 		MakeMeta(nil, "Map of configuration key/value pairs for linter mode", "1.0"))

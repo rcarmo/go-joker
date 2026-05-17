@@ -358,8 +358,8 @@ var procIsTransient = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	switch args[0].(type) {
 	case *TransientVector, *TransientMap:
-		return Boolean{B: true}
+		return coretypes.Boolean{B: true}
 	default:
-		return Boolean{B: false}
+		return coretypes.Boolean{B: false}
 	}
 }

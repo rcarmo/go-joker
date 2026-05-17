@@ -263,7 +263,7 @@ func walkReducibleRangePipeline(p reducibleRangePipeline, emit func(Object) bool
 	}
 
 	for i := p.start; (p.step > 0 && i < p.end) || (p.step < 0 && i > p.end); i += p.step {
-		v := Object(Int{I: i})
+		v := Object(coretypes.Int{I: i})
 		alive := true
 		stopAfterCurrent := false
 
@@ -275,7 +275,7 @@ func walkReducibleRangePipeline(p reducibleRangePipeline, emit func(Object) bool
 			case reducibleMap:
 				if step.intrinsic == reducibleSquareInt {
 					if iv, ok := v.(Int); ok {
-						v = Int{I: iv.I * iv.I}
+						v = coretypes.Int{I: iv.I * iv.I}
 					} else {
 						v = call1(step.fn, v)
 					}
@@ -705,7 +705,7 @@ var procFrequencies ProcFn = func(args []Object) Object {
 			stringOnly = false
 			tm = MapToTransient(nil)
 			for k, v := range stringCounts {
-				tm.AssocInPlace(String{S: k}, Int{I: v})
+				tm.AssocInPlace(String{S: k}, coretypes.Int{I: v})
 			}
 			stringCounts = nil
 		}
@@ -714,20 +714,20 @@ var procFrequencies ProcFn = func(args []Object) Object {
 		if i, ok := old.(Int); ok {
 			cnt = i.I
 		}
-		tm.AssocInPlace(obj, Int{I: cnt + 1})
+		tm.AssocInPlace(obj, coretypes.Int{I: cnt + 1})
 		seq = seq.Rest()
 	}
 	if stringOnly {
 		if len(stringCounts) <= int(HASHMAP_THRESHOLD/2) {
 			res := collectionConstruction.NewEmptyArrayMap()
 			for k, v := range stringCounts {
-				res.Add(String{S: k}, Int{I: v})
+				res.Add(String{S: k}, coretypes.Int{I: v})
 			}
 			return res
 		}
 		res := EmptyHashMap
 		for k, v := range stringCounts {
-			res = res.Assoc(String{S: k}, Int{I: v}).(*HashMap)
+			res = res.Assoc(String{S: k}, coretypes.Int{I: v}).(*HashMap)
 		}
 		return res
 	}
@@ -775,7 +775,7 @@ func (r *IntRange) chunkedSeqFrom(cur int) Seq {
 	buf := make([]Object, 0, 32)
 	v := cur
 	for len(buf) < 32 && r.contains(v) {
-		buf = append(buf, Int{I: v})
+		buf = append(buf, coretypes.Int{I: v})
 		v += r.step
 	}
 	chunk := &ArrayChunk{arr: buf, off: 0, end: len(buf)}
@@ -816,9 +816,9 @@ func (r *IntRange) reduce(f Callable) Object {
 	if result, ok := r.reduceFast(f); ok {
 		return result
 	}
-	acc := Object(Int{I: r.start})
+	acc := Object(coretypes.Int{I: r.start})
 	for i := r.start + r.step; r.contains(i); i += r.step {
-		acc = call2(f, acc, Int{I: i})
+		acc = call2(f, acc, coretypes.Int{I: i})
 		if IsReduced(acc) {
 			return DerefReduced(acc)
 		}
@@ -832,7 +832,7 @@ func (r *IntRange) reduceInit(f Callable, init Object) Object {
 	}
 	acc := init
 	for i := r.start; r.contains(i); i += r.step {
-		acc = call2(f, acc, Int{I: i})
+		acc = call2(f, acc, coretypes.Int{I: i})
 		if IsReduced(acc) {
 			return DerefReduced(acc)
 		}
@@ -856,13 +856,13 @@ func (r *IntRange) reduceFast(f Callable) (Object, bool) {
 		for i := r.start + r.step; r.contains(i); i += r.step {
 			acc += i
 		}
-		return Int{I: acc}, true
+		return coretypes.Int{I: acc}, true
 	case "procMultiply", "procunchecked-multiply", "procunchecked-multiply-int":
 		acc := r.start
 		for i := r.start + r.step; r.contains(i); i += r.step {
 			acc *= i
 		}
-		return Int{I: acc}, true
+		return coretypes.Int{I: acc}, true
 	case "procMax":
 		acc := r.start
 		for i := r.start + r.step; r.contains(i); i += r.step {
@@ -870,7 +870,7 @@ func (r *IntRange) reduceFast(f Callable) (Object, bool) {
 				acc = i
 			}
 		}
-		return Int{I: acc}, true
+		return coretypes.Int{I: acc}, true
 	case "procMin":
 		acc := r.start
 		for i := r.start + r.step; r.contains(i); i += r.step {
@@ -878,7 +878,7 @@ func (r *IntRange) reduceFast(f Callable) (Object, bool) {
 				acc = i
 			}
 		}
-		return Int{I: acc}, true
+		return coretypes.Int{I: acc}, true
 	}
 	return nil, false
 }
@@ -896,26 +896,26 @@ func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
 			for i := r.start; r.contains(i); i += r.step {
 				v += i
 			}
-			return Int{I: v}, true
+			return coretypes.Int{I: v}, true
 		case "procMultiply", "procunchecked-multiply", "procunchecked-multiply-int":
 			for i := r.start; r.contains(i); i += r.step {
 				v *= i
 			}
-			return Int{I: v}, true
+			return coretypes.Int{I: v}, true
 		case "procMax":
 			for i := r.start; r.contains(i); i += r.step {
 				if i > v {
 					v = i
 				}
 			}
-			return Int{I: v}, true
+			return coretypes.Int{I: v}, true
 		case "procMin":
 			for i := r.start; r.contains(i); i += r.step {
 				if i < v {
 					v = i
 				}
 			}
-			return Int{I: v}, true
+			return coretypes.Int{I: v}, true
 		}
 	case Double:
 		v := acc.D
@@ -924,12 +924,12 @@ func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
 			for i := r.start; r.contains(i); i += r.step {
 				v += float64(i)
 			}
-			return Double{D: v}, true
+			return coretypes.Double{D: v}, true
 		case "procMultiply":
 			for i := r.start; r.contains(i); i += r.step {
 				v *= float64(i)
 			}
-			return Double{D: v}, true
+			return coretypes.Double{D: v}, true
 		case "procMax":
 			for i := r.start; r.contains(i); i += r.step {
 				fi := float64(i)
@@ -937,7 +937,7 @@ func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
 					v = fi
 				}
 			}
-			return Double{D: v}, true
+			return coretypes.Double{D: v}, true
 		case "procMin":
 			for i := r.start; r.contains(i); i += r.step {
 				fi := float64(i)
@@ -945,7 +945,7 @@ func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
 					v = fi
 				}
 			}
-			return Double{D: v}, true
+			return coretypes.Double{D: v}, true
 		}
 	}
 	return nil, false
@@ -987,7 +987,7 @@ func (r *IntRange) reduceMapAssocFast(f Callable, init Object) (Object, bool) {
 	}
 	tm := MapToTransient(m)
 	for i := r.start; r.contains(i); i += r.step {
-		tm.AssocInPlace(Int{I: keyFn(0, i)}, Int{I: valFn(0, i)})
+		tm.AssocInPlace(coretypes.Int{I: keyFn(0, i)}, coretypes.Int{I: valFn(0, i)})
 	}
 	return tm.ToPersistent(), true
 }
@@ -1120,7 +1120,7 @@ func (s *intRangeSeq) WithMeta(m Map) Object {
 }
 func (s *intRangeSeq) Seq() Seq          { return s }
 func (s *intRangeSeq) SequentialMarker() {}
-func (s *intRangeSeq) First() Object     { return Int{I: s.cur} }
+func (s *intRangeSeq) First() Object     { return coretypes.Int{I: s.cur} }
 func (s *intRangeSeq) Rest() Seq {
 	next := s.cur + s.r.step
 	if s.r.step > 0 && next >= s.r.end {

@@ -192,7 +192,7 @@ var procAgetF64 = func(args []Object) Object {
 		return NIL
 	}
 	i := EnsureArgIsNumber(args, 1).Int().I
-	return Double{D: arr.GetF64(i)}
+	return coretypes.Double{D: arr.GetF64(i)}
 }
 
 var procAsetF64 = func(args []Object) Object {
@@ -213,5 +213,5 @@ var procArrayLength = func(args []Object) Object {
 	if !ok {
 		return NIL
 	}
-	return Int{I: arr.Length()}
+	return coretypes.Int{I: arr.Length()}
 }

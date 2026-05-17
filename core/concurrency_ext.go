@@ -143,7 +143,7 @@ func installConcurrencyExt() {
 		if p, ok := args[0].(coretypes.Pending); ok {
 			return coretypes.MakeBoolean(p.IsRealized())
 		}
-		return Boolean{B: false}
+		return coretypes.Boolean{B: false}
 	}}
 	referToUser(MakeSymbol("realized?"), rzVr)
 

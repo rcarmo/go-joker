@@ -152,25 +152,25 @@ var procWithMeta = func(args []Object) Object {
 var procIsZero = func(args []Object) Object {
 	switch n := args[0].(type) {
 	case Int:
-		return Boolean{B: n.I == 0}
+		return coretypes.Boolean{B: n.I == 0}
 	case Double:
-		return Boolean{B: n.D == 0}
+		return coretypes.Boolean{B: n.D == 0}
 	}
 	n := EnsureArgIsNumber(args, 0)
 	ops := GetOps(n)
-	return Boolean{B: ops.IsZero(n)}
+	return coretypes.Boolean{B: ops.IsZero(n)}
 }
 
 var procIsPos = func(args []Object) Object {
 	n := EnsureArgIsNumber(args, 0)
 	ops := GetOps(n)
-	return Boolean{B: ops.Gt(n, Int{I: 0})}
+	return coretypes.Boolean{B: ops.Gt(n, coretypes.Int{I: 0})}
 }
 
 var procIsNeg = func(args []Object) Object {
 	n := EnsureArgIsNumber(args, 0)
 	ops := GetOps(n)
-	return Boolean{B: ops.Lt(n, Int{I: 0})}
+	return coretypes.Boolean{B: ops.Lt(n, coretypes.Int{I: 0})}
 }
 
 var procAdd = func(args []Object) Object {
@@ -180,14 +180,14 @@ var procAdd = func(args []Object) Object {
 		case Int:
 			return INT_OPS.Add(x, y)
 		case Double:
-			return Double{D: float64(x.I) + y.D}
+			return coretypes.Double{D: float64(x.I) + y.D}
 		}
 	case Double:
 		switch y := args[1].(type) {
 		case Int:
-			return Double{D: x.D + float64(y.I)}
+			return coretypes.Double{D: x.D + float64(y.I)}
 		case Double:
-			return Double{D: x.D + y.D}
+			return coretypes.Double{D: x.D + y.D}
 		}
 	}
 	x := EnsureObjectIsNumber(args[0], "")
@@ -210,14 +210,14 @@ var procMultiply = func(args []Object) Object {
 		case Int:
 			return INT_OPS.Multiply(x, y)
 		case Double:
-			return Double{D: float64(x.I) * y.D}
+			return coretypes.Double{D: float64(x.I) * y.D}
 		}
 	case Double:
 		switch y := args[1].(type) {
 		case Int:
-			return Double{D: x.D * float64(y.I)}
+			return coretypes.Double{D: x.D * float64(y.I)}
 		case Double:
-			return Double{D: x.D * y.D}
+			return coretypes.Double{D: x.D * y.D}
 		}
 	}
 	x := EnsureObjectIsNumber(args[0], "")
@@ -237,11 +237,11 @@ var procSubtract = func(args []Object) Object {
 	if len(args) == 1 {
 		switch x := args[0].(type) {
 		case Int:
-			return INT_OPS.Subtract(Int{I: 0}, x)
+			return INT_OPS.Subtract(coretypes.Int{I: 0}, x)
 		case Double:
-			return Double{D: -x.D}
+			return coretypes.Double{D: -x.D}
 		}
-		a := Int{I: 0}
+		a := coretypes.Int{I: 0}
 		b := EnsureObjectIsNumber(args[0], "")
 		ops := GetOps(a).Combine(GetOps(b))
 		return ops.Subtract(a, b)
@@ -252,14 +252,14 @@ var procSubtract = func(args []Object) Object {
 		case Int:
 			return INT_OPS.Subtract(a, b)
 		case Double:
-			return Double{D: float64(a.I) - b.D}
+			return coretypes.Double{D: float64(a.I) - b.D}
 		}
 	case Double:
 		switch b := args[1].(type) {
 		case Int:
-			return Double{D: a.D - float64(b.I)}
+			return coretypes.Double{D: a.D - float64(b.I)}
 		case Double:
-			return Double{D: a.D - b.D}
+			return coretypes.Double{D: a.D - b.D}
 		}
 	}
 	a := EnsureObjectIsNumber(args[0], "")
@@ -271,7 +271,7 @@ var procSubtract = func(args []Object) Object {
 var procSubtractEx = func(args []Object) Object {
 	var a, b Object
 	if len(args) == 1 {
-		a = Int{I: 0}
+		a = coretypes.Int{I: 0}
 		b = args[0]
 	} else {
 		a = args[0]
@@ -302,7 +302,7 @@ var procRem = func(args []Object) Object {
 			if y.I == 0 {
 				panicOnZero(INT_OPS, y)
 			}
-			return Int{I: x.I % y.I}
+			return coretypes.Int{I: x.I % y.I}
 		}
 	}
 	x := EnsureArgIsNumber(args, 0)
@@ -313,7 +313,7 @@ var procRem = func(args []Object) Object {
 
 var procBitNot = func(args []Object) Object {
 	x := EnsureObjectIsInt(args[0], "Bit operation not supported for "+args[0].GetType().ToString(false))
-	return Int{I: ^x.I}
+	return coretypes.Int{I: ^x.I}
 }
 
 func EnsureObjectIsInts(args []Object) (Int, Int) {
@@ -324,22 +324,22 @@ func EnsureObjectIsInts(args []Object) (Int, Int) {
 
 var procBitAnd = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I & y.I}
+	return coretypes.Int{I: x.I & y.I}
 }
 
 var procBitOr = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I | y.I}
+	return coretypes.Int{I: x.I | y.I}
 }
 
 var procBitXor = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I ^ y.I}
+	return coretypes.Int{I: x.I ^ y.I}
 }
 
 var procBitAndNot = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I &^ y.I}
+	return coretypes.Int{I: x.I &^ y.I}
 }
 
 func checkedBitIndex(index int, op string) uint {
@@ -361,37 +361,37 @@ func checkedShiftCount(count int, op string) uint {
 
 var procBitClear = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I &^ (1 << checkedBitIndex(y.I, "bit-clear"))}
+	return coretypes.Int{I: x.I &^ (1 << checkedBitIndex(y.I, "bit-clear"))}
 }
 
 var procBitSet = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I | (1 << checkedBitIndex(y.I, "bit-set"))}
+	return coretypes.Int{I: x.I | (1 << checkedBitIndex(y.I, "bit-set"))}
 }
 
 var procBitFlip = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I ^ (1 << checkedBitIndex(y.I, "bit-flip"))}
+	return coretypes.Int{I: x.I ^ (1 << checkedBitIndex(y.I, "bit-flip"))}
 }
 
 var procBitTest = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Boolean{B: x.I&(1<<checkedBitIndex(y.I, "bit-test")) != 0}
+	return coretypes.Boolean{B: x.I&(1<<checkedBitIndex(y.I, "bit-test")) != 0}
 }
 
 var procBitShiftLeft = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I << checkedShiftCount(y.I, "bit-shift-left")}
+	return coretypes.Int{I: x.I << checkedShiftCount(y.I, "bit-shift-left")}
 }
 
 var procBitShiftRight = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I >> checkedShiftCount(y.I, "bit-shift-right")}
+	return coretypes.Int{I: x.I >> checkedShiftCount(y.I, "bit-shift-right")}
 }
 
 var procUnsignedBitShiftRight = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: int(uint(x.I) >> checkedShiftCount(y.I, "unsigned-bit-shift-right"))}
+	return coretypes.Int{I: int(uint(x.I) >> checkedShiftCount(y.I, "unsigned-bit-shift-right"))}
 }
 
 var procExInfo = func(args []Object) Object {
@@ -478,11 +478,11 @@ var procReFind = func(args []Object) Object {
 
 var procRand = func(args []Object) Object {
 	r := rand.Float64()
-	return Double{D: r}
+	return coretypes.Double{D: r}
 }
 
 var procIsSpecialSymbol = func(args []Object) Object {
-	return Boolean{B: IsSpecialSymbol(args[0])}
+	return coretypes.Boolean{B: IsSpecialSymbol(args[0])}
 }
 
 var procSubs = func(args []Object) Object {
@@ -611,7 +611,7 @@ var procEmpty = func(args []Object) Object {
 
 var procIsBound = func(args []Object) Object {
 	vr := EnsureArgIsVar(args, 0)
-	return Boolean{B: vr.Value != nil}
+	return coretypes.Boolean{B: vr.Value != nil}
 }
 
 // Convert Joker object to native Go object. For those satisfying the
@@ -714,7 +714,7 @@ var procSeq = func(args []Object) Object {
 var procIsInstance = func(args []Object) Object {
 	CheckArity(args, 2, 2)
 	t := EnsureArgIsType(args, 0)
-	return Boolean{B: IsInstance(t, args[1])}
+	return coretypes.Boolean{B: IsInstance(t, args[1])}
 }
 
 var procAssoc = func(args []Object) Object {
@@ -722,16 +722,16 @@ var procAssoc = func(args []Object) Object {
 }
 
 var procEquals = func(args []Object) Object {
-	return Boolean{B: args[0].Equals(args[1])}
+	return coretypes.Boolean{B: args[0].Equals(args[1])}
 }
 
 var procCount = func(args []Object) Object {
 	switch obj := args[0].(type) {
 	case coretypes.Counted:
-		return Int{I: obj.Count()}
+		return coretypes.Int{I: obj.Count()}
 	default:
 		s := EnsureObjectIsSeqable(obj, "count not supported on this type: %s")
-		return Int{I: SeqCount(s.Seq())}
+		return coretypes.Int{I: SeqCount(s.Seq())}
 	}
 }
 
@@ -907,23 +907,23 @@ var procForce = func(args []Object) Object {
 }
 
 var procIdentical = func(args []Object) Object {
-	return Boolean{B: args[0] == args[1]}
+	return coretypes.Boolean{B: args[0] == args[1]}
 }
 
 var procCompare = func(args []Object) Object {
 	k1, k2 := args[0], args[1]
 	if k1.Equals(k2) {
-		return Int{I: 0}
+		return coretypes.Int{I: 0}
 	}
 	switch k2.(type) {
 	case Nil:
-		return Int{I: 1}
+		return coretypes.Int{I: 1}
 	}
 	switch k1 := k1.(type) {
 	case Nil:
-		return Int{I: -1}
+		return coretypes.Int{I: -1}
 	case coretypes.Comparable:
-		return Int{I: k1.Compare(k2)}
+		return coretypes.Int{I: k1.Compare(k2)}
 	}
 	panic(RT.NewError(fmt.Sprintf("%s (type: %s) is not a Comparable", k1.ToString(true), k1.GetType().ToString(false))))
 }
@@ -931,7 +931,7 @@ var procCompare = func(args []Object) Object {
 var procInt = func(args []Object) Object {
 	switch obj := args[0].(type) {
 	case Char:
-		return Int{I: int(obj.Ch)}
+		return coretypes.Int{I: int(obj.Ch)}
 	case Number:
 		return obj.Int()
 	default:
@@ -957,14 +957,14 @@ var procChar = func(args []Object) Object {
 		if i < MIN_RUNE || i > MAX_RUNE {
 			panic(RT.NewError(fmt.Sprintf("Value out of range for char: %d", i)))
 		}
-		return Char{Ch: rune(i)}
+		return coretypes.Char{Ch: rune(i)}
 	default:
 		panic(RT.NewError(fmt.Sprintf("Cannot cast %s (type: %s) to Char", c.ToString(true), c.GetType().ToString(false))))
 	}
 }
 
 var procBoolean = func(args []Object) Object {
-	return Boolean{B: ToBool(args[0])}
+	return coretypes.Boolean{B: ToBool(args[0])}
 }
 
 var procNumerator = func(args []Object) Object {
@@ -1034,39 +1034,39 @@ var procLt = func(args []Object) Object {
 	case Int:
 		switch b := args[1].(type) {
 		case Int:
-			return Boolean{B: a.I < b.I}
+			return coretypes.Boolean{B: a.I < b.I}
 		case Double:
-			return Boolean{B: float64(a.I) < b.D}
+			return coretypes.Boolean{B: float64(a.I) < b.D}
 		}
 	case Double:
 		switch b := args[1].(type) {
 		case Int:
-			return Boolean{B: a.D < float64(b.I)}
+			return coretypes.Boolean{B: a.D < float64(b.I)}
 		case Double:
-			return Boolean{B: a.D < b.D}
+			return coretypes.Boolean{B: a.D < b.D}
 		}
 	}
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return Boolean{B: GetOps(a).Combine(GetOps(b)).Lt(a, b)}
+	return coretypes.Boolean{B: GetOps(a).Combine(GetOps(b)).Lt(a, b)}
 }
 
 var procLte = func(args []Object) Object {
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return Boolean{B: GetOps(a).Combine(GetOps(b)).Lte(a, b)}
+	return coretypes.Boolean{B: GetOps(a).Combine(GetOps(b)).Lte(a, b)}
 }
 
 var procGt = func(args []Object) Object {
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return Boolean{B: GetOps(a).Combine(GetOps(b)).Gt(a, b)}
+	return coretypes.Boolean{B: GetOps(a).Combine(GetOps(b)).Gt(a, b)}
 }
 
 var procGte = func(args []Object) Object {
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return Boolean{B: GetOps(a).Combine(GetOps(b)).Gte(a, b)}
+	return coretypes.Boolean{B: GetOps(a).Combine(GetOps(b)).Gte(a, b)}
 }
 
 var procEq = func(args []Object) Object {
@@ -1074,21 +1074,21 @@ var procEq = func(args []Object) Object {
 	case Int:
 		switch b := args[1].(type) {
 		case Int:
-			return Boolean{B: a.I == b.I}
+			return coretypes.Boolean{B: a.I == b.I}
 		case Double:
-			return Boolean{B: float64(a.I) == b.D}
+			return coretypes.Boolean{B: float64(a.I) == b.D}
 		}
 	case Double:
 		switch b := args[1].(type) {
 		case Int:
-			return Boolean{B: a.D == float64(b.I)}
+			return coretypes.Boolean{B: a.D == float64(b.I)}
 		case Double:
-			return Boolean{B: a.D == b.D}
+			return coretypes.Boolean{B: a.D == b.D}
 		}
 	}
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return Boolean{B: numbersEq(a, b)}
+	return coretypes.Boolean{B: numbersEq(a, b)}
 }
 
 var procMax = func(args []Object) Object {
@@ -1106,37 +1106,37 @@ var procMin = func(args []Object) Object {
 var procIncEx = func(args []Object) Object {
 	x := EnsureArgIsNumber(args, 0)
 	ops := GetOps(x).Combine(BIGINT_OPS)
-	return ops.Add(x, Int{I: 1})
+	return ops.Add(x, coretypes.Int{I: 1})
 }
 
 var procDecEx = func(args []Object) Object {
 	x := EnsureArgIsNumber(args, 0)
 	ops := GetOps(x).Combine(BIGINT_OPS)
-	return ops.Subtract(x, Int{I: 1})
+	return ops.Subtract(x, coretypes.Int{I: 1})
 }
 
 var procInc = func(args []Object) Object {
 	switch x := args[0].(type) {
 	case Int:
-		return INT_OPS.Add(x, Int{I: 1})
+		return INT_OPS.Add(x, coretypes.Int{I: 1})
 	case Double:
-		return Double{D: x.D + 1}
+		return coretypes.Double{D: x.D + 1}
 	}
 	x := EnsureArgIsNumber(args, 0)
 	ops := GetOps(x).Combine(INT_OPS)
-	return ops.Add(x, Int{I: 1})
+	return ops.Add(x, coretypes.Int{I: 1})
 }
 
 var procDec = func(args []Object) Object {
 	switch x := args[0].(type) {
 	case Int:
-		return INT_OPS.Subtract(x, Int{I: 1})
+		return INT_OPS.Subtract(x, coretypes.Int{I: 1})
 	case Double:
-		return Double{D: x.D - 1}
+		return coretypes.Double{D: x.D - 1}
 	}
 	x := EnsureArgIsNumber(args, 0)
 	ops := GetOps(x).Combine(INT_OPS)
-	return ops.Subtract(x, Int{I: 1})
+	return ops.Subtract(x, coretypes.Int{I: 1})
 }
 
 var procPeek = func(args []Object) Object {
@@ -1154,9 +1154,9 @@ var procContains = func(args []Object) Object {
 	case Gettable:
 		ok, _ := c.Get(args[1])
 		if ok {
-			return Boolean{B: true}
+			return coretypes.Boolean{B: true}
 		}
-		return Boolean{B: false}
+		return coretypes.Boolean{B: false}
 	}
 	panic(RT.NewError("contains? not supported on type " + args[0].GetType().ToString(false)))
 }
@@ -1585,7 +1585,7 @@ var procShuffle = func(args []Object) Object {
 }
 
 var procIsRealized = func(args []Object) Object {
-	return Boolean{B: EnsureArgIsPending(args, 0).IsRealized()}
+	return coretypes.Boolean{B: EnsureArgIsPending(args, 0).IsRealized()}
 }
 
 var procDeriveInfo = func(args []Object) Object {
@@ -1599,7 +1599,7 @@ var procJokerVersion = func(args []Object) Object {
 }
 
 var procHash = func(args []Object) Object {
-	return Int{I: int(args[0].Hash())}
+	return coretypes.Int{I: int(args[0].Hash())}
 }
 
 func loadFile(filename string) Object {
@@ -1676,10 +1676,10 @@ var procIndexOf = func(args []Object) Object {
 	ch := EnsureArgIsChar(args, 1)
 	for i, r := range s.S {
 		if r == ch.Ch {
-			return Int{I: i}
+			return coretypes.Int{I: i}
 		}
 	}
-	return Int{I: -1}
+	return coretypes.Int{I: -1}
 }
 
 func libExternalPath(sym Symbol) (path string, ok bool) {
@@ -1742,11 +1742,11 @@ var procInternFakeVar = func(args []Object) Object {
 
 var procParse = func(args []Object) Object {
 	lm, _ := GLOBAL_ENV.Resolve(MakeSymbol("joker.core/*linter-mode*"))
-	lm.Value = Boolean{B: true}
+	lm.Value = coretypes.Boolean{B: true}
 	LINTER_MODE = true
 	defer func() {
 		LINTER_MODE = false
-		lm.Value = Boolean{B: false}
+		lm.Value = coretypes.Boolean{B: false}
 	}()
 	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
 	res := Parse(args[0], parseContext)
@@ -1840,14 +1840,14 @@ var procExit = func(args []Object) Object {
 
 var procIsNaN = func(args []Object) Object {
 	n := EnsureArgIsNumber(args, 0)
-	return Boolean{B: math.IsNaN(n.Double().D)}
+	return coretypes.Boolean{B: math.IsNaN(n.Double().D)}
 }
 
 var procAbs = func(args []Object) Object {
 	n := EnsureArgIsNumber(args, 0)
 	switch n := n.(type) {
 	case Double:
-		return Double{D: math.Abs(n.D)}
+		return coretypes.Double{D: math.Abs(n.D)}
 	case *BigInt:
 		b := &big.Int{}
 		return &BigInt{b: b.Abs(n.b)}
@@ -1862,14 +1862,14 @@ var procAbs = func(args []Object) Object {
 		if x < 0 {
 			x = -x
 		}
-		return Int{I: x}
+		return coretypes.Int{I: x}
 	}
 	panic(FailArg(n, "Number", 0))
 }
 
 var procIsInfinite = func(args []Object) Object {
 	n := EnsureArgIsNumber(args, 0)
-	return Boolean{B: math.IsInf(n.Double().D, 0)}
+	return coretypes.Boolean{B: math.IsInf(n.Double().D, 0)}
 }
 
 var procParseDouble = func(args []Object) Object {
@@ -1878,7 +1878,7 @@ var procParseDouble = func(args []Object) Object {
 	if err != nil {
 		return NIL
 	}
-	return Double{D: d}
+	return coretypes.Double{D: d}
 }
 
 var procParseLong = func(args []Object) Object {
@@ -1887,7 +1887,7 @@ var procParseLong = func(args []Object) Object {
 	if err != nil {
 		return NIL
 	}
-	return Int{I: int(i)}
+	return coretypes.Int{I: int(i)}
 }
 
 func PackReader(reader *Reader, filename string) ([]byte, error) {

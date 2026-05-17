@@ -2,7 +2,10 @@ package core
 
 // atom_ext.go — Atom extensions: validators, watches, compare-and-set!
 
-import "sync"
+import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	"sync"
+)
 
 // atomExtras holds validator and watches for an Atom.
 // Stored in a side table to avoid changing the Atom struct.
@@ -146,10 +149,10 @@ func registerAtomExtProcs() {
 			a.value = newVal
 			a.mu.Unlock()
 			notifyWatches(a, old, newVal)
-			return Boolean{B: true}
+			return coretypes.Boolean{B: true}
 		}
 		a.mu.Unlock()
-		return Boolean{B: false}
+		return coretypes.Boolean{B: false}
 	}}
 	referToUser(MakeSymbol("compare-and-set!"), casVr)
 }

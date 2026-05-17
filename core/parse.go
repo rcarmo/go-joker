@@ -823,7 +823,7 @@ func skipRedundantDo(obj Object) bool {
 	if meta, ok := obj.(Meta); ok {
 		if m := meta.GetMeta(); m != nil {
 			if ok, res := m.Get(MakeKeyword("skip-redundant-do")); ok {
-				return res.Equals(Boolean{B: true})
+				return res.Equals(coretypes.Boolean{B: true})
 			}
 		}
 	}
@@ -1470,9 +1470,9 @@ func checkArglist(arglist Seq, passedArgsCount int) bool {
 
 func setMacroMeta(vr *Var) {
 	if vr.meta == nil {
-		vr.meta = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.macro, Boolean{B: true}).(Map)
+		vr.meta = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(Map)
 	} else {
-		vr.meta = vr.meta.Assoc(KEYWORDS.macro, Boolean{B: true}).(Map)
+		vr.meta = vr.meta.Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(Map)
 	}
 }
 

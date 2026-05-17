@@ -11,10 +11,10 @@ func (expr *LiteralExpr) InferType() *coretypes.Type {
 
 func dumpPosition(p coretypes.Position) Map {
 	res := collectionConstruction.NewEmptyArrayMap()
-	res.Add(KEYWORDS.startLine, Int{I: p.StartLine})
-	res.Add(KEYWORDS.endLine, Int{I: p.EndLine})
-	res.Add(KEYWORDS.startColumn, Int{I: p.StartColumn})
-	res.Add(KEYWORDS.endColumn, Int{I: p.EndColumn})
+	res.Add(KEYWORDS.startLine, coretypes.Int{I: p.StartLine})
+	res.Add(KEYWORDS.endLine, coretypes.Int{I: p.EndLine})
+	res.Add(KEYWORDS.startColumn, coretypes.Int{I: p.StartColumn})
+	res.Add(KEYWORDS.endColumn, coretypes.Int{I: p.EndColumn})
 	res.Add(KEYWORDS.filename, String{S: p.FilenameOrUnknown()})
 	return res
 }

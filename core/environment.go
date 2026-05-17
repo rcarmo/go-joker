@@ -1,6 +1,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"os"
 
@@ -39,9 +40,9 @@ type (
 func versionMap() Map {
 	res := collectionConstruction.NewEmptyArrayMap()
 	major, minor, incremental := corestr.ParseVersionTriplet(VERSION)
-	res.Add(MakeKeyword("major"), Int{I: int(major)})
-	res.Add(MakeKeyword("minor"), Int{I: int(minor)})
-	res.Add(MakeKeyword("incremental"), Int{I: int(incremental)})
+	res.Add(MakeKeyword("major"), coretypes.Int{I: int(major)})
+	res.Add(MakeKeyword("minor"), coretypes.Int{I: int(minor)})
+	res.Add(MakeKeyword("incremental"), coretypes.Int{I: int(incremental)})
 	return res
 }
 

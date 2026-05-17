@@ -3,7 +3,9 @@
 
 package core
 
-var privateMeta Map = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.private, Boolean{B: true}).(Map)
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
+var privateMeta Map = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.private, coretypes.Boolean{B: true}).(Map)
 
 func intern(name string, proc ProcFn, procName string) {
 	vr := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol(name))
@@ -13,7 +15,7 @@ func intern(name string, proc ProcFn, procName string) {
 }
 
 func init() {
-	GLOBAL_ENV.CoreNamespace.InternVar("*assert*", Boolean{B: true},
+	GLOBAL_ENV.CoreNamespace.InternVar("*assert*", coretypes.Boolean{B: true},
 		MakeMeta(nil, "When set to logical false, assert is a noop. Defaults to true.", "1.0"))
 
 	intern("list__", procList, "procList")
