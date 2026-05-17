@@ -77,14 +77,14 @@ func open(path string) *git.Repository {
 
 func addUser(m *ArrayMap, section string, name string, email string) {
 	user := EmptyArrayMap()
-	user.Add(MakeKeyword("name"), MakeString(name))
-	user.Add(MakeKeyword("email"), MakeString(email))
+	user.Add(MakeKeyword("name"), coretypes.MakeString(name))
+	user.Add(MakeKeyword("email"), coretypes.MakeString(email))
 	m.Add(MakeKeyword(section), user)
 }
 
 func makeRemote(remote *gitConfig.RemoteConfig) Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("name"), MakeString(remote.Name))
+	res.Add(MakeKeyword("name"), coretypes.MakeString(remote.Name))
 	res.Add(MakeKeyword("urls"), MakeStringVector(remote.URLs))
 	res.Add(MakeKeyword("mirror?"), coretypes.MakeBoolean(remote.Mirror))
 	return res
@@ -92,27 +92,27 @@ func makeRemote(remote *gitConfig.RemoteConfig) Map {
 
 func makeSubmodule(submodule *gitConfig.Submodule) Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("name"), MakeString(submodule.Name))
-	res.Add(MakeKeyword("path"), MakeString(submodule.Path))
-	res.Add(MakeKeyword("url"), MakeString(submodule.URL))
-	res.Add(MakeKeyword("branch"), MakeString(submodule.Branch))
+	res.Add(MakeKeyword("name"), coretypes.MakeString(submodule.Name))
+	res.Add(MakeKeyword("path"), coretypes.MakeString(submodule.Path))
+	res.Add(MakeKeyword("url"), coretypes.MakeString(submodule.URL))
+	res.Add(MakeKeyword("branch"), coretypes.MakeString(submodule.Branch))
 	return res
 }
 
 func makeBranch(branch *gitConfig.Branch) Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("name"), MakeString(branch.Name))
-	res.Add(MakeKeyword("remote"), MakeString(branch.Remote))
-	res.Add(MakeKeyword("merge"), MakeString(string(branch.Merge)))
-	res.Add(MakeKeyword("rebase"), MakeString(branch.Rebase))
-	res.Add(MakeKeyword("description"), MakeString(branch.Description))
+	res.Add(MakeKeyword("name"), coretypes.MakeString(branch.Name))
+	res.Add(MakeKeyword("remote"), coretypes.MakeString(branch.Remote))
+	res.Add(MakeKeyword("merge"), coretypes.MakeString(string(branch.Merge)))
+	res.Add(MakeKeyword("rebase"), coretypes.MakeString(branch.Rebase))
+	res.Add(MakeKeyword("description"), coretypes.MakeString(branch.Description))
 	return res
 }
 
 func makeUrl(url *gitConfig.URL) Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("name"), MakeString(url.Name))
-	res.Add(MakeKeyword("instead-of"), MakeString(url.InsteadOf))
+	res.Add(MakeKeyword("name"), coretypes.MakeString(url.Name))
+	res.Add(MakeKeyword("instead-of"), coretypes.MakeString(url.InsteadOf))
 	return res
 }
 
@@ -125,31 +125,31 @@ func config(repo *git.Repository) Map {
 func makeConfigMap(cfg *gitConfig.Config) Map {
 	res := EmptyArrayMap()
 	res.Add(MakeKeyword("bare?"), coretypes.MakeBoolean(cfg.Core.IsBare))
-	res.Add(MakeKeyword("worktree"), MakeString(cfg.Core.Worktree))
-	res.Add(MakeKeyword("comment-char"), MakeString(cfg.Core.CommentChar))
-	res.Add(MakeKeyword("repository-format-version"), MakeString(string(cfg.Core.RepositoryFormatVersion)))
-	res.Add(MakeKeyword("default-branch"), MakeString(cfg.Init.DefaultBranch))
+	res.Add(MakeKeyword("worktree"), coretypes.MakeString(cfg.Core.Worktree))
+	res.Add(MakeKeyword("comment-char"), coretypes.MakeString(cfg.Core.CommentChar))
+	res.Add(MakeKeyword("repository-format-version"), coretypes.MakeString(string(cfg.Core.RepositoryFormatVersion)))
+	res.Add(MakeKeyword("default-branch"), coretypes.MakeString(cfg.Init.DefaultBranch))
 	addUser(res, "user", cfg.User.Name, cfg.User.Email)
 	addUser(res, "author", cfg.Author.Name, cfg.Author.Email)
 	addUser(res, "committer", cfg.Committer.Name, cfg.Committer.Email)
 	remotes := EmptyArrayMap()
 	for name, remote := range cfg.Remotes {
-		remotes.Add(MakeString(name), makeRemote(remote))
+		remotes.Add(coretypes.MakeString(name), makeRemote(remote))
 	}
 	res.Add(MakeKeyword("remotes"), remotes)
 	submodules := EmptyArrayMap()
 	for name, submodule := range cfg.Submodules {
-		submodules.Add(MakeString(name), makeSubmodule(submodule))
+		submodules.Add(coretypes.MakeString(name), makeSubmodule(submodule))
 	}
 	res.Add(MakeKeyword("submodules"), submodules)
 	branches := EmptyArrayMap()
 	for name, branch := range cfg.Branches {
-		branches.Add(MakeString(name), makeBranch(branch))
+		branches.Add(coretypes.MakeString(name), makeBranch(branch))
 	}
 	res.Add(MakeKeyword("branches"), branches)
 	urls := EmptyArrayMap()
 	for name, url := range cfg.URLs {
-		urls.Add(MakeString(name), makeUrl(url))
+		urls.Add(coretypes.MakeString(name), makeUrl(url))
 	}
 	res.Add(MakeKeyword("urls"), urls)
 	return res
@@ -164,9 +164,9 @@ func makeRef(r *plumbing.Reference) Map {
 		refType = "symbolic"
 	}
 	res.Add(MakeKeyword("type"), MakeKeyword(refType))
-	res.Add(MakeKeyword("name"), MakeString(string(r.Name())))
-	res.Add(MakeKeyword("target"), MakeString(string(r.Target())))
-	res.Add(MakeKeyword("hash"), MakeString(r.Hash().String()))
+	res.Add(MakeKeyword("name"), coretypes.MakeString(string(r.Name())))
+	res.Add(MakeKeyword("target"), coretypes.MakeString(string(r.Target())))
+	res.Add(MakeKeyword("hash"), coretypes.MakeString(r.Hash().String()))
 	return res
 }
 
@@ -184,23 +184,23 @@ func head(repo *git.Repository) Map {
 
 func makeSignature(s object.Signature) Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("name"), MakeString(s.Name))
-	res.Add(MakeKeyword("email"), MakeString(s.Email))
+	res.Add(MakeKeyword("name"), coretypes.MakeString(s.Name))
+	res.Add(MakeKeyword("email"), coretypes.MakeString(s.Email))
 	res.Add(MakeKeyword("when"), coretypes.MakeTime(s.When))
 	return res
 }
 
 func makeCommit(cmt *object.Commit) Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("hash"), MakeString(cmt.Hash.String()))
+	res.Add(MakeKeyword("hash"), coretypes.MakeString(cmt.Hash.String()))
 	res.Add(MakeKeyword("author"), makeSignature(cmt.Author))
 	res.Add(MakeKeyword("committer"), makeSignature(cmt.Committer))
-	res.Add(MakeKeyword("pgp-siganture"), MakeString(cmt.PGPSignature))
-	res.Add(MakeKeyword("message"), MakeString(cmt.Message))
-	res.Add(MakeKeyword("tree-hash"), MakeString(cmt.TreeHash.String()))
+	res.Add(MakeKeyword("pgp-siganture"), coretypes.MakeString(cmt.PGPSignature))
+	res.Add(MakeKeyword("message"), coretypes.MakeString(cmt.Message))
+	res.Add(MakeKeyword("tree-hash"), coretypes.MakeString(cmt.TreeHash.String()))
 	parentHashes := EmptyVector()
 	for _, v := range cmt.ParentHashes {
-		parentHashes = parentHashes.Conjoin(MakeString(v.String()))
+		parentHashes = parentHashes.Conjoin(coretypes.MakeString(v.String()))
 	}
 	res.Add(MakeKeyword("parent-hashes"), parentHashes)
 	return res
@@ -229,7 +229,7 @@ func log(repo *git.Repository, opts Map) Vec {
 	if ok, v := opts.Get(MakeKeyword("path-filter")); ok {
 		fn := EnsureObjectIsFn(v, "Invalid :path-filter option: %s")
 		logOpts.PathFilter = func(s string) bool {
-			return ToBool(fn.Call([]Object{MakeString(s)}))
+			return ToBool(fn.Call([]Object{coretypes.MakeString(s)}))
 		}
 	}
 	if ok, v := opts.Get(MakeKeyword("all")); ok {
@@ -293,7 +293,7 @@ func findObject(repo *git.Repository, hash string) Map {
 	obj, err := repo.Object(plumbing.AnyObject, plumbing.NewHash(hash))
 	PanicOnErr(err)
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("id"), MakeString(obj.ID().String()))
+	res.Add(MakeKeyword("id"), coretypes.MakeString(obj.ID().String()))
 	objType := MakeKeyword("invalid")
 	switch obj.Type() {
 	case 1:

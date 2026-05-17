@@ -166,7 +166,7 @@ func isDeclaredInConfig(vr *Var) bool {
 	if !ok {
 		return false
 	}
-	s, ok := v.(String)
+	s, ok := v.(coretypes.String)
 	if !ok {
 		return false
 	}

@@ -113,7 +113,7 @@ func initRandomNamespace() {
 		b[6] = (b[6] & 0x0f) | 0x40 // version 4
 		b[8] = (b[8] & 0x3f) | 0x80 // variant 10
 		s := hex.EncodeToString(b[:])
-		return MakeString(s[:8] + "-" + s[8:12] + "-" + s[12:16] + "-" + s[16:20] + "-" + s[20:])
+		return coretypes.MakeString(s[:8] + "-" + s[8:12] + "-" + s[12:16] + "-" + s[16:20] + "-" + s[20:])
 	}, Name: "random-uuid", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom()), `Returns a random UUID v4 string.`, "1.0"))
 
@@ -129,7 +129,7 @@ func initRandomNamespace() {
 		if err != nil {
 			panic(RT.NewError("secure-bytes: " + err.Error()))
 		}
-		return MakeString(hex.EncodeToString(b))
+		return coretypes.MakeString(hex.EncodeToString(b))
 	}, Name: "random-secure-bytes", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("n"))),
 			`Returns n cryptographically random bytes as a hex string.`, "1.0"))

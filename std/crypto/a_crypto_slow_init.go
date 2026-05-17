@@ -5,6 +5,7 @@ package crypto
 import (
 	"fmt"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 )
 
@@ -18,46 +19,46 @@ func InternsOrThunks() {
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("algorithm"), MakeSymbol("message"), MakeSymbol("key"))),
 			`Returns HMAC signature for message and key using specified algorithm.
-  Algorithm is one of the following: :sha1, :sha224, :sha256, :sha384, :sha512.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+  Algorithm is one of the following: :sha1, :sha224, :sha256, :sha384, :sha512.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	cryptoNamespace.InternVar("md5", md5_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the MD5 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Returns the MD5 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	cryptoNamespace.InternVar("sha1", sha1_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA1 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Returns the SHA1 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	cryptoNamespace.InternVar("sha224", sha224_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA224 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Returns the SHA224 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	cryptoNamespace.InternVar("sha256", sha256_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA256 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Returns the SHA256 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	cryptoNamespace.InternVar("sha384", sha384_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA384 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Returns the SHA384 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	cryptoNamespace.InternVar("sha512", sha512_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA512 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Returns the SHA512 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	cryptoNamespace.InternVar("sha512-224", sha512_224_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA512/224 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Returns the SHA512/224 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	cryptoNamespace.InternVar("sha512-256", sha512_256_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA512/256 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Returns the SHA512/256 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 }

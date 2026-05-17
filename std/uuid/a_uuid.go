@@ -4,6 +4,7 @@ package uuid
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 var __new__P ProcFn = __new_
@@ -14,7 +15,7 @@ func __new_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := new()
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

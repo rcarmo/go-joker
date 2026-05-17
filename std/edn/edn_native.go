@@ -3,6 +3,7 @@ package edn
 import (
 	"bufio"
 	"errors"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"strings"
 
@@ -28,7 +29,7 @@ func ReadEDNString(s string) (Object, error) {
 }
 
 func writeEDNString(obj Object) Object {
-	return MakeString(WriteEDNString(obj))
+	return coretypes.MakeString(WriteEDNString(obj))
 }
 
 func WriteEDNString(obj Object) string {

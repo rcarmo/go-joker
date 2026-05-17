@@ -57,7 +57,7 @@ func podPayloadFromObject(obj Object) interface{} {
 		return v.I
 	case coretypes.Double:
 		return v.D
-	case String:
+	case coretypes.String:
 		return v.S
 	case Keyword:
 		return v.ToString(false)
@@ -88,7 +88,7 @@ func podPayloadToObject(v interface{}) Object {
 	case bool:
 		return coretypes.Boolean{B: x}
 	case string:
-		return MakeString(x)
+		return coretypes.MakeString(x)
 	case float64:
 		if x == float64(int(x)) {
 			return coretypes.MakeInt(int(x))
@@ -103,10 +103,10 @@ func podPayloadToObject(v interface{}) Object {
 	case map[string]interface{}:
 		m := EmptyArrayMap()
 		for k, val := range x {
-			m.Add(MakeString(k), podPayloadToObject(val))
+			m.Add(coretypes.MakeString(k), podPayloadToObject(val))
 		}
 		return m
 	default:
-		return MakeString(fmt.Sprint(v))
+		return coretypes.MakeString(fmt.Sprint(v))
 	}
 }

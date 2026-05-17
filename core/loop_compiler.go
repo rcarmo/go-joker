@@ -297,12 +297,12 @@ func isASCIIBytes(s string) bool {
 func (c *irCompiler) constantASCIIString(expr Expr) (string, bool) {
 	switch e := expr.(type) {
 	case *LiteralExpr:
-		if s, ok := e.obj.(String); ok && isASCIIBytes(s.S) {
+		if s, ok := e.obj.(coretypes.String); ok && isASCIIBytes(s.S) {
 			return s.S, true
 		}
 	case *BindingExpr:
 		if lit, ok := e.binding.value.(*LiteralExpr); ok {
-			if s, ok := lit.obj.(String); ok && isASCIIBytes(s.S) {
+			if s, ok := lit.obj.(coretypes.String); ok && isASCIIBytes(s.S) {
 				return s.S, true
 			}
 		}
@@ -314,7 +314,7 @@ func (c *irCompiler) constantCount(expr Expr) (int, bool) {
 	switch e := expr.(type) {
 	case *LiteralExpr:
 		switch v := e.obj.(type) {
-		case String:
+		case coretypes.String:
 			return v.Count(), true
 		case coretypes.Counted:
 			return v.Count(), true
@@ -325,7 +325,7 @@ func (c *irCompiler) constantCount(expr Expr) (int, bool) {
 		if e.binding.frame < c.loopFrame {
 			if lit, ok := e.binding.value.(*LiteralExpr); ok {
 				switch v := lit.obj.(type) {
-				case String:
+				case coretypes.String:
 					return v.Count(), true
 				case coretypes.Counted:
 					return v.Count(), true
@@ -666,7 +666,7 @@ func exprHasTextLiteralOrStr(expr Expr) bool {
 	switch e := expr.(type) {
 	case *LiteralExpr:
 		switch e.obj.(type) {
-		case String, coretypes.Char:
+		case coretypes.String, coretypes.Char:
 			return true
 		}
 	case *IfExpr:
@@ -1651,7 +1651,7 @@ func (c *irCompiler) compileCall(expr *CallExpr, isLast bool) bool {
 			if !c.compileExpr(expr.args[1], false) {
 				return false
 			}
-			idx := c.addConstant(String{S: s})
+			idx := c.addConstant(coretypes.String{S: s})
 			c.emitWithOperand(irNthStringASCII, idx)
 		} else {
 			if !c.compileExpr(expr.args[0], false) || !c.compileExpr(expr.args[1], false) {

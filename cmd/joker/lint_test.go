@@ -33,7 +33,7 @@ func TestDialectFromArg(t *testing.T) {
 		want corereader.Dialect
 	}{
 		{arg: "clj", want: corereader.CLJDialect},
-		{arg: "corereader.CLJSDialect", want: corereader.CLJSDialect},
+		{arg: "cljs", want: corereader.CLJSDialect},
 		{arg: "joker", want: corereader.JokerDialect},
 		{arg: "EdN", want: corereader.EDNDialect},
 		{arg: "unknown", want: corereader.UnknownDialect},

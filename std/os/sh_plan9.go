@@ -36,17 +36,17 @@ func sh(dir string, stdin io.Reader, stdout io.Writer, stderr io.Writer, name st
 
 	var exitCode int
 	if err != nil {
-		res.Add(MakeKeyword("err-msg"), String{S: err.Error()})
+		res.Add(MakeKeyword("err-msg"), coretypes.String{S: err.Error()})
 		exitCode = defaultFailedCode
 	} else {
 		exitCode = 0
 	}
 	res.Add(MakeKeyword("exit"), coretypes.Int{I: exitCode})
 	if stdout == nil {
-		res.Add(MakeKeyword("out"), String{S: string(stdoutBuffer.Bytes())})
+		res.Add(MakeKeyword("out"), coretypes.String{S: string(stdoutBuffer.Bytes())})
 	}
 	if stderr == nil {
-		res.Add(MakeKeyword("err"), String{S: string(stderrBuffer.Bytes())})
+		res.Add(MakeKeyword("err"), coretypes.String{S: string(stderrBuffer.Bytes())})
 	}
 	return res
 }

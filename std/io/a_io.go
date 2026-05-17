@@ -4,6 +4,7 @@ package io
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 )
 
@@ -70,7 +71,7 @@ func __read_(_args []Object) Object {
 		r := ExtractIOReader(_args, 0)
 		n := ExtractInt(_args, 1)
 		_res := read(r, n)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

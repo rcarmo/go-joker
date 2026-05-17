@@ -5,6 +5,7 @@ package uuid
 import (
 	"fmt"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 )
 
@@ -17,6 +18,6 @@ func InternsOrThunks() {
 	uuidNamespace.InternVar("new", new_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Creates a new random UUID.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Creates a new random UUID.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 }

@@ -523,7 +523,7 @@ func installAgentExt() {
 		if eo, ok := e.(Object); ok {
 			return eo
 		}
-		return MakeString(e.Error())
+		return coretypes.MakeString(e.Error())
 	}}
 	referToUser(MakeSymbol("agent-error"), aeVr)
 }

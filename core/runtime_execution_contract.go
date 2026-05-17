@@ -146,7 +146,7 @@ func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj Obj
 func (RuntimeExecutionAdapter) HasMutableSlotCandidate(slots []Object) bool {
 	for _, s := range slots {
 		switch s.(type) {
-		case *ArrayVector, *ArrayMap, *HashMap, String:
+		case *ArrayVector, *ArrayMap, *HashMap, coretypes.String:
 			return true
 		}
 	}
@@ -164,7 +164,7 @@ func (RuntimeExecutionAdapter) MutableSlotObject(obj Object, escapeInfo *EscapeI
 		return MapToTransient(v)
 	case *HashMap:
 		return MapToTransient(v)
-	case String:
+	case coretypes.String:
 		if !corert.IRStringBuilderDisabled() && slot < len(escapeInfo.StringPrependSlots) {
 			builder := slot < len(escapeInfo.StringBuilderSlots) && escapeInfo.StringBuilderSlots[slot]
 			prepend := escapeInfo.StringPrependSlots[slot]
@@ -241,7 +241,7 @@ func (RuntimeExecutionAdapter) Nth(coll Object, idx int) (Object, bool) {
 		if idx >= 0 && idx < len(c.arr) {
 			return c.arr[idx], true
 		}
-	case String:
+	case coretypes.String:
 		return stringNthFast(c.S, idx), true
 	case coretypes.Indexed:
 		return c.Nth(idx), true
@@ -321,13 +321,13 @@ func (RuntimeExecutionAdapter) ToPersistent(coll Object) (Object, bool) {
 func (RuntimeExecutionAdapter) Str1(obj Object) Object {
 	switch v := obj.(type) {
 	case Nil:
-		return String{S: ""}
-	case String:
+		return coretypes.String{S: ""}
+	case coretypes.String:
 		return v
 	case coretypes.Char:
 		return charToStringObjectFast(v.Ch)
 	default:
-		return String{S: obj.ToString(false)}
+		return coretypes.String{S: obj.ToString(false)}
 	}
 }
 
@@ -337,29 +337,29 @@ func (RuntimeExecutionAdapter) Str2(a Object, b Object) Object {
 		switch bv := b.(type) {
 		case coretypes.Char:
 			return av.AppendChar(bv.Ch)
-		case String:
+		case coretypes.String:
 			return av.AppendString(bv.S)
 		default:
 			return av.AppendString(b.ToString(false))
 		}
-	case String:
+	case coretypes.String:
 		switch bv := b.(type) {
 		case coretypes.Char:
-			return String{S: av.S + charToStringFast(bv.Ch)}
-		case String:
-			return String{S: av.S + bv.S}
+			return coretypes.String{S: av.S + charToStringFast(bv.Ch)}
+		case coretypes.String:
+			return coretypes.String{S: av.S + bv.S}
 		case *TransientString:
 			return bv.PrependString(av.S)
 		default:
-			return String{S: av.S + b.ToString(false)}
+			return coretypes.String{S: av.S + b.ToString(false)}
 		}
 	case coretypes.Char:
 		if bv, ok := b.(*TransientString); ok {
 			return bv.PrependChar(av.Ch)
 		}
-		return String{S: charToStringFast(av.Ch) + b.ToString(false)}
+		return coretypes.String{S: charToStringFast(av.Ch) + b.ToString(false)}
 	default:
-		return String{S: a.ToString(false) + b.ToString(false)}
+		return coretypes.String{S: a.ToString(false) + b.ToString(false)}
 	}
 }
 
@@ -379,7 +379,7 @@ func (adapter RuntimeExecutionAdapter) NthASCIIStringConst(prog *IRProgram, cons
 	if !ok {
 		return nil, false
 	}
-	s, ok := constant.(String)
+	s, ok := constant.(coretypes.String)
 	if !ok || idx < 0 || idx >= len(s.S) {
 		return nil, false
 	}
@@ -437,6 +437,13 @@ func (RuntimeExecutionAdapter) ProgramCode(prog *IRProgram) []byte {
 		return nil
 	}
 	return prog.code
+}
+
+func (RuntimeExecutionAdapter) ProgramModel(prog *IRProgram) *coreir.Program {
+	if prog == nil {
+		return nil
+	}
+	return prog.neutralModel()
 }
 
 func (RuntimeExecutionAdapter) ProgramConstant(prog *IRProgram, idx int) (Object, bool) {

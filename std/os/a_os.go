@@ -199,7 +199,7 @@ func __cwd_(_args []Object) Object {
 	case _c == 0:
 		_res, err := os.Getwd()
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -282,7 +282,7 @@ func __executable_(_args []Object) Object {
 	case _c == 0:
 		_res, err := os.Executable()
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -337,7 +337,7 @@ func __expand_env_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := os.ExpandEnv(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -408,7 +408,7 @@ func __hostname_(_args []Object) Object {
 	case _c == 0:
 		_res, err := os.Hostname()
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -561,7 +561,7 @@ func __mkdir_temp_(_args []Object) Object {
 		pattern := ExtractString(_args, 1)
 		_res, err := os.MkdirTemp(dir, pattern)
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -662,7 +662,7 @@ func __read_link_(_args []Object) Object {
 		name := ExtractString(_args, 0)
 		_res, err := os.Readlink(name)
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -870,7 +870,7 @@ func __temp_dir_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := os.TempDir()
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -942,7 +942,7 @@ func __user_cache_dir_(_args []Object) Object {
 	case _c == 0:
 		_res, err := os.UserCacheDir()
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -959,7 +959,7 @@ func __user_config_dir_(_args []Object) Object {
 	case _c == 0:
 		_res, err := os.UserConfigDir()
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -976,7 +976,7 @@ func __user_home_dir_(_args []Object) Object {
 	case _c == 0:
 		_res, err := os.UserHomeDir()
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

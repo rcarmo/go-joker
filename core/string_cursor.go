@@ -88,7 +88,7 @@ func initStringCursorProcs() {
 }
 
 func procStringCursor(args []Object) Object {
-	s, ok := args[0].(String)
+	s, ok := args[0].(coretypes.String)
 	if !ok {
 		panic(RT.NewError("string-cursor expects a string argument"))
 	}
@@ -134,7 +134,7 @@ func procCursorIndex(args []Object) Object {
 // ---- transient_string.go ----
 // transient_string.go — internal mutable string builder for IR loops.
 //
-// This is not a user-facing transient. The IR can convert proven-local String
+// This is not a user-facing transient. The IR can convert proven-local coretypes.String
 // loop slots to TransientString so repeated `(str s char)` appends mutate a
 // byte buffer instead of allocating a fresh String every iteration.
 
@@ -148,7 +148,7 @@ func (ts *TransientString) Equals(other interface{}) bool {
 	switch v := other.(type) {
 	case *TransientString:
 		return string(ts.buf) == string(v.buf)
-	case String:
+	case coretypes.String:
 		return string(ts.buf) == v.S
 	default:
 		return false
@@ -157,7 +157,7 @@ func (ts *TransientString) Equals(other interface{}) bool {
 func (ts *TransientString) GetInfo() *coretypes.ObjectInfo        { return nil }
 func (ts *TransientString) WithInfo(*coretypes.ObjectInfo) Object { return ts }
 func (ts *TransientString) GetType() *coretypes.Type              { return TYPE.String }
-func (ts *TransientString) Hash() uint32                          { return String{S: string(ts.buf)}.Hash() }
+func (ts *TransientString) Hash() uint32                          { return coretypes.String{S: string(ts.buf)}.Hash() }
 func (ts *TransientString) Count() int                            { return stringRuneCountFastCompat(string(ts.buf)) }
 
 func stringRuneCountFastCompat(s string) int {
@@ -165,7 +165,7 @@ func stringRuneCountFastCompat(s string) int {
 	// correct implementation. ASCII is the hot path for the builder.
 	for i := 0; i < len(s); i++ {
 		if s[i] >= 0x80 {
-			return String{S: s}.Count()
+			return coretypes.String{S: s}.Count()
 		}
 	}
 	return len(s)
@@ -218,12 +218,12 @@ func (ts *TransientString) PrependString(s string) *TransientString {
 	return ts
 }
 
-func (ts *TransientString) ToPersistent() String {
+func (ts *TransientString) ToPersistent() coretypes.String {
 	ts.frozen = true
-	return String{S: string(ts.buf)}
+	return coretypes.String{S: string(ts.buf)}
 }
 
-func ToTransientString(s String) *TransientString {
+func ToTransientString(s coretypes.String) *TransientString {
 	buf := make([]byte, len(s.S), len(s.S)+16)
 	copy(buf, s.S)
 	return &TransientString{buf: buf}

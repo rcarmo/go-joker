@@ -8,27 +8,27 @@ import (
 	"time"
 )
 
-var ansi_c_ String
+var ansi_c_ coretypes.String
 var hour_ *coretypes.BigInt
-var kitchen_ String
+var kitchen_ coretypes.String
 var microsecond_ coretypes.Int
 var millisecond_ coretypes.Int
 var minute_ *coretypes.BigInt
 var nanosecond_ coretypes.Int
-var rfc1123_ String
-var rfc1123_z_ String
-var rfc3339_ String
-var rfc3339_nano_ String
-var rfc822_ String
-var rfc822_z_ String
-var rfc850_ String
-var ruby_date_ String
+var rfc1123_ coretypes.String
+var rfc1123_z_ coretypes.String
+var rfc3339_ coretypes.String
+var rfc3339_nano_ coretypes.String
+var rfc822_ coretypes.String
+var rfc822_z_ coretypes.String
+var rfc850_ coretypes.String
+var ruby_date_ coretypes.String
 var second_ coretypes.Int
-var stamp_ String
-var stamp_micro_ String
-var stamp_milli_ String
-var stamp_nano_ String
-var unix_date_ String
+var stamp_ coretypes.String
+var stamp_micro_ coretypes.String
+var stamp_milli_ coretypes.String
+var stamp_nano_ coretypes.String
+var unix_date_ coretypes.String
 var __add__P ProcFn = __add_
 var add_ Proc = Proc{Fn: __add__P, Name: "add_", Package: "std/time"}
 
@@ -94,7 +94,7 @@ func __format_(_args []Object) Object {
 		t := ExtractTime(_args, 0)
 		layout := ExtractString(_args, 1)
 		_res := t.Format(layout)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -324,7 +324,7 @@ func __string_(_args []Object) Object {
 	case _c == 1:
 		d := ExtractInteger(_args, 0)
 		_res := time.Duration(d).String()
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -403,27 +403,27 @@ func __until_(_args []Object) Object {
 }
 
 func Init() {
-	ansi_c_ = MakeString(time.ANSIC)
+	ansi_c_ = coretypes.MakeString(time.ANSIC)
 	hour_ = coretypes.MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(time.Hour)))
-	kitchen_ = MakeString(time.Kitchen)
+	kitchen_ = coretypes.MakeString(time.Kitchen)
 	microsecond_ = coretypes.MakeInt(int(time.Microsecond))
 	millisecond_ = coretypes.MakeInt(int(time.Millisecond))
 	minute_ = coretypes.MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(time.Minute)))
 	nanosecond_ = coretypes.MakeInt(int(time.Nanosecond))
-	rfc1123_ = MakeString(time.RFC1123)
-	rfc1123_z_ = MakeString(time.RFC1123Z)
-	rfc3339_ = MakeString(time.RFC3339)
-	rfc3339_nano_ = MakeString(time.RFC3339Nano)
-	rfc822_ = MakeString(time.RFC822)
-	rfc822_z_ = MakeString(time.RFC822Z)
-	rfc850_ = MakeString(time.RFC850)
-	ruby_date_ = MakeString(time.RubyDate)
+	rfc1123_ = coretypes.MakeString(time.RFC1123)
+	rfc1123_z_ = coretypes.MakeString(time.RFC1123Z)
+	rfc3339_ = coretypes.MakeString(time.RFC3339)
+	rfc3339_nano_ = coretypes.MakeString(time.RFC3339Nano)
+	rfc822_ = coretypes.MakeString(time.RFC822)
+	rfc822_z_ = coretypes.MakeString(time.RFC822Z)
+	rfc850_ = coretypes.MakeString(time.RFC850)
+	ruby_date_ = coretypes.MakeString(time.RubyDate)
 	second_ = coretypes.MakeInt(int(time.Second))
-	stamp_ = MakeString(time.Stamp)
-	stamp_micro_ = MakeString(time.StampMicro)
-	stamp_milli_ = MakeString(time.StampMilli)
-	stamp_nano_ = MakeString(time.StampNano)
-	unix_date_ = MakeString(time.UnixDate)
+	stamp_ = coretypes.MakeString(time.Stamp)
+	stamp_micro_ = coretypes.MakeString(time.StampMicro)
+	stamp_milli_ = coretypes.MakeString(time.StampMilli)
+	stamp_nano_ = coretypes.MakeString(time.StampNano)
+	unix_date_ = coretypes.MakeString(time.UnixDate)
 	InternsOrThunks()
 }
 

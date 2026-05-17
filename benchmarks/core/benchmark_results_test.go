@@ -11,23 +11,25 @@ import (
 
 func requireBenchInt(t *testing.T, script string, want int) {
 	t.Helper()
-	got, ok := Eval(compileBenchExpr(t, script), nil).(coretypes.Int)
+	obj := Eval(compileBenchExpr(t, script), nil)
+	got, ok := obj.(coretypes.Number)
 	if !ok {
-		t.Fatalf("%s returned non-coretypes.Int %T", script, got)
+		t.Fatalf("%s returned non-number %T", script, obj)
 	}
-	if got.I != want {
-		t.Fatalf("%s = %d, want %d", script, got.I, want)
+	if got.Int().I != want {
+		t.Fatalf("%s = %d, want %d", script, got.Int().I, want)
 	}
 }
 
 func requireBenchDouble(t *testing.T, script string, want, tolerance float64) {
 	t.Helper()
-	got, ok := Eval(compileBenchExpr(t, script), nil).(coretypes.Double)
+	obj := Eval(compileBenchExpr(t, script), nil)
+	got, ok := obj.(coretypes.Number)
 	if !ok {
-		t.Fatalf("%s returned non-coretypes.Double %T", script, got)
+		t.Fatalf("%s returned non-number %T", script, obj)
 	}
-	if math.Abs(got.D-want) > tolerance {
-		t.Fatalf("%s = %.17g, want %.17g ± %.1g", script, got.D, want, tolerance)
+	if math.Abs(got.Double().D-want) > tolerance {
+		t.Fatalf("%s = %.17g, want %.17g ± %.1g", script, got.Double().D, want, tolerance)
 	}
 }
 

@@ -666,7 +666,7 @@ func (err *ParseError) WithInfo(info *coretypes.ObjectInfo) Object {
 }
 
 func (err *ParseError) Message() coretypes.Object {
-	return MakeString(err.msg)
+	return coretypes.MakeString(err.msg)
 }
 
 func (err ParseError) Error() string {
@@ -796,7 +796,7 @@ func parseDef(obj Object, ctx *ParseContext, isForLinter bool) *DefExpr {
 			res.value = Parse(Fourth(seq), ctx)
 			docstring := Third(seq)
 			switch docstring.(type) {
-			case String:
+			case coretypes.String:
 				if meta != nil {
 					meta = meta.Assoc(KEYWORDS.doc, docstring).(Map)
 				} else {
@@ -1379,7 +1379,7 @@ func getTaggedTypes(obj Meta) []*coretypes.Type {
 				if t := TYPES.Lookup(typeDecl.name); t != nil {
 					res = append(res, t)
 				}
-			case String:
+			case coretypes.String:
 				parts := corestr.Split(typeDecl.S, '|')
 				for _, p := range parts {
 					if t := TYPES.Lookup(MakeSymbol(p).name); t != nil {

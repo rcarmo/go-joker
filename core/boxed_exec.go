@@ -481,8 +481,8 @@ loop:
 					stack = append(stack, coretypes.Boolean{B: av.Ch == bv.Ch})
 					continue
 				}
-			case String:
-				if bv, ok := b.(String); ok {
+			case coretypes.String:
+				if bv, ok := b.(coretypes.String); ok {
 					stack = append(stack, coretypes.Boolean{B: av.S == bv.S})
 					continue
 				}
@@ -876,26 +876,26 @@ loop:
 				start := stack[len(stack)-2]
 				sObj := stack[len(stack)-3]
 				stack = stack[:len(stack)-3]
-				s := sObj.(String).S
+				s := sObj.(coretypes.String).S
 				si := start.(coretypes.Int).I
 				ei := end.(coretypes.Int).I
 				if coretypes.StringIsASCII(s) {
-					stack = append(stack, String{S: s[si:ei]})
+					stack = append(stack, coretypes.String{S: s[si:ei]})
 				} else {
 					runes := []rune(s)
-					stack = append(stack, String{S: string(runes[si:ei])})
+					stack = append(stack, coretypes.String{S: string(runes[si:ei])})
 				}
 			} else {
 				start := stack[len(stack)-1]
 				sObj := stack[len(stack)-2]
 				stack = stack[:len(stack)-2]
-				s := sObj.(String).S
+				s := sObj.(coretypes.String).S
 				si := start.(coretypes.Int).I
 				if coretypes.StringIsASCII(s) {
-					stack = append(stack, String{S: s[si:]})
+					stack = append(stack, coretypes.String{S: s[si:]})
 				} else {
 					runes := []rune(s)
-					stack = append(stack, String{S: string(runes[si:])})
+					stack = append(stack, coretypes.String{S: string(runes[si:])})
 				}
 			}
 
@@ -1492,7 +1492,7 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 			if !ok {
 				return nil
 			}
-			s := constant.(String).S
+			s := constant.(coretypes.String).S
 			if idx.i < 0 || idx.i >= len(s) {
 				return nil
 			}
@@ -2732,7 +2732,7 @@ func objectToIRValue(obj Object) irValue {
 		return irMakeBool(v.B)
 	case coretypes.Char:
 		return irMakeChar(v.Ch)
-	case String:
+	case coretypes.String:
 		return stringToIRValue(v.S)
 	case *ArrayVector:
 		if corert.IRTypedVecEnabled() {
@@ -2777,13 +2777,13 @@ func (v irValue) object() Object {
 	case irValChar:
 		return coretypes.Char{Ch: v.char()}
 	case irValString:
-		return String{S: v.str()}
+		return coretypes.String{S: v.str()}
 	case irValStringBuilder:
-		return String{S: string(v.bytes())}
+		return coretypes.String{S: string(v.bytes())}
 	case irValStringIntMap:
 		res := collectionConstruction.NewEmptyArrayMap()
 		for k, v := range v.stringIntMap() {
-			res.Add(String{S: k}, coretypes.Int{I: v})
+			res.Add(coretypes.String{S: k}, coretypes.Int{I: v})
 		}
 		return res
 	case irValIntVector:
@@ -2791,7 +2791,7 @@ func (v irValue) object() Object {
 		for i, x := range v.intVec() {
 			arr[i] = coretypes.Int{I: x}
 		}
-		return &ArrayVector{arr: arr}
+		return runtimeExec.BuildVector(arr)
 	case irValNil:
 		return NIL
 	case irValKeyword:
@@ -2891,7 +2891,7 @@ func irValueEq(a, b irValue) (irValue, bool) {
 	if a.tag == irValDouble && b.tag == irValInt {
 		return irMakeBool(a.f == float64(b.i)), true
 	}
-	return irMakeBool(a.object().Equals(b.object())), true
+	return irMakeBool(runtimeExec.Equal(a.object(), b.object())), true
 }
 
 // keywordObjectCache caches Keyword Objects by name pointer to avoid
@@ -2996,7 +2996,7 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 		closeWasmModule(ctx, mod)
 		return nil
 	}
-	model := prog.neutralModel()
+	model := runtimeExec.ProgramModel(prog)
 	if model == nil {
 		closeWasmModule(ctx, mod)
 		return nil
@@ -3007,7 +3007,7 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 		execFn:     execFn,
 		useFloat:   corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0),
 		hasImports: !corewasm.Eligible(model.Code),
-		constants:  prog.constants,
+		constants:  runtimeExec.ProgramConstants(prog),
 		bytes:      append([]byte(nil), bin...),
 	}
 	return wp

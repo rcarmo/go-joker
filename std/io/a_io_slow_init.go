@@ -5,6 +5,7 @@ package io
 import (
 	"fmt"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 )
 
@@ -38,6 +39,6 @@ func InternsOrThunks() {
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("r"), MakeSymbol("n"))),
 			`Reads up to n bytes from IOReader r and returns a string of the read bytes.
-  May return a shorter (or blank) string if EOF is encountered.`, "1.3.6").Plus(MakeKeyword("tag"), String{S: "String"}))
+  May return a shorter (or blank) string if EOF is encountered.`, "1.3.6").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 }

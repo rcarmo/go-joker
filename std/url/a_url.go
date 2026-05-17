@@ -4,6 +4,7 @@ package url
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"net/url"
 )
 
@@ -33,7 +34,7 @@ func __path_escape_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := url.PathEscape(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -50,7 +51,7 @@ func __path_unescape_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := pathUnescape(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -67,7 +68,7 @@ func __query_escape_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := url.QueryEscape(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -84,7 +85,7 @@ func __query_unescape_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := queryUnescape(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

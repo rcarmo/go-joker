@@ -81,7 +81,7 @@ func TestPodEndToEndFormats(t *testing.T) {
 			if vr == nil {
 				t.Fatalf("dynamic var %s/echo missing", tc.ns)
 			}
-			callable, ok := vr.Value.(Callable)
+			callable, ok := vr.Value.(coretypes.Callable)
 			if !ok {
 				t.Fatalf("dynamic var is not callable: %T", vr.Value)
 			}

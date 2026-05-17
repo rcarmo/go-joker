@@ -2,6 +2,7 @@ package csv
 
 import (
 	"encoding/csv"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"strings"
 	"unicode/utf8"
@@ -32,7 +33,7 @@ func csvLazySeq(rdr *csv.Reader) *LazySeq {
 func csvSeqOpts(src Object, opts Map) Object {
 	var rdr io.Reader
 	switch src := src.(type) {
-	case String:
+	case coretypes.String:
 		rdr = strings.NewReader(src.S)
 	case io.Reader:
 		rdr = src

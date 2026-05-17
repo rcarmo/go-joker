@@ -219,7 +219,7 @@ func objectMapToPodMessage(obj any) podMessage {
 
 func podMessageKeyString(k Object) string {
 	switch v := k.(type) {
-	case String:
+	case coretypes.String:
 		return v.S
 	case Keyword:
 		return v.ToString(false)[1:]
@@ -232,7 +232,7 @@ func podMessageKeyString(k Object) string {
 
 func podMessageValue(v Object) any {
 	switch x := v.(type) {
-	case String:
+	case coretypes.String:
 		return x.S
 	case Keyword, Symbol:
 		return x.ToString(false)

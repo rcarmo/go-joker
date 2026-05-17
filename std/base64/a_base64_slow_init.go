@@ -5,6 +5,7 @@ package base64
 import (
 	"fmt"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 )
 
@@ -17,11 +18,11 @@ func InternsOrThunks() {
 	base64Namespace.InternVar("decode-string", decode_string_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
-			`Returns the bytes represented by the base64 string s.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Returns the bytes represented by the base64 string s.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	base64Namespace.InternVar("encode-string", encode_string_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
-			`Returns the base64 encoding of s.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+			`Returns the base64 encoding of s.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 }

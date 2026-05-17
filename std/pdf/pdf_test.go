@@ -50,7 +50,7 @@ func TestDocumentCreate(t *testing.T) {
 
 	// Save
 	path := filepath.Join(t.TempDir(), "test-output.pdf")
-	procSave([]Object{doc, MakeString(path)})
+	procSave([]Object{doc, coretypes.MakeString(path)})
 
 	info, err := os.Stat(path)
 	if err != nil {
@@ -103,7 +103,7 @@ func TestPDFGeometryRejectsInvalidDimensions(t *testing.T) {
 	initPDFNamespace()
 	doc := procDocument(nil)
 	expectPanic(t, func() {
-		procTextWrap([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: 0}, MakeString("x")})
+		procTextWrap([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: 0}, coretypes.MakeString("x")})
 	})
 	expectPanic(t, func() {
 		procRect([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: -1}, coretypes.Double{D: 10}})
@@ -112,10 +112,10 @@ func TestPDFGeometryRejectsInvalidDimensions(t *testing.T) {
 		procOval([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: 1}, coretypes.Double{D: 0}})
 	})
 	expectPanic(t, func() {
-		procImage([]Object{doc, MakeString(filepath.Join(t.TempDir(), "missing.png")), coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: -1}})
+		procImage([]Object{doc, coretypes.MakeString(filepath.Join(t.TempDir(), "missing.png")), coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: -1}})
 	})
 	expectPanic(t, func() {
-		procLink([]Object{doc, MakeString("https://example.com"), coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: 0}, coretypes.Double{D: 10}})
+		procLink([]Object{doc, coretypes.MakeString("https://example.com"), coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: 0}, coretypes.Double{D: 10}})
 	})
 	expectPanic(t, func() {
 		procMargins([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: -1}, coretypes.Double{D: 10}, coretypes.Double{D: 10}})
@@ -151,7 +151,7 @@ func TestImageMissingPathPanics(t *testing.T) {
 	doc := procDocument(nil)
 
 	expectPanic(t, func() {
-		procImage([]Object{doc, MakeString(filepath.Join(t.TempDir(), "missing.png")), coretypes.Double{D: 10}, coretypes.Double{D: 10}})
+		procImage([]Object{doc, coretypes.MakeString(filepath.Join(t.TempDir(), "missing.png")), coretypes.Double{D: 10}, coretypes.Double{D: 10}})
 	})
 }
 

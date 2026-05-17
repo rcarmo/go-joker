@@ -92,7 +92,7 @@ func typeNameOf(obj Object) string {
 		return "Double"
 	case coretypes.Boolean:
 		return "Boolean"
-	case String:
+	case coretypes.String:
 		return "String"
 	case coretypes.Char:
 		return "Char"

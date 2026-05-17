@@ -58,16 +58,16 @@ func split(s string, r *regexp.Regexp, n int) Object {
 	lastStart := 0
 	result := EmptyVector()
 	for _, el := range indexes {
-		result = result.Conjoin(String{S: s[lastStart:el[0]]})
+		result = result.Conjoin(coretypes.String{S: s[lastStart:el[0]]})
 		lastStart = el[1]
 	}
-	result = result.Conjoin(String{S: s[lastStart:]})
+	result = result.Conjoin(coretypes.String{S: s[lastStart:]})
 	return result
 }
 
 func splitOnStringOrRegex(s string, sep Object, n int) Object {
 	switch sep := sep.(type) {
-	case String:
+	case coretypes.String:
 		if n == 0 {
 			n = -1
 		}
@@ -88,13 +88,13 @@ func splitOnStringOrRegex(s string, sep Object, n int) Object {
 		}
 		result := EmptyArrayVector()
 		for _, el := range v {
-			result.Append(String{S: el})
+			result.Append(coretypes.String{S: el})
 		}
 		return result
 	case *coretypes.Regex:
 		return split(s, sep.R, n)
 	default:
-		panic(RT.NewArgTypeError(1, sep, "String or Regex"))
+		panic(RT.NewArgTypeError(1, sep, "coretypes.String or Regex"))
 	}
 }
 
@@ -131,7 +131,7 @@ func capitalize(s string) string {
 	return strings.ToUpper(string([]rune(s)[:1])) + strings.ToLower(string([]rune(s)[1:]))
 }
 
-func escape(s string, cmap Callable) string {
+func escape(s string, cmap coretypes.Callable) string {
 	var b bytes.Buffer
 	for _, r := range s {
 		if obj := cmap.Call([]Object{coretypes.Char{Ch: r}}); !obj.Equals(NIL) {
@@ -158,10 +158,10 @@ func indexOf(s string, value Object, from int) Object {
 	switch value := value.(type) {
 	case coretypes.Char:
 		res = strings.IndexRune(s, value.Ch)
-	case String:
+	case coretypes.String:
 		res = strings.Index(s, value.S)
 	default:
-		panic(RT.NewArgTypeError(1, value, "String or Char"))
+		panic(RT.NewArgTypeError(1, value, "coretypes.String or Char"))
 	}
 	if res == -1 {
 		return NIL
@@ -184,10 +184,10 @@ func lastIndexOf(s string, value Object, from int) Object {
 	switch value := value.(type) {
 	case coretypes.Char:
 		res = strings.LastIndex(s, string(value.Ch))
-	case String:
+	case coretypes.String:
 		res = strings.LastIndex(s, value.S)
 	default:
-		panic(RT.NewArgTypeError(1, value, "String or Char"))
+		panic(RT.NewArgTypeError(1, value, "coretypes.String or Char"))
 	}
 	if res == -1 {
 		return NIL
@@ -197,18 +197,18 @@ func lastIndexOf(s string, value Object, from int) Object {
 
 func replace(s string, match Object, repl string) string {
 	switch match := match.(type) {
-	case String:
+	case coretypes.String:
 		return strings.Replace(s, match.S, repl, -1)
 	case *coretypes.Regex:
 		return match.R.ReplaceAllString(s, repl)
 	default:
-		panic(RT.NewArgTypeError(1, match, "String or Regex"))
+		panic(RT.NewArgTypeError(1, match, "coretypes.String or Regex"))
 	}
 }
 
 func replaceFirst(s string, match Object, repl string) string {
 	switch match := match.(type) {
-	case String:
+	case coretypes.String:
 		return strings.Replace(s, match.S, repl, 1)
 	case *coretypes.Regex:
 		m := match.R.FindStringIndex(s)
@@ -217,7 +217,7 @@ func replaceFirst(s string, match Object, repl string) string {
 		}
 		return s[:m[0]] + repl + s[m[1]:]
 	default:
-		panic(RT.NewArgTypeError(1, match, "String or Regex"))
+		panic(RT.NewArgTypeError(1, match, "coretypes.String or Regex"))
 	}
 }
 

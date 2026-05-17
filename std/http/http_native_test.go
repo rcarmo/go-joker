@@ -21,8 +21,8 @@ func TestHandleStreamSSE(t *testing.T) {
 
 	streamFn := Proc{Name: "test-stream", Fn: func(args []Object) Object {
 		send := EnsureArgIsCallable(args, 0)
-		send.Call([]Object{MakeString("hello")})
-		send.Call([]Object{MakeString("tick"), MakeString("42")})
+		send.Call([]Object{coretypes.MakeString("hello")})
+		send.Call([]Object{coretypes.MakeString("tick"), coretypes.MakeString("42")})
 		return NIL
 	}}
 
@@ -69,10 +69,10 @@ func TestMapToRespRejectsInvalidStatus(t *testing.T) {
 
 func TestMapToRespWriteErrorsSurface(t *testing.T) {
 	respMap := EmptyArrayMap()
-	respMap.Add(MakeKeyword("body"), MakeString("hello"))
+	respMap.Add(MakeKeyword("body"), coretypes.MakeString("hello"))
 	defer func() {
 		r := recover()
-		err, ok := r.(Error)
+		err, ok := r.(coretypes.Error)
 		if !ok {
 			t.Fatalf("panic = %T, want core Error", r)
 		}
@@ -97,12 +97,12 @@ func TestHandleStreamRejectsInvalidStatus(t *testing.T) {
 func TestHandleStreamWriteErrorsSurface(t *testing.T) {
 	streamFn := Proc{Name: "test-stream", Fn: func(args []Object) Object {
 		send := EnsureArgIsCallable(args, 0)
-		send.Call([]Object{MakeString("hello")})
+		send.Call([]Object{coretypes.MakeString("hello")})
 		return NIL
 	}}
 	defer func() {
 		r := recover()
-		err, ok := r.(Error)
+		err, ok := r.(coretypes.Error)
 		if !ok {
 			t.Fatalf("panic = %T, want core Error", r)
 		}
@@ -116,7 +116,7 @@ func TestHandleStreamWriteErrorsSurface(t *testing.T) {
 func TestHandleWebSocketUpgradeAndCallbacks(t *testing.T) {
 	var (
 		sendMu sync.Mutex
-		sendFn Callable
+		sendFn coretypes.Callable
 	)
 
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -126,7 +126,7 @@ func TestHandleWebSocketUpgradeAndCallbacks(t *testing.T) {
 			sendFn = EnsureArgIsCallable(args, 0)
 			s := sendFn
 			sendMu.Unlock()
-			s.Call([]Object{MakeString("welcome")})
+			s.Call([]Object{coretypes.MakeString("welcome")})
 			return NIL
 		}})
 		conf.Add(MakeKeyword("on-message"), Proc{Name: "on-message", Fn: func(args []Object) Object {
@@ -224,7 +224,7 @@ func TestReqToMapRemoteAddrIPv6(t *testing.T) {
 	} {
 		req := httptest.NewRequest("GET", "http://example.com/path?q=1", nil)
 		req.RemoteAddr = remote
-		m := reqToMap(MakeString("host"), MakeString("8080"), req)
+		m := reqToMap(coretypes.MakeString("host"), coretypes.MakeString("8080"), req)
 		ok, got := m.Get(MakeKeyword("remote-addr"))
 		if !ok || got.ToString(false) != want {
 			t.Fatalf("remote %q mapped to %v, want %q", remote, got, want)
@@ -241,6 +241,6 @@ func FuzzReqToMapRemoteAddr(f *testing.F) {
 	f.Fuzz(func(t *testing.T, remote string) {
 		req := httptest.NewRequest("GET", "http://example.com/path?q=1", nil)
 		req.RemoteAddr = remote
-		_ = reqToMap(MakeString("host"), MakeString("8080"), req)
+		_ = reqToMap(coretypes.MakeString("host"), coretypes.MakeString("8080"), req)
 	})
 }

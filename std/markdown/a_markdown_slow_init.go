@@ -5,6 +5,7 @@ package markdown
 import (
 	"fmt"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 )
 
@@ -23,6 +24,6 @@ func InternsOrThunks() {
   :with-hard-wraps? - Render newlines as <br>.
   :with-xhtml? - Render as XHTML.
   :with-unsafe? - When false, all raw html will be omitted from the output. When true html is passed through unchanged.
-  `, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+  `, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 }

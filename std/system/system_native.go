@@ -49,7 +49,7 @@ func systemProperties() Map {
 		{"joker.version", VERSION},
 		{"go-joker.version", VERSION},
 	} {
-		m.Add(MakeString(kv[0]), MakeString(kv[1]))
+		m.Add(coretypes.MakeString(kv[0]), coretypes.MakeString(kv[1]))
 	}
 	return m
 }
@@ -73,7 +73,7 @@ func systemGetenv(args []Object) Object {
 	CheckArity(args, 1, 1)
 	key := EnsureArgIsString(args, 0).S
 	if v, ok := os.LookupEnv(key); ok {
-		return MakeString(v)
+		return coretypes.MakeString(v)
 	}
 	return NIL
 }

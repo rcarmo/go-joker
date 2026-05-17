@@ -25,21 +25,21 @@ func expectCSVPanic(t *testing.T, fn func()) {
 func TestCSVOptionsRejectInvalidDelimiters(t *testing.T) {
 	opts := EmptyArrayMap()
 	opts.Add(MakeKeyword("comma"), coretypes.Char{Ch: '\n'})
-	expectCSVPanic(t, func() { _ = writeString(NewVectorFrom(NewVectorFrom(MakeString("a"))), opts) })
+	expectCSVPanic(t, func() { _ = writeString(NewVectorFrom(NewVectorFrom(coretypes.MakeString("a"))), opts) })
 
 	readOpts := EmptyArrayMap()
 	readOpts.Add(MakeKeyword("comma"), coretypes.Char{Ch: ';'})
 	readOpts.Add(MakeKeyword("comment"), coretypes.Char{Ch: ';'})
-	expectCSVPanic(t, func() { _ = csvSeqOpts(MakeString("a;b\n"), readOpts) })
+	expectCSVPanic(t, func() { _ = csvSeqOpts(coretypes.MakeString("a;b\n"), readOpts) })
 }
 
 func TestWriteWriterSurfacesFlushErrors(t *testing.T) {
-	data := NewVectorFrom(NewVectorFrom(MakeString("a"), MakeString("b")))
+	data := NewVectorFrom(NewVectorFrom(coretypes.MakeString("a"), coretypes.MakeString("b")))
 	expectCSVPanic(t, func() { writeWriter(failingWriter{}, data, EmptyArrayMap()) })
 }
 
 func TestWriteStringBasic(t *testing.T) {
-	data := NewVectorFrom(NewVectorFrom(MakeString("a"), MakeString("b")))
+	data := NewVectorFrom(NewVectorFrom(coretypes.MakeString("a"), coretypes.MakeString("b")))
 	if got := writeString(data, EmptyArrayMap()); got != "a,b\n" {
 		t.Fatalf("writeString = %q", got)
 	}

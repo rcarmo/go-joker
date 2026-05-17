@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	corereader "github.com/rcarmo/go-joker/core/reader"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -80,7 +81,7 @@ func processReplCommand(reader *Reader, phase corereader.Phase, parseContext *Pa
 			case *EvalError:
 				replContext.PushException(r)
 				fmt.Fprintln(Stderr, r)
-			case Error:
+			case coretypes.Error:
 				replContext.PushException(r)
 				fmt.Fprintln(Stderr, r)
 			default:

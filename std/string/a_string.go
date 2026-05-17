@@ -36,7 +36,7 @@ func __capitalize_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractStringable(_args, 0)
 		_res := capitalize(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -72,7 +72,7 @@ func __escape_(_args []Object) Object {
 		s := ExtractString(_args, 0)
 		cmap := ExtractCallable(_args, 1)
 		_res := escape(s, cmap)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -132,13 +132,13 @@ func __join_(_args []Object) Object {
 	case _c == 1:
 		coll := ExtractSeqable(_args, 0)
 		_res := join("", coll)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	case _c == 2:
 		separator := ExtractStringable(_args, 0)
 		coll := ExtractSeqable(_args, 1)
 		_res := join(separator, coll)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -180,7 +180,7 @@ func __lower_case_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractStringable(_args, 0)
 		_res := strings.ToLower(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -199,7 +199,7 @@ func __pad_left_(_args []Object) Object {
 		pad := ExtractStringable(_args, 1)
 		n := ExtractInt(_args, 2)
 		_res := padLeft(s, pad, n)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -218,7 +218,7 @@ func __pad_right_(_args []Object) Object {
 		pad := ExtractStringable(_args, 1)
 		n := ExtractInt(_args, 2)
 		_res := padRight(s, pad, n)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -254,7 +254,7 @@ func __replace_(_args []Object) Object {
 		match := ExtractObject(_args, 1)
 		repl := ExtractStringable(_args, 2)
 		_res := replace(s, match, repl)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -273,7 +273,7 @@ func __replace_first_(_args []Object) Object {
 		match := ExtractObject(_args, 1)
 		repl := ExtractStringable(_args, 2)
 		_res := replaceFirst(s, match, repl)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -290,7 +290,7 @@ func __reverse_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := reverse(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -367,7 +367,7 @@ func __trim_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := strings.TrimSpace(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -384,7 +384,7 @@ func __trim_left_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := strings.TrimLeftFunc(s, unicode.IsSpace)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -401,7 +401,7 @@ func __trim_newline_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := strings.TrimRight(s, "\n\r")
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -418,7 +418,7 @@ func __trim_right_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := strings.TrimRightFunc(s, unicode.IsSpace)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -435,7 +435,7 @@ func __triml_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := strings.TrimLeftFunc(s, unicode.IsSpace)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -452,7 +452,7 @@ func __trimr_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := strings.TrimRightFunc(s, unicode.IsSpace)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -469,7 +469,7 @@ func __upper_case_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractStringable(_args, 0)
 		_res := strings.ToUpper(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

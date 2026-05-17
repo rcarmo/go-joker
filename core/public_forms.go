@@ -69,7 +69,7 @@ func macroDefProtocol(args []Object) Object {
 		if !ok {
 			continue
 		}
-		forms = append(forms, String{S: mname.ToString(false)}, coretypes.Int{I: argv.Count()})
+		forms = append(forms, coretypes.String{S: mname.ToString(false)}, coretypes.Int{I: argv.Count()})
 	}
 	return collectionConstruction.NewListFrom(forms...)
 }
@@ -85,7 +85,7 @@ func macroExtendType(args []Object) Object {
 	for i < len(args) {
 		proto := args[i]
 		i++
-		call := []Object{MakeSymbol("__extend-type"), proto, String{S: typeName}}
+		call := []Object{MakeSymbol("__extend-type"), proto, coretypes.String{S: typeName}}
 		for i < len(args) {
 			if _, isProto := args[i].(Symbol); isProto && i+1 < len(args) {
 				if _, nextIsMethod := args[i+1].(Seqable); nextIsMethod {
@@ -108,7 +108,7 @@ func macroExtendType(args []Object) Object {
 			}
 			fnTail := ToSlice(s.Rest())
 			fnForm := collectionConstruction.NewListFrom(append([]Object{MakeSymbol("fn")}, fnTail...)...)
-			call = append(call, String{S: mname.ToString(false)}, fnForm)
+			call = append(call, coretypes.String{S: mname.ToString(false)}, fnForm)
 			i++
 		}
 		forms = append(forms, collectionConstruction.NewListFrom(call...))
@@ -127,7 +127,7 @@ func macroExtendProtocol(args []Object) Object {
 	for i < len(args) {
 		typeName := macroTypeName(args[i])
 		i++
-		call := []Object{MakeSymbol("__extend-type"), proto, String{S: typeName}}
+		call := []Object{MakeSymbol("__extend-type"), proto, coretypes.String{S: typeName}}
 		for i < len(args) {
 			method, ok := args[i].(Seqable)
 			if !ok {
@@ -145,7 +145,7 @@ func macroExtendProtocol(args []Object) Object {
 			}
 			fnTail := ToSlice(s.Rest())
 			fnForm := collectionConstruction.NewListFrom(append([]Object{MakeSymbol("fn")}, fnTail...)...)
-			call = append(call, String{S: mname.ToString(false)}, fnForm)
+			call = append(call, coretypes.String{S: mname.ToString(false)}, fnForm)
 			i++
 			// Stop if the next form looks like a type followed by methods. In practice
 			// a new type is a symbol/string/keyword and a method implementation is a list.
@@ -179,7 +179,7 @@ func macroDefRecord(args []Object) Object {
 		if !ok {
 			panic(RT.NewError("defrecord field must be a symbol"))
 		}
-		defCall = append(defCall, String{S: field.ToString(false)})
+		defCall = append(defCall, coretypes.String{S: field.ToString(false)})
 	}
 	forms := []Object{collectionConstruction.NewListFrom(defCall...)}
 	if len(args) > 4 {
@@ -194,7 +194,7 @@ func macroTypeName(obj Object) string {
 	switch t := obj.(type) {
 	case Symbol:
 		return t.ToString(false)
-	case String:
+	case coretypes.String:
 		return t.S
 	case Keyword:
 		return t.ToString(false)[1:]

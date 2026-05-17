@@ -57,7 +57,7 @@ func parseStyle(args []Object, idx int) string {
 	m, ok := args[idx].(Map)
 	if !ok {
 		// Try as a string
-		if s, ok := args[idx].(String); ok {
+		if s, ok := args[idx].(coretypes.String); ok {
 			return s.S
 		}
 		return ""
@@ -216,11 +216,11 @@ var procPolygon ProcFn = func(args []Object) Object {
 	CheckArity(args, 3, 4)
 	c := extractCanvas(args, 0)
 	// args[1] = vector of x coords, args[2] = vector of y coords
-	xv, ok := args[1].(Indexed)
+	xv, ok := args[1].(coretypes.Indexed)
 	if !ok {
 		panic(RT.NewError("svg/polygon: x coordinates must be indexed"))
 	}
-	yv, ok := args[2].(Indexed)
+	yv, ok := args[2].(coretypes.Indexed)
 	if !ok {
 		panic(RT.NewError("svg/polygon: y coordinates must be indexed"))
 	}
@@ -254,11 +254,11 @@ var procPolygon ProcFn = func(args []Object) Object {
 var procPolyline ProcFn = func(args []Object) Object {
 	CheckArity(args, 3, 4)
 	c := extractCanvas(args, 0)
-	xv, ok := args[1].(Indexed)
+	xv, ok := args[1].(coretypes.Indexed)
 	if !ok {
 		panic(RT.NewError("svg/polyline: x coordinates must be indexed"))
 	}
-	yv, ok := args[2].(Indexed)
+	yv, ok := args[2].(coretypes.Indexed)
 	if !ok {
 		panic(RT.NewError("svg/polyline: y coordinates must be indexed"))
 	}
@@ -375,7 +375,7 @@ var procDefEnd ProcFn = func(args []Object) Object {
 var procToString ProcFn = func(args []Object) Object {
 	c := extractCanvas(args, 0)
 	c.svg.End()
-	return MakeString(c.buf.String())
+	return coretypes.MakeString(c.buf.String())
 }
 
 var procSave ProcFn = func(args []Object) Object {

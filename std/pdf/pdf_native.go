@@ -364,7 +364,7 @@ var procToBytes ProcFn = func(args []Object) Object {
 	if err != nil {
 		panic(RT.NewError("pdf/to-bytes: " + err.Error()))
 	}
-	return MakeString(buf.String())
+	return coretypes.MakeString(buf.String())
 }
 
 // --- Page info ---

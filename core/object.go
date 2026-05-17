@@ -48,8 +48,7 @@ type (
 		name *string
 		hash uint32
 	}
-	String = coretypes.String
-	Var    struct {
+	Var struct {
 		coretypes.InfoHolder
 		MetaHolder
 		ns             *Namespace
@@ -374,9 +373,9 @@ func (exInfo *ExInfo) Error() string {
 	}
 	_, msg := exInfo.Get(KEYWORDS.message)
 	if len(exInfo.rt.callstack.frames) > 0 && !LINTER_MODE {
-		return fmt.Sprintf("%s:%d:%d: %s: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(String).S, exInfo.rt.stacktrace())
+		return fmt.Sprintf("%s:%d:%d: %s: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(coretypes.String).S, exInfo.rt.stacktrace())
 	} else {
-		return fmt.Sprintf("%s:%d:%d: %s: %s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(String).S)
+		return fmt.Sprintf("%s:%d:%d: %s: %s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(coretypes.String).S)
 	}
 }
 
@@ -781,7 +780,7 @@ func (n Nil) Vals() Seq {
 }
 
 var asciiCharStringObjects = corestr.NewObjectCache(func(ch rune) Object {
-	return String{S: corestr.String(ch)}
+	return coretypes.String{S: corestr.String(ch)}
 })
 
 func charToStringFast(ch rune) string { return corestr.String(ch) }
@@ -790,26 +789,26 @@ func charToStringObjectFast(ch rune) Object {
 	if obj, ok := asciiCharStringObjects.Lookup(ch); ok {
 		return obj
 	}
-	return String{S: corestr.String(ch)}
+	return coretypes.String{S: corestr.String(ch)}
 }
 
-func EnsureObjectIsStringable(obj Object, pattern string) String {
+func EnsureObjectIsStringable(obj Object, pattern string) coretypes.String {
 	switch c := obj.(type) {
-	case String:
+	case coretypes.String:
 		return c
 	case coretypes.Char:
-		return String{S: string(c.Ch)}
+		return coretypes.String{S: string(c.Ch)}
 	default:
 		panic(FailObject(c, "Stringable", pattern))
 	}
 }
 
-func EnsureArgIsStringable(args []Object, index int) String {
+func EnsureArgIsStringable(args []Object, index int) coretypes.String {
 	switch c := args[index].(type) {
-	case String:
+	case coretypes.String:
 		return c
 	case coretypes.Char:
-		return String{S: string(c.Ch)}
+		return coretypes.String{S: string(c.Ch)}
 	default:
 		panic(FailArg(c, "Stringable", index))
 	}
@@ -903,8 +902,6 @@ func (s Symbol) Call(args []Object) Object {
 	return getMap(s, args)
 }
 
-func MakeString(s string) String { return coretypes.MakeString(s) }
-
 func MakeStringVector(ss []string) *ArrayVector {
 	res := collectionConstruction.NewEmptyArrayVector()
 	for _, s := range ss {
@@ -981,8 +978,8 @@ func MakeMeta(arglists Seq, docstring string, added string) *ArrayMap {
 	if arglists != nil {
 		res.Add(KEYWORDS.arglist, arglists)
 	}
-	res.Add(KEYWORDS.doc, String{S: docstring})
-	res.Add(KEYWORDS.added, String{S: added})
+	res.Add(KEYWORDS.doc, coretypes.String{S: docstring})
+	res.Add(KEYWORDS.added, coretypes.String{S: added})
 	return res
 }
 

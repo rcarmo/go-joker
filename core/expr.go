@@ -15,7 +15,7 @@ func dumpPosition(p coretypes.Position) Map {
 	res.Add(KEYWORDS.endLine, coretypes.Int{I: p.EndLine})
 	res.Add(KEYWORDS.startColumn, coretypes.Int{I: p.StartColumn})
 	res.Add(KEYWORDS.endColumn, coretypes.Int{I: p.EndColumn})
-	res.Add(KEYWORDS.filename, String{S: p.FilenameOrUnknown()})
+	res.Add(KEYWORDS.filename, coretypes.String{S: p.FilenameOrUnknown()})
 	return res
 }
 
@@ -118,7 +118,7 @@ func (expr *CallExpr) InferType() *coretypes.Type {
 
 func (expr *CallExpr) Dump(pos bool) Map {
 	res := exprArrayMap(expr, "call", pos)
-	res.Add(MakeKeyword("name"), String{S: expr.Name()})
+	res.Add(MakeKeyword("name"), coretypes.String{S: expr.Name()})
 	res.Add(MakeKeyword("callable"), expr.callable.Dump(pos))
 	addVector(res, expr.args, "args", pos)
 	return res
@@ -130,7 +130,7 @@ func (expr *MacroCallExpr) InferType() *coretypes.Type {
 
 func (expr *MacroCallExpr) Dump(pos bool) Map {
 	res := exprArrayMap(expr, "macro-call", pos)
-	res.Add(MakeKeyword("name"), String{S: expr.name})
+	res.Add(MakeKeyword("name"), coretypes.String{S: expr.name})
 	args := collectionConstruction.NewEmptyVector()
 	for _, arg := range expr.args {
 		args = args.Conjoin(arg)

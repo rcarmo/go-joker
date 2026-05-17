@@ -89,13 +89,13 @@ func info(fn *Fn) Object {
 	m.Add(MakeKeyword("self-recursive"), coretypes.Boolean{B: prog.HasSelf()})
 
 	if prog.GetNativeHelper() != nil {
-		m.Add(MakeKeyword("path"), String{S: "native-f64"})
+		m.Add(MakeKeyword("path"), coretypes.String{S: "native-f64"})
 	} else {
 		a := AnalyzeIRProgramExported(prog)
 		if a.Eligible {
-			m.Add(MakeKeyword("path"), String{S: "typed-ir"})
+			m.Add(MakeKeyword("path"), coretypes.String{S: "typed-ir"})
 		} else {
-			m.Add(MakeKeyword("path"), String{S: "boxed-ir"})
+			m.Add(MakeKeyword("path"), coretypes.String{S: "boxed-ir"})
 		}
 	}
 	return m
@@ -132,7 +132,7 @@ func exportConst(o Object) irExportConst {
 		return irExportConst{Type: "int", Value: v.I}
 	case coretypes.Double:
 		return irExportConst{Type: "double", Value: v.D}
-	case String:
+	case coretypes.String:
 		return irExportConst{Type: "string", Value: v.S}
 	case coretypes.Boolean:
 		return irExportConst{Type: "boolean", Value: v.B}
@@ -147,7 +147,7 @@ func exportConst(o Object) irExportConst {
 	}
 }
 
-func exportIR(fn *Fn, path String) Object {
+func exportIR(fn *Fn, path coretypes.String) Object {
 	prog := IrCompileFn(fn)
 	if prog == nil {
 		panic(RT.NewError("jit/export-ir: function cannot be compiled to IR"))
@@ -180,7 +180,7 @@ func exportIR(fn *Fn, path String) Object {
 	return path
 }
 
-func exportWASM(fn *Fn, path String) Object {
+func exportWASM(fn *Fn, path coretypes.String) Object {
 	prog := IrCompileFn(fn)
 	if prog == nil {
 		panic(RT.NewError("jit/export-wasm: function cannot be compiled to IR"))

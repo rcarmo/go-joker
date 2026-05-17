@@ -26,7 +26,7 @@ func TestJSONReadStringKeywordizeAndFromObject(t *testing.T) {
 		t.Fatalf("keywordized a mismatch: %v", a)
 	}
 	m := EmptyArrayMap()
-	m.Add(MakeKeyword("k"), MakeString("v"))
+	m.Add(MakeKeyword("k"), coretypes.MakeString("v"))
 	encoded := fromObject(m).(map[string]interface{})
 	if encoded["k"] != "v" {
 		t.Fatalf("fromObject mismatch: %#v", encoded)
@@ -34,7 +34,7 @@ func TestJSONReadStringKeywordizeAndFromObject(t *testing.T) {
 }
 
 func TestJSONSeqSurfacesDecodeErrors(t *testing.T) {
-	seq := jsonSeqOpts(MakeString(`{"ok":1}
+	seq := jsonSeqOpts(coretypes.MakeString(`{"ok":1}
 {"bad"`), nil).(Seq)
 	if seq.First() == nil {
 		t.Fatal("expected first json object")

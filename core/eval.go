@@ -313,7 +313,7 @@ func (err *EvalError) WithInfo(info *coretypes.ObjectInfo) Object {
 }
 
 func (err *EvalError) Message() coretypes.Object {
-	return MakeString(err.msg)
+	return coretypes.MakeString(err.msg)
 }
 
 func (err *EvalError) Error() string {
@@ -419,7 +419,7 @@ func (expr *DefExpr) Eval(env *LocalEnv) Object {
 	meta := collectionConstruction.NewEmptyArrayMap()
 	meta.Add(KEYWORDS.line, coretypes.Int{I: expr.StartLine})
 	meta.Add(KEYWORDS.column, coretypes.Int{I: expr.StartColumn})
-	meta.Add(KEYWORDS.file, String{S: *expr.Filename})
+	meta.Add(KEYWORDS.file, coretypes.String{S: *expr.Filename})
 	meta.Add(KEYWORDS.ns, expr.vr.ns)
 	meta.Add(KEYWORDS.name, expr.vr.name)
 	expr.vr.meta = meta

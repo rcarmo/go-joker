@@ -4,6 +4,7 @@ package git
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 var __add_commit__P ProcFn = __add_commit_
@@ -17,7 +18,7 @@ func __add_commit_(_args []Object) Object {
 		msg := ExtractString(_args, 1)
 		opts := ExtractMap(_args, 2)
 		_res := addCommit(repo, msg, opts)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -35,7 +36,7 @@ func __add_path_(_args []Object) Object {
 		repo := ExtractGitRepo(_args, 0)
 		path := ExtractString(_args, 1)
 		_res := addPath(repo, path)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -177,7 +178,7 @@ func __resolve_revision_(_args []Object) Object {
 		repo := ExtractGitRepo(_args, 0)
 		revision := ExtractString(_args, 1)
 		_res := resolveRevision(repo, revision)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

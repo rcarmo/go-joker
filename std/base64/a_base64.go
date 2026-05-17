@@ -4,6 +4,7 @@ package base64
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 var __decode_string__P ProcFn = __decode_string_
@@ -15,7 +16,7 @@ func __decode_string_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := decodeString(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -32,7 +33,7 @@ func __encode_string_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := encodeString(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

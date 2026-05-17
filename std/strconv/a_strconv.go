@@ -52,7 +52,7 @@ func __format_bool_(_args []Object) Object {
 	case _c == 1:
 		b := ExtractBoolean(_args, 0)
 		_res := strconv.FormatBool(b)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -72,7 +72,7 @@ func __format_double_(_args []Object) Object {
 		prec := ExtractInt(_args, 2)
 		bitSize := ExtractInt(_args, 3)
 		_res := strconv.FormatFloat(f, byte(fmt), prec, bitSize)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -90,7 +90,7 @@ func __format_int_(_args []Object) Object {
 		i := ExtractInt(_args, 0)
 		base := ExtractInt(_args, 1)
 		_res := strconv.FormatInt(int64(i), base)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -124,7 +124,7 @@ func __itoa_(_args []Object) Object {
 	case _c == 1:
 		i := ExtractInt(_args, 0)
 		_res := strconv.Itoa(i)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -215,7 +215,7 @@ func __quote_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := strconv.Quote(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -232,7 +232,7 @@ func __quote_char_(_args []Object) Object {
 	case _c == 1:
 		c := ExtractChar(_args, 0)
 		_res := strconv.QuoteRune(c)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -249,7 +249,7 @@ func __quote_char_to_ascii_(_args []Object) Object {
 	case _c == 1:
 		c := ExtractChar(_args, 0)
 		_res := strconv.QuoteRuneToASCII(c)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -266,7 +266,7 @@ func __quote_char_to_graphic_(_args []Object) Object {
 	case _c == 1:
 		c := ExtractChar(_args, 0)
 		_res := strconv.QuoteRuneToGraphic(c)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -283,7 +283,7 @@ func __quote_to_ascii_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := strconv.QuoteToASCII(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -300,7 +300,7 @@ func __quote_to_graphic_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := strconv.QuoteToGraphic(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -318,7 +318,7 @@ func __unquote_(_args []Object) Object {
 		s := ExtractString(_args, 0)
 		_res, err := strconv.Unquote(s)
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

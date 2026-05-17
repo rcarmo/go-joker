@@ -19,7 +19,7 @@ func mkFn(code string) *Fn {
 func TestJITCompile(t *testing.T) {
 	Init()
 	compiled := compile(mkFn("(fn [x y] (+ x y))"))
-	result := compiled.(Callable).Call([]Object{coretypes.Double{D: 3}, coretypes.Double{D: 4}})
+	result := compiled.(coretypes.Callable).Call([]Object{coretypes.Double{D: 3}, coretypes.Double{D: 4}})
 	if result.(coretypes.Double).D != 7.0 {
 		t.Fatalf("got %v, want 7.0", result)
 	}
@@ -39,7 +39,7 @@ func TestJITCompiled(t *testing.T) {
 
 func BenchmarkJITCompiled(b *testing.B) {
 	Init()
-	compiled := compile(mkFn("(fn [x y] (+ x y))")).(Callable)
+	compiled := compile(mkFn("(fn [x y] (+ x y))")).(coretypes.Callable)
 	args := []Object{coretypes.Double{D: 3}, coretypes.Double{D: 4}}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {

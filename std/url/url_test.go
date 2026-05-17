@@ -1,6 +1,7 @@
 package url
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -24,12 +25,12 @@ func TestURLHelpers(t *testing.T) {
 		t.Fatalf("queryUnescape mismatch: %s", got)
 	}
 	m := parseQuery("a=1&a=2&b=x").(Map)
-	ok, av := m.Get(MakeString("a"))
-	if !ok || av.(CountedIndexed).Count() != 2 {
+	ok, av := m.Get(coretypes.MakeString("a"))
+	if !ok || av.(coretypes.CountedIndexed).Count() != 2 {
 		t.Fatalf("parseQuery a mismatch: %v", av)
 	}
-	ok, b := m.Get(MakeString("b"))
-	if !ok || b.(CountedIndexed).At(0).ToString(false) != "x" {
+	ok, b := m.Get(coretypes.MakeString("b"))
+	if !ok || b.(coretypes.CountedIndexed).At(0).ToString(false) != "x" {
 		t.Fatalf("parseQuery b mismatch: %v", b)
 	}
 }

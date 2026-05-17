@@ -4,6 +4,7 @@ package markdown
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 var __convert_string__P ProcFn = __convert_string_
@@ -15,13 +16,13 @@ func __convert_string_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := convertString(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	case _c == 2:
 		s := ExtractString(_args, 0)
 		opts := ExtractMap(_args, 1)
 		_res := convertStringOpts(s, opts)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

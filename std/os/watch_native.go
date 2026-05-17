@@ -2,6 +2,7 @@ package os
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	stdos "os"
 	"path/filepath"
 	"sync"
@@ -158,7 +159,7 @@ func (fw *fileWatcher) send(obj Object) bool {
 func watchEvent(event fsnotify.Event) Object {
 	m := EmptyArrayMap()
 	m.Add(MakeKeyword("type"), MakeKeyword("event"))
-	m.Add(MakeKeyword("path"), MakeString(event.Name))
+	m.Add(MakeKeyword("path"), coretypes.MakeString(event.Name))
 	m.Add(MakeKeyword("ops"), watchOps(event.Op))
 	return m
 }

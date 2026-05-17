@@ -2,6 +2,7 @@ package pods
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -21,7 +22,7 @@ func loadPod(args []Object) Object {
 	cmdArgs := []string{}
 	if len(args) == 2 {
 		switch v := args[1].(type) {
-		case String:
+		case coretypes.String:
 			var err error
 			cmdPath, err = findCachedPod(cmdPath, v.S)
 			if err != nil {
@@ -51,7 +52,7 @@ func loadPod(args []Object) Object {
 		panic(RT.NewError("pods/load-pod: " + err.Error()))
 	}
 	p.startRouter()
-	return MakeString(p.id)
+	return coretypes.MakeString(p.id)
 }
 
 func startPodProcess(cmdPath string, args []string) (*Pod, podMessage, error) {

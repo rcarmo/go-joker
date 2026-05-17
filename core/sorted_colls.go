@@ -304,8 +304,8 @@ func compareObjects(a, b Object) int {
 			}
 			return 0
 		}
-	case String:
-		if bv, ok := b.(String); ok {
+	case coretypes.String:
+		if bv, ok := b.(coretypes.String); ok {
 			if av.S < bv.S {
 				return -1
 			}

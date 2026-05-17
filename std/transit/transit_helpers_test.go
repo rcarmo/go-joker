@@ -1,6 +1,7 @@
 package transit
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
 	"testing"
 
@@ -8,7 +9,7 @@ import (
 )
 
 func TestTransitPodHelpers(t *testing.T) {
-	encoded, err := TransitEncodeArgs([]Object{MakeString("hi"), MakeKeyword("k")})
+	encoded, err := TransitEncodeArgs([]Object{coretypes.MakeString("hi"), MakeKeyword("k")})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -8,6 +8,7 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 var __hmac__P ProcFn = __hmac_
@@ -21,7 +22,7 @@ func __hmac_(_args []Object) Object {
 		message := ExtractString(_args, 1)
 		key := ExtractString(_args, 2)
 		_res := hmacSum(algorithm, message, key)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -39,7 +40,7 @@ func __md5_(_args []Object) Object {
 		data := ExtractString(_args, 0)
 		t := md5.Sum([]byte(data))
 		_res := string(t[:])
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -57,7 +58,7 @@ func __sha1_(_args []Object) Object {
 		data := ExtractString(_args, 0)
 		t := sha1.Sum([]byte(data))
 		_res := string(t[:])
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -75,7 +76,7 @@ func __sha224_(_args []Object) Object {
 		data := ExtractString(_args, 0)
 		t := sha256.Sum224([]byte(data))
 		_res := string(t[:])
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -93,7 +94,7 @@ func __sha256_(_args []Object) Object {
 		data := ExtractString(_args, 0)
 		t := sha256.Sum256([]byte(data))
 		_res := string(t[:])
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -111,7 +112,7 @@ func __sha384_(_args []Object) Object {
 		data := ExtractString(_args, 0)
 		t := sha512.Sum384([]byte(data))
 		_res := string(t[:])
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -129,7 +130,7 @@ func __sha512_(_args []Object) Object {
 		data := ExtractString(_args, 0)
 		t := sha512.Sum512([]byte(data))
 		_res := string(t[:])
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -147,7 +148,7 @@ func __sha512_224_(_args []Object) Object {
 		data := ExtractString(_args, 0)
 		t := sha512.Sum512_224([]byte(data))
 		_res := string(t[:])
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -165,7 +166,7 @@ func __sha512_256_(_args []Object) Object {
 		data := ExtractString(_args, 0)
 		t := sha512.Sum512_256([]byte(data))
 		_res := string(t[:])
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

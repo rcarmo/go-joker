@@ -442,7 +442,7 @@ func reGroups(s string, indexes []int) Object {
 		if indexes[0] == -1 {
 			return NIL
 		} else {
-			return String{S: s[indexes[0]:indexes[1]]}
+			return coretypes.String{S: s[indexes[0]:indexes[1]]}
 		}
 	} else {
 		v := collectionConstruction.NewEmptyVector()
@@ -450,7 +450,7 @@ func reGroups(s string, indexes []int) Object {
 			if indexes[i] == -1 {
 				v = v.Conjoin(NIL)
 			} else {
-				v = v.Conjoin(String{S: s[indexes[i]:indexes[i+1]]})
+				v = v.Conjoin(coretypes.String{S: s[indexes[i]:indexes[i+1]]})
 			}
 		}
 		return v
@@ -501,7 +501,7 @@ var procSubs = func(args []Object) Object {
 	if end < 0 || end > slen {
 		panic(RT.NewError(fmt.Sprintf("String index out of range: %d", end)))
 	}
-	return String{S: string([]rune(s)[start:end])}
+	return coretypes.String{S: string([]rune(s)[start:end])}
 }
 
 var procIntern = func(args []Object) Object {
@@ -658,7 +658,7 @@ var procFormat = func(args []Object) Object {
 		fargs[i] = ToNative(v)
 	}
 	res := fmt.Sprintf(s.S, fargs...)
-	return String{S: res}
+	return coretypes.String{S: res}
 }
 
 var procList = func(args []Object) Object {
@@ -800,38 +800,38 @@ var procStr = func(args []Object) Object {
 	if len(args) == 2 {
 		a, b := args[0], args[1]
 		// Fastest: string + char (the parser hot path)
-		if as, ok := a.(String); ok {
+		if as, ok := a.(coretypes.String); ok {
 			if bc, ok := b.(coretypes.Char); ok {
-				return String{S: as.S + charToStringFast(bc.Ch)}
+				return coretypes.String{S: as.S + charToStringFast(bc.Ch)}
 			}
-			if bs, ok := b.(String); ok {
-				return String{S: as.S + bs.S}
+			if bs, ok := b.(coretypes.String); ok {
+				return coretypes.String{S: as.S + bs.S}
 			}
 		}
 		// General 2-arg
 		if a.Equals(NIL) {
 			if b.Equals(NIL) {
-				return String{S: ""}
+				return coretypes.String{S: ""}
 			}
-			return String{S: b.ToString(false)}
+			return coretypes.String{S: b.ToString(false)}
 		}
 		if b.Equals(NIL) {
-			return String{S: a.ToString(false)}
+			return coretypes.String{S: a.ToString(false)}
 		}
-		return String{S: a.ToString(false) + b.ToString(false)}
+		return coretypes.String{S: a.ToString(false) + b.ToString(false)}
 	}
 	// 1-arg str
 	if len(args) == 1 {
 		a := args[0]
 		if a.Equals(NIL) {
-			return String{S: ""}
+			return coretypes.String{S: ""}
 		}
-		if s, ok := a.(String); ok {
+		if s, ok := a.(coretypes.String); ok {
 			return s
 		}
-		return String{S: a.ToString(false)}
+		return coretypes.String{S: a.ToString(false)}
 	}
-	return String{S: str(args...)}
+	return coretypes.String{S: str(args...)}
 }
 
 var procSymbol = func(args []Object) Object {
@@ -851,7 +851,7 @@ var procSymbol = func(args []Object) Object {
 var procKeyword = func(args []Object) Object {
 	if len(args) == 1 {
 		switch obj := args[0].(type) {
-		case String:
+		case coretypes.String:
 			return MakeKeyword(obj.S)
 		case Symbol:
 			return Keyword{
@@ -983,7 +983,7 @@ var procBigInt = func(args []Object) Object {
 	switch n := args[0].(type) {
 	case coretypes.Number:
 		return &coretypes.BigInt{B: n.BigInt()}
-	case String:
+	case coretypes.String:
 		bi := &big.Int{}
 		if _, ok := bi.SetString(n.S, 10); ok {
 			return &coretypes.BigInt{B: bi}
@@ -998,7 +998,7 @@ var procBigFloat = func(args []Object) Object {
 	switch n := args[0].(type) {
 	case coretypes.Number:
 		return &coretypes.BigFloat{B: n.BigFloat()}
-	case String:
+	case coretypes.String:
 		b := &big.Float{}
 		if _, ok := b.SetString(n.S); ok {
 			return &coretypes.BigFloat{B: b}
@@ -1206,7 +1206,7 @@ var procRseq = func(args []Object) Object {
 }
 
 var procName = func(args []Object) Object {
-	return String{S: EnsureArgIsNamed(args, 0).Name()}
+	return coretypes.String{S: EnsureArgIsNamed(args, 0).Name()}
 }
 
 var procNamespace = func(args []Object) Object {
@@ -1214,7 +1214,7 @@ var procNamespace = func(args []Object) Object {
 	if ns == "" {
 		return NIL
 	}
-	return String{S: ns}
+	return coretypes.String{S: ns}
 }
 
 var procFindVar = func(args []Object) Object {
@@ -1324,7 +1324,7 @@ var procReadLine = func(args []Object) Object {
 	if err != nil {
 		return NIL
 	}
-	return String{S: line}
+	return coretypes.String{S: line}
 }
 
 var procReaderReadLine = func(args []Object) Object {
@@ -1334,7 +1334,7 @@ var procReaderReadLine = func(args []Object) Object {
 	if err != nil {
 		return NIL
 	}
-	return String{S: line}
+	return coretypes.String{S: line}
 }
 
 var procNanoTime = func(args []Object) Object {
@@ -1543,14 +1543,14 @@ var procBufferedReader = func(args []Object) Object {
 
 var procSlurp = func(args []Object) Object {
 	switch f := args[0].(type) {
-	case String:
+	case coretypes.String:
 		s, err := osutil.ReadFileString(f.S)
 		PanicOnErr(err)
-		return String{S: s}
+		return coretypes.String{S: s}
 	case io.Reader:
 		s, err := osutil.ReadAllString(f)
 		PanicOnErr(err)
-		return String{S: s}
+		return coretypes.String{S: s}
 	default:
 		panic(RT.NewArgTypeError(0, args[0], "String or IOReader"))
 	}
@@ -1565,7 +1565,7 @@ var procSpit = func(args []Object) Object {
 		appendFile = ToBool(append)
 	}
 	switch f := f.(type) {
-	case String:
+	case coretypes.String:
 		err := osutil.WriteFileString(f.S, str(content), appendFile)
 		PanicOnErr(err)
 	case io.Writer:
@@ -1597,7 +1597,7 @@ var procDeriveInfo = func(args []Object) Object {
 }
 
 var procJokerVersion = func(args []Object) Object {
-	return String{S: VERSION[1:]}
+	return coretypes.String{S: VERSION[1:]}
 }
 
 var procHash = func(args []Object) Object {
@@ -1730,7 +1730,7 @@ var procLibPath = func(args []Object) Object {
 		ns := GLOBAL_ENV.CurrentNamespace().Name
 		path = deps.ResolveRelativeLibPath(file, ns.Name(), sym.Name())
 	}
-	return String{S: path}
+	return coretypes.String{S: path}
 }
 
 var procInternFakeVar = func(args []Object) Object {
@@ -1759,7 +1759,7 @@ var procTypes = func(args []Object) Object {
 	CheckArity(args, 0, 0)
 	res := collectionConstruction.NewEmptyArrayMap()
 	for k, v := range TYPES {
-		res.Add(String{S: *k}, v)
+		res.Add(coretypes.String{S: *k}, v)
 	}
 	return res
 }
@@ -1903,7 +1903,7 @@ func PackReader(reader *Reader, filename string) ([]byte, error) {
 		}()
 		s, err := osutil.Abs(filename)
 		PanicOnErr(err)
-		parseContext.GlobalEnv.SetFilename(MakeString(s))
+		parseContext.GlobalEnv.SetFilename(coretypes.MakeString(s))
 	}
 	for {
 		obj, err := readerConstruction.TryRead(reader)
@@ -1949,7 +1949,7 @@ func ProcessReader(reader *Reader, filename string, phase corereader.Phase) erro
 		}()
 		s, err := osutil.Abs(filename)
 		PanicOnErr(err)
-		parseContext.GlobalEnv.SetFilename(MakeString(s))
+		parseContext.GlobalEnv.SetFilename(coretypes.MakeString(s))
 	}
 	var prevObj Object
 	for {
@@ -2015,7 +2015,7 @@ func ProcessReaderFromEval(reader *Reader, filename string) {
 		}()
 		s, err := osutil.Abs(filename)
 		PanicOnErr(err)
-		parseContext.GlobalEnv.SetFilename(MakeString(s))
+		parseContext.GlobalEnv.SetFilename(coretypes.MakeString(s))
 	}
 	for {
 		obj, err := readerConstruction.TryRead(reader)

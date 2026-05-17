@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 )
 
-var list_separator_ String
-var separator_ String
+var list_separator_ coretypes.String
+var separator_ coretypes.String
 var __abs__P ProcFn = __abs_
 var abs_ Proc = Proc{Fn: __abs__P, Name: "abs_", Package: "std/filepath"}
 
@@ -20,7 +20,7 @@ func __abs_(_args []Object) Object {
 		path := ExtractString(_args, 0)
 		_res, err := filepath.Abs(path)
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -54,7 +54,7 @@ func __base_(_args []Object) Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_res := filepath.Base(path)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -71,7 +71,7 @@ func __clean_(_args []Object) Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_res := filepath.Clean(path)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -88,7 +88,7 @@ func __dir_(_args []Object) Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_res := filepath.Dir(path)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -106,7 +106,7 @@ func __eval_symlinks_(_args []Object) Object {
 		path := ExtractString(_args, 0)
 		_res, err := filepath.EvalSymlinks(path)
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -123,7 +123,7 @@ func __ext_(_args []Object) Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_res := filepath.Ext(path)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -157,7 +157,7 @@ func __from_slash_(_args []Object) Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_res := filepath.FromSlash(path)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -193,7 +193,7 @@ func __join_(_args []Object) Object {
 		CheckArity(_args, 0, 999)
 		elems := ExtractStrings(_args, 0)
 		_res := filepath.Join(elems...)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -231,7 +231,7 @@ func __rel_(_args []Object) Object {
 		targpath := ExtractString(_args, 1)
 		_res, err := filepath.Rel(basepath, targpath)
 		PanicOnErr(err)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -248,7 +248,7 @@ func __split_(_args []Object) Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_dir, _file := filepath.Split(path)
-		_res := NewVectorFrom(MakeString(_dir), MakeString(_file))
+		_res := NewVectorFrom(coretypes.MakeString(_dir), coretypes.MakeString(_file))
 		return _res
 
 	default:
@@ -283,7 +283,7 @@ func __to_slash_(_args []Object) Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_res := filepath.ToSlash(path)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -300,7 +300,7 @@ func __volume_name_(_args []Object) Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_res := filepath.VolumeName(path)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -309,8 +309,8 @@ func __volume_name_(_args []Object) Object {
 }
 
 func Init() {
-	list_separator_ = MakeString(string(filepath.ListSeparator))
-	separator_ = MakeString(string(filepath.Separator))
+	list_separator_ = coretypes.MakeString(string(filepath.ListSeparator))
+	separator_ = coretypes.MakeString(string(filepath.Separator))
 	InternsOrThunks()
 }
 

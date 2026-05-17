@@ -620,7 +620,7 @@ func metadataFromObject(obj Object) (*ArrayMap, bool) {
 	switch v := obj.(type) {
 	case *ArrayMap:
 		return v, true
-	case String, Symbol:
+	case coretypes.String, Symbol:
 		return &ArrayMap{arr: []Object{DeriveReadObject(obj, KEYWORDS.tag), obj}}, true
 	case Keyword:
 		return &ArrayMap{arr: []Object{obj, DeriveReadObject(obj, readerConstruction.Bool(true))}}, true
@@ -700,7 +700,7 @@ func isSelfEvaluating(obj Object) bool {
 		return true
 	}
 	switch obj.(type) {
-	case coretypes.Boolean, coretypes.Double, coretypes.Int, coretypes.Char, Keyword, String:
+	case coretypes.Boolean, coretypes.Double, coretypes.Int, coretypes.Char, Keyword, coretypes.String:
 		return true
 	default:
 		return false

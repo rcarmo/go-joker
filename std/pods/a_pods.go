@@ -1,6 +1,9 @@
 package pods
 
-import . "github.com/rcarmo/go-joker/core"
+import (
+	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+)
 
 var podsNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("pods"))
 var babashkaPodsNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("babashka.pods"))
@@ -33,7 +36,7 @@ var invokePod_ Proc = Proc{Fn: func(args []Object) Object {
 
 var bencodeEncode_ Proc = Proc{Fn: func(args []Object) Object {
 	CheckArity(args, 1, 1)
-	return MakeString(string(bencodeEncodeObject(args[0])))
+	return coretypes.MakeString(string(bencodeEncodeObject(args[0])))
 }, Name: "bencode-encode", Package: "std/pods"}
 
 var bencodeDecode_ Proc = Proc{Fn: func(args []Object) Object {

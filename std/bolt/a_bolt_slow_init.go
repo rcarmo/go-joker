@@ -5,6 +5,7 @@ package bolt
 import (
 	"fmt"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 )
 
@@ -83,7 +84,7 @@ func InternsOrThunks() {
 			`Creates and opens a database at the given path.
   If the file does not exist then it will be created automatically
   with mode perm (before umask).
-  mode is normally passed as an octal literal, e.g. 0600`, "1.0").Plus(MakeKeyword("tag"), String{S: "BoltDB"}))
+  mode is normally passed as an octal literal, e.g. 0600`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "BoltDB"}))
 
 	boltNamespace.InternVar("put", put_,
 		MakeMeta(

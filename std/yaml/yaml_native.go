@@ -48,7 +48,7 @@ func fromObject(obj Object) interface{} {
 func toObject(v interface{}) Object {
 	switch v := v.(type) {
 	case string:
-		return MakeString(v)
+		return coretypes.MakeString(v)
 	case float64:
 		return coretypes.Double{D: v}
 	case int:
@@ -82,10 +82,10 @@ func readString(s string) Object {
 	return toObject(v)
 }
 
-func writeString(obj Object) String {
+func writeString(obj Object) coretypes.String {
 	res, err := yaml.Marshal(fromObject(obj))
 	if err != nil {
 		panic(RT.NewError("Cannot encode value to yaml: " + err.Error()))
 	}
-	return String{S: string(res)}
+	return coretypes.String{S: string(res)}
 }

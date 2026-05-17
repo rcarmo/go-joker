@@ -2,6 +2,7 @@ package transit
 
 import (
 	"encoding/json"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -28,5 +29,5 @@ func TransitDecodeValue(s string) (result Object, err error) {
 			err = RT.NewError("transit decode failed")
 		}
 	}()
-	return readTransit(MakeString(s)), nil
+	return readTransit(coretypes.MakeString(s)), nil
 }

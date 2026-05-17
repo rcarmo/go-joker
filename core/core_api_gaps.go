@@ -54,11 +54,11 @@ func registerCoreAPIGaps() {
 					return NIL
 				}
 				if len(matches) == 1 {
-					return String{S: matches[0]}
+					return coretypes.String{S: matches[0]}
 				}
 				result := collectionConstruction.NewEmptyArrayVector()
 				for _, m := range matches {
-					result = result.Conj(String{S: m}).(*ArrayVector)
+					result = result.Conj(coretypes.String{S: m}).(*ArrayVector)
 				}
 				return result
 			}
@@ -77,7 +77,7 @@ func registerCoreAPIGaps() {
 			if err != nil {
 				return nil
 			}
-			files = append(files, String{S: path})
+			files = append(files, coretypes.String{S: path})
 			return nil
 		})
 		if len(files) == 0 {

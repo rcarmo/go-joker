@@ -23,7 +23,7 @@ func TestPersistentClientReusesConnection(t *testing.T) {
 
 	for i := 0; i < 3; i++ {
 		req := EmptyArrayMap()
-		req.Add(MakeKeyword("url"), MakeString(srv.URL))
+		req.Add(MakeKeyword("url"), coretypes.MakeString(srv.URL))
 		req.Add(MakeKeyword("client"), hc)
 		resp := sendRequest(req)
 		if ok, v := resp.Get(MakeKeyword("body")); !ok || v.ToString(false) != "ok" {

@@ -87,9 +87,11 @@ func (c *transitCache) write(s string, asKey bool) string {
 	return s
 }
 
-func writeTransit(obj Object) Object { return MakeString(writeTransitString(obj, false)) }
+func writeTransit(obj Object) Object { return coretypes.MakeString(writeTransitString(obj, false)) }
 
-func writeTransitVerbose(obj Object) Object { return MakeString(writeTransitString(obj, true)) }
+func writeTransitVerbose(obj Object) Object {
+	return coretypes.MakeString(writeTransitString(obj, true))
+}
 
 func writeTransitString(obj Object, verbose bool) string {
 	enc := &transitEncoder{cache: newTransitCache()}
@@ -104,7 +106,7 @@ func writeTransitString(obj Object, verbose bool) string {
 	return string(b)
 }
 
-func readTransit(s String) Object {
+func readTransit(s coretypes.String) Object {
 	var v interface{}
 	if err := json.Unmarshal([]byte(s.S), &v); err != nil {
 		panic(RT.NewError("transit/read: " + err.Error()))
@@ -129,7 +131,7 @@ func (e *transitEncoder) encode(obj Object, asKey bool) interface{} {
 		return e.cacheString("~f"+v.BigFloat().Text('g', -1), asKey)
 	case *coretypes.Ratio:
 		return e.cacheString("~r"+v.Ratio().String(), asKey)
-	case String:
+	case coretypes.String:
 		return e.cacheString(transitEncodeString(v.S), asKey)
 	case Keyword:
 		return e.cacheString("~:"+strings.TrimPrefix(v.ToString(false), ":"), asKey)
@@ -195,7 +197,7 @@ func (d *transitDecoder) decode(v interface{}, asKey bool) Object {
 	case map[string]interface{}:
 		m := EmptyArrayMap()
 		for k, val := range x {
-			m.Add(MakeString(k), d.decode(val, false))
+			m.Add(coretypes.MakeString(k), d.decode(val, false))
 		}
 		return m
 	default:
@@ -282,7 +284,7 @@ func (d *transitDecoder) decodeTagged(tag string, payload interface{}) Object {
 
 func transitDecodeString(s string) Object {
 	if strings.HasPrefix(s, "~~") {
-		return MakeString(s[1:])
+		return coretypes.MakeString(s[1:])
 	}
 	if strings.HasPrefix(s, "~:") {
 		return MakeKeyword(s[2:])
@@ -308,5 +310,5 @@ func transitDecodeString(s string) Object {
 			return coretypes.MakeRatio(r)
 		}
 	}
-	return MakeString(s)
+	return coretypes.MakeString(s)
 }

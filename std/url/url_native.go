@@ -1,6 +1,7 @@
 package url
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"net/url"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -29,7 +30,7 @@ func parseQuery(s string) Object {
 	}
 	res := EmptyArrayMap()
 	for k, v := range values {
-		res.Add(MakeString(k), MakeStringVector(v))
+		res.Add(coretypes.MakeString(k), MakeStringVector(v))
 	}
 	return res
 }

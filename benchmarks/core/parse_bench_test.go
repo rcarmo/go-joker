@@ -72,9 +72,9 @@ const jsonParserScript = `
 const jsonSmall = `{"name":"John","age":30,"city":"New York","active":true,"scores":[95,87,92]}`
 const jsonMedium = `[{"id":1,"name":"Alice","email":"alice@test.com","tags":["admin","user"],"score":95},{"id":2,"name":"Bob","email":"bob@test.com","tags":["user"],"score":87},{"id":3,"name":"Charlie","email":"charlie@test.com","tags":["user","mod"],"score":92},{"id":4,"name":"Dave","email":"dave@test.com","tags":[],"score":78},{"id":5,"name":"Eve","email":"eve@test.com","tags":["admin"],"score":99}]`
 
-func getJSONParser(tb testing.TB) Callable {
+func getJSONParser(tb testing.TB) coretypes.Callable {
 	clbgInit()
-	return Eval(compileBenchExpr(tb, jsonParserScript), nil).(Callable)
+	return Eval(compileBenchExpr(tb, jsonParserScript), nil).(coretypes.Callable)
 }
 
 func TestJSONParserCorrectness(t *testing.T) {
@@ -90,7 +90,7 @@ func TestJSONParserCorrectness(t *testing.T) {
 		{`{"a":1}`, `{a 1}`},
 	}
 	for _, tt := range tests {
-		r := parse.Call([]Object{String{S: tt.input}})
+		r := parse.Call([]Object{coretypes.String{S: tt.input}})
 		if r == nil {
 			t.Fatalf("parse(%q) = nil", tt.input)
 		}
@@ -99,12 +99,12 @@ func TestJSONParserCorrectness(t *testing.T) {
 			t.Errorf("parse(%q) = %q, want %q", tt.input, got, tt.want)
 		}
 	}
-	r := parse.Call([]Object{String{S: jsonSmall}})
+	r := parse.Call([]Object{coretypes.String{S: jsonSmall}})
 	if r == nil {
 		t.Fatal("small JSON failed")
 	}
 	t.Logf("small: %s", r.ToString(false))
-	r2 := parse.Call([]Object{String{S: jsonMedium}})
+	r2 := parse.Call([]Object{coretypes.String{S: jsonMedium}})
 	if r2 == nil {
 		t.Fatal("medium JSON failed")
 	}
@@ -113,7 +113,7 @@ func TestJSONParserCorrectness(t *testing.T) {
 
 func BenchmarkParseJSONSmall(b *testing.B) {
 	parse := getJSONParser(b)
-	input := String{S: jsonSmall}
+	input := coretypes.String{S: jsonSmall}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		parse.Call([]Object{input})
@@ -122,7 +122,7 @@ func BenchmarkParseJSONSmall(b *testing.B) {
 
 func BenchmarkParseJSONMedium(b *testing.B) {
 	parse := getJSONParser(b)
-	input := String{S: jsonMedium}
+	input := coretypes.String{S: jsonMedium}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		parse.Call([]Object{input})
@@ -192,14 +192,14 @@ const xmlParserScript = `
 const xmlSmall = `<person name="John" age="30"><city>New York</city><active>true</active></person>`
 const xmlMedium = `<users><user id="1"><name>Alice</name><email>alice@test.com</email><roles><role>admin</role><role>user</role></roles></user><user id="2"><name>Bob</name><email>bob@test.com</email><roles><role>user</role></roles></user><user id="3"><name>Charlie</name><email>charlie@test.com</email><roles><role>mod</role></roles></user></users>`
 
-func getXMLParser(tb testing.TB) Callable {
+func getXMLParser(tb testing.TB) coretypes.Callable {
 	clbgInit()
-	return Eval(compileBenchExpr(tb, xmlParserScript), nil).(Callable)
+	return Eval(compileBenchExpr(tb, xmlParserScript), nil).(coretypes.Callable)
 }
 
 func TestXMLParserCorrectness(t *testing.T) {
 	parse := getXMLParser(t)
-	r := parse.Call([]Object{String{S: `<a x="1">hello</a>`}})
+	r := parse.Call([]Object{coretypes.String{S: `<a x="1">hello</a>`}})
 	if r == nil {
 		t.Fatal("nil")
 	}
@@ -207,7 +207,7 @@ func TestXMLParserCorrectness(t *testing.T) {
 		t.Fatalf("simple XML = %q, want %q", got, want)
 	}
 
-	r2 := parse.Call([]Object{String{S: xmlSmall}})
+	r2 := parse.Call([]Object{coretypes.String{S: xmlSmall}})
 	if r2 == nil {
 		t.Fatal("small nil")
 	}
@@ -215,7 +215,7 @@ func TestXMLParserCorrectness(t *testing.T) {
 		t.Fatalf("small XML = %q, want %q", got, want)
 	}
 
-	r3 := parse.Call([]Object{String{S: xmlMedium}})
+	r3 := parse.Call([]Object{coretypes.String{S: xmlMedium}})
 	if r3 == nil {
 		t.Fatal("medium nil")
 	}
@@ -227,7 +227,7 @@ func TestXMLParserCorrectness(t *testing.T) {
 
 func BenchmarkParseXMLSmall(b *testing.B) {
 	parse := getXMLParser(b)
-	input := String{S: xmlSmall}
+	input := coretypes.String{S: xmlSmall}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		parse.Call([]Object{input})
@@ -236,7 +236,7 @@ func BenchmarkParseXMLSmall(b *testing.B) {
 
 func BenchmarkParseXMLMedium(b *testing.B) {
 	parse := getXMLParser(b)
-	input := String{S: xmlMedium}
+	input := coretypes.String{S: xmlMedium}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		parse.Call([]Object{input})
@@ -297,36 +297,36 @@ const yamlParserScript = `
 const yamlSmall = "name: John\nage: 30\ncity: New York\nactive: true\n"
 const yamlMedium = "id: 1\nname: Alice\nemail: alice@test.com\nscore: 95\nrole: admin\nverified: true\nid2: 2\nname2: Bob\nemail2: bob@test.com\nscore2: 87\nrole2: user\nverified2: false\n"
 
-func getYAMLParser(tb testing.TB) Callable {
+func getYAMLParser(tb testing.TB) coretypes.Callable {
 	clbgInit()
-	return Eval(compileBenchExpr(tb, yamlParserScript), nil).(Callable)
+	return Eval(compileBenchExpr(tb, yamlParserScript), nil).(coretypes.Callable)
 }
 
 func TestYAMLParserCorrectness(t *testing.T) {
 	parse := getYAMLParser(t)
-	r := EnsureObjectIsMap(parse.Call([]Object{String{S: yamlSmall}}), "small YAML result: %s")
-	if ok, got := r.Get(MakeString("age")); !ok || !got.Equals(coretypes.MakeInt(30)) {
+	r := EnsureObjectIsMap(parse.Call([]Object{coretypes.String{S: yamlSmall}}), "small YAML result: %s")
+	if ok, got := r.Get(coretypes.MakeString("age")); !ok || !got.Equals(coretypes.MakeInt(30)) {
 		t.Fatalf("small YAML age = %v, want 30", got)
 	}
-	if ok, got := r.Get(MakeString("active")); !ok || !got.Equals(coretypes.Boolean{B: true}) {
+	if ok, got := r.Get(coretypes.MakeString("active")); !ok || !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("small YAML active = %v, want true", got)
 	}
-	if ok, got := r.Get(MakeString("city")); !ok || got.ToString(false) != "New York" {
+	if ok, got := r.Get(coretypes.MakeString("city")); !ok || got.ToString(false) != "New York" {
 		t.Fatalf("small YAML city = %v, want New York", got)
 	}
 
-	r2 := EnsureObjectIsMap(parse.Call([]Object{String{S: yamlMedium}}), "medium YAML result: %s")
-	if ok, got := r2.Get(MakeString("score2")); !ok || !got.Equals(coretypes.MakeInt(87)) {
+	r2 := EnsureObjectIsMap(parse.Call([]Object{coretypes.String{S: yamlMedium}}), "medium YAML result: %s")
+	if ok, got := r2.Get(coretypes.MakeString("score2")); !ok || !got.Equals(coretypes.MakeInt(87)) {
 		t.Fatalf("medium YAML score2 = %v, want 87", got)
 	}
-	if ok, got := r2.Get(MakeString("verified2")); !ok || !got.Equals(coretypes.Boolean{B: false}) {
+	if ok, got := r2.Get(coretypes.MakeString("verified2")); !ok || !got.Equals(coretypes.Boolean{B: false}) {
 		t.Fatalf("medium YAML verified2 = %v, want false", got)
 	}
 }
 
 func BenchmarkParseYAMLSmall(b *testing.B) {
 	parse := getYAMLParser(b)
-	input := String{S: yamlSmall}
+	input := coretypes.String{S: yamlSmall}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		parse.Call([]Object{input})
@@ -335,7 +335,7 @@ func BenchmarkParseYAMLSmall(b *testing.B) {
 
 func BenchmarkParseYAMLMedium(b *testing.B) {
 	parse := getYAMLParser(b)
-	input := String{S: yamlMedium}
+	input := coretypes.String{S: yamlMedium}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		parse.Call([]Object{input})
@@ -366,19 +366,19 @@ const htmlDecodeScript = `
 const htmlSmall = "Hello &amp; welcome to &lt;the&gt; &quot;world&quot;"
 const htmlMedium = "&lt;div class=&quot;container&quot;&gt;&lt;h1&gt;Title &amp; Subtitle&lt;/h1&gt;&lt;p&gt;This is &lt;em&gt;important&lt;/em&gt; &amp; &lt;strong&gt;bold&lt;/strong&gt; text.&lt;/p&gt;&lt;a href=&quot;https://example.com?a=1&amp;b=2&quot;&gt;Link&lt;/a&gt;&lt;/div&gt;"
 
-func getHTMLDecoder(tb testing.TB) Callable {
+func getHTMLDecoder(tb testing.TB) coretypes.Callable {
 	clbgInit()
-	return Eval(compileBenchExpr(tb, htmlDecodeScript), nil).(Callable)
+	return Eval(compileBenchExpr(tb, htmlDecodeScript), nil).(coretypes.Callable)
 }
 
 func TestHTMLDecodeCorrectness(t *testing.T) {
 	decode := getHTMLDecoder(t)
-	r := decode.Call([]Object{String{S: htmlSmall}})
+	r := decode.Call([]Object{coretypes.String{S: htmlSmall}})
 	if got, want := r.ToString(false), `Hello & welcome to <the> "world"`; got != want {
 		t.Fatalf("small HTML decode = %q, want %q", got, want)
 	}
 
-	r2 := decode.Call([]Object{String{S: htmlMedium}})
+	r2 := decode.Call([]Object{coretypes.String{S: htmlMedium}})
 	want := `<div class="container"><h1>Title & Subtitle</h1><p>This is <em>important</em> & <strong>bold</strong> text.</p><a href="https://example.com?a=1&b=2">Link</a></div>`
 	if got := r2.ToString(false); got != want {
 		t.Fatalf("medium HTML decode = %q, want %q", got, want)
@@ -387,7 +387,7 @@ func TestHTMLDecodeCorrectness(t *testing.T) {
 
 func BenchmarkDecodeHTMLSmall(b *testing.B) {
 	decode := getHTMLDecoder(b)
-	input := String{S: htmlSmall}
+	input := coretypes.String{S: htmlSmall}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		decode.Call([]Object{input})
@@ -396,7 +396,7 @@ func BenchmarkDecodeHTMLSmall(b *testing.B) {
 
 func BenchmarkDecodeHTMLMedium(b *testing.B) {
 	decode := getHTMLDecoder(b)
-	input := String{S: htmlMedium}
+	input := coretypes.String{S: htmlMedium}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		decode.Call([]Object{input})

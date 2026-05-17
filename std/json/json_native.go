@@ -19,7 +19,7 @@ func fromObject(obj Object) interface{} {
 		return obj.Double().D
 	case Nil:
 		return nil
-	case String:
+	case coretypes.String:
 		return obj.ToString(false)
 	case Map:
 		res := make(map[string]interface{})
@@ -51,7 +51,7 @@ func fromObject(obj Object) interface{} {
 func toObject(v interface{}, keywordize bool) Object {
 	switch v := v.(type) {
 	case string:
-		return MakeString(v)
+		return coretypes.MakeString(v)
 	case float64:
 		if v == float64(int(v)) {
 			return coretypes.Int{I: int(v)}
@@ -74,7 +74,7 @@ func toObject(v interface{}, keywordize bool) Object {
 			if keywordize {
 				key = MakeKeyword(k)
 			} else {
-				key = MakeString(k)
+				key = coretypes.MakeString(k)
 			}
 			res.Add(key, toObject(v, keywordize))
 		}
@@ -103,7 +103,7 @@ func jsonSeqOpts(src Object, opts Map) Object {
 	var keywordize bool
 	var jsonLazySeq func() *LazySeq
 	switch src := src.(type) {
-	case String:
+	case coretypes.String:
 		dec = json.NewDecoder(strings.NewReader(src.S))
 	case io.Reader:
 		dec = json.NewDecoder(src)
@@ -133,10 +133,10 @@ func jsonSeqOpts(src Object, opts Map) Object {
 	return jsonLazySeq()
 }
 
-func writeString(obj Object, opts Map) String {
+func writeString(obj Object, opts Map) coretypes.String {
 	var (
-		prefix String
-		indent String
+		prefix coretypes.String
+		indent coretypes.String
 		res    []byte
 		err    error
 	)
@@ -157,5 +157,5 @@ func writeString(obj Object, opts Map) String {
 	if err != nil {
 		panic(RT.NewError("Cannot encode value to json: " + err.Error()))
 	}
-	return String{S: string(res)}
+	return coretypes.String{S: string(res)}
 }

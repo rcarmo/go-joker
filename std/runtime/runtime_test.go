@@ -18,7 +18,7 @@ func TestDisassemble(t *testing.T) {
 	fnObj := Eval(expr, nil).(*Fn)
 
 	result := procDisassemble([]Object{fnObj})
-	dis := result.(String).S
+	dis := result.(coretypes.String).S
 	if !strings.Contains(dis, "irMul") {
 		t.Fatalf("expected irMul in disassembly, got:\n%s", dis)
 	}

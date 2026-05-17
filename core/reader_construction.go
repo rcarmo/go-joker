@@ -49,7 +49,7 @@ func (ReaderConstructionAdapter) Char(v rune) Object { return coretypes.Char{Ch:
 
 func (ReaderConstructionAdapter) Int(v int) Object { return coretypes.Int{I: v} }
 
-func (ReaderConstructionAdapter) String(v string) Object { return MakeString(v) }
+func (ReaderConstructionAdapter) String(v string) Object { return coretypes.MakeString(v) }
 
 func (ReaderConstructionAdapter) Symbol(v string) Object { return MakeSymbol(v) }
 

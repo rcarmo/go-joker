@@ -1,6 +1,7 @@
 package pods
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
 	"testing"
 
@@ -27,7 +28,7 @@ func TestPodTransitPayloadSupport(t *testing.T) {
 
 func TestPodEDNPayloadSupport(t *testing.T) {
 	p := newPod("pod-edn", "edn", "edn", nil, nil, nil)
-	encoded, err := p.encodeArgs([]Object{MakeString("x"), MakeKeyword("k")})
+	encoded, err := p.encodeArgs([]Object{coretypes.MakeString("x"), MakeKeyword("k")})
 	if err != nil {
 		t.Fatal(err)
 	}

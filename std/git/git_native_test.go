@@ -1,6 +1,7 @@
 package git
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 
 	gitConfig "github.com/go-git/go-git/v5/config"
@@ -30,11 +31,11 @@ func TestConfigPlacesURLRewritesUnderURLs(t *testing.T) {
 		t.Fatal("missing :urls")
 	}
 	urls := urlsObj.(Map)
-	if ok, _ := urls.Get(MakeString("ssh://example/")); !ok {
+	if ok, _ := urls.Get(coretypes.MakeString("ssh://example/")); !ok {
 		t.Fatalf("url rewrite missing from :urls: %s", urlsObj.ToString(false))
 	}
 	_, branches := m.Get(MakeKeyword("branches"))
-	if ok, _ := branches.(Map).Get(MakeString("ssh://example/")); ok {
+	if ok, _ := branches.(Map).Get(coretypes.MakeString("ssh://example/")); ok {
 		t.Fatal("url rewrite incorrectly placed under :branches")
 	}
 }

@@ -4,6 +4,7 @@ package html
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"html"
 )
 
@@ -16,7 +17,7 @@ func __escape_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := html.EscapeString(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)
@@ -33,7 +34,7 @@ func __unescape_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := html.UnescapeString(s)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

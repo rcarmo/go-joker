@@ -18,11 +18,11 @@ func TestCanvasGeneration(t *testing.T) {
 	// Draw shapes
 	procRect([]Object{canvas, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(80), coretypes.MakeInt(40)})
 	procCircle([]Object{canvas, coretypes.MakeInt(150), coretypes.MakeInt(50), coretypes.MakeInt(30)})
-	procText([]Object{canvas, coretypes.MakeInt(50), coretypes.MakeInt(80), MakeString("Hello")})
+	procText([]Object{canvas, coretypes.MakeInt(50), coretypes.MakeInt(80), coretypes.MakeString("Hello")})
 
 	// Get SVG string
 	result := procToString([]Object{canvas})
-	svg := result.(String).S
+	svg := result.(coretypes.String).S
 
 	if !strings.Contains(svg, "<svg") {
 		t.Fatal("missing <svg tag")
@@ -86,12 +86,12 @@ func TestCanvasWithStyle(t *testing.T) {
 	canvas := procCanvas([]Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
 
 	style := &ArrayMap{}
-	style = style.Assoc(MakeKeyword("fill"), MakeString("red")).(*ArrayMap)
-	style = style.Assoc(MakeKeyword("stroke"), MakeString("black")).(*ArrayMap)
+	style = style.Assoc(MakeKeyword("fill"), coretypes.MakeString("red")).(*ArrayMap)
+	style = style.Assoc(MakeKeyword("stroke"), coretypes.MakeString("black")).(*ArrayMap)
 	procRect([]Object{canvas, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(50), coretypes.MakeInt(50), style})
 
 	result := procToString([]Object{canvas})
-	svg := result.(String).S
+	svg := result.(coretypes.String).S
 
 	if !strings.Contains(svg, "fill:red") {
 		t.Fatalf("missing fill style in: %s", svg)
@@ -105,14 +105,14 @@ func TestRenderSVG(t *testing.T) {
 		<rect x="0" y="0" width="100" height="100" fill="red"/>
 	</svg>`
 
-	img := procRender([]Object{MakeString(svgStr), coretypes.MakeInt(100), coretypes.MakeInt(100)})
+	img := procRender([]Object{coretypes.MakeString(svgStr), coretypes.MakeInt(100), coretypes.MakeInt(100)})
 	if img == nil || img == NIL {
 		t.Fatal("render returned nil")
 	}
 	t.Logf("rendered: %s", img.ToString(false))
 
 	expectSVGPanic(t, func() {
-		procRender([]Object{MakeString(svgStr), coretypes.MakeInt(0), coretypes.MakeInt(100)})
+		procRender([]Object{coretypes.MakeString(svgStr), coretypes.MakeInt(0), coretypes.MakeInt(100)})
 	})
 }
 

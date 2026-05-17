@@ -25,14 +25,14 @@ func env() Object {
 	res := EmptyArrayMap()
 	for _, v := range os.Environ() {
 		parts := strings.SplitN(v, "=", 2)
-		res.Add(String{S: parts[0]}, String{S: parts[1]})
+		res.Add(coretypes.String{S: parts[0]}, coretypes.String{S: parts[1]})
 	}
 	return res
 }
 
 func getEnv(key string) Object {
 	if v, ok := os.LookupEnv(key); ok {
-		return MakeString(v)
+		return coretypes.MakeString(v)
 	}
 	return NIL
 }
@@ -40,7 +40,7 @@ func getEnv(key string) Object {
 func commandArgs() Object {
 	res := EmptyVector()
 	for _, arg := range os.Args {
-		res = res.Conjoin(String{S: arg})
+		res = res.Conjoin(coretypes.String{S: arg})
 	}
 	return res
 }
@@ -115,7 +115,7 @@ func parseExecOpts(opts Map) (dir string, args []string, stdin io.Reader, stdout
 				stdin = s.Reader
 			case io.Reader:
 				stdin = s
-			case String:
+			case coretypes.String:
 				stdin = strings.NewReader(s.S)
 			default:
 				panic(RT.NewError("stdin option must be either an IOReader or a string, got " + stdinObj.GetType().ToString(false)))
@@ -165,7 +165,7 @@ func readDir(dirname string) Object {
 		info, err := e.Info()
 		PanicOnErr(err)
 		m := EmptyArrayMap()
-		m.Add(name, MakeString(e.Name()))
+		m.Add(name, coretypes.MakeString(e.Name()))
 		m.Add(size, nativeIntObject(info.Size()))
 		m.Add(mode, coretypes.MakeInt(int(info.Mode())))
 		m.Add(isDir, coretypes.MakeBoolean(e.IsDir()))

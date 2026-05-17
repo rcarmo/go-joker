@@ -65,7 +65,7 @@ var upgrader = ws.Upgrader{
 func extractMethod(request Map) string {
 	if ok, m := request.Get(MakeKeyword("method")); ok {
 		switch m := m.(type) {
-		case String:
+		case coretypes.String:
 			return m.S
 		case Keyword:
 			return m.ToString(false)[1:]
@@ -114,25 +114,25 @@ func remoteHost(remoteAddr string) string {
 	return strings.Trim(remoteAddr, "[]")
 }
 
-func reqToMap(host String, port String, req *http.Request) Map {
+func reqToMap(host coretypes.String, port coretypes.String, req *http.Request) Map {
 	res := EmptyArrayMap()
 	body, err := io.ReadAll(req.Body)
 	closeErr := req.Body.Close()
 	PanicOnErr(err)
 	PanicOnErr(closeErr)
 	res.Add(MakeKeyword("request-method"), MakeKeyword(strings.ToLower(req.Method)))
-	res.Add(MakeKeyword("body"), MakeString(string(body)))
-	res.Add(MakeKeyword("uri"), MakeString(req.URL.Path))
-	res.Add(MakeKeyword("query-string"), MakeString(req.URL.RawQuery))
+	res.Add(MakeKeyword("body"), coretypes.MakeString(string(body)))
+	res.Add(MakeKeyword("uri"), coretypes.MakeString(req.URL.Path))
+	res.Add(MakeKeyword("query-string"), coretypes.MakeString(req.URL.RawQuery))
 	res.Add(MakeKeyword("server-name"), host)
 	res.Add(MakeKeyword("server-port"), port)
-	res.Add(MakeKeyword("remote-addr"), MakeString(remoteHost(req.RemoteAddr)))
-	res.Add(MakeKeyword("protocol"), MakeString(req.Proto))
+	res.Add(MakeKeyword("remote-addr"), coretypes.MakeString(remoteHost(req.RemoteAddr)))
+	res.Add(MakeKeyword("protocol"), coretypes.MakeString(req.Proto))
 	res.Add(MakeKeyword("scheme"), MakeKeyword("http"))
-	res.Add(MakeKeyword("host"), MakeString(req.Host))
+	res.Add(MakeKeyword("host"), coretypes.MakeString(req.Host))
 	headers := EmptyArrayMap()
 	for k, v := range req.Header {
-		headers.Add(MakeString(strings.ToLower(k)), MakeString(strings.Join(v, ",")))
+		headers.Add(coretypes.MakeString(strings.ToLower(k)), coretypes.MakeString(strings.Join(v, ",")))
 	}
 	res.Add(MakeKeyword("headers"), headers)
 	return res
@@ -144,11 +144,11 @@ func respToMap(resp *http.Response) Map {
 	closeErr := resp.Body.Close()
 	PanicOnErr(err)
 	PanicOnErr(closeErr)
-	res.Add(MakeKeyword("body"), MakeString(string(body)))
+	res.Add(MakeKeyword("body"), coretypes.MakeString(string(body)))
 	res.Add(MakeKeyword("status"), coretypes.MakeInt(resp.StatusCode))
 	respHeaders := EmptyArrayMap()
 	for k, v := range resp.Header {
-		respHeaders.Add(MakeString(k), MakeStringVector(v))
+		respHeaders.Add(coretypes.MakeString(k), MakeStringVector(v))
 	}
 	res.Add(MakeKeyword("headers"), respHeaders)
 	maxNativeInt := int64(int(^uint(0) >> 1))
@@ -189,7 +189,7 @@ func mapToResp(response Map, w http.ResponseWriter) {
 			p := iter.Next()
 			hname := EnsureObjectIsString(p.Key, "HTTP response header name %s").S
 			switch pvalue := p.Value.(type) {
-			case String:
+			case coretypes.String:
 				header.Add(hname, pvalue.S)
 			case Seqable:
 				s := pvalue.Seq()
@@ -275,15 +275,15 @@ func closeClient(c Object) Object {
 	return NIL
 }
 
-func listenHostPort(addr string) (String, String) {
+func listenHostPort(addr string) (coretypes.String, coretypes.String) {
 	host, port, err := net.SplitHostPort(addr)
 	if err == nil {
-		return MakeString(strings.Trim(host, "[]")), MakeString(port)
+		return coretypes.MakeString(strings.Trim(host, "[]")), coretypes.MakeString(port)
 	}
-	return MakeString(strings.Trim(addr, "[]")), MakeString("")
+	return coretypes.MakeString(strings.Trim(addr, "[]")), coretypes.MakeString("")
 }
 
-func startServer(addr string, handler Callable) Object {
+func startServer(addr string, handler coretypes.Callable) Object {
 	host, port := listenHostPort(addr)
 	err := http.ListenAndServe(addr, http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		defer func() {
@@ -382,7 +382,7 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 
 	// Read loop
 	_, onMsg := conf.Get(MakeKeyword("on-message"))
-	var onMsgFn Callable
+	var onMsgFn coretypes.Callable
 	if onMsg != nil {
 		onMsgFn = EnsureObjectIsCallable(onMsg, "on-message must be callable: %s")
 	}
@@ -393,7 +393,7 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 			break
 		}
 		if onMsgFn != nil {
-			onMsgFn.Call([]Object{MakeString(string(message))})
+			onMsgFn.Call([]Object{coretypes.MakeString(string(message))})
 		}
 	}
 
@@ -407,7 +407,7 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 // The stream fn receives a send-event callback: (fn [event-data])
 // Response map can include :status and :headers (applied before streaming).
 // Default Content-coretypes.Type is text/event-stream.
-func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
+func handleStream(w http.ResponseWriter, respMap Map, streamFn coretypes.Callable) {
 	closeInfo := sseCloseInfo("completed", nil)
 	if ok, onClose := respMap.Get(MakeKeyword("on-close")); ok {
 		onCloseFn := EnsureObjectIsCallable(onClose, "stream on-close must be callable: %s")
@@ -436,7 +436,7 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
 			p := iter.Next()
 			hname := EnsureObjectIsString(p.Key, "header name: %s").S
 			switch pvalue := p.Value.(type) {
-			case String:
+			case coretypes.String:
 				header.Add(hname, pvalue.S)
 			case Seqable:
 				s := pvalue.Seq()

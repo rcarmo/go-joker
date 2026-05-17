@@ -153,7 +153,7 @@ func (tm *TransientMap) checkFrozen() {
 // AssocInPlace sets a key-value pair. Returns self.
 func (tm *TransientMap) AssocInPlace(key, val Object) *TransientMap {
 	tm.checkFrozen()
-	if s, ok := key.(String); ok {
+	if s, ok := key.(coretypes.String); ok {
 		if tm.sm == nil {
 			tm.sm = make(map[string]Object)
 		}
@@ -181,7 +181,7 @@ func (tm *TransientMap) AssocInPlace(key, val Object) *TransientMap {
 
 // Get implements coretypes.Gettable for transient maps.
 func (tm *TransientMap) Get(key Object) (bool, Object) {
-	if s, ok := key.(String); ok && tm.sm != nil {
+	if s, ok := key.(coretypes.String); ok && tm.sm != nil {
 		v, ok := tm.sm[s.S]
 		if ok {
 			return true, v
@@ -202,7 +202,7 @@ func (tm *TransientMap) ToPersistent() Object {
 	if tm.count <= int(HASHMAP_THRESHOLD/2) {
 		res := collectionConstruction.NewEmptyArrayMap()
 		for k, v := range tm.sm {
-			res.Add(String{S: k}, v)
+			res.Add(coretypes.String{S: k}, v)
 		}
 		for _, bucket := range tm.m {
 			for _, e := range bucket {
@@ -213,7 +213,7 @@ func (tm *TransientMap) ToPersistent() Object {
 	}
 	res := EmptyHashMap
 	for k, v := range tm.sm {
-		res = res.Assoc(String{S: k}, v).(*HashMap)
+		res = res.Assoc(coretypes.String{S: k}, v).(*HashMap)
 	}
 	for _, bucket := range tm.m {
 		for _, e := range bucket {

@@ -52,10 +52,10 @@ func fillNativeVarMetadata() {
 				continue
 			}
 			if ok, _ := m.Get(KEYWORDS.added); !ok {
-				m.Add(KEYWORDS.added, MakeString("1.0"))
+				m.Add(KEYWORDS.added, coretypes.MakeString("1.0"))
 			}
 			if ok, _ := m.Get(KEYWORDS.doc); !ok {
-				m.Add(KEYWORDS.doc, MakeString("Native runtime helper installed by go-joker."))
+				m.Add(KEYWORDS.doc, coretypes.MakeString("Native runtime helper installed by go-joker."))
 			}
 		}
 	}

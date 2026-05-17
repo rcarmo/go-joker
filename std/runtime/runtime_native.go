@@ -17,9 +17,9 @@ var procDisassemble ProcFn = func(args []Object) Object {
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
 	if prog == nil {
-		return MakeString("; function cannot be compiled to IR")
+		return coretypes.MakeString("; function cannot be compiled to IR")
 	}
-	return MakeString(IrDisassemble(prog))
+	return coretypes.MakeString(IrDisassemble(prog))
 }
 
 // --- Profile ---
@@ -71,14 +71,14 @@ var procWasmDiagnostic ProcFn = func(args []Object) Object {
 	if prog == nil {
 		m := EmptyArrayMap()
 		m = assocM(m, MakeKeyword("eligible"), coretypes.Boolean{B: false})
-		m = assocM(m, MakeKeyword("reason"), MakeString("cannot compile to IR"))
+		m = assocM(m, MakeKeyword("reason"), coretypes.MakeString("cannot compile to IR"))
 		return m
 	}
 	diag := ExplainWASMEligibility(prog)
 	m := EmptyArrayMap()
 	m = assocM(m, MakeKeyword("eligible"), coretypes.Boolean{B: diag.Reason == ""})
 	if diag.Reason != "" {
-		m = assocM(m, MakeKeyword("reason"), MakeString(diag.Reason))
+		m = assocM(m, MakeKeyword("reason"), coretypes.MakeString(diag.Reason))
 	}
 	m = assocM(m, MakeKeyword("uses-float"), coretypes.Boolean{B: diag.UsesFloat})
 	m = assocM(m, MakeKeyword("has-imports"), coretypes.Boolean{B: diag.HasImports})
@@ -112,11 +112,11 @@ var procAnalyze ProcFn = func(args []Object) Object {
 	m = assocM(m, MakeKeyword("has-assoc"), coretypes.Boolean{B: a.HasAssoc})
 	m = assocM(m, MakeKeyword("has-generic-nth"), coretypes.Boolean{B: a.HasGenericNth})
 	if prog.GetNativeHelper() != nil {
-		m = assocM(m, MakeKeyword("path"), MakeString("native-f64"))
+		m = assocM(m, MakeKeyword("path"), coretypes.MakeString("native-f64"))
 	} else if a.Eligible {
-		m = assocM(m, MakeKeyword("path"), MakeString("typed-ir"))
+		m = assocM(m, MakeKeyword("path"), coretypes.MakeString("typed-ir"))
 	} else {
-		m = assocM(m, MakeKeyword("path"), MakeString("boxed-ir"))
+		m = assocM(m, MakeKeyword("path"), coretypes.MakeString("boxed-ir"))
 	}
 	return m
 }

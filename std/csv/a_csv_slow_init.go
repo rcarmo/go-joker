@@ -5,6 +5,7 @@ package csv
 import (
 	"fmt"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 )
 
@@ -64,6 +65,6 @@ func InternsOrThunks() {
 
   :comma - field delimiter (defaults to ',')
 
-  :use-crlf - if true, uses \r\n as the line terminator. Default value is false.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
+  :use-crlf - if true, uses \r\n as the line terminator. Default value is false.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 }

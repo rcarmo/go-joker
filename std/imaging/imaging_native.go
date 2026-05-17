@@ -162,7 +162,7 @@ var procEncode ProcFn = func(args []Object) Object {
 	default:
 		panic(RT.NewError("imaging/encode: unsupported format: " + format))
 	}
-	return MakeString(buf.String())
+	return coretypes.MakeString(buf.String())
 }
 
 var procDecode ProcFn = func(args []Object) Object {
@@ -409,7 +409,7 @@ var procNewImage ProcFn = func(args []Object) Object {
 	}
 	var c color.NRGBA
 	if len(args) > 2 {
-		v, ok := args[2].(Indexed)
+		v, ok := args[2].(coretypes.Indexed)
 		counted, countedOk := args[2].(coretypes.Counted)
 		if !ok || !countedOk || counted.Count() != 4 {
 			panic(RT.NewError("imaging/new: color must be a vector [r g b a]"))

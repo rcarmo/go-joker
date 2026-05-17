@@ -1,6 +1,9 @@
 package system
 
-import . "github.com/rcarmo/go-joker/core"
+import (
+	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+)
 
 var systemNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("System"))
 
@@ -36,7 +39,7 @@ var exit_ Proc = Proc{Fn: func(args []Object) Object {
 
 var lineSeparator_ Proc = Proc{Fn: func(args []Object) Object {
 	CheckArity(args, 0, 0)
-	return MakeString(lineSeparator())
+	return coretypes.MakeString(lineSeparator())
 }, Name: "lineSeparator", Package: "std/system"}
 
 var currentTimeMillis_ Proc = Proc{Fn: func(args []Object) Object {

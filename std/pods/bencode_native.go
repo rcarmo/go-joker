@@ -43,13 +43,13 @@ func objectToBencode(obj Object) interface{} {
 	switch v := obj.(type) {
 	case Nil:
 		return ""
-	case String:
+	case coretypes.String:
 		return v.S
 	case Keyword, Symbol:
 		return v.ToString(false)
 	case coretypes.Int:
 		return int64(v.I)
-	case *BigInt:
+	case *coretypes.BigInt:
 		return v.BigInt().String()
 	case coretypes.Boolean:
 		if v.B {
@@ -76,7 +76,7 @@ func objectToBencode(obj Object) interface{} {
 
 func bencodeKeyString(k Object) string {
 	switch v := k.(type) {
-	case String:
+	case coretypes.String:
 		return v.S
 	case Keyword:
 		return v.ToString(false)[1:]
@@ -90,9 +90,9 @@ func bencodeKeyString(k Object) string {
 func bencodeToObject(v interface{}) Object {
 	switch x := v.(type) {
 	case string:
-		return MakeString(x)
+		return coretypes.MakeString(x)
 	case []byte:
-		return MakeString(string(x))
+		return coretypes.MakeString(string(x))
 	case int:
 		return coretypes.MakeInt(x)
 	case int64:
@@ -108,16 +108,16 @@ func bencodeToObject(v interface{}) Object {
 	case map[string]interface{}:
 		m := EmptyArrayMap()
 		for k, val := range x {
-			m.Add(MakeString(k), bencodeToObject(val))
+			m.Add(coretypes.MakeString(k), bencodeToObject(val))
 		}
 		return m
 	case map[interface{}]interface{}:
 		m := EmptyArrayMap()
 		for k, val := range x {
-			m.Add(MakeString(fmt.Sprint(k)), bencodeToObject(val))
+			m.Add(coretypes.MakeString(fmt.Sprint(k)), bencodeToObject(val))
 		}
 		return m
 	default:
-		return MakeString(fmt.Sprint(v))
+		return coretypes.MakeString(fmt.Sprint(v))
 	}
 }

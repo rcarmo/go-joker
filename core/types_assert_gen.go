@@ -53,19 +53,19 @@ func EnsureArgIsChar(args []Object, index int) coretypes.Char {
 	panic(FailArg(obj, "coretypes.Char", index))
 }
 
-func EnsureObjectIsString(obj Object, pattern string) String {
-	if c, yes := obj.(String); yes {
+func EnsureObjectIsString(obj Object, pattern string) coretypes.String {
+	if c, yes := obj.(coretypes.String); yes {
 		return c
 	}
-	panic(FailObject(obj, "String", pattern))
+	panic(FailObject(obj, "coretypes.String", pattern))
 }
 
-func EnsureArgIsString(args []Object, index int) String {
+func EnsureArgIsString(args []Object, index int) coretypes.String {
 	obj := args[index]
-	if c, yes := obj.(String); yes {
+	if c, yes := obj.(coretypes.String); yes {
 		return c
 	}
-	panic(FailArg(obj, "String", index))
+	panic(FailArg(obj, "coretypes.String", index))
 }
 
 func EnsureObjectIsSymbol(obj Object, pattern string) Symbol {

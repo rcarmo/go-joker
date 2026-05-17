@@ -5,6 +5,7 @@ package git
 import (
 	"fmt"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 )
 
@@ -18,7 +19,7 @@ func InternsOrThunks() {
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("repo"), MakeSymbol("msg"), MakeSymbol("opts"))),
 			`Stores the current contents of the index in a new commit along with
-   a log message from the user describing the changes.`, "1.4").Plus(MakeKeyword("tag"), String{S: "String"}))
+   a log message from the user describing the changes.`, "1.4").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	gitNamespace.InternVar("add-path", add_path_,
 		MakeMeta(
@@ -28,7 +29,7 @@ func InternsOrThunks() {
    from the workspace is given, the file is removed from the index. If a
    directory given, adds the files and all his sub-directories recursively in
    the worktree to the index. If any of the files is already staged in the index
-   no error is thrown. When path is a file, the hash is returned.`, "1.4").Plus(MakeKeyword("tag"), String{S: "String"}))
+   no error is thrown. When path is a file, the hash is returned.`, "1.4").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 	gitNamespace.InternVar("commit", commit_,
 		MakeMeta(
@@ -84,7 +85,7 @@ func InternsOrThunks() {
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("path"))),
 			`Opens a git repository from the given path. It detects if the
-   repository is bare or a normal one. Throws an error if the path doesn't contain a valid repository.`, "1.3").Plus(MakeKeyword("tag"), String{S: "GitRepo"}))
+   repository is bare or a normal one. Throws an error if the path doesn't contain a valid repository.`, "1.3").Plus(MakeKeyword("tag"), coretypes.String{S: "GitRepo"}))
 
 	gitNamespace.InternVar("ref", ref_,
 		MakeMeta(
@@ -96,6 +97,6 @@ func InternsOrThunks() {
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("repo"), MakeSymbol("revision"))),
 			`Resolves revision to corresponding hash. It will always
-   resolve to a commit hash, not a tree or annotated tag.`, "1.3").Plus(MakeKeyword("tag"), String{S: "String"}))
+   resolve to a commit hash, not a tree or annotated tag.`, "1.3").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
 
 }

@@ -115,10 +115,14 @@ func TestInstallPodDescribeNamespaces(t *testing.T) {
 
 func TestPodInvokeTimeoutOptionsRejectInvalidValues(t *testing.T) {
 	for name, opt := range map[string]Object{
-		"non-map":     MakeString("bad"),
-		"non-integer": func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), MakeString("bad")); return m }(),
-		"zero":        func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(0)); return m }(),
-		"negative":    func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(-1)); return m }(),
+		"non-map": coretypes.MakeString("bad"),
+		"non-integer": func() Object {
+			m := EmptyArrayMap()
+			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeString("bad"))
+			return m
+		}(),
+		"zero":     func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(0)); return m }(),
+		"negative": func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(-1)); return m }(),
 		"too-large": func() Object {
 			m := EmptyArrayMap()
 			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(int(^uint(0)>>1)))
@@ -139,7 +143,7 @@ func TestPodInvokeTimeoutOptionsRejectInvalidValues(t *testing.T) {
 func TestPodInvokeTimeoutCleansPending(t *testing.T) {
 	shutdownAllPods()
 	p := newPod("pod-timeout", "timeout", "json", io.Discard, nil, nil)
-	if _, err := p.invokeWithTimeout("fake.pod/hang", []Object{MakeString("hi")}, time.Millisecond); err == nil || err.Error() != "timed out waiting for pod response" {
+	if _, err := p.invokeWithTimeout("fake.pod/hang", []Object{coretypes.MakeString("hi")}, time.Millisecond); err == nil || err.Error() != "timed out waiting for pod response" {
 		t.Fatalf("expected timeout error, got %v", err)
 	}
 	p.pendingMu.Lock()
@@ -169,11 +173,11 @@ func TestPodInvokeJSON(t *testing.T) {
 			}
 		}
 	}()
-	res, err := p.invoke("fake.pod/echo", []Object{MakeString("hi"), coretypes.MakeInt(7)})
+	res, err := p.invoke("fake.pod/echo", []Object{coretypes.MakeString("hi"), coretypes.MakeInt(7)})
 	if err != nil {
 		t.Fatal(err)
 	}
-	vec := res.(CountedIndexed)
+	vec := res.(coretypes.CountedIndexed)
 	if vec.Count() != 2 || vec.At(0).ToString(false) != "hi" || vec.At(1).(coretypes.Int).I != 7 {
 		t.Fatalf("invoke result mismatch: %s", res.ToString(false))
 	}
@@ -182,9 +186,9 @@ func TestPodInvokeJSON(t *testing.T) {
 func TestPodRouterReadsBencodeMessages(t *testing.T) {
 	shutdownAllPods()
 	msg := EmptyArrayMap()
-	msg.Add(MakeString("id"), MakeString("req-1"))
-	msg.Add(MakeString("value"), MakeString("ok"))
-	msg.Add(MakeString("done"), coretypes.Boolean{B: true})
+	msg.Add(coretypes.MakeString("id"), coretypes.MakeString("req-1"))
+	msg.Add(coretypes.MakeString("value"), coretypes.MakeString("ok"))
+	msg.Add(coretypes.MakeString("done"), coretypes.Boolean{B: true})
 	stdout := bytes.NewReader(bencodeEncodeObject(msg))
 	p := newPod("pod-router", "router", "json", io.Discard, stdout, nil)
 	ch := p.registerPending("req-1")

@@ -4,6 +4,7 @@ package csv
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 var __csv_seq__P ProcFn = __csv_seq_
@@ -63,13 +64,13 @@ func __write_string_(_args []Object) Object {
 	case _c == 1:
 		data := ExtractSeqable(_args, 0)
 		_res := writeString(data, EmptyArrayMap())
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	case _c == 2:
 		data := ExtractSeqable(_args, 0)
 		opts := ExtractMap(_args, 1)
 		_res := writeString(data, opts)
-		return MakeString(_res)
+		return coretypes.MakeString(_res)
 
 	default:
 		PanicArity(_c)

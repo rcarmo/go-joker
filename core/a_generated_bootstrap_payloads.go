@@ -3984,21 +3984,21 @@ var arrayMap_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Associative",
 		},
 	},
@@ -4016,21 +4016,21 @@ var arrayMap_NUM_2 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Callable",
 		},
 	},
@@ -4048,21 +4048,21 @@ var arrayMap_NUM_3 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Collection",
 		},
 	},
@@ -4080,21 +4080,21 @@ var arrayMap_NUM_4 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Comparable",
 		},
 	},
@@ -4112,21 +4112,21 @@ var arrayMap_NUM_5 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Comparator",
 		},
 	},
@@ -4144,21 +4144,21 @@ var arrayMap_NUM_6 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Counted",
 		},
 	},
@@ -4176,21 +4176,21 @@ var arrayMap_NUM_7 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.CountedIndexed",
 		},
 	},
@@ -4208,21 +4208,21 @@ var arrayMap_NUM_8 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Deref",
 		},
 	},
@@ -4240,21 +4240,21 @@ var arrayMap_NUM_9 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Channel",
 		},
 	},
@@ -4272,21 +4272,21 @@ var arrayMap_NUM_10 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Error",
 		},
 	},
@@ -4304,21 +4304,21 @@ var arrayMap_NUM_11 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Gettable",
 		},
 	},
@@ -4336,21 +4336,21 @@ var arrayMap_NUM_12 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Indexed",
 		},
 	},
@@ -4368,21 +4368,21 @@ var arrayMap_NUM_13 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "IOReader",
 		},
 	},
@@ -4400,21 +4400,21 @@ var arrayMap_NUM_14 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "IOWriter",
 		},
 	},
@@ -4432,21 +4432,21 @@ var arrayMap_NUM_15 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "KVReduce",
 		},
 	},
@@ -4464,21 +4464,21 @@ var arrayMap_NUM_16 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Reduce",
 		},
 	},
@@ -4496,21 +4496,21 @@ var arrayMap_NUM_17 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Map",
 		},
 	},
@@ -4528,21 +4528,21 @@ var arrayMap_NUM_18 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Meta",
 		},
 	},
@@ -4560,21 +4560,21 @@ var arrayMap_NUM_19 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Named",
 		},
 	},
@@ -4592,21 +4592,21 @@ var arrayMap_NUM_20 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Number",
 		},
 	},
@@ -4624,21 +4624,21 @@ var arrayMap_NUM_21 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Pending",
 		},
 	},
@@ -4656,21 +4656,21 @@ var arrayMap_NUM_22 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Ref",
 		},
 	},
@@ -4688,21 +4688,21 @@ var arrayMap_NUM_23 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Reversible",
 		},
 	},
@@ -4720,21 +4720,21 @@ var arrayMap_NUM_24 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Seq",
 		},
 	},
@@ -4752,21 +4752,21 @@ var arrayMap_NUM_25 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Seqable",
 		},
 	},
@@ -4784,21 +4784,21 @@ var arrayMap_NUM_26 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Sequential",
 		},
 	},
@@ -4816,21 +4816,21 @@ var arrayMap_NUM_27 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Set",
 		},
 	},
@@ -4848,21 +4848,21 @@ var arrayMap_NUM_28 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Stack",
 		},
 	},
@@ -4880,21 +4880,21 @@ var arrayMap_NUM_29 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "ArrayMap",
 		},
 	},
@@ -4912,21 +4912,21 @@ var arrayMap_NUM_30 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "ArrayMapSeq",
 		},
 	},
@@ -4944,21 +4944,21 @@ var arrayMap_NUM_31 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "ArrayNodeSeq",
 		},
 	},
@@ -4976,21 +4976,21 @@ var arrayMap_NUM_32 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "ArraySeq",
 		},
 	},
@@ -5008,21 +5008,21 @@ var arrayMap_NUM_33 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "MapSet",
 		},
 	},
@@ -5040,21 +5040,21 @@ var arrayMap_NUM_34 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Atom",
 		},
 	},
@@ -5072,21 +5072,21 @@ var arrayMap_NUM_35 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)\n  Wraps the Go 'math/big.Float' type",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.BigFloat",
 		},
 	},
@@ -5104,21 +5104,21 @@ var arrayMap_NUM_36 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)\n  Wraps the Go 'math/big.Int' type",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.BigInt",
 		},
 	},
@@ -5136,21 +5136,21 @@ var arrayMap_NUM_37 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete type)\n  Wraps the Go 'bool' type",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Boolean",
 		},
 	},
@@ -5168,21 +5168,21 @@ var arrayMap_NUM_38 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete type)\n  Wraps the Go 'time.Time' type",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Time",
 		},
 	},
@@ -5200,21 +5200,21 @@ var arrayMap_NUM_39 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Buffer",
 		},
 	},
@@ -5232,21 +5232,21 @@ var arrayMap_NUM_40 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete type)\n  Wraps the Go 'rune' type",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Char",
 		},
 	},
@@ -5264,21 +5264,21 @@ var arrayMap_NUM_41 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "ConsSeq",
 		},
 	},
@@ -5296,21 +5296,21 @@ var arrayMap_NUM_42 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Delay",
 		},
 	},
@@ -5328,21 +5328,21 @@ var arrayMap_NUM_43 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete type)\n  Wraps the Go 'float64' type",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Double",
 		},
 	},
@@ -5360,21 +5360,21 @@ var arrayMap_NUM_44 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "EvalError",
 		},
 	},
@@ -5392,21 +5392,21 @@ var arrayMap_NUM_45 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "ExInfo",
 		},
 	},
@@ -5424,21 +5424,21 @@ var arrayMap_NUM_46 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)\n  A callable function or macro implemented via Joker code",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Fn",
 		},
 	},
@@ -5456,21 +5456,21 @@ var arrayMap_NUM_47 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "File",
 		},
 	},
@@ -5488,21 +5488,21 @@ var arrayMap_NUM_48 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "BufferedReader",
 		},
 	},
@@ -5520,21 +5520,21 @@ var arrayMap_NUM_49 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "HashMap",
 		},
 	},
@@ -5552,21 +5552,21 @@ var arrayMap_NUM_50 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete type)\n  Wraps the Go 'int' type, which is 32 bits wide on 32-bit hosts, 64 bits wide on 64-bit hosts, etc.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Int",
 		},
 	},
@@ -5584,21 +5584,21 @@ var arrayMap_NUM_51 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete type)\n  A possibly-namespace-qualified name prefixed by ':'",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Keyword",
 		},
 	},
@@ -5616,21 +5616,21 @@ var arrayMap_NUM_52 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "LazySeq",
 		},
 	},
@@ -5648,21 +5648,21 @@ var arrayMap_NUM_53 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "List",
 		},
 	},
@@ -5680,21 +5680,21 @@ var arrayMap_NUM_54 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "MappingSeq",
 		},
 	},
@@ -5712,21 +5712,21 @@ var arrayMap_NUM_55 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Namespace",
 		},
 	},
@@ -5744,21 +5744,21 @@ var arrayMap_NUM_56 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete type)\n  The 'nil' value",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Nil",
 		},
 	},
@@ -5776,21 +5776,21 @@ var arrayMap_NUM_57 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "NodeSeq",
 		},
 	},
@@ -5808,21 +5808,21 @@ var arrayMap_NUM_58 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "ParseError",
 		},
 	},
@@ -5840,21 +5840,21 @@ var arrayMap_NUM_59 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)\n  A callable function implemented via Go code",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Proc",
 		},
 	},
@@ -5872,21 +5872,21 @@ var arrayMap_NUM_60 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)\n  Wraps the Go 'math.big/Rat' type",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Ratio",
 		},
 	},
@@ -5904,21 +5904,21 @@ var arrayMap_NUM_61 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "RecurBindings",
 		},
 	},
@@ -5936,21 +5936,21 @@ var arrayMap_NUM_62 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)\n  Wraps the Go 'regexp.Regexp' type",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Regex",
 		},
 	},
@@ -5968,21 +5968,21 @@ var arrayMap_NUM_63 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete type)\n  Wraps the Go 'string' type",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 	},
@@ -5992,7 +5992,7 @@ var ty_String coretypes.Type = coretypes.Type{
 		meta: &arrayMap_NUM_63,
 	},
 	Name:        "String",
-	ReflectType: reflect.TypeOf((*String)(nil)).Elem(),
+	ReflectType: reflect.TypeOf((*coretypes.String)(nil)).Elem(),
 }
 var arrayMap_NUM_64 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6000,21 +6000,21 @@ var arrayMap_NUM_64 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Symbol",
 		},
 	},
@@ -6032,21 +6032,21 @@ var arrayMap_NUM_65 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Type",
 		},
 	},
@@ -6064,21 +6064,21 @@ var arrayMap_NUM_66 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Var",
 		},
 	},
@@ -6096,21 +6096,21 @@ var arrayMap_NUM_67 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Vector",
 		},
 	},
@@ -6128,21 +6128,21 @@ var arrayMap_NUM_68 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Interface type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "Vec",
 		},
 	},
@@ -6160,21 +6160,21 @@ var arrayMap_NUM_69 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "ArrayVector",
 		},
 	},
@@ -6192,21 +6192,21 @@ var arrayMap_NUM_70 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "VectorRSeq",
 		},
 	},
@@ -6224,21 +6224,21 @@ var arrayMap_NUM_71 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "VectorSeq",
 		},
 	},
@@ -6256,21 +6256,21 @@ var arrayMap_NUM_72 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "(Concrete reference type)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
 		},
-		String{
+		coretypes.String{
 			S: "StringSeq",
 		},
 	},
@@ -6445,14 +6445,14 @@ var arrayMap_NUM_73 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Provides functions for escaping and unescaping HTML text.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -6529,21 +6529,21 @@ var arrayMap_NUM_74 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Escapes special characters like < to become &lt;. It escapes only five such characters: <, >, &, ' and \".",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -6643,21 +6643,21 @@ var arrayMap_NUM_75 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Unescapes entities like &lt; to become <.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -6719,14 +6719,14 @@ var arrayMap_NUM_76 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Implements simple functions to manipulate strings.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -6790,21 +6790,21 @@ var arrayMap_NUM_77 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "True if s is nil, empty, or contains only whitespace.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Boolean",
 		},
 		Keyword{
@@ -6903,21 +6903,21 @@ var arrayMap_NUM_78 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Converts first character of the string to upper-case, all other\n  characters to lower-case.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -7019,21 +7019,21 @@ var arrayMap_NUM_79 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "True if s ends with substr.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Boolean",
 		},
 		Keyword{
@@ -7135,21 +7135,21 @@ var arrayMap_NUM_80 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return a new string, using cmap to escape each character ch\n  from s as follows:\n\n  If (cmap ch) is nil, append ch to the new string.\n  If (cmap ch) is non-nil, append (str (cmap ch)) instead.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -7251,21 +7251,21 @@ var arrayMap_NUM_81 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "True if s includes substr.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Boolean",
 		},
 		Keyword{
@@ -7422,14 +7422,14 @@ var arrayMap_NUM_82 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return index of value (string or char) in s, optionally searching\n  forward from from or nil if not found.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -7579,21 +7579,21 @@ var arrayMap_NUM_83 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a string of all elements in coll, as returned by (seq coll), separated by an optional separator.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -7750,14 +7750,14 @@ var arrayMap_NUM_84 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return last index of value (string or char) in s, optionally\n  searching backward from from or nil if not found.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -7856,21 +7856,21 @@ var arrayMap_NUM_85 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Converts string to all lower-case.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -7975,21 +7975,21 @@ var arrayMap_NUM_86 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns s padded with pad at the beginning to length n.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -8094,21 +8094,21 @@ var arrayMap_NUM_87 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns s padded with pad at the end to length n.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -8207,21 +8207,21 @@ var arrayMap_NUM_88 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns an instance of coretypes.Regex that matches the string exactly",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Regex",
 		},
 		Keyword{
@@ -8326,21 +8326,21 @@ var arrayMap_NUM_89 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Replaces all instances of match (String or coretypes.Regex) with string repl in string s.\n\n  If match is coretypes.Regex, $1, $2, etc. in the replacement string repl are\n  substituted with the string that matched the corresponding\n  parenthesized group in the pattern.\n  ",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -8446,21 +8446,21 @@ var arrayMap_NUM_90 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Replaces the first instance of match (String or coretypes.Regex) with string repl in string s.\n\n  If match is coretypes.Regex, $1, $2, etc. in the replacement string repl are\n  substituted with the string that matched the corresponding\n  parenthesized group in the pattern.\n  ",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -8559,21 +8559,21 @@ var arrayMap_NUM_91 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns s with its characters reversed.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -8729,14 +8729,14 @@ var arrayMap_NUM_92 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Splits string on a string or regular expression. Returns vector of the splits.\n\n  No more than n elements will be returned in the vector; the last element will\n  be the unsplit remainder. If n is <= 0, no limit is in effect (all substrings\n  are returned in the vector).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -8836,14 +8836,14 @@ var arrayMap_NUM_93 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Splits string on \\n or \\r\\n. Returns vector of the splits.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -8945,21 +8945,21 @@ var arrayMap_NUM_94 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "True if s starts with substr.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Boolean",
 		},
 		Keyword{
@@ -9058,21 +9058,21 @@ var arrayMap_NUM_95 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes whitespace from both ends of string.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -9171,21 +9171,21 @@ var arrayMap_NUM_96 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes whitespace from the left side of string.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -9284,21 +9284,21 @@ var arrayMap_NUM_97 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes all trailing newline \\n or return \\r characters from string.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -9397,21 +9397,21 @@ var arrayMap_NUM_98 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes whitespace from the right side of string.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -9510,21 +9510,21 @@ var arrayMap_NUM_99 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes whitespace from the left side of string.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -9623,21 +9623,21 @@ var arrayMap_NUM_100 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes whitespace from the right side of string.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -9737,21 +9737,21 @@ var arrayMap_NUM_101 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Converts string to all upper-case.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 1815784110,
 			name: &s_tag,
 		},
-		String{
+		coretypes.String{
 			S: "String",
 		},
 		Keyword{
@@ -9845,14 +9845,14 @@ var arrayMap_NUM_103 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Core library of Joker.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -10292,7 +10292,7 @@ var arrayMap_NUM_104 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -10316,14 +10316,14 @@ var arrayMap_NUM_104 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the product of nums. (*) returns 1. Supports arbitrary precision.\n  See also: *",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -10482,7 +10482,7 @@ var arrayMap_NUM_114 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -10506,14 +10506,14 @@ var arrayMap_NUM_114 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Throws an error if x is not of a type t, else returns x.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -10993,7 +10993,7 @@ var arrayMap_NUM_117 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -11017,14 +11017,14 @@ var arrayMap_NUM_117 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "f should be a function of 2 arguments. If val is not supplied,\n  returns the result of applying f to the first 2 items in coll, then\n  applying f to that result and the 3rd item, etc. If coll contains no\n  items, f must accept no arguments as well, and reduce returns the\n  result of calling f with no arguments.  If coll has only 1 item, it\n  is returned and f is not called.  If val is supplied, returns the\n  result of applying f to val and the first item in coll, then\n  applying f to that result and the 2nd item, etc. If coll contains no\n  items, returns val and f is not called.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -11177,7 +11177,7 @@ var bitmapIndexedNode_NUM_1 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates x and tests if it is an instance of type\n         c. Returns true or false",
 		},
 		nil,
@@ -11186,7 +11186,7 @@ var bitmapIndexedNode_NUM_1 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -11215,7 +11215,7 @@ var bitmapIndexedNode_NUM_1 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -11533,7 +11533,7 @@ var bitmapIndexedNode_NUM_3 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a seq on the collection. If the collection is\n         empty, returns nil.  (seq nil) returns nil.",
 		},
 		nil,
@@ -11542,7 +11542,7 @@ var bitmapIndexedNode_NUM_3 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -11571,7 +11571,7 @@ var bitmapIndexedNode_NUM_3 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -11816,7 +11816,7 @@ var arrayMap_NUM_120 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -11840,14 +11840,14 @@ var arrayMap_NUM_120 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the first item in the collection. Calls seq on its\n         argument. If coll is nil, returns nil.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -12063,7 +12063,7 @@ var bitmapIndexedNode_NUM_5 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a seq of the items after the first. Calls seq on its\n         argument.  If there are no more items, returns nil.",
 		},
 		nil,
@@ -12072,7 +12072,7 @@ var bitmapIndexedNode_NUM_5 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -12101,7 +12101,7 @@ var bitmapIndexedNode_NUM_5 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -13011,7 +13011,7 @@ var arrayMap_NUM_121 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -13030,14 +13030,14 @@ var arrayMap_NUM_121 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "bound in a repl to the most recent value printed",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -13126,7 +13126,7 @@ var arrayMap_NUM_122 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -13145,14 +13145,14 @@ var arrayMap_NUM_122 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "bound in a repl to the second most recent value printed",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -13241,7 +13241,7 @@ var arrayMap_NUM_123 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -13260,14 +13260,14 @@ var arrayMap_NUM_123 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "bound in a repl to the third most recent value printed",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -13288,14 +13288,14 @@ var arrayMap_NUM_124 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "When set to logical false, assert is a noop. Defaults to true.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -13413,7 +13413,7 @@ var arrayMap_NUM_125 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -13427,7 +13427,7 @@ var arrayMap_NUM_125 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A vector of the classpath elements as configured by --classpath or\n  the JOKER_CLASSPATH environment variable.\n\n  Use colon-delimited <cp> (semicolon-delimited on Windows) for source\n  directories when loading libraries via :require and the like (but\n  not load-file). An empty field denotes the directory containing the\n  current file being loaded, with zero or more trailing components\n  removed as determined by the number of \".\" separators in the current\n  namespace; or, if no file is being loaded, the current\n  directory (this is original Joker behavior); a '.' (period) by\n  itself denotes solely the current directory. Defaults to the value\n  of the JOKER_CLASSPATH environment variable or, if that is\n  undefined, the empty string (denoting a single empty field). The\n  resulting classpath is stored herein, and this variable is used (in\n  lieu of command-line arguments or environment variables) for all\n  pertinent subsequent operations.",
 		},
 		Keyword{
@@ -13508,7 +13508,7 @@ var arrayMap_NUM_126 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -13520,7 +13520,7 @@ var arrayMap_NUM_126 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A sequence of the supplied command line arguments, or nil if\n  none were supplied",
 		},
 		Keyword{
@@ -13631,7 +13631,7 @@ var arrayMap_NUM_127 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -13657,7 +13657,7 @@ var arrayMap_NUM_127 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A set of symbols representing available core (not std) namespaces",
 		},
 		Keyword{
@@ -13772,7 +13772,7 @@ var arrayMap_NUM_129 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -13791,14 +13791,14 @@ var arrayMap_NUM_129 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "bound in a repl to the most recent exception caught by the repl",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -13855,14 +13855,14 @@ var arrayMap_NUM_130 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A IOWriter object representing standard error for print operations.\n\n  Defaults to stderr.",
 		},
 		Keyword{
@@ -13932,14 +13932,14 @@ var arrayMap_NUM_131 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "The path of the file being evaluated, as a String.\n\n  When there is no file, e.g. in the REPL, the value is not defined.",
 		},
 		Keyword{
@@ -14041,7 +14041,7 @@ var arrayMap_NUM_132 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -14060,14 +14060,14 @@ var arrayMap_NUM_132 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "When set to true, output will be flushed whenever a newline is printed.\n\n    Defaults to true.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -14150,14 +14150,14 @@ var arrayMap_NUM_133 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A BufferedReader object representing standard input for read operations.\n\n  Defaults to stdin.",
 		},
 		Keyword{
@@ -14191,14 +14191,14 @@ var arrayMap_NUM_134 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "The version info for Clojure core, as a map containing :major :minor\n\t\t\t:incremental and :qualifier keys. Feature releases may increment\n\t\t\t:minor and/or :major, bugfix releases will increment :incremental.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -14257,14 +14257,14 @@ var arrayMap_NUM_136 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Map of configuration key/value pairs for linter mode",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -14300,14 +14300,14 @@ var arrayMap_NUM_138 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "true if Joker is running in linter mode",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -14414,7 +14414,7 @@ var arrayMap_NUM_139 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -14435,7 +14435,7 @@ var arrayMap_NUM_139 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A set of symbols representing currently loaded libs",
 		},
 		Keyword{
@@ -14530,21 +14530,21 @@ var arrayMap_POS_joker_DOT_tools_DOT_cli__1_6__3_19_NUM_1 ArrayMap = ArrayMap{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Gareth Jones, Sung Pae, Sean Corfield",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Tools for working with command line arguments.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -14647,21 +14647,21 @@ var arrayMap_POS_joker_DOT_test__17_6__233_19_NUM_1 ArrayMap = ArrayMap{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Stuart Sierra, with contributions and suggestions by\n  Chas Emerick, Allen Rohner, and Stuart Halloway",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A unit testing framework.\n\n   ASSERTIONS\n\n   The core of the library is the \"is\" macro, which lets you make\n   assertions of any arbitrary expression:\n\n   (is (= 4 (+ 2 2)))\n   (is (instance? Integer 256))\n   (is (.startsWith \"abcde\" \"ab\"))\n\n   You can type an \"is\" expression directly at the REPL, which will\n   print a message if it fails.\n\n       user> (is (= 5 (+ 2 2)))\n\n       FAIL in  (:1)\n       expected: (= 5 (+ 2 2))\n         actual: (not (= 5 4))\n       false\n\n   The \"expected:\" line shows you the original expression, and the\n   \"actual:\" shows you what actually happened.  In this case, it\n   shows that (+ 2 2) returned 4, which is not = to 5.  Finally, the\n   \"false\" on the last line is the value returned from the\n   expression.  The \"is\" macro always returns the result of the\n   inner expression.\n\n   There are two special assertions for testing exceptions.  The\n   \"(is (thrown? c ...))\" form tests if an exception of class c is\n   thrown:\n\n   (is (thrown? ArithmeticException (/ 1 0)))\n\n   \"(is (thrown-with-msg? c re ...))\" does the same thing and also\n   tests that the message on the exception matches the regular\n   expression re:\n\n   (is (thrown-with-msg? ArithmeticException #\"Divide by zero\"\n                         (/ 1 0)))\n\n   DOCUMENTING TESTS\n\n   \"is\" takes an optional second argument, a string describing the\n   assertion.  This message will be included in the error report.\n\n   (is (= 5 (+ 2 2)) \"Crazy arithmetic\")\n\n   In addition, you can document groups of assertions with the\n   \"testing\" macro, which takes a string followed by any number of\n   assertions.  The string will be included in failure reports.\n   Calls to \"testing\" may be nested, and all of the strings will be\n   joined together with spaces in the final report, in a style\n   similar to RSpec <http://rspec.Info/>\n\n   (testing \"Arithmetic\"\n     (testing \"with positive integers\"\n       (is (= 4 (+ 2 2)))\n       (is (= 7 (+ 3 4))))\n     (testing \"with negative integers\"\n       (is (= -4 (+ -2 -2)))\n       (is (= -1 (+ 3 -4)))))\n\n   Note that, unlike RSpec, the \"testing\" macro may only be used\n   INSIDE a \"deftest\" or \"with-test\" form (see below).\n\n\n   DEFINING TESTS\n\n   There are two ways to define tests.  The \"with-test\" macro takes\n   a defn or def form as its first argument, followed by any number\n   of assertions.  The tests will be stored as metadata on the\n   definition.\n\n   (with-test\n       (defn my-function [x y]\n         (+ x y))\n     (is (= 4 (my-function 2 2)))\n     (is (= 7 (my-function 3 4))))\n\n   As of Clojure SVN rev. 1221, this does not work with defmacro.\n   See http://code.google.com/p/clojure/issues/detail?id=51\n\n   The other way lets you define tests separately from the rest of\n   your code, even in a different namespace:\n\n   (deftest addition\n     (is (= 4 (+ 2 2)))\n     (is (= 7 (+ 3 4))))\n\n   (deftest subtraction\n     (is (= 1 (- 4 3)))\n     (is (= 3 (- 7 4))))\n\n   This creates functions named \"addition\" and \"subtraction\", which\n   can be called like any other function.  Therefore, tests can be\n   grouped and composed, in a style similar to the test framework in\n   Peter Seibel's \"Practical Common Lisp\"\n   <http://www.gigamonkeys.com/book/practical-building-a-unit-test-framework.html>\n\n   (deftest arithmetic\n     (addition)\n     (subtraction))\n\n   The names of the nested tests will be joined in a list, like\n   \"(arithmetic addition)\", in failure reports.  You can use nested\n   tests to set up a context shared by several tests.\n\n\n   RUNNING TESTS\n\n   Run tests with the function \"(run-tests namespaces...)\":\n\n   (run-tests 'your.namespace 'some.other.namespace)\n\n   If you don't specify any namespaces, the current namespace is\n   used.  To run all tests in all namespaces, use \"(run-all-tests)\".\n\n   By default, these functions will search for all tests defined in\n   a namespace and run them in an undefined order.  However, if you\n   are composing tests, as in the \"arithmetic\" example above, you\n   probably do not want the \"addition\" and \"subtraction\" tests run\n   separately.  In that case, you must define a special function\n   named \"test-ns-hook\" that runs your tests in the correct order:\n\n   (defn test-ns-hook []\n     (arithmetic))\n\n   Note: test-ns-hook prevents execution of fixtures (see below).\n\n\n   OMITTING TESTS FROM PRODUCTION CODE\n\n   You can bind the variable \"*load-tests*\" to false when loading or\n   compiling code in production.  This will prevent any tests from\n   being created by \"with-test\" or \"deftest\".\n\n\n   FIXTURES\n\n   Fixtures allow you to run code before and after tests, to set up\n   the context in which tests should be run.\n\n   A fixture is just a function that calls another function passed as\n   an argument.  It looks like this:\n\n   (defn my-fixture [f]\n      Perform setup, establish bindings, whatever.\n     (f)  Then call the function we were passed.\n      Tear-down / clean-up code here.\n    )\n\n   Fixtures are attached to namespaces in one of two ways.  \"each\"\n   fixtures are run repeatedly, once for each test function created\n   with \"deftest\" or \"with-test\".  \"each\" fixtures are useful for\n   establishing a consistent before/after state for each test, like\n   clearing out database tables.\n\n   \"each\" fixtures can be attached to the current namespace like this:\n   (use-fixtures :each fixture1 fixture2 ...)\n   The fixture1, fixture2 are just functions like the example above.\n   They can also be anonymous functions, like this:\n   (use-fixtures :each (fn [f] setup... (f) cleanup...))\n\n   The other kind of fixture, a \"once\" fixture, is only run once,\n   around ALL the tests in the namespace.  \"once\" fixtures are useful\n   for tasks that only need to be performed once, like establishing\n   database connections, or for time-consuming tasks.\n\n   Attach \"once\" fixtures to the current namespace like this:\n   (use-fixtures :once fixture1 fixture2 ...)\n\n   Note: Fixtures and test-ns-hook are mutually incompatible.  If you\n   are using test-ns-hook, fixture functions will *never* be run.\n\n\n   SAVING TEST OUTPUT TO A FILE\n\n   All the test reporting functions write to the var *test-out*.  By\n   default, this is the same as *out*, but you can rebind it to any\n   PrintWriter.  For example, it could be a file opened with\n   clojure.java.io/writer.\n\n\n   EXTENDING TEST-IS (ADVANCED)\n\n   You can extend the behavior of the \"is\" macro by defining new\n   methods for the \"assert-expr\" multimethod.  These methods are\n   called during expansion of the \"is\" macro, so they should return\n   quoted forms to be evaluated.\n\n   You can plug in your own test-reporting framework by rebinding\n   the \"report\" function: (report event)\n\n   The 'event' argument is a map.  It will always have a :type key,\n   whose value will be a keyword signaling the type of event being\n   reported.  Standard events with :type value of :pass, :fail, and\n   :error are called when an assertion passes, fails, and throws an\n   exception, respectively.  In that case, the event will also have\n   the following keys:\n\n     :expected   The form that was expected to be true\n     :actual     A form representing what actually occurred\n     :message    The string message given as an argument to 'is'\n\n   The \"testing\" strings will be a list in \"*testing-contexts*\", and\n   the vars being tested will be a list in \"*testing-vars*\".\n\n   Your \"report\" function should wrap any printing calls in the\n   \"with-test-out\" macro, which rebinds *out* to the current value\n   of *test-out*.\n\n   For additional event types, see the examples in the code.\n",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -14744,21 +14744,21 @@ var arrayMap_POS_joker_DOT_template__25_6__27_20_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Macros that expand to repeated copies of a template expression.",
 		},
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Stuart Sierra",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -14841,21 +14841,21 @@ var arrayMap_POS_joker_DOT_walk__22_4__33_22_NUM_1 ArrayMap = ArrayMap{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Stuart Sierra",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Defines a generic tree walker for Clojure data structures.\n         Takes any data structure (list, vector, map, set, seq), calls\n         a function on every element, and uses the return value of the\n         function in place of the original.  This makes it fairly easy\n         to write recursive search-and-replace functions, as shown in\n         the examples.\n\n         Note: \"walk\" supports all Clojure data structures EXCEPT maps\n         created with sorted-map-by.  There is no (obvious) way to retrieve\n         the sorting function.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -14938,21 +14938,21 @@ var arrayMap_POS_joker_DOT_set__9_6__11_20_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Set operations such as union/intersection.",
 		},
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Rich Hickey",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -15017,14 +15017,14 @@ var arrayMap_POS_joker_DOT_repl__2_4__3_17_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Utilities meant to be used interactively at the REPL.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -15080,14 +15080,14 @@ var arrayMap_NUM_140 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Renders HTML, XML, or XHTML markup to a string, based on prior work in Hiccup.\n\n  https://github.com/weavejester/hiccup",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -15134,14 +15134,14 @@ var arrayMap_NUM_141 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Pretty printing utilities. Based on Clojure implementation.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -15206,21 +15206,21 @@ var arrayMap_NUM_142 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A collection of variations on Clojure's core macros.",
 		},
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Christophe Grand and Mark Engelberg",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -15413,7 +15413,7 @@ var arrayMap_NUM_143 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -15439,7 +15439,7 @@ var arrayMap_NUM_143 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "True while a verbose load is pending",
 		},
 		Keyword{
@@ -15527,14 +15527,14 @@ var arrayMap_NUM_144 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "The absolute path of <filename> on the command line, as a String.\n\n  When there is no file, e.g. in the REPL, the value is not defined.",
 		},
 		Keyword{
@@ -15604,14 +15604,14 @@ var arrayMap_NUM_145 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A Namespace object representing the current namespace.",
 		},
 		Keyword{
@@ -15723,7 +15723,7 @@ var arrayMap_NUM_146 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -15749,7 +15749,7 @@ var arrayMap_NUM_146 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A vector of mappings of namespaces to root files\n\n  Each such mapping is a two-element key/value vector. The key is a\n  regular expression, matched against the namespace name; the value is\n  a map specifying the source from which to load the external\n  dependency's root file (currently only the :url key is supported).",
 		},
 		Keyword{
@@ -15829,14 +15829,14 @@ var arrayMap_NUM_147 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A IOWriter object representing standard output for print operations.\n\n  Defaults to stdout.",
 		},
 		Keyword{
@@ -15947,7 +15947,7 @@ var arrayMap_NUM_148 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -15973,7 +15973,7 @@ var arrayMap_NUM_148 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A stack of paths currently being loaded",
 		},
 		Keyword{
@@ -16052,14 +16052,14 @@ var arrayMap_NUM_149 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "When set to logical false, strings and characters will be printed with\n  non-alphanumeric characters converted to the appropriate escape sequences.\n\n  Defaults to true",
 		},
 		Keyword{
@@ -16096,14 +16096,14 @@ var arrayMap_NUM_150 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "true if Joker is running in repl mode",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.5",
 		},
 		Keyword{
@@ -16548,7 +16548,7 @@ var arrayMap_NUM_151 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -16572,14 +16572,14 @@ var arrayMap_NUM_151 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the sum of nums. (+) returns 0. Does not auto-promote\n  ints, will overflow. See also: +'",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -17387,7 +17387,7 @@ var arrayMap_NUM_161 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -17411,14 +17411,14 @@ var arrayMap_NUM_161 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the sum of nums. (+) returns 0. Supports arbitrary precision.\n  See also: +",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -18191,7 +18191,7 @@ var arrayMap_NUM_171 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -18215,14 +18215,14 @@ var arrayMap_NUM_171 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "If no ys are supplied, returns the negation of x, else subtracts\n  the ys from x and returns the result. Does not auto-promote\n  ints, will overflow. See also: -'",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -18951,7 +18951,7 @@ var arrayMap_NUM_180 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -18975,14 +18975,14 @@ var arrayMap_NUM_180 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "If no ys are supplied, returns the negation of x, else subtracts\n  the ys from x and returns the result. Supports arbitrary precision.\n  See also: -",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -19483,7 +19483,7 @@ var bitmapIndexedNode_NUM_9 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Threads the expr through the forms. Inserts x as the\n  second item in the first form, making a list of it if it is not a\n  list already. If there are more forms, inserts the first form as the\n  second item in second form, etc.",
 		},
 		Keyword{
@@ -19499,7 +19499,7 @@ var bitmapIndexedNode_NUM_9 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -19523,7 +19523,7 @@ var bitmapIndexedNode_NUM_9 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -19722,7 +19722,7 @@ var bitmapIndexedNode_NUM_11 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is logical false, false otherwise.",
 		},
 		nil,
@@ -19731,7 +19731,7 @@ var bitmapIndexedNode_NUM_11 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -19760,7 +19760,7 @@ var bitmapIndexedNode_NUM_11 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -20086,7 +20086,7 @@ var bitmapIndexedNode_NUM_13 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is the value false, false otherwise.",
 		},
 		nil,
@@ -20095,7 +20095,7 @@ var bitmapIndexedNode_NUM_13 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -20124,7 +20124,7 @@ var bitmapIndexedNode_NUM_13 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -20546,7 +20546,7 @@ var arrayMap_NUM_190 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -21213,7 +21213,7 @@ var arrayMap_NUM_191 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -21237,14 +21237,14 @@ var arrayMap_NUM_191 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Applies fn f to the argument list formed by prepending intervening arguments to args.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -21921,7 +21921,7 @@ var arrayMap_NUM_201 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -21945,14 +21945,14 @@ var arrayMap_NUM_201 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Creates a new list containing the items prepended to the rest, the\n  last of which will be treated as a sequence.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -22147,7 +22147,7 @@ var bitmapIndexedNode_NUM_15 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a new seq where x is the first element and seq is\n         the rest.",
 		},
 		nil,
@@ -22156,7 +22156,7 @@ var bitmapIndexedNode_NUM_15 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -22185,7 +22185,7 @@ var bitmapIndexedNode_NUM_15 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -22737,7 +22737,7 @@ var arrayMap_NUM_211 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -22878,7 +22878,7 @@ var bitmapIndexedNode_NUM_17 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is nil, false otherwise.",
 		},
 		nil,
@@ -22887,7 +22887,7 @@ var bitmapIndexedNode_NUM_17 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -22916,7 +22916,7 @@ var bitmapIndexedNode_NUM_17 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -24603,7 +24603,7 @@ var arrayMap_NUM_212 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -24627,14 +24627,14 @@ var arrayMap_NUM_212 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "println to *err*",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -24819,7 +24819,7 @@ var arrayMap_NUM_214 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -24843,14 +24843,14 @@ var arrayMap_NUM_214 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a map of Var/value pairs. Sets the vars to the corresponding values.\n  Then calls f with the supplied arguments. Resets the vars back to the original\n  values after f returned. Returns whatever f returns.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -24944,7 +24944,7 @@ var arrayMap_NUM_217 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -25118,7 +25118,7 @@ var arrayMap_NUM_218 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -25142,14 +25142,14 @@ var arrayMap_NUM_218 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Reduces an associative collection. f should be a function of 3\n  arguments. Returns the result of applying f to init, the first key\n  and the first value in coll, then applying f to that result and the\n  2nd key and value, etc. If coll contains no entries, returns init\n  and f is not called. Note that reduce-kv is supported on vectors,\n  where the keys will be the ordinals.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -25554,7 +25554,7 @@ var arrayMap_NUM_220 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -25573,7 +25573,7 @@ var arrayMap_NUM_220 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as (first (next x))",
 		},
 		Keyword{
@@ -25585,7 +25585,7 @@ var arrayMap_NUM_220 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -26074,7 +26074,7 @@ var bitmapIndexedNode_NUM_19 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Create an instance of ExInfo, an coretypes.Error that carries a map of additional data.",
 		},
 		nil,
@@ -26083,7 +26083,7 @@ var bitmapIndexedNode_NUM_19 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -26112,7 +26112,7 @@ var bitmapIndexedNode_NUM_19 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -26323,7 +26323,7 @@ var bitmapIndexedNode_NUM_21 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "With no args, returns the empty string. With one arg x, returns\n         string representation of x. (str nil) returns the empty string. With more than\n         one arg, returns the concatenation of the str values of the args.",
 		},
 		nil,
@@ -26332,7 +26332,7 @@ var bitmapIndexedNode_NUM_21 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -26361,7 +26361,7 @@ var bitmapIndexedNode_NUM_21 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -26441,7 +26441,7 @@ var literalExpr_POS_joker_DOT_core__1344_27__1344_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 27,
 		StartLine:   1344,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Cannot reduce-kv on ",
 	},
 }
@@ -26566,7 +26566,7 @@ var arrayMap_NUM_222 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -26590,14 +26590,14 @@ var arrayMap_NUM_222 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the :type metadata of x, or its Type if none",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -26771,7 +26771,7 @@ var arrayMap_NUM_224 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -26795,14 +26795,14 @@ var arrayMap_NUM_224 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the value mapped to key, not-found or nil if key not present.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -27171,7 +27171,7 @@ var bitmapIndexedNode_NUM_23 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the metadata of obj, returns nil if there is no metadata.",
 		},
 		nil,
@@ -27180,7 +27180,7 @@ var bitmapIndexedNode_NUM_23 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -27209,7 +27209,7 @@ var bitmapIndexedNode_NUM_23 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -27838,7 +27838,7 @@ var arrayMap_NUM_225 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -27862,14 +27862,14 @@ var arrayMap_NUM_225 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Gets the value in the var object",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -28153,7 +28153,7 @@ var arrayMap_NUM_227 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -28177,14 +28177,14 @@ var arrayMap_NUM_227 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Sets the value in the var object to val.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -28591,7 +28591,7 @@ var arrayMap_NUM_229 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -28615,14 +28615,14 @@ var arrayMap_NUM_229 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "`assoc[iate]. When applied to a map, returns a new map of the\n         same (hashed/sorted) type, that contains the mapping of key(s) to\n         val(s). When applied to a vector, returns a new vector that\n         contains val at index. Note - index must be <= (count vector).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -29187,7 +29187,7 @@ var bitmapIndexedNode_NUM_25 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as (next (next x))",
 		},
 		nil,
@@ -29196,7 +29196,7 @@ var bitmapIndexedNode_NUM_25 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -29225,7 +29225,7 @@ var bitmapIndexedNode_NUM_25 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -29464,7 +29464,7 @@ var literalExpr_POS_joker_DOT_core__162_28__162_102_NUM_1 LiteralExpr = LiteralE
 		StartColumn: 28,
 		StartLine:   162,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "assoc expects even number of arguments after map/vector, found odd number",
 	},
 }
@@ -30255,7 +30255,7 @@ var bitmapIndexedNode_NUM_27 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "keyval => key val\n         Returns a new hash map with supplied mappings.  If any keys are\n         equal, they are handled as if by repeated uses of assoc.",
 		},
 		nil,
@@ -30264,7 +30264,7 @@ var bitmapIndexedNode_NUM_27 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -30293,7 +30293,7 @@ var bitmapIndexedNode_NUM_27 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -30533,7 +30533,7 @@ var arrayMap_NUM_233 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -30557,14 +30557,14 @@ var arrayMap_NUM_233 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as print followed by (newline)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -30755,7 +30755,7 @@ var arrayMap_NUM_235 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -30779,14 +30779,14 @@ var arrayMap_NUM_235 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as pr followed by (newline). Observes *flush-on-newline*",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -30949,7 +30949,7 @@ var bitmapIndexedNode_NUM_29 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Prints the object(s) to the output stream that is the current value\n         of *out*.  Prints the object(s), separated by spaces if there is\n         more than one.  By default, pr and prn print in a way that objects\n         can be read by the reader",
 		},
 		nil,
@@ -30958,7 +30958,7 @@ var bitmapIndexedNode_NUM_29 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -30987,7 +30987,7 @@ var bitmapIndexedNode_NUM_29 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -31187,7 +31187,7 @@ var arrayMap_NUM_237 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -31211,14 +31211,14 @@ var arrayMap_NUM_237 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Writes a platform-specific newline to *out*",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -31439,7 +31439,7 @@ var arrayMap_NUM_239 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -31463,14 +31463,14 @@ var arrayMap_NUM_239 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Flushes the output stream that is the current value of\n  *out*",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -32033,7 +32033,7 @@ var literalExpr_POS_joker_DOT_core__1194_32__1194_47_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   1194,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No forms in ->",
 	},
 }
@@ -32114,7 +32114,7 @@ var literalExpr_POS_joker_DOT_core__1194_71__1194_85_NUM_1 LiteralExpr = Literal
 		StartColumn: 71,
 		StartLine:   1194,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -32420,7 +32420,7 @@ var arrayMap_NUM_241 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -32444,14 +32444,14 @@ var arrayMap_NUM_241 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is a sequence",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -32746,7 +32746,7 @@ var arrayMap_NUM_242 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -32770,14 +32770,14 @@ var arrayMap_NUM_242 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns an object of the same type and value as obj, with\n         map m as its metadata.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -33254,7 +33254,7 @@ var arrayMap_NUM_243 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -33278,14 +33278,14 @@ var arrayMap_NUM_243 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy seq representing the concatenation of the elements in the supplied colls.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -33671,7 +33671,7 @@ var bitmapIndexedNode_NUM_31 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a possibly empty seq of the items after the first. Calls seq on its\n         argument.",
 		},
 		nil,
@@ -33680,7 +33680,7 @@ var bitmapIndexedNode_NUM_31 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -33709,7 +33709,7 @@ var bitmapIndexedNode_NUM_31 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -34769,7 +34769,7 @@ var bitmapIndexedNode_NUM_33 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Creates a new list containing the items.",
 		},
 		nil,
@@ -34778,7 +34778,7 @@ var bitmapIndexedNode_NUM_33 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -34807,7 +34807,7 @@ var bitmapIndexedNode_NUM_33 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -35446,7 +35446,7 @@ var bitmapIndexedNode_NUM_35 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Threads the expr through the forms. Inserts x as the\n  last item in the first form, making a list of it if it is not a\n  list already. If there are more forms, inserts the first form as the\n  last item in second form, etc.",
 		},
 		Keyword{
@@ -35462,7 +35462,7 @@ var bitmapIndexedNode_NUM_35 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -35486,7 +35486,7 @@ var bitmapIndexedNode_NUM_35 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -35850,7 +35850,7 @@ var literalExpr_POS_joker_DOT_core__1212_32__1212_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   1212,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No forms in ->>",
 	},
 }
@@ -35931,7 +35931,7 @@ var literalExpr_POS_joker_DOT_core__1212_72__1212_86_NUM_1 LiteralExpr = Literal
 		StartColumn: 72,
 		StartLine:   1212,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -36976,7 +36976,7 @@ var arrayMap_NUM_253 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -37000,14 +37000,14 @@ var arrayMap_NUM_253 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "If no denominators are supplied, returns 1/numerator,\n  else returns numerator divided by all of the denominators.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -37758,7 +37758,7 @@ var arrayMap_NUM_262 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -37782,14 +37782,14 @@ var arrayMap_NUM_262 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns non-nil if nums are in monotonically increasing order,\n  otherwise false.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -38424,7 +38424,7 @@ var arrayMap_NUM_271 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -38448,14 +38448,14 @@ var arrayMap_NUM_271 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a value from ch.\n  Returns nil if ch is closed and nothing is available on ch.\n  Blocks if nothing is available on ch and ch is not closed.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -38946,7 +38946,7 @@ var arrayMap_NUM_273 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -38970,14 +38970,14 @@ var arrayMap_NUM_273 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns non-nil if nums are in monotonically non-decreasing order,\n  otherwise false.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -39758,7 +39758,7 @@ var arrayMap_NUM_282 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -39782,14 +39782,14 @@ var arrayMap_NUM_282 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "coretypes.Equality. Returns true if x equals y, false if not. Works for nil, and compares\n  numbers and collections in a type-independent manner.  Immutable data\n  structures define = as a value, not an identity,\n  comparison.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -40642,7 +40642,7 @@ var arrayMap_NUM_286 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -40666,14 +40666,14 @@ var arrayMap_NUM_286 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns non-nil if nums all have the equivalent\n  value (type-independent), otherwise false",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -41569,7 +41569,7 @@ var arrayMap_NUM_295 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -41593,14 +41593,14 @@ var arrayMap_NUM_295 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns non-nil if nums are in monotonically decreasing order,\n  otherwise false.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -42247,7 +42247,7 @@ var arrayMap_NUM_304 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -42271,14 +42271,14 @@ var arrayMap_NUM_304 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Puts val into ch.\n  Throws an exception if val is nil.\n  Blocks if ch is full (no buffer space is available).\n  Returns true unless ch is already closed.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -42790,7 +42790,7 @@ var arrayMap_NUM_306 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -42814,14 +42814,14 @@ var arrayMap_NUM_306 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns non-nil if nums are in monotonically non-increasing order,\n  otherwise false.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -43479,7 +43479,7 @@ var arrayMap_NUM_315 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -43503,14 +43503,14 @@ var arrayMap_NUM_315 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if num is NaN, else false.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.5",
 		},
 	},
@@ -43764,7 +43764,7 @@ var arrayMap_NUM_318 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -43788,14 +43788,14 @@ var arrayMap_NUM_318 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the absolute value of a.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.5",
 		},
 	},
@@ -44045,7 +44045,7 @@ var arrayMap_NUM_321 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -44834,7 +44834,7 @@ var arrayMap_NUM_322 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -44858,14 +44858,14 @@ var arrayMap_NUM_322 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Add an alias in the current namespace to another\n  namespace. Arguments are two symbols: the alias to be used, and\n  the symbolic name of the target namespace. Use :as in the ns macro in preference\n  to calling this directly.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -45046,7 +45046,7 @@ var arrayMap_NUM_325 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -45070,14 +45070,14 @@ var arrayMap_NUM_325 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "If passed a namespace, returns it. Else, when passed a symbol,\n  returns the namespace named by it, throwing an exception if not\n  found.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -45286,7 +45286,7 @@ var arrayMap_NUM_327 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -45310,14 +45310,14 @@ var arrayMap_NUM_327 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the namespace named by the symbol or nil if it doesn't exist.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -45545,7 +45545,7 @@ var literalExpr_POS_joker_DOT_core__2274_45__2274_60_NUM_1 LiteralExpr = Literal
 		StartColumn: 45,
 		StartLine:   2274,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No namespace: ",
 	},
 }
@@ -45576,7 +45576,7 @@ var literalExpr_POS_joker_DOT_core__2274_64__2274_71_NUM_1 LiteralExpr = Literal
 		StartColumn: 64,
 		StartLine:   2274,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " found",
 	},
 }
@@ -45666,7 +45666,7 @@ var literalExpr_POS_joker_DOT_core__2275_58__2275_72_NUM_1 LiteralExpr = Literal
 		StartColumn: 58,
 		StartLine:   2275,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -45814,7 +45814,7 @@ var literalExpr_POS_joker_DOT_core__2277_32__2277_47_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   2277,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No namespace: ",
 	},
 }
@@ -45845,7 +45845,7 @@ var literalExpr_POS_joker_DOT_core__2277_51__2277_58_NUM_1 LiteralExpr = Literal
 		StartColumn: 51,
 		StartLine:   2277,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " found",
 	},
 }
@@ -46249,7 +46249,7 @@ var arrayMap_NUM_330 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -46273,14 +46273,14 @@ var arrayMap_NUM_330 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a sequence of all namespaces.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -46543,7 +46543,7 @@ var arrayMap_NUM_332 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -46567,14 +46567,14 @@ var arrayMap_NUM_332 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Atomically sets the metadata for a namespace/var/atom to be:\n\n  (apply f its-current-meta args)\n\n  f must be free of side-effects",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -46988,7 +46988,7 @@ var bitmapIndexedNode_NUM_37 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates exprs one at a time, from left to right. If a form\n  returns logical false (nil or false), and returns that value and\n  doesn't evaluate any of the other expressions, otherwise it returns\n  the value of the last expr. (and) returns true.",
 		},
 		Keyword{
@@ -47004,7 +47004,7 @@ var bitmapIndexedNode_NUM_37 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -47028,7 +47028,7 @@ var bitmapIndexedNode_NUM_37 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -47247,7 +47247,7 @@ var arrayMap_NUM_335 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -47271,14 +47271,14 @@ var arrayMap_NUM_335 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Creates a new vector containing the args.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -47419,7 +47419,7 @@ var bitmapIndexedNode_NUM_39 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Creates a new vector containing the contents of coll.",
 		},
 		nil,
@@ -47428,7 +47428,7 @@ var bitmapIndexedNode_NUM_39 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -47457,7 +47457,7 @@ var bitmapIndexedNode_NUM_39 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -48180,7 +48180,7 @@ var bitmapIndexedNode_NUM_41 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true given any argument.",
 		},
 		nil,
@@ -48189,7 +48189,7 @@ var bitmapIndexedNode_NUM_41 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -48218,7 +48218,7 @@ var bitmapIndexedNode_NUM_41 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -48441,7 +48441,7 @@ var bitmapIndexedNode_NUM_43 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Constructs an array-map. If any keys are equal, they are handled as\n         if by repeated uses of assoc.",
 		},
 		nil,
@@ -48450,7 +48450,7 @@ var bitmapIndexedNode_NUM_43 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -48479,7 +48479,7 @@ var bitmapIndexedNode_NUM_43 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -48697,7 +48697,7 @@ var bitmapIndexedNode_NUM_45 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Binds name to expr, evaluates the first form in the lexical context\n  of that binding, then binds name to that result, repeating for each\n  successive form, returning the result of the last form.",
 		},
 		Keyword{
@@ -48713,7 +48713,7 @@ var bitmapIndexedNode_NUM_45 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -48737,7 +48737,7 @@ var bitmapIndexedNode_NUM_45 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -49101,7 +49101,7 @@ var literalExpr_POS_joker_DOT_core__4225_32__4225_49_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   4225,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No forms in as->",
 	},
 }
@@ -49182,7 +49182,7 @@ var literalExpr_POS_joker_DOT_core__4225_73__4225_87_NUM_1 LiteralExpr = Literal
 		StartColumn: 73,
 		StartLine:   4225,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -49764,7 +49764,7 @@ var arrayMap_NUM_337 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -49788,14 +49788,14 @@ var arrayMap_NUM_337 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy seq of the first item in each coll, then the second etc.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -51044,7 +51044,7 @@ var arrayMap_NUM_347 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -51068,14 +51068,14 @@ var arrayMap_NUM_347 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence consisting of the result of applying f to the\n  set of first items of each coll, followed by applying f to the set\n  of second items in each coll, until any one of the colls is\n  exhausted.  Any remaining items in other colls are ignored. Function\n  f should accept number-of-colls arguments.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -52877,7 +52877,7 @@ var arrayMap_NUM_365 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -52901,14 +52901,14 @@ var arrayMap_NUM_365 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if (pred x) is logical true for every x in coll, else\n  false.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -53370,7 +53370,7 @@ var arrayMap_NUM_369 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -53394,14 +53394,14 @@ var arrayMap_NUM_369 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns its argument.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -54062,7 +54062,7 @@ var arrayMap_NUM_370 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -54086,14 +54086,14 @@ var arrayMap_NUM_370 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "conj[oin]. Returns a new collection with the xs\n         'added'. (conj nil item) returns (item).  The 'addition' may\n         happen at different 'places' depending on the concrete type.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -55560,7 +55560,7 @@ var arrayMap_NUM_371 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -55584,14 +55584,14 @@ var arrayMap_NUM_371 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy (infinite!, or length n if supplied) sequence of xs.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -55878,7 +55878,7 @@ var arrayMap_NUM_375 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -55902,14 +55902,14 @@ var arrayMap_NUM_375 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of the first n items in coll, or all items if\n  there are fewer than n.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -56058,7 +56058,7 @@ var arrayMap_NUM_379 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -56082,14 +56082,14 @@ var arrayMap_NUM_379 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if num is greater than zero, else false",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -56525,7 +56525,7 @@ var arrayMap_NUM_382 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -56549,14 +56549,14 @@ var arrayMap_NUM_382 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a number one less than num. Does not auto-promote\n  ints, will overflow. See also: dec'",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -57236,7 +57236,7 @@ var arrayMap_NUM_385 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -57260,14 +57260,14 @@ var arrayMap_NUM_385 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return a seq of all but the last item in coll, in linear time.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -57884,7 +57884,7 @@ var arrayMap_NUM_387 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -57908,14 +57908,14 @@ var arrayMap_NUM_387 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if coll has no items - same as (not (seq coll)).\n  Please use the idiom (seq x) rather than (not (empty? x))",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -58198,7 +58198,7 @@ var arrayMap_NUM_390 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -58222,14 +58222,14 @@ var arrayMap_NUM_390 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return the last item in coll, in linear time.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -58793,7 +58793,7 @@ var bitmapIndexedNode_NUM_47 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates expr and throws an exception if it does not evaluate to\n  logical true.",
 		},
 		Keyword{
@@ -58809,7 +58809,7 @@ var bitmapIndexedNode_NUM_47 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -58833,7 +58833,7 @@ var bitmapIndexedNode_NUM_47 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -59039,7 +59039,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_1 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -59620,7 +59620,7 @@ var literalExpr_POS_joker_DOT_core__2908_30__2908_46_NUM_1 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2908,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -59684,7 +59684,7 @@ var literalExpr_POS_joker_DOT_core__2908_57__2908_60_NUM_1 LiteralExpr = Literal
 		StartColumn: 57,
 		StartLine:   2908,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\n",
 	},
 }
@@ -60274,7 +60274,7 @@ var arrayMap_NUM_392 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -60662,7 +60662,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_1 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -61431,7 +61431,7 @@ var bitmapIndexedNode_NUM_49 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A good fdecl looks like (([a] ...) ([a b] ...)) near the end of defn.",
 		},
 		nil,
@@ -61440,7 +61440,7 @@ var bitmapIndexedNode_NUM_49 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -61526,7 +61526,7 @@ var literalExpr_POS_joker_DOT_core__4149_40__4149_70_NUM_1 LiteralExpr = Literal
 		StartColumn: 40,
 		StartLine:   4149,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parameter declaration missing",
 	},
 }
@@ -61823,7 +61823,7 @@ var literalExpr_POS_joker_DOT_core__4155_37__4155_59_NUM_1 LiteralExpr = Literal
 		StartColumn: 37,
 		StartLine:   4155,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Invalid signature: \"",
 	},
 }
@@ -61854,7 +61854,7 @@ var literalExpr_POS_joker_DOT_core__4157_37__4157_55_NUM_1 LiteralExpr = Literal
 		StartColumn: 37,
 		StartLine:   4157,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\" must be a list",
 	},
 }
@@ -61900,7 +61900,7 @@ var literalExpr_POS_joker_DOT_core__4158_37__4158_62_NUM_1 LiteralExpr = Literal
 		StartColumn: 37,
 		StartLine:   4158,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parameter declaration \"",
 	},
 }
@@ -61931,7 +61931,7 @@ var literalExpr_POS_joker_DOT_core__4160_37__4160_57_NUM_1 LiteralExpr = Literal
 		StartColumn: 37,
 		StartLine:   4160,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\" must be a vector",
 	},
 }
@@ -62286,7 +62286,7 @@ var arrayMap_NUM_393 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -62310,14 +62310,14 @@ var arrayMap_NUM_393 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of the items in coll for which\n  (pred item) returns false. pred must be free of side-effects.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -62501,7 +62501,7 @@ var arrayMap_NUM_397 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -62525,14 +62525,14 @@ var arrayMap_NUM_397 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of the items in coll for which\n  (pred item) returns true. pred must be free of side-effects.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -63222,7 +63222,7 @@ var arrayMap_NUM_401 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -63246,14 +63246,14 @@ var arrayMap_NUM_401 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a fn f and returns a fn that takes the same arguments as f,\n  has the same effects, if any, and returns the opposite truth value.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -64017,7 +64017,7 @@ var arrayMap_NUM_404 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -64041,14 +64041,14 @@ var arrayMap_NUM_404 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is a vector",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -64336,7 +64336,7 @@ var literalExpr_POS_joker_DOT_core__4165_28__4165_53_NUM_1 LiteralExpr = Literal
 		StartColumn: 28,
 		StartLine:   4165,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parameter declaration \"",
 	},
 }
@@ -64390,7 +64390,7 @@ var literalExpr_POS_joker_DOT_core__4166_28__4166_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 28,
 		StartLine:   4166,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\" must be a vector",
 	},
 }
@@ -64767,7 +64767,7 @@ var arrayMap_NUM_405 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -64791,14 +64791,14 @@ var arrayMap_NUM_405 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Associates a value in a nested associative structure, where ks is a\n  sequence of keys and v is the new value and returns a new nested structure.\n  If any levels do not exist, hash-maps will be created.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -65417,7 +65417,7 @@ var arrayMap_NUM_409 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -65441,14 +65441,14 @@ var arrayMap_NUM_409 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if coll implements Associative",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -65692,7 +65692,7 @@ var arrayMap_NUM_411 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -65716,14 +65716,14 @@ var arrayMap_NUM_411 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Creates and returns an Atom with an initial value of x and zero or\n  more options (in any order):\n\n  :meta metadata-map\n\n  If metadata-map is supplied, it will become the metadata on the\n  atom.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -65980,7 +65980,7 @@ var arrayMap_NUM_413 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -66004,14 +66004,14 @@ var arrayMap_NUM_413 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Coerce to coretypes.BigFloat",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -66236,7 +66236,7 @@ var arrayMap_NUM_415 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -66260,14 +66260,14 @@ var arrayMap_NUM_415 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if n is a coretypes.BigFloat",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -66487,7 +66487,7 @@ var arrayMap_NUM_417 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -66511,14 +66511,14 @@ var arrayMap_NUM_417 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Coerce to coretypes.BigInt",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -66776,7 +66776,7 @@ var bitmapIndexedNode_NUM_53 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "binding => var-symbol init-expr\n\n  Creates new bindings for the (already-existing) vars, with the\n  supplied initial values, executes the exprs in an implicit do, then\n  re-establishes the bindings that existed before.  The new bindings\n  are made in parallel (unlike let); all init-exprs are evaluated\n  before the vars are bound to their new values.",
 		},
 		Keyword{
@@ -66792,7 +66792,7 @@ var bitmapIndexedNode_NUM_53 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -66816,7 +66816,7 @@ var bitmapIndexedNode_NUM_53 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -66952,7 +66952,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_2 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -66973,7 +66973,7 @@ var literalExpr_POS_joker_DOT_core__1401_23__1401_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   1401,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -67187,7 +67187,7 @@ var arrayMap_NUM_419 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -67211,14 +67211,14 @@ var arrayMap_NUM_419 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if n is even, throws an exception if n is not an integer",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -67344,7 +67344,7 @@ var arrayMap_NUM_421 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -67368,14 +67368,14 @@ var arrayMap_NUM_421 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if n is an integer",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -67761,7 +67761,7 @@ var arrayMap_NUM_423 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -67785,14 +67785,14 @@ var arrayMap_NUM_423 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is zero, else false",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -68223,7 +68223,7 @@ var arrayMap_NUM_426 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -68247,14 +68247,14 @@ var arrayMap_NUM_426 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bitwise and",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -68682,7 +68682,7 @@ var literalExpr_POS_joker_DOT_core__966_26__966_56_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 26,
 		StartLine:   966,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Argument must be an integer: ",
 	},
 }
@@ -68933,7 +68933,7 @@ var arrayMap_NUM_433 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -68957,14 +68957,14 @@ var arrayMap_NUM_433 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the number of items in the collection. (count nil) returns\n  0.  Also works on strings",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -69156,7 +69156,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_3 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -69177,7 +69177,7 @@ var literalExpr_POS_joker_DOT_core__1402_29__1402_71_NUM_1 LiteralExpr = Literal
 		StartColumn: 29,
 		StartLine:   1402,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "an even number of forms in binding vector",
 	},
 }
@@ -70356,7 +70356,7 @@ var arrayMap_NUM_435 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -70380,14 +70380,14 @@ var arrayMap_NUM_435 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bitwise and with complement",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -70850,7 +70850,7 @@ var arrayMap_NUM_442 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -70874,14 +70874,14 @@ var arrayMap_NUM_442 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Clear bit at index n",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -71197,7 +71197,7 @@ var arrayMap_NUM_446 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -71221,14 +71221,14 @@ var arrayMap_NUM_446 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Flip bit at index n",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -71509,7 +71509,7 @@ var arrayMap_NUM_450 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -71533,14 +71533,14 @@ var arrayMap_NUM_450 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bitwise complement",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -71960,7 +71960,7 @@ var arrayMap_NUM_453 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -71984,14 +71984,14 @@ var arrayMap_NUM_453 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bitwise or",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -72454,7 +72454,7 @@ var arrayMap_NUM_460 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -72478,14 +72478,14 @@ var arrayMap_NUM_460 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Set bit at index n",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -72801,7 +72801,7 @@ var arrayMap_NUM_464 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -72825,14 +72825,14 @@ var arrayMap_NUM_464 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bitwise shift left",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -73148,7 +73148,7 @@ var arrayMap_NUM_468 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -73172,14 +73172,14 @@ var arrayMap_NUM_468 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bitwise shift right",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -73495,7 +73495,7 @@ var arrayMap_NUM_472 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -73519,14 +73519,14 @@ var arrayMap_NUM_472 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Test bit at index n",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -73973,7 +73973,7 @@ var arrayMap_NUM_476 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -73997,14 +73997,14 @@ var arrayMap_NUM_476 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bitwise exclusive or",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -74409,7 +74409,7 @@ var arrayMap_NUM_483 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -74433,14 +74433,14 @@ var arrayMap_NUM_483 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Coerce to boolean",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -74657,7 +74657,7 @@ var bitmapIndexedNode_NUM_55 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a coretypes.Boolean",
 		},
 		nil,
@@ -74666,7 +74666,7 @@ var bitmapIndexedNode_NUM_55 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -74695,7 +74695,7 @@ var bitmapIndexedNode_NUM_55 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -74932,7 +74932,7 @@ var arrayMap_NUM_485 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -74956,14 +74956,14 @@ var arrayMap_NUM_485 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if all of the vars provided as arguments have any bound value.\n  Implies that deref'ing the provided vars will succeed. Returns true if no vars are provided.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -75292,7 +75292,7 @@ var arrayMap_NUM_487 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -75316,14 +75316,14 @@ var arrayMap_NUM_487 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "If coll is counted? returns its count, else will count at most the first n\n  elements of coll using its seq",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -75449,7 +75449,7 @@ var arrayMap_NUM_490 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -75473,14 +75473,14 @@ var arrayMap_NUM_490 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if coll implements count in constant time",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -76004,7 +76004,7 @@ var arrayMap_NUM_492 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -76028,14 +76028,14 @@ var arrayMap_NUM_492 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a number one greater than num. Does not auto-promote\n  ints, will overflow. See also: inc'",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -76486,7 +76486,7 @@ var arrayMap_NUM_495 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -76510,14 +76510,14 @@ var arrayMap_NUM_495 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x implements coretypes.Callable. Note that many data structures\n  (e.g. sets and maps) implement coretypes.Callable.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -76770,7 +76770,7 @@ var bitmapIndexedNode_NUM_57 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes an expression, and a set of clauses.\n\n  Each clause can take the form of either:\n\n  test-expr result-expr\n\n  (test-expr ... test-expr)  result-expr\n\n  If the expression is equal to a value of\n  test-expr, the corresponding result-expr is returned. A single\n  default expression can follow the clauses, and its value will be\n  returned if no clause matches. If no default expression is provided\n  and no clause matches, an exception is thrown.",
 		},
 		Keyword{
@@ -76786,7 +76786,7 @@ var bitmapIndexedNode_NUM_57 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -76810,7 +76810,7 @@ var bitmapIndexedNode_NUM_57 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -77364,7 +77364,7 @@ var arrayMap_NUM_497 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -77388,14 +77388,14 @@ var arrayMap_NUM_497 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of lists of n items each, at offsets step\n  apart. If step is not supplied, defaults to n, i.e. the partitions\n  do not overlap. If a pad collection is supplied, use its elements as\n  necessary to complete last partition upto n items. In case there are\n  not enough padding elements, return a partition with less than n items.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -77813,7 +77813,7 @@ var arrayMap_NUM_510 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -77837,14 +77837,14 @@ var arrayMap_NUM_510 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "When lazy sequences are produced via functions that have side\n  effects, any effects other than those needed to produce the first\n  element in the seq do not occur until the seq is consumed. doall can\n  be used to force any effects. Walks through the successive nexts of\n  the seq, retains the head and returns it, thus causing the entire\n  seq to reside in memory at one time.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -78100,7 +78100,7 @@ var arrayMap_NUM_516 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -78124,14 +78124,14 @@ var arrayMap_NUM_516 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "When lazy sequences are produced via functions that have side\n  effects, any effects other than those needed to produce the first\n  element in the seq do not occur until the seq is consumed. dorun can\n  be used to force any effects. Walks through the successive nexts of\n  the seq, does not retain the head and returns nil.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -79163,7 +79163,7 @@ var arrayMap_NUM_522 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -79187,14 +79187,14 @@ var arrayMap_NUM_522 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the nth rest of coll, coll when n is 0.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -80886,7 +80886,7 @@ var arrayMap_NUM_526 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -80910,14 +80910,14 @@ var arrayMap_NUM_526 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the value at the index. get returns nil if index out of\n  bounds, nth throws an exception unless not-found is supplied.  nth\n  also works, in O(n) time, for strings and sequences.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -81631,7 +81631,7 @@ var arrayMap_NUM_529 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -81655,14 +81655,14 @@ var arrayMap_NUM_529 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is a List",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -81939,7 +81939,7 @@ var arrayMap_NUM_531 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -81963,14 +81963,14 @@ var arrayMap_NUM_531 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a set of the distinct elements of coll.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -82096,7 +82096,7 @@ var arrayMap_NUM_534 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -82120,14 +82120,14 @@ var arrayMap_NUM_534 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x implements Set",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -82683,7 +82683,7 @@ var arrayMap_NUM_536 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -82707,14 +82707,14 @@ var arrayMap_NUM_536 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the first logical true value of (pred x) for any x in coll,\n  else nil.  One common idiom is to use a set as pred, for example\n  this will return :fred if :fred is in the sequence, otherwise nil:\n  (some #{:fred} coll)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -83121,7 +83121,7 @@ var literalExpr_POS_joker_DOT_core__3893_33__3893_64_NUM_1 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   3893,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Duplicate case test constant: ",
 	},
 }
@@ -83220,7 +83220,7 @@ var literalExpr_POS_joker_DOT_core__3893_93__3893_105_NUM_1 LiteralExpr = Litera
 		StartColumn: 93,
 		StartLine:   3893,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse error",
 	},
 }
@@ -83489,7 +83489,7 @@ var arrayMap_NUM_539 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -83513,14 +83513,14 @@ var arrayMap_NUM_539 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a new coll consisting of to-coll with all of the items of\n  from-coll conjoined.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -84238,7 +84238,7 @@ var arrayMap_NUM_540 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -84262,14 +84262,14 @@ var arrayMap_NUM_540 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of lists like partition, but may include\n  partitions with fewer than n items at the end.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -86333,7 +86333,7 @@ var arrayMap_NUM_548 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -86357,14 +86357,14 @@ var arrayMap_NUM_548 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a new channel with an optional buffer of size n.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -86651,7 +86651,7 @@ var arrayMap_NUM_552 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -86675,14 +86675,14 @@ var arrayMap_NUM_552 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Coerce to char",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -86908,7 +86908,7 @@ var arrayMap_NUM_554 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -86932,14 +86932,14 @@ var arrayMap_NUM_554 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is a coretypes.Char",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -87151,7 +87151,7 @@ var arrayMap_NUM_555 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -87182,7 +87182,7 @@ var arrayMap_NUM_555 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Detects and rejects non-trivial cyclic load dependencies. The\n  exception message shows the dependency chain with the cycle\n  highlighted. Ignores the trivial case of a file attempting to load\n  itself because.",
 		},
 	},
@@ -87378,7 +87378,7 @@ var literalExpr_POS_joker_DOT_core__3393_45__3393_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 45,
 		StartLine:   3393,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "[ ",
 	},
 }
@@ -87409,7 +87409,7 @@ var literalExpr_POS_joker_DOT_core__3393_52__3393_55_NUM_1 LiteralExpr = Literal
 		StartColumn: 52,
 		StartLine:   3393,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " ]",
 	},
 }
@@ -87712,7 +87712,7 @@ var arrayMap_NUM_556 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -87736,14 +87736,14 @@ var arrayMap_NUM_556 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy seq of the elements of coll separated by sep.\n  Returns a stateful transducer when no collection is provided.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -87927,7 +87927,7 @@ var arrayMap_NUM_559 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -87951,14 +87951,14 @@ var arrayMap_NUM_559 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of all but the first n items in coll.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -88681,7 +88681,7 @@ var literalExpr_POS_joker_DOT_core__3395_39__3395_42_NUM_1 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   3395,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "->",
 	},
 }
@@ -88858,7 +88858,7 @@ var arrayMap_NUM_563 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -88889,7 +88889,7 @@ var arrayMap_NUM_563 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Throws an exception with a message if pred is true",
 		},
 	},
@@ -89126,7 +89126,7 @@ var arrayMap_NUM_565 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -89150,14 +89150,14 @@ var arrayMap_NUM_565 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Formats a string using fmt.Sprintf",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -89651,7 +89651,7 @@ var literalExpr_POS_joker_DOT_core__3396_26__3396_53_NUM_1 LiteralExpr = Literal
 		StartColumn: 26,
 		StartLine:   3396,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Cyclic load dependency: %s",
 	},
 }
@@ -89887,7 +89887,7 @@ var arrayMap_NUM_568 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -89918,7 +89918,7 @@ var arrayMap_NUM_568 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Throws an exception if the given option map contains keys not listed\n  as valid, else returns nil.",
 		},
 	},
@@ -90279,7 +90279,7 @@ var arrayMap_NUM_569 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -90303,14 +90303,14 @@ var arrayMap_NUM_569 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "disj[oin]. Returns a new set of the same (hashed/sorted) type, that\n  does not contain key(s).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -90935,7 +90935,7 @@ var bitmapIndexedNode_NUM_59 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a new hash set with supplied keys.  Any equal keys are\n         handled as if by repeated uses of conj.",
 		},
 		nil,
@@ -90944,7 +90944,7 @@ var bitmapIndexedNode_NUM_59 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -90973,7 +90973,7 @@ var bitmapIndexedNode_NUM_59 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -91180,7 +91180,7 @@ var arrayMap_NUM_576 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -91204,14 +91204,14 @@ var arrayMap_NUM_576 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a sequence of the map's keys, in the same order as (seq map).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -91467,7 +91467,7 @@ var literalExpr_POS_joker_DOT_core__4328_18__4328_49_NUM_1 LiteralExpr = Literal
 		StartColumn: 18,
 		StartLine:   4328,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Only these options are valid: ",
 	},
 }
@@ -91541,7 +91541,7 @@ var literalExpr_POS_joker_DOT_core__4330_25__4330_28_NUM_1 LiteralExpr = Literal
 		StartColumn: 25,
 		StartLine:   4330,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ", ",
 	},
 }
@@ -91892,7 +91892,7 @@ var arrayMap_NUM_579 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -91916,14 +91916,14 @@ var arrayMap_NUM_579 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Always returns false because chunked sequences are not supported",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -92112,7 +92112,7 @@ var arrayMap_NUM_581 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -92136,14 +92136,14 @@ var arrayMap_NUM_581 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the Type of x.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -92353,7 +92353,7 @@ var arrayMap_NUM_583 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -92377,14 +92377,14 @@ var arrayMap_NUM_583 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Closes a channel. The channel will no longer accept any puts (they\n  will be ignored). Data in the channel remains available for taking, until\n  exhausted, after which takes will return nil. If there are any\n  pending takes, they will be dispatched with nil. Closing a closed\n  channel is a no-op. Returns nil.\n\n  Logically closing happens after all puts have been delivered. Therefore, any\n  blocked puts will remain blocked until a taker releases them.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -92614,7 +92614,7 @@ var arrayMap_NUM_585 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -92638,14 +92638,14 @@ var arrayMap_NUM_585 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x implements Collection",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -92887,7 +92887,7 @@ var bitmapIndexedNode_NUM_61 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Ignores body, yields nil",
 		},
 		Keyword{
@@ -92903,7 +92903,7 @@ var bitmapIndexedNode_NUM_61 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -92927,7 +92927,7 @@ var bitmapIndexedNode_NUM_61 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -93580,7 +93580,7 @@ var arrayMap_NUM_587 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -93604,14 +93604,14 @@ var arrayMap_NUM_587 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a set of functions and returns a fn that is the composition\n  of those fns.  The returned fn takes a variable number of args,\n  applies the rightmost of fns to the args, the next\n  fn (right-to-left) to the result, etc.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -95205,7 +95205,7 @@ var arrayMap_NUM_602 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -95229,14 +95229,14 @@ var arrayMap_NUM_602 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a seq of the items in coll in reverse order. Not lazy.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -96124,7 +96124,7 @@ var arrayMap_NUM_605 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -96148,14 +96148,14 @@ var arrayMap_NUM_605 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Comparator. Returns a negative number, zero, or a positive number\n  when x is logically 'less than', 'equal to', or 'greater than'\n  y. Works for nil, and compares numbers and collections in a type-independent manner. x\n  must implement Comparable",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -96423,7 +96423,7 @@ var bitmapIndexedNode_NUM_63 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a set of test/expr pairs. It evaluates each test one at a\n  time.  If a test returns logical true, cond evaluates and returns\n  the value of the corresponding expr and doesn't evaluate any of the\n  other tests or exprs. (cond) returns nil.",
 		},
 		Keyword{
@@ -96439,7 +96439,7 @@ var bitmapIndexedNode_NUM_63 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -96463,7 +96463,7 @@ var bitmapIndexedNode_NUM_63 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -96647,7 +96647,7 @@ var literalExpr_POS_joker_DOT_core__446_29__446_67_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 29,
 		StartLine:   446,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "cond requires an even number of forms",
 	},
 }
@@ -97000,7 +97000,7 @@ var literalExpr_POS_joker_DOT_core__450_34__450_45_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 34,
 		StartLine:   450,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Empty cond",
 	},
 }
@@ -97081,7 +97081,7 @@ var literalExpr_POS_joker_DOT_core__450_69__450_83_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 69,
 		StartLine:   450,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -97368,7 +97368,7 @@ var bitmapIndexedNode_NUM_65 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes an expression and a set of test/form pairs. Threads expr (via ->)\n  through each form for which the corresponding test\n  expression is true. Note that, unlike cond branching, cond-> threading does\n  not short circuit after the first true test expression.",
 		},
 		Keyword{
@@ -97384,7 +97384,7 @@ var bitmapIndexedNode_NUM_65 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -97408,7 +97408,7 @@ var bitmapIndexedNode_NUM_65 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -97538,7 +97538,7 @@ var literalExpr_POS_joker_DOT_core__4183_34__4183_66_NUM_1 LiteralExpr = Literal
 		StartColumn: 34,
 		StartLine:   4183,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Odd number of clauses in cond->",
 	},
 }
@@ -97619,7 +97619,7 @@ var literalExpr_POS_joker_DOT_core__4183_90__4183_104_NUM_1 LiteralExpr = Litera
 		StartColumn: 90,
 		StartLine:   4183,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -97773,7 +97773,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_2 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -98331,7 +98331,7 @@ var literalExpr_POS_joker_DOT_core__4186_32__4186_51_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   4186,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No forms in cond->",
 	},
 }
@@ -98406,7 +98406,7 @@ var literalExpr_POS_joker_DOT_core__4186_75__4186_89_NUM_1 LiteralExpr = Literal
 		StartColumn: 75,
 		StartLine:   4186,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -98673,7 +98673,7 @@ var arrayMap_NUM_607 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -98697,14 +98697,14 @@ var arrayMap_NUM_607 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a new symbol with a unique name. If a prefix string is\n  supplied, the name is prefix# where # is some unique number. If\n  prefix is not supplied, the prefix is 'G__'.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -98736,7 +98736,7 @@ var literalExpr_POS_joker_DOT_core__429_23__429_27_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 23,
 		StartLine:   429,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "G__",
 	},
 }
@@ -99993,7 +99993,7 @@ var bitmapIndexedNode_NUM_67 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes an expression and a set of test/form pairs. Threads expr (via ->>)\n  through each form for which the corresponding test expression\n  is true.  Note that, unlike cond branching, cond->> threading does not short circuit\n  after the first true test expression.",
 		},
 		Keyword{
@@ -100009,7 +100009,7 @@ var bitmapIndexedNode_NUM_67 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -100033,7 +100033,7 @@ var bitmapIndexedNode_NUM_67 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -100163,7 +100163,7 @@ var literalExpr_POS_joker_DOT_core__4205_34__4205_67_NUM_1 LiteralExpr = Literal
 		StartColumn: 34,
 		StartLine:   4205,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Odd number of clauses in cond->>",
 	},
 }
@@ -100244,7 +100244,7 @@ var literalExpr_POS_joker_DOT_core__4205_91__4205_105_NUM_1 LiteralExpr = Litera
 		StartColumn: 91,
 		StartLine:   4205,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -100378,7 +100378,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_3 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -100936,7 +100936,7 @@ var literalExpr_POS_joker_DOT_core__4208_32__4208_52_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   4208,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No forms in cond->>",
 	},
 }
@@ -101011,7 +101011,7 @@ var literalExpr_POS_joker_DOT_core__4208_76__4208_90_NUM_1 LiteralExpr = Literal
 		StartColumn: 76,
 		StartLine:   4208,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -102231,7 +102231,7 @@ var bitmapIndexedNode_NUM_69 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a binary predicate, an expression, and a set of clauses.\n  Each clause can take the form of either:\n\n  test-expr result-expr\n\n  test-expr :>> result-fn\n\n  Note :>> is an ordinary keyword.\n\n  For each clause, (pred test-expr expr) is evaluated. If it returns\n  logical true, the clause is a match. If a binary clause matches, the\n  result-expr is returned, if a ternary clause matches, its result-fn,\n  which must be a unary function, is called with the result of the\n  predicate as its argument, the result of that call being the return\n  value of condp. A single default expression can follow the clauses,\n  and its value will be returned if no clause matches. If no default\n  expression is provided and no clause matches, an\n  exception is thrown.",
 		},
 		Keyword{
@@ -102247,7 +102247,7 @@ var bitmapIndexedNode_NUM_69 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -102271,7 +102271,7 @@ var bitmapIndexedNode_NUM_69 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -102368,7 +102368,7 @@ var literalExpr_POS_joker_DOT_core__3717_34__3717_56_NUM_1 LiteralExpr = Literal
 		StartColumn: 34,
 		StartLine:   3717,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "condp with no clauses",
 	},
 }
@@ -102449,7 +102449,7 @@ var literalExpr_POS_joker_DOT_core__3717_80__3717_92_NUM_1 LiteralExpr = Literal
 		StartColumn: 80,
 		StartLine:   3717,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse error",
 	},
 }
@@ -102634,7 +102634,7 @@ var literalExpr_POS_joker_DOT_core__3719_34__3719_69_NUM_1 LiteralExpr = Literal
 		StartColumn: 34,
 		StartLine:   3719,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "condp with default expression only",
 	},
 }
@@ -102709,7 +102709,7 @@ var literalExpr_POS_joker_DOT_core__3719_93__3719_107_NUM_1 LiteralExpr = Litera
 		StartColumn: 93,
 		StartLine:   3719,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -102869,7 +102869,7 @@ var literalExpr_POS_joker_DOT_core__3720_23__3720_30_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   3720,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "pred__",
 	},
 }
@@ -102913,7 +102913,7 @@ var literalExpr_POS_joker_DOT_core__3721_23__3721_30_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   3721,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "expr__",
 	},
 }
@@ -103190,7 +103190,7 @@ var arrayMap_NUM_611 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -103214,14 +103214,14 @@ var arrayMap_NUM_611 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a vector of [(take n coll) (drop n coll)]",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -103991,7 +103991,7 @@ var literalExpr_POS_joker_DOT_core__3727_50__3727_71_NUM_1 LiteralExpr = Literal
 		StartColumn: 50,
 		StartLine:   3727,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No matching clause: ",
 	},
 }
@@ -105753,7 +105753,7 @@ var arrayMap_NUM_615 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -105777,14 +105777,14 @@ var arrayMap_NUM_615 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a function that takes any number of arguments and returns x.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -106034,7 +106034,7 @@ var arrayMap_NUM_617 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -106058,14 +106058,14 @@ var arrayMap_NUM_617 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if key is present in the given collection, otherwise\n  returns false.  Note that for numerically indexed collections like\n  vectors, this tests if the numeric key is within the\n  range of indexes. 'contains?' operates constant or logarithmic time;\n  it will not perform a linear search for a value.  See also 'some'.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -106341,7 +106341,7 @@ var arrayMap_NUM_620 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -106365,14 +106365,14 @@ var arrayMap_NUM_620 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Create a new namespace named by the symbol if one doesn't already\n  exist, returns it or the already-existing namespace of the same\n  name.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -106611,7 +106611,7 @@ var arrayMap_NUM_623 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -106635,14 +106635,14 @@ var arrayMap_NUM_623 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy (infinite!) sequence of repetitions of the items in coll.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -107083,7 +107083,7 @@ var arrayMap_NUM_626 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -107107,14 +107107,14 @@ var arrayMap_NUM_626 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a number one less than num. Supports arbitrary precision.\n  See also: dec",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -107366,7 +107366,7 @@ var bitmapIndexedNode_NUM_71 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "defs the supplied var names with no bindings, useful for making forward declarations.",
 		},
 		Keyword{
@@ -107382,7 +107382,7 @@ var bitmapIndexedNode_NUM_71 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -107406,7 +107406,7 @@ var bitmapIndexedNode_NUM_71 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -107722,7 +107722,7 @@ var arrayMap_NUM_629 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -107746,14 +107746,14 @@ var arrayMap_NUM_629 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns an object of the same type and value as obj, with\n  (apply f (meta obj) args) as its metadata.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -108331,7 +108331,7 @@ var arrayMap_NUM_631 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -108355,14 +108355,14 @@ var arrayMap_NUM_631 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence removing consecutive duplicates in coll.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -108641,7 +108641,7 @@ var arrayMap_NUM_634 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -108665,14 +108665,14 @@ var arrayMap_NUM_634 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of the items in coll starting from the first\n  item for which (pred item) returns logical false.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -109547,7 +109547,7 @@ var arrayMap_NUM_638 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -109566,14 +109566,14 @@ var arrayMap_NUM_638 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Default map of data reader functions provided by Joker. May be\n  overridden by binding *data-readers*.",
 		},
 	},
@@ -109925,7 +109925,7 @@ var bitmapIndexedNode_NUM_73 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Like defn, but the resulting function name is declared as a\n         macro and will be used as a macro by the compiler when it is\n         called.",
 		},
 		Keyword{
@@ -109941,7 +109941,7 @@ var bitmapIndexedNode_NUM_73 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -109965,7 +109965,7 @@ var bitmapIndexedNode_NUM_73 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -110321,7 +110321,7 @@ var arrayMap_NUM_640 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -110345,14 +110345,14 @@ var arrayMap_NUM_640 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is a String",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -110732,7 +110732,7 @@ var arrayMap_NUM_641 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -110756,14 +110756,14 @@ var arrayMap_NUM_641 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is a map",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -112932,7 +112932,7 @@ var bitmapIndexedNode_NUM_75 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Creates and installs a new method of multimethod associated with dispatch-value. ",
 		},
 		Keyword{
@@ -112948,7 +112948,7 @@ var bitmapIndexedNode_NUM_75 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -112972,7 +112972,7 @@ var bitmapIndexedNode_NUM_75 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -113708,7 +113708,7 @@ var bitmapIndexedNode_NUM_77 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Creates a new multimethod with the associated dispatch function.\n  The docstring and attr-map are optional.\n\n  Options are key-value pairs and may be one of:\n\n  :default\n\n  The default dispatch value, defaults to :default\n\n  :hierarchy (UNSUPPORTED)\n\n  The value used for hierarchical dispatch (e.g. ::square is-a ::shape)\n\n  Hierarchies are type-like relationships that do not depend upon type\n  inheritance. By default Clojure's multimethods dispatch off of a\n  global hierarchy map.  However, a hierarchy relationship can be\n  created with the derive function used to augment the root ancestor\n  created with make-hierarchy.\n\n  Multimethods expect the value of the hierarchy option to be supplied as\n  a reference type e.g. a var (i.e. via the Var-quote dispatch macro #'\n  or the var special form).",
 		},
 		Keyword{
@@ -113724,7 +113724,7 @@ var bitmapIndexedNode_NUM_77 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -113748,7 +113748,7 @@ var bitmapIndexedNode_NUM_77 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -114816,7 +114816,7 @@ var literalExpr_POS_joker_DOT_core__4401_23__4401_121_NUM_1 LiteralExpr = Litera
 		StartColumn: 23,
 		StartLine:   4401,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "The syntax for defmulti has changed. Example: (defmulti name dispatch-fn :default dispatch-value)",
 	},
 }
@@ -116320,7 +116320,7 @@ var bitmapIndexedNode_NUM_79 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the name String of a string, symbol, keyword or any coretypes.Named object (e.g. File).",
 		},
 		nil,
@@ -116329,7 +116329,7 @@ var bitmapIndexedNode_NUM_79 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -116358,7 +116358,7 @@ var bitmapIndexedNode_NUM_79 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -117489,7 +117489,7 @@ var bitmapIndexedNode_NUM_81 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as (def name (fn [params* ] exprs*)) or (def\n         name (fn ([params* ] exprs*)+)) with any doc-string or attrs added\n         to the var metadata. prepost-map defines a map with optional keys\n         :pre and :post that contain collections of pre or post conditions.",
 		},
 		Keyword{
@@ -117505,7 +117505,7 @@ var bitmapIndexedNode_NUM_81 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -117529,7 +117529,7 @@ var bitmapIndexedNode_NUM_81 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -117673,7 +117673,7 @@ var literalExpr_POS_joker_DOT_core__232_28__232_68_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 28,
 		StartLine:   232,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "First argument to defn must be a symbol",
 	},
 }
@@ -118872,7 +118872,7 @@ var arrayMap_NUM_643 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -120817,7 +120817,7 @@ var bitmapIndexedNode_NUM_83 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "same as defn, yielding non-public def",
 		},
 		Keyword{
@@ -120833,7 +120833,7 @@ var bitmapIndexedNode_NUM_83 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -120857,7 +120857,7 @@ var bitmapIndexedNode_NUM_83 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -121251,7 +121251,7 @@ var bitmapIndexedNode_NUM_85 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "defs name to have the value of the expr if the named var is not bound,\n  else expr is unevaluated",
 		},
 		Keyword{
@@ -121267,7 +121267,7 @@ var bitmapIndexedNode_NUM_85 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -121291,7 +121291,7 @@ var bitmapIndexedNode_NUM_85 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -122066,7 +122066,7 @@ var bitmapIndexedNode_NUM_87 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a body of expressions and yields a Delay object that will\n  invoke the body only the first time it is forced (with force or deref/@), and\n  will cache the result and return it on all subsequent force\n  calls. See also - realized?",
 		},
 		Keyword{
@@ -122082,7 +122082,7 @@ var bitmapIndexedNode_NUM_87 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -122106,7 +122106,7 @@ var bitmapIndexedNode_NUM_87 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -122407,7 +122407,7 @@ var arrayMap_NUM_644 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -122431,14 +122431,14 @@ var arrayMap_NUM_644 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "returns true if x is a Delay created with delay",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -122695,7 +122695,7 @@ var arrayMap_NUM_646 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -122719,14 +122719,14 @@ var arrayMap_NUM_646 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the denominator part of a coretypes.Ratio.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -122957,7 +122957,7 @@ var arrayMap_NUM_649 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -122981,14 +122981,14 @@ var arrayMap_NUM_649 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Also reader macro: @var/@atom/@delay. When applied to a var or atom,\n  returns its current state. When applied to a delay, forces\n  it if not already forced.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -123194,7 +123194,7 @@ var arrayMap_NUM_651 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -123348,7 +123348,7 @@ var arrayMap_NUM_652 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -124129,7 +124129,7 @@ var literalExpr_POS_joker_DOT_core__2493_51__2493_82_NUM_1 LiteralExpr = Literal
 		StartColumn: 51,
 		StartLine:   2493,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "destructuring with no bindings",
 	},
 }
@@ -124204,7 +124204,7 @@ var literalExpr_POS_joker_DOT_core__2494_69__2494_83_NUM_1 LiteralExpr = Literal
 		StartColumn: 69,
 		StartLine:   2494,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -124337,7 +124337,7 @@ var literalExpr_POS_joker_DOT_core__2495_41__2495_47_NUM_1 LiteralExpr = Literal
 		StartColumn: 41,
 		StartLine:   2495,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "vec__",
 	},
 }
@@ -124381,7 +124381,7 @@ var literalExpr_POS_joker_DOT_core__2496_41__2496_47_NUM_1 LiteralExpr = Literal
 		StartColumn: 41,
 		StartLine:   2496,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "seq__",
 	},
 }
@@ -124425,7 +124425,7 @@ var literalExpr_POS_joker_DOT_core__2497_43__2497_51_NUM_1 LiteralExpr = Literal
 		StartColumn: 43,
 		StartLine:   2497,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "first__",
 	},
 }
@@ -124661,7 +124661,7 @@ var arrayMap_NUM_653 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -125714,7 +125714,7 @@ var literalExpr_POS_joker_DOT_core__2515_56__2515_114_NUM_1 LiteralExpr = Litera
 		StartColumn: 56,
 		StartLine:   2515,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Unsupported binding form, only :as can follow & parameter",
 	},
 }
@@ -126681,7 +126681,7 @@ var literalExpr_POS_joker_DOT_core__2532_51__2532_82_NUM_1 LiteralExpr = Literal
 		StartColumn: 51,
 		StartLine:   2532,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "destructuring with no bindings",
 	},
 }
@@ -126756,7 +126756,7 @@ var literalExpr_POS_joker_DOT_core__2533_69__2533_83_NUM_1 LiteralExpr = Literal
 		StartColumn: 69,
 		StartLine:   2533,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -126880,7 +126880,7 @@ var literalExpr_POS_joker_DOT_core__2534_41__2534_47_NUM_1 LiteralExpr = Literal
 		StartColumn: 41,
 		StartLine:   2534,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "map__",
 	},
 }
@@ -128022,7 +128022,7 @@ var arrayMap_NUM_654 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -128046,14 +128046,14 @@ var arrayMap_NUM_654 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a Keyword",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -128370,7 +128370,7 @@ var bitmapIndexedNode_NUM_89 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the namespace String of a symbol or keyword, or nil if not present.",
 		},
 		nil,
@@ -128379,7 +128379,7 @@ var bitmapIndexedNode_NUM_89 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -128408,7 +128408,7 @@ var bitmapIndexedNode_NUM_89 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -128636,7 +128636,7 @@ var literalExpr_POS_joker_DOT_core__2549_61__2549_66_NUM_1 LiteralExpr = Literal
 		StartColumn: 61,
 		StartLine:   2549,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "keys",
 	},
 }
@@ -128887,7 +128887,7 @@ var bitmapIndexedNode_NUM_91 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a Keyword with the given namespace and name.  Do not use :\n  in the keyword strings, it will be added automatically.",
 		},
 		nil,
@@ -128896,7 +128896,7 @@ var bitmapIndexedNode_NUM_91 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -128925,7 +128925,7 @@ var bitmapIndexedNode_NUM_91 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -129105,7 +129105,7 @@ var arrayMap_NUM_660 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -129129,14 +129129,14 @@ var arrayMap_NUM_660 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a Symbol",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -129800,7 +129800,7 @@ var literalExpr_POS_joker_DOT_core__2550_61__2550_66_NUM_1 LiteralExpr = Literal
 		StartColumn: 61,
 		StartLine:   2550,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "syms",
 	},
 }
@@ -130061,7 +130061,7 @@ var arrayMap_NUM_662 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -130085,14 +130085,14 @@ var arrayMap_NUM_662 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a Symbol with the given namespace and name.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -130583,7 +130583,7 @@ var literalExpr_POS_joker_DOT_core__2551_61__2551_66_NUM_1 LiteralExpr = Literal
 		StartColumn: 61,
 		StartLine:   2551,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "strs",
 	},
 }
@@ -131056,7 +131056,7 @@ var arrayMap_NUM_665 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -131080,14 +131080,14 @@ var arrayMap_NUM_665 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the value in the map entry.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -131614,7 +131614,7 @@ var arrayMap_NUM_666 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -131638,14 +131638,14 @@ var arrayMap_NUM_666 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "dissoc[iate]. Returns a new map of the same (hashed/sorted) type,\n  that does not contain a mapping for key(s).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -132195,7 +132195,7 @@ var arrayMap_NUM_673 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -132219,14 +132219,14 @@ var arrayMap_NUM_673 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the key of the map entry.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -133416,7 +133416,7 @@ var arrayMap_NUM_674 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -133440,14 +133440,14 @@ var arrayMap_NUM_674 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a symbol or keyword",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -134362,7 +134362,7 @@ var literalExpr_POS_joker_DOT_core__2579_45__2579_72_NUM_1 LiteralExpr = Literal
 		StartColumn: 45,
 		StartLine:   2579,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Unsupported binding form: ",
 	},
 }
@@ -135192,7 +135192,7 @@ var arrayMap_NUM_676 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -135216,14 +135216,14 @@ var arrayMap_NUM_676 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of the elements of coll with duplicates removed.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -136338,7 +136338,7 @@ var arrayMap_NUM_679 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -136362,14 +136362,14 @@ var arrayMap_NUM_679 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if no two of the arguments are =",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -136742,7 +136742,7 @@ var arrayMap_NUM_683 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -136766,14 +136766,14 @@ var arrayMap_NUM_683 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as (not (= obj1 obj2))",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -138073,7 +138073,7 @@ var bitmapIndexedNode_NUM_93 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Repeatedly executes body (presumably for side-effects) with\n  bindings and filtering as provided by \"for\".  Does not retain\n  the head of the sequence. Returns nil.",
 		},
 		Keyword{
@@ -138089,7 +138089,7 @@ var bitmapIndexedNode_NUM_93 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -138113,7 +138113,7 @@ var bitmapIndexedNode_NUM_93 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -138210,7 +138210,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_4 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -138231,7 +138231,7 @@ var literalExpr_POS_joker_DOT_core__1943_24__1943_49_NUM_1 LiteralExpr = Literal
 		StartColumn: 24,
 		StartLine:   1943,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -138421,7 +138421,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_5 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -138442,7 +138442,7 @@ var literalExpr_POS_joker_DOT_core__1944_30__1944_72_NUM_1 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   1944,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "an even number of forms in binding vector",
 	},
 }
@@ -138742,7 +138742,7 @@ var literalExpr_POS_joker_DOT_core__1946_32__1946_54_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   1946,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "doseq with empty body",
 	},
 }
@@ -138817,7 +138817,7 @@ var literalExpr_POS_joker_DOT_core__1947_58__1947_72_NUM_1 LiteralExpr = Literal
 		StartColumn: 58,
 		StartLine:   1947,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -141912,7 +141912,7 @@ var bitmapIndexedNode_NUM_95 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "bindings => name n\n\n  Repeatedly executes body (presumably for side-effects) with name\n  bound to integers from 0 through n-1.",
 		},
 		Keyword{
@@ -141928,7 +141928,7 @@ var bitmapIndexedNode_NUM_95 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -141952,7 +141952,7 @@ var bitmapIndexedNode_NUM_95 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -142049,7 +142049,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_6 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -142070,7 +142070,7 @@ var literalExpr_POS_joker_DOT_core__1986_23__1986_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   1986,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -142282,7 +142282,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_7 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -142303,7 +142303,7 @@ var literalExpr_POS_joker_DOT_core__1987_27__1987_61_NUM_1 LiteralExpr = Literal
 		StartColumn: 27,
 		StartLine:   1987,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "exactly 2 forms in binding vector",
 	},
 }
@@ -143599,7 +143599,7 @@ var bitmapIndexedNode_NUM_97 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates x then calls all of the methods and functions with the\n  value of x supplied at the front of the given arguments.  The forms\n  are evaluated in order.  Returns x.",
 		},
 		Keyword{
@@ -143615,7 +143615,7 @@ var bitmapIndexedNode_NUM_97 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -143639,7 +143639,7 @@ var bitmapIndexedNode_NUM_97 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -144424,7 +144424,7 @@ var arrayMap_NUM_687 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -144448,14 +144448,14 @@ var arrayMap_NUM_687 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Coerce to double",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -144701,7 +144701,7 @@ var bitmapIndexedNode_NUM_99 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a coretypes.Double",
 		},
 		nil,
@@ -144710,7 +144710,7 @@ var bitmapIndexedNode_NUM_99 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -144739,7 +144739,7 @@ var bitmapIndexedNode_NUM_99 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -145095,7 +145095,7 @@ var arrayMap_NUM_691 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -145119,14 +145119,14 @@ var arrayMap_NUM_691 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return a lazy sequence of all but the last n (default 1) items in coll",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -145548,7 +145548,7 @@ var arrayMap_NUM_697 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -145572,14 +145572,14 @@ var arrayMap_NUM_697 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns an empty collection of the same category as coll, or nil",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -145782,7 +145782,7 @@ var arrayMap_NUM_699 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -145806,14 +145806,14 @@ var arrayMap_NUM_699 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates the form data structure (not text!) and returns the result.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -146475,7 +146475,7 @@ var arrayMap_NUM_700 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -146499,14 +146499,14 @@ var arrayMap_NUM_700 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a set of predicates and returns a function f that returns true if all of its\n  composing predicates return a logical true value against all of its arguments, else it returns\n  false. Note that f is short-circuiting in that it will stop execution on the first\n  argument that triggers a logical false result against the original predicates.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -152994,7 +152994,7 @@ var arrayMap_NUM_714 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -153018,14 +153018,14 @@ var arrayMap_NUM_714 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the cause of ex if ex is an ExInfo.\n  Otherwise returns nil.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -153316,7 +153316,7 @@ var arrayMap_NUM_716 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -153340,14 +153340,14 @@ var arrayMap_NUM_716 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns exception data (a map) if ex is an ExInfo.\n  Otherwise returns nil.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -153638,7 +153638,7 @@ var arrayMap_NUM_718 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -153662,14 +153662,14 @@ var arrayMap_NUM_718 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the message attached to ex if ex is an ExInfo.\n  Otherwise returns nil.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -153972,7 +153972,7 @@ var arrayMap_NUM_720 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -153996,14 +153996,14 @@ var arrayMap_NUM_720 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Causes the current program to exit with the given status code (defaults to 0).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -154290,7 +154290,7 @@ var arrayMap_NUM_722 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -154309,7 +154309,7 @@ var arrayMap_NUM_722 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as (first (first x))",
 		},
 		Keyword{
@@ -154321,7 +154321,7 @@ var arrayMap_NUM_722 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -154582,7 +154582,7 @@ var arrayMap_NUM_724 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -155311,7 +155311,7 @@ var arrayMap_NUM_725 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -155335,14 +155335,14 @@ var arrayMap_NUM_725 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a vector of the items in coll for which\n  (pred item) returns true. pred must be free of side-effects.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -155754,7 +155754,7 @@ var arrayMap_NUM_728 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -155778,14 +155778,14 @@ var arrayMap_NUM_728 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the map entry for key, or nil if key not present.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -156060,7 +156060,7 @@ var arrayMap_NUM_730 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -156084,14 +156084,14 @@ var arrayMap_NUM_730 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the global var named by the namespace-qualified symbol, or\n  nil if no var with that name.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -156323,7 +156323,7 @@ var arrayMap_NUM_733 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -156347,14 +156347,14 @@ var arrayMap_NUM_733 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes any nested combination of sequential things (lists, vectors,\n  etc.) and returns their contents as a single, flat sequence.\n  (flatten nil) returns an empty sequence.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -156500,7 +156500,7 @@ var arrayMap_NUM_735 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -156524,14 +156524,14 @@ var arrayMap_NUM_735 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if coll implements Sequential",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -156855,7 +156855,7 @@ var arrayMap_NUM_737 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -156879,14 +156879,14 @@ var arrayMap_NUM_737 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of the nodes in a tree, via a depth-first walk.\n  branch? must be a fn of one arg that returns true if passed a node\n  that can have children (but may not).  children must be a fn of one\n  arg that returns a sequence of the children. Will only be called on\n  nodes for which branch? returns true. Root is the root node of the\n  tree.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -157146,7 +157146,7 @@ var arrayMap_NUM_741 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -157170,14 +157170,14 @@ var arrayMap_NUM_741 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the result of applying concat to the result of applying map\n  to f and colls.  Thus function f should return a collection.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -157911,7 +157911,7 @@ var arrayMap_NUM_744 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -157935,14 +157935,14 @@ var arrayMap_NUM_744 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if n is a floating point number",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -158429,7 +158429,7 @@ var bitmapIndexedNode_NUM_101 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "params => positional-params* , or positional-params* & next-param\n  positional-param => binding-form\n  next-param => binding-form\n  name => symbol\n\n  Defines a function",
 		},
 		Keyword{
@@ -158452,7 +158452,7 @@ var bitmapIndexedNode_NUM_101 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -158481,7 +158481,7 @@ var bitmapIndexedNode_NUM_101 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -158968,7 +158968,7 @@ var literalExpr_POS_joker_DOT_core__2638_33__2638_58_NUM_1 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2638,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parameter declaration \"",
 	},
 }
@@ -159022,7 +159022,7 @@ var literalExpr_POS_joker_DOT_core__2640_33__2640_53_NUM_1 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2640,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\" must be a vector",
 	},
 }
@@ -159068,7 +159068,7 @@ var literalExpr_POS_joker_DOT_core__2641_33__2641_63_NUM_1 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2641,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parameter declaration missing",
 	},
 }
@@ -159307,7 +159307,7 @@ var literalExpr_POS_joker_DOT_core__2647_34__2647_56_NUM_1 LiteralExpr = Literal
 		StartColumn: 34,
 		StartLine:   2647,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Invalid signature: \"",
 	},
 }
@@ -159338,7 +159338,7 @@ var literalExpr_POS_joker_DOT_core__2648_34__2648_52_NUM_1 LiteralExpr = Literal
 		StartColumn: 34,
 		StartLine:   2648,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\" must be a list",
 	},
 }
@@ -159800,7 +159800,7 @@ var literalExpr_POS_joker_DOT_core__2654_44__2654_69_NUM_1 LiteralExpr = Literal
 		StartColumn: 44,
 		StartLine:   2654,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parameter declaration \"",
 	},
 }
@@ -159831,7 +159831,7 @@ var literalExpr_POS_joker_DOT_core__2655_44__2655_64_NUM_1 LiteralExpr = Literal
 		StartColumn: 44,
 		StartLine:   2655,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\" must be a vector",
 	},
 }
@@ -159877,7 +159877,7 @@ var literalExpr_POS_joker_DOT_core__2656_44__2656_66_NUM_1 LiteralExpr = Literal
 		StartColumn: 44,
 		StartLine:   2656,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Invalid signature: \"",
 	},
 }
@@ -159908,7 +159908,7 @@ var literalExpr_POS_joker_DOT_core__2657_44__2657_62_NUM_1 LiteralExpr = Literal
 		StartColumn: 44,
 		StartLine:   2657,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\" must be a list",
 	},
 }
@@ -161501,7 +161501,7 @@ var arrayMap_NUM_746 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -161994,7 +161994,7 @@ var literalExpr_POS_joker_DOT_core__2611_32__2611_36_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   2611,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "p__",
 	},
 }
@@ -163139,7 +163139,7 @@ var arrayMap_NUM_747 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -163163,14 +163163,14 @@ var arrayMap_NUM_747 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is Fn, i.e. is an object created via fn.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -163392,7 +163392,7 @@ var arrayMap_NUM_749 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -163411,7 +163411,7 @@ var arrayMap_NUM_749 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as (first (next x))",
 		},
 		Keyword{
@@ -163423,7 +163423,7 @@ var arrayMap_NUM_749 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -163940,7 +163940,7 @@ var arrayMap_NUM_751 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -163964,14 +163964,14 @@ var arrayMap_NUM_751 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a function f, and returns a function that calls f, replacing\n  a nil first argument to f with the supplied value x. Higher arity\n  versions can replace arguments in the second and third\n  positions (y, z). Note that the function f can take any number of\n  arguments, not just the one(s) being nil-patched.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -166572,7 +166572,7 @@ var bitmapIndexedNode_NUM_103 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "List comprehension. Takes a vector of one or more\n  binding-form/collection-expr pairs, each followed by zero or more\n  modifiers, and yields a lazy sequence of evaluations of expr.\n  Collections are iterated in a nested fashion, rightmost fastest,\n  and nested coll-exprs can refer to bindings created in prior\n  binding-forms.  Supported modifiers are: :let [binding-form expr ...],\n  :while test, :when test.\n\n  (take 100 (for [x (range 100000000) y (range 1000000) :while (< y x)]  [x y]))",
 		},
 		Keyword{
@@ -166588,7 +166588,7 @@ var bitmapIndexedNode_NUM_103 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -166612,7 +166612,7 @@ var bitmapIndexedNode_NUM_103 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -166709,7 +166709,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_8 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -166730,7 +166730,7 @@ var literalExpr_POS_joker_DOT_core__2748_24__2748_49_NUM_1 LiteralExpr = Literal
 		StartColumn: 24,
 		StartLine:   2748,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -166920,7 +166920,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_9 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -166941,7 +166941,7 @@ var literalExpr_POS_joker_DOT_core__2749_30__2749_72_NUM_1 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2749,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "an even number of forms in binding vector",
 	},
 }
@@ -167397,7 +167397,7 @@ var arrayMap_NUM_758 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -167421,14 +167421,14 @@ var arrayMap_NUM_758 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "For a list, returns a new list without the first\n  item, for a vector, returns a new vector without the last item. If\n  the collection is empty, throws an exception.  Note - not the same\n  as next/butlast.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -167709,7 +167709,7 @@ var arrayMap_NUM_760 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -167733,14 +167733,14 @@ var arrayMap_NUM_760 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "For a list, same as first, for a vector, same as, but much\n  more efficient than, last. If the collection is empty, returns nil.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -168673,7 +168673,7 @@ var literalExpr_POS_joker_DOT_core__2758_41__2758_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 41,
 		StartLine:   2758,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "iter__",
 	},
 }
@@ -168717,7 +168717,7 @@ var literalExpr_POS_joker_DOT_core__2759_39__2759_43_NUM_1 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   2759,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "s__",
 	},
 }
@@ -169801,7 +169801,7 @@ var literalExpr_POS_joker_DOT_core__2767_72__2767_89_NUM_1 LiteralExpr = Literal
 		StartColumn: 72,
 		StartLine:   2767,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Invalid keyword ",
 	},
 }
@@ -169832,7 +169832,7 @@ var literalExpr_POS_joker_DOT_core__2767_93__2767_110_NUM_1 LiteralExpr = Litera
 		StartColumn: 93,
 		StartLine:   2767,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " in \"for\" form",
 	},
 }
@@ -172701,7 +172701,7 @@ var arrayMap_NUM_762 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -172725,14 +172725,14 @@ var arrayMap_NUM_762 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "If x is a Delay, returns the (possibly cached) value of its expression, else returns x",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -172956,7 +172956,7 @@ var arrayMap_NUM_763 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -172980,14 +172980,14 @@ var arrayMap_NUM_763 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map from distinct items in coll to the number of times\n  they appear.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -173490,7 +173490,7 @@ var arrayMap_NUM_765 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -173514,14 +173514,14 @@ var arrayMap_NUM_765 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the value in a nested associative structure,\n  where ks is a sequence of keys. Returns nil if the key\n  is not present, or the not-found value if supplied.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -173947,7 +173947,7 @@ var arrayMap_NUM_768 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -173971,14 +173971,14 @@ var arrayMap_NUM_768 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Tests if 2 arguments are the same object",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -174529,7 +174529,7 @@ var arrayMap_NUM_770 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -174553,14 +174553,14 @@ var arrayMap_NUM_770 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Given a multimethod and a dispatch value, returns the dispatch fn\n  that would apply to that value, or nil if none apply and no default",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -175041,7 +175041,7 @@ var arrayMap_NUM_772 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -175308,7 +175308,7 @@ var bitmapIndexedNode_NUM_105 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Schedules the body to run inside a goroutine.\n  Immediately returns a channel which will receive the result of the body when\n  completed.\n  If exception is thrown inside the body, it will be caught and re-thrown upon\n  reading from the returned channel.\n\n  Joker is single threaded and uses the GIL (Global Interpreter Lock) to make sure\n  only one goroutine (including the root one) executes at the same time.\n  However, channel operations and some I/O functions (joker.http/send, joker.os/sh*, joker.os/exec,\n  and joker.time/sleep) release the GIL and allow other goroutines to run.\n  So using goroutines only makes sense if you do I/O (specifically, calling the above functions)\n  inside them. Also, note that a goroutine may never have a chance to run if the root goroutine\n  (or another goroutine) doesn't do any I/O or channel operations (<! or >!).",
 		},
 		Keyword{
@@ -175324,7 +175324,7 @@ var bitmapIndexedNode_NUM_105 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -175348,7 +175348,7 @@ var bitmapIndexedNode_NUM_105 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -175844,7 +175844,7 @@ var bitmapIndexedNode_NUM_107 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Dump ('spew') internal Go structures for object to stderr.\n\n  Returns true if enabled due to building Joker with the 'go_spew' build tag,\n  false otherwise or if some other error occurred (which will be printed to\n  stderr).\n\n  Use the optional (map) argument to specify ConfigState\n  settings. E.g. {:MaxDepth 10} specifies a maximum depth of 10\n  levels. Defaults are per the default config state.\n\n  For more info, see: https://github.com/jcburley/go-spew",
 		},
 		nil,
@@ -175853,7 +175853,7 @@ var bitmapIndexedNode_NUM_107 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -175872,7 +175872,7 @@ var bitmapIndexedNode_NUM_107 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -176237,7 +176237,7 @@ var arrayMap_NUM_776 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -176261,14 +176261,14 @@ var arrayMap_NUM_776 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map of the elements of coll keyed by the result of\n  f on each element. The value at each key will be a vector of the\n  corresponding elements, in the order they appeared in coll.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -176774,7 +176774,7 @@ var arrayMap_NUM_779 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -176798,14 +176798,14 @@ var arrayMap_NUM_779 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the hash code of its argument.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -177152,7 +177152,7 @@ var bitmapIndexedNode_NUM_110 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "bindings => binding-form test\n\n  If test is true, evaluates then with binding-form bound to the value of\n  test, if not, yields else",
 		},
 		Keyword{
@@ -177168,7 +177168,7 @@ var bitmapIndexedNode_NUM_110 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -177192,7 +177192,7 @@ var bitmapIndexedNode_NUM_110 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -177289,7 +177289,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_10 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -177310,7 +177310,7 @@ var literalExpr_POS_joker_DOT_core__1240_24__1240_49_NUM_1 LiteralExpr = Literal
 		StartColumn: 24,
 		StartLine:   1240,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -177522,7 +177522,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_11 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -177543,7 +177543,7 @@ var literalExpr_POS_joker_DOT_core__1241_28__1241_62_NUM_1 LiteralExpr = Literal
 		StartColumn: 28,
 		StartLine:   1241,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "exactly 2 forms in binding vector",
 	},
 }
@@ -178474,7 +178474,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_12 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -178495,7 +178495,7 @@ var literalExpr_POS_joker_DOT_core__1250_24__1250_49_NUM_1 LiteralExpr = Literal
 		StartColumn: 24,
 		StartLine:   1250,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -178669,7 +178669,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_13 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -178690,7 +178690,7 @@ var literalExpr_POS_joker_DOT_core__1251_20__1251_54_NUM_1 LiteralExpr = Literal
 		StartColumn: 20,
 		StartLine:   1251,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "1 or 2 forms after binding vector",
 	},
 }
@@ -178902,7 +178902,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_14 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -178923,7 +178923,7 @@ var literalExpr_POS_joker_DOT_core__1252_28__1252_62_NUM_1 LiteralExpr = Literal
 		StartColumn: 28,
 		StartLine:   1252,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "exactly 2 forms in binding vector",
 	},
 }
@@ -180121,7 +180121,7 @@ var bitmapIndexedNode_NUM_112 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates test. If logical false, evaluates and returns then expr,\n  otherwise else expr, if supplied, else nil.",
 		},
 		Keyword{
@@ -180137,7 +180137,7 @@ var bitmapIndexedNode_NUM_112 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -180161,7 +180161,7 @@ var bitmapIndexedNode_NUM_112 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -180887,7 +180887,7 @@ var bitmapIndexedNode_NUM_114 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "bindings => binding-form test\n\n  If test is not nil, evaluates then with binding-form bound to the\n  value of test, if not, yields else",
 		},
 		Keyword{
@@ -180903,7 +180903,7 @@ var bitmapIndexedNode_NUM_114 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -180927,7 +180927,7 @@ var bitmapIndexedNode_NUM_114 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -181185,7 +181185,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_15 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -181206,7 +181206,7 @@ var literalExpr_POS_joker_DOT_core__1286_24__1286_49_NUM_1 LiteralExpr = Literal
 		StartColumn: 24,
 		StartLine:   1286,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -181380,7 +181380,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_16 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -181401,7 +181401,7 @@ var literalExpr_POS_joker_DOT_core__1287_20__1287_54_NUM_1 LiteralExpr = Literal
 		StartColumn: 20,
 		StartLine:   1287,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "1 or 2 forms after binding vector",
 	},
 }
@@ -181613,7 +181613,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_17 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -181634,7 +181634,7 @@ var literalExpr_POS_joker_DOT_core__1288_28__1288_62_NUM_1 LiteralExpr = Literal
 		StartColumn: 28,
 		StartLine:   1288,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "exactly 2 forms in binding vector",
 	},
 }
@@ -182822,7 +182822,7 @@ var arrayMap_NUM_781 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -182846,14 +182846,14 @@ var arrayMap_NUM_781 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Sets *ns* to the namespace named by the symbol, creating it if needed.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -183087,7 +183087,7 @@ var arrayMap_NUM_784 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -183111,14 +183111,14 @@ var arrayMap_NUM_784 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Prints formatted output, as per format",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -183256,7 +183256,7 @@ var arrayMap_NUM_787 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -183280,14 +183280,14 @@ var arrayMap_NUM_787 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Prints the object(s) to the output stream that is the current value\n  of *out*.  print and println produce output for human consumption.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -183631,7 +183631,7 @@ var literalExpr_POS_joker_DOT_core__3196_15__3196_58_NUM_1 LiteralExpr = Literal
 		StartColumn: 15,
 		StartLine:   3196,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "joker.core/in-ns: changing from %s to %s\n",
 	},
 }
@@ -183991,7 +183991,7 @@ var arrayMap_NUM_789 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -184015,14 +184015,14 @@ var arrayMap_NUM_789 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a number one greater than num. Supports arbitrary precision.\n  See also: inc",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -184269,7 +184269,7 @@ var arrayMap_NUM_792 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -184293,14 +184293,14 @@ var arrayMap_NUM_792 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if coll implements coretypes.Indexed, indicating efficient lookup by index",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -184543,7 +184543,7 @@ var arrayMap_NUM_794 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -184567,14 +184567,14 @@ var arrayMap_NUM_794 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if num is negative or positive infinity, else false.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.5",
 		},
 	},
@@ -184833,7 +184833,7 @@ var arrayMap_NUM_797 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -184857,14 +184857,14 @@ var arrayMap_NUM_797 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Coerce to int",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -185088,7 +185088,7 @@ var bitmapIndexedNode_NUM_116 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a fixed precision integer",
 		},
 		nil,
@@ -185097,7 +185097,7 @@ var bitmapIndexedNode_NUM_116 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -185126,7 +185126,7 @@ var bitmapIndexedNode_NUM_116 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -185484,7 +185484,7 @@ var arrayMap_NUM_800 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -185508,14 +185508,14 @@ var arrayMap_NUM_800 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Finds or creates a var named by the symbol name in the namespace\n  ns (which can be a symbol or a namespace), setting its root binding\n  to val if supplied. The namespace must exist. The var will adopt any\n  metadata from the name symbol.  Returns the var.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -186323,7 +186323,7 @@ var arrayMap_NUM_805 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -186347,14 +186347,14 @@ var arrayMap_NUM_805 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of x, (f x), (f (f x)) etc. f must be free of side-effects",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -186664,7 +186664,7 @@ var arrayMap_NUM_808 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -186688,14 +186688,14 @@ var arrayMap_NUM_808 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns joker version as a printable string.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -187336,7 +187336,7 @@ var arrayMap_NUM_810 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -187360,14 +187360,14 @@ var arrayMap_NUM_810 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a set of functions and returns a fn that is the juxtaposition\n  of those fns.  The returned fn takes a variable number of args, and\n  returns a vector containing the result of applying each fn to the\n  args (left-to-right).\n  ((juxt a b c) x) => [(a x) (b x) (c x)]",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -191394,7 +191394,7 @@ var arrayMap_NUM_824 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -191418,14 +191418,14 @@ var arrayMap_NUM_824 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of the non-nil results of (f item). Note,\n  this means false return values will be included.  f must be free of\n  side-effects.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -192162,7 +192162,7 @@ var arrayMap_NUM_828 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -192186,14 +192186,14 @@ var arrayMap_NUM_828 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of the non-nil results of (f index item). Note,\n  this means false return values will be included.  f must be free of\n  side-effects.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -193121,7 +193121,7 @@ var bitmapIndexedNode_NUM_118 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Expands to code which yields a lazy sequence of the concatenation\n  of the supplied colls.  Each coll expr is not evaluated until it is\n  needed.\n\n  (lazy-cat xs ys zs) === (concat (lazy-seq xs) (lazy-seq ys) (lazy-seq zs))",
 		},
 		Keyword{
@@ -193137,7 +193137,7 @@ var bitmapIndexedNode_NUM_118 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -193161,7 +193161,7 @@ var bitmapIndexedNode_NUM_118 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -193558,7 +193558,7 @@ var bitmapIndexedNode_NUM_120 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a body of expressions that returns an ISeq or nil, and yields\n  a Seqable object that will invoke the body only the first time seq\n  is called, and will cache the result and return it on all subsequent\n  seq calls. See also - realized?",
 		},
 		Keyword{
@@ -193574,7 +193574,7 @@ var bitmapIndexedNode_NUM_120 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -193598,7 +193598,7 @@ var bitmapIndexedNode_NUM_120 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -194044,7 +194044,7 @@ var bitmapIndexedNode_NUM_122 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "binding => binding-form init-expr\n\n  Evaluates the exprs in a lexical context in which the symbols in\n  the binding-forms are bound to their respective init-exprs or parts\n  therein.",
 		},
 		Keyword{
@@ -194067,7 +194067,7 @@ var bitmapIndexedNode_NUM_122 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -194096,7 +194096,7 @@ var bitmapIndexedNode_NUM_122 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -194193,7 +194193,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_18 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -194214,7 +194214,7 @@ var literalExpr_POS_joker_DOT_core__2596_23__2596_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   2596,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -194404,7 +194404,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_19 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -194425,7 +194425,7 @@ var literalExpr_POS_joker_DOT_core__2597_29__2597_71_NUM_1 LiteralExpr = Literal
 		StartColumn: 29,
 		StartLine:   2597,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "an even number of forms in binding vector",
 	},
 }
@@ -195002,7 +195002,7 @@ var bitmapIndexedNode_NUM_124 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "fnspec ==> (fname [params*] exprs) or (fname ([params*] exprs)+)\n\n  Takes a vector of function specs and a body, and generates a set of\n  bindings of functions to their names. All of the names are available\n  in all of the definitions of the functions, as well as the body.",
 		},
 		Keyword{
@@ -195025,7 +195025,7 @@ var bitmapIndexedNode_NUM_124 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -195054,7 +195054,7 @@ var bitmapIndexedNode_NUM_124 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -195504,7 +195504,7 @@ var arrayMap_NUM_832 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -195690,7 +195690,7 @@ var arrayMap_NUM_833 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -195721,7 +195721,7 @@ var arrayMap_NUM_833 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is a libspec",
 		},
 	},
@@ -196230,7 +196230,7 @@ var arrayMap_NUM_834 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -196254,14 +196254,14 @@ var arrayMap_NUM_834 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the lines of text from rdr as a lazy sequence of strings.\n  rdr must be File or BufferedReader.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -196396,7 +196396,7 @@ var arrayMap_NUM_835 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -197048,7 +197048,7 @@ var arrayMap_NUM_836 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -197072,14 +197072,14 @@ var arrayMap_NUM_836 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Loads code from libs, throwing error if cyclic dependency detected,\n  and ignoring libs already being loaded.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -197297,7 +197297,7 @@ var literalExpr_POS_joker_DOT_core__3507_17__3507_52_NUM_1 LiteralExpr = Literal
 		StartColumn: 17,
 		StartLine:   3507,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "(joker.core/load %s from \"%s\")\n",
 	},
 }
@@ -198099,7 +198099,7 @@ var arrayMap_NUM_840 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -198130,7 +198130,7 @@ var arrayMap_NUM_840 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Loads a lib given its name and forces a load of any libs it directly or\n  indirectly loads. If need-ns, ensures that the associated namespace\n  exists after loading. If require, records the load so any duplicate loads\n  can be skipped.",
 		},
 	},
@@ -198282,7 +198282,7 @@ var arrayMap_NUM_841 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -198313,7 +198313,7 @@ var arrayMap_NUM_841 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Loads a lib given its name. If need-ns, ensures that the associated\n  namespace exists after loading. If require, records the load so any\n  duplicate loads can be skipped.",
 		},
 	},
@@ -198526,7 +198526,7 @@ var literalExpr_POS_joker_DOT_core__3279_13__3279_57_NUM_1 LiteralExpr = Literal
 		StartColumn: 13,
 		StartLine:   3279,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "namespace '%s' not found after loading '%s'",
 	},
 }
@@ -199195,7 +199195,7 @@ var arrayMap_NUM_842 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -199219,14 +199219,14 @@ var arrayMap_NUM_842 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Loads code from file f. Does not protect against recursion.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -199452,7 +199452,7 @@ var arrayMap_NUM_845 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -199483,7 +199483,7 @@ var arrayMap_NUM_845 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Loads a lib with options",
 		},
 	},
@@ -199708,7 +199708,7 @@ var literalExpr_POS_joker_DOT_core__3311_13__3311_125_NUM_1 LiteralExpr = Litera
 		StartColumn: 13,
 		StartLine:   3311,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Found lib name '%s' containing period with prefix '%s'.  lib names inside prefix lists must not contain periods",
 	},
 }
@@ -200213,7 +200213,7 @@ var arrayMap_NUM_846 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -200711,7 +200711,7 @@ var literalExpr_POS_joker_DOT_core__3319_32__3319_65_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   3319,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Unsupported option(s) supplied: ",
 	},
 }
@@ -201791,7 +201791,7 @@ var arrayMap_NUM_847 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -201815,14 +201815,14 @@ var arrayMap_NUM_847 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map containing only those entries in map whose key is in keys",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -202382,7 +202382,7 @@ var arrayMap_NUM_851 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -202749,7 +202749,7 @@ var literalExpr_POS_joker_DOT_core__3331_39__3331_62_NUM_1 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   3331,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "duplicate require for ",
 	},
 }
@@ -202848,7 +202848,7 @@ var literalExpr_POS_joker_DOT_core__3332_54__3332_68_NUM_1 LiteralExpr = Literal
 		StartColumn: 54,
 		StartLine:   3332,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -203281,7 +203281,7 @@ var arrayMap_NUM_852 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -203305,14 +203305,14 @@ var arrayMap_NUM_852 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes the namespace named by the symbol. Use with caution.\n  Cannot be used to remove the clojure namespace.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -203699,7 +203699,7 @@ var literalExpr_POS_joker_DOT_core__3343_19__3343_44_NUM_1 LiteralExpr = Literal
 		StartColumn: 19,
 		StartLine:   3343,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "namespace '%s' not found",
 	},
 }
@@ -203847,7 +203847,7 @@ var literalExpr_POS_joker_DOT_core__3345_17__3345_42_NUM_1 LiteralExpr = Literal
 		StartColumn: 17,
 		StartLine:   3345,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "(joker.core/in-ns '%s)\n",
 	},
 }
@@ -203972,7 +203972,7 @@ var arrayMap_NUM_855 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -203996,14 +203996,14 @@ var arrayMap_NUM_855 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the name of the namespace, a symbol.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -204247,7 +204247,7 @@ var literalExpr_POS_joker_DOT_core__3348_19__3348_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 19,
 		StartLine:   3348,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "(joker.core/alias '%s '%s)\n",
 	},
 }
@@ -204435,7 +204435,7 @@ var literalExpr_POS_joker_DOT_core__3352_19__3352_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 19,
 		StartLine:   3352,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "(joker.core/alias '%s '%s)\n",
 	},
 }
@@ -204723,7 +204723,7 @@ var literalExpr_POS_joker_DOT_core__3356_19__3356_41_NUM_1 LiteralExpr = Literal
 		StartColumn: 19,
 		StartLine:   3356,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "(joker.core/refer '%s",
 	},
 }
@@ -204836,7 +204836,7 @@ var literalExpr_POS_joker_DOT_core__3358_21__3358_29_NUM_1 LiteralExpr = Literal
 		StartColumn: 21,
 		StartLine:   3358,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " %s '%s",
 	},
 }
@@ -205013,7 +205013,7 @@ var arrayMap_NUM_857 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -205037,14 +205037,14 @@ var arrayMap_NUM_857 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "print to a string, returning it",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -205449,7 +205449,7 @@ var literalExpr_POS_joker_DOT_core__3359_19__3359_23_NUM_1 LiteralExpr = Literal
 		StartColumn: 19,
 		StartLine:   3359,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ")\n",
 	},
 }
@@ -205681,7 +205681,7 @@ var arrayMap_NUM_859 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -205705,14 +205705,14 @@ var arrayMap_NUM_859 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "refers to all public vars of ns, subject to filters.\n  filters can include at most one each of:\n\n  :exclude list-of-symbols\n  :only list-of-symbols\n  :rename map-of-fromsymbol-tosymbol\n\n  For each public interned var in the namespace named by the symbol,\n  adds a mapping from the name of the var to the var to the current\n  namespace.  Throws an exception if name is already mapped to\n  something else in the current namespace. Filters can be used to\n  select a subset, via inclusion or exclusion, or to provide a mapping\n  to a symbol different from the var's name, in order to prevent\n  clashes. Use :use in the ns macro in preference to calling this directly.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -205877,7 +205877,7 @@ var literalExpr_POS_joker_DOT_core__2363_54__2363_69_NUM_1 LiteralExpr = Literal
 		StartColumn: 54,
 		StartLine:   2363,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No namespace: ",
 	},
 }
@@ -206180,7 +206180,7 @@ var arrayMap_NUM_862 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -206204,14 +206204,14 @@ var arrayMap_NUM_862 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map of the public intern mappings for the namespace.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -206571,7 +206571,7 @@ var arrayMap_NUM_865 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -207004,7 +207004,7 @@ var arrayMap_NUM_866 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -207028,14 +207028,14 @@ var arrayMap_NUM_866 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map of all the mappings for the namespace.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -208039,7 +208039,7 @@ var literalExpr_POS_joker_DOT_core__2372_23__2372_85_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   2372,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ":only/:refer value must be a sequential collection of symbols",
 	},
 }
@@ -208531,7 +208531,7 @@ var arrayMap_NUM_868 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -208555,14 +208555,14 @@ var arrayMap_NUM_868 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map of the intern mappings for the namespace.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -209082,7 +209082,7 @@ var literalExpr_POS_joker_DOT_core__2379_32__2379_47_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   2379,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " is not public",
 	},
 }
@@ -209137,7 +209137,7 @@ var literalExpr_POS_joker_DOT_core__2380_32__2380_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   2380,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " does not exist",
 	},
 }
@@ -210297,7 +210297,7 @@ var arrayMap_NUM_871 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -210328,7 +210328,7 @@ var arrayMap_NUM_871 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Loads libs, interpreting libspecs, prefix lists, and flags for\n  forwarding to load-lib",
 		},
 	},
@@ -210773,7 +210773,7 @@ var literalExpr_POS_joker_DOT_core__3374_28__3374_61_NUM_1 LiteralExpr = Literal
 		StartColumn: 28,
 		StartLine:   3374,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Unsupported option(s) supplied: ",
 	},
 }
@@ -210987,7 +210987,7 @@ var literalExpr_POS_joker_DOT_core__3377_37__3377_63_NUM_1 LiteralExpr = Literal
 		StartColumn: 37,
 		StartLine:   3377,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Nothing specified to load",
 	},
 }
@@ -211235,7 +211235,7 @@ var arrayMap_NUM_872 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -211266,7 +211266,7 @@ var arrayMap_NUM_872 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Prepends a symbol or a seq to coll",
 		},
 	},
@@ -211723,7 +211723,7 @@ var literalExpr_POS_joker_DOT_core__3382_39__3382_60_NUM_1 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   3382,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "prefix cannot be nil",
 	},
 }
@@ -212334,7 +212334,7 @@ var arrayMap_NUM_873 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -212358,14 +212358,14 @@ var arrayMap_NUM_873 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Sequentially read and evaluate the set of forms contained in the\n  string",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -212581,7 +212581,7 @@ var arrayMap_NUM_875 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -212605,14 +212605,14 @@ var arrayMap_NUM_875 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns an UNSORTED set of symbols naming the currently loaded libs",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -212933,7 +212933,7 @@ var bitmapIndexedNode_NUM_126 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates the exprs in a lexical context in which the symbols in\n  the binding-forms are bound to their respective init-exprs or parts\n  therein. Acts as a recur target.",
 		},
 		Keyword{
@@ -212956,7 +212956,7 @@ var bitmapIndexedNode_NUM_126 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -212985,7 +212985,7 @@ var bitmapIndexedNode_NUM_126 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -213082,7 +213082,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_20 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -213103,7 +213103,7 @@ var literalExpr_POS_joker_DOT_core__2691_23__2691_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   2691,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -213293,7 +213293,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_21 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -213314,7 +213314,7 @@ var literalExpr_POS_joker_DOT_core__2692_29__2692_71_NUM_1 LiteralExpr = Literal
 		StartColumn: 29,
 		StartLine:   2692,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "an even number of forms in binding vector",
 	},
 }
@@ -213855,7 +213855,7 @@ var arrayMap_NUM_877 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -213879,14 +213879,14 @@ var arrayMap_NUM_877 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy seq of every nth item in coll.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -215922,7 +215922,7 @@ var arrayMap_NUM_881 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -215946,14 +215946,14 @@ var arrayMap_NUM_881 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Repeatedly calls macroexpand-1 on form until it no longer\n  represents a macro form, then returns it.  Note neither\n  macroexpand-1 nor macroexpand expand macros in subforms.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -216065,7 +216065,7 @@ var arrayMap_NUM_882 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -216089,14 +216089,14 @@ var arrayMap_NUM_882 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "If form represents a macro form, returns its expansion, else returns form.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -216588,7 +216588,7 @@ var arrayMap_NUM_883 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -216612,14 +216612,14 @@ var arrayMap_NUM_883 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence consisting of the result of applying f to 0\n  and the first item of coll, followed by applying f to 1 and the second\n  item in coll, etc, until coll is exhausted. Thus function f should\n  accept 2 arguments, index and item.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -217716,7 +217716,7 @@ var arrayMap_NUM_887 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -217740,14 +217740,14 @@ var arrayMap_NUM_887 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a vector consisting of the result of applying f to the\n  set of first items of each coll, followed by applying f to the set\n  of second items in each coll, until any one of the colls is\n  exhausted.  Any remaining items in other colls are ignored. Function\n  f should accept number-of-colls arguments.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -218868,7 +218868,7 @@ var arrayMap_NUM_896 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -218892,14 +218892,14 @@ var arrayMap_NUM_896 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the greatest of the nums.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -219526,7 +219526,7 @@ var arrayMap_NUM_905 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -219550,14 +219550,14 @@ var arrayMap_NUM_905 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the x for which (k x), a number, is greatest.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -220195,7 +220195,7 @@ var arrayMap_NUM_909 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -220219,14 +220219,14 @@ var arrayMap_NUM_909 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a memoized version of a referentially transparent function. The\n  memoized version of the function keeps a cache of the mapping from arguments\n  to results and, when calls with the same arguments are repeated often, has\n  higher performance at the expense of higher memory use.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -220724,7 +220724,7 @@ var arrayMap_NUM_912 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -220748,14 +220748,14 @@ var arrayMap_NUM_912 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Atomically swaps the value of atom to be:\n  (apply f current-value-of-atom args).\n  Returns the value that was swapped in.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -221286,7 +221286,7 @@ var arrayMap_NUM_915 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -221310,14 +221310,14 @@ var arrayMap_NUM_915 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map that consists of the rest of the maps conj-ed onto\n  the first.  If a key occurs in more than one map, the mapping from\n  the latter (left-to-right) will be the mapping in the result.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -221793,7 +221793,7 @@ var arrayMap_NUM_917 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -221817,14 +221817,14 @@ var arrayMap_NUM_917 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map that consists of the rest of the maps conj-ed onto\n  the first.  If a key occurs in more than one map, the mapping(s)\n  from the latter (left-to-right) will be combined with the mapping in\n  the result by calling (f val-in-result val-in-latter).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -222802,7 +222802,7 @@ var arrayMap_NUM_920 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -222826,14 +222826,14 @@ var arrayMap_NUM_920 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Given a multimethod, returns a map of dispatch values -> dispatch fns",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -223438,7 +223438,7 @@ var arrayMap_NUM_922 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -223462,14 +223462,14 @@ var arrayMap_NUM_922 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the least of the nums.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -224096,7 +224096,7 @@ var arrayMap_NUM_931 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -224120,14 +224120,14 @@ var arrayMap_NUM_931 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the x for which (k x), a number, is least.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -224800,7 +224800,7 @@ var arrayMap_NUM_935 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -224824,14 +224824,14 @@ var arrayMap_NUM_935 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Modulus of num and div. Truncates toward negative infinity.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -225024,7 +225024,7 @@ var arrayMap_NUM_939 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -225048,14 +225048,14 @@ var arrayMap_NUM_939 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "remainder of dividing numerator by denominator.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -225692,7 +225692,7 @@ var arrayMap_NUM_943 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -225765,7 +225765,7 @@ var literalExpr_POS_joker_DOT_core__4337_21__4337_73_NUM_1 LiteralExpr = Literal
 		StartColumn: 21,
 		StartLine:   4337,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ":hierarchy not yet supported by joker.core/defmulti",
 	},
 }
@@ -226137,7 +226137,7 @@ var literalExpr_POS_joker_DOT_core__4348_51__4348_104_NUM_1 LiteralExpr = Litera
 		StartColumn: 51,
 		StartLine:   4348,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No method in multimethod '%s' for dispatch value: %s",
 	},
 }
@@ -226290,7 +226290,7 @@ var arrayMap_NUM_944 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -226314,14 +226314,14 @@ var arrayMap_NUM_944 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "pr to a string, returning it",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -227121,7 +227121,7 @@ var bitmapIndexedNode_NUM_128 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a non-negative fixed precision integer",
 		},
 		nil,
@@ -227130,7 +227130,7 @@ var bitmapIndexedNode_NUM_128 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -227159,7 +227159,7 @@ var bitmapIndexedNode_NUM_128 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -227379,7 +227379,7 @@ var arrayMap_NUM_947 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -227403,14 +227403,14 @@ var arrayMap_NUM_947 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if num is less than zero, else false",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -227789,7 +227789,7 @@ var bitmapIndexedNode_NUM_130 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a negative fixed precision integer",
 		},
 		nil,
@@ -227798,7 +227798,7 @@ var bitmapIndexedNode_NUM_130 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -227827,7 +227827,7 @@ var bitmapIndexedNode_NUM_130 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -228149,7 +228149,7 @@ var bitmapIndexedNode_NUM_132 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as (next (first x))",
 		},
 		nil,
@@ -228158,7 +228158,7 @@ var bitmapIndexedNode_NUM_132 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -228187,7 +228187,7 @@ var bitmapIndexedNode_NUM_132 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -228498,7 +228498,7 @@ var bitmapIndexedNode_NUM_134 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns false if (pred x) is logical true for any x in coll,\n         else true.",
 		},
 		nil,
@@ -228507,7 +228507,7 @@ var bitmapIndexedNode_NUM_134 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -228536,7 +228536,7 @@ var bitmapIndexedNode_NUM_134 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -228758,7 +228758,7 @@ var arrayMap_NUM_952 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -228782,14 +228782,14 @@ var arrayMap_NUM_952 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "If coll is empty, returns nil, else coll",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -229063,7 +229063,7 @@ var bitmapIndexedNode_NUM_136 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns false if (pred x) is logical true for every x in\n         coll, else true.",
 		},
 		nil,
@@ -229072,7 +229072,7 @@ var bitmapIndexedNode_NUM_136 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -229101,7 +229101,7 @@ var bitmapIndexedNode_NUM_136 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -229314,7 +229314,7 @@ var bitmapIndexedNode_NUM_138 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Sets *ns* to the namespace named by name (unevaluated), creating it\n  if needed.  references can be zero or more of:\n  (:require ...) (:use ...) (:load ...)\n  with the syntax of require/use/load\n  respectively, except the arguments are unevaluated and need not be\n  quoted. Use of ns is preferred to\n  individual calls to in-ns/require/use:\n\n  (ns foo.bar\n    (:require [my.lib1 :as lib1])\n    (:use [my.lib2]))",
 		},
 		Keyword{
@@ -229330,7 +229330,7 @@ var bitmapIndexedNode_NUM_138 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -229354,7 +229354,7 @@ var bitmapIndexedNode_NUM_138 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -229594,7 +229594,7 @@ var literalExpr_POS_joker_DOT_core__3144_22__3144_33_NUM_1 LiteralExpr = Literal
 		StartColumn: 22,
 		StartLine:   3144,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "joker.core",
 	},
 }
@@ -232663,7 +232663,7 @@ var arrayMap_NUM_955 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -232687,14 +232687,14 @@ var arrayMap_NUM_955 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map of the aliases for the namespace.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -232990,7 +232990,7 @@ var bitmapIndexedNode_NUM_140 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns whether the namespace, denoted by the symbol, has been initialized.",
 		},
 		nil,
@@ -232999,7 +232999,7 @@ var bitmapIndexedNode_NUM_140 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -233018,7 +233018,7 @@ var bitmapIndexedNode_NUM_140 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -233254,7 +233254,7 @@ var arrayMap_NUM_959 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -233278,14 +233278,14 @@ var arrayMap_NUM_959 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map of the refer mappings for the namespace.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -233985,7 +233985,7 @@ var arrayMap_NUM_962 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -234009,14 +234009,14 @@ var arrayMap_NUM_962 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the var or type to which a symbol will be resolved in the\n  namespace (unless found in the environment), else nil.  Note that\n  if the symbol is fully qualified, the var/Type to which it resolves\n  need not be present in the namespace.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -234501,7 +234501,7 @@ var arrayMap_NUM_968 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -234525,14 +234525,14 @@ var arrayMap_NUM_968 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Adds namespace mappings to the built-in variable *ns-sources*\n\n  The key/value pairs in the map define how to resolve external\n  dependencies. They are appended to the *ns-sources* vector in\n  arbitrary order; so, use separate invocations of this function\n  to add narrower keys before wider.\n\n  Each value is itself a map containing (primarily) a :url key whose\n  value is the URL of the resource. Only http:// and https:// are\n  currently supported; everything else is treated as a local\n  pathname. HTTP URLs are cached in $HOME/.jokerd/deps/.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -234894,7 +234894,7 @@ var literalExpr_POS_joker_DOT_core__3262_46__3262_114_NUM_1 LiteralExpr = Litera
 		StartColumn: 46,
 		StartLine:   3262,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Source value for %s must be a map with :url key (a string), got: %s",
 	},
 }
@@ -235905,7 +235905,7 @@ var arrayMap_NUM_971 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -235929,14 +235929,14 @@ var arrayMap_NUM_971 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes the alias for the symbol from the namespace.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -236246,7 +236246,7 @@ var arrayMap_NUM_974 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -236270,14 +236270,14 @@ var arrayMap_NUM_974 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes the mappings for the symbol from the namespace.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -236610,7 +236610,7 @@ var arrayMap_NUM_977 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -236634,14 +236634,14 @@ var arrayMap_NUM_977 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the nth next of coll, (seq coll) when n is 0.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -237166,7 +237166,7 @@ var arrayMap_NUM_981 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -237190,14 +237190,14 @@ var arrayMap_NUM_981 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Coerce to Number",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -237428,7 +237428,7 @@ var arrayMap_NUM_984 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -237452,14 +237452,14 @@ var arrayMap_NUM_984 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is a Number",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -237703,7 +237703,7 @@ var arrayMap_NUM_986 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -237727,14 +237727,14 @@ var arrayMap_NUM_986 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the numerator part of a coretypes.Ratio.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -237965,7 +237965,7 @@ var arrayMap_NUM_989 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -237989,14 +237989,14 @@ var arrayMap_NUM_989 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if n is odd, throws an exception if n is not an integer",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -238353,7 +238353,7 @@ var bitmapIndexedNode_NUM_143 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates exprs one at a time, from left to right. If a form\n  returns a logical true value, or returns that value and doesn't\n  evaluate any of the other expressions, otherwise it returns the\n  value of the last expression. (or) returns nil.",
 		},
 		Keyword{
@@ -238369,7 +238369,7 @@ var bitmapIndexedNode_NUM_143 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -238393,7 +238393,7 @@ var bitmapIndexedNode_NUM_143 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -239090,7 +239090,7 @@ var arrayMap_NUM_991 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -239114,14 +239114,14 @@ var arrayMap_NUM_991 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Parses strings \"true\" or \"false\" and returns a boolean, or nil if invalid",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.5",
 		},
 	},
@@ -239209,7 +239209,7 @@ var objectInfo_POS_joker_DOT_core__4590_7__4590_12 coretypes.ObjectInfo = corety
 }
 var arrayMap_NUM_994 ArrayMap = ArrayMap{
 	arr: []Object{
-		String{
+		coretypes.String{
 			S: "true",
 		},
 		coretypes.Boolean{
@@ -239283,7 +239283,7 @@ var objectInfo_POS_joker_DOT_core__4591_7__4591_13 coretypes.ObjectInfo = corety
 }
 var arrayMap_NUM_995 ArrayMap = ArrayMap{
 	arr: []Object{
-		String{
+		coretypes.String{
 			S: "false",
 		},
 		coretypes.Boolean{
@@ -239437,7 +239437,7 @@ var literalExpr_POS_joker_DOT_core__4593_26__4593_55_NUM_1 LiteralExpr = Literal
 		StartColumn: 26,
 		StartLine:   4593,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Argument must be an string: ",
 	},
 }
@@ -239703,7 +239703,7 @@ var arrayMap_NUM_996 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -239727,14 +239727,14 @@ var arrayMap_NUM_996 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Parses string with floating point components and return a coretypes.Double value, or nil if parse fails.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.5",
 		},
 	},
@@ -239988,7 +239988,7 @@ var arrayMap_NUM_999 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -240012,14 +240012,14 @@ var arrayMap_NUM_999 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Parses string of decimal digits with optional leading -/+ and return an coretypes.Int value, or nil if parse fails.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.5",
 		},
 	},
@@ -240707,7 +240707,7 @@ var arrayMap_NUM_1002 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -240731,14 +240731,14 @@ var arrayMap_NUM_1002 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a function f and fewer than the normal arguments to f, and\n  returns a fn that takes a variable number of additional args. When\n  called, the returned function calls f with args + additional args.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -241663,7 +241663,7 @@ var arrayMap_NUM_1013 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -241687,14 +241687,14 @@ var arrayMap_NUM_1013 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Applies f to each value in coll, splitting it each time f returns a\n  new value.  Returns a lazy seq of partitions.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -242093,7 +242093,7 @@ var arrayMap_NUM_1017 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -242117,14 +242117,14 @@ var arrayMap_NUM_1017 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of successive items from coll while\n  (pred item) returns true. pred must be free of side-effects.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -243322,7 +243322,7 @@ var arrayMap_NUM_1021 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -243346,14 +243346,14 @@ var arrayMap_NUM_1021 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of vectors of n items each, at offsets step\n  apart. If step is not supplied, defaults to n, i.e. the partitions\n  do not overlap. If a pad collection is supplied, use its elements as\n  necessary to complete last partition upto n items. In case there are\n  not enough padding elements, return a partition with less than n items.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.5",
 		},
 	},
@@ -244867,7 +244867,7 @@ var arrayMap_NUM_1022 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -244891,14 +244891,14 @@ var arrayMap_NUM_1022 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy sequence of vector partitions, but may include\n  partitions with fewer than n items at the end.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.5",
 		},
 	},
@@ -245608,7 +245608,7 @@ var bitmapIndexedNode_NUM_145 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a positive fixed precision integer",
 		},
 		nil,
@@ -245617,7 +245617,7 @@ var bitmapIndexedNode_NUM_145 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -245646,7 +245646,7 @@ var bitmapIndexedNode_NUM_145 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -245953,7 +245953,7 @@ var arrayMap_NUM_1024 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -245977,14 +245977,14 @@ var arrayMap_NUM_1024 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Pretty prints x to the output stream that is the current value of *out*.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -246221,7 +246221,7 @@ var arrayMap_NUM_1026 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -246245,14 +246245,14 @@ var arrayMap_NUM_1026 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "pr to *err*",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -246544,7 +246544,7 @@ var arrayMap_NUM_1028 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -246568,14 +246568,14 @@ var arrayMap_NUM_1028 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Causes the multimethod to prefer matches of dispatch-val-x over dispatch-val-y\n   when there is a conflict",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -246607,7 +246607,7 @@ var literalExpr_POS_joker_DOT_core__4441_19__4441_69_NUM_1 LiteralExpr = Literal
 		StartColumn: 19,
 		StartLine:   4441,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "method preference not yet supported by joker.core",
 	},
 }
@@ -246816,7 +246816,7 @@ var arrayMap_NUM_1029 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -246840,14 +246840,14 @@ var arrayMap_NUM_1029 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Given a multimethod, returns a map of preferred value -> set of other values",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -246879,7 +246879,7 @@ var literalExpr_POS_joker_DOT_core__4467_19__4467_69_NUM_1 LiteralExpr = Literal
 		StartColumn: 19,
 		StartLine:   4467,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "method preference not yet supported by joker.core",
 	},
 }
@@ -247095,7 +247095,7 @@ var arrayMap_NUM_1031 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -247119,14 +247119,14 @@ var arrayMap_NUM_1031 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "print to *err*",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -247429,7 +247429,7 @@ var arrayMap_NUM_1033 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -247453,14 +247453,14 @@ var arrayMap_NUM_1033 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "println to a string, returning it",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -247778,7 +247778,7 @@ var arrayMap_NUM_1035 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -247802,14 +247802,14 @@ var arrayMap_NUM_1035 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "prn to *err*",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -248112,7 +248112,7 @@ var arrayMap_NUM_1037 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -248136,14 +248136,14 @@ var arrayMap_NUM_1037 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "prn to a string, returning it",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -248449,7 +248449,7 @@ var arrayMap_NUM_1039 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -248473,14 +248473,14 @@ var arrayMap_NUM_1039 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a symbol or keyword with a namespace",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -248861,7 +248861,7 @@ var arrayMap_NUM_1041 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -248885,14 +248885,14 @@ var arrayMap_NUM_1041 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a keyword with a namespace",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -249273,7 +249273,7 @@ var arrayMap_NUM_1043 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -249297,14 +249297,14 @@ var arrayMap_NUM_1043 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a symbol with a namespace",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -249744,7 +249744,7 @@ var arrayMap_NUM_1045 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -249768,14 +249768,14 @@ var arrayMap_NUM_1045 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "quot[ient] of dividing numerator by denominator.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -250091,7 +250091,7 @@ var arrayMap_NUM_1049 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -250115,14 +250115,14 @@ var arrayMap_NUM_1049 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a random floating point number between 0 (inclusive) and\n  n (default 1) (exclusive).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -250434,7 +250434,7 @@ var arrayMap_NUM_1053 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -250458,14 +250458,14 @@ var arrayMap_NUM_1053 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a random integer between 0 (inclusive) and n (exclusive).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -250681,7 +250681,7 @@ var arrayMap_NUM_1056 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -250705,14 +250705,14 @@ var arrayMap_NUM_1056 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return a random element of the (sequential) collection. Will have\n  the same performance characteristics as nth for the given\n  collection.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -251035,7 +251035,7 @@ var arrayMap_NUM_1057 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -251059,14 +251059,14 @@ var arrayMap_NUM_1057 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns items from coll with random probability of prob (0.0 -\n  1.0).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -251697,7 +251697,7 @@ var arrayMap_NUM_1061 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -251721,14 +251721,14 @@ var arrayMap_NUM_1061 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy seq of nums from start (inclusive) to end\n  (exclusive), by step, where start defaults to 0, step to 1, and end to\n  infinity. When step is equal to 0, returns an infinite sequence of\n  start. When start is equal to end, returns empty list.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -252760,7 +252760,7 @@ var arrayMap_NUM_1072 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -252784,14 +252784,14 @@ var arrayMap_NUM_1072 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if n is a coretypes.Ratio",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -253012,7 +253012,7 @@ var arrayMap_NUM_1074 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -253036,14 +253036,14 @@ var arrayMap_NUM_1074 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if n is a rational number",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -253379,7 +253379,7 @@ var arrayMap_NUM_1076 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -253403,14 +253403,14 @@ var arrayMap_NUM_1076 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the leftmost regex match, if any, of string to pattern.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -253703,7 +253703,7 @@ var arrayMap_NUM_1079 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -253727,14 +253727,14 @@ var arrayMap_NUM_1079 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the match, if any, of string to pattern.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -254277,7 +254277,7 @@ var arrayMap_NUM_1082 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -254301,14 +254301,14 @@ var arrayMap_NUM_1082 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns an instance of coretypes.Regex",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -254657,7 +254657,7 @@ var arrayMap_NUM_1084 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -254681,14 +254681,14 @@ var arrayMap_NUM_1084 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a sequence of successive matches of pattern in string",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -254935,7 +254935,7 @@ var arrayMap_NUM_1088 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -254959,14 +254959,14 @@ var arrayMap_NUM_1088 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Reads the next object from reader (defaults to *in*)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -255237,7 +255237,7 @@ var bitmapIndexedNode_NUM_147 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Reads the next line from *in*. Returns nil if an error (such as EOF) is detected.",
 		},
 		nil,
@@ -255246,7 +255246,7 @@ var bitmapIndexedNode_NUM_147 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -255275,7 +255275,7 @@ var bitmapIndexedNode_NUM_147 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -255449,7 +255449,7 @@ var arrayMap_NUM_1089 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -255473,14 +255473,14 @@ var arrayMap_NUM_1089 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Reads one object from the string s.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -255670,7 +255670,7 @@ var arrayMap_NUM_1090 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -255694,14 +255694,14 @@ var arrayMap_NUM_1090 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if a value has been produced for a delay or lazy sequence.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -256109,7 +256109,7 @@ var arrayMap_NUM_1093 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -256133,14 +256133,14 @@ var arrayMap_NUM_1093 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a lazy seq of the intermediate values of the reduction (as\n  per reduce) of coll by f, starting with init.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -257092,7 +257092,7 @@ var bitmapIndexedNode_NUM_149 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as (refer 'joker.core <filters>)",
 		},
 		Keyword{
@@ -257108,7 +257108,7 @@ var bitmapIndexedNode_NUM_149 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -257132,7 +257132,7 @@ var bitmapIndexedNode_NUM_149 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -257463,7 +257463,7 @@ var arrayMap_NUM_1100 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -257487,14 +257487,14 @@ var arrayMap_NUM_1100 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes all of the methods of multimethod.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -257741,7 +257741,7 @@ var arrayMap_NUM_1101 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -257765,14 +257765,14 @@ var arrayMap_NUM_1101 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Sets the value of atom to newval without regard for the\n  current value. Returns newval.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -258144,7 +258144,7 @@ var arrayMap_NUM_1103 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -258168,14 +258168,14 @@ var arrayMap_NUM_1103 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Removes the method of multimethod associated with dispatch-value.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -258207,7 +258207,7 @@ var literalExpr_POS_joker_DOT_core__4434_19__4434_66_NUM_1 LiteralExpr = Literal
 		StartColumn: 19,
 		StartLine:   4434,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "method removal not yet supported by joker.core",
 	},
 }
@@ -258543,7 +258543,7 @@ var arrayMap_NUM_1104 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -258567,14 +258567,14 @@ var arrayMap_NUM_1104 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a function of no args, presumably with side effects, and\n  returns an infinite (or length n if supplied) lazy sequence of calls\n  to it",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -259020,7 +259020,7 @@ var arrayMap_NUM_1110 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -259044,14 +259044,14 @@ var arrayMap_NUM_1110 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Given a map of replacement pairs and a vector/collection, returns a\n  vector/seq with any elements = a key in smap replaced with the\n  corresponding val in smap.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -260016,7 +260016,7 @@ var arrayMap_NUM_1113 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -260040,14 +260040,14 @@ var arrayMap_NUM_1113 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Loads libs, skipping any that are already loaded. Each argument is\n  either a libspec that identifies a lib, a prefix list that\n  identifies multiple libs whose names share a common prefix, or a\n  flag that modifies how all the identified libs are\n  loaded. Use :require in the ns macro in preference to calling this\n  directly.\n\n  Libs\n\n  A 'lib' is a named set of resources in *classpath* whose contents\n  define a library of Clojure code. Lib names are symbols and each lib\n  is associated with a Clojure namespace and a Joker package that\n  share its name. A lib's name also locates its root directory within\n  *classpath* using its package name to classpath-relative path\n  mapping. All resources in a lib should be contained in the directory\n  structure under its root directory.  All definitions a lib makes\n  should be in its associated namespace.\n\n  'require loads a lib by loading its root resource. The root resource\n  path is derived from the lib name in the following manner: Consider\n  a lib named by the symbol 'x.y.z; it has the root directory\n  <*classpath*>/x/y/, and its root resource is\n  <*classpath*>/x/y/z.clj. The root resource should contain code to\n  create the lib's namespace (usually by using the ns macro) and load\n  any additional lib resources.\n\n  Libspecs\n\n  A libspec is a lib name or a vector containing a lib name followed\n  by options expressed as sequential keywords and arguments.\n\n  Recognized options:\n  :as takes a symbol as its argument and makes that symbol an alias to the\n    lib's namespace in the current namespace.\n  :refer takes a list of symbols to refer from the namespace or the :all\n    keyword to bring in all public vars.\n\n  Prefix Lists\n\n  It's common for Clojure code to depend on several libs whose names have\n  the same prefix. When specifying libs, prefix lists can be used to reduce\n  repetition. A prefix list contains the shared prefix followed by libspecs\n  with the shared prefix removed from the lib names. After removing the\n  prefix, the names that remain must not contain any periods.\n\n  Flags\n\n  A flag is a keyword.\n  Recognized flags: :reload, :reload-all, :verbose\n  :reload forces loading of all the identified libs even if they are\n    already loaded\n  :reload-all implies :reload and also forces loading of all libs that the\n    identified libs directly or indirectly load via require or use\n  :verbose triggers printing information about each load, alias, and refer\n\n  Example:\n\n  The following would load the libraries clojure.zip and clojure.set\n  abbreviated as 's'.\n\n  (require '(clojure zip [set :as s]))",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -260290,7 +260290,7 @@ var arrayMap_NUM_1115 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -260314,14 +260314,14 @@ var arrayMap_NUM_1115 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Resolves namespace-qualified sym per 'resolve'. If initial resolve\n  fails, attempts to require sym's namespace and retries.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -260616,7 +260616,7 @@ var arrayMap_NUM_1117 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -260640,14 +260640,14 @@ var arrayMap_NUM_1117 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Same as (ns-resolve *ns* sym) or (ns-resolve *ns* env sym)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -261109,7 +261109,7 @@ var literalExpr_POS_joker_DOT_core__3474_26__3474_51_NUM_1 LiteralExpr = Literal
 		StartColumn: 26,
 		StartLine:   3474,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Not a qualified symbol: ",
 	},
 }
@@ -261384,7 +261384,7 @@ var arrayMap_NUM_1123 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -261408,14 +261408,14 @@ var arrayMap_NUM_1123 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Atomically resets the metadata for a namespace/var/atom",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -261708,7 +261708,7 @@ var arrayMap_NUM_1126 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -261732,14 +261732,14 @@ var arrayMap_NUM_1126 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Sets the value of atom to newval. Returns [old new], the value of the\n  atom before and after the reset.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -261991,7 +261991,7 @@ var arrayMap_NUM_1129 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -262015,14 +262015,14 @@ var arrayMap_NUM_1129 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if coll implements Reversible",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -262265,7 +262265,7 @@ var arrayMap_NUM_1131 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -262289,14 +262289,14 @@ var arrayMap_NUM_1131 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns, in constant time, a seq of the items in rev (which\n  can be a vector or sorted-map), in reverse order. If rev is empty returns nil.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -262562,7 +262562,7 @@ var arrayMap_NUM_1134 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -262586,14 +262586,14 @@ var arrayMap_NUM_1134 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Runs the supplied procedure (via reduce), for purposes of side\n  effects, on successive items in the collection. Returns nil.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -262931,7 +262931,7 @@ var arrayMap_NUM_1137 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -262955,14 +262955,14 @@ var arrayMap_NUM_1137 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if the seq function is supported for x",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -263274,7 +263274,7 @@ var arrayMap_NUM_1139 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -263298,14 +263298,14 @@ var arrayMap_NUM_1139 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Coerces coll to a (possibly empty) sequence, if it is not already\n  one. Will not force a lazy seq. (sequence nil) yields ()",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -263638,7 +263638,7 @@ var arrayMap_NUM_1141 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -263662,14 +263662,14 @@ var arrayMap_NUM_1141 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return a random permutation of coll",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -263894,7 +263894,7 @@ var arrayMap_NUM_1143 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -263918,14 +263918,14 @@ var arrayMap_NUM_1143 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a symbol or keyword without a namespace",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -264249,7 +264249,7 @@ var arrayMap_NUM_1145 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -264273,14 +264273,14 @@ var arrayMap_NUM_1145 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a keyword without a namespace",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -264604,7 +264604,7 @@ var arrayMap_NUM_1147 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -264628,14 +264628,14 @@ var arrayMap_NUM_1147 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return true if x is a symbol without a namespace",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -264959,7 +264959,7 @@ var arrayMap_NUM_1149 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -264983,14 +264983,14 @@ var arrayMap_NUM_1149 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Opens file f and reads all its contents, returning a string.\n  f can be a string (filename) or a reader object like *in* or\n  the one returned by joker.os/open.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -265248,7 +265248,7 @@ var bitmapIndexedNode_NUM_151 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "When expr is not nil, threads it into the first form (via ->),\n  and when that result is not nil, through the next etc.",
 		},
 		Keyword{
@@ -265264,7 +265264,7 @@ var bitmapIndexedNode_NUM_151 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -265288,7 +265288,7 @@ var bitmapIndexedNode_NUM_151 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -265652,7 +265652,7 @@ var literalExpr_POS_joker_DOT_core__4238_32__4238_51_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   4238,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No forms in some->",
 	},
 }
@@ -265733,7 +265733,7 @@ var literalExpr_POS_joker_DOT_core__4238_75__4238_89_NUM_1 LiteralExpr = Literal
 		StartColumn: 75,
 		StartLine:   4238,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -266850,7 +266850,7 @@ var bitmapIndexedNode_NUM_153 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "When expr is not nil, threads it into the first form (via ->>),\n  and when that result is not nil, through the next etc.",
 		},
 		Keyword{
@@ -266866,7 +266866,7 @@ var bitmapIndexedNode_NUM_153 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -266890,7 +266890,7 @@ var bitmapIndexedNode_NUM_153 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -267254,7 +267254,7 @@ var literalExpr_POS_joker_DOT_core__4254_32__4254_52_NUM_1 LiteralExpr = Literal
 		StartColumn: 32,
 		StartLine:   4254,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "No forms in some->>",
 	},
 }
@@ -267335,7 +267335,7 @@ var literalExpr_POS_joker_DOT_core__4254_76__4254_90_NUM_1 LiteralExpr = Literal
 		StartColumn: 76,
 		StartLine:   4254,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Parse warning",
 	},
 }
@@ -268857,7 +268857,7 @@ var arrayMap_NUM_1151 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -268881,14 +268881,14 @@ var arrayMap_NUM_1151 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a set of predicates and returns a function f that returns the first logical true value\n  returned by one of its composing predicates against any of its arguments, else it returns\n  logical false. Note that f is short-circuiting in that it will stop execution on the first\n  argument that triggers a logical true result against the original predicates.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -275060,7 +275060,7 @@ var bitmapIndexedNode_NUM_155 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is not nil, false otherwise.",
 		},
 		nil,
@@ -275069,7 +275069,7 @@ var bitmapIndexedNode_NUM_155 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -275098,7 +275098,7 @@ var bitmapIndexedNode_NUM_155 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -275466,7 +275466,7 @@ var arrayMap_NUM_1165 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -275490,14 +275490,14 @@ var arrayMap_NUM_1165 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a sorted sequence of the items in coll. If no comparator is\n  supplied, uses compare.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -276030,7 +276030,7 @@ var arrayMap_NUM_1171 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -276054,14 +276054,14 @@ var arrayMap_NUM_1171 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a sorted sequence of the items in coll, where the sort\n  order is determined by comparing (keyfn item).  If no comparator is\n  supplied, uses compare.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -276558,7 +276558,7 @@ var arrayMap_NUM_1179 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -276582,14 +276582,14 @@ var arrayMap_NUM_1179 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if s names a special form",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -276850,7 +276850,7 @@ var arrayMap_NUM_1181 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -276874,14 +276874,14 @@ var arrayMap_NUM_1181 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Opposite of slurp.  Opens file f, writes content, then\n  closes f.\n  f can be a string (filename) or a writer object like *out* or\n  the one returned by joker.os/create.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -277239,7 +277239,7 @@ var arrayMap_NUM_1183 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -277263,14 +277263,14 @@ var arrayMap_NUM_1183 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a vector of [(take-while pred coll) (drop-while pred coll)]",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -277558,7 +277558,7 @@ var arrayMap_NUM_1187 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -277582,14 +277582,14 @@ var arrayMap_NUM_1187 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a vector of [(into [] (take n coll)) (drop n coll)]",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.5",
 		},
 	},
@@ -278109,7 +278109,7 @@ var arrayMap_NUM_1188 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -278133,14 +278133,14 @@ var arrayMap_NUM_1188 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the substring of s beginning at start inclusive, and ending\n  at end (defaults to length of string), exclusive.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -278715,7 +278715,7 @@ var arrayMap_NUM_1196 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -278739,14 +278739,14 @@ var arrayMap_NUM_1196 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a persistent vector of the items in vector from\n  start (inclusive) to end (exclusive).  If end is not supplied,\n  defaults to (count vector). This operation is O(1) and very fast, as\n  the resulting vector shares structure with the original and no\n  trimming is done.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -279222,7 +279222,7 @@ var arrayMap_NUM_1204 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -279246,14 +279246,14 @@ var arrayMap_NUM_1204 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Atomically swaps the value of atom to be:\n  (apply f current-value-of-atom args). Note that f may be called\n  multiple times, and thus should be free of side effects.\n  Returns [old new], the value of the atom before and after the swap.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -279601,7 +279601,7 @@ var arrayMap_NUM_1208 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -279625,14 +279625,14 @@ var arrayMap_NUM_1208 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a seq of the last n items in coll.  Depending on the type\n  of coll may be no better than linear time.  For vectors, see also subvec.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -280098,7 +280098,7 @@ var arrayMap_NUM_1212 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -280122,14 +280122,14 @@ var arrayMap_NUM_1212 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "test [v] finds fn at key :test in var metadata and calls it,\n  presuming failure will throw exception",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -280519,7 +280519,7 @@ var bitmapIndexedNode_NUM_157 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates expr and prints the time it took.  Returns the value of expr.",
 		},
 		Keyword{
@@ -280535,7 +280535,7 @@ var bitmapIndexedNode_NUM_157 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -280559,7 +280559,7 @@ var bitmapIndexedNode_NUM_157 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -280919,7 +280919,7 @@ var literalExpr_POS_joker_DOT_core__2190_16__2190_31_NUM_1 LiteralExpr = Literal
 		StartColumn: 16,
 		StartLine:   2190,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Elapsed time: ",
 	},
 }
@@ -281322,7 +281322,7 @@ var literalExpr_POS_joker_DOT_core__2190_81__2190_88_NUM_1 LiteralExpr = Literal
 		StartColumn: 81,
 		StartLine:   2190,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " msecs",
 	},
 }
@@ -281730,7 +281730,7 @@ var arrayMap_NUM_1214 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -281754,14 +281754,14 @@ var arrayMap_NUM_1214 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "trampoline can be used to convert algorithms requiring mutual\n  recursion without stack consumption. Calls f with supplied args, if\n  any. If f returns a fn, calls that fn with no arguments, and\n  continues to repeat, until the return value is not a fn, then\n  returns that non-fn value. Note that if you want to return a fn as a\n  final value, you must wrap it in some data structure and unpack it\n  after trampoline returns.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -282199,7 +282199,7 @@ var bitmapIndexedNode_NUM_159 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if x is the value true, false otherwise.",
 		},
 		nil,
@@ -282208,7 +282208,7 @@ var bitmapIndexedNode_NUM_159 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -282237,7 +282237,7 @@ var bitmapIndexedNode_NUM_159 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -282469,7 +282469,7 @@ var bitmapIndexedNode_NUM_161 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns currently registered types as a map.",
 		},
 		nil,
@@ -282478,7 +282478,7 @@ var bitmapIndexedNode_NUM_161 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -282497,7 +282497,7 @@ var bitmapIndexedNode_NUM_161 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -282714,7 +282714,7 @@ var arrayMap_NUM_1217 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -282738,14 +282738,14 @@ var arrayMap_NUM_1217 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bitwise shift right, without sign-extension.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -283681,7 +283681,7 @@ var arrayMap_NUM_1221 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -283705,14 +283705,14 @@ var arrayMap_NUM_1221 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "'Updates' a value in an associative structure, where k is a\n  key and f is a function that will take the old value\n  and any supplied args and return the new value, and returns a new\n  structure.  If the key does not exist, nil is passed as the old value.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -285043,7 +285043,7 @@ var arrayMap_NUM_1237 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -285067,14 +285067,14 @@ var arrayMap_NUM_1237 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "'Updates' a value in a nested associative structure, where ks is a\n  sequence of keys and f is a function that will take the old value\n  and any supplied args and return the new value, and returns a new\n  nested structure.  If any levels do not exist, hash-maps will be\n  created.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -285814,7 +285814,7 @@ var arrayMap_NUM_1242 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -285838,14 +285838,14 @@ var arrayMap_NUM_1242 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "m f => {(f k) v ...}\n  Given a map m and a function f of 1-argument, returns a new map whose\n  keys are the result of applying f to the keys of m, mapped to the\n  corresponding values of m.\n  f must return a unique key for each key of m, else the behavior is undefined.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.1",
 		},
 	},
@@ -286337,7 +286337,7 @@ var arrayMap_NUM_1245 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -286361,14 +286361,14 @@ var arrayMap_NUM_1245 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "m f => {k (f v) ...}\n  Given a map m and a function f of 1-argument, returns a new map where the keys of m\n  are mapped to result of applying f to the corresponding values of m.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.1",
 		},
 	},
@@ -286837,7 +286837,7 @@ var arrayMap_NUM_1248 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -286861,14 +286861,14 @@ var arrayMap_NUM_1248 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Like 'require, but also refers to each lib's namespace using\n  joker.core/refer. Use :use in the ns macro in preference to calling\n  this directly.\n\n  'use accepts additional options in libspecs: :exclude, :only, :rename.\n  The arguments and semantics for :exclude, :only, and :rename are the same\n  as those documented for joker.core/refer.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -287156,7 +287156,7 @@ var arrayMap_NUM_1250 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -287180,14 +287180,14 @@ var arrayMap_NUM_1250 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a sequence of the map's values, in the same order as (seq map).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -287419,7 +287419,7 @@ var arrayMap_NUM_1253 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -287443,14 +287443,14 @@ var arrayMap_NUM_1253 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if v is of type Var",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -287656,7 +287656,7 @@ var bitmapIndexedNode_NUM_164 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Verbosity level as specified via the --verbose option to Joker.",
 		},
 		nil,
@@ -287665,7 +287665,7 @@ var bitmapIndexedNode_NUM_164 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -287684,7 +287684,7 @@ var bitmapIndexedNode_NUM_164 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -287924,7 +287924,7 @@ var bitmapIndexedNode_NUM_167 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates test. If logical true, evaluates body in an implicit do.",
 		},
 		Keyword{
@@ -287940,7 +287940,7 @@ var bitmapIndexedNode_NUM_167 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -287964,7 +287964,7 @@ var bitmapIndexedNode_NUM_167 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -288487,7 +288487,7 @@ var bitmapIndexedNode_NUM_169 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "bindings => x xs\n\n  Roughly the same as (when (seq xs) (let [x (first xs)] body)) but xs is evaluated only once",
 		},
 		Keyword{
@@ -288503,7 +288503,7 @@ var bitmapIndexedNode_NUM_169 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -288527,7 +288527,7 @@ var bitmapIndexedNode_NUM_169 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -288624,7 +288624,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_22 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -288645,7 +288645,7 @@ var literalExpr_POS_joker_DOT_core__2718_23__2718_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   2718,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -288857,7 +288857,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_23 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -288878,7 +288878,7 @@ var literalExpr_POS_joker_DOT_core__2719_27__2719_61_NUM_1 LiteralExpr = Literal
 		StartColumn: 27,
 		StartLine:   2719,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "exactly 2 forms in binding vector",
 	},
 }
@@ -289887,7 +289887,7 @@ var bitmapIndexedNode_NUM_171 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "bindings => binding-form test\n\n  When test is true, evaluates body with binding-form bound to the value of test",
 		},
 		Keyword{
@@ -289903,7 +289903,7 @@ var bitmapIndexedNode_NUM_171 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -289927,7 +289927,7 @@ var bitmapIndexedNode_NUM_171 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -290024,7 +290024,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_24 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -290045,7 +290045,7 @@ var literalExpr_POS_joker_DOT_core__1268_23__1268_49_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   1268,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its bindings",
 	},
 }
@@ -290257,7 +290257,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_25 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -290278,7 +290278,7 @@ var literalExpr_POS_joker_DOT_core__1269_27__1269_62_NUM_1 LiteralExpr = Literal
 		StartColumn: 27,
 		StartLine:   1269,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "exactly 2 forms in bindings vector",
 	},
 }
@@ -291240,7 +291240,7 @@ var bitmapIndexedNode_NUM_173 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates test. If logical false, evaluates body in an implicit do.",
 		},
 		Keyword{
@@ -291256,7 +291256,7 @@ var bitmapIndexedNode_NUM_173 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -291280,7 +291280,7 @@ var bitmapIndexedNode_NUM_173 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -291803,7 +291803,7 @@ var bitmapIndexedNode_NUM_175 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "bindings => binding-form test\n\n  When test is not nil, evaluates body with binding-form bound to the\n  value of test",
 		},
 		Keyword{
@@ -291819,7 +291819,7 @@ var bitmapIndexedNode_NUM_175 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -291843,7 +291843,7 @@ var bitmapIndexedNode_NUM_175 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -291940,7 +291940,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_26 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -291961,7 +291961,7 @@ var literalExpr_POS_joker_DOT_core__1305_23__1305_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   1305,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "a vector for its binding",
 	},
 }
@@ -292173,7 +292173,7 @@ var literalExpr_POS_joker_DOT_core__1226_39__1226_50_NUM_27 LiteralExpr = Litera
 		StartColumn: 39,
 		StartLine:   1226,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " requires ",
 	},
 }
@@ -292194,7 +292194,7 @@ var literalExpr_POS_joker_DOT_core__1306_27__1306_61_NUM_1 LiteralExpr = Literal
 		StartColumn: 27,
 		StartLine:   1306,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "exactly 2 forms in binding vector",
 	},
 }
@@ -293277,7 +293277,7 @@ var bitmapIndexedNode_NUM_177 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Repeatedly executes body while test expression is true. Presumes\n  some side-effect will cause test to become false/nil. Returns nil",
 		},
 		Keyword{
@@ -293293,7 +293293,7 @@ var bitmapIndexedNode_NUM_177 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -293317,7 +293317,7 @@ var bitmapIndexedNode_NUM_177 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -293846,7 +293846,7 @@ var bitmapIndexedNode_NUM_179 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes a map of Var/value pairs. Sets the vars to the corresponding values.\n  Then executes body. Resets the vars back to the original\n  values after body was evaluated. Returns the value of body.",
 		},
 		Keyword{
@@ -293862,7 +293862,7 @@ var bitmapIndexedNode_NUM_179 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -293886,7 +293886,7 @@ var bitmapIndexedNode_NUM_179 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -294341,7 +294341,7 @@ var bitmapIndexedNode_NUM_181 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates body in a context in which *in* is bound to a fresh\n  Buffer initialized with the string s.",
 		},
 		Keyword{
@@ -294357,7 +294357,7 @@ var bitmapIndexedNode_NUM_181 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -294381,7 +294381,7 @@ var bitmapIndexedNode_NUM_181 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -294861,7 +294861,7 @@ var bitmapIndexedNode_NUM_183 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates exprs in a context in which *out* is bound to a fresh\n  Buffer.  Returns the string created by any nested printing\n  calls.",
 		},
 		Keyword{
@@ -294877,7 +294877,7 @@ var bitmapIndexedNode_NUM_183 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -294901,7 +294901,7 @@ var bitmapIndexedNode_NUM_183 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -295470,7 +295470,7 @@ var bitmapIndexedNode_NUM_185 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "The same as binding",
 		},
 		Keyword{
@@ -295486,7 +295486,7 @@ var bitmapIndexedNode_NUM_185 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -295510,7 +295510,7 @@ var bitmapIndexedNode_NUM_185 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -295842,7 +295842,7 @@ var arrayMap_NUM_1255 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -295861,7 +295861,7 @@ var arrayMap_NUM_1255 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "The same as with-bindings*",
 		},
 		Keyword{
@@ -295873,7 +295873,7 @@ var arrayMap_NUM_1255 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -296021,7 +296021,7 @@ var arrayMap_NUM_1256 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -296045,14 +296045,14 @@ var arrayMap_NUM_1256 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A tree seq on the xml elements as per xml/parse",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -296410,7 +296410,7 @@ var arrayMap_NUM_1258 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -296434,14 +296434,14 @@ var arrayMap_NUM_1258 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map with the keys mapped to the corresponding vals.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -297994,7 +297994,7 @@ var arrayMap_NUM_102 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.core>",
 		},
 		Keyword{
@@ -298018,14 +298018,14 @@ var arrayMap_NUM_102 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the product of nums. (*) returns 1. Does not auto-promote\n  ints, will overflow. See also: *'",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -298824,14 +298824,14 @@ var arrayMap_NUM_1271 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Utilities meant to be used interactively at the REPL.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -298934,7 +298934,7 @@ var arrayMap_NUM_1272 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.Repl>",
 		},
 		Keyword{
@@ -298958,14 +298958,14 @@ var arrayMap_NUM_1272 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Given a regular expression or stringable thing, return a seq of all\npublic definitions in all currently-loaded namespaces that match the\nstr-or-pattern.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -299865,7 +299865,7 @@ var bitmapIndexedNode_NUM_187 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Prints a sorted directory of public vars in a namespace",
 		},
 		Keyword{
@@ -299881,7 +299881,7 @@ var bitmapIndexedNode_NUM_187 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.Repl>",
 		},
 		Keyword{
@@ -299905,7 +299905,7 @@ var bitmapIndexedNode_NUM_187 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -300488,7 +300488,7 @@ var arrayMap_NUM_1273 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.Repl>",
 		},
 		Keyword{
@@ -300512,14 +300512,14 @@ var arrayMap_NUM_1273 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a sorted seq of symbols naming public vars in\n  a namespace or namespace alias. Looks for aliases in *ns*",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -300885,7 +300885,7 @@ var bitmapIndexedNode_NUM_189 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Prints documentation for a var, type, or special form given its name,\n  or for a spec if given a keyword",
 		},
 		Keyword{
@@ -300901,7 +300901,7 @@ var bitmapIndexedNode_NUM_189 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.Repl>",
 		},
 		Keyword{
@@ -300925,7 +300925,7 @@ var bitmapIndexedNode_NUM_189 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -301540,7 +301540,7 @@ var arrayMap_NUM_1274 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.Repl>",
 		},
 		Keyword{
@@ -301716,7 +301716,7 @@ var arrayMap_POS_joker_DOT_repl__29_9__34_81_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "catch-clause => (catch type name expr*)\n  finally-clause => (finally expr*)\n\n  Catches and handles errors.\n  User code should normally use (ex-info) function to create new coretypes.Error objects.",
 		},
 	},
@@ -301864,7 +301864,7 @@ var arrayMap_POS_joker_DOT_repl__16_8__19_44_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates test. If not the singular values nil or false,\n  evaluates and yields then, otherwise, evaluates and yields else. If\n  else is not supplied it defaults to nil.",
 		},
 	},
@@ -301980,7 +301980,7 @@ var arrayMap_POS_joker_DOT_repl__35_9__37_80_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "The symbol must resolve to a var, and the Var object\n  itself (not its value) is returned. The reader macro #'x expands to (var x).",
 		},
 	},
@@ -302096,7 +302096,7 @@ var arrayMap_POS_joker_DOT_repl__26_11__28_81_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "The expr is evaluated and thrown, therefore it should yield an coretypes.Error object.\n  User code should normally use (ex-info) function to create new coretypes.Error objects.",
 		},
 	},
@@ -302212,7 +302212,7 @@ var arrayMap_POS_joker_DOT_repl__13_8__15_58_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates the expressions in order and returns the value of\n  the last. If no expressions are supplied, returns nil.",
 		},
 	},
@@ -302360,7 +302360,7 @@ var arrayMap_POS_joker_DOT_repl__7_9__12_60_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Creates and interns a global var with the name\n  of symbol in the current namespace (*ns*) or locates such a var if\n  it already exists.  If init is supplied, it is evaluated, and the\n  root binding of the var is set to the resulting value.  If init is\n  not supplied, the root binding of the var is unaffected.",
 		},
 	},
@@ -302476,7 +302476,7 @@ var arrayMap_POS_joker_DOT_repl__22_11__25_74_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Evaluates the exprs in order, then, in parallel, rebinds\n  the bindings of the recursion point to the values of the exprs.\n  Execution then jumps back to the recursion point, a loop or fn method.",
 		},
 	},
@@ -302592,7 +302592,7 @@ var arrayMap_POS_joker_DOT_repl__20_11__21_47_NUM_1 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Yields the unevaluated form.",
 		},
 	},
@@ -303103,7 +303103,7 @@ var literalExpr_POS_joker_DOT_repl__83_32__83_66_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 32,
 		StartLine:   83,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Keywords (spec) not yet supported",
 	},
 }
@@ -304310,7 +304310,7 @@ var arrayMap_NUM_1275 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.Repl>",
 		},
 		Keyword{
@@ -304762,7 +304762,7 @@ var arrayMap_NUM_1276 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.Repl>",
 		},
 		Keyword{
@@ -305127,7 +305127,7 @@ var literalExpr_POS_joker_DOT_repl__51_12__51_38_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 12,
 		StartLine:   51,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "-------------------------",
 	},
 }
@@ -305287,7 +305287,7 @@ var literalExpr_POS_joker_DOT_repl__52_51__52_53_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 51,
 		StartLine:   52,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "/",
 	},
 }
@@ -305507,7 +305507,7 @@ var literalExpr_POS_joker_DOT_repl__55_14__55_17_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 14,
 		StartLine:   55,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "  ",
 	},
 }
@@ -305809,7 +305809,7 @@ var literalExpr_POS_joker_DOT_repl__62_16__62_29_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 16,
 		StartLine:   62,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Special Form",
 	},
 }
@@ -305853,7 +305853,7 @@ var literalExpr_POS_joker_DOT_repl__63_16__63_18_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 16,
 		StartLine:   63,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " ",
 	},
 }
@@ -306008,7 +306008,7 @@ var literalExpr_POS_joker_DOT_repl__66_25__66_60_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 25,
 		StartLine:   66,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\n  Please see http://clojure.org/",
 	},
 }
@@ -306108,7 +306108,7 @@ var literalExpr_POS_joker_DOT_repl__67_23__67_72_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 23,
 		StartLine:   67,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\n  Please see http://clojure.org/special_forms#",
 	},
 }
@@ -306220,7 +306220,7 @@ var literalExpr_POS_joker_DOT_repl__69_14__69_20_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 14,
 		StartLine:   69,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Macro",
 	},
 }
@@ -306274,7 +306274,7 @@ var literalExpr_POS_joker_DOT_repl__71_14__71_19_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 14,
 		StartLine:   71,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Spec",
 	},
 }
@@ -306374,7 +306374,7 @@ var literalExpr_POS_joker_DOT_repl__72_22__72_24_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 22,
 		StartLine:   72,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " ",
 	},
 }
@@ -306609,7 +306609,7 @@ var arrayMap_NUM_1277 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.Repl>",
 		},
 		Keyword{
@@ -307376,21 +307376,21 @@ var arrayMap_NUM_1278 ArrayMap = ArrayMap{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Stuart Sierra",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Defines a generic tree walker for Clojure data structures.\n         Takes any data structure (list, vector, map, set, seq), calls\n         a function on every element, and uses the return value of the\n         function in place of the original.  This makes it fairly easy\n         to write recursive search-and-replace functions, as shown in\n         the examples.\n\n         Note: \"walk\" supports all Clojure data structures EXCEPT maps\n         created with sorted-map-by.  There is no (obvious) way to retrieve\n         the sorting function.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -307493,7 +307493,7 @@ var arrayMap_NUM_1279 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.walk>",
 		},
 		Keyword{
@@ -307517,14 +307517,14 @@ var arrayMap_NUM_1279 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Recursively transforms all map keys from strings to keywords.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -307960,7 +307960,7 @@ var arrayMap_NUM_1280 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.walk>",
 		},
 		Keyword{
@@ -307984,14 +307984,14 @@ var arrayMap_NUM_1280 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Performs a depth-first, post-order traversal of form.  Calls f on\n  each sub-form, uses f's return value in place of the original.\n  Recognizes all Clojure data structures. Consumes seqs as with doall.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -308118,7 +308118,7 @@ var arrayMap_NUM_1281 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.walk>",
 		},
 		Keyword{
@@ -308142,14 +308142,14 @@ var arrayMap_NUM_1281 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Traverses form, an arbitrary data structure.  inner and outer are\n  functions.  Applies inner to each element of form, building up a\n  data structure of the same type, then applies outer to the result.\n  Recognizes all Clojure data structures. Consumes seqs as with doall.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -309286,7 +309286,7 @@ var arrayMap_NUM_1282 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.walk>",
 		},
 		Keyword{
@@ -309310,14 +309310,14 @@ var arrayMap_NUM_1282 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Recursively performs all possible macroexpansions in form.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -309432,7 +309432,7 @@ var arrayMap_NUM_1283 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.walk>",
 		},
 		Keyword{
@@ -309456,14 +309456,14 @@ var arrayMap_NUM_1283 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Like postwalk, but does pre-order traversal.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -309953,7 +309953,7 @@ var arrayMap_NUM_1284 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.walk>",
 		},
 		Keyword{
@@ -309977,14 +309977,14 @@ var arrayMap_NUM_1284 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Demonstrates the behavior of postwalk by printing each form as it is\n  walked.  Returns form.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -310035,7 +310035,7 @@ var literalExpr_POS_joker_DOT_walk__88_28__88_37_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 28,
 		StartLine:   88,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Walked: ",
 	},
 }
@@ -310315,7 +310315,7 @@ var arrayMap_NUM_1285 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.walk>",
 		},
 		Keyword{
@@ -310339,14 +310339,14 @@ var arrayMap_NUM_1285 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Recursively transforms form by replacing keys in smap with their\n  values.  Like clojure/replace but works on any data structure.  Does\n  replacement at the leaves of the tree first.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -310686,7 +310686,7 @@ var arrayMap_NUM_1286 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.walk>",
 		},
 		Keyword{
@@ -310710,14 +310710,14 @@ var arrayMap_NUM_1286 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Demonstrates the behavior of prewalk by printing each form as it is\n  walked.  Returns form.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -310768,7 +310768,7 @@ var literalExpr_POS_joker_DOT_walk__95_27__95_36_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 27,
 		StartLine:   95,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Walked: ",
 	},
 }
@@ -311048,7 +311048,7 @@ var arrayMap_NUM_1287 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.walk>",
 		},
 		Keyword{
@@ -311072,14 +311072,14 @@ var arrayMap_NUM_1287 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Recursively transforms form by replacing keys in smap with their\n  values.  Like clojure/replace but works on any data structure.  Does\n  replacement at the root of the tree first.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -311418,7 +311418,7 @@ var arrayMap_NUM_1288 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.walk>",
 		},
 		Keyword{
@@ -311442,14 +311442,14 @@ var arrayMap_NUM_1288 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Recursively transforms all map keys from keywords to strings.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -312502,21 +312502,21 @@ var arrayMap_NUM_1289 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Macros that expand to repeated copies of a template expression.",
 		},
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Stuart Sierra",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -312643,7 +312643,7 @@ var arrayMap_NUM_1290 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.template>",
 		},
 		Keyword{
@@ -312667,14 +312667,14 @@ var arrayMap_NUM_1290 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "For use in macros.  argv is an argument list, as in defn.  expr is\n  a quoted expression using the symbols in argv.  values is a sequence\n  of values to be used for the arguments.\n\n  apply-template will recursively replace argument symbols in expr\n  with their corresponding values, returning a modified expr.\n\n  Example: (apply-template '[x] '(+ x x) '[2])\n           ;=> (+ 2 2)",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -312736,7 +312736,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_4 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -312954,7 +312954,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_5 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -313437,7 +313437,7 @@ var bitmapIndexedNode_NUM_192 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Repeatedly copies expr (in a do block) for each group of arguments\n  in values.  values are automatically partitioned by the number of\n  arguments in argv, an argument vector as in defn.\n\n  Example: (macroexpand '(do-template [x y] (+ y x) 2 4 3 5))\n           ;=> (do (+ 4 2) (+ 5 3))",
 		},
 		Keyword{
@@ -313453,7 +313453,7 @@ var bitmapIndexedNode_NUM_192 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.template>",
 		},
 		Keyword{
@@ -313477,7 +313477,7 @@ var bitmapIndexedNode_NUM_192 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -314295,21 +314295,21 @@ var arrayMap_NUM_1291 ArrayMap = ArrayMap{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Stuart Sierra, with contributions and suggestions by\n  Chas Emerick, Allen Rohner, and Stuart Halloway",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A unit testing framework.\n\n   ASSERTIONS\n\n   The core of the library is the \"is\" macro, which lets you make\n   assertions of any arbitrary expression:\n\n   (is (= 4 (+ 2 2)))\n   (is (instance? Integer 256))\n   (is (.startsWith \"abcde\" \"ab\"))\n\n   You can type an \"is\" expression directly at the REPL, which will\n   print a message if it fails.\n\n       user> (is (= 5 (+ 2 2)))\n\n       FAIL in  (:1)\n       expected: (= 5 (+ 2 2))\n         actual: (not (= 5 4))\n       false\n\n   The \"expected:\" line shows you the original expression, and the\n   \"actual:\" shows you what actually happened.  In this case, it\n   shows that (+ 2 2) returned 4, which is not = to 5.  Finally, the\n   \"false\" on the last line is the value returned from the\n   expression.  The \"is\" macro always returns the result of the\n   inner expression.\n\n   There are two special assertions for testing exceptions.  The\n   \"(is (thrown? c ...))\" form tests if an exception of class c is\n   thrown:\n\n   (is (thrown? ArithmeticException (/ 1 0)))\n\n   \"(is (thrown-with-msg? c re ...))\" does the same thing and also\n   tests that the message on the exception matches the regular\n   expression re:\n\n   (is (thrown-with-msg? ArithmeticException #\"Divide by zero\"\n                         (/ 1 0)))\n\n   DOCUMENTING TESTS\n\n   \"is\" takes an optional second argument, a string describing the\n   assertion.  This message will be included in the error report.\n\n   (is (= 5 (+ 2 2)) \"Crazy arithmetic\")\n\n   In addition, you can document groups of assertions with the\n   \"testing\" macro, which takes a string followed by any number of\n   assertions.  The string will be included in failure reports.\n   Calls to \"testing\" may be nested, and all of the strings will be\n   joined together with spaces in the final report, in a style\n   similar to RSpec <http://rspec.Info/>\n\n   (testing \"Arithmetic\"\n     (testing \"with positive integers\"\n       (is (= 4 (+ 2 2)))\n       (is (= 7 (+ 3 4))))\n     (testing \"with negative integers\"\n       (is (= -4 (+ -2 -2)))\n       (is (= -1 (+ 3 -4)))))\n\n   Note that, unlike RSpec, the \"testing\" macro may only be used\n   INSIDE a \"deftest\" or \"with-test\" form (see below).\n\n\n   DEFINING TESTS\n\n   There are two ways to define tests.  The \"with-test\" macro takes\n   a defn or def form as its first argument, followed by any number\n   of assertions.  The tests will be stored as metadata on the\n   definition.\n\n   (with-test\n       (defn my-function [x y]\n         (+ x y))\n     (is (= 4 (my-function 2 2)))\n     (is (= 7 (my-function 3 4))))\n\n   As of Clojure SVN rev. 1221, this does not work with defmacro.\n   See http://code.google.com/p/clojure/issues/detail?id=51\n\n   The other way lets you define tests separately from the rest of\n   your code, even in a different namespace:\n\n   (deftest addition\n     (is (= 4 (+ 2 2)))\n     (is (= 7 (+ 3 4))))\n\n   (deftest subtraction\n     (is (= 1 (- 4 3)))\n     (is (= 3 (- 7 4))))\n\n   This creates functions named \"addition\" and \"subtraction\", which\n   can be called like any other function.  Therefore, tests can be\n   grouped and composed, in a style similar to the test framework in\n   Peter Seibel's \"Practical Common Lisp\"\n   <http://www.gigamonkeys.com/book/practical-building-a-unit-test-framework.html>\n\n   (deftest arithmetic\n     (addition)\n     (subtraction))\n\n   The names of the nested tests will be joined in a list, like\n   \"(arithmetic addition)\", in failure reports.  You can use nested\n   tests to set up a context shared by several tests.\n\n\n   RUNNING TESTS\n\n   Run tests with the function \"(run-tests namespaces...)\":\n\n   (run-tests 'your.namespace 'some.other.namespace)\n\n   If you don't specify any namespaces, the current namespace is\n   used.  To run all tests in all namespaces, use \"(run-all-tests)\".\n\n   By default, these functions will search for all tests defined in\n   a namespace and run them in an undefined order.  However, if you\n   are composing tests, as in the \"arithmetic\" example above, you\n   probably do not want the \"addition\" and \"subtraction\" tests run\n   separately.  In that case, you must define a special function\n   named \"test-ns-hook\" that runs your tests in the correct order:\n\n   (defn test-ns-hook []\n     (arithmetic))\n\n   Note: test-ns-hook prevents execution of fixtures (see below).\n\n\n   OMITTING TESTS FROM PRODUCTION CODE\n\n   You can bind the variable \"*load-tests*\" to false when loading or\n   compiling code in production.  This will prevent any tests from\n   being created by \"with-test\" or \"deftest\".\n\n\n   FIXTURES\n\n   Fixtures allow you to run code before and after tests, to set up\n   the context in which tests should be run.\n\n   A fixture is just a function that calls another function passed as\n   an argument.  It looks like this:\n\n   (defn my-fixture [f]\n      Perform setup, establish bindings, whatever.\n     (f)  Then call the function we were passed.\n      Tear-down / clean-up code here.\n    )\n\n   Fixtures are attached to namespaces in one of two ways.  \"each\"\n   fixtures are run repeatedly, once for each test function created\n   with \"deftest\" or \"with-test\".  \"each\" fixtures are useful for\n   establishing a consistent before/after state for each test, like\n   clearing out database tables.\n\n   \"each\" fixtures can be attached to the current namespace like this:\n   (use-fixtures :each fixture1 fixture2 ...)\n   The fixture1, fixture2 are just functions like the example above.\n   They can also be anonymous functions, like this:\n   (use-fixtures :each (fn [f] setup... (f) cleanup...))\n\n   The other kind of fixture, a \"once\" fixture, is only run once,\n   around ALL the tests in the namespace.  \"once\" fixtures are useful\n   for tasks that only need to be performed once, like establishing\n   database connections, or for time-consuming tasks.\n\n   Attach \"once\" fixtures to the current namespace like this:\n   (use-fixtures :once fixture1 fixture2 ...)\n\n   Note: Fixtures and test-ns-hook are mutually incompatible.  If you\n   are using test-ns-hook, fixture functions will *never* be run.\n\n\n   SAVING TEST OUTPUT TO A FILE\n\n   All the test reporting functions write to the var *test-out*.  By\n   default, this is the same as *out*, but you can rebind it to any\n   PrintWriter.  For example, it could be a file opened with\n   clojure.java.io/writer.\n\n\n   EXTENDING TEST-IS (ADVANCED)\n\n   You can extend the behavior of the \"is\" macro by defining new\n   methods for the \"assert-expr\" multimethod.  These methods are\n   called during expansion of the \"is\" macro, so they should return\n   quoted forms to be evaluated.\n\n   You can plug in your own test-reporting framework by rebinding\n   the \"report\" function: (report event)\n\n   The 'event' argument is a map.  It will always have a :type key,\n   whose value will be a keyword signaling the type of event being\n   reported.  Standard events with :type value of :pass, :fail, and\n   :error are called when an assertion passes, fails, and throws an\n   exception, respectively.  In that case, the event will also have\n   the following keys:\n\n     :expected   The form that was expected to be true\n     :actual     A form representing what actually occurred\n     :message    The string message given as an argument to 'is'\n\n   The \"testing\" strings will be a list in \"*testing-contexts*\", and\n   the vars being tested will be a list in \"*testing-vars*\".\n\n   Your \"report\" function should wrap any printing calls in the\n   \"with-test-out\" macro, which rebinds *out* to the current value\n   of *test-out*.\n\n   For additional event types, see the examples in the code.\n",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -314406,7 +314406,7 @@ var arrayMap_NUM_1292 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -314425,7 +314425,7 @@ var arrayMap_NUM_1292 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Used to initialize *report-counters*",
 		},
 		Keyword{
@@ -314439,7 +314439,7 @@ var arrayMap_NUM_1292 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -314749,7 +314749,7 @@ var arrayMap_NUM_1294 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -314768,14 +314768,14 @@ var arrayMap_NUM_1294 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "True by default.  If set to false, no test functions will\n   be created by deftest, set-test, or with-test.  Use this to omit\n   tests when compiling or loading production code.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -314921,7 +314921,7 @@ var bitmapIndexedNode_NUM_194 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bound to an atom of a map in test-ns",
 		},
 		nil,
@@ -314930,7 +314930,7 @@ var bitmapIndexedNode_NUM_194 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -314961,7 +314961,7 @@ var bitmapIndexedNode_NUM_194 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -315102,7 +315102,7 @@ var bitmapIndexedNode_NUM_196 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "The maximum depth of stack traces to print when an Exception\n  is thrown during a test.  Defaults to nil, which means print the\n  complete stack trace.",
 		},
 		nil,
@@ -315111,7 +315111,7 @@ var bitmapIndexedNode_NUM_196 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -315142,7 +315142,7 @@ var bitmapIndexedNode_NUM_196 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -315268,7 +315268,7 @@ var arrayMap_NUM_1295 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -315287,14 +315287,14 @@ var arrayMap_NUM_1295 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "PrintWriter for test reporting output",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -315413,7 +315413,7 @@ var arrayMap_NUM_1296 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -315432,14 +315432,14 @@ var arrayMap_NUM_1296 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bound to hierarchy of \"testing\" strings",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -315569,7 +315569,7 @@ var arrayMap_NUM_1297 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -315588,14 +315588,14 @@ var arrayMap_NUM_1297 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Bound to hierarchy of vars being tested",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -315776,7 +315776,7 @@ var bitmapIndexedNode_NUM_198 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Adds elements in coll to the current namespace metadata as the\n  value of key.",
 		},
 		nil,
@@ -315785,7 +315785,7 @@ var bitmapIndexedNode_NUM_198 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -315804,7 +315804,7 @@ var bitmapIndexedNode_NUM_198 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -316107,7 +316107,7 @@ var bitmapIndexedNode_NUM_201 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Checks multiple assertions with a template expression.\n  See clojure.template/do-template for an explanation of\n  templates.\n\n  Example: (are [x y] (= x y)\n                2 (+ 1 1)\n                4 (* 2 2))\n  Expands to:\n           (do (is (= 2 (+ 1 1)))\n               (is (= 4 (* 2 2))))\n\n  Note: This breaks some reporting features, such as line numbers.",
 		},
 		Keyword{
@@ -316123,7 +316123,7 @@ var bitmapIndexedNode_NUM_201 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -316147,7 +316147,7 @@ var bitmapIndexedNode_NUM_201 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -316937,7 +316937,7 @@ var literalExpr_POS_joker_DOT_test__587_26__587_53_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 26,
 		StartLine:   587,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "IllegalArgumentException: ",
 	},
 }
@@ -316958,7 +316958,7 @@ var literalExpr_POS_joker_DOT_test__587_55__587_100_NUM_1 LiteralExpr = LiteralE
 		StartColumn: 55,
 		StartLine:   587,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "The number of args doesn't match are's argv.",
 	},
 }
@@ -317190,7 +317190,7 @@ var arrayMap_NUM_1298 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -317214,14 +317214,14 @@ var arrayMap_NUM_1298 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns generic assertion code for any test, including macros, Java\n  method calls, or isolated symbols.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -318566,7 +318566,7 @@ var arrayMap_NUM_1299 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -318585,14 +318585,14 @@ var arrayMap_NUM_1299 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Don't call this; add methods to extend the 'is' macro.",
 		},
 	},
@@ -319376,7 +319376,7 @@ var arrayMap_NUM_1302 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -319400,14 +319400,14 @@ var arrayMap_NUM_1302 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if argument is a function or a symbol that resolves to\n  a function (not a macro).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -319618,7 +319618,7 @@ var arrayMap_NUM_1303 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -319642,14 +319642,14 @@ var arrayMap_NUM_1303 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Like var-get but returns nil if the var is unbound.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -320483,7 +320483,7 @@ var arrayMap_NUM_1304 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -320507,14 +320507,14 @@ var arrayMap_NUM_1304 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns generic assertion code for any functional predicate.  The\n  'expected' argument to 'report' will contains the original form, the\n  'actual' argument will contain the form with all its sub-forms\n  evaluated.  If the predicate returns false, the 'actual' form will\n  be wrapped in (not...).",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -328407,7 +328407,7 @@ var arrayMap_NUM_1300 ArrayMap = ArrayMap{
 }
 var localEnv_NUM_21 LocalEnv = LocalEnv{
 	bindings: []Object{
-		String{
+		coretypes.String{
 			S: "assert-expr",
 		},
 		&fn_EMPTY_POS_joker_DOT_test_469_3__473_22_NUM_1,
@@ -328572,7 +328572,7 @@ var arrayMap_NUM_1305 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -328596,14 +328596,14 @@ var arrayMap_NUM_1305 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Composes two fixture functions, creating a new fixture function\n  that combines their behavior.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -328914,7 +328914,7 @@ var bitmapIndexedNode_NUM_203 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "The default, empty, fixture function.  Just calls its argument.",
 		},
 		nil,
@@ -328923,7 +328923,7 @@ var bitmapIndexedNode_NUM_203 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -328942,7 +328942,7 @@ var bitmapIndexedNode_NUM_203 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -329178,7 +329178,7 @@ var bitmapIndexedNode_NUM_206 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Defines a test function with no arguments.  Test functions may call\n  other tests, so tests may be composed.  If you compose tests, you\n  should also define a function named test-ns-hook; run-tests will\n  call test-ns-hook instead of testing all vars.\n\n  Note: Actually, the test body goes in the :test metadata on the var,\n  and the real function (the value of the var) calls test-var on\n  itself.\n\n  When *load-tests* is false, deftest is ignored.",
 		},
 		Keyword{
@@ -329194,7 +329194,7 @@ var bitmapIndexedNode_NUM_206 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -329218,7 +329218,7 @@ var bitmapIndexedNode_NUM_206 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -330048,7 +330048,7 @@ var bitmapIndexedNode_NUM_208 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Like deftest but creates a private var.",
 		},
 		Keyword{
@@ -330064,7 +330064,7 @@ var bitmapIndexedNode_NUM_208 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -330088,7 +330088,7 @@ var bitmapIndexedNode_NUM_208 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -330907,7 +330907,7 @@ var arrayMap_NUM_1306 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -330931,14 +330931,14 @@ var arrayMap_NUM_1306 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Add file and line information to a test result and call report.\n   If you are writing a custom assert-expr method, call this function\n   to pass test results to report.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -331035,7 +331035,7 @@ var arrayMap_NUM_1307 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -331054,7 +331054,7 @@ var arrayMap_NUM_1307 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Generic reporting function, may be overridden to plug in\n   different report formats (e.g., TAP, JUnit).  Assertions such as\n   'is' call 'report' to indicate results.  The argument given to\n   'report' will be a map with a :type key.  See the documentation at\n   the top of test_is.clj for more information on the types of\n   arguments for 'report'.",
 		},
 		Keyword{
@@ -331068,7 +331068,7 @@ var arrayMap_NUM_1307 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -331161,7 +331161,7 @@ var literalExpr_POS_joker_DOT_test__389_14__389_20_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 14,
 		StartLine:   389,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\nRan",
 	},
 }
@@ -331233,7 +331233,7 @@ var literalExpr_POS_joker_DOT_test__389_32__389_49_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 32,
 		StartLine:   389,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "tests containing",
 	},
 }
@@ -331414,7 +331414,7 @@ var literalExpr_POS_joker_DOT_test__390_49__390_61_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 49,
 		StartLine:   390,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "assertions.",
 	},
 }
@@ -331507,7 +331507,7 @@ var literalExpr_POS_joker_DOT_test__391_24__391_34_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 24,
 		StartLine:   391,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "failures,",
 	},
 }
@@ -331573,7 +331573,7 @@ var literalExpr_POS_joker_DOT_test__391_47__391_55_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 47,
 		StartLine:   391,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "errors.",
 	},
 }
@@ -331803,7 +331803,7 @@ var arrayMap_NUM_1309 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -331827,14 +331827,14 @@ var arrayMap_NUM_1309 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Increments the named counter in *report-counters*, a ref to a map.\n  Does nothing if *report-counters* is nil.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -332159,7 +332159,7 @@ var literalExpr_POS_joker_DOT_test__368_14__368_24_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 14,
 		StartLine:   368,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\nFAIL in",
 	},
 }
@@ -332261,7 +332261,7 @@ var arrayMap_NUM_1310 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -332285,14 +332285,14 @@ var arrayMap_NUM_1310 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a string representation of the current test.  Renders names\n  in *testing-vars* as a list, then the source file and line of\n  current assertion.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -332640,7 +332640,7 @@ var literalExpr_POS_joker_DOT_test__303_6__303_9_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 6,
 		StartLine:   303,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " (",
 	},
 }
@@ -332679,7 +332679,7 @@ var literalExpr_POS_joker_DOT_test__303_16__303_18_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 16,
 		StartLine:   303,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ":",
 	},
 }
@@ -332718,7 +332718,7 @@ var literalExpr_POS_joker_DOT_test__303_25__303_27_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 25,
 		StartLine:   303,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ")",
 	},
 }
@@ -332995,7 +332995,7 @@ var arrayMap_NUM_1311 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -333019,14 +333019,14 @@ var arrayMap_NUM_1311 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a string representation of the current test context. Joins\n  strings in *testing-contexts* with spaces.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -333078,7 +333078,7 @@ var literalExpr_POS_joker_DOT_test__310_25__310_27_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 25,
 		StartLine:   310,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " ",
 	},
 }
@@ -333449,7 +333449,7 @@ var literalExpr_POS_joker_DOT_test__371_14__371_24_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 14,
 		StartLine:   371,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "expected:",
 	},
 }
@@ -333562,7 +333562,7 @@ var literalExpr_POS_joker_DOT_test__372_14__372_24_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 14,
 		StartLine:   372,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "  actual:",
 	},
 }
@@ -334050,7 +334050,7 @@ var literalExpr_POS_joker_DOT_test__395_14__395_24_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 14,
 		StartLine:   395,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\nTesting",
 	},
 }
@@ -334340,7 +334340,7 @@ var literalExpr_POS_joker_DOT_test__377_14__377_25_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 14,
 		StartLine:   377,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "\nERROR in",
 	},
 }
@@ -334706,7 +334706,7 @@ var literalExpr_POS_joker_DOT_test__380_14__380_24_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 14,
 		StartLine:   380,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "expected:",
 	},
 }
@@ -334819,7 +334819,7 @@ var literalExpr_POS_joker_DOT_test__381_12__381_23_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 12,
 		StartLine:   381,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "  actual: ",
 	},
 }
@@ -335296,7 +335296,7 @@ var arrayMap_NUM_1308 ArrayMap = ArrayMap{
 }
 var localEnv_NUM_23 LocalEnv = LocalEnv{
 	bindings: []Object{
-		String{
+		coretypes.String{
 			S: "report",
 		},
 		Keyword{
@@ -335633,7 +335633,7 @@ var bitmapIndexedNode_NUM_213 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Generic assertion macro.  'form' is any predicate test.\n  'msg' is an optional message to attach to the assertion.\n\n  Example: (is (= 4 (+ 2 2)) \"Two plus two should be 4\")\n\n  Special forms:\n\n  (is (thrown? c body)) checks that an instance of c is thrown from\n  body, fails if not; then returns the thing thrown.\n\n  (is (thrown-with-msg? c re body)) checks that an instance of c is\n  thrown AND that the message on the exception matches (with\n  re-find) the regular expression re.",
 		},
 		Keyword{
@@ -335649,7 +335649,7 @@ var bitmapIndexedNode_NUM_213 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -335673,7 +335673,7 @@ var bitmapIndexedNode_NUM_213 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -336112,7 +336112,7 @@ var arrayMap_NUM_1312 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -336136,14 +336136,14 @@ var arrayMap_NUM_1312 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Composes a collection of fixtures, in order.  Always returns a valid\n  fixture function, even if the collection is empty.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -336362,7 +336362,7 @@ var arrayMap_NUM_1313 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -336386,14 +336386,14 @@ var arrayMap_NUM_1313 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Runs all tests in all namespaces; prints results.\n  Optional argument is a regular expression; only namespaces with\n  names matching the regular expression (with re-matches) will be\n  tested.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -336529,7 +336529,7 @@ var arrayMap_NUM_1314 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -336553,14 +336553,14 @@ var arrayMap_NUM_1314 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Runs all tests in the given namespaces; prints results.\n  Defaults to current namespace if none given.  Returns a map\n  summarizing test results.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -336755,7 +336755,7 @@ var arrayMap_NUM_1315 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -336779,14 +336779,14 @@ var arrayMap_NUM_1315 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "If the namespace defines a function named test-ns-hook, calls that.\n  Otherwise, calls test-all-vars on the namespace.  'ns' is a\n  namespace object or a symbol.\n\n  Internally binds *report-counters* to a ref initialized to\n  *initial-report-counters*.  Returns the final, dereferenced state of\n  *report-counters*.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -337112,7 +337112,7 @@ var literalExpr_POS_joker_DOT_test__749_59__749_72_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 59,
 		StartLine:   749,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "test-ns-hook",
 	},
 }
@@ -337370,7 +337370,7 @@ var arrayMap_NUM_1316 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -337394,14 +337394,14 @@ var arrayMap_NUM_1316 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Calls test-vars on every var interned in the namespace, with fixtures.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -337504,7 +337504,7 @@ var arrayMap_NUM_1317 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -337528,14 +337528,14 @@ var arrayMap_NUM_1317 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Groups vars by their namespace and runs test-vars on them with\n   appropriate fixtures applied.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -338295,7 +338295,7 @@ var bitmapIndexedNode_NUM_215 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "If v has a function in its :test metadata, calls that function,\n  with *testing-vars* bound to (conj *testing-vars* v).",
 		},
 		nil,
@@ -338304,7 +338304,7 @@ var bitmapIndexedNode_NUM_215 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -338325,7 +338325,7 @@ var bitmapIndexedNode_NUM_215 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -338848,7 +338848,7 @@ var literalExpr_POS_joker_DOT_test__711_49__711_87_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 49,
 		StartLine:   711,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Uncaught exception, not in assertion.",
 	},
 }
@@ -340760,7 +340760,7 @@ var bitmapIndexedNode_NUM_218 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Experimental.\n  Sets :test metadata of the named var to a fn with the given body.\n  The var must already exist.  Does not modify the value of the var.\n\n  When *load-tests* is false, set-test is ignored.",
 		},
 		Keyword{
@@ -340776,7 +340776,7 @@ var bitmapIndexedNode_NUM_218 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -340800,7 +340800,7 @@ var bitmapIndexedNode_NUM_218 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -341350,7 +341350,7 @@ var arrayMap_NUM_1318 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -341620,7 +341620,7 @@ var arrayMap_NUM_1319 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -341644,14 +341644,14 @@ var arrayMap_NUM_1319 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns true if the given test summary indicates all tests\n  were successful, false otherwise.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -342094,7 +342094,7 @@ var bitmapIndexedNode_NUM_220 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Adds a new string to the list of testing contexts.  May be nested,\n  but must occur inside a test function (deftest).",
 		},
 		Keyword{
@@ -342110,7 +342110,7 @@ var bitmapIndexedNode_NUM_220 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -342134,7 +342134,7 @@ var bitmapIndexedNode_NUM_220 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -342650,7 +342650,7 @@ var bitmapIndexedNode_NUM_222 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Used by the 'is' macro to catch unexpected exceptions.\n  You don't call this.",
 		},
 		Keyword{
@@ -342666,7 +342666,7 @@ var bitmapIndexedNode_NUM_222 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -342690,7 +342690,7 @@ var bitmapIndexedNode_NUM_222 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -343534,7 +343534,7 @@ var arrayMap_NUM_1320 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -343553,14 +343553,14 @@ var arrayMap_NUM_1320 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Wrap test runs in a fixture function to perform setup and\n  teardown. Using a fixture-type of :each wraps every test\n  individually, while :once wraps the whole run in a single function.",
 		},
 	},
@@ -343935,7 +343935,7 @@ var arrayMap_NUM_1321 ArrayMap = ArrayMap{
 }
 var localEnv_NUM_27 LocalEnv = LocalEnv{
 	bindings: []Object{
-		String{
+		coretypes.String{
 			S: "use-fixtures",
 		},
 		&fn_EMPTY_POS_joker_DOT_test_667_3__667_41_NUM_1,
@@ -344144,7 +344144,7 @@ var bitmapIndexedNode_NUM_224 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Takes any definition form (that returns a Var) as the first argument.\n  Remaining body goes in the :test metadata function for that Var.\n\n  When *load-tests* is false, only evaluates the definition, ignoring\n  the tests.",
 		},
 		Keyword{
@@ -344160,7 +344160,7 @@ var bitmapIndexedNode_NUM_224 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -344184,7 +344184,7 @@ var bitmapIndexedNode_NUM_224 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -344806,7 +344806,7 @@ var bitmapIndexedNode_NUM_226 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Runs body with *out* bound to the value of *test-out*.",
 		},
 		Keyword{
@@ -344822,7 +344822,7 @@ var bitmapIndexedNode_NUM_226 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.test>",
 		},
 		Keyword{
@@ -344846,7 +344846,7 @@ var bitmapIndexedNode_NUM_226 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -345582,21 +345582,21 @@ var arrayMap_NUM_1323 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Set operations such as union/intersection.",
 		},
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Rich Hickey",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -345693,7 +345693,7 @@ var arrayMap_NUM_1324 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -345724,7 +345724,7 @@ var arrayMap_NUM_1324 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Move a maximal element of coll according to fn k (which returns a\n  number) to the front of coll.",
 		},
 	},
@@ -346226,7 +346226,7 @@ var arrayMap_NUM_1325 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -346250,14 +346250,14 @@ var arrayMap_NUM_1325 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return a set that is the first set without elements of the remaining sets",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -346974,7 +346974,7 @@ var arrayMap_NUM_1326 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -346998,14 +346998,14 @@ var arrayMap_NUM_1326 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a map of the distinct values of ks in the xrel mapped to a\n  set of the maps in xrel with the corresponding values of ks.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -347592,7 +347592,7 @@ var arrayMap_NUM_1327 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -347616,14 +347616,14 @@ var arrayMap_NUM_1327 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return a set that is the intersection of the input sets",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -348586,7 +348586,7 @@ var arrayMap_NUM_1328 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -348610,14 +348610,14 @@ var arrayMap_NUM_1328 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "When passed 2 rels, returns the rel corresponding to the natural\n  join. When passed an additional keymap, joins on the corresponding\n  keys.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -350028,7 +350028,7 @@ var arrayMap_NUM_1329 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -350052,14 +350052,14 @@ var arrayMap_NUM_1329 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the map with the vals mapped to the keys.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -350882,7 +350882,7 @@ var arrayMap_NUM_1330 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -350906,14 +350906,14 @@ var arrayMap_NUM_1330 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns the map with the keys in kmap renamed to the vals in kmap",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -352090,7 +352090,7 @@ var arrayMap_NUM_1331 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -352114,14 +352114,14 @@ var arrayMap_NUM_1331 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a rel of the elements of xrel with only the keys in ks",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -352488,7 +352488,7 @@ var arrayMap_NUM_1332 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -352512,14 +352512,14 @@ var arrayMap_NUM_1332 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a rel of the maps in xrel with the keys in kmap renamed to the vals in kmap",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -352886,7 +352886,7 @@ var arrayMap_NUM_1333 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -352910,14 +352910,14 @@ var arrayMap_NUM_1333 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Returns a set of the elements for which pred is true",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -353313,7 +353313,7 @@ var bitmapIndexedNode_NUM_228 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Is set1 a subset of set2?",
 		},
 		nil,
@@ -353322,7 +353322,7 @@ var bitmapIndexedNode_NUM_228 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -353351,7 +353351,7 @@ var bitmapIndexedNode_NUM_228 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -353807,7 +353807,7 @@ var bitmapIndexedNode_NUM_230 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Is set1 a superset of set2?",
 		},
 		nil,
@@ -353816,7 +353816,7 @@ var bitmapIndexedNode_NUM_230 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -353845,7 +353845,7 @@ var bitmapIndexedNode_NUM_230 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -354386,7 +354386,7 @@ var arrayMap_NUM_1334 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.set>",
 		},
 		Keyword{
@@ -354410,14 +354410,14 @@ var arrayMap_NUM_1334 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Return a set that is the union of the input sets",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -355461,21 +355461,21 @@ var arrayMap_NUM_1335 ArrayMap = ArrayMap{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Gareth Jones, Sung Pae, Sean Corfield",
 		},
 		Keyword{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Tools for working with command line arguments.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -356448,7 +356448,7 @@ var arrayMap_NUM_1336 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -356479,7 +356479,7 @@ var arrayMap_NUM_1336 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Map a sequence of option specification vectors to a sequence of:\n\n  {:id           Keyword  ; :server\n   :short-opt    String   ; \"-s\"\n   :long-opt     String   ; \"--server\"\n   :required     String   ; \"HOSTNAME\"\n   :desc         String   ; \"Remote server\"\n   :default      Object   ; #<Inet4Address example.com/93.184.216.119>\n   :default-desc String   ; \"example.com\"\n   :default-fn   IFn      ; (constantly 0)\n   :parse-fn     IFn      ; #(InetAddress/getByName %)\n   :assoc-fn     IFn      ; assoc\n   :update-fn    IFn      ; identity\n   :validate-fn  [IFn]    ; [#(instance? Inet4Address %)\n                          ;  #(not (.isMulticastAddress %)]\n   :validate-msg [String] ; [\"Must be an IPv4 host\"\n                          ;  \"Must not be a multicast address\"]\n   :missing      String   ; \"server must be specified\"\n   }\n\n  :id defaults to the keywordized name of long-opt without leading dashes, but\n  may be overridden in the option spec.\n\n  The option spec entry `:validate [fn msg ...]` desugars into the two vector\n  entries :validate-fn and :validate-msg. Multiple pairs of validation\n  functions and error messages may be provided.\n\n  A :default(-fn) entry will not be included in the compiled spec unless\n  specified. The :default is applied before options are parsed, the :default-fn\n  is applied after options are parsed (only where an option was not specified,\n  and is passed the whole options map as its single argument, so defaults can\n  be computed from other options if needed).\n\n  An option spec may also be passed as a map containing the entries above,\n  in which case that subset of the map is transferred directly to the result\n  vector.\n\n  An assertion error is thrown if any :id values are unset, or if there exist\n  any duplicate :id, :short-opt, or :long-opt values, or if both :assoc-fn and\n  :update-fn are provided for any single option.",
 		},
 	},
@@ -356586,7 +356586,7 @@ var arrayMap_NUM_1337 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -357159,7 +357159,7 @@ var arrayMap_NUM_1338 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -357190,7 +357190,7 @@ var arrayMap_NUM_1338 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Select only known spec entries from map and warn the user about unknown\n   entries at development time.",
 		},
 	},
@@ -357316,7 +357316,7 @@ var arrayMap_NUM_1339 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -357896,7 +357896,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__78_25__78_89_NUM_1 LiteralExpr = Li
 		StartColumn: 25,
 		StartLine:   78,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Warning: The following options to parse-opts are unrecognized: ",
 	},
 }
@@ -357927,7 +357927,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__79_33__79_36_NUM_1 LiteralExpr = Li
 		StartColumn: 33,
 		StartLine:   79,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ", ",
 	},
 }
@@ -358278,7 +358278,7 @@ var arrayMap_NUM_1340 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -360459,7 +360459,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_6 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -360681,7 +360681,7 @@ var arrayMap_NUM_1341 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -360996,7 +360996,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_7 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -361344,7 +361344,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_8 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -361689,7 +361689,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_9 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -362020,7 +362020,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_10 LiteralExpr = Litera
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -362433,7 +362433,7 @@ var literalExpr_POS_joker_DOT_core__2904_30__2904_46_NUM_11 LiteralExpr = Litera
 		StartColumn: 30,
 		StartLine:   2904,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Assert failed: ",
 	},
 }
@@ -362894,7 +362894,7 @@ var arrayMap_NUM_1342 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -363368,7 +363368,7 @@ var arrayMap_NUM_1343 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -363668,7 +363668,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__197_35__197_38_NUM_1 LiteralExpr = 
 		StartColumn: 35,
 		StartLine:   197,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "--",
 	},
 }
@@ -363723,7 +363723,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__197_56__197_62_NUM_1 LiteralExpr = 
 		StartColumn: 56,
 		StartLine:   197,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "--no-",
 	},
 }
@@ -364175,7 +364175,7 @@ var arrayMap_NUM_1344 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -364194,7 +364194,7 @@ var arrayMap_NUM_1344 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -364206,7 +364206,7 @@ var arrayMap_NUM_1344 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Format a sequence of summary parts into columns. lens is a sequence of\n  lengths to use for parts. There are two sequences of lengths if we are\n  not displaying defaults. There are three sequences of lengths if we\n  are showing defaults.",
 		},
 	},
@@ -364300,7 +364300,7 @@ var arrayMap_NUM_1345 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -364331,7 +364331,7 @@ var arrayMap_NUM_1345 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Given a sequence of column widths, return a string suitable for use in\n  format to print a sequences of strings in those columns.",
 		},
 	},
@@ -364383,7 +364383,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__60_22__60_26_NUM_1 LiteralExpr = Li
 		StartColumn: 22,
 		StartLine:   60,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "  %",
 	},
 }
@@ -364467,7 +364467,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__60_51__60_53_NUM_1 LiteralExpr = Li
 		StartColumn: 51,
 		StartLine:   60,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "-",
 	},
 }
@@ -364527,7 +364527,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__60_59__60_61_NUM_1 LiteralExpr = Li
 		StartColumn: 59,
 		StartLine:   60,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "s",
 	},
 }
@@ -365027,7 +365027,7 @@ var arrayMap_NUM_1346 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -365046,7 +365046,7 @@ var arrayMap_NUM_1346 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -365058,7 +365058,7 @@ var arrayMap_NUM_1346 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Extract the map of default options from a sequence of option vectors.\n\n  As of 0.4.1, this also applies any :default-fn present.",
 		},
 	},
@@ -365813,7 +365813,7 @@ var arrayMap_NUM_1347 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -365832,7 +365832,7 @@ var arrayMap_NUM_1347 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -365844,7 +365844,7 @@ var arrayMap_NUM_1347 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Given a single compiled option spec, turn it into a formatted string,\n  optionally with its default values if requested.",
 		},
 	},
@@ -366325,7 +366325,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__312_59__312_62_NUM_1 LiteralExpr = 
 		StartColumn: 59,
 		StartLine:   312,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ", ",
 	},
 }
@@ -366391,7 +366391,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__313_33__313_38_NUM_1 LiteralExpr = 
 		StartColumn: 33,
 		StartLine:   313,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "    ",
 	},
 }
@@ -366769,7 +366769,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__321_29__321_33_NUM_1 LiteralExpr = 
 		StartColumn: 29,
 		StartLine:   321,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "nil",
 	},
 }
@@ -366869,7 +366869,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__323_27__323_38_NUM_1 LiteralExpr = 
 		StartColumn: 27,
 		StartLine:   323,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "<computed>",
 	},
 }
@@ -366939,7 +366939,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__324_25__324_26_NUM_1 LiteralExpr = 
 		StartColumn: 25,
 		StartLine:   324,
 	},
-	obj: String{},
+	obj: coretypes.String{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__317_21__324_27_NUM_3 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -367077,7 +367077,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__325_25__325_26_NUM_1 LiteralExpr = 
 		StartColumn: 25,
 		StartLine:   325,
 	},
-	obj: String{},
+	obj: coretypes.String{},
 }
 var vectorExpr_POS_joker_DOT_tools_DOT_cli__325_20__325_27_NUM_1 VectorExpr = VectorExpr{
 	Position: coretypes.Position{
@@ -367297,7 +367297,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__327_24__327_25_NUM_1 LiteralExpr = 
 		StartColumn: 24,
 		StartLine:   327,
 	},
-	obj: String{},
+	obj: coretypes.String{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__327_15__327_26_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -367409,7 +367409,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__328_21__328_22_NUM_1 LiteralExpr = 
 		StartColumn: 21,
 		StartLine:   328,
 	},
-	obj: String{},
+	obj: coretypes.String{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__328_12__328_23_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -367663,7 +367663,7 @@ var arrayMap_NUM_1348 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -367694,7 +367694,7 @@ var arrayMap_NUM_1348 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Given specs, returns a map of spec id to error message if missing.",
 		},
 	},
@@ -368135,7 +368135,7 @@ var arrayMap_NUM_1349 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -368191,7 +368191,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__206_8__206_39_NUM_1 LiteralExpr = L
 		StartColumn: 8,
 		StartLine:   206,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Missing required argument for ",
 	},
 }
@@ -368278,7 +368278,7 @@ var arrayMap_NUM_1350 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -368637,7 +368637,7 @@ var arrayMap_NUM_1351 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -369132,7 +369132,7 @@ var arrayMap_NUM_1352 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -369188,7 +369188,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__209_8__209_36_NUM_1 LiteralExpr = L
 		StartColumn: 8,
 		StartLine:   209,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "coretypes.Error while parsing option ",
 	},
 }
@@ -369266,7 +369266,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__209_59__209_62_NUM_1 LiteralExpr = 
 		StartColumn: 59,
 		StartLine:   209,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ": ",
 	},
 }
@@ -369449,7 +369449,7 @@ var arrayMap_NUM_1353 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -370021,7 +370021,7 @@ var arrayMap_NUM_1354 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -370757,7 +370757,7 @@ var arrayMap_NUM_1355 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -371668,7 +371668,7 @@ var arrayMap_NUM_1356 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -371724,7 +371724,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__212_8__212_28_NUM_1 LiteralExpr = L
 		StartColumn: 8,
 		StartLine:   212,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Failed to validate ",
 	},
 }
@@ -371829,7 +371829,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__213_21__213_24_NUM_1 LiteralExpr = 
 		StartColumn: 21,
 		StartLine:   213,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ": ",
 	},
 }
@@ -371874,7 +371874,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__213_31__213_32_NUM_1 LiteralExpr = 
 		StartColumn: 31,
 		StartLine:   213,
 	},
-	obj: String{},
+	obj: coretypes.String{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__213_8__213_33_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -372905,7 +372905,7 @@ var arrayMap_NUM_1357 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -372936,7 +372936,7 @@ var arrayMap_NUM_1357 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Reduce sequence of [opt-type opt ?optarg?] tokens into a map of\n  {option-id value} merged over the default values in the option\n  specifications.\n\n  If the :no-defaults flag is true, only options specified in the tokens are\n  included in the option-map.\n\n  Unknown options, missing options, missing required arguments, option\n  argument parsing exceptions, and validation failures are collected into\n  a vector of error message strings.\n\n  If the :strict flag is true, required arguments that match other options\n  are treated as missing, instead of a literal value beginning with - or --.\n\n  Returns [option-map error-messages-vector].",
 		},
 	},
@@ -376844,7 +376844,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__287_39__287_56_NUM_1 LiteralExpr = 
 		StartColumn: 39,
 		StartLine:   287,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "Unknown option: ",
 	},
 }
@@ -377385,7 +377385,7 @@ var arrayMap_NUM_1358 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -377404,7 +377404,7 @@ var arrayMap_NUM_1358 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -377416,7 +377416,7 @@ var arrayMap_NUM_1358 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Parse arguments sequence according to given option specifications and the\n  GNU Program Argument Syntax Conventions:\n\n    https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html\n\n  Option specifications are a sequence of vectors with the following format:\n\n    [short-opt long-opt-with-required-description description\n     :property value]\n\n  The first three string parameters in an option spec are positional and\n  optional, and may be nil in order to specify a later parameter.\n\n  By default, options are toggles that default to nil, but the second string\n  parameter may be used to specify that an option requires an argument.\n\n    e.g. [\"-p\" \"--port PORT\"] specifies that --port requires an argument,\n         of which PORT is a short description.\n\n  The :property value pairs are optional and take precedence over the\n  positional string arguments. The valid properties are:\n\n    :id           The key for this option in the resulting option map. This\n                  is normally set to the keywordized name of the long option\n                  without the leading dashes.\n\n                  Multiple option entries can share the same :id in order to\n                  transform a value in different ways, but only one of these\n                  option entries may contain a :default(-fn) entry.\n\n                  This option is mandatory.\n\n    :short-opt    The short format for this option, normally set by the first\n                  positional string parameter: e.g. \"-p\". Must be unique.\n\n    :long-opt     The long format for this option, normally set by the second\n                  positional string parameter; e.g. \"--port\". Must be unique.\n\n    :required     A description of the required argument for this option if\n                  one is required; normally set in the second positional\n                  string parameter after the long option: \"--port PORT\".\n\n                  The absence of this entry indicates that the option is a\n                  boolean toggle that is set to true when specified on the\n                  command line.\n\n    :desc         A optional short description of this option.\n\n    :default      The default value of this option. If none is specified, the\n                  resulting option map will not contain an entry for this\n                  option unless set on the command line. Also see :default-fn\n                  (below).\n\n                  This default is applied before any arguments are parsed so\n                  this is a good way to seed values for :assoc-fn or :update-fn\n                  as well as the simplest way to provide defaults.\n\n                  If you need to compute a default based on other command line\n                  arguments, or you need to provide a default separate from the\n                  seed for :assoc-fn or :update-fn, see :default-fn below.\n\n    :default-desc An optional description of the default value. This should be\n                  used when the string representation of the default value is\n                  too ugly to be printed on the command line, or :default-fn\n                  is used to compute the default.\n\n    :default-fn   A function to compute the default value of this option, given\n                  the whole, parsed option map as its one argument. If no\n                  function is specified, the resulting option map will not\n                  contain an entry for this option unless set on the command\n                  line. Also see :default (above).\n\n                  If both :default and :default-fn are provided, if the\n                  argument is not provided on the command-line, :default-fn will\n                  still be called (and can override :default).\n\n    :parse-fn     A function that receives the required option argument and\n                  returns the option value.\n\n                  If this is a boolean option, parse-fn will receive the value\n                  true. This may be used to invert the logic of this option:\n\n                  [\"-q\" \"--quiet\"\n                   :id :verbose\n                   :default true\n                   :parse-fn not]\n\n    :assoc-fn     A function that receives the current option map, the current\n                  option :id, and the current parsed option value, and returns\n                  a new option map. The default is 'assoc'.\n\n                  For non-idempotent options, where you need to compute a option\n                  value based on the current value and a new value from the\n                  command line. If you only need the the current value, consider\n                  :update-fn (below).\n\n                  You cannot specify both :assoc-fn and :update-fn for an\n                  option.\n\n    :update-fn    A function that receives the the current parsed option value,\n                  and returns a new option value, for each option :id present.\n                  The default is 'identity'.\n\n                  This may be used to create non-idempotent options where you\n                  only need the current value, like setting a verbosity level by\n                  specifying an option multiple times. (\"-vvv\" -> 3)\n\n                  [\"-v\" \"--verbose\"\n                   :default 0\n                   :update-fn inc]\n\n                  :default is applied first. If you wish to omit the :default\n                  option value, use fnil in your :update-fn as follows:\n\n                  [\"-v\" \"--verbose\"\n                   :update-fn (fnil inc 0)]\n\n                  You cannot specify both :assoc-fn and :update-fn for an\n                  option.\n\n    :validate     A vector of [validate-fn validate-msg ...]. Multiple pairs\n                  of validation functions and error messages may be provided.\n\n    :validate-fn  A vector of functions that receives the parsed option value\n                  and returns a falsy value or throws an exception when the\n                  value is invalid. The validations are tried in the given\n                  order.\n\n    :validate-msg A vector of error messages corresponding to :validate-fn\n                  that will be added to the :errors vector on validation\n                  failure.\n\n  parse-opts returns a map with four entries:\n\n    {:options     The options map, keyed by :id, mapped to the parsed value\n     :arguments   A vector of unprocessed arguments\n     :summary     A string containing a minimal options summary\n     :errors      A possible vector of error message strings generated during\n                  parsing; nil when no errors exist}\n\n  A few function options may be specified to influence the behavior of\n  parse-opts:\n\n    :in-order     Stop option processing at the first unknown argument. Useful\n                  for building programs with subcommands that have their own\n                  option specs.\n\n    :no-defaults  Only include option values specified in arguments and do not\n                  include any default values in the resulting options map.\n                  Useful for parsing options from multiple sources; i.e. from a\n                  config file and from the command line.\n\n    :strict       Parse required arguments strictly: if a required argument value\n                  matches any other option, it is considered to be missing (and\n                  you have a parse error).\n\n    :summary-fn   A function that receives the sequence of compiled option specs\n                  (documented at #'clojure.tools.cli/compile-option-specs), and\n                  returns a custom option summary string.\n  ",
 		},
 	},
@@ -377841,7 +377841,7 @@ var arrayMap_NUM_1359 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -378546,7 +378546,7 @@ var arrayMap_NUM_1360 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -378577,7 +378577,7 @@ var arrayMap_NUM_1360 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Reduce arguments sequence into [opt-type opt ?optarg?] vectors and a vector\n  of remaining arguments. Returns as [option-tokens remaining-args].\n\n  Expands clumped short options like \"-abc\" into:\n  [[:short-opt \"-a\"] [:short-opt \"-b\"] [:short-opt \"-c\"]]\n\n  If \"-b\" were in the set of options that require arguments, \"-abc\" would\n  then be interpreted as: [[:short-opt \"-a\"] [:short-opt \"-b\" \"c\"]]\n\n  Long options with `=` are always parsed as option + optarg, even if nothing\n  follows the `=` sign.\n\n  If the :in-order flag is true, the first non-option, non-optarg argument\n  stops options processing. This is useful for handling subcommand options.",
 		},
 	},
@@ -382719,7 +382719,7 @@ var arrayMap_NUM_1361 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.tools.cli>",
 		},
 		Keyword{
@@ -382738,7 +382738,7 @@ var arrayMap_NUM_1361 ArrayMap = ArrayMap{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 		Keyword{
@@ -382750,7 +382750,7 @@ var arrayMap_NUM_1361 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Reduce options specs into a options summary for printing at a terminal.\n  Note that the specs argument should be the compiled version. That effectively\n  means that you shouldn't call summarize directly. When you call parse-opts\n  you get back a :summary key which is the result of calling summarize (or\n  your user-supplied :summary-fn option) on the compiled option specs.",
 		},
 	},
@@ -383597,7 +383597,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__362_5__362_6_NUM_1 LiteralExpr = Li
 		StartColumn: 5,
 		StartLine:   362,
 	},
-	obj: String{},
+	obj: coretypes.String{},
 }
 var ifExpr_POS_joker_DOT_tools_DOT_cli__354_3__362_7_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -384391,14 +384391,14 @@ var arrayMap_NUM_1362 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Renders HTML, XML, or XHTML markup to a string, based on prior work in Hiccup.\n\n  https://github.com/weavejester/hiccup",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -384483,7 +384483,7 @@ var arrayMap_NUM_1363 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -384592,7 +384592,7 @@ var arrayMap_NUM_1364 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -385011,7 +385011,7 @@ var literalExpr_POS_joker_DOT_hiccup__23_5__23_6_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 5,
 		StartLine:   23,
 	},
-	obj: String{},
+	obj: coretypes.String{},
 }
 var varRef_number_Q__POS_joker_DOT_hiccup__25_6__25_12 VarRefExpr = VarRefExpr{
 	Position: coretypes.Position{
@@ -385341,7 +385341,7 @@ var arrayMap_NUM_1365 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -385494,7 +385494,7 @@ var arrayMap_NUM_1366 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -385776,7 +385776,7 @@ var arrayMap_NUM_1367 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -385802,7 +385802,7 @@ var arrayMap_NUM_1367 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "HTML Elements that must be rendered without a closing tag.",
 		},
 	},
@@ -385953,97 +385953,97 @@ var objectInfo_POS_joker_DOT_hiccup__76_37__76_41 coretypes.ObjectInfo = coretyp
 }
 var arrayMap_NUM_1368 ArrayMap = ArrayMap{
 	arr: []Object{
-		String{
+		coretypes.String{
 			S: "area",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "base",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "br",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "col",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "command",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "embed",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "hr",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "img",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "input",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "keygen",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "link",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "meta",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "param",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "source",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "track",
 		},
 		coretypes.Boolean{
 			B: true,
 		},
-		String{
+		coretypes.String{
 			S: "wbr",
 		},
 		coretypes.Boolean{
@@ -386062,7 +386062,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_5__75_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 5,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "area",
 	},
 }
@@ -386074,7 +386074,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_12__75_17_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 12,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "base",
 	},
 }
@@ -386086,7 +386086,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_19__75_22_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 19,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "br",
 	},
 }
@@ -386098,7 +386098,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_24__75_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 24,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "col",
 	},
 }
@@ -386110,7 +386110,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_30__75_38_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 30,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "command",
 	},
 }
@@ -386122,7 +386122,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_40__75_46_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 40,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "embed",
 	},
 }
@@ -386134,7 +386134,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_48__75_51_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 48,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "hr",
 	},
 }
@@ -386146,7 +386146,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_53__75_57_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 53,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "img",
 	},
 }
@@ -386158,7 +386158,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_59__75_65_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 59,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "input",
 	},
 }
@@ -386170,7 +386170,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_67__75_74_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 67,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "keygen",
 	},
 }
@@ -386182,7 +386182,7 @@ var literalExpr_POS_joker_DOT_hiccup__75_76__75_81_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 76,
 		StartLine:   75,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "link",
 	},
 }
@@ -386194,7 +386194,7 @@ var literalExpr_POS_joker_DOT_hiccup__76_5__76_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 5,
 		StartLine:   76,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "meta",
 	},
 }
@@ -386206,7 +386206,7 @@ var literalExpr_POS_joker_DOT_hiccup__76_12__76_18_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 12,
 		StartLine:   76,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "param",
 	},
 }
@@ -386218,7 +386218,7 @@ var literalExpr_POS_joker_DOT_hiccup__76_20__76_27_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 20,
 		StartLine:   76,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "source",
 	},
 }
@@ -386230,7 +386230,7 @@ var literalExpr_POS_joker_DOT_hiccup__76_29__76_35_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 29,
 		StartLine:   76,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "track",
 	},
 }
@@ -386242,7 +386242,7 @@ var literalExpr_POS_joker_DOT_hiccup__76_37__76_41_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 37,
 		StartLine:   76,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "wbr",
 	},
 }
@@ -386545,7 +386545,7 @@ var arrayMap_NUM_1369 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -386654,7 +386654,7 @@ var arrayMap_NUM_1370 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -386870,7 +386870,7 @@ var literalExpr_POS_joker_DOT_hiccup__41_24__41_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 24,
 		StartLine:   41,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " />",
 	},
 }
@@ -386891,7 +386891,7 @@ var literalExpr_POS_joker_DOT_hiccup__41_30__41_32_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 30,
 		StartLine:   41,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ">",
 	},
 }
@@ -387032,7 +387032,7 @@ var arrayMap_NUM_1371 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -387278,7 +387278,7 @@ var arrayMap_NUM_1372 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -387302,14 +387302,14 @@ var arrayMap_NUM_1372 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Renders the Hiccup-style content as HTML markup, returning a string of\n  the markup.\n\n  The first parameter may be a map, which is options for the entire render.\n\n  The :mode option defaults to :xhtml but can also be :html, :xml, or :sgml.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -387844,7 +387844,7 @@ var arrayMap_NUM_1373 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -387996,7 +387996,7 @@ var literalExpr_POS_joker_DOT_hiccup__113_5__113_6_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 5,
 		StartLine:   113,
 	},
-	obj: String{},
+	obj: coretypes.String{},
 }
 var varRef_vector_Q__POS_joker_DOT_hiccup__115_6__115_12 VarRefExpr = VarRefExpr{
 	Position: coretypes.Position{
@@ -388123,7 +388123,7 @@ var arrayMap_NUM_1374 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -388444,7 +388444,7 @@ var arrayMap_NUM_1375 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -388475,7 +388475,7 @@ var arrayMap_NUM_1375 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Ensure an element vector is of the form [tag-name attrs content].",
 		},
 	},
@@ -388685,7 +388685,7 @@ var literalExpr_POS_joker_DOT_hiccup__95_30__95_59_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 30,
 		StartLine:   95,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " is not a valid element name",
 	},
 }
@@ -388907,7 +388907,7 @@ var arrayMap_NUM_1376 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -389285,7 +389285,7 @@ var literalExpr_POS_joker_DOT_hiccup__98_66__98_68_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 66,
 		StartLine:   98,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ".",
 	},
 }
@@ -389306,7 +389306,7 @@ var literalExpr_POS_joker_DOT_hiccup__98_70__98_72_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 70,
 		StartLine:   98,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " ",
 	},
 }
@@ -389609,7 +389609,7 @@ var arrayMap_NUM_1377 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -389833,7 +389833,7 @@ var literalExpr_POS_joker_DOT_hiccup__86_36__86_38_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 36,
 		StartLine:   86,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " ",
 	},
 }
@@ -390754,7 +390754,7 @@ var arrayMap_NUM_1378 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -391023,7 +391023,7 @@ var arrayMap_NUM_1379 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -391223,7 +391223,7 @@ var arrayMap_NUM_1380 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -391279,7 +391279,7 @@ var literalExpr_POS_joker_DOT_hiccup__49_8__49_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 8,
 		StartLine:   49,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " ",
 	},
 }
@@ -391339,7 +391339,7 @@ var literalExpr_POS_joker_DOT_hiccup__49_26__49_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 26,
 		StartLine:   49,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "=",
 	},
 }
@@ -391569,7 +391569,7 @@ var literalExpr_POS_joker_DOT_hiccup__57_12__57_14_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 12,
 		StartLine:   57,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " ",
 	},
 }
@@ -391682,7 +391682,7 @@ var literalExpr_POS_joker_DOT_hiccup__60_5__60_6_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 5,
 		StartLine:   60,
 	},
-	obj: String{},
+	obj: coretypes.String{},
 }
 var objectInfo_POS_joker_DOT_hiccup__62_5__62_9 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -392317,7 +392317,7 @@ var literalExpr_POS_joker_DOT_hiccup__140_14__140_16_NUM_1 LiteralExpr = Literal
 		StartColumn: 14,
 		StartLine:   140,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "<",
 	},
 }
@@ -392366,7 +392366,7 @@ var literalExpr_POS_joker_DOT_hiccup__140_39__140_41_NUM_1 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   140,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ">",
 	},
 }
@@ -392405,7 +392405,7 @@ var literalExpr_POS_joker_DOT_hiccup__142_14__142_17_NUM_1 LiteralExpr = Literal
 		StartColumn: 14,
 		StartLine:   142,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "</",
 	},
 }
@@ -392436,7 +392436,7 @@ var literalExpr_POS_joker_DOT_hiccup__142_23__142_25_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   142,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: ">",
 	},
 }
@@ -392487,7 +392487,7 @@ var literalExpr_POS_joker_DOT_hiccup__143_14__143_16_NUM_1 LiteralExpr = Literal
 		StartColumn: 14,
 		StartLine:   143,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "<",
 	},
 }
@@ -393378,7 +393378,7 @@ var arrayMap_NUM_1381 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.hiccup>",
 		},
 		Keyword{
@@ -393402,14 +393402,14 @@ var arrayMap_NUM_1381 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A raw string is pre-rendered content that is added directly to the output markup\n   without any interpretation or escaping.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -393959,14 +393959,14 @@ var arrayMap_NUM_1382 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Pretty printing utilities. Based on Clojure implementation.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -394107,7 +394107,7 @@ var arrayMap_NUM_1383 ArrayMap = ArrayMap{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.pprint>",
 		},
 		Keyword{
@@ -394131,14 +394131,14 @@ var arrayMap_NUM_1383 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "Prints a collection of maps in a textual table. Prints table headings\n   ks, and then a line of output for each row, corresponding to the keys\n   in ks. If ks are not specified, use the keys of the first item in rows.",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -394627,7 +394627,7 @@ var literalExpr_POS_joker_DOT_pprint__16_49__16_51_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 49,
 		StartLine:   16,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "-",
 	},
 }
@@ -394755,7 +394755,7 @@ var literalExpr_POS_joker_DOT_pprint__17_30__17_32_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 30,
 		StartLine:   17,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "%",
 	},
 }
@@ -394793,7 +394793,7 @@ var literalExpr_POS_joker_DOT_pprint__17_36__17_38_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 36,
 		StartLine:   17,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "s",
 	},
 }
@@ -395863,7 +395863,7 @@ var literalExpr_POS_joker_DOT_pprint__25_28__25_31_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 28,
 		StartLine:   25,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "| ",
 	},
 }
@@ -395884,7 +395884,7 @@ var literalExpr_POS_joker_DOT_pprint__25_33__25_37_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 33,
 		StartLine:   25,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " | ",
 	},
 }
@@ -395905,7 +395905,7 @@ var literalExpr_POS_joker_DOT_pprint__25_39__25_42_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 39,
 		StartLine:   25,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " |",
 	},
 }
@@ -396019,7 +396019,7 @@ var literalExpr_POS_joker_DOT_pprint__26_28__26_31_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 28,
 		StartLine:   26,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "|-",
 	},
 }
@@ -396040,7 +396040,7 @@ var literalExpr_POS_joker_DOT_pprint__26_33__26_37_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 33,
 		StartLine:   26,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "-+-",
 	},
 }
@@ -396061,7 +396061,7 @@ var literalExpr_POS_joker_DOT_pprint__26_39__26_42_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 39,
 		StartLine:   26,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "-|",
 	},
 }
@@ -396241,7 +396241,7 @@ var literalExpr_POS_joker_DOT_pprint__28_30__28_33_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 30,
 		StartLine:   28,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: "| ",
 	},
 }
@@ -396262,7 +396262,7 @@ var literalExpr_POS_joker_DOT_pprint__28_35__28_39_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 35,
 		StartLine:   28,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " | ",
 	},
 }
@@ -396283,7 +396283,7 @@ var literalExpr_POS_joker_DOT_pprint__28_41__28_44_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 41,
 		StartLine:   28,
 	},
-	obj: String{
+	obj: coretypes.String{
 		S: " |",
 	},
 }
@@ -397071,21 +397071,21 @@ var arrayMap_NUM_1384 ArrayMap = ArrayMap{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A collection of variations on Clojure's core macros.",
 		},
 		Keyword{
 			hash: 960486649,
 			name: &s_author,
 		},
-		String{
+		coretypes.String{
 			S: "Christophe Grand and Mark Engelberg",
 		},
 		Keyword{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -397232,7 +397232,7 @@ var bitmapIndexedNode_NUM_232 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A variation on cond which sports let bindings, do and implicit else:\n     (cond \n       (odd? a) 1\n       :do (println a)\n       :let [a (quot a 2)]\n       (odd? a) 2\n       3).\n   Also supports :when-let and :when-some. \n   :let, :when-let, :when-some and :do do not need to be written as keywords.",
 		},
 		Keyword{
@@ -397248,7 +397248,7 @@ var bitmapIndexedNode_NUM_232 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.better-cond>",
 		},
 		Keyword{
@@ -397272,7 +397272,7 @@ var bitmapIndexedNode_NUM_232 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -399927,7 +399927,7 @@ var bitmapIndexedNode_NUM_234 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A variation on if-let where all the exprs in the bindings vector must be true.\n   Also supports :let.",
 		},
 		Keyword{
@@ -399943,7 +399943,7 @@ var bitmapIndexedNode_NUM_234 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.better-cond>",
 		},
 		Keyword{
@@ -399967,7 +399967,7 @@ var bitmapIndexedNode_NUM_234 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -401816,7 +401816,7 @@ var bitmapIndexedNode_NUM_236 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A variation on if-some where all the exprs in the bindings vector must be non-nil.\n   Also supports :let.",
 		},
 		Keyword{
@@ -401832,7 +401832,7 @@ var bitmapIndexedNode_NUM_236 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.better-cond>",
 		},
 		Keyword{
@@ -401856,7 +401856,7 @@ var bitmapIndexedNode_NUM_236 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -403724,7 +403724,7 @@ var bitmapIndexedNode_NUM_238 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A variation on when-let where all the exprs in the bindings vector must be true.\n   Also supports :let.",
 		},
 		Keyword{
@@ -403740,7 +403740,7 @@ var bitmapIndexedNode_NUM_238 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.better-cond>",
 		},
 		Keyword{
@@ -403764,7 +403764,7 @@ var bitmapIndexedNode_NUM_238 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},
@@ -404166,7 +404166,7 @@ var bitmapIndexedNode_NUM_240 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2335013920,
 			name: &s_doc,
 		},
-		String{
+		coretypes.String{
 			S: "A variation on when-some where all the exprs in the bindings vector must be non-nil.\n   Also supports :let.",
 		},
 		Keyword{
@@ -404182,7 +404182,7 @@ var bitmapIndexedNode_NUM_240 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3660982472,
 			name: &s_file,
 		},
-		String{
+		coretypes.String{
 			S: "<joker.better-cond>",
 		},
 		Keyword{
@@ -404206,7 +404206,7 @@ var bitmapIndexedNode_NUM_240 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 3376861428,
 			name: &s_added,
 		},
-		String{
+		coretypes.String{
 			S: "1.0",
 		},
 	},

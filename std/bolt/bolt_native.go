@@ -161,7 +161,7 @@ func get(db *bolt.DB, bucket, key string) Object {
 	if v == nil {
 		return NIL
 	}
-	return MakeString(string(v))
+	return coretypes.MakeString(string(v))
 }
 
 func byPrefix(db *bolt.DB, bucket, prefix string) *ArrayVector {
@@ -170,7 +170,7 @@ func byPrefix(db *bolt.DB, bucket, prefix string) *ArrayVector {
 		c := getBucket(tx, bucket).Cursor()
 		pr := []byte(prefix)
 		for k, v := c.Seek(pr); k != nil && bytes.HasPrefix(k, pr); k, v = c.Next() {
-			res.Append(NewVectorFrom(MakeString(string(k)), MakeString(string(v))))
+			res.Append(NewVectorFrom(coretypes.MakeString(string(k)), coretypes.MakeString(string(v))))
 		}
 		return nil
 	})

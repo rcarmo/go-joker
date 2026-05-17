@@ -21,7 +21,7 @@ func typeBuilder() coretypes.Builder {
 		Intern:   STRINGS.Intern,
 		MetaFactory: func(kind coretypes.Kind, name string, doc string) any {
 			meta := MakeMeta(nil, coretypes.TypeMetadataDoc(kind, doc), "1.0")
-			meta.Add(KEYWORDS.name, MakeString(name))
+			meta.Add(KEYWORDS.name, coretypes.MakeString(name))
 			return MetaHolder{meta}
 		},
 	}
@@ -92,7 +92,7 @@ func init() {
 		Ratio:         typeBuilder().RegisterReference("coretypes.Ratio", (*coretypes.Ratio)(nil), "Wraps the Go 'math.big/Rat' type"),
 		RecurBindings: typeBuilder().RegisterReference("RecurBindings", (*RecurBindings)(nil), ""),
 		Regex:         typeBuilder().RegisterReference("Regex", (*coretypes.Regex)(nil), "Wraps the Go 'regexp.Regexp' type"),
-		String:        typeBuilder().RegisterValue("String", (*String)(nil), "Wraps the Go 'string' type"),
+		String:        typeBuilder().RegisterValue("String", (*coretypes.String)(nil), "Wraps the Go 'string' type"),
 		Symbol:        typeBuilder().RegisterValue("Symbol", (*Symbol)(nil), ""),
 		Type:          typeBuilder().RegisterReference("Type", (*coretypes.Type)(nil), ""),
 		Var:           typeBuilder().RegisterReference("Var", (*Var)(nil), ""),

@@ -676,7 +676,7 @@ var procSplitWhitespace ProcFn = func(args []Object) Object {
 func splitWhitespaceVector(s string) *ArrayVector {
 	res := collectionConstruction.NewEmptyArrayVector()
 	for _, token := range corestr.SplitWhitespace(s) {
-		res.Append(String{S: token})
+		res.Append(coretypes.String{S: token})
 	}
 	return res
 }
@@ -697,7 +697,7 @@ var procFrequencies ProcFn = func(args []Object) Object {
 	for !seq.IsEmpty() {
 		obj := seq.First()
 		if stringOnly {
-			if s, ok := obj.(String); ok {
+			if s, ok := obj.(coretypes.String); ok {
 				stringCounts[s.S]++
 				seq = seq.Rest()
 				continue
@@ -705,7 +705,7 @@ var procFrequencies ProcFn = func(args []Object) Object {
 			stringOnly = false
 			tm = MapToTransient(nil)
 			for k, v := range stringCounts {
-				tm.AssocInPlace(String{S: k}, coretypes.Int{I: v})
+				tm.AssocInPlace(coretypes.String{S: k}, coretypes.Int{I: v})
 			}
 			stringCounts = nil
 		}
@@ -721,13 +721,13 @@ var procFrequencies ProcFn = func(args []Object) Object {
 		if len(stringCounts) <= int(HASHMAP_THRESHOLD/2) {
 			res := collectionConstruction.NewEmptyArrayMap()
 			for k, v := range stringCounts {
-				res.Add(String{S: k}, coretypes.Int{I: v})
+				res.Add(coretypes.String{S: k}, coretypes.Int{I: v})
 			}
 			return res
 		}
 		res := EmptyHashMap
 		for k, v := range stringCounts {
-			res = res.Assoc(String{S: k}, coretypes.Int{I: v}).(*HashMap)
+			res = res.Assoc(coretypes.String{S: k}, coretypes.Int{I: v}).(*HashMap)
 		}
 		return res
 	}

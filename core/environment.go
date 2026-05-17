@@ -49,7 +49,7 @@ func versionMap() Map {
 func (env *Env) SetEnvArgs(newArgs []string) {
 	args := collectionConstruction.NewEmptyArrayVector()
 	for _, arg := range newArgs {
-		args.Append(MakeString(arg))
+		args.Append(coretypes.MakeString(arg))
 	}
 	if args.Count() > 0 {
 		env.args.Value = args.Seq()
@@ -67,7 +67,7 @@ This runs after invariant initialization, which includes calling
 func (env *Env) SetClassPath(cp string) {
 	cpVec := collectionConstruction.NewEmptyArrayVector()
 	for _, cpelem := range osutil.ClassPathElements(cp) {
-		cpVec.Append(MakeString(cpelem))
+		cpVec.Append(coretypes.MakeString(cpelem))
 	}
 	env.classPath.Value = cpVec
 }
@@ -112,7 +112,7 @@ This runs after invariant initialization, which includes calling
 	initializations must be reflected in gen/codegen/main.go.
 */
 func (env *Env) SetMainFilename(filename string) {
-	env.MainFile.Value = MakeString(filename)
+	env.MainFile.Value = coretypes.MakeString(filename)
 }
 
 /*
