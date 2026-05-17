@@ -27,7 +27,6 @@ import (
 )
 
 type (
-	Type   = coretypes.Type
 	Object interface {
 		coretypes.Object
 		GetType() *coretypes.Type
