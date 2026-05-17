@@ -1850,7 +1850,7 @@ func parseSymbol(obj Object, ctx *ParseContext) Expr {
 	if vr, ok := ctx.GlobalEnv.Resolve(sym); ok {
 		return MakeVarRefExpr(vr, obj)
 	}
-	if sym.ns == nil && TYPES.Lookup(sym.name) != nil {
+	if sym.ns == nil && TYPES.Contains(sym.name) {
 		return &LiteralExpr{
 			Position: GetPosition(obj),
 			obj:      TYPES.Lookup(sym.name),

@@ -235,7 +235,7 @@ func (env *Env) ResolveSymbol(s Symbol) Symbol {
 	if corestr.HasNamespaceSeparator(*s.name, '.') {
 		return s
 	}
-	if s.ns == nil && TYPES.Lookup(s.name) != nil {
+	if s.ns == nil && TYPES.Contains(s.name) {
 		return s
 	}
 	currentNs := env.CurrentNamespace()

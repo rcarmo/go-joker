@@ -11,6 +11,10 @@ func (r Registry) Lookup(name *string) *Type {
 	return r[name]
 }
 
+func (r Registry) Contains(name *string) bool {
+	return r.Lookup(name) != nil
+}
+
 type Types struct {
 	Associative    *Type
 	Callable       *Type
