@@ -573,25 +573,7 @@ func readMapWithNamespace(reader *Reader, nsname string) Object {
 	if !corereader.HasEvenFormCount(len(objs)) {
 		panic(MakeReadError(reader, "Map literal must contain an even number of forms"))
 	}
-	if int64(len(objs)) >= HASHMAP_THRESHOLD {
-		hashMap := collectionConstruction.HashMapFrom()
-		for i := 0; i < len(objs); i += 2 {
-			key := resolveKey(objs[i], nsname)
-			if hashMap.containsKey(key) {
-				panic(MakeReadError(reader, "Duplicate key "+key.ToString(false)))
-			}
-			hashMap = hashMap.Assoc(key, objs[i+1]).(*HashMap)
-		}
-		return MakeReadObject(reader, hashMap)
-	}
-	m := collectionConstruction.EmptyArrayMap()
-	for i := 0; i < len(objs); i += 2 {
-		key := resolveKey(objs[i], nsname)
-		if !m.Add(key, objs[i+1]) {
-			panic(MakeReadError(reader, "Duplicate key "+key.ToString(false)))
-		}
-	}
-	return MakeReadObject(reader, m)
+	return MakeReadObject(reader, readerConstruction.MapLiteral(reader, objs, nsname))
 }
 
 func readSet(reader *Reader) Object {

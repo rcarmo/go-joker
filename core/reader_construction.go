@@ -70,6 +70,28 @@ func (ReaderConstructionAdapter) PersistentVectorFromSeq(seq Seq) Object {
 	return collectionConstruction.VectorFromSeq(seq)
 }
 
+func (ReaderConstructionAdapter) MapLiteral(reader *Reader, values []Object, nsname string) Object {
+	if int64(len(values)) >= HASHMAP_THRESHOLD {
+		hashMap := collectionConstruction.HashMapFrom()
+		for i := 0; i < len(values); i += 2 {
+			key := resolveKey(values[i], nsname)
+			if hashMap.containsKey(key) {
+				panic(MakeReadError(reader, "Duplicate key "+key.ToString(false)))
+			}
+			hashMap = hashMap.Assoc(key, values[i+1]).(*HashMap)
+		}
+		return hashMap
+	}
+	m := collectionConstruction.EmptyArrayMap()
+	for i := 0; i < len(values); i += 2 {
+		key := resolveKey(values[i], nsname)
+		if !m.Add(key, values[i+1]) {
+			panic(MakeReadError(reader, "Duplicate key "+key.ToString(false)))
+		}
+	}
+	return m
+}
+
 func (ReaderConstructionAdapter) Double(v float64) Object { return MakeDouble(v) }
 
 func (ReaderConstructionAdapter) BigInt(v *big.Int, original string) Object {
