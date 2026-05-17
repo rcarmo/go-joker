@@ -10,7 +10,6 @@ import (
 	"math/big"
 	"math/rand"
 	"os"
-	"reflect"
 	"regexp"
 	"sort"
 	"strconv"
@@ -756,9 +755,7 @@ var procSubvec = func(args []Object) Object {
 
 var procCast = func(args []Object) Object {
 	t := EnsureArgIsType(args, 0)
-	if t.ReflectType.Kind() == reflect.Interface &&
-		args[1].GetType().ReflectType.Implements(t.ReflectType) ||
-		args[1].GetType().ReflectType == t.ReflectType {
+	if coretypes.IsEqualOrImplements(t, args[1].GetType()) {
 		return args[1]
 	}
 	panic(RT.NewError("Cannot cast " + args[1].GetType().ToString(false) + " to " + t.ToString(false)))

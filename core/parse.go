@@ -1397,7 +1397,7 @@ func getTaggedTypes(obj Meta) []*coretypes.Type {
 
 func isTypeOneOf(abstractTypes []*coretypes.Type, concreteType *coretypes.Type) bool {
 	for _, t := range abstractTypes {
-		if IsEqualOrImplements(t, concreteType) {
+		if coretypes.IsEqualOrImplements(t, concreteType) {
 			return true
 		}
 	}

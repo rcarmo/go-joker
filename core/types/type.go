@@ -29,6 +29,13 @@ func NewInterfaceType(name string, inst any, metaHolder any) *Type {
 	return NewType(name, reflect.TypeOf(inst).Elem(), metaHolder)
 }
 
+func IsEqualOrImplements(abstractType *Type, concreteType *Type) bool {
+	if abstractType.ReflectType.Kind() == reflect.Interface {
+		return concreteType.ReflectType.Implements(abstractType.ReflectType)
+	}
+	return concreteType.ReflectType == abstractType.ReflectType
+}
+
 func (t *Type) ToString(escape bool) string   { return t.Name }
 func (t *Type) Equals(other interface{}) bool { return t == other }
 func (t *Type) GetInfo() *ObjectInfo          { return nil }

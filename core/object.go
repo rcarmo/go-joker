@@ -1623,14 +1623,6 @@ func (x RecurBindings) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 
-func IsEqualOrImplements(abstractType *coretypes.Type, concreteType *coretypes.Type) bool {
-	if abstractType.ReflectType.Kind() == reflect.Interface {
-		return concreteType.ReflectType.Implements(abstractType.ReflectType)
-	} else {
-		return concreteType.ReflectType == abstractType.ReflectType
-	}
-}
-
 func IsInstance(t *coretypes.Type, obj Object) bool {
 	if obj.Equals(NIL) {
 		return false
@@ -1646,7 +1638,7 @@ func IsInstance(t *coretypes.Type, obj Object) bool {
 		_, ok := obj.(KVReduce)
 		return ok
 	}
-	return IsEqualOrImplements(t, obj.GetType())
+	return coretypes.IsEqualOrImplements(t, obj.GetType())
 }
 
 func IsSpecialSymbol(obj Object) bool {
