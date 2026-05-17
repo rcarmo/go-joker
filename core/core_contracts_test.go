@@ -2473,7 +2473,7 @@ func TestExecutorFilesUseRuntimeExecutionAdapterForProgramState(t *testing.T) {
 			if lineText == "case *ArrayVector:" || lineText == "case *TransientVector:" || lineText == "return (*ArrayVector)(v.p)" || lineText == "return (*TransientVector)(v.p)" {
 				continue
 			}
-			if strings.Contains(line, "coretypes.Seqable") || strings.Contains(line, "coretypes.Conjable") || strings.Contains(line, "Counted") || strings.Contains(line, "Associative") || strings.Contains(line, "*TransientVector") || strings.Contains(line, "*ArrayVector") || strings.Contains(line, "&ArrayVector") {
+			if strings.Contains(line, "coretypes.Seqable") || strings.Contains(line, "coretypes.Conjable") || strings.Contains(line, "Counted") || strings.Contains(line, "coretypes.Associative") || strings.Contains(line, "*TransientVector") || strings.Contains(line, "*ArrayVector") || strings.Contains(line, "&ArrayVector") {
 				t.Fatalf("%s:%d performs collection construction/access instead of runtimeExec adapter: %s", file, lineNo+1, lineText)
 			}
 			if lineText == "case *StringCursor:" || lineText == "return (*StringCursor)(v.p)" {

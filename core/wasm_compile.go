@@ -872,7 +872,7 @@ func registerWasmHost(rt wazero.Runtime) {
 				coll := t.load(collHandle)
 				keyObj := wasmToObj(t, key)
 				valObj := wasmToObj(t, val)
-				if a, ok := coll.(Associative); ok {
+				if a, ok := coll.(coretypes.Associative); ok {
 					result := a.Assoc(keyObj, valObj)
 					return t.store(result)
 				}

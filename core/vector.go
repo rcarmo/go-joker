@@ -13,7 +13,7 @@ type (
 		coretypes.Object
 		coretypes.CountedIndexed
 		coretypes.Gettable
-		Associative
+		coretypes.Associative
 		coretypes.Sequential
 		coretypes.Comparable
 		coretypes.Indexed
@@ -382,7 +382,7 @@ func (v *Vector) Get(key coretypes.Object) (bool, coretypes.Object) {
 	return CountedIndexedGet(v, key)
 }
 
-func (v *Vector) EntryAt(key coretypes.Object) *ArrayVector {
+func (v *Vector) EntryAt(key coretypes.Object) coretypes.Object {
 	ok, val := v.Get(key)
 	if ok {
 		return collectionConstruction.NewArrayVectorFrom(key, val)
@@ -433,7 +433,7 @@ func assertInteger(obj coretypes.Object) int {
 	return i
 }
 
-func (v *Vector) Assoc(key, val coretypes.Object) Associative {
+func (v *Vector) Assoc(key, val coretypes.Object) coretypes.Associative {
 	i := assertInteger(key)
 	return v.assocN(i, val)
 }

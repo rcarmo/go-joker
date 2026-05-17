@@ -10,7 +10,7 @@ import (
 
 type (
 	Map interface {
-		Associative
+		coretypes.Associative
 		coretypes.Seqable
 		coretypes.Counted
 		Without(key coretypes.Object) Map

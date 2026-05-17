@@ -4008,7 +4008,7 @@ var ty_Associative coretypes.Type = coretypes.Type{
 		meta: &arrayMap_NUM_1,
 	},
 	Name:        "Associative",
-	ReflectType: reflect.TypeOf((*Associative)(nil)).Elem(),
+	ReflectType: reflect.TypeOf((*coretypes.Associative)(nil)).Elem(),
 }
 var arrayMap_NUM_2 ArrayMap = ArrayMap{
 	arr: []coretypes.Object{
@@ -65442,7 +65442,7 @@ var arrayMap_NUM_409 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "Returns true if coll implements Associative",
+			S: "Returns true if coll implements coretypes.Associative",
 		},
 		Keyword{
 			hash: 3376861428,

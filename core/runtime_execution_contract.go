@@ -207,7 +207,7 @@ func (RuntimeExecutionAdapter) Assoc(coll coretypes.Object, key coretypes.Object
 		return c.AssocInPlace(key, val), true
 	case *TransientMap:
 		return c.AssocInPlace(key, val), true
-	case Associative:
+	case coretypes.Associative:
 		return c.Assoc(key, val), true
 	default:
 		return nil, false

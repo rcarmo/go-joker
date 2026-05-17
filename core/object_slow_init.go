@@ -29,7 +29,7 @@ func typeBuilder() coretypes.Builder {
 
 func init() {
 	TYPE = coretypes.Types{
-		Associative:    typeBuilder().RegisterInterface("Associative", (*Associative)(nil), ""),
+		Associative:    typeBuilder().RegisterInterface("Associative", (*coretypes.Associative)(nil), ""),
 		Callable:       typeBuilder().RegisterInterface("coretypes.Callable", (*coretypes.Callable)(nil), ""),
 		Collection:     typeBuilder().RegisterInterface("Collection", (*coretypes.Collection)(nil), ""),
 		Comparable:     typeBuilder().RegisterInterface("Comparable", (*coretypes.Comparable)(nil), ""),

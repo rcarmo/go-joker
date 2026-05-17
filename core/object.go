@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert coretypes.Comparable Vec coretypes.Char String Symbol Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number coretypes.Seqable coretypes.Callable *coretypes.Type Meta coretypes.Int coretypes.Double coretypes.Stack Map Set Associative coretypes.Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn coretypes.Deref *Atom Ref coretypes.KVReduce coretypes.Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel coretypes.CountedIndexed
+//go:generate go run gen/gen_types.go assert coretypes.Comparable Vec coretypes.Char String Symbol Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number coretypes.Seqable coretypes.Callable *coretypes.Type Meta coretypes.Int coretypes.Double coretypes.Stack Map Set coretypes.Associative coretypes.Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn coretypes.Deref *Atom Ref coretypes.KVReduce coretypes.Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel coretypes.CountedIndexed
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil Keyword Symbol *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
 //go:generate go run -tags gen_code gen/codegen/main.go
 
@@ -86,12 +86,6 @@ type (
 	Delay struct {
 		fn      coretypes.Callable
 		runtime *corert.Promise[coretypes.Object]
-	}
-	Associative interface {
-		coretypes.Conjable
-		coretypes.Gettable
-		EntryAt(key coretypes.Object) *ArrayVector
-		Assoc(key, val coretypes.Object) Associative
 	}
 	Atom struct {
 		MetaHolder
@@ -710,11 +704,11 @@ func (n Nil) Merge(other Map) Map {
 	return other
 }
 
-func (n Nil) Assoc(key, value coretypes.Object) Associative {
+func (n Nil) Assoc(key, value coretypes.Object) coretypes.Associative {
 	return collectionConstruction.NewEmptyArrayMap().Assoc(key, value)
 }
 
-func (n Nil) EntryAt(key coretypes.Object) *ArrayVector {
+func (n Nil) EntryAt(key coretypes.Object) coretypes.Object {
 	return nil
 }
 

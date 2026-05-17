@@ -689,7 +689,7 @@ func (m *HashMap) containsKey(key coretypes.Object) bool {
 	}
 }
 
-func (m *HashMap) Assoc(key, val coretypes.Object) Associative {
+func (m *HashMap) Assoc(key, val coretypes.Object) coretypes.Associative {
 	addedLeaf := &Box{}
 	var newroot, t Node
 	if m.root == nil {
@@ -713,7 +713,7 @@ func (m *HashMap) Assoc(key, val coretypes.Object) Associative {
 	return res
 }
 
-func (m *HashMap) EntryAt(key coretypes.Object) *ArrayVector {
+func (m *HashMap) EntryAt(key coretypes.Object) coretypes.Object {
 	if m.root != nil {
 		p := m.root.find(0, key.Hash(), key)
 		if p != nil {
@@ -768,7 +768,7 @@ func (m *HashMap) Merge(other Map) Map {
 	if m.Count() == 0 {
 		return other
 	}
-	var res Associative = m
+	var res coretypes.Associative = m
 	for iter := other.Iter(); iter.HasNext(); {
 		p := iter.Next()
 		res = res.Assoc(p.Key, p.Value)
@@ -797,7 +797,7 @@ func (m *HashMap) Call(args []coretypes.Object) coretypes.Object {
 }
 
 func NewHashMap(keyvals ...coretypes.Object) *HashMap {
-	var res Associative = EmptyHashMap
+	var res coretypes.Associative = EmptyHashMap
 	for i := 0; i < len(keyvals); i += 2 {
 		res = res.Assoc(keyvals[i], keyvals[i+1])
 	}

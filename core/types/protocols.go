@@ -96,6 +96,13 @@ type Collection interface {
 	Empty() Collection
 }
 
+type Associative interface {
+	Conjable
+	Gettable
+	EntryAt(key Object) Object
+	Assoc(key, val Object) Associative
+}
+
 type KVReduce interface {
 	KVReduce(c Callable, init Object) Object
 }

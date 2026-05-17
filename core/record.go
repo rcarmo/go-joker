@@ -151,7 +151,7 @@ func (r *Record) Get(key coretypes.Object) (bool, coretypes.Object) {
 }
 
 // EntryAt returns a MapEntry for the given key.
-func (r *Record) EntryAt(key coretypes.Object) *ArrayVector {
+func (r *Record) EntryAt(key coretypes.Object) coretypes.Object {
 	if ok, v := r.Get(key); ok {
 		av := collectionConstruction.NewEmptyArrayVector().Conj(key).(*ArrayVector).Conj(v).(*ArrayVector)
 		return av
@@ -161,7 +161,7 @@ func (r *Record) EntryAt(key coretypes.Object) *ArrayVector {
 
 // Assoc returns a new record with the key set to val.
 // If key is a base field, returns a new record. Otherwise extends.
-func (r *Record) Assoc(key, val coretypes.Object) Associative {
+func (r *Record) Assoc(key, val coretypes.Object) coretypes.Associative {
 	if kw, ok := key.(Keyword); ok {
 		name := kw.ToString(false)[1:]
 		if idx, ok := r.rtype.fieldIdx[name]; ok {

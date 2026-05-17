@@ -200,7 +200,7 @@ func (m *ArrayMap) Clone() *ArrayMap {
 	return &result
 }
 
-func (m *ArrayMap) Assoc(key coretypes.Object, value coretypes.Object) Associative {
+func (m *ArrayMap) Assoc(key coretypes.Object, value coretypes.Object) coretypes.Associative {
 	i := m.indexOf(key)
 	if i != -1 {
 		res := m.Clone()
@@ -216,7 +216,7 @@ func (m *ArrayMap) Assoc(key coretypes.Object, value coretypes.Object) Associati
 	return res
 }
 
-func (m *ArrayMap) EntryAt(key coretypes.Object) *ArrayVector {
+func (m *ArrayMap) EntryAt(key coretypes.Object) coretypes.Object {
 	i := m.indexOf(key)
 	if i != -1 {
 		return collectionConstruction.NewArrayVectorFrom(key, m.arr[i+1])

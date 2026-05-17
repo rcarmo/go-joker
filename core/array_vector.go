@@ -129,7 +129,7 @@ func (v *ArrayVector) Get(key coretypes.Object) (bool, coretypes.Object) {
 	return CountedIndexedGet(v, key)
 }
 
-func (v *ArrayVector) EntryAt(key coretypes.Object) *ArrayVector {
+func (v *ArrayVector) EntryAt(key coretypes.Object) coretypes.Object {
 	ok, val := v.Get(key)
 	if ok {
 		return collectionConstruction.NewArrayVectorFrom(key, val)
@@ -137,7 +137,7 @@ func (v *ArrayVector) EntryAt(key coretypes.Object) *ArrayVector {
 	return nil
 }
 
-func (v *ArrayVector) Assoc(key, val coretypes.Object) Associative {
+func (v *ArrayVector) Assoc(key, val coretypes.Object) coretypes.Associative {
 	i := assertInteger(key)
 	if i < 0 || i > v.Count() {
 		panic(RT.NewError((fmt.Sprintf("Index %d is out of bounds [0..%d]", i, v.Count()))))

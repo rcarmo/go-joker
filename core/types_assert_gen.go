@@ -293,19 +293,19 @@ func EnsureArgIsSet(args []coretypes.Object, index int) Set {
 	panic(FailArg(obj, "Set", index))
 }
 
-func EnsureObjectIsAssociative(obj coretypes.Object, pattern string) Associative {
-	if c, yes := obj.(Associative); yes {
+func EnsureObjectIsAssociative(obj coretypes.Object, pattern string) coretypes.Associative {
+	if c, yes := obj.(coretypes.Associative); yes {
 		return c
 	}
-	panic(FailObject(obj, "Associative", pattern))
+	panic(FailObject(obj, "coretypes.Associative", pattern))
 }
 
-func EnsureArgIsAssociative(args []coretypes.Object, index int) Associative {
+func EnsureArgIsAssociative(args []coretypes.Object, index int) coretypes.Associative {
 	obj := args[index]
-	if c, yes := obj.(Associative); yes {
+	if c, yes := obj.(coretypes.Associative); yes {
 		return c
 	}
-	panic(FailArg(obj, "Associative", index))
+	panic(FailArg(obj, "coretypes.Associative", index))
 }
 
 func EnsureObjectIsReversible(obj coretypes.Object, pattern string) coretypes.Reversible {
