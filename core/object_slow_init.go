@@ -104,6 +104,6 @@ func init() {
 		StringSeq:     typeBuilder().RegisterReference("StringSeq", (*stringSeq)(nil), ""),
 	}
 	coretypes.RuntimeTypes = &TYPE
-	coretypes.NumberCompare = CompareNumbers
+	coretypes.NumberCompare = coretypes.CompareNumbers
 	coretypes.NumberEquals = equalsNumbers
 }

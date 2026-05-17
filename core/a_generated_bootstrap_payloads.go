@@ -6433,7 +6433,7 @@ var TYPES coretypes.Registry = coretypes.Registry{
 
 func init() {
 	coretypes.RuntimeTypes = &TYPE
-	coretypes.NumberCompare = CompareNumbers
+	coretypes.NumberCompare = coretypes.CompareNumbers
 	coretypes.NumberEquals = equalsNumbers
 }
 

@@ -157,19 +157,19 @@ var procIsZero = func(args []Object) Object {
 		return coretypes.Boolean{B: n.D == 0}
 	}
 	n := EnsureArgIsNumber(args, 0)
-	ops := GetOps(n)
+	ops := coretypes.GetOps(n)
 	return coretypes.Boolean{B: ops.IsZero(n)}
 }
 
 var procIsPos = func(args []Object) Object {
 	n := EnsureArgIsNumber(args, 0)
-	ops := GetOps(n)
+	ops := coretypes.GetOps(n)
 	return coretypes.Boolean{B: ops.Gt(n, coretypes.Int{I: 0})}
 }
 
 var procIsNeg = func(args []Object) Object {
 	n := EnsureArgIsNumber(args, 0)
-	ops := GetOps(n)
+	ops := coretypes.GetOps(n)
 	return coretypes.Boolean{B: ops.Lt(n, coretypes.Int{I: 0})}
 }
 
@@ -178,7 +178,7 @@ var procAdd = func(args []Object) Object {
 	case coretypes.Int:
 		switch y := args[1].(type) {
 		case coretypes.Int:
-			return INT_OPS.Add(x, y)
+			return coretypes.INT_OPS.Add(x, y)
 		case coretypes.Double:
 			return coretypes.Double{D: float64(x.I) + y.D}
 		}
@@ -192,14 +192,14 @@ var procAdd = func(args []Object) Object {
 	}
 	x := EnsureObjectIsNumber(args[0], "")
 	y := EnsureObjectIsNumber(args[1], "")
-	ops := GetOps(x).Combine(GetOps(y))
+	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y))
 	return ops.Add(x, y)
 }
 
 var procAddEx = func(args []Object) Object {
 	x := EnsureObjectIsNumber(args[0], "")
 	y := EnsureObjectIsNumber(args[1], "")
-	ops := GetOps(x).Combine(GetOps(y)).Combine(BIGINT_OPS)
+	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y)).Combine(coretypes.BIGINT_OPS)
 	return ops.Add(x, y)
 }
 
@@ -208,7 +208,7 @@ var procMultiply = func(args []Object) Object {
 	case coretypes.Int:
 		switch y := args[1].(type) {
 		case coretypes.Int:
-			return INT_OPS.Multiply(x, y)
+			return coretypes.INT_OPS.Multiply(x, y)
 		case coretypes.Double:
 			return coretypes.Double{D: float64(x.I) * y.D}
 		}
@@ -222,14 +222,14 @@ var procMultiply = func(args []Object) Object {
 	}
 	x := EnsureObjectIsNumber(args[0], "")
 	y := EnsureObjectIsNumber(args[1], "")
-	ops := GetOps(x).Combine(GetOps(y))
+	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y))
 	return ops.Multiply(x, y)
 }
 
 var procMultiplyEx = func(args []Object) Object {
 	x := EnsureObjectIsNumber(args[0], "")
 	y := EnsureObjectIsNumber(args[1], "")
-	ops := GetOps(x).Combine(GetOps(y)).Combine(BIGINT_OPS)
+	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y)).Combine(coretypes.BIGINT_OPS)
 	return ops.Multiply(x, y)
 }
 
@@ -237,20 +237,20 @@ var procSubtract = func(args []Object) Object {
 	if len(args) == 1 {
 		switch x := args[0].(type) {
 		case coretypes.Int:
-			return INT_OPS.Subtract(coretypes.Int{I: 0}, x)
+			return coretypes.INT_OPS.Subtract(coretypes.Int{I: 0}, x)
 		case coretypes.Double:
 			return coretypes.Double{D: -x.D}
 		}
 		a := coretypes.Int{I: 0}
 		b := EnsureObjectIsNumber(args[0], "")
-		ops := GetOps(a).Combine(GetOps(b))
+		ops := coretypes.GetOps(a).Combine(coretypes.GetOps(b))
 		return ops.Subtract(a, b)
 	}
 	switch a := args[0].(type) {
 	case coretypes.Int:
 		switch b := args[1].(type) {
 		case coretypes.Int:
-			return INT_OPS.Subtract(a, b)
+			return coretypes.INT_OPS.Subtract(a, b)
 		case coretypes.Double:
 			return coretypes.Double{D: float64(a.I) - b.D}
 		}
@@ -264,7 +264,7 @@ var procSubtract = func(args []Object) Object {
 	}
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	ops := GetOps(a).Combine(GetOps(b))
+	ops := coretypes.GetOps(a).Combine(coretypes.GetOps(b))
 	return ops.Subtract(a, b)
 }
 
@@ -277,21 +277,23 @@ var procSubtractEx = func(args []Object) Object {
 		a = args[0]
 		b = args[1]
 	}
-	ops := GetOps(a).Combine(GetOps(b)).Combine(BIGINT_OPS)
-	return ops.Subtract(EnsureObjectIsNumber(a, ""), EnsureObjectIsNumber(b, ""))
+	an := EnsureObjectIsNumber(a, "")
+	bn := EnsureObjectIsNumber(b, "")
+	ops := coretypes.GetOps(an).Combine(coretypes.GetOps(bn)).Combine(coretypes.BIGINT_OPS)
+	return ops.Subtract(an, bn)
 }
 
 var procDivide = func(args []Object) Object {
 	x := EnsureArgIsNumber(args, 0)
 	y := EnsureArgIsNumber(args, 1)
-	ops := GetOps(x).Combine(GetOps(y))
+	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y))
 	return ops.Divide(x, y)
 }
 
 var procQuot = func(args []Object) Object {
 	x := EnsureArgIsNumber(args, 0)
 	y := EnsureArgIsNumber(args, 1)
-	ops := GetOps(x).Combine(GetOps(y))
+	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y))
 	return ops.Quotient(x, y)
 }
 
@@ -300,14 +302,14 @@ var procRem = func(args []Object) Object {
 	case coretypes.Int:
 		if y, ok := args[1].(coretypes.Int); ok {
 			if y.I == 0 {
-				panicOnZero(INT_OPS, y)
+				coretypes.PanicOnZero(coretypes.INT_OPS, y)
 			}
 			return coretypes.Int{I: x.I % y.I}
 		}
 	}
 	x := EnsureArgIsNumber(args, 0)
 	y := EnsureArgIsNumber(args, 1)
-	ops := GetOps(x).Combine(GetOps(y))
+	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y))
 	return ops.Rem(x, y)
 }
 
@@ -954,7 +956,7 @@ var procChar = func(args []Object) Object {
 		return c
 	case coretypes.Number:
 		i := c.Int().I
-		if i < MIN_RUNE || i > MAX_RUNE {
+		if i < coretypes.MIN_RUNE || i > coretypes.MAX_RUNE {
 			panic(RT.NewError(fmt.Sprintf("Value out of range for char: %d", i)))
 		}
 		return coretypes.Char{Ch: rune(i)}
@@ -1048,25 +1050,25 @@ var procLt = func(args []Object) Object {
 	}
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return coretypes.Boolean{B: GetOps(a).Combine(GetOps(b)).Lt(a, b)}
+	return coretypes.Boolean{B: coretypes.GetOps(a).Combine(coretypes.GetOps(b)).Lt(a, b)}
 }
 
 var procLte = func(args []Object) Object {
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return coretypes.Boolean{B: GetOps(a).Combine(GetOps(b)).Lte(a, b)}
+	return coretypes.Boolean{B: coretypes.GetOps(a).Combine(coretypes.GetOps(b)).Lte(a, b)}
 }
 
 var procGt = func(args []Object) Object {
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return coretypes.Boolean{B: GetOps(a).Combine(GetOps(b)).Gt(a, b)}
+	return coretypes.Boolean{B: coretypes.GetOps(a).Combine(coretypes.GetOps(b)).Gt(a, b)}
 }
 
 var procGte = func(args []Object) Object {
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return coretypes.Boolean{B: GetOps(a).Combine(GetOps(b)).Gte(a, b)}
+	return coretypes.Boolean{B: coretypes.GetOps(a).Combine(coretypes.GetOps(b)).Gte(a, b)}
 }
 
 var procEq = func(args []Object) Object {
@@ -1088,54 +1090,54 @@ var procEq = func(args []Object) Object {
 	}
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return coretypes.Boolean{B: numbersEq(a, b)}
+	return coretypes.Boolean{B: coretypes.NumbersEq(a, b)}
 }
 
 var procMax = func(args []Object) Object {
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return Max(a, b)
+	return coretypes.Max(a, b)
 }
 
 var procMin = func(args []Object) Object {
 	a := EnsureObjectIsNumber(args[0], "")
 	b := EnsureObjectIsNumber(args[1], "")
-	return Min(a, b)
+	return coretypes.Min(a, b)
 }
 
 var procIncEx = func(args []Object) Object {
 	x := EnsureArgIsNumber(args, 0)
-	ops := GetOps(x).Combine(BIGINT_OPS)
+	ops := coretypes.GetOps(x).Combine(coretypes.BIGINT_OPS)
 	return ops.Add(x, coretypes.Int{I: 1})
 }
 
 var procDecEx = func(args []Object) Object {
 	x := EnsureArgIsNumber(args, 0)
-	ops := GetOps(x).Combine(BIGINT_OPS)
+	ops := coretypes.GetOps(x).Combine(coretypes.BIGINT_OPS)
 	return ops.Subtract(x, coretypes.Int{I: 1})
 }
 
 var procInc = func(args []Object) Object {
 	switch x := args[0].(type) {
 	case coretypes.Int:
-		return INT_OPS.Add(x, coretypes.Int{I: 1})
+		return coretypes.INT_OPS.Add(x, coretypes.Int{I: 1})
 	case coretypes.Double:
 		return coretypes.Double{D: x.D + 1}
 	}
 	x := EnsureArgIsNumber(args, 0)
-	ops := GetOps(x).Combine(INT_OPS)
+	ops := coretypes.GetOps(x).Combine(coretypes.INT_OPS)
 	return ops.Add(x, coretypes.Int{I: 1})
 }
 
 var procDec = func(args []Object) Object {
 	switch x := args[0].(type) {
 	case coretypes.Int:
-		return INT_OPS.Subtract(x, coretypes.Int{I: 1})
+		return coretypes.INT_OPS.Subtract(x, coretypes.Int{I: 1})
 	case coretypes.Double:
 		return coretypes.Double{D: x.D - 1}
 	}
 	x := EnsureArgIsNumber(args, 0)
-	ops := GetOps(x).Combine(INT_OPS)
+	ops := coretypes.GetOps(x).Combine(coretypes.INT_OPS)
 	return ops.Subtract(x, coretypes.Int{I: 1})
 }
 

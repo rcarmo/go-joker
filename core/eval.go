@@ -594,7 +594,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				if a, ok := ax.(coretypes.Int); ok {
 					if b, ok := bx.(coretypes.Int); ok {
 						if b.I == 0 {
-							panicOnZero(INT_OPS, b)
+							coretypes.PanicOnZero(coretypes.INT_OPS, b)
 						}
 						return coretypes.Int{I: a.I % b.I}
 					}
@@ -607,7 +607,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 					switch b := bx.(type) {
 					case coretypes.Int:
 						if b.I == 0 {
-							panicOnZero(INT_OPS, b)
+							coretypes.PanicOnZero(coretypes.INT_OPS, b)
 						}
 						return coretypes.Double{D: float64(a.I) / float64(b.I)}
 					case coretypes.Double:

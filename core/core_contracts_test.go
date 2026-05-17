@@ -1031,22 +1031,22 @@ func TestBitOpsRejectInvalidIndexesAndShifts(t *testing.T) {
 }
 
 func TestIntArithmeticPromotesToBigIntOnOverflow(t *testing.T) {
-	if got := procAdd([]Object{coretypes.Int{I: maxInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "9223372036854775808N" {
+	if got := procAdd([]Object{coretypes.Int{I: coretypes.MaxInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "9223372036854775808N" {
 		t.Fatalf("add promotion mismatch: %T %s", got, got.ToString(false))
 	}
-	if got := procSubtract([]Object{coretypes.Int{I: minInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "-9223372036854775809N" {
+	if got := procSubtract([]Object{coretypes.Int{I: coretypes.MinInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "-9223372036854775809N" {
 		t.Fatalf("subtract promotion mismatch: %T %s", got, got.ToString(false))
 	}
-	if got := procMultiply([]Object{coretypes.Int{I: maxInt}, coretypes.Int{I: 2}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "18446744073709551614N" {
+	if got := procMultiply([]Object{coretypes.Int{I: coretypes.MaxInt}, coretypes.Int{I: 2}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "18446744073709551614N" {
 		t.Fatalf("multiply promotion mismatch: %T %s", got, got.ToString(false))
 	}
 }
 
 func TestIncDecPromoteToBigIntOnOverflow(t *testing.T) {
-	if got := procInc([]Object{coretypes.Int{I: maxInt}}); got.GetType() != TYPE.BigInt {
+	if got := procInc([]Object{coretypes.Int{I: coretypes.MaxInt}}); got.GetType() != TYPE.BigInt {
 		t.Fatalf("inc did not promote: %T %s", got, got.ToString(false))
 	}
-	if got := procDec([]Object{coretypes.Int{I: minInt}}); got.GetType() != TYPE.BigInt {
+	if got := procDec([]Object{coretypes.Int{I: coretypes.MinInt}}); got.GetType() != TYPE.BigInt {
 		t.Fatalf("dec did not promote: %T %s", got, got.ToString(false))
 	}
 }
@@ -1061,7 +1061,7 @@ func TestBigDecimalArithmeticKeepsBigFloat(t *testing.T) {
 }
 
 func TestBigIntIntPanicsOutsideNativeRange(t *testing.T) {
-	tooLarge := coretypes.MakeBigInt(new(big.Int).Add(maxIntBig, big.NewInt(1)))
+	tooLarge := coretypes.MakeBigInt(new(big.Int).Add(coretypes.MaxIntBig, big.NewInt(1)))
 	defer func() {
 		if recover() == nil {
 			t.Fatal("coretypes.BigInt.Int should panic outside native int range")
@@ -1103,7 +1103,7 @@ func TestFileInfoMapPromotesLargeSize(t *testing.T) {
 	if !found {
 		t.Fatal("FileInfoMap missing :size")
 	}
-	if math.MaxInt64 > int64(maxInt) {
+	if math.MaxInt64 > int64(coretypes.MaxInt) {
 		if got.GetType() != TYPE.BigInt {
 			t.Fatalf("file size type = %s, want coretypes.BigInt", got.GetType().ToString(false))
 		}
@@ -1116,7 +1116,7 @@ func TestFileInfoMapPromotesLargeSize(t *testing.T) {
 
 func TestRatioOrIntUsesNativeIntRange(t *testing.T) {
 	tooLargeFor32Bit := new(big.Rat).SetInt(new(big.Int).Lsh(big.NewInt(1), 40))
-	got := ratioOrInt(tooLargeFor32Bit)
+	got := coretypes.RatioOrInt(tooLargeFor32Bit)
 	if strconv.IntSize == 32 {
 		if got.GetType() != TYPE.BigInt {
 			t.Fatalf("32-bit ratio integer promotion type = %s, want coretypes.BigInt", got.GetType().ToString(false))
@@ -1130,7 +1130,7 @@ func TestRatioOrIntUsesNativeIntRange(t *testing.T) {
 
 func TestRatioOrIntWithOriginalPreservesBigIntOriginal(t *testing.T) {
 	tooLarge := new(big.Rat).SetInt(new(big.Int).Lsh(big.NewInt(1), 70))
-	got := ratioOrIntWithOriginal("1180591620717411303424/1", tooLarge)
+	got := coretypes.RatioOrIntWithOriginal("1180591620717411303424/1", tooLarge)
 	bi, ok := got.(*coretypes.BigInt)
 	if !ok {
 		t.Fatalf("large ratio integer type = %T, want *coretypes.BigInt", got)
@@ -3774,7 +3774,7 @@ func TestWasmArrayF64(t *testing.T) {
 
 func TestWasmRawIntObjectPromotesOutsideNativeRange(t *testing.T) {
 	got := wasmRawIntObject(uint64(math.MaxInt64))
-	if math.MaxInt64 > int64(maxInt) {
+	if math.MaxInt64 > int64(coretypes.MaxInt) {
 		if got.GetType() != TYPE.BigInt {
 			t.Fatalf("wasm raw int object type = %s, want coretypes.BigInt", got.GetType().ToString(false))
 		}
@@ -3786,14 +3786,14 @@ func TestWasmRawIntObjectPromotesOutsideNativeRange(t *testing.T) {
 }
 
 func TestWasmRawIntRejectsOutOfRangeIndex(t *testing.T) {
-	if _, ok := wasmRawInt(uint64(math.MaxInt64)); ok && math.MaxInt64 > int64(maxInt) {
+	if _, ok := wasmRawInt(uint64(math.MaxInt64)); ok && math.MaxInt64 > int64(coretypes.MaxInt) {
 		t.Fatal("wasmRawInt should reject values outside native int range")
 	}
 }
 
 func TestWasmExecRawIntegerResultUsesNativeRange(t *testing.T) {
 	got := wasmRawIntObject(uint64(math.MaxInt64))
-	if math.MaxInt64 > int64(maxInt) && got.GetType() != TYPE.BigInt {
+	if math.MaxInt64 > int64(coretypes.MaxInt) && got.GetType() != TYPE.BigInt {
 		t.Fatalf("raw wasm result type = %s, want coretypes.BigInt", got.GetType().ToString(false))
 	}
 }

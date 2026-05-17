@@ -285,7 +285,7 @@ func (s SortableSlice) Less(i, j int) bool {
 func equalsNumbers(x coretypes.Number, y interface{}) bool {
 	switch y := y.(type) {
 	case coretypes.Number:
-		return category(x) == category(y) && numbersEq(x, y)
+		return coretypes.Category(x) == coretypes.Category(y) && coretypes.NumbersEq(x, y)
 	default:
 		return false
 	}

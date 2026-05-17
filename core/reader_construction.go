@@ -110,7 +110,7 @@ func (ReaderConstructionAdapter) BigFloatFromString(value string, original strin
 }
 
 func (ReaderConstructionAdapter) RatioOrInt(value string, ratio *big.Rat) Object {
-	return ratioOrIntWithOriginal(value, ratio)
+	return coretypes.RatioOrIntWithOriginal(value, ratio)
 }
 
 func (ReaderConstructionAdapter) Comment(v string) Object { return Comment{C: v} }

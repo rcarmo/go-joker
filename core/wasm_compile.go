@@ -778,7 +778,7 @@ func isHandle(v uint64) bool {
 
 func wasmRawInt(v uint64) (int, bool) {
 	i := int64(v)
-	if i < int64(minInt) || i > int64(maxInt) {
+	if i < int64(coretypes.MinInt) || i > int64(coretypes.MaxInt) {
 		return 0, false
 	}
 	return int(i), true
