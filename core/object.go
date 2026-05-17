@@ -1675,18 +1675,6 @@ func typeBuilder() coretypes.Builder {
 	}
 }
 
-func RegRefType(name string, inst interface{}, doc string) *coretypes.Type {
-	return typeBuilder().RegisterReference(name, inst, doc)
-}
-
-func RegType(name string, inst interface{}, doc string) *coretypes.Type {
-	return typeBuilder().RegisterValue(name, inst, doc)
-}
-
-func RegInterface(name string, inst interface{}, doc string) *coretypes.Type {
-	return typeBuilder().RegisterInterface(name, inst, doc)
-}
-
 func CountedIndexedToString(v CountedIndexed, escape bool) string {
 	var b bytes.Buffer
 	b.WriteRune('[')
