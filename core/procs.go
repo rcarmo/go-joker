@@ -26,28 +26,7 @@ import (
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
-type (
-	Phase   = corereader.Phase
-	Dialect = corereader.Dialect
-)
-
-const (
-	READ             = corereader.ReadPhase
-	FORMAT           = corereader.FormatPhase
-	PARSE            = corereader.ParsePhase
-	EVAL             = corereader.EvalPhase
-	PRINT_IF_NOT_NIL = corereader.PrintIfNotNilPhase
-)
-
 const VERSION = "v42.8.2"
-
-const (
-	CLJ     = corereader.CLJDialect
-	CLJS    = corereader.CLJSDialect
-	JOKER   = corereader.JokerDialect
-	EDN     = corereader.EDNDialect
-	UNKNOWN = corereader.UnknownDialect
-)
 
 func ExtractCallable(args []Object, index int) Callable {
 	return EnsureArgIsCallable(args, index)
@@ -1957,8 +1936,8 @@ var procIncProblemCount = func(args []Object) Object {
 	return NIL
 }
 
-func ProcessReader(reader *Reader, filename string, phase Phase) error {
-	if phase == FORMAT {
+func ProcessReader(reader *Reader, filename string, phase corereader.Phase) error {
+	if phase == corereader.FormatPhase {
 		FORMAT_MODE = true
 		HASHMAP_THRESHOLD = 100000
 	}
@@ -1985,10 +1964,10 @@ func ProcessReader(reader *Reader, filename string, phase Phase) error {
 			fmt.Fprintln(Stderr, err)
 			return err
 		}
-		if phase == READ {
+		if phase == corereader.ReadPhase {
 			continue
 		}
-		if phase == FORMAT {
+		if phase == corereader.FormatPhase {
 			if prevObj != nil {
 				cnt := newLineCount(prevObj, obj)
 				for i := 0; i < cnt; i++ {
@@ -2006,7 +1985,7 @@ func ProcessReader(reader *Reader, filename string, phase Phase) error {
 		if err != nil {
 			fmt.Fprintln(Stderr, err)
 		}
-		if phase == PARSE {
+		if phase == corereader.ParsePhase {
 			continue
 		}
 		if err != nil {
@@ -2017,7 +1996,7 @@ func ProcessReader(reader *Reader, filename string, phase Phase) error {
 			fmt.Fprintln(Stderr, err)
 			return err
 		}
-		if phase == EVAL {
+		if phase == corereader.EvalPhase {
 			continue
 		}
 		if _, ok := obj.(Nil); !ok {
@@ -2065,22 +2044,22 @@ func ProcessReplData() {
 	// Let MaybeLazy() handle initialization.
 }
 
-func ProcessLinterData(dialect Dialect) {
-	if dialect == EDN {
+func ProcessLinterData(dialect corereader.Dialect) {
+	if dialect == corereader.EDNDialect {
 		markJokerNamespacesAsUsed()
 		return
 	}
 	processGeneratedLinterPayload("linter_all.joke")
-	if dialect == JOKER {
+	if dialect == corereader.JokerDialect {
 		markJokerNamespacesAsUsed()
 		processGeneratedLinterPayload("linter_joker.joke")
 		return
 	}
 	processGeneratedLinterPayload("linter_cljx.joke")
 	switch dialect {
-	case CLJ:
+	case corereader.CLJDialect:
 		processGeneratedLinterPayload("linter_clj.joke")
-	case CLJS:
+	case corereader.CLJSDialect:
 		processGeneratedLinterPayload("linter_cljs.joke")
 	}
 }
@@ -2358,28 +2337,28 @@ func NewReaderFromFile(filename string) (*Reader, error) {
 func ProcessLinterFile(configDir string, filename string) {
 	if linterFileName := osutil.ExistingChild(configDir, filename); linterFileName != "" {
 		if reader, err := NewReaderFromFile(linterFileName); err == nil {
-			ProcessReader(reader, linterFileName, EVAL)
+			ProcessReader(reader, linterFileName, corereader.EvalPhase)
 		}
 	}
 }
 
-func ProcessLinterFiles(dialect Dialect, filename string, workingDir string) {
-	if dialect == EDN {
+func ProcessLinterFiles(dialect corereader.Dialect, filename string, workingDir string) {
+	if dialect == corereader.EDNDialect {
 		return
 	}
 	configDir := findConfigFile(filename, workingDir, true)
 	if configDir == "" {
 		return
 	}
-	if dialect == JOKER {
+	if dialect == corereader.JokerDialect {
 		ProcessLinterFile(configDir, "linter.joke")
 		return
 	}
 	ProcessLinterFile(configDir, "linter.cljc")
 	switch dialect {
-	case CLJS:
+	case corereader.CLJSDialect:
 		ProcessLinterFile(configDir, "linter.cljs")
-	case CLJ:
+	case corereader.CLJDialect:
 		ProcessLinterFile(configDir, "linter.clj")
 	}
 }

@@ -42,7 +42,7 @@ var (
 	LINTER_MODE   bool = false
 	FORMAT_MODE   bool = false
 	PROBLEM_COUNT      = 0
-	DIALECT       Dialect
+	DIALECT       corereader.Dialect
 	LINTER_CONFIG *Var
 	SUPPRESS_READ bool = false
 )
@@ -788,7 +788,7 @@ func handleNoReaderError(reader *Reader, s Symbol) Object {
 
 func handleNoReaderErrorValue(reader *Reader, s Symbol, value Object) Object {
 	msg := "No reader function for tag " + s.ToString(false)
-	switch corereader.ClassifyMissingTaggedReaderAction(SUPPRESS_READ, LINTER_MODE, DIALECT == EDN) {
+	switch corereader.ClassifyMissingTaggedReaderAction(SUPPRESS_READ, LINTER_MODE, DIALECT == corereader.EDNDialect) {
 	case corereader.MissingTaggedReaderReturnValue:
 		return value
 	case corereader.MissingTaggedReaderWarnAndReturnValue:
@@ -1070,7 +1070,7 @@ func Read(reader *Reader) (Object, bool) {
 	if corereader.NeedsReadFormPeek(r) {
 		peek = reader.Peek()
 	}
-	switch corereader.ClassifyReadForm(r, peek, ARGS != nil, FORMAT_MODE, DIALECT == CLJS) {
+	switch corereader.ClassifyReadForm(r, peek, ARGS != nil, FORMAT_MODE, DIALECT == corereader.CLJSDialect) {
 	case corereader.ReadFormCharacter:
 		return readCharacter(reader), false
 	case corereader.ReadFormNumber:

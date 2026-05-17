@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
@@ -1858,7 +1859,7 @@ func parseSymbol(obj Object, ctx *ParseContext) Expr {
 	if !LINTER_MODE {
 		panic(&ParseError{obj: obj, msg: "Unable to resolve symbol: " + sym.ToString(false)})
 	}
-	if DIALECT == CLJS && sym.ns == nil {
+	if DIALECT == corereader.CLJSDialect && sym.ns == nil {
 		// Check if this is a "callable namespace"
 		ns := ctx.GlobalEnv.FindNamespace(sym)
 		if ns == nil {
