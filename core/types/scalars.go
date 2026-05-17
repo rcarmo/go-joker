@@ -3,9 +3,12 @@ package types
 import (
 	"encoding/binary"
 	"fmt"
+	"io"
 	"math"
 	"math/big"
+	"regexp"
 	"time"
+	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
 	"github.com/rcarmo/go-joker/core/numutil"
@@ -29,11 +32,17 @@ type Time struct {
 	T time.Time
 }
 
-func MakeBoolean(b bool) Boolean  { return Boolean{B: b} }
-func MakeTime(t time.Time) Time   { return Time{T: t} }
-func MakeDouble(d float64) Double { return Double{D: d} }
-func MakeInt(i int) Int           { return Int{I: i} }
-func MakeChar(r rune) Char        { return Char{Ch: r} }
+type Regex struct {
+	InfoHolder
+	R *regexp.Regexp
+}
+
+func MakeBoolean(b bool) Boolean        { return Boolean{B: b} }
+func MakeTime(t time.Time) Time         { return Time{T: t} }
+func MakeDouble(d float64) Double       { return Double{D: d} }
+func MakeInt(i int) Int                 { return Int{I: i} }
+func MakeChar(r rune) Char              { return Char{Ch: r} }
+func MakeRegex(r *regexp.Regexp) *Regex { return &Regex{R: r} }
 
 func (c Char) ToString(escape bool) string {
 	if escape {
@@ -172,3 +181,25 @@ func cmpFloat(a, b float64) int {
 	}
 	return 0
 }
+
+func (rx *Regex) ToString(escape bool) string {
+	if escape {
+		return "#\"" + rx.R.String() + "\""
+	}
+	return rx.R.String()
+}
+
+func (rx *Regex) Print(w io.Writer, printReadably bool) { fmt.Fprint(w, rx.ToString(true)) }
+
+func (rx *Regex) Equals(other interface{}) bool {
+	switch other := other.(type) {
+	case *Regex:
+		return rx.R == other.R
+	default:
+		return false
+	}
+}
+
+func (rx *Regex) GetType() *Type                   { return RuntimeTypes.Regex }
+func (rx *Regex) Hash() uint32                     { return hashutil.Ptr(uintptr(unsafe.Pointer(rx.R))) }
+func (rx *Regex) WithInfo(info *ObjectInfo) Object { rx.Info = info; return rx }

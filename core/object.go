@@ -11,7 +11,6 @@ import (
 	"math"
 	"math/big"
 	"reflect"
-	"regexp"
 	"sync"
 	"unicode/utf8"
 	"unsafe"
@@ -29,6 +28,7 @@ type (
 	Int     = coretypes.Int
 	Boolean = coretypes.Boolean
 	Time    = coretypes.Time
+	Regex   = coretypes.Regex
 	Object  interface {
 		coretypes.Object
 		GetType() *coretypes.Type
@@ -96,10 +96,6 @@ type (
 	Comment struct {
 		coretypes.InfoHolder
 		C string
-	}
-	Regex struct {
-		coretypes.InfoHolder
-		R *regexp.Regexp
 	}
 	Var struct {
 		coretypes.InfoHolder
@@ -1073,38 +1069,6 @@ func (k Keyword) Compare(other coretypes.Object) int {
 
 func (k Keyword) Call(args []Object) Object {
 	return getMap(k, args)
-}
-
-func MakeRegex(r *regexp.Regexp) *Regex {
-	return &Regex{R: r}
-}
-
-func (rx *Regex) ToString(escape bool) string {
-	if escape {
-		return "#\"" + rx.R.String() + "\""
-	}
-	return rx.R.String()
-}
-
-func (rx *Regex) Print(w io.Writer, printReadably bool) {
-	fmt.Fprint(w, rx.ToString(true))
-}
-
-func (rx *Regex) Equals(other interface{}) bool {
-	switch other := other.(type) {
-	case *Regex:
-		return rx.R == other.R
-	default:
-		return false
-	}
-}
-
-func (rx *Regex) GetType() *coretypes.Type {
-	return TYPE.Regex
-}
-
-func (rx *Regex) Hash() uint32 {
-	return hashutil.Ptr(uintptr(unsafe.Pointer(rx.R)))
 }
 
 func (s Symbol) ToString(escape bool) string {

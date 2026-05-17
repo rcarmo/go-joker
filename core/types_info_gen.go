@@ -64,11 +64,6 @@ func (x Keyword) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 
-func (x *Regex) WithInfo(info *coretypes.ObjectInfo) Object {
-	x.Info = info
-	return x
-}
-
 func (x Symbol) WithInfo(info *coretypes.ObjectInfo) Object {
 	x.Info = info
 	return x

@@ -430,7 +430,7 @@ var procRegex = func(args []Object) Object {
 	if err != nil {
 		panic(RT.NewError("Invalid regex: " + err.Error()))
 	}
-	return &Regex{R: r}
+	return coretypes.MakeRegex(r)
 }
 
 func reGroups(s string, indexes []int) Object {

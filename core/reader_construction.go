@@ -115,7 +115,7 @@ func (ReaderConstructionAdapter) RatioOrInt(value string, ratio *big.Rat) Object
 
 func (ReaderConstructionAdapter) Comment(v string) Object { return Comment{C: v} }
 
-func (ReaderConstructionAdapter) Regex(v *regexp.Regexp) Object { return &Regex{R: v} }
+func (ReaderConstructionAdapter) Regex(v *regexp.Regexp) Object { return coretypes.MakeRegex(v) }
 
 func (ReaderConstructionAdapter) NumberFromToken(reader *Reader, token corereader.NumberToken) Object {
 	return numberFromToken(reader, token)
