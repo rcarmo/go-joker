@@ -4104,7 +4104,7 @@ var ty_Comparable coretypes.Type = coretypes.Type{
 		meta: &arrayMap_NUM_4,
 	},
 	Name:        "Comparable",
-	ReflectType: reflect.TypeOf((*Comparable)(nil)).Elem(),
+	ReflectType: reflect.TypeOf((*coretypes.Comparable)(nil)).Elem(),
 }
 var arrayMap_NUM_5 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4136,7 +4136,7 @@ var ty_Comparator coretypes.Type = coretypes.Type{
 		meta: &arrayMap_NUM_5,
 	},
 	Name:        "Comparator",
-	ReflectType: reflect.TypeOf((*Comparator)(nil)).Elem(),
+	ReflectType: reflect.TypeOf((*coretypes.Comparator)(nil)).Elem(),
 }
 var arrayMap_NUM_6 ArrayMap = ArrayMap{
 	arr: []Object{

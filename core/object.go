@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert Comparable Vec Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *coretypes.Type Meta Int Double Stack Map Set Associative Reversible coretypes.Named Comparator *Ratio *BigFloat *BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Reduce coretypes.Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel CountedIndexed
+//go:generate go run gen/gen_types.go assert coretypes.Comparable Vec Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *coretypes.Type Meta Int Double Stack Map Set Associative Reversible coretypes.Named coretypes.Comparator *Ratio *BigFloat *BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Reduce coretypes.Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel CountedIndexed
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
 //go:generate go run -tags gen_code gen/codegen/main.go
 
@@ -161,8 +161,7 @@ type (
 	Sequential interface {
 		sequential()
 	}
-	Comparable = coretypes.Comparable
-	Indexed    interface {
+	Indexed interface {
 		Nth(i int) Object
 		TryNth(i int, d Object) Object
 	}
@@ -182,10 +181,9 @@ type (
 	Reversible interface {
 		Rseq() Seq
 	}
-	Comparator    = coretypes.Comparator
 	SortableSlice struct {
 		s   []Object
-		cmp Comparator
+		cmp coretypes.Comparator
 	}
 	Collection interface {
 		Object

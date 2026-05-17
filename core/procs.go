@@ -948,7 +948,7 @@ var procCompare = func(args []Object) Object {
 	switch k1 := k1.(type) {
 	case Nil:
 		return Int{I: -1}
-	case Comparable:
+	case coretypes.Comparable:
 		return Int{I: k1.Compare(k2)}
 	}
 	panic(RT.NewError(fmt.Sprintf("%s (type: %s) is not a Comparable", k1.ToString(true), k1.GetType().ToString(false))))

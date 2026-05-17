@@ -15,7 +15,7 @@ type (
 		Gettable
 		Associative
 		Sequential
-		Comparable
+		coretypes.Comparable
 		Indexed
 		Stack
 		Reversible

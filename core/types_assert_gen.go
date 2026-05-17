@@ -8,16 +8,16 @@ import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
-func EnsureObjectIsComparable(obj Object, pattern string) Comparable {
-	if c, yes := obj.(Comparable); yes {
+func EnsureObjectIsComparable(obj Object, pattern string) coretypes.Comparable {
+	if c, yes := obj.(coretypes.Comparable); yes {
 		return c
 	}
 	panic(FailObject(obj, "Comparable", pattern))
 }
 
-func EnsureArgIsComparable(args []Object, index int) Comparable {
+func EnsureArgIsComparable(args []Object, index int) coretypes.Comparable {
 	obj := args[index]
-	if c, yes := obj.(Comparable); yes {
+	if c, yes := obj.(coretypes.Comparable); yes {
 		return c
 	}
 	panic(FailArg(obj, "Comparable", index))
@@ -338,16 +338,16 @@ func EnsureArgIsNamed(args []Object, index int) coretypes.Named {
 	panic(FailArg(obj, "coretypes.Named", index))
 }
 
-func EnsureObjectIsComparator(obj Object, pattern string) Comparator {
-	if c, yes := obj.(Comparator); yes {
+func EnsureObjectIsComparator(obj Object, pattern string) coretypes.Comparator {
+	if c, yes := obj.(coretypes.Comparator); yes {
 		return c
 	}
 	panic(FailObject(obj, "Comparator", pattern))
 }
 
-func EnsureArgIsComparator(args []Object, index int) Comparator {
+func EnsureArgIsComparator(args []Object, index int) coretypes.Comparator {
 	obj := args[index]
-	if c, yes := obj.(Comparator); yes {
+	if c, yes := obj.(coretypes.Comparator); yes {
 		return c
 	}
 	panic(FailArg(obj, "Comparator", index))
