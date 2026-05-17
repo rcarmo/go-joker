@@ -3,6 +3,7 @@ package pdf
 import (
 	"bytes"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 
 	"github.com/signintech/gopdf"
@@ -371,7 +372,7 @@ var procToBytes ProcFn = func(args []Object) Object {
 var procPageCount ProcFn = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
-	return MakeInt(d.pdf.GetNumberOfPages())
+	return coretypes.MakeInt(d.pdf.GetNumberOfPages())
 }
 
 // --- Margins ---

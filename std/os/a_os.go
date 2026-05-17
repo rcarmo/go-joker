@@ -4,6 +4,7 @@ package os
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 )
 
@@ -214,7 +215,7 @@ func __egid_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := os.Getegid()
-		return MakeInt(_res)
+		return coretypes.MakeInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -246,7 +247,7 @@ func __euid_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := os.Geteuid()
-		return MakeInt(_res)
+		return coretypes.MakeInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -298,7 +299,7 @@ func __isexists_(_args []Object) Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_res := exists(path)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -369,7 +370,7 @@ func __gid_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := os.Getgid()
-		return MakeInt(_res)
+		return coretypes.MakeInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -590,7 +591,7 @@ func __pagesize_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := os.Getpagesize()
-		return MakeInt(_res)
+		return coretypes.MakeInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -607,7 +608,7 @@ func __ispath_separator_(_args []Object) Object {
 	case _c == 1:
 		c := ExtractChar(_args, 0)
 		_res := os.IsPathSeparator(uint8(c))
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -623,7 +624,7 @@ func __pid_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := os.Getpid()
-		return MakeInt(_res)
+		return coretypes.MakeInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -639,7 +640,7 @@ func __ppid_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := os.Getppid()
-		return MakeInt(_res)
+		return coretypes.MakeInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -810,7 +811,7 @@ func __start_(_args []Object) Object {
 		name := ExtractString(_args, 0)
 		opts := ExtractMap(_args, 1)
 		_res := startProcess(name, opts)
-		return MakeInt(_res)
+		return coretypes.MakeInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -901,7 +902,7 @@ func __uid_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := os.Getuid()
-		return MakeInt(_res)
+		return coretypes.MakeInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -1005,18 +1006,18 @@ func __watch_(_args []Object) Object {
 }
 
 func Init() {
-	SIGABRT_ = MakeInt(0x6)
-	SIGALRM_ = MakeInt(0xe)
-	SIGFPE_ = MakeInt(0x8)
-	SIGHUP_ = MakeInt(0x1)
-	SIGILL_ = MakeInt(0x4)
-	SIGINT_ = MakeInt(0x2)
-	SIGKILL_ = MakeInt(0x9)
-	SIGPIPE_ = MakeInt(0xd)
-	SIGQUIT_ = MakeInt(0x3)
-	SIGSEGV_ = MakeInt(0xb)
-	SIGTERM_ = MakeInt(0xf)
-	SIGTRAP_ = MakeInt(0x5)
+	SIGABRT_ = coretypes.MakeInt(0x6)
+	SIGALRM_ = coretypes.MakeInt(0xe)
+	SIGFPE_ = coretypes.MakeInt(0x8)
+	SIGHUP_ = coretypes.MakeInt(0x1)
+	SIGILL_ = coretypes.MakeInt(0x4)
+	SIGINT_ = coretypes.MakeInt(0x2)
+	SIGKILL_ = coretypes.MakeInt(0x9)
+	SIGPIPE_ = coretypes.MakeInt(0xd)
+	SIGQUIT_ = coretypes.MakeInt(0x3)
+	SIGSEGV_ = coretypes.MakeInt(0xb)
+	SIGTERM_ = coretypes.MakeInt(0xf)
+	SIGTRAP_ = coretypes.MakeInt(0x5)
 	InternsOrThunks()
 }
 

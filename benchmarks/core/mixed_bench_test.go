@@ -2,6 +2,7 @@ package core_test
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 )
 
@@ -102,7 +103,7 @@ func BenchmarkArrayVectorAssoc35(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var v Associative = av
 		for j := 0; j < 9; j++ {
-			v = v.Assoc(MakeInt(j*3+3), Double{D: float64(i + j)})
+			v = v.Assoc(coretypes.MakeInt(j*3+3), Double{D: float64(i + j)})
 		}
 		_ = v
 	}

@@ -1,6 +1,7 @@
 package os
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 	"os"
@@ -17,7 +18,7 @@ func nativeIntObject(n int64) Object {
 	if n > maxNativeInt || n < minNativeInt {
 		return MakeBigInt(big.NewInt(n))
 	}
-	return MakeInt(int(n))
+	return coretypes.MakeInt(int(n))
 }
 
 func env() Object {
@@ -166,8 +167,8 @@ func readDir(dirname string) Object {
 		m := EmptyArrayMap()
 		m.Add(name, MakeString(e.Name()))
 		m.Add(size, nativeIntObject(info.Size()))
-		m.Add(mode, MakeInt(int(info.Mode())))
-		m.Add(isDir, MakeBoolean(e.IsDir()))
+		m.Add(mode, coretypes.MakeInt(int(info.Mode())))
+		m.Add(isDir, coretypes.MakeBoolean(e.IsDir()))
 		m.Add(modTime, nativeIntObject(info.ModTime().Unix()))
 		res = res.Conjoin(m)
 	}

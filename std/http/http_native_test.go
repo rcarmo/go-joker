@@ -2,6 +2,7 @@ package http
 
 import (
 	"errors"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -16,7 +17,7 @@ import (
 func TestHandleStreamSSE(t *testing.T) {
 	rec := httptest.NewRecorder()
 	respMap := EmptyArrayMap()
-	respMap.Add(MakeKeyword("status"), MakeInt(200))
+	respMap.Add(MakeKeyword("status"), coretypes.MakeInt(200))
 
 	streamFn := Proc{Name: "test-stream", Fn: func(args []Object) Object {
 		send := EnsureArgIsCallable(args, 0)
@@ -57,7 +58,7 @@ func (w *failingStreamWriter) Flush() {}
 
 func TestMapToRespRejectsInvalidStatus(t *testing.T) {
 	respMap := EmptyArrayMap()
-	respMap.Add(MakeKeyword("status"), MakeInt(99))
+	respMap.Add(MakeKeyword("status"), coretypes.MakeInt(99))
 	defer func() {
 		if recover() == nil {
 			t.Fatal("invalid response status did not panic")
@@ -84,7 +85,7 @@ func TestMapToRespWriteErrorsSurface(t *testing.T) {
 
 func TestHandleStreamRejectsInvalidStatus(t *testing.T) {
 	respMap := EmptyArrayMap()
-	respMap.Add(MakeKeyword("status"), MakeInt(1000))
+	respMap.Add(MakeKeyword("status"), coretypes.MakeInt(1000))
 	defer func() {
 		if recover() == nil {
 			t.Fatal("invalid stream status did not panic")

@@ -2,6 +2,7 @@ package pods
 
 import (
 	"bytes"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"os"
 	"testing"
@@ -116,11 +117,11 @@ func TestPodInvokeTimeoutOptionsRejectInvalidValues(t *testing.T) {
 	for name, opt := range map[string]Object{
 		"non-map":     MakeString("bad"),
 		"non-integer": func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), MakeString("bad")); return m }(),
-		"zero":        func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), MakeInt(0)); return m }(),
-		"negative":    func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), MakeInt(-1)); return m }(),
+		"zero":        func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(0)); return m }(),
+		"negative":    func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(-1)); return m }(),
 		"too-large": func() Object {
 			m := EmptyArrayMap()
-			m.Add(MakeKeyword("timeout-ms"), MakeInt(int(^uint(0)>>1)))
+			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(int(^uint(0)>>1)))
 			return m
 		}(),
 	} {
@@ -168,7 +169,7 @@ func TestPodInvokeJSON(t *testing.T) {
 			}
 		}
 	}()
-	res, err := p.invoke("fake.pod/echo", []Object{MakeString("hi"), MakeInt(7)})
+	res, err := p.invoke("fake.pod/echo", []Object{MakeString("hi"), coretypes.MakeInt(7)})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -3,6 +3,7 @@ package pods
 import (
 	"encoding/json"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	. "github.com/rcarmo/go-joker/core"
 	edn "github.com/rcarmo/go-joker/std/edn"
@@ -90,7 +91,7 @@ func podPayloadToObject(v interface{}) Object {
 		return MakeString(x)
 	case float64:
 		if x == float64(int(x)) {
-			return MakeInt(int(x))
+			return coretypes.MakeInt(int(x))
 		}
 		return Double{D: x}
 	case []interface{}:

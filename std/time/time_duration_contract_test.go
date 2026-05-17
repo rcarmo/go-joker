@@ -1,6 +1,7 @@
 package time
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"testing"
 
@@ -23,7 +24,7 @@ func TestTimeIntObjectPromotesOutsideNativeRange(t *testing.T) {
 
 func TestTimeIntObjectKeepsSmallValuesAsInt(t *testing.T) {
 	got := timeIntObject(42)
-	if !got.Equals(MakeInt(42)) {
+	if !got.Equals(coretypes.MakeInt(42)) {
 		t.Fatalf("time integer object = %s, want 42", got.ToString(false))
 	}
 }

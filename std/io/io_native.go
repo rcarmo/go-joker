@@ -1,6 +1,7 @@
 package io
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 
@@ -12,7 +13,7 @@ func copyCountObject(n int64) Object {
 	if n > maxNativeInt {
 		return MakeBigInt(big.NewInt(n))
 	}
-	return MakeInt(int(n))
+	return coretypes.MakeInt(int(n))
 }
 
 func pipe() Object {

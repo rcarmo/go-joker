@@ -2,6 +2,7 @@ package core_test
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 )
 
@@ -45,7 +46,7 @@ func TestMixedBenchmarkScriptResults(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := Eval(compileBenchExpr(t, tt.script), nil)
-			if got == nil || !got.Equals(MakeInt(tt.want)) {
+			if got == nil || !got.Equals(coretypes.MakeInt(tt.want)) {
 				t.Fatalf("%s = %v, want %d", tt.name, got, tt.want)
 			}
 		})

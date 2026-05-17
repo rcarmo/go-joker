@@ -1,6 +1,7 @@
 package random
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -22,7 +23,7 @@ func TestRandomIntBetweenRejectsOverflowRange(t *testing.T) {
 	minInt := -maxInt - 1
 	expectRandomPanic(t, func() {
 		intBetween := randomNamespace.Resolve("int-between").Resolve().(Callable)
-		intBetween.Call([]Object{MakeInt(minInt), MakeInt(maxInt)})
+		intBetween.Call([]Object{coretypes.MakeInt(minInt), coretypes.MakeInt(maxInt)})
 	})
 }
 
@@ -30,10 +31,10 @@ func TestRandomSecureArgsValidate(t *testing.T) {
 	initRandomNamespace()
 	expectRandomPanic(t, func() {
 		secureBytes := randomNamespace.Resolve("secure-bytes").Resolve().(Callable)
-		secureBytes.Call([]Object{MakeInt(0)})
+		secureBytes.Call([]Object{coretypes.MakeInt(0)})
 	})
 	expectRandomPanic(t, func() {
 		secureInt := randomNamespace.Resolve("secure-int").Resolve().(Callable)
-		secureInt.Call([]Object{MakeInt(0)})
+		secureInt.Call([]Object{coretypes.MakeInt(0)})
 	})
 }

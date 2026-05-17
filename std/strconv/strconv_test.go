@@ -1,6 +1,7 @@
 package strconv
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"testing"
 
@@ -23,7 +24,7 @@ func TestStrconvIntObjectPromotesOutsideNativeRange(t *testing.T) {
 
 func TestStrconvIntObjectKeepsSmallValuesAsInt(t *testing.T) {
 	got := strconvIntObject(42)
-	if !got.Equals(MakeInt(42)) {
+	if !got.Equals(coretypes.MakeInt(42)) {
 		t.Fatalf("strconv integer object = %s, want 42", got.ToString(false))
 	}
 }

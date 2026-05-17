@@ -1,6 +1,7 @@
 package svg
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"strings"
 	"testing"
@@ -12,12 +13,12 @@ func TestCanvasGeneration(t *testing.T) {
 	initSVGNamespace()
 
 	// Create a canvas
-	canvas := procCanvas([]Object{MakeInt(200), MakeInt(100)})
+	canvas := procCanvas([]Object{coretypes.MakeInt(200), coretypes.MakeInt(100)})
 
 	// Draw shapes
-	procRect([]Object{canvas, MakeInt(10), MakeInt(10), MakeInt(80), MakeInt(40)})
-	procCircle([]Object{canvas, MakeInt(150), MakeInt(50), MakeInt(30)})
-	procText([]Object{canvas, MakeInt(50), MakeInt(80), MakeString("Hello")})
+	procRect([]Object{canvas, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(80), coretypes.MakeInt(40)})
+	procCircle([]Object{canvas, coretypes.MakeInt(150), coretypes.MakeInt(50), coretypes.MakeInt(30)})
+	procText([]Object{canvas, coretypes.MakeInt(50), coretypes.MakeInt(80), MakeString("Hello")})
 
 	// Get SVG string
 	result := procToString([]Object{canvas})
@@ -43,15 +44,15 @@ func TestCanvasGeneration(t *testing.T) {
 
 func TestCanvasRejectsInvalidDimensions(t *testing.T) {
 	expectSVGPanic(t, func() {
-		procCanvas([]Object{MakeInt(0), MakeInt(100)})
+		procCanvas([]Object{coretypes.MakeInt(0), coretypes.MakeInt(100)})
 	})
 	expectSVGPanic(t, func() {
-		procCanvasWithViewbox([]Object{MakeInt(100), MakeInt(100), MakeInt(-1), MakeInt(100)})
+		procCanvasWithViewbox([]Object{coretypes.MakeInt(100), coretypes.MakeInt(100), coretypes.MakeInt(-1), coretypes.MakeInt(100)})
 	})
 }
 
 func TestTransformsRejectNonFiniteFloats(t *testing.T) {
-	canvas := procCanvas([]Object{MakeInt(100), MakeInt(100)})
+	canvas := procCanvas([]Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
 	expectSVGPanic(t, func() {
 		procScale([]Object{canvas, Double{D: math.Inf(1)}})
 	})
@@ -64,30 +65,30 @@ func TestTransformsRejectNonFiniteFloats(t *testing.T) {
 }
 
 func TestShapesRejectInvalidDimensions(t *testing.T) {
-	canvas := procCanvas([]Object{MakeInt(100), MakeInt(100)})
+	canvas := procCanvas([]Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
 	expectSVGPanic(t, func() {
-		procRect([]Object{canvas, MakeInt(0), MakeInt(0), MakeInt(0), MakeInt(10)})
+		procRect([]Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(10)})
 	})
 	expectSVGPanic(t, func() {
-		procRoundrect([]Object{canvas, MakeInt(0), MakeInt(0), MakeInt(10), MakeInt(10), MakeInt(-1), MakeInt(2)})
+		procRoundrect([]Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(-1), coretypes.MakeInt(2)})
 	})
 	expectSVGPanic(t, func() {
-		procCircle([]Object{canvas, MakeInt(0), MakeInt(0), MakeInt(0)})
+		procCircle([]Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(0)})
 	})
 	expectSVGPanic(t, func() {
-		procEllipse([]Object{canvas, MakeInt(0), MakeInt(0), MakeInt(10), MakeInt(-1)})
+		procEllipse([]Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(10), coretypes.MakeInt(-1)})
 	})
 }
 
 func TestCanvasWithStyle(t *testing.T) {
 	initSVGNamespace()
 
-	canvas := procCanvas([]Object{MakeInt(100), MakeInt(100)})
+	canvas := procCanvas([]Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
 
 	style := &ArrayMap{}
 	style = style.Assoc(MakeKeyword("fill"), MakeString("red")).(*ArrayMap)
 	style = style.Assoc(MakeKeyword("stroke"), MakeString("black")).(*ArrayMap)
-	procRect([]Object{canvas, MakeInt(10), MakeInt(10), MakeInt(50), MakeInt(50), style})
+	procRect([]Object{canvas, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(50), coretypes.MakeInt(50), style})
 
 	result := procToString([]Object{canvas})
 	svg := result.(String).S
@@ -104,14 +105,14 @@ func TestRenderSVG(t *testing.T) {
 		<rect x="0" y="0" width="100" height="100" fill="red"/>
 	</svg>`
 
-	img := procRender([]Object{MakeString(svgStr), MakeInt(100), MakeInt(100)})
+	img := procRender([]Object{MakeString(svgStr), coretypes.MakeInt(100), coretypes.MakeInt(100)})
 	if img == nil || img == NIL {
 		t.Fatal("render returned nil")
 	}
 	t.Logf("rendered: %s", img.ToString(false))
 
 	expectSVGPanic(t, func() {
-		procRender([]Object{MakeString(svgStr), MakeInt(0), MakeInt(100)})
+		procRender([]Object{MakeString(svgStr), coretypes.MakeInt(0), coretypes.MakeInt(100)})
 	})
 }
 
@@ -126,9 +127,9 @@ func expectSVGPanic(t *testing.T, fn func()) {
 }
 
 func TestPolylineRejectsMismatchedCoordinates(t *testing.T) {
-	canvas := procCanvas([]Object{MakeInt(10), MakeInt(10)})
+	canvas := procCanvas([]Object{coretypes.MakeInt(10), coretypes.MakeInt(10)})
 	expectSVGPanic(t, func() {
-		procPolyline([]Object{canvas, NewVectorFrom(MakeInt(1), MakeInt(2)), NewVectorFrom(MakeInt(1))})
+		procPolyline([]Object{canvas, NewVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2)), NewVectorFrom(coretypes.MakeInt(1))})
 	})
 }
 

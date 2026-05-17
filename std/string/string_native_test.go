@@ -1,6 +1,7 @@
 package string
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -35,13 +36,13 @@ func TestSplitOnEmptyStringUsesWhitespaceFields(t *testing.T) {
 }
 
 func TestStringIndexBounds(t *testing.T) {
-	if got := indexOf("åbc", Char{Ch: 'b'}, -3); !got.Equals(MakeInt(1)) {
+	if got := indexOf("åbc", Char{Ch: 'b'}, -3); !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("indexOf negative from = %v, want 1", got)
 	}
 	if got := indexOf("åbc", Char{Ch: 'b'}, 10); !got.Equals(NIL) {
 		t.Fatalf("indexOf oversized from = %v, want nil", got)
 	}
-	if got := lastIndexOf("ababa", String{S: "ba"}, 99); !got.Equals(MakeInt(3)) {
+	if got := lastIndexOf("ababa", String{S: "ba"}, 99); !got.Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("lastIndexOf oversized from = %v, want 3", got)
 	}
 	if got := lastIndexOf("ababa", String{S: "ba"}, -1); !got.Equals(NIL) {

@@ -2,6 +2,7 @@ package http
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 	"net"
@@ -144,7 +145,7 @@ func respToMap(resp *http.Response) Map {
 	PanicOnErr(err)
 	PanicOnErr(closeErr)
 	res.Add(MakeKeyword("body"), MakeString(string(body)))
-	res.Add(MakeKeyword("status"), MakeInt(resp.StatusCode))
+	res.Add(MakeKeyword("status"), coretypes.MakeInt(resp.StatusCode))
 	respHeaders := EmptyArrayMap()
 	for k, v := range resp.Header {
 		respHeaders.Add(MakeString(k), MakeStringVector(v))
@@ -155,7 +156,7 @@ func respToMap(resp *http.Response) Map {
 	if resp.ContentLength > maxNativeInt || resp.ContentLength < minNativeInt {
 		res.Add(MakeKeyword("content-length"), MakeBigInt(big.NewInt(resp.ContentLength)))
 	} else {
-		res.Add(MakeKeyword("content-length"), MakeInt(int(resp.ContentLength)))
+		res.Add(MakeKeyword("content-length"), coretypes.MakeInt(int(resp.ContentLength)))
 	}
 	return res
 }

@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"testing"
 
@@ -65,5 +66,5 @@ func TestProfileRejectsNonPositiveIterations(t *testing.T) {
 			t.Fatal("profile should reject non-positive iterations")
 		}
 	}()
-	procProfile([]Object{Proc{Fn: func(args []Object) Object { return NIL }}, MakeInt(0)})
+	procProfile([]Object{Proc{Fn: func(args []Object) Object { return NIL }}, coretypes.MakeInt(0)})
 }

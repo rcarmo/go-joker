@@ -1,6 +1,7 @@
 package system
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	"os"
 	"os/user"
@@ -90,7 +91,7 @@ func systemIntObject(n int64) Object {
 	if n > maxNativeInt || n < minNativeInt {
 		return MakeBigInt(big.NewInt(n))
 	}
-	return MakeInt(int(n))
+	return coretypes.MakeInt(int(n))
 }
 
 func currentTimeMillis() Object { return systemIntObject(time.Now().UnixMilli()) }

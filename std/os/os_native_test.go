@@ -1,6 +1,7 @@
 package os
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math"
 	"runtime"
@@ -44,7 +45,7 @@ func TestNativeIntObjectPromotesOutsideNativeRange(t *testing.T) {
 
 func TestNativeIntObjectKeepsSmallValuesAsInt(t *testing.T) {
 	got := nativeIntObject(42)
-	if !got.Equals(MakeInt(42)) {
+	if !got.Equals(coretypes.MakeInt(42)) {
 		t.Fatalf("native int object = %s, want 42", got.ToString(false))
 	}
 }

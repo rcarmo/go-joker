@@ -2,6 +2,7 @@ package bolt
 
 import (
 	"bytes"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	"os"
 	"unsafe"
@@ -128,7 +129,7 @@ func nextSequence(db *bolt.DB, bucket string) Object {
 	if id > maxNativeUint {
 		return MakeBigInt(new(big.Int).SetUint64(id))
 	}
-	return MakeInt(int(id))
+	return coretypes.MakeInt(int(id))
 }
 
 func put(db *bolt.DB, bucket, key, value string) Nil {

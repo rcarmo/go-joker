@@ -1,6 +1,7 @@
 package pods
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -8,7 +9,7 @@ import (
 
 func TestPodPayloadEDNArgsAndResult(t *testing.T) {
 	p := &Pod{format: "edn"}
-	payload, err := p.encodeArgs([]Object{MakeInt(1), MakeKeyword("a"), NewVectorFrom(MakeString("x"))})
+	payload, err := p.encodeArgs([]Object{coretypes.MakeInt(1), MakeKeyword("a"), NewVectorFrom(MakeString("x"))})
 	if err != nil {
 		t.Fatal(err)
 	}

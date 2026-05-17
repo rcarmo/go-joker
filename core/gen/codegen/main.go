@@ -19,6 +19,8 @@ import (
 	_ "github.com/rcarmo/go-joker/std/string"
 
 	. "github.com/rcarmo/go-joker/core"
+	gen_go "github.com/rcarmo/go-joker/core/gen/gengo"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
@@ -349,7 +351,7 @@ func main() {
 
 		file, err := os.Open("data/" + f.Filename)
 		PanicOnErr(err)
-		err = ProcessReader(NewReader(bufio.NewReader(file), f.Name), f.Filename, EVAL)
+		err = ProcessReader(NewReader(bufio.NewReader(file), f.Name), f.Filename, corereader.EvalPhase)
 		PanicOnErr(err)
 		PanicOnErr(file.Close())
 

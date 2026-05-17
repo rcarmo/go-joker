@@ -2,6 +2,7 @@ package core_test
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 )
 
@@ -29,7 +30,7 @@ func TestStringIterationBenchmarksAgree(t *testing.T) {
 	} {
 		t.Run(name, func(t *testing.T) {
 			got := Eval(compileBenchExpr(t, script), nil)
-			if got == nil || !got.Equals(MakeInt(13)) {
+			if got == nil || !got.Equals(coretypes.MakeInt(13)) {
 				t.Fatalf("%s string iteration benchmark = %v, want 13 spaces", name, got)
 			}
 		})

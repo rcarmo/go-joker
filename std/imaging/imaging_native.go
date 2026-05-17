@@ -3,6 +3,7 @@ package imaging
 import (
 	"bytes"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"image"
 	"image/color"
 	"image/png"
@@ -368,13 +369,13 @@ var procPaste ProcFn = func(args []Object) Object {
 var procWidth ProcFn = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	im := extractImage(args, 0)
-	return MakeInt(im.img.Bounds().Dx())
+	return coretypes.MakeInt(im.img.Bounds().Dx())
 }
 
 var procHeight ProcFn = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	im := extractImage(args, 0)
-	return MakeInt(im.img.Bounds().Dy())
+	return coretypes.MakeInt(im.img.Bounds().Dy())
 }
 
 var procBounds ProcFn = func(args []Object) Object {
@@ -382,10 +383,10 @@ var procBounds ProcFn = func(args []Object) Object {
 	im := extractImage(args, 0)
 	b := im.img.Bounds()
 	return NewVectorFrom(
-		MakeInt(b.Min.X),
-		MakeInt(b.Min.Y),
-		MakeInt(b.Dx()),
-		MakeInt(b.Dy()),
+		coretypes.MakeInt(b.Min.X),
+		coretypes.MakeInt(b.Min.Y),
+		coretypes.MakeInt(b.Dx()),
+		coretypes.MakeInt(b.Dy()),
 	)
 }
 

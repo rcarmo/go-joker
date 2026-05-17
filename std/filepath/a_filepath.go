@@ -4,6 +4,7 @@ package filepath
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"path/filepath"
 )
 
@@ -36,7 +37,7 @@ func __isabs_(_args []Object) Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_res := filepath.IsAbs(path)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -211,7 +212,7 @@ func __ismatches_(_args []Object) Object {
 		name := ExtractString(_args, 1)
 		_res, err := filepath.Match(pattern, name)
 		PanicOnErr(err)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)

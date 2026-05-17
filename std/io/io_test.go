@@ -1,6 +1,7 @@
 package io
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"testing"
 
@@ -23,7 +24,7 @@ func TestCopyCountObjectPromotesOutsideNativeRange(t *testing.T) {
 
 func TestCopyCountObjectKeepsSmallCountsAsInt(t *testing.T) {
 	got := copyCountObject(42)
-	if !got.Equals(MakeInt(42)) {
+	if !got.Equals(coretypes.MakeInt(42)) {
 		t.Fatalf("copy count = %s, want 42", got.ToString(false))
 	}
 }

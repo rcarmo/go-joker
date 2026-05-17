@@ -3,6 +3,7 @@ package pods
 import (
 	"bytes"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	"github.com/zeebo/bencode"
@@ -93,11 +94,11 @@ func bencodeToObject(v interface{}) Object {
 	case []byte:
 		return MakeString(string(x))
 	case int:
-		return MakeInt(x)
+		return coretypes.MakeInt(x)
 	case int64:
-		return MakeInt(int(x))
+		return coretypes.MakeInt(int(x))
 	case uint64:
-		return MakeInt(int(x))
+		return coretypes.MakeInt(int(x))
 	case []interface{}:
 		objs := make([]Object, len(x))
 		for i, e := range x {

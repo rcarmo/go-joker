@@ -4,6 +4,7 @@ package math
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 )
 
@@ -29,7 +30,7 @@ func __abs_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Abs(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -46,7 +47,7 @@ func __ceil_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Ceil(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -64,7 +65,7 @@ func __copy_sign_(_args []Object) Object {
 		x := ExtractNumber(_args, 0)
 		y := ExtractNumber(_args, 1)
 		_res := math.Copysign(x.Double().D, y.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -81,7 +82,7 @@ func __cos_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Cos(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -98,7 +99,7 @@ func __cube_root_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Cbrt(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -116,7 +117,7 @@ func __dim_(_args []Object) Object {
 		x := ExtractNumber(_args, 0)
 		y := ExtractNumber(_args, 1)
 		_res := math.Dim(x.Double().D, y.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -133,7 +134,7 @@ func __exp_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Exp(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -150,7 +151,7 @@ func __exp_2_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Exp2(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -167,7 +168,7 @@ func __exp_minus_1_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Expm1(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -184,7 +185,7 @@ func __floor_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Floor(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -202,7 +203,7 @@ func __hypot_(_args []Object) Object {
 		p := ExtractNumber(_args, 0)
 		q := ExtractNumber(_args, 1)
 		_res := math.Hypot(p.Double().D, q.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -219,7 +220,7 @@ func __inf_(_args []Object) Object {
 	case _c == 1:
 		sign := ExtractInt(_args, 0)
 		_res := math.Inf(sign)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -237,7 +238,7 @@ func __isinf_(_args []Object) Object {
 		x := ExtractNumber(_args, 0)
 		sign := ExtractInt(_args, 1)
 		_res := math.IsInf(x.Double().D, sign)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -254,7 +255,7 @@ func __log_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Log(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -271,7 +272,7 @@ func __log_10_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Log10(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -288,7 +289,7 @@ func __log_2_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Log2(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -305,7 +306,7 @@ func __log_binary_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Logb(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -322,7 +323,7 @@ func __log_plus_1_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Log1p(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -355,7 +356,7 @@ func __nan_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := math.NaN()
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -372,7 +373,7 @@ func __isnan_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.IsNaN(x.Double().D)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -390,7 +391,7 @@ func __next_after_(_args []Object) Object {
 		x := ExtractNumber(_args, 0)
 		y := ExtractNumber(_args, 1)
 		_res := math.Nextafter(x.Double().D, y.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -408,7 +409,7 @@ func __pow_(_args []Object) Object {
 		x := ExtractNumber(_args, 0)
 		y := ExtractNumber(_args, 1)
 		_res := math.Pow(x.Double().D, y.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -425,7 +426,7 @@ func __pow_10_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractInt(_args, 0)
 		_res := math.Pow10(x)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -459,7 +460,7 @@ func __round_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Round(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -476,7 +477,7 @@ func __round_to_even_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.RoundToEven(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -511,7 +512,7 @@ func __sign_bit_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Signbit(x.Double().D)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -528,7 +529,7 @@ func __sin_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Sin(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -545,7 +546,7 @@ func __sqrt_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Sqrt(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -562,7 +563,7 @@ func __trunc_(_args []Object) Object {
 	case _c == 1:
 		x := ExtractNumber(_args, 0)
 		_res := math.Trunc(x.Double().D)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -571,19 +572,19 @@ func __trunc_(_args []Object) Object {
 }
 
 func Init() {
-	e_ = MakeDouble(math.E)
-	ln_of_10_ = MakeDouble(math.Ln10)
-	ln_of_2_ = MakeDouble(math.Ln2)
-	log_10_of_e_ = MakeDouble(math.Log10E)
-	log_2_of_e_ = MakeDouble(math.Log2E)
-	max_double_ = MakeDouble(math.MaxFloat64)
-	phi_ = MakeDouble(math.Phi)
-	pi_ = MakeDouble(math.Pi)
-	smallest_nonzero_double_ = MakeDouble(math.SmallestNonzeroFloat64)
-	sqrt_of_2_ = MakeDouble(math.Sqrt2)
-	sqrt_of_e_ = MakeDouble(math.SqrtE)
-	sqrt_of_phi_ = MakeDouble(math.SqrtPhi)
-	sqrt_of_pi_ = MakeDouble(math.SqrtPi)
+	e_ = coretypes.MakeDouble(math.E)
+	ln_of_10_ = coretypes.MakeDouble(math.Ln10)
+	ln_of_2_ = coretypes.MakeDouble(math.Ln2)
+	log_10_of_e_ = coretypes.MakeDouble(math.Log10E)
+	log_2_of_e_ = coretypes.MakeDouble(math.Log2E)
+	max_double_ = coretypes.MakeDouble(math.MaxFloat64)
+	phi_ = coretypes.MakeDouble(math.Phi)
+	pi_ = coretypes.MakeDouble(math.Pi)
+	smallest_nonzero_double_ = coretypes.MakeDouble(math.SmallestNonzeroFloat64)
+	sqrt_of_2_ = coretypes.MakeDouble(math.Sqrt2)
+	sqrt_of_e_ = coretypes.MakeDouble(math.SqrtE)
+	sqrt_of_phi_ = coretypes.MakeDouble(math.SqrtPhi)
+	sqrt_of_pi_ = coretypes.MakeDouble(math.SqrtPi)
 	InternsOrThunks()
 }
 

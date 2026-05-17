@@ -1,6 +1,7 @@
 package pdf
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"os"
 	"path/filepath"
@@ -37,7 +38,7 @@ func TestDocumentCreate(t *testing.T) {
 	procOval([]Object{doc, Double{D: 300}, Double{D: 200}, Double{D: 50}, Double{D: 30}})
 
 	// Color
-	procStrokeColor([]Object{doc, MakeInt(255), MakeInt(0), MakeInt(0)})
+	procStrokeColor([]Object{doc, coretypes.MakeInt(255), coretypes.MakeInt(0), coretypes.MakeInt(0)})
 	procLine([]Object{doc, Double{D: 50}, Double{D: 300}, Double{D: 500}, Double{D: 300}})
 
 	// New page
@@ -63,13 +64,13 @@ func TestPDFColorRejectsOutOfRangeChannels(t *testing.T) {
 	initPDFNamespace()
 	doc := procDocument(nil)
 	expectPanic(t, func() {
-		procColor([]Object{doc, MakeInt(256), MakeInt(0), MakeInt(0)})
+		procColor([]Object{doc, coretypes.MakeInt(256), coretypes.MakeInt(0), coretypes.MakeInt(0)})
 	})
 	expectPanic(t, func() {
-		procStrokeColor([]Object{doc, MakeInt(0), MakeInt(-1), MakeInt(0)})
+		procStrokeColor([]Object{doc, coretypes.MakeInt(0), coretypes.MakeInt(-1), coretypes.MakeInt(0)})
 	})
 	expectPanic(t, func() {
-		procFillColor([]Object{doc, MakeInt(0), MakeInt(0), MakeInt(999)})
+		procFillColor([]Object{doc, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(999)})
 	})
 }
 

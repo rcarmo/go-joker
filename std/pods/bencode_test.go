@@ -2,6 +2,7 @@ package pods
 
 import (
 	"bytes"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -11,7 +12,7 @@ func TestBencodeRoundTripPodMessage(t *testing.T) {
 	msg := EmptyArrayMap()
 	msg.Add(MakeString("op"), MakeString("describe"))
 	msg.Add(MakeString("id"), MakeString("joker-1"))
-	msg.Add(MakeString("args"), NewVectorFrom(MakeString("x"), MakeInt(42)))
+	msg.Add(MakeString("args"), NewVectorFrom(MakeString("x"), coretypes.MakeInt(42)))
 
 	encoded := bencodeEncodeObject(msg)
 	if !bytes.Contains(encoded, []byte("2:id7:joker-1")) || !bytes.Contains(encoded, []byte("2:op8:describe")) {

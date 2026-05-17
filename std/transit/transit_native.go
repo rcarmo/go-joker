@@ -3,6 +3,7 @@ package transit
 import (
 	"encoding/json"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	"strings"
 
@@ -181,10 +182,10 @@ func (d *transitDecoder) decode(v interface{}, asKey bool) Object {
 	case nil:
 		return NIL
 	case bool:
-		return MakeBoolean(x)
+		return coretypes.MakeBoolean(x)
 	case float64:
 		if x == float64(int(x)) {
-			return MakeInt(int(x))
+			return coretypes.MakeInt(int(x))
 		}
 		return Double{D: x}
 	case string:
@@ -292,7 +293,7 @@ func transitDecodeString(s string) Object {
 	if strings.HasPrefix(s, "~i") {
 		if bi, ok := new(big.Int).SetString(s[2:], 10); ok {
 			if bi.IsInt64() {
-				return MakeInt(int(bi.Int64()))
+				return coretypes.MakeInt(int(bi.Int64()))
 			}
 			return MakeBigInt(bi)
 		}

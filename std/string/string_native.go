@@ -2,6 +2,7 @@ package string
 
 import (
 	"bytes"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"regexp"
 	"strings"
 	"unicode"
@@ -165,7 +166,7 @@ func indexOf(s string, value Object, from int) Object {
 	if res == -1 {
 		return NIL
 	}
-	return MakeInt(utf8.RuneCountInString(s[:res]) + from)
+	return coretypes.MakeInt(utf8.RuneCountInString(s[:res]) + from)
 }
 
 func lastIndexOf(s string, value Object, from int) Object {
@@ -191,7 +192,7 @@ func lastIndexOf(s string, value Object, from int) Object {
 	if res == -1 {
 		return NIL
 	}
-	return MakeInt(utf8.RuneCountInString(s[:res]))
+	return coretypes.MakeInt(utf8.RuneCountInString(s[:res]))
 }
 
 func replace(s string, match Object, repl string) string {

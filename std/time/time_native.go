@@ -1,6 +1,7 @@
 package time
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	"time"
 
@@ -13,7 +14,7 @@ func timeIntObject(n int64) Object {
 	if n > maxNativeInt || n < minNativeInt {
 		return MakeBigInt(big.NewInt(n))
 	}
-	return MakeInt(int(n))
+	return coretypes.MakeInt(int(n))
 }
 
 func inTimezone(t time.Time, tz string) time.Time {

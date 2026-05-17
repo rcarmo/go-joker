@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	"runtime"
 	"time"
@@ -222,7 +223,7 @@ func runtimeIntObject(n int64) Object {
 	if n > maxNativeInt || n < minNativeInt {
 		return MakeBigInt(big.NewInt(n))
 	}
-	return MakeInt(int(n))
+	return coretypes.MakeInt(int(n))
 }
 
 func runtimeUintObject(n uint64) Object {
@@ -230,7 +231,7 @@ func runtimeUintObject(n uint64) Object {
 	if n > maxNativeUint {
 		return MakeBigInt(new(big.Int).SetUint64(n))
 	}
-	return MakeInt(int(n))
+	return coretypes.MakeInt(int(n))
 }
 
 func ensureArgIsFnLocal(args []Object, idx int) *Fn {

@@ -4,6 +4,7 @@ package strconv
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strconv"
 )
 
@@ -17,7 +18,7 @@ func __atoi_(_args []Object) Object {
 		s := ExtractString(_args, 0)
 		_res, err := strconv.Atoi(s)
 		PanicOnErr(err)
-		return MakeInt(_res)
+		return coretypes.MakeInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -34,7 +35,7 @@ func __iscan_backquote_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := strconv.CanBackquote(s)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -106,7 +107,7 @@ func __isgraphic_(_args []Object) Object {
 	case _c == 1:
 		c := ExtractChar(_args, 0)
 		_res := strconv.IsGraphic(c)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -141,7 +142,7 @@ func __parse_bool_(_args []Object) Object {
 		s := ExtractString(_args, 0)
 		_res, err := strconv.ParseBool(s)
 		PanicOnErr(err)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -159,7 +160,7 @@ func __parse_double_(_args []Object) Object {
 		s := ExtractString(_args, 0)
 		_res, err := strconv.ParseFloat(s, 64)
 		PanicOnErr(err)
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -197,7 +198,7 @@ func __isprintable_(_args []Object) Object {
 	case _c == 1:
 		c := ExtractChar(_args, 0)
 		_res := strconv.IsPrint(c)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)

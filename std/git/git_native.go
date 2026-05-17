@@ -1,6 +1,7 @@
 package git
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"unsafe"
 
 	git "github.com/go-git/go-git/v5"
@@ -85,7 +86,7 @@ func makeRemote(remote *gitConfig.RemoteConfig) Map {
 	res := EmptyArrayMap()
 	res.Add(MakeKeyword("name"), MakeString(remote.Name))
 	res.Add(MakeKeyword("urls"), MakeStringVector(remote.URLs))
-	res.Add(MakeKeyword("mirror?"), MakeBoolean(remote.Mirror))
+	res.Add(MakeKeyword("mirror?"), coretypes.MakeBoolean(remote.Mirror))
 	return res
 }
 
@@ -123,7 +124,7 @@ func config(repo *git.Repository) Map {
 
 func makeConfigMap(cfg *gitConfig.Config) Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("bare?"), MakeBoolean(cfg.Core.IsBare))
+	res.Add(MakeKeyword("bare?"), coretypes.MakeBoolean(cfg.Core.IsBare))
 	res.Add(MakeKeyword("worktree"), MakeString(cfg.Core.Worktree))
 	res.Add(MakeKeyword("comment-char"), MakeString(cfg.Core.CommentChar))
 	res.Add(MakeKeyword("repository-format-version"), MakeString(string(cfg.Core.RepositoryFormatVersion)))
@@ -185,7 +186,7 @@ func makeSignature(s object.Signature) Map {
 	res := EmptyArrayMap()
 	res.Add(MakeKeyword("name"), MakeString(s.Name))
 	res.Add(MakeKeyword("email"), MakeString(s.Email))
-	res.Add(MakeKeyword("when"), MakeTime(s.When))
+	res.Add(MakeKeyword("when"), coretypes.MakeTime(s.When))
 	return res
 }
 

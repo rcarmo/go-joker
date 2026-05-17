@@ -2,6 +2,7 @@ package core_test
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 )
 
@@ -304,7 +305,7 @@ func getYAMLParser(tb testing.TB) Callable {
 func TestYAMLParserCorrectness(t *testing.T) {
 	parse := getYAMLParser(t)
 	r := EnsureObjectIsMap(parse.Call([]Object{String{S: yamlSmall}}), "small YAML result: %s")
-	if ok, got := r.Get(MakeString("age")); !ok || !got.Equals(MakeInt(30)) {
+	if ok, got := r.Get(MakeString("age")); !ok || !got.Equals(coretypes.MakeInt(30)) {
 		t.Fatalf("small YAML age = %v, want 30", got)
 	}
 	if ok, got := r.Get(MakeString("active")); !ok || !got.Equals(Boolean{B: true}) {
@@ -315,7 +316,7 @@ func TestYAMLParserCorrectness(t *testing.T) {
 	}
 
 	r2 := EnsureObjectIsMap(parse.Call([]Object{String{S: yamlMedium}}), "medium YAML result: %s")
-	if ok, got := r2.Get(MakeString("score2")); !ok || !got.Equals(MakeInt(87)) {
+	if ok, got := r2.Get(MakeString("score2")); !ok || !got.Equals(coretypes.MakeInt(87)) {
 		t.Fatalf("medium YAML score2 = %v, want 87", got)
 	}
 	if ok, got := r2.Get(MakeString("verified2")); !ok || !got.Equals(Boolean{B: false}) {

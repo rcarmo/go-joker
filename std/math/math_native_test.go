@@ -1,6 +1,7 @@
 package math
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	stdmath "math"
 	"testing"
 
@@ -29,5 +30,5 @@ func TestSetPrecisionRejectsNegativePrecision(t *testing.T) {
 			t.Fatal("setPrecision accepted negative precision")
 		}
 	}()
-	setPrecision(MakeInt(-1), MakeDouble(1.25).BigFloat())
+	setPrecision(coretypes.MakeInt(-1), coretypes.MakeDouble(1.25).BigFloat())
 }

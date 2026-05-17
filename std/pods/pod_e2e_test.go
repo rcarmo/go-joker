@@ -1,6 +1,7 @@
 package pods
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 	"testing"
 
@@ -84,7 +85,7 @@ func TestPodEndToEndFormats(t *testing.T) {
 			if !ok {
 				t.Fatalf("dynamic var is not callable: %T", vr.Value)
 			}
-			res := callable.Call([]Object{MakeKeyword("k"), MakeInt(7)})
+			res := callable.Call([]Object{MakeKeyword("k"), coretypes.MakeInt(7)})
 			got := res.ToString(false)
 			if got != "[:k 7]" && got != "(:k 7)" {
 				t.Fatalf("%s echo = %s", tc.format, got)

@@ -4,6 +4,7 @@ package string
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"regexp"
 	"strings"
 	"unicode"
@@ -18,7 +19,7 @@ func __isblank_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractObject(_args, 0)
 		_res := isBlank(s)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -53,7 +54,7 @@ func __isends_with_(_args []Object) Object {
 		s := ExtractString(_args, 0)
 		substr := ExtractStringable(_args, 1)
 		_res := strings.HasSuffix(s, substr)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -89,7 +90,7 @@ func __isincludes_(_args []Object) Object {
 		s := ExtractString(_args, 0)
 		substr := ExtractStringable(_args, 1)
 		_res := strings.Contains(s, substr)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)
@@ -349,7 +350,7 @@ func __isstarts_with_(_args []Object) Object {
 		s := ExtractString(_args, 0)
 		substr := ExtractStringable(_args, 1)
 		_res := strings.HasPrefix(s, substr)
-		return MakeBoolean(_res)
+		return coretypes.MakeBoolean(_res)
 
 	default:
 		PanicArity(_c)

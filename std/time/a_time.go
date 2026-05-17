@@ -4,6 +4,7 @@ package time
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"time"
 )
 
@@ -38,7 +39,7 @@ func __add_(_args []Object) Object {
 		t := ExtractTime(_args, 0)
 		d := ExtractInteger(_args, 1)
 		_res := t.Add(time.Duration(d))
-		return MakeTime(_res)
+		return coretypes.MakeTime(_res)
 
 	default:
 		PanicArity(_c)
@@ -58,7 +59,7 @@ func __add_date_(_args []Object) Object {
 		months := ExtractInteger(_args, 2)
 		days := ExtractInteger(_args, 3)
 		_res := t.AddDate(years, months, days)
-		return MakeTime(_res)
+		return coretypes.MakeTime(_res)
 
 	default:
 		PanicArity(_c)
@@ -75,7 +76,7 @@ func __day_of_year_(_args []Object) Object {
 	case _c == 1:
 		t := ExtractTime(_args, 0)
 		_res := t.YearDay()
-		return MakeInt(_res)
+		return coretypes.MakeInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -111,7 +112,7 @@ func __from_unix_(_args []Object) Object {
 		sec := ExtractInteger(_args, 0)
 		nsec := ExtractInteger(_args, 1)
 		_res := time.Unix(int64(sec), int64(nsec))
-		return MakeTime(_res)
+		return coretypes.MakeTime(_res)
 
 	default:
 		PanicArity(_c)
@@ -128,7 +129,7 @@ func __hours_(_args []Object) Object {
 	case _c == 1:
 		d := ExtractInteger(_args, 0)
 		_res := time.Duration(d).Hours()
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -146,7 +147,7 @@ func __in_timezone_(_args []Object) Object {
 		t := ExtractTime(_args, 0)
 		tz := ExtractString(_args, 1)
 		_res := inTimezone(t, tz)
-		return MakeTime(_res)
+		return coretypes.MakeTime(_res)
 
 	default:
 		PanicArity(_c)
@@ -163,7 +164,7 @@ func __minutes_(_args []Object) Object {
 	case _c == 1:
 		d := ExtractInteger(_args, 0)
 		_res := time.Duration(d).Minutes()
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -179,7 +180,7 @@ func __now_(_args []Object) Object {
 	switch {
 	case _c == 0:
 		_res := time.Now()
-		return MakeTime(_res)
+		return coretypes.MakeTime(_res)
 
 	default:
 		PanicArity(_c)
@@ -198,7 +199,7 @@ func __parse_(_args []Object) Object {
 		value := ExtractString(_args, 1)
 		_res, err := time.Parse(layout, value)
 		PanicOnErr(err)
-		return MakeTime(_res)
+		return coretypes.MakeTime(_res)
 
 	default:
 		PanicArity(_c)
@@ -236,7 +237,7 @@ func __parse_in_timezone_(_args []Object) Object {
 		value := ExtractString(_args, 1)
 		tz := ExtractString(_args, 2)
 		_res := parseInTimezone(layout, value, tz)
-		return MakeTime(_res)
+		return coretypes.MakeTime(_res)
 
 	default:
 		PanicArity(_c)
@@ -271,7 +272,7 @@ func __seconds_(_args []Object) Object {
 	case _c == 1:
 		d := ExtractInteger(_args, 0)
 		_res := time.Duration(d).Seconds()
-		return MakeDouble(_res)
+		return coretypes.MakeDouble(_res)
 
 	default:
 		PanicArity(_c)
@@ -405,10 +406,10 @@ func Init() {
 	ansi_c_ = MakeString(time.ANSIC)
 	hour_ = MakeBigInt(MakeMathBigIntFromInt64(int64(time.Hour)))
 	kitchen_ = MakeString(time.Kitchen)
-	microsecond_ = MakeInt(int(time.Microsecond))
-	millisecond_ = MakeInt(int(time.Millisecond))
+	microsecond_ = coretypes.MakeInt(int(time.Microsecond))
+	millisecond_ = coretypes.MakeInt(int(time.Millisecond))
 	minute_ = MakeBigInt(MakeMathBigIntFromInt64(int64(time.Minute)))
-	nanosecond_ = MakeInt(int(time.Nanosecond))
+	nanosecond_ = coretypes.MakeInt(int(time.Nanosecond))
 	rfc1123_ = MakeString(time.RFC1123)
 	rfc1123_z_ = MakeString(time.RFC1123Z)
 	rfc3339_ = MakeString(time.RFC3339)
@@ -417,7 +418,7 @@ func Init() {
 	rfc822_z_ = MakeString(time.RFC822Z)
 	rfc850_ = MakeString(time.RFC850)
 	ruby_date_ = MakeString(time.RubyDate)
-	second_ = MakeInt(int(time.Second))
+	second_ = coretypes.MakeInt(int(time.Second))
 	stamp_ = MakeString(time.Stamp)
 	stamp_micro_ = MakeString(time.StampMicro)
 	stamp_milli_ = MakeString(time.StampMilli)

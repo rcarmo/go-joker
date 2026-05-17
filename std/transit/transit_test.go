@@ -1,6 +1,7 @@
 package transit
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
 	"testing"
 
@@ -10,7 +11,7 @@ import (
 func TestTransitRoundTripMap(t *testing.T) {
 	m := EmptyArrayMap()
 	m.Add(MakeKeyword("name"), MakeString("joker"))
-	m.Add(MakeKeyword("n"), MakeInt(42))
+	m.Add(MakeKeyword("n"), coretypes.MakeInt(42))
 	encoded := writeTransit(m).(String).S
 	if !strings.Contains(encoded, `"^ "`) || !strings.Contains(encoded, `"~:name"`) {
 		t.Fatalf("unexpected transit map encoding: %s", encoded)
@@ -42,7 +43,7 @@ func TestTransitCacheRefs(t *testing.T) {
 
 func TestTransitTaggedSetListQuoteCMap(t *testing.T) {
 	set := readTransit(MakeString(`["~#set",[1,"~:a"]]`)).(*MapSet)
-	if ok, _ := set.Get(MakeInt(1)); !ok {
+	if ok, _ := set.Get(coretypes.MakeInt(1)); !ok {
 		t.Fatalf("set missing int: %s", set.ToString(false))
 	}
 	lst := readTransit(MakeString(`["~#list",[1,2]]`))

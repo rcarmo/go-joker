@@ -3,6 +3,7 @@ package random
 import (
 	"crypto/rand"
 	"encoding/hex"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	mrand "math/rand/v2"
 
@@ -23,7 +24,7 @@ func initRandomNamespace() {
 	// int — returns a non-negative random int
 	randomNamespace.InternVar("int", Proc{Fn: func(args []Object) Object {
 		CheckArity(args, 0, 0)
-		return MakeInt(mrand.Int())
+		return coretypes.MakeInt(mrand.Int())
 	}, Name: "random-int", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom()), `Returns a non-negative random integer.`, "1.0"))
 
@@ -34,7 +35,7 @@ func initRandomNamespace() {
 		if n <= 0 {
 			panic(RT.NewError("int-n: n must be positive"))
 		}
-		return MakeInt(mrand.IntN(n))
+		return coretypes.MakeInt(mrand.IntN(n))
 	}, Name: "random-int-n", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("n"))), `Returns a random integer in [0, n).`, "1.0"))
 
@@ -50,7 +51,7 @@ func initRandomNamespace() {
 		if delta <= 0 {
 			panic(RT.NewError("int-between: range is too large"))
 		}
-		return MakeInt(lo + mrand.IntN(delta))
+		return coretypes.MakeInt(lo + mrand.IntN(delta))
 	}, Name: "random-int-between", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("lo"), MakeSymbol("hi"))),
 			`Returns a random integer in [lo, hi).`, "1.0"))
@@ -58,14 +59,14 @@ func initRandomNamespace() {
 	// float — returns a random float64 in [0.0, 1.0)
 	randomNamespace.InternVar("float", Proc{Fn: func(args []Object) Object {
 		CheckArity(args, 0, 0)
-		return MakeDouble(mrand.Float64())
+		return coretypes.MakeDouble(mrand.Float64())
 	}, Name: "random-float", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom()), `Returns a random float in [0.0, 1.0).`, "1.0"))
 
 	// boolean — returns a random boolean
 	randomNamespace.InternVar("boolean", Proc{Fn: func(args []Object) Object {
 		CheckArity(args, 0, 0)
-		return MakeBoolean(mrand.IntN(2) == 1)
+		return coretypes.MakeBoolean(mrand.IntN(2) == 1)
 	}, Name: "random-boolean", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom()), `Returns a random boolean.`, "1.0"))
 
@@ -145,7 +146,7 @@ func initRandomNamespace() {
 		if err != nil {
 			panic(RT.NewError("secure-int: " + err.Error()))
 		}
-		return MakeInt(int(r.Int64()))
+		return coretypes.MakeInt(int(r.Int64()))
 	}, Name: "random-secure-int", Package: "std/random"},
 		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("n"))),
 			`Returns a cryptographically random integer in [0, n).`, "1.0"))
