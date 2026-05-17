@@ -54,13 +54,13 @@ func TestCanvasRejectsInvalidDimensions(t *testing.T) {
 func TestTransformsRejectNonFiniteFloats(t *testing.T) {
 	canvas := procCanvas([]Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
 	expectSVGPanic(t, func() {
-		procScale([]Object{canvas, Double{D: math.Inf(1)}})
+		procScale([]Object{canvas, coretypes.Double{D: math.Inf(1)}})
 	})
 	expectSVGPanic(t, func() {
-		procScale([]Object{canvas, Double{D: 1}, Double{D: math.NaN()}})
+		procScale([]Object{canvas, coretypes.Double{D: 1}, coretypes.Double{D: math.NaN()}})
 	})
 	expectSVGPanic(t, func() {
-		procRotate([]Object{canvas, Double{D: math.Inf(-1)}})
+		procRotate([]Object{canvas, coretypes.Double{D: math.Inf(-1)}})
 	})
 }
 

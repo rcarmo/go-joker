@@ -3,6 +3,7 @@ package svg
 import (
 	"bytes"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"image"
 	"image/color"
 	"math"
@@ -19,23 +20,23 @@ import (
 
 // Canvas wraps an SVG being built.
 type Canvas struct {
-	InfoHolder
+	coretypes.InfoHolder
 	buf *bytes.Buffer
 	svg *svglib.SVG
 	w   int
 	h   int
 }
 
-var typeCanvas = &Type{}
+var typeCanvas = &coretypes.Type{}
 
 func (c *Canvas) ToString(escape bool) string {
 	return fmt.Sprintf("#<SVG %dx%d>", c.w, c.h)
 }
-func (c *Canvas) Equals(other interface{}) bool    { return c == other }
-func (c *Canvas) GetInfo() *ObjectInfo             { return nil }
-func (c *Canvas) WithInfo(info *ObjectInfo) Object { return c }
-func (c *Canvas) GetType() *Type                   { return typeCanvas }
-func (c *Canvas) Hash() uint32                     { return 0 }
+func (c *Canvas) Equals(other interface{}) bool              { return c == other }
+func (c *Canvas) GetInfo() *coretypes.ObjectInfo             { return nil }
+func (c *Canvas) WithInfo(info *coretypes.ObjectInfo) Object { return c }
+func (c *Canvas) GetType() *coretypes.Type                   { return typeCanvas }
+func (c *Canvas) Hash() uint32                               { return 0 }
 
 func extractCanvas(args []Object, idx int) *Canvas {
 	if idx < 0 || idx >= len(args) {
@@ -223,11 +224,11 @@ var procPolygon ProcFn = func(args []Object) Object {
 	if !ok {
 		panic(RT.NewError("svg/polygon: y coordinates must be indexed"))
 	}
-	xc, ok := args[1].(Counted)
+	xc, ok := args[1].(coretypes.Counted)
 	if !ok {
 		panic(RT.NewError("svg/polygon: x coordinates must be counted"))
 	}
-	yc, ok := args[2].(Counted)
+	yc, ok := args[2].(coretypes.Counted)
 	if !ok {
 		panic(RT.NewError("svg/polygon: y coordinates must be counted"))
 	}
@@ -261,11 +262,11 @@ var procPolyline ProcFn = func(args []Object) Object {
 	if !ok {
 		panic(RT.NewError("svg/polyline: y coordinates must be indexed"))
 	}
-	xc, ok := args[1].(Counted)
+	xc, ok := args[1].(coretypes.Counted)
 	if !ok {
 		panic(RT.NewError("svg/polyline: x coordinates must be counted"))
 	}
-	yc, ok := args[2].(Counted)
+	yc, ok := args[2].(coretypes.Counted)
 	if !ok {
 		panic(RT.NewError("svg/polyline: y coordinates must be counted"))
 	}
