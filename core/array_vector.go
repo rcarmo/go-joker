@@ -80,7 +80,7 @@ func (v *ArrayVector) Seq() Seq {
 	return &VectorSeq{vector: v, index: 0}
 }
 
-func (v *ArrayVector) Conj(obj Object) Conjable {
+func (v *ArrayVector) Conj(obj Object) coretypes.Conjable {
 	return v.Conjoin(obj)
 }
 

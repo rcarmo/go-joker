@@ -10,7 +10,7 @@ import (
 
 type (
 	Set interface {
-		Conjable
+		coretypes.Conjable
 		coretypes.Gettable
 		Disjoin(key Object) Set
 	}
@@ -53,7 +53,7 @@ func (set *MapSet) Add(obj Object) bool {
 	}
 }
 
-func (set *MapSet) Conj(obj Object) Conjable {
+func (set *MapSet) Conj(obj Object) coretypes.Conjable {
 	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.ensureMap().Assoc(obj, coretypes.Boolean{B: true}).(Map)}
 }
 

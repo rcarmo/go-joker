@@ -231,13 +231,13 @@ func (r *Record) Vals() Seq {
 }
 
 // Conj adds a map entry to the record.
-func (r *Record) Conj(obj Object) Conjable {
+func (r *Record) Conj(obj Object) coretypes.Conjable {
 	switch v := obj.(type) {
 	case *Vector:
 		if v.count != 2 {
 			panic(RT.NewError("Vector arg to conj on record must be a pair"))
 		}
-		return r.Assoc(v.at(0), v.at(1)).(Conjable)
+		return r.Assoc(v.at(0), v.at(1)).(coretypes.Conjable)
 	}
 	panic(RT.NewError(fmt.Sprintf("Cannot conj %s onto record", obj.GetType().ToString(false))))
 }

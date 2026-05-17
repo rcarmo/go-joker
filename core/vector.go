@@ -297,7 +297,7 @@ func (v *Vector) Seq() Seq {
 	return &VectorSeq{vector: v, index: 0}
 }
 
-func (v *Vector) Conj(obj Object) Conjable {
+func (v *Vector) Conj(obj Object) coretypes.Conjable {
 	return v.Conjoin(obj)
 }
 

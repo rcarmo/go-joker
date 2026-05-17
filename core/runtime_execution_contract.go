@@ -253,7 +253,7 @@ func (RuntimeExecutionAdapter) Conj(coll Object, val Object) (Object, bool) {
 	switch c := coll.(type) {
 	case *TransientVector:
 		return c.ConjInPlace(val), true
-	case Conjable:
+	case coretypes.Conjable:
 		return c.Conj(val), true
 	default:
 		return nil, false

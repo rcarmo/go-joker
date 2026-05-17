@@ -21,12 +21,8 @@ import (
 )
 
 type (
-	Object   = coretypes.Object
-	Conjable interface {
-		Object
-		Conj(obj Object) Conjable
-	}
-	Meta interface {
+	Object = coretypes.Object
+	Meta   interface {
 		GetMeta() Map
 		WithMeta(Map) Object
 	}
@@ -104,7 +100,7 @@ type (
 		runtime *corert.Promise[Object]
 	}
 	Associative interface {
-		Conjable
+		coretypes.Conjable
 		coretypes.Gettable
 		EntryAt(key Object) *ArrayVector
 		Assoc(key, val Object) Associative
@@ -749,7 +745,7 @@ func (n Nil) Cons(obj Object) Seq {
 	return collectionConstruction.NewListFrom(obj)
 }
 
-func (n Nil) Conj(obj Object) Conjable {
+func (n Nil) Conj(obj Object) coretypes.Conjable {
 	return collectionConstruction.NewListFrom(obj)
 }
 

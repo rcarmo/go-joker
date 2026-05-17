@@ -395,7 +395,7 @@ func procAsyncInto(args []Object) Object {
 				out.Close()
 				return
 			}
-			if c, ok := acc.(Conjable); ok {
+			if c, ok := acc.(coretypes.Conjable); ok {
 				acc = c.Conj(v).(Object)
 			} else {
 				panic(RT.NewError("into init is not conjable"))

@@ -541,9 +541,9 @@ func installTransducerCompat() {
 			case 1:
 				return callArgs[0]
 			case 2:
-				acc, ok := callArgs[0].(Conjable)
+				acc, ok := callArgs[0].(coretypes.Conjable)
 				if !ok {
-					panic(FailArg(callArgs[0], "Conjable", 0))
+					panic(FailArg(callArgs[0], "coretypes.Conjable", 0))
 				}
 				return acc.Conj(callArgs[1]).(Object)
 			default:

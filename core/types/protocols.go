@@ -57,6 +57,11 @@ type Deref interface {
 	Deref() Object
 }
 
+type Conjable interface {
+	Object
+	Conj(obj Object) Conjable
+}
+
 type CountedIndexed interface {
 	Counted
 	At(int) Object

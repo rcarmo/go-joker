@@ -281,7 +281,7 @@ func (m *ArrayMap) Iter() MapIterator {
 	return &ArrayMapIterator{m: m}
 }
 
-func (m *ArrayMap) Conj(obj Object) Conjable {
+func (m *ArrayMap) Conj(obj Object) coretypes.Conjable {
 	return mapConj(m, obj)
 }
 

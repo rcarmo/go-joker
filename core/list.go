@@ -59,7 +59,7 @@ func (list *List) conj(obj Object) *List {
 	return NewList(obj, list)
 }
 
-func (list *List) Conj(obj Object) Conjable {
+func (list *List) Conj(obj Object) coretypes.Conjable {
 	return list.conj(obj)
 }
 

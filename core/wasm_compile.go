@@ -911,7 +911,7 @@ func registerWasmHost(rt wazero.Runtime) {
 				}
 				coll := t.load(collHandle)
 				valObj := wasmToObj(t, val)
-				if c, ok := coll.(Conjable); ok {
+				if c, ok := coll.(coretypes.Conjable); ok {
 					return t.store(c.Conj(valObj))
 				}
 				return collHandle

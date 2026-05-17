@@ -43,7 +43,7 @@ func (iter *EmptyMapIterator) Next() *Pair {
 	panic(newIteratorError())
 }
 
-func mapConj(m Map, obj Object) Conjable {
+func mapConj(m Map, obj Object) coretypes.Conjable {
 	switch obj := obj.(type) {
 	case Vec:
 		if obj.Count() != 2 {

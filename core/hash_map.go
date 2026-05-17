@@ -732,7 +732,7 @@ func (m *HashMap) Get(key Object) (bool, Object) {
 	return false, nil
 }
 
-func (m *HashMap) Conj(obj Object) Conjable {
+func (m *HashMap) Conj(obj Object) coretypes.Conjable {
 	return mapConj(m, obj)
 }
 

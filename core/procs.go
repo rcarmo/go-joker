@@ -695,7 +695,7 @@ var procRest = func(args []Object) Object {
 
 var procConj = func(args []Object) Object {
 	switch c := args[0].(type) {
-	case Conjable:
+	case coretypes.Conjable:
 		return c.Conj(args[1])
 	case Seq:
 		return c.Cons(args[1])
