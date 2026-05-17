@@ -5,7 +5,6 @@
 package core
 
 import (
-	"bytes"
 	"encoding/binary"
 	"errors"
 	"fmt"
@@ -19,6 +18,7 @@ import (
 	"unicode/utf8"
 	"unsafe"
 
+	corecollections "github.com/rcarmo/go-joker/core/collections"
 	"github.com/rcarmo/go-joker/core/hashutil"
 	"github.com/rcarmo/go-joker/core/numutil"
 	corert "github.com/rcarmo/go-joker/core/runtime"
@@ -1661,30 +1661,11 @@ func MakeMeta(arglists Seq, docstring string, added string) *ArrayMap {
 }
 
 func CountedIndexedToString(v CountedIndexed, escape bool) string {
-	var b bytes.Buffer
-	b.WriteRune('[')
-	cnt := v.Count()
-	if cnt > 0 {
-		for i := 0; i < cnt-1; i++ {
-			b.WriteString(v.At(i).ToString(escape))
-			b.WriteRune(' ')
-		}
-		b.WriteString(v.At(cnt - 1).ToString(escape))
-	}
-	b.WriteRune(']')
-	return b.String()
+	return corecollections.IndexedToString[Object](v, escape)
 }
 
 func AreCountedIndexedEqual(v1, v2 CountedIndexed) bool {
-	if v1.Count() != v2.Count() {
-		return false
-	}
-	for i := 0; i < v1.Count(); i++ {
-		if !v1.At(i).Equals(v2.At(i)) {
-			return false
-		}
-	}
-	return true
+	return corecollections.IndexedEqual[Object](v1, v2)
 }
 
 func CountedIndexedHash(v CountedIndexed) uint32 {
@@ -1706,19 +1687,9 @@ func CountedIndexedGet(v CountedIndexed, key Object) (bool, Object) {
 }
 
 func CountedIndexedCompare(v1, v2 CountedIndexed) int {
-	if v1.Count() > v2.Count() {
-		return 1
-	}
-	if v1.Count() < v2.Count() {
-		return -1
-	}
-	for i := 0; i < v1.Count(); i++ {
-		c := EnsureObjectIsComparable(v1.At(i), "").Compare(v2.At(i))
-		if c != 0 {
-			return c
-		}
-	}
-	return 0
+	return corecollections.IndexedCompare[Object](v1, v2, func(a, b Object) int {
+		return EnsureObjectIsComparable(a, "").Compare(b)
+	})
 }
 
 func CountedIndexedKvreduce(v CountedIndexed, c Callable, init Object) Object {
