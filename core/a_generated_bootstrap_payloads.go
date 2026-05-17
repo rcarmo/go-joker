@@ -143,8 +143,8 @@ var s_ArraySeq string = "ArraySeq"
 var s_ArrayVector string = "ArrayVector"
 var s_Associative string = "Associative"
 var s_Atom string = "Atom"
-var s_BigFloat string = "BigFloat"
-var s_BigInt string = "BigInt"
+var s_BigFloat string = "coretypes.BigFloat"
+var s_BigInt string = "coretypes.BigInt"
 var s_Boolean string = "coretypes.Boolean"
 var s_Buffer string = "Buffer"
 var s_BufferedReader string = "BufferedReader"
@@ -204,7 +204,7 @@ var s_Number string = "Number"
 var s_ParseError string = "ParseError"
 var s_Pending string = "Pending"
 var s_Proc string = "Proc"
-var s_Ratio string = "Ratio"
+var s_Ratio string = "coretypes.Ratio"
 var s_RecurBindings string = "RecurBindings"
 var s_Reduce string = "Reduce"
 var s_Ref string = "Ref"
@@ -1920,8 +1920,8 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"ArrayVector":                &s_ArrayVector,
 	"Associative":                &s_Associative,
 	"Atom":                       &s_Atom,
-	"BigFloat":                   &s_BigFloat,
-	"BigInt":                     &s_BigInt,
+	"coretypes.BigFloat":         &s_BigFloat,
+	"coretypes.BigInt":           &s_BigInt,
 	"coretypes.Boolean":          &s_Boolean,
 	"Buffer":                     &s_Buffer,
 	"BufferedReader":             &s_BufferedReader,
@@ -1981,7 +1981,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"ParseError":                 &s_ParseError,
 	"Pending":                    &s_Pending,
 	"Proc":                       &s_Proc,
-	"Ratio":                      &s_Ratio,
+	"coretypes.Ratio":            &s_Ratio,
 	"RecurBindings":              &s_RecurBindings,
 	"Reduce":                     &s_Reduce,
 	"Ref":                        &s_Ref,
@@ -5087,7 +5087,7 @@ var arrayMap_NUM_35 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "BigFloat",
+			S: "coretypes.BigFloat",
 		},
 	},
 }
@@ -5095,8 +5095,8 @@ var ty_BigFloat coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_35,
 	},
-	Name:        "BigFloat",
-	ReflectType: reflect.TypeOf((*BigFloat)(nil)),
+	Name:        "coretypes.BigFloat",
+	ReflectType: reflect.TypeOf((*coretypes.BigFloat)(nil)),
 }
 var arrayMap_NUM_36 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5119,7 +5119,7 @@ var arrayMap_NUM_36 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "BigInt",
+			S: "coretypes.BigInt",
 		},
 	},
 }
@@ -5127,8 +5127,8 @@ var ty_BigInt coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_36,
 	},
-	Name:        "BigInt",
-	ReflectType: reflect.TypeOf((*BigInt)(nil)),
+	Name:        "coretypes.BigInt",
+	ReflectType: reflect.TypeOf((*coretypes.BigInt)(nil)),
 }
 var arrayMap_NUM_37 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5887,7 +5887,7 @@ var arrayMap_NUM_60 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Ratio",
+			S: "coretypes.Ratio",
 		},
 	},
 }
@@ -5895,8 +5895,8 @@ var ty_Ratio coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_60,
 	},
-	Name:        "Ratio",
-	ReflectType: reflect.TypeOf((*Ratio)(nil)),
+	Name:        "coretypes.Ratio",
+	ReflectType: reflect.TypeOf((*coretypes.Ratio)(nil)),
 }
 var arrayMap_NUM_61 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -66005,7 +66005,7 @@ var arrayMap_NUM_413 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Coerce to BigFloat",
+			S: "Coerce to coretypes.BigFloat",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -66261,7 +66261,7 @@ var arrayMap_NUM_415 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Returns true if n is a BigFloat",
+			S: "Returns true if n is a coretypes.BigFloat",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -66512,7 +66512,7 @@ var arrayMap_NUM_417 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Coerce to BigInt",
+			S: "Coerce to coretypes.BigInt",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -122720,7 +122720,7 @@ var arrayMap_NUM_646 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Returns the denominator part of a Ratio.",
+			S: "Returns the denominator part of a coretypes.Ratio.",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -237728,7 +237728,7 @@ var arrayMap_NUM_986 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Returns the numerator part of a Ratio.",
+			S: "Returns the numerator part of a coretypes.Ratio.",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -252785,7 +252785,7 @@ var arrayMap_NUM_1072 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Returns true if n is a Ratio",
+			S: "Returns true if n is a coretypes.Ratio",
 		},
 		Keyword{
 			hash: 3376861428,

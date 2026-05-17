@@ -102,7 +102,7 @@ func (ReaderConstructionAdapter) SetLiteral(reader *Reader, values []Object) Obj
 func (ReaderConstructionAdapter) Double(v float64) Object { return coretypes.MakeDouble(v) }
 
 func (ReaderConstructionAdapter) BigInt(v *big.Int, original string) Object {
-	return &BigInt{B: v, Original: original}
+	return &coretypes.BigInt{B: v, Original: original}
 }
 
 func (ReaderConstructionAdapter) BigFloatFromString(value string, original string) (Object, bool) {

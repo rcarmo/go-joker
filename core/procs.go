@@ -616,17 +616,17 @@ var procIsBound = func(args []Object) Object {
 
 // Convert Joker object to native Go object. For those satisfying the
 // coretypes.Native type, that's straightforward. For other Joker objects, try
-// converting them to suitable native Go objects. E.g. a BigInt might
+// converting them to suitable native Go objects. E.g. a coretypes.BigInt might
 // hold a value > MaxInt64 but < MaxUint64, in which case conversion
 // to a uint64 makes more sense than returning the stringized version,
-// for use cases such as `(format "%x" value)`. Even for BigFloat and
+// for use cases such as `(format "%x" value)`. Even for coretypes.BigFloat and
 // BigRat, try to (accurately) convert them to native types so they
 // can be formatted via the usual ways.
 func ToNative(obj Object) interface{} {
 	switch obj := obj.(type) {
 	case coretypes.Native:
 		return obj.Native()
-	case *BigInt:
+	case *coretypes.BigInt:
 		b := obj.BigInt()
 		if b.IsInt64() {
 			return b.Int64()
@@ -634,12 +634,12 @@ func ToNative(obj Object) interface{} {
 		if b.IsUint64() {
 			return b.Uint64()
 		}
-	case *BigFloat:
+	case *coretypes.BigFloat:
 		b := obj.BigFloat()
 		if f, acc := b.Float64(); acc == big.Exact {
 			return f
 		}
-	case *Ratio:
+	case *coretypes.Ratio:
 		b := obj.Ratio()
 		if f, exact := b.Float64(); exact {
 			return f
@@ -969,41 +969,41 @@ var procBoolean = func(args []Object) Object {
 
 var procNumerator = func(args []Object) Object {
 	bi := EnsureArgIsRatio(args, 0).R.Num()
-	return &BigInt{B: bi}
+	return &coretypes.BigInt{B: bi}
 }
 
 var procDenominator = func(args []Object) Object {
 	bi := EnsureArgIsRatio(args, 0).R.Denom()
-	return &BigInt{B: bi}
+	return &coretypes.BigInt{B: bi}
 }
 
 var procBigInt = func(args []Object) Object {
 	switch n := args[0].(type) {
 	case coretypes.Number:
-		return &BigInt{B: n.BigInt()}
+		return &coretypes.BigInt{B: n.BigInt()}
 	case String:
 		bi := &big.Int{}
 		if _, ok := bi.SetString(n.S, 10); ok {
-			return &BigInt{B: bi}
+			return &coretypes.BigInt{B: bi}
 		}
 		panic(RT.NewError("Invalid number format " + n.S))
 	default:
-		panic(RT.NewError(fmt.Sprintf("Cannot cast %s (type: %s) to BigInt", n.ToString(true), n.GetType().ToString(false))))
+		panic(RT.NewError(fmt.Sprintf("Cannot cast %s (type: %s) to coretypes.BigInt", n.ToString(true), n.GetType().ToString(false))))
 	}
 }
 
 var procBigFloat = func(args []Object) Object {
 	switch n := args[0].(type) {
 	case coretypes.Number:
-		return &BigFloat{B: n.BigFloat()}
+		return &coretypes.BigFloat{B: n.BigFloat()}
 	case String:
 		b := &big.Float{}
 		if _, ok := b.SetString(n.S); ok {
-			return &BigFloat{B: b}
+			return &coretypes.BigFloat{B: b}
 		}
 		panic(RT.NewError("Invalid number format " + n.S))
 	default:
-		panic(RT.NewError(fmt.Sprintf("Cannot cast %s (type: %s) to BigFloat", n.ToString(true), n.GetType().ToString(false))))
+		panic(RT.NewError(fmt.Sprintf("Cannot cast %s (type: %s) to coretypes.BigFloat", n.ToString(true), n.GetType().ToString(false))))
 	}
 }
 
@@ -1336,7 +1336,7 @@ var procReaderReadLine = func(args []Object) Object {
 }
 
 var procNanoTime = func(args []Object) Object {
-	return &BigInt{B: big.NewInt(time.Now().UnixNano())}
+	return &coretypes.BigInt{B: big.NewInt(time.Now().UnixNano())}
 }
 
 var procMacroexpand1 = func(args []Object) Object {
@@ -1848,15 +1848,15 @@ var procAbs = func(args []Object) Object {
 	switch n := n.(type) {
 	case coretypes.Double:
 		return coretypes.Double{D: math.Abs(n.D)}
-	case *BigInt:
+	case *coretypes.BigInt:
 		b := &big.Int{}
-		return &BigInt{B: b.Abs(n.B)}
-	case *BigFloat:
+		return &coretypes.BigInt{B: b.Abs(n.B)}
+	case *coretypes.BigFloat:
 		b := &big.Float{}
-		return &BigFloat{B: b.Abs(n.B)}
-	case *Ratio:
+		return &coretypes.BigFloat{B: b.Abs(n.B)}
+	case *coretypes.Ratio:
 		r := &big.Rat{}
-		return &Ratio{R: r.Abs(n.R)}
+		return &coretypes.Ratio{R: r.Abs(n.R)}
 	case coretypes.Int:
 		x := n.I
 		if x < 0 {

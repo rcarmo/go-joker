@@ -49,10 +49,7 @@ type (
 	MetaHolder struct {
 		meta Map
 	}
-	BigInt   = coretypes.BigInt
-	BigFloat = coretypes.BigFloat
-	Ratio    = coretypes.Ratio
-	Nil      struct {
+	Nil struct {
 		coretypes.InfoHolder
 		n struct{}
 	}

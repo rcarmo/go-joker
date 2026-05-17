@@ -425,7 +425,7 @@ func assertInteger(obj Object) int {
 	switch obj := obj.(type) {
 	case coretypes.Int:
 		i = obj.I
-	case *BigInt:
+	case *coretypes.BigInt:
 		i = obj.Int().I
 	default:
 		panic(RT.NewError("Key must be integer"))

@@ -44,12 +44,12 @@ func intOrBigInt(b *big.Int) coretypes.Number {
 	if strconv.IntSize == 32 && b.Cmp(minIntBig) >= 0 && b.Cmp(maxIntBig) <= 0 {
 		return coretypes.MakeInt(int(b.Int64()))
 	}
-	return &BigInt{B: new(big.Int).Set(b)}
+	return &coretypes.BigInt{B: new(big.Int).Set(b)}
 }
 
 func intOrBigIntWithOriginal(orig string, b *big.Int) coretypes.Number {
 	res := intOrBigInt(b)
-	if bi, ok := res.(*BigInt); ok {
+	if bi, ok := res.(*coretypes.BigInt); ok {
 		bi.Original = orig
 		return bi
 	}
@@ -71,14 +71,14 @@ func ratioOrInt(r *big.Rat) coretypes.Number {
 	if r.IsInt() {
 		return intOrBigInt(r.Num())
 	}
-	return &Ratio{R: r}
+	return &coretypes.Ratio{R: r}
 }
 
 func ratioOrIntWithOriginal(orig string, r *big.Rat) coretypes.Number {
 	if r.IsInt() {
 		return intOrBigIntWithOriginal(orig, r.Num())
 	}
-	return &Ratio{R: r, Original: orig}
+	return &coretypes.Ratio{R: r, Original: orig}
 }
 
 func (ops IntOps) Combine(other coretypes.Ops) coretypes.Ops {
@@ -120,11 +120,11 @@ func GetOps(obj Object) coretypes.Ops {
 	switch obj.(type) {
 	case coretypes.Double:
 		return DOUBLE_OPS
-	case *BigInt:
+	case *coretypes.BigInt:
 		return BIGINT_OPS
-	case *BigFloat:
+	case *coretypes.BigFloat:
 		return BIGFLOAT_OPS
-	case *Ratio:
+	case *coretypes.Ratio:
 		return RATIO_OPS
 	default:
 		return INT_OPS
@@ -139,7 +139,7 @@ func (ops IntOps) Add(x, y coretypes.Number) coretypes.Number {
 	xi, yi := x.Int().I, y.Int().I
 	if (yi > 0 && xi > maxInt-yi) || (yi < 0 && xi < minInt-yi) {
 		b := new(big.Int).Add(big.NewInt(int64(xi)), big.NewInt(int64(yi)))
-		return &BigInt{B: b}
+		return &coretypes.BigInt{B: b}
 	}
 	return coretypes.Int{I: xi + yi}
 }
@@ -151,14 +151,14 @@ func (ops DoubleOps) Add(x, y coretypes.Number) coretypes.Number {
 func (ops BigIntOps) Add(x, y coretypes.Number) coretypes.Number {
 	b := &big.Int{}
 	b.Add(x.BigInt(), y.BigInt())
-	res := BigInt{B: b}
+	res := coretypes.BigInt{B: b}
 	return &res
 }
 
 func (ops BigFloatOps) Add(x, y coretypes.Number) coretypes.Number {
 	b := bigFloatWithPrec(x, y, 1)
 	b.Add(x.BigFloat(), y.BigFloat())
-	return &BigFloat{B: b}
+	return &coretypes.BigFloat{B: b}
 }
 
 func (ops RatioOps) Add(x, y coretypes.Number) coretypes.Number {
@@ -173,7 +173,7 @@ func (ops IntOps) Subtract(x, y coretypes.Number) coretypes.Number {
 	xi, yi := x.Int().I, y.Int().I
 	if (yi < 0 && xi > maxInt+yi) || (yi > 0 && xi < minInt+yi) {
 		b := new(big.Int).Sub(big.NewInt(int64(xi)), big.NewInt(int64(yi)))
-		return &BigInt{B: b}
+		return &coretypes.BigInt{B: b}
 	}
 	return coretypes.Int{I: xi - yi}
 }
@@ -185,14 +185,14 @@ func (ops DoubleOps) Subtract(x, y coretypes.Number) coretypes.Number {
 func (ops BigIntOps) Subtract(x, y coretypes.Number) coretypes.Number {
 	b := &big.Int{}
 	b.Sub(x.BigInt(), y.BigInt())
-	res := BigInt{B: b}
+	res := coretypes.BigInt{B: b}
 	return &res
 }
 
 func (ops BigFloatOps) Subtract(x, y coretypes.Number) coretypes.Number {
 	b := bigFloatWithPrec(x, y, 1)
 	b.Sub(x.BigFloat(), y.BigFloat())
-	return &BigFloat{B: b}
+	return &coretypes.BigFloat{B: b}
 }
 
 func (ops RatioOps) Subtract(x, y coretypes.Number) coretypes.Number {
@@ -216,14 +216,14 @@ func (ops DoubleOps) Multiply(x, y coretypes.Number) coretypes.Number {
 func (ops BigIntOps) Multiply(x, y coretypes.Number) coretypes.Number {
 	b := &big.Int{}
 	b.Mul(x.BigInt(), y.BigInt())
-	res := BigInt{B: b}
+	res := coretypes.BigInt{B: b}
 	return &res
 }
 
 func (ops BigFloatOps) Multiply(x, y coretypes.Number) coretypes.Number {
 	b := bigFloatWithPrec(x, y, x.BigFloat().Prec()+y.BigFloat().Prec())
 	b.Mul(x.BigFloat(), y.BigFloat())
-	return &BigFloat{B: b}
+	return &coretypes.BigFloat{B: b}
 }
 
 func (ops RatioOps) Multiply(x, y coretypes.Number) coretypes.Number {
@@ -255,10 +255,10 @@ func (ops BigIntOps) Divide(x, y coretypes.Number) coretypes.Number {
 	b := &big.Rat{}
 	b.Quo(x.Ratio(), y.Ratio())
 	if b.IsInt() {
-		res := BigInt{B: b.Num()}
+		res := coretypes.BigInt{B: b.Num()}
 		return &res
 	}
-	res := Ratio{R: b}
+	res := coretypes.Ratio{R: b}
 	return &res
 }
 
@@ -266,7 +266,7 @@ func (ops BigFloatOps) Divide(x, y coretypes.Number) coretypes.Number {
 	panicOnZero(ops, y)
 	b := bigFloatWithPrec(x, y, 64)
 	b.Quo(x.BigFloat(), y.BigFloat())
-	return &BigFloat{B: b}
+	return &coretypes.BigFloat{B: b}
 }
 
 func (ops RatioOps) Divide(x, y coretypes.Number) coretypes.Number {
@@ -295,21 +295,21 @@ func (ops BigIntOps) Quotient(x, y coretypes.Number) coretypes.Number {
 	panicOnZero(ops, y)
 	z := &big.Int{}
 	z.Quo(x.BigInt(), y.BigInt())
-	return &BigInt{B: z}
+	return &coretypes.BigInt{B: z}
 }
 
 func (ops BigFloatOps) Quotient(x, y coretypes.Number) coretypes.Number {
 	panicOnZero(ops, y)
 	z := &big.Float{}
 	i, _ := z.Quo(x.BigFloat(), y.BigFloat()).Int64()
-	return &BigFloat{B: z.SetInt64(i)}
+	return &coretypes.BigFloat{B: z.SetInt64(i)}
 }
 
 func (ops RatioOps) Quotient(x, y coretypes.Number) coretypes.Number {
 	panicOnZero(ops, y)
 	z := &big.Rat{}
 	f, _ := z.Quo(x.Ratio(), y.Ratio()).Float64()
-	return &BigInt{B: big.NewInt(int64(f))}
+	return &coretypes.BigInt{B: big.NewInt(int64(f))}
 }
 
 // Remainder
@@ -331,7 +331,7 @@ func (ops BigIntOps) Rem(x, y coretypes.Number) coretypes.Number {
 	panicOnZero(ops, y)
 	z := &big.Int{}
 	z.Rem(x.BigInt(), y.BigInt())
-	return &BigInt{B: z}
+	return &coretypes.BigInt{B: z}
 }
 
 func (ops BigFloatOps) Rem(x, y coretypes.Number) coretypes.Number {
@@ -342,7 +342,7 @@ func (ops BigFloatOps) Rem(x, y coretypes.Number) coretypes.Number {
 	i, _ := z.Quo(n, d).Int64()
 	d.Mul(d, big.NewFloat(float64(i)))
 	z.Sub(n, d)
-	return &BigFloat{B: z}
+	return &coretypes.BigFloat{B: z}
 }
 
 func (ops RatioOps) Rem(x, y coretypes.Number) coretypes.Number {
@@ -521,11 +521,11 @@ func Min(x coretypes.Number, y coretypes.Number) coretypes.Number {
 
 func category(x coretypes.Number) int {
 	switch x.(type) {
-	case *BigFloat:
+	case *coretypes.BigFloat:
 		return FLOATING_CATEGORY
 	case coretypes.Double:
 		return FLOATING_CATEGORY
-	case *Ratio:
+	case *coretypes.Ratio:
 		return RATIO_CATEGORY
 	default:
 		return INTEGER_CATEGORY
