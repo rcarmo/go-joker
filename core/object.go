@@ -21,9 +21,7 @@ import (
 )
 
 type (
-	Object interface {
-		coretypes.Object
-	}
+	Object   = coretypes.Object
 	Conjable interface {
 		Object
 		Conj(obj Object) Conjable
