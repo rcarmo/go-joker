@@ -21,6 +21,7 @@ import (
 
 	"github.com/rcarmo/go-joker/core/hashutil"
 	"github.com/rcarmo/go-joker/core/numutil"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
@@ -182,8 +183,8 @@ type (
 	}
 	RecurBindings []Object
 	Delay         struct {
-		fn    Callable
-		value Object
+		fn      Callable
+		runtime *corert.Promise[Object]
 	}
 	Sequential interface {
 		sequential()
@@ -544,10 +545,15 @@ func (d *Delay) WithInfo(info *ObjectInfo) Object {
 }
 
 func (d *Delay) Force() Object {
-	if d.value == nil {
-		d.value = call0(d.fn)
+	if d.runtime == nil {
+		d.runtime = corert.NewPromise[Object]()
 	}
-	return d.value
+	if d.runtime.IsRealized() {
+		return d.runtime.Await()
+	}
+	value := call0(d.fn)
+	d.runtime.Deliver(value)
+	return value
 }
 
 func (d *Delay) Deref() Object {
@@ -555,7 +561,7 @@ func (d *Delay) Deref() Object {
 }
 
 func (d *Delay) IsRealized() bool {
-	return d.value != nil
+	return d.runtime != nil && d.runtime.IsRealized()
 }
 
 func (t *Type) ToString(escape bool) string {

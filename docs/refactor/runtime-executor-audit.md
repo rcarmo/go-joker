@@ -88,7 +88,7 @@ Safe next steps:
 - Keep `core/wasm` for neutral helpers only.
 - Do not move host/runtime execution until typed/object conversion is behind a stable runtime adapter.
 
-### Channel/concurrency mechanics
+### Channel/pending concurrency mechanics
 
 Files:
 
@@ -98,8 +98,10 @@ Files:
 Current state:
 
 - Generic close-state, send, and receive mechanics now live in `core/runtime.Channel[T]` with package-local tests.
+- Generic pending-value mechanics now live in `core/runtime.Future[T,E]` and `core/runtime.Promise[T]` with package-local tests.
 - Root `core.Channel` wraps `runtime.Channel[FutureResult]`, preserving `Object`, `Error`, type/hash, proc registration, and `alts!` reflection integration in root.
-- Core send/receive/go procs now call root `Channel` methods instead of writing to the raw channel directly.
+- Root `core.Future`, `core.Promise`, and `core.Delay` wrap runtime pending primitives, preserving Object/Error/proc semantics in root while moving blocking/realization/deliver-once mechanics out.
+- Core send/receive/go/future/promise/delay procs now call root wrappers instead of manipulating raw done channels or value slots directly.
 
 Safe next steps:
 

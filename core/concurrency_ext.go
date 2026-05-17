@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 )
 
 // concurrency_ext.go — Extended concurrency primitives: alts!, timeout, future, promise, pmap.
@@ -62,22 +63,24 @@ func installConcurrencyExt() {
 	fcVr.Value = Proc{Name: "procFutureCall", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		f := EnsureArgIsCallable(args, 0)
-		fut := &Future{ch: make(chan struct{})}
+		fut := &Future{runtime: corert.NewFuture[Object, Error]()}
 		go func() {
 			registerGoroutineRT()
 			defer unregisterGoroutineRT()
+			var value Object = NIL
+			var err Error
 			defer func() {
 				if r := recover(); r != nil {
 					switch e := r.(type) {
 					case Error:
-						fut.err = e
+						err = e
 					default:
-						fut.err = RT.NewError("future panic")
+						err = RT.NewError("future panic")
 					}
 				}
-				close(fut.ch)
+				fut.runtime.Complete(value, err)
 			}()
-			fut.value = call0(f)
+			value = call0(f)
 		}()
 		return fut
 	}}
@@ -105,7 +108,7 @@ func installConcurrencyExt() {
 	prVr := ns.Intern(MakeSymbol("promise"))
 	prVr.Value = Proc{Name: "procPromise", Fn: func(args []Object) Object {
 		CheckArity(args, 0, 0)
-		return &Promise{ch: make(chan struct{})}
+		return &Promise{runtime: corert.NewPromise[Object]()}
 	}}
 	referToUser(MakeSymbol("promise"), prVr)
 
@@ -118,13 +121,7 @@ func installConcurrencyExt() {
 		if !ok {
 			panic(RT.NewError("deliver requires a promise"))
 		}
-		p.mu.Lock()
-		if !p.delivered {
-			p.value = args[1]
-			p.delivered = true
-			close(p.ch)
-		}
-		p.mu.Unlock()
+		p.runtime.Deliver(args[1])
 		return p
 	}}
 	referToUser(MakeSymbol("deliver"), dlVr)
@@ -326,9 +323,7 @@ func procAlts(args []Object) Object {
 
 // Future holds a value computed asynchronously.
 type Future struct {
-	value Object
-	err   Error
-	ch    chan struct{} // closed when done
+	runtime *corert.Future[Object, Error]
 }
 
 func (f *Future) ToString(escape bool) string   { return "#object[Future]" }
@@ -341,30 +336,22 @@ func (f *Future) Hash() uint32 {
 func (f *Future) WithInfo(info *ObjectInfo) Object { return f }
 
 func (f *Future) Deref() Object {
-	<-f.ch // Block until done.
-	if f.err != nil {
-		panic(f.err)
+	value, err := f.runtime.Await()
+	if err != nil {
+		panic(err)
 	}
-	return f.value
+	return value
 }
 
 func (f *Future) IsRealized() bool {
-	select {
-	case <-f.ch:
-		return true
-	default:
-		return false
-	}
+	return f.runtime.IsRealized()
 }
 
 // --- Promise type ---
 
 // Promise holds a value that can be delivered once.
 type Promise struct {
-	mu        sync.Mutex
-	value     Object
-	delivered bool
-	ch        chan struct{} // closed when delivered
+	runtime *corert.Promise[Object]
 }
 
 func (p *Promise) ToString(escape bool) string   { return "#object[Promise]" }
@@ -377,17 +364,11 @@ func (p *Promise) Hash() uint32 {
 func (p *Promise) WithInfo(info *ObjectInfo) Object { return p }
 
 func (p *Promise) Deref() Object {
-	<-p.ch // Block until delivered.
-	return p.value
+	return p.runtime.Await()
 }
 
 func (p *Promise) IsRealized() bool {
-	select {
-	case <-p.ch:
-		return true
-	default:
-		return false
-	}
+	return p.runtime.IsRealized()
 }
 
 func init() {

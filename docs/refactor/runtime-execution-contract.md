@@ -25,14 +25,14 @@ These fields are not pure IR shape. Moving them into `core/ir` would leak root r
 
 ## Runtime/channel concurrency contract
 
-Generic channel close/send/receive mechanics now live in `core/runtime.Channel[T]`. Root `core.Channel` wraps `Channel[FutureResult]` so root keeps `Object`, `Error`, hashing, type, proc, and `alts!` integration while runtime owns the root-independent concurrency mechanics. Its current contract is:
+Generic channel close/send/receive mechanics now live in `core/runtime.Channel[T]`; generic pending-value mechanics now live in `core/runtime.Future[T,E]` and `core/runtime.Promise[T]`. Root `core.Channel`, `core.Future`, `core.Promise`, and `core.Delay` wrap those runtime mechanics so root keeps `Object`, `Error`, hashing, type, proc, and `alts!` integration while runtime owns the root-independent concurrency mechanics. Its current contract is:
 
 - `Channel.Close()` is idempotent and safe under concurrent callers.
 - `Channel.IsClosed()` is the only supported closed-state accessor; callers must not read runtime fields directly.
 - Sending after close returns false rather than panicking.
 - Receiving from a closed channel returns `NIL` with `ChannelReceiveClosed`.
 
-`channel_contract_test.go` and `core/runtime/channel_test.go` guard the concurrent close/idempotency behavior. This matters for future runtime extraction because async helpers, `alts!`, and core send/receive procs must all share the same close-state semantics.
+`channel_contract_test.go`, `core/runtime/channel_test.go`, and `core/runtime/pending_test.go` guard close/idempotency and pending-value realization behavior. This matters for future runtime extraction because async helpers, `alts!`, futures, promises, delays, and core send/receive procs must all share the same concurrency semantics.
 
 ## Required execution boundary
 
