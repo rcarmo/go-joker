@@ -121,13 +121,6 @@ func newIteratorError() error {
 	return errors.New("Iterator reached the end of collection")
 }
 
-func getHash() interface {
-	Write([]byte) (int, error)
-	Sum32() uint32
-} {
-	return hashutil.New32()
-}
-
 func MakeSymbol(nsname string) Symbol {
 	ns, local, ok := corestr.SplitQualified(nsname)
 	if !ok {

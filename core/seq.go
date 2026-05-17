@@ -438,13 +438,13 @@ func hashUnordered(seq Seq, seed uint32) uint32 {
 		seed += seq.First().Hash()
 		seq = seq.Rest()
 	}
-	h := getHash()
+	h := coretypes.NewHash32()
 	h.Write(hashutil.Uint32Bytes(seed))
 	return h.Sum32()
 }
 
 func hashOrdered(seq Seq) uint32 {
-	h := getHash()
+	h := coretypes.NewHash32()
 	for !seq.IsEmpty() {
 		h.Write(hashutil.Uint32Bytes(seq.First().Hash()))
 		seq = seq.Rest()
