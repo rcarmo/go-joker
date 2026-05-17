@@ -73,6 +73,15 @@ func TestBigIntIntConvertsWithinNativeRange(t *testing.T) {
 	}
 }
 
+func TestBigIntDoubleUsesFullMagnitude(t *testing.T) {
+	large := MakeBigInt(new(big.Int).Lsh(big.NewInt(1), 70))
+	got := large.Double().D
+	want := math.Pow(2, 70)
+	if got != want {
+		t.Fatalf("BigInt.Double = %.0f, want %.0f", got, want)
+	}
+}
+
 type contractFileInfo struct {
 	size int64
 }

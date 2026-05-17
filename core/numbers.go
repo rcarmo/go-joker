@@ -217,7 +217,8 @@ func (b *BigInt) BigInt() *big.Int {
 }
 
 func (b *BigInt) Double() Double {
-	return Double{D: float64(b.BigInt().Int64())}
+	f, _ := new(big.Float).SetInt(b.BigInt()).Float64()
+	return Double{D: f}
 }
 
 func (b *BigInt) BigFloat() *big.Float {
