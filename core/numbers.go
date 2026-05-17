@@ -144,7 +144,7 @@ func (ops RatioOps) Combine(other Ops) Ops {
 
 func GetOps(obj Object) Ops {
 	switch obj.(type) {
-	case Double:
+	case coretypes.Double:
 		return DOUBLE_OPS
 	case *BigInt:
 		return BIGINT_OPS
@@ -640,7 +640,7 @@ func category(x Number) int {
 	switch x.(type) {
 	case *BigFloat:
 		return FLOATING_CATEGORY
-	case Double:
+	case coretypes.Double:
 		return FLOATING_CATEGORY
 	case *Ratio:
 		return RATIO_CATEGORY
