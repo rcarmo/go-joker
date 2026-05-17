@@ -894,14 +894,12 @@ var procLazySeq = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procDelay = func(args []coretypes.Object) coretypes.Object {
-	return &Delay{
-		fn: args[0].(*Fn),
-	}
+	return coretypes.NewDelay(args[0].(*Fn))
 }
 
 var procForce = func(args []coretypes.Object) coretypes.Object {
 	switch d := args[0].(type) {
-	case *Delay:
+	case *coretypes.Delay:
 		return d.Force()
 	default:
 		return d

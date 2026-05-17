@@ -13,7 +13,6 @@ import (
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
-	corert "github.com/rcarmo/go-joker/core/runtime"
 	corestr "github.com/rcarmo/go-joker/core/string"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 )
@@ -83,11 +82,8 @@ type (
 		ArrayMap
 		rt *goroutineRT
 	}
-	Delay struct {
-		fn      coretypes.Callable
-		runtime *corert.Promise[coretypes.Object]
-	}
-	Atom struct {
+	Delay = coretypes.Delay
+	Atom  struct {
 		MetaHolder
 		mu    sync.Mutex
 		value coretypes.Object
@@ -238,50 +234,6 @@ func (a *Atom) Deref() coretypes.Object {
 	v := a.value
 	a.mu.Unlock()
 	return v
-}
-
-func (d *Delay) ToString(escape bool) string {
-	return "#object[Delay]"
-}
-
-func (d *Delay) Equals(other interface{}) bool {
-	return d == other
-}
-
-func (d *Delay) GetInfo() *coretypes.ObjectInfo {
-	return nil
-}
-
-func (d *Delay) GetType() *coretypes.Type {
-	return TYPE.Delay
-}
-
-func (d *Delay) Hash() uint32 {
-	return hashutil.Ptr(uintptr(unsafe.Pointer(d)))
-}
-
-func (d *Delay) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	return d
-}
-
-func (d *Delay) Force() coretypes.Object {
-	if d.runtime == nil {
-		d.runtime = corert.NewPromise[coretypes.Object]()
-	}
-	if d.runtime.IsRealized() {
-		return d.runtime.Await()
-	}
-	value := call0(d.fn)
-	d.runtime.Deliver(value)
-	return value
-}
-
-func (d *Delay) Deref() coretypes.Object {
-	return d.Force()
-}
-
-func (d *Delay) IsRealized() bool {
-	return d.runtime != nil && d.runtime.IsRealized()
 }
 
 func (exInfo *ExInfo) ToString(escape bool) string {

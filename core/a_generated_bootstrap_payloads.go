@@ -5320,7 +5320,7 @@ var ty_Delay coretypes.Type = coretypes.Type{
 		meta: &arrayMap_NUM_42,
 	},
 	Name:        "Delay",
-	ReflectType: reflect.TypeOf((*Delay)(nil)),
+	ReflectType: reflect.TypeOf((*coretypes.Delay)(nil)),
 }
 var arrayMap_NUM_43 ArrayMap = ArrayMap{
 	arr: []coretypes.Object{
@@ -6435,6 +6435,7 @@ func init() {
 	coretypes.RuntimeTypes = &TYPE
 	coretypes.NumberCompare = coretypes.CompareNumbers
 	coretypes.NumberEquals = equalsNumbers
+	coretypes.DelayCall = call0
 }
 
 var LINTER_TYPES map[*string]bool = map[*string]bool{}
