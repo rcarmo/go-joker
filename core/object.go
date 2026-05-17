@@ -7,11 +7,9 @@ package core
 import (
 	"errors"
 	"fmt"
-	"io"
 	"math"
 	"reflect"
 	"sync"
-	"unicode/utf8"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
@@ -50,11 +48,8 @@ type (
 		name *string
 		hash uint32
 	}
-	String struct {
-		coretypes.InfoHolder
-		S string
-	}
-	Var struct {
+	String = coretypes.String
+	Var    struct {
 		coretypes.InfoHolder
 		MetaHolder
 		ns             *Namespace
@@ -908,177 +903,14 @@ func (s Symbol) Call(args []Object) Object {
 	return getMap(s, args)
 }
 
-func (s String) ToString(escape bool) string {
-	if escape {
-		return corestr.EscapeString(s.S)
-	}
-	return s.S
-}
-
-func (s String) Format(w io.Writer, indent int) int {
-	fmt.Fprint(w, "\"", s.S, "\"")
-	return indent + utf8.RuneCountInString(s.S) + 2
-}
-
-func MakeString(s string) String {
-	return String{S: s}
-}
+func MakeString(s string) String { return coretypes.MakeString(s) }
 
 func MakeStringVector(ss []string) *ArrayVector {
 	res := collectionConstruction.NewEmptyArrayVector()
 	for _, s := range ss {
-		res.Append(MakeString(s))
+		res.Append(coretypes.MakeString(s))
 	}
 	return res
-}
-
-func (s String) Equals(other interface{}) bool {
-	switch other := other.(type) {
-	case String:
-		return s.S == other.S
-	default:
-		return false
-	}
-}
-
-func (s String) GetType() *coretypes.Type {
-	return TYPE.String
-}
-
-func (s String) Native() interface{} {
-	return s.S
-}
-
-func (s String) Hash() uint32 {
-	h := getHash()
-	h.Write([]byte(s.S))
-	return h.Sum32()
-}
-
-func (s String) Count() int {
-	if stringIsASCII(s.S) {
-		return len(s.S)
-	}
-	return utf8.RuneCountInString(s.S)
-}
-
-func (s String) Seq() Seq {
-	return &stringSeq{s: s.S, off: 0}
-}
-
-func (seq *stringSeq) Seq() Seq          { return seq }
-func (seq *stringSeq) SequentialMarker() {}
-
-func (seq *stringSeq) First() Object {
-	if seq.off >= len(seq.s) {
-		return NIL
-	}
-	r, _ := utf8.DecodeRuneInString(seq.s[seq.off:])
-	return coretypes.Char{Ch: r}
-}
-
-func (seq *stringSeq) Rest() Seq {
-	if seq.off >= len(seq.s) {
-		return EmptyList
-	}
-	_, size := utf8.DecodeRuneInString(seq.s[seq.off:])
-	return &stringSeq{s: seq.s, off: seq.off + size}
-}
-
-func (seq *stringSeq) IsEmpty() bool {
-	return seq.off >= len(seq.s)
-}
-
-func (seq *stringSeq) Cons(obj Object) Seq {
-	return &ConsSeq{first: obj, rest: seq}
-}
-
-func (seq *stringSeq) Equals(other interface{}) bool {
-	return IsSeqEqual(seq, other)
-}
-
-func (seq *stringSeq) ToString(escape bool) string {
-	return SeqToString(seq, escape)
-}
-
-func (seq *stringSeq) GetInfo() *coretypes.ObjectInfo                       { return nil }
-func (seq *stringSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return seq }
-func (seq *stringSeq) GetType() *coretypes.Type                             { return TYPE.StringSeq }
-func (seq *stringSeq) Hash() uint32                                         { return hashOrdered(seq) }
-func (seq *stringSeq) WithMeta(meta Map) Object {
-	// stringSeq has no meta; return as-is like other minimal seqs
-	return seq
-}
-func (seq *stringSeq) Pprint(w io.Writer, indent int) int { return pprintSeq(seq, w, indent) }
-func (seq *stringSeq) Format(w io.Writer, indent int) int { return formatSeq(seq, w, indent) }
-
-func (s String) Nth(i int) Object {
-	if i < 0 {
-		panic(RT.NewError(fmt.Sprintf("Negative index: %d", i)))
-	}
-	// Fast path: for pure ASCII strings, byte index == rune index.
-	// Check: if len(s) matches byte count, all chars are single-byte.
-	if i < len(s.S) && stringIsASCII(s.S) {
-		return coretypes.Char{Ch: rune(s.S[i])}
-	}
-	// Slow path: UTF-8 rune iteration
-	n := 0
-	for _, r := range s.S {
-		if n == i {
-			return coretypes.Char{Ch: r}
-		}
-		n++
-	}
-	panic(RT.NewError(fmt.Sprintf("Index %d exceeds string's length %d", i, n)))
-}
-
-// stringIsASCII returns true if all bytes in s are < 0x80.
-// Caches results for strings > 8 bytes to avoid repeated scans.
-var asciiCache sync.Map // string -> bool
-
-func stringIsASCII(s string) bool {
-	if len(s) <= 8 {
-		for i := 0; i < len(s); i++ {
-			if s[i] >= 0x80 {
-				return false
-			}
-		}
-		return true
-	}
-	if v, ok := asciiCache.Load(s); ok {
-		return v.(bool)
-	}
-	result := true
-	for i := 0; i < len(s); i++ {
-		if s[i] >= 0x80 {
-			result = false
-			break
-		}
-	}
-	asciiCache.Store(s, result)
-	return result
-}
-
-func (s String) TryNth(i int, d Object) Object {
-	if i < 0 {
-		return d
-	}
-	if i < len(s.S) && stringIsASCII(s.S) {
-		return coretypes.Char{Ch: rune(s.S[i])}
-	}
-	n := 0
-	for _, r := range s.S {
-		if n == i {
-			return coretypes.Char{Ch: r}
-		}
-		n++
-	}
-	return d
-}
-
-func (s String) Compare(other coretypes.Object) int {
-	s2 := EnsureObjectIsString(rootObject(other), "Cannot compare String: %s")
-	return corestr.Compare(s.S, s2.S)
 }
 
 func IsSymbol(obj Object) bool {

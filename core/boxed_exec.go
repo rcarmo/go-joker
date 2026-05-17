@@ -879,7 +879,7 @@ loop:
 				s := sObj.(String).S
 				si := start.(coretypes.Int).I
 				ei := end.(coretypes.Int).I
-				if stringIsASCII(s) {
+				if coretypes.StringIsASCII(s) {
 					stack = append(stack, String{S: s[si:ei]})
 				} else {
 					runes := []rune(s)
@@ -891,7 +891,7 @@ loop:
 				stack = stack[:len(stack)-2]
 				s := sObj.(String).S
 				si := start.(coretypes.Int).I
-				if stringIsASCII(s) {
+				if coretypes.StringIsASCII(s) {
 					stack = append(stack, String{S: s[si:]})
 				} else {
 					runes := []rune(s)
