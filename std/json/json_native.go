@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"strings"
 )
@@ -12,9 +13,9 @@ func fromObject(obj Object) interface{} {
 	switch obj := obj.(type) {
 	case Keyword:
 		return obj.ToString(false)[1:]
-	case Boolean:
+	case coretypes.Boolean:
 		return obj.B
-	case Number:
+	case coretypes.Number:
 		return obj.Double().D
 	case Nil:
 		return nil
@@ -53,11 +54,11 @@ func toObject(v interface{}, keywordize bool) Object {
 		return MakeString(v)
 	case float64:
 		if v == float64(int(v)) {
-			return Int{I: int(v)}
+			return coretypes.Int{I: int(v)}
 		}
-		return Double{D: v}
+		return coretypes.Double{D: v}
 	case bool:
-		return Boolean{B: v}
+		return coretypes.Boolean{B: v}
 	case nil:
 		return NIL
 	case []interface{}:
