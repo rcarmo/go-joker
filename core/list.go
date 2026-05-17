@@ -126,7 +126,7 @@ func (list *List) Count() int {
 	return list.listNode().Count()
 }
 
-func (list *List) Empty() Collection {
+func (list *List) Empty() coretypes.Collection {
 	return EmptyList
 }
 

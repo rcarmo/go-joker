@@ -85,6 +85,17 @@ type Gettable interface {
 	Get(key Object) (bool, Object)
 }
 
+type Reversible interface {
+	Rseq() Seq
+}
+
+type Collection interface {
+	Object
+	Counted
+	Seqable
+	Empty() Collection
+}
+
 type KVReduce interface {
 	KVReduce(c Callable, init Object) Object
 }

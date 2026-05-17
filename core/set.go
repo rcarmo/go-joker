@@ -120,7 +120,7 @@ func (set *MapSet) Call(args []coretypes.Object) coretypes.Object {
 	return NIL
 }
 
-func (set *MapSet) Empty() Collection {
+func (set *MapSet) Empty() coretypes.Collection {
 	return collectionConstruction.NewEmptySet()
 }
 

@@ -31,7 +31,7 @@ func init() {
 	TYPE = coretypes.Types{
 		Associative:    typeBuilder().RegisterInterface("Associative", (*Associative)(nil), ""),
 		Callable:       typeBuilder().RegisterInterface("coretypes.Callable", (*coretypes.Callable)(nil), ""),
-		Collection:     typeBuilder().RegisterInterface("Collection", (*Collection)(nil), ""),
+		Collection:     typeBuilder().RegisterInterface("Collection", (*coretypes.Collection)(nil), ""),
 		Comparable:     typeBuilder().RegisterInterface("Comparable", (*coretypes.Comparable)(nil), ""),
 		Comparator:     typeBuilder().RegisterInterface("Comparator", (*coretypes.Comparator)(nil), ""),
 		Counted:        typeBuilder().RegisterInterface("Counted", (*coretypes.Counted)(nil), ""),
@@ -50,7 +50,7 @@ func init() {
 		Number:         typeBuilder().RegisterInterface("Number", (*coretypes.Number)(nil), ""),
 		Pending:        typeBuilder().RegisterInterface("Pending", (*coretypes.Pending)(nil), ""),
 		Ref:            typeBuilder().RegisterInterface("Ref", (*Ref)(nil), ""),
-		Reversible:     typeBuilder().RegisterInterface("Reversible", (*Reversible)(nil), ""),
+		Reversible:     typeBuilder().RegisterInterface("Reversible", (*coretypes.Reversible)(nil), ""),
 		Seq:            typeBuilder().RegisterInterface("coretypes.Seq", (*coretypes.Seq)(nil), ""),
 		Seqable:        typeBuilder().RegisterInterface("coretypes.Seqable", (*coretypes.Seqable)(nil), ""),
 		Sequential:     typeBuilder().RegisterInterface("Sequential", (*coretypes.Sequential)(nil), ""),

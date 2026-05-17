@@ -18,7 +18,7 @@ type (
 		coretypes.Comparable
 		coretypes.Indexed
 		coretypes.Stack
-		Reversible
+		coretypes.Reversible
 		Meta
 		coretypes.Seqable
 		coretypes.Formatter
@@ -502,7 +502,7 @@ func NewVectorFromSeq(seq coretypes.Seq) *Vector {
 	return res
 }
 
-func (v *Vector) Empty() Collection {
+func (v *Vector) Empty() coretypes.Collection {
 	return collectionConstruction.NewEmptyVector()
 }
 

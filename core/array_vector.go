@@ -164,7 +164,7 @@ func EmptyArrayVector() *ArrayVector {
 	return &ArrayVector{}
 }
 
-func (v *ArrayVector) Empty() Collection {
+func (v *ArrayVector) Empty() coretypes.Collection {
 	return collectionConstruction.NewEmptyArrayVector()
 }
 

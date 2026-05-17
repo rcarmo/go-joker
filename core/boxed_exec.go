@@ -2391,7 +2391,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 			sp = 0
 			pc = target
 
-		// Collection ops: convert at boundary
+		// coretypes.Collection ops: convert at boundary
 		case irNth:
 			sp -= 2
 			coll := nbToObject(stackBuf[sp], objTable)
@@ -2686,11 +2686,11 @@ func irTypedEligible(a coreirx.Analysis) bool {
 	if a.HasCallSlot {
 		return !a.UsesString && !a.HasMapOps && (!a.UsesCollection || a.HasGenericNth)
 	}
-	// Collection programs with nth but NO assoc (read-only vector access)
+	// coretypes.Collection programs with nth but NO assoc (read-only vector access)
 	if a.UsesCollection && a.HasGenericNth && !a.HasMapOps && !a.UsesString && !a.HasAssoc {
 		return true
 	}
-	// Collection programs with assoc: prefer boxed executor (has transient support)
+	// coretypes.Collection programs with assoc: prefer boxed executor (has transient support)
 	if a.UsesCollection && a.HasGenericNth && a.HasAssoc && !a.HasMapOps && !a.UsesString {
 		return false
 	}

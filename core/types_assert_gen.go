@@ -308,19 +308,19 @@ func EnsureArgIsAssociative(args []coretypes.Object, index int) Associative {
 	panic(FailArg(obj, "Associative", index))
 }
 
-func EnsureObjectIsReversible(obj coretypes.Object, pattern string) Reversible {
-	if c, yes := obj.(Reversible); yes {
+func EnsureObjectIsReversible(obj coretypes.Object, pattern string) coretypes.Reversible {
+	if c, yes := obj.(coretypes.Reversible); yes {
 		return c
 	}
-	panic(FailObject(obj, "Reversible", pattern))
+	panic(FailObject(obj, "coretypes.Reversible", pattern))
 }
 
-func EnsureArgIsReversible(args []coretypes.Object, index int) Reversible {
+func EnsureArgIsReversible(args []coretypes.Object, index int) coretypes.Reversible {
 	obj := args[index]
-	if c, yes := obj.(Reversible); yes {
+	if c, yes := obj.(coretypes.Reversible); yes {
 		return c
 	}
-	panic(FailArg(obj, "Reversible", index))
+	panic(FailArg(obj, "coretypes.Reversible", index))
 }
 
 func EnsureObjectIsNamed(obj coretypes.Object, pattern string) coretypes.Named {

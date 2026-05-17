@@ -804,7 +804,7 @@ func NewHashMap(keyvals ...coretypes.Object) *HashMap {
 	return res.(*HashMap)
 }
 
-func (m *HashMap) Empty() Collection {
+func (m *HashMap) Empty() coretypes.Collection {
 	return EmptyHashMap
 }
 

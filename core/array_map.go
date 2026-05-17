@@ -309,7 +309,7 @@ func (m *ArrayMap) Call(args []coretypes.Object) coretypes.Object {
 	return callMap(m, args)
 }
 
-func (m *ArrayMap) Empty() Collection {
+func (m *ArrayMap) Empty() coretypes.Collection {
 	return collectionConstruction.NewEmptyArrayMap()
 }
 

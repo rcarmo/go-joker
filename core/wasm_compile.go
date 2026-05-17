@@ -513,7 +513,7 @@ func compileWasmBodyWithImports(prog *IRProgram) []byte {
 		case irIsZero:
 			o = append(o, 0x50, 0xad)
 
-		// Collection operations → call imported host functions
+		// coretypes.Collection operations → call imported host functions
 		case irGet:
 			o = append(o, 0x10)           // call
 			o = corewasm.AppendULEB(o, 0) // import index 0 = get

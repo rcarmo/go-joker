@@ -604,7 +604,7 @@ var procResetMeta = func(args []coretypes.Object) coretypes.Object {
 
 var procEmpty = func(args []coretypes.Object) coretypes.Object {
 	switch c := args[0].(type) {
-	case Collection:
+	case coretypes.Collection:
 		return c.Empty()
 	default:
 		return NIL

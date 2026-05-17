@@ -4072,7 +4072,7 @@ var ty_Collection coretypes.Type = coretypes.Type{
 		meta: &arrayMap_NUM_3,
 	},
 	Name:        "Collection",
-	ReflectType: reflect.TypeOf((*Collection)(nil)).Elem(),
+	ReflectType: reflect.TypeOf((*coretypes.Collection)(nil)).Elem(),
 }
 var arrayMap_NUM_4 ArrayMap = ArrayMap{
 	arr: []coretypes.Object{
@@ -4712,7 +4712,7 @@ var ty_Reversible coretypes.Type = coretypes.Type{
 		meta: &arrayMap_NUM_23,
 	},
 	Name:        "Reversible",
-	ReflectType: reflect.TypeOf((*Reversible)(nil)).Elem(),
+	ReflectType: reflect.TypeOf((*coretypes.Reversible)(nil)).Elem(),
 }
 var arrayMap_NUM_24 ArrayMap = ArrayMap{
 	arr: []coretypes.Object{
@@ -92639,7 +92639,7 @@ var arrayMap_NUM_585 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "Returns true if x implements Collection",
+			S: "Returns true if x implements coretypes.Collection",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -262016,7 +262016,7 @@ var arrayMap_NUM_1129 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "Returns true if coll implements Reversible",
+			S: "Returns true if coll implements coretypes.Reversible",
 		},
 		Keyword{
 			hash: 3376861428,
