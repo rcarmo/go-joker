@@ -52,7 +52,7 @@ func (c *StringCursor) WithInfo(info *coretypes.ObjectInfo) Object { return c }
 
 func (c *StringCursor) GetType() *Type { return typeStringCursor }
 
-var typeStringCursor = &Type{name: "StringCursor"}
+var typeStringCursor = &Type{Name: "StringCursor"}
 
 // ---- string_cursor_procs.go ----
 // String cursor procs — registered in procs_slow_init.go or inline

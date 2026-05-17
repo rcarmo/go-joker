@@ -87,7 +87,7 @@ func (e *Env) AsGo() string {
 }
 
 func (t *Type) AsGo() string {
-	return "ty_" + corestr.GoName(t.name)
+	return "ty_" + corestr.GoName(t.Name)
 }
 
 func kwAsGo(kw Keyword) string {

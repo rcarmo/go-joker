@@ -4007,8 +4007,8 @@ var ty_Associative Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1,
 	},
-	name:        "Associative",
-	reflectType: reflect.TypeOf((*Associative)(nil)).Elem(),
+	Name:        "Associative",
+	ReflectType: reflect.TypeOf((*Associative)(nil)).Elem(),
 }
 var arrayMap_NUM_2 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4039,8 +4039,8 @@ var ty_Callable Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_2,
 	},
-	name:        "Callable",
-	reflectType: reflect.TypeOf((*Callable)(nil)).Elem(),
+	Name:        "Callable",
+	ReflectType: reflect.TypeOf((*Callable)(nil)).Elem(),
 }
 var arrayMap_NUM_3 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4071,8 +4071,8 @@ var ty_Collection Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_3,
 	},
-	name:        "Collection",
-	reflectType: reflect.TypeOf((*Collection)(nil)).Elem(),
+	Name:        "Collection",
+	ReflectType: reflect.TypeOf((*Collection)(nil)).Elem(),
 }
 var arrayMap_NUM_4 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4103,8 +4103,8 @@ var ty_Comparable Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_4,
 	},
-	name:        "Comparable",
-	reflectType: reflect.TypeOf((*Comparable)(nil)).Elem(),
+	Name:        "Comparable",
+	ReflectType: reflect.TypeOf((*Comparable)(nil)).Elem(),
 }
 var arrayMap_NUM_5 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4135,8 +4135,8 @@ var ty_Comparator Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_5,
 	},
-	name:        "Comparator",
-	reflectType: reflect.TypeOf((*Comparator)(nil)).Elem(),
+	Name:        "Comparator",
+	ReflectType: reflect.TypeOf((*Comparator)(nil)).Elem(),
 }
 var arrayMap_NUM_6 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4167,8 +4167,8 @@ var ty_Counted Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_6,
 	},
-	name:        "Counted",
-	reflectType: reflect.TypeOf((*coretypes.Counted)(nil)).Elem(),
+	Name:        "Counted",
+	ReflectType: reflect.TypeOf((*coretypes.Counted)(nil)).Elem(),
 }
 var arrayMap_NUM_7 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4199,8 +4199,8 @@ var ty_CountedIndexed Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_7,
 	},
-	name:        "CountedIndexed",
-	reflectType: reflect.TypeOf((*CountedIndexed)(nil)).Elem(),
+	Name:        "CountedIndexed",
+	ReflectType: reflect.TypeOf((*CountedIndexed)(nil)).Elem(),
 }
 var arrayMap_NUM_8 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4231,8 +4231,8 @@ var ty_Deref Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_8,
 	},
-	name:        "Deref",
-	reflectType: reflect.TypeOf((*Deref)(nil)).Elem(),
+	Name:        "Deref",
+	ReflectType: reflect.TypeOf((*Deref)(nil)).Elem(),
 }
 var arrayMap_NUM_9 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4263,8 +4263,8 @@ var ty_Channel Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_9,
 	},
-	name:        "Channel",
-	reflectType: reflect.TypeOf((*Channel)(nil)),
+	Name:        "Channel",
+	ReflectType: reflect.TypeOf((*Channel)(nil)),
 }
 var arrayMap_NUM_10 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4295,8 +4295,8 @@ var ty_Error Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_10,
 	},
-	name:        "Error",
-	reflectType: reflect.TypeOf((*Error)(nil)).Elem(),
+	Name:        "Error",
+	ReflectType: reflect.TypeOf((*Error)(nil)).Elem(),
 }
 var arrayMap_NUM_11 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4327,8 +4327,8 @@ var ty_Gettable Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_11,
 	},
-	name:        "Gettable",
-	reflectType: reflect.TypeOf((*Gettable)(nil)).Elem(),
+	Name:        "Gettable",
+	ReflectType: reflect.TypeOf((*Gettable)(nil)).Elem(),
 }
 var arrayMap_NUM_12 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4359,8 +4359,8 @@ var ty_Indexed Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_12,
 	},
-	name:        "Indexed",
-	reflectType: reflect.TypeOf((*Indexed)(nil)).Elem(),
+	Name:        "Indexed",
+	ReflectType: reflect.TypeOf((*Indexed)(nil)).Elem(),
 }
 var arrayMap_NUM_13 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4391,8 +4391,8 @@ var ty_IOReader Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_13,
 	},
-	name:        "IOReader",
-	reflectType: reflect.TypeOf((*io.Reader)(nil)).Elem(),
+	Name:        "IOReader",
+	ReflectType: reflect.TypeOf((*io.Reader)(nil)).Elem(),
 }
 var arrayMap_NUM_14 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4423,8 +4423,8 @@ var ty_IOWriter Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_14,
 	},
-	name:        "IOWriter",
-	reflectType: reflect.TypeOf((*io.Writer)(nil)).Elem(),
+	Name:        "IOWriter",
+	ReflectType: reflect.TypeOf((*io.Writer)(nil)).Elem(),
 }
 var arrayMap_NUM_15 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4455,8 +4455,8 @@ var ty_KVReduce Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_15,
 	},
-	name:        "KVReduce",
-	reflectType: reflect.TypeOf((*KVReduce)(nil)).Elem(),
+	Name:        "KVReduce",
+	ReflectType: reflect.TypeOf((*KVReduce)(nil)).Elem(),
 }
 var arrayMap_NUM_16 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4487,8 +4487,8 @@ var ty_Reduce Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_16,
 	},
-	name:        "Reduce",
-	reflectType: reflect.TypeOf((*Reduce)(nil)).Elem(),
+	Name:        "Reduce",
+	ReflectType: reflect.TypeOf((*Reduce)(nil)).Elem(),
 }
 var arrayMap_NUM_17 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4519,8 +4519,8 @@ var ty_Map Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_17,
 	},
-	name:        "Map",
-	reflectType: reflect.TypeOf((*Map)(nil)).Elem(),
+	Name:        "Map",
+	ReflectType: reflect.TypeOf((*Map)(nil)).Elem(),
 }
 var arrayMap_NUM_18 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4551,8 +4551,8 @@ var ty_Meta Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_18,
 	},
-	name:        "Meta",
-	reflectType: reflect.TypeOf((*Meta)(nil)).Elem(),
+	Name:        "Meta",
+	ReflectType: reflect.TypeOf((*Meta)(nil)).Elem(),
 }
 var arrayMap_NUM_19 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4583,8 +4583,8 @@ var ty_Named Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_19,
 	},
-	name:        "Named",
-	reflectType: reflect.TypeOf((*coretypes.Named)(nil)).Elem(),
+	Name:        "Named",
+	ReflectType: reflect.TypeOf((*coretypes.Named)(nil)).Elem(),
 }
 var arrayMap_NUM_20 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4615,8 +4615,8 @@ var ty_Number Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_20,
 	},
-	name:        "Number",
-	reflectType: reflect.TypeOf((*Number)(nil)).Elem(),
+	Name:        "Number",
+	ReflectType: reflect.TypeOf((*Number)(nil)).Elem(),
 }
 var arrayMap_NUM_21 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4647,8 +4647,8 @@ var ty_Pending Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_21,
 	},
-	name:        "Pending",
-	reflectType: reflect.TypeOf((*coretypes.Pending)(nil)).Elem(),
+	Name:        "Pending",
+	ReflectType: reflect.TypeOf((*coretypes.Pending)(nil)).Elem(),
 }
 var arrayMap_NUM_22 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4679,8 +4679,8 @@ var ty_Ref Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_22,
 	},
-	name:        "Ref",
-	reflectType: reflect.TypeOf((*Ref)(nil)).Elem(),
+	Name:        "Ref",
+	ReflectType: reflect.TypeOf((*Ref)(nil)).Elem(),
 }
 var arrayMap_NUM_23 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4711,8 +4711,8 @@ var ty_Reversible Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_23,
 	},
-	name:        "Reversible",
-	reflectType: reflect.TypeOf((*Reversible)(nil)).Elem(),
+	Name:        "Reversible",
+	ReflectType: reflect.TypeOf((*Reversible)(nil)).Elem(),
 }
 var arrayMap_NUM_24 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4743,8 +4743,8 @@ var ty_Seq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_24,
 	},
-	name:        "Seq",
-	reflectType: reflect.TypeOf((*Seq)(nil)).Elem(),
+	Name:        "Seq",
+	ReflectType: reflect.TypeOf((*Seq)(nil)).Elem(),
 }
 var arrayMap_NUM_25 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4775,8 +4775,8 @@ var ty_Seqable Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_25,
 	},
-	name:        "Seqable",
-	reflectType: reflect.TypeOf((*Seqable)(nil)).Elem(),
+	Name:        "Seqable",
+	ReflectType: reflect.TypeOf((*Seqable)(nil)).Elem(),
 }
 var arrayMap_NUM_26 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4807,8 +4807,8 @@ var ty_Sequential Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_26,
 	},
-	name:        "Sequential",
-	reflectType: reflect.TypeOf((*Sequential)(nil)).Elem(),
+	Name:        "Sequential",
+	ReflectType: reflect.TypeOf((*Sequential)(nil)).Elem(),
 }
 var arrayMap_NUM_27 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4839,8 +4839,8 @@ var ty_Set Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_27,
 	},
-	name:        "Set",
-	reflectType: reflect.TypeOf((*Set)(nil)).Elem(),
+	Name:        "Set",
+	ReflectType: reflect.TypeOf((*Set)(nil)).Elem(),
 }
 var arrayMap_NUM_28 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4871,8 +4871,8 @@ var ty_Stack Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_28,
 	},
-	name:        "Stack",
-	reflectType: reflect.TypeOf((*Stack)(nil)).Elem(),
+	Name:        "Stack",
+	ReflectType: reflect.TypeOf((*Stack)(nil)).Elem(),
 }
 var arrayMap_NUM_29 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4903,8 +4903,8 @@ var ty_ArrayMap Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_29,
 	},
-	name:        "ArrayMap",
-	reflectType: reflect.TypeOf((*ArrayMap)(nil)),
+	Name:        "ArrayMap",
+	ReflectType: reflect.TypeOf((*ArrayMap)(nil)),
 }
 var arrayMap_NUM_30 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4935,8 +4935,8 @@ var ty_ArrayMapSeq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_30,
 	},
-	name:        "ArrayMapSeq",
-	reflectType: reflect.TypeOf((*ArrayMapSeq)(nil)),
+	Name:        "ArrayMapSeq",
+	ReflectType: reflect.TypeOf((*ArrayMapSeq)(nil)),
 }
 var arrayMap_NUM_31 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4967,8 +4967,8 @@ var ty_ArrayNodeSeq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_31,
 	},
-	name:        "ArrayNodeSeq",
-	reflectType: reflect.TypeOf((*ArrayNodeSeq)(nil)),
+	Name:        "ArrayNodeSeq",
+	ReflectType: reflect.TypeOf((*ArrayNodeSeq)(nil)),
 }
 var arrayMap_NUM_32 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4999,8 +4999,8 @@ var ty_ArraySeq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_32,
 	},
-	name:        "ArraySeq",
-	reflectType: reflect.TypeOf((*ArraySeq)(nil)),
+	Name:        "ArraySeq",
+	ReflectType: reflect.TypeOf((*ArraySeq)(nil)),
 }
 var arrayMap_NUM_33 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5031,8 +5031,8 @@ var ty_MapSet Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_33,
 	},
-	name:        "MapSet",
-	reflectType: reflect.TypeOf((*MapSet)(nil)),
+	Name:        "MapSet",
+	ReflectType: reflect.TypeOf((*MapSet)(nil)),
 }
 var arrayMap_NUM_34 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5063,8 +5063,8 @@ var ty_Atom Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_34,
 	},
-	name:        "Atom",
-	reflectType: reflect.TypeOf((*Atom)(nil)),
+	Name:        "Atom",
+	ReflectType: reflect.TypeOf((*Atom)(nil)),
 }
 var arrayMap_NUM_35 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5095,8 +5095,8 @@ var ty_BigFloat Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_35,
 	},
-	name:        "BigFloat",
-	reflectType: reflect.TypeOf((*BigFloat)(nil)),
+	Name:        "BigFloat",
+	ReflectType: reflect.TypeOf((*BigFloat)(nil)),
 }
 var arrayMap_NUM_36 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5127,8 +5127,8 @@ var ty_BigInt Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_36,
 	},
-	name:        "BigInt",
-	reflectType: reflect.TypeOf((*BigInt)(nil)),
+	Name:        "BigInt",
+	ReflectType: reflect.TypeOf((*BigInt)(nil)),
 }
 var arrayMap_NUM_37 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5159,8 +5159,8 @@ var ty_Boolean Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_37,
 	},
-	name:        "Boolean",
-	reflectType: reflect.TypeOf((*Boolean)(nil)).Elem(),
+	Name:        "Boolean",
+	ReflectType: reflect.TypeOf((*Boolean)(nil)).Elem(),
 }
 var arrayMap_NUM_38 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5191,8 +5191,8 @@ var ty_Time Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_38,
 	},
-	name:        "Time",
-	reflectType: reflect.TypeOf((*Time)(nil)).Elem(),
+	Name:        "Time",
+	ReflectType: reflect.TypeOf((*Time)(nil)).Elem(),
 }
 var arrayMap_NUM_39 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5223,8 +5223,8 @@ var ty_Buffer Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_39,
 	},
-	name:        "Buffer",
-	reflectType: reflect.TypeOf((*Buffer)(nil)),
+	Name:        "Buffer",
+	ReflectType: reflect.TypeOf((*Buffer)(nil)),
 }
 var arrayMap_NUM_40 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5255,8 +5255,8 @@ var ty_Char Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_40,
 	},
-	name:        "Char",
-	reflectType: reflect.TypeOf((*Char)(nil)).Elem(),
+	Name:        "Char",
+	ReflectType: reflect.TypeOf((*Char)(nil)).Elem(),
 }
 var arrayMap_NUM_41 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5287,8 +5287,8 @@ var ty_ConsSeq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_41,
 	},
-	name:        "ConsSeq",
-	reflectType: reflect.TypeOf((*ConsSeq)(nil)),
+	Name:        "ConsSeq",
+	ReflectType: reflect.TypeOf((*ConsSeq)(nil)),
 }
 var arrayMap_NUM_42 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5319,8 +5319,8 @@ var ty_Delay Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_42,
 	},
-	name:        "Delay",
-	reflectType: reflect.TypeOf((*Delay)(nil)),
+	Name:        "Delay",
+	ReflectType: reflect.TypeOf((*Delay)(nil)),
 }
 var arrayMap_NUM_43 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5351,8 +5351,8 @@ var ty_Double Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_43,
 	},
-	name:        "Double",
-	reflectType: reflect.TypeOf((*Double)(nil)).Elem(),
+	Name:        "Double",
+	ReflectType: reflect.TypeOf((*Double)(nil)).Elem(),
 }
 var arrayMap_NUM_44 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5383,8 +5383,8 @@ var ty_EvalError Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_44,
 	},
-	name:        "EvalError",
-	reflectType: reflect.TypeOf((*EvalError)(nil)),
+	Name:        "EvalError",
+	ReflectType: reflect.TypeOf((*EvalError)(nil)),
 }
 var arrayMap_NUM_45 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5415,8 +5415,8 @@ var ty_ExInfo Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_45,
 	},
-	name:        "ExInfo",
-	reflectType: reflect.TypeOf((*ExInfo)(nil)),
+	Name:        "ExInfo",
+	ReflectType: reflect.TypeOf((*ExInfo)(nil)),
 }
 var arrayMap_NUM_46 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5447,8 +5447,8 @@ var ty_Fn Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_46,
 	},
-	name:        "Fn",
-	reflectType: reflect.TypeOf((*Fn)(nil)),
+	Name:        "Fn",
+	ReflectType: reflect.TypeOf((*Fn)(nil)),
 }
 var arrayMap_NUM_47 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5479,8 +5479,8 @@ var ty_File Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_47,
 	},
-	name:        "File",
-	reflectType: reflect.TypeOf((*File)(nil)),
+	Name:        "File",
+	ReflectType: reflect.TypeOf((*File)(nil)),
 }
 var arrayMap_NUM_48 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5511,8 +5511,8 @@ var ty_BufferedReader Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_48,
 	},
-	name:        "BufferedReader",
-	reflectType: reflect.TypeOf((*BufferedReader)(nil)),
+	Name:        "BufferedReader",
+	ReflectType: reflect.TypeOf((*BufferedReader)(nil)),
 }
 var arrayMap_NUM_49 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5543,8 +5543,8 @@ var ty_HashMap Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_49,
 	},
-	name:        "HashMap",
-	reflectType: reflect.TypeOf((*HashMap)(nil)),
+	Name:        "HashMap",
+	ReflectType: reflect.TypeOf((*HashMap)(nil)),
 }
 var arrayMap_NUM_50 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5575,8 +5575,8 @@ var ty_Int Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_50,
 	},
-	name:        "Int",
-	reflectType: reflect.TypeOf((*Int)(nil)).Elem(),
+	Name:        "Int",
+	ReflectType: reflect.TypeOf((*Int)(nil)).Elem(),
 }
 var arrayMap_NUM_51 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5607,8 +5607,8 @@ var ty_Keyword Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_51,
 	},
-	name:        "Keyword",
-	reflectType: reflect.TypeOf((*Keyword)(nil)).Elem(),
+	Name:        "Keyword",
+	ReflectType: reflect.TypeOf((*Keyword)(nil)).Elem(),
 }
 var arrayMap_NUM_52 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5639,8 +5639,8 @@ var ty_LazySeq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_52,
 	},
-	name:        "LazySeq",
-	reflectType: reflect.TypeOf((*LazySeq)(nil)),
+	Name:        "LazySeq",
+	ReflectType: reflect.TypeOf((*LazySeq)(nil)),
 }
 var arrayMap_NUM_53 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5671,8 +5671,8 @@ var ty_List Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_53,
 	},
-	name:        "List",
-	reflectType: reflect.TypeOf((*List)(nil)),
+	Name:        "List",
+	ReflectType: reflect.TypeOf((*List)(nil)),
 }
 var arrayMap_NUM_54 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5703,8 +5703,8 @@ var ty_MappingSeq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_54,
 	},
-	name:        "MappingSeq",
-	reflectType: reflect.TypeOf((*MappingSeq)(nil)),
+	Name:        "MappingSeq",
+	ReflectType: reflect.TypeOf((*MappingSeq)(nil)),
 }
 var arrayMap_NUM_55 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5735,8 +5735,8 @@ var ty_Namespace Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_55,
 	},
-	name:        "Namespace",
-	reflectType: reflect.TypeOf((*Namespace)(nil)),
+	Name:        "Namespace",
+	ReflectType: reflect.TypeOf((*Namespace)(nil)),
 }
 var arrayMap_NUM_56 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5767,8 +5767,8 @@ var ty_Nil Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_56,
 	},
-	name:        "Nil",
-	reflectType: reflect.TypeOf((*Nil)(nil)).Elem(),
+	Name:        "Nil",
+	ReflectType: reflect.TypeOf((*Nil)(nil)).Elem(),
 }
 var arrayMap_NUM_57 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5799,8 +5799,8 @@ var ty_NodeSeq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_57,
 	},
-	name:        "NodeSeq",
-	reflectType: reflect.TypeOf((*NodeSeq)(nil)),
+	Name:        "NodeSeq",
+	ReflectType: reflect.TypeOf((*NodeSeq)(nil)),
 }
 var arrayMap_NUM_58 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5831,8 +5831,8 @@ var ty_ParseError Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_58,
 	},
-	name:        "ParseError",
-	reflectType: reflect.TypeOf((*ParseError)(nil)),
+	Name:        "ParseError",
+	ReflectType: reflect.TypeOf((*ParseError)(nil)),
 }
 var arrayMap_NUM_59 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5863,8 +5863,8 @@ var ty_Proc Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_59,
 	},
-	name:        "Proc",
-	reflectType: reflect.TypeOf((*Proc)(nil)),
+	Name:        "Proc",
+	ReflectType: reflect.TypeOf((*Proc)(nil)),
 }
 var arrayMap_NUM_60 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5895,8 +5895,8 @@ var ty_Ratio Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_60,
 	},
-	name:        "Ratio",
-	reflectType: reflect.TypeOf((*Ratio)(nil)),
+	Name:        "Ratio",
+	ReflectType: reflect.TypeOf((*Ratio)(nil)),
 }
 var arrayMap_NUM_61 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5927,8 +5927,8 @@ var ty_RecurBindings Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_61,
 	},
-	name:        "RecurBindings",
-	reflectType: reflect.TypeOf((*RecurBindings)(nil)),
+	Name:        "RecurBindings",
+	ReflectType: reflect.TypeOf((*RecurBindings)(nil)),
 }
 var arrayMap_NUM_62 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5959,8 +5959,8 @@ var ty_Regex Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_62,
 	},
-	name:        "Regex",
-	reflectType: reflect.TypeOf((*Regex)(nil)),
+	Name:        "Regex",
+	ReflectType: reflect.TypeOf((*Regex)(nil)),
 }
 var arrayMap_NUM_63 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5991,8 +5991,8 @@ var ty_String Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_63,
 	},
-	name:        "String",
-	reflectType: reflect.TypeOf((*String)(nil)).Elem(),
+	Name:        "String",
+	ReflectType: reflect.TypeOf((*String)(nil)).Elem(),
 }
 var arrayMap_NUM_64 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6023,8 +6023,8 @@ var ty_Symbol Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_64,
 	},
-	name:        "Symbol",
-	reflectType: reflect.TypeOf((*Symbol)(nil)).Elem(),
+	Name:        "Symbol",
+	ReflectType: reflect.TypeOf((*Symbol)(nil)).Elem(),
 }
 var arrayMap_NUM_65 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6055,8 +6055,8 @@ var ty_Type Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_65,
 	},
-	name:        "Type",
-	reflectType: reflect.TypeOf((*Type)(nil)),
+	Name:        "Type",
+	ReflectType: reflect.TypeOf((*Type)(nil)),
 }
 var arrayMap_NUM_66 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6087,8 +6087,8 @@ var ty_Var Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_66,
 	},
-	name:        "Var",
-	reflectType: reflect.TypeOf((*Var)(nil)),
+	Name:        "Var",
+	ReflectType: reflect.TypeOf((*Var)(nil)),
 }
 var arrayMap_NUM_67 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6119,8 +6119,8 @@ var ty_Vector Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_67,
 	},
-	name:        "Vector",
-	reflectType: reflect.TypeOf((*Vector)(nil)),
+	Name:        "Vector",
+	ReflectType: reflect.TypeOf((*Vector)(nil)),
 }
 var arrayMap_NUM_68 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6151,8 +6151,8 @@ var ty_Vec Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_68,
 	},
-	name:        "Vec",
-	reflectType: reflect.TypeOf((*Vec)(nil)).Elem(),
+	Name:        "Vec",
+	ReflectType: reflect.TypeOf((*Vec)(nil)).Elem(),
 }
 var arrayMap_NUM_69 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6183,8 +6183,8 @@ var ty_ArrayVector Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_69,
 	},
-	name:        "ArrayVector",
-	reflectType: reflect.TypeOf((*ArrayVector)(nil)),
+	Name:        "ArrayVector",
+	ReflectType: reflect.TypeOf((*ArrayVector)(nil)),
 }
 var arrayMap_NUM_70 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6215,8 +6215,8 @@ var ty_VectorRSeq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_70,
 	},
-	name:        "VectorRSeq",
-	reflectType: reflect.TypeOf((*VectorRSeq)(nil)),
+	Name:        "VectorRSeq",
+	ReflectType: reflect.TypeOf((*VectorRSeq)(nil)),
 }
 var arrayMap_NUM_71 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6247,8 +6247,8 @@ var ty_VectorSeq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_71,
 	},
-	name:        "VectorSeq",
-	reflectType: reflect.TypeOf((*VectorSeq)(nil)),
+	Name:        "VectorSeq",
+	ReflectType: reflect.TypeOf((*VectorSeq)(nil)),
 }
 var arrayMap_NUM_72 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6279,8 +6279,8 @@ var ty_StringSeq Type = Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_72,
 	},
-	name:        "StringSeq",
-	reflectType: reflect.TypeOf((*stringSeq)(nil)),
+	Name:        "StringSeq",
+	ReflectType: reflect.TypeOf((*stringSeq)(nil)),
 }
 var TYPE Types = Types{
 	ArrayMap:       &ty_ArrayMap,

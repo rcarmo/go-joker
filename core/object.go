@@ -27,14 +27,9 @@ import (
 )
 
 type (
-	Type struct {
-		MetaHolder
-		name        string
-		reflectType reflect.Type
-	}
+	Type   = coretypes.Type
 	Object interface {
 		coretypes.Object
-		WithInfo(*coretypes.ObjectInfo) Object
 		GetType() *Type
 	}
 	Conjable interface {
@@ -514,26 +509,6 @@ func (d *Delay) Deref() Object {
 
 func (d *Delay) IsRealized() bool {
 	return d.runtime != nil && d.runtime.IsRealized()
-}
-
-func (t *Type) ToString(escape bool) string {
-	return t.name
-}
-
-func (t *Type) Equals(other interface{}) bool {
-	return t == other
-}
-
-func (t *Type) GetInfo() *coretypes.ObjectInfo {
-	return nil
-}
-
-func (t *Type) GetType() *Type {
-	return TYPE.Type
-}
-
-func (t *Type) Hash() uint32 {
-	return hashutil.Ptr(uintptr(unsafe.Pointer(t)))
 }
 
 func (rb RecurBindings) ToString(escape bool) string {
@@ -1729,19 +1704,15 @@ func IsSeq(obj Object) bool {
 	}
 }
 
-func (x *Type) WithInfo(info *coretypes.ObjectInfo) Object {
-	return x
-}
-
 func (x RecurBindings) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 
 func IsEqualOrImplements(abstractType *Type, concreteType *Type) bool {
-	if abstractType.reflectType.Kind() == reflect.Interface {
-		return concreteType.reflectType.Implements(abstractType.reflectType)
+	if abstractType.ReflectType.Kind() == reflect.Interface {
+		return concreteType.ReflectType.Implements(abstractType.ReflectType)
 	} else {
-		return concreteType.reflectType == abstractType.reflectType
+		return concreteType.ReflectType == abstractType.ReflectType
 	}
 }
 
@@ -1957,4 +1928,13 @@ func CountedIndexedReduceInit(v CountedIndexed, c Callable, init Object) Object 
 		}
 		return acc
 	}
+}
+
+func withInfo(obj Object, info *coretypes.ObjectInfo) Object {
+	if h, ok := obj.(interface {
+		WithInfo(*coretypes.ObjectInfo) Object
+	}); ok {
+		return h.WithInfo(info)
+	}
+	return obj
 }

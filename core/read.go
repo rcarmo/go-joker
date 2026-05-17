@@ -82,7 +82,7 @@ func MakeReadError(reader *Reader, msg string) ReadError {
 
 func makeReadObject(reader *Reader, obj Object) Object {
 	p := popPos()
-	return obj.WithInfo(&coretypes.ObjectInfo{Position: coretypes.Position{
+	return withInfo(obj, &coretypes.ObjectInfo{Position: coretypes.Position{
 		StartColumn: p.Column,
 		StartLine:   p.Line,
 		EndLine:     reader.Line(),
@@ -99,7 +99,7 @@ func deriveReadObject(base Object, obj Object) Object {
 	baseInfo := base.GetInfo()
 	if baseInfo != nil {
 		bi := *baseInfo
-		return obj.WithInfo(&bi)
+		return withInfo(obj, &bi)
 	}
 	return obj
 }
@@ -738,7 +738,7 @@ func syntaxQuoteColl(seq Seq, env map[*string]Symbol, reader *Reader, ctor Symbo
 	if ctor != SYMBOLS.emptySymbol {
 		res = readerConstruction.ListFrom([]Object{ctor, seqList}).(Seq).Cons(SYMBOLS.apply)
 	}
-	return res.WithInfo(info)
+	return withInfo(res, info)
 }
 
 func makeSyntaxQuote(obj Object, env map[*string]Symbol, reader *Reader) Object {

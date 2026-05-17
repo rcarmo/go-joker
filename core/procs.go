@@ -160,11 +160,6 @@ var procMeta = func(args []Object) Object {
 		if meta != nil {
 			return meta
 		}
-	case *Type:
-		meta := obj.GetMeta()
-		if meta != nil {
-			return meta
-		}
 	}
 	return NIL
 }
@@ -784,9 +779,9 @@ var procSubvec = func(args []Object) Object {
 
 var procCast = func(args []Object) Object {
 	t := EnsureArgIsType(args, 0)
-	if t.reflectType.Kind() == reflect.Interface &&
-		args[1].GetType().reflectType.Implements(t.reflectType) ||
-		args[1].GetType().reflectType == t.reflectType {
+	if t.ReflectType.Kind() == reflect.Interface &&
+		args[1].GetType().ReflectType.Implements(t.ReflectType) ||
+		args[1].GetType().ReflectType == t.ReflectType {
 		return args[1]
 	}
 	panic(RT.NewError("Cannot cast " + args[1].GetType().ToString(false) + " to " + t.ToString(false)))
@@ -1622,7 +1617,7 @@ var procIsRealized = func(args []Object) Object {
 var procDeriveInfo = func(args []Object) Object {
 	dest := args[0]
 	src := args[1]
-	return dest.WithInfo(src.GetInfo())
+	return withInfo(dest, src.GetInfo())
 }
 
 var procJokerVersion = func(args []Object) Object {

@@ -1475,7 +1475,7 @@ func TestInfoAndMetaContract(t *testing.T) {
 		PersistentVectorFrom([]Object{MakeInt(1)}),
 	}
 	for _, v := range values {
-		withInfo := v.WithInfo(info)
+		withInfo := withInfo(v, info)
 		if withInfo.GetInfo() != info {
 			t.Fatalf("%T WithInfo did not retain info", v)
 		}

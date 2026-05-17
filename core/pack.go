@@ -315,8 +315,8 @@ func unpackSymbol(p []byte, header *PackHeader) (Symbol, []byte) {
 	return res, p
 }
 
-func (t *Type) Pack(p []byte, env *PackEnv) []byte {
-	s := MakeSymbol(t.name)
+func packType(t *Type, p []byte, env *PackEnv) []byte {
+	s := MakeSymbol(t.Name)
 	return s.Pack(p, env)
 }
 
@@ -336,7 +336,7 @@ func packObject(obj Object, p []byte, env *PackEnv) []byte {
 		return p
 	case *Type:
 		p = append(p, TYPE_OBJ)
-		p = obj.Pack(p, env)
+		p = packType(obj, p, env)
 		return p
 	default:
 		p = append(p, NULL)
@@ -714,7 +714,7 @@ func (expr *FnArityExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = packSeq(p, expr.body, env)
 	if expr.taggedType != nil {
 		p = append(p, NOT_NULL)
-		p = appendUint16(p, env.stringIndex(STRINGS.Intern(expr.taggedType.name)))
+		p = appendUint16(p, env.stringIndex(STRINGS.Intern(expr.taggedType.Name)))
 	} else {
 		p = append(p, NULL)
 	}
@@ -848,7 +848,7 @@ func unpackThrowExpr(p []byte, header *PackHeader) (*ThrowExpr, []byte) {
 func (expr *CatchExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, CATCH_EXPR)
 	p = packPosition(expr.Pos(), p, env)
-	p = appendUint16(p, env.stringIndex(STRINGS.Intern(expr.excType.name)))
+	p = appendUint16(p, env.stringIndex(STRINGS.Intern(expr.excType.Name)))
 	p = expr.excSymbol.Pack(p, env)
 	p = packSeq(p, expr.body, env)
 	return p
