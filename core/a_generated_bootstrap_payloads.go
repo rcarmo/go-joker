@@ -119,7 +119,7 @@ var s__LT___ string = "<__"
 var s__LT_joker_DOT_better_DASH_cond_GT_ string = "<joker.better-cond>"
 var s__LT_joker_DOT_hiccup_GT_ string = "<joker.hiccup>"
 var s__LT_joker_DOT_pprint_GT_ string = "<joker.pprint>"
-var s__LT_joker_DOT_repl_GT_ string = "<joker.repl>"
+var s__LT_joker_DOT_repl_GT_ string = "<joker.Repl>"
 var s__LT_joker_DOT_set_GT_ string = "<joker.set>"
 var s__LT_joker_DOT_template_GT_ string = "<joker.template>"
 var s__LT_joker_DOT_test_GT_ string = "<joker.test>"
@@ -229,7 +229,7 @@ var s_joker_DOT_html string = "joker.html"
 var s_joker_DOT_string string = "joker.string"
 var s_user string = "user"
 var s_joker_DOT_core string = "joker.core"
-var s_joker_DOT_repl string = "joker.repl"
+var s_joker_DOT_repl string = "joker.Repl"
 var s_joker_DOT_walk string = "joker.walk"
 var s_joker_DOT_template string = "joker.template"
 var s_joker_DOT_test string = "joker.test"
@@ -1896,7 +1896,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"<joker.core>":               &s__LT_joker_DOT_core_GT_,
 	"<joker.hiccup>":             &s__LT_joker_DOT_hiccup_GT_,
 	"<joker.pprint>":             &s__LT_joker_DOT_pprint_GT_,
-	"<joker.repl>":               &s__LT_joker_DOT_repl_GT_,
+	"<joker.Repl>":               &s__LT_joker_DOT_repl_GT_,
 	"<joker.set>":                &s__LT_joker_DOT_set_GT_,
 	"<joker.template>":           &s__LT_joker_DOT_template_GT_,
 	"<joker.test>":               &s__LT_joker_DOT_test_GT_,
@@ -2006,7 +2006,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"joker.string":               &s_joker_DOT_string,
 	"user":                       &s_user,
 	"joker.core":                 &s_joker_DOT_core,
-	"joker.repl":                 &s_joker_DOT_repl,
+	"joker.Repl":                 &s_joker_DOT_repl,
 	"joker.walk":                 &s_joker_DOT_walk,
 	"joker.template":             &s_joker_DOT_template,
 	"joker.test":                 &s_joker_DOT_test,
@@ -298931,13 +298931,13 @@ var arrayMap_NUM_1272 ArrayMap = ArrayMap{
 			name: &s_file,
 		},
 		String{
-			S: "<joker.repl>",
+			S: "<joker.Repl>",
 		},
 		Keyword{
 			hash: 2476974793,
 			name: &s_ns,
 		},
-		nil, /* joker.repl: &ns_joker_DOT_repl */
+		nil, /* joker.Repl: &ns_joker_DOT_repl */
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
@@ -299729,7 +299729,7 @@ var var_NAME_apropos_POS_joker_DOT_repl_94_1__107_30 Var = Var{
 	name: Symbol{
 		name: &s_apropos,
 	},
-	ns: nil, /* joker.repl: &ns_joker_DOT_repl */
+	ns: nil, /* joker.Repl: &ns_joker_DOT_repl */
 }
 var objectInfo_POS_joker_DOT_repl__116_1__121_19 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -299878,13 +299878,13 @@ var bitmapIndexedNode_NUM_187 BitmapIndexedNode = BitmapIndexedNode{
 			name: &s_file,
 		},
 		String{
-			S: "<joker.repl>",
+			S: "<joker.Repl>",
 		},
 		Keyword{
 			hash: 2476974793,
 			name: &s_ns,
 		},
-		nil, /* joker.repl: &ns_joker_DOT_repl */
+		nil, /* joker.Repl: &ns_joker_DOT_repl */
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -300384,7 +300384,7 @@ var var_NAME_dir_POS_joker_DOT_repl_116_1__121_19 Var = Var{
 	name: Symbol{
 		name: &s_dir,
 	},
-	ns: nil, /* joker.repl: &ns_joker_DOT_repl */
+	ns: nil, /* joker.Repl: &ns_joker_DOT_repl */
 }
 var objectInfo_POS_joker_DOT_repl__109_1__114_73 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -300485,13 +300485,13 @@ var arrayMap_NUM_1273 ArrayMap = ArrayMap{
 			name: &s_file,
 		},
 		String{
-			S: "<joker.repl>",
+			S: "<joker.Repl>",
 		},
 		Keyword{
 			hash: 2476974793,
 			name: &s_ns,
 		},
-		nil, /* joker.repl: &ns_joker_DOT_repl */
+		nil, /* joker.Repl: &ns_joker_DOT_repl */
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
@@ -300749,7 +300749,7 @@ var var_NAME_dir_DASH_fn_POS_joker_DOT_repl_109_1__114_73 Var = Var{
 	name: Symbol{
 		name: &s_dir_DASH_fn,
 	},
-	ns: nil, /* joker.repl: &ns_joker_DOT_repl */
+	ns: nil, /* joker.Repl: &ns_joker_DOT_repl */
 }
 var objectInfo_POS_joker_DOT_repl__74_1__89_52 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -300898,13 +300898,13 @@ var bitmapIndexedNode_NUM_189 BitmapIndexedNode = BitmapIndexedNode{
 			name: &s_file,
 		},
 		String{
-			S: "<joker.repl>",
+			S: "<joker.Repl>",
 		},
 		Keyword{
 			hash: 2476974793,
 			name: &s_ns,
 		},
-		nil, /* joker.repl: &ns_joker_DOT_repl */
+		nil, /* joker.Repl: &ns_joker_DOT_repl */
 		Keyword{
 			hash: 3111631563,
 			name: &s_arglists,
@@ -301537,13 +301537,13 @@ var arrayMap_NUM_1274 ArrayMap = ArrayMap{
 			name: &s_file,
 		},
 		String{
-			S: "<joker.repl>",
+			S: "<joker.Repl>",
 		},
 		Keyword{
 			hash: 2476974793,
 			name: &s_ns,
 		},
-		nil, /* joker.repl: &ns_joker_DOT_repl */
+		nil, /* joker.Repl: &ns_joker_DOT_repl */
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
@@ -302656,7 +302656,7 @@ var var_NAME_special_DASH_doc_DASH_map_POS_joker_DOT_repl_6_1__37_82 Var = Var{
 	name: Symbol{
 		name: &s_special_DASH_doc_DASH_map,
 	},
-	ns: nil, /* joker.repl: &ns_joker_DOT_repl */
+	ns: nil, /* joker.Repl: &ns_joker_DOT_repl */
 }
 var varRef_special_DASH_doc_DASH_map_POS_joker_DOT_repl__82_8__82_22 VarRefExpr = VarRefExpr{
 	Position: coretypes.Position{
@@ -304233,7 +304233,7 @@ var var_NAME_doc_POS_joker_DOT_repl_74_1__89_52 Var = Var{
 	name: Symbol{
 		name: &s_doc,
 	},
-	ns: nil, /* joker.repl: &ns_joker_DOT_repl */
+	ns: nil, /* joker.Repl: &ns_joker_DOT_repl */
 }
 var objectInfo_POS_joker_DOT_repl__44_1__45_47 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -304307,13 +304307,13 @@ var arrayMap_NUM_1275 ArrayMap = ArrayMap{
 			name: &s_file,
 		},
 		String{
-			S: "<joker.repl>",
+			S: "<joker.Repl>",
 		},
 		Keyword{
 			hash: 2476974793,
 			name: &s_ns,
 		},
-		nil, /* joker.repl: &ns_joker_DOT_repl */
+		nil, /* joker.Repl: &ns_joker_DOT_repl */
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
@@ -304497,7 +304497,7 @@ var var_NAME_namespace_DASH_doc_POS_joker_DOT_repl_44_1__45_47 Var = Var{
 	name: Symbol{
 		name: &s_namespace_DASH_doc,
 	},
-	ns: nil, /* joker.repl: &ns_joker_DOT_repl */
+	ns: nil, /* joker.Repl: &ns_joker_DOT_repl */
 }
 var objectInfo_POS_joker_DOT_repl__47_1__72_31 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -304759,13 +304759,13 @@ var arrayMap_NUM_1276 ArrayMap = ArrayMap{
 			name: &s_file,
 		},
 		String{
-			S: "<joker.repl>",
+			S: "<joker.Repl>",
 		},
 		Keyword{
 			hash: 2476974793,
 			name: &s_ns,
 		},
-		nil, /* joker.repl: &ns_joker_DOT_repl */
+		nil, /* joker.Repl: &ns_joker_DOT_repl */
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
@@ -306532,7 +306532,7 @@ var var_NAME_print_DASH_doc_POS_joker_DOT_repl_47_1__72_31 Var = Var{
 	name: Symbol{
 		name: &s_print_DASH_doc,
 	},
-	ns: nil, /* joker.repl: &ns_joker_DOT_repl */
+	ns: nil, /* joker.Repl: &ns_joker_DOT_repl */
 }
 var objectInfo_POS_joker_DOT_repl__39_1__42_29 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -306606,13 +306606,13 @@ var arrayMap_NUM_1277 ArrayMap = ArrayMap{
 			name: &s_file,
 		},
 		String{
-			S: "<joker.repl>",
+			S: "<joker.Repl>",
 		},
 		Keyword{
 			hash: 2476974793,
 			name: &s_ns,
 		},
-		nil, /* joker.repl: &ns_joker_DOT_repl */
+		nil, /* joker.Repl: &ns_joker_DOT_repl */
 		Keyword{
 			hash: 148243501,
 			name: &s_name,
@@ -306933,7 +306933,7 @@ var var_NAME_special_DASH_doc_POS_joker_DOT_repl_39_1__42_29 Var = Var{
 	name: Symbol{
 		name: &s_special_DASH_doc,
 	},
-	ns: nil, /* joker.repl: &ns_joker_DOT_repl */
+	ns: nil, /* joker.Repl: &ns_joker_DOT_repl */
 }
 var ns_joker_DOT_repl Namespace = Namespace{
 	MetaHolder: MetaHolder{
@@ -406252,7 +406252,7 @@ func replLazyInit() {
 	var_NAME_print_DASH_doc_POS_joker_DOT_repl_47_1__72_31.ns = &ns_joker_DOT_repl
 	var_NAME_special_DASH_doc_DASH_map_POS_joker_DOT_repl_6_1__37_82.ns = &ns_joker_DOT_repl
 	var_NAME_special_DASH_doc_POS_joker_DOT_repl_39_1__42_29.ns = &ns_joker_DOT_repl
-	ns_joker_DOT_string.MaybeLazy("joker.repl")
+	ns_joker_DOT_string.MaybeLazy("joker.Repl")
 }
 
 // ---- a_set_code.go ----

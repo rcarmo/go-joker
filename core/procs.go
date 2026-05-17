@@ -101,11 +101,11 @@ func ExtractNumber(args []Object, index int) coretypes.Number {
 }
 
 func ExtractBigInt(args []Object, index int) *big.Int {
-	return EnsureArgIsBigInt(args, index).b
+	return EnsureArgIsBigInt(args, index).B
 }
 
 func ExtractBigFloat(args []Object, index int) *big.Float {
-	return EnsureArgIsBigFloat(args, index).b
+	return EnsureArgIsBigFloat(args, index).B
 }
 
 func ExtractRegex(args []Object, index int) *regexp.Regexp {
@@ -968,23 +968,23 @@ var procBoolean = func(args []Object) Object {
 }
 
 var procNumerator = func(args []Object) Object {
-	bi := EnsureArgIsRatio(args, 0).r.Num()
-	return &BigInt{b: bi}
+	bi := EnsureArgIsRatio(args, 0).R.Num()
+	return &BigInt{B: bi}
 }
 
 var procDenominator = func(args []Object) Object {
-	bi := EnsureArgIsRatio(args, 0).r.Denom()
-	return &BigInt{b: bi}
+	bi := EnsureArgIsRatio(args, 0).R.Denom()
+	return &BigInt{B: bi}
 }
 
 var procBigInt = func(args []Object) Object {
 	switch n := args[0].(type) {
 	case coretypes.Number:
-		return &BigInt{b: n.BigInt()}
+		return &BigInt{B: n.BigInt()}
 	case String:
 		bi := &big.Int{}
 		if _, ok := bi.SetString(n.S, 10); ok {
-			return &BigInt{b: bi}
+			return &BigInt{B: bi}
 		}
 		panic(RT.NewError("Invalid number format " + n.S))
 	default:
@@ -995,11 +995,11 @@ var procBigInt = func(args []Object) Object {
 var procBigFloat = func(args []Object) Object {
 	switch n := args[0].(type) {
 	case coretypes.Number:
-		return &BigFloat{b: n.BigFloat()}
+		return &BigFloat{B: n.BigFloat()}
 	case String:
 		b := &big.Float{}
 		if _, ok := b.SetString(n.S); ok {
-			return &BigFloat{b: b}
+			return &BigFloat{B: b}
 		}
 		panic(RT.NewError("Invalid number format " + n.S))
 	default:
@@ -1336,7 +1336,7 @@ var procReaderReadLine = func(args []Object) Object {
 }
 
 var procNanoTime = func(args []Object) Object {
-	return &BigInt{b: big.NewInt(time.Now().UnixNano())}
+	return &BigInt{B: big.NewInt(time.Now().UnixNano())}
 }
 
 var procMacroexpand1 = func(args []Object) Object {
@@ -1850,13 +1850,13 @@ var procAbs = func(args []Object) Object {
 		return coretypes.Double{D: math.Abs(n.D)}
 	case *BigInt:
 		b := &big.Int{}
-		return &BigInt{b: b.Abs(n.b)}
+		return &BigInt{B: b.Abs(n.B)}
 	case *BigFloat:
 		b := &big.Float{}
-		return &BigFloat{b: b.Abs(n.b)}
+		return &BigFloat{B: b.Abs(n.B)}
 	case *Ratio:
 		r := &big.Rat{}
-		return &Ratio{r: r.Abs(n.r)}
+		return &Ratio{R: r.Abs(n.R)}
 	case coretypes.Int:
 		x := n.I
 		if x < 0 {

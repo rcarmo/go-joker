@@ -53,17 +53,17 @@ type (
 	}
 	BigInt struct {
 		coretypes.InfoHolder
-		b        *big.Int
+		B        *big.Int
 		Original string
 	}
 	BigFloat struct {
 		coretypes.InfoHolder
-		b        *big.Float
+		B        *big.Float
 		Original string
 	}
 	Ratio struct {
 		coretypes.InfoHolder
-		r        *big.Rat
+		R        *big.Rat
 		Original string
 	}
 	Nil struct {
@@ -865,7 +865,7 @@ func (n Nil) Vals() Seq {
 }
 
 func (rat *Ratio) ToString(escape bool) string {
-	return rat.r.String()
+	return rat.R.String()
 }
 
 func (rat *Ratio) Equals(other interface{}) bool {
@@ -877,7 +877,7 @@ func (rat *Ratio) GetType() *coretypes.Type {
 }
 
 func (rat *Ratio) Hash() uint32 {
-	return hashutil.GobEncoder(rat.r)
+	return hashutil.GobEncoder(rat.R)
 }
 
 func (rat *Ratio) Compare(other coretypes.Object) int {
@@ -885,18 +885,18 @@ func (rat *Ratio) Compare(other coretypes.Object) int {
 }
 
 func MakeBigInt(b *big.Int) *BigInt {
-	return &BigInt{b: b}
+	return &BigInt{B: b}
 }
 
 func MakeRatio(r *big.Rat) *Ratio {
-	return &Ratio{r: r}
+	return &Ratio{R: r}
 }
 
 func (bi *BigInt) ToString(escape bool) string {
 	if FORMAT_MODE && bi.Original != "" {
 		return bi.Original
 	}
-	return bi.b.String() + "N"
+	return bi.B.String() + "N"
 }
 
 func (bi *BigInt) Equals(other interface{}) bool {
@@ -908,7 +908,7 @@ func (bi *BigInt) GetType() *coretypes.Type {
 }
 
 func (bi *BigInt) Hash() uint32 {
-	return hashutil.GobEncoder(bi.b)
+	return hashutil.GobEncoder(bi.B)
 }
 
 func (bi *BigInt) Compare(other coretypes.Object) int {
@@ -916,7 +916,7 @@ func (bi *BigInt) Compare(other coretypes.Object) int {
 }
 
 func MakeBigFloat(b *big.Float) *BigFloat {
-	return &BigFloat{b: b}
+	return &BigFloat{B: b}
 }
 
 // Helper function that returns a BigFloat given a string, remembering
@@ -928,7 +928,7 @@ func MakeBigFloatWithOrig(s, orig string) (*BigFloat, bool) {
 	f.SetPrec(uint(prec))
 
 	if _, ok := f.SetString(s); ok {
-		return &BigFloat{b: f, Original: orig}, true
+		return &BigFloat{B: f, Original: orig}, true
 	}
 
 	return nil, false
@@ -938,7 +938,7 @@ func (bf *BigFloat) ToString(escape bool) string {
 	if FORMAT_MODE && bf.Original != "" {
 		return bf.Original
 	}
-	b := bf.b
+	b := bf.B
 	if b.IsInf() {
 		if b.Signbit() {
 			return "##-Inf"
@@ -957,7 +957,7 @@ func (bf *BigFloat) GetType() *coretypes.Type {
 }
 
 func (bf *BigFloat) Hash() uint32 {
-	return hashutil.GobEncoder(bf.b)
+	return hashutil.GobEncoder(bf.B)
 }
 
 func (bf *BigFloat) Compare(other coretypes.Object) int {
