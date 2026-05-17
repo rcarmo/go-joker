@@ -13,22 +13,22 @@ import (
 
 // Document wraps a gopdf instance.
 type Document struct {
-	InfoHolder
+	coretypes.InfoHolder
 	pdf    *gopdf.GoPdf
 	w, h   float64
 	closed bool
 }
 
-var typeDocument = &Type{}
+var typeDocument = &coretypes.Type{}
 
 func (d *Document) ToString(escape bool) string {
 	return fmt.Sprintf("#<PDF %.0fx%.0f>", d.w, d.h)
 }
-func (d *Document) Equals(other interface{}) bool    { return d == other }
-func (d *Document) GetInfo() *ObjectInfo             { return nil }
-func (d *Document) WithInfo(info *ObjectInfo) Object { return d }
-func (d *Document) GetType() *Type                   { return typeDocument }
-func (d *Document) Hash() uint32                     { return 0 }
+func (d *Document) Equals(other interface{}) bool              { return d == other }
+func (d *Document) GetInfo() *coretypes.ObjectInfo             { return nil }
+func (d *Document) WithInfo(info *coretypes.ObjectInfo) Object { return d }
+func (d *Document) GetType() *coretypes.Type                   { return typeDocument }
+func (d *Document) Hash() uint32                               { return 0 }
 
 func extractDoc(args []Object, idx int) *Document {
 	if idx < 0 || idx >= len(args) {
@@ -320,13 +320,13 @@ var procMoveTo ProcFn = func(args []Object) Object {
 var procGetX ProcFn = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
-	return Double{D: d.pdf.GetX()}
+	return coretypes.Double{D: d.pdf.GetX()}
 }
 
 var procGetY ProcFn = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
-	return Double{D: d.pdf.GetY()}
+	return coretypes.Double{D: d.pdf.GetY()}
 }
 
 // --- Link ---

@@ -33,18 +33,18 @@ func TestDocumentCreate(t *testing.T) {
 	// gopdf requires an explicit TTF font - skip text test without font file
 
 	// Draw shapes (these work without fonts)
-	procLine([]Object{doc, Double{D: 50}, Double{D: 50}, Double{D: 500}, Double{D: 50}})
-	procRect([]Object{doc, Double{D: 50}, Double{D: 100}, Double{D: 200}, Double{D: 150}})
-	procOval([]Object{doc, Double{D: 300}, Double{D: 200}, Double{D: 50}, Double{D: 30}})
+	procLine([]Object{doc, coretypes.Double{D: 50}, coretypes.Double{D: 50}, coretypes.Double{D: 500}, coretypes.Double{D: 50}})
+	procRect([]Object{doc, coretypes.Double{D: 50}, coretypes.Double{D: 100}, coretypes.Double{D: 200}, coretypes.Double{D: 150}})
+	procOval([]Object{doc, coretypes.Double{D: 300}, coretypes.Double{D: 200}, coretypes.Double{D: 50}, coretypes.Double{D: 30}})
 
 	// Color
 	procStrokeColor([]Object{doc, coretypes.MakeInt(255), coretypes.MakeInt(0), coretypes.MakeInt(0)})
-	procLine([]Object{doc, Double{D: 50}, Double{D: 300}, Double{D: 500}, Double{D: 300}})
+	procLine([]Object{doc, coretypes.Double{D: 50}, coretypes.Double{D: 300}, coretypes.Double{D: 500}, coretypes.Double{D: 300}})
 
 	// New page
 	procPage([]Object{doc})
 	count := procPageCount([]Object{doc})
-	if count.(Int).I != 2 {
+	if count.(coretypes.Int).I != 2 {
 		t.Fatalf("expected 2 pages, got %v", count)
 	}
 
@@ -78,13 +78,13 @@ func TestPDFRejectsInvalidFiniteNumbers(t *testing.T) {
 	initPDFNamespace()
 	doc := procDocument(nil)
 	expectPanic(t, func() {
-		procFontSize([]Object{doc, Double{D: math.Inf(1)}})
+		procFontSize([]Object{doc, coretypes.Double{D: math.Inf(1)}})
 	})
 	expectPanic(t, func() {
-		procLine([]Object{doc, Double{D: math.NaN()}, Double{D: 0}, Double{D: 10}, Double{D: 10}})
+		procLine([]Object{doc, coretypes.Double{D: math.NaN()}, coretypes.Double{D: 0}, coretypes.Double{D: 10}, coretypes.Double{D: 10}})
 	})
 	expectPanic(t, func() {
-		procMoveTo([]Object{doc, Double{D: 10}, Double{D: math.Inf(-1)}})
+		procMoveTo([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: math.Inf(-1)}})
 	})
 }
 
@@ -92,10 +92,10 @@ func TestPDFGeometryRejectsNonFiniteDimensions(t *testing.T) {
 	initPDFNamespace()
 	doc := procDocument(nil)
 	expectPanic(t, func() {
-		procRect([]Object{doc, Double{D: 10}, Double{D: 10}, Double{D: math.Inf(1)}, Double{D: 10}})
+		procRect([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: math.Inf(1)}, coretypes.Double{D: 10}})
 	})
 	expectPanic(t, func() {
-		procMargins([]Object{doc, Double{D: 10}, Double{D: math.NaN()}, Double{D: 10}, Double{D: 10}})
+		procMargins([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: math.NaN()}, coretypes.Double{D: 10}, coretypes.Double{D: 10}})
 	})
 }
 
@@ -103,22 +103,22 @@ func TestPDFGeometryRejectsInvalidDimensions(t *testing.T) {
 	initPDFNamespace()
 	doc := procDocument(nil)
 	expectPanic(t, func() {
-		procTextWrap([]Object{doc, Double{D: 10}, Double{D: 10}, Double{D: 0}, MakeString("x")})
+		procTextWrap([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: 0}, MakeString("x")})
 	})
 	expectPanic(t, func() {
-		procRect([]Object{doc, Double{D: 10}, Double{D: 10}, Double{D: -1}, Double{D: 10}})
+		procRect([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: -1}, coretypes.Double{D: 10}})
 	})
 	expectPanic(t, func() {
-		procOval([]Object{doc, Double{D: 10}, Double{D: 10}, Double{D: 1}, Double{D: 0}})
+		procOval([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: 1}, coretypes.Double{D: 0}})
 	})
 	expectPanic(t, func() {
-		procImage([]Object{doc, MakeString(filepath.Join(t.TempDir(), "missing.png")), Double{D: 10}, Double{D: 10}, Double{D: -1}})
+		procImage([]Object{doc, MakeString(filepath.Join(t.TempDir(), "missing.png")), coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: -1}})
 	})
 	expectPanic(t, func() {
-		procLink([]Object{doc, MakeString("https://example.com"), Double{D: 10}, Double{D: 10}, Double{D: 0}, Double{D: 10}})
+		procLink([]Object{doc, MakeString("https://example.com"), coretypes.Double{D: 10}, coretypes.Double{D: 10}, coretypes.Double{D: 0}, coretypes.Double{D: 10}})
 	})
 	expectPanic(t, func() {
-		procMargins([]Object{doc, Double{D: 10}, Double{D: -1}, Double{D: 10}, Double{D: 10}})
+		procMargins([]Object{doc, coretypes.Double{D: 10}, coretypes.Double{D: -1}, coretypes.Double{D: 10}, coretypes.Double{D: 10}})
 	})
 }
 
@@ -126,23 +126,23 @@ func TestPDFLineWidthRejectsInvalidValue(t *testing.T) {
 	initPDFNamespace()
 	doc := procDocument(nil)
 	expectPanic(t, func() {
-		procLineWidth([]Object{doc, Double{D: 0}})
+		procLineWidth([]Object{doc, coretypes.Double{D: 0}})
 	})
 }
 
 func TestPDFDocumentRejectsInvalidDimensions(t *testing.T) {
 	initPDFNamespace()
 	expectPanic(t, func() {
-		procDocument([]Object{Double{D: 0}, Double{D: 100}})
+		procDocument([]Object{coretypes.Double{D: 0}, coretypes.Double{D: 100}})
 	})
 	expectPanic(t, func() {
-		procDocument([]Object{Double{D: 100}, Double{D: -1}})
+		procDocument([]Object{coretypes.Double{D: 100}, coretypes.Double{D: -1}})
 	})
 	expectPanic(t, func() {
 		procDocument([]Object{MakeKeyword("bogus")})
 	})
 	expectPanic(t, func() {
-		procDocument([]Object{Double{D: 100}})
+		procDocument([]Object{coretypes.Double{D: 100}})
 	})
 }
 
@@ -151,7 +151,7 @@ func TestImageMissingPathPanics(t *testing.T) {
 	doc := procDocument(nil)
 
 	expectPanic(t, func() {
-		procImage([]Object{doc, MakeString(filepath.Join(t.TempDir(), "missing.png")), Double{D: 10}, Double{D: 10}})
+		procImage([]Object{doc, MakeString(filepath.Join(t.TempDir(), "missing.png")), coretypes.Double{D: 10}, coretypes.Double{D: 10}})
 	})
 }
 
