@@ -892,28 +892,6 @@ func MakeRatio(r *big.Rat) *Ratio {
 	return &Ratio{r: r}
 }
 
-// Helper function that returns a math/big.Int given an int.
-func MakeMathBigIntFromInt(i int) *big.Int {
-	return MakeMathBigIntFromInt64(int64(i))
-}
-
-// Helper function that returns a math/big.Int given an int64.
-func MakeMathBigIntFromInt64(i int64) *big.Int {
-	return big.NewInt(i)
-}
-
-// Helper function that returns a math/big.Int given a uint.
-func MakeMathBigIntFromUint(b uint) *big.Int {
-	return MakeMathBigIntFromUint64(uint64(b))
-}
-
-// Helper function that returns a math/big.Int given a uint64.
-func MakeMathBigIntFromUint64(b uint64) *big.Int {
-	bigint := big.NewInt(0)
-	bigint.SetUint64(b)
-	return bigint
-}
-
 func (bi *BigInt) ToString(escape bool) string {
 	if FORMAT_MODE && bi.Original != "" {
 		return bi.Original

@@ -11,10 +11,10 @@ import (
 var ansi_c_ String
 var hour_ *BigInt
 var kitchen_ String
-var microsecond_ Int
-var millisecond_ Int
+var microsecond_ coretypes.Int
+var millisecond_ coretypes.Int
 var minute_ *BigInt
-var nanosecond_ Int
+var nanosecond_ coretypes.Int
 var rfc1123_ String
 var rfc1123_z_ String
 var rfc3339_ String
@@ -23,7 +23,7 @@ var rfc822_ String
 var rfc822_z_ String
 var rfc850_ String
 var ruby_date_ String
-var second_ Int
+var second_ coretypes.Int
 var stamp_ String
 var stamp_micro_ String
 var stamp_milli_ String
@@ -404,11 +404,11 @@ func __until_(_args []Object) Object {
 
 func Init() {
 	ansi_c_ = MakeString(time.ANSIC)
-	hour_ = MakeBigInt(MakeMathBigIntFromInt64(int64(time.Hour)))
+	hour_ = MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(time.Hour)))
 	kitchen_ = MakeString(time.Kitchen)
 	microsecond_ = coretypes.MakeInt(int(time.Microsecond))
 	millisecond_ = coretypes.MakeInt(int(time.Millisecond))
-	minute_ = MakeBigInt(MakeMathBigIntFromInt64(int64(time.Minute)))
+	minute_ = MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(time.Minute)))
 	nanosecond_ = coretypes.MakeInt(int(time.Nanosecond))
 	rfc1123_ = MakeString(time.RFC1123)
 	rfc1123_z_ = MakeString(time.RFC1123Z)

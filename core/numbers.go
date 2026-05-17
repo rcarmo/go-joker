@@ -603,11 +603,11 @@ func Min(x coretypes.Number, y coretypes.Number) coretypes.Number {
 // Precision
 
 func (n *BigInt) Precision() *big.Int {
-	return MakeMathBigIntFromInt(n.b.BitLen())
+	return coretypes.MakeMathBigIntFromInt(n.b.BitLen())
 }
 
 func (n *BigFloat) Precision() *big.Int {
-	return MakeMathBigIntFromUint(n.b.Prec())
+	return coretypes.MakeMathBigIntFromUint(n.b.Prec())
 }
 
 func category(x coretypes.Number) int {
