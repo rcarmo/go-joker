@@ -35,6 +35,7 @@ This folder is the canonical refactor/audit document set:
 - `core-split.md` — collections/reader/runtime/WASM split candidates.
 - `object-protocol-contracts.md` — object/protocol contracts blocking broad moves.
 - `runtime-execution-contract.md` — execution metadata contract required before moving IR executors/runtime frames.
+- `runtime-executor-audit.md` — current executor/runtime file-family ownership, blockers, and safe next seams.
 - `reader-construction-contract.md` — object construction/tagged literal contract required before moving reader/parser code.
 - `reader-parser-audit.md` — current remaining reader/parser root ownership, blockers, and next safe extraction seams.
 - `std-resource-layout.md` — repository layout rules for std namespace roots, Go packages, and pure Joker sub-namespace resources.

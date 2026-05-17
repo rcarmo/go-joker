@@ -1,0 +1,119 @@
+# Runtime/executor extraction audit
+
+Updated: 2026-05-17
+
+## Purpose
+
+This audit records the remaining root-owned executor/runtime families before any real move into `core/runtime`. The goal is to keep package moves honest: executor code may move only after dependencies are explicit, acyclic, and routed through `RuntimeExecutionAdapter` or similarly narrow contracts.
+
+## Root executor families
+
+### Boxed executor
+
+Files:
+
+- `boxed_exec.go`
+- `fn_ir_dispatch.go`
+- `fn_ir_cache.go`
+- `fn_ir_compile.go`
+
+Current state:
+
+- Uses `runtimeExec` for executable envelope access, constants, bytecode, nested calls, Fn construction, call dispatch, collection/string/cursor helpers, native helper dispatch, and failure gating.
+- Still root-bound through `Object`, `Callable`, `Fn`, `FnExpr`, `LocalEnv`, `Expr`, `Seq`, root errors, opcode-local value semantics, and tree-walker fallback.
+
+Safe next steps:
+
+- Keep replacing direct root-object reach-through with adapter methods when the method has a stable semantic boundary.
+- Do not move boxed executor loops until frame/result/error construction no longer requires root internals.
+
+### Typed executor and nanbox executor
+
+Files:
+
+- `typed_exec.go`
+- `typed_exec_inline.go`
+- `typed_exec_nanbox.go`
+- `typed_values.go`
+- `typed_value_accessors.go`
+
+Current state:
+
+- Uses adapter seams for many Fn/program/call/failure/collection operations.
+- Still root-bound through `irValue`, typed value representation, object boxing/unboxing, root numeric/string semantics, fast-path object predicates, and failure fallback behavior.
+
+Safe next steps:
+
+- Keep boxed executor boundary stable first.
+- Add contract tests before moving typed value representation; it is runtime representation, not neutral IR.
+
+### Escape analysis and inline rewrites
+
+Files:
+
+- `escape_analysis.go`
+- `inline_rewrites.go`
+- `loop_frame_detect.go`
+- `loop_native_helpers.go`
+
+Current state:
+
+- Escape facts are tied to root `Expr`, `LocalEnv`, binding keys, native helper eligibility, safe mutable slots, and string-builder slots.
+- Some facts are already covered by contract tests, but movement would still require an explicit expression/runtime-facts interface.
+
+Safe next steps:
+
+- Keep escape analysis in root until it consumes neutral IR/expression facts rather than root AST/runtime structures.
+- Move only leaf helper predicates if they do not mention root `Object`, `Expr`, `LocalEnv`, `FnExpr`, `Var`, or binding keys.
+
+### WASM/native helper runtime
+
+Files:
+
+- `wasm_compile.go`
+- `wasm_compile_host.go`
+- `wasm_exec_runtime.go`
+- `wasm_host_funcs.go`
+- `wasm_helper_backend.go`
+- `wasm_mem_nth_backend.go`
+- `native_recursive.go`
+- `loop_wasm_diagnostics.go`
+
+Current state:
+
+- Neutral eligibility/lowering reads increasingly consume `core/ir.Program` and `core/wasm` helpers.
+- Runtime execution remains root-bound through object promotion, host argument/result conversion, Fn/native-helper state, WASM failure fallback, mem-nth retry gating, and std/root object semantics.
+
+Safe next steps:
+
+- Keep `core/wasm` for neutral helpers only.
+- Do not move host/runtime execution until typed/object conversion is behind a stable runtime adapter.
+
+### Environment, frames, and parse/eval handoff
+
+Files:
+
+- `environment.go`
+- `environment_fast_init.go`
+- `environment_slow_init.go`
+- parser/eval-facing parts of `parse.go`/`eval.go`
+
+Current state:
+
+- These own root evaluation frames, locals, dynamic vars, closures, binding keys, and namespace/eval semantics.
+- They are not leaf runtime helpers and should remain root until a much narrower frame contract exists.
+
+## Current blockers for moving executor loops
+
+- `Object` and concrete object conversions are root-owned.
+- `Fn`, `FnExpr`, `Expr`, `LocalEnv`, `bindingKey`, `Var`, and namespace/eval state are root-owned.
+- `irValue` and typed/nanbox representation are still coupled to root object conversion and fallback semantics.
+- Error creation/throwing, tree-walker fallback, and failure caches are runtime behavior, not neutral IR.
+- Collection/string/cursor operations still depend on root protocols and object types despite adapter seams.
+
+## Next safe runtime work
+
+1. Continue adding narrow `RuntimeExecutionAdapter` methods only when an executor still reaches into root internals directly.
+2. Add/extend contract tests for any newly adapterized behavior before moving files.
+3. Move only root-independent runtime leaf helpers first; do not move executor loops or escape analysis by force.
+4. Keep `docs/refactor/runtime-execution-contract.md` synchronized with adapter coverage and blockers.
