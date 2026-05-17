@@ -1052,8 +1052,8 @@ func TestIncDecPromoteToBigIntOnOverflow(t *testing.T) {
 }
 
 func TestBigDecimalArithmeticKeepsBigFloat(t *testing.T) {
-	a, _ := MakeBigFloatWithOrig("0.1", "0.1M")
-	b, _ := MakeBigFloatWithOrig("0.2", "0.2M")
+	a, _ := coretypes.MakeBigFloatWithOrig("0.1", "0.1M")
+	b, _ := coretypes.MakeBigFloatWithOrig("0.2", "0.2M")
 	got := procAdd([]Object{a, b})
 	if got.GetType() != TYPE.BigFloat || !strings.HasPrefix(got.ToString(false), "0.3") || !strings.HasSuffix(got.ToString(false), "M") {
 		t.Fatalf("big decimal add mismatch: %T %s", got, got.ToString(false))

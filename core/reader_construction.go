@@ -106,7 +106,7 @@ func (ReaderConstructionAdapter) BigInt(v *big.Int, original string) Object {
 }
 
 func (ReaderConstructionAdapter) BigFloatFromString(value string, original string) (Object, bool) {
-	return MakeBigFloatWithOrig(value, original)
+	return coretypes.MakeBigFloatWithOrig(value, original)
 }
 
 func (ReaderConstructionAdapter) RatioOrInt(value string, ratio *big.Rat) Object {

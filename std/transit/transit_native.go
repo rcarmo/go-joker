@@ -299,7 +299,7 @@ func transitDecodeString(s string) Object {
 		}
 	}
 	if strings.HasPrefix(s, "~f") {
-		if bf, ok := MakeBigFloatWithOrig(s[2:], ""); ok {
+		if bf, ok := coretypes.MakeBigFloatWithOrig(s[2:], ""); ok {
 			return bf
 		}
 	}

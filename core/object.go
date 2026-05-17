@@ -9,14 +9,12 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"math/big"
 	"reflect"
 	"sync"
 	"unicode/utf8"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
-	"github.com/rcarmo/go-joker/core/numutil"
 	corert "github.com/rcarmo/go-joker/core/runtime"
 	corestr "github.com/rcarmo/go-joker/core/string"
 	coretypes "github.com/rcarmo/go-joker/core/types"
@@ -850,16 +848,6 @@ func (n Nil) Keys() Seq {
 
 func (n Nil) Vals() Seq {
 	return NIL
-}
-
-func MakeBigInt(b *big.Int) *BigInt { return coretypes.MakeBigInt(b) }
-
-func MakeRatio(r *big.Rat) *Ratio { return coretypes.MakeRatio(r) }
-
-func MakeBigFloat(b *big.Float) *BigFloat { return coretypes.MakeBigFloat(b) }
-
-func MakeBigFloatWithOrig(s, orig string) (*BigFloat, bool) {
-	return coretypes.MakeBigFloatWithOrig(s, orig, numutil.ComputeFloatPrecision)
 }
 
 var asciiCharStringObjects = corestr.NewObjectCache(func(ch rune) Object {
