@@ -1167,9 +1167,9 @@ func TestCountedIndexedVectorContract(t *testing.T) {
 		{name: "persistent", v: PersistentVectorFrom(items)},
 	}
 	for _, tc := range vectors {
-		ci, ok := tc.v.(CountedIndexed)
+		ci, ok := tc.v.(coretypes.CountedIndexed)
 		if !ok {
-			t.Fatalf("%s does not implement CountedIndexed", tc.name)
+			t.Fatalf("%s does not implement coretypes.CountedIndexed", tc.name)
 		}
 		if ci.Count() != len(items) {
 			t.Fatalf("%s Count = %d", tc.name, ci.Count())
@@ -1361,8 +1361,8 @@ func TestSortedCollectionContract(t *testing.T) {
 func TestTransientContract(t *testing.T) {
 	vec := NewArrayVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2))
 	tv := ToTransient(vec)
-	if _, ok := any(tv).(CountedIndexed); !ok {
-		t.Fatal("TransientVector should implement CountedIndexed")
+	if _, ok := any(tv).(coretypes.CountedIndexed); !ok {
+		t.Fatal("TransientVector should implement coretypes.CountedIndexed")
 	}
 	if tv.Count() != 2 || !tv.At(1).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("transient vector Count/At mismatch: count=%d at1=%s", tv.Count(), tv.At(1).ToString(false))
@@ -2065,7 +2065,7 @@ func TestReaderConstructionAdapterReaderSurface(t *testing.T) {
 	if err != nil {
 		t.Fatalf("TryRead via adapter: %v", err)
 	}
-	vec := obj.(CountedIndexed)
+	vec := obj.(coretypes.CountedIndexed)
 	if vec.Count() != 2 || !vec.At(0).Equals(coretypes.MakeInt(1)) || obj.GetInfo().FilenameOrUnknown() != "<adapter>" {
 		t.Fatalf("adapter reader result mismatch: %s info=%#v", obj.ToString(false), obj.GetInfo())
 	}
@@ -2144,7 +2144,7 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	if vecObj.GetInfo() == nil || vecObj.GetInfo().FilenameOrUnknown() != "<reader-contract>" {
 		t.Fatalf("vector did not retain source Info: %#v", vecObj.GetInfo())
 	}
-	vec := vecObj.(CountedIndexed)
+	vec := vecObj.(coretypes.CountedIndexed)
 	if vec.Count() != 3 || !vec.At(0).Equals(coretypes.MakeInt(1)) || !vec.At(1).Equals(MakeKeyword("two")) || !vec.At(2).Equals(MakeString("three")) {
 		t.Fatalf("vector construction mismatch: %s", vec.(Object).ToString(false))
 	}
@@ -2206,7 +2206,7 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 	dataReadersVar.Value = readers
 	defer func() { dataReadersVar.Value = oldDataReaders }()
 
-	direct := readOneForContract(t, `#contract/direct 7`).(CountedIndexed)
+	direct := readOneForContract(t, `#contract/direct 7`).(coretypes.CountedIndexed)
 	if direct.Count() != 2 || !direct.At(0).Equals(MakeKeyword("direct")) || !direct.At(1).Equals(coretypes.MakeInt(7)) {
 		t.Fatalf("direct tagged reader mismatch: %s", direct.(Object).ToString(false))
 	}
@@ -2222,7 +2222,7 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 	}}
 	defer func() { fallbackVar.Value = oldFallback }()
 
-	tagged := readOneForContract(t, `#contract/tag {:x 1}`).(CountedIndexed)
+	tagged := readOneForContract(t, `#contract/tag {:x 1}`).(coretypes.CountedIndexed)
 	if tagged.Count() != 2 || !tagged.At(0).Equals(MakeSymbol("contract/tag")) {
 		t.Fatalf("tagged fallback mismatch: %s", tagged.(Object).ToString(false))
 	}
@@ -2235,7 +2235,7 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 	}
 
 	selected := readOneForContract(t, `#?(:missing :no :joker [1 2])`)
-	selectedVec, ok := selected.(CountedIndexed)
+	selectedVec, ok := selected.(coretypes.CountedIndexed)
 	if !ok || selectedVec.Count() != 2 || !selectedVec.At(0).Equals(coretypes.MakeInt(1)) || !selectedVec.At(1).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("reader conditional selected wrong form: %s", selected.ToString(false))
 	}
@@ -2407,11 +2407,11 @@ func TestReaderConstructionAdapterCollectionObjects(t *testing.T) {
 	if SeqCount(list) != 2 || !list.First().Equals(coretypes.MakeInt(1)) || !Second(list).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("adapter ListFrom mismatch: %s", list.ToString(false))
 	}
-	vec := readerConstruction.VectorFrom([]Object{MakeKeyword("a"), MakeKeyword("b")}).(CountedIndexed)
+	vec := readerConstruction.VectorFrom([]Object{MakeKeyword("a"), MakeKeyword("b")}).(coretypes.CountedIndexed)
 	if vec.Count() != 2 || !vec.At(0).Equals(MakeKeyword("a")) || !vec.At(1).Equals(MakeKeyword("b")) {
 		t.Fatalf("adapter VectorFrom mismatch: %s", vec.(Object).ToString(false))
 	}
-	persistent := readerConstruction.PersistentVectorFromSeq(vec.(Seqable).Seq()).(CountedIndexed)
+	persistent := readerConstruction.PersistentVectorFromSeq(vec.(Seqable).Seq()).(coretypes.CountedIndexed)
 	if persistent.Count() != 2 || !persistent.At(0).Equals(MakeKeyword("a")) || !persistent.At(1).Equals(MakeKeyword("b")) {
 		t.Fatalf("adapter PersistentVectorFromSeq mismatch: %s", persistent.(Object).ToString(false))
 	}
@@ -2706,7 +2706,7 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	}
 	if got, ok := adapter.Assoc(vec, coretypes.MakeInt(0), coretypes.MakeInt(9)); !ok {
 		t.Fatalf("Assoc returned %#v, %v", got, ok)
-	} else if ok, val := got.(Gettable).Get(coretypes.MakeInt(0)); !ok || !val.Equals(coretypes.MakeInt(9)) {
+	} else if ok, val := got.(coretypes.Gettable).Get(coretypes.MakeInt(0)); !ok || !val.Equals(coretypes.MakeInt(9)) {
 		t.Fatalf("Assoc value = %#v, %v", val, ok)
 	}
 	if got, ok := adapter.Conj(vec, coretypes.MakeInt(3)); !ok || got.(coretypes.Counted).Count() != 3 {
@@ -2740,7 +2740,7 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	}
 	if got, ok := adapter.AssocBang(transientObj, coretypes.MakeInt(1), coretypes.MakeInt(8)); !ok {
 		t.Fatalf("AssocBang returned %#v, %v", got, ok)
-	} else if got, ok := adapter.ToPersistent(got); !ok || got.(Indexed).Nth(1) != coretypes.MakeInt(8) {
+	} else if got, ok := adapter.ToPersistent(got); !ok || got.(coretypes.Indexed).Nth(1) != coretypes.MakeInt(8) {
 		t.Fatalf("ToPersistent after AssocBang = %#v, %v", got, ok)
 	}
 }

@@ -136,7 +136,7 @@ func (r *Record) clone() *Record {
 
 // --- Map interface ---
 
-// Get implements Gettable for keyword access.
+// Get implements coretypes.Gettable for keyword access.
 func (r *Record) Get(key Object) (bool, Object) {
 	if kw, ok := key.(Keyword); ok {
 		name := kw.ToString(false)[1:] // strip leading ":"

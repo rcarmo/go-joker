@@ -881,7 +881,7 @@ var procGensym = func(args []Object) Object {
 
 var procApply = func(args []Object) Object {
 	// TODO:
-	// Stacktrace is broken. Need to somehow know
+	// coretypes.Stacktrace is broken. Need to somehow know
 	// the name of the function passed ...
 	f := EnsureArgIsCallable(args, 0)
 	return f.Call(ToSlice(EnsureArgIsSeqable(args, 1).Seq()))
@@ -1012,7 +1012,7 @@ var procBigFloat = func(args []Object) Object {
 var procNth = func(args []Object) Object {
 	n := EnsureArgIsNumber(args, 1).Int().I
 	switch coll := args[0].(type) {
-	case Indexed:
+	case coretypes.Indexed:
 		if len(args) == 3 {
 			return coll.TryNth(n, args[2])
 		}
@@ -1153,7 +1153,7 @@ var procPop = func(args []Object) Object {
 
 var procContains = func(args []Object) Object {
 	switch c := args[0].(type) {
-	case Gettable:
+	case coretypes.Gettable:
 		ok, _ := c.Get(args[1])
 		if ok {
 			return coretypes.Boolean{B: true}
@@ -1165,7 +1165,7 @@ var procContains = func(args []Object) Object {
 
 var procGet = func(args []Object) Object {
 	switch c := args[0].(type) {
-	case Gettable:
+	case coretypes.Gettable:
 		ok, v := c.Get(args[1])
 		if ok {
 			return v

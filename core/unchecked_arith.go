@@ -244,7 +244,7 @@ func registerUncheckedArithProcs() {
 	agVr := ns.Intern(MakeSymbol("aget"))
 	agVr.Value = Proc{Name: "procAget", Fn: func(args []Object) Object {
 		CheckArity(args, 2, 2)
-		g, ok := args[0].(Gettable)
+		g, ok := args[0].(coretypes.Gettable)
 		if !ok {
 			panic(RT.NewError("aget requires an indexed collection"))
 		}

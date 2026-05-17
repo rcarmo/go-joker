@@ -11,13 +11,13 @@ import (
 type (
 	Vec interface {
 		Object
-		CountedIndexed
-		Gettable
+		coretypes.CountedIndexed
+		coretypes.Gettable
 		Associative
 		coretypes.Sequential
 		coretypes.Comparable
-		Indexed
-		Stack
+		coretypes.Indexed
+		coretypes.Stack
 		Reversible
 		Meta
 		Seqable
@@ -35,13 +35,13 @@ type (
 	VectorSeq struct {
 		coretypes.InfoHolder
 		MetaHolder
-		vector CountedIndexed
+		vector coretypes.CountedIndexed
 		index  int
 	}
 	VectorRSeq struct {
 		coretypes.InfoHolder
 		MetaHolder
-		vector CountedIndexed
+		vector coretypes.CountedIndexed
 		index  int
 	}
 )
@@ -147,7 +147,7 @@ func (v *Vector) Equals(other interface{}) bool {
 		return true
 	}
 	switch other := other.(type) {
-	case CountedIndexed:
+	case coretypes.CountedIndexed:
 		return AreCountedIndexedEqual(v, other)
 	default:
 		return IsSeqEqual(v.Seq(), other)
@@ -350,12 +350,12 @@ func (v *Vector) popTail(level uint, node []interface{}) []interface{} {
 	}
 }
 
-func (v *Vector) Pop() Stack {
+func (v *Vector) Pop() coretypes.Stack {
 	if v.count == 0 {
 		panic(RT.NewError("Can't pop empty vector"))
 	}
 	if v.count == 1 {
-		return collectionConstruction.NewEmptyVector().WithMeta(v.meta).(Stack)
+		return collectionConstruction.NewEmptyVector().WithMeta(v.meta).(coretypes.Stack)
 	}
 	if v.count-v.tailoff() > 1 {
 		newTail := clone(v.tail)[0 : len(v.tail)-1]

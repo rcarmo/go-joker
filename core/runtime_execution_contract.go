@@ -193,7 +193,7 @@ func (RuntimeExecutionAdapter) PersistentResult(result Object) Object {
 }
 
 func (RuntimeExecutionAdapter) Get(coll Object, key Object, def Object) Object {
-	if g, ok := coll.(Gettable); ok {
+	if g, ok := coll.(coretypes.Gettable); ok {
 		if ok, v := g.Get(key); ok {
 			return v
 		}
@@ -243,7 +243,7 @@ func (RuntimeExecutionAdapter) Nth(coll Object, idx int) (Object, bool) {
 		}
 	case String:
 		return stringNthFast(c.S, idx), true
-	case Indexed:
+	case coretypes.Indexed:
 		return c.Nth(idx), true
 	}
 	return nil, false

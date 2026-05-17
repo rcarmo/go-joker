@@ -22,7 +22,7 @@ import (
 // Semantics:
 //   - Single-owner: do not share transients across goroutines
 //   - After persistent!, the transient is invalid (further mutation panics)
-//   - Transients implement coretypes.Counted, Indexed, and Gettable
+//   - Transients implement coretypes.Counted, coretypes.Indexed, and coretypes.Gettable
 
 // ---------- TransientVector ----------
 
@@ -78,7 +78,7 @@ func (tv *TransientVector) PopInPlace() *TransientVector {
 	return tv
 }
 
-// At returns the element at index for CountedIndexed compatibility.
+// At returns the element at index for coretypes.CountedIndexed compatibility.
 func (tv *TransientVector) At(i int) Object { return tv.Nth(i) }
 
 // Nth returns the element at index.
@@ -96,7 +96,7 @@ func (tv *TransientVector) TryNth(i int, d Object) Object {
 	return d
 }
 
-// Get implements Gettable for transient vectors.
+// Get implements coretypes.Gettable for transient vectors.
 func (tv *TransientVector) Get(key Object) (bool, Object) {
 	if idx, ok := key.(coretypes.Int); ok {
 		if idx.I >= 0 && idx.I < len(tv.arr) {
@@ -179,7 +179,7 @@ func (tm *TransientMap) AssocInPlace(key, val Object) *TransientMap {
 	return tm
 }
 
-// Get implements Gettable for transient maps.
+// Get implements coretypes.Gettable for transient maps.
 func (tm *TransientMap) Get(key Object) (bool, Object) {
 	if s, ok := key.(String); ok && tm.sm != nil {
 		v, ok := tm.sm[s.S]

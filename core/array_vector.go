@@ -61,7 +61,7 @@ func (v *ArrayVector) Equals(other interface{}) bool {
 		return true
 	}
 	switch other := other.(type) {
-	case CountedIndexed:
+	case coretypes.CountedIndexed:
 		return AreCountedIndexedEqual(v, other)
 	default:
 		return IsSeqEqual(v.Seq(), other)
@@ -116,7 +116,7 @@ func (v *ArrayVector) Peek() Object {
 	return NIL
 }
 
-func (v *ArrayVector) Pop() Stack {
+func (v *ArrayVector) Pop() coretypes.Stack {
 	if v.Count() == 0 {
 		panic(RT.NewError("Can't pop empty vector"))
 	}

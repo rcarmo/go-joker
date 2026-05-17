@@ -57,6 +57,25 @@ type Deref interface {
 	Deref() Object
 }
 
+type CountedIndexed interface {
+	Counted
+	At(int) Object
+}
+
+type Indexed interface {
+	Nth(i int) Object
+	TryNth(i int, d Object) Object
+}
+
+type Stack interface {
+	Peek() Object
+	Pop() Stack
+}
+
+type Gettable interface {
+	Get(key Object) (bool, Object)
+}
+
 type Sequential interface {
 	SequentialMarker()
 }

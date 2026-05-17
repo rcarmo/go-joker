@@ -156,7 +156,7 @@ var s_Comparable string = "Comparable"
 var s_Comparator string = "Comparator"
 var s_ConsSeq string = "ConsSeq"
 var s_Counted string = "Counted"
-var s_CountedIndexed string = "CountedIndexed"
+var s_CountedIndexed string = "coretypes.CountedIndexed"
 var s_Delay string = "Delay"
 var s_Deref string = "coretypes.Deref"
 var s_Double string = "coretypes.Double"
@@ -181,11 +181,11 @@ var s_G__292 string = "G__292"
 var s_G__293 string = "G__293"
 var s_G__395 string = "G__395"
 var s_G__86 string = "G__86"
-var s_Gettable string = "Gettable"
+var s_Gettable string = "coretypes.Gettable"
 var s_HashMap string = "HashMap"
 var s_IOReader string = "IOReader"
 var s_IOWriter string = "IOWriter"
-var s_Indexed string = "Indexed"
+var s_Indexed string = "coretypes.Indexed"
 var s_Int string = "coretypes.Int"
 var s_KVReduce string = "KVReduce"
 var s_Keyword string = "Keyword"
@@ -214,7 +214,7 @@ var s_Seq string = "Seq"
 var s_Seqable string = "Seqable"
 var s_Sequential string = "Sequential"
 var s_Set string = "Set"
-var s_Stack string = "Stack"
+var s_Stack string = "coretypes.Stack"
 var s_String string = "String"
 var s_StringSeq string = "StringSeq"
 var s_Symbol string = "Symbol"
@@ -1933,7 +1933,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"Comparator":                 &s_Comparator,
 	"ConsSeq":                    &s_ConsSeq,
 	"Counted":                    &s_Counted,
-	"CountedIndexed":             &s_CountedIndexed,
+	"coretypes.CountedIndexed":   &s_CountedIndexed,
 	"Delay":                      &s_Delay,
 	"coretypes.Deref":            &s_Deref,
 	"coretypes.Double":           &s_Double,
@@ -1958,11 +1958,11 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"G__293":                     &s_G__293,
 	"G__395":                     &s_G__395,
 	"G__86":                      &s_G__86,
-	"Gettable":                   &s_Gettable,
+	"coretypes.Gettable":         &s_Gettable,
 	"HashMap":                    &s_HashMap,
 	"IOReader":                   &s_IOReader,
 	"IOWriter":                   &s_IOWriter,
-	"Indexed":                    &s_Indexed,
+	"coretypes.Indexed":          &s_Indexed,
 	"coretypes.Int":              &s_Int,
 	"KVReduce":                   &s_KVReduce,
 	"Keyword":                    &s_Keyword,
@@ -1991,7 +1991,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"Seqable":                    &s_Seqable,
 	"Sequential":                 &s_Sequential,
 	"Set":                        &s_Set,
-	"Stack":                      &s_Stack,
+	"coretypes.Stack":            &s_Stack,
 	"String":                     &s_String,
 	"StringSeq":                  &s_StringSeq,
 	"Symbol":                     &s_Symbol,
@@ -4191,7 +4191,7 @@ var arrayMap_NUM_7 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "CountedIndexed",
+			S: "coretypes.CountedIndexed",
 		},
 	},
 }
@@ -4199,8 +4199,8 @@ var ty_CountedIndexed coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_7,
 	},
-	Name:        "CountedIndexed",
-	ReflectType: reflect.TypeOf((*CountedIndexed)(nil)).Elem(),
+	Name:        "coretypes.CountedIndexed",
+	ReflectType: reflect.TypeOf((*coretypes.CountedIndexed)(nil)).Elem(),
 }
 var arrayMap_NUM_8 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4319,7 +4319,7 @@ var arrayMap_NUM_11 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Gettable",
+			S: "coretypes.Gettable",
 		},
 	},
 }
@@ -4327,8 +4327,8 @@ var ty_Gettable coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_11,
 	},
-	Name:        "Gettable",
-	ReflectType: reflect.TypeOf((*Gettable)(nil)).Elem(),
+	Name:        "coretypes.Gettable",
+	ReflectType: reflect.TypeOf((*coretypes.Gettable)(nil)).Elem(),
 }
 var arrayMap_NUM_12 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4351,7 +4351,7 @@ var arrayMap_NUM_12 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Indexed",
+			S: "coretypes.Indexed",
 		},
 	},
 }
@@ -4359,8 +4359,8 @@ var ty_Indexed coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_12,
 	},
-	Name:        "Indexed",
-	ReflectType: reflect.TypeOf((*Indexed)(nil)).Elem(),
+	Name:        "coretypes.Indexed",
+	ReflectType: reflect.TypeOf((*coretypes.Indexed)(nil)).Elem(),
 }
 var arrayMap_NUM_13 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4863,7 +4863,7 @@ var arrayMap_NUM_28 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Stack",
+			S: "coretypes.Stack",
 		},
 	},
 }
@@ -4871,8 +4871,8 @@ var ty_Stack coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_28,
 	},
-	Name:        "Stack",
-	ReflectType: reflect.TypeOf((*Stack)(nil)).Elem(),
+	Name:        "coretypes.Stack",
+	ReflectType: reflect.TypeOf((*coretypes.Stack)(nil)).Elem(),
 }
 var arrayMap_NUM_29 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -184294,7 +184294,7 @@ var arrayMap_NUM_792 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Return true if coll implements Indexed, indicating efficient lookup by index",
+			S: "Return true if coll implements coretypes.Indexed, indicating efficient lookup by index",
 		},
 		Keyword{
 			hash: 3376861428,

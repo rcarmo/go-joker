@@ -248,19 +248,19 @@ func EnsureArgIsDouble(args []Object, index int) coretypes.Double {
 	panic(FailArg(obj, "coretypes.Double", index))
 }
 
-func EnsureObjectIsStack(obj Object, pattern string) Stack {
-	if c, yes := obj.(Stack); yes {
+func EnsureObjectIsStack(obj Object, pattern string) coretypes.Stack {
+	if c, yes := obj.(coretypes.Stack); yes {
 		return c
 	}
-	panic(FailObject(obj, "Stack", pattern))
+	panic(FailObject(obj, "coretypes.Stack", pattern))
 }
 
-func EnsureArgIsStack(args []Object, index int) Stack {
+func EnsureArgIsStack(args []Object, index int) coretypes.Stack {
 	obj := args[index]
-	if c, yes := obj.(Stack); yes {
+	if c, yes := obj.(coretypes.Stack); yes {
 		return c
 	}
-	panic(FailArg(obj, "Stack", index))
+	panic(FailArg(obj, "coretypes.Stack", index))
 }
 
 func EnsureObjectIsMap(obj Object, pattern string) Map {
@@ -638,17 +638,17 @@ func EnsureArgIsChannel(args []Object, index int) *Channel {
 	panic(FailArg(obj, "Channel", index))
 }
 
-func EnsureObjectIsCountedIndexed(obj Object, pattern string) CountedIndexed {
-	if c, yes := obj.(CountedIndexed); yes {
+func EnsureObjectIsCountedIndexed(obj Object, pattern string) coretypes.CountedIndexed {
+	if c, yes := obj.(coretypes.CountedIndexed); yes {
 		return c
 	}
-	panic(FailObject(obj, "CountedIndexed", pattern))
+	panic(FailObject(obj, "coretypes.CountedIndexed", pattern))
 }
 
-func EnsureArgIsCountedIndexed(args []Object, index int) CountedIndexed {
+func EnsureArgIsCountedIndexed(args []Object, index int) coretypes.CountedIndexed {
 	obj := args[index]
-	if c, yes := obj.(CountedIndexed); yes {
+	if c, yes := obj.(coretypes.CountedIndexed); yes {
 		return c
 	}
-	panic(FailArg(obj, "CountedIndexed", index))
+	panic(FailArg(obj, "coretypes.CountedIndexed", index))
 }

@@ -830,7 +830,7 @@ func registerWasmHost(rt wazero.Runtime) {
 				} else {
 					keyObj = wasmRawIntObject(key)
 				}
-				if g, ok := coll.(Gettable); ok {
+				if g, ok := coll.(coretypes.Gettable); ok {
 					ok, v := g.Get(keyObj)
 					if ok {
 						return objToWasm(t, v)
@@ -853,7 +853,7 @@ func registerWasmHost(rt wazero.Runtime) {
 				} else {
 					keyObj = wasmRawIntObject(key)
 				}
-				if g, ok := coll.(Gettable); ok {
+				if g, ok := coll.(coretypes.Gettable); ok {
 					ok, v := g.Get(keyObj)
 					if ok {
 						return objToWasm(t, v)
@@ -896,7 +896,7 @@ func registerWasmHost(rt wazero.Runtime) {
 					if i >= 0 && i < len(c.arr) {
 						return objToWasm(t, c.arr[i])
 					}
-				case Indexed:
+				case coretypes.Indexed:
 					return objToWasm(t, c.Nth(i))
 				}
 				return 0

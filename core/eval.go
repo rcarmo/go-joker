@@ -524,7 +524,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				coll := Eval(expr.args[0], env)
 				key := Eval(expr.args[1], env)
 				switch c := coll.(type) {
-				case Gettable:
+				case coretypes.Gettable:
 					ok, v := c.Get(key)
 					if ok {
 						return v
@@ -728,7 +728,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				key := Eval(expr.args[1], env)
 				def := Eval(expr.args[2], env)
 				switch c := coll.(type) {
-				case Gettable:
+				case coretypes.Gettable:
 					ok, v := c.Get(key)
 					if ok {
 						return v

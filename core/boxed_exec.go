@@ -591,7 +591,7 @@ loop:
 			key := stack[len(stack)-1]
 			coll := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			if _, ok := coll.(Gettable); !ok {
+			if _, ok := coll.(coretypes.Gettable); !ok {
 				return nil
 			}
 			stack = append(stack, runtimeExec.Get(coll, key, NIL))

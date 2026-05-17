@@ -11,7 +11,7 @@ import (
 type (
 	Set interface {
 		Conjable
-		Gettable
+		coretypes.Gettable
 		Disjoin(key Object) Set
 	}
 	MapSet struct {

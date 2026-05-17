@@ -284,7 +284,7 @@ type (
 	}
 )
 
-// Stack-allocated helper calls for hot Callable paths.
+// coretypes.Stack-allocated helper calls for hot Callable paths.
 // Avoids repeated []Object literal allocation at call sites such as reduce,
 // transducers, watches, and comparators.
 func call0(c Callable) Object {

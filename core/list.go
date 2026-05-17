@@ -134,7 +134,7 @@ func (list *List) Peek() Object {
 	return list.first
 }
 
-func (list *List) Pop() Stack {
+func (list *List) Pop() coretypes.Stack {
 	if list.count == 0 {
 		panic(RT.NewError("Can't pop empty list"))
 	}

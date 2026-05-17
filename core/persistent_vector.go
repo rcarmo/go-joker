@@ -271,14 +271,16 @@ func (v *PersistentVector) At(i int) Object { return v.Nth(i) }
 
 func (v *PersistentVector) Seq() Seq { return NewVectorFrom(v.ToSlice()...).Seq() }
 
-func (v *PersistentVector) ToString(escape bool) string { return CountedIndexedToString(v, escape) }
+func (v *PersistentVector) ToString(escape bool) string {
+	return CountedIndexedToString(v, escape)
+}
 
 func (v *PersistentVector) Equals(other interface{}) bool {
 	if v == other {
 		return true
 	}
 	switch other := other.(type) {
-	case CountedIndexed:
+	case coretypes.CountedIndexed:
 		return AreCountedIndexedEqual(v, other)
 	default:
 		return IsSeqEqual(v.Seq(), other)
