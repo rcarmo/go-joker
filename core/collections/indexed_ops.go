@@ -1,6 +1,8 @@
 package collections
 
 import (
+	"fmt"
+	"io"
 	"strings"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
@@ -52,6 +54,40 @@ func IndexedHash[T coretypes.Object](v IndexedView[T]) uint32 {
 		h.Write(hashutil.Uint32Bytes(v.At(i).Hash()))
 	}
 	return h.Sum32()
+}
+
+func IndexedPprint[T coretypes.Object](v IndexedView[T], w io.Writer, indent int, pprint func(T, int, io.Writer) int, writeIndent func(io.Writer, int)) int {
+	ind := indent + 1
+	fmt.Fprint(w, "[")
+	if v.Count() > 0 {
+		for i := 0; i < v.Count()-1; i++ {
+			pprint(v.At(i), indent+1, w)
+			fmt.Fprint(w, "\n")
+			writeIndent(w, indent+1)
+		}
+		ind = pprint(v.At(v.Count()-1), indent+1, w)
+	}
+	fmt.Fprint(w, "]")
+	return ind + 1
+}
+
+func IndexedFormat[T coretypes.Object](v IndexedView[T], w io.Writer, indent int, format func(T, int, io.Writer) int, maybeNewLine func(io.Writer, T, T, int, int) int, isComment func(T) bool, writeIndent func(io.Writer, int)) int {
+	ind := indent + 1
+	fmt.Fprint(w, "[")
+	if v.Count() > 0 {
+		for i := 0; i < v.Count()-1; i++ {
+			ind = format(v.At(i), ind, w)
+			ind = maybeNewLine(w, v.At(i), v.At(i+1), indent+1, ind)
+		}
+		ind = format(v.At(v.Count()-1), ind, w)
+	}
+	if v.Count() > 0 && isComment(v.At(v.Count()-1)) {
+		fmt.Fprint(w, "\n")
+		writeIndent(w, indent+1)
+		ind = indent + 1
+	}
+	fmt.Fprint(w, "]")
+	return ind + 1
 }
 
 func IndexedKVReduce[T coretypes.Object, R any](v IndexedView[T], init R, reduce func(R, int, T) R) R {

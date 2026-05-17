@@ -1694,40 +1694,11 @@ func CountedIndexedKvreduce(v CountedIndexed, c Callable, init Object) Object {
 }
 
 func CountedIndexedPprint(v CountedIndexed, w io.Writer, indent int) int {
-	ind := indent + 1
-	fmt.Fprint(w, "[")
-	if v.Count() > 0 {
-		for i := 0; i < v.Count()-1; i++ {
-			pprintObject(v.At(i), indent+1, w)
-			fmt.Fprint(w, "\n")
-			writeIndent(w, indent+1)
-		}
-		ind = pprintObject(v.At(v.Count()-1), indent+1, w)
-	}
-	fmt.Fprint(w, "]")
-	return ind + 1
+	return corecollections.IndexedPprint[Object](v, w, indent, pprintObject, writeIndent)
 }
 
 func CountedIndexedFormat(v CountedIndexed, w io.Writer, indent int) int {
-	ind := indent + 1
-	fmt.Fprint(w, "[")
-	if v.Count() > 0 {
-		for i := 0; i < v.Count()-1; i++ {
-			ind = formatObject(v.At(i), ind, w)
-
-			ind = maybeNewLine(w, v.At(i), v.At(i+1), indent+1, ind)
-		}
-		ind = formatObject(v.At(v.Count()-1), ind, w)
-	}
-	if v.Count() > 0 {
-		if isComment(v.At(v.Count() - 1)) {
-			fmt.Fprint(w, "\n")
-			writeIndent(w, indent+1)
-			ind = indent + 1
-		}
-	}
-	fmt.Fprint(w, "]")
-	return ind + 1
+	return corecollections.IndexedFormat[Object](v, w, indent, formatObject, maybeNewLine, isComment, writeIndent)
 }
 
 func CountedIndexedReduce(v CountedIndexed, c Callable) Object {
