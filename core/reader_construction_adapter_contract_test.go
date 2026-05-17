@@ -77,6 +77,10 @@ func TestReaderConstructionAdapterMetadata(t *testing.T) {
 	if _, ok := readerConstruction.WithMeta(MakeInt(1), meta); ok {
 		t.Fatal("metadata applied to int")
 	}
+	skip := readerConstruction.SkipRedundantDoMeta()
+	if found, got := skip.Get(MakeKeyword("skip-redundant-do")); !found || !got.Equals(Boolean{B: true}) {
+		t.Fatalf("SkipRedundantDoMeta entry = %v %v", found, got)
+	}
 }
 
 func TestReaderConstructionAdapterNumericObjects(t *testing.T) {

@@ -656,17 +656,17 @@ func makeFnForm(args map[int]Symbol, body Object) Object {
 	if !ok {
 		panic(RT.NewError("Invalid arg literal index"))
 	}
-	argVector := collectionConstruction.EmptyVector()
+	argObjects := make([]Object, 0, len(a))
 	for _, v := range a {
-		argVector = argVector.Conjoin(v)
+		argObjects = append(argObjects, v)
 	}
+	argVector := readerConstruction.PersistentVectorFromSeq(readerConstruction.VectorFrom(argObjects).(Seqable).Seq())
 	if LINTER_MODE {
-		if meta, ok := body.(Meta); ok {
-			m := collectionConstruction.EmptyArrayMap().Plus(MakeKeyword("skip-redundant-do"), Boolean{B: true})
-			body = meta.WithMeta(m)
+		if _, ok := body.(Meta); ok {
+			body, _ = readerConstruction.WithMeta(body, readerConstruction.SkipRedundantDoMeta())
 		}
 	}
-	return DeriveReadObject(body, NewListFrom(MakeSymbol("joker.core/fn"), argVector, body))
+	return DeriveReadObject(body, readerConstruction.ListFrom([]Object{readerConstruction.Symbol("joker.core/fn"), argVector, body}))
 }
 
 func genSym(prefix string, postfix string) Symbol {

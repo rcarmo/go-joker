@@ -104,6 +104,10 @@ func (ReaderConstructionAdapter) WithMeta(obj Object, meta *ArrayMap) (Object, b
 	return deriveReadObject(obj, v.WithMeta(meta)), true
 }
 
+func (ReaderConstructionAdapter) SkipRedundantDoMeta() *ArrayMap {
+	return collectionConstruction.EmptyArrayMap().Plus(MakeKeyword("skip-redundant-do"), Boolean{B: true})
+}
+
 func (ReaderConstructionAdapter) LiteralExpr(obj Object) *LiteralExpr {
 	return NewLiteralExpr(obj)
 }
