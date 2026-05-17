@@ -3,6 +3,7 @@ package pods
 import (
 	"errors"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"os"
 	"os/exec"
@@ -235,9 +236,9 @@ func podMessageValue(v Object) any {
 		return x.S
 	case Keyword, Symbol:
 		return x.ToString(false)
-	case Int:
+	case coretypes.Int:
 		return x.I
-	case Boolean:
+	case coretypes.Boolean:
 		return x.B
 	case Nil:
 		return nil

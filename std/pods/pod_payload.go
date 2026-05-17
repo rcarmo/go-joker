@@ -51,11 +51,11 @@ func podPayloadFromObject(obj Object) interface{} {
 	switch v := obj.(type) {
 	case Nil:
 		return nil
-	case Boolean:
+	case coretypes.Boolean:
 		return v.B
-	case Int:
+	case coretypes.Int:
 		return v.I
-	case Double:
+	case coretypes.Double:
 		return v.D
 	case String:
 		return v.S
@@ -86,14 +86,14 @@ func podPayloadToObject(v interface{}) Object {
 	case nil:
 		return NIL
 	case bool:
-		return Boolean{B: x}
+		return coretypes.Boolean{B: x}
 	case string:
 		return MakeString(x)
 	case float64:
 		if x == float64(int(x)) {
 			return coretypes.MakeInt(int(x))
 		}
-		return Double{D: x}
+		return coretypes.Double{D: x}
 	case []interface{}:
 		objs := make([]Object, len(x))
 		for i, e := range x {

@@ -2,6 +2,7 @@ package pods
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"time"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -20,7 +21,7 @@ func podInvokeTimeoutFromOpts(opts Object, fallback time.Duration) time.Duration
 		panic(RT.NewError("pods/invoke: opts must be a map"))
 	}
 	if found, v := m.Get(MakeKeyword("timeout-ms")); found {
-		i, ok := v.(Int)
+		i, ok := v.(coretypes.Int)
 		if !ok {
 			panic(RT.NewError("pods/invoke: :timeout-ms must be an integer"))
 		}

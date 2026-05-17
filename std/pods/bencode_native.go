@@ -47,11 +47,11 @@ func objectToBencode(obj Object) interface{} {
 		return v.S
 	case Keyword, Symbol:
 		return v.ToString(false)
-	case Int:
+	case coretypes.Int:
 		return int64(v.I)
 	case *BigInt:
 		return v.BigInt().String()
-	case Boolean:
+	case coretypes.Boolean:
 		if v.B {
 			return int64(1)
 		}

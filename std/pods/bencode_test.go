@@ -22,7 +22,7 @@ func TestBencodeRoundTripPodMessage(t *testing.T) {
 	if ok, op := decoded.Get(MakeString("op")); !ok || op.ToString(false) != "describe" {
 		t.Fatalf("op mismatch: %v", op)
 	}
-	if ok, args := decoded.Get(MakeString("args")); !ok || args.(CountedIndexed).At(1).(Int).I != 42 {
+	if ok, args := decoded.Get(MakeString("args")); !ok || args.(CountedIndexed).At(1).(coretypes.Int).I != 42 {
 		t.Fatalf("args mismatch: %v", args)
 	}
 }

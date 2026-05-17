@@ -174,7 +174,7 @@ func TestPodInvokeJSON(t *testing.T) {
 		t.Fatal(err)
 	}
 	vec := res.(CountedIndexed)
-	if vec.Count() != 2 || vec.At(0).ToString(false) != "hi" || vec.At(1).(Int).I != 7 {
+	if vec.Count() != 2 || vec.At(0).ToString(false) != "hi" || vec.At(1).(coretypes.Int).I != 7 {
 		t.Fatalf("invoke result mismatch: %s", res.ToString(false))
 	}
 }
@@ -184,7 +184,7 @@ func TestPodRouterReadsBencodeMessages(t *testing.T) {
 	msg := EmptyArrayMap()
 	msg.Add(MakeString("id"), MakeString("req-1"))
 	msg.Add(MakeString("value"), MakeString("ok"))
-	msg.Add(MakeString("done"), Boolean{B: true})
+	msg.Add(MakeString("done"), coretypes.Boolean{B: true})
 	stdout := bytes.NewReader(bencodeEncodeObject(msg))
 	p := newPod("pod-router", "router", "json", io.Discard, stdout, nil)
 	ch := p.registerPending("req-1")

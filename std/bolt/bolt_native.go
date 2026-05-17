@@ -20,7 +20,7 @@ type (
 	}
 )
 
-var boltDBType *Type
+var boltDBType *coretypes.Type
 
 func MakeBoltDB(db *bolt.DB) BoltDB {
 	res := BoltDB{db, 0}
@@ -39,11 +39,11 @@ func (db BoltDB) Equals(other interface{}) bool {
 	return false
 }
 
-func (db BoltDB) GetInfo() *ObjectInfo {
+func (db BoltDB) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (db BoltDB) GetType() *Type {
+func (db BoltDB) GetType() *coretypes.Type {
 	return boltDBType
 }
 
@@ -51,7 +51,7 @@ func (db BoltDB) Hash() uint32 {
 	return db.hash
 }
 
-func (db BoltDB) WithInfo(info *ObjectInfo) Object {
+func (db BoltDB) WithInfo(info *coretypes.ObjectInfo) Object {
 	return db
 }
 
@@ -179,5 +179,5 @@ func byPrefix(db *bolt.DB, bucket, prefix string) *ArrayVector {
 }
 
 func init() {
-	boltDBType = RegType("BoltDB", (*BoltDB)(nil), "Wraps Bolt DB type")
+	boltDBType = coretypes.NewValueType("BoltDB", (*BoltDB)(nil), nil)
 }
