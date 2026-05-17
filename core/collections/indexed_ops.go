@@ -3,6 +3,7 @@ package collections
 import (
 	"strings"
 
+	"github.com/rcarmo/go-joker/core/hashutil"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
@@ -35,6 +36,14 @@ func IndexedEqual[T coretypes.Object](v1, v2 IndexedView[T]) bool {
 		}
 	}
 	return true
+}
+
+func IndexedHash[T coretypes.Object](v IndexedView[T]) uint32 {
+	h := hashutil.New32()
+	for i := 0; i < v.Count(); i++ {
+		h.Write(hashutil.Uint32Bytes(v.At(i).Hash()))
+	}
+	return h.Sum32()
 }
 
 func IndexedCompare[T coretypes.Object](v1, v2 IndexedView[T], compare func(T, T) int) int {

@@ -1669,11 +1669,7 @@ func AreCountedIndexedEqual(v1, v2 CountedIndexed) bool {
 }
 
 func CountedIndexedHash(v CountedIndexed) uint32 {
-	h := getHash()
-	for i := 0; i < v.Count(); i++ {
-		h.Write(hashutil.Uint32Bytes(v.At(i).Hash()))
-	}
-	return h.Sum32()
+	return corecollections.IndexedHash[Object](v)
 }
 
 func CountedIndexedGet(v CountedIndexed, key Object) (bool, Object) {
