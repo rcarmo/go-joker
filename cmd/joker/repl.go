@@ -6,6 +6,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"os"
 	"path/filepath"
@@ -82,10 +83,10 @@ func saveReplHistory(rl *liner.State, filename string) {
 	}
 }
 
-func repl(phase Phase) {
+func repl(phase corereader.Phase) {
 	ProcessReplData()
 	GLOBAL_ENV.FindNamespace(MakeSymbol("user")).ReferAll(GLOBAL_ENV.FindNamespace(MakeSymbol("joker.repl")))
-	GLOBAL_ENV.CoreNamespace.Resolve("*repl*").Value = Boolean{B: true}
+	GLOBAL_ENV.CoreNamespace.Resolve("*repl*").Value = coretypes.Boolean{B: true}
 	fmt.Printf("Welcome to joker %s. Use '(exit)', %s to exit.\n", VERSION, EXITERS)
 	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
 	replContext := NewReplContext(parseContext.GlobalEnv)

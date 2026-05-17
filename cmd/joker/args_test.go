@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 	"runtime"
 	"strings"
 	"testing"
@@ -32,11 +33,11 @@ func resetParsedArgsForTest() {
 	debugOut = nil
 	helpFlag = false
 	versionFlag = false
-	phase = EVAL
+	phase = corereader.EvalPhase
 	workingDir = ""
 	lintFlag = false
 	reportGloballyUnusedFlag = false
-	dialect = UNKNOWN
+	dialect = corereader.UnknownDialect
 	eval = ""
 	replFlag = false
 	replSocket = ""
@@ -61,8 +62,8 @@ func TestParseArgsEvalStopsBeforeFileAndKeepsRemainingArgs(t *testing.T) {
 
 	parseArgs([]string{"joker", "--eval", "(+ 1 2)", "script.clj", "a", "b"})
 
-	if phase != PRINT_IF_NOT_NIL {
-		t.Fatalf("phase = %v, want PRINT_IF_NOT_NIL", phase)
+	if phase != corereader.PrintIfNotNilPhase {
+		t.Fatalf("phase = %v, want corereader.PrintIfNotNilPhase", phase)
 	}
 	if eval != "(+ 1 2)" {
 		t.Fatalf("eval = %q", eval)
@@ -123,8 +124,8 @@ func TestParseArgsLintDialectAndProfilerFlags(t *testing.T) {
 	if !lintFlag {
 		t.Fatal("lintFlag = false, want true")
 	}
-	if dialect != CLJS {
-		t.Fatalf("dialect = %v, want CLJS", dialect)
+	if dialect != corereader.CLJSDialect {
+		t.Fatalf("dialect = %v, want corereader.CLJSDialect", dialect)
 	}
 	if workingDir != "src" {
 		t.Fatalf("workingDir = %q", workingDir)

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 	"io"
 	"os"
 	"path/filepath"
@@ -11,7 +12,7 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func processFile(filename string, phase Phase) error {
+func processFile(filename string, phase corereader.Phase) error {
 	var reader *Reader
 	var input *os.File
 	var formatBuf *bytes.Buffer
@@ -27,7 +28,7 @@ func processFile(filename string, phase Phase) error {
 			return err
 		}
 		reader = NewReader(bufio.NewReader(input), filename)
-		if phase == FORMAT && writeFlag {
+		if phase == corereader.FormatPhase && writeFlag {
 			formatBuf = &bytes.Buffer{}
 			oldStdout = Stdout
 			Stdout = formatBuf

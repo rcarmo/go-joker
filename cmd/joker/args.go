@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 	"io"
 	"math"
 	"os"
@@ -16,11 +17,11 @@ var (
 	debugOut                 io.Writer
 	helpFlag                 bool
 	versionFlag              bool
-	phase                    Phase = EVAL // --read, --parse, --evaluate
+	phase                    corereader.Phase = corereader.EvalPhase // --read, --parse, --evaluate
 	workingDir               string
 	lintFlag                 bool
 	reportGloballyUnusedFlag bool
-	dialect                  Dialect = UNKNOWN
+	dialect                  corereader.Dialect = corereader.UnknownDialect
 	eval                     string
 	replFlag                 bool
 	replSocket               string
@@ -121,15 +122,15 @@ func parseArgs(args []string) {
 		case "--version", "-v":
 			versionFlag = true
 		case "--format":
-			phase = FORMAT
+			phase = corereader.FormatPhase
 		case "--write":
 			writeFlag = true
 		case "--read":
-			phase = READ
+			phase = corereader.ReadPhase
 		case "--parse":
-			phase = PARSE
+			phase = corereader.ParsePhase
 		case "--evaluate":
-			phase = EVAL
+			phase = corereader.EvalPhase
 		case "--working-dir":
 			if i < length-1 && notOption(args[i+1]) {
 				i += 1 // shift
@@ -143,16 +144,16 @@ func parseArgs(args []string) {
 			lintFlag = true
 		case "--lintclj":
 			lintFlag = true
-			dialect = CLJ
+			dialect = corereader.CLJDialect
 		case "--lintcljs":
 			lintFlag = true
-			dialect = CLJS
+			dialect = corereader.CLJSDialect
 		case "--lintjoker":
 			lintFlag = true
-			dialect = JOKER
+			dialect = corereader.JokerDialect
 		case "--lintedn":
 			lintFlag = true
-			dialect = EDN
+			dialect = corereader.EDNDialect
 		case "--dialect":
 			if i < length-1 && notOption(args[i+1]) {
 				i += 1 // shift
@@ -180,7 +181,7 @@ func parseArgs(args []string) {
 			if i < length-1 && notOption(args[i+1]) {
 				i += 1 // shift
 				eval = args[i]
-				phase = PRINT_IF_NOT_NIL
+				phase = corereader.PrintIfNotNilPhase
 			} else {
 				missing = true
 			}

@@ -3,12 +3,13 @@ package main
 import (
 	"bufio"
 	"fmt"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 	"io"
 
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func repl(phase Phase) {
+func repl(phase corereader.Phase) {
 	ProcessReplData()
 	GLOBAL_ENV.FindNamespace(MakeSymbol("user")).ReferAll(GLOBAL_ENV.FindNamespace(MakeSymbol("joker.repl")))
 	fmt.Printf("Welcome to joker %s. Use '(exit)', %s to exit.\n", VERSION, EXITERS)

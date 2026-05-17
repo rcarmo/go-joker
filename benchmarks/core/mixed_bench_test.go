@@ -80,13 +80,13 @@ func BenchmarkIRStringPrependBuilderLoop(b *testing.B) {
 func BenchmarkPVAssoc35(b *testing.B) {
 	pv := EmptyPersistentVector()
 	for i := 0; i < 35; i++ {
-		pv = pv.Conj(Double{D: float64(i)})
+		pv = pv.Conj(coretypes.Double{D: float64(i)})
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		v := pv
 		for j := 0; j < 9; j++ {
-			v = v.Assoc(j*3+3, Double{D: float64(i + j)})
+			v = v.Assoc(j*3+3, coretypes.Double{D: float64(i + j)})
 		}
 		_ = v
 	}
@@ -96,14 +96,14 @@ func BenchmarkPVAssoc35(b *testing.B) {
 func BenchmarkArrayVectorAssoc35(b *testing.B) {
 	arr := make([]Object, 35)
 	for i := range arr {
-		arr[i] = Double{D: float64(i)}
+		arr[i] = coretypes.Double{D: float64(i)}
 	}
 	av := NewArrayVectorFrom(arr...)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		var v Associative = av
 		for j := 0; j < 9; j++ {
-			v = v.Assoc(coretypes.MakeInt(j*3+3), Double{D: float64(i + j)})
+			v = v.Assoc(coretypes.MakeInt(j*3+3), coretypes.Double{D: float64(i + j)})
 		}
 		_ = v
 	}

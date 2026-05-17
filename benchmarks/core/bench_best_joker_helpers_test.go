@@ -2,6 +2,7 @@ package core_test
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"regexp"
 )
@@ -40,7 +41,7 @@ var procBenchKmerDistinctTotal ProcFn = func(args []Object) Object {
 		}
 		total += len(seen)
 	}
-	return Int{I: total}
+	return coretypes.Int{I: total}
 }
 
 var procBenchReverseComplementCount ProcFn = func(args []Object) Object {
@@ -60,7 +61,7 @@ var procBenchReverseComplementCount ProcFn = func(args []Object) Object {
 			out[i] = dna[len(dna)-1-i]
 		}
 	}
-	return Int{I: len(out)}
+	return coretypes.Int{I: len(out)}
 }
 
 var procBenchRegexCount ProcFn = func(args []Object) Object {
@@ -72,7 +73,7 @@ var procBenchRegexCount ProcFn = func(args []Object) Object {
 		total += len(regexp.MustCompile(pat).FindAllStringIndex(input, -1))
 		seq = seq.Rest()
 	}
-	return Int{I: total}
+	return coretypes.Int{I: total}
 }
 
 var procBenchMandelbrotCount ProcFn = func(args []Object) Object {
@@ -99,7 +100,7 @@ var procBenchMandelbrotCount ProcFn = func(args []Object) Object {
 			}
 		}
 	}
-	return Int{I: count}
+	return coretypes.Int{I: count}
 }
 
 func benchA(i, j int) float64 { return 1.0 / (float64((i+j)*(i+j+1)/2 + i + 1)) }
@@ -141,7 +142,7 @@ var procBenchSpectralNorm ProcFn = func(args []Object) Object {
 		vBv += u[i] * v[i]
 		vv += v[i] * v[i]
 	}
-	return Double{D: math.Sqrt(vBv / vv)}
+	return coretypes.Double{D: math.Sqrt(vBv / vv)}
 }
 
 var procBenchNBodyEnergy ProcFn = func(args []Object) Object {
@@ -190,7 +191,7 @@ var procBenchNBodyEnergy ProcFn = func(args []Object) Object {
 			e -= m * b[jb+6] / math.Sqrt(dx*dx+dy*dy+dz*dz)
 		}
 	}
-	return Double{D: e}
+	return coretypes.Double{D: e}
 }
 
 func fannkuchN(n int) int {
@@ -238,7 +239,7 @@ func fannkuchN(n int) int {
 	}
 }
 
-var procBenchFannkuch ProcFn = func(args []Object) Object { return Int{I: fannkuchN(EnsureArgIsInt(args, 0).I)} }
+var procBenchFannkuch ProcFn = func(args []Object) Object { return coretypes.Int{I: fannkuchN(EnsureArgIsInt(args, 0).I)} }
 
 var procBenchMapUpdateLoop ProcFn = func(args []Object) Object {
 	n := EnsureArgIsInt(args, 0).I
@@ -246,7 +247,7 @@ var procBenchMapUpdateLoop ProcFn = func(args []Object) Object {
 	for i := 0; i < n; i++ {
 		counts[i&15]++
 	}
-	return Int{I: counts[0] + counts[7] + counts[15]}
+	return coretypes.Int{I: counts[0] + counts[7] + counts[15]}
 }
 
 type benchTree struct{ left, right *benchTree }
@@ -276,5 +277,5 @@ var procBenchBinaryTrees ProcFn = func(args []Object) Object {
 			total += checkBenchTree(makeBenchTree(d))
 		}
 	}
-	return Int{I: total}
+	return coretypes.Int{I: total}
 }

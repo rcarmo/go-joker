@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 	"io"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -69,7 +70,7 @@ func skipRestOfLine(reader *Reader) {
 	}
 }
 
-func processReplCommand(reader *Reader, phase Phase, parseContext *ParseContext, replContext *ReplContext) (exit bool) {
+func processReplCommand(reader *Reader, phase corereader.Phase, parseContext *ParseContext, replContext *ReplContext) (exit bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			switch r := r.(type) {
@@ -98,13 +99,13 @@ func processReplCommand(reader *Reader, phase Phase, parseContext *ParseContext,
 		return
 	}
 
-	if phase == READ {
+	if phase == corereader.ReadPhase {
 		fmt.Println(obj.ToString(true))
 		return false
 	}
 
 	expr := Parse(obj, parseContext)
-	if phase == PARSE {
+	if phase == corereader.ParsePhase {
 		fmt.Println(expr)
 		return false
 	}

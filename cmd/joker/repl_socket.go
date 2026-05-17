@@ -3,15 +3,17 @@ package main
 import (
 	"bufio"
 	"fmt"
+	corereader "github.com/rcarmo/go-joker/core/reader"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"net"
 
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func srepl(port string, phase Phase) {
+func srepl(port string, phase corereader.Phase) {
 	ProcessReplData()
 	GLOBAL_ENV.FindNamespace(MakeSymbol("user")).ReferAll(GLOBAL_ENV.FindNamespace(MakeSymbol("joker.repl")))
-	GLOBAL_ENV.CoreNamespace.Resolve("*repl*").Value = Boolean{B: true}
+	GLOBAL_ENV.CoreNamespace.Resolve("*repl*").Value = coretypes.Boolean{B: true}
 	l, err := net.Listen("tcp", replSocket)
 	if err != nil {
 		fmt.Fprintf(Stderr, "Cannot start srepl listening on %s: %s\n",

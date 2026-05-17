@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -22,7 +23,7 @@ func runLintMode() bool {
 		fmt.Fprintf(Stderr, "Error: Cannot combine --lint and --error-to-repl.\n")
 		ExitJoker(15)
 	}
-	if dialect == UNKNOWN {
+	if dialect == corereader.UnknownDialect {
 		dialect = detectDialect(filename)
 	}
 	if filename != "" {

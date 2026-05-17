@@ -308,7 +308,7 @@ func TestYAMLParserCorrectness(t *testing.T) {
 	if ok, got := r.Get(MakeString("age")); !ok || !got.Equals(coretypes.MakeInt(30)) {
 		t.Fatalf("small YAML age = %v, want 30", got)
 	}
-	if ok, got := r.Get(MakeString("active")); !ok || !got.Equals(Boolean{B: true}) {
+	if ok, got := r.Get(MakeString("active")); !ok || !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("small YAML active = %v, want true", got)
 	}
 	if ok, got := r.Get(MakeString("city")); !ok || got.ToString(false) != "New York" {
@@ -319,7 +319,7 @@ func TestYAMLParserCorrectness(t *testing.T) {
 	if ok, got := r2.Get(MakeString("score2")); !ok || !got.Equals(coretypes.MakeInt(87)) {
 		t.Fatalf("medium YAML score2 = %v, want 87", got)
 	}
-	if ok, got := r2.Get(MakeString("verified2")); !ok || !got.Equals(Boolean{B: false}) {
+	if ok, got := r2.Get(MakeString("verified2")); !ok || !got.Equals(coretypes.Boolean{B: false}) {
 		t.Fatalf("medium YAML verified2 = %v, want false", got)
 	}
 }

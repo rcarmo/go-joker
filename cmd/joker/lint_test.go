@@ -1,22 +1,21 @@
 package main
 
 import (
+	corereader "github.com/rcarmo/go-joker/core/reader"
 	"testing"
-
-	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestDetectDialectFromFilename(t *testing.T) {
 	tests := []struct {
 		name string
 		file string
-		want Dialect
+		want corereader.Dialect
 	}{
-		{name: "edn", file: "deps.edn", want: EDN},
-		{name: "cljs", file: "src/app.cljs", want: CLJS},
-		{name: "joker", file: "script.joke", want: JOKER},
-		{name: "default clj", file: "src/app.cljc", want: CLJ},
-		{name: "extensionless default clj", file: "Makefile", want: CLJ},
+		{name: "edn", file: "deps.edn", want: corereader.EDNDialect},
+		{name: "cljs", file: "src/app.cljs", want: corereader.CLJSDialect},
+		{name: "joker", file: "script.joke", want: corereader.JokerDialect},
+		{name: "default clj", file: "src/app.cljc", want: corereader.CLJDialect},
+		{name: "extensionless default clj", file: "Makefile", want: corereader.CLJDialect},
 	}
 
 	for _, tt := range tests {
@@ -31,13 +30,13 @@ func TestDetectDialectFromFilename(t *testing.T) {
 func TestDialectFromArg(t *testing.T) {
 	tests := []struct {
 		arg  string
-		want Dialect
+		want corereader.Dialect
 	}{
-		{arg: "clj", want: CLJ},
-		{arg: "CLJS", want: CLJS},
-		{arg: "joker", want: JOKER},
-		{arg: "EdN", want: EDN},
-		{arg: "unknown", want: UNKNOWN},
+		{arg: "clj", want: corereader.CLJDialect},
+		{arg: "corereader.CLJSDialect", want: corereader.CLJSDialect},
+		{arg: "joker", want: corereader.JokerDialect},
+		{arg: "EdN", want: corereader.EDNDialect},
+		{arg: "unknown", want: corereader.UnknownDialect},
 	}
 
 	for _, tt := range tests {
@@ -50,14 +49,14 @@ func TestDialectFromArg(t *testing.T) {
 func TestMatchesDialect(t *testing.T) {
 	tests := []struct {
 		path    string
-		dialect Dialect
+		dialect corereader.Dialect
 		want    bool
 	}{
-		{path: "src/app.clj", dialect: CLJ, want: true},
-		{path: "src/app.cljs", dialect: CLJS, want: true},
-		{path: "src/app.joke", dialect: JOKER, want: true},
-		{path: "deps.edn", dialect: EDN, want: true},
-		{path: "src/app.cljc", dialect: CLJ, want: false},
+		{path: "src/app.clj", dialect: corereader.CLJDialect, want: true},
+		{path: "src/app.cljs", dialect: corereader.CLJSDialect, want: true},
+		{path: "src/app.joke", dialect: corereader.JokerDialect, want: true},
+		{path: "deps.edn", dialect: corereader.EDNDialect, want: true},
+		{path: "src/app.cljc", dialect: corereader.CLJDialect, want: false},
 	}
 
 	for _, tt := range tests {

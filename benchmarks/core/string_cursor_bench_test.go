@@ -2,6 +2,7 @@ package core_test
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 )
 
@@ -18,10 +19,10 @@ func initBenchStringCursorProcs() {
 			if r < 0 {
 				return NIL
 			}
-			return Char{Ch: r}
+			return coretypes.Char{Ch: r}
 		}},
 		{"cursor-next", func(args []Object) Object { return args[0].(*StringCursor).Next() }},
-		{"cursor-done?", func(args []Object) Object { return Boolean{B: args[0].(*StringCursor).Done()} }},
+		{"cursor-done?", func(args []Object) Object { return coretypes.Boolean{B: args[0].(*StringCursor).Done()} }},
 	} {
 		sym := MakeSymbol(p.name)
 		vr := ns.Intern(sym)

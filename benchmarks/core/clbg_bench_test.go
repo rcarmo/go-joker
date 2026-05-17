@@ -5,6 +5,7 @@ package core_test
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"sync"
 	"testing"
@@ -16,7 +17,7 @@ func clbgInit() {
 	clbgInitOnce.Do(func() {
 		sqrtProc := Proc{Fn: func(args []Object) Object {
 			x := EnsureArgIsNumber(args, 0).Double().D
-			return Double{D: math.Sqrt(x)}
+			return coretypes.Double{D: math.Sqrt(x)}
 		}, Name: "procSqrt"}
 		// Register in core namespace
 		vr := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol("sqrt"))

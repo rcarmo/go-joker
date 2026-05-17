@@ -2,6 +2,7 @@ package core_test
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"testing"
 
@@ -10,9 +11,9 @@ import (
 
 func requireBenchInt(t *testing.T, script string, want int) {
 	t.Helper()
-	got, ok := Eval(compileBenchExpr(t, script), nil).(Int)
+	got, ok := Eval(compileBenchExpr(t, script), nil).(coretypes.Int)
 	if !ok {
-		t.Fatalf("%s returned non-Int %T", script, got)
+		t.Fatalf("%s returned non-coretypes.Int %T", script, got)
 	}
 	if got.I != want {
 		t.Fatalf("%s = %d, want %d", script, got.I, want)
@@ -21,9 +22,9 @@ func requireBenchInt(t *testing.T, script string, want int) {
 
 func requireBenchDouble(t *testing.T, script string, want, tolerance float64) {
 	t.Helper()
-	got, ok := Eval(compileBenchExpr(t, script), nil).(Double)
+	got, ok := Eval(compileBenchExpr(t, script), nil).(coretypes.Double)
 	if !ok {
-		t.Fatalf("%s returned non-Double %T", script, got)
+		t.Fatalf("%s returned non-coretypes.Double %T", script, got)
 	}
 	if math.Abs(got.D-want) > tolerance {
 		t.Fatalf("%s = %.17g, want %.17g ± %.1g", script, got.D, want, tolerance)

@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	corereader "github.com/rcarmo/go-joker/core/reader"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 	"path/filepath"
 	"strings"
@@ -9,50 +11,50 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func makeDialectKeyword(dialect Dialect) Keyword {
+func makeDialectKeyword(dialect corereader.Dialect) Keyword {
 	switch dialect {
-	case EDN:
+	case corereader.EDNDialect:
 		return MakeKeyword("clj")
-	case CLJ:
+	case corereader.CLJDialect:
 		return MakeKeyword("clj")
-	case CLJS:
+	case corereader.CLJSDialect:
 		return MakeKeyword("cljs")
 	default:
 		return MakeKeyword("joker")
 	}
 }
 
-func configureLinterMode(dialect Dialect, filename string, workingDir string) {
+func configureLinterMode(dialect corereader.Dialect, filename string, workingDir string) {
 	ProcessLinterData(dialect)
 	ProcessLinterFiles(dialect, filename, workingDir)
-	if dialect != JOKER {
+	if dialect != corereader.JokerDialect {
 		RemoveJokerNamespaces()
 	}
 	GLOBAL_ENV.CoreNamespace.Resolve("*loaded-libs*").Value = EmptySet()
 	LINTER_MODE = true
 	DIALECT = dialect
 	lm, _ := GLOBAL_ENV.Resolve(MakeSymbol("joker.core/*linter-mode*"))
-	lm.Value = Boolean{B: true}
+	lm.Value = coretypes.Boolean{B: true}
 	GLOBAL_ENV.Features = GLOBAL_ENV.Features.Disjoin(MakeKeyword("joker")).Conj(makeDialectKeyword(dialect)).(Set)
 	EnableIdentValidation()
 }
 
-func detectDialect(filename string) Dialect {
+func detectDialect(filename string) corereader.Dialect {
 	switch {
 	case strings.HasSuffix(filename, ".edn"):
-		return EDN
+		return corereader.EDNDialect
 	case strings.HasSuffix(filename, ".cljs"):
-		return CLJS
+		return corereader.CLJSDialect
 	case strings.HasSuffix(filename, ".joke"):
-		return JOKER
+		return corereader.JokerDialect
 	}
-	return CLJ
+	return corereader.CLJDialect
 }
 
-func lintFile(filename string, dialect Dialect, workingDir string) {
-	phase := PARSE
-	if dialect == EDN {
-		phase = READ
+func lintFile(filename string, dialect corereader.Dialect, workingDir string) {
+	phase := corereader.ParsePhase
+	if dialect == corereader.EDNDialect {
+		phase = corereader.ReadPhase
 	}
 	ReadConfig(filename, workingDir)
 	configureLinterMode(dialect, filename, workingDir)
@@ -62,14 +64,14 @@ func lintFile(filename string, dialect Dialect, workingDir string) {
 	}
 }
 
-func matchesDialect(path string, dialect Dialect) bool {
+func matchesDialect(path string, dialect corereader.Dialect) bool {
 	ext := ".clj"
 	switch dialect {
-	case CLJS:
+	case corereader.CLJSDialect:
 		ext = ".cljs"
-	case JOKER:
+	case corereader.JokerDialect:
 		ext = ".joke"
-	case EDN:
+	case corereader.EDNDialect:
 		ext = ".edn"
 	}
 	return strings.HasSuffix(path, ext)
@@ -87,11 +89,11 @@ func isIgnored(path string) bool {
 	return false
 }
 
-func lintDir(dirname string, dialect Dialect, reportGloballyUnused bool) {
+func lintDir(dirname string, dialect corereader.Dialect, reportGloballyUnused bool) {
 	var processErr error
-	phase := PARSE
-	if dialect == EDN {
-		phase = READ
+	phase := corereader.ParsePhase
+	if dialect == corereader.EDNDialect {
+		phase = corereader.ReadPhase
 	}
 	ns := GLOBAL_ENV.CurrentNamespace()
 	ReadConfig("", dirname)
@@ -119,16 +121,16 @@ func lintDir(dirname string, dialect Dialect, reportGloballyUnused bool) {
 	}
 }
 
-func dialectFromArg(arg string) Dialect {
+func dialectFromArg(arg string) corereader.Dialect {
 	switch strings.ToLower(arg) {
 	case "clj":
-		return CLJ
+		return corereader.CLJDialect
 	case "cljs":
-		return CLJS
+		return corereader.CLJSDialect
 	case "joker":
-		return JOKER
+		return corereader.JokerDialect
 	case "edn":
-		return EDN
+		return corereader.EDNDialect
 	}
-	return UNKNOWN
+	return corereader.UnknownDialect
 }
