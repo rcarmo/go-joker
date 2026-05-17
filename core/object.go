@@ -33,12 +33,9 @@ type (
 		reflectType reflect.Type
 	}
 	Object interface {
-		coretypes.Equality
-		ToString(escape bool) string
-		GetInfo() *coretypes.ObjectInfo
+		coretypes.Object
 		WithInfo(*coretypes.ObjectInfo) Object
 		GetType() *Type
-		Hash() uint32
 	}
 	Conjable interface {
 		Object
