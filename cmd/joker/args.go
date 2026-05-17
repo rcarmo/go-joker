@@ -48,6 +48,19 @@ func notOption(arg string) bool {
 	return arg == "-" || !strings.HasPrefix(arg, "-") || isNumber(arg[1:])
 }
 
+func parsePositiveOptionInt(raw string, name string) (int, bool) {
+	rate, err := strconv.Atoi(raw)
+	if err != nil {
+		fmt.Fprintln(Stderr, "Error: ", err)
+		return 0, false
+	}
+	if rate <= 0 {
+		fmt.Fprintf(Stderr, "Error: %s must be positive\n", name)
+		return 0, false
+	}
+	return rate, true
+}
+
 func parseArgs(args []string) {
 	if len(args) > 1 {
 		// peek to see if the first arg is "--debug*"
@@ -222,15 +235,12 @@ func parseArgs(args []string) {
 		case "--cpuprofile-rate":
 			if i < length-1 && notOption(args[i+1]) {
 				i += 1 // shift
-				rate, err := strconv.Atoi(args[i])
-				if err != nil {
-					fmt.Fprintln(Stderr, "Error: ", err)
+				rate, ok := parsePositiveOptionInt(args[i], "--cpuprofile-rate")
+				if !ok {
 					return
 				}
-				if rate > 0 {
-					cpuProfileRate = rate
-					cpuProfileRateFlag = true
-				}
+				cpuProfileRate = rate
+				cpuProfileRateFlag = true
 			} else {
 				missing = true
 			}
@@ -244,14 +254,11 @@ func parseArgs(args []string) {
 		case "--memprofile-rate":
 			if i < length-1 && notOption(args[i+1]) {
 				i += 1 // shift
-				rate, err := strconv.Atoi(args[i])
-				if err != nil {
-					fmt.Fprintln(Stderr, "Error: ", err)
+				rate, ok := parsePositiveOptionInt(args[i], "--memprofile-rate")
+				if !ok {
 					return
 				}
-				if rate > 0 {
-					runtime.MemProfileRate = rate
-				}
+				runtime.MemProfileRate = rate
 			} else {
 				missing = true
 			}

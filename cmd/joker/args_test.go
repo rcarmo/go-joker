@@ -1,6 +1,9 @@
 package main
 
 import (
+	"bytes"
+	"runtime"
+	"strings"
 	"testing"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -11,9 +14,13 @@ func resetArgsForTest(t *testing.T) {
 
 	oldVerbosity := VerbosityLevel
 	oldHashmapThreshold := HASHMAP_THRESHOLD
+	oldStderr := Stderr
+	oldMemProfileRate := runtime.MemProfileRate
 	t.Cleanup(func() {
 		VerbosityLevel = oldVerbosity
 		HASHMAP_THRESHOLD = oldHashmapThreshold
+		Stderr = oldStderr
+		runtime.MemProfileRate = oldMemProfileRate
 		resetParsedArgsForTest()
 	})
 
@@ -81,6 +88,30 @@ func TestParseArgsDoubleDashSkipsFilenameParsing(t *testing.T) {
 	}
 	if got := len(remainingArgs); got != 2 || remainingArgs[0] != "--not-an-option" || remainingArgs[1] != "file.clj" {
 		t.Fatalf("remainingArgs = %#v", remainingArgs)
+	}
+}
+
+func TestParseArgsRejectsNonPositiveProfileRates(t *testing.T) {
+	resetArgsForTest(t)
+	var stderr bytes.Buffer
+	Stderr = &stderr
+
+	parseArgs([]string{"joker", "--cpuprofile-rate", "0", "target.clj"})
+
+	if cpuProfileRateFlag || cpuProfileRate != 0 {
+		t.Fatalf("cpu profile rate accepted non-positive value: rate=%d flag=%v", cpuProfileRate, cpuProfileRateFlag)
+	}
+	if !strings.Contains(stderr.String(), "--cpuprofile-rate must be positive") {
+		t.Fatalf("stderr = %q", stderr.String())
+	}
+
+	stderr.Reset()
+	parseArgs([]string{"joker", "--memprofile-rate", "-1", "target.clj"})
+	if runtime.MemProfileRate == -1 {
+		t.Fatal("mem profile rate accepted negative value")
+	}
+	if !strings.Contains(stderr.String(), "--memprofile-rate must be positive") {
+		t.Fatalf("stderr = %q", stderr.String())
 	}
 }
 
