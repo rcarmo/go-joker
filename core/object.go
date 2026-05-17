@@ -84,7 +84,7 @@ type (
 		ArrayMap
 		rt *goroutineRT
 	}
-	RecurBindings []Object
+	RecurBindings = coretypes.RecurBindings
 	Delay         struct {
 		fn      coretypes.Callable
 		runtime *corert.Promise[Object]
@@ -299,26 +299,6 @@ func (d *Delay) Deref() Object {
 
 func (d *Delay) IsRealized() bool {
 	return d.runtime != nil && d.runtime.IsRealized()
-}
-
-func (rb RecurBindings) ToString(escape bool) string {
-	return "#object[RecurBindings]"
-}
-
-func (rb RecurBindings) Equals(other interface{}) bool {
-	return false
-}
-
-func (rb RecurBindings) GetInfo() *coretypes.ObjectInfo {
-	return nil
-}
-
-func (rb RecurBindings) GetType() *coretypes.Type {
-	return TYPE.RecurBindings
-}
-
-func (rb RecurBindings) Hash() uint32 {
-	return 0
 }
 
 func (exInfo *ExInfo) ToString(escape bool) string {
@@ -926,10 +906,6 @@ func IsSeq(obj Object) bool {
 	default:
 		return false
 	}
-}
-
-func (x RecurBindings) WithInfo(info *coretypes.ObjectInfo) Object {
-	return x
 }
 
 func IsInstance(t *coretypes.Type, obj Object) bool {

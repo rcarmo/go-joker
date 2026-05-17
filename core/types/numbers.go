@@ -76,6 +76,8 @@ type Ratio struct {
 	Original string
 }
 
+type RecurBindings []Object
+
 var FormatMode bool
 var NumberCompare func(Number, Number) int
 var NumberEquals func(Number, interface{}) bool
@@ -174,6 +176,13 @@ func (r *Ratio) BigInt() *big.Int        { f, _ := r.Ratio().Float64(); return b
 func (r *Ratio) Double() Double          { f, _ := r.Ratio().Float64(); return Double{D: f} }
 func (r *Ratio) BigFloat() *big.Float    { f, _ := r.Ratio().Float64(); return big.NewFloat(f) }
 func (r *Ratio) Ratio() *big.Rat         { return r.R }
+
+func (rb RecurBindings) ToString(escape bool) string      { return "#object[RecurBindings]" }
+func (rb RecurBindings) Equals(other interface{}) bool    { return false }
+func (rb RecurBindings) GetInfo() *ObjectInfo             { return nil }
+func (rb RecurBindings) GetType() *Type                   { return RuntimeTypes.RecurBindings }
+func (rb RecurBindings) Hash() uint32                     { return 0 }
+func (rb RecurBindings) WithInfo(info *ObjectInfo) Object { return rb }
 
 func compareNumbers(x, y Number) int {
 	if NumberCompare != nil {
