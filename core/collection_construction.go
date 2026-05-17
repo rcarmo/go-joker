@@ -6,9 +6,11 @@ import (
 	corecollections "github.com/rcarmo/go-joker/core/collections"
 )
 
-type CollectionConstructionAdapter = corecollections.ConstructionAdapter[Object, Seq, *Vector, *ArrayVector, *ArrayMap, *HashMap, *MapSet]
+type CollectionConstructionAdapter = corecollections.ConstructionAdapter[Object, Seq, *List, *Vector, *ArrayVector, *ArrayMap, *HashMap, *MapSet]
 
 var collectionConstruction = CollectionConstructionAdapter{
+	EmptyList:        func() *List { return EmptyList },
+	ListFrom:         NewListFrom,
 	EmptyVector:      EmptyVector,
 	VectorFrom:       NewVectorFrom,
 	VectorFromSeq:    NewVectorFromSeq,
