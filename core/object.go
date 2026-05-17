@@ -23,13 +23,7 @@ import (
 )
 
 type (
-	Char    = coretypes.Char
-	Double  = coretypes.Double
-	Int     = coretypes.Int
-	Boolean = coretypes.Boolean
-	Time    = coretypes.Time
-	Regex   = coretypes.Regex
-	Object  interface {
+	Object interface {
 		coretypes.Object
 		GetType() *coretypes.Type
 	}
@@ -651,7 +645,7 @@ func (fn *Fn) Call(args []Object) Object {
 
 func compare(c Callable, a, b Object) int {
 	switch r := call2(c, a, b).(type) {
-	case Boolean:
+	case coretypes.Boolean:
 		if r.B {
 			return -1
 		}
@@ -1009,7 +1003,7 @@ func EnsureObjectIsStringable(obj Object, pattern string) String {
 	switch c := obj.(type) {
 	case String:
 		return c
-	case Char:
+	case coretypes.Char:
 		return String{S: string(c.Ch)}
 	default:
 		panic(FailObject(c, "Stringable", pattern))
@@ -1020,7 +1014,7 @@ func EnsureArgIsStringable(args []Object, index int) String {
 	switch c := args[index].(type) {
 	case String:
 		return c
-	case Char:
+	case coretypes.Char:
 		return String{S: string(c.Ch)}
 	default:
 		panic(FailArg(c, "Stringable", index))

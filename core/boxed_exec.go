@@ -95,21 +95,21 @@ loop:
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Int{I: av.I + bv.I})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Double{D: float64(av.I) + bv.D})
 					continue
 				}
-			case Double:
+			case coretypes.Double:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Double{D: av.D + float64(bv.I)})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Double{D: av.D + bv.D})
 					continue
 				}
@@ -121,21 +121,21 @@ loop:
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Int{I: av.I - bv.I})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Double{D: float64(av.I) - bv.D})
 					continue
 				}
-			case Double:
+			case coretypes.Double:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Double{D: av.D - float64(bv.I)})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Double{D: av.D - bv.D})
 					continue
 				}
@@ -147,21 +147,21 @@ loop:
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Int{I: av.I * bv.I})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Double{D: float64(av.I) * bv.D})
 					continue
 				}
-			case Double:
+			case coretypes.Double:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Double{D: av.D * float64(bv.I)})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Double{D: av.D * bv.D})
 					continue
 				}
@@ -172,8 +172,8 @@ loop:
 			b := stack[len(stack)-1]
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			if ai, aok := a.(Int); aok {
-				if bi, bok := b.(Int); bok {
+			if ai, aok := a.(coretypes.Int); aok {
+				if bi, bok := b.(coretypes.Int); bok {
 					if bi.I == 0 {
 						return nil
 					}
@@ -189,17 +189,17 @@ loop:
 			stack = stack[:len(stack)-2]
 			var av, bv float64
 			switch x := a.(type) {
-			case Int:
+			case coretypes.Int:
 				av = float64(x.I)
-			case Double:
+			case coretypes.Double:
 				av = x.D
 			default:
 				return nil
 			}
 			switch x := b.(type) {
-			case Int:
+			case coretypes.Int:
 				bv = float64(x.I)
-			case Double:
+			case coretypes.Double:
 				bv = x.D
 			default:
 				return nil
@@ -213,9 +213,9 @@ loop:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				stack = append(stack, coretypes.Int{I: av.I + 1})
-			case Double:
+			case coretypes.Double:
 				stack = append(stack, coretypes.Double{D: av.D + 1})
 			default:
 				return nil
@@ -225,9 +225,9 @@ loop:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				stack = append(stack, coretypes.Int{I: av.I - 1})
-			case Double:
+			case coretypes.Double:
 				stack = append(stack, coretypes.Double{D: av.D - 1})
 			default:
 				return nil
@@ -238,21 +238,21 @@ loop:
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Boolean{B: av.I < bv.I})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Boolean{B: float64(av.I) < bv.D})
 					continue
 				}
-			case Double:
+			case coretypes.Double:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Boolean{B: av.D < float64(bv.I)})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Boolean{B: av.D < bv.D})
 					continue
 				}
@@ -264,21 +264,21 @@ loop:
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Boolean{B: av.I >= bv.I})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Boolean{B: float64(av.I) >= bv.D})
 					continue
 				}
-			case Double:
+			case coretypes.Double:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Boolean{B: av.D >= float64(bv.I)})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Boolean{B: av.D >= bv.D})
 					continue
 				}
@@ -290,21 +290,21 @@ loop:
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Boolean{B: av.I > bv.I})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Boolean{B: float64(av.I) > bv.D})
 					continue
 				}
-			case Double:
+			case coretypes.Double:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Boolean{B: av.D > float64(bv.I)})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Boolean{B: av.D > bv.D})
 					continue
 				}
@@ -316,21 +316,21 @@ loop:
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Boolean{B: av.I <= bv.I})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Boolean{B: float64(av.I) <= bv.D})
 					continue
 				}
-			case Double:
+			case coretypes.Double:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Boolean{B: av.D <= float64(bv.I)})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Boolean{B: av.D <= bv.D})
 					continue
 				}
@@ -402,23 +402,23 @@ loop:
 			stack = append(stack, fn)
 
 		case irBitAnd:
-			b, a := stack[len(stack)-1].(Int), stack[len(stack)-2].(Int)
+			b, a := stack[len(stack)-1].(coretypes.Int), stack[len(stack)-2].(coretypes.Int)
 			stack = stack[:len(stack)-2]
 			stack = append(stack, coretypes.Int{I: a.I & b.I})
 		case irBitOr:
-			b, a := stack[len(stack)-1].(Int), stack[len(stack)-2].(Int)
+			b, a := stack[len(stack)-1].(coretypes.Int), stack[len(stack)-2].(coretypes.Int)
 			stack = stack[:len(stack)-2]
 			stack = append(stack, coretypes.Int{I: a.I | b.I})
 		case irBitNot:
-			a := stack[len(stack)-1].(Int)
+			a := stack[len(stack)-1].(coretypes.Int)
 			stack = stack[:len(stack)-1]
 			stack = append(stack, coretypes.Int{I: ^a.I})
 		case irBitShiftLeft:
-			b, a := stack[len(stack)-1].(Int), stack[len(stack)-2].(Int)
+			b, a := stack[len(stack)-1].(coretypes.Int), stack[len(stack)-2].(coretypes.Int)
 			stack = stack[:len(stack)-2]
 			stack = append(stack, coretypes.Int{I: a.I << uint(b.I)})
 		case irBitShiftRight:
-			b, a := stack[len(stack)-1].(Int), stack[len(stack)-2].(Int)
+			b, a := stack[len(stack)-1].(coretypes.Int), stack[len(stack)-2].(coretypes.Int)
 			stack = stack[:len(stack)-2]
 			stack = append(stack, coretypes.Int{I: a.I >> uint(b.I)})
 
@@ -430,7 +430,7 @@ loop:
 			pc += 2
 			var testVal int
 			switch v := slots[slotIdx].(type) {
-			case Int:
+			case coretypes.Int:
 				testVal = v.I
 			default:
 				// Skip table, jump to default
@@ -458,26 +458,26 @@ loop:
 			a := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Boolean{B: av.I == bv.I})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Boolean{B: float64(av.I) == bv.D})
 					continue
 				}
-			case Double:
+			case coretypes.Double:
 				switch bv := b.(type) {
-				case Int:
+				case coretypes.Int:
 					stack = append(stack, coretypes.Boolean{B: av.D == float64(bv.I)})
 					continue
-				case Double:
+				case coretypes.Double:
 					stack = append(stack, coretypes.Boolean{B: av.D == bv.D})
 					continue
 				}
-			case Char:
-				if bv, ok := b.(Char); ok {
+			case coretypes.Char:
+				if bv, ok := b.(coretypes.Char); ok {
 					stack = append(stack, coretypes.Boolean{B: av.Ch == bv.Ch})
 					continue
 				}
@@ -493,9 +493,9 @@ loop:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			switch av := a.(type) {
-			case Int:
+			case coretypes.Int:
 				stack = append(stack, coretypes.Boolean{B: av.I == 0})
-			case Double:
+			case coretypes.Double:
 				stack = append(stack, coretypes.Boolean{B: av.D == 0})
 			default:
 				return nil
@@ -509,7 +509,7 @@ loop:
 			switch v := val.(type) {
 			case Nil:
 				pc = target
-			case Boolean:
+			case coretypes.Boolean:
 				if !v.B {
 					pc = target
 				}
@@ -618,7 +618,7 @@ loop:
 			idxObj := stack[len(stack)-1]
 			coll := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			idx, iok := idxObj.(Int)
+			idx, iok := idxObj.(coretypes.Int)
 			if !iok {
 				return nil
 			}
@@ -642,9 +642,9 @@ loop:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			switch av := a.(type) {
-			case Double:
+			case coretypes.Double:
 				stack = append(stack, coretypes.Double{D: math.Sqrt(av.D)})
-			case Int:
+			case coretypes.Int:
 				stack = append(stack, coretypes.Double{D: math.Sqrt(float64(av.I))})
 			default:
 				return nil
@@ -668,9 +668,9 @@ loop:
 					}
 					for i := nargs - 1; i >= 0; i-- {
 						switch v := stack[len(stack)-1].(type) {
-						case Double:
+						case coretypes.Double:
 							f64args[i] = v.D
-						case Int:
+						case coretypes.Int:
 							f64args[i] = float64(v.I)
 						default:
 							f64args[i] = 0
@@ -801,7 +801,7 @@ loop:
 			pc += 2
 			idxObj := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			idx, ok := idxObj.(Int)
+			idx, ok := idxObj.(coretypes.Int)
 			if !ok {
 				return nil
 			}
@@ -858,11 +858,11 @@ loop:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
 			switch v := a.(type) {
-			case Char:
+			case coretypes.Char:
 				stack = append(stack, coretypes.Int{I: int(v.Ch)})
-			case Int:
+			case coretypes.Int:
 				stack = append(stack, v)
-			case Double:
+			case coretypes.Double:
 				stack = append(stack, coretypes.Int{I: int(v.D)})
 			default:
 				return nil
@@ -877,8 +877,8 @@ loop:
 				sObj := stack[len(stack)-3]
 				stack = stack[:len(stack)-3]
 				s := sObj.(String).S
-				si := start.(Int).I
-				ei := end.(Int).I
+				si := start.(coretypes.Int).I
+				ei := end.(coretypes.Int).I
 				if stringIsASCII(s) {
 					stack = append(stack, String{S: s[si:ei]})
 				} else {
@@ -890,7 +890,7 @@ loop:
 				sObj := stack[len(stack)-2]
 				stack = stack[:len(stack)-2]
 				s := sObj.(String).S
-				si := start.(Int).I
+				si := start.(coretypes.Int).I
 				if stringIsASCII(s) {
 					stack = append(stack, String{S: s[si:]})
 				} else {
@@ -2118,11 +2118,11 @@ func irExecTypedInline(prog *IRProgram, slots []irValue) irValue {
 
 func nbFromObject(obj Object, table *[]Object) uint64 {
 	switch v := obj.(type) {
-	case Int:
+	case coretypes.Int:
 		return coreirx.BoxInt(v.I)
-	case Double:
+	case coretypes.Double:
 		return coreirx.BoxDouble(v.D)
-	case Boolean:
+	case coretypes.Boolean:
 		return coreirx.BoxBool(v.B)
 	case Nil:
 		return coreirx.BoxNil()
@@ -2724,13 +2724,13 @@ func stringToIRValue(s string) irValue {
 
 func objectToIRValue(obj Object) irValue {
 	switch v := obj.(type) {
-	case Int:
+	case coretypes.Int:
 		return irValue{tag: irValInt, i: v.I}
-	case Double:
+	case coretypes.Double:
 		return irValue{tag: irValDouble, f: v.D}
-	case Boolean:
+	case coretypes.Boolean:
 		return irMakeBool(v.B)
-	case Char:
+	case coretypes.Char:
 		return irMakeChar(v.Ch)
 	case String:
 		return stringToIRValue(v.S)
@@ -2738,7 +2738,7 @@ func objectToIRValue(obj Object) irValue {
 		if corert.IRTypedVecEnabled() {
 			iv := make([]int, len(v.arr))
 			for i, obj := range v.arr {
-				x, ok := obj.(Int)
+				x, ok := obj.(coretypes.Int)
 				if !ok {
 					return irMakeObject(obj)
 				}
@@ -3033,13 +3033,13 @@ func wasmExec(wp *WasmProgram, slots []Object) Object {
 	}
 	for i, s := range slots {
 		switch v := s.(type) {
-		case Int:
+		case coretypes.Int:
 			if wp.useFloat {
 				stack[i] = math.Float64bits(float64(v.I))
 			} else {
 				stack[i] = uint64(v.I)
 			}
-		case Double:
+		case coretypes.Double:
 			if wp.useFloat {
 				stack[i] = math.Float64bits(v.D)
 			} else {

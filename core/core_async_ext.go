@@ -101,7 +101,7 @@ func asyncBufferSize(o Object) int {
 		return 0
 	}
 	switch v := o.(type) {
-	case Int:
+	case coretypes.Int:
 		return v.I
 	default:
 		panic(RT.NewError("buffer size must be an integer"))

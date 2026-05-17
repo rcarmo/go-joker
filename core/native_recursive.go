@@ -93,22 +93,22 @@ func compileNativeRecursive(fn *Fn) *nativeRecursiveEntry {
 func callNativeRecursive(entry *nativeRecursiveEntry, args []Object) Object {
 	switch entry.arity {
 	case 1:
-		a, ok := args[0].(Int)
+		a, ok := args[0].(coretypes.Int)
 		if !ok {
 			return nil
 		}
 		return coretypes.Int{I: entry.fn1(a.I)}
 	case 2:
-		a, aok := args[0].(Int)
-		b, bok := args[1].(Int)
+		a, aok := args[0].(coretypes.Int)
+		b, bok := args[1].(coretypes.Int)
 		if !aok || !bok {
 			return nil
 		}
 		return coretypes.Int{I: entry.fn2(a.I, b.I)}
 	case 3:
-		a, aok := args[0].(Int)
-		b, bok := args[1].(Int)
-		c, cok := args[2].(Int)
+		a, aok := args[0].(coretypes.Int)
+		b, bok := args[1].(coretypes.Int)
+		c, cok := args[2].(coretypes.Int)
 		if !aok || !bok || !cok {
 			return nil
 		}
@@ -124,7 +124,7 @@ type intBool1 func(a int) bool
 func compileIntExpr1(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) nativeIntFn1 {
 	switch e := expr.(type) {
 	case *LiteralExpr:
-		if v, ok := e.obj.(Int); ok {
+		if v, ok := e.obj.(coretypes.Int); ok {
 			val := v.I
 			return func(a int) int { return val }
 		}
@@ -257,7 +257,7 @@ type intBool3 func(a, b, c int) bool
 func compileIntExpr3(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) nativeIntFn3 {
 	switch e := expr.(type) {
 	case *LiteralExpr:
-		if v, ok := e.obj.(Int); ok {
+		if v, ok := e.obj.(coretypes.Int); ok {
 			val := v.I
 			return func(a, b, c int) int { return val }
 		}
@@ -399,7 +399,7 @@ type intBool2 func(a, b int) bool
 func compileIntExpr2(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) nativeIntFn2 {
 	switch e := expr.(type) {
 	case *LiteralExpr:
-		if v, ok := e.obj.(Int); ok {
+		if v, ok := e.obj.(coretypes.Int); ok {
 			val := v.I
 			return func(a, b int) int { return val }
 		}

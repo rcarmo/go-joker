@@ -268,7 +268,7 @@ func transducePipelineRange(xf *XForm, rf Callable, init Object, r *IntRange) Ob
 
 func applyXFormMapStep(step xformStep, val Object) Object {
 	if step.intrinsic == reducibleSquareInt {
-		if iv, ok := val.(Int); ok {
+		if iv, ok := val.(coretypes.Int); ok {
 			return coretypes.Int{I: iv.I * iv.I}
 		}
 	}
@@ -277,7 +277,7 @@ func applyXFormMapStep(step xformStep, val Object) Object {
 
 func applyXFormFilterStep(step xformStep, val Object) bool {
 	if step.intrinsic == reducibleEvenInt {
-		if iv, ok := val.(Int); ok {
+		if iv, ok := val.(coretypes.Int); ok {
 			return iv.I%2 == 0
 		}
 		return false
@@ -292,14 +292,14 @@ func reduceStepFast(rf Callable, acc Object, val Object) Object {
 func reduceStepFastByName(rf Callable, name string, acc Object, val Object) Object {
 	switch name {
 	case "procAdd", "procunchecked-add", "procunchecked-add-int":
-		if a, ok := acc.(Int); ok {
-			if b, ok := val.(Int); ok {
+		if a, ok := acc.(coretypes.Int); ok {
+			if b, ok := val.(coretypes.Int); ok {
 				return coretypes.Int{I: a.I + b.I}
 			}
 		}
 	case "procMultiply", "procunchecked-multiply", "procunchecked-multiply-int":
-		if a, ok := acc.(Int); ok {
-			if b, ok := val.(Int); ok {
+		if a, ok := acc.(coretypes.Int); ok {
+			if b, ok := val.(coretypes.Int); ok {
 				return coretypes.Int{I: a.I * b.I}
 			}
 		}

@@ -452,7 +452,7 @@ func TestFindLetFrameNestedLet(t *testing.T) {
 	if r == nil {
 		t.Fatal("nested let loop returned nil")
 	}
-	if r.(Int).I != 30 {
+	if r.(coretypes.Int).I != 30 {
 		t.Fatalf("expected 30, got %s", r.ToString(false))
 	}
 }
@@ -475,11 +475,11 @@ func TestIrCompileFnWithCaptures(t *testing.T) {
 	}
 	// Verify correctness
 	r := irExec(prog, []Object{coretypes.Double{D: 0}, coretypes.Double{D: 0}})
-	if r == nil || r.(Int).I != 1 {
+	if r == nil || r.(coretypes.Int).I != 1 {
 		t.Fatalf("pixel(0,0) = %v, want 1", r)
 	}
 	r2 := irExec(prog, []Object{coretypes.Double{D: 2}, coretypes.Double{D: 0}})
-	if r2 == nil || r2.(Int).I != 0 {
+	if r2 == nil || r2.(coretypes.Int).I != 0 {
 		t.Fatalf("pixel(2,0) = %v, want 0", r2)
 	}
 }
@@ -503,7 +503,7 @@ func TestIrCompileFnFlip(t *testing.T) {
 		t.Fatal("flip returned nil")
 	}
 	av := r.(*ArrayVector)
-	if av.arr[0].(Int).I != 0 || av.arr[1].(Int).I != 1 {
+	if av.arr[0].(coretypes.Int).I != 0 || av.arr[1].(coretypes.Int).I != 1 {
 		t.Fatalf("flip([1,0,2]) = %s, want [0 1 2]", r.ToString(false))
 	}
 }
@@ -523,7 +523,7 @@ func TestFrameStackRecursiveFib(t *testing.T) {
 	clbgInit()
 	r := Eval(compileBenchExpr(t, `(letfn [(fib [n] (if (< n 2) n (+ (fib (- n 1)) (fib (- n 2)))))]
     (fib 10))`), nil)
-	if r == nil || r.(Int).I != 55 {
+	if r == nil || r.(coretypes.Int).I != 55 {
 		t.Fatalf("fib(10) = %v, want 55", r)
 	}
 }
@@ -534,7 +534,7 @@ func TestFrameStackDeepRecursion(t *testing.T) {
 	r := Eval(compileBenchExpr(t, `(letfn [(countdown [n]
       (if (= n 0) 0 (+ 1 (countdown (- n 1)))))]
     (countdown 500))`), nil)
-	if r == nil || r.(Int).I != 500 {
+	if r == nil || r.(coretypes.Int).I != 500 {
 		t.Fatalf("countdown(500) = %v, want 500", r)
 	}
 }
@@ -578,7 +578,7 @@ func TestIrValueObjectRoundtrip(t *testing.T) {
 	if got == nil {
 		t.Fatal("irMakeObject roundtrip returned nil")
 	}
-	if got.(*ArrayVector).arr[0].(Int).I != 1 {
+	if got.(*ArrayVector).arr[0].(coretypes.Int).I != 1 {
 		t.Fatal("vector content mismatch")
 	}
 }
@@ -764,7 +764,7 @@ func TestIRFrameStackPushPop(t *testing.T) {
 	if pc != 10 || sl != 5 {
 		t.Fatalf("pop: pc=%d sl=%d, want 10, 5", pc, sl)
 	}
-	if slots[0].(Int).I != 42 {
+	if slots[0].(coretypes.Int).I != 42 {
 		t.Fatalf("slot[0] = %v after pop, want 42", slots[0])
 	}
 }
@@ -777,7 +777,7 @@ func TestTypedExecutorCallSelf(t *testing.T) {
 	r := Eval(compileBenchExpr(t, `(letfn [(sum [n]
       (if (= n 0) 0 (+ n (sum (- n 1)))))]
     (sum 10))`), nil)
-	if r == nil || r.(Int).I != 55 {
+	if r == nil || r.(coretypes.Int).I != 55 {
 		t.Fatalf("sum(10) = %v, want 55", r)
 	}
 }
@@ -848,7 +848,7 @@ func TestTypedExecutorTransientOps(t *testing.T) {
 		t.Fatal("transient loop returned nil")
 	}
 	av := r.(*ArrayVector)
-	if av.arr[4].(Int).I != 16 {
+	if av.arr[4].(coretypes.Int).I != 16 {
 		t.Fatalf("v[4] = %v, want 16", av.arr[4])
 	}
 }
@@ -858,7 +858,7 @@ func TestTypedExecutorNthOnObject(t *testing.T) {
 	r := Eval(compileBenchExpr(t, `(let [v [10 20 30]]
     (loop [i 0 s 0]
       (if (= i 3) s (recur (+ i 1) (+ s (nth v i))))))`), nil)
-	if r == nil || r.(Int).I != 60 {
+	if r == nil || r.(coretypes.Int).I != 60 {
 		t.Fatalf("nth sum = %v, want 60", r)
 	}
 }
@@ -1333,8 +1333,8 @@ func TestSortedCollectionContract(t *testing.T) {
 	}
 	byParity := Proc{Name: "parity", Fn: func(args []Object) Object {
 		CheckArity(args, 2, 2)
-		ai := args[0].(Int).I % 2
-		bi := args[1].(Int).I % 2
+		ai := args[0].(coretypes.Int).I % 2
+		bi := args[1].(coretypes.Int).I % 2
 		if ai < bi {
 			return coretypes.Int{I: -1}
 		}
@@ -1520,7 +1520,7 @@ func evalTestScript(tb testing.TB, script string) Object {
 
 func requireInt(tb testing.TB, obj Object, want int) {
 	tb.Helper()
-	got, ok := obj.(Int)
+	got, ok := obj.(coretypes.Int)
 	if !ok {
 		tb.Fatalf("expected Int(%d), got %T (%s)", want, obj, obj.ToString(false))
 	}
@@ -1531,7 +1531,7 @@ func requireInt(tb testing.TB, obj Object, want int) {
 
 func requireDouble(tb testing.TB, obj Object, want float64) {
 	tb.Helper()
-	got, ok := obj.(Double)
+	got, ok := obj.(coretypes.Double)
 	if !ok {
 		tb.Fatalf("expected Double(%v), got %T (%s)", want, obj, obj.ToString(false))
 	}
@@ -1542,7 +1542,7 @@ func requireDouble(tb testing.TB, obj Object, want float64) {
 
 func requireBool(tb testing.TB, obj Object, want bool) {
 	tb.Helper()
-	got, ok := obj.(Boolean)
+	got, ok := obj.(coretypes.Boolean)
 	if !ok {
 		tb.Fatalf("expected Boolean(%v), got %T (%s)", want, obj, obj.ToString(false))
 	}
@@ -1694,11 +1694,11 @@ func TestFrequenciesFastStringSeq(t *testing.T) {
 		t.Fatalf("expected map, got %T", res)
 	}
 	ok, v := m.Get(String{S: "alpha"})
-	if !ok || v.(Int).I != 3 {
+	if !ok || v.(coretypes.Int).I != 3 {
 		t.Fatalf("expected alpha=3, got %v %v", ok, v)
 	}
 	ok, v = m.Get(String{S: "theta"})
-	if !ok || v.(Int).I != 1 {
+	if !ok || v.(coretypes.Int).I != 1 {
 		t.Fatalf("expected theta=1, got %v %v", ok, v)
 	}
 }
@@ -1771,7 +1771,7 @@ func TestPVConjSmall(t *testing.T) {
 		t.Fatalf("expected 10, got %d", pv.Count())
 	}
 	for i := 0; i < 10; i++ {
-		v := pv.Nth(i).(Int).I
+		v := pv.Nth(i).(coretypes.Int).I
 		if v != i {
 			t.Fatalf("Nth(%d) = %d, want %d", i, v, i)
 		}
@@ -1787,7 +1787,7 @@ func TestPVConjBeyondTail(t *testing.T) {
 		t.Fatalf("expected 100, got %d", pv.Count())
 	}
 	for i := 0; i < 100; i++ {
-		v := pv.Nth(i).(Int).I
+		v := pv.Nth(i).(coretypes.Int).I
 		if v != i {
 			t.Fatalf("Nth(%d) = %d, want %d", i, v, i)
 		}
@@ -1804,7 +1804,7 @@ func TestPVConjLarge(t *testing.T) {
 		t.Fatalf("expected %d, got %d", n, pv.Count())
 	}
 	for i := 0; i < n; i++ {
-		v := pv.Nth(i).(Int).I
+		v := pv.Nth(i).(coretypes.Int).I
 		if v != i {
 			t.Fatalf("Nth(%d) = %d, want %d", i, v, i)
 		}
@@ -1815,15 +1815,15 @@ func TestPVAssocTail(t *testing.T) {
 	pv := PersistentVectorFrom([]Object{coretypes.MakeInt(0), coretypes.MakeInt(1), coretypes.MakeInt(2)})
 	pv2 := pv.Assoc(1, coretypes.MakeInt(99))
 	// Original unchanged
-	if pv.Nth(1).(Int).I != 1 {
+	if pv.Nth(1).(coretypes.Int).I != 1 {
 		t.Fatal("original modified")
 	}
 	// New version has update
-	if pv2.Nth(1).(Int).I != 99 {
-		t.Fatalf("assoc failed: got %d", pv2.Nth(1).(Int).I)
+	if pv2.Nth(1).(coretypes.Int).I != 99 {
+		t.Fatalf("assoc failed: got %d", pv2.Nth(1).(coretypes.Int).I)
 	}
 	// Other elements unchanged
-	if pv2.Nth(0).(Int).I != 0 || pv2.Nth(2).(Int).I != 2 {
+	if pv2.Nth(0).(coretypes.Int).I != 0 || pv2.Nth(2).(coretypes.Int).I != 2 {
 		t.Fatal("assoc corrupted other elements")
 	}
 }
@@ -1836,18 +1836,18 @@ func TestPVAssocInTrie(t *testing.T) {
 	}
 	// Assoc in the trie portion (index < 32)
 	pv2 := pv.Assoc(10, coretypes.MakeInt(999))
-	if pv.Nth(10).(Int).I != 10 {
+	if pv.Nth(10).(coretypes.Int).I != 10 {
 		t.Fatal("original modified")
 	}
-	if pv2.Nth(10).(Int).I != 999 {
-		t.Fatalf("trie assoc failed: got %d", pv2.Nth(10).(Int).I)
+	if pv2.Nth(10).(coretypes.Int).I != 999 {
+		t.Fatalf("trie assoc failed: got %d", pv2.Nth(10).(coretypes.Int).I)
 	}
 	// Check structural sharing: other elements unchanged
 	for i := 0; i < 50; i++ {
 		if i == 10 {
 			continue
 		}
-		if pv2.Nth(i).(Int).I != i {
+		if pv2.Nth(i).(coretypes.Int).I != i {
 			t.Fatalf("structural sharing broken at %d", i)
 		}
 	}
@@ -1860,7 +1860,7 @@ func TestPVAssocAtEnd(t *testing.T) {
 	if pv2.Count() != 4 {
 		t.Fatalf("expected 4, got %d", pv2.Count())
 	}
-	if pv2.Nth(3).(Int).I != 4 {
+	if pv2.Nth(3).(coretypes.Int).I != 4 {
 		t.Fatal("assoc at end failed")
 	}
 }
@@ -1875,19 +1875,19 @@ func TestPVStructuralSharing(t *testing.T) {
 	v2 := pv.Assoc(40, coretypes.MakeInt(400))
 
 	// All three versions are independent
-	if pv.Nth(5).(Int).I != 5 {
+	if pv.Nth(5).(coretypes.Int).I != 5 {
 		t.Fatal("original corrupted")
 	}
-	if v1.Nth(5).(Int).I != 500 {
+	if v1.Nth(5).(coretypes.Int).I != 500 {
 		t.Fatal("v1 wrong")
 	}
-	if v2.Nth(5).(Int).I != 5 {
+	if v2.Nth(5).(coretypes.Int).I != 5 {
 		t.Fatal("v2 corrupted v1's change")
 	}
-	if v2.Nth(40).(Int).I != 400 {
+	if v2.Nth(40).(coretypes.Int).I != 400 {
 		t.Fatal("v2 wrong")
 	}
-	if v1.Nth(40).(Int).I != 40 {
+	if v1.Nth(40).(coretypes.Int).I != 40 {
 		t.Fatal("v1 corrupted by v2")
 	}
 }
@@ -1898,7 +1898,7 @@ func TestPVPop(t *testing.T) {
 	if pv2.Count() != 2 {
 		t.Fatalf("expected 2, got %d", pv2.Count())
 	}
-	if pv2.Nth(0).(Int).I != 1 || pv2.Nth(1).(Int).I != 2 {
+	if pv2.Nth(0).(coretypes.Int).I != 1 || pv2.Nth(1).(coretypes.Int).I != 2 {
 		t.Fatal("pop corrupted remaining elements")
 	}
 	if pv.Count() != 3 {
@@ -1915,7 +1915,7 @@ func TestPVPopLarge(t *testing.T) {
 		if pv.Count() != i+1 {
 			t.Fatalf("count mismatch at pop %d: got %d", 100-i, pv.Count())
 		}
-		if pv.Nth(i).(Int).I != i {
+		if pv.Nth(i).(coretypes.Int).I != i {
 			t.Fatalf("last element wrong before pop %d", 100-i)
 		}
 		pv = pv.Pop()
@@ -1971,11 +1971,11 @@ func TestPVMultipleAssocSameBase(t *testing.T) {
 	v3 := v2.Assoc(5, coretypes.Double{D: 300.0})
 
 	// Original unchanged
-	if pv.Nth(3).(Double).D != 3.0 {
+	if pv.Nth(3).(coretypes.Double).D != 3.0 {
 		t.Fatal("original corrupted")
 	}
 	// Final has all three updates
-	if v3.Nth(3).(Double).D != 100.0 || v3.Nth(4).(Double).D != 200.0 || v3.Nth(5).(Double).D != 300.0 {
+	if v3.Nth(3).(coretypes.Double).D != 100.0 || v3.Nth(4).(coretypes.Double).D != 200.0 || v3.Nth(5).(coretypes.Double).D != 300.0 {
 		t.Fatal("chained assoc failed")
 	}
 }
@@ -2311,7 +2311,7 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 	if c, ok := readerConstruction.Comment(";").(Comment); !ok || c.C != ";" {
 		t.Fatalf("adapter Comment mismatch: %#v", c)
 	}
-	rxObj, ok := readerConstruction.Regex(regexp.MustCompile("x+")).(*Regex)
+	rxObj, ok := readerConstruction.Regex(regexp.MustCompile("x+")).(*coretypes.Regex)
 	if !ok || rxObj.R == nil || !rxObj.R.MatchString("xxx") {
 		t.Fatalf("adapter Regex mismatch: %#v", rxObj)
 	}
@@ -2764,7 +2764,7 @@ func TestRuntimeExecutionAdapterStringOps(t *testing.T) {
 	if got, ok := adapter.CursorChar(cur); !ok || !got.Equals(coretypes.MakeChar('x')) {
 		t.Fatalf("CursorChar = %#v, %v", got, ok)
 	}
-	if got, ok := adapter.CursorDone(cur); !ok || got.(Boolean).B {
+	if got, ok := adapter.CursorDone(cur); !ok || got.(coretypes.Boolean).B {
 		t.Fatalf("CursorDone = %#v, %v", got, ok)
 	}
 	if got, ok := adapter.CursorNext(cur); !ok || got == cur {
@@ -3105,11 +3105,11 @@ func TestCursorJSONCorrectness(t *testing.T) {
 // ---- string_ir_fastpath_test.go ----
 func TestStringNthFastUnicodeCorrectness(t *testing.T) {
 	got := stringNthFast("abcdef", 3)
-	if ch, ok := got.(Char); !ok || ch.Ch != 'd' {
+	if ch, ok := got.(coretypes.Char); !ok || ch.Ch != 'd' {
 		t.Fatalf("expected d, got %T %s", got, got.ToString(false))
 	}
 	got = stringNthFast("éclair", 1)
-	if ch, ok := got.(Char); !ok || ch.Ch != 'c' {
+	if ch, ok := got.(coretypes.Char); !ok || ch.Ch != 'c' {
 		t.Fatalf("expected c, got %T %s", got, got.ToString(false))
 	}
 }
@@ -3385,7 +3385,7 @@ func TestTransientVector(t *testing.T) {
 	if tv.Count() != 4 {
 		t.Fatalf("expected count 4, got %d", tv.Count())
 	}
-	if tv.Nth(1).(Int).I != 99 {
+	if tv.Nth(1).(coretypes.Int).I != 99 {
 		t.Fatalf("expected 99 at index 1")
 	}
 	pv := tv.ToPersistent()
@@ -3413,7 +3413,7 @@ func TestTransientMap(t *testing.T) {
 		t.Fatalf("expected 3, got %d", tm.Count())
 	}
 	ok, v := tm.Get(MakeKeyword("a"))
-	if !ok || v.(Int).I != 99 {
+	if !ok || v.(coretypes.Int).I != 99 {
 		t.Fatalf("expected 99 for :a")
 	}
 	pm := tm.ToPersistent()
@@ -3431,12 +3431,12 @@ func TestTransientMapStringKeys(t *testing.T) {
 		t.Fatalf("expected 2, got %d", tm.Count())
 	}
 	ok, v := tm.Get(String{S: "alpha"})
-	if !ok || v.(Int).I != 3 {
+	if !ok || v.(coretypes.Int).I != 3 {
 		t.Fatalf("expected 3 for alpha")
 	}
 	pm := tm.ToPersistent().(Map)
 	ok, v = pm.Get(String{S: "beta"})
-	if !ok || v.(Int).I != 2 {
+	if !ok || v.(coretypes.Int).I != 2 {
 		t.Fatalf("expected persistent beta=2")
 	}
 }

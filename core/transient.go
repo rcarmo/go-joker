@@ -49,7 +49,7 @@ func (tv *TransientVector) checkFrozen() {
 // AssocInPlace sets an element by index. Returns self.
 func (tv *TransientVector) AssocInPlace(key, val Object) *TransientVector {
 	tv.checkFrozen()
-	idxObj, ok := key.(Int)
+	idxObj, ok := key.(coretypes.Int)
 	if !ok {
 		panic(RT.NewArgTypeError(1, key, "Int"))
 	}
@@ -98,7 +98,7 @@ func (tv *TransientVector) TryNth(i int, d Object) Object {
 
 // Get implements Gettable for transient vectors.
 func (tv *TransientVector) Get(key Object) (bool, Object) {
-	if idx, ok := key.(Int); ok {
+	if idx, ok := key.(coretypes.Int); ok {
 		if idx.I >= 0 && idx.I < len(tv.arr) {
 			return true, tv.arr[idx.I]
 		}

@@ -158,7 +158,7 @@ func registerUncheckedArithProcs() {
 			switch len(args) {
 			case 1:
 				switch v := args[0].(type) {
-				case Int:
+				case coretypes.Int:
 					// (int-array n) — create vector of n nils
 					result := collectionConstruction.NewEmptyArrayVector()
 					for i := 0; i < v.I; i++ {

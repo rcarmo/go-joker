@@ -209,7 +209,7 @@ func compileReducibleRangePipeline(expr Expr, env *LocalEnv) (reducibleRangePipe
 			return reducibleRangePipeline{}, false
 		}
 		nObj := Eval(call.args[0], env)
-		n, ok := nObj.(Int)
+		n, ok := nObj.(coretypes.Int)
 		if !ok {
 			return reducibleRangePipeline{}, false
 		}
@@ -274,7 +274,7 @@ func walkReducibleRangePipeline(p reducibleRangePipeline, emit func(Object) bool
 			switch step.kind {
 			case reducibleMap:
 				if step.intrinsic == reducibleSquareInt {
-					if iv, ok := v.(Int); ok {
+					if iv, ok := v.(coretypes.Int); ok {
 						v = coretypes.Int{I: iv.I * iv.I}
 					} else {
 						v = call1(step.fn, v)
@@ -284,7 +284,7 @@ func walkReducibleRangePipeline(p reducibleRangePipeline, emit func(Object) bool
 				}
 			case reducibleFilter:
 				if step.intrinsic == reducibleEvenInt {
-					if iv, ok := v.(Int); ok {
+					if iv, ok := v.(coretypes.Int); ok {
 						alive = iv.I%2 == 0
 					} else {
 						alive = false
@@ -375,21 +375,21 @@ func evalRangeArgs(args []Expr, env *LocalEnv) (start, end, step int, ok bool) {
 	switch len(args) {
 	case 1:
 		endObj := Eval(args[0], env)
-		endInt, yes := endObj.(Int)
+		endInt, yes := endObj.(coretypes.Int)
 		return 0, endInt.I, 1, yes
 	case 2:
 		startObj := Eval(args[0], env)
 		endObj := Eval(args[1], env)
-		startInt, sok := startObj.(Int)
-		endInt, eok := endObj.(Int)
+		startInt, sok := startObj.(coretypes.Int)
+		endInt, eok := endObj.(coretypes.Int)
 		return startInt.I, endInt.I, 1, sok && eok
 	case 3:
 		startObj := Eval(args[0], env)
 		endObj := Eval(args[1], env)
 		stepObj := Eval(args[2], env)
-		startInt, sok := startObj.(Int)
-		endInt, eok := endObj.(Int)
-		stepInt, tok := stepObj.(Int)
+		startInt, sok := startObj.(coretypes.Int)
+		endInt, eok := endObj.(coretypes.Int)
+		stepInt, tok := stepObj.(coretypes.Int)
 		return startInt.I, endInt.I, stepInt.I, sok && eok && tok
 	}
 	return 0, 0, 0, false
@@ -711,7 +711,7 @@ var procFrequencies ProcFn = func(args []Object) Object {
 		}
 		_, old := tm.Get(obj)
 		cnt := 0
-		if i, ok := old.(Int); ok {
+		if i, ok := old.(coretypes.Int); ok {
 			cnt = i.I
 		}
 		tm.AssocInPlace(obj, coretypes.Int{I: cnt + 1})
@@ -889,7 +889,7 @@ func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
 	}
 	name := hotReducerName(f)
 	switch acc := init.(type) {
-	case Int:
+	case coretypes.Int:
 		v := acc.I
 		switch name {
 		case "procAdd", "procunchecked-add", "procunchecked-add-int":
@@ -917,7 +917,7 @@ func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
 			}
 			return coretypes.Int{I: v}, true
 		}
-	case Double:
+	case coretypes.Double:
 		v := acc.D
 		switch name {
 		case "procAdd":
@@ -1164,19 +1164,19 @@ func maybeOverrideRange() {
 	rangeVr.Value = Proc{Name: "procRangeFast", Fn: func(args []Object) Object {
 		switch len(args) {
 		case 1:
-			if end, ok := args[0].(Int); ok {
+			if end, ok := args[0].(coretypes.Int); ok {
 				return NewIntRange(0, end.I, 1)
 			}
 		case 2:
-			if start, ok := args[0].(Int); ok {
-				if end, ok := args[1].(Int); ok {
+			if start, ok := args[0].(coretypes.Int); ok {
+				if end, ok := args[1].(coretypes.Int); ok {
 					return NewIntRange(start.I, end.I, 1)
 				}
 			}
 		case 3:
-			if start, ok := args[0].(Int); ok {
-				if end, ok := args[1].(Int); ok {
-					if step, ok := args[2].(Int); ok && step.I != 0 {
+			if start, ok := args[0].(coretypes.Int); ok {
+				if end, ok := args[1].(coretypes.Int); ok {
+					if step, ok := args[2].(coretypes.Int); ok && step.I != 0 {
 						return NewIntRange(start.I, end.I, step.I)
 					}
 				}

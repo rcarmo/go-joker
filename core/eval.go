@@ -138,7 +138,7 @@ func Eval(expr Expr, env *LocalEnv) Object {
 		switch cond := Eval(expr.cond, env).(type) {
 		case Nil:
 			return Eval(expr.negative, env)
-		case Boolean:
+		case coretypes.Boolean:
 			if cond.B {
 				return Eval(expr.positive, env)
 			}
@@ -488,30 +488,30 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 			switch callable.Name {
 			case "procInc":
 				switch x := Eval(expr.args[0], env).(type) {
-				case Int:
+				case coretypes.Int:
 					return coretypes.Int{I: x.I + 1}
-				case Double:
+				case coretypes.Double:
 					return coretypes.Double{D: x.D + 1}
 				}
 			case "procDec":
 				switch x := Eval(expr.args[0], env).(type) {
-				case Int:
+				case coretypes.Int:
 					return coretypes.Int{I: x.I - 1}
-				case Double:
+				case coretypes.Double:
 					return coretypes.Double{D: x.D - 1}
 				}
 			case "procIsZero":
 				switch x := Eval(expr.args[0], env).(type) {
-				case Int:
+				case coretypes.Int:
 					return coretypes.Boolean{B: x.I == 0}
-				case Double:
+				case coretypes.Double:
 					return coretypes.Boolean{B: x.D == 0}
 				}
 			case "procSubtract":
 				switch x := Eval(expr.args[0], env).(type) {
-				case Int:
+				case coretypes.Int:
 					return coretypes.Int{I: -x.I}
-				case Double:
+				case coretypes.Double:
 					return coretypes.Double{D: -x.D}
 				}
 			}
@@ -535,18 +535,18 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
-				case Int:
+				case coretypes.Int:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Int{I: a.I + b.I}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Double{D: float64(a.I) + b.D}
 					}
-				case Double:
+				case coretypes.Double:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Double{D: a.D + float64(b.I)}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Double{D: a.D + b.D}
 					}
 				}
@@ -554,18 +554,18 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
-				case Int:
+				case coretypes.Int:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Int{I: a.I - b.I}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Double{D: float64(a.I) - b.D}
 					}
-				case Double:
+				case coretypes.Double:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Double{D: a.D - float64(b.I)}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Double{D: a.D - b.D}
 					}
 				}
@@ -573,26 +573,26 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
-				case Int:
+				case coretypes.Int:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Int{I: a.I * b.I}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Double{D: float64(a.I) * b.D}
 					}
-				case Double:
+				case coretypes.Double:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Double{D: a.D * float64(b.I)}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Double{D: a.D * b.D}
 					}
 				}
 			case "procRem":
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
-				if a, ok := ax.(Int); ok {
-					if b, ok := bx.(Int); ok {
+				if a, ok := ax.(coretypes.Int); ok {
+					if b, ok := bx.(coretypes.Int); ok {
 						if b.I == 0 {
 							panicOnZero(INT_OPS, b)
 						}
@@ -603,21 +603,21 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
-				case Int:
+				case coretypes.Int:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						if b.I == 0 {
 							panicOnZero(INT_OPS, b)
 						}
 						return coretypes.Double{D: float64(a.I) / float64(b.I)}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Double{D: float64(a.I) / b.D}
 					}
-				case Double:
+				case coretypes.Double:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Double{D: a.D / float64(b.I)}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Double{D: a.D / b.D}
 					}
 				}
@@ -625,18 +625,18 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
-				case Int:
+				case coretypes.Int:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Boolean{B: a.I < b.I}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Boolean{B: float64(a.I) < b.D}
 					}
-				case Double:
+				case coretypes.Double:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Boolean{B: a.D < float64(b.I)}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Boolean{B: a.D < b.D}
 					}
 				}
@@ -644,18 +644,18 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
-				case Int:
+				case coretypes.Int:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Boolean{B: a.I == b.I}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Boolean{B: float64(a.I) == b.D}
 					}
-				case Double:
+				case coretypes.Double:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Boolean{B: a.D == float64(b.I)}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Boolean{B: a.D == b.D}
 					}
 				}
@@ -663,18 +663,18 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
-				case Int:
+				case coretypes.Int:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Boolean{B: a.I > b.I}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Boolean{B: float64(a.I) > b.D}
 					}
-				case Double:
+				case coretypes.Double:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Boolean{B: a.D > float64(b.I)}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Boolean{B: a.D > b.D}
 					}
 				}
@@ -682,18 +682,18 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
-				case Int:
+				case coretypes.Int:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Boolean{B: a.I >= b.I}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Boolean{B: float64(a.I) >= b.D}
 					}
-				case Double:
+				case coretypes.Double:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Boolean{B: a.D >= float64(b.I)}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Boolean{B: a.D >= b.D}
 					}
 				}
@@ -701,18 +701,18 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				ax := Eval(expr.args[0], env)
 				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
-				case Int:
+				case coretypes.Int:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Boolean{B: a.I <= b.I}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Boolean{B: float64(a.I) <= b.D}
 					}
-				case Double:
+				case coretypes.Double:
 					switch b := bx.(type) {
-					case Int:
+					case coretypes.Int:
 						return coretypes.Boolean{B: a.D <= float64(b.I)}
-					case Double:
+					case coretypes.Double:
 						return coretypes.Boolean{B: a.D <= b.D}
 					}
 				}

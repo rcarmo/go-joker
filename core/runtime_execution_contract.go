@@ -324,7 +324,7 @@ func (RuntimeExecutionAdapter) Str1(obj Object) Object {
 		return String{S: ""}
 	case String:
 		return v
-	case Char:
+	case coretypes.Char:
 		return charToStringObjectFast(v.Ch)
 	default:
 		return String{S: obj.ToString(false)}
@@ -335,7 +335,7 @@ func (RuntimeExecutionAdapter) Str2(a Object, b Object) Object {
 	switch av := a.(type) {
 	case *TransientString:
 		switch bv := b.(type) {
-		case Char:
+		case coretypes.Char:
 			return av.AppendChar(bv.Ch)
 		case String:
 			return av.AppendString(bv.S)
@@ -344,7 +344,7 @@ func (RuntimeExecutionAdapter) Str2(a Object, b Object) Object {
 		}
 	case String:
 		switch bv := b.(type) {
-		case Char:
+		case coretypes.Char:
 			return String{S: av.S + charToStringFast(bv.Ch)}
 		case String:
 			return String{S: av.S + bv.S}
@@ -353,7 +353,7 @@ func (RuntimeExecutionAdapter) Str2(a Object, b Object) Object {
 		default:
 			return String{S: av.S + b.ToString(false)}
 		}
-	case Char:
+	case coretypes.Char:
 		if bv, ok := b.(*TransientString); ok {
 			return bv.PrependChar(av.Ch)
 		}

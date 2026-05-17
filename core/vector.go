@@ -423,7 +423,7 @@ func (v *Vector) assocN(i int, val Object) *Vector {
 func assertInteger(obj Object) int {
 	var i int
 	switch obj := obj.(type) {
-	case Int:
+	case coretypes.Int:
 		i = obj.I
 	case *BigInt:
 		i = obj.Int().I

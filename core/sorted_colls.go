@@ -284,8 +284,8 @@ func rangePred(pred Callable, a, b Object) bool {
 func compareObjects(a, b Object) int {
 	// Same type comparisons
 	switch av := a.(type) {
-	case Int:
-		if bv, ok := b.(Int); ok {
+	case coretypes.Int:
+		if bv, ok := b.(coretypes.Int); ok {
 			if av.I < bv.I {
 				return -1
 			}
@@ -294,8 +294,8 @@ func compareObjects(a, b Object) int {
 			}
 			return 0
 		}
-	case Double:
-		if bv, ok := b.(Double); ok {
+	case coretypes.Double:
+		if bv, ok := b.(coretypes.Double); ok {
 			if av.D < bv.D {
 				return -1
 			}

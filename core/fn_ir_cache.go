@@ -2,6 +2,7 @@ package core
 
 import (
 	coreir "github.com/rcarmo/go-joker/core/ir"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"sync"
 	"sync/atomic"
@@ -97,9 +98,9 @@ func buildNativeLoopWrapper(fn *Fn, arity FnArityExpr, loop *LoopExpr, loopProg 
 			return nil
 		}
 		switch lv := lit.obj.(type) {
-		case Int:
+		case coretypes.Int:
 			initVals[i] = float64(lv.I)
-		case Double:
+		case coretypes.Double:
 			initVals[i] = lv.D
 		default:
 			return nil
@@ -145,10 +146,10 @@ func buildNativeLoopWrapper(fn *Fn, arity FnArityExpr, loop *LoopExpr, loopProg 
 				if ck.index < len(e.bindings) {
 					obj := e.bindings[ck.index]
 					switch v := obj.(type) {
-					case Int:
+					case coretypes.Int:
 						caps[ci] = capInfo{constVal: float64(v.I)}
 						resolved = true
-					case Double:
+					case coretypes.Double:
 						caps[ci] = capInfo{constVal: v.D}
 						resolved = true
 					case *Fn:
@@ -626,7 +627,7 @@ func (p *IRProgram) neutralFloatConsts() []float64 {
 	}
 	var floats []float64
 	for _, constant := range p.constants {
-		if v, ok := constant.(Double); ok {
+		if v, ok := constant.(coretypes.Double); ok {
 			floats = append(floats, v.D)
 		}
 	}

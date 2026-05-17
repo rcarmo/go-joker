@@ -145,12 +145,12 @@ var s_Associative string = "Associative"
 var s_Atom string = "Atom"
 var s_BigFloat string = "BigFloat"
 var s_BigInt string = "BigInt"
-var s_Boolean string = "Boolean"
+var s_Boolean string = "coretypes.Boolean"
 var s_Buffer string = "Buffer"
 var s_BufferedReader string = "BufferedReader"
 var s_Callable string = "Callable"
 var s_Channel string = "Channel"
-var s_Char string = "Char"
+var s_Char string = "coretypes.Char"
 var s_Collection string = "Collection"
 var s_Comparable string = "Comparable"
 var s_Comparator string = "Comparator"
@@ -159,7 +159,7 @@ var s_Counted string = "Counted"
 var s_CountedIndexed string = "CountedIndexed"
 var s_Delay string = "Delay"
 var s_Deref string = "Deref"
-var s_Double string = "Double"
+var s_Double string = "coretypes.Double"
 var s_Error string = "Error"
 var s_EvalError string = "EvalError"
 var s_ExInfo string = "ExInfo"
@@ -186,7 +186,7 @@ var s_HashMap string = "HashMap"
 var s_IOReader string = "IOReader"
 var s_IOWriter string = "IOWriter"
 var s_Indexed string = "Indexed"
-var s_Int string = "Int"
+var s_Int string = "coretypes.Int"
 var s_KVReduce string = "KVReduce"
 var s_Keyword string = "Keyword"
 var s_LazySeq string = "LazySeq"
@@ -208,7 +208,7 @@ var s_Ratio string = "Ratio"
 var s_RecurBindings string = "RecurBindings"
 var s_Reduce string = "Reduce"
 var s_Ref string = "Ref"
-var s_Regex string = "Regex"
+var s_Regex string = "coretypes.Regex"
 var s_Reversible string = "Reversible"
 var s_Seq string = "Seq"
 var s_Seqable string = "Seqable"
@@ -218,7 +218,7 @@ var s_Stack string = "Stack"
 var s_String string = "String"
 var s_StringSeq string = "StringSeq"
 var s_Symbol string = "Symbol"
-var s_Time string = "Time"
+var s_Time string = "coretypes.Time"
 var s_Type string = "Type"
 var s_Var string = "Var"
 var s_Vec string = "Vec"
@@ -1922,12 +1922,12 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"Atom":                       &s_Atom,
 	"BigFloat":                   &s_BigFloat,
 	"BigInt":                     &s_BigInt,
-	"Boolean":                    &s_Boolean,
+	"coretypes.Boolean":          &s_Boolean,
 	"Buffer":                     &s_Buffer,
 	"BufferedReader":             &s_BufferedReader,
 	"Callable":                   &s_Callable,
 	"Channel":                    &s_Channel,
-	"Char":                       &s_Char,
+	"coretypes.Char":             &s_Char,
 	"Collection":                 &s_Collection,
 	"Comparable":                 &s_Comparable,
 	"Comparator":                 &s_Comparator,
@@ -1936,7 +1936,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"CountedIndexed":             &s_CountedIndexed,
 	"Delay":                      &s_Delay,
 	"Deref":                      &s_Deref,
-	"Double":                     &s_Double,
+	"coretypes.Double":           &s_Double,
 	"Error":                      &s_Error,
 	"EvalError":                  &s_EvalError,
 	"ExInfo":                     &s_ExInfo,
@@ -1963,7 +1963,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"IOReader":                   &s_IOReader,
 	"IOWriter":                   &s_IOWriter,
 	"Indexed":                    &s_Indexed,
-	"Int":                        &s_Int,
+	"coretypes.Int":              &s_Int,
 	"KVReduce":                   &s_KVReduce,
 	"Keyword":                    &s_Keyword,
 	"LazySeq":                    &s_LazySeq,
@@ -1985,7 +1985,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"RecurBindings":              &s_RecurBindings,
 	"Reduce":                     &s_Reduce,
 	"Ref":                        &s_Ref,
-	"Regex":                      &s_Regex,
+	"coretypes.Regex":            &s_Regex,
 	"Reversible":                 &s_Reversible,
 	"Seq":                        &s_Seq,
 	"Seqable":                    &s_Seqable,
@@ -1995,7 +1995,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"String":                     &s_String,
 	"StringSeq":                  &s_StringSeq,
 	"Symbol":                     &s_Symbol,
-	"Time":                       &s_Time,
+	"coretypes.Time":             &s_Time,
 	"Type":                       &s_Type,
 	"Var":                        &s_Var,
 	"Vec":                        &s_Vec,
@@ -5151,7 +5151,7 @@ var arrayMap_NUM_37 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Boolean",
+			S: "coretypes.Boolean",
 		},
 	},
 }
@@ -5159,8 +5159,8 @@ var ty_Boolean coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_37,
 	},
-	Name:        "Boolean",
-	ReflectType: reflect.TypeOf((*Boolean)(nil)).Elem(),
+	Name:        "coretypes.Boolean",
+	ReflectType: reflect.TypeOf((*coretypes.Boolean)(nil)).Elem(),
 }
 var arrayMap_NUM_38 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5183,7 +5183,7 @@ var arrayMap_NUM_38 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Time",
+			S: "coretypes.Time",
 		},
 	},
 }
@@ -5191,8 +5191,8 @@ var ty_Time coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_38,
 	},
-	Name:        "Time",
-	ReflectType: reflect.TypeOf((*Time)(nil)).Elem(),
+	Name:        "coretypes.Time",
+	ReflectType: reflect.TypeOf((*coretypes.Time)(nil)).Elem(),
 }
 var arrayMap_NUM_39 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5247,7 +5247,7 @@ var arrayMap_NUM_40 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Char",
+			S: "coretypes.Char",
 		},
 	},
 }
@@ -5255,8 +5255,8 @@ var ty_Char coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_40,
 	},
-	Name:        "Char",
-	ReflectType: reflect.TypeOf((*Char)(nil)).Elem(),
+	Name:        "coretypes.Char",
+	ReflectType: reflect.TypeOf((*coretypes.Char)(nil)).Elem(),
 }
 var arrayMap_NUM_41 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5343,7 +5343,7 @@ var arrayMap_NUM_43 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Double",
+			S: "coretypes.Double",
 		},
 	},
 }
@@ -5351,8 +5351,8 @@ var ty_Double coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_43,
 	},
-	Name:        "Double",
-	ReflectType: reflect.TypeOf((*Double)(nil)).Elem(),
+	Name:        "coretypes.Double",
+	ReflectType: reflect.TypeOf((*coretypes.Double)(nil)).Elem(),
 }
 var arrayMap_NUM_44 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5567,7 +5567,7 @@ var arrayMap_NUM_50 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Int",
+			S: "coretypes.Int",
 		},
 	},
 }
@@ -5575,8 +5575,8 @@ var ty_Int coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_50,
 	},
-	Name:        "Int",
-	ReflectType: reflect.TypeOf((*Int)(nil)).Elem(),
+	Name:        "coretypes.Int",
+	ReflectType: reflect.TypeOf((*coretypes.Int)(nil)).Elem(),
 }
 var arrayMap_NUM_51 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -5951,7 +5951,7 @@ var arrayMap_NUM_62 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Regex",
+			S: "coretypes.Regex",
 		},
 	},
 }
@@ -5959,8 +5959,8 @@ var ty_Regex coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_62,
 	},
-	Name:        "Regex",
-	ReflectType: reflect.TypeOf((*Regex)(nil)),
+	Name:        "coretypes.Regex",
+	ReflectType: reflect.TypeOf((*coretypes.Regex)(nil)),
 }
 var arrayMap_NUM_63 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6801,7 +6801,7 @@ var arrayMap_NUM_77 ArrayMap = ArrayMap{
 			name: &s_tag,
 		},
 		String{
-			S: "Boolean",
+			S: "coretypes.Boolean",
 		},
 		Keyword{
 			hash: 2476974793,
@@ -7030,7 +7030,7 @@ var arrayMap_NUM_79 ArrayMap = ArrayMap{
 			name: &s_tag,
 		},
 		String{
-			S: "Boolean",
+			S: "coretypes.Boolean",
 		},
 		Keyword{
 			hash: 2476974793,
@@ -7262,7 +7262,7 @@ var arrayMap_NUM_81 ArrayMap = ArrayMap{
 			name: &s_tag,
 		},
 		String{
-			S: "Boolean",
+			S: "coretypes.Boolean",
 		},
 		Keyword{
 			hash: 2476974793,
@@ -8204,7 +8204,7 @@ var arrayMap_NUM_88 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Returns an instance of Regex that matches the string exactly",
+			S: "Returns an instance of coretypes.Regex that matches the string exactly",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -8218,7 +8218,7 @@ var arrayMap_NUM_88 ArrayMap = ArrayMap{
 			name: &s_tag,
 		},
 		String{
-			S: "Regex",
+			S: "coretypes.Regex",
 		},
 		Keyword{
 			hash: 2476974793,
@@ -8323,7 +8323,7 @@ var arrayMap_NUM_89 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Replaces all instances of match (String or Regex) with string repl in string s.\n\n  If match is Regex, $1, $2, etc. in the replacement string repl are\n  substituted with the string that matched the corresponding\n  parenthesized group in the pattern.\n  ",
+			S: "Replaces all instances of match (String or coretypes.Regex) with string repl in string s.\n\n  If match is coretypes.Regex, $1, $2, etc. in the replacement string repl are\n  substituted with the string that matched the corresponding\n  parenthesized group in the pattern.\n  ",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -8443,7 +8443,7 @@ var arrayMap_NUM_90 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Replaces the first instance of match (String or Regex) with string repl in string s.\n\n  If match is Regex, $1, $2, etc. in the replacement string repl are\n  substituted with the string that matched the corresponding\n  parenthesized group in the pattern.\n  ",
+			S: "Replaces the first instance of match (String or coretypes.Regex) with string repl in string s.\n\n  If match is coretypes.Regex, $1, $2, etc. in the replacement string repl are\n  substituted with the string that matched the corresponding\n  parenthesized group in the pattern.\n  ",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -8956,7 +8956,7 @@ var arrayMap_NUM_94 ArrayMap = ArrayMap{
 			name: &s_tag,
 		},
 		String{
-			S: "Boolean",
+			S: "coretypes.Boolean",
 		},
 		Keyword{
 			hash: 2476974793,
@@ -10274,14 +10274,14 @@ var arrayMap_NUM_104 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 733,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -10341,7 +10341,7 @@ var literalExpr_POS_joker_DOT_core__737_15__737_15_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 15,
 		StartLine:   737,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -10464,14 +10464,14 @@ var arrayMap_NUM_114 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 261,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -10520,7 +10520,7 @@ var arrayMap_NUM_116 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -10975,14 +10975,14 @@ var arrayMap_NUM_117 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 681,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -11058,14 +11058,14 @@ var bitmapIndexedNode_NUM_2 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 111,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -11426,14 +11426,14 @@ var bitmapIndexedNode_NUM_4 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 104,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -11798,14 +11798,14 @@ var arrayMap_NUM_120 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 45,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -11956,14 +11956,14 @@ var bitmapIndexedNode_NUM_6 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 51,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -12993,14 +12993,14 @@ var arrayMap_NUM_121 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3629,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -13108,14 +13108,14 @@ var arrayMap_NUM_122 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3633,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -13223,14 +13223,14 @@ var arrayMap_NUM_123 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3637,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -13312,7 +13312,7 @@ var var_NS_joker_DOT_core_NAME__STAR_assert_STAR_ Var = Var{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_124,
 	},
-	Value: Boolean{
+	Value: coretypes.Boolean{
 		B: true,
 	},
 	isGloballyUsed: true,
@@ -13416,7 +13416,7 @@ var arrayMap_NUM_125 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -13613,14 +13613,14 @@ var arrayMap_NUM_127 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3199,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -13646,7 +13646,7 @@ var arrayMap_NUM_127 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -13660,7 +13660,7 @@ var arrayMap_NUM_127 ArrayMap = ArrayMap{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -13754,14 +13754,14 @@ var arrayMap_NUM_129 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3641,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -14023,14 +14023,14 @@ var arrayMap_NUM_132 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2109,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -14085,7 +14085,7 @@ var literalExpr_POS_joker_DOT_core__2114_22__2114_25_NUM_1 LiteralExpr = Literal
 		StartColumn: 22,
 		StartLine:   2114,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -14093,7 +14093,7 @@ var var_NS_joker_DOT_core_NAME__STAR_flush_DASH_on_DASH_newline_STAR__POS_joker_
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_132,
 	},
-	Value: Boolean{
+	Value: coretypes.Boolean{
 		B: true,
 	},
 	expr:           &literalExpr_POS_joker_DOT_core__2114_22__2114_25_NUM_1,
@@ -14217,21 +14217,21 @@ var arrayMap_NUM_135 ArrayMap = ArrayMap{
 			hash: 14102651,
 			name: &s_major,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
 			hash: 1585733479,
 			name: &s_minor,
 		},
-		Int{
+		coretypes.Int{
 			I: 7,
 		},
 		Keyword{
 			hash: 310992626,
 			name: &s_incremental,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -14324,7 +14324,7 @@ var var_NS_joker_DOT_core_NAME__STAR_linter_DASH_mode_STAR_ Var = Var{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_138,
 	},
-	Value:          Boolean{},
+	Value:          coretypes.Boolean{},
 	isGloballyUsed: true,
 	isUsed:         true,
 	name: Symbol{
@@ -14417,14 +14417,14 @@ var arrayMap_NUM_139 ArrayMap = ArrayMap{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -14553,13 +14553,13 @@ var bitmapIndexedNode_NUM_8 BitmapIndexedNode = BitmapIndexedNode{
 			},
 			name: &s_joker_DOT_tools_DOT_cli,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Symbol{
 			name: &s_joker_DOT_html,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -15231,7 +15231,7 @@ var bitmapIndexedNode_NUM_7 BitmapIndexedNode = BitmapIndexedNode{
 			},
 			name: &s_joker_DOT_test,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Symbol{
@@ -15240,7 +15240,7 @@ var bitmapIndexedNode_NUM_7 BitmapIndexedNode = BitmapIndexedNode{
 			},
 			name: &s_joker_DOT_template,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Symbol{
@@ -15249,7 +15249,7 @@ var bitmapIndexedNode_NUM_7 BitmapIndexedNode = BitmapIndexedNode{
 			},
 			name: &s_joker_DOT_walk,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Symbol{
@@ -15258,7 +15258,7 @@ var bitmapIndexedNode_NUM_7 BitmapIndexedNode = BitmapIndexedNode{
 			},
 			name: &s_joker_DOT_set,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Symbol{
@@ -15267,7 +15267,7 @@ var bitmapIndexedNode_NUM_7 BitmapIndexedNode = BitmapIndexedNode{
 			},
 			name: &s_joker_DOT_repl,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Symbol{
@@ -15276,7 +15276,7 @@ var bitmapIndexedNode_NUM_7 BitmapIndexedNode = BitmapIndexedNode{
 			},
 			name: &s_joker_DOT_hiccup,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Symbol{
@@ -15285,13 +15285,13 @@ var bitmapIndexedNode_NUM_7 BitmapIndexedNode = BitmapIndexedNode{
 			},
 			name: &s_joker_DOT_pprint,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Symbol{
 			name: &s_joker_DOT_string,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Symbol{
@@ -15300,7 +15300,7 @@ var bitmapIndexedNode_NUM_7 BitmapIndexedNode = BitmapIndexedNode{
 			},
 			name: &s_joker_DOT_better_DASH_cond,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -15395,14 +15395,14 @@ var arrayMap_NUM_143 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3185,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -15428,7 +15428,7 @@ var arrayMap_NUM_143 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -15442,7 +15442,7 @@ var arrayMap_NUM_143 ArrayMap = ArrayMap{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -15464,13 +15464,13 @@ var literalExpr_POS_joker_DOT_core__3188_23__3188_27_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   3188,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var var_NS_joker_DOT_core_NAME__STAR_loading_DASH_verbosely_STAR__POS_joker_DOT_core_3185_1__3188_28 Var = Var{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_143,
 	},
-	Value:          Boolean{},
+	Value:          coretypes.Boolean{},
 	expr:           &literalExpr_POS_joker_DOT_core__3188_23__3188_27_NUM_1,
 	isDynamic:      true,
 	isGloballyUsed: true,
@@ -15705,14 +15705,14 @@ var arrayMap_NUM_146 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3209,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -15738,7 +15738,7 @@ var arrayMap_NUM_146 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -15752,7 +15752,7 @@ var arrayMap_NUM_146 ArrayMap = ArrayMap{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -15929,14 +15929,14 @@ var arrayMap_NUM_148 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3204,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -15962,7 +15962,7 @@ var arrayMap_NUM_148 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -15976,7 +15976,7 @@ var arrayMap_NUM_148 ArrayMap = ArrayMap{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -16076,7 +16076,7 @@ var var_NS_joker_DOT_core_NAME__STAR_print_DASH_readably_STAR_ Var = Var{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_149,
 	},
-	Value: Boolean{
+	Value: coretypes.Boolean{
 		B: true,
 	},
 	isGloballyUsed: true,
@@ -16120,7 +16120,7 @@ var var_NS_joker_DOT_core_NAME__STAR_repl_STAR_ Var = Var{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_150,
 	},
-	Value:  Boolean{},
+	Value:  coretypes.Boolean{},
 	isUsed: true,
 	name: Symbol{
 		name: &s__STAR_repl_STAR_,
@@ -16530,14 +16530,14 @@ var arrayMap_NUM_151 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 723,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -16597,7 +16597,7 @@ var literalExpr_POS_joker_DOT_core__727_15__727_15_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 15,
 		StartLine:   727,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var varRef_cast_POS_joker_DOT_core__728_25__728_28 VarRefExpr = VarRefExpr{
 	Position: coretypes.Position{
@@ -17369,14 +17369,14 @@ var arrayMap_NUM_161 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 713,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -17436,7 +17436,7 @@ var literalExpr_POS_joker_DOT_core__717_15__717_15_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 15,
 		StartLine:   717,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var varRef_cast_POS_joker_DOT_core__718_25__718_28 VarRefExpr = VarRefExpr{
 	Position: coretypes.Position{
@@ -18173,14 +18173,14 @@ var arrayMap_NUM_171 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 772,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -18933,14 +18933,14 @@ var arrayMap_NUM_180 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 762,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -19349,14 +19349,14 @@ var bitmapIndexedNode_NUM_10 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1186,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -19486,7 +19486,7 @@ var bitmapIndexedNode_NUM_9 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -19607,14 +19607,14 @@ var bitmapIndexedNode_NUM_12 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 387,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -19799,7 +19799,7 @@ var literalExpr_POS_joker_DOT_core__391_22__391_26_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 22,
 		StartLine:   391,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var objectInfo_POS_joker_DOT_core__391_28__391_31 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -19818,7 +19818,7 @@ var literalExpr_POS_joker_DOT_core__391_28__391_31_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 28,
 		StartLine:   391,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -19994,14 +19994,14 @@ var bitmapIndexedNode_NUM_14 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 363,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -20189,7 +20189,7 @@ var literalExpr_POS_joker_DOT_core__367_14__367_18_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 14,
 		StartLine:   367,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var callExpr_POS_joker_DOT_core__367_7__367_19_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -20528,14 +20528,14 @@ var arrayMap_NUM_190 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2863,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -20561,7 +20561,7 @@ var arrayMap_NUM_190 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -21195,14 +21195,14 @@ var arrayMap_NUM_191 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 482,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -21903,14 +21903,14 @@ var arrayMap_NUM_201 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 471,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -22028,14 +22028,14 @@ var bitmapIndexedNode_NUM_16 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 19,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -22719,14 +22719,14 @@ var arrayMap_NUM_211 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 463,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -22757,7 +22757,7 @@ var arrayMap_NUM_211 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -22786,14 +22786,14 @@ var bitmapIndexedNode_NUM_18 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 294,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -24585,14 +24585,14 @@ var arrayMap_NUM_212 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2856,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -24801,14 +24801,14 @@ var arrayMap_NUM_214 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1365,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -24926,14 +24926,14 @@ var arrayMap_NUM_217 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1356,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -24959,7 +24959,7 @@ var arrayMap_NUM_217 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -25100,14 +25100,14 @@ var arrayMap_NUM_218 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1326,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -25536,14 +25536,14 @@ var arrayMap_NUM_220 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 77,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -25901,14 +25901,14 @@ var bitmapIndexedNode_NUM_20 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 143,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -26204,14 +26204,14 @@ var bitmapIndexedNode_NUM_22 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 399,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -26548,14 +26548,14 @@ var arrayMap_NUM_222 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1320,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -26753,14 +26753,14 @@ var arrayMap_NUM_224 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1052,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -27064,14 +27064,14 @@ var bitmapIndexedNode_NUM_24 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 165,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -27820,14 +27820,14 @@ var arrayMap_NUM_225 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1346,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -28135,14 +28135,14 @@ var arrayMap_NUM_227 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1351,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -28573,14 +28573,14 @@ var arrayMap_NUM_229 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 149,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -29080,14 +29080,14 @@ var bitmapIndexedNode_NUM_26 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 98,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -30136,14 +30136,14 @@ var bitmapIndexedNode_NUM_28 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 279,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -30515,14 +30515,14 @@ var arrayMap_NUM_233 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2133,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -30737,14 +30737,14 @@ var arrayMap_NUM_235 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2116,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -30830,14 +30830,14 @@ var bitmapIndexedNode_NUM_30 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2080,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -31169,14 +31169,14 @@ var arrayMap_NUM_237 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2095,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -31421,14 +31421,14 @@ var arrayMap_NUM_239 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2101,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -32402,14 +32402,14 @@ var arrayMap_NUM_241 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 118,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -32728,14 +32728,14 @@ var arrayMap_NUM_242 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 171,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -33236,14 +33236,14 @@ var arrayMap_NUM_243 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 518,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -33564,14 +33564,14 @@ var bitmapIndexedNode_NUM_32 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 58,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -34650,14 +34650,14 @@ var bitmapIndexedNode_NUM_34 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 13,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -35312,14 +35312,14 @@ var bitmapIndexedNode_NUM_36 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1204,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -35449,7 +35449,7 @@ var bitmapIndexedNode_NUM_35 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -36958,14 +36958,14 @@ var arrayMap_NUM_253 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 753,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -37035,7 +37035,7 @@ var literalExpr_POS_joker_DOT_core__757_27__757_27_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 27,
 		StartLine:   757,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -37740,14 +37740,14 @@ var arrayMap_NUM_262 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 656,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -37807,7 +37807,7 @@ var literalExpr_POS_joker_DOT_core__660_25__660_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 25,
 		StartLine:   660,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -38179,7 +38179,7 @@ var literalExpr_POS_joker_DOT_core__667_6__667_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 6,
 		StartLine:   667,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__663_4__667_11_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -38406,14 +38406,14 @@ var arrayMap_NUM_271 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4499,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -38928,14 +38928,14 @@ var arrayMap_NUM_273 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 782,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -38995,7 +38995,7 @@ var literalExpr_POS_joker_DOT_core__786_25__786_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 25,
 		StartLine:   786,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -39367,7 +39367,7 @@ var literalExpr_POS_joker_DOT_core__793_6__793_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 6,
 		StartLine:   793,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__789_4__793_11_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -39740,14 +39740,14 @@ var arrayMap_NUM_282 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 574,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -39807,7 +39807,7 @@ var literalExpr_POS_joker_DOT_core__580_17__580_20_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 17,
 		StartLine:   580,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -40151,7 +40151,7 @@ var literalExpr_POS_joker_DOT_core__587_6__587_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 6,
 		StartLine:   587,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__583_4__587_11_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -40624,14 +40624,14 @@ var arrayMap_NUM_286 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 821,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -40691,7 +40691,7 @@ var literalExpr_POS_joker_DOT_core__825_25__825_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 25,
 		StartLine:   825,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -41063,7 +41063,7 @@ var literalExpr_POS_joker_DOT_core__832_6__832_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 6,
 		StartLine:   832,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__828_4__832_11_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -41551,14 +41551,14 @@ var arrayMap_NUM_295 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 795,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -41618,7 +41618,7 @@ var literalExpr_POS_joker_DOT_core__799_25__799_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 25,
 		StartLine:   799,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -41990,7 +41990,7 @@ var literalExpr_POS_joker_DOT_core__806_6__806_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 6,
 		StartLine:   806,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__802_4__806_11_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -42229,14 +42229,14 @@ var arrayMap_NUM_304 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4507,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -42772,14 +42772,14 @@ var arrayMap_NUM_306 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 808,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -42839,7 +42839,7 @@ var literalExpr_POS_joker_DOT_core__812_25__812_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 25,
 		StartLine:   812,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -43211,7 +43211,7 @@ var literalExpr_POS_joker_DOT_core__819_6__819_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 6,
 		StartLine:   819,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__815_4__819_11_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -43461,14 +43461,14 @@ var arrayMap_NUM_315 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4566,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -43746,14 +43746,14 @@ var arrayMap_NUM_318 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4572,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -44027,14 +44027,14 @@ var arrayMap_NUM_321 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3739,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -44065,14 +44065,14 @@ var arrayMap_NUM_321 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -44816,14 +44816,14 @@ var arrayMap_NUM_322 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2398,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -45028,14 +45028,14 @@ var arrayMap_NUM_325 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2262,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -45268,14 +45268,14 @@ var arrayMap_NUM_327 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2239,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -46231,14 +46231,14 @@ var arrayMap_NUM_330 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2257,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -46525,14 +46525,14 @@ var arrayMap_NUM_332 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1468,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -46762,14 +46762,14 @@ var bitmapIndexedNode_NUM_38 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 605,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -46991,7 +46991,7 @@ var bitmapIndexedNode_NUM_37 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -47051,7 +47051,7 @@ var literalExpr_POS_joker_DOT_core__611_7__611_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 7,
 		StartLine:   611,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -47229,14 +47229,14 @@ var arrayMap_NUM_335 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 273,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -47312,14 +47312,14 @@ var bitmapIndexedNode_NUM_40 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 267,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -48088,14 +48088,14 @@ var bitmapIndexedNode_NUM_42 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 381,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -48241,7 +48241,7 @@ var literalExpr_POS_joker_DOT_core__385_7__385_10_NUM_1 LiteralExpr = LiteralExp
 		StartColumn: 7,
 		StartLine:   385,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -48322,14 +48322,14 @@ var bitmapIndexedNode_NUM_44 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2466,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -48551,14 +48551,14 @@ var bitmapIndexedNode_NUM_46 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4218,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -48700,7 +48700,7 @@ var bitmapIndexedNode_NUM_45 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -49746,14 +49746,14 @@ var arrayMap_NUM_337 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2430,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -51026,14 +51026,14 @@ var arrayMap_NUM_347 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1615,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -52859,14 +52859,14 @@ var arrayMap_NUM_365 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1581,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -52992,7 +52992,7 @@ var literalExpr_POS_joker_DOT_core__1587_23__1587_26_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   1587,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -53156,7 +53156,7 @@ var literalExpr_POS_joker_DOT_core__1589_11__1589_15_NUM_1 LiteralExpr = Literal
 		StartColumn: 11,
 		StartLine:   1589,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var literalExpr_POS_joker_DOT_core__352_22__352_24_NUM_12 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -53352,14 +53352,14 @@ var arrayMap_NUM_369 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1024,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -54044,14 +54044,14 @@ var arrayMap_NUM_370 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 65,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -55542,14 +55542,14 @@ var arrayMap_NUM_371 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1751,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -55860,14 +55860,14 @@ var arrayMap_NUM_375 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1672,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -56040,14 +56040,14 @@ var arrayMap_NUM_379 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 862,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -56507,14 +56507,14 @@ var arrayMap_NUM_382 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 856,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -57218,14 +57218,14 @@ var arrayMap_NUM_385 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 212,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -57866,14 +57866,14 @@ var arrayMap_NUM_387 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3687,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -58180,14 +58180,14 @@ var arrayMap_NUM_390 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 204,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -58618,14 +58618,14 @@ var bitmapIndexedNode_NUM_48 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2897,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -58796,7 +58796,7 @@ var bitmapIndexedNode_NUM_47 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -60256,14 +60256,14 @@ var arrayMap_NUM_392 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1222,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -60289,7 +60289,7 @@ var arrayMap_NUM_392 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -60301,7 +60301,7 @@ var arrayMap_NUM_392 ArrayMap = ArrayMap{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -61282,14 +61282,14 @@ var bitmapIndexedNode_NUM_50 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4146,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -61364,7 +61364,7 @@ var bitmapIndexedNode_NUM_51 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -61415,7 +61415,7 @@ var bitmapIndexedNode_NUM_52 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -62268,14 +62268,14 @@ var arrayMap_NUM_393 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1665,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -62483,14 +62483,14 @@ var arrayMap_NUM_397 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1653,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -63204,14 +63204,14 @@ var arrayMap_NUM_401 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1007,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -63999,14 +63999,14 @@ var arrayMap_NUM_404 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 138,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -64749,14 +64749,14 @@ var arrayMap_NUM_405 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3535,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -65399,14 +65399,14 @@ var arrayMap_NUM_409 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3604,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -65674,14 +65674,14 @@ var arrayMap_NUM_411 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1425,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -65962,14 +65962,14 @@ var arrayMap_NUM_413 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2073,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -66218,14 +66218,14 @@ var arrayMap_NUM_415 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2049,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -66469,14 +66469,14 @@ var arrayMap_NUM_417 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2066,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -66642,14 +66642,14 @@ var bitmapIndexedNode_NUM_54 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1390,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -66779,7 +66779,7 @@ var bitmapIndexedNode_NUM_53 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -67169,14 +67169,14 @@ var arrayMap_NUM_419 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 959,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -67326,14 +67326,14 @@ var arrayMap_NUM_421 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 952,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -67743,14 +67743,14 @@ var arrayMap_NUM_423 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 629,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -68205,14 +68205,14 @@ var arrayMap_NUM_426 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 889,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -68610,7 +68610,7 @@ var literalExpr_POS_joker_DOT_core__965_31__965_31_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 31,
 		StartLine:   965,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -68915,14 +68915,14 @@ var arrayMap_NUM_433 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 634,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -70338,14 +70338,14 @@ var arrayMap_NUM_435 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 910,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -70832,14 +70832,14 @@ var arrayMap_NUM_442 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 917,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -71179,14 +71179,14 @@ var arrayMap_NUM_446 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 927,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -71491,14 +71491,14 @@ var arrayMap_NUM_450 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 884,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -71942,14 +71942,14 @@ var arrayMap_NUM_453 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 896,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -72436,14 +72436,14 @@ var arrayMap_NUM_460 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 922,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -72783,14 +72783,14 @@ var arrayMap_NUM_464 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 937,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -73130,14 +73130,14 @@ var arrayMap_NUM_468 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 942,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -73477,14 +73477,14 @@ var arrayMap_NUM_472 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 932,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -73955,14 +73955,14 @@ var arrayMap_NUM_476 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 903,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -74391,14 +74391,14 @@ var arrayMap_NUM_483 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2012,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -74565,14 +74565,14 @@ var bitmapIndexedNode_NUM_56 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 375,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -74654,7 +74654,7 @@ var bitmapIndexedNode_NUM_55 BitmapIndexedNode = BitmapIndexedNode{
 			name: &s_doc,
 		},
 		String{
-			S: "Return true if x is a Boolean",
+			S: "Return true if x is a coretypes.Boolean",
 		},
 		nil,
 		&bitmapIndexedNode_NUM_56,
@@ -74914,14 +74914,14 @@ var arrayMap_NUM_485 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3088,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -75274,14 +75274,14 @@ var arrayMap_NUM_487 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4062,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -75431,14 +75431,14 @@ var arrayMap_NUM_490 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3614,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -75684,7 +75684,7 @@ var literalExpr_POS_joker_DOT_core__4069_14__4069_14_NUM_1 LiteralExpr = Literal
 		StartColumn: 14,
 		StartLine:   4069,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var varRef_seq_POS_joker_DOT_core__4069_19__4069_21 VarRefExpr = VarRefExpr{
 	Position: coretypes.Position{
@@ -75986,14 +75986,14 @@ var arrayMap_NUM_492 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 675,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -76468,14 +76468,14 @@ var arrayMap_NUM_495 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3593,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -76636,14 +76636,14 @@ var bitmapIndexedNode_NUM_58 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3872,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -76773,7 +76773,7 @@ var bitmapIndexedNode_NUM_57 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -77346,14 +77346,14 @@ var arrayMap_NUM_497 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1908,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -77795,14 +77795,14 @@ var arrayMap_NUM_510 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1875,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -78082,14 +78082,14 @@ var arrayMap_NUM_516 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1861,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -79145,14 +79145,14 @@ var arrayMap_NUM_522 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1899,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -80555,7 +80555,7 @@ var literalExpr_POS_joker_DOT_core__3889_50__3889_50_NUM_1 LiteralExpr = Literal
 		StartColumn: 50,
 		StartLine:   3889,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -80868,14 +80868,14 @@ var arrayMap_NUM_526 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 647,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -81186,7 +81186,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_1 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var objectInfo_POS_joker_DOT_core__2524_71__2524_73 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -81226,7 +81226,7 @@ var bindingExpr_POS_0_0__0_0_NUM_12 BindingExpr = BindingExpr{
 	binding: &binding_NUM_407,
 }
 var literalExpr_POS_0_0__0_0_NUM_4 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -81408,7 +81408,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_2 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_3 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -81439,7 +81439,7 @@ var bindingExpr_POS_0_0__0_0_NUM_21 BindingExpr = BindingExpr{
 	binding: &binding_NUM_415,
 }
 var literalExpr_POS_0_0__0_0_NUM_5 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -81613,14 +81613,14 @@ var arrayMap_NUM_529 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3581,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -81921,14 +81921,14 @@ var arrayMap_NUM_531 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2222,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -82078,14 +82078,14 @@ var arrayMap_NUM_534 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2217,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -82665,14 +82665,14 @@ var arrayMap_NUM_536 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1598,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -83471,14 +83471,14 @@ var arrayMap_NUM_539 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3865,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -84220,14 +84220,14 @@ var arrayMap_NUM_540 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3853,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -84888,7 +84888,7 @@ var literalExpr_POS_joker_DOT_core__3898_30__3898_30_NUM_1 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   3898,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -85106,7 +85106,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_3 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_5 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -85137,7 +85137,7 @@ var bindingExpr_POS_0_0__0_0_NUM_26 BindingExpr = BindingExpr{
 	binding: &binding_NUM_443,
 }
 var literalExpr_POS_0_0__0_0_NUM_6 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -85203,7 +85203,7 @@ var literalExpr_POS_joker_DOT_core__3901_26__3901_26_NUM_1 LiteralExpr = Literal
 		StartColumn: 26,
 		StartLine:   3901,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -86315,14 +86315,14 @@ var arrayMap_NUM_548 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4493,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -86408,7 +86408,7 @@ var literalExpr_POS_joker_DOT_core__4496_24__4496_24_NUM_1 LiteralExpr = Literal
 		StartColumn: 24,
 		StartLine:   4496,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__4496_16__4496_25_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -86633,14 +86633,14 @@ var arrayMap_NUM_552 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2006,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -86890,14 +86890,14 @@ var arrayMap_NUM_554 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 123,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -86929,7 +86929,7 @@ var arrayMap_NUM_554 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Returns true if x is a Char",
+			S: "Returns true if x is a coretypes.Char",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -87133,14 +87133,14 @@ var arrayMap_NUM_555 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3386,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -87166,7 +87166,7 @@ var arrayMap_NUM_555 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -87694,14 +87694,14 @@ var arrayMap_NUM_556 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3075,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -87909,14 +87909,14 @@ var arrayMap_NUM_559 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1692,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -88498,7 +88498,7 @@ var literalExpr_POS_joker_DOT_core__3080_9__3080_9_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 9,
 		StartLine:   3080,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -88840,14 +88840,14 @@ var arrayMap_NUM_563 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3219,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -88873,7 +88873,7 @@ var arrayMap_NUM_563 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -89108,14 +89108,14 @@ var arrayMap_NUM_565 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3115,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -89609,7 +89609,7 @@ var literalExpr_POS_joker_DOT_core__3396_17__3396_20_NUM_1 LiteralExpr = Literal
 		StartColumn: 17,
 		StartLine:   3396,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -89869,14 +89869,14 @@ var arrayMap_NUM_568 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4321,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -89902,7 +89902,7 @@ var arrayMap_NUM_568 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -90261,14 +90261,14 @@ var arrayMap_NUM_569 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1073,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -90816,14 +90816,14 @@ var bitmapIndexedNode_NUM_60 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 287,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -91162,14 +91162,14 @@ var arrayMap_NUM_576 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1106,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -91874,14 +91874,14 @@ var arrayMap_NUM_579 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 512,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -91941,7 +91941,7 @@ var literalExpr_POS_joker_DOT_core__516_3__516_7_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 3,
 		StartLine:   516,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var fnExpr_POS_joker_DOT_core_512_1__516_8_NUM_1 FnExpr = FnExpr{
 	Position: coretypes.Position{
@@ -92094,14 +92094,14 @@ var arrayMap_NUM_581 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1314,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -92335,14 +92335,14 @@ var arrayMap_NUM_583 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4516,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -92596,14 +92596,14 @@ var arrayMap_NUM_585 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3576,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -92765,14 +92765,14 @@ var bitmapIndexedNode_NUM_62 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2784,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -92890,7 +92890,7 @@ var bitmapIndexedNode_NUM_61 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -93562,14 +93562,14 @@ var arrayMap_NUM_587 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1489,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -95187,14 +95187,14 @@ var arrayMap_NUM_602 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 707,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -96106,14 +96106,14 @@ var arrayMap_NUM_605 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 597,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -96301,14 +96301,14 @@ var bitmapIndexedNode_NUM_64 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 435,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -96426,7 +96426,7 @@ var bitmapIndexedNode_NUM_63 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -97234,14 +97234,14 @@ var bitmapIndexedNode_NUM_66 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4174,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -97371,7 +97371,7 @@ var bitmapIndexedNode_NUM_65 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -98655,14 +98655,14 @@ var arrayMap_NUM_607 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 424,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -98946,7 +98946,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_4 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_7 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -98977,7 +98977,7 @@ var bindingExpr_POS_0_0__0_0_NUM_31 BindingExpr = BindingExpr{
 	binding: &binding_NUM_536,
 }
 var literalExpr_POS_0_0__0_0_NUM_7 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -99343,7 +99343,7 @@ var literalExpr_POS_joker_DOT_core__4189_31__4189_31_NUM_1 LiteralExpr = Literal
 		StartColumn: 31,
 		StartLine:   4189,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -99859,14 +99859,14 @@ var bitmapIndexedNode_NUM_68 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4196,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -99996,7 +99996,7 @@ var bitmapIndexedNode_NUM_67 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -101172,7 +101172,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_5 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_9 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -101203,7 +101203,7 @@ var bindingExpr_POS_0_0__0_0_NUM_34 BindingExpr = BindingExpr{
 	binding: &binding_NUM_547,
 }
 var literalExpr_POS_0_0__0_0_NUM_8 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -101569,7 +101569,7 @@ var literalExpr_POS_joker_DOT_core__4211_31__4211_31_NUM_1 LiteralExpr = Literal
 		StartColumn: 31,
 		StartLine:   4211,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -102085,14 +102085,14 @@ var bitmapIndexedNode_NUM_70 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3693,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -102234,7 +102234,7 @@ var bitmapIndexedNode_NUM_69 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -102542,7 +102542,7 @@ var literalExpr_POS_joker_DOT_core__3718_14__3718_14_NUM_1 LiteralExpr = Literal
 		StartColumn: 14,
 		StartLine:   3718,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -103172,14 +103172,14 @@ var arrayMap_NUM_611 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1739,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -103510,7 +103510,7 @@ var literalExpr_POS_joker_DOT_core__3724_58__3724_58_NUM_1 LiteralExpr = Literal
 		StartColumn: 58,
 		StartLine:   3724,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 3,
 	},
 }
@@ -103531,7 +103531,7 @@ var literalExpr_POS_joker_DOT_core__3724_60__3724_60_NUM_1 LiteralExpr = Literal
 		StartColumn: 60,
 		StartLine:   3724,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -103589,7 +103589,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_6 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_11 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -103635,7 +103635,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_7 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_12 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -103666,7 +103666,7 @@ var bindingExpr_POS_0_0__0_0_NUM_37 BindingExpr = BindingExpr{
 	binding: &binding_NUM_559,
 }
 var literalExpr_POS_0_0__0_0_NUM_9 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -103699,7 +103699,7 @@ var bindingExpr_POS_0_0__0_0_NUM_38 BindingExpr = BindingExpr{
 	binding: &binding_NUM_559,
 }
 var literalExpr_POS_0_0__0_0_NUM_10 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -103735,7 +103735,7 @@ var bindingExpr_POS_0_0__0_0_NUM_40 BindingExpr = BindingExpr{
 	binding: &binding_NUM_558,
 }
 var literalExpr_POS_0_0__0_0_NUM_11 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -103832,7 +103832,7 @@ var literalExpr_POS_joker_DOT_core__3727_23__3727_23_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   3727,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var binding_NUM_561 Binding = Binding{
 	frame:  4,
@@ -104222,7 +104222,7 @@ var literalExpr_POS_joker_DOT_core__3728_23__3728_23_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   3728,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -104295,7 +104295,7 @@ var literalExpr_POS_joker_DOT_core__3729_23__3729_23_NUM_1 LiteralExpr = Literal
 		StartColumn: 23,
 		StartLine:   3729,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -105735,14 +105735,14 @@ var arrayMap_NUM_615 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1018,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -106016,14 +106016,14 @@ var arrayMap_NUM_617 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1043,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -106323,14 +106323,14 @@ var arrayMap_NUM_620 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2244,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -106593,14 +106593,14 @@ var arrayMap_NUM_623 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1731,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -107065,14 +107065,14 @@ var arrayMap_NUM_626 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 850,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -107244,14 +107244,14 @@ var bitmapIndexedNode_NUM_72 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1837,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -107369,7 +107369,7 @@ var bitmapIndexedNode_NUM_71 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -107704,14 +107704,14 @@ var arrayMap_NUM_629 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 496,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -108017,7 +108017,7 @@ var literalExpr_POS_joker_DOT_core__1840_74__1840_77_NUM_1 LiteralExpr = Literal
 		StartColumn: 74,
 		StartLine:   1840,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -108313,14 +108313,14 @@ var arrayMap_NUM_631 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4264,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -108623,14 +108623,14 @@ var arrayMap_NUM_634 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1719,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -109529,14 +109529,14 @@ var arrayMap_NUM_638 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4288,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -109631,14 +109631,14 @@ var bitmapIndexedNode_NUM_74 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 300,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -109928,7 +109928,7 @@ var bitmapIndexedNode_NUM_73 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -110303,14 +110303,14 @@ var arrayMap_NUM_640 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 128,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -110714,14 +110714,14 @@ var arrayMap_NUM_641 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 133,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -112786,14 +112786,14 @@ var bitmapIndexedNode_NUM_76 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4413,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -112935,7 +112935,7 @@ var bitmapIndexedNode_NUM_75 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -113559,14 +113559,14 @@ var bitmapIndexedNode_NUM_78 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4353,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -113711,7 +113711,7 @@ var bitmapIndexedNode_NUM_77 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -114767,7 +114767,7 @@ var literalExpr_POS_joker_DOT_core__4400_30__4400_30_NUM_1 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   4400,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -116205,14 +116205,14 @@ var bitmapIndexedNode_NUM_80 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1135,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -117167,14 +117167,14 @@ var bitmapIndexedNode_NUM_82 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 221,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -117492,7 +117492,7 @@ var bitmapIndexedNode_NUM_81 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -118854,14 +118854,14 @@ var arrayMap_NUM_643 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 180,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -118887,7 +118887,7 @@ var arrayMap_NUM_643 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -119190,7 +119190,7 @@ var literalExpr_POS_joker_DOT_core__189_47__189_47_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 47,
 		StartLine:   189,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -120683,14 +120683,14 @@ var bitmapIndexedNode_NUM_84 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2964,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -120820,7 +120820,7 @@ var bitmapIndexedNode_NUM_83 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -120986,7 +120986,7 @@ var literalExpr_POS_joker_DOT_core__2968_60__2968_63_NUM_1 LiteralExpr = Literal
 		StartColumn: 60,
 		StartLine:   2968,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -121129,14 +121129,14 @@ var bitmapIndexedNode_NUM_86 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3176,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -121254,7 +121254,7 @@ var bitmapIndexedNode_NUM_85 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -121944,14 +121944,14 @@ var bitmapIndexedNode_NUM_88 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 539,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -122069,7 +122069,7 @@ var bitmapIndexedNode_NUM_87 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -122389,14 +122389,14 @@ var arrayMap_NUM_644 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 548,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -122677,14 +122677,14 @@ var arrayMap_NUM_646 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2043,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -122939,14 +122939,14 @@ var arrayMap_NUM_649 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1417,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -123176,14 +123176,14 @@ var arrayMap_NUM_651 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2485,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -123209,7 +123209,7 @@ var arrayMap_NUM_651 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -123330,14 +123330,14 @@ var arrayMap_NUM_652 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2473,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -123363,7 +123363,7 @@ var arrayMap_NUM_652 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -123624,7 +123624,7 @@ var literalExpr_POS_joker_DOT_core__2477_39__2477_42_NUM_1 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   2477,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -123849,7 +123849,7 @@ var literalExpr_POS_joker_DOT_core__2488_26__2488_26_NUM_1 LiteralExpr = Literal
 		StartColumn: 26,
 		StartLine:   2488,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -124643,14 +124643,14 @@ var arrayMap_NUM_653 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2480,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -124676,7 +124676,7 @@ var arrayMap_NUM_653 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -124771,7 +124771,7 @@ var literalExpr_POS_joker_DOT_core__2482_53__2482_56_NUM_1 LiteralExpr = Literal
 		StartColumn: 53,
 		StartLine:   2482,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -125115,7 +125115,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_8 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var bindingExpr_POS_joker_DOT_core__2504_34__2504_34_NUM_1 BindingExpr = BindingExpr{
 	Position: coretypes.Position{
@@ -125144,7 +125144,7 @@ var literalExpr_POS_joker_DOT_core__2505_42__2505_46_NUM_1 LiteralExpr = Literal
 		StartColumn: 42,
 		StartLine:   2505,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var varRef_seq_POS_joker_DOT_core__2506_31__2506_33 VarRefExpr = VarRefExpr{
 	Position: coretypes.Position{
@@ -125460,7 +125460,7 @@ var literalExpr_POS_joker_DOT_core__2512_53__2512_56_NUM_1 LiteralExpr = Literal
 		StartColumn: 53,
 		StartLine:   2512,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -128004,14 +128004,14 @@ var arrayMap_NUM_654 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 412,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -128232,14 +128232,14 @@ var bitmapIndexedNode_NUM_90 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1143,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -128711,14 +128711,14 @@ var bitmapIndexedNode_NUM_92 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 452,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -129087,14 +129087,14 @@ var arrayMap_NUM_660 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 407,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -130043,14 +130043,14 @@ var arrayMap_NUM_662 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 417,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -131038,14 +131038,14 @@ var arrayMap_NUM_665 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1122,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -131596,14 +131596,14 @@ var arrayMap_NUM_666 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1060,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -132177,14 +132177,14 @@ var arrayMap_NUM_673 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1116,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -133398,14 +133398,14 @@ var arrayMap_NUM_674 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1150,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -135174,14 +135174,14 @@ var arrayMap_NUM_676 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3039,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -135306,7 +135306,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_9 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_17 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -136320,14 +136320,14 @@ var arrayMap_NUM_679 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3100,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -136387,7 +136387,7 @@ var literalExpr_POS_joker_DOT_core__3103_17__3103_20_NUM_1 LiteralExpr = Literal
 		StartColumn: 17,
 		StartLine:   3103,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -136724,14 +136724,14 @@ var arrayMap_NUM_683 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 589,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -136791,7 +136791,7 @@ var literalExpr_POS_joker_DOT_core__592_17__592_21_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 17,
 		StartLine:   592,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var varRef_not_POS_joker_DOT_core__593_20__593_22 VarRefExpr = VarRefExpr{
 	Position: coretypes.Position{
@@ -137547,7 +137547,7 @@ var literalExpr_POS_joker_DOT_core__3110_12__3110_16_NUM_1 LiteralExpr = Literal
 		StartColumn: 12,
 		StartLine:   3110,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var varRef_conj_POS_joker_DOT_core__3111_20__3111_23 VarRefExpr = VarRefExpr{
 	Position: coretypes.Position{
@@ -137653,7 +137653,7 @@ var literalExpr_POS_joker_DOT_core__3112_10__3112_13_NUM_1 LiteralExpr = Literal
 		StartColumn: 10,
 		StartLine:   3112,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -137810,7 +137810,7 @@ var literalExpr_POS_joker_DOT_core__3113_6__3113_10_NUM_1 LiteralExpr = LiteralE
 		StartColumn: 6,
 		StartLine:   3113,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var ifExpr_POS_joker_DOT_core__3106_4__3113_11_NUM_1 IfExpr = IfExpr{
 	Position: coretypes.Position{
@@ -137939,14 +137939,14 @@ var bitmapIndexedNode_NUM_94 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1936,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -138076,7 +138076,7 @@ var bitmapIndexedNode_NUM_93 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -138961,7 +138961,7 @@ var literalExpr_POS_joker_DOT_core__1948_31__1948_31_NUM_1 LiteralExpr = Literal
 		StartColumn: 31,
 		StartLine:   1948,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -139171,7 +139171,7 @@ var literalExpr_POS_joker_DOT_core__1953_19__1953_22_NUM_1 LiteralExpr = Literal
 		StartColumn: 19,
 		StartLine:   1953,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -139772,7 +139772,7 @@ var literalExpr_POS_joker_DOT_core__1959_42__1959_42_NUM_1 LiteralExpr = Literal
 		StartColumn: 42,
 		StartLine:   1959,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__1959_32__1959_43_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -139814,7 +139814,7 @@ var literalExpr_POS_joker_DOT_core__1960_42__1960_42_NUM_1 LiteralExpr = Literal
 		StartColumn: 42,
 		StartLine:   1960,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -140116,7 +140116,7 @@ var literalExpr_POS_joker_DOT_core__1963_36__1963_40_NUM_1 LiteralExpr = Literal
 		StartColumn: 36,
 		StartLine:   1963,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var objectInfo_POS_joker_DOT_core__1963_44__1963_47 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -140368,7 +140368,7 @@ var literalExpr_POS_joker_DOT_core__1966_35__1966_39_NUM_1 LiteralExpr = Literal
 		StartColumn: 35,
 		StartLine:   1966,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var objectInfo_POS_joker_DOT_core__1966_43__1966_44 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -140721,7 +140721,7 @@ var literalExpr_POS_joker_DOT_core__1971_29__1971_32_NUM_1 LiteralExpr = Literal
 		StartColumn: 29,
 		StartLine:   1971,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -141656,7 +141656,7 @@ var literalExpr_POS_joker_DOT_core__1976_37__1976_37_NUM_1 LiteralExpr = Literal
 		StartColumn: 37,
 		StartLine:   1976,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -141778,14 +141778,14 @@ var bitmapIndexedNode_NUM_96 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1978,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -141915,7 +141915,7 @@ var bitmapIndexedNode_NUM_95 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -142186,7 +142186,7 @@ var literalExpr_POS_joker_DOT_core__1987_7__1987_7_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 7,
 		StartLine:   1987,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -142825,7 +142825,7 @@ var literalExpr_POS_joker_DOT_core__1991_18__1991_18_NUM_1 LiteralExpr = Literal
 		StartColumn: 18,
 		StartLine:   1991,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__1991_18__1991_18_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -143465,14 +143465,14 @@ var bitmapIndexedNode_NUM_98 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2169,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -143602,7 +143602,7 @@ var bitmapIndexedNode_NUM_97 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -144406,14 +144406,14 @@ var arrayMap_NUM_687 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2001,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -144586,14 +144586,14 @@ var bitmapIndexedNode_NUM_100 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1001,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -144698,7 +144698,7 @@ var bitmapIndexedNode_NUM_99 BitmapIndexedNode = BitmapIndexedNode{
 			name: &s_doc,
 		},
 		String{
-			S: "Return true if x is a Double",
+			S: "Return true if x is a coretypes.Double",
 		},
 		nil,
 		&bitmapIndexedNode_NUM_100,
@@ -145077,14 +145077,14 @@ var arrayMap_NUM_691 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1703,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -145154,7 +145154,7 @@ var literalExpr_POS_joker_DOT_core__1706_33__1706_33_NUM_1 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   1706,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -145530,14 +145530,14 @@ var arrayMap_NUM_697 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3082,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -145764,14 +145764,14 @@ var arrayMap_NUM_699 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1931,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -146457,14 +146457,14 @@ var arrayMap_NUM_700 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4074,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -146524,7 +146524,7 @@ var literalExpr_POS_joker_DOT_core__4081_16__4081_19_NUM_1 LiteralExpr = Literal
 		StartColumn: 16,
 		StartLine:   4081,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -147475,7 +147475,7 @@ var literalExpr_POS_joker_DOT_core__4088_16__4088_19_NUM_1 LiteralExpr = Literal
 		StartColumn: 16,
 		StartLine:   4088,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -149138,7 +149138,7 @@ var literalExpr_POS_joker_DOT_core__4095_16__4095_19_NUM_1 LiteralExpr = Literal
 		StartColumn: 16,
 		StartLine:   4095,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -151566,7 +151566,7 @@ var literalExpr_POS_joker_DOT_core__4103_18__4103_21_NUM_1 LiteralExpr = Literal
 		StartColumn: 18,
 		StartLine:   4103,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -152976,14 +152976,14 @@ var arrayMap_NUM_714 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2876,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -153298,14 +153298,14 @@ var arrayMap_NUM_716 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2868,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -153620,14 +153620,14 @@ var arrayMap_NUM_718 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2884,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -153954,14 +153954,14 @@ var arrayMap_NUM_720 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4559,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -154031,7 +154031,7 @@ var literalExpr_POS_joker_DOT_core__4562_13__4562_13_NUM_1 LiteralExpr = Literal
 		StartColumn: 13,
 		StartLine:   4562,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__4562_7__4562_14_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -154272,14 +154272,14 @@ var arrayMap_NUM_722 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 82,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -154564,14 +154564,14 @@ var arrayMap_NUM_724 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2230,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -154597,7 +154597,7 @@ var arrayMap_NUM_724 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -155293,14 +155293,14 @@ var arrayMap_NUM_725 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3924,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -155736,14 +155736,14 @@ var arrayMap_NUM_728 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1087,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -156042,14 +156042,14 @@ var arrayMap_NUM_730 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1483,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -156305,14 +156305,14 @@ var arrayMap_NUM_733 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3950,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -156482,14 +156482,14 @@ var arrayMap_NUM_735 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3609,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -156837,14 +156837,14 @@ var arrayMap_NUM_737 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2970,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -157128,14 +157128,14 @@ var arrayMap_NUM_741 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1646,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -157893,14 +157893,14 @@ var arrayMap_NUM_744 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2054,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -158061,14 +158061,14 @@ var bitmapIndexedNode_NUM_102 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2619,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -158432,7 +158432,7 @@ var bitmapIndexedNode_NUM_101 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -158441,7 +158441,7 @@ var bitmapIndexedNode_NUM_101 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2961805446,
 			name: &s_special_DASH_form,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -160626,7 +160626,7 @@ var literalExpr_POS_joker_DOT_core__2666_52__2666_52_NUM_1 LiteralExpr = Literal
 		StartColumn: 52,
 		StartLine:   2666,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -161483,14 +161483,14 @@ var arrayMap_NUM_746 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2600,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -161516,7 +161516,7 @@ var arrayMap_NUM_746 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -163121,14 +163121,14 @@ var arrayMap_NUM_747 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3599,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -163374,14 +163374,14 @@ var arrayMap_NUM_749 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 93,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -163922,14 +163922,14 @@ var arrayMap_NUM_751 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3829,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -166450,14 +166450,14 @@ var bitmapIndexedNode_NUM_104 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2735,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -166575,7 +166575,7 @@ var bitmapIndexedNode_NUM_103 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -167161,7 +167161,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_10 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_18 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -167192,7 +167192,7 @@ var bindingExpr_POS_0_0__0_0_NUM_66 BindingExpr = BindingExpr{
 	binding: &binding_NUM_1014,
 }
 var literalExpr_POS_0_0__0_0_NUM_12 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -167379,14 +167379,14 @@ var arrayMap_NUM_758 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1035,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -167691,14 +167691,14 @@ var arrayMap_NUM_760 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1029,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -168123,7 +168123,7 @@ var literalExpr_POS_joker_DOT_core__2755_43__2755_43_NUM_1 LiteralExpr = Literal
 		StartColumn: 43,
 		StartLine:   2755,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -168506,7 +168506,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_11 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_20 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -168552,7 +168552,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_12 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_21 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -168583,7 +168583,7 @@ var bindingExpr_POS_0_0__0_0_NUM_83 BindingExpr = BindingExpr{
 	binding: &binding_NUM_1033,
 }
 var literalExpr_POS_0_0__0_0_NUM_13 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -168869,7 +168869,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_13 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_23 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -168900,7 +168900,7 @@ var bindingExpr_POS_0_0__0_0_NUM_91 BindingExpr = BindingExpr{
 	binding: &binding_NUM_1038,
 }
 var literalExpr_POS_0_0__0_0_NUM_14 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -172683,14 +172683,14 @@ var arrayMap_NUM_762 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 554,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -172938,14 +172938,14 @@ var arrayMap_NUM_763 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3983,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -173118,7 +173118,7 @@ var literalExpr_POS_joker_DOT_core__3989_48__3989_48_NUM_1 LiteralExpr = Literal
 		StartColumn: 48,
 		StartLine:   3989,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__3989_34__3989_49_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -173472,14 +173472,14 @@ var arrayMap_NUM_765 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3517,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -173929,14 +173929,14 @@ var arrayMap_NUM_768 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 568,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -174511,14 +174511,14 @@ var arrayMap_NUM_770 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4451,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -175023,14 +175023,14 @@ var arrayMap_NUM_772 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2325,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -175056,7 +175056,7 @@ var arrayMap_NUM_772 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -175186,14 +175186,14 @@ var bitmapIndexedNode_NUM_106 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4475,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -175311,7 +175311,7 @@ var bitmapIndexedNode_NUM_105 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -175635,14 +175635,14 @@ var bitmapIndexedNode_NUM_108 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4529,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -175810,7 +175810,7 @@ var bitmapIndexedNode_NUM_109 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -176219,14 +176219,14 @@ var arrayMap_NUM_776 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3959,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -176756,14 +176756,14 @@ var arrayMap_NUM_779 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2892,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -176929,14 +176929,14 @@ var bitmapIndexedNode_NUM_111 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1232,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -177155,7 +177155,7 @@ var bitmapIndexedNode_NUM_110 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -177426,7 +177426,7 @@ var literalExpr_POS_joker_DOT_core__1241_8__1241_8_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 8,
 		StartLine:   1241,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -177715,7 +177715,7 @@ var literalExpr_POS_joker_DOT_core__1242_25__1242_25_NUM_1 LiteralExpr = Literal
 		StartColumn: 25,
 		StartLine:   1242,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__1242_15__1242_26_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -177757,7 +177757,7 @@ var literalExpr_POS_joker_DOT_core__1242_42__1242_42_NUM_1 LiteralExpr = Literal
 		StartColumn: 42,
 		StartLine:   1242,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -178806,7 +178806,7 @@ var literalExpr_POS_joker_DOT_core__1252_8__1252_8_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 8,
 		StartLine:   1252,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -179109,7 +179109,7 @@ var literalExpr_POS_joker_DOT_core__1253_25__1253_25_NUM_1 LiteralExpr = Literal
 		StartColumn: 25,
 		StartLine:   1253,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__1253_15__1253_26_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -179151,7 +179151,7 @@ var literalExpr_POS_joker_DOT_core__1253_42__1253_42_NUM_1 LiteralExpr = Literal
 		StartColumn: 42,
 		StartLine:   1253,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -179922,14 +179922,14 @@ var bitmapIndexedNode_NUM_113 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 560,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -180124,7 +180124,7 @@ var bitmapIndexedNode_NUM_112 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -180664,14 +180664,14 @@ var bitmapIndexedNode_NUM_115 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1276,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -180890,7 +180890,7 @@ var bitmapIndexedNode_NUM_114 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -181517,7 +181517,7 @@ var literalExpr_POS_joker_DOT_core__1288_8__1288_8_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 8,
 		StartLine:   1288,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -181820,7 +181820,7 @@ var literalExpr_POS_joker_DOT_core__1289_25__1289_25_NUM_1 LiteralExpr = Literal
 		StartColumn: 25,
 		StartLine:   1289,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__1289_15__1289_26_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -181862,7 +181862,7 @@ var literalExpr_POS_joker_DOT_core__1289_42__1289_42_NUM_1 LiteralExpr = Literal
 		StartColumn: 42,
 		StartLine:   1289,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -182804,14 +182804,14 @@ var arrayMap_NUM_781 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3190,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -183069,14 +183069,14 @@ var arrayMap_NUM_784 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3121,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -183238,14 +183238,14 @@ var arrayMap_NUM_787 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2125,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -183973,14 +183973,14 @@ var arrayMap_NUM_789 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 669,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -184251,14 +184251,14 @@ var arrayMap_NUM_792 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3624,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -184525,14 +184525,14 @@ var arrayMap_NUM_794 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4578,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -184815,14 +184815,14 @@ var arrayMap_NUM_797 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 641,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -184973,14 +184973,14 @@ var bitmapIndexedNode_NUM_117 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 974,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -185466,14 +185466,14 @@ var arrayMap_NUM_800 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2329,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -186305,14 +186305,14 @@ var arrayMap_NUM_805 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1757,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -186646,14 +186646,14 @@ var arrayMap_NUM_808 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4315,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -187318,14 +187318,14 @@ var arrayMap_NUM_810 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1519,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -191376,14 +191376,14 @@ var arrayMap_NUM_824 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4034,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -192144,14 +192144,14 @@ var arrayMap_NUM_828 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4047,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -192866,7 +192866,7 @@ var literalExpr_POS_joker_DOT_core__4060_12__4060_12_NUM_1 LiteralExpr = Literal
 		StartColumn: 12,
 		StartLine:   4060,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var binding_NUM_1205 Binding = Binding{
 	index:  1,
@@ -192999,14 +192999,14 @@ var bitmapIndexedNode_NUM_119 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2725,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -193124,7 +193124,7 @@ var bitmapIndexedNode_NUM_118 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -193436,14 +193436,14 @@ var bitmapIndexedNode_NUM_121 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 503,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -193561,7 +193561,7 @@ var bitmapIndexedNode_NUM_120 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -193798,14 +193798,14 @@ var bitmapIndexedNode_NUM_123 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2587,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -194047,7 +194047,7 @@ var bitmapIndexedNode_NUM_122 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -194056,7 +194056,7 @@ var bitmapIndexedNode_NUM_122 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2961805446,
 			name: &s_special_DASH_form,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -194756,14 +194756,14 @@ var bitmapIndexedNode_NUM_125 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3815,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -195005,7 +195005,7 @@ var bitmapIndexedNode_NUM_124 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -195014,7 +195014,7 @@ var bitmapIndexedNode_NUM_124 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2961805446,
 			name: &s_special_DASH_form,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -195486,14 +195486,14 @@ var arrayMap_NUM_832 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3298,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -195519,7 +195519,7 @@ var arrayMap_NUM_832 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -195672,14 +195672,14 @@ var arrayMap_NUM_833 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3227,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -195705,7 +195705,7 @@ var arrayMap_NUM_833 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -196212,14 +196212,14 @@ var arrayMap_NUM_834 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1825,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -196378,14 +196378,14 @@ var arrayMap_NUM_835 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1820,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -196411,7 +196411,7 @@ var arrayMap_NUM_835 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -197030,14 +197030,14 @@ var arrayMap_NUM_836 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3499,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -198081,14 +198081,14 @@ var arrayMap_NUM_840 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3284,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -198114,7 +198114,7 @@ var arrayMap_NUM_840 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -198264,14 +198264,14 @@ var arrayMap_NUM_841 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3271,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -198297,7 +198297,7 @@ var arrayMap_NUM_841 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -199177,14 +199177,14 @@ var arrayMap_NUM_842 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3493,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -199434,14 +199434,14 @@ var arrayMap_NUM_845 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3306,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -199467,7 +199467,7 @@ var arrayMap_NUM_845 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -199604,7 +199604,7 @@ var literalExpr_POS_joker_DOT_core__3309_54__3309_55_NUM_1 LiteralExpr = Literal
 		StartColumn: 54,
 		StartLine:   3309,
 	},
-	obj: Char{
+	obj: coretypes.Char{
 		Ch: 46,
 	},
 }
@@ -199978,7 +199978,7 @@ var literalExpr_POS_joker_DOT_core__3313_44__3313_45_NUM_1 LiteralExpr = Literal
 		StartColumn: 44,
 		StartLine:   3313,
 	},
-	obj: Char{
+	obj: coretypes.Char{
 		Ch: 46,
 	},
 }
@@ -200195,14 +200195,14 @@ var arrayMap_NUM_846 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3302,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -200228,7 +200228,7 @@ var arrayMap_NUM_846 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -200738,7 +200738,7 @@ var literalExpr_POS_joker_DOT_core__3320_39__3320_40_NUM_1 LiteralExpr = Literal
 		StartColumn: 39,
 		StartLine:   3320,
 	},
-	obj: Char{
+	obj: coretypes.Char{
 		Ch: 44,
 	},
 }
@@ -201773,14 +201773,14 @@ var arrayMap_NUM_847 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1092,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -202364,14 +202364,14 @@ var arrayMap_NUM_851 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3295,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -202397,7 +202397,7 @@ var arrayMap_NUM_851 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -203263,14 +203263,14 @@ var arrayMap_NUM_852 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2251,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -203954,14 +203954,14 @@ var arrayMap_NUM_855 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2279,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -204995,14 +204995,14 @@ var arrayMap_NUM_857 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2821,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -205663,14 +205663,14 @@ var arrayMap_NUM_859 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2346,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -206162,14 +206162,14 @@ var arrayMap_NUM_862 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2304,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -206553,14 +206553,14 @@ var arrayMap_NUM_865 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2300,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -206586,7 +206586,7 @@ var arrayMap_NUM_865 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -206986,14 +206986,14 @@ var arrayMap_NUM_866 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2286,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -208513,14 +208513,14 @@ var arrayMap_NUM_868 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2315,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -210279,14 +210279,14 @@ var arrayMap_NUM_871 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3362,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -210312,7 +210312,7 @@ var arrayMap_NUM_871 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -210460,7 +210460,7 @@ var literalExpr_POS_joker_DOT_core__3367_40__3367_43_NUM_1 LiteralExpr = Literal
 		StartColumn: 40,
 		StartLine:   3367,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -210800,7 +210800,7 @@ var literalExpr_POS_joker_DOT_core__3375_35__3375_36_NUM_1 LiteralExpr = Literal
 		StartColumn: 35,
 		StartLine:   3375,
 	},
-	obj: Char{
+	obj: coretypes.Char{
 		Ch: 44,
 	},
 }
@@ -211217,14 +211217,14 @@ var arrayMap_NUM_872 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3236,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -211250,7 +211250,7 @@ var arrayMap_NUM_872 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -212316,14 +212316,14 @@ var arrayMap_NUM_873 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2210,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -212563,14 +212563,14 @@ var arrayMap_NUM_875 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3487,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -212687,14 +212687,14 @@ var bitmapIndexedNode_NUM_127 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2684,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -212936,7 +212936,7 @@ var bitmapIndexedNode_NUM_126 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -212945,7 +212945,7 @@ var bitmapIndexedNode_NUM_126 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2961805446,
 			name: &s_special_DASH_form,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -213837,14 +213837,14 @@ var arrayMap_NUM_877 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2422,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -214290,7 +214290,7 @@ var literalExpr_POS_joker_DOT_core__2696_26__2696_26_NUM_1 LiteralExpr = Literal
 		StartColumn: 26,
 		StartLine:   2696,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -214321,7 +214321,7 @@ var literalExpr_POS_joker_DOT_core__2696_34__2696_34_NUM_1 LiteralExpr = Literal
 		StartColumn: 34,
 		StartLine:   2696,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -214390,7 +214390,7 @@ var literalExpr_POS_joker_DOT_core__2697_26__2697_26_NUM_1 LiteralExpr = Literal
 		StartColumn: 26,
 		StartLine:   2697,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -214665,7 +214665,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_14 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_25 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -214696,7 +214696,7 @@ var bindingExpr_POS_0_0__0_0_NUM_126 BindingExpr = BindingExpr{
 	binding: &binding_NUM_1340,
 }
 var literalExpr_POS_0_0__0_0_NUM_22 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -214729,7 +214729,7 @@ var bindingExpr_POS_0_0__0_0_NUM_127 BindingExpr = BindingExpr{
 	binding: &binding_NUM_1340,
 }
 var literalExpr_POS_0_0__0_0_NUM_23 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -214986,7 +214986,7 @@ var literalExpr_POS_joker_DOT_core__2703_77__2703_80_NUM_1 LiteralExpr = Literal
 		StartColumn: 77,
 		StartLine:   2703,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -215253,7 +215253,7 @@ var literalExpr_POS_joker_DOT_core__2705_33__2705_36_NUM_1 LiteralExpr = Literal
 		StartColumn: 33,
 		StartLine:   2705,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -215904,14 +215904,14 @@ var arrayMap_NUM_881 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2199,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -216047,14 +216047,14 @@ var arrayMap_NUM_882 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2193,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -216570,14 +216570,14 @@ var arrayMap_NUM_883 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4021,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -217111,7 +217111,7 @@ var literalExpr_POS_joker_DOT_core__4032_11__4032_11_NUM_1 LiteralExpr = Literal
 		StartColumn: 11,
 		StartLine:   4032,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var binding_NUM_1358 Binding = Binding{
 	index:  1,
@@ -217698,14 +217698,14 @@ var arrayMap_NUM_887 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3908,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -218850,14 +218850,14 @@ var arrayMap_NUM_896 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 834,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -219508,14 +219508,14 @@ var arrayMap_NUM_905 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3023,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -220177,14 +220177,14 @@ var arrayMap_NUM_909 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3672,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -220706,14 +220706,14 @@ var arrayMap_NUM_912 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1437,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -221268,14 +221268,14 @@ var arrayMap_NUM_915 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1781,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -221775,14 +221775,14 @@ var arrayMap_NUM_917 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1790,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -222784,14 +222784,14 @@ var arrayMap_NUM_920 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4443,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -223420,14 +223420,14 @@ var arrayMap_NUM_922 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 842,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -224078,14 +224078,14 @@ var arrayMap_NUM_931 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3031,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -224782,14 +224782,14 @@ var arrayMap_NUM_935 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2023,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -225006,14 +225006,14 @@ var arrayMap_NUM_939 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 878,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -225674,14 +225674,14 @@ var arrayMap_NUM_943 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4334,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -225707,7 +225707,7 @@ var arrayMap_NUM_943 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -226272,14 +226272,14 @@ var arrayMap_NUM_944 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2807,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -227006,14 +227006,14 @@ var bitmapIndexedNode_NUM_129 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 994,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -227361,14 +227361,14 @@ var arrayMap_NUM_947 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 867,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -227674,14 +227674,14 @@ var bitmapIndexedNode_NUM_131 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 987,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -228042,14 +228042,14 @@ var bitmapIndexedNode_NUM_133 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 87,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -228379,14 +228379,14 @@ var bitmapIndexedNode_NUM_135 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1608,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -228740,14 +228740,14 @@ var arrayMap_NUM_952 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3095,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -228944,14 +228944,14 @@ var bitmapIndexedNode_NUM_137 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1591,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -229198,14 +229198,14 @@ var bitmapIndexedNode_NUM_139 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3127,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -229317,7 +229317,7 @@ var bitmapIndexedNode_NUM_138 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -232645,14 +232645,14 @@ var arrayMap_NUM_955 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2408,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -232842,14 +232842,14 @@ var bitmapIndexedNode_NUM_141 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4553,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -232956,7 +232956,7 @@ var bitmapIndexedNode_NUM_142 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -233236,14 +233236,14 @@ var arrayMap_NUM_959 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2388,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -233967,14 +233967,14 @@ var arrayMap_NUM_962 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2447,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -234483,14 +234483,14 @@ var arrayMap_NUM_968 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3245,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -234615,7 +234615,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_15 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_28 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -234646,7 +234646,7 @@ var bindingExpr_POS_0_0__0_0_NUM_136 BindingExpr = BindingExpr{
 	binding: &binding_NUM_1489,
 }
 var literalExpr_POS_0_0__0_0_NUM_30 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -235368,7 +235368,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_16 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_30 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -235399,7 +235399,7 @@ var bindingExpr_POS_0_0__0_0_NUM_142 BindingExpr = BindingExpr{
 	binding: &binding_NUM_1498,
 }
 var literalExpr_POS_0_0__0_0_NUM_31 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -235887,14 +235887,14 @@ var arrayMap_NUM_971 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2415,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -236228,14 +236228,14 @@ var arrayMap_NUM_974 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2293,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -236592,14 +236592,14 @@ var arrayMap_NUM_977 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1890,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -237148,14 +237148,14 @@ var arrayMap_NUM_981 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1996,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -237410,14 +237410,14 @@ var arrayMap_NUM_984 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2017,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -237685,14 +237685,14 @@ var arrayMap_NUM_986 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2037,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -237947,14 +237947,14 @@ var arrayMap_NUM_989 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 968,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -238127,14 +238127,14 @@ var bitmapIndexedNode_NUM_144 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 617,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -238356,7 +238356,7 @@ var bitmapIndexedNode_NUM_143 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -239072,14 +239072,14 @@ var arrayMap_NUM_991 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4584,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -239208,7 +239208,7 @@ var arrayMap_NUM_994 ArrayMap = ArrayMap{
 		String{
 			S: "true",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -239261,7 +239261,7 @@ var literalExpr_POS_joker_DOT_core__4590_14__4590_17_NUM_1 LiteralExpr = Literal
 		StartColumn: 14,
 		StartLine:   4590,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -239282,7 +239282,7 @@ var arrayMap_NUM_995 ArrayMap = ArrayMap{
 		String{
 			S: "false",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -239327,7 +239327,7 @@ var literalExpr_POS_joker_DOT_core__4591_15__4591_19_NUM_1 LiteralExpr = Literal
 		StartColumn: 15,
 		StartLine:   4591,
 	},
-	obj: Boolean{},
+	obj: coretypes.Boolean{},
 }
 var objectInfo_POS_joker_DOT_core__4592_7__4592_9 coretypes.ObjectInfo = coretypes.ObjectInfo{
 	Position: coretypes.Position{
@@ -239685,14 +239685,14 @@ var arrayMap_NUM_996 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4595,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -239724,7 +239724,7 @@ var arrayMap_NUM_996 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Parses string with floating point components and return a Double value, or nil if parse fails.",
+			S: "Parses string with floating point components and return a coretypes.Double value, or nil if parse fails.",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -239970,14 +239970,14 @@ var arrayMap_NUM_999 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4601,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -240009,7 +240009,7 @@ var arrayMap_NUM_999 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Parses string of decimal digits with optional leading -/+ and return an Int value, or nil if parse fails.",
+			S: "Parses string of decimal digits with optional leading -/+ and return an coretypes.Int value, or nil if parse fails.",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -240689,14 +240689,14 @@ var arrayMap_NUM_1002 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1556,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -241645,14 +241645,14 @@ var arrayMap_NUM_1013 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3971,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -242075,14 +242075,14 @@ var arrayMap_NUM_1017 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1682,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -243304,14 +243304,14 @@ var arrayMap_NUM_1021 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4607,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -244849,14 +244849,14 @@ var arrayMap_NUM_1022 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4630,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -245493,14 +245493,14 @@ var bitmapIndexedNode_NUM_146 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 980,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -245935,14 +245935,14 @@ var arrayMap_NUM_1024 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2089,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -246203,14 +246203,14 @@ var arrayMap_NUM_1026 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2835,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -246526,14 +246526,14 @@ var arrayMap_NUM_1028 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4436,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -246798,14 +246798,14 @@ var arrayMap_NUM_1029 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4463,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -247077,14 +247077,14 @@ var arrayMap_NUM_1031 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2849,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -247411,14 +247411,14 @@ var arrayMap_NUM_1033 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2828,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -247760,14 +247760,14 @@ var arrayMap_NUM_1035 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2842,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -248094,14 +248094,14 @@ var arrayMap_NUM_1037 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2814,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -248431,14 +248431,14 @@ var arrayMap_NUM_1039 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1161,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -248604,7 +248604,7 @@ var literalExpr_POS_joker_DOT_core__1164_46__1164_49_NUM_1 LiteralExpr = Literal
 		StartColumn: 46,
 		StartLine:   1164,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -248843,14 +248843,14 @@ var arrayMap_NUM_1041 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1181,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -249016,7 +249016,7 @@ var literalExpr_POS_joker_DOT_core__1184_48__1184_51_NUM_1 LiteralExpr = Literal
 		StartColumn: 48,
 		StartLine:   1184,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -249255,14 +249255,14 @@ var arrayMap_NUM_1043 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1171,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -249428,7 +249428,7 @@ var literalExpr_POS_joker_DOT_core__1174_47__1174_50_NUM_1 LiteralExpr = Literal
 		StartColumn: 47,
 		StartLine:   1174,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -249726,14 +249726,14 @@ var arrayMap_NUM_1045 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 872,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -250073,14 +250073,14 @@ var arrayMap_NUM_1049 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2952,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -250416,14 +250416,14 @@ var arrayMap_NUM_1053 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2959,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -250663,14 +250663,14 @@ var arrayMap_NUM_1056 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4007,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -251017,14 +251017,14 @@ var arrayMap_NUM_1057 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4273,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -251679,14 +251679,14 @@ var arrayMap_NUM_1061 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1762,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -251766,7 +251766,7 @@ var literalExpr_POS_joker_DOT_core__1768_25__1768_25_NUM_1 LiteralExpr = Literal
 		StartColumn: 25,
 		StartLine:   1768,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__1768_12__1768_26_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -251809,7 +251809,7 @@ var literalExpr_POS_joker_DOT_core__1769_30__1769_30_NUM_1 LiteralExpr = Literal
 		StartColumn: 30,
 		StartLine:   1769,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var binding_NUM_1601 Binding = Binding{
 	isUsed: true,
@@ -251847,7 +251847,7 @@ var literalExpr_POS_joker_DOT_core__1769_36__1769_36_NUM_1 LiteralExpr = Literal
 		StartColumn: 36,
 		StartLine:   1769,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -251932,7 +251932,7 @@ var literalExpr_POS_joker_DOT_core__1770_54__1770_54_NUM_1 LiteralExpr = Literal
 		StartColumn: 54,
 		StartLine:   1770,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -252742,14 +252742,14 @@ var arrayMap_NUM_1072 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2032,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -252994,14 +252994,14 @@ var arrayMap_NUM_1074 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2060,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -253361,14 +253361,14 @@ var arrayMap_NUM_1076 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2935,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -253685,14 +253685,14 @@ var arrayMap_NUM_1079 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2941,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -254259,14 +254259,14 @@ var arrayMap_NUM_1082 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2920,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -254298,7 +254298,7 @@ var arrayMap_NUM_1082 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Returns an instance of Regex",
+			S: "Returns an instance of coretypes.Regex",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -254639,14 +254639,14 @@ var arrayMap_NUM_1084 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2929,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -254917,14 +254917,14 @@ var arrayMap_NUM_1088 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2140,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -255145,14 +255145,14 @@ var bitmapIndexedNode_NUM_148 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2146,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -255431,14 +255431,14 @@ var arrayMap_NUM_1089 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2152,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -255652,14 +255652,14 @@ var arrayMap_NUM_1090 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4169,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -256091,14 +256091,14 @@ var arrayMap_NUM_1093 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3992,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -256970,14 +256970,14 @@ var bitmapIndexedNode_NUM_150 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3170,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -257095,7 +257095,7 @@ var bitmapIndexedNode_NUM_149 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -257445,14 +257445,14 @@ var arrayMap_NUM_1100 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4421,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -257723,14 +257723,14 @@ var arrayMap_NUM_1101 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1454,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -258126,14 +258126,14 @@ var arrayMap_NUM_1103 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4430,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -258525,14 +258525,14 @@ var arrayMap_NUM_1104 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3067,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -259002,14 +259002,14 @@ var arrayMap_NUM_1110 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3053,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -259998,14 +259998,14 @@ var arrayMap_NUM_1113 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3398,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -260272,14 +260272,14 @@ var arrayMap_NUM_1115 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3465,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -260598,14 +260598,14 @@ var arrayMap_NUM_1117 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2460,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -261366,14 +261366,14 @@ var arrayMap_NUM_1123 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1478,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -261690,14 +261690,14 @@ var arrayMap_NUM_1126 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1461,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -261973,14 +261973,14 @@ var arrayMap_NUM_1129 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3619,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -262247,14 +262247,14 @@ var arrayMap_NUM_1131 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1128,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -262544,14 +262544,14 @@ var arrayMap_NUM_1134 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4280,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -262913,14 +262913,14 @@ var arrayMap_NUM_1137 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3586,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -263256,14 +263256,14 @@ var arrayMap_NUM_1139 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1571,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -263620,14 +263620,14 @@ var arrayMap_NUM_1141 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4015,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -263876,14 +263876,14 @@ var arrayMap_NUM_1143 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1156,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -264231,14 +264231,14 @@ var arrayMap_NUM_1145 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1176,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -264586,14 +264586,14 @@ var arrayMap_NUM_1147 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1166,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -264941,14 +264941,14 @@ var arrayMap_NUM_1149 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3933,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -265114,14 +265114,14 @@ var bitmapIndexedNode_NUM_152 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4232,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -265251,7 +265251,7 @@ var bitmapIndexedNode_NUM_151 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -266716,14 +266716,14 @@ var bitmapIndexedNode_NUM_154 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4248,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -266853,7 +266853,7 @@ var bitmapIndexedNode_NUM_153 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -268839,14 +268839,14 @@ var arrayMap_NUM_1151 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4110,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -274968,14 +274968,14 @@ var bitmapIndexedNode_NUM_156 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 393,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -275448,14 +275448,14 @@ var arrayMap_NUM_1165 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1842,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -276012,14 +276012,14 @@ var arrayMap_NUM_1171 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1851,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -276540,14 +276540,14 @@ var arrayMap_NUM_1179 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3005,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -276832,14 +276832,14 @@ var arrayMap_NUM_1181 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3941,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -277221,14 +277221,14 @@ var arrayMap_NUM_1183 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1745,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -277540,14 +277540,14 @@ var arrayMap_NUM_1187 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4642,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -278091,14 +278091,14 @@ var arrayMap_NUM_1188 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3016,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -278697,14 +278697,14 @@ var arrayMap_NUM_1196 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2157,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -279204,14 +279204,14 @@ var arrayMap_NUM_1204 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1445,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -279583,14 +279583,14 @@ var arrayMap_NUM_1208 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1709,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -280080,14 +280080,14 @@ var arrayMap_NUM_1212 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2910,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -280409,14 +280409,14 @@ var bitmapIndexedNode_NUM_158 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2184,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -280522,7 +280522,7 @@ var bitmapIndexedNode_NUM_157 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -281243,7 +281243,7 @@ var literalExpr_POS_joker_DOT_core__2190_70__2190_78_NUM_1 LiteralExpr = Literal
 		StartColumn: 70,
 		StartLine:   2190,
 	},
-	obj: Double{
+	obj: coretypes.Double{
 		D: 0x1.e848p+19,
 	},
 }
@@ -281712,14 +281712,14 @@ var arrayMap_NUM_1214 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3645,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -282107,14 +282107,14 @@ var bitmapIndexedNode_NUM_160 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 369,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -282286,7 +282286,7 @@ var literalExpr_POS_joker_DOT_core__373_14__373_17_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 14,
 		StartLine:   373,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -282382,14 +282382,14 @@ var bitmapIndexedNode_NUM_162 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4469,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -282426,7 +282426,7 @@ var bitmapIndexedNode_NUM_163 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -282696,14 +282696,14 @@ var arrayMap_NUM_1217 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 947,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -283663,14 +283663,14 @@ var arrayMap_NUM_1221 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3559,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -285025,14 +285025,14 @@ var arrayMap_NUM_1237 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3546,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -285796,14 +285796,14 @@ var arrayMap_NUM_1242 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4293,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -286319,14 +286319,14 @@ var arrayMap_NUM_1245 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4305,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -286819,14 +286819,14 @@ var arrayMap_NUM_1248 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3476,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -287138,14 +287138,14 @@ var arrayMap_NUM_1250 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1111,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -287401,14 +287401,14 @@ var arrayMap_NUM_1253 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3011,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -287569,14 +287569,14 @@ var bitmapIndexedNode_NUM_165 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 4547,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -287622,7 +287622,7 @@ var bitmapIndexedNode_NUM_166 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -287790,14 +287790,14 @@ var bitmapIndexedNode_NUM_168 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 345,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -287927,7 +287927,7 @@ var bitmapIndexedNode_NUM_167 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -288046,7 +288046,7 @@ var literalExpr_POS_joker_DOT_core__349_35__349_35_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 35,
 		StartLine:   349,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -288353,14 +288353,14 @@ var bitmapIndexedNode_NUM_170 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2711,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -288490,7 +288490,7 @@ var bitmapIndexedNode_NUM_169 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -288761,7 +288761,7 @@ var literalExpr_POS_joker_DOT_core__2719_7__2719_7_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 7,
 		StartLine:   2719,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -289051,7 +289051,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_17 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_32 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -289082,7 +289082,7 @@ var bindingExpr_POS_0_0__0_0_NUM_153 BindingExpr = BindingExpr{
 	binding: &binding_NUM_1893,
 }
 var literalExpr_POS_0_0__0_0_NUM_35 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -289753,14 +289753,14 @@ var bitmapIndexedNode_NUM_172 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1261,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -289890,7 +289890,7 @@ var bitmapIndexedNode_NUM_171 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -290161,7 +290161,7 @@ var literalExpr_POS_joker_DOT_core__1269_7__1269_7_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 7,
 		StartLine:   1269,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -290450,7 +290450,7 @@ var literalExpr_POS_joker_DOT_core__1270_24__1270_24_NUM_1 LiteralExpr = Literal
 		StartColumn: 24,
 		StartLine:   1270,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__1270_14__1270_25_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -290492,7 +290492,7 @@ var literalExpr_POS_joker_DOT_core__1270_41__1270_41_NUM_1 LiteralExpr = Literal
 		StartColumn: 41,
 		StartLine:   1270,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -291106,14 +291106,14 @@ var bitmapIndexedNode_NUM_174 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 354,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -291243,7 +291243,7 @@ var bitmapIndexedNode_NUM_173 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -291362,7 +291362,7 @@ var literalExpr_POS_joker_DOT_core__358_35__358_35_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 35,
 		StartLine:   358,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -291669,14 +291669,14 @@ var bitmapIndexedNode_NUM_176 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1297,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -291806,7 +291806,7 @@ var bitmapIndexedNode_NUM_175 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -292077,7 +292077,7 @@ var literalExpr_POS_joker_DOT_core__1306_7__1306_7_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 7,
 		StartLine:   1306,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -292366,7 +292366,7 @@ var literalExpr_POS_joker_DOT_core__1307_24__1307_24_NUM_1 LiteralExpr = Literal
 		StartColumn: 24,
 		StartLine:   1307,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_core__1307_14__1307_25_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -292408,7 +292408,7 @@ var literalExpr_POS_joker_DOT_core__1307_41__1307_41_NUM_1 LiteralExpr = Literal
 		StartColumn: 41,
 		StartLine:   1307,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -293143,14 +293143,14 @@ var bitmapIndexedNode_NUM_178 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 3662,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -293280,7 +293280,7 @@ var bitmapIndexedNode_NUM_177 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -293712,14 +293712,14 @@ var bitmapIndexedNode_NUM_180 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1382,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -293849,7 +293849,7 @@ var bitmapIndexedNode_NUM_179 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -294207,14 +294207,14 @@ var bitmapIndexedNode_NUM_182 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2799,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -294344,7 +294344,7 @@ var bitmapIndexedNode_NUM_181 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -294739,14 +294739,14 @@ var bitmapIndexedNode_NUM_184 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2789,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -294864,7 +294864,7 @@ var bitmapIndexedNode_NUM_183 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -295336,14 +295336,14 @@ var bitmapIndexedNode_NUM_186 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1411,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -295473,7 +295473,7 @@ var bitmapIndexedNode_NUM_185 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -295824,14 +295824,14 @@ var arrayMap_NUM_1255 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1377,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -296003,14 +296003,14 @@ var arrayMap_NUM_1256 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 2996,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -296392,14 +296392,14 @@ var arrayMap_NUM_1258 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 1807,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -297976,14 +297976,14 @@ var arrayMap_NUM_102 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 743,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -298043,7 +298043,7 @@ var literalExpr_POS_joker_DOT_core__747_15__747_15_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 15,
 		StartLine:   747,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -298916,14 +298916,14 @@ var arrayMap_NUM_1272 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 94,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -299755,14 +299755,14 @@ var bitmapIndexedNode_NUM_188 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 116,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -299868,7 +299868,7 @@ var bitmapIndexedNode_NUM_187 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -300470,14 +300470,14 @@ var arrayMap_NUM_1273 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 109,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -300775,14 +300775,14 @@ var bitmapIndexedNode_NUM_190 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 74,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -300888,7 +300888,7 @@ var bitmapIndexedNode_NUM_189 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -301522,14 +301522,14 @@ var arrayMap_NUM_1274 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 6,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -301555,7 +301555,7 @@ var arrayMap_NUM_1274 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -304292,14 +304292,14 @@ var arrayMap_NUM_1275 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 44,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -304325,7 +304325,7 @@ var arrayMap_NUM_1275 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -304744,14 +304744,14 @@ var arrayMap_NUM_1276 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 47,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -304777,7 +304777,7 @@ var arrayMap_NUM_1276 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -306591,14 +306591,14 @@ var arrayMap_NUM_1277 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 39,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -306624,7 +306624,7 @@ var arrayMap_NUM_1277 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -306869,7 +306869,7 @@ var literalExpr_POS_joker_DOT_repl__42_24__42_27_NUM_1 LiteralExpr = LiteralExpr
 		StartColumn: 24,
 		StartLine:   42,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -307475,14 +307475,14 @@ var arrayMap_NUM_1279 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 97,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -307580,7 +307580,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_18 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_34 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -307611,7 +307611,7 @@ var bindingExpr_POS_0_0__0_0_NUM_173 BindingExpr = BindingExpr{
 	binding: &binding_NUM_1967,
 }
 var literalExpr_POS_0_0__0_0_NUM_47 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -307942,14 +307942,14 @@ var arrayMap_NUM_1280 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 56,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -308100,14 +308100,14 @@ var arrayMap_NUM_1281 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 36,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -309268,14 +309268,14 @@ var arrayMap_NUM_1282 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 129,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -309414,14 +309414,14 @@ var arrayMap_NUM_1283 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 64,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -309935,14 +309935,14 @@ var arrayMap_NUM_1284 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 83,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -310297,14 +310297,14 @@ var arrayMap_NUM_1285 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 121,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -310668,14 +310668,14 @@ var arrayMap_NUM_1286 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 90,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -311030,14 +311030,14 @@ var arrayMap_NUM_1287 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 113,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -311400,14 +311400,14 @@ var arrayMap_NUM_1288 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 105,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -311505,7 +311505,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_19 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_36 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -311536,7 +311536,7 @@ var bindingExpr_POS_0_0__0_0_NUM_176 BindingExpr = BindingExpr{
 	binding: &binding_NUM_1993,
 }
 var literalExpr_POS_0_0__0_0_NUM_48 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -312625,14 +312625,14 @@ var arrayMap_NUM_1290 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 31,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -313291,14 +313291,14 @@ var bitmapIndexedNode_NUM_193 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 47,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -313440,7 +313440,7 @@ var bitmapIndexedNode_NUM_192 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -314388,14 +314388,14 @@ var arrayMap_NUM_1292 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 262,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -314428,7 +314428,7 @@ var arrayMap_NUM_1292 ArrayMap = ArrayMap{
 			hash: 4201447173,
 			name: &s_const,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -314518,22 +314518,22 @@ var arrayMap_NUM_1293 ArrayMap = ArrayMap{
 			hash: 415146070,
 			name: &s_test,
 		},
-		Int{},
+		coretypes.Int{},
 		Keyword{
 			hash: 802606911,
 			name: &s_pass,
 		},
-		Int{},
+		coretypes.Int{},
 		Keyword{
 			hash: 2035365230,
 			name: &s_fail,
 		},
-		Int{},
+		coretypes.Int{},
 		Keyword{
 			hash: 1736104344,
 			name: &s_error,
 		},
-		Int{},
+		coretypes.Int{},
 	},
 }
 var literalExpr_POS_joker_DOT_test__266_30__266_34_NUM_1 LiteralExpr = LiteralExpr{
@@ -314596,7 +314596,7 @@ var literalExpr_POS_joker_DOT_test__266_36__266_36_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 36,
 		StartLine:   266,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_test__266_45__266_45_NUM_1 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -314606,7 +314606,7 @@ var literalExpr_POS_joker_DOT_test__266_45__266_45_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 45,
 		StartLine:   266,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_test__266_54__266_54_NUM_1 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -314616,7 +314616,7 @@ var literalExpr_POS_joker_DOT_test__266_54__266_54_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 54,
 		StartLine:   266,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_test__266_64__266_64_NUM_1 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -314626,7 +314626,7 @@ var literalExpr_POS_joker_DOT_test__266_64__266_64_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 64,
 		StartLine:   266,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var mapExpr_POS_joker_DOT_test__266_29__266_65_NUM_1 MapExpr = MapExpr{
 	Position: coretypes.Position{
@@ -314731,14 +314731,14 @@ var arrayMap_NUM_1294 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 238,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -314778,7 +314778,7 @@ var arrayMap_NUM_1294 ArrayMap = ArrayMap{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -314800,7 +314800,7 @@ var literalExpr_POS_joker_DOT_test__243_16__243_19_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 16,
 		StartLine:   243,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -314808,7 +314808,7 @@ var var_NAME__STAR_load_DASH_tests_STAR__POS_joker_DOT_test_238_1__243_20 Var = 
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1294,
 	},
-	Value: Boolean{
+	Value: coretypes.Boolean{
 		B: true,
 	},
 	expr:           &literalExpr_POS_joker_DOT_test__243_16__243_19_NUM_1,
@@ -314853,14 +314853,14 @@ var bitmapIndexedNode_NUM_195 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 256,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -314938,7 +314938,7 @@ var bitmapIndexedNode_NUM_194 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -315034,14 +315034,14 @@ var bitmapIndexedNode_NUM_197 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 245,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -315119,7 +315119,7 @@ var bitmapIndexedNode_NUM_196 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -315250,14 +315250,14 @@ var arrayMap_NUM_1295 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 278,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -315297,7 +315297,7 @@ var arrayMap_NUM_1295 ArrayMap = ArrayMap{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -315395,14 +315395,14 @@ var arrayMap_NUM_1296 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 273,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -315442,7 +315442,7 @@ var arrayMap_NUM_1296 ArrayMap = ArrayMap{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -315551,14 +315551,14 @@ var arrayMap_NUM_1297 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 268,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -315598,7 +315598,7 @@ var arrayMap_NUM_1297 ArrayMap = ArrayMap{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -315662,14 +315662,14 @@ var bitmapIndexedNode_NUM_199 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 655,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -315742,7 +315742,7 @@ var bitmapIndexedNode_NUM_200 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -315961,14 +315961,14 @@ var bitmapIndexedNode_NUM_202 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 564,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -316110,7 +316110,7 @@ var bitmapIndexedNode_NUM_201 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -317172,14 +317172,14 @@ var arrayMap_NUM_1298 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 445,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -318548,14 +318548,14 @@ var arrayMap_NUM_1299 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 466,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -319358,14 +319358,14 @@ var arrayMap_NUM_1302 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 414,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -319600,14 +319600,14 @@ var arrayMap_NUM_1303 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 406,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -320465,14 +320465,14 @@ var arrayMap_NUM_1304 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 426,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -322848,7 +322848,7 @@ var literalExpr_POS_joker_DOT_test__486_28__486_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 28,
 		StartLine:   486,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -322950,7 +322950,7 @@ var literalExpr_POS_joker_DOT_test__487_29__487_29_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 29,
 		StartLine:   487,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -324726,7 +324726,7 @@ var literalExpr_POS_joker_DOT_test__501_28__501_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 28,
 		StartLine:   501,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -326061,7 +326061,7 @@ var literalExpr_POS_joker_DOT_test__515_25__515_25_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 25,
 		StartLine:   515,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -326116,7 +326116,7 @@ var literalExpr_POS_joker_DOT_test__516_22__516_22_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 22,
 		StartLine:   516,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -326171,7 +326171,7 @@ var literalExpr_POS_joker_DOT_test__517_28__517_28_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 28,
 		StartLine:   517,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 3,
 	},
 }
@@ -328554,14 +328554,14 @@ var arrayMap_NUM_1305 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 681,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -328812,14 +328812,14 @@ var bitmapIndexedNode_NUM_204 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 675,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -328880,7 +328880,7 @@ var bitmapIndexedNode_NUM_205 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -329044,14 +329044,14 @@ var bitmapIndexedNode_NUM_207 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 614,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -329181,7 +329181,7 @@ var bitmapIndexedNode_NUM_206 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -329914,14 +329914,14 @@ var bitmapIndexedNode_NUM_209 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 631,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -330051,7 +330051,7 @@ var bitmapIndexedNode_NUM_208 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -330367,7 +330367,7 @@ var literalExpr_POS_joker_DOT_test__636_65__636_68_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 65,
 		StartLine:   636,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -330889,14 +330889,14 @@ var arrayMap_NUM_1306 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 341,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -331017,14 +331017,14 @@ var arrayMap_NUM_1307 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 322,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -331057,7 +331057,7 @@ var arrayMap_NUM_1307 ArrayMap = ArrayMap{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -331785,14 +331785,14 @@ var arrayMap_NUM_1309 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 312,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -331950,7 +331950,7 @@ var literalExpr_POS_joker_DOT_test__318_67__318_67_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 67,
 		StartLine:   318,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_test__318_57__318_68_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -331999,7 +331999,7 @@ var literalExpr_POS_joker_DOT_test__318_71__318_71_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 71,
 		StartLine:   318,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -332243,14 +332243,14 @@ var arrayMap_NUM_1310 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 292,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -332977,14 +332977,14 @@ var arrayMap_NUM_1311 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 305,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -335458,14 +335458,14 @@ var bitmapIndexedNode_NUM_214 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 546,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -335636,7 +335636,7 @@ var bitmapIndexedNode_NUM_213 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -336094,14 +336094,14 @@ var arrayMap_NUM_1312 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 688,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -336344,14 +336344,14 @@ var arrayMap_NUM_1313 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 772,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -336511,14 +336511,14 @@ var arrayMap_NUM_1314 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 760,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -336737,14 +336737,14 @@ var arrayMap_NUM_1315 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 735,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -337352,14 +337352,14 @@ var arrayMap_NUM_1316 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 729,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -337486,14 +337486,14 @@ var arrayMap_NUM_1317 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 715,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -337707,7 +337707,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_20 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_38 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -337738,7 +337738,7 @@ var bindingExpr_POS_0_0__0_0_NUM_185 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2084,
 }
 var literalExpr_POS_0_0__0_0_NUM_64 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -338177,14 +338177,14 @@ var bitmapIndexedNode_NUM_216 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 700,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -338247,7 +338247,7 @@ var bitmapIndexedNode_NUM_217 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 2683020395,
 			name: &s_dynamic,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -340626,14 +340626,14 @@ var bitmapIndexedNode_NUM_219 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 640,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -340763,7 +340763,7 @@ var bitmapIndexedNode_NUM_218 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -341332,14 +341332,14 @@ var arrayMap_NUM_1318 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 334,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -341365,7 +341365,7 @@ var arrayMap_NUM_1318 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -341602,14 +341602,14 @@ var arrayMap_NUM_1319 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 781,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -341717,7 +341717,7 @@ var literalExpr_POS_joker_DOT_test__786_30__786_30_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 30,
 		StartLine:   786,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_test__786_15__786_31_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -341822,7 +341822,7 @@ var literalExpr_POS_joker_DOT_test__787_31__787_31_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 31,
 		StartLine:   787,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_test__787_15__787_32_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -341960,14 +341960,14 @@ var bitmapIndexedNode_NUM_221 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 589,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -342097,7 +342097,7 @@ var bitmapIndexedNode_NUM_220 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -342528,14 +342528,14 @@ var bitmapIndexedNode_NUM_223 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 530,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -342653,7 +342653,7 @@ var bitmapIndexedNode_NUM_222 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -343516,14 +343516,14 @@ var arrayMap_NUM_1320 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 662,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -344010,14 +344010,14 @@ var bitmapIndexedNode_NUM_225 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 601,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -344147,7 +344147,7 @@ var bitmapIndexedNode_NUM_224 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -344684,14 +344684,14 @@ var bitmapIndexedNode_NUM_227 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 283,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -344809,7 +344809,7 @@ var bitmapIndexedNode_NUM_226 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -345675,14 +345675,14 @@ var arrayMap_NUM_1324 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 14,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -345708,7 +345708,7 @@ var arrayMap_NUM_1324 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -346208,14 +346208,14 @@ var arrayMap_NUM_1325 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 50,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -346956,14 +346956,14 @@ var arrayMap_NUM_1326 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 96,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -347574,14 +347574,14 @@ var arrayMap_NUM_1327 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 34,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -348568,14 +348568,14 @@ var arrayMap_NUM_1328 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 112,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -349161,7 +349161,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_21 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_40 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -349192,7 +349192,7 @@ var bindingExpr_POS_0_0__0_0_NUM_191 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2145,
 }
 var literalExpr_POS_0_0__0_0_NUM_66 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -350010,14 +350010,14 @@ var arrayMap_NUM_1329 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 107,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -350126,7 +350126,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_22 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_42 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -350157,7 +350157,7 @@ var bindingExpr_POS_0_0__0_0_NUM_194 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2158,
 }
 var literalExpr_POS_0_0__0_0_NUM_67 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -350537,7 +350537,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_23 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_44 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -350568,7 +350568,7 @@ var bindingExpr_POS_0_0__0_0_NUM_196 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2164,
 }
 var literalExpr_POS_0_0__0_0_NUM_68 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -350601,7 +350601,7 @@ var bindingExpr_POS_0_0__0_0_NUM_197 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2164,
 }
 var literalExpr_POS_0_0__0_0_NUM_69 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -350864,14 +350864,14 @@ var arrayMap_NUM_1330 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 79,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -350980,7 +350980,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_24 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_47 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -351011,7 +351011,7 @@ var bindingExpr_POS_0_0__0_0_NUM_200 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2169,
 }
 var literalExpr_POS_0_0__0_0_NUM_70 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -352072,14 +352072,14 @@ var arrayMap_NUM_1331 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 73,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -352470,14 +352470,14 @@ var arrayMap_NUM_1332 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 90,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -352868,14 +352868,14 @@ var arrayMap_NUM_1333 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 66,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -353209,14 +353209,14 @@ var bitmapIndexedNode_NUM_229 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 143,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -353703,14 +353703,14 @@ var bitmapIndexedNode_NUM_231 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 151,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -354368,14 +354368,14 @@ var arrayMap_NUM_1334 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 21,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -356430,14 +356430,14 @@ var arrayMap_NUM_1336 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 117,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -356463,7 +356463,7 @@ var arrayMap_NUM_1336 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -356568,14 +356568,14 @@ var arrayMap_NUM_1337 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 110,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -356601,7 +356601,7 @@ var arrayMap_NUM_1337 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -357141,14 +357141,14 @@ var arrayMap_NUM_1338 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 70,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -357174,7 +357174,7 @@ var arrayMap_NUM_1338 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -357298,14 +357298,14 @@ var arrayMap_NUM_1339 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 66,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -357331,7 +357331,7 @@ var arrayMap_NUM_1339 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -358260,14 +358260,14 @@ var arrayMap_NUM_1340 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 83,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -358293,7 +358293,7 @@ var arrayMap_NUM_1340 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -358748,7 +358748,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_25 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_49 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -358779,7 +358779,7 @@ var bindingExpr_POS_0_0__0_0_NUM_202 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2216,
 }
 var literalExpr_POS_0_0__0_0_NUM_71 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -358812,7 +358812,7 @@ var bindingExpr_POS_0_0__0_0_NUM_203 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2216,
 }
 var literalExpr_POS_0_0__0_0_NUM_72 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -359018,7 +359018,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__89_41__89_67 coretypes.ObjectInfo = 
 		StartLine:   89,
 	},
 }
-var regex_POS_joker_DOT_tools_DOT_cli__89_41__89_67_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_tools_DOT_cli__89_41__89_67_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.tools.cli: &regexp.MustCompile("^(--[^ =]+)(?:[ =](.*))?") */
 }
 var literalExpr_POS_joker_DOT_tools_DOT_cli__89_41__89_67_NUM_1 LiteralExpr = LiteralExpr{
@@ -359109,7 +359109,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_26 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_52 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -359140,7 +359140,7 @@ var bindingExpr_POS_0_0__0_0_NUM_205 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2221,
 }
 var literalExpr_POS_0_0__0_0_NUM_73 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -359226,7 +359226,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__91_37__91_56 coretypes.ObjectInfo = 
 		StartLine:   91,
 	},
 }
-var regex_POS_joker_DOT_tools_DOT_cli__91_37__91_56_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_tools_DOT_cli__91_37__91_56_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.tools.cli: &regexp.MustCompile("^--(\\[no-\\])?(.*)") */
 }
 var literalExpr_POS_joker_DOT_tools_DOT_cli__91_37__91_56_NUM_1 LiteralExpr = LiteralExpr{
@@ -359280,7 +359280,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__91_68__91_68_NUM_1 LiteralExpr = Li
 		StartColumn: 68,
 		StartLine:   91,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -359476,7 +359476,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__94_54__94_54_NUM_1 LiteralExpr = Li
 		StartColumn: 54,
 		StartLine:   94,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -359497,7 +359497,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__94_56__94_56_NUM_1 LiteralExpr = Li
 		StartColumn: 56,
 		StartLine:   94,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -359625,7 +359625,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_27 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_54 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -359656,7 +359656,7 @@ var bindingExpr_POS_0_0__0_0_NUM_207 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2224,
 }
 var literalExpr_POS_0_0__0_0_NUM_74 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -360663,14 +360663,14 @@ var arrayMap_NUM_1341 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 105,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -360696,7 +360696,7 @@ var arrayMap_NUM_1341 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -360806,7 +360806,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__108_5__108_8_NUM_1 LiteralExpr = Li
 		StartColumn: 5,
 		StartLine:   108,
 	},
-	obj: Boolean{
+	obj: coretypes.Boolean{
 		B: true,
 	},
 }
@@ -362876,14 +362876,14 @@ var arrayMap_NUM_1342 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 174,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -362909,7 +362909,7 @@ var arrayMap_NUM_1342 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -363350,14 +363350,14 @@ var arrayMap_NUM_1343 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 190,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -363383,7 +363383,7 @@ var arrayMap_NUM_1343 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -363563,7 +363563,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__195_42__195_58 coretypes.ObjectInfo 
 		StartLine:   195,
 	},
 }
-var regex_POS_joker_DOT_tools_DOT_cli__195_42__195_58_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_tools_DOT_cli__195_42__195_58_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.tools.cli: &regexp.MustCompile("^--\\[no-\\](.*)") */
 }
 var literalExpr_POS_joker_DOT_tools_DOT_cli__195_42__195_58_NUM_1 LiteralExpr = LiteralExpr{
@@ -364157,14 +364157,14 @@ var arrayMap_NUM_1344 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 330,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -364282,14 +364282,14 @@ var arrayMap_NUM_1345 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 56,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -364315,7 +364315,7 @@ var arrayMap_NUM_1345 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -365009,14 +365009,14 @@ var arrayMap_NUM_1346 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 364,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -365245,7 +365245,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_28 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_56 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -365276,7 +365276,7 @@ var bindingExpr_POS_0_0__0_0_NUM_210 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2255,
 }
 var literalExpr_POS_0_0__0_0_NUM_76 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -365795,14 +365795,14 @@ var arrayMap_NUM_1347 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 306,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -366544,7 +366544,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__316_30__316_35_NUM_1 LiteralExpr = 
 		StartColumn: 30,
 		StartLine:   316,
 	},
-	obj: Char{
+	obj: coretypes.Char{
 		Ch: 32,
 	},
 }
@@ -367119,7 +367119,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_29 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_58 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -367150,7 +367150,7 @@ var bindingExpr_POS_0_0__0_0_NUM_222 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2274,
 }
 var literalExpr_POS_0_0__0_0_NUM_84 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -367645,14 +367645,14 @@ var arrayMap_NUM_1348 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 181,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -367678,7 +367678,7 @@ var arrayMap_NUM_1348 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -368117,14 +368117,14 @@ var arrayMap_NUM_1349 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 205,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -368150,7 +368150,7 @@ var arrayMap_NUM_1349 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -368260,14 +368260,14 @@ var arrayMap_NUM_1350 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 202,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -368293,7 +368293,7 @@ var arrayMap_NUM_1350 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -368340,7 +368340,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__203_19__203_24_NUM_1 LiteralExpr = 
 		StartColumn: 19,
 		StartLine:   203,
 	},
-	obj: Char{
+	obj: coretypes.Char{
 		Ch: 32,
 	},
 }
@@ -368619,14 +368619,14 @@ var arrayMap_NUM_1351 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 236,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -368652,7 +368652,7 @@ var arrayMap_NUM_1351 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -368749,7 +368749,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__238_17__238_29 coretypes.ObjectInfo 
 		StartLine:   238,
 	},
 }
-var regex_POS_joker_DOT_tools_DOT_cli__238_17__238_29_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_tools_DOT_cli__238_17__238_29_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.tools.cli: &regexp.MustCompile("^--\\[no-\\]") */
 }
 var literalExpr_POS_joker_DOT_tools_DOT_cli__238_17__238_29_NUM_1 LiteralExpr = LiteralExpr{
@@ -368857,7 +368857,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__239_17__239_25 coretypes.ObjectInfo 
 		StartLine:   239,
 	},
 }
-var regex_POS_joker_DOT_tools_DOT_cli__239_17__239_25_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_tools_DOT_cli__239_17__239_25_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.tools.cli: &regexp.MustCompile("^--no-") */
 }
 var literalExpr_POS_joker_DOT_tools_DOT_cli__239_17__239_25_NUM_1 LiteralExpr = LiteralExpr{
@@ -369114,14 +369114,14 @@ var arrayMap_NUM_1352 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 208,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -369147,7 +369147,7 @@ var arrayMap_NUM_1352 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -369431,14 +369431,14 @@ var arrayMap_NUM_1353 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 241,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -369464,7 +369464,7 @@ var arrayMap_NUM_1353 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -370003,14 +370003,14 @@ var arrayMap_NUM_1354 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 224,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -370036,7 +370036,7 @@ var arrayMap_NUM_1354 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -370522,7 +370522,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_30 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_60 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -370553,7 +370553,7 @@ var bindingExpr_POS_0_0__0_0_NUM_232 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2309,
 }
 var literalExpr_POS_0_0__0_0_NUM_87 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -370739,14 +370739,14 @@ var arrayMap_NUM_1355 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 215,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -370772,7 +370772,7 @@ var arrayMap_NUM_1355 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -371650,14 +371650,14 @@ var arrayMap_NUM_1356 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 211,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -371683,7 +371683,7 @@ var arrayMap_NUM_1356 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -372887,14 +372887,14 @@ var arrayMap_NUM_1357 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 250,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -372920,7 +372920,7 @@ var arrayMap_NUM_1357 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -373368,7 +373368,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_31 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_62 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -373399,7 +373399,7 @@ var bindingExpr_POS_0_0__0_0_NUM_270 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2354,
 }
 var literalExpr_POS_0_0__0_0_NUM_92 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -373432,7 +373432,7 @@ var bindingExpr_POS_0_0__0_0_NUM_271 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2354,
 }
 var literalExpr_POS_0_0__0_0_NUM_93 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -373758,7 +373758,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_32 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_65 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -373789,7 +373789,7 @@ var bindingExpr_POS_0_0__0_0_NUM_274 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2360,
 }
 var literalExpr_POS_0_0__0_0_NUM_94 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -373822,7 +373822,7 @@ var bindingExpr_POS_0_0__0_0_NUM_275 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2360,
 }
 var literalExpr_POS_0_0__0_0_NUM_95 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -373881,7 +373881,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_33 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_68 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -373912,7 +373912,7 @@ var bindingExpr_POS_0_0__0_0_NUM_278 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2362,
 }
 var literalExpr_POS_0_0__0_0_NUM_96 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -374475,7 +374475,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_34 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_70 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -374506,7 +374506,7 @@ var bindingExpr_POS_0_0__0_0_NUM_281 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2371,
 }
 var literalExpr_POS_0_0__0_0_NUM_97 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -374539,7 +374539,7 @@ var bindingExpr_POS_0_0__0_0_NUM_282 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2371,
 }
 var literalExpr_POS_0_0__0_0_NUM_98 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -374598,7 +374598,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_35 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_73 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -374629,7 +374629,7 @@ var bindingExpr_POS_0_0__0_0_NUM_285 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2373,
 }
 var literalExpr_POS_0_0__0_0_NUM_99 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -375121,7 +375121,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_36 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_75 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -375152,7 +375152,7 @@ var bindingExpr_POS_0_0__0_0_NUM_288 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2382,
 }
 var literalExpr_POS_0_0__0_0_NUM_100 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -375185,7 +375185,7 @@ var bindingExpr_POS_0_0__0_0_NUM_289 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2382,
 }
 var literalExpr_POS_0_0__0_0_NUM_101 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -375244,7 +375244,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_37 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_78 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -375275,7 +375275,7 @@ var bindingExpr_POS_0_0__0_0_NUM_292 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2384,
 }
 var literalExpr_POS_0_0__0_0_NUM_102 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -375308,7 +375308,7 @@ var bindingExpr_POS_0_0__0_0_NUM_293 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2384,
 }
 var literalExpr_POS_0_0__0_0_NUM_103 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -375559,7 +375559,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_38 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_81 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -375590,7 +375590,7 @@ var bindingExpr_POS_0_0__0_0_NUM_295 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2390,
 }
 var literalExpr_POS_0_0__0_0_NUM_104 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -377367,14 +377367,14 @@ var arrayMap_NUM_1358 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 379,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -377823,14 +377823,14 @@ var arrayMap_NUM_1359 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 339,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -377856,7 +377856,7 @@ var arrayMap_NUM_1359 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -378528,14 +378528,14 @@ var arrayMap_NUM_1360 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 7,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -378561,7 +378561,7 @@ var arrayMap_NUM_1360 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -379134,7 +379134,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__28_11__28_17 coretypes.ObjectInfo = 
 		StartLine:   28,
 	},
 }
-var regex_POS_joker_DOT_tools_DOT_cli__28_11__28_17_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_tools_DOT_cli__28_11__28_17_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.tools.cli: &regexp.MustCompile("^--$") */
 }
 var literalExpr_POS_joker_DOT_tools_DOT_cli__28_11__28_17_NUM_1 LiteralExpr = LiteralExpr{
@@ -379285,7 +379285,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__30_11__30_20 coretypes.ObjectInfo = 
 		StartLine:   30,
 	},
 }
-var regex_POS_joker_DOT_tools_DOT_cli__30_11__30_20_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_tools_DOT_cli__30_11__30_20_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.tools.cli: &regexp.MustCompile("^--\\S+=") */
 }
 var literalExpr_POS_joker_DOT_tools_DOT_cli__30_11__30_20_NUM_1 LiteralExpr = LiteralExpr{
@@ -379408,7 +379408,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__30_71__30_74 coretypes.ObjectInfo = 
 		StartLine:   30,
 	},
 }
-var regex_POS_joker_DOT_tools_DOT_cli__30_71__30_74_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_tools_DOT_cli__30_71__30_74_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.tools.cli: &regexp.MustCompile("=") */
 }
 var literalExpr_POS_joker_DOT_tools_DOT_cli__30_71__30_74_NUM_1 LiteralExpr = LiteralExpr{
@@ -379438,7 +379438,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__30_76__30_76_NUM_1 LiteralExpr = Li
 		StartColumn: 76,
 		StartLine:   30,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -379531,7 +379531,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__33_11__33_16 coretypes.ObjectInfo = 
 		StartLine:   33,
 	},
 }
-var regex_POS_joker_DOT_tools_DOT_cli__33_11__33_16_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_tools_DOT_cli__33_11__33_16_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.tools.cli: &regexp.MustCompile("^--") */
 }
 var literalExpr_POS_joker_DOT_tools_DOT_cli__33_11__33_16_NUM_1 LiteralExpr = LiteralExpr{
@@ -379780,7 +379780,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_39 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_83 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -379811,7 +379811,7 @@ var bindingExpr_POS_0_0__0_0_NUM_334 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2444,
 }
 var literalExpr_POS_0_0__0_0_NUM_113 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -380087,7 +380087,7 @@ var objectInfo_POS_joker_DOT_tools_DOT_cli__39_11__39_16 coretypes.ObjectInfo = 
 		StartLine:   39,
 	},
 }
-var regex_POS_joker_DOT_tools_DOT_cli__39_11__39_16_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_tools_DOT_cli__39_11__39_16_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.tools.cli: &regexp.MustCompile("^-.") */
 }
 var literalExpr_POS_joker_DOT_tools_DOT_cli__39_11__39_16_NUM_1 LiteralExpr = LiteralExpr{
@@ -380472,7 +380472,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__40_48__40_49_NUM_1 LiteralExpr = Li
 		StartColumn: 48,
 		StartLine:   40,
 	},
-	obj: Char{
+	obj: coretypes.Char{
 		Ch: 45,
 	},
 }
@@ -381329,7 +381329,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_40 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_85 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -381360,7 +381360,7 @@ var bindingExpr_POS_0_0__0_0_NUM_351 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2463,
 }
 var literalExpr_POS_0_0__0_0_NUM_114 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -382173,7 +382173,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_41 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_87 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -382204,7 +382204,7 @@ var bindingExpr_POS_0_0__0_0_NUM_353 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2470,
 }
 var literalExpr_POS_0_0__0_0_NUM_115 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -382388,7 +382388,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_42 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_89 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -382419,7 +382419,7 @@ var bindingExpr_POS_0_0__0_0_NUM_355 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2474,
 }
 var literalExpr_POS_0_0__0_0_NUM_116 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -382701,14 +382701,14 @@ var arrayMap_NUM_1361 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 347,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -383508,7 +383508,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__361_15__361_22_NUM_1 LiteralExpr = 
 		StartColumn: 15,
 		StartLine:   361,
 	},
-	obj: Char{
+	obj: coretypes.Char{
 		Ch: 10,
 	},
 }
@@ -384465,14 +384465,14 @@ var arrayMap_NUM_1363 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 16,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -384498,7 +384498,7 @@ var arrayMap_NUM_1363 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -384574,14 +384574,14 @@ var arrayMap_NUM_1364 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 10,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -384607,7 +384607,7 @@ var arrayMap_NUM_1364 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -385323,14 +385323,14 @@ var arrayMap_NUM_1365 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 78,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -385356,7 +385356,7 @@ var arrayMap_NUM_1365 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -385476,14 +385476,14 @@ var arrayMap_NUM_1366 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 35,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -385509,7 +385509,7 @@ var arrayMap_NUM_1366 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -385758,14 +385758,14 @@ var arrayMap_NUM_1367 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 73,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -385791,7 +385791,7 @@ var arrayMap_NUM_1367 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -385952,97 +385952,97 @@ var arrayMap_NUM_1368 ArrayMap = ArrayMap{
 		String{
 			S: "area",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "base",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "br",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "col",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "command",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "embed",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "hr",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "img",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "input",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "keygen",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "link",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "meta",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "param",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "source",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "track",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		String{
 			S: "wbr",
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -386527,14 +386527,14 @@ var arrayMap_NUM_1369 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 39,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -386560,7 +386560,7 @@ var arrayMap_NUM_1369 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -386636,14 +386636,14 @@ var arrayMap_NUM_1370 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 31,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -386669,7 +386669,7 @@ var arrayMap_NUM_1370 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -387014,14 +387014,14 @@ var arrayMap_NUM_1371 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 43,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -387047,7 +387047,7 @@ var arrayMap_NUM_1371 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -387260,14 +387260,14 @@ var arrayMap_NUM_1372 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 152,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -387554,7 +387554,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_43 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_91 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -387585,7 +387585,7 @@ var bindingExpr_POS_0_0__0_0_NUM_357 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2504,
 }
 var literalExpr_POS_0_0__0_0_NUM_117 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -387826,14 +387826,14 @@ var arrayMap_NUM_1373 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 106,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -387859,7 +387859,7 @@ var arrayMap_NUM_1373 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -388105,14 +388105,14 @@ var arrayMap_NUM_1374 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 131,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -388138,7 +388138,7 @@ var arrayMap_NUM_1374 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -388426,14 +388426,14 @@ var arrayMap_NUM_1375 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 91,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -388459,7 +388459,7 @@ var arrayMap_NUM_1375 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -388889,14 +388889,14 @@ var arrayMap_NUM_1376 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 89,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -388922,7 +388922,7 @@ var arrayMap_NUM_1376 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},
@@ -388936,7 +388936,7 @@ var objectInfo_POS_joker_DOT_hiccup__89_23__89_69 coretypes.ObjectInfo = coretyp
 		StartLine:   89,
 	},
 }
-var regex_POS_joker_DOT_hiccup__89_23__89_69_NUM_1 Regex = Regex{
+var regex_POS_joker_DOT_hiccup__89_23__89_69_NUM_1 coretypes.Regex = coretypes.Regex{
 	R: nil, /* joker.hiccup: &regexp.MustCompile("([^\\s\\.#]+)(?:#([^\\s\\.#]+))?(?:\\.([^\\s#]+))?") */
 }
 var literalExpr_POS_joker_DOT_hiccup__89_23__89_69_NUM_1 LiteralExpr = LiteralExpr{
@@ -389038,7 +389038,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_44 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_93 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -389069,7 +389069,7 @@ var bindingExpr_POS_0_0__0_0_NUM_365 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2515,
 }
 var literalExpr_POS_0_0__0_0_NUM_118 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -389102,7 +389102,7 @@ var bindingExpr_POS_0_0__0_0_NUM_366 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2515,
 }
 var literalExpr_POS_0_0__0_0_NUM_119 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -389135,7 +389135,7 @@ var bindingExpr_POS_0_0__0_0_NUM_367 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2515,
 }
 var literalExpr_POS_0_0__0_0_NUM_120 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 3,
 	},
 }
@@ -389591,14 +389591,14 @@ var arrayMap_NUM_1377 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 83,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -389624,7 +389624,7 @@ var arrayMap_NUM_1377 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -390565,7 +390565,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_45 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_97 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -390596,7 +390596,7 @@ var bindingExpr_POS_0_0__0_0_NUM_375 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2530,
 }
 var literalExpr_POS_0_0__0_0_NUM_123 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -390629,7 +390629,7 @@ var bindingExpr_POS_0_0__0_0_NUM_376 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2530,
 }
 var literalExpr_POS_0_0__0_0_NUM_124 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -390736,14 +390736,14 @@ var arrayMap_NUM_1378 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 65,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -390769,7 +390769,7 @@ var arrayMap_NUM_1378 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -390855,7 +390855,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_46 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_100 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -390886,7 +390886,7 @@ var bindingExpr_POS_0_0__0_0_NUM_379 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2532,
 }
 var literalExpr_POS_0_0__0_0_NUM_125 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -391005,14 +391005,14 @@ var arrayMap_NUM_1379 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 51,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -391038,7 +391038,7 @@ var arrayMap_NUM_1379 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -391205,14 +391205,14 @@ var arrayMap_NUM_1380 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 47,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -391238,7 +391238,7 @@ var arrayMap_NUM_1380 ArrayMap = ArrayMap{
 			hash: 2982761421,
 			name: &s_private,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
@@ -391356,7 +391356,7 @@ var literalExpr_POS_joker_DOT_hiccup__49_30__49_31_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 30,
 		StartLine:   49,
 	},
-	obj: Char{
+	obj: coretypes.Char{
 		Ch: 34,
 	},
 }
@@ -391417,7 +391417,7 @@ var literalExpr_POS_joker_DOT_hiccup__49_53__49_54_NUM_1 LiteralExpr = LiteralEx
 		StartColumn: 53,
 		StartLine:   49,
 	},
-	obj: Char{
+	obj: coretypes.Char{
 		Ch: 34,
 	},
 }
@@ -393360,14 +393360,14 @@ var arrayMap_NUM_1381 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 145,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -394089,14 +394089,14 @@ var arrayMap_NUM_1383 ArrayMap = ArrayMap{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 5,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 		Keyword{
@@ -395097,7 +395097,7 @@ var literalExpr_POS_joker_DOT_core__2503_33__2503_33_NUM_47 LiteralExpr = Litera
 		StartColumn: 33,
 		StartLine:   2503,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var literalExpr_POS_joker_DOT_core__2524_71__2524_73_NUM_102 LiteralExpr = LiteralExpr{
 	Position: coretypes.Position{
@@ -395128,7 +395128,7 @@ var bindingExpr_POS_0_0__0_0_NUM_383 BindingExpr = BindingExpr{
 	binding: &binding_NUM_2566,
 }
 var literalExpr_POS_0_0__0_0_NUM_126 LiteralExpr = LiteralExpr{
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -397110,14 +397110,14 @@ var bitmapIndexedNode_NUM_233 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 57,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -397235,7 +397235,7 @@ var bitmapIndexedNode_NUM_232 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -399728,14 +399728,14 @@ var bitmapIndexedNode_NUM_235 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 7,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -399930,7 +399930,7 @@ var bitmapIndexedNode_NUM_234 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -400233,7 +400233,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__15_32__15_32_NUM_1 LiteralExpr =
 		StartColumn: 32,
 		StartLine:   15,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__15_22__15_33_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -400347,7 +400347,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__15_54__15_54_NUM_1 LiteralExpr =
 		StartColumn: 54,
 		StartLine:   15,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__15_44__15_55_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -400470,7 +400470,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__16_25__16_25_NUM_1 LiteralExpr =
 		StartColumn: 25,
 		StartLine:   16,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -400572,7 +400572,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__17_37__17_37_NUM_1 LiteralExpr =
 		StartColumn: 37,
 		StartLine:   17,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -400820,7 +400820,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__18_32__18_32_NUM_1 LiteralExpr =
 		StartColumn: 32,
 		StartLine:   18,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -401034,7 +401034,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__20_30__20_30_NUM_1 LiteralExpr =
 		StartColumn: 30,
 		StartLine:   20,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__20_20__20_31_NUM_2 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -401222,7 +401222,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__21_41__21_41_NUM_1 LiteralExpr =
 		StartColumn: 41,
 		StartLine:   21,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -401617,14 +401617,14 @@ var bitmapIndexedNode_NUM_237 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 32,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -401819,7 +401819,7 @@ var bitmapIndexedNode_NUM_236 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -402122,7 +402122,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__40_32__40_32_NUM_1 LiteralExpr =
 		StartColumn: 32,
 		StartLine:   40,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__40_22__40_33_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -402236,7 +402236,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__40_54__40_54_NUM_1 LiteralExpr =
 		StartColumn: 54,
 		StartLine:   40,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__40_44__40_55_NUM_1 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -402359,7 +402359,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__41_25__41_25_NUM_1 LiteralExpr =
 		StartColumn: 25,
 		StartLine:   41,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -402461,7 +402461,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__42_38__42_38_NUM_1 LiteralExpr =
 		StartColumn: 38,
 		StartLine:   42,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -402718,7 +402718,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__43_32__43_32_NUM_1 LiteralExpr =
 		StartColumn: 32,
 		StartLine:   43,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 1,
 	},
 }
@@ -403030,7 +403030,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__46_30__46_30_NUM_1 LiteralExpr =
 		StartColumn: 30,
 		StartLine:   46,
 	},
-	obj: Int{},
+	obj: coretypes.Int{},
 }
 var callExpr_POS_joker_DOT_better_DASH_cond__46_20__46_31_NUM_2 CallExpr = CallExpr{
 	Position: coretypes.Position{
@@ -403218,7 +403218,7 @@ var literalExpr_POS_joker_DOT_better_DASH_cond__47_42__47_42_NUM_1 LiteralExpr =
 		StartColumn: 42,
 		StartLine:   47,
 	},
-	obj: Int{
+	obj: coretypes.Int{
 		I: 2,
 	},
 }
@@ -403590,14 +403590,14 @@ var bitmapIndexedNode_NUM_239 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 25,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -403727,7 +403727,7 @@ var bitmapIndexedNode_NUM_238 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -404032,14 +404032,14 @@ var bitmapIndexedNode_NUM_241 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1214236516,
 			name: &s_line,
 		},
-		Int{
+		coretypes.Int{
 			I: 50,
 		},
 		Keyword{
 			hash: 3310719876,
 			name: &s_column,
 		},
-		Int{
+		coretypes.Int{
 			I: 1,
 		},
 	},
@@ -404169,7 +404169,7 @@ var bitmapIndexedNode_NUM_240 BitmapIndexedNode = BitmapIndexedNode{
 			hash: 1196942594,
 			name: &s_macro,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		nil,
@@ -404879,14 +404879,14 @@ var arrayMap_NUM_1385 ArrayMap = ArrayMap{
 			hash: 1590785587,
 			name: &s_default,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 		Keyword{
 			hash: 3861485985,
 			name: &s_joker,
 		},
-		Boolean{
+		coretypes.Boolean{
 			B: true,
 		},
 	},

@@ -149,9 +149,9 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 			if useFloat {
 				var fv float64
 				switch v := c.(type) {
-				case Int:
+				case coretypes.Int:
 					fv = float64(v.I)
-				case Double:
+				case coretypes.Double:
 					fv = v.D
 				default:
 					return nil
@@ -159,7 +159,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 				o = append(o, 0x44) // f64.const
 				o = corewasm.AppendF64(o, fv)
 			} else {
-				v, ok := c.(Int)
+				v, ok := c.(coretypes.Int)
 				if !ok {
 					return nil
 				}
@@ -464,7 +464,7 @@ func compileWasmBodyWithImports(prog *IRProgram) []byte {
 			pc += 2
 			c := prog.constants[idx]
 			switch v := c.(type) {
-			case Int:
+			case coretypes.Int:
 				o = append(o, 0x42)
 				o = corewasm.AppendSLEB(o, int64(v.I))
 			default:
@@ -961,9 +961,9 @@ func registerWasmHost(rt wazero.Runtime) {
 // objToWasm converts a Joker Object to a WASM uint64 (handle or direct value).
 func objToWasm(t *objectTable, obj Object) uint64 {
 	switch v := obj.(type) {
-	case Int:
+	case coretypes.Int:
 		return uint64(v.I)
-	case Double:
+	case coretypes.Double:
 		return math.Float64bits(v.D) | (1 << 63) // tag bit for float
 	default:
 		return t.store(obj)
@@ -1051,7 +1051,7 @@ func wasmMemNthEligible(prog *IRProgram, slots []Object) bool {
 	// Check if any slot is a Double (indicates float loop)
 	hasFloat := false
 	for _, s := range slots {
-		if _, ok := s.(Double); ok {
+		if _, ok := s.(coretypes.Double); ok {
 			hasFloat = true
 			break
 		}
@@ -1208,9 +1208,9 @@ func wasmMemNthCompileAndExec(prog *IRProgram, slots []Object) Object {
 			for i, obj := range vec.arr {
 				var fv float64
 				switch v := obj.(type) {
-				case Double:
+				case coretypes.Double:
 					fv = v.D
-				case Int:
+				case coretypes.Int:
 					fv = float64(v.I)
 				default:
 					return nil
@@ -1227,9 +1227,9 @@ func wasmMemNthCompileAndExec(prog *IRProgram, slots []Object) Object {
 	// Build params — reuse buffer
 	for i, s := range slots {
 		switch v := s.(type) {
-		case Int:
+		case coretypes.Int:
 			c.paramsBuf[i] = math.Float64bits(float64(v.I))
-		case Double:
+		case coretypes.Double:
 			c.paramsBuf[i] = math.Float64bits(v.D)
 		default:
 			// Vector slot: pass memory byte offset
@@ -1429,9 +1429,9 @@ func buildMemNthBody(prog *IRProgram, helperSlot, helperFuncIdx, numParams int) 
 			c := prog.constants[idx]
 			var fv float64
 			switch v := c.(type) {
-			case Int:
+			case coretypes.Int:
 				fv = float64(v.I)
-			case Double:
+			case coretypes.Double:
 				fv = v.D
 			default:
 				return nil

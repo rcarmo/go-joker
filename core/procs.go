@@ -151,9 +151,9 @@ var procWithMeta = func(args []Object) Object {
 
 var procIsZero = func(args []Object) Object {
 	switch n := args[0].(type) {
-	case Int:
+	case coretypes.Int:
 		return coretypes.Boolean{B: n.I == 0}
-	case Double:
+	case coretypes.Double:
 		return coretypes.Boolean{B: n.D == 0}
 	}
 	n := EnsureArgIsNumber(args, 0)
@@ -175,18 +175,18 @@ var procIsNeg = func(args []Object) Object {
 
 var procAdd = func(args []Object) Object {
 	switch x := args[0].(type) {
-	case Int:
+	case coretypes.Int:
 		switch y := args[1].(type) {
-		case Int:
+		case coretypes.Int:
 			return INT_OPS.Add(x, y)
-		case Double:
+		case coretypes.Double:
 			return coretypes.Double{D: float64(x.I) + y.D}
 		}
-	case Double:
+	case coretypes.Double:
 		switch y := args[1].(type) {
-		case Int:
+		case coretypes.Int:
 			return coretypes.Double{D: x.D + float64(y.I)}
-		case Double:
+		case coretypes.Double:
 			return coretypes.Double{D: x.D + y.D}
 		}
 	}
@@ -205,18 +205,18 @@ var procAddEx = func(args []Object) Object {
 
 var procMultiply = func(args []Object) Object {
 	switch x := args[0].(type) {
-	case Int:
+	case coretypes.Int:
 		switch y := args[1].(type) {
-		case Int:
+		case coretypes.Int:
 			return INT_OPS.Multiply(x, y)
-		case Double:
+		case coretypes.Double:
 			return coretypes.Double{D: float64(x.I) * y.D}
 		}
-	case Double:
+	case coretypes.Double:
 		switch y := args[1].(type) {
-		case Int:
+		case coretypes.Int:
 			return coretypes.Double{D: x.D * float64(y.I)}
-		case Double:
+		case coretypes.Double:
 			return coretypes.Double{D: x.D * y.D}
 		}
 	}
@@ -236,9 +236,9 @@ var procMultiplyEx = func(args []Object) Object {
 var procSubtract = func(args []Object) Object {
 	if len(args) == 1 {
 		switch x := args[0].(type) {
-		case Int:
+		case coretypes.Int:
 			return INT_OPS.Subtract(coretypes.Int{I: 0}, x)
-		case Double:
+		case coretypes.Double:
 			return coretypes.Double{D: -x.D}
 		}
 		a := coretypes.Int{I: 0}
@@ -247,18 +247,18 @@ var procSubtract = func(args []Object) Object {
 		return ops.Subtract(a, b)
 	}
 	switch a := args[0].(type) {
-	case Int:
+	case coretypes.Int:
 		switch b := args[1].(type) {
-		case Int:
+		case coretypes.Int:
 			return INT_OPS.Subtract(a, b)
-		case Double:
+		case coretypes.Double:
 			return coretypes.Double{D: float64(a.I) - b.D}
 		}
-	case Double:
+	case coretypes.Double:
 		switch b := args[1].(type) {
-		case Int:
+		case coretypes.Int:
 			return coretypes.Double{D: a.D - float64(b.I)}
-		case Double:
+		case coretypes.Double:
 			return coretypes.Double{D: a.D - b.D}
 		}
 	}
@@ -297,8 +297,8 @@ var procQuot = func(args []Object) Object {
 
 var procRem = func(args []Object) Object {
 	switch x := args[0].(type) {
-	case Int:
-		if y, ok := args[1].(Int); ok {
+	case coretypes.Int:
+		if y, ok := args[1].(coretypes.Int); ok {
 			if y.I == 0 {
 				panicOnZero(INT_OPS, y)
 			}
@@ -316,7 +316,7 @@ var procBitNot = func(args []Object) Object {
 	return coretypes.Int{I: ^x.I}
 }
 
-func EnsureObjectIsInts(args []Object) (Int, Int) {
+func EnsureObjectIsInts(args []Object) (coretypes.Int, coretypes.Int) {
 	x := EnsureObjectIsInt(args[0], "Bit operation not supported: %s")
 	y := EnsureObjectIsInt(args[1], "Bit operation not supported: %s")
 	return x, y
@@ -799,7 +799,7 @@ var procStr = func(args []Object) Object {
 		a, b := args[0], args[1]
 		// Fastest: string + char (the parser hot path)
 		if as, ok := a.(String); ok {
-			if bc, ok := b.(Char); ok {
+			if bc, ok := b.(coretypes.Char); ok {
 				return String{S: as.S + charToStringFast(bc.Ch)}
 			}
 			if bs, ok := b.(String); ok {
@@ -930,7 +930,7 @@ var procCompare = func(args []Object) Object {
 
 var procInt = func(args []Object) Object {
 	switch obj := args[0].(type) {
-	case Char:
+	case coretypes.Char:
 		return coretypes.Int{I: int(obj.Ch)}
 	case Number:
 		return obj.Int()
@@ -950,7 +950,7 @@ var procDouble = func(args []Object) Object {
 
 var procChar = func(args []Object) Object {
 	switch c := args[0].(type) {
-	case Char:
+	case coretypes.Char:
 		return c
 	case Number:
 		i := c.Int().I
@@ -1031,18 +1031,18 @@ var procNth = func(args []Object) Object {
 
 var procLt = func(args []Object) Object {
 	switch a := args[0].(type) {
-	case Int:
+	case coretypes.Int:
 		switch b := args[1].(type) {
-		case Int:
+		case coretypes.Int:
 			return coretypes.Boolean{B: a.I < b.I}
-		case Double:
+		case coretypes.Double:
 			return coretypes.Boolean{B: float64(a.I) < b.D}
 		}
-	case Double:
+	case coretypes.Double:
 		switch b := args[1].(type) {
-		case Int:
+		case coretypes.Int:
 			return coretypes.Boolean{B: a.D < float64(b.I)}
-		case Double:
+		case coretypes.Double:
 			return coretypes.Boolean{B: a.D < b.D}
 		}
 	}
@@ -1071,18 +1071,18 @@ var procGte = func(args []Object) Object {
 
 var procEq = func(args []Object) Object {
 	switch a := args[0].(type) {
-	case Int:
+	case coretypes.Int:
 		switch b := args[1].(type) {
-		case Int:
+		case coretypes.Int:
 			return coretypes.Boolean{B: a.I == b.I}
-		case Double:
+		case coretypes.Double:
 			return coretypes.Boolean{B: float64(a.I) == b.D}
 		}
-	case Double:
+	case coretypes.Double:
 		switch b := args[1].(type) {
-		case Int:
+		case coretypes.Int:
 			return coretypes.Boolean{B: a.D == float64(b.I)}
-		case Double:
+		case coretypes.Double:
 			return coretypes.Boolean{B: a.D == b.D}
 		}
 	}
@@ -1117,9 +1117,9 @@ var procDecEx = func(args []Object) Object {
 
 var procInc = func(args []Object) Object {
 	switch x := args[0].(type) {
-	case Int:
+	case coretypes.Int:
 		return INT_OPS.Add(x, coretypes.Int{I: 1})
-	case Double:
+	case coretypes.Double:
 		return coretypes.Double{D: x.D + 1}
 	}
 	x := EnsureArgIsNumber(args, 0)
@@ -1129,9 +1129,9 @@ var procInc = func(args []Object) Object {
 
 var procDec = func(args []Object) Object {
 	switch x := args[0].(type) {
-	case Int:
+	case coretypes.Int:
 		return INT_OPS.Subtract(x, coretypes.Int{I: 1})
-	case Double:
+	case coretypes.Double:
 		return coretypes.Double{D: x.D - 1}
 	}
 	x := EnsureArgIsNumber(args, 0)
@@ -1846,7 +1846,7 @@ var procIsNaN = func(args []Object) Object {
 var procAbs = func(args []Object) Object {
 	n := EnsureArgIsNumber(args, 0)
 	switch n := n.(type) {
-	case Double:
+	case coretypes.Double:
 		return coretypes.Double{D: math.Abs(n.D)}
 	case *BigInt:
 		b := &big.Int{}
@@ -1857,7 +1857,7 @@ var procAbs = func(args []Object) Object {
 	case *Ratio:
 		r := &big.Rat{}
 		return &Ratio{r: r.Abs(n.r)}
-	case Int:
+	case coretypes.Int:
 		x := n.I
 		if x < 0 {
 			x = -x
@@ -2199,7 +2199,7 @@ func ReadConfig(filename string, workingDir string) {
 		if ok1 {
 			s := seq.Seq()
 			for !s.IsEmpty() {
-				regex, ok2 := s.First().(*Regex)
+				regex, ok2 := s.First().(*coretypes.Regex)
 				if !ok2 {
 					printConfigError(configFileName, ":ignored-file-regexes elements must be regexes, got "+s.First().GetType().ToString(false))
 					return

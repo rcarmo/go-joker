@@ -688,7 +688,7 @@ func readArgSymbol(reader *Reader) Object {
 		return MakeReadObject(reader, registerArg(-1))
 	}
 	switch n := obj.(type) {
-	case Int:
+	case coretypes.Int:
 		return MakeReadObject(reader, registerArg(n.I))
 	default:
 		panic(MakeReadError(reader, "Arg literal must be %, %& or %integer"))
@@ -700,7 +700,7 @@ func isSelfEvaluating(obj Object) bool {
 		return true
 	}
 	switch obj.(type) {
-	case Boolean, Double, Int, Char, Keyword, String:
+	case coretypes.Boolean, coretypes.Double, coretypes.Int, coretypes.Char, Keyword, String:
 		return true
 	default:
 		return false

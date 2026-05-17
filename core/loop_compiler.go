@@ -666,7 +666,7 @@ func exprHasTextLiteralOrStr(expr Expr) bool {
 	switch e := expr.(type) {
 	case *LiteralExpr:
 		switch e.obj.(type) {
-		case String, Char:
+		case String, coretypes.Char:
 			return true
 		}
 	case *IfExpr:
@@ -748,7 +748,7 @@ func exprIsPureArithmetic(expr Expr) bool {
 	switch e := expr.(type) {
 	case *LiteralExpr:
 		switch e.obj.(type) {
-		case Int, Double:
+		case coretypes.Int, coretypes.Double:
 			return true
 		default:
 			return false
@@ -1035,9 +1035,9 @@ func irCompileNativeHelper(prog *IRProgram) nativeF64Fn {
 	consts := make([]float64, len(prog.constants))
 	for i, c := range prog.constants {
 		switch v := c.(type) {
-		case Int:
+		case coretypes.Int:
 			consts[i] = float64(v.I)
-		case Double:
+		case coretypes.Double:
 			consts[i] = v.D
 		default:
 			return nil

@@ -86,21 +86,21 @@ func typeNameOf(obj Object) string {
 	switch obj := obj.(type) {
 	case Nil:
 		return "nil"
-	case Int:
+	case coretypes.Int:
 		return "Int"
-	case Double:
+	case coretypes.Double:
 		return "Double"
-	case Boolean:
+	case coretypes.Boolean:
 		return "Boolean"
 	case String:
 		return "String"
-	case Char:
+	case coretypes.Char:
 		return "Char"
 	case Keyword:
 		return "Keyword"
 	case Symbol:
 		return "Symbol"
-	case *Regex:
+	case *coretypes.Regex:
 		return "Regex"
 	case *Vector:
 		return "Vector"

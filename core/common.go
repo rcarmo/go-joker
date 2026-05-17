@@ -98,7 +98,7 @@ func ToBool(obj Object) bool {
 	switch obj := obj.(type) {
 	case Nil:
 		return false
-	case Boolean:
+	case coretypes.Boolean:
 		return obj.B
 	default:
 		return true
