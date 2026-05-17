@@ -1664,7 +1664,7 @@ func RegRefType(name string, inst interface{}, doc string) *coretypes.Type {
 	if doc != "" {
 		doc = "\n  " + doc
 	}
-	meta := MakeMeta(nil, "(Concrete reference type)"+doc, "1.0")
+	meta := MakeMeta(nil, coretypes.ReferenceKind.DocumentationPrefix()+doc, "1.0")
 	meta.Add(KEYWORDS.name, MakeString(name))
 	return TYPES.Register(STRINGS.Intern(name), coretypes.NewRefType(name, inst, MetaHolder{meta}))
 }
@@ -1673,7 +1673,7 @@ func RegType(name string, inst interface{}, doc string) *coretypes.Type {
 	if doc != "" {
 		doc = "\n  " + doc
 	}
-	meta := MakeMeta(nil, "(Concrete type)"+doc, "1.0")
+	meta := MakeMeta(nil, coretypes.ValueKind.DocumentationPrefix()+doc, "1.0")
 	meta.Add(KEYWORDS.name, MakeString(name))
 	return TYPES.Register(STRINGS.Intern(name), coretypes.NewValueType(name, inst, MetaHolder{meta}))
 }
@@ -1682,7 +1682,7 @@ func RegInterface(name string, inst interface{}, doc string) *coretypes.Type {
 	if doc != "" {
 		doc = "\n  " + doc
 	}
-	meta := MakeMeta(nil, "(Interface type)"+doc, "1.0")
+	meta := MakeMeta(nil, coretypes.InterfaceKind.DocumentationPrefix()+doc, "1.0")
 	meta.Add(KEYWORDS.name, MakeString(name))
 	return TYPES.Register(STRINGS.Intern(name), coretypes.NewInterfaceType(name, inst, MetaHolder{meta}))
 }

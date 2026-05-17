@@ -5,6 +5,16 @@ import (
 	"unsafe"
 )
 
+type Kind string
+
+const (
+	ReferenceKind Kind = "Concrete reference type"
+	ValueKind     Kind = "Concrete type"
+	InterfaceKind Kind = "Interface type"
+)
+
+func (k Kind) DocumentationPrefix() string { return "(" + string(k) + ")" }
+
 // Type describes a Joker runtime type. Root core still owns registry population
 // until bootstrap/proc systems move out.
 type Type struct {
