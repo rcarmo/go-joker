@@ -260,7 +260,7 @@ func readIdent(reader *Reader, first rune) Object {
 			if FORMAT_MODE {
 				return MakeReadObject(reader, readerConstruction.Keyword(str))
 			}
-			sym := MakeSymbol(str[1:])
+			sym := readerConstruction.Symbol(str[1:]).(Symbol)
 			ns := GLOBAL_ENV.NamespaceFor(GLOBAL_ENV.CurrentNamespace(), sym)
 			if ns == nil {
 				msg := fmt.Sprintf("Unable to resolve namespace %s in keyword %s", *sym.ns, ":"+str)
@@ -671,7 +671,7 @@ func makeFnForm(args map[int]Symbol, body Object) Object {
 
 func genSym(prefix string, postfix string) Symbol {
 	GENSYM++
-	return MakeSymbol(fmt.Sprintf("%s%d%s", prefix, GENSYM, postfix))
+	return readerConstruction.Symbol(fmt.Sprintf("%s%d%s", prefix, GENSYM, postfix)).(Symbol)
 }
 
 func generateSymbol(prefix string) Symbol {
