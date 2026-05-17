@@ -17,62 +17,62 @@ func InternsOrThunks() {
 	osNamespace.InternVar("SIGABRT", SIGABRT_,
 		MakeMeta(
 			nil,
-			`SIGABRT`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGABRT`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGALRM", SIGALRM_,
 		MakeMeta(
 			nil,
-			`SIGALRM`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGALRM`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGFPE", SIGFPE_,
 		MakeMeta(
 			nil,
-			`SIGFPE`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGFPE`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGHUP", SIGHUP_,
 		MakeMeta(
 			nil,
-			`SIGHUP`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGHUP`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGILL", SIGILL_,
 		MakeMeta(
 			nil,
-			`SIGILL`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGILL`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGINT", SIGINT_,
 		MakeMeta(
 			nil,
-			`SIGINT`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGINT`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGKILL", SIGKILL_,
 		MakeMeta(
 			nil,
-			`SIGKILL`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGKILL`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGPIPE", SIGPIPE_,
 		MakeMeta(
 			nil,
-			`SIGPIPE`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGPIPE`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGQUIT", SIGQUIT_,
 		MakeMeta(
 			nil,
-			`SIGQUIT`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGQUIT`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGSEGV", SIGSEGV_,
 		MakeMeta(
 			nil,
-			`SIGSEGV`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGSEGV`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGTERM", SIGTERM_,
 		MakeMeta(
 			nil,
-			`SIGTERM`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGTERM`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGTRAP", SIGTRAP_,
 		MakeMeta(
 			nil,
-			`SIGTRAP`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`SIGTRAP`, "1.0.1").Plus(MakeKeyword("const"), String{S: "true"}).Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("args", args_,
 		MakeMeta(
@@ -135,7 +135,7 @@ func InternsOrThunks() {
 	osNamespace.InternVar("egid", egid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the numeric effective group id of the caller.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the numeric effective group id of the caller.`, "1.0").Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("env", env_,
 		MakeMeta(
@@ -145,7 +145,7 @@ func InternsOrThunks() {
 	osNamespace.InternVar("euid", euid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the numeric effective user id of the caller.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the numeric effective user id of the caller.`, "1.0").Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("exec", exec_,
 		MakeMeta(
@@ -174,7 +174,7 @@ func InternsOrThunks() {
 	osNamespace.InternVar("exists?", isexists_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("path"))),
-			`Returns true if file or directory with the given path exists. Otherwise returns false.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Boolean"}))
+			`Returns true if file or directory with the given path exists. Otherwise returns false.`, "1.0").Plus(MakeKeyword("tag"), String{S: "coretypes.Boolean"}))
 
 	osNamespace.InternVar("exit", exit_,
 		MakeMeta(
@@ -195,12 +195,12 @@ func InternsOrThunks() {
 	osNamespace.InternVar("gid", gid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the numeric group id of the caller.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the numeric group id of the caller.`, "1.0").Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("groups", groups_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns a list of the numeric ids of groups that the caller belongs to.`, "1.0").Plus(MakeKeyword("tag"), String{S: "[Int]"}))
+			`Returns a list of the numeric ids of groups that the caller belongs to.`, "1.0").Plus(MakeKeyword("tag"), String{S: "[coretypes.Int]"}))
 
 	osNamespace.InternVar("hostname", hostname_,
 		MakeMeta(
@@ -230,10 +230,10 @@ func InternsOrThunks() {
 			`Reads the directory named by dirname and returns a list of directory entries sorted by filename.
   Each entry is a map with the following keys:
   :name - name (String)
-  :size - size in bytes (Int, or BigInt when it exceeds the native int range)
-  :mode - mode (Int)
-  :dir? - true if the file is a directory (Boolean)
-  :modtime - modification time as a Unix timestamp (Int, or BigInt when it exceeds the native int range)`, "1.0"))
+  :size - size in bytes (coretypes.Int, or BigInt when it exceeds the native int range)
+  :mode - mode (coretypes.Int)
+  :dir? - true if the file is a directory (coretypes.Boolean)
+  :modtime - modification time as a Unix timestamp (coretypes.Int, or BigInt when it exceeds the native int range)`, "1.0"))
 
 	osNamespace.InternVar("lstat", lstat_,
 		MakeMeta(
@@ -272,22 +272,22 @@ func InternsOrThunks() {
 	osNamespace.InternVar("pagesize", pagesize_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the underlying system's memory page size.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the underlying system's memory page size.`, "1.0").Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("path-separator?", ispath_separator_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("c"))),
-			`Reports whether c is a directory separator character.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Boolean"}))
+			`Reports whether c is a directory separator character.`, "1.0").Plus(MakeKeyword("tag"), String{S: "coretypes.Boolean"}))
 
 	osNamespace.InternVar("pid", pid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the process id of the caller.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the process id of the caller.`, "1.0").Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("ppid", ppid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the process id of the caller's parent.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the process id of the caller's parent.`, "1.0").Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("read-link", read_link_,
 		MakeMeta(
@@ -349,7 +349,7 @@ func InternsOrThunks() {
 			`Starts a new process with the program specified by name.
   opts is a map with the same keys as in exec.
   Doesn't wait for the process to finish.
-  Returns the process's PID.`, "1.0.1").Plus(MakeKeyword("tag"), String{S: "Int"}))
+  Returns the process's PID.`, "1.0.1").Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("stat", stat_,
 		MakeMeta(
@@ -383,7 +383,7 @@ func InternsOrThunks() {
 	osNamespace.InternVar("uid", uid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the numeric user id of the caller.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
+			`Returns the numeric user id of the caller.`, "1.0").Plus(MakeKeyword("tag"), String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("unset-env", unset_env_,
 		MakeMeta(

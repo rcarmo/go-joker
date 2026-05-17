@@ -8,18 +8,18 @@ import (
 	"os"
 )
 
-var SIGABRT_ Int
-var SIGALRM_ Int
-var SIGFPE_ Int
-var SIGHUP_ Int
-var SIGILL_ Int
-var SIGINT_ Int
-var SIGKILL_ Int
-var SIGPIPE_ Int
-var SIGQUIT_ Int
-var SIGSEGV_ Int
-var SIGTERM_ Int
-var SIGTRAP_ Int
+var SIGABRT_ coretypes.Int
+var SIGALRM_ coretypes.Int
+var SIGFPE_ coretypes.Int
+var SIGHUP_ coretypes.Int
+var SIGILL_ coretypes.Int
+var SIGINT_ coretypes.Int
+var SIGKILL_ coretypes.Int
+var SIGPIPE_ coretypes.Int
+var SIGQUIT_ coretypes.Int
+var SIGSEGV_ coretypes.Int
+var SIGTERM_ coretypes.Int
+var SIGTRAP_ coretypes.Int
 var __args__P ProcFn = __args_
 var args_ Proc = Proc{Fn: __args__P, Name: "args_", Package: "std/os"}
 
@@ -387,7 +387,11 @@ func __groups_(_args []Object) Object {
 	case _c == 0:
 		_res, err := os.Getgroups()
 		PanicOnErr(err)
-		return MakeIntVector(_res)
+		_vec := EmptyVector()
+		for _, _v := range _res {
+			_vec = _vec.Conjoin(coretypes.MakeInt(_v))
+		}
+		return _vec
 
 	default:
 		PanicArity(_c)

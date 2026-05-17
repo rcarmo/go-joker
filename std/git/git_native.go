@@ -19,7 +19,7 @@ type (
 	}
 )
 
-var gitRepoType *Type
+var gitRepoType *coretypes.Type
 
 func MakeGitRepo(repo *git.Repository) GitRepo {
 	res := GitRepo{repo, 0}
@@ -38,11 +38,11 @@ func (repo GitRepo) Equals(other interface{}) bool {
 	return false
 }
 
-func (repo GitRepo) GetInfo() *ObjectInfo {
+func (repo GitRepo) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (repo GitRepo) GetType() *Type {
+func (repo GitRepo) GetType() *coretypes.Type {
 	return gitRepoType
 }
 
@@ -50,7 +50,7 @@ func (repo GitRepo) Hash() uint32 {
 	return repo.hash
 }
 
-func (repo GitRepo) WithInfo(_info *ObjectInfo) Object {
+func (repo GitRepo) WithInfo(_info *coretypes.ObjectInfo) Object {
 	return repo
 }
 
@@ -316,5 +316,5 @@ func findObject(repo *git.Repository, hash string) Map {
 }
 
 func init() {
-	gitRepoType = RegType("GitRepo", (*GitRepo)(nil), "Wraps git.Repository type")
+	gitRepoType = coretypes.NewValueType("GitRepo", (*GitRepo)(nil), nil)
 }

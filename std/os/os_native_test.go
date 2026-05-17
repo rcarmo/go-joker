@@ -39,7 +39,7 @@ func TestNativeIntObjectPromotesOutsideNativeRange(t *testing.T) {
 		return
 	}
 	if got.GetType() != TYPE.Int {
-		t.Fatalf("native int object type = %s, want Int", got.GetType().ToString(false))
+		t.Fatalf("native int object type = %s, want coretypes.Int", got.GetType().ToString(false))
 	}
 }
 

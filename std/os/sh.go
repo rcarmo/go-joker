@@ -5,6 +5,7 @@ package os
 
 import (
 	"bytes"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"os/exec"
 	"syscall"
@@ -35,7 +36,7 @@ func sh(dir string, stdin io.Reader, stdout io.Writer, stderr io.Writer, name st
 	err = cmd.Wait()
 
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("success"), Boolean{B: err == nil})
+	res.Add(MakeKeyword("success"), coretypes.Boolean{B: err == nil})
 
 	var exitCode int
 	if err != nil {
@@ -50,7 +51,7 @@ func sh(dir string, stdin io.Reader, stdout io.Writer, stderr io.Writer, name st
 		ws := cmd.ProcessState.Sys().(syscall.WaitStatus)
 		exitCode = ws.ExitStatus()
 	}
-	res.Add(MakeKeyword("exit"), Int{I: exitCode})
+	res.Add(MakeKeyword("exit"), coretypes.Int{I: exitCode})
 	if stdout == nil {
 		res.Add(MakeKeyword("out"), String{S: string(stdoutBuffer.Bytes())})
 	}
