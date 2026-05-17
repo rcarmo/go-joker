@@ -609,7 +609,7 @@ func unpackVar(p []byte, header *PackHeader) (*Var, []byte) {
 	name, p := unpackSymbol(p, header)
 	vr := GLOBAL_ENV.FindNamespace(nsName).mappings[name.name]
 	if vr == nil {
-		panic(RT.NewError("Error unpacking var: cannot find var " + *nsName.name + "/" + *name.name))
+		panic(RT.NewError("coretypes.Error unpacking var: cannot find var " + *nsName.name + "/" + *name.name))
 	}
 	return vr, p
 }

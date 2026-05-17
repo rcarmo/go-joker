@@ -17,7 +17,7 @@ type RuntimeExecutionAdapter struct{}
 
 var runtimeExec RuntimeExecutionAdapter
 
-func (RuntimeExecutionAdapter) Errorf(format string, args ...any) Error {
+func (RuntimeExecutionAdapter) Errorf(format string, args ...any) coretypes.Error {
 	return RT.NewError(fmt.Sprintf(format, args...))
 }
 

@@ -108,7 +108,7 @@ func DeriveReadObject(base Object, obj Object) Object {
 	return readerConstruction.DeriveReadObject(base, obj)
 }
 
-func (err ReadError) Message() Object {
+func (err ReadError) Message() coretypes.Object {
 	return readerConstruction.String(err.msg)
 }
 

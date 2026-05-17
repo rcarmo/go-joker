@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert coretypes.Comparable Vec coretypes.Char String Symbol Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number Seqable Callable *coretypes.Type Meta coretypes.Int coretypes.Double Stack Map Set Associative Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel CountedIndexed
+//go:generate go run gen/gen_types.go assert coretypes.Comparable Vec coretypes.Char String Symbol Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number Seqable Callable *coretypes.Type Meta coretypes.Int coretypes.Double Stack Map Set Associative Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn Deref *Atom Ref KVReduce Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel CountedIndexed
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil Keyword Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
 //go:generate go run -tags gen_code gen/codegen/main.go
 
@@ -31,11 +31,6 @@ type (
 	CountedIndexed interface {
 		coretypes.Counted
 		At(int) Object
-	}
-	Error interface {
-		error
-		Object
-		Message() Object
 	}
 	Meta interface {
 		GetMeta() Map
@@ -390,7 +385,7 @@ func (exInfo *ExInfo) Hash() uint32 {
 	return hashutil.Ptr(uintptr(unsafe.Pointer(exInfo)))
 }
 
-func (exInfo *ExInfo) Message() Object {
+func (exInfo *ExInfo) Message() coretypes.Object {
 	if ok, res := exInfo.Get(KEYWORDS.message); ok {
 		return res
 	}

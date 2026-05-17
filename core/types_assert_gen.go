@@ -428,19 +428,19 @@ func EnsureArgIsVar(args []Object, index int) *Var {
 	panic(FailArg(obj, "Var", index))
 }
 
-func EnsureObjectIsError(obj Object, pattern string) Error {
-	if c, yes := obj.(Error); yes {
+func EnsureObjectIsError(obj Object, pattern string) coretypes.Error {
+	if c, yes := obj.(coretypes.Error); yes {
 		return c
 	}
-	panic(FailObject(obj, "Error", pattern))
+	panic(FailObject(obj, "coretypes.Error", pattern))
 }
 
-func EnsureArgIsError(args []Object, index int) Error {
+func EnsureArgIsError(args []Object, index int) coretypes.Error {
 	obj := args[index]
-	if c, yes := obj.(Error); yes {
+	if c, yes := obj.(coretypes.Error); yes {
 		return c
 	}
-	panic(FailArg(obj, "Error", index))
+	panic(FailArg(obj, "coretypes.Error", index))
 }
 
 func EnsureObjectIsFn(obj Object, pattern string) *Fn {

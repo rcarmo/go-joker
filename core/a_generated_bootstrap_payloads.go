@@ -160,7 +160,7 @@ var s_CountedIndexed string = "CountedIndexed"
 var s_Delay string = "Delay"
 var s_Deref string = "Deref"
 var s_Double string = "coretypes.Double"
-var s_Error string = "Error"
+var s_Error string = "coretypes.Error"
 var s_EvalError string = "EvalError"
 var s_ExInfo string = "ExInfo"
 var s_File string = "File"
@@ -1937,7 +1937,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"Delay":                      &s_Delay,
 	"Deref":                      &s_Deref,
 	"coretypes.Double":           &s_Double,
-	"Error":                      &s_Error,
+	"coretypes.Error":            &s_Error,
 	"EvalError":                  &s_EvalError,
 	"ExInfo":                     &s_ExInfo,
 	"File":                       &s_File,
@@ -4287,7 +4287,7 @@ var arrayMap_NUM_10 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Error",
+			S: "coretypes.Error",
 		},
 	},
 }
@@ -4295,8 +4295,8 @@ var ty_Error coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_10,
 	},
-	Name:        "Error",
-	ReflectType: reflect.TypeOf((*Error)(nil)).Elem(),
+	Name:        "coretypes.Error",
+	ReflectType: reflect.TypeOf((*coretypes.Error)(nil)).Elem(),
 }
 var arrayMap_NUM_11 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -26075,7 +26075,7 @@ var bitmapIndexedNode_NUM_19 BitmapIndexedNode = BitmapIndexedNode{
 			name: &s_doc,
 		},
 		String{
-			S: "Create an instance of ExInfo, an Error that carries a map of additional data.",
+			S: "Create an instance of ExInfo, an coretypes.Error that carries a map of additional data.",
 		},
 		nil,
 		&bitmapIndexedNode_NUM_20,
@@ -301717,7 +301717,7 @@ var arrayMap_POS_joker_DOT_repl__29_9__34_81_NUM_1 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "catch-clause => (catch type name expr*)\n  finally-clause => (finally expr*)\n\n  Catches and handles errors.\n  User code should normally use (ex-info) function to create new Error objects.",
+			S: "catch-clause => (catch type name expr*)\n  finally-clause => (finally expr*)\n\n  Catches and handles errors.\n  User code should normally use (ex-info) function to create new coretypes.Error objects.",
 		},
 	},
 }
@@ -302097,7 +302097,7 @@ var arrayMap_POS_joker_DOT_repl__26_11__28_81_NUM_1 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "The expr is evaluated and thrown, therefore it should yield an Error object.\n  User code should normally use (ex-info) function to create new Error objects.",
+			S: "The expr is evaluated and thrown, therefore it should yield an coretypes.Error object.\n  User code should normally use (ex-info) function to create new coretypes.Error objects.",
 		},
 	},
 }
@@ -369189,7 +369189,7 @@ var literalExpr_POS_joker_DOT_tools_DOT_cli__209_8__209_36_NUM_1 LiteralExpr = L
 		StartLine:   209,
 	},
 	obj: String{
-		S: "Error while parsing option ",
+		S: "coretypes.Error while parsing option ",
 	},
 }
 var varRef_pr_DASH_join_POS_joker_DOT_tools_DOT_cli__209_39__209_45 VarRefExpr = VarRefExpr{

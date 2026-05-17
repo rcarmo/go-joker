@@ -37,7 +37,7 @@ func init() {
 		Counted:        typeBuilder().RegisterInterface("Counted", (*coretypes.Counted)(nil), ""),
 		CountedIndexed: typeBuilder().RegisterInterface("CountedIndexed", (*CountedIndexed)(nil), ""),
 		Deref:          typeBuilder().RegisterInterface("Deref", (*Deref)(nil), ""),
-		Error:          typeBuilder().RegisterInterface("Error", (*Error)(nil), ""),
+		Error:          typeBuilder().RegisterInterface("Error", (*coretypes.Error)(nil), ""),
 		Gettable:       typeBuilder().RegisterInterface("Gettable", (*Gettable)(nil), ""),
 		Indexed:        typeBuilder().RegisterInterface("Indexed", (*Indexed)(nil), ""),
 		IOReader:       typeBuilder().RegisterInterface("IOReader", (*io.Reader)(nil), ""),

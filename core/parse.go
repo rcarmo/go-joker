@@ -668,7 +668,7 @@ func (err *ParseError) WithInfo(info *coretypes.ObjectInfo) Object {
 	return err
 }
 
-func (err *ParseError) Message() Object {
+func (err *ParseError) Message() coretypes.Object {
 	return MakeString(err.msg)
 }
 

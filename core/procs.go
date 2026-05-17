@@ -424,7 +424,7 @@ var procExCause = func(args []Object) Object {
 }
 
 var procExMessage = func(args []Object) Object {
-	return args[0].(Error).Message()
+	return args[0].(coretypes.Error).Message()
 }
 
 var procRegex = func(args []Object) Object {
@@ -1814,7 +1814,7 @@ var procGo = func(args []Object) Object {
 		defer func() {
 			if r := recover(); r != nil {
 				switch r := r.(type) {
-				case Error:
+				case coretypes.Error:
 					ch.SendResult(MakeFutureResult(NIL, r))
 					ch.Close()
 				default:
@@ -2127,14 +2127,14 @@ func findConfigFile(filename string, workingDir string, findDir bool) string {
 	}
 	path, err := osutil.FindConfigPath(filename, workingDir, configName, osutil.HomeDir(), findDir)
 	if err != nil {
-		fmt.Fprintln(Stderr, "Error reading config file "+filename+": ", err)
+		fmt.Fprintln(Stderr, "coretypes.Error reading config file "+filename+": ", err)
 		return ""
 	}
 	return path
 }
 
 func printConfigError(filename, msg string) {
-	fmt.Fprintln(Stderr, "Error reading config file "+filename+": ", msg)
+	fmt.Fprintln(Stderr, "coretypes.Error reading config file "+filename+": ", msg)
 }
 
 func knownMacrosToMap(km Object) (Map, error) {
@@ -2328,7 +2328,7 @@ func markJokerNamespacesAsUsed() {
 func NewReaderFromFile(filename string) (*Reader, error) {
 	data, err := osutil.ReadFileBytes(filename)
 	if err != nil {
-		fmt.Fprintln(Stderr, "Error: ", err)
+		fmt.Fprintln(Stderr, "coretypes.Error: ", err)
 		return nil, err
 	}
 	return readerConstruction.NewReader(osutil.ByteRuneReader(data), filename), nil

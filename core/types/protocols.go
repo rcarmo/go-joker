@@ -47,6 +47,12 @@ type StringReader interface {
 	ReadString(delim byte) (s string, e error)
 }
 
+type Error interface {
+	error
+	Object
+	Message() Object
+}
+
 type Sequential interface {
 	SequentialMarker()
 }

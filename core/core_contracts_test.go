@@ -2816,9 +2816,9 @@ func TestRuntimeExecutionAdapterThrow(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
 	defer func() {
 		r := recover()
-		err, ok := r.(Error)
+		err, ok := r.(coretypes.Error)
 		if !ok {
-			t.Fatalf("Throw panic = %T, want core Error", r)
+			t.Fatalf("Throw panic = %T, want core coretypes.Error", r)
 		}
 		msg := err.Message().(String)
 		if msg.S != "boom" {

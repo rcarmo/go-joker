@@ -13,7 +13,7 @@ type (
 
 	FutureResult struct {
 		value Object
-		err   Error
+		err   coretypes.Error
 	}
 	Channel struct {
 		runtime *corert.Channel[FutureResult]
@@ -27,7 +27,7 @@ const (
 	ChannelReceiveDone   = corert.ChannelReceiveDone
 )
 
-func MakeFutureResult(value Object, err Error) FutureResult {
+func MakeFutureResult(value Object, err coretypes.Error) FutureResult {
 	return FutureResult{value: value, err: err}
 }
 
@@ -85,7 +85,7 @@ func (ch *Channel) SendResult(result FutureResult) bool {
 	return ch.runtime.Send(result)
 }
 
-func (ch *Channel) Receive(done <-chan struct{}) (Object, ChannelReceiveStatus, Error) {
+func (ch *Channel) Receive(done <-chan struct{}) (Object, ChannelReceiveStatus, coretypes.Error) {
 	res, status := ch.runtime.Receive(done)
 	if status != ChannelReceiveValue {
 		return NIL, status, nil

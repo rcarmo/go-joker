@@ -64,16 +64,16 @@ func installConcurrencyExt() {
 	fcVr.Value = Proc{Name: "procFutureCall", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		f := EnsureArgIsCallable(args, 0)
-		fut := &Future{runtime: corert.NewFuture[Object, Error]()}
+		fut := &Future{runtime: corert.NewFuture[Object, coretypes.Error]()}
 		go func() {
 			registerGoroutineRT()
 			defer unregisterGoroutineRT()
 			var value Object = NIL
-			var err Error
+			var err coretypes.Error
 			defer func() {
 				if r := recover(); r != nil {
 					switch e := r.(type) {
-					case Error:
+					case coretypes.Error:
 						err = e
 					default:
 						err = RT.NewError("future panic")
@@ -324,7 +324,7 @@ func procAlts(args []Object) Object {
 
 // Future holds a value computed asynchronously.
 type Future struct {
-	runtime *corert.Future[Object, Error]
+	runtime *corert.Future[Object, coretypes.Error]
 }
 
 func (f *Future) ToString(escape bool) string    { return "#object[Future]" }
@@ -385,7 +385,7 @@ type Agent struct {
 	mu    sync.Mutex
 	value Object
 	queue chan agentAction
-	err   Error
+	err   coretypes.Error
 }
 
 type agentAction struct {
@@ -410,7 +410,7 @@ func (a *Agent) processLoop() {
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
-					if e, ok := r.(Error); ok {
+					if e, ok := r.(coretypes.Error); ok {
 						a.err = e
 					}
 				}

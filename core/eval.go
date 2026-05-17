@@ -312,7 +312,7 @@ func (err *EvalError) WithInfo(info *coretypes.ObjectInfo) Object {
 	return err
 }
 
-func (err *EvalError) Message() Object {
+func (err *EvalError) Message() coretypes.Object {
 	return MakeString(err.msg)
 }
 
@@ -862,7 +862,7 @@ func (expr *CallExpr) Name() string {
 func (expr *ThrowExpr) Eval(env *LocalEnv) Object {
 	e := Eval(expr.e, env)
 	switch e.(type) {
-	case Error:
+	case coretypes.Error:
 		panic(e)
 	default:
 		panic(RT.NewError("Cannot throw " + e.ToString(false)))
@@ -878,7 +878,7 @@ func (expr *TryExpr) Eval(env *LocalEnv) (obj Object) {
 		}()
 		if r := recover(); r != nil {
 			switch r := r.(type) {
-			case Error:
+			case coretypes.Error:
 				for _, catchExpr := range expr.catches {
 					if IsInstance(catchExpr.excType, r) {
 						obj = evalBody(catchExpr.body, env.addFrame([]Object{r}))

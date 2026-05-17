@@ -15,7 +15,7 @@ var procGoSpew = func(args []Object) (res Object) {
 	CheckArity(args, 1, 2)
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Fprintf(Stderr, "Error: %v\n", r)
+			fmt.Fprintf(Stderr, "coretypes.Error: %v\n", r)
 		}
 	}()
 	scs := spew.NewDefaultConfig()
