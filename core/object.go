@@ -1674,7 +1674,7 @@ func RegRefType(name string, inst interface{}, doc string) *coretypes.Type {
 	}
 	meta := MakeMeta(nil, "(Concrete reference type)"+doc, "1.0")
 	meta.Add(KEYWORDS.name, MakeString(name))
-	return TYPES.Register(STRINGS.Intern(name), coretypes.NewType(name, reflect.TypeOf(inst), MetaHolder{meta}))
+	return TYPES.Register(STRINGS.Intern(name), coretypes.NewRefType(name, inst, MetaHolder{meta}))
 }
 
 func RegType(name string, inst interface{}, doc string) *coretypes.Type {
@@ -1683,7 +1683,7 @@ func RegType(name string, inst interface{}, doc string) *coretypes.Type {
 	}
 	meta := MakeMeta(nil, "(Concrete type)"+doc, "1.0")
 	meta.Add(KEYWORDS.name, MakeString(name))
-	return TYPES.Register(STRINGS.Intern(name), coretypes.NewType(name, reflect.TypeOf(inst).Elem(), MetaHolder{meta}))
+	return TYPES.Register(STRINGS.Intern(name), coretypes.NewValueType(name, inst, MetaHolder{meta}))
 }
 
 func RegInterface(name string, inst interface{}, doc string) *coretypes.Type {
@@ -1692,7 +1692,7 @@ func RegInterface(name string, inst interface{}, doc string) *coretypes.Type {
 	}
 	meta := MakeMeta(nil, "(Interface type)"+doc, "1.0")
 	meta.Add(KEYWORDS.name, MakeString(name))
-	return TYPES.Register(STRINGS.Intern(name), coretypes.NewType(name, reflect.TypeOf(inst).Elem(), MetaHolder{meta}))
+	return TYPES.Register(STRINGS.Intern(name), coretypes.NewInterfaceType(name, inst, MetaHolder{meta}))
 }
 
 func CountedIndexedToString(v CountedIndexed, escape bool) string {
