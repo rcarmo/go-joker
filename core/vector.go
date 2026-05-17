@@ -355,7 +355,7 @@ func (v *Vector) Pop() Stack {
 		panic(RT.NewError("Can't pop empty vector"))
 	}
 	if v.count == 1 {
-		return EmptyVector().WithMeta(v.meta).(Stack)
+		return collectionConstruction.NewEmptyVector().WithMeta(v.meta).(Stack)
 	}
 	if v.count-v.tailoff() > 1 {
 		newTail := clone(v.tail)[0 : len(v.tail)-1]
@@ -385,7 +385,7 @@ func (v *Vector) Get(key Object) (bool, Object) {
 func (v *Vector) EntryAt(key Object) *ArrayVector {
 	ok, val := v.Get(key)
 	if ok {
-		return NewArrayVectorFrom(key, val)
+		return collectionConstruction.NewArrayVectorFrom(key, val)
 	}
 	return nil
 }
@@ -503,7 +503,7 @@ func NewVectorFromSeq(seq Seq) *Vector {
 }
 
 func (v *Vector) Empty() Collection {
-	return EmptyVector()
+	return collectionConstruction.NewEmptyVector()
 }
 
 func (v *Vector) kvreduce(c Callable, init Object) Object {

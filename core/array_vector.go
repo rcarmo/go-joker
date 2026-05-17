@@ -132,7 +132,7 @@ func (v *ArrayVector) Get(key Object) (bool, Object) {
 func (v *ArrayVector) EntryAt(key Object) *ArrayVector {
 	ok, val := v.Get(key)
 	if ok {
-		return NewArrayVectorFrom(key, val)
+		return collectionConstruction.NewArrayVectorFrom(key, val)
 	}
 	return nil
 }
@@ -165,7 +165,7 @@ func EmptyArrayVector() *ArrayVector {
 }
 
 func (v *ArrayVector) Empty() Collection {
-	return EmptyArrayVector()
+	return collectionConstruction.NewEmptyArrayVector()
 }
 
 func (v *ArrayVector) kvreduce(c Callable, init Object) Object {
