@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -44,15 +45,15 @@ func compile(fn *Fn) Object {
 				f64buf := make([]float64, len(args))
 				for i, a := range args {
 					switch v := a.(type) {
-					case Double:
+					case coretypes.Double:
 						f64buf[i] = v.D
-					case Int:
+					case coretypes.Int:
 						f64buf[i] = float64(v.I)
 					default:
 						panic(RT.NewError(fmt.Sprintf("jit: argument %d must be a number, got %s", i, a.GetType().ToString(false))))
 					}
 				}
-				return Double{D: nh(f64buf)}
+				return coretypes.Double{D: nh(f64buf)}
 			},
 			Name: "jit-compiled",
 		}
@@ -79,13 +80,13 @@ func info(fn *Fn) Object {
 	m := EmptyArrayMap()
 	prog := IrCompileFn(fn)
 	if prog == nil {
-		m.Add(MakeKeyword("compiled"), Boolean{B: false})
+		m.Add(MakeKeyword("compiled"), coretypes.Boolean{B: false})
 		return m
 	}
-	m.Add(MakeKeyword("compiled"), Boolean{B: true})
-	m.Add(MakeKeyword("slots"), Int{I: prog.NumSlots()})
-	m.Add(MakeKeyword("captures"), Int{I: len(prog.CaptureSlots())})
-	m.Add(MakeKeyword("self-recursive"), Boolean{B: prog.HasSelf()})
+	m.Add(MakeKeyword("compiled"), coretypes.Boolean{B: true})
+	m.Add(MakeKeyword("slots"), coretypes.Int{I: prog.NumSlots()})
+	m.Add(MakeKeyword("captures"), coretypes.Int{I: len(prog.CaptureSlots())})
+	m.Add(MakeKeyword("self-recursive"), coretypes.Boolean{B: prog.HasSelf()})
 
 	if prog.GetNativeHelper() != nil {
 		m.Add(MakeKeyword("path"), String{S: "native-f64"})
@@ -127,13 +128,13 @@ type irExportWASMInfo struct {
 
 func exportConst(o Object) irExportConst {
 	switch v := o.(type) {
-	case Int:
+	case coretypes.Int:
 		return irExportConst{Type: "int", Value: v.I}
-	case Double:
+	case coretypes.Double:
 		return irExportConst{Type: "double", Value: v.D}
 	case String:
 		return irExportConst{Type: "string", Value: v.S}
-	case Boolean:
+	case coretypes.Boolean:
 		return irExportConst{Type: "boolean", Value: v.B}
 	case Keyword:
 		return irExportConst{Type: "keyword", Value: v.ToString(false)}

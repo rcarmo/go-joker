@@ -2,6 +2,7 @@ package jit
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 var jitNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.jit"))
@@ -63,7 +64,7 @@ var info_ Proc = Proc{Fn: func(args []Object) Object {
 
 var compiled_ Proc = Proc{Fn: func(args []Object) Object {
 	fn := EnsureArgIsFn(args, 0)
-	return Boolean{B: isCompiled(fn)}
+	return coretypes.Boolean{B: isCompiled(fn)}
 }, Name: "compiled?", Package: "std/jit"}
 
 var export_ir_ Proc = Proc{Fn: func(args []Object) Object {

@@ -1,6 +1,7 @@
 package jit
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
 	"testing"
 
@@ -18,8 +19,8 @@ func mkFn(code string) *Fn {
 func TestJITCompile(t *testing.T) {
 	Init()
 	compiled := compile(mkFn("(fn [x y] (+ x y))"))
-	result := compiled.(Callable).Call([]Object{Double{D: 3}, Double{D: 4}})
-	if result.(Double).D != 7.0 {
+	result := compiled.(Callable).Call([]Object{coretypes.Double{D: 3}, coretypes.Double{D: 4}})
+	if result.(coretypes.Double).D != 7.0 {
 		t.Fatalf("got %v, want 7.0", result)
 	}
 }
@@ -39,7 +40,7 @@ func TestJITCompiled(t *testing.T) {
 func BenchmarkJITCompiled(b *testing.B) {
 	Init()
 	compiled := compile(mkFn("(fn [x y] (+ x y))")).(Callable)
-	args := []Object{Double{D: 3}, Double{D: 4}}
+	args := []Object{coretypes.Double{D: 3}, coretypes.Double{D: 4}}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		compiled.Call(args)
@@ -49,7 +50,7 @@ func BenchmarkJITCompiled(b *testing.B) {
 func BenchmarkJITInterpreted(b *testing.B) {
 	Init()
 	fn := mkFn("(fn [x y] (+ x y))")
-	args := []Object{Double{D: 3}, Double{D: 4}}
+	args := []Object{coretypes.Double{D: 3}, coretypes.Double{D: 4}}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		fn.Call(args)
