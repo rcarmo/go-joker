@@ -91,7 +91,7 @@ func splitOnStringOrRegex(s string, sep Object, n int) Object {
 			result.Append(String{S: el})
 		}
 		return result
-	case *Regex:
+	case *coretypes.Regex:
 		return split(s, sep.R, n)
 	default:
 		panic(RT.NewArgTypeError(1, sep, "String or Regex"))
@@ -134,7 +134,7 @@ func capitalize(s string) string {
 func escape(s string, cmap Callable) string {
 	var b bytes.Buffer
 	for _, r := range s {
-		if obj := cmap.Call([]Object{Char{Ch: r}}); !obj.Equals(NIL) {
+		if obj := cmap.Call([]Object{coretypes.Char{Ch: r}}); !obj.Equals(NIL) {
 			b.WriteString(obj.ToString(false))
 		} else {
 			b.WriteRune(r)
@@ -156,7 +156,7 @@ func indexOf(s string, value Object, from int) Object {
 		s = string(runes[from:])
 	}
 	switch value := value.(type) {
-	case Char:
+	case coretypes.Char:
 		res = strings.IndexRune(s, value.Ch)
 	case String:
 		res = strings.Index(s, value.S)
@@ -182,7 +182,7 @@ func lastIndexOf(s string, value Object, from int) Object {
 		s = string(runes[:from])
 	}
 	switch value := value.(type) {
-	case Char:
+	case coretypes.Char:
 		res = strings.LastIndex(s, string(value.Ch))
 	case String:
 		res = strings.LastIndex(s, value.S)
@@ -199,7 +199,7 @@ func replace(s string, match Object, repl string) string {
 	switch match := match.(type) {
 	case String:
 		return strings.Replace(s, match.S, repl, -1)
-	case *Regex:
+	case *coretypes.Regex:
 		return match.R.ReplaceAllString(s, repl)
 	default:
 		panic(RT.NewArgTypeError(1, match, "String or Regex"))
@@ -210,7 +210,7 @@ func replaceFirst(s string, match Object, repl string) string {
 	switch match := match.(type) {
 	case String:
 		return strings.Replace(s, match.S, repl, 1)
-	case *Regex:
+	case *coretypes.Regex:
 		m := match.R.FindStringIndex(s)
 		if m == nil {
 			return s

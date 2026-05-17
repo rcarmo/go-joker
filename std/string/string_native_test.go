@@ -36,10 +36,10 @@ func TestSplitOnEmptyStringUsesWhitespaceFields(t *testing.T) {
 }
 
 func TestStringIndexBounds(t *testing.T) {
-	if got := indexOf("åbc", Char{Ch: 'b'}, -3); !got.Equals(coretypes.MakeInt(1)) {
+	if got := indexOf("åbc", coretypes.Char{Ch: 'b'}, -3); !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("indexOf negative from = %v, want 1", got)
 	}
-	if got := indexOf("åbc", Char{Ch: 'b'}, 10); !got.Equals(NIL) {
+	if got := indexOf("åbc", coretypes.Char{Ch: 'b'}, 10); !got.Equals(NIL) {
 		t.Fatalf("indexOf oversized from = %v, want nil", got)
 	}
 	if got := lastIndexOf("ababa", String{S: "ba"}, 99); !got.Equals(coretypes.MakeInt(3)) {
