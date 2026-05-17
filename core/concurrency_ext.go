@@ -91,8 +91,8 @@ func installConcurrencyExt() {
 	installMacro(ns, "future", func(args []Object) Object {
 		// args: &form, &env, body...
 		body := args[2:]
-		fnForm := NewListFrom(append([]Object{MakeSymbol("fn"), collectionConstruction.NewVectorFrom()}, body...)...)
-		return NewListFrom(MakeSymbol("future-call"), fnForm)
+		fnForm := collectionConstruction.NewListFrom(append([]Object{MakeSymbol("fn"), collectionConstruction.NewVectorFrom()}, body...)...)
+		return collectionConstruction.NewListFrom(MakeSymbol("future-call"), fnForm)
 	})
 
 	// future? — true if obj is a Future.
@@ -186,7 +186,7 @@ func installConcurrencyExt() {
 			panic(r)
 		default:
 		}
-		return NewListFrom(results...)
+		return collectionConstruction.NewListFrom(results...)
 	}}
 	referToUser(MakeSymbol("pmap"), pmapVr)
 
@@ -222,7 +222,7 @@ func installConcurrencyExt() {
 			panic(r)
 		default:
 		}
-		return NewListFrom(results...)
+		return collectionConstruction.NewListFrom(results...)
 	}}
 	referToUser(MakeSymbol("pcalls"), pcVr)
 }
