@@ -16,12 +16,12 @@ func TestNewAndInfo(t *testing.T) {
 	img := procNewImage([]Object{coretypes.MakeInt(100), coretypes.MakeInt(50), color})
 
 	w := procWidth([]Object{img})
-	if w.(Int).I != 100 {
+	if w.(coretypes.Int).I != 100 {
 		t.Fatalf("expected width 100, got %v", w)
 	}
 
 	h := procHeight([]Object{img})
-	if h.(Int).I != 50 {
+	if h.(coretypes.Int).I != 50 {
 		t.Fatalf("expected height 50, got %v", h)
 	}
 
@@ -36,7 +36,7 @@ func TestResize(t *testing.T) {
 
 	w := procWidth([]Object{resized})
 	h := procHeight([]Object{resized})
-	if w.(Int).I != 50 || h.(Int).I != 25 {
+	if w.(coretypes.Int).I != 50 || h.(coretypes.Int).I != 25 {
 		t.Fatalf("expected 50x25, got %vx%v", w, h)
 	}
 	assertImagingPanic(t, "zero resize width", func() {
@@ -47,16 +47,16 @@ func TestResize(t *testing.T) {
 func TestAdjustmentsRejectInvalidFloats(t *testing.T) {
 	img := procNewImage([]Object{coretypes.MakeInt(8), coretypes.MakeInt(8)})
 	assertImagingPanic(t, "non-finite rotate angle", func() {
-		procRotate([]Object{img, Double{D: math.Inf(1)}})
+		procRotate([]Object{img, coretypes.Double{D: math.Inf(1)}})
 	})
 	assertImagingPanic(t, "non-positive gamma", func() {
-		procGamma([]Object{img, Double{D: 0}})
+		procGamma([]Object{img, coretypes.Double{D: 0}})
 	})
 	assertImagingPanic(t, "negative blur sigma", func() {
-		procBlur([]Object{img, Double{D: -1}})
+		procBlur([]Object{img, coretypes.Double{D: -1}})
 	})
 	assertImagingPanic(t, "bad overlay opacity", func() {
-		procOverlay([]Object{img, img, coretypes.MakeInt(0), coretypes.MakeInt(0), Double{D: 2}})
+		procOverlay([]Object{img, img, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.Double{D: 2}})
 	})
 }
 
@@ -65,10 +65,10 @@ func TestGrayscaleAndBlur(t *testing.T) {
 
 	img := procNewImage([]Object{coretypes.MakeInt(64), coretypes.MakeInt(64), NewVectorFrom(coretypes.MakeInt(200), coretypes.MakeInt(100), coretypes.MakeInt(50), coretypes.MakeInt(255))})
 	gray := procGrayscale([]Object{img})
-	blurred := procBlur([]Object{gray, Double{D: 2.0}})
+	blurred := procBlur([]Object{gray, coretypes.Double{D: 2.0}})
 
 	w := procWidth([]Object{blurred})
-	if w.(Int).I != 64 {
+	if w.(coretypes.Int).I != 64 {
 		t.Fatal("size changed after grayscale+blur")
 	}
 }
@@ -81,13 +81,13 @@ func TestCropAndFlip(t *testing.T) {
 
 	w := procWidth([]Object{cropped})
 	h := procHeight([]Object{cropped})
-	if w.(Int).I != 50 || h.(Int).I != 30 {
+	if w.(coretypes.Int).I != 50 || h.(coretypes.Int).I != 30 {
 		t.Fatalf("crop: expected 50x30, got %vx%v", w, h)
 	}
 
 	flipped := procFlipH([]Object{cropped})
 	w2 := procWidth([]Object{flipped})
-	if w2.(Int).I != 50 {
+	if w2.(coretypes.Int).I != 50 {
 		t.Fatal("flip changed width")
 	}
 	assertImagingPanic(t, "negative crop width", func() {
