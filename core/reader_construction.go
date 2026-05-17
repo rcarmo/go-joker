@@ -92,6 +92,16 @@ func (ReaderConstructionAdapter) MapLiteral(reader *Reader, values []Object, nsn
 	return m
 }
 
+func (ReaderConstructionAdapter) SetLiteral(reader *Reader, values []Object) Object {
+	set := collectionConstruction.EmptySet()
+	for _, obj := range values {
+		if !set.Add(obj) {
+			panic(MakeReadError(reader, "Duplicate set element "+obj.ToString(false)))
+		}
+	}
+	return set
+}
+
 func (ReaderConstructionAdapter) Double(v float64) Object { return MakeDouble(v) }
 
 func (ReaderConstructionAdapter) BigInt(v *big.Int, original string) Object {

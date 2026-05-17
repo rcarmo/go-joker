@@ -58,6 +58,19 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 	}
 }
 
+func TestReaderConstructionAdapterSetLiteral(t *testing.T) {
+	r := readerConstruction.NewReader(strings.NewReader("#{}"), "<adapter-contract>")
+	pushPos(r)
+	set := readerConstruction.SetLiteral(r, []Object{MakeInt(1), MakeInt(2)}).(*MapSet)
+	if set.Count() != 2 {
+		t.Fatalf("SetLiteral count = %d, want 2", set.Count())
+	}
+	obj := readerConstruction.ReadObject(r, set)
+	if obj.GetInfo() == nil || obj.GetInfo().Filename() != "<adapter-contract>" {
+		t.Fatalf("SetLiteral read object info = %#v", obj.GetInfo())
+	}
+}
+
 func TestReaderConstructionAdapterMapLiteral(t *testing.T) {
 	r := readerConstruction.NewReader(strings.NewReader("{}"), "<adapter-contract>")
 	pushPos(r)

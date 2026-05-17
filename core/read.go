@@ -577,28 +577,24 @@ func readMapWithNamespace(reader *Reader, nsname string) Object {
 }
 
 func readSet(reader *Reader) Object {
-	set := collectionConstruction.EmptySet()
+	items := make([]Object, 0, 8)
 	eatWhitespace(reader)
 	r := reader.Peek()
 	for r != '}' {
 		obj, multi := readerConstruction.Read(reader)
 		if !multi {
-			if !set.Add(obj) {
-				panic(MakeReadError(reader, "Duplicate set element "+obj.ToString(false)))
-			}
+			items = append(items, obj)
 		} else {
 			v := obj.(Vec)
 			for i := 0; i < v.Count(); i++ {
-				if !set.Add(v.At(i)) {
-					panic(MakeReadError(reader, "Duplicate set element "+v.At(i).ToString(false)))
-				}
+				items = append(items, v.At(i))
 			}
 		}
 		eatWhitespace(reader)
 		r = reader.Peek()
 	}
 	reader.Get()
-	return MakeReadObject(reader, set)
+	return MakeReadObject(reader, readerConstruction.SetLiteral(reader, items))
 }
 
 func makeQuote(obj Object, quote Symbol) Object {
