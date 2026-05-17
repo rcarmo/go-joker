@@ -51,22 +51,10 @@ type (
 	MetaHolder struct {
 		meta Map
 	}
-	BigInt struct {
-		coretypes.InfoHolder
-		B        *big.Int
-		Original string
-	}
-	BigFloat struct {
-		coretypes.InfoHolder
-		B        *big.Float
-		Original string
-	}
-	Ratio struct {
-		coretypes.InfoHolder
-		R        *big.Rat
-		Original string
-	}
-	Nil struct {
+	BigInt   = coretypes.BigInt
+	BigFloat = coretypes.BigFloat
+	Ratio    = coretypes.Ratio
+	Nil      struct {
 		coretypes.InfoHolder
 		n struct{}
 	}
@@ -864,104 +852,14 @@ func (n Nil) Vals() Seq {
 	return NIL
 }
 
-func (rat *Ratio) ToString(escape bool) string {
-	return rat.R.String()
-}
+func MakeBigInt(b *big.Int) *BigInt { return coretypes.MakeBigInt(b) }
 
-func (rat *Ratio) Equals(other interface{}) bool {
-	return equalsNumbers(rat, other)
-}
+func MakeRatio(r *big.Rat) *Ratio { return coretypes.MakeRatio(r) }
 
-func (rat *Ratio) GetType() *coretypes.Type {
-	return TYPE.Ratio
-}
+func MakeBigFloat(b *big.Float) *BigFloat { return coretypes.MakeBigFloat(b) }
 
-func (rat *Ratio) Hash() uint32 {
-	return hashutil.GobEncoder(rat.R)
-}
-
-func (rat *Ratio) Compare(other coretypes.Object) int {
-	return CompareNumbers(rat, EnsureObjectIsNumber(rootObject(other), "Cannot compare Ratio: %s"))
-}
-
-func MakeBigInt(b *big.Int) *BigInt {
-	return &BigInt{B: b}
-}
-
-func MakeRatio(r *big.Rat) *Ratio {
-	return &Ratio{R: r}
-}
-
-func (bi *BigInt) ToString(escape bool) string {
-	if FORMAT_MODE && bi.Original != "" {
-		return bi.Original
-	}
-	return bi.B.String() + "N"
-}
-
-func (bi *BigInt) Equals(other interface{}) bool {
-	return equalsNumbers(bi, other)
-}
-
-func (bi *BigInt) GetType() *coretypes.Type {
-	return TYPE.BigInt
-}
-
-func (bi *BigInt) Hash() uint32 {
-	return hashutil.GobEncoder(bi.B)
-}
-
-func (bi *BigInt) Compare(other coretypes.Object) int {
-	return CompareNumbers(bi, EnsureObjectIsNumber(rootObject(other), "Cannot compare BigInt: %s"))
-}
-
-func MakeBigFloat(b *big.Float) *BigFloat {
-	return &BigFloat{B: b}
-}
-
-// Helper function that returns a BigFloat given a string, remembering
-// any original string provided, and true if the string had the proper
-// format; nil and false otherwise.
 func MakeBigFloatWithOrig(s, orig string) (*BigFloat, bool) {
-	prec := numutil.ComputeFloatPrecision(s)
-	f := new(big.Float)
-	f.SetPrec(uint(prec))
-
-	if _, ok := f.SetString(s); ok {
-		return &BigFloat{B: f, Original: orig}, true
-	}
-
-	return nil, false
-}
-
-func (bf *BigFloat) ToString(escape bool) string {
-	if FORMAT_MODE && bf.Original != "" {
-		return bf.Original
-	}
-	b := bf.B
-	if b.IsInf() {
-		if b.Signbit() {
-			return "##-Inf"
-		}
-		return "##Inf"
-	}
-	return b.Text('g', -1) + "M"
-}
-
-func (bf *BigFloat) Equals(other interface{}) bool {
-	return equalsNumbers(bf, other)
-}
-
-func (bf *BigFloat) GetType() *coretypes.Type {
-	return TYPE.BigFloat
-}
-
-func (bf *BigFloat) Hash() uint32 {
-	return hashutil.GobEncoder(bf.B)
-}
-
-func (bf *BigFloat) Compare(other coretypes.Object) int {
-	return CompareNumbers(bf, EnsureObjectIsNumber(rootObject(other), "Cannot compare BigFloat: %s"))
+	return coretypes.MakeBigFloatWithOrig(s, orig, numutil.ComputeFloatPrecision)
 }
 
 var asciiCharStringObjects = corestr.NewObjectCache(func(ch rune) Object {

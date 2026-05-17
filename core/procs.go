@@ -1936,6 +1936,7 @@ var procIncProblemCount = func(args []Object) Object {
 func ProcessReader(reader *Reader, filename string, phase corereader.Phase) error {
 	if phase == corereader.FormatPhase {
 		FORMAT_MODE = true
+		coretypes.FormatMode = true
 		HASHMAP_THRESHOLD = 100000
 	}
 	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}

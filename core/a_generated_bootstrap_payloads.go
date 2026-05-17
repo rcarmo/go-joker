@@ -6431,7 +6431,11 @@ var TYPES coretypes.Registry = coretypes.Registry{
 	&s_VectorSeq:      &ty_VectorSeq,
 }
 
-func init() { coretypes.RuntimeTypes = &TYPE }
+func init() {
+	coretypes.RuntimeTypes = &TYPE
+	coretypes.NumberCompare = CompareNumbers
+	coretypes.NumberEquals = equalsNumbers
+}
 
 var LINTER_TYPES map[*string]bool = map[*string]bool{}
 var GLOBAL_ENV *Env

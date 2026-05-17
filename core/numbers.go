@@ -131,87 +131,6 @@ func GetOps(obj Object) coretypes.Ops {
 	}
 }
 
-// BigInt conversions
-
-func (b *BigInt) Int() coretypes.Int {
-	bi := b.BigInt()
-	if bi.Cmp(minIntBig) < 0 || bi.Cmp(maxIntBig) > 0 {
-		panic(RT.NewError("BigInt value out of native int range: " + b.ToString(false)))
-	}
-	return coretypes.Int{I: int(bi.Int64())}
-}
-
-func (b *BigInt) BigInt() *big.Int {
-	return b.B
-}
-
-func (b *BigInt) Double() coretypes.Double {
-	f, _ := new(big.Float).SetInt(b.BigInt()).Float64()
-	return coretypes.Double{D: f}
-}
-
-func (b *BigInt) BigFloat() *big.Float {
-	res := big.Float{}
-	return res.SetInt(b.BigInt())
-}
-
-func (b *BigInt) Ratio() *big.Rat {
-	res := big.Rat{}
-	return res.SetInt(b.BigInt())
-}
-
-// BigFloat conversions
-
-func (b *BigFloat) Int() coretypes.Int {
-	f, _ := b.BigFloat().Float64()
-	return coretypes.Int{I: int(f)}
-}
-
-func (b *BigFloat) BigInt() *big.Int {
-	bi, _ := b.BigFloat().Int(nil)
-	return bi
-}
-
-func (b *BigFloat) Double() coretypes.Double {
-	f, _ := b.BigFloat().Float64()
-	return coretypes.Double{D: f}
-}
-
-func (b *BigFloat) BigFloat() *big.Float {
-	return b.B
-}
-
-func (b *BigFloat) Ratio() *big.Rat {
-	res := big.Rat{}
-	return res.SetFloat64(float64(b.Double().D))
-}
-
-// Ratio conversions
-
-func (r *Ratio) Int() coretypes.Int {
-	f, _ := r.Ratio().Float64()
-	return coretypes.Int{I: int(f)}
-}
-
-func (r *Ratio) BigInt() *big.Int {
-	f, _ := r.Ratio().Float64()
-	return big.NewInt(int64(f))
-}
-
-func (r *Ratio) Double() coretypes.Double {
-	f, _ := r.Ratio().Float64()
-	return coretypes.Double{D: f}
-}
-
-func (r *Ratio) BigFloat() *big.Float {
-	f, _ := r.Ratio().Float64()
-	return big.NewFloat(f)
-}
-
-func (r *Ratio) Ratio() *big.Rat {
-	return r.R
-}
-
 // coretypes.Ops
 
 // Add
@@ -598,16 +517,6 @@ func Min(x coretypes.Number, y coretypes.Number) coretypes.Number {
 		return x
 	}
 	return y
-}
-
-// Precision
-
-func (n *BigInt) Precision() *big.Int {
-	return coretypes.MakeMathBigIntFromInt(n.B.BitLen())
-}
-
-func (n *BigFloat) Precision() *big.Int {
-	return coretypes.MakeMathBigIntFromUint(n.B.Prec())
 }
 
 func category(x coretypes.Number) int {

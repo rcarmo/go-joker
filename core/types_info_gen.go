@@ -44,21 +44,6 @@ func (x Nil) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 
-func (x *Ratio) WithInfo(info *coretypes.ObjectInfo) Object {
-	x.Info = info
-	return x
-}
-
-func (x *BigInt) WithInfo(info *coretypes.ObjectInfo) Object {
-	x.Info = info
-	return x
-}
-
-func (x *BigFloat) WithInfo(info *coretypes.ObjectInfo) Object {
-	x.Info = info
-	return x
-}
-
 func (x Keyword) WithInfo(info *coretypes.ObjectInfo) Object {
 	x.Info = info
 	return x
