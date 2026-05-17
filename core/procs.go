@@ -370,39 +370,56 @@ var procBitAndNot = func(args []Object) Object {
 	return Int{I: x.I &^ y.I}
 }
 
+func checkedBitIndex(index int, op string) uint {
+	if index < 0 {
+		panic(RT.NewError(op + " bit index must be non-negative"))
+	}
+	if index >= strconv.IntSize {
+		panic(RT.NewError(op + " bit index is too large"))
+	}
+	return uint(index)
+}
+
+func checkedShiftCount(count int, op string) uint {
+	if count < 0 {
+		panic(RT.NewError(op + " shift count must be non-negative"))
+	}
+	return uint(count)
+}
+
 var procBitClear = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I &^ (1 << uint(y.I))}
+	return Int{I: x.I &^ (1 << checkedBitIndex(y.I, "bit-clear"))}
 }
 
 var procBitSet = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I | (1 << uint(y.I))}
+	return Int{I: x.I | (1 << checkedBitIndex(y.I, "bit-set"))}
 }
 
 var procBitFlip = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I ^ (1 << uint(y.I))}
+	return Int{I: x.I ^ (1 << checkedBitIndex(y.I, "bit-flip"))}
 }
 
 var procBitTest = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Boolean{B: x.I&(1<<uint(y.I)) != 0}
+	return Boolean{B: x.I&(1<<checkedBitIndex(y.I, "bit-test")) != 0}
 }
 
 var procBitShiftLeft = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I << uint(y.I)}
+	return Int{I: x.I << checkedShiftCount(y.I, "bit-shift-left")}
 }
 
 var procBitShiftRight = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: x.I >> uint(y.I)}
+	return Int{I: x.I >> checkedShiftCount(y.I, "bit-shift-right")}
 }
 
 var procUnsignedBitShiftRight = func(args []Object) Object {
 	x, y := EnsureObjectIsInts(args)
-	return Int{I: int(uint(x.I) >> uint(y.I))}
+	return Int{I: int(uint(x.I) >> checkedShiftCount(y.I, "unsigned-bit-shift-right"))}
 }
 
 var procExInfo = func(args []Object) Object {

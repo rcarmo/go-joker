@@ -10,6 +10,22 @@ import (
 	"time"
 )
 
+func requirePanic(t *testing.T, name string, fn func()) {
+	t.Helper()
+	defer func() {
+		if recover() == nil {
+			t.Fatalf("%s did not panic", name)
+		}
+	}()
+	fn()
+}
+
+func TestBitOpsRejectInvalidIndexesAndShifts(t *testing.T) {
+	requirePanic(t, "negative bit index", func() { procBitSet([]Object{MakeInt(0), MakeInt(-1)}) })
+	requirePanic(t, "too-large bit index", func() { procBitTest([]Object{MakeInt(0), MakeInt(strconv.IntSize)}) })
+	requirePanic(t, "negative shift count", func() { procBitShiftLeft([]Object{MakeInt(1), MakeInt(-1)}) })
+}
+
 func TestIntArithmeticPromotesToBigIntOnOverflow(t *testing.T) {
 	if got := procAdd([]Object{Int{I: maxInt}, Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "9223372036854775808N" {
 		t.Fatalf("add promotion mismatch: %T %s", got, got.ToString(false))
