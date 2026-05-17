@@ -32,10 +32,10 @@ func installMacro(ns *Namespace, name string, fn func([]Object) Object) {
 	referToUser(sym, vr)
 }
 
-func listObjs(objs ...Object) *List { return NewListFrom(objs...) }
+func listObjs(objs ...Object) *List { return collectionConstruction.NewListFrom(objs...) }
 func quoteObj(obj Object) *List     { return listObjs(MakeSymbol("quote"), obj) }
 func doObj(forms ...Object) *List {
-	return NewListFrom(append([]Object{MakeSymbol("do")}, forms...)...)
+	return collectionConstruction.NewListFrom(append([]Object{MakeSymbol("do")}, forms...)...)
 }
 
 func macroDefProtocol(args []Object) Object {
@@ -71,7 +71,7 @@ func macroDefProtocol(args []Object) Object {
 		}
 		forms = append(forms, String{S: mname.ToString(false)}, Int{I: argv.Count()})
 	}
-	return NewListFrom(forms...)
+	return collectionConstruction.NewListFrom(forms...)
 }
 
 func macroExtendType(args []Object) Object {
@@ -107,11 +107,11 @@ func macroExtendType(args []Object) Object {
 				continue
 			}
 			fnTail := ToSlice(s.Rest())
-			fnForm := NewListFrom(append([]Object{MakeSymbol("fn")}, fnTail...)...)
+			fnForm := collectionConstruction.NewListFrom(append([]Object{MakeSymbol("fn")}, fnTail...)...)
 			call = append(call, String{S: mname.ToString(false)}, fnForm)
 			i++
 		}
-		forms = append(forms, NewListFrom(call...))
+		forms = append(forms, collectionConstruction.NewListFrom(call...))
 	}
 	return doObj(forms...)
 }
@@ -144,7 +144,7 @@ func macroExtendProtocol(args []Object) Object {
 				continue
 			}
 			fnTail := ToSlice(s.Rest())
-			fnForm := NewListFrom(append([]Object{MakeSymbol("fn")}, fnTail...)...)
+			fnForm := collectionConstruction.NewListFrom(append([]Object{MakeSymbol("fn")}, fnTail...)...)
 			call = append(call, String{S: mname.ToString(false)}, fnForm)
 			i++
 			// Stop if the next form looks like a type followed by methods. In practice
@@ -155,7 +155,7 @@ func macroExtendProtocol(args []Object) Object {
 				}
 			}
 		}
-		forms = append(forms, NewListFrom(call...))
+		forms = append(forms, collectionConstruction.NewListFrom(call...))
 	}
 	return doObj(forms...)
 }
@@ -181,7 +181,7 @@ func macroDefRecord(args []Object) Object {
 		}
 		defCall = append(defCall, String{S: field.ToString(false)})
 	}
-	forms := []Object{NewListFrom(defCall...)}
+	forms := []Object{collectionConstruction.NewListFrom(defCall...)}
 	if len(args) > 4 {
 		// Reuse extend-type semantics with the record's dispatch type name.
 		extendArgs := append([]Object{args[0], args[1], name}, args[4:]...)
