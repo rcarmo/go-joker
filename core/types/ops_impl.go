@@ -531,11 +531,6 @@ func Category(x Number) int {
 	}
 }
 
-var NumericError func(string) any
-
 func panicNumericError(msg string) {
-	if NumericError != nil {
-		panic(NumericError(msg))
-	}
 	panic(msg)
 }

@@ -81,7 +81,6 @@ type RecurBindings []Object
 var FormatMode bool
 var NumberCompare func(Number, Number) int
 var NumberEquals func(Number, interface{}) bool
-var BigIntNativeBoundsError func(*BigInt) string
 
 func MakeBigInt(b *big.Int) *BigInt       { return &BigInt{B: b} }
 func MakeRatio(r *big.Rat) *Ratio         { return &Ratio{R: r} }
@@ -152,9 +151,6 @@ func (bf *BigFloat) Compare(other Object) int { return compareNumbers(bf, other.
 func (b *BigInt) Int() Int {
 	bi := b.BigInt()
 	if bi.Cmp(minIntBig) < 0 || bi.Cmp(maxIntBig) > 0 {
-		if BigIntNativeBoundsError != nil {
-			panic(BigIntNativeBoundsError(b))
-		}
 		panic("BigInt value out of native int range: " + b.ToString(false))
 	}
 	return Int{I: int(bi.Int64())}
