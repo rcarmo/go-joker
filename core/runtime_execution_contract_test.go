@@ -241,6 +241,12 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 		t.Fatalf("BuildVector returned %#v", got)
 	}
 	transient := ToTransient(vec)
+	if !adapter.HasMutableSlotCandidate([]Object{MakeInt(1), vec}) {
+		t.Fatal("HasMutableSlotCandidate missed vector")
+	}
+	if adapter.HasMutableSlotCandidate([]Object{MakeInt(1), MakeSymbol("x")}) {
+		t.Fatal("HasMutableSlotCandidate should ignore non-candidate objects")
+	}
 	if got := adapter.MutableSlotObject(vec, &EscapeInfo{SafeMutableSlots: []bool{true}}, 0); got == vec {
 		t.Fatalf("MutableSlotObject did not convert vector: %#v", got)
 	}

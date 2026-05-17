@@ -137,6 +137,16 @@ func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj Obj
 	return adapter.CallObject(fnObj, args)
 }
 
+func (RuntimeExecutionAdapter) HasMutableSlotCandidate(slots []Object) bool {
+	for _, s := range slots {
+		switch s.(type) {
+		case *ArrayVector, *ArrayMap, *HashMap, String:
+			return true
+		}
+	}
+	return false
+}
+
 func (RuntimeExecutionAdapter) MutableSlotObject(obj Object, escapeInfo *EscapeInfo, slot int) Object {
 	if escapeInfo == nil || slot < 0 || slot >= len(escapeInfo.SafeMutableSlots) || !escapeInfo.SafeMutableSlots[slot] {
 		return obj

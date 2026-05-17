@@ -27,17 +27,7 @@ func irExec(prog *IRProgram, initSlots []Object) Object {
 
 	// Escape analysis: convert safe local values to transient builders.
 	// Only run if there are actually mutable candidate slots.
-	hasMutableCandidate := false
-	for _, s := range slots {
-		switch s.(type) {
-		case *ArrayVector, *ArrayMap, *HashMap, String:
-			hasMutableCandidate = true
-		}
-		if hasMutableCandidate {
-			break
-		}
-	}
-	if hasMutableCandidate {
+	if runtimeExec.HasMutableSlotCandidate(slots) {
 		escapeInfo := runtimeExec.ProgramEscapeInfo(prog)
 		if escapeInfo == nil {
 			return nil
