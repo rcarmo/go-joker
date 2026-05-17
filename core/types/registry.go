@@ -2,6 +2,15 @@ package types
 
 type Registry map[*string]*Type
 
+func (r Registry) Register(name *string, typ *Type) *Type {
+	r[name] = typ
+	return typ
+}
+
+func (r Registry) Lookup(name *string) *Type {
+	return r[name]
+}
+
 type Types struct {
 	Associative    *Type
 	Callable       *Type
