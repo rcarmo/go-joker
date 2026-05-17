@@ -1,9 +1,10 @@
 package core
 
 import (
-	"bytes"
 	"fmt"
 	"io"
+
+	corecollections "github.com/rcarmo/go-joker/core/collections"
 )
 
 type (
@@ -60,16 +61,13 @@ func EmptySet() *MapSet {
 }
 
 func (set *MapSet) ToString(escape bool) string {
-	var b bytes.Buffer
-	b.WriteString("#{")
-	for iter := iter(set.m.Keys()); iter.HasNext(); {
-		b.WriteString(iter.Next().ToString(escape))
-		if iter.HasNext() {
-			b.WriteRune(' ')
+	return corecollections.FormatDelimited("#{", "}", " ", func(yield func(string) bool) {
+		for iter := iter(set.m.Keys()); iter.HasNext(); {
+			if !yield(iter.Next().ToString(escape)) {
+				return
+			}
 		}
-	}
-	b.WriteRune('}')
-	return b.String()
+	})
 }
 
 func (set *MapSet) Equals(other interface{}) bool {

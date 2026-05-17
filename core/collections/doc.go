@@ -1,7 +1,8 @@
 // Package collections is reserved for collection extraction from root core.
 //
 // It contains root-independent collection mechanics such as generic slice
-// storage helpers, pair-array helpers, bitmap/hash-index helpers, and opaque
+// storage helpers, persistent list-node helpers, map equality/formatting
+// helpers, pair-array helpers, bitmap/hash-index helpers, and opaque
 // trie node/path helpers. Go packages are directory-scoped, so vectors, maps,
 // sets, seqs, and transients should move here only as real package moves.
 // Current production collection construction call sites route through root

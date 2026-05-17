@@ -1,7 +1,6 @@
 package core
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 
@@ -111,23 +110,22 @@ func mapEquals(m Map, other interface{}) bool {
 }
 
 func mapToString(m Map, escape bool) string {
-	var b bytes.Buffer
-	b.WriteRune('{')
-	if m.Count() > 0 {
-		for iter := m.Iter(); ; {
-			p := iter.Next()
-			b.WriteString(p.Key.ToString(escape))
-			b.WriteRune(' ')
-			b.WriteString(p.Value.ToString(escape))
-			if iter.HasNext() {
-				b.WriteString(", ")
-			} else {
-				break
+	return corecollections.FormatPairDelimited(
+		"{",
+		"}",
+		" ",
+		", ",
+		func(yield func(corecollections.Pair[Object, Object]) bool) {
+			for iter := m.Iter(); iter.HasNext(); {
+				p := iter.Next()
+				if !yield(corecollections.Pair[Object, Object]{Key: p.Key, Value: p.Value}) {
+					return
+				}
 			}
-		}
-	}
-	b.WriteRune('}')
-	return b.String()
+		},
+		func(key Object) string { return key.ToString(escape) },
+		func(value Object) string { return value.ToString(escape) },
+	)
 }
 
 func callMap(m Map, args []Object) Object {
