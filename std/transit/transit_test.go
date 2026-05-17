@@ -20,7 +20,7 @@ func TestTransitRoundTripMap(t *testing.T) {
 	if ok, v := decoded.Get(MakeKeyword("name")); !ok || v.ToString(false) != "joker" {
 		t.Fatalf("name roundtrip failed: %v", v)
 	}
-	if ok, v := decoded.Get(MakeKeyword("n")); !ok || v.(Int).I != 42 {
+	if ok, v := decoded.Get(MakeKeyword("n")); !ok || v.(coretypes.Int).I != 42 {
 		t.Fatalf("n roundtrip failed: %v", v)
 	}
 }
@@ -55,7 +55,7 @@ func TestTransitTaggedSetListQuoteCMap(t *testing.T) {
 		t.Fatalf("quote tag mismatch: %s", quoted.ToString(false))
 	}
 	cmap := readTransit(MakeString(`["~#cmap",["~:k",1,"~$sym",2]]`)).(Map)
-	if ok, v := cmap.Get(MakeKeyword("k")); !ok || v.(Int).I != 1 {
+	if ok, v := cmap.Get(MakeKeyword("k")); !ok || v.(coretypes.Int).I != 1 {
 		t.Fatalf("cmap keyword mismatch: %s", cmap.ToString(false))
 	}
 }

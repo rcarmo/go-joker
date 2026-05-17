@@ -1,9 +1,8 @@
 package edn
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
-
-	. "github.com/rcarmo/go-joker/core"
 )
 
 func roundTrip(t *testing.T, src string, want string) {
@@ -53,7 +52,7 @@ func TestEDNDecodeAll(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(objs) != 3 || objs[0].(Int).I != 1 || objs[1].ToString(false) != ":a" {
+	if len(objs) != 3 || objs[0].(coretypes.Int).I != 1 || objs[1].ToString(false) != ":a" {
 		t.Fatalf("unexpected objects: %#v", objs)
 	}
 }

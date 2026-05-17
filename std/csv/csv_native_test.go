@@ -2,6 +2,7 @@ package csv
 
 import (
 	"errors"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -23,12 +24,12 @@ func expectCSVPanic(t *testing.T, fn func()) {
 
 func TestCSVOptionsRejectInvalidDelimiters(t *testing.T) {
 	opts := EmptyArrayMap()
-	opts.Add(MakeKeyword("comma"), Char{Ch: '\n'})
+	opts.Add(MakeKeyword("comma"), coretypes.Char{Ch: '\n'})
 	expectCSVPanic(t, func() { _ = writeString(NewVectorFrom(NewVectorFrom(MakeString("a"))), opts) })
 
 	readOpts := EmptyArrayMap()
-	readOpts.Add(MakeKeyword("comma"), Char{Ch: ';'})
-	readOpts.Add(MakeKeyword("comment"), Char{Ch: ';'})
+	readOpts.Add(MakeKeyword("comma"), coretypes.Char{Ch: ';'})
+	readOpts.Add(MakeKeyword("comment"), coretypes.Char{Ch: ';'})
 	expectCSVPanic(t, func() { _ = csvSeqOpts(MakeString("a;b\n"), readOpts) })
 }
 

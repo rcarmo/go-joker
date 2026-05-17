@@ -1,6 +1,7 @@
 package yaml
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
 	"testing"
 
@@ -10,7 +11,7 @@ import (
 func TestYAMLReadWriteString(t *testing.T) {
 	obj := readString("a: 1\nb:\n  - true\n  - x\n").(Map)
 	ok, a := obj.Get(MakeString("a"))
-	if !ok || a.(Int).I != 1 {
+	if !ok || a.(coretypes.Int).I != 1 {
 		t.Fatalf("yaml read mismatch: %v", a)
 	}
 	m := EmptyArrayMap()

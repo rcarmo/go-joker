@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
 	"testing"
 	"time"
@@ -42,7 +43,7 @@ func TestAnalyze(t *testing.T) {
 func TestBenchmarkFn(t *testing.T) {
 	initRuntimeNamespace()
 	// Benchmark a simple fn; this should complete quickly and never loop forever.
-	counter := Int{I: 0}
+	counter := coretypes.Int{I: 0}
 	fn := Proc{Fn: func(args []Object) Object {
 		counter.I++
 		return counter
@@ -64,7 +65,7 @@ func TestBenchmarkFn(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected result type: %T", result)
 	}
-	if ok, v := am.Get(MakeKeyword("iterations")); !ok || v.(Int).I <= 0 {
+	if ok, v := am.Get(MakeKeyword("iterations")); !ok || v.(coretypes.Int).I <= 0 {
 		t.Fatalf("invalid iterations in result: %s", result.ToString(false))
 	}
 	t.Logf("benchmark: %s", result.ToString(false))

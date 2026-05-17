@@ -17,7 +17,7 @@ func TestRuntimeIntObjectPromotesOutsideNativeRange(t *testing.T) {
 		return
 	}
 	if got.GetType() != TYPE.Int {
-		t.Fatalf("runtime int object type = %s, want Int", got.GetType().ToString(false))
+		t.Fatalf("runtime int object type = %s, want coretypes.Int", got.GetType().ToString(false))
 	}
 }
 
@@ -30,7 +30,7 @@ func TestRuntimeUintObjectPromotesOutsideNativeRange(t *testing.T) {
 		return
 	}
 	if got.GetType() != TYPE.Int {
-		t.Fatalf("runtime uint object type = %s, want Int", got.GetType().ToString(false))
+		t.Fatalf("runtime uint object type = %s, want coretypes.Int", got.GetType().ToString(false))
 	}
 }
 

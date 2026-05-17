@@ -117,11 +117,11 @@ func (e *transitEncoder) encode(obj Object, asKey bool) interface{} {
 	switch v := obj.(type) {
 	case Nil:
 		return nil
-	case Boolean:
+	case coretypes.Boolean:
 		return v.B
-	case Int:
+	case coretypes.Int:
 		return v.I
-	case Double:
+	case coretypes.Double:
 		return v.D
 	case *BigInt:
 		return e.cacheString("~i"+v.BigInt().String(), asKey)
@@ -187,7 +187,7 @@ func (d *transitDecoder) decode(v interface{}, asKey bool) Object {
 		if x == float64(int(x)) {
 			return coretypes.MakeInt(int(x))
 		}
-		return Double{D: x}
+		return coretypes.Double{D: x}
 	case string:
 		return d.decodeString(x, asKey)
 	case []interface{}:

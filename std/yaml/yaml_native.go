@@ -2,6 +2,7 @@ package yaml
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	"gopkg.in/yaml.v2"
 
@@ -12,9 +13,9 @@ func fromObject(obj Object) interface{} {
 	switch obj := obj.(type) {
 	case Keyword:
 		return obj.ToString(false)[1:]
-	case Boolean:
+	case coretypes.Boolean:
 		return obj.B
-	case Number:
+	case coretypes.Number:
 		return obj.Double().D
 	case Nil:
 		return nil
@@ -49,11 +50,11 @@ func toObject(v interface{}) Object {
 	case string:
 		return MakeString(v)
 	case float64:
-		return Double{D: v}
+		return coretypes.Double{D: v}
 	case int:
-		return Int{I: v}
+		return coretypes.Int{I: v}
 	case bool:
-		return Boolean{B: v}
+		return coretypes.Boolean{B: v}
 	case nil:
 		return NIL
 	case []interface{}:
