@@ -353,49 +353,49 @@ func EnsureArgIsComparator(args []Object, index int) coretypes.Comparator {
 	panic(FailArg(obj, "coretypes.Comparator", index))
 }
 
-func EnsureObjectIsRatio(obj Object, pattern string) *Ratio {
-	if c, yes := obj.(*Ratio); yes {
+func EnsureObjectIsRatio(obj Object, pattern string) *coretypes.Ratio {
+	if c, yes := obj.(*coretypes.Ratio); yes {
 		return c
 	}
-	panic(FailObject(obj, "Ratio", pattern))
+	panic(FailObject(obj, "coretypes.Ratio", pattern))
 }
 
-func EnsureArgIsRatio(args []Object, index int) *Ratio {
+func EnsureArgIsRatio(args []Object, index int) *coretypes.Ratio {
 	obj := args[index]
-	if c, yes := obj.(*Ratio); yes {
+	if c, yes := obj.(*coretypes.Ratio); yes {
 		return c
 	}
-	panic(FailArg(obj, "Ratio", index))
+	panic(FailArg(obj, "coretypes.Ratio", index))
 }
 
-func EnsureObjectIsBigFloat(obj Object, pattern string) *BigFloat {
-	if c, yes := obj.(*BigFloat); yes {
+func EnsureObjectIsBigFloat(obj Object, pattern string) *coretypes.BigFloat {
+	if c, yes := obj.(*coretypes.BigFloat); yes {
 		return c
 	}
-	panic(FailObject(obj, "BigFloat", pattern))
+	panic(FailObject(obj, "coretypes.BigFloat", pattern))
 }
 
-func EnsureArgIsBigFloat(args []Object, index int) *BigFloat {
+func EnsureArgIsBigFloat(args []Object, index int) *coretypes.BigFloat {
 	obj := args[index]
-	if c, yes := obj.(*BigFloat); yes {
+	if c, yes := obj.(*coretypes.BigFloat); yes {
 		return c
 	}
-	panic(FailArg(obj, "BigFloat", index))
+	panic(FailArg(obj, "coretypes.BigFloat", index))
 }
 
-func EnsureObjectIsBigInt(obj Object, pattern string) *BigInt {
-	if c, yes := obj.(*BigInt); yes {
+func EnsureObjectIsBigInt(obj Object, pattern string) *coretypes.BigInt {
+	if c, yes := obj.(*coretypes.BigInt); yes {
 		return c
 	}
-	panic(FailObject(obj, "BigInt", pattern))
+	panic(FailObject(obj, "coretypes.BigInt", pattern))
 }
 
-func EnsureArgIsBigInt(args []Object, index int) *BigInt {
+func EnsureArgIsBigInt(args []Object, index int) *coretypes.BigInt {
 	obj := args[index]
-	if c, yes := obj.(*BigInt); yes {
+	if c, yes := obj.(*coretypes.BigInt); yes {
 		return c
 	}
-	panic(FailArg(obj, "BigInt", index))
+	panic(FailArg(obj, "coretypes.BigInt", index))
 }
 
 func EnsureObjectIsNamespace(obj Object, pattern string) *Namespace {
