@@ -1665,10 +1665,7 @@ func typeBuilder() coretypes.Builder {
 		Registry: TYPES,
 		Intern:   STRINGS.Intern,
 		MetaFactory: func(kind coretypes.Kind, name string, doc string) any {
-			if doc != "" {
-				doc = "\n  " + doc
-			}
-			meta := MakeMeta(nil, kind.DocumentationPrefix()+doc, "1.0")
+			meta := MakeMeta(nil, coretypes.TypeMetadataDoc(kind, doc), "1.0")
 			meta.Add(KEYWORDS.name, MakeString(name))
 			return MetaHolder{meta}
 		},
