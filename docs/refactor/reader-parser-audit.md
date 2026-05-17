@@ -16,15 +16,15 @@ Updated: 2026-05-16
 
 The package still does **not** import root `core` and must remain that way.
 
-## Remaining root-bound `core/reader.go`
+## Remaining root-bound reader wrapper
 
-`core/reader.go` is now a thin root adapter:
+The former tiny `core/reader.go` wrapper has been folded into `core/read.go` so root reader ownership is not split across a standalone file. The remaining root wrapper responsibilities are still:
 
 - root `Reader` embeds `reader.RuneStream`;
 - root keeps filename interning through `STRINGS.Intern`;
 - root converts underlying rune-read errors to `RT.NewError`.
 
-Moving this file completely requires a reader construction adapter for filename/string interning and error conversion, or accepting non-interned filename storage in `core/reader` plus a root wrapper for core errors.
+Moving this wrapper completely requires a reader construction adapter for filename/string interning and error conversion, or accepting non-interned filename storage in `core/reader` plus a root wrapper for core errors.
 
 ## Remaining root-bound `core/read.go`
 
