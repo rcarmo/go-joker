@@ -104,8 +104,8 @@ func (v *ArrayVector) TryNth(i int, d Object) Object {
 
 func (v *ArrayVector) sequential() {}
 
-func (v *ArrayVector) Compare(other Object) int {
-	v2 := EnsureObjectIsCountedIndexed(other, "Cannot compare Vector: %s")
+func (v *ArrayVector) Compare(other coretypes.Object) int {
+	v2 := EnsureObjectIsCountedIndexed(other.(Object), "Cannot compare Vector: %s")
 	return CountedIndexedCompare(v, v2)
 }
 

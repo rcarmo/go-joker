@@ -10,6 +10,14 @@ type Counted interface {
 	Count() int
 }
 
+type Comparable interface {
+	Compare(other Object) int
+}
+
+type Comparator interface {
+	Compare(a, b Object) int
+}
+
 type Named interface {
 	Name() string
 	Namespace() string

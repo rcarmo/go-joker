@@ -161,10 +161,8 @@ type (
 	Sequential interface {
 		sequential()
 	}
-	Comparable interface {
-		Compare(other Object) int
-	}
-	Indexed interface {
+	Comparable = coretypes.Comparable
+	Indexed    interface {
 		Nth(i int) Object
 		TryNth(i int, d Object) Object
 	}
@@ -184,9 +182,7 @@ type (
 	Reversible interface {
 		Rseq() Seq
 	}
-	Comparator interface {
-		Compare(a, b Object) int
-	}
+	Comparator    = coretypes.Comparator
 	SortableSlice struct {
 		s   []Object
 		cmp Comparator
@@ -693,8 +689,8 @@ func compare(c Callable, a, b Object) int {
 	}
 }
 
-func (fn *Fn) Compare(a, b Object) int {
-	return compare(fn, a, b)
+func (fn *Fn) Compare(a, b coretypes.Object) int {
+	return compare(fn, a.(Object), b.(Object))
 }
 
 func (p Proc) Call(args []Object) Object {
@@ -702,8 +698,8 @@ func (p Proc) Call(args []Object) Object {
 	return p.Fn(args)
 }
 
-func (p Proc) Compare(a, b Object) int {
-	return compare(p, a, b)
+func (p Proc) Compare(a, b coretypes.Object) int {
+	return compare(p, a.(Object), b.(Object))
 }
 
 func (p Proc) ToString(escape bool) string {
@@ -915,8 +911,8 @@ func (rat *Ratio) Hash() uint32 {
 	return hashutil.GobEncoder(rat.r)
 }
 
-func (rat *Ratio) Compare(other Object) int {
-	return CompareNumbers(rat, EnsureObjectIsNumber(other, "Cannot compare Ratio: %s"))
+func (rat *Ratio) Compare(other coretypes.Object) int {
+	return CompareNumbers(rat, EnsureObjectIsNumber(other.(Object), "Cannot compare Ratio: %s"))
 }
 
 func MakeBigInt(b *big.Int) *BigInt {
@@ -968,8 +964,8 @@ func (bi *BigInt) Hash() uint32 {
 	return hashutil.GobEncoder(bi.b)
 }
 
-func (bi *BigInt) Compare(other Object) int {
-	return CompareNumbers(bi, EnsureObjectIsNumber(other, "Cannot compare BigInt: %s"))
+func (bi *BigInt) Compare(other coretypes.Object) int {
+	return CompareNumbers(bi, EnsureObjectIsNumber(other.(Object), "Cannot compare BigInt: %s"))
 }
 
 func MakeBigFloat(b *big.Float) *BigFloat {
@@ -1017,8 +1013,8 @@ func (bf *BigFloat) Hash() uint32 {
 	return hashutil.GobEncoder(bf.b)
 }
 
-func (bf *BigFloat) Compare(other Object) int {
-	return CompareNumbers(bf, EnsureObjectIsNumber(other, "Cannot compare BigFloat: %s"))
+func (bf *BigFloat) Compare(other coretypes.Object) int {
+	return CompareNumbers(bf, EnsureObjectIsNumber(other.(Object), "Cannot compare BigFloat: %s"))
 }
 
 var asciiCharStringObjects = corestr.NewObjectCache(func(ch rune) Object {
@@ -1086,8 +1082,8 @@ func (c Char) Hash() uint32 {
 	return h.Sum32()
 }
 
-func (c Char) Compare(other Object) int {
-	c2 := EnsureObjectIsChar(other, "Cannot compare Char: %s")
+func (c Char) Compare(other coretypes.Object) int {
+	c2 := EnsureObjectIsChar(other.(Object), "Cannot compare Char: %s")
 	if c.Ch < c2.Ch {
 		return -1
 	}
@@ -1149,8 +1145,8 @@ func (d Double) Hash() uint32 {
 	return h.Sum32()
 }
 
-func (d Double) Compare(other Object) int {
-	return CompareNumbers(d, EnsureObjectIsNumber(other, "Cannot compare Double: %s"))
+func (d Double) Compare(other coretypes.Object) int {
+	return CompareNumbers(d, EnsureObjectIsNumber(other.(Object), "Cannot compare Double: %s"))
 }
 
 func (i Int) GetInfo() *coretypes.ObjectInfo { return nil }
@@ -1195,8 +1191,8 @@ func (i Int) Hash() uint32 {
 	return h.Sum32()
 }
 
-func (i Int) Compare(other Object) int {
-	return CompareNumbers(i, EnsureObjectIsNumber(other, "Cannot compare Int: %s"))
+func (i Int) Compare(other coretypes.Object) int {
+	return CompareNumbers(i, EnsureObjectIsNumber(other.(Object), "Cannot compare Int: %s"))
 }
 
 func (b Boolean) ToString(escape bool) string {
@@ -1232,8 +1228,8 @@ func (b Boolean) Hash() uint32 {
 	return h.Sum32()
 }
 
-func (b Boolean) Compare(other Object) int {
-	b2 := EnsureObjectIsBoolean(other, "Cannot compare Boolean: %s")
+func (b Boolean) Compare(other coretypes.Object) int {
+	b2 := EnsureObjectIsBoolean(other.(Object), "Cannot compare Boolean: %s")
 	if b.B == b2.B {
 		return 0
 	}
@@ -1268,8 +1264,8 @@ func (t Time) Hash() uint32 {
 	return hashutil.GobEncoder(t.T)
 }
 
-func (t Time) Compare(other Object) int {
-	t2 := EnsureObjectIsTime(other, "Cannot compare Time: %s")
+func (t Time) Compare(other coretypes.Object) int {
+	t2 := EnsureObjectIsTime(other.(Object), "Cannot compare Time: %s")
 	if t.T.Equal(t2.T) {
 		return 0
 	}
@@ -1314,8 +1310,8 @@ func (k Keyword) Hash() uint32 {
 	return k.hash
 }
 
-func (k Keyword) Compare(other Object) int {
-	k2 := EnsureObjectIsKeyword(other, "Cannot compare Keyword: %s")
+func (k Keyword) Compare(other coretypes.Object) int {
+	k2 := EnsureObjectIsKeyword(other.(Object), "Cannot compare Keyword: %s")
 	return corestr.Compare(k.ToString(false), k2.ToString(false))
 }
 
@@ -1390,8 +1386,8 @@ func (s Symbol) Hash() uint32 {
 	return hashutil.Symbol(s.ns, s.name) + 0x9e3779b9
 }
 
-func (s Symbol) Compare(other Object) int {
-	s2 := EnsureObjectIsSymbol(other, "Cannot compare Symbol: %s")
+func (s Symbol) Compare(other coretypes.Object) int {
+	s2 := EnsureObjectIsSymbol(other.(Object), "Cannot compare Symbol: %s")
 	return corestr.Compare(s.ToString(false), s2.ToString(false))
 }
 
@@ -1591,8 +1587,8 @@ func (s String) TryNth(i int, d Object) Object {
 	return d
 }
 
-func (s String) Compare(other Object) int {
-	s2 := EnsureObjectIsString(other, "Cannot compare String: %s")
+func (s String) Compare(other coretypes.Object) int {
+	s2 := EnsureObjectIsString(other.(Object), "Cannot compare String: %s")
 	return corestr.Compare(s.S, s2.S)
 }
 

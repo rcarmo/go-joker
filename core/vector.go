@@ -318,8 +318,8 @@ func (v *Vector) TryNth(i int, d Object) Object {
 
 func (v *Vector) sequential() {}
 
-func (v *Vector) Compare(other Object) int {
-	v2 := EnsureObjectIsCountedIndexed(other, "Cannot compare Vector: %s")
+func (v *Vector) Compare(other coretypes.Object) int {
+	v2 := EnsureObjectIsCountedIndexed(other.(Object), "Cannot compare Vector: %s")
 	return CountedIndexedCompare(v, v2)
 }
 
