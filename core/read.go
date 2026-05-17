@@ -95,7 +95,7 @@ func DeriveReadObject(base Object, obj Object) Object {
 }
 
 func (err ReadError) Message() Object {
-	return MakeString(err.msg)
+	return readerConstruction.String(err.msg)
 }
 
 func (err ReadError) Error() string {
@@ -522,17 +522,17 @@ func resolveKey(key Object, nsname string) Object {
 	switch key := key.(type) {
 	case Keyword:
 		if key.ns == nil {
-			return DeriveReadObject(key, MakeKeyword(nsname+"/"+key.Name()))
+			return DeriveReadObject(key, readerConstruction.Keyword(nsname+"/"+key.Name()))
 		}
 		if key.Namespace() == "_" {
-			return DeriveReadObject(key, MakeKeyword(key.Name()))
+			return DeriveReadObject(key, readerConstruction.Keyword(key.Name()))
 		}
 	case Symbol:
 		if key.ns == nil {
-			return DeriveReadObject(key, MakeSymbol(nsname+"/"+key.Name()))
+			return DeriveReadObject(key, readerConstruction.Symbol(nsname+"/"+key.Name()))
 		}
 		if key.Namespace() == "_" {
-			return DeriveReadObject(key, MakeSymbol(key.Name()))
+			return DeriveReadObject(key, readerConstruction.Symbol(key.Name()))
 		}
 	}
 	return key
