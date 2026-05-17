@@ -573,17 +573,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				}
 				stack = append(stack, irValue{tag: irValInt, i: coll.intVec()[idx.i]})
 			} else if coll.tag == irValObject {
-				switch v := coll.obj().(type) {
-				case *ArrayVector:
-					if idx.i >= len(v.arr) {
-						return nil
-					}
-					stack = append(stack, objectToIRValue(v.arr[idx.i]))
-				case Indexed:
-					stack = append(stack, objectToIRValue(v.Nth(idx.i)))
-				default:
+				obj, ok := runtimeExec.Nth(coll.obj(), idx.i)
+				if !ok {
 					return nil
 				}
+				stack = append(stack, objectToIRValue(obj))
 			} else {
 				return nil
 			}

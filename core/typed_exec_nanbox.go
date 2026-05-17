@@ -301,24 +301,12 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 			} else {
 				idx = int(coreirx.ToFloat(idxV))
 			}
-			switch v := coll.(type) {
-			case *ArrayVector:
-				if idx >= 0 && idx < len(v.arr) {
-					stackBuf[sp] = nbFromObject(v.arr[idx], &objTable)
-					sp++
-				} else {
-					return nil
-				}
-			case *TransientVector:
-				if idx >= 0 && idx < len(v.arr) {
-					stackBuf[sp] = nbFromObject(v.arr[idx], &objTable)
-					sp++
-				} else {
-					return nil
-				}
-			default:
+			obj, ok := runtimeExec.Nth(coll, idx)
+			if !ok {
 				return nil
 			}
+			stackBuf[sp] = nbFromObject(obj, &objTable)
+			sp++
 
 		case irCallSlot:
 			slotIdx := int(code[pc])<<8 | int(code[pc+1])
