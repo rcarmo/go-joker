@@ -235,7 +235,7 @@ func __re_quote_(_args []Object) Object {
 	case _c == 1:
 		s := ExtractString(_args, 0)
 		_res := regexp.MustCompile(regexp.QuoteMeta(s))
-		return MakeRegex(_res)
+		return coretypes.MakeRegex(_res)
 
 	default:
 		PanicArity(_c)
