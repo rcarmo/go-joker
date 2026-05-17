@@ -842,11 +842,11 @@ func (n Nil) IsEmpty() bool {
 }
 
 func (n Nil) Cons(obj Object) Seq {
-	return NewListFrom(obj)
+	return collectionConstruction.NewListFrom(obj)
 }
 
 func (n Nil) Conj(obj Object) Conjable {
-	return NewListFrom(obj)
+	return collectionConstruction.NewListFrom(obj)
 }
 
 func (n Nil) Without(key Object) Map {
@@ -866,7 +866,7 @@ func (n Nil) Merge(other Map) Map {
 }
 
 func (n Nil) Assoc(key, value Object) Associative {
-	return EmptyArrayMap().Assoc(key, value)
+	return collectionConstruction.NewEmptyArrayMap().Assoc(key, value)
 }
 
 func (n Nil) EntryAt(key Object) *ArrayVector {
@@ -1154,7 +1154,7 @@ func MakeInt(i int) Int {
 }
 
 func MakeIntVector(ii []int) *ArrayVector {
-	res := EmptyArrayVector()
+	res := collectionConstruction.NewEmptyArrayVector()
 	for _, i := range ii {
 		res.Append(MakeInt(i))
 	}
@@ -1430,7 +1430,7 @@ func MakeChar(r rune) Char {
 }
 
 func MakeStringVector(ss []string) *ArrayVector {
-	res := EmptyArrayVector()
+	res := collectionConstruction.NewEmptyArrayVector()
 	for _, s := range ss {
 		res.Append(MakeString(s))
 	}
