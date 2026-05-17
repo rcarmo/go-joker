@@ -1231,12 +1231,12 @@ var procFindVar = func(args []Object) Object {
 var procSort = func(args []Object) Object {
 	cmp := EnsureArgIsComparator(args, 0)
 	coll := EnsureArgIsSeqable(args, 1)
-	s := SortableSlice{
-		s:   ToSlice(coll.Seq()),
-		cmp: cmp,
+	s := coretypes.ComparatorSlice[Object]{
+		Items: ToSlice(coll.Seq()),
+		Cmp:   cmp,
 	}
 	sort.Sort(s)
-	return &ArraySeq{arr: s.s}
+	return &ArraySeq{arr: s.Items}
 }
 
 var procEval = func(args []Object) Object {

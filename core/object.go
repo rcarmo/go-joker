@@ -135,10 +135,6 @@ type (
 	Reversible interface {
 		Rseq() Seq
 	}
-	SortableSlice struct {
-		s   []Object
-		cmp coretypes.Comparator
-	}
 	Collection interface {
 		Object
 		coretypes.Counted
@@ -191,18 +187,6 @@ func MakeSymbol(nsname string) Symbol {
 		ns:   STRINGS.Intern(ns),
 		name: STRINGS.Intern(local),
 	}
-}
-
-type BySymbolName []Symbol
-
-func (s BySymbolName) Len() int {
-	return len(s)
-}
-func (s BySymbolName) Swap(i, j int) {
-	s[i], s[j] = s[j], s[i]
-}
-func (s BySymbolName) Less(i, j int) bool {
-	return s[i].ToString(false) < s[j].ToString(false)
 }
 
 const KeywordHashMask uint32 = 0x7334c790
@@ -268,18 +252,6 @@ func getMap(k Object, args []Object) Object {
 		return args[1]
 	}
 	return NIL
-}
-
-func (s SortableSlice) Len() int {
-	return len(s.s)
-}
-
-func (s SortableSlice) Swap(i, j int) {
-	s.s[i], s.s[j] = s.s[j], s.s[i]
-}
-
-func (s SortableSlice) Less(i, j int) bool {
-	return s.cmp.Compare(s.s[i], s.s[j]) == -1
 }
 
 func equalsNumbers(x coretypes.Number, y interface{}) bool {

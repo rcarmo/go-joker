@@ -953,7 +953,7 @@ func addArity(fn *FnExpr, sig Seq, ctx *ParseContext) {
 					unused = append(unused, b.name)
 				}
 			}
-			sort.Sort(BySymbolName(unused))
+			sort.Sort(coretypes.NamedSlice[Symbol](unused))
 			for _, u := range unused {
 				printParseWarning(GetPosition(u), "unused parameter: "+u.ToString(false))
 			}
@@ -1228,7 +1228,7 @@ func parseLetLoop(obj Object, formName string, ctx *ParseContext) *LetExpr {
 						unused = append(unused, b.name)
 					}
 				}
-				sort.Sort(BySymbolName(unused))
+				sort.Sort(coretypes.NamedSlice[Symbol](unused))
 				for _, u := range unused {
 					printParseWarning(GetPosition(u), "unused binding: "+u.ToString(false))
 				}
