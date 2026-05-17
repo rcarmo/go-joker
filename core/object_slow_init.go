@@ -25,7 +25,6 @@ func typeBuilder() coretypes.Builder {
 			return MetaHolder{meta}
 		},
 	}
-	coretypes.RuntimeTypes = &TYPE
 }
 
 func init() {
@@ -104,4 +103,5 @@ func init() {
 		VectorSeq:     typeBuilder().RegisterReference("VectorSeq", (*VectorSeq)(nil), ""),
 		StringSeq:     typeBuilder().RegisterReference("StringSeq", (*stringSeq)(nil), ""),
 	}
+	coretypes.RuntimeTypes = &TYPE
 }

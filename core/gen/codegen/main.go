@@ -696,7 +696,19 @@ func (genEnv *GenEnv) emitPtrToRegexp(target string, v reflect.Value) string {
 }
 
 func coreTypeString(s string) string {
-	return strings.Replace(s, "core.", "", 1)
+	s = strings.Replace(s, "core.", "", 1)
+	for _, moved := range []string{"Int", "Double", "Boolean", "Char", "Time"} {
+		if s == moved {
+			return "coretypes." + moved
+		}
+		if strings.HasPrefix(s, "*"+moved) {
+			return "*coretypes." + moved
+		}
+		if strings.HasPrefix(s, "[]"+moved) {
+			return "[]coretypes." + moved
+		}
+	}
+	return s
 }
 
 func uniqueId(obj interface{}) string {
