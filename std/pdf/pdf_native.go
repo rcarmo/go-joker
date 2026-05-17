@@ -24,13 +24,13 @@ var typeDocument = &coretypes.Type{}
 func (d *Document) ToString(escape bool) string {
 	return fmt.Sprintf("#<PDF %.0fx%.0f>", d.w, d.h)
 }
-func (d *Document) Equals(other interface{}) bool              { return d == other }
-func (d *Document) GetInfo() *coretypes.ObjectInfo             { return nil }
-func (d *Document) WithInfo(info *coretypes.ObjectInfo) Object { return d }
-func (d *Document) GetType() *coretypes.Type                   { return typeDocument }
-func (d *Document) Hash() uint32                               { return 0 }
+func (d *Document) Equals(other interface{}) bool                        { return d == other }
+func (d *Document) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (d *Document) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return d }
+func (d *Document) GetType() *coretypes.Type                             { return typeDocument }
+func (d *Document) Hash() uint32                                         { return 0 }
 
-func extractDoc(args []Object, idx int) *Document {
+func extractDoc(args []coretypes.Object, idx int) *Document {
 	if idx < 0 || idx >= len(args) {
 		panic(RT.NewError("Expected PDF document argument"))
 	}
@@ -61,8 +61,8 @@ func finitePDFNumber(v float64, name string) float64 {
 	return v
 }
 
-func pdfNumber(obj Object, name string) float64 {
-	return finitePDFNumber(ExtractDouble([]Object{obj}, 0), name)
+func pdfNumber(obj coretypes.Object, name string) float64 {
+	return finitePDFNumber(ExtractDouble([]coretypes.Object{obj}, 0), name)
 }
 
 func positivePDFDimension(v float64, name string) float64 {
@@ -81,7 +81,7 @@ func nonNegativePDFDimension(v float64, name string) float64 {
 	return v
 }
 
-var procDocument ProcFn = func(args []Object) Object {
+var procDocument ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 2)
 	w := 595.0 // A4 default
 	h := 842.0
@@ -105,7 +105,7 @@ var procDocument ProcFn = func(args []Object) Object {
 	return &Document{pdf: pdf, w: w, h: h}
 }
 
-var procPage ProcFn = func(args []Object) Object {
+var procPage ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
 	d.pdf.AddPage()
@@ -114,7 +114,7 @@ var procPage ProcFn = func(args []Object) Object {
 
 // --- Fonts ---
 
-var procFont ProcFn = func(args []Object) Object {
+var procFont ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 3)
 	d := extractDoc(args, 0)
 	name := ExtractString(args, 1)
@@ -136,7 +136,7 @@ var procFont ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procFontFile ProcFn = func(args []Object) Object {
+var procFontFile ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 4)
 	d := extractDoc(args, 0)
 	name := ExtractString(args, 1)
@@ -156,7 +156,7 @@ var procFontFile ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procFontSize ProcFn = func(args []Object) Object {
+var procFontSize ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
 	size := positivePDFDimension(ExtractDouble(args, 1), "font size")
@@ -168,7 +168,7 @@ var procFontSize ProcFn = func(args []Object) Object {
 
 // --- Text ---
 
-var procText ProcFn = func(args []Object) Object {
+var procText ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
 	x := pdfNumber(args[1], "text x")
@@ -181,7 +181,7 @@ var procText ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procTextWrap ProcFn = func(args []Object) Object {
+var procTextWrap ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
 	x := pdfNumber(args[1], "text-wrap x")
@@ -198,7 +198,7 @@ var procTextWrap ProcFn = func(args []Object) Object {
 
 // --- Drawing ---
 
-var procLine ProcFn = func(args []Object) Object {
+var procLine ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
 	x1 := pdfNumber(args[1], "line x1")
@@ -209,7 +209,7 @@ var procLine ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procRect ProcFn = func(args []Object) Object {
+var procRect ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 5, 6)
 	d := extractDoc(args, 0)
 	x := pdfNumber(args[1], "rect x")
@@ -224,7 +224,7 @@ var procRect ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procOval ProcFn = func(args []Object) Object {
+var procOval ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
 	x := pdfNumber(args[1], "oval x")
@@ -237,7 +237,7 @@ var procOval ProcFn = func(args []Object) Object {
 
 // --- Color ---
 
-func pdfColorChannel(obj Object, name string) uint8 {
+func pdfColorChannel(obj coretypes.Object, name string) uint8 {
 	v := EnsureObjectIsInt(obj, "pdf color "+name+": %s").I
 	if v < 0 || v > 255 {
 		panic(RT.NewError("pdf color " + name + " must be in [0,255]"))
@@ -245,7 +245,7 @@ func pdfColorChannel(obj Object, name string) uint8 {
 	return uint8(v)
 }
 
-var procColor ProcFn = func(args []Object) Object {
+var procColor ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
 	r := pdfColorChannel(args[1], "r")
@@ -255,7 +255,7 @@ var procColor ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procStrokeColor ProcFn = func(args []Object) Object {
+var procStrokeColor ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
 	r := pdfColorChannel(args[1], "r")
@@ -265,7 +265,7 @@ var procStrokeColor ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procFillColor ProcFn = func(args []Object) Object {
+var procFillColor ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 4, 4)
 	d := extractDoc(args, 0)
 	r := pdfColorChannel(args[1], "r")
@@ -275,7 +275,7 @@ var procFillColor ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procLineWidth ProcFn = func(args []Object) Object {
+var procLineWidth ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
 	w := positivePDFDimension(ExtractDouble(args, 1), "line width")
@@ -285,7 +285,7 @@ var procLineWidth ProcFn = func(args []Object) Object {
 
 // --- Images ---
 
-var procImage ProcFn = func(args []Object) Object {
+var procImage ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 4, 6)
 	d := extractDoc(args, 0)
 	path := ExtractString(args, 1)
@@ -308,7 +308,7 @@ var procImage ProcFn = func(args []Object) Object {
 
 // --- Position ---
 
-var procMoveTo ProcFn = func(args []Object) Object {
+var procMoveTo ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 3)
 	d := extractDoc(args, 0)
 	x := pdfNumber(args[1], "move-to x")
@@ -317,13 +317,13 @@ var procMoveTo ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procGetX ProcFn = func(args []Object) Object {
+var procGetX ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
 	return coretypes.Double{D: d.pdf.GetX()}
 }
 
-var procGetY ProcFn = func(args []Object) Object {
+var procGetY ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
 	return coretypes.Double{D: d.pdf.GetY()}
@@ -331,7 +331,7 @@ var procGetY ProcFn = func(args []Object) Object {
 
 // --- Link ---
 
-var procLink ProcFn = func(args []Object) Object {
+var procLink ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 6, 6)
 	d := extractDoc(args, 0)
 	url := ExtractString(args, 1)
@@ -345,7 +345,7 @@ var procLink ProcFn = func(args []Object) Object {
 
 // --- Output ---
 
-var procSave ProcFn = func(args []Object) Object {
+var procSave ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
 	path := ExtractString(args, 1)
@@ -356,7 +356,7 @@ var procSave ProcFn = func(args []Object) Object {
 	return NIL
 }
 
-var procToBytes ProcFn = func(args []Object) Object {
+var procToBytes ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
 	var buf bytes.Buffer
@@ -369,7 +369,7 @@ var procToBytes ProcFn = func(args []Object) Object {
 
 // --- Page info ---
 
-var procPageCount ProcFn = func(args []Object) Object {
+var procPageCount ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	d := extractDoc(args, 0)
 	return coretypes.MakeInt(d.pdf.GetNumberOfPages())
@@ -377,7 +377,7 @@ var procPageCount ProcFn = func(args []Object) Object {
 
 // --- Margins ---
 
-var procMargins ProcFn = func(args []Object) Object {
+var procMargins ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
 	left := nonNegativePDFDimension(ExtractDouble(args, 1), "left margin")

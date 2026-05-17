@@ -53,14 +53,14 @@ func InternsOrThunks() {
 			NewListFrom(NewVectorFrom(MakeSymbol("f"), MakeSymbol("data")), NewVectorFrom(MakeSymbol("f"), MakeSymbol("data"), MakeSymbol("opts"))),
 			`Writes records to a CSV encoded file.
   f must be io.Writer (for example, as returned by joker.os/create).
-  data must be Seqable, each element of which must be Seqable as well.
+  data must be coretypes.Seqable, each element of which must be coretypes.Seqable as well.
   opts is as in joker.csv/write-string.`, "1.0"))
 
 	csvNamespace.InternVar("write-string", write_string_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("data")), NewVectorFrom(MakeSymbol("data"), MakeSymbol("opts"))),
 			`Writes records to a string in CSV format and returns the string.
-  data must be Seqable, each element of which must be Seqable as well.
+  data must be coretypes.Seqable, each element of which must be coretypes.Seqable as well.
   opts may have the following keys:
 
   :comma - field delimiter (defaults to ',')

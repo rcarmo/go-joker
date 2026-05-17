@@ -23,7 +23,7 @@ func queryUnescape(s string) string {
 	return res
 }
 
-func parseQuery(s string) Object {
+func parseQuery(s string) coretypes.Object {
 	values, err := url.ParseQuery(s)
 	if err != nil {
 		panic(RT.NewError("Error parsing query string: " + err.Error()))

@@ -17,7 +17,7 @@ func TestDisassemble(t *testing.T) {
 	expr, _ := TryParse(obj, &ParseContext{GlobalEnv: GLOBAL_ENV})
 	fnObj := Eval(expr, nil).(*Fn)
 
-	result := procDisassemble([]Object{fnObj})
+	result := procDisassemble([]coretypes.Object{fnObj})
 	dis := result.(coretypes.String).S
 	if !strings.Contains(dis, "irMul") {
 		t.Fatalf("expected irMul in disassembly, got:\n%s", dis)
@@ -36,7 +36,7 @@ func TestAnalyze(t *testing.T) {
 	expr, _ := TryParse(obj, &ParseContext{GlobalEnv: GLOBAL_ENV})
 	fnObj := Eval(expr, nil).(*Fn)
 
-	result := procAnalyze([]Object{fnObj})
+	result := procAnalyze([]coretypes.Object{fnObj})
 	t.Logf("analyze: %s", result.ToString(false))
 }
 
@@ -44,17 +44,17 @@ func TestBenchmarkFn(t *testing.T) {
 	initRuntimeNamespace()
 	// Benchmark a simple fn; this should complete quickly and never loop forever.
 	counter := coretypes.Int{I: 0}
-	fn := Proc{Fn: func(args []Object) Object {
+	fn := Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		counter.I++
 		return counter
 	}, Name: "test-fn"}
 
-	resCh := make(chan Object, 1)
+	resCh := make(chan coretypes.Object, 1)
 	go func() {
-		resCh <- procBenchmark([]Object{fn})
+		resCh <- procBenchmark([]coretypes.Object{fn})
 	}()
 
-	var result Object
+	var result coretypes.Object
 	select {
 	case result = <-resCh:
 	case <-time.After(5 * time.Second):

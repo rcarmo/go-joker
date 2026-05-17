@@ -19,10 +19,10 @@ func TestHandleStreamSSE(t *testing.T) {
 	respMap := EmptyArrayMap()
 	respMap.Add(MakeKeyword("status"), coretypes.MakeInt(200))
 
-	streamFn := Proc{Name: "test-stream", Fn: func(args []Object) Object {
+	streamFn := Proc{Name: "test-stream", Fn: func(args []coretypes.Object) coretypes.Object {
 		send := EnsureArgIsCallable(args, 0)
-		send.Call([]Object{coretypes.MakeString("hello")})
-		send.Call([]Object{coretypes.MakeString("tick"), coretypes.MakeString("42")})
+		send.Call([]coretypes.Object{coretypes.MakeString("hello")})
+		send.Call([]coretypes.Object{coretypes.MakeString("tick"), coretypes.MakeString("42")})
 		return NIL
 	}}
 
@@ -91,13 +91,13 @@ func TestHandleStreamRejectsInvalidStatus(t *testing.T) {
 			t.Fatal("invalid stream status did not panic")
 		}
 	}()
-	handleStream(httptest.NewRecorder(), respMap, Proc{Name: "stream", Fn: func(args []Object) Object { return NIL }})
+	handleStream(httptest.NewRecorder(), respMap, Proc{Name: "stream", Fn: func(args []coretypes.Object) coretypes.Object { return NIL }})
 }
 
 func TestHandleStreamWriteErrorsSurface(t *testing.T) {
-	streamFn := Proc{Name: "test-stream", Fn: func(args []Object) Object {
+	streamFn := Proc{Name: "test-stream", Fn: func(args []coretypes.Object) coretypes.Object {
 		send := EnsureArgIsCallable(args, 0)
-		send.Call([]Object{coretypes.MakeString("hello")})
+		send.Call([]coretypes.Object{coretypes.MakeString("hello")})
 		return NIL
 	}}
 	defer func() {
@@ -121,20 +121,20 @@ func TestHandleWebSocketUpgradeAndCallbacks(t *testing.T) {
 
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		conf := EmptyArrayMap()
-		conf.Add(MakeKeyword("on-open"), Proc{Name: "on-open", Fn: func(args []Object) Object {
+		conf.Add(MakeKeyword("on-open"), Proc{Name: "on-open", Fn: func(args []coretypes.Object) coretypes.Object {
 			sendMu.Lock()
 			sendFn = EnsureArgIsCallable(args, 0)
 			s := sendFn
 			sendMu.Unlock()
-			s.Call([]Object{coretypes.MakeString("welcome")})
+			s.Call([]coretypes.Object{coretypes.MakeString("welcome")})
 			return NIL
 		}})
-		conf.Add(MakeKeyword("on-message"), Proc{Name: "on-message", Fn: func(args []Object) Object {
+		conf.Add(MakeKeyword("on-message"), Proc{Name: "on-message", Fn: func(args []coretypes.Object) coretypes.Object {
 			sendMu.Lock()
 			s := sendFn
 			sendMu.Unlock()
 			if s != nil {
-				s.Call([]Object{args[0]})
+				s.Call([]coretypes.Object{args[0]})
 			}
 			return NIL
 		}})
@@ -170,16 +170,16 @@ func TestHandleWebSocketUpgradeAndCallbacks(t *testing.T) {
 }
 
 func TestHandleWebSocketCloseCallbackIsIdempotent(t *testing.T) {
-	done := make(chan Object, 1)
+	done := make(chan coretypes.Object, 1)
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		conf := EmptyArrayMap()
-		conf.Add(MakeKeyword("on-open"), Proc{Name: "on-open", Fn: func(args []Object) Object {
+		conf.Add(MakeKeyword("on-open"), Proc{Name: "on-open", Fn: func(args []coretypes.Object) coretypes.Object {
 			closeFn := EnsureArgIsCallable(args, 1)
 			closeFn.Call(nil)
 			closeFn.Call(nil)
 			return NIL
 		}})
-		conf.Add(MakeKeyword("on-close"), Proc{Name: "on-close", Fn: func(args []Object) Object {
+		conf.Add(MakeKeyword("on-close"), Proc{Name: "on-close", Fn: func(args []coretypes.Object) coretypes.Object {
 			done <- coretypes.Boolean{B: true}
 			return NIL
 		}})

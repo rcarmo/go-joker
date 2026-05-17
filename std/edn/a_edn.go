@@ -1,6 +1,9 @@
 package edn
 
-import . "github.com/rcarmo/go-joker/core"
+import (
+	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+)
 
 var ednNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.edn"))
 var ednAliasNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("edn"))
@@ -23,12 +26,12 @@ func InitAlias() {
 	ednAliasNamespace.InternVar("write-string", writeString_, MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("x")), NewVectorFrom(MakeSymbol("opts"), MakeSymbol("x"))), "Writes x as an EDN string.", "1.0"))
 }
 
-var readString_ Proc = Proc{Fn: func(args []Object) Object {
+var readString_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 2)
 	return readEDNString(EnsureArgIsString(args, len(args)-1).S)
 }, Name: "read-string", Package: "std/edn"}
 
-var writeString_ Proc = Proc{Fn: func(args []Object) Object {
+var writeString_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 2)
 	return writeEDNString(args[len(args)-1])
 }, Name: "write-string", Package: "std/edn"}

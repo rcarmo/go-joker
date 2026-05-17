@@ -51,12 +51,12 @@ func newHTTPClient(maxIdle, maxIdlePerHost int, idleTimeout time.Duration) *HTTP
 	return hc
 }
 
-func (hc *HTTPClient) ToString(escape bool) string                { return "#object[HTTPClient]" }
-func (hc *HTTPClient) Equals(other interface{}) bool              { return hc == other }
-func (hc *HTTPClient) GetInfo() *coretypes.ObjectInfo             { return nil }
-func (hc *HTTPClient) WithInfo(info *coretypes.ObjectInfo) Object { return hc }
-func (hc *HTTPClient) GetType() *coretypes.Type                   { return TYPE.Proc }
-func (hc *HTTPClient) Hash() uint32                               { return hc.hash }
+func (hc *HTTPClient) ToString(escape bool) string                          { return "#object[HTTPClient]" }
+func (hc *HTTPClient) Equals(other interface{}) bool                        { return hc == other }
+func (hc *HTTPClient) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (hc *HTTPClient) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return hc }
+func (hc *HTTPClient) GetType() *coretypes.Type                             { return TYPE.Proc }
+func (hc *HTTPClient) Hash() uint32                                         { return hc.hash }
 
 var upgrader = ws.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
@@ -78,7 +78,7 @@ func extractMethod(request Map) string {
 	return "get"
 }
 
-func getOrPanic(m Map, k Object, errMsg string) Object {
+func getOrPanic(m Map, k coretypes.Object, errMsg string) coretypes.Object {
 	if ok, v := m.Get(k); ok {
 		return v
 	}
@@ -165,7 +165,7 @@ func validHTTPStatus(status int) bool {
 	return status >= 100 && status <= 999
 }
 
-func responseStatus(obj Object, context string) int {
+func responseStatus(obj coretypes.Object, context string) int {
 	status := EnsureObjectIsInt(obj, context+": %s").I
 	if !validHTTPStatus(status) {
 		panic(RT.NewError(context + " must be between 100 and 999"))
@@ -191,7 +191,7 @@ func mapToResp(response Map, w http.ResponseWriter) {
 			switch pvalue := p.Value.(type) {
 			case coretypes.String:
 				header.Add(hname, pvalue.S)
-			case Seqable:
+			case coretypes.Seqable:
 				s := pvalue.Seq()
 				for !s.IsEmpty() {
 					header.Add(hname, EnsureObjectIsString(s.First(), "HTTP response header value: %s").S)
@@ -229,7 +229,7 @@ func sendRequest(request Map) Map {
 
 const maxHTTPMillisecondDuration = int64(1<<63-1) / int64(time.Millisecond)
 
-func nonNegativeHTTPOption(obj Object, name string) int {
+func nonNegativeHTTPOption(obj coretypes.Object, name string) int {
 	v := EnsureObjectIsInt(obj, name+": %s").I
 	if v < 0 {
 		panic(RT.NewError(name + " must be non-negative"))
@@ -244,7 +244,7 @@ func httpIdleTimeoutDuration(ms int) time.Duration {
 	return time.Duration(ms) * time.Millisecond
 }
 
-func makeClient(args []Object) Object {
+func makeClient(args []coretypes.Object) coretypes.Object {
 	if len(args) > 1 {
 		panic(RT.NewError("client expects zero args or one options map"))
 	}
@@ -266,7 +266,7 @@ func makeClient(args []Object) Object {
 	return newHTTPClient(maxIdle, maxIdlePerHost, httpIdleTimeoutDuration(idleTimeoutMs))
 }
 
-func closeClient(c Object) Object {
+func closeClient(c coretypes.Object) coretypes.Object {
 	hc, ok := c.(*HTTPClient)
 	if !ok {
 		panic(RT.NewError("close-client requires an HTTP client"))
@@ -283,7 +283,7 @@ func listenHostPort(addr string) (coretypes.String, coretypes.String) {
 	return coretypes.MakeString(strings.Trim(addr, "[]")), coretypes.MakeString("")
 }
 
-func startServer(addr string, handler coretypes.Callable) Object {
+func startServer(addr string, handler coretypes.Callable) coretypes.Object {
 	host, port := listenHostPort(addr)
 	err := http.ListenAndServe(addr, http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		defer func() {
@@ -295,7 +295,7 @@ func startServer(addr string, handler coretypes.Callable) Object {
 				fmt.Fprintln(os.Stderr, r)
 			}
 		}()
-		response := handler.Call([]Object{reqToMap(host, port, req)})
+		response := handler.Call([]coretypes.Object{reqToMap(host, port, req)})
 		respMap := EnsureObjectIsMap(response, "HTTP response: %s")
 
 		// Check for WebSocket upgrade
@@ -316,7 +316,7 @@ func startServer(addr string, handler coretypes.Callable) Object {
 	return NIL
 }
 
-func startFileServer(addr string, root string) Object {
+func startFileServer(addr string, root string) coretypes.Object {
 	err := http.ListenAndServe(addr, http.FileServer(http.Dir(root)))
 	PanicOnErr(err)
 	return NIL
@@ -354,7 +354,7 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 	var writeMu sync.Mutex
 
 	// Build send-fn: (fn [msg]) sends a text message
-	sendFn := Proc{Name: "ws-send", Fn: func(args []Object) Object {
+	sendFn := Proc{Name: "ws-send", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		msg := args[0].ToString(false)
 		writeMu.Lock()
@@ -367,7 +367,7 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 	}}
 
 	// Build close-fn: (fn []) closes the connection
-	closeFn := Proc{Name: "ws-close", Fn: func(args []Object) Object {
+	closeFn := Proc{Name: "ws-close", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 0, 0)
 		if err := closeConn(); err != nil {
 			panic(RT.NewError("websocket close error: " + err.Error()))
@@ -377,7 +377,7 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 
 	// Call on-open
 	if ok, onOpen := conf.Get(MakeKeyword("on-open")); ok {
-		EnsureObjectIsCallable(onOpen, "on-open must be callable: %s").Call([]Object{sendFn, closeFn})
+		EnsureObjectIsCallable(onOpen, "on-open must be callable: %s").Call([]coretypes.Object{sendFn, closeFn})
 	}
 
 	// Read loop
@@ -393,13 +393,13 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 			break
 		}
 		if onMsgFn != nil {
-			onMsgFn.Call([]Object{coretypes.MakeString(string(message))})
+			onMsgFn.Call([]coretypes.Object{coretypes.MakeString(string(message))})
 		}
 	}
 
 	// Call on-close
 	if ok, onClose := conf.Get(MakeKeyword("on-close")); ok {
-		EnsureObjectIsCallable(onClose, "on-close must be callable: %s").Call([]Object{})
+		EnsureObjectIsCallable(onClose, "on-close must be callable: %s").Call([]coretypes.Object{})
 	}
 }
 
@@ -412,7 +412,7 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn coretypes.Callabl
 	if ok, onClose := respMap.Get(MakeKeyword("on-close")); ok {
 		onCloseFn := EnsureObjectIsCallable(onClose, "stream on-close must be callable: %s")
 		defer func() {
-			onCloseFn.Call([]Object{closeInfo})
+			onCloseFn.Call([]coretypes.Object{closeInfo})
 		}()
 	}
 
@@ -438,7 +438,7 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn coretypes.Callabl
 			switch pvalue := p.Value.(type) {
 			case coretypes.String:
 				header.Add(hname, pvalue.S)
-			case Seqable:
+			case coretypes.Seqable:
 				s := pvalue.Seq()
 				for !s.IsEmpty() {
 					header.Add(hname, EnsureObjectIsString(s.First(), "header value: %s").S)
@@ -465,7 +465,7 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn coretypes.Callabl
 	}
 
 	// Build send-event fn: (fn [data]) or (fn [event data])
-	sendEvent := Proc{Name: "sse-send", Fn: func(args []Object) Object {
+	sendEvent := Proc{Name: "sse-send", Fn: func(args []coretypes.Object) coretypes.Object {
 		switch len(args) {
 		case 1:
 			// data-only: sends "data: ...\n\n"
@@ -502,10 +502,10 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn coretypes.Callabl
 	}()
 
 	// Call the stream function with send-event
-	streamFn.Call([]Object{sendEvent})
+	streamFn.Call([]coretypes.Object{sendEvent})
 }
 
-func sseCloseInfo(reason string, err error) Object {
+func sseCloseInfo(reason string, err error) coretypes.Object {
 	m := EmptyArrayMap()
 	m.Add(MakeKeyword("reason"), MakeKeyword(reason))
 	if err != nil {

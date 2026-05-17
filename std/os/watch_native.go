@@ -23,7 +23,7 @@ type fileWatcher struct {
 	cancelOnce sync.Once
 }
 
-func watch(paths Seqable, ch *Channel, opts Map) Object {
+func watch(paths coretypes.Seqable, ch *Channel, opts Map) coretypes.Object {
 	recursive := false
 	if ok, obj := opts.Get(MakeKeyword("recursive?")); ok {
 		recursive = EnsureObjectIsBoolean(obj, "recursive?: %s").B
@@ -47,7 +47,7 @@ func watch(paths Seqable, ch *Channel, opts Map) Object {
 	go fw.run()
 
 	return Proc{
-		Fn: func(args []Object) Object {
+		Fn: func(args []coretypes.Object) coretypes.Object {
 			CheckArity(args, 0, 0)
 			fw.cancel()
 			return NIL
@@ -73,7 +73,7 @@ func (fw *fileWatcher) closeWatcher() {
 	})
 }
 
-func (fw *fileWatcher) addPaths(paths Seqable) error {
+func (fw *fileWatcher) addPaths(paths coretypes.Seqable) error {
 	for s := paths.Seq(); !s.IsEmpty(); s = s.Rest() {
 		path := EnsureObjectIsString(s.First(), "watch path: %s").S
 		if err := fw.addPath(path); err != nil {
@@ -152,11 +152,11 @@ func (fw *fileWatcher) addCreatedDir(path string) {
 	}
 }
 
-func (fw *fileWatcher) send(obj Object) bool {
+func (fw *fileWatcher) send(obj coretypes.Object) bool {
 	return fw.ch.Send(obj)
 }
 
-func watchEvent(event fsnotify.Event) Object {
+func watchEvent(event fsnotify.Event) coretypes.Object {
 	m := EmptyArrayMap()
 	m.Add(MakeKeyword("type"), MakeKeyword("event"))
 	m.Add(MakeKeyword("path"), coretypes.MakeString(event.Name))
@@ -164,7 +164,7 @@ func watchEvent(event fsnotify.Event) Object {
 	return m
 }
 
-func watchError(err error) Object {
+func watchError(err error) coretypes.Object {
 	m := EmptyArrayMap()
 	m.Add(MakeKeyword("type"), MakeKeyword("error"))
 	m.Add(MakeKeyword("error"), RT.NewError(err.Error()))

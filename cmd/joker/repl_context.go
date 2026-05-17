@@ -52,13 +52,13 @@ func NewReplContext(env *Env) *ReplContext {
 	}
 }
 
-func (ctx *ReplContext) PushValue(obj Object) {
+func (ctx *ReplContext) PushValue(obj coretypes.Object) {
 	ctx.third.Value = ctx.second.Value
 	ctx.second.Value = ctx.first.Value
 	ctx.first.Value = obj
 }
 
-func (ctx *ReplContext) PushException(exc Object) {
+func (ctx *ReplContext) PushException(exc coretypes.Object) {
 	ctx.exc.Value = exc
 }
 

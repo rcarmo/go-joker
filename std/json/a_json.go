@@ -4,12 +4,13 @@ package json
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 var __json_seq__P ProcFn = __json_seq_
 var json_seq_ Proc = Proc{Fn: __json_seq__P, Name: "json_seq_", Package: "std/json"}
 
-func __json_seq_(_args []Object) Object {
+func __json_seq_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
@@ -32,7 +33,7 @@ func __json_seq_(_args []Object) Object {
 var __read_string__P ProcFn = __read_string_
 var read_string_ Proc = Proc{Fn: __read_string__P, Name: "read_string_", Package: "std/json"}
 
-func __read_string_(_args []Object) Object {
+func __read_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
@@ -55,7 +56,7 @@ func __read_string_(_args []Object) Object {
 var __write_string__P ProcFn = __write_string_
 var write_string_ Proc = Proc{Fn: __write_string__P, Name: "write_string_", Package: "std/json"}
 
-func __write_string_(_args []Object) Object {
+func __write_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:

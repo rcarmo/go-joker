@@ -12,8 +12,8 @@ func initBenchStringCursorProcs() {
 		name string
 		fn   ProcFn
 	}{
-		{"string-cursor", func(args []Object) Object { return NewStringCursor(EnsureArgIsString(args, 0).S) }},
-		{"cursor-char", func(args []Object) Object {
+		{"string-cursor", func(args []coretypes.Object) coretypes.Object { return NewStringCursor(EnsureArgIsString(args, 0).S) }},
+		{"cursor-char", func(args []coretypes.Object) coretypes.Object {
 			c := args[0].(*StringCursor)
 			r := c.Char()
 			if r < 0 {
@@ -21,8 +21,10 @@ func initBenchStringCursorProcs() {
 			}
 			return coretypes.Char{Ch: r}
 		}},
-		{"cursor-next", func(args []Object) Object { return args[0].(*StringCursor).Next() }},
-		{"cursor-done?", func(args []Object) Object { return coretypes.Boolean{B: args[0].(*StringCursor).Done()} }},
+		{"cursor-next", func(args []coretypes.Object) coretypes.Object { return args[0].(*StringCursor).Next() }},
+		{"cursor-done?", func(args []coretypes.Object) coretypes.Object {
+			return coretypes.Boolean{B: args[0].(*StringCursor).Done()}
+		}},
 	} {
 		sym := MakeSymbol(p.name)
 		vr := ns.Intern(sym)

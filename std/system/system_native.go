@@ -54,7 +54,7 @@ func systemProperties() Map {
 	return m
 }
 
-func getProperty(args []Object) Object {
+func getProperty(args []coretypes.Object) coretypes.Object {
 	if len(args) < 1 || len(args) > 2 {
 		panic(RT.NewError("System/getProperty expects 1 or 2 args"))
 	}
@@ -69,7 +69,7 @@ func getProperty(args []Object) Object {
 	return NIL
 }
 
-func systemGetenv(args []Object) Object {
+func systemGetenv(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	key := EnsureArgIsString(args, 0).S
 	if v, ok := os.LookupEnv(key); ok {
@@ -78,14 +78,14 @@ func systemGetenv(args []Object) Object {
 	return NIL
 }
 
-func systemExit(args []Object) Object {
+func systemExit(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	code := EnsureArgIsInt(args, 0).I
 	os.Exit(code)
 	return NIL
 }
 
-func systemIntObject(n int64) Object {
+func systemIntObject(n int64) coretypes.Object {
 	maxNativeInt := int64(int(^uint(0) >> 1))
 	minNativeInt := -maxNativeInt - 1
 	if n > maxNativeInt || n < minNativeInt {
@@ -94,5 +94,5 @@ func systemIntObject(n int64) Object {
 	return coretypes.MakeInt(int(n))
 }
 
-func currentTimeMillis() Object { return systemIntObject(time.Now().UnixMilli()) }
-func nanoTime() Object          { return systemIntObject(time.Now().UnixNano()) }
+func currentTimeMillis() coretypes.Object { return systemIntObject(time.Now().UnixMilli()) }
+func nanoTime() coretypes.Object          { return systemIntObject(time.Now().UnixNano()) }

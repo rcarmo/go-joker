@@ -2,6 +2,7 @@ package log
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 	"strings"
 	"sync"
@@ -17,7 +18,7 @@ var (
 
 var levelNames = []string{"DEBUG", "INFO", "WARN", "ERROR"}
 
-func parseLogLevel(obj Object, context string) int {
+func parseLogLevel(obj coretypes.Object, context string) int {
 	switch s := obj.ToString(false); s {
 	case ":debug", "debug", `"debug"`:
 		return 0
@@ -32,7 +33,7 @@ func parseLogLevel(obj Object, context string) int {
 	}
 }
 
-func logMsg(level int, args []Object) {
+func logMsg(level int, args []coretypes.Object) {
 	if level < logLevel {
 		return
 	}
@@ -56,7 +57,7 @@ func initLogNamespace() {
 	logNamespace.ResetMeta(MakeMeta(nil, `Simple leveled logging to stderr.`, "1.0"))
 
 	// debug
-	logNamespace.InternVar("debug", Proc{Fn: func(args []Object) Object {
+	logNamespace.InternVar("debug", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		logMsg(0, args)
 		return NIL
 	}, Name: "log-debug", Package: "std/log"},
@@ -64,7 +65,7 @@ func initLogNamespace() {
 			`Logs a DEBUG message to stderr.`, "1.0"))
 
 	// info
-	logNamespace.InternVar("info", Proc{Fn: func(args []Object) Object {
+	logNamespace.InternVar("info", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		logMsg(1, args)
 		return NIL
 	}, Name: "log-info", Package: "std/log"},
@@ -72,7 +73,7 @@ func initLogNamespace() {
 			`Logs an INFO message to stderr.`, "1.0"))
 
 	// warn
-	logNamespace.InternVar("warn", Proc{Fn: func(args []Object) Object {
+	logNamespace.InternVar("warn", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		logMsg(2, args)
 		return NIL
 	}, Name: "log-warn", Package: "std/log"},
@@ -80,7 +81,7 @@ func initLogNamespace() {
 			`Logs a WARN message to stderr.`, "1.0"))
 
 	// error
-	logNamespace.InternVar("error", Proc{Fn: func(args []Object) Object {
+	logNamespace.InternVar("error", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		logMsg(3, args)
 		return NIL
 	}, Name: "log-error", Package: "std/log"},
@@ -88,7 +89,7 @@ func initLogNamespace() {
 			`Logs an ERROR message to stderr.`, "1.0"))
 
 	// set-level! — set the minimum log level
-	logNamespace.InternVar("set-level!", Proc{Fn: func(args []Object) Object {
+	logNamespace.InternVar("set-level!", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		lvl := parseLogLevel(args[0], "set-level!")
 		logMu.Lock()
@@ -100,7 +101,7 @@ func initLogNamespace() {
 			`Sets the minimum log level (:debug, :info, :warn, :error). Default is :warn.`, "1.0"))
 
 	// get-level — returns the current log level as a keyword
-	logNamespace.InternVar("get-level", Proc{Fn: func(args []Object) Object {
+	logNamespace.InternVar("get-level", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 0, 0)
 		logMu.Lock()
 		l := logLevel
@@ -111,7 +112,7 @@ func initLogNamespace() {
 			`Returns the current log level as a keyword.`, "1.0"))
 
 	// logf — formatted log message
-	logNamespace.InternVar("logf", Proc{Fn: func(args []Object) Object {
+	logNamespace.InternVar("logf", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, -1)
 		lvl := parseLogLevel(args[0], "logf level")
 		logMsg(lvl, args[1:])

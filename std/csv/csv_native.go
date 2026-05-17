@@ -10,7 +10,7 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func csvDelimiter(obj Object, name string) rune {
+func csvDelimiter(obj coretypes.Object, name string) rune {
 	r := EnsureObjectIsChar(obj, name+": %s").Ch
 	if r == '\n' || r == '\r' || r == 0 || r == utf8.RuneError {
 		panic(RT.NewError("csv/" + name + " must be a valid delimiter"))
@@ -19,7 +19,7 @@ func csvDelimiter(obj Object, name string) rune {
 }
 
 func csvLazySeq(rdr *csv.Reader) *LazySeq {
-	var c = func(args []Object) Object {
+	var c = func(args []coretypes.Object) coretypes.Object {
 		t, err := rdr.Read()
 		if err == io.EOF {
 			return EmptyList
@@ -30,7 +30,7 @@ func csvLazySeq(rdr *csv.Reader) *LazySeq {
 	return NewLazySeq(Proc{Fn: c})
 }
 
-func csvSeqOpts(src Object, opts Map) Object {
+func csvSeqOpts(src coretypes.Object, opts Map) coretypes.Object {
 	var rdr io.Reader
 	switch src := src.(type) {
 	case coretypes.String:
@@ -63,7 +63,7 @@ func csvSeqOpts(src Object, opts Map) Object {
 	return csvLazySeq(csvReader)
 }
 
-func sliceOfStrings(obj Object) (res []string) {
+func sliceOfStrings(obj coretypes.Object) (res []string) {
 	s := EnsureObjectIsSeqable(obj, "CSV record: %s").Seq()
 	for !s.IsEmpty() {
 		res = append(res, s.First().ToString(false))
@@ -72,7 +72,7 @@ func sliceOfStrings(obj Object) (res []string) {
 	return
 }
 
-func writeWriter(wr io.Writer, data Seqable, opts Map) {
+func writeWriter(wr io.Writer, data coretypes.Seqable, opts Map) {
 	csvWriter := csv.NewWriter(wr)
 	if ok, c := opts.Get(MakeKeyword("comma")); ok {
 		csvWriter.Comma = csvDelimiter(c, "comma")
@@ -92,12 +92,12 @@ func writeWriter(wr io.Writer, data Seqable, opts Map) {
 	}
 }
 
-func write(wr io.Writer, data Seqable, opts Map) Object {
+func write(wr io.Writer, data coretypes.Seqable, opts Map) coretypes.Object {
 	writeWriter(wr, data, opts)
 	return NIL
 }
 
-func writeString(data Seqable, opts Map) string {
+func writeString(data coretypes.Seqable, opts Map) string {
 	var b strings.Builder
 	writeWriter(&b, data, opts)
 	return b.String()

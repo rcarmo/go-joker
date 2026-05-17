@@ -32,13 +32,13 @@ var typeCanvas = &coretypes.Type{}
 func (c *Canvas) ToString(escape bool) string {
 	return fmt.Sprintf("#<SVG %dx%d>", c.w, c.h)
 }
-func (c *Canvas) Equals(other interface{}) bool              { return c == other }
-func (c *Canvas) GetInfo() *coretypes.ObjectInfo             { return nil }
-func (c *Canvas) WithInfo(info *coretypes.ObjectInfo) Object { return c }
-func (c *Canvas) GetType() *coretypes.Type                   { return typeCanvas }
-func (c *Canvas) Hash() uint32                               { return 0 }
+func (c *Canvas) Equals(other interface{}) bool                        { return c == other }
+func (c *Canvas) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (c *Canvas) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return c }
+func (c *Canvas) GetType() *coretypes.Type                             { return typeCanvas }
+func (c *Canvas) Hash() uint32                                         { return 0 }
 
-func extractCanvas(args []Object, idx int) *Canvas {
+func extractCanvas(args []coretypes.Object, idx int) *Canvas {
 	if idx < 0 || idx >= len(args) {
 		panic(RT.NewError("Expected SVG canvas argument"))
 	}
@@ -50,7 +50,7 @@ func extractCanvas(args []Object, idx int) *Canvas {
 }
 
 // parseStyle converts a Joker map to SVG style string
-func parseStyle(args []Object, idx int) string {
+func parseStyle(args []coretypes.Object, idx int) string {
 	if idx >= len(args) {
 		return ""
 	}
@@ -78,7 +78,7 @@ func parseStyle(args []Object, idx int) string {
 
 // --- Creation ---
 
-func positiveDimension(obj Object, context, name string) int {
+func positiveDimension(obj coretypes.Object, context, name string) int {
 	v := EnsureObjectIsInt(obj, context+" "+name+": %s").I
 	if v <= 0 {
 		panic(RT.NewError(context + ": " + name + " must be positive"))
@@ -86,7 +86,7 @@ func positiveDimension(obj Object, context, name string) int {
 	return v
 }
 
-func nonNegativeDimension(obj Object, context, name string) int {
+func nonNegativeDimension(obj coretypes.Object, context, name string) int {
 	v := EnsureObjectIsInt(obj, context+" "+name+": %s").I
 	if v < 0 {
 		panic(RT.NewError(context + ": " + name + " must be non-negative"))
@@ -94,15 +94,15 @@ func nonNegativeDimension(obj Object, context, name string) int {
 	return v
 }
 
-func finiteSVGFloat(obj Object, context, name string) float64 {
-	v := ExtractDouble([]Object{obj}, 0)
+func finiteSVGFloat(obj coretypes.Object, context, name string) float64 {
+	v := ExtractDouble([]coretypes.Object{obj}, 0)
 	if math.IsNaN(v) || math.IsInf(v, 0) {
 		panic(RT.NewError(context + ": " + name + " must be finite"))
 	}
 	return v
 }
 
-var procCanvas ProcFn = func(args []Object) Object {
+var procCanvas ProcFn = func(args []coretypes.Object) coretypes.Object {
 	w := positiveDimension(args[0], "svg/canvas", "width")
 	h := positiveDimension(args[1], "svg/canvas", "height")
 	buf := &bytes.Buffer{}
@@ -111,7 +111,7 @@ var procCanvas ProcFn = func(args []Object) Object {
 	return &Canvas{buf: buf, svg: s, w: w, h: h}
 }
 
-var procCanvasWithViewbox ProcFn = func(args []Object) Object {
+var procCanvasWithViewbox ProcFn = func(args []coretypes.Object) coretypes.Object {
 	w := positiveDimension(args[0], "svg/canvas", "width")
 	h := positiveDimension(args[1], "svg/canvas", "height")
 	vw := positiveDimension(args[2], "svg/canvas", "viewbox width")
@@ -124,7 +124,7 @@ var procCanvasWithViewbox ProcFn = func(args []Object) Object {
 
 // --- Shapes ---
 
-var procRect ProcFn = func(args []Object) Object {
+var procRect ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	x := ExtractInt(args, 1)
 	y := ExtractInt(args, 2)
@@ -139,7 +139,7 @@ var procRect ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procRoundrect ProcFn = func(args []Object) Object {
+var procRoundrect ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	x := ExtractInt(args, 1)
 	y := ExtractInt(args, 2)
@@ -156,7 +156,7 @@ var procRoundrect ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procCircle ProcFn = func(args []Object) Object {
+var procCircle ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	cx := ExtractInt(args, 1)
 	cy := ExtractInt(args, 2)
@@ -170,7 +170,7 @@ var procCircle ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procEllipse ProcFn = func(args []Object) Object {
+var procEllipse ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	cx := ExtractInt(args, 1)
 	cy := ExtractInt(args, 2)
@@ -185,7 +185,7 @@ var procEllipse ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procLine ProcFn = func(args []Object) Object {
+var procLine ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	x1 := ExtractInt(args, 1)
 	y1 := ExtractInt(args, 2)
@@ -200,7 +200,7 @@ var procLine ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procPath ProcFn = func(args []Object) Object {
+var procPath ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	d := ExtractString(args, 1)
 	style := parseStyle(args, 2)
@@ -212,7 +212,7 @@ var procPath ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procPolygon ProcFn = func(args []Object) Object {
+var procPolygon ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 4)
 	c := extractCanvas(args, 0)
 	// args[1] = vector of x coords, args[2] = vector of y coords
@@ -251,7 +251,7 @@ var procPolygon ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procPolyline ProcFn = func(args []Object) Object {
+var procPolyline ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 4)
 	c := extractCanvas(args, 0)
 	xv, ok := args[1].(coretypes.Indexed)
@@ -291,7 +291,7 @@ var procPolyline ProcFn = func(args []Object) Object {
 
 // --- Text ---
 
-var procText ProcFn = func(args []Object) Object {
+var procText ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	x := ExtractInt(args, 1)
 	y := ExtractInt(args, 2)
@@ -307,7 +307,7 @@ var procText ProcFn = func(args []Object) Object {
 
 // --- Grouping & Transform ---
 
-var procGroup ProcFn = func(args []Object) Object {
+var procGroup ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	style := parseStyle(args, 1)
 	if style != "" {
@@ -318,13 +318,13 @@ var procGroup ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procGroupEnd ProcFn = func(args []Object) Object {
+var procGroupEnd ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	c.svg.Gend()
 	return args[0]
 }
 
-var procTranslate ProcFn = func(args []Object) Object {
+var procTranslate ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	x := ExtractInt(args, 1)
 	y := ExtractInt(args, 2)
@@ -332,7 +332,7 @@ var procTranslate ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procScale ProcFn = func(args []Object) Object {
+var procScale ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	sx := finiteSVGFloat(args[1], "svg/scale", "sx")
 	sy := sx
@@ -343,14 +343,14 @@ var procScale ProcFn = func(args []Object) Object {
 	return args[0]
 }
 
-var procRotate ProcFn = func(args []Object) Object {
+var procRotate ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	angle := finiteSVGFloat(args[1], "svg/rotate", "angle")
 	c.svg.Gtransform(fmt.Sprintf("rotate(%g)", angle))
 	return args[0]
 }
 
-var procTransformEnd ProcFn = func(args []Object) Object {
+var procTransformEnd ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	c.svg.Gend()
 	return args[0]
@@ -358,13 +358,13 @@ var procTransformEnd ProcFn = func(args []Object) Object {
 
 // --- Definitions & Use ---
 
-var procDef ProcFn = func(args []Object) Object {
+var procDef ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	c.svg.Def()
 	return args[0]
 }
 
-var procDefEnd ProcFn = func(args []Object) Object {
+var procDefEnd ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	c.svg.DefEnd()
 	return args[0]
@@ -372,13 +372,13 @@ var procDefEnd ProcFn = func(args []Object) Object {
 
 // --- Output ---
 
-var procToString ProcFn = func(args []Object) Object {
+var procToString ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	c.svg.End()
 	return coretypes.MakeString(c.buf.String())
 }
 
-var procSave ProcFn = func(args []Object) Object {
+var procSave ProcFn = func(args []coretypes.Object) coretypes.Object {
 	c := extractCanvas(args, 0)
 	path := ExtractString(args, 1)
 	c.svg.End()
@@ -391,7 +391,7 @@ var procSave ProcFn = func(args []Object) Object {
 
 // --- Raw SVG injection ---
 
-var procRaw ProcFn = func(args []Object) Object {
+var procRaw ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	c := extractCanvas(args, 0)
 	s := ExtractString(args, 1)
@@ -403,7 +403,7 @@ var procRaw ProcFn = func(args []Object) Object {
 
 // --- Render SVG to raster Image ---
 
-func renderDimension(obj Object, name string) int {
+func renderDimension(obj coretypes.Object, name string) int {
 	return positiveDimension(obj, "svg/render", name)
 }
 
@@ -425,7 +425,7 @@ func rgbaToNRGBA(img *image.RGBA, w, h int) *image.NRGBA {
 	return nrgba
 }
 
-var procRender ProcFn = func(args []Object) Object {
+var procRender ProcFn = func(args []coretypes.Object) coretypes.Object {
 	svgData := ExtractString(args, 0)
 	w := renderDimension(args[1], "width")
 	h := renderDimension(args[2], "height")
@@ -447,7 +447,7 @@ var procRender ProcFn = func(args []Object) Object {
 
 // --- Render SVG file to raster ---
 
-var procRenderFile ProcFn = func(args []Object) Object {
+var procRenderFile ProcFn = func(args []coretypes.Object) coretypes.Object {
 	path := ExtractString(args, 0)
 	w := renderDimension(args[1], "width")
 	h := renderDimension(args[2], "height")

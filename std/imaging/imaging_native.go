@@ -38,14 +38,14 @@ func (im *Image) Equals(other interface{}) bool {
 	return im == other
 }
 
-func (im *Image) GetInfo() *coretypes.ObjectInfo             { return nil }
-func (im *Image) WithInfo(info *coretypes.ObjectInfo) Object { return im }
-func (im *Image) GetType() *coretypes.Type                   { return typeImage }
-func (im *Image) Hash() uint32                               { return 0 }
+func (im *Image) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (im *Image) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return im }
+func (im *Image) GetType() *coretypes.Type                             { return typeImage }
+func (im *Image) Hash() uint32                                         { return 0 }
 
 // --- Helpers ---
 
-func extractImage(args []Object, idx int) *Image {
+func extractImage(args []coretypes.Object, idx int) *Image {
 	if idx < 0 || idx >= len(args) {
 		panic(RT.NewError("Expected Image argument"))
 	}
@@ -61,7 +61,7 @@ func wrapImage(img *image.NRGBA) *Image {
 }
 
 // WrapImage creates a Joker Image from an *image.NRGBA (exported for other packages).
-func WrapImage(img *image.NRGBA) Object {
+func WrapImage(img *image.NRGBA) coretypes.Object {
 	return &Image{img: img}
 }
 
@@ -106,7 +106,7 @@ func parseAnchor(s string) imaging.Anchor {
 
 // --- I/O ---
 
-var procOpen ProcFn = func(args []Object) Object {
+var procOpen ProcFn = func(args []coretypes.Object) coretypes.Object {
 	path := ExtractString(args, 0)
 	img, err := imaging.Open(path)
 	if err != nil {
@@ -115,7 +115,7 @@ var procOpen ProcFn = func(args []Object) Object {
 	return wrapImage(toNRGBA(img))
 }
 
-var procSave ProcFn = func(args []Object) Object {
+var procSave ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	path := ExtractString(args, 1)
 	err := imaging.Save(im.img, path)
@@ -125,7 +125,7 @@ var procSave ProcFn = func(args []Object) Object {
 	return NIL
 }
 
-var procEncode ProcFn = func(args []Object) Object {
+var procEncode ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	format := ExtractKeyword(args, 1)
 	var buf bytes.Buffer
@@ -165,7 +165,7 @@ var procEncode ProcFn = func(args []Object) Object {
 	return coretypes.MakeString(buf.String())
 }
 
-var procDecode ProcFn = func(args []Object) Object {
+var procDecode ProcFn = func(args []coretypes.Object) coretypes.Object {
 	data := ExtractString(args, 0)
 	img, _, err := image.Decode(bytes.NewReader([]byte(data)))
 	if err != nil {
@@ -176,7 +176,7 @@ var procDecode ProcFn = func(args []Object) Object {
 
 // --- Geometry ---
 
-func positiveDimension(obj Object, name string) int {
+func positiveDimension(obj coretypes.Object, name string) int {
 	v := EnsureObjectIsInt(obj, "imaging "+name+": %s").I
 	if v <= 0 {
 		panic(RT.NewError("imaging: " + name + " must be positive"))
@@ -184,15 +184,15 @@ func positiveDimension(obj Object, name string) int {
 	return v
 }
 
-func finiteFloat(obj Object, name string) float64 {
-	v := ExtractDouble([]Object{obj}, 0)
+func finiteFloat(obj coretypes.Object, name string) float64 {
+	v := ExtractDouble([]coretypes.Object{obj}, 0)
 	if math.IsNaN(v) || math.IsInf(v, 0) {
 		panic(RT.NewError("imaging: " + name + " must be finite"))
 	}
 	return v
 }
 
-func nonNegativeFloat(obj Object, name string) float64 {
+func nonNegativeFloat(obj coretypes.Object, name string) float64 {
 	v := finiteFloat(obj, name)
 	if v < 0 {
 		panic(RT.NewError("imaging: " + name + " must be non-negative"))
@@ -200,7 +200,7 @@ func nonNegativeFloat(obj Object, name string) float64 {
 	return v
 }
 
-func positiveFloat(obj Object, name string) float64 {
+func positiveFloat(obj coretypes.Object, name string) float64 {
 	v := finiteFloat(obj, name)
 	if v <= 0 {
 		panic(RT.NewError("imaging: " + name + " must be positive"))
@@ -208,7 +208,7 @@ func positiveFloat(obj Object, name string) float64 {
 	return v
 }
 
-func opacityFloat(obj Object) float64 {
+func opacityFloat(obj coretypes.Object) float64 {
 	v := finiteFloat(obj, "opacity")
 	if v < 0 || v > 1 {
 		panic(RT.NewError("imaging: opacity must be in [0,1]"))
@@ -216,21 +216,21 @@ func opacityFloat(obj Object) float64 {
 	return v
 }
 
-var procResize ProcFn = func(args []Object) Object {
+var procResize ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	w := positiveDimension(args[1], "width")
 	h := positiveDimension(args[2], "height")
 	return wrapImage(toNRGBA(imaging.Resize(im.img, w, h, imaging.Lanczos)))
 }
 
-var procFit ProcFn = func(args []Object) Object {
+var procFit ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	w := positiveDimension(args[1], "width")
 	h := positiveDimension(args[2], "height")
 	return wrapImage(toNRGBA(imaging.Fit(im.img, w, h, imaging.Lanczos)))
 }
 
-var procFill ProcFn = func(args []Object) Object {
+var procFill ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	w := positiveDimension(args[1], "width")
 	h := positiveDimension(args[2], "height")
@@ -241,7 +241,7 @@ var procFill ProcFn = func(args []Object) Object {
 	return wrapImage(toNRGBA(imaging.Fill(im.img, w, h, parseAnchor(anchor), imaging.Lanczos)))
 }
 
-var procCrop ProcFn = func(args []Object) Object {
+var procCrop ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	x := ExtractInt(args, 1)
 	y := ExtractInt(args, 2)
@@ -251,77 +251,77 @@ var procCrop ProcFn = func(args []Object) Object {
 	return wrapImage(toNRGBA(imaging.Crop(im.img, rect)))
 }
 
-var procCropCenter ProcFn = func(args []Object) Object {
+var procCropCenter ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	w := positiveDimension(args[1], "width")
 	h := positiveDimension(args[2], "height")
 	return wrapImage(toNRGBA(imaging.CropCenter(im.img, w, h)))
 }
 
-var procRotate ProcFn = func(args []Object) Object {
+var procRotate ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	angle := finiteFloat(args[1], "angle")
 	bg := color.NRGBA{0, 0, 0, 0}
 	return wrapImage(toNRGBA(imaging.Rotate(im.img, angle, bg)))
 }
 
-var procFlipH ProcFn = func(args []Object) Object {
+var procFlipH ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	return wrapImage(toNRGBA(imaging.FlipH(im.img)))
 }
 
-var procFlipV ProcFn = func(args []Object) Object {
+var procFlipV ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	return wrapImage(toNRGBA(imaging.FlipV(im.img)))
 }
 
-var procTranspose ProcFn = func(args []Object) Object {
+var procTranspose ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	return wrapImage(toNRGBA(imaging.Transpose(im.img)))
 }
 
-var procTransverse ProcFn = func(args []Object) Object {
+var procTransverse ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	return wrapImage(toNRGBA(imaging.Transverse(im.img)))
 }
 
 // --- Color / Adjustment ---
 
-var procGrayscale ProcFn = func(args []Object) Object {
+var procGrayscale ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	return wrapImage(toNRGBA(imaging.Grayscale(im.img)))
 }
 
-var procInvert ProcFn = func(args []Object) Object {
+var procInvert ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	return wrapImage(toNRGBA(imaging.Invert(im.img)))
 }
 
-var procBrightness ProcFn = func(args []Object) Object {
+var procBrightness ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	p := finiteFloat(args[1], "brightness") // -100 to 100
 	return wrapImage(toNRGBA(imaging.AdjustBrightness(im.img, p)))
 }
 
-var procContrast ProcFn = func(args []Object) Object {
+var procContrast ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	p := finiteFloat(args[1], "contrast") // -100 to 100
 	return wrapImage(toNRGBA(imaging.AdjustContrast(im.img, p)))
 }
 
-var procSaturation ProcFn = func(args []Object) Object {
+var procSaturation ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	p := finiteFloat(args[1], "saturation") // -100 to 100
 	return wrapImage(toNRGBA(imaging.AdjustSaturation(im.img, p)))
 }
 
-var procGamma ProcFn = func(args []Object) Object {
+var procGamma ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	g := positiveFloat(args[1], "gamma")
 	return wrapImage(toNRGBA(imaging.AdjustGamma(im.img, g)))
 }
 
-var procSigmoid ProcFn = func(args []Object) Object {
+var procSigmoid ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	midpoint := finiteFloat(args[1], "midpoint")
 	factor := finiteFloat(args[2], "factor")
@@ -330,13 +330,13 @@ var procSigmoid ProcFn = func(args []Object) Object {
 
 // --- Filters / Effects ---
 
-var procBlur ProcFn = func(args []Object) Object {
+var procBlur ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	sigma := nonNegativeFloat(args[1], "sigma")
 	return wrapImage(toNRGBA(imaging.Blur(im.img, sigma)))
 }
 
-var procSharpen ProcFn = func(args []Object) Object {
+var procSharpen ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
 	sigma := nonNegativeFloat(args[1], "sigma")
 	return wrapImage(toNRGBA(imaging.Sharpen(im.img, sigma)))
@@ -344,7 +344,7 @@ var procSharpen ProcFn = func(args []Object) Object {
 
 // --- Compositing ---
 
-var procOverlay ProcFn = func(args []Object) Object {
+var procOverlay ProcFn = func(args []coretypes.Object) coretypes.Object {
 	base := extractImage(args, 0)
 	overlay := extractImage(args, 1)
 	x := ExtractInt(args, 2)
@@ -356,7 +356,7 @@ var procOverlay ProcFn = func(args []Object) Object {
 	return wrapImage(toNRGBA(imaging.Overlay(base.img, overlay.img, image.Pt(x, y), opacity)))
 }
 
-var procPaste ProcFn = func(args []Object) Object {
+var procPaste ProcFn = func(args []coretypes.Object) coretypes.Object {
 	base := extractImage(args, 0)
 	overlay := extractImage(args, 1)
 	x := ExtractInt(args, 2)
@@ -366,19 +366,19 @@ var procPaste ProcFn = func(args []Object) Object {
 
 // --- Info ---
 
-var procWidth ProcFn = func(args []Object) Object {
+var procWidth ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	im := extractImage(args, 0)
 	return coretypes.MakeInt(im.img.Bounds().Dx())
 }
 
-var procHeight ProcFn = func(args []Object) Object {
+var procHeight ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	im := extractImage(args, 0)
 	return coretypes.MakeInt(im.img.Bounds().Dy())
 }
 
-var procBounds ProcFn = func(args []Object) Object {
+var procBounds ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	im := extractImage(args, 0)
 	b := im.img.Bounds()
@@ -392,7 +392,7 @@ var procBounds ProcFn = func(args []Object) Object {
 
 // --- New blank image ---
 
-func colorChannel(obj Object, name string) uint8 {
+func colorChannel(obj coretypes.Object, name string) uint8 {
 	v := EnsureObjectIsInt(obj, "imaging/new color "+name+": %s").I
 	if v < 0 || v > 255 {
 		panic(RT.NewError("imaging/new: color channel " + name + " must be in [0,255]"))
@@ -400,7 +400,7 @@ func colorChannel(obj Object, name string) uint8 {
 	return uint8(v)
 }
 
-var procNewImage ProcFn = func(args []Object) Object {
+var procNewImage ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 3)
 	w := ExtractInt(args, 0)
 	h := ExtractInt(args, 1)

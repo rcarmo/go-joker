@@ -26,20 +26,20 @@ func installPodsNamespace(ns *Namespace) {
 	ns.InternVar("bencode-decode", bencodeDecode_, MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("s"))), "Decodes a bencode string into Joker data.", "1.0"))
 }
 
-var loadPod_ Proc = Proc{Fn: func(args []Object) Object {
+var loadPod_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	return loadPod(args)
 }, Name: "load-pod", Package: "std/pods"}
 
-var invokePod_ Proc = Proc{Fn: func(args []Object) Object {
+var invokePod_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	return invokePod(args)
 }, Name: "invoke", Package: "std/pods"}
 
-var bencodeEncode_ Proc = Proc{Fn: func(args []Object) Object {
+var bencodeEncode_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	return coretypes.MakeString(string(bencodeEncodeObject(args[0])))
 }, Name: "bencode-encode", Package: "std/pods"}
 
-var bencodeDecode_ Proc = Proc{Fn: func(args []Object) Object {
+var bencodeDecode_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	return bencodeDecodeBytes([]byte(EnsureArgIsString(args, 0).S))
 }, Name: "bencode-decode", Package: "std/pods"}

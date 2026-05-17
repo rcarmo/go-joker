@@ -14,7 +14,7 @@ import (
 
 const podDescribeTimeout = 5 * time.Second
 
-func loadPod(args []Object) Object {
+func loadPod(args []coretypes.Object) coretypes.Object {
 	if len(args) < 1 || len(args) > 2 {
 		panic(RT.NewError("pods/load-pod expects command path or pod name plus optional version/args"))
 	}
@@ -28,7 +28,7 @@ func loadPod(args []Object) Object {
 			if err != nil {
 				panic(RT.NewError("pods/load-pod: " + err.Error()))
 			}
-		case Seqable:
+		case coretypes.Seqable:
 			for s := v.Seq(); !s.IsEmpty(); s = s.Rest() {
 				cmdArgs = append(cmdArgs, EnsureObjectIsString(s.First(), "pods/load-pod args must be strings").S)
 			}

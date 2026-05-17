@@ -9,7 +9,7 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func sh(dir string, stdin io.Reader, stdout io.Writer, stderr io.Writer, name string, args []string) Object {
+func sh(dir string, stdin io.Reader, stdout io.Writer, stderr io.Writer, name string, args []string) coretypes.Object {
 	cmd := exec.Command(name, args...)
 	cmd.Dir = dir
 	cmd.Stdin = stdin

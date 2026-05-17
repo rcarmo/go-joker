@@ -10,7 +10,7 @@ import (
 var __add_commit__P ProcFn = __add_commit_
 var add_commit_ Proc = Proc{Fn: __add_commit__P, Name: "add_commit_", Package: "std/git"}
 
-func __add_commit_(_args []Object) Object {
+func __add_commit_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
@@ -29,7 +29,7 @@ func __add_commit_(_args []Object) Object {
 var __add_path__P ProcFn = __add_path_
 var add_path_ Proc = Proc{Fn: __add_path__P, Name: "add_path_", Package: "std/git"}
 
-func __add_path_(_args []Object) Object {
+func __add_path_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -47,7 +47,7 @@ func __add_path_(_args []Object) Object {
 var __commit__P ProcFn = __commit_
 var commit_ Proc = Proc{Fn: __commit__P, Name: "commit_", Package: "std/git"}
 
-func __commit_(_args []Object) Object {
+func __commit_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -65,7 +65,7 @@ func __commit_(_args []Object) Object {
 var __config__P ProcFn = __config_
 var config_ Proc = Proc{Fn: __config__P, Name: "config_", Package: "std/git"}
 
-func __config_(_args []Object) Object {
+func __config_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
@@ -82,7 +82,7 @@ func __config_(_args []Object) Object {
 var __head__P ProcFn = __head_
 var head_ Proc = Proc{Fn: __head__P, Name: "head_", Package: "std/git"}
 
-func __head_(_args []Object) Object {
+func __head_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
@@ -99,7 +99,7 @@ func __head_(_args []Object) Object {
 var __log__P ProcFn = __log_
 var log_ Proc = Proc{Fn: __log__P, Name: "log_", Package: "std/git"}
 
-func __log_(_args []Object) Object {
+func __log_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -117,7 +117,7 @@ func __log_(_args []Object) Object {
 var __object__P ProcFn = __object_
 var object_ Proc = Proc{Fn: __object__P, Name: "object_", Package: "std/git"}
 
-func __object_(_args []Object) Object {
+func __object_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -135,7 +135,7 @@ func __object_(_args []Object) Object {
 var __open__P ProcFn = __open_
 var open_ Proc = Proc{Fn: __open__P, Name: "open_", Package: "std/git"}
 
-func __open_(_args []Object) Object {
+func __open_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
@@ -152,7 +152,7 @@ func __open_(_args []Object) Object {
 var __ref__P ProcFn = __ref_
 var ref_ Proc = Proc{Fn: __ref__P, Name: "ref_", Package: "std/git"}
 
-func __ref_(_args []Object) Object {
+func __ref_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
@@ -171,7 +171,7 @@ func __ref_(_args []Object) Object {
 var __resolve_revision__P ProcFn = __resolve_revision_
 var resolve_revision_ Proc = Proc{Fn: __resolve_revision__P, Name: "resolve_revision_", Package: "std/git"}
 
-func __resolve_revision_(_args []Object) Object {
+func __resolve_revision_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:

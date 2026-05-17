@@ -20,11 +20,11 @@ func TestSystemProperties(t *testing.T) {
 }
 
 func TestGetPropertyDefaultAndEnv(t *testing.T) {
-	if v := getProperty([]Object{coretypes.MakeString("missing"), coretypes.MakeString("fallback")}); v.ToString(false) != "fallback" {
+	if v := getProperty([]coretypes.Object{coretypes.MakeString("missing"), coretypes.MakeString("fallback")}); v.ToString(false) != "fallback" {
 		t.Fatalf("default mismatch: %v", v)
 	}
 	t.Setenv("GO_JOKER_SYSTEM_TEST", "ok")
-	if v := systemGetenv([]Object{coretypes.MakeString("GO_JOKER_SYSTEM_TEST")}); v.ToString(false) != "ok" {
+	if v := systemGetenv([]coretypes.Object{coretypes.MakeString("GO_JOKER_SYSTEM_TEST")}); v.ToString(false) != "ok" {
 		t.Fatalf("env mismatch: %v", v)
 	}
 }

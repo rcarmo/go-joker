@@ -11,7 +11,7 @@ import (
 func TestModfBoundary(t *testing.T) {
 	got := modf(3.75).(interface {
 		Count() int
-		Nth(int) Object
+		Nth(int) coretypes.Object
 	})
 	if got.Count() != 2 {
 		t.Fatalf("modf returned %d values, want 2", got.Count())

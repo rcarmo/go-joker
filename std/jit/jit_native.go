@@ -28,7 +28,7 @@ import (
 // For pure arithmetic fns, the compiled version runs as a native
 // Go f64 closure — zero interpreter overhead.
 // For other fns, returns an IR-compiled wrapper.
-func compile(fn *Fn) Object {
+func compile(fn *Fn) coretypes.Object {
 	prog := IrCompileFn(fn)
 	if prog == nil {
 		panic(RT.NewError("jit/compile: function cannot be compiled to IR"))
@@ -41,7 +41,7 @@ func compile(fn *Fn) Object {
 			nargs -= len(prog.CaptureSlots())
 		}
 		return Proc{
-			Fn: func(args []Object) Object {
+			Fn: func(args []coretypes.Object) coretypes.Object {
 				f64buf := make([]float64, len(args))
 				for i, a := range args {
 					switch v := a.(type) {
@@ -61,7 +61,7 @@ func compile(fn *Fn) Object {
 
 	// Otherwise return an IR-compiled wrapper
 	return Proc{
-		Fn: func(args []Object) Object {
+		Fn: func(args []coretypes.Object) coretypes.Object {
 			result := IrExecTyped(prog, args)
 			if result == nil {
 				result = IrExec(prog, args)
@@ -76,7 +76,7 @@ func compile(fn *Fn) Object {
 }
 
 // info returns a map with compilation information about a fn.
-func info(fn *Fn) Object {
+func info(fn *Fn) coretypes.Object {
 	m := EmptyArrayMap()
 	prog := IrCompileFn(fn)
 	if prog == nil {
@@ -126,7 +126,7 @@ type irExportWASMInfo struct {
 	Reason   string `json:"reason,omitempty"`
 }
 
-func exportConst(o Object) irExportConst {
+func exportConst(o coretypes.Object) irExportConst {
 	switch v := o.(type) {
 	case coretypes.Int:
 		return irExportConst{Type: "int", Value: v.I}
@@ -147,7 +147,7 @@ func exportConst(o Object) irExportConst {
 	}
 }
 
-func exportIR(fn *Fn, path coretypes.String) Object {
+func exportIR(fn *Fn, path coretypes.String) coretypes.Object {
 	prog := IrCompileFn(fn)
 	if prog == nil {
 		panic(RT.NewError("jit/export-ir: function cannot be compiled to IR"))
@@ -180,7 +180,7 @@ func exportIR(fn *Fn, path coretypes.String) Object {
 	return path
 }
 
-func exportWASM(fn *Fn, path coretypes.String) Object {
+func exportWASM(fn *Fn, path coretypes.String) coretypes.Object {
 	prog := IrCompileFn(fn)
 	if prog == nil {
 		panic(RT.NewError("jit/export-wasm: function cannot be compiled to IR"))

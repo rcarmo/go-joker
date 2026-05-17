@@ -87,13 +87,15 @@ func (c *transitCache) write(s string, asKey bool) string {
 	return s
 }
 
-func writeTransit(obj Object) Object { return coretypes.MakeString(writeTransitString(obj, false)) }
+func writeTransit(obj coretypes.Object) coretypes.Object {
+	return coretypes.MakeString(writeTransitString(obj, false))
+}
 
-func writeTransitVerbose(obj Object) Object {
+func writeTransitVerbose(obj coretypes.Object) coretypes.Object {
 	return coretypes.MakeString(writeTransitString(obj, true))
 }
 
-func writeTransitString(obj Object, verbose bool) string {
+func writeTransitString(obj coretypes.Object, verbose bool) string {
 	enc := &transitEncoder{cache: newTransitCache()}
 	if verbose {
 		enc.cache = nil
@@ -106,7 +108,7 @@ func writeTransitString(obj Object, verbose bool) string {
 	return string(b)
 }
 
-func readTransit(s coretypes.String) Object {
+func readTransit(s coretypes.String) coretypes.Object {
 	var v interface{}
 	if err := json.Unmarshal([]byte(s.S), &v); err != nil {
 		panic(RT.NewError("transit/read: " + err.Error()))
@@ -115,7 +117,7 @@ func readTransit(s coretypes.String) Object {
 	return dec.decode(v, false)
 }
 
-func (e *transitEncoder) encode(obj Object, asKey bool) interface{} {
+func (e *transitEncoder) encode(obj coretypes.Object, asKey bool) interface{} {
 	switch v := obj.(type) {
 	case Nil:
 		return nil
@@ -153,7 +155,7 @@ func (e *transitEncoder) encode(obj Object, asKey bool) interface{} {
 		}
 		return arr
 	}
-	if s, ok := obj.(Seqable); ok {
+	if s, ok := obj.(coretypes.Seqable); ok {
 		arr := []interface{}{}
 		seq := s.Seq()
 		for !seq.IsEmpty() {
@@ -179,7 +181,7 @@ func transitEncodeString(s string) string {
 	return s
 }
 
-func (d *transitDecoder) decode(v interface{}, asKey bool) Object {
+func (d *transitDecoder) decode(v interface{}, asKey bool) coretypes.Object {
 	switch x := v.(type) {
 	case nil:
 		return NIL
@@ -205,14 +207,14 @@ func (d *transitDecoder) decode(v interface{}, asKey bool) Object {
 	}
 }
 
-func (d *transitDecoder) decodeString(s string, asKey bool) Object {
+func (d *transitDecoder) decodeString(s string, asKey bool) coretypes.Object {
 	if d.cache != nil {
 		s = d.cache.read(s, asKey)
 	}
 	return transitDecodeString(s)
 }
 
-func (d *transitDecoder) decodeArray(x []interface{}) Object {
+func (d *transitDecoder) decodeArray(x []interface{}) coretypes.Object {
 	if len(x) > 0 {
 		if tag, ok := x[0].(string); ok {
 			resolved := tag
@@ -234,14 +236,14 @@ func (d *transitDecoder) decodeArray(x []interface{}) Object {
 			}
 		}
 	}
-	objs := make([]Object, len(x))
+	objs := make([]coretypes.Object, len(x))
 	for i, e := range x {
 		objs[i] = d.decode(e, false)
 	}
 	return NewVectorFrom(objs...)
 }
 
-func (d *transitDecoder) decodeTagged(tag string, payload interface{}) Object {
+func (d *transitDecoder) decodeTagged(tag string, payload interface{}) coretypes.Object {
 	switch tag {
 	case "set":
 		items, ok := payload.([]interface{})
@@ -258,7 +260,7 @@ func (d *transitDecoder) decodeTagged(tag string, payload interface{}) Object {
 		if !ok {
 			break
 		}
-		objs := make([]Object, len(items))
+		objs := make([]coretypes.Object, len(items))
 		for i, item := range items {
 			objs[i] = d.decode(item, false)
 		}
@@ -282,7 +284,7 @@ func (d *transitDecoder) decodeTagged(tag string, payload interface{}) Object {
 	return d.decode(payload, false)
 }
 
-func transitDecodeString(s string) Object {
+func transitDecodeString(s string) coretypes.Object {
 	if strings.HasPrefix(s, "~~") {
 		return coretypes.MakeString(s[1:])
 	}

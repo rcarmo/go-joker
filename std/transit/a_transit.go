@@ -1,6 +1,9 @@
 package transit
 
-import . "github.com/rcarmo/go-joker/core"
+import (
+	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+)
 
 var transitNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.transit"))
 
@@ -15,17 +18,17 @@ func Init() {
 	transitNamespace.InternVar("read-str", read_, MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("s"))), "Alias for read; reads a Transit+JSON string into Joker data.", "1.0"))
 }
 
-var write_ Proc = Proc{Fn: func(args []Object) Object {
+var write_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	return writeTransit(args[0])
 }, Name: "write", Package: "std/transit"}
 
-var writeVerbose_ Proc = Proc{Fn: func(args []Object) Object {
+var writeVerbose_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	return writeTransitVerbose(args[0])
 }, Name: "write-verbose", Package: "std/transit"}
 
-var read_ Proc = Proc{Fn: func(args []Object) Object {
+var read_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	return readTransit(EnsureArgIsString(args, 0))
 }, Name: "read", Package: "std/transit"}

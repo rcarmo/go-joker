@@ -20,34 +20,34 @@ func Init() {
 	systemNamespace.InternVar("nanoTime", nanoTime_, MakeMeta(NewListFrom(EmptyVector()), "Returns monotonic-ish current time in nanoseconds.", "1.0"))
 }
 
-var getProperty_ Proc = Proc{Fn: func(args []Object) Object {
+var getProperty_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	return getProperty(args)
 }, Name: "getProperty", Package: "std/system"}
 
-var getProperties_ Proc = Proc{Fn: func(args []Object) Object {
+var getProperties_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
 	return systemProperties()
 }, Name: "getProperties", Package: "std/system"}
 
-var getenv_ Proc = Proc{Fn: func(args []Object) Object {
+var getenv_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	return systemGetenv(args)
 }, Name: "getenv", Package: "std/system"}
 
-var exit_ Proc = Proc{Fn: func(args []Object) Object {
+var exit_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	return systemExit(args)
 }, Name: "exit", Package: "std/system"}
 
-var lineSeparator_ Proc = Proc{Fn: func(args []Object) Object {
+var lineSeparator_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
 	return coretypes.MakeString(lineSeparator())
 }, Name: "lineSeparator", Package: "std/system"}
 
-var currentTimeMillis_ Proc = Proc{Fn: func(args []Object) Object {
+var currentTimeMillis_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
 	return currentTimeMillis()
 }, Name: "currentTimeMillis", Package: "std/system"}
 
-var nanoTime_ Proc = Proc{Fn: func(args []Object) Object {
+var nanoTime_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
 	return nanoTime()
 }, Name: "nanoTime", Package: "std/system"}

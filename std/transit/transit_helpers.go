@@ -8,7 +8,7 @@ import (
 )
 
 // TransitEncodeArgs encodes pod invocation arguments as a Transit+JSON list.
-func TransitEncodeArgs(args []Object) (string, error) {
+func TransitEncodeArgs(args []coretypes.Object) (string, error) {
 	enc := &transitEncoder{cache: newTransitCache()}
 	items := make([]interface{}, len(args))
 	for i, arg := range args {
@@ -22,7 +22,7 @@ func TransitEncodeArgs(args []Object) (string, error) {
 }
 
 // TransitDecodeValue decodes a Transit+JSON pod result payload.
-func TransitDecodeValue(s string) (result Object, err error) {
+func TransitDecodeValue(s string) (result coretypes.Object, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			result = NIL

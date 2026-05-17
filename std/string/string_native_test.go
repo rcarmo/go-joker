@@ -25,7 +25,7 @@ func TestPadLeftRightUseRuneWidth(t *testing.T) {
 func TestSplitOnEmptyStringUsesWhitespaceFields(t *testing.T) {
 	got := splitOnStringOrRegex(" alpha  beta\tgamma ", coretypes.String{S: ""}, -1).(interface {
 		Count() int
-		Nth(int) Object
+		Nth(int) coretypes.Object
 	})
 	if got.Count() != 3 {
 		t.Fatalf("split field count = %d, want 3", got.Count())

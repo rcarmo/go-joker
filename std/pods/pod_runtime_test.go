@@ -114,16 +114,24 @@ func TestInstallPodDescribeNamespaces(t *testing.T) {
 }
 
 func TestPodInvokeTimeoutOptionsRejectInvalidValues(t *testing.T) {
-	for name, opt := range map[string]Object{
+	for name, opt := range map[string]coretypes.Object{
 		"non-map": coretypes.MakeString("bad"),
-		"non-integer": func() Object {
+		"non-integer": func() coretypes.Object {
 			m := EmptyArrayMap()
 			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeString("bad"))
 			return m
 		}(),
-		"zero":     func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(0)); return m }(),
-		"negative": func() Object { m := EmptyArrayMap(); m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(-1)); return m }(),
-		"too-large": func() Object {
+		"zero": func() coretypes.Object {
+			m := EmptyArrayMap()
+			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(0))
+			return m
+		}(),
+		"negative": func() coretypes.Object {
+			m := EmptyArrayMap()
+			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(-1))
+			return m
+		}(),
+		"too-large": func() coretypes.Object {
 			m := EmptyArrayMap()
 			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(int(^uint(0)>>1)))
 			return m
@@ -143,7 +151,7 @@ func TestPodInvokeTimeoutOptionsRejectInvalidValues(t *testing.T) {
 func TestPodInvokeTimeoutCleansPending(t *testing.T) {
 	shutdownAllPods()
 	p := newPod("pod-timeout", "timeout", "json", io.Discard, nil, nil)
-	if _, err := p.invokeWithTimeout("fake.pod/hang", []Object{coretypes.MakeString("hi")}, time.Millisecond); err == nil || err.Error() != "timed out waiting for pod response" {
+	if _, err := p.invokeWithTimeout("fake.pod/hang", []coretypes.Object{coretypes.MakeString("hi")}, time.Millisecond); err == nil || err.Error() != "timed out waiting for pod response" {
 		t.Fatalf("expected timeout error, got %v", err)
 	}
 	p.pendingMu.Lock()
@@ -173,7 +181,7 @@ func TestPodInvokeJSON(t *testing.T) {
 			}
 		}
 	}()
-	res, err := p.invoke("fake.pod/echo", []Object{coretypes.MakeString("hi"), coretypes.MakeInt(7)})
+	res, err := p.invoke("fake.pod/echo", []coretypes.Object{coretypes.MakeString("hi"), coretypes.MakeInt(7)})
 	if err != nil {
 		t.Fatal(err)
 	}

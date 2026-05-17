@@ -4,12 +4,13 @@ package bolt
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 var __by_prefix__P ProcFn = __by_prefix_
 var by_prefix_ Proc = Proc{Fn: __by_prefix__P, Name: "by_prefix_", Package: "std/bolt"}
 
-func __by_prefix_(_args []Object) Object {
+func __by_prefix_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
@@ -28,7 +29,7 @@ func __by_prefix_(_args []Object) Object {
 var __close__P ProcFn = __close_
 var close_ Proc = Proc{Fn: __close__P, Name: "close_", Package: "std/bolt"}
 
-func __close_(_args []Object) Object {
+func __close_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
@@ -45,7 +46,7 @@ func __close_(_args []Object) Object {
 var __create_bucket__P ProcFn = __create_bucket_
 var create_bucket_ Proc = Proc{Fn: __create_bucket__P, Name: "create_bucket_", Package: "std/bolt"}
 
-func __create_bucket_(_args []Object) Object {
+func __create_bucket_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -63,7 +64,7 @@ func __create_bucket_(_args []Object) Object {
 var __create_bucket_if_not_exists__P ProcFn = __create_bucket_if_not_exists_
 var create_bucket_if_not_exists_ Proc = Proc{Fn: __create_bucket_if_not_exists__P, Name: "create_bucket_if_not_exists_", Package: "std/bolt"}
 
-func __create_bucket_if_not_exists_(_args []Object) Object {
+func __create_bucket_if_not_exists_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -81,7 +82,7 @@ func __create_bucket_if_not_exists_(_args []Object) Object {
 var __delete__P ProcFn = __delete_
 var delete_ Proc = Proc{Fn: __delete__P, Name: "delete_", Package: "std/bolt"}
 
-func __delete_(_args []Object) Object {
+func __delete_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
@@ -100,7 +101,7 @@ func __delete_(_args []Object) Object {
 var __delete_bucket__P ProcFn = __delete_bucket_
 var delete_bucket_ Proc = Proc{Fn: __delete_bucket__P, Name: "delete_bucket_", Package: "std/bolt"}
 
-func __delete_bucket_(_args []Object) Object {
+func __delete_bucket_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -118,7 +119,7 @@ func __delete_bucket_(_args []Object) Object {
 var __get__P ProcFn = __get_
 var get_ Proc = Proc{Fn: __get__P, Name: "get_", Package: "std/bolt"}
 
-func __get_(_args []Object) Object {
+func __get_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
@@ -137,7 +138,7 @@ func __get_(_args []Object) Object {
 var __next_sequence__P ProcFn = __next_sequence_
 var next_sequence_ Proc = Proc{Fn: __next_sequence__P, Name: "next_sequence_", Package: "std/bolt"}
 
-func __next_sequence_(_args []Object) Object {
+func __next_sequence_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -155,7 +156,7 @@ func __next_sequence_(_args []Object) Object {
 var __open__P ProcFn = __open_
 var open_ Proc = Proc{Fn: __open__P, Name: "open_", Package: "std/bolt"}
 
-func __open_(_args []Object) Object {
+func __open_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -173,7 +174,7 @@ func __open_(_args []Object) Object {
 var __put__P ProcFn = __put_
 var put_ Proc = Proc{Fn: __put__P, Name: "put_", Package: "std/bolt"}
 
-func __put_(_args []Object) Object {
+func __put_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 4:

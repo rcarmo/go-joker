@@ -79,7 +79,7 @@ func InternsOrThunks() {
 	gitNamespace.InternVar("object", object_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("repo"), MakeSymbol("hash"))),
-			`Returns an Object with the given hash.`, "1.3"))
+			`Returns an coretypes.Object with the given hash.`, "1.3"))
 
 	gitNamespace.InternVar("open", open_,
 		MakeMeta(

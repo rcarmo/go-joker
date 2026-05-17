@@ -12,7 +12,7 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func nativeIntObject(n int64) Object {
+func nativeIntObject(n int64) coretypes.Object {
 	maxNativeInt := int64(int(^uint(0) >> 1))
 	minNativeInt := -maxNativeInt - 1
 	if n > maxNativeInt || n < minNativeInt {
@@ -21,7 +21,7 @@ func nativeIntObject(n int64) Object {
 	return coretypes.MakeInt(int(n))
 }
 
-func env() Object {
+func env() coretypes.Object {
 	res := EmptyArrayMap()
 	for _, v := range os.Environ() {
 		parts := strings.SplitN(v, "=", 2)
@@ -30,14 +30,14 @@ func env() Object {
 	return res
 }
 
-func getEnv(key string) Object {
+func getEnv(key string) coretypes.Object {
 	if v, ok := os.LookupEnv(key); ok {
 		return coretypes.MakeString(v)
 	}
 	return NIL
 }
 
-func commandArgs() Object {
+func commandArgs() coretypes.Object {
 	res := EmptyVector()
 	for _, arg := range os.Args {
 		res = res.Conjoin(coretypes.String{S: arg})
@@ -72,7 +72,7 @@ func startProcess(name string, opts Map) int {
 	return pid
 }
 
-func sendSignal(pid, signal int) Object {
+func sendSignal(pid, signal int) coretypes.Object {
 	p, err := os.FindProcess(pid)
 	PanicOnErr(err)
 	err = p.Signal(syscall.Signal(signal))
@@ -80,7 +80,7 @@ func sendSignal(pid, signal int) Object {
 	return NIL
 }
 
-func killProcess(pid int) Object {
+func killProcess(pid int) coretypes.Object {
 	p, err := os.FindProcess(pid)
 	PanicOnErr(err)
 	err = p.Kill()
@@ -147,12 +147,12 @@ func parseExecOpts(opts Map) (dir string, args []string, stdin io.Reader, stdout
 	return
 }
 
-func execute(name string, opts Map) Object {
+func execute(name string, opts Map) coretypes.Object {
 	dir, args, stdin, stdout, stderr := parseExecOpts(opts)
 	return sh(dir, stdin, stdout, stderr, name, args)
 }
 
-func readDir(dirname string) Object {
+func readDir(dirname string) coretypes.Object {
 	entries, err := os.ReadDir(dirname)
 	PanicOnErr(err)
 	res := EmptyVector()

@@ -217,7 +217,7 @@ func objectMapToPodMessage(obj any) podMessage {
 	return m
 }
 
-func podMessageKeyString(k Object) string {
+func podMessageKeyString(k coretypes.Object) string {
 	switch v := k.(type) {
 	case coretypes.String:
 		return v.S
@@ -230,7 +230,7 @@ func podMessageKeyString(k Object) string {
 	}
 }
 
-func podMessageValue(v Object) any {
+func podMessageValue(v coretypes.Object) any {
 	switch x := v.(type) {
 	case coretypes.String:
 		return x.S
@@ -244,7 +244,7 @@ func podMessageValue(v Object) any {
 		return nil
 	case Map:
 		return objectMapToPodMessage(x)
-	case Seqable:
+	case coretypes.Seqable:
 		vals := []any{}
 		for s := x.Seq(); !s.IsEmpty(); s = s.Rest() {
 			vals = append(vals, podMessageValue(s.First()))

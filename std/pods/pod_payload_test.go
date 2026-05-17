@@ -10,7 +10,7 @@ import (
 
 func TestPodTransitPayloadSupport(t *testing.T) {
 	p := newPod("pod-transit", "transit", "transit+json", nil, nil, nil)
-	encoded, err := p.encodeArgs([]Object{MakeKeyword("k")})
+	encoded, err := p.encodeArgs([]coretypes.Object{MakeKeyword("k")})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -28,7 +28,7 @@ func TestPodTransitPayloadSupport(t *testing.T) {
 
 func TestPodEDNPayloadSupport(t *testing.T) {
 	p := newPod("pod-edn", "edn", "edn", nil, nil, nil)
-	encoded, err := p.encodeArgs([]Object{coretypes.MakeString("x"), MakeKeyword("k")})
+	encoded, err := p.encodeArgs([]coretypes.Object{coretypes.MakeString("x"), MakeKeyword("k")})
 	if err != nil {
 		t.Fatal(err)
 	}

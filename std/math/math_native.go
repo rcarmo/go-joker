@@ -9,7 +9,7 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func modf(x float64) Object {
+func modf(x float64) coretypes.Object {
 	i, f := math.Modf(x)
 	res := EmptyVector()
 	res = res.Conjoin(coretypes.MakeDouble(i))

@@ -35,7 +35,7 @@ func TestJSONReadStringKeywordizeAndFromObject(t *testing.T) {
 
 func TestJSONSeqSurfacesDecodeErrors(t *testing.T) {
 	seq := jsonSeqOpts(coretypes.MakeString(`{"ok":1}
-{"bad"`), nil).(Seq)
+{"bad"`), nil).(coretypes.Seq)
 	if seq.First() == nil {
 		t.Fatal("expected first json object")
 	}

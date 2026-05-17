@@ -12,7 +12,7 @@ import (
 
 // --- Disassemble ---
 
-var procDisassemble ProcFn = func(args []Object) Object {
+var procDisassemble ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
@@ -24,7 +24,7 @@ var procDisassemble ProcFn = func(args []Object) Object {
 
 // --- Profile ---
 
-var procProfile ProcFn = func(args []Object) Object {
+var procProfile ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 2)
 	callable := EnsureArgIsCallable(args, 0)
 	iterations := 1
@@ -42,7 +42,7 @@ var procProfile ProcFn = func(args []Object) Object {
 	runtime.ReadMemStats(&memBefore)
 
 	start := time.Now()
-	var result Object
+	var result coretypes.Object
 	for i := 0; i < iterations; i++ {
 		result = callable.Call(nil)
 	}
@@ -64,7 +64,7 @@ var procProfile ProcFn = func(args []Object) Object {
 
 // --- WASM Diagnostic ---
 
-var procWasmDiagnostic ProcFn = func(args []Object) Object {
+var procWasmDiagnostic ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
@@ -87,7 +87,7 @@ var procWasmDiagnostic ProcFn = func(args []Object) Object {
 
 // --- IR Analysis ---
 
-var procAnalyze ProcFn = func(args []Object) Object {
+var procAnalyze ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
@@ -123,7 +123,7 @@ var procAnalyze ProcFn = func(args []Object) Object {
 
 // --- Escape Analysis ---
 
-var procEscapeAnalysis ProcFn = func(args []Object) Object {
+var procEscapeAnalysis ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
@@ -131,7 +131,7 @@ var procEscapeAnalysis ProcFn = func(args []Object) Object {
 		return NIL
 	}
 	info := AnalyzeEscapesExported(prog)
-	slots := make([]Object, len(info))
+	slots := make([]coretypes.Object, len(info))
 	for i, safe := range info {
 		slots[i] = coretypes.Boolean{B: safe}
 	}
@@ -143,7 +143,7 @@ var procEscapeAnalysis ProcFn = func(args []Object) Object {
 
 // --- Memory stats ---
 
-var procMemStats ProcFn = func(args []Object) Object {
+var procMemStats ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
 	var ms runtime.MemStats
 	runtime.ReadMemStats(&ms)
@@ -158,7 +158,7 @@ var procMemStats ProcFn = func(args []Object) Object {
 
 // --- GC ---
 
-var procGC ProcFn = func(args []Object) Object {
+var procGC ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
 	runtime.GC()
 	return NIL
@@ -166,7 +166,7 @@ var procGC ProcFn = func(args []Object) Object {
 
 // --- Benchmark helper ---
 
-var procBenchmark ProcFn = func(args []Object) Object {
+var procBenchmark ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	callable := EnsureArgIsCallable(args, 0)
 	// Warm up a little to reduce one-off effects.
@@ -217,7 +217,7 @@ var procBenchmark ProcFn = func(args []Object) Object {
 
 // --- Helpers ---
 
-func runtimeIntObject(n int64) Object {
+func runtimeIntObject(n int64) coretypes.Object {
 	maxNativeInt := int64(int(^uint(0) >> 1))
 	minNativeInt := -maxNativeInt - 1
 	if n > maxNativeInt || n < minNativeInt {
@@ -226,7 +226,7 @@ func runtimeIntObject(n int64) Object {
 	return coretypes.MakeInt(int(n))
 }
 
-func runtimeUintObject(n uint64) Object {
+func runtimeUintObject(n uint64) coretypes.Object {
 	maxNativeUint := uint64(int(^uint(0) >> 1))
 	if n > maxNativeUint {
 		return coretypes.MakeBigInt(new(big.Int).SetUint64(n))
@@ -234,7 +234,7 @@ func runtimeUintObject(n uint64) Object {
 	return coretypes.MakeInt(int(n))
 }
 
-func ensureArgIsFnLocal(args []Object, idx int) *Fn {
+func ensureArgIsFnLocal(args []coretypes.Object, idx int) *Fn {
 	fn, ok := args[idx].(*Fn)
 	if !ok {
 		panic(RT.NewError(fmt.Sprintf("Expected function, got %s", args[idx].GetType().ToString(false))))
@@ -242,7 +242,7 @@ func ensureArgIsFnLocal(args []Object, idx int) *Fn {
 	return fn
 }
 
-func ensureArgIsIntLocal(args []Object, idx int) int {
+func ensureArgIsIntLocal(args []coretypes.Object, idx int) int {
 	switch v := args[idx].(type) {
 	case coretypes.Int:
 		return v.I
@@ -251,7 +251,7 @@ func ensureArgIsIntLocal(args []Object, idx int) int {
 	}
 }
 
-func assocM(m *ArrayMap, k, v Object) *ArrayMap {
+func assocM(m *ArrayMap, k, v coretypes.Object) *ArrayMap {
 	result := m.Assoc(k, v)
 	if am, ok := result.(*ArrayMap); ok {
 		return am

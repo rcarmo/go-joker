@@ -29,5 +29,5 @@ func TestParseLogLevelAcceptsStringsAndKeywords(t *testing.T) {
 func TestLogfChecksArity(t *testing.T) {
 	initLogNamespace()
 	logf := logNamespace.Resolve("logf").Resolve().(coretypes.Callable)
-	expectLogPanic(t, func() { logf.Call([]Object{MakeKeyword("info")}) })
+	expectLogPanic(t, func() { logf.Call([]coretypes.Object{MakeKeyword("info")}) })
 }

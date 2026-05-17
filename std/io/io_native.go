@@ -8,7 +8,7 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func copyCountObject(n int64) Object {
+func copyCountObject(n int64) coretypes.Object {
 	maxNativeInt := int64(int(^uint(0) >> 1))
 	if n > maxNativeInt {
 		return coretypes.MakeBigInt(big.NewInt(n))
@@ -16,7 +16,7 @@ func copyCountObject(n int64) Object {
 	return coretypes.MakeInt(int(n))
 }
 
-func pipe() Object {
+func pipe() coretypes.Object {
 	r, w := io.Pipe()
 	res := EmptyVector()
 	res = res.Conjoin(MakeIOReader(r))
@@ -24,14 +24,14 @@ func pipe() Object {
 	return res
 }
 
-func close(f Object) Nil {
+func close(f coretypes.Object) Nil {
 	if c, ok := f.(io.Closer); ok {
 		if err := c.Close(); err != nil {
 			panic(RT.NewError(err.Error()))
 		}
 		return NIL
 	}
-	panic(RT.NewError("Object is not closable: " + f.ToString(false)))
+	panic(RT.NewError("coretypes.Object is not closable: " + f.ToString(false)))
 }
 
 func read(r io.Reader, n int) string {

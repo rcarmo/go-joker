@@ -2,6 +2,7 @@ package pods
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -55,7 +56,7 @@ func makePodProxyProc(p *Pod, qualified string) Proc {
 	return Proc{
 		Name:    "pod-proxy-" + qualified,
 		Package: "std/pods",
-		Fn: func(args []Object) Object {
+		Fn: func(args []coretypes.Object) coretypes.Object {
 			res, err := p.invoke(qualified, args)
 			if err != nil {
 				panic(RT.NewError("pod " + qualified + ": " + err.Error()))

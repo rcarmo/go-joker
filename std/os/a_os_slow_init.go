@@ -427,7 +427,7 @@ func InternsOrThunks() {
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("paths"), MakeSymbol("ch")), NewVectorFrom(MakeSymbol("paths"), MakeSymbol("ch"), MakeSymbol("opts"))),
 			`Watches paths for file system changes, sends event maps to ch, and returns a
-  zero-argument cancel function. paths must be Seqable and each path must be a
+  zero-argument cancel function. paths must be coretypes.Seqable and each path must be a
   string. opts may contain :recursive? to watch child directories recursively.
 
   Event maps have {:type :event :path path :ops ops}, where ops is a set

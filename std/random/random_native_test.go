@@ -23,7 +23,7 @@ func TestRandomIntBetweenRejectsOverflowRange(t *testing.T) {
 	minInt := -maxInt - 1
 	expectRandomPanic(t, func() {
 		intBetween := randomNamespace.Resolve("int-between").Resolve().(coretypes.Callable)
-		intBetween.Call([]Object{coretypes.MakeInt(minInt), coretypes.MakeInt(maxInt)})
+		intBetween.Call([]coretypes.Object{coretypes.MakeInt(minInt), coretypes.MakeInt(maxInt)})
 	})
 }
 
@@ -31,10 +31,10 @@ func TestRandomSecureArgsValidate(t *testing.T) {
 	initRandomNamespace()
 	expectRandomPanic(t, func() {
 		secureBytes := randomNamespace.Resolve("secure-bytes").Resolve().(coretypes.Callable)
-		secureBytes.Call([]Object{coretypes.MakeInt(0)})
+		secureBytes.Call([]coretypes.Object{coretypes.MakeInt(0)})
 	})
 	expectRandomPanic(t, func() {
 		secureInt := randomNamespace.Resolve("secure-int").Resolve().(coretypes.Callable)
-		secureInt.Call([]Object{coretypes.MakeInt(0)})
+		secureInt.Call([]coretypes.Object{coretypes.MakeInt(0)})
 	})
 }

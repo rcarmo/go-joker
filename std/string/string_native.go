@@ -53,7 +53,7 @@ func padLeft(s, pad string, n int) string {
 	return s
 }
 
-func split(s string, r *regexp.Regexp, n int) Object {
+func split(s string, r *regexp.Regexp, n int) coretypes.Object {
 	indexes := r.FindAllStringIndex(s, n-1)
 	lastStart := 0
 	result := EmptyVector()
@@ -65,7 +65,7 @@ func split(s string, r *regexp.Regexp, n int) Object {
 	return result
 }
 
-func splitOnStringOrRegex(s string, sep Object, n int) Object {
+func splitOnStringOrRegex(s string, sep coretypes.Object, n int) coretypes.Object {
 	switch sep := sep.(type) {
 	case coretypes.String:
 		if n == 0 {
@@ -98,7 +98,7 @@ func splitOnStringOrRegex(s string, sep Object, n int) Object {
 	}
 }
 
-func join(sep string, seqable Seqable) string {
+func join(sep string, seqable coretypes.Seqable) string {
 	seq := seqable.Seq()
 	var b bytes.Buffer
 	for !seq.IsEmpty() {
@@ -111,7 +111,7 @@ func join(sep string, seqable Seqable) string {
 	return b.String()
 }
 
-func isBlank(s Object) bool {
+func isBlank(s coretypes.Object) bool {
 	if s.Equals(NIL) {
 		return true
 	}
@@ -134,7 +134,7 @@ func capitalize(s string) string {
 func escape(s string, cmap coretypes.Callable) string {
 	var b bytes.Buffer
 	for _, r := range s {
-		if obj := cmap.Call([]Object{coretypes.Char{Ch: r}}); !obj.Equals(NIL) {
+		if obj := cmap.Call([]coretypes.Object{coretypes.Char{Ch: r}}); !obj.Equals(NIL) {
 			b.WriteString(obj.ToString(false))
 		} else {
 			b.WriteRune(r)
@@ -143,7 +143,7 @@ func escape(s string, cmap coretypes.Callable) string {
 	return b.String()
 }
 
-func indexOf(s string, value Object, from int) Object {
+func indexOf(s string, value coretypes.Object, from int) coretypes.Object {
 	var res int
 	if from < 0 {
 		from = 0
@@ -169,7 +169,7 @@ func indexOf(s string, value Object, from int) Object {
 	return coretypes.MakeInt(utf8.RuneCountInString(s[:res]) + from)
 }
 
-func lastIndexOf(s string, value Object, from int) Object {
+func lastIndexOf(s string, value coretypes.Object, from int) coretypes.Object {
 	var res int
 	runes := []rune(s)
 	if from < 0 {
@@ -195,7 +195,7 @@ func lastIndexOf(s string, value Object, from int) Object {
 	return coretypes.MakeInt(utf8.RuneCountInString(s[:res]))
 }
 
-func replace(s string, match Object, repl string) string {
+func replace(s string, match coretypes.Object, repl string) string {
 	switch match := match.(type) {
 	case coretypes.String:
 		return strings.Replace(s, match.S, repl, -1)
@@ -206,7 +206,7 @@ func replace(s string, match Object, repl string) string {
 	}
 }
 
-func replaceFirst(s string, match Object, repl string) string {
+func replaceFirst(s string, match coretypes.Object, repl string) string {
 	switch match := match.(type) {
 	case coretypes.String:
 		return strings.Replace(s, match.S, repl, 1)

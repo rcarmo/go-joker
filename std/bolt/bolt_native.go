@@ -51,11 +51,11 @@ func (db BoltDB) Hash() uint32 {
 	return db.hash
 }
 
-func (db BoltDB) WithInfo(info *coretypes.ObjectInfo) Object {
+func (db BoltDB) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return db
 }
 
-func EnsureArgIsBoltDB(args []Object, index int) BoltDB {
+func EnsureArgIsBoltDB(args []coretypes.Object, index int) BoltDB {
 	if index < 0 || index >= len(args) {
 		panic(RT.NewError("Expected BoltDB argument"))
 	}
@@ -66,7 +66,7 @@ func EnsureArgIsBoltDB(args []Object, index int) BoltDB {
 	panic(FailArg(obj, "BoltDB", index))
 }
 
-func ExtractBoltDB(args []Object, index int) *bolt.DB {
+func ExtractBoltDB(args []coretypes.Object, index int) *bolt.DB {
 	return EnsureArgIsBoltDB(args, index).DB
 }
 
@@ -116,7 +116,7 @@ func getBucket(tx *bolt.Tx, bucket string) *bolt.Bucket {
 	return b
 }
 
-func nextSequence(db *bolt.DB, bucket string) Object {
+func nextSequence(db *bolt.DB, bucket string) coretypes.Object {
 	var id uint64
 	err := db.Update(func(tx *bolt.Tx) error {
 		b := getBucket(tx, bucket)
@@ -150,7 +150,7 @@ func delete(db *bolt.DB, bucket, key string) Nil {
 	return NIL
 }
 
-func get(db *bolt.DB, bucket, key string) Object {
+func get(db *bolt.DB, bucket, key string) coretypes.Object {
 	var v []byte
 	err := db.View(func(tx *bolt.Tx) error {
 		b := getBucket(tx, bucket)

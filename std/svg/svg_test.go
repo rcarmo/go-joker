@@ -13,15 +13,15 @@ func TestCanvasGeneration(t *testing.T) {
 	initSVGNamespace()
 
 	// Create a canvas
-	canvas := procCanvas([]Object{coretypes.MakeInt(200), coretypes.MakeInt(100)})
+	canvas := procCanvas([]coretypes.Object{coretypes.MakeInt(200), coretypes.MakeInt(100)})
 
 	// Draw shapes
-	procRect([]Object{canvas, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(80), coretypes.MakeInt(40)})
-	procCircle([]Object{canvas, coretypes.MakeInt(150), coretypes.MakeInt(50), coretypes.MakeInt(30)})
-	procText([]Object{canvas, coretypes.MakeInt(50), coretypes.MakeInt(80), coretypes.MakeString("Hello")})
+	procRect([]coretypes.Object{canvas, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(80), coretypes.MakeInt(40)})
+	procCircle([]coretypes.Object{canvas, coretypes.MakeInt(150), coretypes.MakeInt(50), coretypes.MakeInt(30)})
+	procText([]coretypes.Object{canvas, coretypes.MakeInt(50), coretypes.MakeInt(80), coretypes.MakeString("Hello")})
 
 	// Get SVG string
-	result := procToString([]Object{canvas})
+	result := procToString([]coretypes.Object{canvas})
 	svg := result.(coretypes.String).S
 
 	if !strings.Contains(svg, "<svg") {
@@ -44,53 +44,53 @@ func TestCanvasGeneration(t *testing.T) {
 
 func TestCanvasRejectsInvalidDimensions(t *testing.T) {
 	expectSVGPanic(t, func() {
-		procCanvas([]Object{coretypes.MakeInt(0), coretypes.MakeInt(100)})
+		procCanvas([]coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(100)})
 	})
 	expectSVGPanic(t, func() {
-		procCanvasWithViewbox([]Object{coretypes.MakeInt(100), coretypes.MakeInt(100), coretypes.MakeInt(-1), coretypes.MakeInt(100)})
+		procCanvasWithViewbox([]coretypes.Object{coretypes.MakeInt(100), coretypes.MakeInt(100), coretypes.MakeInt(-1), coretypes.MakeInt(100)})
 	})
 }
 
 func TestTransformsRejectNonFiniteFloats(t *testing.T) {
-	canvas := procCanvas([]Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
+	canvas := procCanvas([]coretypes.Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
 	expectSVGPanic(t, func() {
-		procScale([]Object{canvas, coretypes.Double{D: math.Inf(1)}})
+		procScale([]coretypes.Object{canvas, coretypes.Double{D: math.Inf(1)}})
 	})
 	expectSVGPanic(t, func() {
-		procScale([]Object{canvas, coretypes.Double{D: 1}, coretypes.Double{D: math.NaN()}})
+		procScale([]coretypes.Object{canvas, coretypes.Double{D: 1}, coretypes.Double{D: math.NaN()}})
 	})
 	expectSVGPanic(t, func() {
-		procRotate([]Object{canvas, coretypes.Double{D: math.Inf(-1)}})
+		procRotate([]coretypes.Object{canvas, coretypes.Double{D: math.Inf(-1)}})
 	})
 }
 
 func TestShapesRejectInvalidDimensions(t *testing.T) {
-	canvas := procCanvas([]Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
+	canvas := procCanvas([]coretypes.Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
 	expectSVGPanic(t, func() {
-		procRect([]Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(10)})
+		procRect([]coretypes.Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(10)})
 	})
 	expectSVGPanic(t, func() {
-		procRoundrect([]Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(-1), coretypes.MakeInt(2)})
+		procRoundrect([]coretypes.Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(-1), coretypes.MakeInt(2)})
 	})
 	expectSVGPanic(t, func() {
-		procCircle([]Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(0)})
+		procCircle([]coretypes.Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(0)})
 	})
 	expectSVGPanic(t, func() {
-		procEllipse([]Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(10), coretypes.MakeInt(-1)})
+		procEllipse([]coretypes.Object{canvas, coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(10), coretypes.MakeInt(-1)})
 	})
 }
 
 func TestCanvasWithStyle(t *testing.T) {
 	initSVGNamespace()
 
-	canvas := procCanvas([]Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
+	canvas := procCanvas([]coretypes.Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
 
 	style := &ArrayMap{}
 	style = style.Assoc(MakeKeyword("fill"), coretypes.MakeString("red")).(*ArrayMap)
 	style = style.Assoc(MakeKeyword("stroke"), coretypes.MakeString("black")).(*ArrayMap)
-	procRect([]Object{canvas, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(50), coretypes.MakeInt(50), style})
+	procRect([]coretypes.Object{canvas, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(50), coretypes.MakeInt(50), style})
 
-	result := procToString([]Object{canvas})
+	result := procToString([]coretypes.Object{canvas})
 	svg := result.(coretypes.String).S
 
 	if !strings.Contains(svg, "fill:red") {
@@ -105,14 +105,14 @@ func TestRenderSVG(t *testing.T) {
 		<rect x="0" y="0" width="100" height="100" fill="red"/>
 	</svg>`
 
-	img := procRender([]Object{coretypes.MakeString(svgStr), coretypes.MakeInt(100), coretypes.MakeInt(100)})
+	img := procRender([]coretypes.Object{coretypes.MakeString(svgStr), coretypes.MakeInt(100), coretypes.MakeInt(100)})
 	if img == nil || img == NIL {
 		t.Fatal("render returned nil")
 	}
 	t.Logf("rendered: %s", img.ToString(false))
 
 	expectSVGPanic(t, func() {
-		procRender([]Object{coretypes.MakeString(svgStr), coretypes.MakeInt(0), coretypes.MakeInt(100)})
+		procRender([]coretypes.Object{coretypes.MakeString(svgStr), coretypes.MakeInt(0), coretypes.MakeInt(100)})
 	})
 }
 
@@ -127,9 +127,9 @@ func expectSVGPanic(t *testing.T, fn func()) {
 }
 
 func TestPolylineRejectsMismatchedCoordinates(t *testing.T) {
-	canvas := procCanvas([]Object{coretypes.MakeInt(10), coretypes.MakeInt(10)})
+	canvas := procCanvas([]coretypes.Object{coretypes.MakeInt(10), coretypes.MakeInt(10)})
 	expectSVGPanic(t, func() {
-		procPolyline([]Object{canvas, NewVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2)), NewVectorFrom(coretypes.MakeInt(1))})
+		procPolyline([]coretypes.Object{canvas, NewVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2)), NewVectorFrom(coretypes.MakeInt(1))})
 	})
 }
 

@@ -94,14 +94,14 @@ func BenchmarkPVAssoc35(b *testing.B) {
 
 // From core/persistent_vector_test.go
 func BenchmarkArrayVectorAssoc35(b *testing.B) {
-	arr := make([]Object, 35)
+	arr := make([]coretypes.Object, 35)
 	for i := range arr {
 		arr[i] = coretypes.Double{D: float64(i)}
 	}
 	av := NewArrayVectorFrom(arr...)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		var v Associative = av
+		var v coretypes.Associative = av
 		for j := 0; j < 9; j++ {
 			v = v.Assoc(coretypes.MakeInt(j*3+3), coretypes.Double{D: float64(i + j)})
 		}

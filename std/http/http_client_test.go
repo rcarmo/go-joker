@@ -43,7 +43,7 @@ func TestPersistentClientRejectsOverflowingIdleTimeout(t *testing.T) {
 			t.Fatal("overflowing idle timeout option did not panic")
 		}
 	}()
-	_ = makeClient([]Object{opts})
+	_ = makeClient([]coretypes.Object{opts})
 }
 
 func TestPersistentClientRejectsNegativeOptions(t *testing.T) {
@@ -54,7 +54,7 @@ func TestPersistentClientRejectsNegativeOptions(t *testing.T) {
 			t.Fatal("negative client option did not panic")
 		}
 	}()
-	_ = makeClient([]Object{opts})
+	_ = makeClient([]coretypes.Object{opts})
 }
 
 func TestPersistentClientOptions(t *testing.T) {
@@ -62,7 +62,7 @@ func TestPersistentClientOptions(t *testing.T) {
 	opts.Add(MakeKeyword("max-idle-conns"), coretypes.MakeInt(7))
 	opts.Add(MakeKeyword("max-idle-conns-per-host"), coretypes.MakeInt(3))
 	opts.Add(MakeKeyword("idle-timeout-ms"), coretypes.MakeInt(1234))
-	hc := makeClient([]Object{opts}).(*HTTPClient)
+	hc := makeClient([]coretypes.Object{opts}).(*HTTPClient)
 	if hc.transport.MaxIdleConns != 7 || hc.transport.MaxIdleConnsPerHost != 3 {
 		t.Fatalf("options not applied: %#v", hc.transport)
 	}

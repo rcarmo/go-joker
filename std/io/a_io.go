@@ -11,7 +11,7 @@ import (
 var __close__P ProcFn = __close_
 var close_ Proc = Proc{Fn: __close__P, Name: "close_", Package: "std/io"}
 
-func __close_(_args []Object) Object {
+func __close_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
@@ -28,7 +28,7 @@ func __close_(_args []Object) Object {
 var __copy__P ProcFn = __copy_
 var copy_ Proc = Proc{Fn: __copy__P, Name: "copy_", Package: "std/io"}
 
-func __copy_(_args []Object) Object {
+func __copy_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -48,7 +48,7 @@ func __copy_(_args []Object) Object {
 var __pipe__P ProcFn = __pipe_
 var pipe_ Proc = Proc{Fn: __pipe__P, Name: "pipe_", Package: "std/io"}
 
-func __pipe_(_args []Object) Object {
+func __pipe_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 0:
@@ -64,7 +64,7 @@ func __pipe_(_args []Object) Object {
 var __read__P ProcFn = __read_
 var read_ Proc = Proc{Fn: __read__P, Name: "read_", Package: "std/io"}
 
-func __read_(_args []Object) Object {
+func __read_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:

@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func fromObject(obj Object) interface{} {
+func fromObject(obj coretypes.Object) interface{} {
 	switch obj := obj.(type) {
 	case Keyword:
 		return obj.ToString(false)[1:]
@@ -35,7 +35,7 @@ func fromObject(obj Object) interface{} {
 			res[k] = fromObject(p.Value)
 		}
 		return res
-	case Seqable:
+	case coretypes.Seqable:
 		s := obj.Seq()
 		var res []interface{} = []interface{}{}
 		for !s.IsEmpty() {
@@ -48,7 +48,7 @@ func fromObject(obj Object) interface{} {
 	}
 }
 
-func toObject(v interface{}, keywordize bool) Object {
+func toObject(v interface{}, keywordize bool) coretypes.Object {
 	switch v := v.(type) {
 	case string:
 		return coretypes.MakeString(v)
@@ -70,7 +70,7 @@ func toObject(v interface{}, keywordize bool) Object {
 	case map[string]interface{}:
 		res := EmptyArrayMap()
 		for k, v := range v {
-			var key Object
+			var key coretypes.Object
 			if keywordize {
 				key = MakeKeyword(k)
 			} else {
@@ -84,7 +84,7 @@ func toObject(v interface{}, keywordize bool) Object {
 	}
 }
 
-func readString(s string, opts Map) Object {
+func readString(s string, opts Map) coretypes.Object {
 	var v interface{}
 	if err := json.Unmarshal([]byte(s), &v); err != nil {
 		panic(RT.NewError("Invalid json: " + err.Error()))
@@ -98,7 +98,7 @@ func readString(s string, opts Map) Object {
 	return toObject(v, keywordize)
 }
 
-func jsonSeqOpts(src Object, opts Map) Object {
+func jsonSeqOpts(src coretypes.Object, opts Map) coretypes.Object {
 	var dec *json.Decoder
 	var keywordize bool
 	var jsonLazySeq func() *LazySeq
@@ -116,7 +116,7 @@ func jsonSeqOpts(src Object, opts Map) Object {
 		}
 	}
 	jsonLazySeq = func() *LazySeq {
-		var c = func(args []Object) Object {
+		var c = func(args []coretypes.Object) coretypes.Object {
 			var o interface{}
 			err := dec.Decode(&o)
 			if err == io.EOF {
@@ -133,7 +133,7 @@ func jsonSeqOpts(src Object, opts Map) Object {
 	return jsonLazySeq()
 }
 
-func writeString(obj Object, opts Map) coretypes.String {
+func writeString(obj coretypes.Object, opts Map) coretypes.String {
 	var (
 		prefix coretypes.String
 		indent coretypes.String

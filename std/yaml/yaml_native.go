@@ -9,7 +9,7 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func fromObject(obj Object) interface{} {
+func fromObject(obj coretypes.Object) interface{} {
 	switch obj := obj.(type) {
 	case Keyword:
 		return obj.ToString(false)[1:]
@@ -45,7 +45,7 @@ func fromObject(obj Object) interface{} {
 	}
 }
 
-func toObject(v interface{}) Object {
+func toObject(v interface{}) coretypes.Object {
 	switch v := v.(type) {
 	case string:
 		return coretypes.MakeString(v)
@@ -74,7 +74,7 @@ func toObject(v interface{}) Object {
 	}
 }
 
-func readString(s string) Object {
+func readString(s string) coretypes.Object {
 	var v interface{}
 	if err := yaml.Unmarshal([]byte(s), &v); err != nil {
 		panic(RT.NewError("Invalid yaml: " + err.Error()))
@@ -82,7 +82,7 @@ func readString(s string) Object {
 	return toObject(v)
 }
 
-func writeString(obj Object) coretypes.String {
+func writeString(obj coretypes.Object) coretypes.String {
 	res, err := yaml.Marshal(fromObject(obj))
 	if err != nil {
 		panic(RT.NewError("Cannot encode value to yaml: " + err.Error()))

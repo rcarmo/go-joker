@@ -10,7 +10,7 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func readEDNString(s string) Object {
+func readEDNString(s string) coretypes.Object {
 	r := NewReader(bufio.NewReader(strings.NewReader(s)), "<edn-string>")
 	obj, err := TryRead(r)
 	if err != nil {
@@ -19,7 +19,7 @@ func readEDNString(s string) Object {
 	return obj
 }
 
-func ReadEDNString(s string) (Object, error) {
+func ReadEDNString(s string) (coretypes.Object, error) {
 	r := NewReader(bufio.NewReader(strings.NewReader(s)), "<edn-string>")
 	obj, err := TryRead(r)
 	if err != nil {
@@ -28,20 +28,20 @@ func ReadEDNString(s string) (Object, error) {
 	return obj, nil
 }
 
-func writeEDNString(obj Object) Object {
+func writeEDNString(obj coretypes.Object) coretypes.Object {
 	return coretypes.MakeString(WriteEDNString(obj))
 }
 
-func WriteEDNString(obj Object) string {
+func WriteEDNString(obj coretypes.Object) string {
 	if obj == nil {
 		return "nil"
 	}
 	return obj.ToString(true)
 }
 
-func DecodeAllEDN(s string) ([]Object, error) {
+func DecodeAllEDN(s string) ([]coretypes.Object, error) {
 	r := NewReader(bufio.NewReader(strings.NewReader(s)), "<edn-string>")
-	out := []Object{}
+	out := []coretypes.Object{}
 	for {
 		obj, err := TryRead(r)
 		if err != nil {

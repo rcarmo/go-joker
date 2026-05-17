@@ -50,11 +50,11 @@ func (repo GitRepo) Hash() uint32 {
 	return repo.hash
 }
 
-func (repo GitRepo) WithInfo(_info *coretypes.ObjectInfo) Object {
+func (repo GitRepo) WithInfo(_info *coretypes.ObjectInfo) coretypes.Object {
 	return repo
 }
 
-func EnsureArgIsGitRepo(args []Object, index int) GitRepo {
+func EnsureArgIsGitRepo(args []coretypes.Object, index int) GitRepo {
 	if index < 0 || index >= len(args) {
 		panic(RT.NewError("Expected GitRepo argument"))
 	}
@@ -65,7 +65,7 @@ func EnsureArgIsGitRepo(args []Object, index int) GitRepo {
 	panic(FailArg(obj, "GitRepo", index))
 }
 
-func ExtractGitRepo(args []Object, index int) *git.Repository {
+func ExtractGitRepo(args []coretypes.Object, index int) *git.Repository {
 	return EnsureArgIsGitRepo(args, index).repo
 }
 
@@ -229,7 +229,7 @@ func log(repo *git.Repository, opts Map) Vec {
 	if ok, v := opts.Get(MakeKeyword("path-filter")); ok {
 		fn := EnsureObjectIsFn(v, "Invalid :path-filter option: %s")
 		logOpts.PathFilter = func(s string) bool {
-			return ToBool(fn.Call([]Object{coretypes.MakeString(s)}))
+			return ToBool(fn.Call([]coretypes.Object{coretypes.MakeString(s)}))
 		}
 	}
 	if ok, v := opts.Get(MakeKeyword("all")); ok {

@@ -52,7 +52,7 @@ func TestRuntimeProcsCheckArity(t *testing.T) {
 				}
 			}()
 			if name == "mem-stats-extra" || name == "gc-extra" {
-				proc([]Object{NIL})
+				proc([]coretypes.Object{NIL})
 				return
 			}
 			proc(nil)
@@ -66,5 +66,5 @@ func TestProfileRejectsNonPositiveIterations(t *testing.T) {
 			t.Fatal("profile should reject non-positive iterations")
 		}
 	}()
-	procProfile([]Object{Proc{Fn: func(args []Object) Object { return NIL }}, coretypes.MakeInt(0)})
+	procProfile([]coretypes.Object{Proc{Fn: func(args []coretypes.Object) coretypes.Object { return NIL }}, coretypes.MakeInt(0)})
 }

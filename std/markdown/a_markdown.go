@@ -10,7 +10,7 @@ import (
 var __convert_string__P ProcFn = __convert_string_
 var convert_string_ Proc = Proc{Fn: __convert_string__P, Name: "convert_string_", Package: "std/markdown"}
 
-func __convert_string_(_args []Object) Object {
+func __convert_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:

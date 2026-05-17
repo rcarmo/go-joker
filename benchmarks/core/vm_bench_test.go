@@ -2,6 +2,7 @@ package core_test
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"strings"
 	"testing"
@@ -11,10 +12,10 @@ import (
 // These track regressions in hot calling paths.
 
 // evalBenchForms parses and evaluates multiple top-level forms (e.g. defn + call).
-func evalBenchForms(tb testing.TB, code string) Object {
+func evalBenchForms(tb testing.TB, code string) coretypes.Object {
 	tb.Helper()
 	reader := NewReader(strings.NewReader(code), "<bench>")
-	var result Object
+	var result coretypes.Object
 	for {
 		obj, err := TryRead(reader)
 		if err == io.EOF {

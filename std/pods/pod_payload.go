@@ -10,7 +10,7 @@ import (
 	transit "github.com/rcarmo/go-joker/std/transit"
 )
 
-func (p *Pod) encodeArgs(args []Object) (string, error) {
+func (p *Pod) encodeArgs(args []coretypes.Object) (string, error) {
 	switch p.format {
 	case "", "json":
 		vals := make([]interface{}, len(args))
@@ -20,7 +20,7 @@ func (p *Pod) encodeArgs(args []Object) (string, error) {
 		bs, err := json.Marshal(vals)
 		return string(bs), err
 	case "edn":
-		objs := make([]Object, len(args))
+		objs := make([]coretypes.Object, len(args))
 		copy(objs, args)
 		return edn.WriteEDNString(NewVectorFrom(objs...)), nil
 	case "transit+json":
@@ -30,7 +30,7 @@ func (p *Pod) encodeArgs(args []Object) (string, error) {
 	}
 }
 
-func (p *Pod) decodePayload(s string) (Object, error) {
+func (p *Pod) decodePayload(s string) (coretypes.Object, error) {
 	switch p.format {
 	case "", "json":
 		var v interface{}
@@ -47,7 +47,7 @@ func (p *Pod) decodePayload(s string) (Object, error) {
 	}
 }
 
-func podPayloadFromObject(obj Object) interface{} {
+func podPayloadFromObject(obj coretypes.Object) interface{} {
 	switch v := obj.(type) {
 	case Nil:
 		return nil
@@ -70,7 +70,7 @@ func podPayloadFromObject(obj Object) interface{} {
 			m[bencodeKeyString(p.Key)] = podPayloadFromObject(p.Value)
 		}
 		return m
-	case Seqable:
+	case coretypes.Seqable:
 		arr := []interface{}{}
 		for s := v.Seq(); !s.IsEmpty(); s = s.Rest() {
 			arr = append(arr, podPayloadFromObject(s.First()))
@@ -81,7 +81,7 @@ func podPayloadFromObject(obj Object) interface{} {
 	}
 }
 
-func podPayloadToObject(v interface{}) Object {
+func podPayloadToObject(v interface{}) coretypes.Object {
 	switch x := v.(type) {
 	case nil:
 		return NIL
@@ -95,7 +95,7 @@ func podPayloadToObject(v interface{}) Object {
 		}
 		return coretypes.Double{D: x}
 	case []interface{}:
-		objs := make([]Object, len(x))
+		objs := make([]coretypes.Object, len(x))
 		for i, e := range x {
 			objs[i] = podPayloadToObject(e)
 		}

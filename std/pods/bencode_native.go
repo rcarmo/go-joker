@@ -11,7 +11,7 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func bencodeEncodeObject(obj Object) []byte {
+func bencodeEncodeObject(obj coretypes.Object) []byte {
 	return bencodeEncodePlain(objectToBencode(obj))
 }
 
@@ -23,7 +23,7 @@ func bencodeEncodePlain(v interface{}) []byte {
 	return buf.Bytes()
 }
 
-func bencodeDecodeBytes(data []byte) Object {
+func bencodeDecodeBytes(data []byte) coretypes.Object {
 	var v interface{}
 	if err := bencode.NewDecoder(bytes.NewReader(data)).Decode(&v); err != nil {
 		panic(RT.NewError("pods/bencode-decode: " + err.Error()))
@@ -31,7 +31,7 @@ func bencodeDecodeBytes(data []byte) Object {
 	return bencodeToObject(v)
 }
 
-func bencodeDecodeReader(r io.Reader) (Object, error) {
+func bencodeDecodeReader(r io.Reader) (coretypes.Object, error) {
 	var v interface{}
 	if err := bencode.NewDecoder(r).Decode(&v); err != nil {
 		return NIL, err
@@ -39,7 +39,7 @@ func bencodeDecodeReader(r io.Reader) (Object, error) {
 	return bencodeToObject(v), nil
 }
 
-func objectToBencode(obj Object) interface{} {
+func objectToBencode(obj coretypes.Object) interface{} {
 	switch v := obj.(type) {
 	case Nil:
 		return ""
@@ -63,7 +63,7 @@ func objectToBencode(obj Object) interface{} {
 			m[bencodeKeyString(p.Key)] = objectToBencode(p.Value)
 		}
 		return m
-	case Seqable:
+	case coretypes.Seqable:
 		arr := []interface{}{}
 		for s := v.Seq(); !s.IsEmpty(); s = s.Rest() {
 			arr = append(arr, objectToBencode(s.First()))
@@ -74,7 +74,7 @@ func objectToBencode(obj Object) interface{} {
 	}
 }
 
-func bencodeKeyString(k Object) string {
+func bencodeKeyString(k coretypes.Object) string {
 	switch v := k.(type) {
 	case coretypes.String:
 		return v.S
@@ -87,7 +87,7 @@ func bencodeKeyString(k Object) string {
 	}
 }
 
-func bencodeToObject(v interface{}) Object {
+func bencodeToObject(v interface{}) coretypes.Object {
 	switch x := v.(type) {
 	case string:
 		return coretypes.MakeString(x)
@@ -100,7 +100,7 @@ func bencodeToObject(v interface{}) Object {
 	case uint64:
 		return coretypes.MakeInt(int(x))
 	case []interface{}:
-		objs := make([]Object, len(x))
+		objs := make([]coretypes.Object, len(x))
 		for i, e := range x {
 			objs[i] = bencodeToObject(e)
 		}

@@ -12,7 +12,7 @@ const podInvokeTimeout = 30 * time.Second
 
 const maxPodInvokeMillisecondDuration = int64(1<<63-1) / int64(time.Millisecond)
 
-func podInvokeTimeoutFromOpts(opts Object, fallback time.Duration) time.Duration {
+func podInvokeTimeoutFromOpts(opts coretypes.Object, fallback time.Duration) time.Duration {
 	if opts == nil || opts.Equals(NIL) {
 		return fallback
 	}
@@ -36,7 +36,7 @@ func podInvokeTimeoutFromOpts(opts Object, fallback time.Duration) time.Duration
 	return fallback
 }
 
-func invokePod(args []Object) Object {
+func invokePod(args []coretypes.Object) coretypes.Object {
 	if len(args) < 3 || len(args) > 4 {
 		panic(RT.NewError("pods/invoke expects pod-id, var symbol, args vector, and optional opts"))
 	}
@@ -46,8 +46,8 @@ func invokePod(args []Object) Object {
 		panic(RT.NewError(fmt.Sprintf("pods/invoke: no pod with id %q", podID)))
 	}
 	varSym := EnsureArgIsSymbol(args, 1).ToString(false)
-	callArgs := []Object{}
-	seqable, ok := args[2].(Seqable)
+	callArgs := []coretypes.Object{}
+	seqable, ok := args[2].(coretypes.Seqable)
 	if !ok {
 		panic(RT.NewError("pods/invoke: args must be sequential"))
 	}
@@ -65,11 +65,11 @@ func invokePod(args []Object) Object {
 	return res
 }
 
-func (p *Pod) invoke(varName string, args []Object) (Object, error) {
+func (p *Pod) invoke(varName string, args []coretypes.Object) (coretypes.Object, error) {
 	return p.invokeWithTimeout(varName, args, podInvokeTimeout)
 }
 
-func (p *Pod) invokeWithTimeout(varName string, args []Object, timeout time.Duration) (Object, error) {
+func (p *Pod) invokeWithTimeout(varName string, args []coretypes.Object, timeout time.Duration) (coretypes.Object, error) {
 	encoded, err := p.encodeArgs(args)
 	if err != nil {
 		return NIL, fmt.Errorf("encode args: %w", err)
@@ -84,7 +84,7 @@ func (p *Pod) invokeWithTimeout(varName string, args []Object, timeout time.Dura
 	if timeout > 0 {
 		timer = time.After(timeout)
 	}
-	var result Object = NIL
+	var result coretypes.Object = NIL
 	for {
 		select {
 		case <-timer:

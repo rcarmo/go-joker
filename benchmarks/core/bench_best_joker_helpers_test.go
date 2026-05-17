@@ -30,7 +30,7 @@ func init() {
 	}
 }
 
-var procBenchKmerDistinctTotal ProcFn = func(args []Object) Object {
+var procBenchKmerDistinctTotal ProcFn = func(args []coretypes.Object) coretypes.Object {
 	dna := EnsureArgIsString(args, 0).S
 	maxFrame := EnsureArgIsInt(args, 1).I
 	total := 0
@@ -44,7 +44,7 @@ var procBenchKmerDistinctTotal ProcFn = func(args []Object) Object {
 	return coretypes.Int{I: total}
 }
 
-var procBenchReverseComplementCount ProcFn = func(args []Object) Object {
+var procBenchReverseComplementCount ProcFn = func(args []coretypes.Object) coretypes.Object {
 	dna := EnsureArgIsString(args, 0).S
 	out := make([]byte, len(dna))
 	for i := 0; i < len(dna); i++ {
@@ -64,7 +64,7 @@ var procBenchReverseComplementCount ProcFn = func(args []Object) Object {
 	return coretypes.Int{I: len(out)}
 }
 
-var procBenchRegexCount ProcFn = func(args []Object) Object {
+var procBenchRegexCount ProcFn = func(args []coretypes.Object) coretypes.Object {
 	input := EnsureArgIsString(args, 0).S
 	seq := EnsureObjectIsSeqable(args[1], "patterns must be seqable").Seq()
 	total := 0
@@ -76,7 +76,7 @@ var procBenchRegexCount ProcFn = func(args []Object) Object {
 	return coretypes.Int{I: total}
 }
 
-var procBenchMandelbrotCount ProcFn = func(args []Object) Object {
+var procBenchMandelbrotCount ProcFn = func(args []coretypes.Object) coretypes.Object {
 	n := EnsureArgIsInt(args, 0).I
 	maxIter := EnsureArgIsInt(args, 1).I
 	count := 0
@@ -105,7 +105,7 @@ var procBenchMandelbrotCount ProcFn = func(args []Object) Object {
 
 func benchA(i, j int) float64 { return 1.0 / (float64((i+j)*(i+j+1)/2 + i + 1)) }
 
-var procBenchSpectralNorm ProcFn = func(args []Object) Object {
+var procBenchSpectralNorm ProcFn = func(args []coretypes.Object) coretypes.Object {
 	n := EnsureArgIsInt(args, 0).I
 	u := make([]float64, n)
 	v := make([]float64, n)
@@ -145,7 +145,7 @@ var procBenchSpectralNorm ProcFn = func(args []Object) Object {
 	return coretypes.Double{D: math.Sqrt(vBv / vv)}
 }
 
-var procBenchNBodyEnergy ProcFn = func(args []Object) Object {
+var procBenchNBodyEnergy ProcFn = func(args []coretypes.Object) coretypes.Object {
 	steps := EnsureArgIsInt(args, 0).I
 	pi := 3.141592653589793
 	solarMass := 4.0 * pi * pi
@@ -239,9 +239,11 @@ func fannkuchN(n int) int {
 	}
 }
 
-var procBenchFannkuch ProcFn = func(args []Object) Object { return coretypes.Int{I: fannkuchN(EnsureArgIsInt(args, 0).I)} }
+var procBenchFannkuch ProcFn = func(args []coretypes.Object) coretypes.Object {
+	return coretypes.Int{I: fannkuchN(EnsureArgIsInt(args, 0).I)}
+}
 
-var procBenchMapUpdateLoop ProcFn = func(args []Object) Object {
+var procBenchMapUpdateLoop ProcFn = func(args []coretypes.Object) coretypes.Object {
 	n := EnsureArgIsInt(args, 0).I
 	counts := make([]int, 16)
 	for i := 0; i < n; i++ {
@@ -265,7 +267,7 @@ func checkBenchTree(t *benchTree) int {
 	return 1 + checkBenchTree(t.left) + checkBenchTree(t.right)
 }
 
-var procBenchBinaryTrees ProcFn = func(args []Object) Object {
+var procBenchBinaryTrees ProcFn = func(args []coretypes.Object) coretypes.Object {
 	max := EnsureArgIsInt(args, 0).I
 	total := 0
 	for d := 4; d <= max; d++ {

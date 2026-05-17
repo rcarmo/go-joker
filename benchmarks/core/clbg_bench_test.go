@@ -15,7 +15,7 @@ var clbgInitOnce sync.Once
 
 func clbgInit() {
 	clbgInitOnce.Do(func() {
-		sqrtProc := Proc{Fn: func(args []Object) Object {
+		sqrtProc := Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 			x := EnsureArgIsNumber(args, 0).Double().D
 			return coretypes.Double{D: math.Sqrt(x)}
 		}, Name: "procSqrt"}

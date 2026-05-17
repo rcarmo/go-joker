@@ -9,7 +9,7 @@ import (
 )
 
 func TestTransitPodHelpers(t *testing.T) {
-	encoded, err := TransitEncodeArgs([]Object{coretypes.MakeString("hi"), MakeKeyword("k")})
+	encoded, err := TransitEncodeArgs([]coretypes.Object{coretypes.MakeString("hi"), MakeKeyword("k")})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -52,28 +52,28 @@ The exported module exposes an exec function. Parameters and return values are
 i64 for integer IR programs or f64 for floating-point IR programs.`, "1.0"))
 }
 
-var compile_ Proc = Proc{Fn: func(args []Object) Object {
+var compile_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	fn := EnsureArgIsFn(args, 0)
 	return compile(fn)
 }, Name: "compile", Package: "std/jit"}
 
-var info_ Proc = Proc{Fn: func(args []Object) Object {
+var info_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	fn := EnsureArgIsFn(args, 0)
 	return info(fn)
 }, Name: "info", Package: "std/jit"}
 
-var compiled_ Proc = Proc{Fn: func(args []Object) Object {
+var compiled_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	fn := EnsureArgIsFn(args, 0)
 	return coretypes.Boolean{B: isCompiled(fn)}
 }, Name: "compiled?", Package: "std/jit"}
 
-var export_ir_ Proc = Proc{Fn: func(args []Object) Object {
+var export_ir_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	fn := EnsureArgIsFn(args, 0)
 	path := EnsureArgIsString(args, 1)
 	return exportIR(fn, path)
 }, Name: "export-ir", Package: "std/jit"}
 
-var export_wasm_ Proc = Proc{Fn: func(args []Object) Object {
+var export_wasm_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	fn := EnsureArgIsFn(args, 0)
 	path := EnsureArgIsString(args, 1)
 	return exportWASM(fn, path)
