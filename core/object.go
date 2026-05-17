@@ -1660,31 +1660,31 @@ func MakeMeta(arglists Seq, docstring string, added string) *ArrayMap {
 	return res
 }
 
-func RegRefType(name string, inst interface{}, doc string) *coretypes.Type {
-	if doc != "" {
-		doc = "\n  " + doc
+func typeBuilder() coretypes.Builder {
+	return coretypes.Builder{
+		Registry: TYPES,
+		Intern:   STRINGS.Intern,
+		MetaFactory: func(kind coretypes.Kind, name string, doc string) any {
+			if doc != "" {
+				doc = "\n  " + doc
+			}
+			meta := MakeMeta(nil, kind.DocumentationPrefix()+doc, "1.0")
+			meta.Add(KEYWORDS.name, MakeString(name))
+			return MetaHolder{meta}
+		},
 	}
-	meta := MakeMeta(nil, coretypes.ReferenceKind.DocumentationPrefix()+doc, "1.0")
-	meta.Add(KEYWORDS.name, MakeString(name))
-	return TYPES.Register(STRINGS.Intern(name), coretypes.NewRefType(name, inst, MetaHolder{meta}))
+}
+
+func RegRefType(name string, inst interface{}, doc string) *coretypes.Type {
+	return typeBuilder().RegisterReference(name, inst, doc)
 }
 
 func RegType(name string, inst interface{}, doc string) *coretypes.Type {
-	if doc != "" {
-		doc = "\n  " + doc
-	}
-	meta := MakeMeta(nil, coretypes.ValueKind.DocumentationPrefix()+doc, "1.0")
-	meta.Add(KEYWORDS.name, MakeString(name))
-	return TYPES.Register(STRINGS.Intern(name), coretypes.NewValueType(name, inst, MetaHolder{meta}))
+	return typeBuilder().RegisterValue(name, inst, doc)
 }
 
 func RegInterface(name string, inst interface{}, doc string) *coretypes.Type {
-	if doc != "" {
-		doc = "\n  " + doc
-	}
-	meta := MakeMeta(nil, coretypes.InterfaceKind.DocumentationPrefix()+doc, "1.0")
-	meta.Add(KEYWORDS.name, MakeString(name))
-	return TYPES.Register(STRINGS.Intern(name), coretypes.NewInterfaceType(name, inst, MetaHolder{meta}))
+	return typeBuilder().RegisterInterface(name, inst, doc)
 }
 
 func CountedIndexedToString(v CountedIndexed, escape bool) string {
