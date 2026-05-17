@@ -86,10 +86,6 @@ func (e *Env) AsGo() string {
 	panic("not GLOBAL_ENV")
 }
 
-func (t *coretypes.Type) AsGo() string {
-	return "ty_" + corestr.GoName(t.Name)
-}
-
 func kwAsGo(kw Keyword) string {
 	return corestr.KeywordGoName(kw.ToString(false))
 }
@@ -263,6 +259,10 @@ func UniqueId(obj interface{}) (id string) {
 			id = fmt.Sprintf("%s_NUM_%d", id, n)
 		}
 	}()
+	if t, ok := obj.(*coretypes.Type); ok {
+		id = "ty_" + corestr.GoName(t.Name)
+		return
+	}
 	id = obj.(interface{ AsGo() string }).AsGo()
 	return
 }
