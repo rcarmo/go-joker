@@ -85,6 +85,15 @@ type Gettable interface {
 	Get(key Object) (bool, Object)
 }
 
+type KVReduce interface {
+	KVReduce(c Callable, init Object) Object
+}
+
+type Reduce interface {
+	ReduceInit(c Callable, init Object) Object
+	Reduce(c Callable) Object
+}
+
 type Sequential interface {
 	SequentialMarker()
 }

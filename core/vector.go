@@ -506,7 +506,7 @@ func (v *Vector) Empty() Collection {
 	return collectionConstruction.NewEmptyVector()
 }
 
-func (v *Vector) kvreduce(c coretypes.Callable, init Object) Object {
+func (v *Vector) KVReduce(c coretypes.Callable, init Object) Object {
 	return CountedIndexedKvreduce(v, c, init)
 }
 
@@ -518,10 +518,10 @@ func (v *Vector) Format(w io.Writer, indent int) int {
 	return CountedIndexedFormat(v, w, indent)
 }
 
-func (v *Vector) reduce(c coretypes.Callable) Object {
+func (v *Vector) Reduce(c coretypes.Callable) Object {
 	return CountedIndexedReduce(v, c)
 }
 
-func (v *Vector) reduceInit(c coretypes.Callable, init Object) Object {
+func (v *Vector) ReduceInit(c coretypes.Callable, init Object) Object {
 	return CountedIndexedReduceInit(v, c, init)
 }

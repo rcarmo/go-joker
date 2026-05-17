@@ -503,34 +503,34 @@ func EnsureArgIsRef(args []Object, index int) Ref {
 	panic(FailArg(obj, "Ref", index))
 }
 
-func EnsureObjectIsKVReduce(obj Object, pattern string) KVReduce {
-	if c, yes := obj.(KVReduce); yes {
+func EnsureObjectIsKVReduce(obj Object, pattern string) coretypes.KVReduce {
+	if c, yes := obj.(coretypes.KVReduce); yes {
 		return c
 	}
-	panic(FailObject(obj, "KVReduce", pattern))
+	panic(FailObject(obj, "coretypes.KVReduce", pattern))
 }
 
-func EnsureArgIsKVReduce(args []Object, index int) KVReduce {
+func EnsureArgIsKVReduce(args []Object, index int) coretypes.KVReduce {
 	obj := args[index]
-	if c, yes := obj.(KVReduce); yes {
+	if c, yes := obj.(coretypes.KVReduce); yes {
 		return c
 	}
-	panic(FailArg(obj, "KVReduce", index))
+	panic(FailArg(obj, "coretypes.KVReduce", index))
 }
 
-func EnsureObjectIsReduce(obj Object, pattern string) Reduce {
-	if c, yes := obj.(Reduce); yes {
+func EnsureObjectIsReduce(obj Object, pattern string) coretypes.Reduce {
+	if c, yes := obj.(coretypes.Reduce); yes {
 		return c
 	}
-	panic(FailObject(obj, "Reduce", pattern))
+	panic(FailObject(obj, "coretypes.Reduce", pattern))
 }
 
-func EnsureArgIsReduce(args []Object, index int) Reduce {
+func EnsureArgIsReduce(args []Object, index int) coretypes.Reduce {
 	obj := args[index]
-	if c, yes := obj.(Reduce); yes {
+	if c, yes := obj.(coretypes.Reduce); yes {
 		return c
 	}
-	panic(FailArg(obj, "Reduce", index))
+	panic(FailArg(obj, "coretypes.Reduce", index))
 }
 
 func EnsureObjectIsPending(obj Object, pattern string) coretypes.Pending {

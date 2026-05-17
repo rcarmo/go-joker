@@ -187,7 +187,7 @@ var s_IOReader string = "IOReader"
 var s_IOWriter string = "IOWriter"
 var s_Indexed string = "coretypes.Indexed"
 var s_Int string = "coretypes.Int"
-var s_KVReduce string = "KVReduce"
+var s_KVReduce string = "coretypes.KVReduce"
 var s_Keyword string = "Keyword"
 var s_LazySeq string = "LazySeq"
 var s_List string = "List"
@@ -206,7 +206,7 @@ var s_Pending string = "Pending"
 var s_Proc string = "Proc"
 var s_Ratio string = "coretypes.Ratio"
 var s_RecurBindings string = "RecurBindings"
-var s_Reduce string = "Reduce"
+var s_Reduce string = "coretypes.Reduce"
 var s_Ref string = "Ref"
 var s_Regex string = "coretypes.Regex"
 var s_Reversible string = "Reversible"
@@ -1964,7 +1964,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"IOWriter":                   &s_IOWriter,
 	"coretypes.Indexed":          &s_Indexed,
 	"coretypes.Int":              &s_Int,
-	"KVReduce":                   &s_KVReduce,
+	"coretypes.KVReduce":         &s_KVReduce,
 	"Keyword":                    &s_Keyword,
 	"LazySeq":                    &s_LazySeq,
 	"List":                       &s_List,
@@ -1983,7 +1983,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"Proc":                       &s_Proc,
 	"coretypes.Ratio":            &s_Ratio,
 	"RecurBindings":              &s_RecurBindings,
-	"Reduce":                     &s_Reduce,
+	"coretypes.Reduce":           &s_Reduce,
 	"Ref":                        &s_Ref,
 	"coretypes.Regex":            &s_Regex,
 	"Reversible":                 &s_Reversible,
@@ -4447,7 +4447,7 @@ var arrayMap_NUM_15 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		coretypes.String{
-			S: "KVReduce",
+			S: "coretypes.KVReduce",
 		},
 	},
 }
@@ -4455,8 +4455,8 @@ var ty_KVReduce coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_15,
 	},
-	Name:        "KVReduce",
-	ReflectType: reflect.TypeOf((*KVReduce)(nil)).Elem(),
+	Name:        "coretypes.KVReduce",
+	ReflectType: reflect.TypeOf((*coretypes.KVReduce)(nil)).Elem(),
 }
 var arrayMap_NUM_16 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4479,7 +4479,7 @@ var arrayMap_NUM_16 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		coretypes.String{
-			S: "Reduce",
+			S: "coretypes.Reduce",
 		},
 	},
 }
@@ -4487,8 +4487,8 @@ var ty_Reduce coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_16,
 	},
-	Name:        "Reduce",
-	ReflectType: reflect.TypeOf((*Reduce)(nil)).Elem(),
+	Name:        "coretypes.Reduce",
+	ReflectType: reflect.TypeOf((*coretypes.Reduce)(nil)).Elem(),
 }
 var arrayMap_NUM_17 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -372937,7 +372937,7 @@ var arrayMap_NUM_1357 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "Reduce sequence of [opt-type opt ?optarg?] tokens into a map of\n  {option-id value} merged over the default values in the option\n  specifications.\n\n  If the :no-defaults flag is true, only options specified in the tokens are\n  included in the option-map.\n\n  Unknown options, missing options, missing required arguments, option\n  argument parsing exceptions, and validation failures are collected into\n  a vector of error message strings.\n\n  If the :strict flag is true, required arguments that match other options\n  are treated as missing, instead of a literal value beginning with - or --.\n\n  Returns [option-map error-messages-vector].",
+			S: "coretypes.Reduce sequence of [opt-type opt ?optarg?] tokens into a map of\n  {option-id value} merged over the default values in the option\n  specifications.\n\n  If the :no-defaults flag is true, only options specified in the tokens are\n  included in the option-map.\n\n  Unknown options, missing options, missing required arguments, option\n  argument parsing exceptions, and validation failures are collected into\n  a vector of error message strings.\n\n  If the :strict flag is true, required arguments that match other options\n  are treated as missing, instead of a literal value beginning with - or --.\n\n  Returns [option-map error-messages-vector].",
 		},
 	},
 }
@@ -378578,7 +378578,7 @@ var arrayMap_NUM_1360 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "Reduce arguments sequence into [opt-type opt ?optarg?] vectors and a vector\n  of remaining arguments. Returns as [option-tokens remaining-args].\n\n  Expands clumped short options like \"-abc\" into:\n  [[:short-opt \"-a\"] [:short-opt \"-b\"] [:short-opt \"-c\"]]\n\n  If \"-b\" were in the set of options that require arguments, \"-abc\" would\n  then be interpreted as: [[:short-opt \"-a\"] [:short-opt \"-b\" \"c\"]]\n\n  Long options with `=` are always parsed as option + optarg, even if nothing\n  follows the `=` sign.\n\n  If the :in-order flag is true, the first non-option, non-optarg argument\n  stops options processing. This is useful for handling subcommand options.",
+			S: "coretypes.Reduce arguments sequence into [opt-type opt ?optarg?] vectors and a vector\n  of remaining arguments. Returns as [option-tokens remaining-args].\n\n  Expands clumped short options like \"-abc\" into:\n  [[:short-opt \"-a\"] [:short-opt \"-b\"] [:short-opt \"-c\"]]\n\n  If \"-b\" were in the set of options that require arguments, \"-abc\" would\n  then be interpreted as: [[:short-opt \"-a\"] [:short-opt \"-b\" \"c\"]]\n\n  Long options with `=` are always parsed as option + optarg, even if nothing\n  follows the `=` sign.\n\n  If the :in-order flag is true, the first non-option, non-optarg argument\n  stops options processing. This is useful for handling subcommand options.",
 		},
 	},
 }
@@ -382751,7 +382751,7 @@ var arrayMap_NUM_1361 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		coretypes.String{
-			S: "Reduce options specs into a options summary for printing at a terminal.\n  Note that the specs argument should be the compiled version. That effectively\n  means that you shouldn't call summarize directly. When you call parse-opts\n  you get back a :summary key which is the result of calling summarize (or\n  your user-supplied :summary-fn option) on the compiled option specs.",
+			S: "coretypes.Reduce options specs into a options summary for printing at a terminal.\n  Note that the specs argument should be the compiled version. That effectively\n  means that you shouldn't call summarize directly. When you call parse-opts\n  you get back a :summary key which is the result of calling summarize (or\n  your user-supplied :summary-fn option) on the compiled option specs.",
 		},
 	},
 }

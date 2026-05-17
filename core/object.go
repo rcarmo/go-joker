@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert coretypes.Comparable Vec coretypes.Char String Symbol Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number Seqable coretypes.Callable *coretypes.Type Meta coretypes.Int coretypes.Double coretypes.Stack Map Set Associative Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn coretypes.Deref *Atom Ref KVReduce Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel coretypes.CountedIndexed
+//go:generate go run gen/gen_types.go assert coretypes.Comparable Vec coretypes.Char String Symbol Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number Seqable coretypes.Callable *coretypes.Type Meta coretypes.Int coretypes.Double coretypes.Stack Map Set Associative Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn coretypes.Deref *Atom Ref coretypes.KVReduce coretypes.Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel coretypes.CountedIndexed
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil Keyword Symbol *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
 //go:generate go run -tags gen_code gen/codegen/main.go
 
@@ -108,13 +108,6 @@ type (
 		MetaHolder
 		mu    sync.Mutex
 		value Object
-	}
-	KVReduce interface {
-		kvreduce(c coretypes.Callable, init Object) Object
-	}
-	Reduce interface {
-		reduceInit(c coretypes.Callable, init Object) Object
-		reduce(c coretypes.Callable) Object
 	}
 )
 
@@ -951,14 +944,14 @@ func IsInstance(t *coretypes.Type, obj Object) bool {
 		return false
 	}
 	// Interface-typed extension objects may report a concrete sequence/map type
-	// from GetType while still satisfying runtime interfaces such as Reduce.
+	// from GetType while still satisfying runtime interfaces such as coretypes.Reduce.
 	// Check the actual Go interface first for hot extension paths.
 	if t == TYPE.Reduce {
-		_, ok := obj.(Reduce)
+		_, ok := obj.(coretypes.Reduce)
 		return ok
 	}
 	if t == TYPE.KVReduce {
-		_, ok := obj.(KVReduce)
+		_, ok := obj.(coretypes.KVReduce)
 		return ok
 	}
 	return coretypes.IsEqualOrImplements(t, obj.GetType())

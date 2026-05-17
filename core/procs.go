@@ -1659,18 +1659,18 @@ var procReduceKv = func(args []Object) Object {
 	f := EnsureArgIsCallable(args, 0)
 	init := args[1]
 	coll := EnsureArgIsKVReduce(args, 2)
-	return coll.kvreduce(f, init)
+	return coll.KVReduce(f, init)
 }
 
 var procReduce = func(args []Object) Object {
 	f := EnsureArgIsCallable(args, 0)
 	if len(args) == 2 {
 		coll := EnsureArgIsReduce(args, 1)
-		return coll.reduce(f)
+		return coll.Reduce(f)
 	}
 	init := args[1]
 	coll := EnsureArgIsReduce(args, 2)
-	return coll.reduceInit(f, init)
+	return coll.ReduceInit(f, init)
 }
 
 var procIndexOf = func(args []Object) Object {

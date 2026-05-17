@@ -470,13 +470,13 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				if len(expr.args) == 3 {
 					init := Eval(expr.args[1], env)
 					coll := Eval(expr.args[2], env)
-					if r, ok := coll.(Reduce); ok {
-						return r.reduceInit(fn, init)
+					if r, ok := coll.(coretypes.Reduce); ok {
+						return r.ReduceInit(fn, init)
 					}
 				} else {
 					coll := Eval(expr.args[1], env)
-					if r, ok := coll.(Reduce); ok {
-						return r.reduce(fn)
+					if r, ok := coll.(coretypes.Reduce); ok {
+						return r.Reduce(fn)
 					}
 				}
 			}
@@ -764,13 +764,13 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 				if len(expr.args) == 3 {
 					init := Eval(expr.args[1], env)
 					coll := Eval(expr.args[2], env)
-					if r, ok := coll.(Reduce); ok {
-						return r.reduceInit(fn, init)
+					if r, ok := coll.(coretypes.Reduce); ok {
+						return r.ReduceInit(fn, init)
 					}
 				} else {
 					coll := Eval(expr.args[1], env)
-					if r, ok := coll.(Reduce); ok {
-						return r.reduce(fn)
+					if r, ok := coll.(coretypes.Reduce); ok {
+						return r.Reduce(fn)
 					}
 				}
 			}

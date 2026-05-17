@@ -37,26 +37,26 @@ func seqReduce(s Seq, f coretypes.Callable) Object {
 	return acc
 }
 
-// LazySeq Reduce support — implements the Reduce interface so (reduce f init lazy-seq) works.
-func (seq *LazySeq) reduce(f coretypes.Callable) Object {
+// LazySeq coretypes.Reduce support — implements the coretypes.Reduce interface so (reduce f init lazy-seq) works.
+func (seq *LazySeq) Reduce(f coretypes.Callable) Object {
 	return seqReduce(seq.Seq(), f)
 }
 
-func (seq *LazySeq) reduceInit(f coretypes.Callable, init Object) Object {
+func (seq *LazySeq) ReduceInit(f coretypes.Callable, init Object) Object {
 	return seqReduceInit(seq.Seq(), f, init)
 }
 
-// ConsSeq Reduce support
-func (seq *ConsSeq) reduce(f coretypes.Callable) Object {
+// ConsSeq coretypes.Reduce support
+func (seq *ConsSeq) Reduce(f coretypes.Callable) Object {
 	return seqReduce(seq, f)
 }
 
-func (seq *ConsSeq) reduceInit(f coretypes.Callable, init Object) Object {
+func (seq *ConsSeq) ReduceInit(f coretypes.Callable, init Object) Object {
 	return seqReduceInit(seq, f, init)
 }
 
-// MappingSeq Reduce support
-func (seq *MappingSeq) reduce(f coretypes.Callable) Object {
+// MappingSeq coretypes.Reduce support
+func (seq *MappingSeq) Reduce(f coretypes.Callable) Object {
 	if seq.seq.IsEmpty() {
 		return call0(f)
 	}
@@ -72,7 +72,7 @@ func (seq *MappingSeq) reduce(f coretypes.Callable) Object {
 	return acc
 }
 
-func (seq *MappingSeq) reduceInit(f coretypes.Callable, init Object) Object {
+func (seq *MappingSeq) ReduceInit(f coretypes.Callable, init Object) Object {
 	acc := init
 	cur := seq.seq
 	for !cur.IsEmpty() {
@@ -450,7 +450,7 @@ func (s *FilteringSeq) nextSeq() Seq {
 	return EmptyList
 }
 
-func (s *FilteringSeq) reduce(f coretypes.Callable) Object {
+func (s *FilteringSeq) Reduce(f coretypes.Callable) Object {
 	cur := s.seq
 	for !cur.IsEmpty() {
 		v := cur.First()
@@ -474,7 +474,7 @@ func (s *FilteringSeq) reduce(f coretypes.Callable) Object {
 	return call0(f)
 }
 
-func (s *FilteringSeq) reduceInit(f coretypes.Callable, init Object) Object {
+func (s *FilteringSeq) ReduceInit(f coretypes.Callable, init Object) Object {
 	acc := init
 	cur := s.seq
 	for !cur.IsEmpty() {
@@ -512,7 +512,7 @@ func (s *TakeSeq) Rest() Seq {
 }
 func (s *TakeSeq) Cons(obj Object) Seq { return &ConsSeq{first: obj, rest: s} }
 
-func (s *TakeSeq) reduce(f coretypes.Callable) Object {
+func (s *TakeSeq) Reduce(f coretypes.Callable) Object {
 	if result, ok := s.reduceFused(f); ok {
 		return result
 	}
@@ -535,7 +535,7 @@ func (s *TakeSeq) reduceFused(f coretypes.Callable) (Object, bool) {
 	return nil, false
 }
 
-func (s *TakeSeq) reduceInit(f coretypes.Callable, init Object) Object {
+func (s *TakeSeq) ReduceInit(f coretypes.Callable, init Object) Object {
 	acc := init
 	cur := s.seq
 	for i := 0; i < s.n && !cur.IsEmpty(); i++ {
@@ -735,7 +735,7 @@ var procFrequencies ProcFn = func(args []Object) Object {
 }
 
 // ---- range_fast.go ----
-// range_fast.go — Efficient Range type that implements Reduce for fast numeric reduce.
+// range_fast.go — Efficient Range type that implements coretypes.Reduce for fast numeric reduce.
 
 var hotReducerFnCache sync.Map // *Fn -> reducer proc name string
 
@@ -809,7 +809,7 @@ func (r *IntRange) Count() int {
 	return 0
 }
 
-func (r *IntRange) reduce(f coretypes.Callable) Object {
+func (r *IntRange) Reduce(f coretypes.Callable) Object {
 	if r.isEmpty() {
 		return f.Call(nil)
 	}
@@ -826,7 +826,7 @@ func (r *IntRange) reduce(f coretypes.Callable) Object {
 	return acc
 }
 
-func (r *IntRange) reduceInit(f coretypes.Callable, init Object) Object {
+func (r *IntRange) ReduceInit(f coretypes.Callable, init Object) Object {
 	if result, ok := r.reduceInitFast(f, init); ok {
 		return result
 	}
