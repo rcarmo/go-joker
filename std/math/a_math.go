@@ -8,19 +8,19 @@ import (
 	"math"
 )
 
-var e_ Double
-var ln_of_10_ Double
-var ln_of_2_ Double
-var log_10_of_e_ Double
-var log_2_of_e_ Double
-var max_double_ Double
-var phi_ Double
-var pi_ Double
-var smallest_nonzero_double_ Double
-var sqrt_of_2_ Double
-var sqrt_of_e_ Double
-var sqrt_of_phi_ Double
-var sqrt_of_pi_ Double
+var e_ coretypes.Double
+var ln_of_10_ coretypes.Double
+var ln_of_2_ coretypes.Double
+var log_10_of_e_ coretypes.Double
+var log_2_of_e_ coretypes.Double
+var max_double_ coretypes.Double
+var phi_ coretypes.Double
+var pi_ coretypes.Double
+var smallest_nonzero_double_ coretypes.Double
+var sqrt_of_2_ coretypes.Double
+var sqrt_of_e_ coretypes.Double
+var sqrt_of_phi_ coretypes.Double
+var sqrt_of_pi_ coretypes.Double
 var __abs__P ProcFn = __abs_
 var abs_ Proc = Proc{Fn: __abs__P, Name: "abs_", Package: "std/math"}
 

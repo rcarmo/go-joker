@@ -17,19 +17,19 @@ func modf(x float64) Object {
 	return res
 }
 
-func precision(x Number) *big.Int {
+func precision(x coretypes.Number) *big.Int {
 	switch n := x.(type) {
-	case Precision:
+	case coretypes.Precision:
 		return n.Precision()
 	default:
-		panic(RT.NewArgTypeError(0, x, "BigInt, BigFloat, Int, or Double"))
+		panic(RT.NewArgTypeError(0, x, "BigInt, BigFloat, coretypes.Int, or coretypes.Double"))
 	}
 }
 
-func setPrecision(prec Number, n *big.Float) *big.Float {
+func setPrecision(prec coretypes.Number, n *big.Float) *big.Float {
 	p := prec.Int().I
 	if p < 0 {
-		panic(RT.NewError(fmt.Sprintf("prec must be a non-negative Int, but is %d", p)))
+		panic(RT.NewError(fmt.Sprintf("prec must be a non-negative coretypes.Int, but is %d", p)))
 	}
 	return big.NewFloat(0).Copy(n).SetPrec(uint(p))
 }
