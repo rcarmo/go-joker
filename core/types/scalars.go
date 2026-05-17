@@ -37,6 +37,11 @@ type Regex struct {
 	R *regexp.Regexp
 }
 
+type Comment struct {
+	InfoHolder
+	C string
+}
+
 func MakeBoolean(b bool) Boolean        { return Boolean{B: b} }
 func MakeTime(t time.Time) Time         { return Time{T: t} }
 func MakeDouble(d float64) Double       { return Double{D: d} }
@@ -203,3 +208,13 @@ func (rx *Regex) Equals(other interface{}) bool {
 func (rx *Regex) GetType() *Type                   { return RuntimeTypes.Regex }
 func (rx *Regex) Hash() uint32                     { return hashutil.Ptr(uintptr(unsafe.Pointer(rx.R))) }
 func (rx *Regex) WithInfo(info *ObjectInfo) Object { rx.Info = info; return rx }
+
+func (c Comment) ToString(escape bool) string   { return c.C }
+func (c Comment) Equals(other interface{}) bool { return false }
+func (c Comment) GetType() *Type                { return RuntimeTypes.String }
+func (c Comment) Hash() uint32 {
+	h := hashutil.New32()
+	h.Write([]byte(c.C))
+	return h.Sum32()
+}
+func (c Comment) WithInfo(info *ObjectInfo) Object { c.Info = info; return c }

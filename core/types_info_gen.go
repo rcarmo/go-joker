@@ -59,11 +59,6 @@ func (x String) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 
-func (x Comment) WithInfo(info *coretypes.ObjectInfo) Object {
-	x.Info = info
-	return x
-}
-
 func (x *LazySeq) WithInfo(info *coretypes.ObjectInfo) Object {
 	x.Info = info
 	return x

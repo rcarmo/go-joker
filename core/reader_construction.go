@@ -113,7 +113,7 @@ func (ReaderConstructionAdapter) RatioOrInt(value string, ratio *big.Rat) Object
 	return coretypes.RatioOrIntWithOriginal(value, ratio)
 }
 
-func (ReaderConstructionAdapter) Comment(v string) Object { return Comment{C: v} }
+func (ReaderConstructionAdapter) Comment(v string) Object { return coretypes.Comment{C: v} }
 
 func (ReaderConstructionAdapter) Regex(v *regexp.Regexp) Object { return coretypes.MakeRegex(v) }
 

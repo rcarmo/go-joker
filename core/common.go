@@ -56,7 +56,7 @@ func formatObject(obj Object, indent int, w io.Writer) int {
 }
 
 func isComment(obj Object) bool {
-	if _, ok := obj.(Comment); ok {
+	if _, ok := obj.(coretypes.Comment); ok {
 		return true
 	}
 	info := obj.GetInfo()
@@ -67,7 +67,7 @@ func isComment(obj Object) bool {
 }
 
 func isComma(obj Object) bool {
-	if c, ok := obj.(Comment); ok && c.C == "," {
+	if c, ok := obj.(coretypes.Comment); ok && c.C == "," {
 		return true
 	}
 	return false

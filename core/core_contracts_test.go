@@ -2308,8 +2308,8 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 	if !readerConstruction.Double(1.5).Equals(coretypes.MakeDouble(1.5)) {
 		t.Fatal("adapter Double mismatch")
 	}
-	if c, ok := readerConstruction.Comment(";").(Comment); !ok || c.C != ";" {
-		t.Fatalf("adapter Comment mismatch: %#v", c)
+	if c, ok := readerConstruction.Comment(";").(coretypes.Comment); !ok || c.C != ";" {
+		t.Fatalf("adapter coretypes.Comment mismatch: %#v", c)
 	}
 	rxObj, ok := readerConstruction.Regex(regexp.MustCompile("x+")).(*coretypes.Regex)
 	if !ok || rxObj.R == nil || !rxObj.R.MatchString("xxx") {
