@@ -13,6 +13,10 @@ type Type struct {
 	ReflectType reflect.Type
 }
 
+func NewType(name string, reflectType reflect.Type, metaHolder any) *Type {
+	return &Type{MetaHolder: metaHolder, Name: name, ReflectType: reflectType}
+}
+
 func (t *Type) ToString(escape bool) string   { return t.Name }
 func (t *Type) Equals(other interface{}) bool { return t == other }
 func (t *Type) GetInfo() *ObjectInfo          { return nil }
