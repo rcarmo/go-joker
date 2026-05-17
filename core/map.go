@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+
+	corecollections "github.com/rcarmo/go-joker/core/collections"
 )
 
 type (
@@ -84,14 +86,25 @@ func mapEquals(m Map, other interface{}) bool {
 			}
 			return true
 		}
-		for iter := m.Iter(); iter.HasNext(); {
-			p := iter.Next()
-			success, value := otherMap.Get(p.Key)
-			if !success || !value.Equals(p.Value) {
-				return false
-			}
-		}
-		return true
+		return corecollections.EqualMaps(
+			m.Count(),
+			otherMap.Count(),
+			func(yield func(corecollections.Pair[Object, Object]) bool) {
+				for iter := m.Iter(); iter.HasNext(); {
+					p := iter.Next()
+					if !yield(corecollections.Pair[Object, Object]{Key: p.Key, Value: p.Value}) {
+						return
+					}
+				}
+			},
+			func(key Object) (Object, bool) {
+				found, value := otherMap.Get(key)
+				return value, found
+			},
+			func(a Object, b Object) bool {
+				return b.Equals(a)
+			},
+		)
 	default:
 		return false
 	}
