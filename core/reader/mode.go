@@ -13,8 +13,9 @@ const (
 type Dialect int
 
 const (
-	EDNDialect Dialect = iota
-	CLJDialect
+	CLJDialect Dialect = iota
 	CLJSDialect
-	CLJXDialect
+	JokerDialect
+	EDNDialect
+	UnknownDialect
 )

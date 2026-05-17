@@ -22,30 +22,31 @@ import (
 	"github.com/rcarmo/go-joker/core/hashutil"
 	"github.com/rcarmo/go-joker/core/numutil"
 	"github.com/rcarmo/go-joker/core/osutil"
+	corereader "github.com/rcarmo/go-joker/core/reader"
 	corestr "github.com/rcarmo/go-joker/core/string"
 )
 
 type (
-	Phase   int
-	Dialect int
+	Phase   = corereader.Phase
+	Dialect = corereader.Dialect
 )
 
 const (
-	READ Phase = iota
-	FORMAT
-	PARSE
-	EVAL
-	PRINT_IF_NOT_NIL
+	READ             = corereader.ReadPhase
+	FORMAT           = corereader.FormatPhase
+	PARSE            = corereader.ParsePhase
+	EVAL             = corereader.EvalPhase
+	PRINT_IF_NOT_NIL = corereader.PrintIfNotNilPhase
 )
 
 const VERSION = "v42.8.2"
 
 const (
-	CLJ Dialect = iota
-	CLJS
-	JOKER
-	EDN
-	UNKNOWN
+	CLJ     = corereader.CLJDialect
+	CLJS    = corereader.CLJSDialect
+	JOKER   = corereader.JokerDialect
+	EDN     = corereader.EDNDialect
+	UNKNOWN = corereader.UnknownDialect
 )
 
 func ExtractCallable(args []Object, index int) Callable {
