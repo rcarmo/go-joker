@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	"github.com/rcarmo/go-joker/core/bufferpool"
@@ -372,12 +373,12 @@ func ToSlice(seq Seq) []Object {
 }
 
 func SeqCount(seq Seq) int {
-	if c, ok := seq.(Counted); ok {
+	if c, ok := seq.(coretypes.Counted); ok {
 		return c.Count()
 	}
 	n := 0
 	for !seq.IsEmpty() {
-		if c, ok := seq.(Counted); ok {
+		if c, ok := seq.(coretypes.Counted); ok {
 			return n + c.Count()
 		}
 		n++

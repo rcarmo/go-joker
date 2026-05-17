@@ -1,6 +1,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"reflect"
 	"sync"
 	"time"
@@ -139,7 +140,7 @@ func installConcurrencyExt() {
 	rzVr := ns.Intern(MakeSymbol("realized?"))
 	rzVr.Value = Proc{Name: "procRealizedQ", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
-		if p, ok := args[0].(Pending); ok {
+		if p, ok := args[0].(coretypes.Pending); ok {
 			return MakeBoolean(p.IsRealized())
 		}
 		return Boolean{B: false}

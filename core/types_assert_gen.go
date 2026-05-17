@@ -3,6 +3,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 )
 
@@ -321,16 +322,16 @@ func EnsureArgIsReversible(args []Object, index int) Reversible {
 	panic(FailArg(obj, "Reversible", index))
 }
 
-func EnsureObjectIsNamed(obj Object, pattern string) Named {
-	if c, yes := obj.(Named); yes {
+func EnsureObjectIsNamed(obj Object, pattern string) coretypes.Named {
+	if c, yes := obj.(coretypes.Named); yes {
 		return c
 	}
 	panic(FailObject(obj, "Named", pattern))
 }
 
-func EnsureArgIsNamed(args []Object, index int) Named {
+func EnsureArgIsNamed(args []Object, index int) coretypes.Named {
 	obj := args[index]
-	if c, yes := obj.(Named); yes {
+	if c, yes := obj.(coretypes.Named); yes {
 		return c
 	}
 	panic(FailArg(obj, "Named", index))
@@ -531,16 +532,16 @@ func EnsureArgIsReduce(args []Object, index int) Reduce {
 	panic(FailArg(obj, "Reduce", index))
 }
 
-func EnsureObjectIsPending(obj Object, pattern string) Pending {
-	if c, yes := obj.(Pending); yes {
+func EnsureObjectIsPending(obj Object, pattern string) coretypes.Pending {
+	if c, yes := obj.(coretypes.Pending); yes {
 		return c
 	}
 	panic(FailObject(obj, "Pending", pattern))
 }
 
-func EnsureArgIsPending(args []Object, index int) Pending {
+func EnsureArgIsPending(args []Object, index int) coretypes.Pending {
 	obj := args[index]
-	if c, yes := obj.(Pending); yes {
+	if c, yes := obj.(coretypes.Pending); yes {
 		return c
 	}
 	panic(FailArg(obj, "Pending", index))

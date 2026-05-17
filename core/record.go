@@ -6,7 +6,7 @@ package core
 // Records support:
 // - Keyword access: (:field record)
 // - get/assoc/dissoc (dissoc to extension fields only; dissoc of base field returns plain map)
-// - Equality by type + fields
+// - coretypes.Equality by type + fields
 // - Protocol satisfaction via extend-type with the record's type name
 
 import (

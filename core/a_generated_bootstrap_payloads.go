@@ -7,6 +7,7 @@ package core
 
 import (
 	corestr "github.com/rcarmo/go-joker/core/string"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"reflect"
 	"regexp"
@@ -4167,7 +4168,7 @@ var ty_Counted Type = Type{
 		meta: &arrayMap_NUM_6,
 	},
 	name:        "Counted",
-	reflectType: reflect.TypeOf((*Counted)(nil)).Elem(),
+	reflectType: reflect.TypeOf((*coretypes.Counted)(nil)).Elem(),
 }
 var arrayMap_NUM_7 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4583,7 +4584,7 @@ var ty_Named Type = Type{
 		meta: &arrayMap_NUM_19,
 	},
 	name:        "Named",
-	reflectType: reflect.TypeOf((*Named)(nil)).Elem(),
+	reflectType: reflect.TypeOf((*coretypes.Named)(nil)).Elem(),
 }
 var arrayMap_NUM_20 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -4647,7 +4648,7 @@ var ty_Pending Type = Type{
 		meta: &arrayMap_NUM_21,
 	},
 	name:        "Pending",
-	reflectType: reflect.TypeOf((*Pending)(nil)).Elem(),
+	reflectType: reflect.TypeOf((*coretypes.Pending)(nil)).Elem(),
 }
 var arrayMap_NUM_22 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -39775,7 +39776,7 @@ var arrayMap_NUM_282 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Equality. Returns true if x equals y, false if not. Works for nil, and compares\n  numbers and collections in a type-independent manner.  Immutable data\n  structures define = as a value, not an identity,\n  comparison.",
+			S: "coretypes.Equality. Returns true if x equals y, false if not. Works for nil, and compares\n  numbers and collections in a type-independent manner.  Immutable data\n  structures define = as a value, not an identity,\n  comparison.",
 		},
 		Keyword{
 			hash: 3376861428,
@@ -116313,7 +116314,7 @@ var bitmapIndexedNode_NUM_79 BitmapIndexedNode = BitmapIndexedNode{
 			name: &s_doc,
 		},
 		String{
-			S: "Returns the name String of a string, symbol, keyword or any Named object (e.g. File).",
+			S: "Returns the name String of a string, symbol, keyword or any coretypes.Named object (e.g. File).",
 		},
 		nil,
 		&bitmapIndexedNode_NUM_80,

@@ -1,6 +1,6 @@
 package core
 
-// native_recursive.go — Native Go code generation for pure-integer recursive fns.
+// native_recursive.go — coretypes.Native Go code generation for pure-integer recursive fns.
 //
 // When a fn body contains only integer arithmetic, comparisons, and self-recursive
 // calls (no collections, strings, or other types), we compile to fixed-arity

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 	"os"
@@ -30,7 +31,7 @@ func writeIndent(w io.Writer, n int) {
 
 func pprintObject(obj Object, indent int, w io.Writer) int {
 	switch obj := obj.(type) {
-	case Pprinter:
+	case coretypes.Pprinter:
 		return obj.Pprint(w, indent)
 	default:
 		s := obj.ToString(true)
@@ -45,7 +46,7 @@ func formatObject(obj Object, indent int, w io.Writer) int {
 		indent += utf8.RuneCountInString(info.prefix)
 	}
 	switch obj := obj.(type) {
-	case Formatter:
+	case coretypes.Formatter:
 		return obj.Format(w, indent)
 	default:
 		s := obj.ToString(true)

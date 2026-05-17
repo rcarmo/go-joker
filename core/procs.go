@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math"
 	"math/big"
@@ -643,7 +644,7 @@ var procIsBound = func(args []Object) Object {
 }
 
 // Convert Joker object to native Go object. For those satisfying the
-// Native type, that's straightforward. For other Joker objects, try
+// coretypes.Native type, that's straightforward. For other Joker objects, try
 // converting them to suitable native Go objects. E.g. a BigInt might
 // hold a value > MaxInt64 but < MaxUint64, in which case conversion
 // to a uint64 makes more sense than returning the stringized version,
@@ -652,7 +653,7 @@ var procIsBound = func(args []Object) Object {
 // can be formatted via the usual ways.
 func ToNative(obj Object) interface{} {
 	switch obj := obj.(type) {
-	case Native:
+	case coretypes.Native:
 		return obj.Native()
 	case *BigInt:
 		b := obj.BigInt()
@@ -755,7 +756,7 @@ var procEquals = func(args []Object) Object {
 
 var procCount = func(args []Object) Object {
 	switch obj := args[0].(type) {
-	case Counted:
+	case coretypes.Counted:
 		return Int{I: obj.Count()}
 	default:
 		s := EnsureObjectIsSeqable(obj, "count not supported on this type: %s")
@@ -1288,7 +1289,7 @@ var procPprint = func(args []Object) Object {
 func PrintObject(obj Object, w io.Writer) {
 	printReadably := ToBool(GLOBAL_ENV.printReadably.Value)
 	switch obj := obj.(type) {
-	case Printer:
+	case coretypes.Printer:
 		obj.Print(w, printReadably)
 	default:
 		fmt.Fprint(w, obj.ToString(printReadably))

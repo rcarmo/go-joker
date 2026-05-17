@@ -4,6 +4,7 @@ import (
 	"fmt"
 	coreir "github.com/rcarmo/go-joker/core/ir"
 	corert "github.com/rcarmo/go-joker/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"math"
 )
@@ -315,7 +316,7 @@ func (c *irCompiler) constantCount(expr Expr) (int, bool) {
 		switch v := e.obj.(type) {
 		case String:
 			return v.Count(), true
-		case Counted:
+		case coretypes.Counted:
 			return v.Count(), true
 		}
 	case *BindingExpr:
@@ -326,7 +327,7 @@ func (c *irCompiler) constantCount(expr Expr) (int, bool) {
 				switch v := lit.obj.(type) {
 				case String:
 					return v.Count(), true
-				case Counted:
+				case coretypes.Counted:
 					return v.Count(), true
 				}
 			}

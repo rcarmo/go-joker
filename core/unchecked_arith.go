@@ -1,5 +1,7 @@
 package core
 
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
 // unchecked_arith.go — Unchecked arithmetic operations for Clojure parity.
 //
 // In Clojure JVM, unchecked-* ops bypass overflow checks and use
@@ -257,7 +259,7 @@ func registerUncheckedArithProcs() {
 	alVr := ns.Intern(MakeSymbol("alength"))
 	alVr.Value = Proc{Name: "procAlength", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
-		c, ok := args[0].(Counted)
+		c, ok := args[0].(coretypes.Counted)
 		if !ok {
 			panic(RT.NewError("alength requires a counted collection"))
 		}

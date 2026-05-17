@@ -1,6 +1,8 @@
 package core
 
-import "sync"
+import (
+	"sync"
+)
 
 // transient.go — Clojure-style transient data structures.
 //
@@ -19,7 +21,7 @@ import "sync"
 // Semantics:
 //   - Single-owner: do not share transients across goroutines
 //   - After persistent!, the transient is invalid (further mutation panics)
-//   - Transients implement Counted, Indexed, and Gettable
+//   - Transients implement coretypes.Counted, Indexed, and Gettable
 
 // ---------- TransientVector ----------
 

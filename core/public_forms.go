@@ -1,5 +1,7 @@
 package core
 
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
 // public_forms.go — Public macro forms for protocols and records.
 //
 // The runtime helpers (__defprotocol, __extend-type, __defrecord) are useful
@@ -63,7 +65,7 @@ func macroDefProtocol(args []Object) Object {
 		if s.IsEmpty() {
 			continue
 		}
-		argv, ok := s.First().(Counted)
+		argv, ok := s.First().(coretypes.Counted)
 		if !ok {
 			continue
 		}

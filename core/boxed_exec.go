@@ -2414,7 +2414,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []Object) Object {
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			fnObj := nbToObject(slots[slotIdx], objTable)
-			// Native f64 fast path
+			// coretypes.Native f64 fast path
 			if fnProg, ok := runtimeExec.FnProgram(fnObj); ok {
 				if nativeHelper, ok := runtimeExec.NativeHelper(fnProg); ok {
 					var f64buf [4]float64

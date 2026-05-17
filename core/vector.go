@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	corecollections "github.com/rcarmo/go-joker/core/collections"
@@ -20,7 +21,7 @@ type (
 		Reversible
 		Meta
 		Seqable
-		Formatter
+		coretypes.Formatter
 		Callable
 	}
 	Vector struct {
@@ -481,7 +482,7 @@ func NewVectorFrom(objs ...Object) *Vector {
 }
 
 func NewVectorFromSeq(seq Seq) *Vector {
-	if c, ok := seq.(Counted); ok {
+	if c, ok := seq.(coretypes.Counted); ok {
 		n := c.Count()
 		if n == 0 {
 			return EmptyVector()

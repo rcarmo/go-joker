@@ -4,6 +4,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	corestr "github.com/rcarmo/go-joker/core/string"
@@ -21,7 +22,7 @@ func init() {
 		Collection:     RegInterface("Collection", (*Collection)(nil), ""),
 		Comparable:     RegInterface("Comparable", (*Comparable)(nil), ""),
 		Comparator:     RegInterface("Comparator", (*Comparator)(nil), ""),
-		Counted:        RegInterface("Counted", (*Counted)(nil), ""),
+		Counted:        RegInterface("Counted", (*coretypes.Counted)(nil), ""),
 		CountedIndexed: RegInterface("CountedIndexed", (*CountedIndexed)(nil), ""),
 		Deref:          RegInterface("Deref", (*Deref)(nil), ""),
 		Error:          RegInterface("Error", (*Error)(nil), ""),
@@ -33,9 +34,9 @@ func init() {
 		Reduce:         RegInterface("Reduce", (*Reduce)(nil), ""),
 		Map:            RegInterface("Map", (*Map)(nil), ""),
 		Meta:           RegInterface("Meta", (*Meta)(nil), ""),
-		Named:          RegInterface("Named", (*Named)(nil), ""),
+		Named:          RegInterface("Named", (*coretypes.Named)(nil), ""),
 		Number:         RegInterface("Number", (*Number)(nil), ""),
-		Pending:        RegInterface("Pending", (*Pending)(nil), ""),
+		Pending:        RegInterface("Pending", (*coretypes.Pending)(nil), ""),
 		Ref:            RegInterface("Ref", (*Ref)(nil), ""),
 		Reversible:     RegInterface("Reversible", (*Reversible)(nil), ""),
 		Seq:            RegInterface("Seq", (*Seq)(nil), ""),

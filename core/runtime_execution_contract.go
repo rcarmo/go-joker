@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	corert "github.com/rcarmo/go-joker/core/runtime"
 	corestr "github.com/rcarmo/go-joker/core/string"
@@ -365,7 +366,7 @@ func (RuntimeExecutionAdapter) Count(obj Object) (int, bool) {
 	switch v := obj.(type) {
 	case *TransientString:
 		return v.Count(), true
-	case Counted:
+	case coretypes.Counted:
 		return v.Count(), true
 	default:
 		return 0, false

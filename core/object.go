@@ -34,14 +34,13 @@ type (
 		startColumn int
 		filename    *string
 	}
-	Equality = coretypes.Equality
-	Type     struct {
+	Type struct {
 		MetaHolder
 		name        string
 		reflectType reflect.Type
 	}
 	Object interface {
-		Equality
+		coretypes.Equality
 		ToString(escape bool) string
 		GetInfo() *ObjectInfo
 		WithInfo(*ObjectInfo) Object
@@ -52,9 +51,8 @@ type (
 		Object
 		Conj(obj Object) Conjable
 	}
-	Counted        = coretypes.Counted
 	CountedIndexed interface {
-		Counted
+		coretypes.Counted
 		At(int) Object
 	}
 	Error interface {
@@ -209,7 +207,6 @@ type (
 	Reversible interface {
 		Rseq() Seq
 	}
-	Named      = coretypes.Named
 	Comparator interface {
 		Compare(a, b Object) int
 	}
@@ -217,12 +214,9 @@ type (
 		s   []Object
 		cmp Comparator
 	}
-	Printer    = coretypes.Printer
-	Pprinter   = coretypes.Pprinter
-	Formatter  = coretypes.Formatter
 	Collection interface {
 		Object
-		Counted
+		coretypes.Counted
 		Seqable
 		Empty() Collection
 	}
@@ -234,7 +228,6 @@ type (
 	Deref interface {
 		Deref() Object
 	}
-	Native   = coretypes.Native
 	KVReduce interface {
 		kvreduce(c Callable, init Object) Object
 	}
@@ -242,8 +235,7 @@ type (
 		reduceInit(c Callable, init Object) Object
 		reduce(c Callable) Object
 	}
-	Pending = coretypes.Pending
-	Types   struct {
+	Types struct {
 		Associative    *Type
 		Callable       *Type
 		Collection     *Type

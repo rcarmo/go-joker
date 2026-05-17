@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/binary"
 	corert "github.com/rcarmo/go-joker/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"github.com/rcarmo/go-joker/core/wasm"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"github.com/tetratelabs/wazero"
@@ -947,7 +948,7 @@ func registerWasmHost(rt wazero.Runtime) {
 				}
 				coll := t.load(collHandle)
 				switch v := coll.(type) {
-				case Counted:
+				case coretypes.Counted:
 					return uint64(v.Count())
 				}
 				return 0

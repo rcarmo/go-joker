@@ -4,6 +4,7 @@ import (
 	coregenerated "github.com/rcarmo/go-joker/core/generated"
 	coreirx "github.com/rcarmo/go-joker/core/ir"
 	corereader "github.com/rcarmo/go-joker/core/reader"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"github.com/rcarmo/go-joker/tests/clbgscripts"
 	"io"
@@ -610,7 +611,7 @@ func TestNoescape64Correctness(t *testing.T) {
 	}
 }
 
-// --- Native helper ---
+// --- coretypes.Native helper ---
 
 func TestNativeHelperSpectralA(t *testing.T) {
 	clbgInit()
@@ -2414,7 +2415,7 @@ func TestReaderConstructionAdapterCollectionObjects(t *testing.T) {
 	if persistent.Count() != 2 || !persistent.At(0).Equals(MakeKeyword("a")) || !persistent.At(1).Equals(MakeKeyword("b")) {
 		t.Fatalf("adapter PersistentVectorFromSeq mismatch: %s", persistent.(Object).ToString(false))
 	}
-	if readerConstruction.VectorFrom(nil).(Counted).Count() != 0 {
+	if readerConstruction.VectorFrom(nil).(coretypes.Counted).Count() != 0 {
 		t.Fatal("adapter empty VectorFrom not empty")
 	}
 }
@@ -2708,7 +2709,7 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	} else if ok, val := got.(Gettable).Get(MakeInt(0)); !ok || !val.Equals(MakeInt(9)) {
 		t.Fatalf("Assoc value = %#v, %v", val, ok)
 	}
-	if got, ok := adapter.Conj(vec, MakeInt(3)); !ok || got.(Counted).Count() != 3 {
+	if got, ok := adapter.Conj(vec, MakeInt(3)); !ok || got.(coretypes.Counted).Count() != 3 {
 		t.Fatalf("Conj returned %#v, %v", got, ok)
 	}
 	if got, ok := adapter.First(vec); !ok || !got.Equals(MakeInt(1)) {
@@ -2717,7 +2718,7 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	if got, ok := adapter.First(EmptyArrayVector()); !ok || got != NIL {
 		t.Fatalf("First empty returned %#v, %v", got, ok)
 	}
-	if got := adapter.BuildVector([]Object{MakeInt(4), MakeInt(5)}); got.(Counted).Count() != 2 {
+	if got := adapter.BuildVector([]Object{MakeInt(4), MakeInt(5)}); got.(coretypes.Counted).Count() != 2 {
 		t.Fatalf("BuildVector returned %#v", got)
 	}
 	transient := ToTransient(vec)
@@ -2730,7 +2731,7 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	if got := adapter.MutableSlotObject(vec, &EscapeInfo{SafeMutableSlots: []bool{true}}, 0); got == vec {
 		t.Fatalf("MutableSlotObject did not convert vector: %#v", got)
 	}
-	if got := adapter.PersistentResult(transient); got.(Counted).Count() != 2 {
+	if got := adapter.PersistentResult(transient); got.(coretypes.Counted).Count() != 2 {
 		t.Fatalf("PersistentResult = %#v", got)
 	}
 	transientObj, ok := adapter.ToTransient(vec)

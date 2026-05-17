@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	corecollections "github.com/rcarmo/go-joker/core/collections"
@@ -11,7 +12,7 @@ type (
 	Map interface {
 		Associative
 		Seqable
-		Counted
+		coretypes.Counted
 		Without(key Object) Map
 		Keys() Seq
 		Vals() Seq
