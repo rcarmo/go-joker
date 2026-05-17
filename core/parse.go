@@ -1302,7 +1302,7 @@ func fixInfo(obj Object, info *coretypes.ObjectInfo) Object {
 			objs = append(objs, t)
 			s = s.Rest()
 		}
-		res := NewListFrom(objs...)
+		res := collectionConstruction.NewListFrom(objs...)
 		if s, ok := obj.(Meta); ok {
 			res.meta = s.GetMeta()
 		}
