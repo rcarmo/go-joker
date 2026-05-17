@@ -158,7 +158,7 @@ var s_ConsSeq string = "ConsSeq"
 var s_Counted string = "Counted"
 var s_CountedIndexed string = "CountedIndexed"
 var s_Delay string = "Delay"
-var s_Deref string = "Deref"
+var s_Deref string = "coretypes.Deref"
 var s_Double string = "coretypes.Double"
 var s_Error string = "coretypes.Error"
 var s_EvalError string = "EvalError"
@@ -1935,7 +1935,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"Counted":                    &s_Counted,
 	"CountedIndexed":             &s_CountedIndexed,
 	"Delay":                      &s_Delay,
-	"Deref":                      &s_Deref,
+	"coretypes.Deref":            &s_Deref,
 	"coretypes.Double":           &s_Double,
 	"coretypes.Error":            &s_Error,
 	"EvalError":                  &s_EvalError,
@@ -4223,7 +4223,7 @@ var arrayMap_NUM_8 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Deref",
+			S: "coretypes.Deref",
 		},
 	},
 }
@@ -4231,8 +4231,8 @@ var ty_Deref coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_8,
 	},
-	Name:        "Deref",
-	ReflectType: reflect.TypeOf((*Deref)(nil)).Elem(),
+	Name:        "coretypes.Deref",
+	ReflectType: reflect.TypeOf((*coretypes.Deref)(nil)).Elem(),
 }
 var arrayMap_NUM_9 ArrayMap = ArrayMap{
 	arr: []Object{

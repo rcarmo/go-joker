@@ -458,19 +458,19 @@ func EnsureArgIsFn(args []Object, index int) *Fn {
 	panic(FailArg(obj, "Fn", index))
 }
 
-func EnsureObjectIsDeref(obj Object, pattern string) Deref {
-	if c, yes := obj.(Deref); yes {
+func EnsureObjectIsDeref(obj Object, pattern string) coretypes.Deref {
+	if c, yes := obj.(coretypes.Deref); yes {
 		return c
 	}
-	panic(FailObject(obj, "Deref", pattern))
+	panic(FailObject(obj, "coretypes.Deref", pattern))
 }
 
-func EnsureArgIsDeref(args []Object, index int) Deref {
+func EnsureArgIsDeref(args []Object, index int) coretypes.Deref {
 	obj := args[index]
-	if c, yes := obj.(Deref); yes {
+	if c, yes := obj.(coretypes.Deref); yes {
 		return c
 	}
-	panic(FailArg(obj, "Deref", index))
+	panic(FailArg(obj, "coretypes.Deref", index))
 }
 
 func EnsureObjectIsAtom(obj Object, pattern string) *Atom {

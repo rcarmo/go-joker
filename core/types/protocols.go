@@ -53,6 +53,10 @@ type Error interface {
 	Message() Object
 }
 
+type Deref interface {
+	Deref() Object
+}
+
 type Sequential interface {
 	SequentialMarker()
 }
