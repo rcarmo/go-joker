@@ -100,7 +100,7 @@ func (seq *MappingSeq) WithMeta(meta Map) Object {
 	return &res
 }
 
-func (seq *MappingSeq) GetType() *Type {
+func (seq *MappingSeq) GetType() *coretypes.Type {
 	return TYPE.MappingSeq
 }
 
@@ -165,7 +165,7 @@ func (seq *LazySeq) WithMeta(meta Map) Object {
 	return &res
 }
 
-func (seq *LazySeq) GetType() *Type {
+func (seq *LazySeq) GetType() *coretypes.Type {
 	return TYPE.LazySeq
 }
 
@@ -224,7 +224,7 @@ func (seq *ArraySeq) WithMeta(meta Map) Object {
 	return &res
 }
 
-func (seq *ArraySeq) GetType() *Type {
+func (seq *ArraySeq) GetType() *coretypes.Type {
 	return TYPE.ArraySeq
 }
 
@@ -304,7 +304,7 @@ func (seq *ConsSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *ConsSeq) GetType() *Type {
+func (seq *ConsSeq) GetType() *coretypes.Type {
 	return TYPE.ConsSeq
 }
 

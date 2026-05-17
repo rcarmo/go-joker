@@ -26,7 +26,7 @@ func (tc *TailCall) ToString(escape bool) string           { return "#<tail-call
 func (tc *TailCall) Equals(other interface{}) bool         { return false }
 func (tc *TailCall) GetInfo() *coretypes.ObjectInfo        { return nil }
 func (tc *TailCall) WithInfo(*coretypes.ObjectInfo) Object { return tc }
-func (tc *TailCall) GetType() *Type                        { return TYPE.Fn }
+func (tc *TailCall) GetType() *coretypes.Type              { return TYPE.Fn }
 func (tc *TailCall) Hash() uint32                          { return 0 }
 
 // activeFn tracks the currently executing Fn for TCO detection.

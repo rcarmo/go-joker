@@ -4003,7 +4003,7 @@ var arrayMap_NUM_1 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Associative Type = Type{
+var ty_Associative coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_1,
 	},
@@ -4035,7 +4035,7 @@ var arrayMap_NUM_2 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Callable Type = Type{
+var ty_Callable coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_2,
 	},
@@ -4067,7 +4067,7 @@ var arrayMap_NUM_3 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Collection Type = Type{
+var ty_Collection coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_3,
 	},
@@ -4099,7 +4099,7 @@ var arrayMap_NUM_4 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Comparable Type = Type{
+var ty_Comparable coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_4,
 	},
@@ -4131,7 +4131,7 @@ var arrayMap_NUM_5 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Comparator Type = Type{
+var ty_Comparator coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_5,
 	},
@@ -4163,7 +4163,7 @@ var arrayMap_NUM_6 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Counted Type = Type{
+var ty_Counted coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_6,
 	},
@@ -4195,7 +4195,7 @@ var arrayMap_NUM_7 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_CountedIndexed Type = Type{
+var ty_CountedIndexed coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_7,
 	},
@@ -4227,7 +4227,7 @@ var arrayMap_NUM_8 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Deref Type = Type{
+var ty_Deref coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_8,
 	},
@@ -4259,7 +4259,7 @@ var arrayMap_NUM_9 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Channel Type = Type{
+var ty_Channel coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_9,
 	},
@@ -4291,7 +4291,7 @@ var arrayMap_NUM_10 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Error Type = Type{
+var ty_Error coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_10,
 	},
@@ -4323,7 +4323,7 @@ var arrayMap_NUM_11 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Gettable Type = Type{
+var ty_Gettable coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_11,
 	},
@@ -4355,7 +4355,7 @@ var arrayMap_NUM_12 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Indexed Type = Type{
+var ty_Indexed coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_12,
 	},
@@ -4387,7 +4387,7 @@ var arrayMap_NUM_13 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_IOReader Type = Type{
+var ty_IOReader coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_13,
 	},
@@ -4419,7 +4419,7 @@ var arrayMap_NUM_14 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_IOWriter Type = Type{
+var ty_IOWriter coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_14,
 	},
@@ -4451,7 +4451,7 @@ var arrayMap_NUM_15 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_KVReduce Type = Type{
+var ty_KVReduce coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_15,
 	},
@@ -4483,7 +4483,7 @@ var arrayMap_NUM_16 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Reduce Type = Type{
+var ty_Reduce coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_16,
 	},
@@ -4515,7 +4515,7 @@ var arrayMap_NUM_17 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Map Type = Type{
+var ty_Map coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_17,
 	},
@@ -4547,7 +4547,7 @@ var arrayMap_NUM_18 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Meta Type = Type{
+var ty_Meta coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_18,
 	},
@@ -4579,7 +4579,7 @@ var arrayMap_NUM_19 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Named Type = Type{
+var ty_Named coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_19,
 	},
@@ -4611,7 +4611,7 @@ var arrayMap_NUM_20 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Number Type = Type{
+var ty_Number coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_20,
 	},
@@ -4643,7 +4643,7 @@ var arrayMap_NUM_21 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Pending Type = Type{
+var ty_Pending coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_21,
 	},
@@ -4675,7 +4675,7 @@ var arrayMap_NUM_22 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Ref Type = Type{
+var ty_Ref coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_22,
 	},
@@ -4707,7 +4707,7 @@ var arrayMap_NUM_23 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Reversible Type = Type{
+var ty_Reversible coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_23,
 	},
@@ -4739,7 +4739,7 @@ var arrayMap_NUM_24 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Seq Type = Type{
+var ty_Seq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_24,
 	},
@@ -4771,7 +4771,7 @@ var arrayMap_NUM_25 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Seqable Type = Type{
+var ty_Seqable coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_25,
 	},
@@ -4803,7 +4803,7 @@ var arrayMap_NUM_26 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Sequential Type = Type{
+var ty_Sequential coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_26,
 	},
@@ -4835,7 +4835,7 @@ var arrayMap_NUM_27 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Set Type = Type{
+var ty_Set coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_27,
 	},
@@ -4867,7 +4867,7 @@ var arrayMap_NUM_28 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Stack Type = Type{
+var ty_Stack coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_28,
 	},
@@ -4899,7 +4899,7 @@ var arrayMap_NUM_29 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_ArrayMap Type = Type{
+var ty_ArrayMap coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_29,
 	},
@@ -4931,7 +4931,7 @@ var arrayMap_NUM_30 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_ArrayMapSeq Type = Type{
+var ty_ArrayMapSeq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_30,
 	},
@@ -4963,7 +4963,7 @@ var arrayMap_NUM_31 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_ArrayNodeSeq Type = Type{
+var ty_ArrayNodeSeq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_31,
 	},
@@ -4995,7 +4995,7 @@ var arrayMap_NUM_32 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_ArraySeq Type = Type{
+var ty_ArraySeq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_32,
 	},
@@ -5027,7 +5027,7 @@ var arrayMap_NUM_33 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_MapSet Type = Type{
+var ty_MapSet coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_33,
 	},
@@ -5059,7 +5059,7 @@ var arrayMap_NUM_34 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Atom Type = Type{
+var ty_Atom coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_34,
 	},
@@ -5091,7 +5091,7 @@ var arrayMap_NUM_35 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_BigFloat Type = Type{
+var ty_BigFloat coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_35,
 	},
@@ -5123,7 +5123,7 @@ var arrayMap_NUM_36 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_BigInt Type = Type{
+var ty_BigInt coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_36,
 	},
@@ -5155,7 +5155,7 @@ var arrayMap_NUM_37 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Boolean Type = Type{
+var ty_Boolean coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_37,
 	},
@@ -5187,7 +5187,7 @@ var arrayMap_NUM_38 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Time Type = Type{
+var ty_Time coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_38,
 	},
@@ -5219,7 +5219,7 @@ var arrayMap_NUM_39 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Buffer Type = Type{
+var ty_Buffer coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_39,
 	},
@@ -5251,7 +5251,7 @@ var arrayMap_NUM_40 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Char Type = Type{
+var ty_Char coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_40,
 	},
@@ -5283,7 +5283,7 @@ var arrayMap_NUM_41 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_ConsSeq Type = Type{
+var ty_ConsSeq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_41,
 	},
@@ -5315,7 +5315,7 @@ var arrayMap_NUM_42 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Delay Type = Type{
+var ty_Delay coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_42,
 	},
@@ -5347,7 +5347,7 @@ var arrayMap_NUM_43 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Double Type = Type{
+var ty_Double coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_43,
 	},
@@ -5379,7 +5379,7 @@ var arrayMap_NUM_44 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_EvalError Type = Type{
+var ty_EvalError coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_44,
 	},
@@ -5411,7 +5411,7 @@ var arrayMap_NUM_45 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_ExInfo Type = Type{
+var ty_ExInfo coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_45,
 	},
@@ -5443,7 +5443,7 @@ var arrayMap_NUM_46 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Fn Type = Type{
+var ty_Fn coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_46,
 	},
@@ -5475,7 +5475,7 @@ var arrayMap_NUM_47 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_File Type = Type{
+var ty_File coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_47,
 	},
@@ -5507,7 +5507,7 @@ var arrayMap_NUM_48 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_BufferedReader Type = Type{
+var ty_BufferedReader coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_48,
 	},
@@ -5539,7 +5539,7 @@ var arrayMap_NUM_49 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_HashMap Type = Type{
+var ty_HashMap coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_49,
 	},
@@ -5571,7 +5571,7 @@ var arrayMap_NUM_50 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Int Type = Type{
+var ty_Int coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_50,
 	},
@@ -5603,7 +5603,7 @@ var arrayMap_NUM_51 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Keyword Type = Type{
+var ty_Keyword coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_51,
 	},
@@ -5635,7 +5635,7 @@ var arrayMap_NUM_52 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_LazySeq Type = Type{
+var ty_LazySeq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_52,
 	},
@@ -5667,7 +5667,7 @@ var arrayMap_NUM_53 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_List Type = Type{
+var ty_List coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_53,
 	},
@@ -5699,7 +5699,7 @@ var arrayMap_NUM_54 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_MappingSeq Type = Type{
+var ty_MappingSeq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_54,
 	},
@@ -5731,7 +5731,7 @@ var arrayMap_NUM_55 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Namespace Type = Type{
+var ty_Namespace coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_55,
 	},
@@ -5763,7 +5763,7 @@ var arrayMap_NUM_56 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Nil Type = Type{
+var ty_Nil coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_56,
 	},
@@ -5795,7 +5795,7 @@ var arrayMap_NUM_57 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_NodeSeq Type = Type{
+var ty_NodeSeq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_57,
 	},
@@ -5827,7 +5827,7 @@ var arrayMap_NUM_58 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_ParseError Type = Type{
+var ty_ParseError coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_58,
 	},
@@ -5859,7 +5859,7 @@ var arrayMap_NUM_59 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Proc Type = Type{
+var ty_Proc coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_59,
 	},
@@ -5891,7 +5891,7 @@ var arrayMap_NUM_60 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Ratio Type = Type{
+var ty_Ratio coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_60,
 	},
@@ -5923,7 +5923,7 @@ var arrayMap_NUM_61 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_RecurBindings Type = Type{
+var ty_RecurBindings coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_61,
 	},
@@ -5955,7 +5955,7 @@ var arrayMap_NUM_62 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Regex Type = Type{
+var ty_Regex coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_62,
 	},
@@ -5987,7 +5987,7 @@ var arrayMap_NUM_63 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_String Type = Type{
+var ty_String coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_63,
 	},
@@ -6019,7 +6019,7 @@ var arrayMap_NUM_64 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Symbol Type = Type{
+var ty_Symbol coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_64,
 	},
@@ -6051,12 +6051,12 @@ var arrayMap_NUM_65 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Type Type = Type{
+var ty_Type coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_65,
 	},
 	Name:        "Type",
-	ReflectType: reflect.TypeOf((*Type)(nil)),
+	ReflectType: reflect.TypeOf((*coretypes.Type)(nil)),
 }
 var arrayMap_NUM_66 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -6083,7 +6083,7 @@ var arrayMap_NUM_66 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Var Type = Type{
+var ty_Var coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_66,
 	},
@@ -6115,7 +6115,7 @@ var arrayMap_NUM_67 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Vector Type = Type{
+var ty_Vector coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_67,
 	},
@@ -6147,7 +6147,7 @@ var arrayMap_NUM_68 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_Vec Type = Type{
+var ty_Vec coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_68,
 	},
@@ -6179,7 +6179,7 @@ var arrayMap_NUM_69 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_ArrayVector Type = Type{
+var ty_ArrayVector coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_69,
 	},
@@ -6211,7 +6211,7 @@ var arrayMap_NUM_70 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_VectorRSeq Type = Type{
+var ty_VectorRSeq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_70,
 	},
@@ -6243,7 +6243,7 @@ var arrayMap_NUM_71 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_VectorSeq Type = Type{
+var ty_VectorSeq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_71,
 	},
@@ -6275,7 +6275,7 @@ var arrayMap_NUM_72 ArrayMap = ArrayMap{
 		},
 	},
 }
-var ty_StringSeq Type = Type{
+var ty_StringSeq coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_72,
 	},
@@ -6356,7 +6356,7 @@ var TYPE coretypes.Types = coretypes.Types{
 	VectorRSeq:     &ty_VectorRSeq,
 	VectorSeq:      &ty_VectorSeq,
 }
-var TYPES map[*string]*Type = map[*string]*Type{
+var TYPES map[*string]*coretypes.Type = map[*string]*coretypes.Type{
 	&s_ArrayMap:       &ty_ArrayMap,
 	&s_ArrayMapSeq:    &ty_ArrayMapSeq,
 	&s_ArrayNodeSeq:   &ty_ArrayNodeSeq,

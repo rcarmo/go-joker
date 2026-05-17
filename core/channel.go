@@ -43,7 +43,7 @@ func (ch *Channel) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (ch *Channel) GetType() *Type {
+func (ch *Channel) GetType() *coretypes.Type {
 	return TYPE.Channel
 }
 

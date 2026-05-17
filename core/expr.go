@@ -2,7 +2,7 @@ package core
 
 import coretypes "github.com/rcarmo/go-joker/core/types"
 
-func (expr *LiteralExpr) InferType() *Type {
+func (expr *LiteralExpr) InferType() *coretypes.Type {
 	if expr.isSurrogate {
 		return nil
 	}
@@ -42,7 +42,7 @@ func (expr *LiteralExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *VectorExpr) InferType() *Type {
+func (expr *VectorExpr) InferType() *coretypes.Type {
 	return TYPE.Vec
 }
 
@@ -52,7 +52,7 @@ func (expr *VectorExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *MapExpr) InferType() *Type {
+func (expr *MapExpr) InferType() *coretypes.Type {
 	return TYPE.ArrayMap
 }
 
@@ -63,7 +63,7 @@ func (expr *MapExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *SetExpr) InferType() *Type {
+func (expr *SetExpr) InferType() *coretypes.Type {
 	return TYPE.MapSet
 }
 
@@ -73,7 +73,7 @@ func (expr *SetExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *IfExpr) InferType() *Type {
+func (expr *IfExpr) InferType() *coretypes.Type {
 	return nil
 }
 
@@ -85,7 +85,7 @@ func (expr *IfExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *DefExpr) InferType() *Type {
+func (expr *DefExpr) InferType() *coretypes.Type {
 	return TYPE.Var
 }
 
@@ -102,7 +102,7 @@ func (expr *DefExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *CallExpr) InferType() *Type {
+func (expr *CallExpr) InferType() *coretypes.Type {
 	switch callableExpr := expr.callable.(type) {
 	case *VarRefExpr:
 		switch f := callableExpr.vr.Value.(type) {
@@ -124,7 +124,7 @@ func (expr *CallExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *MacroCallExpr) InferType() *Type {
+func (expr *MacroCallExpr) InferType() *coretypes.Type {
 	return nil
 }
 
@@ -139,7 +139,7 @@ func (expr *MacroCallExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *RecurExpr) InferType() *Type {
+func (expr *RecurExpr) InferType() *coretypes.Type {
 	return nil
 }
 
@@ -149,7 +149,7 @@ func (expr *RecurExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *VarRefExpr) InferType() *Type {
+func (expr *VarRefExpr) InferType() *coretypes.Type {
 	// if expr.vr.taggedType != nil {
 	// 	return expr.vr.taggedType
 	// }
@@ -168,7 +168,7 @@ func (expr *VarRefExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *SetMacroExpr) InferType() *Type {
+func (expr *SetMacroExpr) InferType() *coretypes.Type {
 	return nil
 }
 
@@ -178,7 +178,7 @@ func (expr *SetMacroExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *BindingExpr) InferType() *Type {
+func (expr *BindingExpr) InferType() *coretypes.Type {
 	return expr.binding.inferredType
 }
 
@@ -188,7 +188,7 @@ func (expr *BindingExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *MetaExpr) InferType() *Type {
+func (expr *MetaExpr) InferType() *coretypes.Type {
 	return expr.expr.InferType()
 }
 
@@ -199,7 +199,7 @@ func (expr *MetaExpr) Dump(pos bool) Map {
 	return res
 }
 
-func typeOfLast(exprs []Expr) *Type {
+func typeOfLast(exprs []Expr) *coretypes.Type {
 	n := len(exprs)
 	if n > 0 {
 		return exprs[n-1].InferType()
@@ -207,7 +207,7 @@ func typeOfLast(exprs []Expr) *Type {
 	return nil
 }
 
-func (expr *DoExpr) InferType() *Type {
+func (expr *DoExpr) InferType() *coretypes.Type {
 	return typeOfLast(expr.body)
 }
 
@@ -217,11 +217,11 @@ func (expr *DoExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *FnExpr) InferType() *Type {
+func (expr *FnExpr) InferType() *coretypes.Type {
 	return TYPE.Fn
 }
 
-func (expr *FnArityExpr) InferType() *Type {
+func (expr *FnArityExpr) InferType() *coretypes.Type {
 	return nil
 }
 
@@ -252,7 +252,7 @@ func (expr *FnExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *LetExpr) InferType() *Type {
+func (expr *LetExpr) InferType() *coretypes.Type {
 	return typeOfLast(expr.body)
 }
 
@@ -267,7 +267,7 @@ func (expr *LetExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *LoopExpr) InferType() *Type {
+func (expr *LoopExpr) InferType() *coretypes.Type {
 	return typeOfLast(expr.body)
 }
 
@@ -282,7 +282,7 @@ func (expr *LoopExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *ThrowExpr) InferType() *Type {
+func (expr *ThrowExpr) InferType() *coretypes.Type {
 	return nil
 }
 
@@ -292,7 +292,7 @@ func (expr *ThrowExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *CatchExpr) InferType() *Type {
+func (expr *CatchExpr) InferType() *coretypes.Type {
 	return typeOfLast(expr.body)
 }
 
@@ -304,7 +304,7 @@ func (expr *CatchExpr) Dump(pos bool) Map {
 	return res
 }
 
-func (expr *TryExpr) InferType() *Type {
+func (expr *TryExpr) InferType() *coretypes.Type {
 	return typeOfLast(expr.body)
 }
 

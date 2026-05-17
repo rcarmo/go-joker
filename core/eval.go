@@ -300,7 +300,7 @@ func (err *EvalError) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (err *EvalError) GetType() *Type {
+func (err *EvalError) GetType() *coretypes.Type {
 	return TYPE.EvalError
 }
 

@@ -154,7 +154,7 @@ func (v *Vector) Equals(other interface{}) bool {
 	}
 }
 
-func (v *Vector) GetType() *Type {
+func (v *Vector) GetType() *coretypes.Type {
 	return TYPE.Vector
 }
 
@@ -188,7 +188,7 @@ func (seq *VectorSeq) WithMeta(meta Map) Object {
 	return &res
 }
 
-func (seq *VectorSeq) GetType() *Type {
+func (seq *VectorSeq) GetType() *coretypes.Type {
 	return TYPE.VectorSeq
 }
 
@@ -254,7 +254,7 @@ func (seq *VectorRSeq) WithMeta(meta Map) Object {
 	return &res
 }
 
-func (seq *VectorRSeq) GetType() *Type {
+func (seq *VectorRSeq) GetType() *coretypes.Type {
 	return TYPE.VectorRSeq
 }
 

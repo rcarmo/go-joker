@@ -419,8 +419,8 @@ func (s *FilteringSeq) WithInfo(info *coretypes.ObjectInfo) Object {
 	res.Info = info
 	return &res
 }
-func (s *FilteringSeq) GetType() *Type { return TYPE.LazySeq }
-func (s *FilteringSeq) Hash() uint32   { return hashOrdered(s) }
+func (s *FilteringSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
+func (s *FilteringSeq) Hash() uint32             { return hashOrdered(s) }
 func (s *FilteringSeq) WithMeta(m Map) Object {
 	res := *s
 	res.meta = SafeMerge(res.meta, m)
@@ -497,13 +497,13 @@ func (s *TakeSeq) WithInfo(info *coretypes.ObjectInfo) Object {
 	res.Info = info
 	return &res
 }
-func (s *TakeSeq) GetType() *Type        { return TYPE.LazySeq }
-func (s *TakeSeq) Hash() uint32          { return hashOrdered(s) }
-func (s *TakeSeq) WithMeta(m Map) Object { res := *s; res.meta = SafeMerge(res.meta, m); return &res }
-func (s *TakeSeq) Seq() Seq              { return s }
-func (s *TakeSeq) sequential()           {}
-func (s *TakeSeq) IsEmpty() bool         { return s.n <= 0 || s.seq.IsEmpty() }
-func (s *TakeSeq) First() Object         { return s.seq.First() }
+func (s *TakeSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
+func (s *TakeSeq) Hash() uint32             { return hashOrdered(s) }
+func (s *TakeSeq) WithMeta(m Map) Object    { res := *s; res.meta = SafeMerge(res.meta, m); return &res }
+func (s *TakeSeq) Seq() Seq                 { return s }
+func (s *TakeSeq) sequential()              {}
+func (s *TakeSeq) IsEmpty() bool            { return s.n <= 0 || s.seq.IsEmpty() }
+func (s *TakeSeq) First() Object            { return s.seq.First() }
 func (s *TakeSeq) Rest() Seq {
 	if s.n <= 1 {
 		return EmptyList
@@ -753,7 +753,7 @@ func NewIntRange(start, end, step int) *IntRange {
 func (r *IntRange) ToString(escape bool) string             { return SeqToString(r.Seq(), escape) }
 func (r *IntRange) Equals(other interface{}) bool           { return IsSeqEqual(r.Seq(), other) }
 func (r *IntRange) WithInfo(i *coretypes.ObjectInfo) Object { res := *r; res.Info = i; return &res }
-func (r *IntRange) GetType() *Type                          { return TYPE.LazySeq }
+func (r *IntRange) GetType() *coretypes.Type                { return TYPE.LazySeq }
 func (r *IntRange) Hash() uint32                            { return hashOrdered(r.Seq()) }
 func (r *IntRange) WithMeta(m Map) Object                   { res := *r; res.meta = SafeMerge(res.meta, m); return &res }
 func (r *IntRange) sequential()                             {}
@@ -1111,8 +1111,8 @@ func (s *intRangeSeq) WithInfo(info *coretypes.ObjectInfo) Object {
 	res.Info = info
 	return &res
 }
-func (s *intRangeSeq) GetType() *Type { return TYPE.LazySeq }
-func (s *intRangeSeq) Hash() uint32   { return hashOrdered(s) }
+func (s *intRangeSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
+func (s *intRangeSeq) Hash() uint32             { return hashOrdered(s) }
 func (s *intRangeSeq) WithMeta(m Map) Object {
 	res := *s
 	res.meta = SafeMerge(res.meta, m)

@@ -79,7 +79,7 @@ func (list *List) Equals(other interface{}) bool {
 	return IsSeqEqual(list, other)
 }
 
-func (list *List) GetType() *Type {
+func (list *List) GetType() *coretypes.Type {
 	return TYPE.List
 }
 

@@ -11,7 +11,7 @@ import (
 )
 
 var STRINGS corestr.Pool = corestr.Pool{}
-var TYPES = map[*string]*Type{}
+var TYPES = map[*string]*coretypes.Type{}
 var TYPE coretypes.Types
 var LINTER_TYPES = map[*string]bool{}
 
@@ -82,7 +82,7 @@ func init() {
 		Regex:         RegRefType("Regex", (*Regex)(nil), "Wraps the Go 'regexp.Regexp' type"),
 		String:        RegType("String", (*String)(nil), "Wraps the Go 'string' type"),
 		Symbol:        RegType("Symbol", (*Symbol)(nil), ""),
-		Type:          RegRefType("Type", (*Type)(nil), ""),
+		Type:          RegRefType("Type", (*coretypes.Type)(nil), ""),
 		Var:           RegRefType("Var", (*Var)(nil), ""),
 		Vector:        RegRefType("Vector", (*Vector)(nil), ""),
 		Vec:           RegInterface("Vec", (*Vec)(nil), ""),

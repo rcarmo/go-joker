@@ -34,7 +34,7 @@ func MakeHierarchy() *Hierarchy {
 
 func (h *Hierarchy) ToString(escape bool) string   { return "#object[Hierarchy]" }
 func (h *Hierarchy) Equals(other interface{}) bool { return h == other }
-func (h *Hierarchy) GetType() *Type                { return TYPE.Fn }
+func (h *Hierarchy) GetType() *coretypes.Type      { return TYPE.Fn }
 func (h *Hierarchy) Hash() uint32                  { return hashutil.Ptr(uintptr(unsafe.Pointer(h))) }
 func (h *Hierarchy) WithInfo(info *coretypes.ObjectInfo) Object {
 	h.Info = info

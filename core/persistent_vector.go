@@ -297,5 +297,5 @@ func (v *PersistentVector) WithMeta(meta Map) Object {
 	return &res
 }
 
-func (v *PersistentVector) GetType() *Type { return TYPE.ArrayVector }
-func (v *PersistentVector) Hash() uint32   { return CountedIndexedHash(v) }
+func (v *PersistentVector) GetType() *coretypes.Type { return TYPE.ArrayVector }
+func (v *PersistentVector) Hash() uint32             { return CountedIndexedHash(v) }

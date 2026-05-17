@@ -417,7 +417,7 @@ func (m *asyncMult) Print(w fmt.State, printReadably bool) {}
 func (m *asyncMult) Equals(o interface{}) bool             { return m == o }
 func (m *asyncMult) GetInfo() *coretypes.ObjectInfo        { return nil }
 func (m *asyncMult) WithInfo(*coretypes.ObjectInfo) Object { return m }
-func (m *asyncMult) GetType() *Type                        { return TYPE.Proc }
+func (m *asyncMult) GetType() *coretypes.Type              { return TYPE.Proc }
 func (m *asyncMult) Hash() uint32                          { return m.hash }
 
 type asyncPub struct {
@@ -432,7 +432,7 @@ func (p *asyncPub) ToString(bool) string                  { return "#object[core
 func (p *asyncPub) Equals(o interface{}) bool             { return p == o }
 func (p *asyncPub) GetInfo() *coretypes.ObjectInfo        { return nil }
 func (p *asyncPub) WithInfo(*coretypes.ObjectInfo) Object { return p }
-func (p *asyncPub) GetType() *Type                        { return TYPE.Proc }
+func (p *asyncPub) GetType() *coretypes.Type              { return TYPE.Proc }
 func (p *asyncPub) Hash() uint32                          { return p.hash }
 
 func procAsyncMult(args []Object) Object {

@@ -50,7 +50,7 @@ func (c *StringCursor) Hash() uint32 { return c.cur.Hash() }
 
 func (c *StringCursor) WithInfo(info *coretypes.ObjectInfo) Object { return c }
 
-func (c *StringCursor) GetType() *Type { return typeStringCursor }
+func (c *StringCursor) GetType() *coretypes.Type { return typeStringCursor }
 
 var typeStringCursor = &Type{Name: "StringCursor"}
 
@@ -156,7 +156,7 @@ func (ts *TransientString) Equals(other interface{}) bool {
 }
 func (ts *TransientString) GetInfo() *coretypes.ObjectInfo        { return nil }
 func (ts *TransientString) WithInfo(*coretypes.ObjectInfo) Object { return ts }
-func (ts *TransientString) GetType() *Type                        { return TYPE.String }
+func (ts *TransientString) GetType() *coretypes.Type              { return TYPE.String }
 func (ts *TransientString) Hash() uint32                          { return String{S: string(ts.buf)}.Hash() }
 func (ts *TransientString) Count() int                            { return stringRuneCountFastCompat(string(ts.buf)) }
 

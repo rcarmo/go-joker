@@ -38,7 +38,7 @@ func (a *WasmArray) ToString(escape bool) string           { return "#<wasm-arra
 func (a *WasmArray) Equals(other interface{}) bool         { return a == other }
 func (a *WasmArray) GetInfo() *coretypes.ObjectInfo        { return nil }
 func (a *WasmArray) WithInfo(*coretypes.ObjectInfo) Object { return a }
-func (a *WasmArray) GetType() *Type                        { return TYPE.ArrayVector }
+func (a *WasmArray) GetType() *coretypes.Type              { return TYPE.ArrayVector }
 func (a *WasmArray) Hash() uint32                          { return 0 }
 
 // GetF64 reads a float64 at index i.

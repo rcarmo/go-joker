@@ -330,7 +330,7 @@ type Future struct {
 func (f *Future) ToString(escape bool) string    { return "#object[Future]" }
 func (f *Future) Equals(other interface{}) bool  { return f == other }
 func (f *Future) GetInfo() *coretypes.ObjectInfo { return nil }
-func (f *Future) GetType() *Type                 { return TYPE.Fn } // Clojure: futures are IFn
+func (f *Future) GetType() *coretypes.Type       { return TYPE.Fn } // Clojure: futures are IFn
 func (f *Future) Hash() uint32 {
 	return hashutil.Ptr(uintptr(reflect.ValueOf(f).Pointer()))
 }
@@ -358,7 +358,7 @@ type Promise struct {
 func (p *Promise) ToString(escape bool) string    { return "#object[Promise]" }
 func (p *Promise) Equals(other interface{}) bool  { return p == other }
 func (p *Promise) GetInfo() *coretypes.ObjectInfo { return nil }
-func (p *Promise) GetType() *Type                 { return TYPE.Fn }
+func (p *Promise) GetType() *coretypes.Type       { return TYPE.Fn }
 func (p *Promise) Hash() uint32 {
 	return hashutil.Ptr(uintptr(reflect.ValueOf(p).Pointer()))
 }
@@ -425,7 +425,7 @@ func (a *Agent) processLoop() {
 func (a *Agent) ToString(escape bool) string    { return "#object[Agent]" }
 func (a *Agent) Equals(other interface{}) bool  { return a == other }
 func (a *Agent) GetInfo() *coretypes.ObjectInfo { return nil }
-func (a *Agent) GetType() *Type                 { return TYPE.Fn }
+func (a *Agent) GetType() *coretypes.Type       { return TYPE.Fn }
 func (a *Agent) Hash() uint32 {
 	return hashutil.Ptr(uintptr(reflect.ValueOf(a).Pointer()))
 }

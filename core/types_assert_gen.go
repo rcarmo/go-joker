@@ -187,16 +187,16 @@ func EnsureArgIsCallable(args []Object, index int) Callable {
 	panic(FailArg(obj, "Callable", index))
 }
 
-func EnsureObjectIsType(obj Object, pattern string) *Type {
-	if c, yes := obj.(*Type); yes {
+func EnsureObjectIsType(obj Object, pattern string) *coretypes.Type {
+	if c, yes := obj.(*coretypes.Type); yes {
 		return c
 	}
 	panic(FailObject(obj, "Type", pattern))
 }
 
-func EnsureArgIsType(args []Object, index int) *Type {
+func EnsureArgIsType(args []Object, index int) *coretypes.Type {
 	obj := args[index]
-	if c, yes := obj.(*Type); yes {
+	if c, yes := obj.(*coretypes.Type); yes {
 		return c
 	}
 	panic(FailArg(obj, "Type", index))

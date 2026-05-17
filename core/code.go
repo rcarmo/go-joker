@@ -86,7 +86,7 @@ func (e *Env) AsGo() string {
 	panic("not GLOBAL_ENV")
 }
 
-func (t *Type) AsGo() string {
+func (t *coretypes.Type) AsGo() string {
 	return "ty_" + corestr.GoName(t.Name)
 }
 

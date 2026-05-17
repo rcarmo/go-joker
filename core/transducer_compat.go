@@ -43,7 +43,7 @@ type XForm struct {
 
 func (xf *XForm) ToString(escape bool) string   { return "#object[XForm]" }
 func (xf *XForm) Equals(other interface{}) bool { return xf == other }
-func (xf *XForm) GetType() *Type                { return TYPE.Fn }
+func (xf *XForm) GetType() *coretypes.Type      { return TYPE.Fn }
 func (xf *XForm) Hash() uint32                  { return hashutil.Ptr(uintptr(unsafe.Pointer(xf))) }
 func (xf *XForm) WithInfo(info *coretypes.ObjectInfo) Object {
 	res := *xf

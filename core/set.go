@@ -90,7 +90,7 @@ func (set *MapSet) Get(key Object) (bool, Object) {
 	return false, nil
 }
 
-func (seq *MapSet) GetType() *Type {
+func (seq *MapSet) GetType() *coretypes.Type {
 	return TYPE.MapSet
 }
 

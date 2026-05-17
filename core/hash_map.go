@@ -189,7 +189,7 @@ func (seq *ArrayNodeSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (s *ArrayNodeSeq) GetType() *Type {
+func (s *ArrayNodeSeq) GetType() *coretypes.Type {
 	return TYPE.ArrayNodeSeq
 }
 
@@ -282,7 +282,7 @@ func (seq *NodeSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (s *NodeSeq) GetType() *Type {
+func (s *NodeSeq) GetType() *coretypes.Type {
 	return TYPE.NodeSeq
 }
 
@@ -659,7 +659,7 @@ func (m *HashMap) Equals(other interface{}) bool {
 	return mapEquals(m, other)
 }
 
-func (m *HashMap) GetType() *Type {
+func (m *HashMap) GetType() *coretypes.Type {
 	return TYPE.HashMap
 }
 

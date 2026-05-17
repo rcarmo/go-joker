@@ -23,7 +23,7 @@ type ChunkBuffer struct {
 
 func (cb *ChunkBuffer) ToString(escape bool) string                { return "#object[ChunkBuffer]" }
 func (cb *ChunkBuffer) Equals(other interface{}) bool              { return cb == other }
-func (cb *ChunkBuffer) GetType() *Type                             { return TYPE.ArrayVector }
+func (cb *ChunkBuffer) GetType() *coretypes.Type                   { return TYPE.ArrayVector }
 func (cb *ChunkBuffer) Hash() uint32                               { return 0 }
 func (cb *ChunkBuffer) WithInfo(info *coretypes.ObjectInfo) Object { return cb }
 func (cb *ChunkBuffer) WithMeta(m Map) Object                      { return cb }
@@ -39,7 +39,7 @@ type ArrayChunk struct {
 
 func (ac *ArrayChunk) ToString(escape bool) string                { return "#object[ArrayChunk]" }
 func (ac *ArrayChunk) Equals(other interface{}) bool              { return ac == other }
-func (ac *ArrayChunk) GetType() *Type                             { return TYPE.ArrayVector }
+func (ac *ArrayChunk) GetType() *coretypes.Type                   { return TYPE.ArrayVector }
 func (ac *ArrayChunk) Hash() uint32                               { return 0 }
 func (ac *ArrayChunk) WithInfo(info *coretypes.ObjectInfo) Object { return ac }
 func (ac *ArrayChunk) WithMeta(m Map) Object                      { return ac }
@@ -70,7 +70,7 @@ type ChunkedCons struct {
 
 func (cc *ChunkedCons) ToString(escape bool) string   { return SeqToString(cc, escape) }
 func (cc *ChunkedCons) Equals(other interface{}) bool { return IsSeqEqual(cc, other) }
-func (cc *ChunkedCons) GetType() *Type                { return TYPE.LazySeq }
+func (cc *ChunkedCons) GetType() *coretypes.Type      { return TYPE.LazySeq }
 func (cc *ChunkedCons) Hash() uint32                  { return hashOrdered(cc) }
 func (cc *ChunkedCons) WithInfo(info *coretypes.ObjectInfo) Object {
 	res := *cc

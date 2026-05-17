@@ -47,8 +47,8 @@ func (p *Protocol) Equals(other interface{}) bool {
 	return false
 }
 
-func (p *Protocol) GetType() *Type { return TYPE.Fn }
-func (p *Protocol) Hash() uint32   { return hashutil.Ptr(uintptr(unsafe.Pointer(p))) }
+func (p *Protocol) GetType() *coretypes.Type { return TYPE.Fn }
+func (p *Protocol) Hash() uint32             { return hashutil.Ptr(uintptr(unsafe.Pointer(p))) }
 
 func (p *Protocol) WithInfo(info *coretypes.ObjectInfo) Object {
 	res := *p

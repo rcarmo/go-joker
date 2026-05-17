@@ -68,7 +68,7 @@ func (v *ArrayVector) Equals(other interface{}) bool {
 	}
 }
 
-func (v *ArrayVector) GetType() *Type {
+func (v *ArrayVector) GetType() *coretypes.Type {
 	return TYPE.ArrayVector
 }
 

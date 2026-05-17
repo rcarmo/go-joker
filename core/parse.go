@@ -15,7 +15,7 @@ import (
 type (
 	Expr interface {
 		Eval(env *LocalEnv) Object
-		InferType() *Type
+		InferType() *coretypes.Type
 		Pos() coretypes.Position
 		Dump(includePosition bool) Map
 		Pack(p []byte, env *PackEnv) []byte
@@ -89,7 +89,7 @@ type (
 		coretypes.Position
 		args       []Symbol
 		body       []Expr
-		taggedType *Type
+		taggedType *coretypes.Type
 	}
 	FnExpr struct {
 		coretypes.Position
@@ -112,7 +112,7 @@ type (
 	}
 	CatchExpr struct {
 		coretypes.Position
-		excType   *Type
+		excType   *coretypes.Type
 		excSymbol Symbol
 		body      []Expr
 	}
@@ -138,7 +138,7 @@ type (
 		index        int
 		frame        int
 		isUsed       bool
-		inferredType *Type
+		inferredType *coretypes.Type
 		value        Expr // the bound expression (for fn inlining)
 	}
 	Bindings struct {
@@ -412,7 +412,7 @@ func (b *Bindings) PopFrame() *Bindings {
 	return b.parent
 }
 
-func (b *Bindings) AddBinding(sym Symbol, index int, skipUnused bool, inferredType *Type) {
+func (b *Bindings) AddBinding(sym Symbol, index int, skipUnused bool, inferredType *coretypes.Type) {
 	if LINTER_MODE && !skipUnused {
 		old := b.bindings[sym.name]
 		if old != nil && needsUnusedWarning(old) {
@@ -655,7 +655,7 @@ func (err *ParseError) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (err *ParseError) GetType() *Type {
+func (err *ParseError) GetType() *coretypes.Type {
 	return TYPE.ParseError
 }
 
@@ -1023,12 +1023,12 @@ func isFinally(obj Object) bool {
 	return IsSeq(obj) && obj.(Seq).First().Equals(SYMBOLS.finally)
 }
 
-func resolveType(obj Object, ctx *ParseContext) *Type {
+func resolveType(obj Object, ctx *ParseContext) *coretypes.Type {
 	excType := Parse(obj, ctx)
 	switch excType := excType.(type) {
 	case *LiteralExpr:
 		switch t := excType.obj.(type) {
-		case *Type:
+		case *coretypes.Type:
 			return t
 		}
 	}
@@ -1171,7 +1171,7 @@ func parseLetLoop(obj Object, formName string, ctx *ParseContext) *LetExpr {
 					panic(&ParseError{obj: s, msg: "Unsupported binding form: " + sym.ToString(false)})
 				}
 			}
-			var inferredType *Type
+			var inferredType *coretypes.Type
 			if formName != "letfn" {
 				res.values[i] = Parse(b.At(i*2+1), ctx)
 				if LINTER_MODE {
@@ -1359,7 +1359,7 @@ func reportNotAFunction(pos coretypes.Position, name string) {
 	printParseWarning(pos, name+" is not a function")
 }
 
-func getTaggedType(obj Meta) *Type {
+func getTaggedType(obj Meta) *coretypes.Type {
 	if m := obj.GetMeta(); m != nil {
 		if ok, typeName := m.Get(KEYWORDS.tag); ok {
 			if typeSym, ok := typeName.(Symbol); ok {
@@ -1372,8 +1372,8 @@ func getTaggedType(obj Meta) *Type {
 	return nil
 }
 
-func getTaggedTypes(obj Meta) []*Type {
-	var res []*Type
+func getTaggedTypes(obj Meta) []*coretypes.Type {
+	var res []*coretypes.Type
 	if m := obj.GetMeta(); m != nil {
 		if ok, typeName := m.Get(KEYWORDS.tag); ok {
 			switch typeDecl := typeName.(type) {
@@ -1394,7 +1394,7 @@ func getTaggedTypes(obj Meta) []*Type {
 	return res
 }
 
-func isTypeOneOf(abstractTypes []*Type, concreteType *Type) bool {
+func isTypeOneOf(abstractTypes []*coretypes.Type, concreteType *coretypes.Type) bool {
 	for _, t := range abstractTypes {
 		if IsEqualOrImplements(t, concreteType) {
 			return true
@@ -1403,7 +1403,7 @@ func isTypeOneOf(abstractTypes []*Type, concreteType *Type) bool {
 	return false
 }
 
-func typesString(types []*Type) string {
+func typesString(types []*coretypes.Type) string {
 	var b bytes.Buffer
 	for i, t := range types {
 		b.WriteString(t.ToString(false))

@@ -26,7 +26,7 @@ func (r *Reduced) Equals(other interface{}) bool {
 	return false
 }
 
-func (r *Reduced) GetType() *Type {
+func (r *Reduced) GetType() *coretypes.Type {
 	return TYPE.Fn // reuse Fn type slot for now
 }
 

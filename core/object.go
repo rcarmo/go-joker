@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert Comparable Vec Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Reduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel CountedIndexed
+//go:generate go run gen/gen_types.go assert Comparable Vec Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *coretypes.Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Reduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel CountedIndexed
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
 //go:generate go run -tags gen_code gen/codegen/main.go
 
@@ -30,7 +30,7 @@ type (
 	Type   = coretypes.Type
 	Object interface {
 		coretypes.Object
-		GetType() *Type
+		GetType() *coretypes.Type
 	}
 	Conjable interface {
 		Object
@@ -131,7 +131,7 @@ type (
 		isUsed         bool
 		isGloballyUsed bool
 		isFake         bool
-		taggedType     *Type
+		taggedType     *coretypes.Type
 	}
 	ProcFn func([]Object) Object
 	Proc   struct {
@@ -356,7 +356,7 @@ func (a *Atom) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (a *Atom) GetType() *Type {
+func (a *Atom) GetType() *coretypes.Type {
 	return TYPE.Atom
 }
 
@@ -404,7 +404,7 @@ func (d *Delay) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (d *Delay) GetType() *Type {
+func (d *Delay) GetType() *coretypes.Type {
 	return TYPE.Delay
 }
 
@@ -448,7 +448,7 @@ func (rb RecurBindings) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (rb RecurBindings) GetType() *Type {
+func (rb RecurBindings) GetType() *coretypes.Type {
 	return TYPE.RecurBindings
 }
 
@@ -464,7 +464,7 @@ func (exInfo *ExInfo) Equals(other interface{}) bool {
 	return exInfo == other
 }
 
-func (exInfo *ExInfo) GetType() *Type {
+func (exInfo *ExInfo) GetType() *coretypes.Type {
 	return TYPE.ExInfo
 }
 
@@ -519,7 +519,7 @@ func (fn *Fn) WithMeta(meta Map) Object {
 	return &res
 }
 
-func (fn *Fn) GetType() *Type {
+func (fn *Fn) GetType() *coretypes.Type {
 	return TYPE.Fn
 }
 
@@ -731,7 +731,7 @@ func (p Proc) WithInfo(*coretypes.ObjectInfo) Object {
 	return p
 }
 
-func (p Proc) GetType() *Type {
+func (p Proc) GetType() *coretypes.Type {
 	return TYPE.Proc
 }
 
@@ -787,7 +787,7 @@ func (v *Var) AlterMeta(fn *Fn, args []Object) Map {
 	return AlterMeta(&v.MetaHolder, fn, args)
 }
 
-func (v *Var) GetType() *Type {
+func (v *Var) GetType() *coretypes.Type {
 	return TYPE.Var
 }
 
@@ -828,7 +828,7 @@ func (n Nil) Equals(other interface{}) bool {
 	}
 }
 
-func (n Nil) GetType() *Type {
+func (n Nil) GetType() *coretypes.Type {
 	return TYPE.Nil
 }
 
@@ -908,7 +908,7 @@ func (rat *Ratio) Equals(other interface{}) bool {
 	return equalsNumbers(rat, other)
 }
 
-func (rat *Ratio) GetType() *Type {
+func (rat *Ratio) GetType() *coretypes.Type {
 	return TYPE.Ratio
 }
 
@@ -961,7 +961,7 @@ func (bi *BigInt) Equals(other interface{}) bool {
 	return equalsNumbers(bi, other)
 }
 
-func (bi *BigInt) GetType() *Type {
+func (bi *BigInt) GetType() *coretypes.Type {
 	return TYPE.BigInt
 }
 
@@ -1010,7 +1010,7 @@ func (bf *BigFloat) Equals(other interface{}) bool {
 	return equalsNumbers(bf, other)
 }
 
-func (bf *BigFloat) GetType() *Type {
+func (bf *BigFloat) GetType() *coretypes.Type {
 	return TYPE.BigFloat
 }
 
@@ -1073,7 +1073,7 @@ func (c Char) Equals(other interface{}) bool {
 	}
 }
 
-func (c Char) GetType() *Type {
+func (c Char) GetType() *coretypes.Type {
 	return TYPE.Char
 }
 
@@ -1134,7 +1134,7 @@ func (d Double) Equals(other interface{}) bool {
 	return equalsNumbers(d, other)
 }
 
-func (d Double) GetType() *Type {
+func (d Double) GetType() *coretypes.Type {
 	return TYPE.Double
 }
 
@@ -1180,7 +1180,7 @@ func (i Int) Equals(other interface{}) bool {
 	return equalsNumbers(i, other)
 }
 
-func (i Int) GetType() *Type {
+func (i Int) GetType() *coretypes.Type {
 	return TYPE.Int
 }
 
@@ -1213,7 +1213,7 @@ func (b Boolean) Equals(other interface{}) bool {
 	}
 }
 
-func (b Boolean) GetType() *Type {
+func (b Boolean) GetType() *coretypes.Type {
 	return TYPE.Boolean
 }
 
@@ -1257,7 +1257,7 @@ func (t Time) Equals(other interface{}) bool {
 	}
 }
 
-func (t Time) GetType() *Type {
+func (t Time) GetType() *coretypes.Type {
 	return TYPE.Time
 }
 
@@ -1307,7 +1307,7 @@ func (k Keyword) Equals(other interface{}) bool {
 	}
 }
 
-func (k Keyword) GetType() *Type {
+func (k Keyword) GetType() *coretypes.Type {
 	return TYPE.Keyword
 }
 
@@ -1348,7 +1348,7 @@ func (rx *Regex) Equals(other interface{}) bool {
 	}
 }
 
-func (rx *Regex) GetType() *Type {
+func (rx *Regex) GetType() *coretypes.Type {
 	return TYPE.Regex
 }
 
@@ -1383,7 +1383,7 @@ func (s Symbol) Equals(other interface{}) bool {
 	}
 }
 
-func (s Symbol) GetType() *Type {
+func (s Symbol) GetType() *coretypes.Type {
 	return TYPE.Symbol
 }
 
@@ -1408,7 +1408,7 @@ func (c Comment) Equals(other interface{}) bool {
 	return false
 }
 
-func (c Comment) GetType() *Type {
+func (c Comment) GetType() *coretypes.Type {
 	// Comments don't deserve their own type
 	// since they are only used in FORMAT mode.
 	return TYPE.String
@@ -1457,7 +1457,7 @@ func (s String) Equals(other interface{}) bool {
 	}
 }
 
-func (s String) GetType() *Type {
+func (s String) GetType() *coretypes.Type {
 	return TYPE.String
 }
 
@@ -1519,7 +1519,7 @@ func (seq *stringSeq) ToString(escape bool) string {
 
 func (seq *stringSeq) GetInfo() *coretypes.ObjectInfo             { return nil }
 func (seq *stringSeq) WithInfo(info *coretypes.ObjectInfo) Object { return seq }
-func (seq *stringSeq) GetType() *Type                             { return TYPE.StringSeq }
+func (seq *stringSeq) GetType() *coretypes.Type                   { return TYPE.StringSeq }
 func (seq *stringSeq) Hash() uint32                               { return hashOrdered(seq) }
 func (seq *stringSeq) WithMeta(meta Map) Object {
 	// stringSeq has no meta; return as-is like other minimal seqs
@@ -1633,7 +1633,7 @@ func (x RecurBindings) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 
-func IsEqualOrImplements(abstractType *Type, concreteType *Type) bool {
+func IsEqualOrImplements(abstractType *coretypes.Type, concreteType *coretypes.Type) bool {
 	if abstractType.ReflectType.Kind() == reflect.Interface {
 		return concreteType.ReflectType.Implements(abstractType.ReflectType)
 	} else {
@@ -1641,7 +1641,7 @@ func IsEqualOrImplements(abstractType *Type, concreteType *Type) bool {
 	}
 }
 
-func IsInstance(t *Type, obj Object) bool {
+func IsInstance(t *coretypes.Type, obj Object) bool {
 	if obj.Equals(NIL) {
 		return false
 	}
@@ -1678,7 +1678,7 @@ func MakeMeta(arglists Seq, docstring string, added string) *ArrayMap {
 	return res
 }
 
-func RegRefType(name string, inst interface{}, doc string) *Type {
+func RegRefType(name string, inst interface{}, doc string) *coretypes.Type {
 	if doc != "" {
 		doc = "\n  " + doc
 	}
@@ -1689,7 +1689,7 @@ func RegRefType(name string, inst interface{}, doc string) *Type {
 	return t
 }
 
-func RegType(name string, inst interface{}, doc string) *Type {
+func RegType(name string, inst interface{}, doc string) *coretypes.Type {
 	if doc != "" {
 		doc = "\n  " + doc
 	}
@@ -1700,7 +1700,7 @@ func RegType(name string, inst interface{}, doc string) *Type {
 	return t
 }
 
-func RegInterface(name string, inst interface{}, doc string) *Type {
+func RegInterface(name string, inst interface{}, doc string) *coretypes.Type {
 	if doc != "" {
 		doc = "\n  " + doc
 	}

@@ -94,7 +94,7 @@ func (r *Record) Equals(other interface{}) bool {
 	return r.ext.Equals(o.ext)
 }
 
-func (r *Record) GetType() *Type { return TYPE.ArrayMap }
+func (r *Record) GetType() *coretypes.Type { return TYPE.ArrayMap }
 func (r *Record) Hash() uint32 {
 	h := uint32(0x9e3779b9)
 	for _, v := range r.bases {

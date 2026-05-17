@@ -315,12 +315,12 @@ func unpackSymbol(p []byte, header *PackHeader) (Symbol, []byte) {
 	return res, p
 }
 
-func packType(t *Type, p []byte, env *PackEnv) []byte {
+func packType(t *coretypes.Type, p []byte, env *PackEnv) []byte {
 	s := MakeSymbol(t.Name)
 	return s.Pack(p, env)
 }
 
-func unpackType(p []byte, header *PackHeader) (*Type, []byte) {
+func unpackType(p []byte, header *PackHeader) (*coretypes.Type, []byte) {
 	s, p := unpackSymbol(p, header)
 	return TYPES[s.name], p
 }
@@ -334,7 +334,7 @@ func packObject(obj Object, p []byte, env *PackEnv) []byte {
 		p = append(p, VAR_OBJ)
 		p = obj.Pack(p, env)
 		return p
-	case *Type:
+	case *coretypes.Type:
 		p = append(p, TYPE_OBJ)
 		p = packType(obj, p, env)
 		return p
@@ -726,7 +726,7 @@ func unpackFnArityExpr(p []byte, header *PackHeader) (*FnArityExpr, []byte) {
 	pos, p := unpackPosition(p, header)
 	args, p := unpackSymbolSeq(p, header)
 	body, p := unpackSeq(p, header)
-	var taggedType *Type
+	var taggedType *coretypes.Type
 	if p[0] == NULL {
 		p = p[1:]
 	} else {

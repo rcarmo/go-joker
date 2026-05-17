@@ -70,7 +70,7 @@ func (seq *ArrayMapSeq) WithMeta(meta Map) Object {
 	return &res
 }
 
-func (seq *ArrayMapSeq) GetType() *Type {
+func (seq *ArrayMapSeq) GetType() *coretypes.Type {
 	return TYPE.ArrayMapSeq
 }
 
@@ -293,7 +293,7 @@ func (m *ArrayMap) Equals(other interface{}) bool {
 	return mapEquals(m, other)
 }
 
-func (m *ArrayMap) GetType() *Type {
+func (m *ArrayMap) GetType() *coretypes.Type {
 	return TYPE.ArrayMap
 }
 

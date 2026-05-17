@@ -41,7 +41,7 @@ func (ns *Namespace) WithInfo(info *coretypes.ObjectInfo) Object {
 	return ns
 }
 
-func (ns *Namespace) GetType() *Type {
+func (ns *Namespace) GetType() *coretypes.Type {
 	return TYPE.Namespace
 }
 
