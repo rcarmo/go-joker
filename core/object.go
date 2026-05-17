@@ -23,7 +23,6 @@ import (
 type (
 	Object interface {
 		coretypes.Object
-		GetType() *coretypes.Type
 	}
 	Conjable interface {
 		Object
