@@ -88,6 +88,24 @@ Safe next steps:
 - Keep `core/wasm` for neutral helpers only.
 - Do not move host/runtime execution until typed/object conversion is behind a stable runtime adapter.
 
+### Channel/concurrency mechanics
+
+Files:
+
+- `channel.go`
+- `concurrency_ext.go`
+
+Current state:
+
+- Generic close-state, send, and receive mechanics now live in `core/runtime.Channel[T]` with package-local tests.
+- Root `core.Channel` wraps `runtime.Channel[FutureResult]`, preserving `Object`, `Error`, type/hash, proc registration, and `alts!` reflection integration in root.
+- Core send/receive/go procs now call root `Channel` methods instead of writing to the raw channel directly.
+
+Safe next steps:
+
+- Keep `alts!` root-bound until Object/vector/result construction seams are explicit.
+- Avoid exposing raw runtime channels except for reflection-select integration that cannot currently be moved without root Object semantics.
+
 ### Environment, frames, and parse/eval handoff
 
 Files:

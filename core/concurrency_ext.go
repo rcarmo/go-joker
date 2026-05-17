@@ -264,7 +264,7 @@ func procAlts(args []Object) Object {
 			// Take operation.
 			cases = append(cases, reflect.SelectCase{
 				Dir:  reflect.SelectRecv,
-				Chan: reflect.ValueOf(v.ch),
+				Chan: reflect.ValueOf(v.raw()),
 			})
 			infos = append(infos, portInfo{ch: v, isPut: false})
 		default:
@@ -278,7 +278,7 @@ func procAlts(args []Object) Object {
 				val := ci.At(1)
 				cases = append(cases, reflect.SelectCase{
 					Dir:  reflect.SelectSend,
-					Chan: reflect.ValueOf(ch.ch),
+					Chan: reflect.ValueOf(ch.raw()),
 					Send: reflect.ValueOf(MakeFutureResult(val, nil)),
 				})
 				infos = append(infos, portInfo{ch: ch, isPut: true})

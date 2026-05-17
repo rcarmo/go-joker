@@ -1,6 +1,6 @@
 # Runtime execution metadata contract
 
-Updated: 2026-05-14
+Updated: 2026-05-17
 
 ## Purpose
 
@@ -25,14 +25,14 @@ These fields are not pure IR shape. Moving them into `core/ir` would leak root r
 
 ## Runtime/channel concurrency contract
 
-The root channel runtime remains in `core` until runtime boundaries are explicit. Its current contract is:
+Generic channel close/send/receive mechanics now live in `core/runtime.Channel[T]`. Root `core.Channel` wraps `Channel[FutureResult]` so root keeps `Object`, `Error`, hashing, type, proc, and `alts!` integration while runtime owns the root-independent concurrency mechanics. Its current contract is:
 
 - `Channel.Close()` is idempotent and safe under concurrent callers.
-- `Channel.IsClosed()` is the only supported closed-state accessor; callers must not read internal fields directly.
+- `Channel.IsClosed()` is the only supported closed-state accessor; callers must not read runtime fields directly.
 - Sending after close returns false rather than panicking.
 - Receiving from a closed channel returns `NIL` with `ChannelReceiveClosed`.
 
-`channel_contract_test.go` guards the concurrent close/idempotency behavior. This matters for future runtime extraction because async helpers, `alts!`, and core send/receive procs must all share the same close-state semantics.
+`channel_contract_test.go` and `core/runtime/channel_test.go` guard the concurrent close/idempotency behavior. This matters for future runtime extraction because async helpers, `alts!`, and core send/receive procs must all share the same close-state semantics.
 
 ## Required execution boundary
 

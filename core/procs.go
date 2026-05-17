@@ -1815,21 +1815,14 @@ var procSend = func(args []Object) (obj Object) {
 	if ch.IsClosed() {
 		return MakeBoolean(false)
 	}
-	obj = MakeBoolean(true)
-	defer func() {
-		if r := recover(); r != nil {
-			obj = MakeBoolean(false)
-		}
-	}()
-	ch.ch <- MakeFutureResult(v, nil)
-	return
+	return MakeBoolean(ch.Send(v))
 }
 
 var procReceive = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	ch := EnsureArgIsChannel(args, 0)
-	res, ok := <-ch.ch
-	if !ok {
+	res, status := ch.runtime.Receive(nil)
+	if status == ChannelReceiveClosed {
 		return NIL
 	}
 	if res.err != nil {
@@ -1850,7 +1843,7 @@ var procGo = func(args []Object) Object {
 			if r := recover(); r != nil {
 				switch r := r.(type) {
 				case Error:
-					ch.ch <- MakeFutureResult(NIL, r)
+					ch.SendResult(MakeFutureResult(NIL, r))
 					ch.Close()
 				default:
 					panic(r)
@@ -1859,7 +1852,7 @@ var procGo = func(args []Object) Object {
 		}()
 
 		res := call0(f)
-		ch.ch <- MakeFutureResult(res, nil)
+		ch.SendResult(MakeFutureResult(res, nil))
 		ch.Close()
 	}()
 	return ch

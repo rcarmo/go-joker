@@ -1,31 +1,29 @@
 package core
 
 import (
-	"sync"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 )
 
 type (
-	ChannelReceiveStatus int
+	ChannelReceiveStatus = corert.ChannelReceiveStatus
 
 	FutureResult struct {
 		value Object
 		err   Error
 	}
 	Channel struct {
-		ch       chan FutureResult
-		closeMu  sync.Mutex
-		isClosed bool
-		hash     uint32
+		runtime *corert.Channel[FutureResult]
+		hash    uint32
 	}
 )
 
 const (
-	ChannelReceiveValue ChannelReceiveStatus = iota
-	ChannelReceiveClosed
-	ChannelReceiveDone
+	ChannelReceiveValue  = corert.ChannelReceiveValue
+	ChannelReceiveClosed = corert.ChannelReceiveClosed
+	ChannelReceiveDone   = corert.ChannelReceiveDone
 )
 
 func MakeFutureResult(value Object, err Error) FutureResult {
@@ -57,7 +55,7 @@ func (ch *Channel) WithInfo(info *ObjectInfo) Object {
 }
 
 func MakeChannel(ch chan FutureResult) *Channel {
-	res := &Channel{ch: ch, hash: 0}
+	res := &Channel{runtime: corert.NewChannel(ch), hash: 0}
 	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(res)))
 	return res
 }
@@ -67,50 +65,29 @@ func ExtractChannel(args []Object, index int) *Channel {
 }
 
 func (ch *Channel) Close() {
-	ch.closeMu.Lock()
-	defer ch.closeMu.Unlock()
-	if ch.isClosed {
-		return
-	}
-	ch.isClosed = true
-	close(ch.ch)
+	ch.runtime.Close()
 }
 
 func (ch *Channel) IsClosed() bool {
-	ch.closeMu.Lock()
-	defer ch.closeMu.Unlock()
-	return ch.isClosed
+	return ch.runtime.IsClosed()
 }
 
-func (ch *Channel) Send(value Object) (ok bool) {
-	if ch.IsClosed() {
-		return false
-	}
-	ok = true
-	defer func() {
-		if r := recover(); r != nil {
-			ok = false
-		}
-	}()
-	ch.ch <- MakeFutureResult(value, nil)
-	return
+func (ch *Channel) raw() chan FutureResult {
+	return ch.runtime.Raw()
+}
+
+func (ch *Channel) Send(value Object) bool {
+	return ch.SendResult(MakeFutureResult(value, nil))
+}
+
+func (ch *Channel) SendResult(result FutureResult) bool {
+	return ch.runtime.Send(result)
 }
 
 func (ch *Channel) Receive(done <-chan struct{}) (Object, ChannelReceiveStatus, Error) {
-	if done == nil {
-		res, ok := <-ch.ch
-		if !ok {
-			return NIL, ChannelReceiveClosed, nil
-		}
-		return res.value, ChannelReceiveValue, res.err
+	res, status := ch.runtime.Receive(done)
+	if status != ChannelReceiveValue {
+		return NIL, status, nil
 	}
-	select {
-	case res, ok := <-ch.ch:
-		if !ok {
-			return NIL, ChannelReceiveClosed, nil
-		}
-		return res.value, ChannelReceiveValue, res.err
-	case <-done:
-		return NIL, ChannelReceiveDone, nil
-	}
+	return res.value, status, res.err
 }
