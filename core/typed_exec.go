@@ -526,18 +526,11 @@ func irExecTyped(prog *IRProgram, initSlots []Object) Object {
 				stack = append(stack, coll)
 			} else {
 				// General assoc path for Object types (vector of doubles, etc.)
-				collObj := coll.object()
-				keyObj := key.object()
-				valObj := val.object()
-				if tv, ok := collObj.(*TransientVector); ok {
-					result := tv.AssocInPlace(keyObj, valObj)
-					stack = append(stack, objectToIRValue(result))
-				} else if assocable, ok := collObj.(Associative); ok {
-					result := assocable.Assoc(keyObj, valObj)
-					stack = append(stack, objectToIRValue(result))
-				} else {
+				result, ok := runtimeExec.Assoc(coll.object(), key.object(), val.object())
+				if !ok {
 					return nil
 				}
+				stack = append(stack, objectToIRValue(result))
 			}
 		case irNth:
 			idx := stack[len(stack)-1]
