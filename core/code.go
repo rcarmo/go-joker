@@ -7,6 +7,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"reflect"
 
 	corestr "github.com/rcarmo/go-joker/core/string"
@@ -27,12 +28,12 @@ func positionAsGo(filename *string, startLine, startColumn, endLine, endColumn i
 	return fmt.Sprintf("%s%d_%d__%d_%d", name, startLine, startColumn, endLine, endColumn)
 }
 
-func isPositionNil(p Position) bool {
-	return p.endLine == 0 && p.endColumn == 0 && p.startLine == 0 && p.startColumn == 0 && (p.filename == nil || *p.filename == "")
+func isPositionNil(p coretypes.Position) bool {
+	return p.EndLine == 0 && p.EndColumn == 0 && p.StartLine == 0 && p.StartColumn == 0 && (p.Filename == nil || *p.Filename == "")
 }
 
-func isObjectInfoNil(p *ObjectInfo) bool {
-	return p == nil || (p.endLine == 0 && p.endColumn == 0 && p.startLine == 0 && p.startColumn == 0 && (p.filename == nil || *p.filename == ""))
+func isObjectInfoNil(p *coretypes.ObjectInfo) bool {
+	return p == nil || (p.EndLine == 0 && p.EndColumn == 0 && p.StartLine == 0 && p.StartColumn == 0 && (p.Filename == nil || *p.Filename == ""))
 }
 
 func symAsGo(sym Symbol) string {
@@ -46,8 +47,8 @@ func symAsGo(sym Symbol) string {
 func (sym Symbol) AsGo() string {
 	name := symAsGo(sym)
 	pos := ""
-	if f := sym.info; !isObjectInfoNil(f) {
-		pos = fmt.Sprintf("_POS_%s", positionAsGo(f.filename, f.startLine, f.startColumn, f.endLine, f.endColumn))
+	if f := sym.Info; !isObjectInfoNil(f) {
+		pos = fmt.Sprintf("_POS_%s", positionAsGo(f.Filename, f.StartLine, f.StartColumn, f.EndLine, f.EndColumn))
 	}
 	return "symbol_" + name + pos
 }
@@ -57,13 +58,13 @@ func fnExprAsGo(f *FnExpr) string {
 }
 
 func (f *FnExpr) AsGo() string {
-	name := fmt.Sprintf("fnExpr_POS_%s", positionAsGo(f.filename, f.startLine, f.startColumn, f.endLine, f.endColumn))
+	name := fmt.Sprintf("fnExpr_POS_%s", positionAsGo(f.Filename, f.StartLine, f.StartColumn, f.EndLine, f.EndColumn))
 	return fmt.Sprintf("%s_NUM_%d", name, ordinalForObj(name, f))
 }
 
 func (fn *Fn) AsGo() string {
 	if f := fn.fnExpr; f != nil {
-		baseName := fmt.Sprintf("fn_%s_POS_%s", fnExprAsGo(f), positionAsGo(f.filename, f.startLine, f.startColumn, f.endLine, f.endColumn))
+		baseName := fmt.Sprintf("fn_%s_POS_%s", fnExprAsGo(f), positionAsGo(f.Filename, f.StartLine, f.StartColumn, f.EndLine, f.EndColumn))
 		return fmt.Sprintf("%s_NUM_%d", baseName, ordinalForObj(baseName, fn))
 	}
 	panic("(*Fn)Asgo(): fn.fnExpr == nil")
@@ -71,8 +72,8 @@ func (fn *Fn) AsGo() string {
 
 func (ns *Namespace) AsGo() string {
 	file := ""
-	if ns.Name.info != nil && ns.Name.info.filename != nil && *ns.Name.info.filename != *ns.Name.name && corestr.FilenameUnbracketed(*ns.Name.info.filename) != *ns.Name.name {
-		file = "_FILE_" + corestr.GoName(*ns.Name.info.filename)
+	if ns.Name.Info != nil && ns.Name.Info.Filename != nil && *ns.Name.Info.Filename != *ns.Name.name && corestr.FilenameUnbracketed(*ns.Name.Info.Filename) != *ns.Name.name {
+		file = "_FILE_" + corestr.GoName(*ns.Name.Info.Filename)
 	}
 	return "ns_" + corestr.GoName(*ns.Name.name) + file
 }
@@ -98,17 +99,17 @@ func (kw Keyword) AsGo() string {
 		panic("empty keyword")
 	}
 	pos := ""
-	if f := kw.info; f != nil {
-		pos = fmt.Sprintf("_POS_%s", positionAsGo(f.filename, f.startLine, f.startColumn, f.endLine, f.endColumn))
+	if f := kw.Info; f != nil {
+		pos = fmt.Sprintf("_POS_%s", positionAsGo(f.Filename, f.StartLine, f.StartColumn, f.EndLine, f.EndColumn))
 	}
 	return "kw_" + name + pos
 }
 
-func (oi *ObjectInfo) AsGo() string {
+func (oi *coretypes.ObjectInfo) AsGo() string {
 	if res, ok := infoHolderAsGoName(*oi); ok {
 		return "objectInfo_" + res
 	}
-	panic("could not make useful name out of ObjectInfo")
+	panic("could not make useful name out of coretypes.ObjectInfo")
 }
 
 func (v *Var) AsGo() string {
@@ -122,19 +123,19 @@ func (v *Var) AsGo() string {
 			panic(msg)
 		}
 		if sym.ns == nil {
-			i := v.ns.Name.info
-			if i == nil || i.filename == nil || corestr.FilenameUnbracketed(*i.filename) != *v.ns.Name.name {
+			i := v.ns.Name.Info
+			if i == nil || i.Filename == nil || corestr.FilenameUnbracketed(*i.Filename) != *v.ns.Name.name {
 				ns = "_NS_" + corestr.GoName(*v.ns.Name.name)
 			}
 		}
 	}
 	pos := ""
-	f := v.info
+	f := v.Info
 	if f == nil {
-		f = sym.info
+		f = sym.Info
 	}
 	if f != nil {
-		pos = fmt.Sprintf("_POS_%s", positionAsGo(f.filename, f.startLine, f.startColumn, f.endLine, f.endColumn))
+		pos = fmt.Sprintf("_POS_%s", positionAsGo(f.Filename, f.StartLine, f.StartColumn, f.EndLine, f.EndColumn))
 	}
 	return "var" + ns + "_NAME_" + name + pos
 }
@@ -144,7 +145,7 @@ func (v *VarRefExpr) AsGo() string {
 	if res, ok := infoHolderAsGoName(*v); ok {
 		return "varRef_" + corestr.GoName(s) + "_" + res
 	}
-	return fmt.Sprintf("%s_%d_%d", corestr.VarRefExprName(s), v.startLine, v.startColumn)
+	return fmt.Sprintf("%s_%d_%d", corestr.VarRefExprName(s), v.StartLine, v.StartColumn)
 }
 
 // Returns typename of object as it should be represented in package
@@ -166,12 +167,12 @@ func infoHolderAsGoName(obj interface{}) (string, bool) {
 		return "", false
 	}
 	vt := v.Type()
-	sf, yes := vt.FieldByName("InfoHolder")
+	sf, yes := vt.FieldByName("coretypes.InfoHolder")
 	if yes {
 		if !sf.Anonymous {
 			return "", false
 		}
-		v = v.FieldByName("InfoHolder")
+		v = v.FieldByName("coretypes.InfoHolder")
 		vt = v.Type()
 		if vt.Kind() != reflect.Struct {
 			return "", false
@@ -191,11 +192,11 @@ func infoHolderAsGoName(obj interface{}) (string, bool) {
 		v = v.Elem()
 		vt = v.Type()
 	}
-	sf, yes = vt.FieldByName("Position")
+	sf, yes = vt.FieldByName("coretypes.Position")
 	if !yes || !sf.Anonymous {
 		return "", false
 	}
-	v = v.FieldByName("Position")
+	v = v.FieldByName("coretypes.Position")
 	vt = v.Type()
 	if vt.Kind() != reflect.Struct {
 		return "", false
@@ -204,7 +205,7 @@ func infoHolderAsGoName(obj interface{}) (string, bool) {
 	if !yes || sf.Anonymous {
 		return "", false
 	}
-	filename := ""
+	Filename := ""
 	filenamePtr := gen_go.UnsafeReflectValue(v.FieldByName("filename"))
 	if !(filenamePtr.IsZero() || filenamePtr.IsNil()) {
 		filename = filenameAsGo(filenamePtr.Elem().Interface().(string))
@@ -212,10 +213,10 @@ func infoHolderAsGoName(obj interface{}) (string, bool) {
 			filename = filename + "_"
 		}
 	}
-	startLine := gen_go.UnsafeReflectValue(v.FieldByName("startLine")).Interface().(int)
-	startColumn := gen_go.UnsafeReflectValue(v.FieldByName("startColumn")).Interface().(int)
-	endLine := gen_go.UnsafeReflectValue(v.FieldByName("endLine")).Interface().(int)
-	endColumn := gen_go.UnsafeReflectValue(v.FieldByName("endColumn")).Interface().(int)
+	StartLine := gen_go.UnsafeReflectValue(v.FieldByName("startLine")).Interface().(int)
+	StartColumn := gen_go.UnsafeReflectValue(v.FieldByName("startColumn")).Interface().(int)
+	EndLine := gen_go.UnsafeReflectValue(v.FieldByName("endLine")).Interface().(int)
+	EndColumn := gen_go.UnsafeReflectValue(v.FieldByName("endColumn")).Interface().(int)
 	return "POS_" + positionAsGo(&filename, startLine, startColumn, endLine, endColumn), true
 }
 

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	corestr "github.com/rcarmo/go-joker/core/string"
@@ -32,11 +33,11 @@ func (ns *Namespace) Equals(other interface{}) bool {
 	return ns == other
 }
 
-func (ns *Namespace) GetInfo() *ObjectInfo {
+func (ns *Namespace) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (ns *Namespace) WithInfo(info *ObjectInfo) Object {
+func (ns *Namespace) WithInfo(info *coretypes.ObjectInfo) Object {
 	return ns
 }
 

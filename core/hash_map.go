@@ -1,6 +1,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	corecollections "github.com/rcarmo/go-joker/core/collections"
@@ -18,7 +19,7 @@ type (
 		iter() MapIterator
 	}
 	HashMap struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		count int
 		root  Node
@@ -37,14 +38,14 @@ type (
 		array []Node
 	}
 	NodeSeq struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		array []interface{}
 		i     int
 		s     Seq
 	}
 	ArrayNodeSeq struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		nodes []Node
 		i     int

@@ -2,6 +2,7 @@ package core
 
 import (
 	corestr "github.com/rcarmo/go-joker/core/string"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"sync"
 )
 
@@ -398,24 +399,28 @@ func evalRangeArgs(args []Expr, env *LocalEnv) (start, end, step int, ok bool) {
 // seq_ops_fast.go — Fast map/filter/take seq wrappers for reducible pipelines.
 
 type FilteringSeq struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	seq  Seq
 	pred Callable
 }
 
 type TakeSeq struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	seq Seq
 	n   int
 }
 
-func (s *FilteringSeq) ToString(escape bool) string      { return SeqToString(s, escape) }
-func (s *FilteringSeq) Equals(other interface{}) bool    { return IsSeqEqual(s, other) }
-func (s *FilteringSeq) WithInfo(info *ObjectInfo) Object { res := *s; res.info = info; return &res }
-func (s *FilteringSeq) GetType() *Type                   { return TYPE.LazySeq }
-func (s *FilteringSeq) Hash() uint32                     { return hashOrdered(s) }
+func (s *FilteringSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
+func (s *FilteringSeq) Equals(other interface{}) bool { return IsSeqEqual(s, other) }
+func (s *FilteringSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	res := *s
+	res.Info = info
+	return &res
+}
+func (s *FilteringSeq) GetType() *Type { return TYPE.LazySeq }
+func (s *FilteringSeq) Hash() uint32   { return hashOrdered(s) }
 func (s *FilteringSeq) WithMeta(m Map) Object {
 	res := *s
 	res.meta = SafeMerge(res.meta, m)
@@ -485,16 +490,20 @@ func (s *FilteringSeq) reduceInit(f Callable, init Object) Object {
 	return acc
 }
 
-func (s *TakeSeq) ToString(escape bool) string      { return SeqToString(s, escape) }
-func (s *TakeSeq) Equals(other interface{}) bool    { return IsSeqEqual(s, other) }
-func (s *TakeSeq) WithInfo(info *ObjectInfo) Object { res := *s; res.info = info; return &res }
-func (s *TakeSeq) GetType() *Type                   { return TYPE.LazySeq }
-func (s *TakeSeq) Hash() uint32                     { return hashOrdered(s) }
-func (s *TakeSeq) WithMeta(m Map) Object            { res := *s; res.meta = SafeMerge(res.meta, m); return &res }
-func (s *TakeSeq) Seq() Seq                         { return s }
-func (s *TakeSeq) sequential()                      {}
-func (s *TakeSeq) IsEmpty() bool                    { return s.n <= 0 || s.seq.IsEmpty() }
-func (s *TakeSeq) First() Object                    { return s.seq.First() }
+func (s *TakeSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
+func (s *TakeSeq) Equals(other interface{}) bool { return IsSeqEqual(s, other) }
+func (s *TakeSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	res := *s
+	res.Info = info
+	return &res
+}
+func (s *TakeSeq) GetType() *Type        { return TYPE.LazySeq }
+func (s *TakeSeq) Hash() uint32          { return hashOrdered(s) }
+func (s *TakeSeq) WithMeta(m Map) Object { res := *s; res.meta = SafeMerge(res.meta, m); return &res }
+func (s *TakeSeq) Seq() Seq              { return s }
+func (s *TakeSeq) sequential()           {}
+func (s *TakeSeq) IsEmpty() bool         { return s.n <= 0 || s.seq.IsEmpty() }
+func (s *TakeSeq) First() Object         { return s.seq.First() }
 func (s *TakeSeq) Rest() Seq {
 	if s.n <= 1 {
 		return EmptyList
@@ -732,7 +741,7 @@ var hotReducerFnCache sync.Map // *Fn -> reducer proc name string
 
 // IntRange represents a range of integers [start, end) with step.
 type IntRange struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	start, end, step int
 }
@@ -741,13 +750,13 @@ func NewIntRange(start, end, step int) *IntRange {
 	return &IntRange{start: start, end: end, step: step}
 }
 
-func (r *IntRange) ToString(escape bool) string   { return SeqToString(r.Seq(), escape) }
-func (r *IntRange) Equals(other interface{}) bool { return IsSeqEqual(r.Seq(), other) }
-func (r *IntRange) WithInfo(i *ObjectInfo) Object { res := *r; res.info = i; return &res }
-func (r *IntRange) GetType() *Type                { return TYPE.LazySeq }
-func (r *IntRange) Hash() uint32                  { return hashOrdered(r.Seq()) }
-func (r *IntRange) WithMeta(m Map) Object         { res := *r; res.meta = SafeMerge(res.meta, m); return &res }
-func (r *IntRange) sequential()                   {}
+func (r *IntRange) ToString(escape bool) string             { return SeqToString(r.Seq(), escape) }
+func (r *IntRange) Equals(other interface{}) bool           { return IsSeqEqual(r.Seq(), other) }
+func (r *IntRange) WithInfo(i *coretypes.ObjectInfo) Object { res := *r; res.Info = i; return &res }
+func (r *IntRange) GetType() *Type                          { return TYPE.LazySeq }
+func (r *IntRange) Hash() uint32                            { return hashOrdered(r.Seq()) }
+func (r *IntRange) WithMeta(m Map) Object                   { res := *r; res.meta = SafeMerge(res.meta, m); return &res }
+func (r *IntRange) sequential()                             {}
 
 func (r *IntRange) Seq() Seq {
 	if r.step > 0 && r.start >= r.end {
@@ -1089,17 +1098,21 @@ func hotReducerSymbol(sym string) string {
 
 // intRangeSeq is the lazy seq view of an IntRange
 type intRangeSeq struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	r   *IntRange
 	cur int
 }
 
-func (s *intRangeSeq) ToString(escape bool) string      { return SeqToString(s, escape) }
-func (s *intRangeSeq) Equals(other interface{}) bool    { return IsSeqEqual(s, other) }
-func (s *intRangeSeq) WithInfo(info *ObjectInfo) Object { res := *s; res.info = info; return &res }
-func (s *intRangeSeq) GetType() *Type                   { return TYPE.LazySeq }
-func (s *intRangeSeq) Hash() uint32                     { return hashOrdered(s) }
+func (s *intRangeSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
+func (s *intRangeSeq) Equals(other interface{}) bool { return IsSeqEqual(s, other) }
+func (s *intRangeSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	res := *s
+	res.Info = info
+	return &res
+}
+func (s *intRangeSeq) GetType() *Type { return TYPE.LazySeq }
+func (s *intRangeSeq) Hash() uint32   { return hashOrdered(s) }
 func (s *intRangeSeq) WithMeta(m Map) Object {
 	res := *s
 	res.meta = SafeMerge(res.meta, m)

@@ -11,6 +11,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
 )
 
@@ -23,7 +24,7 @@ type RecordType struct {
 
 // Record is an instance of a RecordType.
 type Record struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	rtype *RecordType
 	bases []Object  // values for base fields (same order as rtype.fields)
@@ -105,9 +106,9 @@ func (r *Record) Hash() uint32 {
 	return h
 }
 
-func (r *Record) WithInfo(info *ObjectInfo) Object {
+func (r *Record) WithInfo(info *coretypes.ObjectInfo) Object {
 	res := r.clone()
-	res.info = info
+	res.Info = info
 	return res
 }
 

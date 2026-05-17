@@ -327,14 +327,14 @@ type Future struct {
 	runtime *corert.Future[Object, Error]
 }
 
-func (f *Future) ToString(escape bool) string   { return "#object[Future]" }
-func (f *Future) Equals(other interface{}) bool { return f == other }
-func (f *Future) GetInfo() *ObjectInfo          { return nil }
-func (f *Future) GetType() *Type                { return TYPE.Fn } // Clojure: futures are IFn
+func (f *Future) ToString(escape bool) string    { return "#object[Future]" }
+func (f *Future) Equals(other interface{}) bool  { return f == other }
+func (f *Future) GetInfo() *coretypes.ObjectInfo { return nil }
+func (f *Future) GetType() *Type                 { return TYPE.Fn } // Clojure: futures are IFn
 func (f *Future) Hash() uint32 {
 	return hashutil.Ptr(uintptr(reflect.ValueOf(f).Pointer()))
 }
-func (f *Future) WithInfo(info *ObjectInfo) Object { return f }
+func (f *Future) WithInfo(info *coretypes.ObjectInfo) Object { return f }
 
 func (f *Future) Deref() Object {
 	value, err := f.runtime.Await()
@@ -355,14 +355,14 @@ type Promise struct {
 	runtime *corert.Promise[Object]
 }
 
-func (p *Promise) ToString(escape bool) string   { return "#object[Promise]" }
-func (p *Promise) Equals(other interface{}) bool { return p == other }
-func (p *Promise) GetInfo() *ObjectInfo          { return nil }
-func (p *Promise) GetType() *Type                { return TYPE.Fn }
+func (p *Promise) ToString(escape bool) string    { return "#object[Promise]" }
+func (p *Promise) Equals(other interface{}) bool  { return p == other }
+func (p *Promise) GetInfo() *coretypes.ObjectInfo { return nil }
+func (p *Promise) GetType() *Type                 { return TYPE.Fn }
 func (p *Promise) Hash() uint32 {
 	return hashutil.Ptr(uintptr(reflect.ValueOf(p).Pointer()))
 }
-func (p *Promise) WithInfo(info *ObjectInfo) Object { return p }
+func (p *Promise) WithInfo(info *coretypes.ObjectInfo) Object { return p }
 
 func (p *Promise) Deref() Object {
 	return p.runtime.Await()
@@ -422,14 +422,14 @@ func (a *Agent) processLoop() {
 	}
 }
 
-func (a *Agent) ToString(escape bool) string   { return "#object[Agent]" }
-func (a *Agent) Equals(other interface{}) bool { return a == other }
-func (a *Agent) GetInfo() *ObjectInfo          { return nil }
-func (a *Agent) GetType() *Type                { return TYPE.Fn }
+func (a *Agent) ToString(escape bool) string    { return "#object[Agent]" }
+func (a *Agent) Equals(other interface{}) bool  { return a == other }
+func (a *Agent) GetInfo() *coretypes.ObjectInfo { return nil }
+func (a *Agent) GetType() *Type                 { return TYPE.Fn }
 func (a *Agent) Hash() uint32 {
 	return hashutil.Ptr(uintptr(reflect.ValueOf(a).Pointer()))
 }
-func (a *Agent) WithInfo(info *ObjectInfo) Object { return a }
+func (a *Agent) WithInfo(info *coretypes.ObjectInfo) Object { return a }
 
 func (a *Agent) Deref() Object {
 	a.mu.Lock()

@@ -12,6 +12,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"sync"
 	"unsafe"
 
@@ -20,7 +21,7 @@ import (
 
 // Protocol represents a Clojure-style protocol.
 type Protocol struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	name    Symbol
 	methods map[string]*ProtocolMethod // method name → method descriptor
@@ -49,9 +50,9 @@ func (p *Protocol) Equals(other interface{}) bool {
 func (p *Protocol) GetType() *Type { return TYPE.Fn }
 func (p *Protocol) Hash() uint32   { return hashutil.Ptr(uintptr(unsafe.Pointer(p))) }
 
-func (p *Protocol) WithInfo(info *ObjectInfo) Object {
+func (p *Protocol) WithInfo(info *coretypes.ObjectInfo) Object {
 	res := *p
-	res.info = info
+	res.Info = info
 	return &res
 }
 

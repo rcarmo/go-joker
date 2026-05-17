@@ -49,7 +49,7 @@ func fnTraceName(fn *Fn, argc int) string {
 		return fmt.Sprintf("%s/%d", fn.fnExpr.self.ToString(false), argc)
 	}
 	if info := fn.GetInfo(); info != nil {
-		return fmt.Sprintf("fn@%s:%d/%d", info.Filename(), info.startLine, argc)
+		return fmt.Sprintf("fn@%s:%d/%d", info.FilenameOrUnknown(), info.StartLine, argc)
 	}
 	return fmt.Sprintf("fn@%p/%d", fn, argc)
 }

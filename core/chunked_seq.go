@@ -1,5 +1,7 @@
 package core
 
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
 // chunked_seq.go — Chunked sequence compatibility layer.
 //
 // Clojure uses chunked sequences internally for performance (processing
@@ -13,34 +15,34 @@ func init() {
 
 // ChunkBuffer is a mutable buffer for building chunks.
 type ChunkBuffer struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	arr   []Object
 	count int
 }
 
-func (cb *ChunkBuffer) ToString(escape bool) string      { return "#object[ChunkBuffer]" }
-func (cb *ChunkBuffer) Equals(other interface{}) bool    { return cb == other }
-func (cb *ChunkBuffer) GetType() *Type                   { return TYPE.ArrayVector }
-func (cb *ChunkBuffer) Hash() uint32                     { return 0 }
-func (cb *ChunkBuffer) WithInfo(info *ObjectInfo) Object { return cb }
-func (cb *ChunkBuffer) WithMeta(m Map) Object            { return cb }
+func (cb *ChunkBuffer) ToString(escape bool) string                { return "#object[ChunkBuffer]" }
+func (cb *ChunkBuffer) Equals(other interface{}) bool              { return cb == other }
+func (cb *ChunkBuffer) GetType() *Type                             { return TYPE.ArrayVector }
+func (cb *ChunkBuffer) Hash() uint32                               { return 0 }
+func (cb *ChunkBuffer) WithInfo(info *coretypes.ObjectInfo) Object { return cb }
+func (cb *ChunkBuffer) WithMeta(m Map) Object                      { return cb }
 
 // ArrayChunk wraps a slice of objects as a chunk.
 type ArrayChunk struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	arr []Object
 	off int
 	end int
 }
 
-func (ac *ArrayChunk) ToString(escape bool) string      { return "#object[ArrayChunk]" }
-func (ac *ArrayChunk) Equals(other interface{}) bool    { return ac == other }
-func (ac *ArrayChunk) GetType() *Type                   { return TYPE.ArrayVector }
-func (ac *ArrayChunk) Hash() uint32                     { return 0 }
-func (ac *ArrayChunk) WithInfo(info *ObjectInfo) Object { return ac }
-func (ac *ArrayChunk) WithMeta(m Map) Object            { return ac }
+func (ac *ArrayChunk) ToString(escape bool) string                { return "#object[ArrayChunk]" }
+func (ac *ArrayChunk) Equals(other interface{}) bool              { return ac == other }
+func (ac *ArrayChunk) GetType() *Type                             { return TYPE.ArrayVector }
+func (ac *ArrayChunk) Hash() uint32                               { return 0 }
+func (ac *ArrayChunk) WithInfo(info *coretypes.ObjectInfo) Object { return ac }
+func (ac *ArrayChunk) WithMeta(m Map) Object                      { return ac }
 
 func (ac *ArrayChunk) Count() int { return ac.end - ac.off }
 func (ac *ArrayChunk) Nth(i int) Object {
@@ -59,18 +61,22 @@ func (ac *ArrayChunk) DropFirst() *ArrayChunk {
 
 // ChunkedCons wraps a chunk + rest seq for chunked-seq? compatibility.
 type ChunkedCons struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	chunk *ArrayChunk
 	rest  Seq
 	idx   int
 }
 
-func (cc *ChunkedCons) ToString(escape bool) string      { return SeqToString(cc, escape) }
-func (cc *ChunkedCons) Equals(other interface{}) bool    { return IsSeqEqual(cc, other) }
-func (cc *ChunkedCons) GetType() *Type                   { return TYPE.LazySeq }
-func (cc *ChunkedCons) Hash() uint32                     { return hashOrdered(cc) }
-func (cc *ChunkedCons) WithInfo(info *ObjectInfo) Object { res := *cc; res.info = info; return &res }
+func (cc *ChunkedCons) ToString(escape bool) string   { return SeqToString(cc, escape) }
+func (cc *ChunkedCons) Equals(other interface{}) bool { return IsSeqEqual(cc, other) }
+func (cc *ChunkedCons) GetType() *Type                { return TYPE.LazySeq }
+func (cc *ChunkedCons) Hash() uint32                  { return hashOrdered(cc) }
+func (cc *ChunkedCons) WithInfo(info *coretypes.ObjectInfo) Object {
+	res := *cc
+	res.Info = info
+	return &res
+}
 func (cc *ChunkedCons) WithMeta(m Map) Object {
 	res := *cc
 	res.meta = SafeMerge(res.meta, m)

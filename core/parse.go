@@ -3,6 +3,7 @@ package core
 import (
 	"bytes"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"regexp"
 	"sort"
 	"unsafe"
@@ -15,36 +16,36 @@ type (
 	Expr interface {
 		Eval(env *LocalEnv) Object
 		InferType() *Type
-		Pos() Position
+		Pos() coretypes.Position
 		Dump(includePosition bool) Map
 		Pack(p []byte, env *PackEnv) []byte
 	}
 	LiteralExpr struct {
-		Position
+		coretypes.Position
 		obj         Object
 		isSurrogate bool
 	}
 	VectorExpr struct {
-		Position
+		coretypes.Position
 		v []Expr
 	}
 	MapExpr struct {
-		Position
+		coretypes.Position
 		keys   []Expr
 		values []Expr
 	}
 	SetExpr struct {
-		Position
+		coretypes.Position
 		elements []Expr
 	}
 	IfExpr struct {
-		Position
+		coretypes.Position
 		cond     Expr
 		positive Expr
 		negative Expr
 	}
 	DefExpr struct {
-		Position
+		coretypes.Position
 		vr               *Var
 		name             Symbol
 		value            Expr
@@ -52,46 +53,46 @@ type (
 		isCreatedByMacro bool
 	}
 	CallExpr struct {
-		Position
+		coretypes.Position
 		callable Expr
 		args     []Expr
 	}
 	MacroCallExpr struct {
-		Position
+		coretypes.Position
 		macro Callable
 		args  []Object
 		name  string
 	}
 	RecurExpr struct {
-		Position
+		coretypes.Position
 		args []Expr
 	}
 	VarRefExpr struct {
-		Position
+		coretypes.Position
 		vr *Var
 	}
 	BindingExpr struct {
-		Position
+		coretypes.Position
 		binding *Binding
 	}
 	MetaExpr struct {
-		Position
+		coretypes.Position
 		meta *MapExpr
 		expr Expr
 	}
 	DoExpr struct {
-		Position
+		coretypes.Position
 		body             []Expr
 		isCreatedByMacro bool
 	}
 	FnArityExpr struct {
-		Position
+		coretypes.Position
 		args       []Symbol
 		body       []Expr
 		taggedType *Type
 	}
 	FnExpr struct {
-		Position
+		coretypes.Position
 		arities       []FnArityExpr
 		variadic      *FnArityExpr
 		self          Symbol
@@ -99,30 +100,30 @@ type (
 		tailRewritten bool
 	}
 	LetExpr struct {
-		Position
+		coretypes.Position
 		names  []Symbol
 		values []Expr
 		body   []Expr
 	}
 	LoopExpr  LetExpr
 	ThrowExpr struct {
-		Position
+		coretypes.Position
 		e Expr
 	}
 	CatchExpr struct {
-		Position
+		coretypes.Position
 		excType   *Type
 		excSymbol Symbol
 		body      []Expr
 	}
 	TryExpr struct {
-		Position
+		coretypes.Position
 		body        []Expr
 		catches     []*CatchExpr
 		finallyExpr []Expr
 	}
 	SetMacroExpr struct {
-		Position
+		coretypes.Position
 		vr *Var
 	}
 	ParseError struct {
@@ -458,10 +459,6 @@ func (ctx *ParseContext) GetLocalBinding(sym Symbol) *Binding {
 	return ctx.localBindings.GetBinding(sym)
 }
 
-func (pos Position) Pos() Position {
-	return pos
-}
-
 func (expr *LetExpr) Name() string {
 	return "let"
 }
@@ -470,33 +467,33 @@ func (expr *LoopExpr) Name() string {
 	return "loop"
 }
 
-func printError(pos Position, msg string) {
+func printError(pos coretypes.Position, msg string) {
 	PROBLEM_COUNT++
-	fmt.Fprintf(Stderr, "%s:%d:%d: %s\n", pos.Filename(), pos.startLine, pos.startColumn, msg)
+	fmt.Fprintf(Stderr, "%s:%d:%d: %s\n", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, msg)
 }
 
-func printParseWarning(pos Position, msg string) {
+func printParseWarning(pos coretypes.Position, msg string) {
 	printError(pos, "Parse warning: "+msg)
 }
 
-func printParseError(pos Position, msg string) {
+func printParseError(pos coretypes.Position, msg string) {
 	printError(pos, "Parse error: "+msg)
 }
 
 func printReadWarning(reader *Reader, msg string) {
-	pos := Position{
-		filename:    reader.filename,
-		startColumn: reader.Column(),
-		startLine:   reader.Line(),
+	pos := coretypes.Position{
+		Filename:    reader.filename,
+		StartColumn: reader.Column(),
+		StartLine:   reader.Line(),
 	}
 	printError(pos, "Read warning: "+msg)
 }
 
 func printReadError(reader *Reader, msg string) {
-	pos := Position{
-		filename:    reader.filename,
-		startColumn: reader.Column(),
-		startLine:   reader.Line(),
+	pos := coretypes.Position{
+		Filename:    reader.filename,
+		StartColumn: reader.Column(),
+		StartLine:   reader.Line(),
 	}
 	printError(pos, "Read error: "+msg)
 }
@@ -528,12 +525,12 @@ func isEntryPointNs(ns *Namespace) bool {
 
 func WarnOnGloballyUnusedNamespaces() {
 	var names []string
-	positions := make(map[string]Position)
+	positions := make(map[string]coretypes.Position)
 
 	for _, ns := range GLOBAL_ENV.Namespaces {
 		if !ns.isGloballyUsed && !isIgnoredUnusedNamespace(ns) && !isEntryPointNs(ns) {
 			pos := ns.Name.GetInfo()
-			if pos != nil && pos.Filename() != "<joker.core>" && pos.Filename() != "<user>" {
+			if pos != nil && pos.FilenameOrUnknown() != "<joker.core>" && pos.FilenameOrUnknown() != "<user>" {
 				name := ns.Name.ToString(false)
 				names = append(names, name)
 				positions[name] = pos.Position
@@ -549,12 +546,12 @@ func WarnOnGloballyUnusedNamespaces() {
 
 func WarnOnUnusedNamespaces() {
 	var names []string
-	positions := make(map[string]Position)
+	positions := make(map[string]coretypes.Position)
 
 	for _, ns := range GLOBAL_ENV.Namespaces {
 		if ns != GLOBAL_ENV.CurrentNamespace() && !ns.isUsed && !isIgnoredUnusedNamespace(ns) {
 			pos := ns.Name.GetInfo()
-			if pos != nil && pos.Filename() != "<joker.core>" && pos.Filename() != "<user>" {
+			if pos != nil && pos.FilenameOrUnknown() != "<joker.core>" && pos.FilenameOrUnknown() != "<user>" {
 				name := ns.Name.ToString(false)
 				names = append(names, name)
 				positions[name] = pos.Position
@@ -582,7 +579,7 @@ func isEntryPointVar(vr *Var) bool {
 
 func WarnOnGloballyUnusedVars() {
 	var names []string
-	positions := make(map[string]Position)
+	positions := make(map[string]coretypes.Position)
 
 	for _, ns := range GLOBAL_ENV.Namespaces {
 		if ns == GLOBAL_ENV.CoreNamespace {
@@ -608,7 +605,7 @@ func WarnOnGloballyUnusedVars() {
 
 func WarnOnUnusedVars() {
 	var names []string
-	positions := make(map[string]Position)
+	positions := make(map[string]coretypes.Position)
 
 	for _, ns := range GLOBAL_ENV.Namespaces {
 		if ns == GLOBAL_ENV.CoreNamespace {
@@ -654,7 +651,7 @@ func (err *ParseError) Equals(other interface{}) bool {
 	return err == other
 }
 
-func (err *ParseError) GetInfo() *ObjectInfo {
+func (err *ParseError) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
@@ -666,7 +663,7 @@ func (err *ParseError) Hash() uint32 {
 	return hashutil.Ptr(uintptr(unsafe.Pointer(err)))
 }
 
-func (err *ParseError) WithInfo(info *ObjectInfo) Object {
+func (err *ParseError) WithInfo(info *coretypes.ObjectInfo) Object {
 	return err
 }
 
@@ -678,7 +675,7 @@ func (err ParseError) Error() string {
 	line, column, filename := 0, 0, "<file>"
 	info := err.obj.GetInfo()
 	if info != nil {
-		line, column, filename = info.startLine, info.startColumn, info.Filename()
+		line, column, filename = info.StartLine, info.StartColumn, info.FilenameOrUnknown()
 	}
 	return fmt.Sprintf("%s:%d:%d: Parse error: %s", filename, line, column, err.msg)
 }
@@ -692,7 +689,7 @@ func parseSeq(seq Seq, ctx *ParseContext) []Expr {
 	return res
 }
 
-func parseVector(v Vec, pos Position, ctx *ParseContext) Expr {
+func parseVector(v Vec, pos coretypes.Position, ctx *ParseContext) Expr {
 	r := make([]Expr, v.Count())
 	for i := 0; i < v.Count(); i++ {
 		r[i] = Parse(v.At(i), ctx)
@@ -700,7 +697,7 @@ func parseVector(v Vec, pos Position, ctx *ParseContext) Expr {
 	return readerConstruction.VectorExpr(r, pos)
 }
 
-func parseMap(m Map, pos Position, ctx *ParseContext) *MapExpr {
+func parseMap(m Map, pos coretypes.Position, ctx *ParseContext) *MapExpr {
 	res := readerConstruction.MapExpr(m.Count(), pos)
 	for iter, i := m.Iter(), 0; iter.HasNext(); i++ {
 		p := iter.Next()
@@ -710,7 +707,7 @@ func parseMap(m Map, pos Position, ctx *ParseContext) *MapExpr {
 	return res
 }
 
-func parseSet(s *MapSet, pos Position, ctx *ParseContext) Expr {
+func parseSet(s *MapSet, pos coretypes.Position, ctx *ParseContext) Expr {
 	res := readerConstruction.SetExpr(s.m.Count(), pos)
 	for iter, i := iter(s.Seq()), 0; iter.HasNext(); i++ {
 		res.elements[i] = Parse(iter.Next(), ctx)
@@ -730,15 +727,15 @@ func checkForm(obj Object, min int, max int) int {
 	return c
 }
 
-func GetPosition(obj Object) Position {
+func GetPosition(obj Object) coretypes.Position {
 	info := obj.GetInfo()
 	if info != nil {
 		return info.Position
 	}
-	return Position{}
+	return coretypes.Position{}
 }
 
-func updateVar(vr *Var, info *ObjectInfo, valueExpr Expr, sym Symbol) {
+func updateVar(vr *Var, info *coretypes.ObjectInfo, valueExpr Expr, sym Symbol) {
 	vr.WithInfo(info)
 	vr.expr = valueExpr
 	meta := sym.GetMeta()
@@ -765,7 +762,7 @@ func isCreatedByMacro(formSeq Seq) bool {
 	if info == nil {
 		return false
 	}
-	return info.Pos().filename == STR.coreFilename
+	return info.Pos().Filename == STR.coreFilename
 }
 
 func parseDef(obj Object, ctx *ParseContext, isForLinter bool) *DefExpr {
@@ -1293,7 +1290,7 @@ func resolveMacro(obj Object, ctx *ParseContext) *Var {
 	}
 }
 
-func fixInfo(obj Object, info *ObjectInfo) Object {
+func fixInfo(obj Object, info *coretypes.ObjectInfo) Object {
 	switch s := obj.(type) {
 	case Nil:
 		return obj
@@ -1358,7 +1355,7 @@ func macroexpand1(seq Seq, ctx *ParseContext) Object {
 	}
 }
 
-func reportNotAFunction(pos Position, name string) {
+func reportNotAFunction(pos coretypes.Position, name string) {
 	printParseWarning(pos, name+" is not a function")
 }
 
@@ -1445,7 +1442,7 @@ func selectArity(expr *FnExpr, passedArgsCount int) *FnArityExpr {
 	return nil
 }
 
-func reportWrongArity(expr *FnExpr, isMacro bool, call *CallExpr, pos Position) bool {
+func reportWrongArity(expr *FnExpr, isMacro bool, call *CallExpr, pos coretypes.Position) bool {
 	passedArgsCount := len(call.args)
 	if isMacro {
 		passedArgsCount += 2
@@ -1588,7 +1585,7 @@ func getInNsVar(ctx *ParseContext) *Var {
 	return IN_NS_VAR
 }
 
-func checkCall(expr Expr, isMacro bool, call *CallExpr, pos Position) {
+func checkCall(expr Expr, isMacro bool, call *CallExpr, pos coretypes.Position) {
 	argsCount := len(call.args)
 	switch expr := expr.(type) {
 	case *FnExpr:

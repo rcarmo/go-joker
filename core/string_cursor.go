@@ -2,6 +2,7 @@ package core
 
 import (
 	corecursor "github.com/rcarmo/go-joker/core/cursor"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"sync"
 )
 
@@ -10,7 +11,7 @@ import (
 // Object protocol. Runtime cursor mechanics live in core/cursor; this file is
 // only the root object/protocol adapter required by existing Joker objects.
 type StringCursor struct {
-	InfoHolder
+	coretypes.InfoHolder
 	cur *corecursor.Cursor
 }
 
@@ -43,11 +44,11 @@ func (c *StringCursor) Equals(other interface{}) bool {
 	return false
 }
 
-func (c *StringCursor) GetInfo() *ObjectInfo { return nil }
+func (c *StringCursor) GetInfo() *coretypes.ObjectInfo { return nil }
 
 func (c *StringCursor) Hash() uint32 { return c.cur.Hash() }
 
-func (c *StringCursor) WithInfo(info *ObjectInfo) Object { return c }
+func (c *StringCursor) WithInfo(info *coretypes.ObjectInfo) Object { return c }
 
 func (c *StringCursor) GetType() *Type { return typeStringCursor }
 
@@ -153,11 +154,11 @@ func (ts *TransientString) Equals(other interface{}) bool {
 		return false
 	}
 }
-func (ts *TransientString) GetInfo() *ObjectInfo        { return nil }
-func (ts *TransientString) WithInfo(*ObjectInfo) Object { return ts }
-func (ts *TransientString) GetType() *Type              { return TYPE.String }
-func (ts *TransientString) Hash() uint32                { return String{S: string(ts.buf)}.Hash() }
-func (ts *TransientString) Count() int                  { return stringRuneCountFastCompat(string(ts.buf)) }
+func (ts *TransientString) GetInfo() *coretypes.ObjectInfo        { return nil }
+func (ts *TransientString) WithInfo(*coretypes.ObjectInfo) Object { return ts }
+func (ts *TransientString) GetType() *Type                        { return TYPE.String }
+func (ts *TransientString) Hash() uint32                          { return String{S: string(ts.buf)}.Hash() }
+func (ts *TransientString) Count() int                            { return stringRuneCountFastCompat(string(ts.buf)) }
 
 func stringRuneCountFastCompat(s string) int {
 	// Avoid importing utf8 in this tiny helper file; String.Count has the fully

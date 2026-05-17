@@ -42,8 +42,8 @@ func pprintObject(obj Object, indent int, w io.Writer) int {
 
 func formatObject(obj Object, indent int, w io.Writer) int {
 	if info := obj.GetInfo(); info != nil {
-		fmt.Fprint(w, info.prefix)
-		indent += utf8.RuneCountInString(info.prefix)
+		fmt.Fprint(w, info.Prefix)
+		indent += utf8.RuneCountInString(info.Prefix)
 	}
 	switch obj := obj.(type) {
 	case coretypes.Formatter:
@@ -63,7 +63,7 @@ func isComment(obj Object) bool {
 	if info == nil {
 		return false
 	}
-	return info.prefix == "^" || info.prefix == "#^" || info.prefix == "#_"
+	return info.Prefix == "^" || info.Prefix == "#^" || info.Prefix == "#_"
 }
 
 func isComma(obj Object) bool {

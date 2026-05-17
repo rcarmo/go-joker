@@ -2,12 +2,13 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 )
 
 type (
 	ArrayMap struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		arr []Object
 	}
@@ -16,7 +17,7 @@ type (
 		current int
 	}
 	ArrayMapSeq struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		m     *ArrayMap
 		index int

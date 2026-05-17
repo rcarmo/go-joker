@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"maps"
 	"slices"
 	"sort"
@@ -236,40 +237,40 @@ func extractInt(p []byte) (int, []byte) {
 	return int(binary.BigEndian.Uint64(p[0:8])), p[8:]
 }
 
-func (pos Position) Pack(p []byte, env *PackEnv) []byte {
-	p = appendInt(p, pos.startLine)
-	p = appendInt(p, pos.endLine)
-	p = appendInt(p, pos.startColumn)
-	p = appendInt(p, pos.endColumn)
-	p = appendUint16(p, env.stringIndex(pos.filename))
+func packPosition(pos coretypes.Position, p []byte, env *PackEnv) []byte {
+	p = appendInt(p, pos.StartLine)
+	p = appendInt(p, pos.EndLine)
+	p = appendInt(p, pos.StartColumn)
+	p = appendInt(p, pos.EndColumn)
+	p = appendUint16(p, env.stringIndex(pos.Filename))
 	return p
 }
 
-func unpackPosition(p []byte, header *PackHeader) (pos Position, pp []byte) {
-	pos.startLine, p = extractInt(p)
-	pos.endLine, p = extractInt(p)
-	pos.startColumn, p = extractInt(p)
-	pos.endColumn, p = extractInt(p)
+func unpackPosition(p []byte, header *PackHeader) (pos coretypes.Position, pp []byte) {
+	pos.StartLine, p = extractInt(p)
+	pos.EndLine, p = extractInt(p)
+	pos.StartColumn, p = extractInt(p)
+	pos.EndColumn, p = extractInt(p)
 	i, p := extractUInt16(p)
-	pos.filename = header.Strings[i]
+	pos.Filename = header.Strings[i]
 	return pos, p
 }
 
-func (info *ObjectInfo) Pack(p []byte, env *PackEnv) []byte {
+func packObjectInfo(info *coretypes.ObjectInfo, p []byte, env *PackEnv) []byte {
 	if info == nil {
 		return append(p, NULL)
 	}
 	p = append(p, NOT_NULL)
-	return info.Pos().Pack(p, env)
+	return packPosition(info.Pos(), p, env)
 }
 
-func unpackObjectInfo(p []byte, header *PackHeader) (*ObjectInfo, []byte) {
+func unpackObjectInfo(p []byte, header *PackHeader) (*coretypes.ObjectInfo, []byte) {
 	if p[0] == NULL {
 		return nil, p[1:]
 	}
 	p = p[1:]
 	pos, p := unpackPosition(p, header)
-	return &ObjectInfo{Position: pos}, p
+	return &coretypes.ObjectInfo{Position: pos}, p
 }
 
 func PackObjectOrNull(obj Object, p []byte, env *PackEnv) []byte {
@@ -288,7 +289,7 @@ func UnpackObjectOrNull(p []byte, header *PackHeader) (Object, []byte) {
 }
 
 func (s Symbol) Pack(p []byte, env *PackEnv) []byte {
-	p = s.info.Pack(p, env)
+	p = packObjectInfo(s.Info, p, env)
 	p = PackObjectOrNull(s.meta, p, env)
 	p = appendUint16(p, env.stringIndex(s.name))
 	p = appendUint16(p, env.stringIndex(s.ns))
@@ -303,7 +304,7 @@ func unpackSymbol(p []byte, header *PackHeader) (Symbol, []byte) {
 	ins, p := extractUInt16(p)
 	hash, p := extractUInt32(p)
 	res := Symbol{
-		InfoHolder: InfoHolder{info: info},
+		InfoHolder: coretypes.InfoHolder{Info: info},
 		name:       header.Strings[iname],
 		ns:         header.Strings[ins],
 		hash:       hash,
@@ -368,10 +369,14 @@ func unpackObject(p []byte, header *PackHeader) (Object, []byte) {
 
 func (expr *LiteralExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, LITERAL_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = appendBool(p, expr.isSurrogate)
 	p = packObject(expr.obj, p, env)
 	return p
+}
+
+func (expr *MacroCallExpr) Pack(p []byte, env *PackEnv) []byte {
+	panic(RT.NewError("cannot pack macro call expression"))
 }
 
 func unpackLiteralExpr(p []byte, header *PackHeader) (*LiteralExpr, []byte) {
@@ -459,7 +464,7 @@ func unpackCatchExprSeq(p []byte, header *PackHeader) ([]*CatchExpr, []byte) {
 
 func (expr *VectorExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, VECTOR_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	return packSeq(p, expr.v, env)
 }
 
@@ -472,7 +477,7 @@ func unpackVectorExpr(p []byte, header *PackHeader) (*VectorExpr, []byte) {
 
 func (expr *SetExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, SET_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	return packSeq(p, expr.elements, env)
 }
 
@@ -485,7 +490,7 @@ func unpackSetExpr(p []byte, header *PackHeader) (*SetExpr, []byte) {
 
 func (expr *MapExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, MAP_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = packSeq(p, expr.keys, env)
 	p = packSeq(p, expr.values, env)
 	return p
@@ -501,7 +506,7 @@ func unpackMapExpr(p []byte, header *PackHeader) (*MapExpr, []byte) {
 
 func (expr *IfExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, IF_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = expr.cond.Pack(p, env)
 	p = expr.positive.Pack(p, env)
 	p = expr.negative.Pack(p, env)
@@ -525,11 +530,11 @@ func unpackIfExpr(p []byte, header *PackHeader) (*IfExpr, []byte) {
 
 func (expr *DefExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, DEF_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = expr.name.Pack(p, env)
 	p = PackExprOrNull(expr.value, p, env)
 	p = PackExprOrNull(expr.meta, p, env)
-	p = expr.vr.info.Pack(p, env)
+	p = packObjectInfo(expr.vr.Info, p, env)
 	return p
 }
 
@@ -556,7 +561,7 @@ func unpackDefExpr(p []byte, header *PackHeader) (*DefExpr, []byte) {
 
 func (expr *CallExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, CALL_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = expr.callable.Pack(p, env)
 	p = packSeq(p, expr.args, env)
 	return p
@@ -577,7 +582,7 @@ func unpackCallExpr(p []byte, header *PackHeader) (*CallExpr, []byte) {
 
 func (expr *RecurExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, RECUR_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = packSeq(p, expr.args, env)
 	return p
 }
@@ -611,7 +616,7 @@ func unpackVar(p []byte, header *PackHeader) (*Var, []byte) {
 
 func (expr *VarRefExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, VARREF_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = expr.vr.Pack(p, env)
 	return p
 }
@@ -629,7 +634,7 @@ func unpackVarRefExpr(p []byte, header *PackHeader) (*VarRefExpr, []byte) {
 
 func (expr *SetMacroExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, SET_MACRO_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = expr.vr.Pack(p, env)
 	return p
 }
@@ -647,7 +652,7 @@ func unpackSetMacroExpr(p []byte, header *PackHeader) (*SetMacroExpr, []byte) {
 
 func (expr *BindingExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, BINDING_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = appendInt(p, env.bindingIndex(expr.binding))
 	return p
 }
@@ -665,7 +670,7 @@ func unpackBindingExpr(p []byte, header *PackHeader) (*BindingExpr, []byte) {
 
 func (expr *MetaExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, META_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = expr.meta.Pack(p, env)
 	p = expr.expr.Pack(p, env)
 	return p
@@ -686,7 +691,7 @@ func unpackMetaExpr(p []byte, header *PackHeader) (*MetaExpr, []byte) {
 
 func (expr *DoExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, DO_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = packSeq(p, expr.body, env)
 	return p
 }
@@ -704,7 +709,7 @@ func unpackDoExpr(p []byte, header *PackHeader) (*DoExpr, []byte) {
 
 func (expr *FnArityExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, FN_ARITY_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = packSymbolSeq(p, expr.args, env)
 	p = packSeq(p, expr.body, env)
 	if expr.taggedType != nil {
@@ -741,7 +746,7 @@ func unpackFnArityExpr(p []byte, header *PackHeader) (*FnArityExpr, []byte) {
 
 func (expr *FnExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, FN_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = packFnArityExprSeq(p, expr.arities, env)
 	if expr.variadic == nil {
 		p = append(p, NULL)
@@ -776,7 +781,7 @@ func unpackFnExpr(p []byte, header *PackHeader) (*FnExpr, []byte) {
 
 func (expr *LetExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, LET_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = packSymbolSeq(p, expr.names, env)
 	p = packSeq(p, expr.values, env)
 	p = packSeq(p, expr.body, env)
@@ -800,7 +805,7 @@ func unpackLetExpr(p []byte, header *PackHeader) (*LetExpr, []byte) {
 
 func (expr *LoopExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, LOOP_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = packSymbolSeq(p, expr.names, env)
 	p = packSeq(p, expr.values, env)
 	p = packSeq(p, expr.body, env)
@@ -824,7 +829,7 @@ func unpackLoopExpr(p []byte, header *PackHeader) (*LoopExpr, []byte) {
 
 func (expr *ThrowExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, THROW_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = expr.e.Pack(p, env)
 	return p
 }
@@ -842,7 +847,7 @@ func unpackThrowExpr(p []byte, header *PackHeader) (*ThrowExpr, []byte) {
 
 func (expr *CatchExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, CATCH_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = appendUint16(p, env.stringIndex(STRINGS.Intern(expr.excType.name)))
 	p = expr.excSymbol.Pack(p, env)
 	p = packSeq(p, expr.body, env)
@@ -867,7 +872,7 @@ func unpackCatchExpr(p []byte, header *PackHeader) (*CatchExpr, []byte) {
 
 func (expr *TryExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, TRY_EXPR)
-	p = expr.Pos().Pack(p, env)
+	p = packPosition(expr.Pos(), p, env)
 	p = packSeq(p, expr.body, env)
 	p = packCatchExprSeq(p, expr.catches, env)
 	p = packSeq(p, expr.finallyExpr, env)

@@ -1467,7 +1467,7 @@ func TestSeqContract(t *testing.T) {
 }
 
 func TestInfoAndMetaContract(t *testing.T) {
-	info := &ObjectInfo{Position: Position{startLine: 42}}
+	info := &coretypes.ObjectInfo{Position: coretypes.Position{StartLine: 42}}
 	meta := EmptyArrayMap().Assoc(MakeKeyword("doc"), MakeString("sample")).(Map)
 	values := []Object{
 		NewArrayVectorFrom(MakeInt(1)),
@@ -2066,7 +2066,7 @@ func TestReaderConstructionAdapterReaderSurface(t *testing.T) {
 		t.Fatalf("TryRead via adapter: %v", err)
 	}
 	vec := obj.(CountedIndexed)
-	if vec.Count() != 2 || !vec.At(0).Equals(MakeInt(1)) || obj.GetInfo().Filename() != "<adapter>" {
+	if vec.Count() != 2 || !vec.At(0).Equals(MakeInt(1)) || obj.GetInfo().FilenameOrUnknown() != "<adapter>" {
 		t.Fatalf("adapter reader result mismatch: %s info=%#v", obj.ToString(false), obj.GetInfo())
 	}
 	if _, err := adapter.TryRead(reader); err != io.EOF {
@@ -2085,7 +2085,7 @@ func TestReaderConstructionAdapterExpressionSurface(t *testing.T) {
 	if surrogate.obj != obj || !surrogate.isSurrogate {
 		t.Fatalf("SurrogateExpr mismatch: %#v", surrogate)
 	}
-	pos := Position{startLine: 1, startColumn: 2, endLine: 1, endColumn: 3}
+	pos := coretypes.Position{StartLine: 1, StartColumn: 2, EndLine: 1, EndColumn: 3}
 	vec := adapter.VectorExpr([]Expr{lit}, pos)
 	if len(vec.v) != 1 || vec.Position != pos {
 		t.Fatalf("VectorExpr mismatch: %#v", vec)
@@ -2141,8 +2141,8 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	}
 
 	vecObj := readOneForContract(t, `[1 :two "three"]`)
-	if vecObj.GetInfo() == nil || vecObj.GetInfo().Filename() != "<reader-contract>" {
-		t.Fatalf("vector did not retain source info: %#v", vecObj.GetInfo())
+	if vecObj.GetInfo() == nil || vecObj.GetInfo().FilenameOrUnknown() != "<reader-contract>" {
+		t.Fatalf("vector did not retain source Info: %#v", vecObj.GetInfo())
 	}
 	vec := vecObj.(CountedIndexed)
 	if vec.Count() != 3 || !vec.At(0).Equals(MakeInt(1)) || !vec.At(1).Equals(MakeKeyword("two")) || !vec.At(2).Equals(MakeString("three")) {
@@ -2189,8 +2189,8 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 	if found, got := meta.GetMeta().Get(MakeKeyword("private")); !found || !got.Equals(Boolean{B: true}) {
 		t.Fatalf("metadata did not contain :private true: %v %v", found, got)
 	}
-	if metaObj.GetInfo() == nil || metaObj.GetInfo().Filename() != "<reader-contract>" {
-		t.Fatalf("metadata form did not preserve source info: %#v", metaObj.GetInfo())
+	if metaObj.GetInfo() == nil || metaObj.GetInfo().FilenameOrUnknown() != "<reader-contract>" {
+		t.Fatalf("metadata form did not preserve source Info: %#v", metaObj.GetInfo())
 	}
 
 	dataReadersVar := GLOBAL_ENV.CoreNamespace.Resolve("*data-readers*")
@@ -2283,7 +2283,7 @@ func TestReaderConstructionAdapterReadObjectAndError(t *testing.T) {
 	_ = r.Get()
 	obj := readerConstruction.ReadObject(r, MakeSymbol("x"))
 	info := obj.GetInfo()
-	if info == nil || info.Filename() != "<adapter-contract>" || info.startLine != 1 || info.startColumn != 0 || info.endLine != 1 || info.endColumn != 1 {
+	if info == nil || info.FilenameOrUnknown() != "<adapter-contract>" || info.StartLine != 1 || info.StartColumn != 0 || info.EndLine != 1 || info.EndColumn != 1 {
 		t.Fatalf("adapter ReadObject info = %#v", info)
 	}
 	err := readerConstruction.ReadError(r, "boom")
@@ -2334,7 +2334,7 @@ func TestReaderConstructionAdapterSetLiteral(t *testing.T) {
 		t.Fatalf("SetLiteral count = %d, want 2", set.Count())
 	}
 	obj := readerConstruction.ReadObject(r, set)
-	if obj.GetInfo() == nil || obj.GetInfo().Filename() != "<adapter-contract>" {
+	if obj.GetInfo() == nil || obj.GetInfo().FilenameOrUnknown() != "<adapter-contract>" {
 		t.Fatalf("SetLiteral read object info = %#v", obj.GetInfo())
 	}
 }
@@ -2347,7 +2347,7 @@ func TestReaderConstructionAdapterMapLiteral(t *testing.T) {
 		t.Fatalf("MapLiteral entry = %v %v", found, got)
 	}
 	obj := readerConstruction.ReadObject(r, m)
-	if obj.GetInfo() == nil || obj.GetInfo().Filename() != "<adapter-contract>" {
+	if obj.GetInfo() == nil || obj.GetInfo().FilenameOrUnknown() != "<adapter-contract>" {
 		t.Fatalf("MapLiteral read object info = %#v", obj.GetInfo())
 	}
 }
@@ -2426,7 +2426,7 @@ func TestReaderConstructionAdapterDeriveReadObject(t *testing.T) {
 	_ = r.Get()
 	base := readerConstruction.ReadObject(r, MakeSymbol("x"))
 	derived := readerConstruction.DeriveReadObject(base, MakeKeyword("x"))
-	if derived.GetInfo() == nil || derived.GetInfo().Filename() != "<adapter-contract>" {
+	if derived.GetInfo() == nil || derived.GetInfo().FilenameOrUnknown() != "<adapter-contract>" {
 		t.Fatalf("derived info = %#v", derived.GetInfo())
 	}
 }

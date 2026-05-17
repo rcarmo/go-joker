@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	corecollections "github.com/rcarmo/go-joker/core/collections"
@@ -13,7 +14,7 @@ var (
 
 type (
 	ArrayVector struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		arr []Object
 	}

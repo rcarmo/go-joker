@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 	"math/rand"
@@ -81,12 +82,12 @@ func MakeReadError(reader *Reader, msg string) ReadError {
 
 func makeReadObject(reader *Reader, obj Object) Object {
 	p := popPos()
-	return obj.WithInfo(&ObjectInfo{Position: Position{
-		startColumn: p.Column,
-		startLine:   p.Line,
-		endLine:     reader.Line(),
-		endColumn:   reader.Column(),
-		filename:    reader.filename,
+	return obj.WithInfo(&coretypes.ObjectInfo{Position: coretypes.Position{
+		StartColumn: p.Column,
+		StartLine:   p.Line,
+		EndLine:     reader.Line(),
+		EndColumn:   reader.Column(),
+		Filename:    reader.filename,
 	}})
 }
 
@@ -729,7 +730,7 @@ func syntaxQuoteSeq(seq Seq, env map[*string]Symbol, reader *Reader) Seq {
 	return &ArraySeq{arr: res}
 }
 
-func syntaxQuoteColl(seq Seq, env map[*string]Symbol, reader *Reader, ctor Symbol, info *ObjectInfo) Object {
+func syntaxQuoteColl(seq Seq, env map[*string]Symbol, reader *Reader, ctor Symbol, info *coretypes.ObjectInfo) Object {
 	q := syntaxQuoteSeq(seq, env, reader)
 	concat := q.Cons(SYMBOLS.concat)
 	seqList := readerConstruction.ListFrom([]Object{SYMBOLS.seq, concat})
@@ -1044,7 +1045,7 @@ func readFirst(reader *Reader) Object {
 }
 
 func addPrefix(obj Object, prefix string) {
-	obj.GetInfo().prefix = prefix + obj.GetInfo().prefix
+	obj.GetInfo().Prefix = prefix + obj.GetInfo().Prefix
 }
 
 func Read(reader *Reader) (Object, bool) {

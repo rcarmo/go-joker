@@ -1,6 +1,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
@@ -35,17 +36,21 @@ type xformStep struct {
 // XForm is an internal transducer pipeline representation.
 // It is also Callable, so it remains compatible with generic transducer use.
 type XForm struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	steps []xformStep
 }
 
-func (xf *XForm) ToString(escape bool) string      { return "#object[XForm]" }
-func (xf *XForm) Equals(other interface{}) bool    { return xf == other }
-func (xf *XForm) GetType() *Type                   { return TYPE.Fn }
-func (xf *XForm) Hash() uint32                     { return hashutil.Ptr(uintptr(unsafe.Pointer(xf))) }
-func (xf *XForm) WithInfo(info *ObjectInfo) Object { res := *xf; res.info = info; return &res }
-func (xf *XForm) WithMeta(m Map) Object            { res := *xf; res.meta = SafeMerge(res.meta, m); return &res }
+func (xf *XForm) ToString(escape bool) string   { return "#object[XForm]" }
+func (xf *XForm) Equals(other interface{}) bool { return xf == other }
+func (xf *XForm) GetType() *Type                { return TYPE.Fn }
+func (xf *XForm) Hash() uint32                  { return hashutil.Ptr(uintptr(unsafe.Pointer(xf))) }
+func (xf *XForm) WithInfo(info *coretypes.ObjectInfo) Object {
+	res := *xf
+	res.Info = info
+	return &res
+}
+func (xf *XForm) WithMeta(m Map) Object { res := *xf; res.meta = SafeMerge(res.meta, m); return &res }
 
 func (xf *XForm) Call(args []Object) Object {
 	CheckArity(args, 1, 1)

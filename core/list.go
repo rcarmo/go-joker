@@ -1,13 +1,14 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	corecollections "github.com/rcarmo/go-joker/core/collections"
 )
 
 type List struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	first Object
 	rest  *List

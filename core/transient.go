@@ -1,6 +1,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"sync"
 )
 
@@ -31,13 +32,13 @@ type TransientVector struct {
 	frozen bool
 }
 
-func (tv *TransientVector) ToString(escape bool) string   { return "#<transient-vector>" }
-func (tv *TransientVector) Equals(other interface{}) bool { return tv == other }
-func (tv *TransientVector) GetInfo() *ObjectInfo          { return nil }
-func (tv *TransientVector) WithInfo(*ObjectInfo) Object   { return tv }
-func (tv *TransientVector) GetType() *Type                { return TYPE.ArrayVector }
-func (tv *TransientVector) Hash() uint32                  { return 0 }
-func (tv *TransientVector) Count() int                    { return len(tv.arr) }
+func (tv *TransientVector) ToString(escape bool) string           { return "#<transient-vector>" }
+func (tv *TransientVector) Equals(other interface{}) bool         { return tv == other }
+func (tv *TransientVector) GetInfo() *coretypes.ObjectInfo        { return nil }
+func (tv *TransientVector) WithInfo(*coretypes.ObjectInfo) Object { return tv }
+func (tv *TransientVector) GetType() *Type                        { return TYPE.ArrayVector }
+func (tv *TransientVector) Hash() uint32                          { return 0 }
+func (tv *TransientVector) Count() int                            { return len(tv.arr) }
 
 func (tv *TransientVector) checkFrozen() {
 	if tv.frozen {
@@ -135,13 +136,13 @@ type mapEntry struct {
 	val Object
 }
 
-func (tm *TransientMap) ToString(escape bool) string   { return "#<transient-map>" }
-func (tm *TransientMap) Equals(other interface{}) bool { return tm == other }
-func (tm *TransientMap) GetInfo() *ObjectInfo          { return nil }
-func (tm *TransientMap) WithInfo(*ObjectInfo) Object   { return tm }
-func (tm *TransientMap) GetType() *Type                { return TYPE.ArrayMap }
-func (tm *TransientMap) Hash() uint32                  { return 0 }
-func (tm *TransientMap) Count() int                    { return tm.count }
+func (tm *TransientMap) ToString(escape bool) string           { return "#<transient-map>" }
+func (tm *TransientMap) Equals(other interface{}) bool         { return tm == other }
+func (tm *TransientMap) GetInfo() *coretypes.ObjectInfo        { return nil }
+func (tm *TransientMap) WithInfo(*coretypes.ObjectInfo) Object { return tm }
+func (tm *TransientMap) GetType() *Type                        { return TYPE.ArrayMap }
+func (tm *TransientMap) Hash() uint32                          { return 0 }
+func (tm *TransientMap) Count() int                            { return tm.count }
 
 func (tm *TransientMap) checkFrozen() {
 	if tm.frozen {

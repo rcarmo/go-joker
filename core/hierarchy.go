@@ -7,6 +7,7 @@ package core
 // is stored as a var and used by default for isa?/derive/underive.
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"sync"
 	"unsafe"
 
@@ -15,7 +16,7 @@ import (
 
 // Hierarchy represents a Clojure hierarchy.
 type Hierarchy struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	mu         sync.RWMutex
 	parents    map[string]map[string]bool // child key → set of parent keys
@@ -35,8 +36,8 @@ func (h *Hierarchy) ToString(escape bool) string   { return "#object[Hierarchy]"
 func (h *Hierarchy) Equals(other interface{}) bool { return h == other }
 func (h *Hierarchy) GetType() *Type                { return TYPE.Fn }
 func (h *Hierarchy) Hash() uint32                  { return hashutil.Ptr(uintptr(unsafe.Pointer(h))) }
-func (h *Hierarchy) WithInfo(info *ObjectInfo) Object {
-	h.info = info
+func (h *Hierarchy) WithInfo(info *coretypes.ObjectInfo) Object {
+	h.Info = info
 	return h
 }
 func (h *Hierarchy) WithMeta(m Map) Object {

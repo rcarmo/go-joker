@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/bufferpool"
@@ -13,11 +14,11 @@ import (
 type (
 	Traceable interface {
 		Name() string
-		Pos() Position
+		Pos() coretypes.Position
 	}
 	EvalError struct {
 		msg  string
-		pos  Position
+		pos  coretypes.Position
 		rt   *goroutineRT
 		hash uint32
 	}
@@ -64,7 +65,7 @@ func (rt *Runtime) NewArgTypeError(index int, obj Object, expectedType string) *
 	return rt.NewError(fmt.Sprintf("Arg[%d] of %s must have type %s, got %s", index, name, expectedType, obj.GetType().ToString(false)))
 }
 
-func (rt *Runtime) NewErrorWithPos(msg string, pos Position) *EvalError {
+func (rt *Runtime) NewErrorWithPos(msg string, pos coretypes.Position) *EvalError {
 	grt := cloneGRT()
 	return &EvalError{
 		msg: msg,
@@ -81,17 +82,17 @@ func (rt *Runtime) stacktrace() string {
 func (grt *goroutineRT) stacktrace() string {
 	b := bufferpool.Get()
 	defer bufferpool.Put(b)
-	pos := Position{}
+	pos := coretypes.Position{}
 	if grt.currentExpr != nil {
 		pos = grt.currentExpr.Pos()
 	}
 	name := "global"
 	for _, f := range grt.callstack.frames {
 		framePos := f.traceable.Pos()
-		b.WriteString(fmt.Sprintf("  %s %s:%d:%d\n", name, framePos.Filename(), framePos.startLine, framePos.startColumn))
+		b.WriteString(fmt.Sprintf("  %s %s:%d:%d\n", name, framePos.FilenameOrUnknown(), framePos.StartLine, framePos.StartColumn))
 		name = corestr.TrimVarQuotePrefix(f.traceable.Name())
 	}
-	b.WriteString(fmt.Sprintf("  %s %s:%d:%d", name, pos.Filename(), pos.startLine, pos.startColumn))
+	b.WriteString(fmt.Sprintf("  %s %s:%d:%d", name, pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn))
 	return b.String()
 }
 
@@ -273,7 +274,7 @@ func (s *Callstack) String() string {
 	defer bufferpool.Put(b)
 	for _, f := range s.frames {
 		pos := f.traceable.Pos()
-		b.WriteString(fmt.Sprintf("%s %s:%d:%d\n", f.traceable.Name(), pos.Filename(), pos.startLine, pos.startColumn))
+		b.WriteString(fmt.Sprintf("%s %s:%d:%d\n", f.traceable.Name(), pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn))
 	}
 	if b.Len() > 0 {
 		b.Truncate(b.Len() - 1)
@@ -281,7 +282,7 @@ func (s *Callstack) String() string {
 	return b.String()
 }
 
-func MakeEvalError(msg string, pos Position, grt *goroutineRT) *EvalError {
+func MakeEvalError(msg string, pos coretypes.Position, grt *goroutineRT) *EvalError {
 	res := &EvalError{msg, pos, grt, 0}
 	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(res)))
 	return res
@@ -295,7 +296,7 @@ func (err *EvalError) Equals(other interface{}) bool {
 	return err == other
 }
 
-func (err *EvalError) GetInfo() *ObjectInfo {
+func (err *EvalError) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
@@ -307,7 +308,7 @@ func (err *EvalError) Hash() uint32 {
 	return err.hash
 }
 
-func (err *EvalError) WithInfo(info *ObjectInfo) Object {
+func (err *EvalError) WithInfo(info *coretypes.ObjectInfo) Object {
 	return err
 }
 
@@ -318,12 +319,12 @@ func (err *EvalError) Message() Object {
 func (err *EvalError) Error() string {
 	pos := err.pos
 	if len(err.rt.callstack.frames) > 0 && !LINTER_MODE {
-		return fmt.Sprintf("%s:%d:%d: Eval error: %s\nStacktrace:\n%s", pos.Filename(), pos.startLine, pos.startColumn, err.msg, err.rt.stacktrace())
+		return fmt.Sprintf("%s:%d:%d: Eval error: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, err.msg, err.rt.stacktrace())
 	} else {
 		if len(err.rt.callstack.frames) > 0 {
 			pos = err.rt.callstack.frames[0].traceable.Pos()
 		}
-		return fmt.Sprintf("%s:%d:%d: Eval error: %s", pos.Filename(), pos.startLine, pos.startColumn, err.msg)
+		return fmt.Sprintf("%s:%d:%d: Eval error: %s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, err.msg)
 	}
 }
 
@@ -416,9 +417,9 @@ func (expr *DefExpr) Eval(env *LocalEnv) Object {
 		}
 	}
 	meta := collectionConstruction.EmptyArrayMap()
-	meta.Add(KEYWORDS.line, Int{I: expr.startLine})
-	meta.Add(KEYWORDS.column, Int{I: expr.startColumn})
-	meta.Add(KEYWORDS.file, String{S: *expr.filename})
+	meta.Add(KEYWORDS.line, Int{I: expr.StartLine})
+	meta.Add(KEYWORDS.column, Int{I: expr.StartColumn})
+	meta.Add(KEYWORDS.file, String{S: *expr.Filename})
 	meta.Add(KEYWORDS.ns, expr.vr.ns)
 	meta.Add(KEYWORDS.name, expr.vr.name)
 	expr.vr.meta = meta

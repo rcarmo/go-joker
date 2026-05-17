@@ -2,160 +2,162 @@
 
 package core
 
-func (x *List) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
+func (x *List) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *ArrayMapSeq) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *ArrayMapSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *ArrayMap) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *ArrayMap) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *HashMap) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *HashMap) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *ExInfo) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *ExInfo) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *Fn) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *Fn) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *Var) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *Var) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x Nil) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x Nil) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *Ratio) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *Ratio) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *BigInt) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *BigInt) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *BigFloat) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *BigFloat) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x Char) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x Char) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x Double) WithInfo(info *ObjectInfo) Object {
+func (x Double) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 
-func (x Int) WithInfo(info *ObjectInfo) Object {
+func (x Int) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 
-func (x Boolean) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x Boolean) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x Time) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x Time) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x Keyword) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x Keyword) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *Regex) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *Regex) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x Symbol) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x Symbol) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x String) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x String) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x Comment) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x Comment) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *LazySeq) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *LazySeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *MappingSeq) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *MappingSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *ArraySeq) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *ArraySeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *ConsSeq) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *ConsSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *NodeSeq) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *NodeSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *ArrayNodeSeq) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *ArrayNodeSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *MapSet) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *MapSet) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *Vector) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *Vector) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *ArrayVector) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *ArrayVector) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *VectorSeq) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *VectorSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 
-func (x *VectorRSeq) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x *VectorRSeq) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }

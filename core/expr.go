@@ -1,5 +1,7 @@
 package core
 
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
 func (expr *LiteralExpr) InferType() *Type {
 	if expr.isSurrogate {
 		return nil
@@ -7,13 +9,13 @@ func (expr *LiteralExpr) InferType() *Type {
 	return expr.obj.GetType()
 }
 
-func dumpPosition(p Position) Map {
+func dumpPosition(p coretypes.Position) Map {
 	res := collectionConstruction.EmptyArrayMap()
-	res.Add(KEYWORDS.startLine, Int{I: p.startLine})
-	res.Add(KEYWORDS.endLine, Int{I: p.endLine})
-	res.Add(KEYWORDS.startColumn, Int{I: p.startColumn})
-	res.Add(KEYWORDS.endColumn, Int{I: p.endColumn})
-	res.Add(KEYWORDS.filename, String{S: p.Filename()})
+	res.Add(KEYWORDS.startLine, Int{I: p.StartLine})
+	res.Add(KEYWORDS.endLine, Int{I: p.EndLine})
+	res.Add(KEYWORDS.startColumn, Int{I: p.StartColumn})
+	res.Add(KEYWORDS.endColumn, Int{I: p.EndColumn})
+	res.Add(KEYWORDS.filename, String{S: p.FilenameOrUnknown()})
 	return res
 }
 

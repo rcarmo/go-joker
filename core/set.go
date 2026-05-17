@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	corecollections "github.com/rcarmo/go-joker/core/collections"
@@ -14,7 +15,7 @@ type (
 		Disjoin(key Object) Set
 	}
 	MapSet struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		m Map
 	}

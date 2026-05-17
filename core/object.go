@@ -27,13 +27,6 @@ import (
 )
 
 type (
-	Position struct {
-		endLine     int
-		endColumn   int
-		startLine   int
-		startColumn int
-		filename    *string
-	}
 	Type struct {
 		MetaHolder
 		name        string
@@ -42,8 +35,8 @@ type (
 	Object interface {
 		coretypes.Equality
 		ToString(escape bool) string
-		GetInfo() *ObjectInfo
-		WithInfo(*ObjectInfo) Object
+		GetInfo() *coretypes.ObjectInfo
+		WithInfo(*coretypes.ObjectInfo) Object
 		GetType() *Type
 		Hash() uint32
 	}
@@ -71,15 +64,8 @@ type (
 	MetaHolder struct {
 		meta Map
 	}
-	ObjectInfo struct {
-		prefix string
-		Position
-	}
-	InfoHolder struct {
-		info *ObjectInfo
-	}
 	Char struct {
-		InfoHolder
+		coretypes.InfoHolder
 		Ch rune
 	}
 	Double struct {
@@ -89,59 +75,59 @@ type (
 		I int
 	}
 	BigInt struct {
-		InfoHolder
+		coretypes.InfoHolder
 		b        *big.Int
 		Original string
 	}
 	BigFloat struct {
-		InfoHolder
+		coretypes.InfoHolder
 		b        *big.Float
 		Original string
 	}
 	Ratio struct {
-		InfoHolder
+		coretypes.InfoHolder
 		r        *big.Rat
 		Original string
 	}
 	Boolean struct {
-		InfoHolder
+		coretypes.InfoHolder
 		B bool
 	}
 	Nil struct {
-		InfoHolder
+		coretypes.InfoHolder
 		n struct{}
 	}
 	Keyword struct {
-		InfoHolder
+		coretypes.InfoHolder
 		ns   *string
 		name *string
 		hash uint32
 	}
 	Symbol struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		ns   *string
 		name *string
 		hash uint32
 	}
 	String struct {
-		InfoHolder
+		coretypes.InfoHolder
 		S string
 	}
 	Comment struct {
-		InfoHolder
+		coretypes.InfoHolder
 		C string
 	}
 	Regex struct {
-		InfoHolder
+		coretypes.InfoHolder
 		R *regexp.Regexp
 	}
 	Time struct {
-		InfoHolder
+		coretypes.InfoHolder
 		T time.Time
 	}
 	Var struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		ns             *Namespace
 		name           Symbol
@@ -162,7 +148,7 @@ type (
 		Package string // "" for core (this package), else e.g. "std/string"
 	}
 	Fn struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		isMacro       bool
 		fnExpr        *FnExpr
@@ -318,13 +304,6 @@ type stringSeq struct {
 	off int
 }
 
-func (pos Position) Filename() string {
-	if pos.filename == nil {
-		return "<file>"
-	}
-	return *pos.filename
-}
-
 func newIteratorError() error {
 	return errors.New("Iterator reached the end of collection")
 }
@@ -456,7 +435,7 @@ func (a *Atom) Equals(other interface{}) bool {
 	return a == other
 }
 
-func (a *Atom) GetInfo() *ObjectInfo {
+func (a *Atom) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
@@ -468,7 +447,7 @@ func (a *Atom) Hash() uint32 {
 	return hashutil.Ptr(uintptr(unsafe.Pointer(a)))
 }
 
-func (a *Atom) WithInfo(info *ObjectInfo) Object {
+func (a *Atom) WithInfo(info *coretypes.ObjectInfo) Object {
 	return a
 }
 
@@ -504,7 +483,7 @@ func (d *Delay) Equals(other interface{}) bool {
 	return d == other
 }
 
-func (d *Delay) GetInfo() *ObjectInfo {
+func (d *Delay) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
@@ -516,7 +495,7 @@ func (d *Delay) Hash() uint32 {
 	return hashutil.Ptr(uintptr(unsafe.Pointer(d)))
 }
 
-func (d *Delay) WithInfo(info *ObjectInfo) Object {
+func (d *Delay) WithInfo(info *coretypes.ObjectInfo) Object {
 	return d
 }
 
@@ -548,7 +527,7 @@ func (t *Type) Equals(other interface{}) bool {
 	return t == other
 }
 
-func (t *Type) GetInfo() *ObjectInfo {
+func (t *Type) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
@@ -568,7 +547,7 @@ func (rb RecurBindings) Equals(other interface{}) bool {
 	return false
 }
 
-func (rb RecurBindings) GetInfo() *ObjectInfo {
+func (rb RecurBindings) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
@@ -604,7 +583,7 @@ func (exInfo *ExInfo) Message() Object {
 }
 
 func (exInfo *ExInfo) Error() string {
-	var pos Position
+	var pos coretypes.Position
 	_, data := exInfo.Get(KEYWORDS.data)
 	ok, form := data.(Map).Get(KEYWORDS.form)
 	if ok {
@@ -618,9 +597,9 @@ func (exInfo *ExInfo) Error() string {
 	}
 	_, msg := exInfo.Get(KEYWORDS.message)
 	if len(exInfo.rt.callstack.frames) > 0 && !LINTER_MODE {
-		return fmt.Sprintf("%s:%d:%d: %s: %s\nStacktrace:\n%s", pos.Filename(), pos.startLine, pos.startColumn, prefix, msg.(String).S, exInfo.rt.stacktrace())
+		return fmt.Sprintf("%s:%d:%d: %s: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(String).S, exInfo.rt.stacktrace())
 	} else {
-		return fmt.Sprintf("%s:%d:%d: %s: %s", pos.Filename(), pos.startLine, pos.startColumn, prefix, msg.(String).S)
+		return fmt.Sprintf("%s:%d:%d: %s: %s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(String).S)
 	}
 }
 
@@ -847,11 +826,11 @@ func (p Proc) Equals(other interface{}) bool {
 	return false
 }
 
-func (p Proc) GetInfo() *ObjectInfo {
+func (p Proc) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
-func (p Proc) WithInfo(*ObjectInfo) Object {
+func (p Proc) WithInfo(*coretypes.ObjectInfo) Object {
 	return p
 }
 
@@ -861,10 +840,6 @@ func (p Proc) GetType() *Type {
 
 func (p Proc) Hash() uint32 {
 	return hashutil.Ptr(reflect.ValueOf(p.Fn).Pointer())
-}
-
-func (i InfoHolder) GetInfo() *ObjectInfo {
-	return i.info
 }
 
 func (m MetaHolder) GetMeta() Map {
@@ -1238,7 +1213,7 @@ func MakeDouble(d float64) Double {
 	return Double{D: d}
 }
 
-func (d Double) GetInfo() *ObjectInfo { return nil }
+func (d Double) GetInfo() *coretypes.ObjectInfo { return nil }
 
 func (d Double) ToString(escape bool) string {
 	dbl := d.D
@@ -1282,7 +1257,7 @@ func (d Double) Compare(other Object) int {
 	return CompareNumbers(d, EnsureObjectIsNumber(other, "Cannot compare Double: %s"))
 }
 
-func (i Int) GetInfo() *ObjectInfo { return nil }
+func (i Int) GetInfo() *coretypes.ObjectInfo { return nil }
 
 func (i Int) ToString(escape bool) string {
 	return corestr.Int(i.I)
@@ -1645,10 +1620,10 @@ func (seq *stringSeq) ToString(escape bool) string {
 	return SeqToString(seq, escape)
 }
 
-func (seq *stringSeq) GetInfo() *ObjectInfo             { return nil }
-func (seq *stringSeq) WithInfo(info *ObjectInfo) Object { return seq }
-func (seq *stringSeq) GetType() *Type                   { return TYPE.StringSeq }
-func (seq *stringSeq) Hash() uint32                     { return hashOrdered(seq) }
+func (seq *stringSeq) GetInfo() *coretypes.ObjectInfo             { return nil }
+func (seq *stringSeq) WithInfo(info *coretypes.ObjectInfo) Object { return seq }
+func (seq *stringSeq) GetType() *Type                             { return TYPE.StringSeq }
+func (seq *stringSeq) Hash() uint32                               { return hashOrdered(seq) }
 func (seq *stringSeq) WithMeta(meta Map) Object {
 	// stringSeq has no meta; return as-is like other minimal seqs
 	return seq
@@ -1757,11 +1732,11 @@ func IsSeq(obj Object) bool {
 	}
 }
 
-func (x *Type) WithInfo(info *ObjectInfo) Object {
+func (x *Type) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 
-func (x RecurBindings) WithInfo(info *ObjectInfo) Object {
+func (x RecurBindings) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 

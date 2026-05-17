@@ -1,6 +1,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 	"regexp"
@@ -148,22 +149,22 @@ func (ReaderConstructionAdapter) SurrogateExpr(obj Object) *LiteralExpr {
 	return NewSurrogateExpr(obj)
 }
 
-func (ReaderConstructionAdapter) VectorExpr(elements []Expr, pos Position) *VectorExpr {
+func (ReaderConstructionAdapter) VectorExpr(elements []Expr, pos coretypes.Position) *VectorExpr {
 	return &VectorExpr{v: elements, Position: pos}
 }
 
-func (ReaderConstructionAdapter) MapExpr(size int, pos Position) *MapExpr {
+func (ReaderConstructionAdapter) MapExpr(size int, pos coretypes.Position) *MapExpr {
 	return &MapExpr{keys: make([]Expr, size), values: make([]Expr, size), Position: pos}
 }
 
-func (ReaderConstructionAdapter) SetExpr(size int, pos Position) *SetExpr {
+func (ReaderConstructionAdapter) SetExpr(size int, pos coretypes.Position) *SetExpr {
 	return &SetExpr{elements: make([]Expr, size), Position: pos}
 }
 
-func (ReaderConstructionAdapter) SetExprFrom(elements []Expr, pos Position) *SetExpr {
+func (ReaderConstructionAdapter) SetExprFrom(elements []Expr, pos coretypes.Position) *SetExpr {
 	return &SetExpr{elements: elements, Position: pos}
 }
 
-func (ReaderConstructionAdapter) MapExprFrom(keys []Expr, values []Expr, pos Position) *MapExpr {
+func (ReaderConstructionAdapter) MapExprFrom(keys []Expr, values []Expr, pos coretypes.Position) *MapExpr {
 	return &MapExpr{keys: keys, values: values, Position: pos}
 }

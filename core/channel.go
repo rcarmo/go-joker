@@ -1,6 +1,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
@@ -38,7 +39,7 @@ func (ch *Channel) Equals(other interface{}) bool {
 	return ch == other
 }
 
-func (ch *Channel) GetInfo() *ObjectInfo {
+func (ch *Channel) GetInfo() *coretypes.ObjectInfo {
 	return nil
 }
 
@@ -50,7 +51,7 @@ func (ch *Channel) Hash() uint32 {
 	return ch.hash
 }
 
-func (ch *Channel) WithInfo(info *ObjectInfo) Object {
+func (ch *Channel) WithInfo(info *coretypes.ObjectInfo) Object {
 	return ch
 }
 

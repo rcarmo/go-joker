@@ -27,8 +27,8 @@ func seqFirstAfterSpace(seq Seq, w io.Writer, indent int, insideDefRecord bool) 
 		// inside defrecord
 		if s, ok := obj.(Seq); ok && !obj.Equals(NIL) {
 			if info := obj.GetInfo(); info != nil {
-				fmt.Fprint(w, info.prefix)
-				indent += utf8.RuneCountInString(info.prefix)
+				fmt.Fprint(w, info.Prefix)
+				indent += utf8.RuneCountInString(info.Prefix)
 			}
 			indent = formatSeqEx(s, w, indent+1, insideDefRecord)
 		} else {
@@ -57,8 +57,8 @@ func seqFirstAfterBreak(prevObj Object, seq Seq, w io.Writer, indent int, inside
 		// inside defrecord
 		if s, ok := obj.(Seq); ok && !obj.Equals(NIL) {
 			if info := obj.GetInfo(); info != nil {
-				fmt.Fprint(w, info.prefix)
-				indent += utf8.RuneCountInString(info.prefix)
+				fmt.Fprint(w, info.Prefix)
+				indent += utf8.RuneCountInString(info.Prefix)
 			}
 			indent = formatSeqEx(s, w, indent, insideDefRecord)
 		} else {
@@ -155,7 +155,7 @@ func isBodyIndent(obj Object) bool {
 
 func isNewLine(obj, nextObj Object) bool {
 	info, nextInfo := obj.GetInfo(), nextObj.GetInfo()
-	return !(info == nil || nextInfo == nil || info.endLine == nextInfo.startLine)
+	return !(info == nil || nextInfo == nil || info.EndLine == nextInfo.StartLine)
 }
 
 func newLineCount(obj, nextObj Object) int {
@@ -163,7 +163,7 @@ func newLineCount(obj, nextObj Object) int {
 	if info == nil || nextInfo == nil {
 		return 0
 	}
-	return nextInfo.startLine - info.endLine
+	return nextInfo.StartLine - info.EndLine
 }
 
 func formatSeq(seq Seq, w io.Writer, indent int) int {
@@ -220,7 +220,7 @@ func sortRequire(seq Seq) Seq {
 
 func formatSeqEx(seq Seq, w io.Writer, indent int, formatAsDef bool) int {
 	if info := seq.GetInfo(); info != nil {
-		if info.prefix == "#?" || info.prefix == "#?@" {
+		if info.Prefix == "#?" || info.Prefix == "#?@" {
 			return formatSeqSimple(seq, w, indent)
 		}
 	}

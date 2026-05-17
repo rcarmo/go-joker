@@ -25,25 +25,25 @@ type (
 		seq Seq
 	}
 	ConsSeq struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		first Object
 		rest  Seq
 	}
 	ArraySeq struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		arr   []Object
 		index int
 	}
 	LazySeq struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		fn  Callable
 		seq Seq
 	}
 	MappingSeq struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		seq Seq
 		fn  func(obj Object) Object

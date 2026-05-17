@@ -25,7 +25,7 @@ type (
 		Callable
 	}
 	Vector struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		root  []interface{}
 		tail  []interface{}
@@ -33,13 +33,13 @@ type (
 		shift uint
 	}
 	VectorSeq struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		vector CountedIndexed
 		index  int
 	}
 	VectorRSeq struct {
-		InfoHolder
+		coretypes.InfoHolder
 		MetaHolder
 		vector CountedIndexed
 		index  int

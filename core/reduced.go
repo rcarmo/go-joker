@@ -1,5 +1,7 @@
 package core
 
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
 // reduced.go — Proper Reduced type for transducer early termination.
 //
 // In Clojure, (reduced x) wraps x in a Reduced box that signals
@@ -8,7 +10,7 @@ package core
 
 // Reduced wraps a value to signal early termination in reduce/transduce.
 type Reduced struct {
-	InfoHolder
+	coretypes.InfoHolder
 	MetaHolder
 	Val Object
 }
@@ -32,9 +34,9 @@ func (r *Reduced) Hash() uint32 {
 	return r.Val.Hash() ^ 0xDEADBEEF
 }
 
-func (r *Reduced) WithInfo(info *ObjectInfo) Object {
+func (r *Reduced) WithInfo(info *coretypes.ObjectInfo) Object {
 	res := *r
-	res.info = info
+	res.Info = info
 	return &res
 }
 
