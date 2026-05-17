@@ -1,5 +1,7 @@
 package core
 
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
 // protocol_init.go — Register defprotocol, extend-type, extend-protocol, satisfies?
 // as runtime procs/macros in the core namespace.
 
@@ -21,7 +23,7 @@ func registerProtocolProcs() {
 		if !ok {
 			panic(RT.NewError("First argument to satisfies? must be a Protocol"))
 		}
-		return MakeBoolean(Satisfies(proto, args[1]))
+		return coretypes.MakeBoolean(Satisfies(proto, args[1]))
 	}}
 	referToUser(MakeSymbol("satisfies?"), satVr)
 
@@ -33,7 +35,7 @@ func registerProtocolProcs() {
 		if !ok {
 			panic(RT.NewError("First argument to extends? must be a Protocol"))
 		}
-		return MakeBoolean(Satisfies(proto, args[1]))
+		return coretypes.MakeBoolean(Satisfies(proto, args[1]))
 	}}
 	referToUser(MakeSymbol("extends?"), extVr)
 

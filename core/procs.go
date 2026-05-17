@@ -1783,9 +1783,9 @@ var procSend = func(args []Object) (obj Object) {
 		panic(RT.NewError("Can't put nil on channel"))
 	}
 	if ch.IsClosed() {
-		return MakeBoolean(false)
+		return coretypes.MakeBoolean(false)
 	}
-	return MakeBoolean(ch.Send(v))
+	return coretypes.MakeBoolean(ch.Send(v))
 }
 
 var procReceive = func(args []Object) Object {
@@ -1830,7 +1830,7 @@ var procGo = func(args []Object) Object {
 
 var procVerbosityLevel = func(args []Object) Object {
 	CheckArity(args, 0, 0)
-	return MakeInt(VerbosityLevel)
+	return coretypes.MakeInt(VerbosityLevel)
 }
 
 var procExit = func(args []Object) Object {
@@ -2114,7 +2114,7 @@ var procIsNamespaceInitialized = func(args []Object) Object {
 	}
 	// First look for registered (e.g. std) libs
 	ns, found := GLOBAL_ENV.Namespaces[sym.name]
-	return MakeBoolean(found && ns.Lazy == nil)
+	return coretypes.MakeBoolean(found && ns.Lazy == nil)
 }
 
 func findConfigFile(filename string, workingDir string, findDir bool) string {

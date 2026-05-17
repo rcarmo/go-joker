@@ -1,5 +1,7 @@
 package core
 
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
 // hierarchy_init.go — Register derive, underive, isa?, ancestors, descendants, parents, make-hierarchy.
 
 func init() {
@@ -67,13 +69,13 @@ func registerHierarchyProcs() {
 	isaVr.Value = Proc{Name: "procIsaQ", Fn: func(args []Object) Object {
 		switch len(args) {
 		case 2:
-			return MakeBoolean(globalHierarchy.IsA(args[0], args[1]))
+			return coretypes.MakeBoolean(globalHierarchy.IsA(args[0], args[1]))
 		case 3:
 			h, ok := args[0].(*Hierarchy)
 			if !ok {
 				panic(RT.NewError("First argument to 3-arity isa? must be a hierarchy"))
 			}
-			return MakeBoolean(h.IsA(args[1], args[2]))
+			return coretypes.MakeBoolean(h.IsA(args[1], args[2]))
 		default:
 			PanicArityMinMax(len(args), 2, 3)
 			return NIL

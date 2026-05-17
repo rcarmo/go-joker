@@ -375,7 +375,7 @@ func installTransducerCompat() {
 	reducedQVr := ns.Intern(MakeSymbol("reduced?"))
 	reducedQVr.Value = Proc{Name: "procReducedQ", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
-		return MakeBoolean(IsReduced(args[0]))
+		return coretypes.MakeBoolean(IsReduced(args[0]))
 	}}
 	referToUser(MakeSymbol("reduced?"), reducedQVr)
 

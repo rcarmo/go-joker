@@ -1,5 +1,7 @@
 package core
 
+import coretypes "github.com/rcarmo/go-joker/core/types"
+
 // record_init.go — Register __defrecord and record constructors.
 
 func init() {
@@ -17,7 +19,7 @@ func registerRecordProcs() {
 	recordQVr.Value = Proc{Name: "procRecordQ", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		_, ok := args[0].(*Record)
-		return MakeBoolean(ok)
+		return coretypes.MakeBoolean(ok)
 	}}
 	referToUser(MakeSymbol("record?"), recordQVr)
 

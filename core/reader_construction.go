@@ -99,7 +99,7 @@ func (ReaderConstructionAdapter) SetLiteral(reader *Reader, values []Object) Obj
 	return set
 }
 
-func (ReaderConstructionAdapter) Double(v float64) Object { return MakeDouble(v) }
+func (ReaderConstructionAdapter) Double(v float64) Object { return coretypes.MakeDouble(v) }
 
 func (ReaderConstructionAdapter) BigInt(v *big.Int, original string) Object {
 	return &BigInt{b: v, Original: original}

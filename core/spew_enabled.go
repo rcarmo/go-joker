@@ -11,7 +11,7 @@ import (
 )
 
 var procGoSpew = func(args []Object) (res Object) {
-	res = MakeBoolean(false)
+	res = coretypes.MakeBoolean(false)
 	CheckArity(args, 1, 2)
 	defer func() {
 		if r := recover(); r != nil {
@@ -56,5 +56,5 @@ var procGoSpew = func(args []Object) (res Object) {
 		}
 	}
 	scs.Fdump(Stderr, args[0])
-	return MakeBoolean(true)
+	return coretypes.MakeBoolean(true)
 }

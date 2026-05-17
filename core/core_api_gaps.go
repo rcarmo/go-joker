@@ -3,6 +3,7 @@ package core
 // core_api_gaps.go — Fills remaining core API gaps from divergence matrix.
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -113,7 +114,7 @@ func registerCoreAPIGaps() {
 	vqVr.Value = Proc{Name: "procVarQ", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		_, ok := args[0].(*Var)
-		return MakeBoolean(ok)
+		return coretypes.MakeBoolean(ok)
 	}}
 	referToUser(MakeSymbol("var?"), vqVr)
 }

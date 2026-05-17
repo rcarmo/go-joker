@@ -231,7 +231,7 @@ func registerChunkedSeqProcs() {
 		csqVr.Value = Proc{Name: "procChunkedSeqQ", Fn: func(args []Object) Object {
 			CheckArity(args, 1, 1)
 			_, ok := args[0].(*ChunkedCons)
-			return MakeBoolean(ok)
+			return coretypes.MakeBoolean(ok)
 		}}
 	}
 }

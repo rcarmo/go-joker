@@ -6,7 +6,10 @@ package core
 // Not a true balanced tree — O(n log n) creation, O(n) lookup.
 // Sufficient for parity; can be upgraded to a tree later.
 
-import "sort"
+import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	"sort"
+)
 
 var sortedMetaCache Map
 
@@ -86,7 +89,7 @@ func registerSortedCollProcs() {
 			meta := m.GetMeta()
 			if meta != nil {
 				if ok, v := meta.Get(MakeKeyword("sorted")); ok {
-					return MakeBoolean(ToBool(v))
+					return coretypes.MakeBoolean(ToBool(v))
 				}
 			}
 		}

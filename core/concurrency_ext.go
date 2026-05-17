@@ -100,7 +100,7 @@ func installConcurrencyExt() {
 	fqVr.Value = Proc{Name: "procFutureQ", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		_, ok := args[0].(*Future)
-		return MakeBoolean(ok)
+		return coretypes.MakeBoolean(ok)
 	}}
 	referToUser(MakeSymbol("future?"), fqVr)
 
@@ -132,7 +132,7 @@ func installConcurrencyExt() {
 	pqVr.Value = Proc{Name: "procPromiseQ", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		_, ok := args[0].(*Promise)
-		return MakeBoolean(ok)
+		return coretypes.MakeBoolean(ok)
 	}}
 	referToUser(MakeSymbol("promise?"), pqVr)
 
@@ -141,7 +141,7 @@ func installConcurrencyExt() {
 	rzVr.Value = Proc{Name: "procRealizedQ", Fn: func(args []Object) Object {
 		CheckArity(args, 1, 1)
 		if p, ok := args[0].(coretypes.Pending); ok {
-			return MakeBoolean(p.IsRealized())
+			return coretypes.MakeBoolean(p.IsRealized())
 		}
 		return Boolean{B: false}
 	}}
@@ -271,7 +271,7 @@ func procAlts(args []Object) Object {
 				ch := EnsureObjectIsChannel(ci.At(0), "alts! put port first element must be a channel")
 				if ch.IsClosed() {
 					// Clojure-like semantics: put on closed channel returns false immediately.
-					return collectionConstruction.NewVectorFrom(MakeBoolean(false), ch)
+					return collectionConstruction.NewVectorFrom(coretypes.MakeBoolean(false), ch)
 				}
 				val := ci.At(1)
 				cases = append(cases, reflect.SelectCase{
@@ -306,7 +306,7 @@ func procAlts(args []Object) Object {
 	info := infos[chosen]
 	if info.isPut {
 		// Put completed.
-		return collectionConstruction.NewVectorFrom(MakeBoolean(true), info.ch)
+		return collectionConstruction.NewVectorFrom(coretypes.MakeBoolean(true), info.ch)
 	}
 	// Take completed.
 	if !recvOK {

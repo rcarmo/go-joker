@@ -88,9 +88,9 @@ func FileInfoMap(name string, info os.FileInfo) Map {
 	m := collectionConstruction.NewEmptyArrayMap()
 	m.Add(MakeKeyword("name"), MakeString(name))
 	m.Add(MakeKeyword("size"), intOrBigInt(big.NewInt(info.Size())))
-	m.Add(MakeKeyword("mode"), MakeInt(int(info.Mode())))
-	m.Add(MakeKeyword("modtime"), MakeTime(info.ModTime()))
-	m.Add(MakeKeyword("dir?"), MakeBoolean(info.IsDir()))
+	m.Add(MakeKeyword("mode"), coretypes.MakeInt(int(info.Mode())))
+	m.Add(MakeKeyword("modtime"), coretypes.MakeTime(info.ModTime()))
+	m.Add(MakeKeyword("dir?"), coretypes.MakeBoolean(info.IsDir()))
 	return m
 }
 

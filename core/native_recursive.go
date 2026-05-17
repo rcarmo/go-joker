@@ -1,15 +1,13 @@
 package core
 
-// native_recursive.go — coretypes.Native Go code generation for pure-integer recursive fns.
+// native_recursive.go — Native Go code generation for pure-integer recursive fns.
 //
 // When a fn body contains only integer arithmetic, comparisons, and self-recursive
 // calls (no collections, strings, or other types), we compile to fixed-arity
 // native Go functions that run without Object boxing, interface dispatch, or
 // slice allocation per call.
 
-import (
-	"sync"
-)
+import "sync"
 
 // nativeIntFn1 through nativeIntFn3 are typed native function signatures.
 type nativeIntFn1 func(a int) int

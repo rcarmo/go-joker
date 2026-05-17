@@ -144,10 +144,10 @@ func procAsyncPutBang(args []Object) Object {
 		registerGoroutineRT()
 		ok := asyncSend(ch, v)
 		if cb != nil {
-			call1(cb, MakeBoolean(ok))
+			call1(cb, coretypes.MakeBoolean(ok))
 		}
 	}()
-	return MakeBoolean(!ch.IsClosed())
+	return coretypes.MakeBoolean(!ch.IsClosed())
 }
 
 func procAsyncTakeBang(args []Object) Object {

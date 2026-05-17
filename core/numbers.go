@@ -1,6 +1,7 @@
 package core
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	"strconv"
 )
@@ -64,10 +65,10 @@ var minIntBig = big.NewInt(int64(minInt))
 
 func intOrBigInt(b *big.Int) Number {
 	if strconv.IntSize == 64 && b.IsInt64() {
-		return MakeInt(int(b.Int64()))
+		return coretypes.MakeInt(int(b.Int64()))
 	}
 	if strconv.IntSize == 32 && b.Cmp(minIntBig) >= 0 && b.Cmp(maxIntBig) <= 0 {
-		return MakeInt(int(b.Int64()))
+		return coretypes.MakeInt(int(b.Int64()))
 	}
 	return &BigInt{b: new(big.Int).Set(b)}
 }
