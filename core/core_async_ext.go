@@ -81,7 +81,7 @@ func macroCoreAsyncGoLoop(args []Object) Object {
 	if len(args) < 3 {
 		panic(RT.NewError("go-loop requires bindings and body"))
 	}
-	return listObjs(MakeSymbol("go"), NewListFrom(append([]Object{MakeSymbol("loop"), args[2]}, args[3:]...)...))
+	return listObjs(MakeSymbol("go"), collectionConstruction.NewListFrom(append([]Object{MakeSymbol("loop"), args[2]}, args[3:]...)...))
 }
 func macroCoreAsyncThread(args []Object) Object {
 	if len(args) < 2 {

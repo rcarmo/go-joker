@@ -660,7 +660,7 @@ var procFormat = func(args []Object) Object {
 }
 
 var procList = func(args []Object) Object {
-	return NewListFrom(args...)
+	return collectionConstruction.NewListFrom(args...)
 }
 
 var procCons = func(args []Object) Object {
