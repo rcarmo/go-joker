@@ -84,7 +84,7 @@ func evalTailExpr(expr Expr, env *LocalEnv, self *Fn) Object {
 		}
 		// Not a self-call — evaluate normally
 		switch c := callable.(type) {
-		case Callable:
+		case coretypes.Callable:
 			args := evalSeq(e.args, env)
 			return c.Call(args)
 		default:

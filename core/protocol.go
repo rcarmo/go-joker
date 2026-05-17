@@ -31,9 +31,9 @@ type Protocol struct {
 // ProtocolMethod holds one method's signature and dispatch table.
 type ProtocolMethod struct {
 	name        string
-	arities     []int    // accepted arities (including 'this')
-	dispatch    sync.Map // type name (string) → Callable
-	defaultImpl Callable // nil or default implementation
+	arities     []int              // accepted arities (including 'this')
+	dispatch    sync.Map           // type name (string) → coretypes.Callable
+	defaultImpl coretypes.Callable // nil or default implementation
 }
 
 func (p *Protocol) ToString(escape bool) string {
@@ -63,14 +63,14 @@ func (p *Protocol) WithMeta(m Map) Object {
 }
 
 // lookupMethod finds the implementation of a method for a given object.
-func (pm *ProtocolMethod) lookupMethod(obj Object) Callable {
+func (pm *ProtocolMethod) lookupMethod(obj Object) coretypes.Callable {
 	typeName := typeNameOf(obj)
 	if fn, ok := pm.dispatch.Load(typeName); ok {
-		return fn.(Callable)
+		return fn.(coretypes.Callable)
 	}
 	// Try "Object" catch-all
 	if fn, ok := pm.dispatch.Load("Object"); ok {
-		return fn.(Callable)
+		return fn.(coretypes.Callable)
 	}
 	if pm.defaultImpl != nil {
 		return pm.defaultImpl
@@ -190,7 +190,7 @@ type ProtocolMethodDef struct {
 }
 
 // ExtendType extends a protocol's methods for a given type name.
-func ExtendType(proto *Protocol, typeName string, impls map[string]Callable) {
+func ExtendType(proto *Protocol, typeName string, impls map[string]coretypes.Callable) {
 	for methodName, impl := range impls {
 		pm, ok := proto.methods[methodName]
 		if !ok {

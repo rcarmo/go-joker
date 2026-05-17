@@ -10,10 +10,10 @@ import (
 // atomExtras holds validator and watches for an Atom.
 // Stored in a side table to avoid changing the Atom struct.
 type atomExtras struct {
-	validator Callable
+	validator coretypes.Callable
 	watches   map[string]struct {
 		key Object
-		fn  Callable
+		fn  coretypes.Callable
 	} // key.ToString → watch
 }
 
@@ -32,7 +32,7 @@ func getOrCreateAtomExtras(a *Atom) *atomExtras {
 	}
 	ext := &atomExtras{watches: make(map[string]struct {
 		key Object
-		fn  Callable
+		fn  coretypes.Callable
 	})}
 	atomExtrasMap.Store(a, ext)
 	return ext
@@ -115,7 +115,7 @@ func registerAtomExtProcs() {
 		ext := getOrCreateAtomExtras(a)
 		ext.watches[key.ToString(false)] = struct {
 			key Object
-			fn  Callable
+			fn  coretypes.Callable
 		}{key, fn}
 		return a
 	}}

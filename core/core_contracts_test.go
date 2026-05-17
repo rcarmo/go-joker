@@ -2450,7 +2450,7 @@ func TestExecutorFilesUseRuntimeExecutionAdapterForProgramState(t *testing.T) {
 			if strings.Contains(line, "RuntimeExecutionAdapter{}") {
 				t.Fatalf("%s:%d constructs ad-hoc runtime adapter instead of shared runtimeExec: %s", file, lineNo+1, strings.TrimSpace(line))
 			}
-			if strings.Contains(line, "currentGRT()") || strings.Contains(line, ".Call(") || strings.Contains(line, "(Callable)") {
+			if strings.Contains(line, "currentGRT()") || strings.Contains(line, ".Call(") || strings.Contains(line, "(coretypes.Callable)") {
 				t.Fatalf("%s:%d performs call/runtime dispatch instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
 			}
 			if strings.Contains(line, "*Fn") || strings.Contains(line, "irGetFnProg") || strings.Contains(line, "wasmGetFn") || strings.Contains(line, ".env") {
@@ -3088,9 +3088,9 @@ const jsonCursorParserScript = `
         (fn [s] (first (parse-value (string-cursor s))))))))
 `
 
-func getCursorJSONParser(tb testing.TB) Callable {
+func getCursorJSONParser(tb testing.TB) coretypes.Callable {
 	initStringCursorProcs()
-	return Eval(compileBenchExpr(tb, jsonCursorParserScript), nil).(Callable)
+	return Eval(compileBenchExpr(tb, jsonCursorParserScript), nil).(coretypes.Callable)
 }
 
 func TestCursorJSONCorrectness(t *testing.T) {

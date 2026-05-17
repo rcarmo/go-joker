@@ -50,7 +50,7 @@ func CountedIndexedCompare(v1, v2 coretypes.CountedIndexed) int {
 	})
 }
 
-func CountedIndexedKvreduce(v coretypes.CountedIndexed, c Callable, init Object) Object {
+func CountedIndexedKvreduce(v coretypes.CountedIndexed, c coretypes.Callable, init Object) Object {
 	return corecollections.IndexedKVReduce[Object](v, init, func(res Object, i int, value Object) Object {
 		return call3(c, res, coretypes.Int{I: i}, value)
 	})
@@ -64,13 +64,13 @@ func CountedIndexedFormat(v coretypes.CountedIndexed, w io.Writer, indent int) i
 	return corecollections.IndexedFormat[Object](v, w, indent, formatObject, maybeNewLine, isComment, writeIndent)
 }
 
-func CountedIndexedReduce(v coretypes.CountedIndexed, c Callable) Object {
+func CountedIndexedReduce(v coretypes.CountedIndexed, c coretypes.Callable) Object {
 	return corecollections.IndexedReduce[Object](v, func() Object { return call0(c) }, func(acc Object, value Object) Object {
 		return c.Call([]Object{acc, value})
 	})
 }
 
-func CountedIndexedReduceInit(v coretypes.CountedIndexed, c Callable, init Object) Object {
+func CountedIndexedReduceInit(v coretypes.CountedIndexed, c coretypes.Callable, init Object) Object {
 	return corecollections.IndexedReduceInit[Object](v, init, func(acc Object, value Object) Object {
 		return c.Call([]Object{acc, value})
 	})

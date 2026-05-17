@@ -128,7 +128,7 @@ func (RuntimeExecutionAdapter) CallArgs(argsSeq Object) ([]Object, bool) {
 }
 
 func (RuntimeExecutionAdapter) CallObject(fnObj Object, args []Object) (Object, bool) {
-	callable, ok := fnObj.(Callable)
+	callable, ok := fnObj.(coretypes.Callable)
 	if !ok {
 		return nil, false
 	}

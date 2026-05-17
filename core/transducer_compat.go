@@ -29,12 +29,12 @@ const (
 type xformStep struct {
 	kind      xformKind
 	intrinsic reducibleIntrinsic
-	fn        Callable
+	fn        coretypes.Callable
 	n         int
 }
 
 // XForm is an internal transducer pipeline representation.
-// It is also Callable, so it remains compatible with generic transducer use.
+// It is also coretypes.Callable, so it remains compatible with generic transducer use.
 type XForm struct {
 	coretypes.InfoHolder
 	MetaHolder
@@ -58,7 +58,7 @@ func (xf *XForm) Call(args []Object) Object {
 	return buildXFormRF(xf.steps, rf).(Object)
 }
 
-func buildXFormRF(steps []xformStep, rf Callable) Callable {
+func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
 	wrapped := rf
 	for i := len(steps) - 1; i >= 0; i-- {
 		step := steps[i]
@@ -128,7 +128,7 @@ func buildXFormRF(steps []xformStep, rf Callable) Callable {
 	return wrapped
 }
 
-func completeReducingFn(rf Callable, res Object) Object {
+func completeReducingFn(rf coretypes.Callable, res Object) Object {
 	completed := res
 	func() {
 		defer func() {
@@ -141,7 +141,7 @@ func completeReducingFn(rf Callable, res Object) Object {
 	return DerefReduced(completed)
 }
 
-func transduceInternal(xform Callable, reducingFnObj Object, init Object, collObj Object) Object {
+func transduceInternal(xform coretypes.Callable, reducingFnObj Object, init Object, collObj Object) Object {
 	if xf, ok := xform.(*XForm); ok {
 		return transducePipeline(xf, reducingFnObj, init, collObj)
 	}
@@ -163,7 +163,7 @@ func transduceInternal(xform Callable, reducingFnObj Object, init Object, collOb
 }
 
 func transducePipeline(xf *XForm, reducingFnObj Object, init Object, collObj Object) Object {
-	rf := EnsureObjectIsCallable(reducingFnObj, "transduce reducing function must be Callable, got %s")
+	rf := EnsureObjectIsCallable(reducingFnObj, "transduce reducing function must be coretypes.Callable, got %s")
 	if r, ok := collObj.(*IntRange); ok {
 		return transducePipelineRange(xf, rf, init, r)
 	}
@@ -217,7 +217,7 @@ func transducePipeline(xf *XForm, reducingFnObj Object, init Object, collObj Obj
 	return completeReducingFn(rf, res)
 }
 
-func transducePipelineRange(xf *XForm, rf Callable, init Object, r *IntRange) Object {
+func transducePipelineRange(xf *XForm, rf coretypes.Callable, init Object, r *IntRange) Object {
 	res := init
 	reducerName := hotReducerName(rf)
 	takeRemaining := -1
@@ -285,11 +285,11 @@ func applyXFormFilterStep(step xformStep, val Object) bool {
 	return ToBool(call1(step.fn, val))
 }
 
-func reduceStepFast(rf Callable, acc Object, val Object) Object {
+func reduceStepFast(rf coretypes.Callable, acc Object, val Object) Object {
 	return reduceStepFastByName(rf, hotReducerName(rf), acc, val)
 }
 
-func reduceStepFastByName(rf Callable, name string, acc Object, val Object) Object {
+func reduceStepFastByName(rf coretypes.Callable, name string, acc Object, val Object) Object {
 	switch name {
 	case "procAdd", "procunchecked-add", "procunchecked-add-int":
 		if a, ok := acc.(coretypes.Int); ok {
@@ -307,7 +307,7 @@ func reduceStepFastByName(rf Callable, name string, acc Object, val Object) Obje
 	return call2(rf, acc, val)
 }
 
-func makeMapTransducer(f Callable) Object {
+func makeMapTransducer(f coretypes.Callable) Object {
 	step := xformStep{kind: xformMap, fn: f}
 	if fn, ok := f.(*Fn); ok && isSquareFnExpr(fn.fnExpr) {
 		step.intrinsic = reducibleSquareInt
@@ -315,7 +315,7 @@ func makeMapTransducer(f Callable) Object {
 	return &XForm{steps: []xformStep{step}}
 }
 
-func makeFilterTransducer(pred Callable) Object {
+func makeFilterTransducer(pred coretypes.Callable) Object {
 	step := xformStep{kind: xformFilter, fn: pred}
 	if findFnVarNameCallable(pred) == "even?" {
 		step.intrinsic = reducibleEvenInt
@@ -346,7 +346,7 @@ func installTransducerCompat() {
 	// Fix reduce-kv to handle nil coll (returns init)
 	rkvVr := ns.Resolve("reduce-kv")
 	if rkvVr != nil {
-		origRKV, ok := rkvVr.Value.(Callable)
+		origRKV, ok := rkvVr.Value.(coretypes.Callable)
 		if ok {
 			rkvVr.Value = Proc{Name: "procReduceKvNilSafe", Fn: func(args []Object) Object {
 				if len(args) >= 3 {
@@ -402,7 +402,7 @@ func installTransducerCompat() {
 			PanicArityMinMax(len(args), 1, 2)
 		}
 		f := EnsureArgIsCallable(args, 0)
-		var cf Callable
+		var cf coretypes.Callable
 		if len(args) == 2 {
 			cf = EnsureArgIsCallable(args, 1)
 		} else {
@@ -436,11 +436,11 @@ func installTransducerCompat() {
 		return
 	}
 
-	mapOrig, mapOK := mapVr.Value.(Callable)
-	filterOrig, filterOK := filterVr.Value.(Callable)
-	takeOrig, takeOK := takeVr.Value.(Callable)
-	sequenceOrig, sequenceOK := sequenceVr.Value.(Callable)
-	compOrig, compOK := compVr.Value.(Callable)
+	mapOrig, mapOK := mapVr.Value.(coretypes.Callable)
+	filterOrig, filterOK := filterVr.Value.(coretypes.Callable)
+	takeOrig, takeOK := takeVr.Value.(coretypes.Callable)
+	sequenceOrig, sequenceOK := sequenceVr.Value.(coretypes.Callable)
+	compOrig, compOK := compVr.Value.(coretypes.Callable)
 	if !mapOK || !filterOK || !takeOK || !sequenceOK || !compOK {
 		return
 	}
@@ -559,7 +559,7 @@ func installTransducerCompat() {
 	// sequence 2-arity: (sequence xform coll) → lazy seq of eduction result
 	sequenceVr.Value = Proc{Name: "procSequenceCompat", Fn: func(args []Object) Object {
 		if len(args) == 2 {
-			res := eductionVr.Value.(Callable).Call(args)
+			res := eductionVr.Value.(coretypes.Callable).Call(args)
 			if s, ok := res.(Seqable); ok {
 				return s.Seq()
 			}

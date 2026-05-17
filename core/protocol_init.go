@@ -87,7 +87,7 @@ func registerProtocolProcs() {
 		if len(args[2:])%2 != 0 {
 			panic(RT.NewError("__extend-type method implementations must be name/function pairs"))
 		}
-		impls := make(map[string]Callable)
+		impls := make(map[string]coretypes.Callable)
 		i := 2
 		for i+1 < len(args) {
 			methodName := EnsureObjectIsString(args[i], "method name must be a string").S

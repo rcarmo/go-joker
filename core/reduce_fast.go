@@ -9,7 +9,7 @@ import (
 // ---- reduce_fast.go ----
 // reduce_fast.go — Seq-walking reduce fallback + IntRange creation at reduce time.
 
-func seqReduceInit(s Seq, f Callable, init Object) Object {
+func seqReduceInit(s Seq, f coretypes.Callable, init Object) Object {
 	acc := init
 	for !s.IsEmpty() {
 		acc = call2(f, acc, s.First())
@@ -21,7 +21,7 @@ func seqReduceInit(s Seq, f Callable, init Object) Object {
 	return acc
 }
 
-func seqReduce(s Seq, f Callable) Object {
+func seqReduce(s Seq, f coretypes.Callable) Object {
 	if s.IsEmpty() {
 		return f.Call(nil)
 	}
@@ -38,25 +38,25 @@ func seqReduce(s Seq, f Callable) Object {
 }
 
 // LazySeq Reduce support — implements the Reduce interface so (reduce f init lazy-seq) works.
-func (seq *LazySeq) reduce(f Callable) Object {
+func (seq *LazySeq) reduce(f coretypes.Callable) Object {
 	return seqReduce(seq.Seq(), f)
 }
 
-func (seq *LazySeq) reduceInit(f Callable, init Object) Object {
+func (seq *LazySeq) reduceInit(f coretypes.Callable, init Object) Object {
 	return seqReduceInit(seq.Seq(), f, init)
 }
 
 // ConsSeq Reduce support
-func (seq *ConsSeq) reduce(f Callable) Object {
+func (seq *ConsSeq) reduce(f coretypes.Callable) Object {
 	return seqReduce(seq, f)
 }
 
-func (seq *ConsSeq) reduceInit(f Callable, init Object) Object {
+func (seq *ConsSeq) reduceInit(f coretypes.Callable, init Object) Object {
 	return seqReduceInit(seq, f, init)
 }
 
 // MappingSeq Reduce support
-func (seq *MappingSeq) reduce(f Callable) Object {
+func (seq *MappingSeq) reduce(f coretypes.Callable) Object {
 	if seq.seq.IsEmpty() {
 		return call0(f)
 	}
@@ -72,7 +72,7 @@ func (seq *MappingSeq) reduce(f Callable) Object {
 	return acc
 }
 
-func (seq *MappingSeq) reduceInit(f Callable, init Object) Object {
+func (seq *MappingSeq) reduceInit(f coretypes.Callable, init Object) Object {
 	acc := init
 	cur := seq.seq
 	for !cur.IsEmpty() {
@@ -111,7 +111,7 @@ const (
 type reducibleStep struct {
 	kind      reducibleStepKind
 	intrinsic reducibleIntrinsic
-	fn        Callable
+	fn        coretypes.Callable
 	takeLimit int
 }
 
@@ -128,7 +128,7 @@ func evalReducePipelineFast(expr *CallExpr, env *LocalEnv) (Object, bool) {
 	}
 
 	reducerObj := Eval(expr.args[0], env)
-	reducer, ok := reducerObj.(Callable)
+	reducer, ok := reducerObj.(coretypes.Callable)
 	if !ok {
 		return nil, false
 	}
@@ -177,7 +177,7 @@ func compileReducibleRangePipeline(expr Expr, env *LocalEnv) (reducibleRangePipe
 			return inner, true
 		}
 		fnObj := Eval(call.args[0], env)
-		fn, ok := fnObj.(Callable)
+		fn, ok := fnObj.(coretypes.Callable)
 		if !ok {
 			return reducibleRangePipeline{}, false
 		}
@@ -195,7 +195,7 @@ func compileReducibleRangePipeline(expr Expr, env *LocalEnv) (reducibleRangePipe
 			return inner, true
 		}
 		fnObj := Eval(call.args[0], env)
-		fn, ok := fnObj.(Callable)
+		fn, ok := fnObj.(coretypes.Callable)
 		if !ok {
 			return reducibleRangePipeline{}, false
 		}
@@ -220,7 +220,7 @@ func compileReducibleRangePipeline(expr Expr, env *LocalEnv) (reducibleRangePipe
 	return reducibleRangePipeline{}, false
 }
 
-func reducePipelineNoInit(reducer Callable, p reducibleRangePipeline) (Object, bool) {
+func reducePipelineNoInit(reducer coretypes.Callable, p reducibleRangePipeline) (Object, bool) {
 	seen := false
 	var acc Object
 	_, stopped := walkReducibleRangePipeline(p, func(v Object) bool {
@@ -241,7 +241,7 @@ func reducePipelineNoInit(reducer Callable, p reducibleRangePipeline) (Object, b
 	return acc, true
 }
 
-func reducePipelineInit(reducer Callable, init Object, p reducibleRangePipeline) Object {
+func reducePipelineInit(reducer coretypes.Callable, init Object, p reducibleRangePipeline) Object {
 	acc := init
 	reducerName := hotReducerName(reducer)
 	_, stopped := walkReducibleRangePipeline(p, func(v Object) bool {
@@ -402,7 +402,7 @@ type FilteringSeq struct {
 	coretypes.InfoHolder
 	MetaHolder
 	seq  Seq
-	pred Callable
+	pred coretypes.Callable
 }
 
 type TakeSeq struct {
@@ -450,7 +450,7 @@ func (s *FilteringSeq) nextSeq() Seq {
 	return EmptyList
 }
 
-func (s *FilteringSeq) reduce(f Callable) Object {
+func (s *FilteringSeq) reduce(f coretypes.Callable) Object {
 	cur := s.seq
 	for !cur.IsEmpty() {
 		v := cur.First()
@@ -474,7 +474,7 @@ func (s *FilteringSeq) reduce(f Callable) Object {
 	return call0(f)
 }
 
-func (s *FilteringSeq) reduceInit(f Callable, init Object) Object {
+func (s *FilteringSeq) reduceInit(f coretypes.Callable, init Object) Object {
 	acc := init
 	cur := s.seq
 	for !cur.IsEmpty() {
@@ -512,7 +512,7 @@ func (s *TakeSeq) Rest() Seq {
 }
 func (s *TakeSeq) Cons(obj Object) Seq { return &ConsSeq{first: obj, rest: s} }
 
-func (s *TakeSeq) reduce(f Callable) Object {
+func (s *TakeSeq) reduce(f coretypes.Callable) Object {
 	if result, ok := s.reduceFused(f); ok {
 		return result
 	}
@@ -531,11 +531,11 @@ func (s *TakeSeq) reduce(f Callable) Object {
 	return acc
 }
 
-func (s *TakeSeq) reduceFused(f Callable) (Object, bool) {
+func (s *TakeSeq) reduceFused(f coretypes.Callable) (Object, bool) {
 	return nil, false
 }
 
-func (s *TakeSeq) reduceInit(f Callable, init Object) Object {
+func (s *TakeSeq) reduceInit(f coretypes.Callable, init Object) Object {
 	acc := init
 	cur := s.seq
 	for i := 0; i < s.n && !cur.IsEmpty(); i++ {
@@ -548,7 +548,7 @@ func (s *TakeSeq) reduceInit(f Callable, init Object) Object {
 	return acc
 }
 
-func chunkedMapSeq(f Callable, src Seq) Seq {
+func chunkedMapSeq(f coretypes.Callable, src Seq) Seq {
 	if src == nil || src.IsEmpty() {
 		return EmptyList
 	}
@@ -569,7 +569,7 @@ func chunkedMapSeq(f Callable, src Seq) Seq {
 	return &ChunkedCons{chunk: chunk, rest: rest, idx: 0}
 }
 
-func chunkedFilterSeq(pred Callable, src Seq) Seq {
+func chunkedFilterSeq(pred coretypes.Callable, src Seq) Seq {
 	cur := src
 	for {
 		if cur == nil || cur.IsEmpty() {
@@ -606,9 +606,9 @@ func maybeOverrideSeqOps() {
 	if mapVr == nil || filterVr == nil || takeVr == nil {
 		return
 	}
-	mapOrig, mapOK := mapVr.Value.(Callable)
-	filterOrig, filterOK := filterVr.Value.(Callable)
-	takeOrig, takeOK := takeVr.Value.(Callable)
+	mapOrig, mapOK := mapVr.Value.(coretypes.Callable)
+	filterOrig, filterOK := filterVr.Value.(coretypes.Callable)
+	takeOrig, takeOK := takeVr.Value.(coretypes.Callable)
 	if !mapOK || !filterOK || !takeOK {
 		return
 	}
@@ -809,7 +809,7 @@ func (r *IntRange) Count() int {
 	return 0
 }
 
-func (r *IntRange) reduce(f Callable) Object {
+func (r *IntRange) reduce(f coretypes.Callable) Object {
 	if r.isEmpty() {
 		return f.Call(nil)
 	}
@@ -826,7 +826,7 @@ func (r *IntRange) reduce(f Callable) Object {
 	return acc
 }
 
-func (r *IntRange) reduceInit(f Callable, init Object) Object {
+func (r *IntRange) reduceInit(f coretypes.Callable, init Object) Object {
 	if result, ok := r.reduceInitFast(f, init); ok {
 		return result
 	}
@@ -848,7 +848,7 @@ func (r *IntRange) contains(i int) bool {
 	return (r.step > 0 && i < r.end) || (r.step < 0 && i > r.end)
 }
 
-func (r *IntRange) reduceFast(f Callable) (Object, bool) {
+func (r *IntRange) reduceFast(f coretypes.Callable) (Object, bool) {
 	name := hotReducerName(f)
 	switch name {
 	case "procAdd", "procunchecked-add", "procunchecked-add-int":
@@ -883,7 +883,7 @@ func (r *IntRange) reduceFast(f Callable) (Object, bool) {
 	return nil, false
 }
 
-func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
+func (r *IntRange) reduceInitFast(f coretypes.Callable, init Object) (Object, bool) {
 	if result, ok := r.reduceMapAssocFast(f, init); ok {
 		return result, true
 	}
@@ -951,7 +951,7 @@ func (r *IntRange) reduceInitFast(f Callable, init Object) (Object, bool) {
 	return nil, false
 }
 
-func (r *IntRange) reduceMapAssocFast(f Callable, init Object) (Object, bool) {
+func (r *IntRange) reduceMapAssocFast(f coretypes.Callable, init Object) (Object, bool) {
 	fn, ok := f.(*Fn)
 	if !ok || fn == nil || fn.fnExpr == nil || len(fn.fnExpr.arities) != 1 || fn.fnExpr.variadic != nil {
 		return nil, false
@@ -992,7 +992,7 @@ func (r *IntRange) reduceMapAssocFast(f Callable, init Object) (Object, bool) {
 	return tm.ToPersistent(), true
 }
 
-func hotReducerName(f Callable) string {
+func hotReducerName(f coretypes.Callable) string {
 	switch c := f.(type) {
 	case Proc:
 		return c.Name
@@ -1015,7 +1015,7 @@ func hotReducerName(f Callable) string {
 	return ""
 }
 
-func findFnVarNameCallable(c Callable) string {
+func findFnVarNameCallable(c coretypes.Callable) string {
 	switch f := c.(type) {
 	case *Fn:
 		return findFnVarName(f)
@@ -1156,7 +1156,7 @@ func maybeOverrideRange() {
 	if p, ok := rangeVr.Value.(Proc); ok && p.Name == "procRangeFast" {
 		return
 	}
-	origRange, ok := rangeVr.Value.(Callable)
+	origRange, ok := rangeVr.Value.(coretypes.Callable)
 	if !ok {
 		return
 	}

@@ -60,7 +60,7 @@ type (
 	}
 	MacroCallExpr struct {
 		coretypes.Position
-		macro Callable
+		macro coretypes.Callable
 		args  []Object
 		name  string
 	}
@@ -130,9 +130,6 @@ type (
 	ParseError struct {
 		obj Object
 		msg string
-	}
-	Callable interface {
-		Call(args []Object) Object
 	}
 	Binding struct {
 		name         Symbol
@@ -284,27 +281,27 @@ type (
 	}
 )
 
-// coretypes.Stack-allocated helper calls for hot Callable paths.
+// coretypes.Stack-allocated helper calls for hot coretypes.Callable paths.
 // Avoids repeated []Object literal allocation at call sites such as reduce,
 // transducers, watches, and comparators.
-func call0(c Callable) Object {
+func call0(c coretypes.Callable) Object {
 	return c.Call(nil)
 }
 
-func call1(c Callable, a Object) Object {
+func call1(c coretypes.Callable, a Object) Object {
 	var args [1]Object
 	args[0] = a
 	return c.Call(args[:])
 }
 
-func call2(c Callable, a, b Object) Object {
+func call2(c coretypes.Callable, a, b Object) Object {
 	var args [2]Object
 	args[0] = a
 	args[1] = b
 	return c.Call(args[:])
 }
 
-func call3(c Callable, a, b, d Object) Object {
+func call3(c coretypes.Callable, a, b, d Object) Object {
 	var args [3]Object
 	args[0] = a
 	args[1] = b
@@ -312,7 +309,7 @@ func call3(c Callable, a, b, d Object) Object {
 	return c.Call(args[:])
 }
 
-func call4(c Callable, a, b, d, e Object) Object {
+func call4(c coretypes.Callable, a, b, d, e Object) Object {
 	var args [4]Object
 	args[0] = a
 	args[1] = b
@@ -1346,7 +1343,7 @@ func macroexpand1(seq Seq, ctx *ParseContext) Object {
 	if vr != nil {
 		expr := &MacroCallExpr{
 			Position: GetPosition(seq),
-			macro:    vr.Value.(Callable),
+			macro:    vr.Value.(coretypes.Callable),
 			args:     ToSlice(seq.Rest().Cons(ctx.localBindings.ToMap()).Cons(seq)),
 			name:     varCallableString(vr),
 		}
@@ -1600,7 +1597,7 @@ func checkCall(expr Expr, isMacro bool, call *CallExpr, pos coretypes.Position) 
 			printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to a set", argsCount))
 		}
 	case *LiteralExpr:
-		if _, ok := expr.obj.(Callable); !ok && !expr.isSurrogate {
+		if _, ok := expr.obj.(coretypes.Callable); !ok && !expr.isSurrogate {
 			reportNotAFunction(pos, call.Name())
 			return
 		}
@@ -1769,7 +1766,7 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 							Eval(res, nil)
 						}
 					}
-				case Callable:
+				case coretypes.Callable:
 					if m := c.vr.GetMeta(); m != nil {
 						if ok, arglist := m.Get(KEYWORDS.arglist); ok {
 							if arglist, ok := arglist.(Seq); ok {

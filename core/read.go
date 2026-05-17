@@ -816,7 +816,7 @@ func lookupDataReader(s Symbol) (Object, bool) {
 	return nil, false
 }
 
-func lookupDefaultDataReaderFn() (Callable, bool) {
+func lookupDefaultDataReaderFn() (coretypes.Callable, bool) {
 	vr := GLOBAL_ENV.CoreNamespace.Resolve(corereader.DefaultDataReaderFnVarName())
 	if vr == nil || vr.Value == nil || IsNil(vr.Value) {
 		return nil, false

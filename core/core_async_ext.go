@@ -136,7 +136,7 @@ func procAsyncPutBang(args []Object) Object {
 	}
 	ch := channelFromArg(args, 0)
 	v := args[1]
-	var cb Callable
+	var cb coretypes.Callable
 	if len(args) == 3 {
 		cb = EnsureArgIsCallable(args, 2)
 	}
@@ -423,7 +423,7 @@ func (m *asyncMult) Hash() uint32                          { return m.hash }
 type asyncPub struct {
 	mu      sync.Mutex
 	src     *Channel
-	topicFn Callable
+	topicFn coretypes.Callable
 	subs    map[string][]*Channel
 	hash    uint32
 }

@@ -173,19 +173,19 @@ func EnsureArgIsSeqable(args []Object, index int) Seqable {
 	panic(FailArg(obj, "Seqable", index))
 }
 
-func EnsureObjectIsCallable(obj Object, pattern string) Callable {
-	if c, yes := obj.(Callable); yes {
+func EnsureObjectIsCallable(obj Object, pattern string) coretypes.Callable {
+	if c, yes := obj.(coretypes.Callable); yes {
 		return c
 	}
-	panic(FailObject(obj, "Callable", pattern))
+	panic(FailObject(obj, "coretypes.Callable", pattern))
 }
 
-func EnsureArgIsCallable(args []Object, index int) Callable {
+func EnsureArgIsCallable(args []Object, index int) coretypes.Callable {
 	obj := args[index]
-	if c, yes := obj.(Callable); yes {
+	if c, yes := obj.(coretypes.Callable); yes {
 		return c
 	}
-	panic(FailArg(obj, "Callable", index))
+	panic(FailArg(obj, "coretypes.Callable", index))
 }
 
 func EnsureObjectIsType(obj Object, pattern string) *coretypes.Type {

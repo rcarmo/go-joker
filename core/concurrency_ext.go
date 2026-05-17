@@ -202,7 +202,7 @@ func installConcurrencyExt() {
 		panicCh := make(chan interface{}, len(args))
 		for i, arg := range args {
 			f := EnsureObjectIsCallable(arg, "pcalls requires callable arguments")
-			go func(idx int, fn Callable) {
+			go func(idx int, fn coretypes.Callable) {
 				registerGoroutineRT()
 				defer unregisterGoroutineRT()
 				defer func() {
@@ -389,7 +389,7 @@ type Agent struct {
 }
 
 type agentAction struct {
-	fn   Callable
+	fn   coretypes.Callable
 	args []Object
 }
 

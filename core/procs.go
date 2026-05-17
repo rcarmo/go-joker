@@ -27,7 +27,7 @@ import (
 
 const VERSION = "v42.8.2"
 
-func ExtractCallable(args []Object, index int) Callable {
+func ExtractCallable(args []Object, index int) coretypes.Callable {
 	return EnsureArgIsCallable(args, index)
 }
 

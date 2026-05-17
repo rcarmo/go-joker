@@ -57,6 +57,10 @@ type Deref interface {
 	Deref() Object
 }
 
+type Callable interface {
+	Call(args []Object) Object
+}
+
 type Conjable interface {
 	Object
 	Conj(obj Object) Conjable

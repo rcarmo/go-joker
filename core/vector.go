@@ -22,7 +22,7 @@ type (
 		Meta
 		Seqable
 		coretypes.Formatter
-		Callable
+		coretypes.Callable
 	}
 	Vector struct {
 		coretypes.InfoHolder
@@ -506,7 +506,7 @@ func (v *Vector) Empty() Collection {
 	return collectionConstruction.NewEmptyVector()
 }
 
-func (v *Vector) kvreduce(c Callable, init Object) Object {
+func (v *Vector) kvreduce(c coretypes.Callable, init Object) Object {
 	return CountedIndexedKvreduce(v, c, init)
 }
 
@@ -518,10 +518,10 @@ func (v *Vector) Format(w io.Writer, indent int) int {
 	return CountedIndexedFormat(v, w, indent)
 }
 
-func (v *Vector) reduce(c Callable) Object {
+func (v *Vector) reduce(c coretypes.Callable) Object {
 	return CountedIndexedReduce(v, c)
 }
 
-func (v *Vector) reduceInit(c Callable, init Object) Object {
+func (v *Vector) reduceInit(c coretypes.Callable, init Object) Object {
 	return CountedIndexedReduceInit(v, c, init)
 }

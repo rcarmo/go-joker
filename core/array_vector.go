@@ -168,7 +168,7 @@ func (v *ArrayVector) Empty() Collection {
 	return collectionConstruction.NewEmptyArrayVector()
 }
 
-func (v *ArrayVector) kvreduce(c Callable, init Object) Object {
+func (v *ArrayVector) kvreduce(c coretypes.Callable, init Object) Object {
 	return CountedIndexedKvreduce(v, c, init)
 }
 
@@ -188,10 +188,10 @@ func NewArrayVectorFrom(objs ...Object) *ArrayVector {
 	return &ArrayVector{arr: corecollections.FromValues(objs...)}
 }
 
-func (v *ArrayVector) reduce(c Callable) Object {
+func (v *ArrayVector) reduce(c coretypes.Callable) Object {
 	return CountedIndexedReduce(v, c)
 }
 
-func (v *ArrayVector) reduceInit(c Callable, init Object) Object {
+func (v *ArrayVector) reduceInit(c coretypes.Callable, init Object) Object {
 	return CountedIndexedReduceInit(v, c, init)
 }

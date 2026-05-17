@@ -148,7 +148,7 @@ var s_BigInt string = "coretypes.BigInt"
 var s_Boolean string = "coretypes.Boolean"
 var s_Buffer string = "Buffer"
 var s_BufferedReader string = "BufferedReader"
-var s_Callable string = "Callable"
+var s_Callable string = "coretypes.Callable"
 var s_Channel string = "Channel"
 var s_Char string = "coretypes.Char"
 var s_Collection string = "Collection"
@@ -1925,7 +1925,7 @@ var STRINGS corestr.Pool = corestr.Pool{
 	"coretypes.Boolean":          &s_Boolean,
 	"Buffer":                     &s_Buffer,
 	"BufferedReader":             &s_BufferedReader,
-	"Callable":                   &s_Callable,
+	"coretypes.Callable":         &s_Callable,
 	"Channel":                    &s_Channel,
 	"coretypes.Char":             &s_Char,
 	"Collection":                 &s_Collection,
@@ -4031,7 +4031,7 @@ var arrayMap_NUM_2 ArrayMap = ArrayMap{
 			name: &s_name,
 		},
 		String{
-			S: "Callable",
+			S: "coretypes.Callable",
 		},
 	},
 }
@@ -4039,8 +4039,8 @@ var ty_Callable coretypes.Type = coretypes.Type{
 	MetaHolder: MetaHolder{
 		meta: &arrayMap_NUM_2,
 	},
-	Name:        "Callable",
-	ReflectType: reflect.TypeOf((*Callable)(nil)).Elem(),
+	Name:        "coretypes.Callable",
+	ReflectType: reflect.TypeOf((*coretypes.Callable)(nil)).Elem(),
 }
 var arrayMap_NUM_3 ArrayMap = ArrayMap{
 	arr: []Object{
@@ -76511,7 +76511,7 @@ var arrayMap_NUM_495 ArrayMap = ArrayMap{
 			name: &s_doc,
 		},
 		String{
-			S: "Returns true if x implements Callable. Note that many data structures\n  (e.g. sets and maps) implement Callable.",
+			S: "Returns true if x implements coretypes.Callable. Note that many data structures\n  (e.g. sets and maps) implement coretypes.Callable.",
 		},
 		Keyword{
 			hash: 3376861428,

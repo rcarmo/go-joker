@@ -134,7 +134,7 @@ type sortedKV struct {
 	val Object
 }
 
-func sortedKeyValuePairs(keyvals []Object, comp Callable) []sortedKV {
+func sortedKeyValuePairs(keyvals []Object, comp coretypes.Callable) []sortedKV {
 	pairs := make([]sortedKV, len(keyvals)/2)
 	for i := 0; i < len(keyvals); i += 2 {
 		pairs[i/2] = sortedKV{key: keyvals[i], val: keyvals[i+1]}
@@ -148,7 +148,7 @@ func sortedKeyValuePairs(keyvals []Object, comp Callable) []sortedKV {
 	return pairs
 }
 
-func addOrReplaceSortedMap(m *ArrayMap, key Object, val Object, comp Callable) {
+func addOrReplaceSortedMap(m *ArrayMap, key Object, val Object, comp coretypes.Callable) {
 	if comp != nil {
 		for i := 0; i < len(m.arr); i += 2 {
 			if compareWith(comp, m.arr[i], key) == 0 {
@@ -168,7 +168,7 @@ func addOrReplaceSortedMap(m *ArrayMap, key Object, val Object, comp Callable) {
 	}
 }
 
-func sortedSetFrom(values []Object, comp Callable) Object {
+func sortedSetFrom(values []Object, comp coretypes.Callable) Object {
 	sorted := make([]Object, len(values))
 	copy(sorted, values)
 	sort.Slice(sorted, func(i, j int) bool {
@@ -184,7 +184,7 @@ func sortedSetFrom(values []Object, comp Callable) Object {
 	return s.WithMeta(sortedCollMeta())
 }
 
-func compareWith(comp Callable, a, b Object) int {
+func compareWith(comp coretypes.Callable, a, b Object) int {
 	return compare(comp, a, b)
 }
 
@@ -201,7 +201,7 @@ func sortedSubseq(args []Object, reverse bool) Object {
 	}
 	startPred := EnsureObjectIsCallable(args[1], "subseq predicate must be callable, got %s")
 	startKey := args[2]
-	var endPred Callable
+	var endPred coretypes.Callable
 	var endKey Object
 	if len(args) == 5 {
 		endPred = EnsureObjectIsCallable(args[3], "subseq predicate must be callable, got %s")
@@ -264,7 +264,7 @@ func rangeKey(entry Object) Object {
 	return entry
 }
 
-func rangePred(pred Callable, a, b Object) bool {
+func rangePred(pred coretypes.Callable, a, b Object) bool {
 	if name := hotReducerName(pred); name != "" {
 		switch name {
 		case "procLt":

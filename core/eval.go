@@ -466,7 +466,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 	case Proc:
 		if callable.Name == "procReduce" && (len(expr.args) == 2 || len(expr.args) == 3) {
 			f := Eval(expr.args[0], env)
-			if fn, ok := f.(Callable); ok {
+			if fn, ok := f.(coretypes.Callable); ok {
 				if len(expr.args) == 3 {
 					init := Eval(expr.args[1], env)
 					coll := Eval(expr.args[2], env)
@@ -760,7 +760,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 	case *Fn:
 		if findFnVarName(callable) == "reduce" && (len(expr.args) == 2 || len(expr.args) == 3) {
 			f := Eval(expr.args[0], env)
-			if fn, ok := f.(Callable); ok {
+			if fn, ok := f.(coretypes.Callable); ok {
 				if len(expr.args) == 3 {
 					init := Eval(expr.args[1], env)
 					coll := Eval(expr.args[2], env)
@@ -804,7 +804,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) Object {
 			args := evalSeq(expr.args, env)
 			return irDispatchFnCall(callable, args)
 		}
-	case Callable:
+	case coretypes.Callable:
 		switch len(expr.args) {
 		case 0:
 			return callable.Call(nil)

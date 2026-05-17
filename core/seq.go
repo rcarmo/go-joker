@@ -39,7 +39,7 @@ type (
 	LazySeq struct {
 		coretypes.InfoHolder
 		MetaHolder
-		fn  Callable
+		fn  coretypes.Callable
 		seq Seq
 	}
 	MappingSeq struct {
@@ -194,7 +194,7 @@ func (seq *LazySeq) Cons(obj Object) Seq {
 
 func (seq *LazySeq) SequentialMarker() {}
 
-func NewLazySeq(c Callable) *LazySeq {
+func NewLazySeq(c coretypes.Callable) *LazySeq {
 	return &LazySeq{fn: c}
 }
 
