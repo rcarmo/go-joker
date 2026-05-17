@@ -38,19 +38,19 @@ func EnsureArgIsVec(args []Object, index int) Vec {
 	panic(FailArg(obj, "Vec", index))
 }
 
-func EnsureObjectIsChar(obj Object, pattern string) Char {
-	if c, yes := obj.(Char); yes {
+func EnsureObjectIsChar(obj Object, pattern string) coretypes.Char {
+	if c, yes := obj.(coretypes.Char); yes {
 		return c
 	}
-	panic(FailObject(obj, "Char", pattern))
+	panic(FailObject(obj, "coretypes.Char", pattern))
 }
 
-func EnsureArgIsChar(args []Object, index int) Char {
+func EnsureArgIsChar(args []Object, index int) coretypes.Char {
 	obj := args[index]
-	if c, yes := obj.(Char); yes {
+	if c, yes := obj.(coretypes.Char); yes {
 		return c
 	}
-	panic(FailArg(obj, "Char", index))
+	panic(FailArg(obj, "coretypes.Char", index))
 }
 
 func EnsureObjectIsString(obj Object, pattern string) String {
@@ -98,49 +98,49 @@ func EnsureArgIsKeyword(args []Object, index int) Keyword {
 	panic(FailArg(obj, "Keyword", index))
 }
 
-func EnsureObjectIsRegex(obj Object, pattern string) *Regex {
-	if c, yes := obj.(*Regex); yes {
+func EnsureObjectIsRegex(obj Object, pattern string) *coretypes.Regex {
+	if c, yes := obj.(*coretypes.Regex); yes {
 		return c
 	}
-	panic(FailObject(obj, "Regex", pattern))
+	panic(FailObject(obj, "coretypes.Regex", pattern))
 }
 
-func EnsureArgIsRegex(args []Object, index int) *Regex {
+func EnsureArgIsRegex(args []Object, index int) *coretypes.Regex {
 	obj := args[index]
-	if c, yes := obj.(*Regex); yes {
+	if c, yes := obj.(*coretypes.Regex); yes {
 		return c
 	}
-	panic(FailArg(obj, "Regex", index))
+	panic(FailArg(obj, "coretypes.Regex", index))
 }
 
-func EnsureObjectIsBoolean(obj Object, pattern string) Boolean {
-	if c, yes := obj.(Boolean); yes {
+func EnsureObjectIsBoolean(obj Object, pattern string) coretypes.Boolean {
+	if c, yes := obj.(coretypes.Boolean); yes {
 		return c
 	}
-	panic(FailObject(obj, "Boolean", pattern))
+	panic(FailObject(obj, "coretypes.Boolean", pattern))
 }
 
-func EnsureArgIsBoolean(args []Object, index int) Boolean {
+func EnsureArgIsBoolean(args []Object, index int) coretypes.Boolean {
 	obj := args[index]
-	if c, yes := obj.(Boolean); yes {
+	if c, yes := obj.(coretypes.Boolean); yes {
 		return c
 	}
-	panic(FailArg(obj, "Boolean", index))
+	panic(FailArg(obj, "coretypes.Boolean", index))
 }
 
-func EnsureObjectIsTime(obj Object, pattern string) Time {
-	if c, yes := obj.(Time); yes {
+func EnsureObjectIsTime(obj Object, pattern string) coretypes.Time {
+	if c, yes := obj.(coretypes.Time); yes {
 		return c
 	}
-	panic(FailObject(obj, "Time", pattern))
+	panic(FailObject(obj, "coretypes.Time", pattern))
 }
 
-func EnsureArgIsTime(args []Object, index int) Time {
+func EnsureArgIsTime(args []Object, index int) coretypes.Time {
 	obj := args[index]
-	if c, yes := obj.(Time); yes {
+	if c, yes := obj.(coretypes.Time); yes {
 		return c
 	}
-	panic(FailArg(obj, "Time", index))
+	panic(FailArg(obj, "coretypes.Time", index))
 }
 
 func EnsureObjectIsNumber(obj Object, pattern string) Number {
@@ -218,34 +218,34 @@ func EnsureArgIsMeta(args []Object, index int) Meta {
 	panic(FailArg(obj, "Meta", index))
 }
 
-func EnsureObjectIsInt(obj Object, pattern string) Int {
-	if c, yes := obj.(Int); yes {
+func EnsureObjectIsInt(obj Object, pattern string) coretypes.Int {
+	if c, yes := obj.(coretypes.Int); yes {
 		return c
 	}
-	panic(FailObject(obj, "Int", pattern))
+	panic(FailObject(obj, "coretypes.Int", pattern))
 }
 
-func EnsureArgIsInt(args []Object, index int) Int {
+func EnsureArgIsInt(args []Object, index int) coretypes.Int {
 	obj := args[index]
-	if c, yes := obj.(Int); yes {
+	if c, yes := obj.(coretypes.Int); yes {
 		return c
 	}
-	panic(FailArg(obj, "Int", index))
+	panic(FailArg(obj, "coretypes.Int", index))
 }
 
-func EnsureObjectIsDouble(obj Object, pattern string) Double {
-	if c, yes := obj.(Double); yes {
+func EnsureObjectIsDouble(obj Object, pattern string) coretypes.Double {
+	if c, yes := obj.(coretypes.Double); yes {
 		return c
 	}
-	panic(FailObject(obj, "Double", pattern))
+	panic(FailObject(obj, "coretypes.Double", pattern))
 }
 
-func EnsureArgIsDouble(args []Object, index int) Double {
+func EnsureArgIsDouble(args []Object, index int) coretypes.Double {
 	obj := args[index]
-	if c, yes := obj.(Double); yes {
+	if c, yes := obj.(coretypes.Double); yes {
 		return c
 	}
-	panic(FailArg(obj, "Double", index))
+	panic(FailArg(obj, "coretypes.Double", index))
 }
 
 func EnsureObjectIsStack(obj Object, pattern string) Stack {

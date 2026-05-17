@@ -47,8 +47,8 @@ func EnsureArgIs{{.Name}}(args []Object, index int) {{.TypeName}} {
 `
 
 var infoTemplate string = `
-func (x {{.TypeName}}) WithInfo(info *ObjectInfo) Object {
-	x.info = info
+func (x {{.TypeName}}) WithInfo(info *coretypes.ObjectInfo) Object {
+	x.Info = info
 	return x
 }
 `
@@ -105,6 +105,9 @@ func generateInfo(types []string) {
 	var info = template.Must(template.New("info").Parse(infoTemplate))
 
 	_, err = f.WriteString(header)
+	checkError(err)
+	_, err = f.WriteString(`import coretypes "github.com/rcarmo/go-joker/core/types"
+`)
 	checkError(err)
 	for _, t := range types {
 		typeInfo := TypeInfo{
