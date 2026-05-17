@@ -5,7 +5,6 @@
 package core
 
 import (
-	"encoding/binary"
 	"errors"
 	"fmt"
 	"io"
@@ -14,7 +13,6 @@ import (
 	"reflect"
 	"regexp"
 	"sync"
-	"time"
 	"unicode/utf8"
 	"unsafe"
 
@@ -26,7 +24,12 @@ import (
 )
 
 type (
-	Object interface {
+	Char    = coretypes.Char
+	Double  = coretypes.Double
+	Int     = coretypes.Int
+	Boolean = coretypes.Boolean
+	Time    = coretypes.Time
+	Object  interface {
 		coretypes.Object
 		GetType() *coretypes.Type
 	}
@@ -54,16 +57,6 @@ type (
 	MetaHolder struct {
 		meta Map
 	}
-	Char struct {
-		coretypes.InfoHolder
-		Ch rune
-	}
-	Double struct {
-		D float64
-	}
-	Int struct {
-		I int
-	}
 	BigInt struct {
 		coretypes.InfoHolder
 		b        *big.Int
@@ -78,10 +71,6 @@ type (
 		coretypes.InfoHolder
 		r        *big.Rat
 		Original string
-	}
-	Boolean struct {
-		coretypes.InfoHolder
-		B bool
 	}
 	Nil struct {
 		coretypes.InfoHolder
@@ -111,10 +100,6 @@ type (
 	Regex struct {
 		coretypes.InfoHolder
 		R *regexp.Regexp
-	}
-	Time struct {
-		coretypes.InfoHolder
-		T time.Time
 	}
 	Var struct {
 		coretypes.InfoHolder
@@ -1046,229 +1031,6 @@ func EnsureArgIsStringable(args []Object, index int) String {
 	}
 }
 
-func (c Char) ToString(escape bool) string {
-	if escape {
-		return corestr.EscapeRune(c.Ch)
-	}
-	return charToStringFast(c.Ch)
-}
-
-func (c Char) Equals(other interface{}) bool {
-	switch other := other.(type) {
-	case Char:
-		return c.Ch == other.Ch
-	default:
-		return false
-	}
-}
-
-func (c Char) GetType() *coretypes.Type {
-	return TYPE.Char
-}
-
-func (c Char) Native() interface{} {
-	return c.Ch
-}
-
-func (c Char) Hash() uint32 {
-	h := getHash()
-	h.Write([]byte(string(c.Ch)))
-	return h.Sum32()
-}
-
-func (c Char) Compare(other coretypes.Object) int {
-	c2 := EnsureObjectIsChar(rootObject(other), "Cannot compare Char: %s")
-	if c.Ch < c2.Ch {
-		return -1
-	}
-	if c2.Ch < c.Ch {
-		return 1
-	}
-	return 0
-}
-
-func MakeBoolean(b bool) Boolean {
-	return Boolean{B: b}
-}
-
-func MakeTime(t time.Time) Time {
-	return Time{T: t}
-}
-
-func MakeDouble(d float64) Double {
-	return Double{D: d}
-}
-
-func (d Double) GetInfo() *coretypes.ObjectInfo { return nil }
-
-func (d Double) ToString(escape bool) string {
-	dbl := d.D
-	if math.IsInf(dbl, 1) {
-		return "##Inf"
-	}
-	if math.IsInf(dbl, -1) {
-		return "##-Inf"
-	}
-	if math.IsNaN(dbl) {
-		return "##NaN"
-	}
-	res := fmt.Sprintf("%g", dbl)
-	if numutil.NeedsDecimalSuffix(res) {
-		return res + ".0"
-	}
-	return res
-}
-
-func (d Double) Equals(other interface{}) bool {
-	return equalsNumbers(d, other)
-}
-
-func (d Double) GetType() *coretypes.Type {
-	return TYPE.Double
-}
-
-func (d Double) Native() interface{} {
-	return d.D
-}
-
-func (d Double) Hash() uint32 {
-	h := getHash()
-	b := make([]byte, 8)
-	binary.LittleEndian.PutUint64(b, math.Float64bits(d.D))
-	h.Write(b)
-	return h.Sum32()
-}
-
-func (d Double) Compare(other coretypes.Object) int {
-	return CompareNumbers(d, EnsureObjectIsNumber(rootObject(other), "Cannot compare Double: %s"))
-}
-
-func (i Int) GetInfo() *coretypes.ObjectInfo { return nil }
-
-func (i Int) ToString(escape bool) string {
-	return corestr.Int(i.I)
-}
-
-func MakeInt(i int) Int {
-	return Int{I: i}
-}
-
-func MakeIntVector(ii []int) *ArrayVector {
-	res := collectionConstruction.NewEmptyArrayVector()
-	for _, i := range ii {
-		res.Append(MakeInt(i))
-	}
-	return res
-}
-
-func MakeIntWithOriginal(orig string, i int) Int {
-	return Int{I: i}
-}
-
-func (i Int) Equals(other interface{}) bool {
-	return equalsNumbers(i, other)
-}
-
-func (i Int) GetType() *coretypes.Type {
-	return TYPE.Int
-}
-
-func (i Int) Native() interface{} {
-	return i.I
-}
-
-func (i Int) Hash() uint32 {
-	h := getHash()
-	b := make([]byte, 8)
-	binary.LittleEndian.PutUint64(b, uint64(i.I))
-	h.Write(b)
-	return h.Sum32()
-}
-
-func (i Int) Compare(other coretypes.Object) int {
-	return CompareNumbers(i, EnsureObjectIsNumber(rootObject(other), "Cannot compare Int: %s"))
-}
-
-func (b Boolean) ToString(escape bool) string {
-	return fmt.Sprintf("%t", b.B)
-}
-
-func (b Boolean) Equals(other interface{}) bool {
-	switch other := other.(type) {
-	case Boolean:
-		return b.B == other.B
-	default:
-		return false
-	}
-}
-
-func (b Boolean) GetType() *coretypes.Type {
-	return TYPE.Boolean
-}
-
-func (b Boolean) Native() interface{} {
-	return b.B
-}
-
-func (b Boolean) Hash() uint32 {
-	h := getHash()
-	var bs = make([]byte, 1)
-	if b.B {
-		bs[0] = 1
-	} else {
-		bs[0] = 0
-	}
-	h.Write(bs)
-	return h.Sum32()
-}
-
-func (b Boolean) Compare(other coretypes.Object) int {
-	b2 := EnsureObjectIsBoolean(rootObject(other), "Cannot compare Boolean: %s")
-	if b.B == b2.B {
-		return 0
-	}
-	if b.B {
-		return 1
-	}
-	return -1
-}
-
-func (t Time) ToString(escape bool) string {
-	return t.T.String()
-}
-
-func (t Time) Equals(other interface{}) bool {
-	switch other := other.(type) {
-	case Time:
-		return t.T.Equal(other.T)
-	default:
-		return false
-	}
-}
-
-func (t Time) GetType() *coretypes.Type {
-	return TYPE.Time
-}
-
-func (t Time) Native() interface{} {
-	return t.T
-}
-
-func (t Time) Hash() uint32 {
-	return hashutil.GobEncoder(t.T)
-}
-
-func (t Time) Compare(other coretypes.Object) int {
-	t2 := EnsureObjectIsTime(rootObject(other), "Cannot compare Time: %s")
-	if t.T.Equal(t2.T) {
-		return 0
-	}
-	if t2.T.Before(t.T) {
-		return 1
-	}
-	return -1
-}
-
 func (k Keyword) ToString(escape bool) string {
 	if k.ns != nil {
 		return ":" + *k.ns + "/" + *k.name
@@ -1423,10 +1185,6 @@ func (s String) Format(w io.Writer, indent int) int {
 
 func MakeString(s string) String {
 	return String{S: s}
-}
-
-func MakeChar(r rune) Char {
-	return Char{Ch: r}
 }
 
 func MakeStringVector(ss []string) *ArrayVector {

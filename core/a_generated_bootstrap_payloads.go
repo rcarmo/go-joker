@@ -6430,6 +6430,9 @@ var TYPES coretypes.Registry = coretypes.Registry{
 	&s_VectorRSeq:     &ty_VectorRSeq,
 	&s_VectorSeq:      &ty_VectorSeq,
 }
+
+func init() { coretypes.RuntimeTypes = &TYPE }
+
 var LINTER_TYPES map[*string]bool = map[*string]bool{}
 var GLOBAL_ENV *Env
 var arrayMap_NUM_73 ArrayMap = ArrayMap{

@@ -2,7 +2,6 @@ package core
 
 import (
 	"math/big"
-	"math/bits"
 	"strconv"
 )
 
@@ -155,51 +154,6 @@ func GetOps(obj Object) Ops {
 	default:
 		return INT_OPS
 	}
-}
-
-// Int conversions
-
-func (i Int) Int() Int {
-	return i
-}
-
-func (i Int) Double() Double {
-	return Double{D: float64(i.I)}
-}
-
-func (i Int) BigInt() *big.Int {
-	return big.NewInt(int64(i.I))
-}
-
-func (i Int) BigFloat() *big.Float {
-	return big.NewFloat(float64(i.I))
-}
-
-func (i Int) Ratio() *big.Rat {
-	return big.NewRat(int64(i.I), 1)
-}
-
-// Double conversions
-
-func (d Double) Int() Int {
-	return Int{I: int(d.D)}
-}
-
-func (d Double) BigInt() *big.Int {
-	return big.NewInt(int64(d.D))
-}
-
-func (d Double) Double() Double {
-	return d
-}
-
-func (d Double) BigFloat() *big.Float {
-	return big.NewFloat(float64(d.D))
-}
-
-func (d Double) Ratio() *big.Rat {
-	res := big.Rat{}
-	return res.SetFloat64(float64(d.D))
 }
 
 // BigInt conversions
@@ -679,14 +633,6 @@ func (n *BigInt) Precision() *big.Int {
 
 func (n *BigFloat) Precision() *big.Int {
 	return MakeMathBigIntFromUint(n.b.Prec())
-}
-
-func (n Int) Precision() *big.Int {
-	return MakeMathBigIntFromInt64(bits.UintSize - 1)
-}
-
-func (n Double) Precision() *big.Int {
-	return MakeMathBigIntFromInt(53)
 }
 
 func category(x Number) int {

@@ -59,29 +59,6 @@ func (x *BigFloat) WithInfo(info *coretypes.ObjectInfo) Object {
 	return x
 }
 
-func (x Char) WithInfo(info *coretypes.ObjectInfo) Object {
-	x.Info = info
-	return x
-}
-
-func (x Double) WithInfo(info *coretypes.ObjectInfo) Object {
-	return x
-}
-
-func (x Int) WithInfo(info *coretypes.ObjectInfo) Object {
-	return x
-}
-
-func (x Boolean) WithInfo(info *coretypes.ObjectInfo) Object {
-	x.Info = info
-	return x
-}
-
-func (x Time) WithInfo(info *coretypes.ObjectInfo) Object {
-	x.Info = info
-	return x
-}
-
 func (x Keyword) WithInfo(info *coretypes.ObjectInfo) Object {
 	x.Info = info
 	return x

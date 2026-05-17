@@ -25,6 +25,7 @@ func typeBuilder() coretypes.Builder {
 			return MetaHolder{meta}
 		},
 	}
+	coretypes.RuntimeTypes = &TYPE
 }
 
 func init() {
