@@ -9,8 +9,8 @@ import (
 type (
 	Number interface {
 		Object
-		Int() Int
-		Double() Double
+		Int() coretypes.Int
+		Double() coretypes.Double
 		BigInt() *big.Int
 		BigFloat() *big.Float
 		Ratio() *big.Rat
@@ -159,7 +159,7 @@ func GetOps(obj Object) Ops {
 
 // BigInt conversions
 
-func (b *BigInt) Int() Int {
+func (b *BigInt) Int() coretypes.Int {
 	bi := b.BigInt()
 	if bi.Cmp(minIntBig) < 0 || bi.Cmp(maxIntBig) > 0 {
 		panic(RT.NewError("BigInt value out of native int range: " + b.ToString(false)))
@@ -171,7 +171,7 @@ func (b *BigInt) BigInt() *big.Int {
 	return b.b
 }
 
-func (b *BigInt) Double() Double {
+func (b *BigInt) Double() coretypes.Double {
 	f, _ := new(big.Float).SetInt(b.BigInt()).Float64()
 	return coretypes.Double{D: f}
 }
@@ -188,7 +188,7 @@ func (b *BigInt) Ratio() *big.Rat {
 
 // BigFloat conversions
 
-func (b *BigFloat) Int() Int {
+func (b *BigFloat) Int() coretypes.Int {
 	f, _ := b.BigFloat().Float64()
 	return coretypes.Int{I: int(f)}
 }
@@ -198,7 +198,7 @@ func (b *BigFloat) BigInt() *big.Int {
 	return bi
 }
 
-func (b *BigFloat) Double() Double {
+func (b *BigFloat) Double() coretypes.Double {
 	f, _ := b.BigFloat().Float64()
 	return coretypes.Double{D: f}
 }
@@ -214,7 +214,7 @@ func (b *BigFloat) Ratio() *big.Rat {
 
 // Ratio conversions
 
-func (r *Ratio) Int() Int {
+func (r *Ratio) Int() coretypes.Int {
 	f, _ := r.Ratio().Float64()
 	return coretypes.Int{I: int(f)}
 }
@@ -224,7 +224,7 @@ func (r *Ratio) BigInt() *big.Int {
 	return big.NewInt(int64(f))
 }
 
-func (r *Ratio) Double() Double {
+func (r *Ratio) Double() coretypes.Double {
 	f, _ := r.Ratio().Float64()
 	return coretypes.Double{D: f}
 }
