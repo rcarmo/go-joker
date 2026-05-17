@@ -7,9 +7,6 @@ import (
 )
 
 type (
-	Precision interface {
-		Precision() *big.Int
-	}
 	Ops interface {
 		Combine(ops Ops) Ops
 		Add(coretypes.Number, coretypes.Number) coretypes.Number

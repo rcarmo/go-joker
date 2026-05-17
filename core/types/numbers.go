@@ -12,3 +12,8 @@ type Number interface {
 	BigFloat() *big.Float
 	Ratio() *big.Rat
 }
+
+// Precision reports the precision of numeric values that expose it.
+type Precision interface {
+	Precision() *big.Int
+}
