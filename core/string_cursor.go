@@ -48,7 +48,7 @@ func (c *StringCursor) GetInfo() *coretypes.ObjectInfo { return nil }
 
 func (c *StringCursor) Hash() uint32 { return c.cur.Hash() }
 
-func (c *StringCursor) WithInfo(info *coretypes.ObjectInfo) Object { return c }
+func (c *StringCursor) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return c }
 
 func (c *StringCursor) GetType() *coretypes.Type { return typeStringCursor }
 

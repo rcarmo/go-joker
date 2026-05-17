@@ -334,7 +334,7 @@ func (f *Future) GetType() *coretypes.Type       { return TYPE.Fn } // Clojure: 
 func (f *Future) Hash() uint32 {
 	return hashutil.Ptr(uintptr(reflect.ValueOf(f).Pointer()))
 }
-func (f *Future) WithInfo(info *coretypes.ObjectInfo) Object { return f }
+func (f *Future) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return f }
 
 func (f *Future) Deref() Object {
 	value, err := f.runtime.Await()
@@ -362,7 +362,7 @@ func (p *Promise) GetType() *coretypes.Type       { return TYPE.Fn }
 func (p *Promise) Hash() uint32 {
 	return hashutil.Ptr(uintptr(reflect.ValueOf(p).Pointer()))
 }
-func (p *Promise) WithInfo(info *coretypes.ObjectInfo) Object { return p }
+func (p *Promise) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return p }
 
 func (p *Promise) Deref() Object {
 	return p.runtime.Await()
@@ -429,7 +429,7 @@ func (a *Agent) GetType() *coretypes.Type       { return TYPE.Fn }
 func (a *Agent) Hash() uint32 {
 	return hashutil.Ptr(uintptr(reflect.ValueOf(a).Pointer()))
 }
-func (a *Agent) WithInfo(info *coretypes.ObjectInfo) Object { return a }
+func (a *Agent) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return a }
 
 func (a *Agent) Deref() Object {
 	a.mu.Lock()

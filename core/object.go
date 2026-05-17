@@ -1507,10 +1507,10 @@ func (seq *stringSeq) ToString(escape bool) string {
 	return SeqToString(seq, escape)
 }
 
-func (seq *stringSeq) GetInfo() *coretypes.ObjectInfo             { return nil }
-func (seq *stringSeq) WithInfo(info *coretypes.ObjectInfo) Object { return seq }
-func (seq *stringSeq) GetType() *coretypes.Type                   { return TYPE.StringSeq }
-func (seq *stringSeq) Hash() uint32                               { return hashOrdered(seq) }
+func (seq *stringSeq) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (seq *stringSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return seq }
+func (seq *stringSeq) GetType() *coretypes.Type                             { return TYPE.StringSeq }
+func (seq *stringSeq) Hash() uint32                                         { return hashOrdered(seq) }
 func (seq *stringSeq) WithMeta(meta Map) Object {
 	// stringSeq has no meta; return as-is like other minimal seqs
 	return seq

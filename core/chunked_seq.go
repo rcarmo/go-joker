@@ -21,12 +21,12 @@ type ChunkBuffer struct {
 	count int
 }
 
-func (cb *ChunkBuffer) ToString(escape bool) string                { return "#object[ChunkBuffer]" }
-func (cb *ChunkBuffer) Equals(other interface{}) bool              { return cb == other }
-func (cb *ChunkBuffer) GetType() *coretypes.Type                   { return TYPE.ArrayVector }
-func (cb *ChunkBuffer) Hash() uint32                               { return 0 }
-func (cb *ChunkBuffer) WithInfo(info *coretypes.ObjectInfo) Object { return cb }
-func (cb *ChunkBuffer) WithMeta(m Map) Object                      { return cb }
+func (cb *ChunkBuffer) ToString(escape bool) string                          { return "#object[ChunkBuffer]" }
+func (cb *ChunkBuffer) Equals(other interface{}) bool                        { return cb == other }
+func (cb *ChunkBuffer) GetType() *coretypes.Type                             { return TYPE.ArrayVector }
+func (cb *ChunkBuffer) Hash() uint32                                         { return 0 }
+func (cb *ChunkBuffer) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return cb }
+func (cb *ChunkBuffer) WithMeta(m Map) Object                                { return cb }
 
 // ArrayChunk wraps a slice of objects as a chunk.
 type ArrayChunk struct {
@@ -37,12 +37,12 @@ type ArrayChunk struct {
 	end int
 }
 
-func (ac *ArrayChunk) ToString(escape bool) string                { return "#object[ArrayChunk]" }
-func (ac *ArrayChunk) Equals(other interface{}) bool              { return ac == other }
-func (ac *ArrayChunk) GetType() *coretypes.Type                   { return TYPE.ArrayVector }
-func (ac *ArrayChunk) Hash() uint32                               { return 0 }
-func (ac *ArrayChunk) WithInfo(info *coretypes.ObjectInfo) Object { return ac }
-func (ac *ArrayChunk) WithMeta(m Map) Object                      { return ac }
+func (ac *ArrayChunk) ToString(escape bool) string                          { return "#object[ArrayChunk]" }
+func (ac *ArrayChunk) Equals(other interface{}) bool                        { return ac == other }
+func (ac *ArrayChunk) GetType() *coretypes.Type                             { return TYPE.ArrayVector }
+func (ac *ArrayChunk) Hash() uint32                                         { return 0 }
+func (ac *ArrayChunk) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return ac }
+func (ac *ArrayChunk) WithMeta(m Map) Object                                { return ac }
 
 func (ac *ArrayChunk) Count() int { return ac.end - ac.off }
 func (ac *ArrayChunk) Nth(i int) Object {
