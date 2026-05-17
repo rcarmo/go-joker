@@ -1675,9 +1675,8 @@ func CountedIndexedHash(v CountedIndexed) uint32 {
 func CountedIndexedGet(v CountedIndexed, key Object) (bool, Object) {
 	switch key := key.(type) {
 	case Int:
-		if key.I >= 0 && key.I < v.Count() {
-			return true, v.At(key.I)
-		}
+		value, ok := corecollections.IndexedGet[Object](v, key.I)
+		return ok, value
 	}
 	return false, nil
 }

@@ -38,6 +38,14 @@ func IndexedEqual[T coretypes.Object](v1, v2 IndexedView[T]) bool {
 	return true
 }
 
+func IndexedGet[T coretypes.Object](v IndexedView[T], index int) (T, bool) {
+	var zero T
+	if index < 0 || index >= v.Count() {
+		return zero, false
+	}
+	return v.At(index), true
+}
+
 func IndexedHash[T coretypes.Object](v IndexedView[T]) uint32 {
 	h := hashutil.New32()
 	for i := 0; i < v.Count(); i++ {
