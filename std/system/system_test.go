@@ -1,6 +1,7 @@
 package system
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"runtime"
 	"testing"
@@ -29,7 +30,7 @@ func TestGetPropertyDefaultAndEnv(t *testing.T) {
 }
 
 func TestTimes(t *testing.T) {
-	if currentTimeMillis().(Number).BigInt().Sign() <= 0 || nanoTime().(Number).BigInt().Sign() <= 0 {
+	if currentTimeMillis().(coretypes.Number).BigInt().Sign() <= 0 || nanoTime().(coretypes.Number).BigInt().Sign() <= 0 {
 		t.Fatal("expected positive times")
 	}
 }
