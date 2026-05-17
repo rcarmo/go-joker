@@ -12,7 +12,7 @@ func EnsureObjectIsComparable(obj Object, pattern string) coretypes.Comparable {
 	if c, yes := obj.(coretypes.Comparable); yes {
 		return c
 	}
-	panic(FailObject(obj, "Comparable", pattern))
+	panic(FailObject(obj, "coretypes.Comparable", pattern))
 }
 
 func EnsureArgIsComparable(args []Object, index int) coretypes.Comparable {
@@ -20,7 +20,7 @@ func EnsureArgIsComparable(args []Object, index int) coretypes.Comparable {
 	if c, yes := obj.(coretypes.Comparable); yes {
 		return c
 	}
-	panic(FailArg(obj, "Comparable", index))
+	panic(FailArg(obj, "coretypes.Comparable", index))
 }
 
 func EnsureObjectIsVec(obj Object, pattern string) Vec {
@@ -342,7 +342,7 @@ func EnsureObjectIsComparator(obj Object, pattern string) coretypes.Comparator {
 	if c, yes := obj.(coretypes.Comparator); yes {
 		return c
 	}
-	panic(FailObject(obj, "Comparator", pattern))
+	panic(FailObject(obj, "coretypes.Comparator", pattern))
 }
 
 func EnsureArgIsComparator(args []Object, index int) coretypes.Comparator {
@@ -350,7 +350,7 @@ func EnsureArgIsComparator(args []Object, index int) coretypes.Comparator {
 	if c, yes := obj.(coretypes.Comparator); yes {
 		return c
 	}
-	panic(FailArg(obj, "Comparator", index))
+	panic(FailArg(obj, "coretypes.Comparator", index))
 }
 
 func EnsureObjectIsRatio(obj Object, pattern string) *Ratio {
@@ -593,19 +593,19 @@ func EnsureArgIsio_Writer(args []Object, index int) io.Writer {
 	panic(FailArg(obj, "io.Writer", index))
 }
 
-func EnsureObjectIsStringReader(obj Object, pattern string) StringReader {
-	if c, yes := obj.(StringReader); yes {
+func EnsureObjectIsStringReader(obj Object, pattern string) coretypes.StringReader {
+	if c, yes := obj.(coretypes.StringReader); yes {
 		return c
 	}
-	panic(FailObject(obj, "StringReader", pattern))
+	panic(FailObject(obj, "coretypes.StringReader", pattern))
 }
 
-func EnsureArgIsStringReader(args []Object, index int) StringReader {
+func EnsureArgIsStringReader(args []Object, index int) coretypes.StringReader {
 	obj := args[index]
-	if c, yes := obj.(StringReader); yes {
+	if c, yes := obj.(coretypes.StringReader); yes {
 		return c
 	}
-	panic(FailArg(obj, "StringReader", index))
+	panic(FailArg(obj, "coretypes.StringReader", index))
 }
 
 func EnsureObjectIsio_RuneReader(obj Object, pattern string) io.RuneReader {

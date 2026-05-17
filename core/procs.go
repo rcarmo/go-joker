@@ -26,11 +26,8 @@ import (
 )
 
 type (
-	Phase        int
-	Dialect      int
-	StringReader interface {
-		ReadString(delim byte) (s string, e error)
-	}
+	Phase   int
+	Dialect int
 )
 
 const (

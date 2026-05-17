@@ -43,6 +43,10 @@ type Pending interface {
 	IsRealized() bool
 }
 
+type StringReader interface {
+	ReadString(delim byte) (s string, e error)
+}
+
 type Sequential interface {
 	SequentialMarker()
 }
