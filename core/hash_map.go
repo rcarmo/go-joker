@@ -294,7 +294,7 @@ func (s *NodeSeq) First() Object {
 	if s.s != nil {
 		return s.s.First()
 	}
-	return NewVectorFrom(s.array[s.i].(Object), s.array[s.i+1].(Object))
+	return collectionConstruction.NewVectorFrom(s.array[s.i].(Object), s.array[s.i+1].(Object))
 }
 
 func (s *NodeSeq) Rest() Seq {
@@ -717,7 +717,7 @@ func (m *HashMap) EntryAt(key Object) *ArrayVector {
 	if m.root != nil {
 		p := m.root.find(0, key.Hash(), key)
 		if p != nil {
-			return NewArrayVectorFrom(p.Key, p.Value)
+			return collectionConstruction.NewArrayVectorFrom(p.Key, p.Value)
 		}
 	}
 	return nil
