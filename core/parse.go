@@ -331,12 +331,12 @@ var (
 	IN_NS_VAR      *Var
 	WARNINGS       = Warnings{
 		fnWithEmptyBody: true,
-		entryPoints:     collectionConstruction.EmptySet(),
+		entryPoints:     collectionConstruction.NewEmptySet(),
 	}
 )
 
 func (b *Bindings) ToMap() Map {
-	var res Map = collectionConstruction.EmptyArrayMap()
+	var res Map = collectionConstruction.NewEmptyArrayMap()
 	for b != nil {
 		for _, v := range b.bindings {
 			res = res.Assoc(v.name, NIL).(Map)
@@ -803,7 +803,7 @@ func parseDef(obj Object, ctx *ParseContext, isForLinter bool) *DefExpr {
 				if meta != nil {
 					meta = meta.Assoc(KEYWORDS.doc, docstring).(Map)
 				} else {
-					meta = collectionConstruction.EmptyArrayMap().Assoc(KEYWORDS.doc, docstring).(Map)
+					meta = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.doc, docstring).(Map)
 				}
 			default:
 				panic(&ParseError{obj: docstring, msg: "Docstring must be a string"})
@@ -1311,7 +1311,7 @@ func fixInfo(obj Object, info *coretypes.ObjectInfo) Object {
 		}
 		return res.WithInfo(info)
 	case Vec:
-		res := collectionConstruction.EmptyArrayVector()
+		res := collectionConstruction.NewEmptyArrayVector()
 		res.meta = s.(Meta).GetMeta()
 		for i := 0; i < s.Count(); i++ {
 			t := fixInfo(s.At(i), info)
@@ -1322,7 +1322,7 @@ func fixInfo(obj Object, info *coretypes.ObjectInfo) Object {
 		}
 		return res.WithInfo(info)
 	case Map:
-		res := collectionConstruction.EmptyArrayMap()
+		res := collectionConstruction.NewEmptyArrayMap()
 		iter := s.Iter()
 		for iter.HasNext() {
 			p := iter.Next()
@@ -1470,7 +1470,7 @@ func checkArglist(arglist Seq, passedArgsCount int) bool {
 
 func setMacroMeta(vr *Var) {
 	if vr.meta == nil {
-		vr.meta = collectionConstruction.EmptyArrayMap().Assoc(KEYWORDS.macro, Boolean{B: true}).(Map)
+		vr.meta = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.macro, Boolean{B: true}).(Map)
 	} else {
 		vr.meta = vr.meta.Assoc(KEYWORDS.macro, Boolean{B: true}).(Map)
 	}

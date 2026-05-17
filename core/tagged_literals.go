@@ -58,7 +58,7 @@ func registerTaggedLiterals() {
 		readersVr = ns.Intern(MakeSymbol("default-data-readers"))
 	}
 
-	m := collectionConstruction.EmptyArrayMap()
+	m := collectionConstruction.NewEmptyArrayMap()
 	m.Add(MakeSymbol("inst"), instReaderVr)
 	m.Add(MakeSymbol("uuid"), uuidReaderVr)
 	readersVr.Value = m

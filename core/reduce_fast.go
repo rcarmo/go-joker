@@ -674,7 +674,7 @@ var procSplitWhitespace ProcFn = func(args []Object) Object {
 }
 
 func splitWhitespaceVector(s string) *ArrayVector {
-	res := collectionConstruction.EmptyArrayVector()
+	res := collectionConstruction.NewEmptyArrayVector()
 	for _, token := range corestr.SplitWhitespace(s) {
 		res.Append(String{S: token})
 	}
@@ -685,7 +685,7 @@ var procFrequencies ProcFn = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	seq := EnsureObjectIsSeqable(args[0], "frequencies requires a seqable collection").Seq()
 	if seq.IsEmpty() {
-		return collectionConstruction.EmptyArrayMap()
+		return collectionConstruction.NewEmptyArrayMap()
 	}
 
 	// Specialize the common text-token case: String keys and integer counts.
@@ -719,7 +719,7 @@ var procFrequencies ProcFn = func(args []Object) Object {
 	}
 	if stringOnly {
 		if len(stringCounts) <= int(HASHMAP_THRESHOLD/2) {
-			res := collectionConstruction.EmptyArrayMap()
+			res := collectionConstruction.NewEmptyArrayMap()
 			for k, v := range stringCounts {
 				res.Add(String{S: k}, Int{I: v})
 			}

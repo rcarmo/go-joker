@@ -14,7 +14,7 @@ func sortedCollMeta() Map {
 	if sortedMetaCache != nil {
 		return sortedMetaCache
 	}
-	m := collectionConstruction.EmptyArrayMap()
+	m := collectionConstruction.NewEmptyArrayMap()
 	m.Add(MakeKeyword("sorted"), Boolean{B: true})
 	sortedMetaCache = m
 	return sortedMetaCache
@@ -37,7 +37,7 @@ func registerSortedCollProcs() {
 			panic(RT.NewError("sorted-map requires an even number of arguments"))
 		}
 		pairs := sortedKeyValuePairs(args, nil)
-		m := collectionConstruction.EmptyArrayMap()
+		m := collectionConstruction.NewEmptyArrayMap()
 		for _, p := range pairs {
 			addOrReplaceSortedMap(m, p.key, p.val, nil)
 		}
@@ -55,7 +55,7 @@ func registerSortedCollProcs() {
 			panic(RT.NewError("sorted-map-by requires an even number of key/value arguments"))
 		}
 		pairs := sortedKeyValuePairs(keyvals, comp)
-		m := collectionConstruction.EmptyArrayMap()
+		m := collectionConstruction.NewEmptyArrayMap()
 		for _, p := range pairs {
 			addOrReplaceSortedMap(m, p.key, p.val, comp)
 		}
@@ -174,7 +174,7 @@ func sortedSetFrom(values []Object, comp Callable) Object {
 		}
 		return compareObjects(sorted[i], sorted[j]) < 0
 	})
-	s := collectionConstruction.EmptySet()
+	s := collectionConstruction.NewEmptySet()
 	for _, v := range sorted {
 		s = s.Conj(v).(*MapSet)
 	}
@@ -227,7 +227,7 @@ func sortedEntries(coll Object) []Object {
 	if m, ok := coll.(Map); ok {
 		for it := m.Iter(); it.HasNext(); {
 			p := it.Next()
-			out = append(out, collectionConstruction.ArrayVectorFrom(p.Key, p.Value))
+			out = append(out, collectionConstruction.NewArrayVectorFrom(p.Key, p.Value))
 		}
 		if !preserveOrder {
 			sort.Slice(out, func(i, j int) bool { return compareObjects(rangeKey(out[i]), rangeKey(out[j])) < 0 })

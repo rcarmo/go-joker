@@ -2360,7 +2360,7 @@ func TestReaderConstructionAdapterMetadata(t *testing.T) {
 	if found, got := meta.Get(MakeKeyword("private")); !found || !got.Equals(Boolean{B: true}) {
 		t.Fatalf("keyword metadata entry = %v %v", found, got)
 	}
-	vec := collectionConstruction.ArrayVectorFrom(MakeInt(1))
+	vec := collectionConstruction.NewArrayVectorFrom(MakeInt(1))
 	withMeta, ok := readerConstruction.WithMeta(vec, meta)
 	if !ok || withMeta.(Meta).GetMeta() == nil {
 		t.Fatalf("WithMeta = %T %v", withMeta, ok)

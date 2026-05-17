@@ -10,7 +10,7 @@ func (expr *LiteralExpr) InferType() *coretypes.Type {
 }
 
 func dumpPosition(p coretypes.Position) Map {
-	res := collectionConstruction.EmptyArrayMap()
+	res := collectionConstruction.NewEmptyArrayMap()
 	res.Add(KEYWORDS.startLine, Int{I: p.StartLine})
 	res.Add(KEYWORDS.endLine, Int{I: p.EndLine})
 	res.Add(KEYWORDS.startColumn, Int{I: p.StartColumn})
@@ -20,7 +20,7 @@ func dumpPosition(p coretypes.Position) Map {
 }
 
 func exprArrayMap(expr Expr, exprType string, pos bool) *ArrayMap {
-	res := collectionConstruction.EmptyArrayMap()
+	res := collectionConstruction.NewEmptyArrayMap()
 	res.Add(KEYWORDS.type_, MakeKeyword(exprType))
 	if pos {
 		res.Add(KEYWORDS.pos, dumpPosition(expr.Pos()))
@@ -29,7 +29,7 @@ func exprArrayMap(expr Expr, exprType string, pos bool) *ArrayMap {
 }
 
 func addVector(res *ArrayMap, body []Expr, name string, pos bool) {
-	b := collectionConstruction.EmptyVector()
+	b := collectionConstruction.NewEmptyVector()
 	for _, e := range body {
 		b = b.Conjoin(e.Dump(pos))
 	}
@@ -131,7 +131,7 @@ func (expr *MacroCallExpr) InferType() *coretypes.Type {
 func (expr *MacroCallExpr) Dump(pos bool) Map {
 	res := exprArrayMap(expr, "macro-call", pos)
 	res.Add(MakeKeyword("name"), String{S: expr.name})
-	args := collectionConstruction.EmptyVector()
+	args := collectionConstruction.NewEmptyVector()
 	for _, arg := range expr.args {
 		args = args.Conjoin(arg)
 	}
@@ -227,7 +227,7 @@ func (expr *FnArityExpr) InferType() *coretypes.Type {
 
 func (expr *FnArityExpr) Dump(pos bool) Map {
 	res := exprArrayMap(expr, "arity", pos)
-	args := collectionConstruction.EmptyVector()
+	args := collectionConstruction.NewEmptyVector()
 	for _, arg := range expr.args {
 		args = args.Conjoin(arg)
 	}
@@ -244,7 +244,7 @@ func (expr *FnExpr) Dump(pos bool) Map {
 	if expr.variadic != nil {
 		res.Add(MakeKeyword("variadic"), expr.variadic.Dump(pos))
 	}
-	arities := collectionConstruction.EmptyVector()
+	arities := collectionConstruction.NewEmptyVector()
 	for _, a := range expr.arities {
 		arities = arities.Conjoin(a.Dump(pos))
 	}
@@ -258,7 +258,7 @@ func (expr *LetExpr) InferType() *coretypes.Type {
 
 func (expr *LetExpr) Dump(pos bool) Map {
 	res := exprArrayMap(expr, "let", pos)
-	names := collectionConstruction.EmptyVector()
+	names := collectionConstruction.NewEmptyVector()
 	for _, name := range expr.names {
 		names = names.Conjoin(name)
 	}
@@ -273,7 +273,7 @@ func (expr *LoopExpr) InferType() *coretypes.Type {
 
 func (expr *LoopExpr) Dump(pos bool) Map {
 	res := exprArrayMap(expr, "loop", pos)
-	names := collectionConstruction.EmptyVector()
+	names := collectionConstruction.NewEmptyVector()
 	for _, name := range expr.names {
 		names = names.Conjoin(name)
 	}
@@ -312,7 +312,7 @@ func (expr *TryExpr) Dump(pos bool) Map {
 	res := exprArrayMap(expr, "try", pos)
 	addVector(res, expr.body, "body", pos)
 	addVector(res, expr.finallyExpr, "finally", pos)
-	catches := collectionConstruction.EmptyVector()
+	catches := collectionConstruction.NewEmptyVector()
 	for _, c := range expr.catches {
 		catches = catches.Conjoin(c.Dump(pos))
 	}

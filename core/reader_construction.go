@@ -64,16 +64,16 @@ func (ReaderConstructionAdapter) ListFrom(values []Object) Object {
 }
 
 func (ReaderConstructionAdapter) VectorFrom(values []Object) Object {
-	return collectionConstruction.ArrayVectorFrom(values...)
+	return collectionConstruction.NewArrayVectorFrom(values...)
 }
 
 func (ReaderConstructionAdapter) PersistentVectorFromSeq(seq Seq) Object {
-	return collectionConstruction.VectorFromSeq(seq)
+	return collectionConstruction.NewVectorFromSeq(seq)
 }
 
 func (ReaderConstructionAdapter) MapLiteral(reader *Reader, values []Object, nsname string) Object {
 	if int64(len(values)) >= HASHMAP_THRESHOLD {
-		hashMap := collectionConstruction.HashMapFrom()
+		hashMap := collectionConstruction.NewHashMapFrom()
 		for i := 0; i < len(values); i += 2 {
 			key := resolveKey(values[i], nsname)
 			if hashMap.containsKey(key) {
@@ -83,7 +83,7 @@ func (ReaderConstructionAdapter) MapLiteral(reader *Reader, values []Object, nsn
 		}
 		return hashMap
 	}
-	m := collectionConstruction.EmptyArrayMap()
+	m := collectionConstruction.NewEmptyArrayMap()
 	for i := 0; i < len(values); i += 2 {
 		key := resolveKey(values[i], nsname)
 		if !m.Add(key, values[i+1]) {
@@ -94,7 +94,7 @@ func (ReaderConstructionAdapter) MapLiteral(reader *Reader, values []Object, nsn
 }
 
 func (ReaderConstructionAdapter) SetLiteral(reader *Reader, values []Object) Object {
-	set := collectionConstruction.EmptySet()
+	set := collectionConstruction.NewEmptySet()
 	for _, obj := range values {
 		if !set.Add(obj) {
 			panic(MakeReadError(reader, "Duplicate set element "+obj.ToString(false)))
@@ -138,7 +138,7 @@ func (ReaderConstructionAdapter) WithMeta(obj Object, meta *ArrayMap) (Object, b
 }
 
 func (ReaderConstructionAdapter) SkipRedundantDoMeta() *ArrayMap {
-	return collectionConstruction.EmptyArrayMap().Plus(MakeKeyword("skip-redundant-do"), Boolean{B: true})
+	return collectionConstruction.NewEmptyArrayMap().Plus(MakeKeyword("skip-redundant-do"), Boolean{B: true})
 }
 
 func (ReaderConstructionAdapter) LiteralExpr(obj Object) *LiteralExpr {

@@ -443,7 +443,7 @@ func reGroups(s string, indexes []int) Object {
 			return String{S: s[indexes[0]:indexes[1]]}
 		}
 	} else {
-		v := collectionConstruction.EmptyVector()
+		v := collectionConstruction.NewEmptyVector()
 		for i := 0; i < len(indexes); i += 2 {
 			if indexes[i] == -1 {
 				v = v.Conjoin(NIL)
@@ -524,7 +524,7 @@ var procAtom = func(args []Object) Object {
 		value: args[0],
 	}
 	if len(args) > 1 {
-		m := collectionConstruction.HashMapFrom(args[1:]...)
+		m := collectionConstruction.NewHashMapFrom(args[1:]...)
 		if ok, v := m.Get(KEYWORDS.meta); ok {
 			res.meta = EnsureObjectIsMap(v, "")
 		}
@@ -561,7 +561,7 @@ var procSwapVals = func(args []Object) Object {
 	a.value = newValue
 	a.mu.Unlock()
 	notifyWatches(a, oldValue, newValue)
-	return collectionConstruction.VectorFrom(oldValue, newValue)
+	return collectionConstruction.NewVectorFrom(oldValue, newValue)
 }
 
 var procReset = func(args []Object) Object {
@@ -585,7 +585,7 @@ var procResetVals = func(args []Object) Object {
 	a.value = newValue
 	a.mu.Unlock()
 	notifyWatches(a, oldValue, newValue)
-	return collectionConstruction.VectorFrom(oldValue, newValue)
+	return collectionConstruction.NewVectorFrom(oldValue, newValue)
 }
 
 var procAlterMeta = func(args []Object) Object {
@@ -750,7 +750,7 @@ var procSubvec = func(args []Object) Object {
 	for i := start; i < end; i++ {
 		subv = append(subv, v.At(i))
 	}
-	return collectionConstruction.VectorFrom(subv...)
+	return collectionConstruction.NewVectorFrom(subv...)
 }
 
 var procCast = func(args []Object) Object {
@@ -762,18 +762,18 @@ var procCast = func(args []Object) Object {
 }
 
 var procVec = func(args []Object) Object {
-	return collectionConstruction.VectorFromSeq(EnsureArgIsSeqable(args, 0).Seq())
+	return collectionConstruction.NewVectorFromSeq(EnsureArgIsSeqable(args, 0).Seq())
 }
 
 var procHashMap = func(args []Object) Object {
 	if len(args)%2 != 0 {
 		panic(RT.NewError("No value supplied for key " + args[len(args)-1].ToString(false)))
 	}
-	return collectionConstruction.HashMapFrom(args...)
+	return collectionConstruction.NewHashMapFrom(args...)
 }
 
 var procHashSet = func(args []Object) Object {
-	res := collectionConstruction.EmptySet()
+	res := collectionConstruction.NewEmptySet()
 	for i := 0; i < len(args); i++ {
 		res.Add(args[i])
 	}
@@ -1513,7 +1513,7 @@ var procArrayMap = func(args []Object) Object {
 	if len(args)%2 == 1 {
 		panic(RT.NewError("No value supplied for key " + args[len(args)-1].ToString(false)))
 	}
-	res := collectionConstruction.EmptyArrayMap()
+	res := collectionConstruction.NewEmptyArrayMap()
 	for i := 0; i < len(args); i += 2 {
 		res.Set(args[i], args[i+1])
 	}
@@ -1581,7 +1581,7 @@ var procShuffle = func(args []Object) Object {
 		j := rand.Intn(i + 1)
 		s[i], s[j] = s[j], s[i]
 	}
-	return collectionConstruction.VectorFrom(s...)
+	return collectionConstruction.NewVectorFrom(s...)
 }
 
 var procIsRealized = func(args []Object) Object {
@@ -1755,7 +1755,7 @@ var procParse = func(args []Object) Object {
 
 var procTypes = func(args []Object) Object {
 	CheckArity(args, 0, 0)
-	res := collectionConstruction.EmptyArrayMap()
+	res := collectionConstruction.NewEmptyArrayMap()
 	for k, v := range TYPES {
 		res.Add(String{S: *k}, v)
 	}
@@ -2136,7 +2136,7 @@ func printConfigError(filename, msg string) {
 
 func knownMacrosToMap(km Object) (Map, error) {
 	s := km.(Seqable).Seq()
-	res := collectionConstruction.EmptyArrayMap()
+	res := collectionConstruction.NewEmptyArrayMap()
 	for !s.IsEmpty() {
 		obj := s.First()
 		switch obj := obj.(type) {
@@ -2157,7 +2157,7 @@ func knownMacrosToMap(km Object) (Map, error) {
 
 func ReadConfig(filename string, workingDir string) {
 	LINTER_CONFIG = GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol("*linter-config*"))
-	LINTER_CONFIG.Value = collectionConstruction.EmptyArrayMap()
+	LINTER_CONFIG.Value = collectionConstruction.NewEmptyArrayMap()
 	configFileName := findConfigFile(filename, workingDir, false)
 	if configFileName == "" {
 		return
@@ -2187,7 +2187,7 @@ func ReadConfig(filename string, workingDir string) {
 	if ok {
 		seq, ok1 := ignoredUnusedNamespaces.(Seqable)
 		if ok1 {
-			WARNINGS.ignoredUnusedNamespaces = collectionConstruction.SetFromSeq(seq.Seq())
+			WARNINGS.ignoredUnusedNamespaces = collectionConstruction.NewSetFromSeq(seq.Seq())
 		} else {
 			printConfigError(configFileName, ":ignored-unused-namespaces value must be a vector, got "+ignoredUnusedNamespaces.GetType().ToString(false))
 			return
@@ -2216,7 +2216,7 @@ func ReadConfig(filename string, workingDir string) {
 	if ok {
 		seq, ok1 := entryPoints.(Seqable)
 		if ok1 {
-			WARNINGS.entryPoints = collectionConstruction.SetFromSeq(seq.Seq())
+			WARNINGS.entryPoints = collectionConstruction.NewSetFromSeq(seq.Seq())
 		} else {
 			printConfigError(configFileName, ":entry-points value must be a vector, got "+entryPoints.GetType().ToString(false))
 			return

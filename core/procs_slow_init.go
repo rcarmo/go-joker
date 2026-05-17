@@ -3,7 +3,7 @@
 
 package core
 
-var privateMeta Map = collectionConstruction.EmptyArrayMap().Assoc(KEYWORDS.private, Boolean{B: true}).(Map)
+var privateMeta Map = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.private, Boolean{B: true}).(Map)
 
 func intern(name string, proc ProcFn, procName string) {
 	vr := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol(name))

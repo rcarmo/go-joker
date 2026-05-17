@@ -28,7 +28,7 @@ func fillNativeVarMetadata() {
 			}
 			m, _ := vr.meta.(*ArrayMap)
 			if m == nil {
-				m = collectionConstruction.EmptyArrayMap()
+				m = collectionConstruction.NewEmptyArrayMap()
 				if vr.meta != nil {
 					for it := vr.meta.Iter(); it.HasNext(); {
 						p := it.Next()
