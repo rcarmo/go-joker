@@ -1,6 +1,10 @@
 package core
 
-import "io"
+import (
+	"io"
+
+	corecollections "github.com/rcarmo/go-joker/core/collections"
+)
 
 type List struct {
 	InfoHolder
@@ -8,17 +12,32 @@ type List struct {
 	first Object
 	rest  *List
 	count int
+	node  *corecollections.ListNode[Object]
 }
 
 func NewList(first Object, rest *List) *List {
-	result := List{
-		first: first,
-		rest:  rest,
-	}
+	var restNode *corecollections.ListNode[Object]
 	if rest != nil {
-		result.count = rest.count + 1
+		restNode = rest.listNode()
 	}
-	return &result
+	node := corecollections.NewListNode(first, restNode)
+	return &List{first: first, rest: rest, count: node.Count(), node: node}
+}
+
+func (list *List) listNode() *corecollections.ListNode[Object] {
+	if list.node != nil {
+		return list.node
+	}
+	if list.count == 0 {
+		list.node = corecollections.NewEmptyListNode[Object](list.first)
+		return list.node
+	}
+	var restNode *corecollections.ListNode[Object]
+	if list.rest != nil {
+		restNode = list.rest.listNode()
+	}
+	list.node = corecollections.NewListNode(list.first, restNode)
+	return list.node
 }
 
 func NewListFrom(objs ...Object) *List {
@@ -68,15 +87,18 @@ func (list *List) Hash() uint32 {
 }
 
 func (list *List) First() Object {
-	return list.first
+	return list.listNode().First()
 }
 
 func (list *List) Rest() Seq {
-	return list.rest
+	if list.rest != nil {
+		return list.rest
+	}
+	return &List{node: list.listNode().Rest()}
 }
 
 func (list *List) IsEmpty() bool {
-	return list.count == 0
+	return list.listNode().IsEmpty()
 }
 
 func (list *List) Cons(obj Object) Seq {
@@ -88,19 +110,19 @@ func (list *List) Seq() Seq {
 }
 
 func (list *List) Second() Object {
-	return list.rest.first
+	return list.listNode().Rest().First()
 }
 
 func (list *List) Third() Object {
-	return list.rest.rest.first
+	return list.listNode().Rest().Rest().First()
 }
 
 func (list *List) Forth() Object {
-	return list.rest.rest.rest.first
+	return list.listNode().Rest().Rest().Rest().First()
 }
 
 func (list *List) Count() int {
-	return list.count
+	return list.listNode().Count()
 }
 
 func (list *List) Empty() Collection {
@@ -120,7 +142,7 @@ func (list *List) Pop() Stack {
 
 func (list *List) sequential() {}
 
-var EmptyList = NewList(Nil{}, nil)
+var EmptyList = &List{first: Nil{}, node: corecollections.NewEmptyListNode[Object](Nil{})}
 
 func init() {
 	EmptyList.rest = EmptyList
