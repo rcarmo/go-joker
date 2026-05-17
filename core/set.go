@@ -121,7 +121,7 @@ func (set *MapSet) Call(args []Object) Object {
 }
 
 func (set *MapSet) Empty() Collection {
-	return EmptySet()
+	return collectionConstruction.NewEmptySet()
 }
 
 func NewSetFromSeq(s Seq) *MapSet {
