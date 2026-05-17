@@ -18,7 +18,6 @@ import (
 	"unicode/utf8"
 	"unsafe"
 
-	corecollections "github.com/rcarmo/go-joker/core/collections"
 	"github.com/rcarmo/go-joker/core/hashutil"
 	"github.com/rcarmo/go-joker/core/numutil"
 	corert "github.com/rcarmo/go-joker/core/runtime"
@@ -1658,59 +1657,6 @@ func MakeMeta(arglists Seq, docstring string, added string) *ArrayMap {
 	res.Add(KEYWORDS.doc, String{S: docstring})
 	res.Add(KEYWORDS.added, String{S: added})
 	return res
-}
-
-func CountedIndexedToString(v CountedIndexed, escape bool) string {
-	return corecollections.IndexedToString[Object](v, escape)
-}
-
-func AreCountedIndexedEqual(v1, v2 CountedIndexed) bool {
-	return corecollections.IndexedEqual[Object](v1, v2)
-}
-
-func CountedIndexedHash(v CountedIndexed) uint32 {
-	return corecollections.IndexedHash[Object](v)
-}
-
-func CountedIndexedGet(v CountedIndexed, key Object) (bool, Object) {
-	switch key := key.(type) {
-	case Int:
-		value, ok := corecollections.IndexedGet[Object](v, key.I)
-		return ok, value
-	}
-	return false, nil
-}
-
-func CountedIndexedCompare(v1, v2 CountedIndexed) int {
-	return corecollections.IndexedCompare[Object](v1, v2, func(a, b Object) int {
-		return EnsureObjectIsComparable(a, "").Compare(b)
-	})
-}
-
-func CountedIndexedKvreduce(v CountedIndexed, c Callable, init Object) Object {
-	return corecollections.IndexedKVReduce[Object](v, init, func(res Object, i int, value Object) Object {
-		return call3(c, res, Int{I: i}, value)
-	})
-}
-
-func CountedIndexedPprint(v CountedIndexed, w io.Writer, indent int) int {
-	return corecollections.IndexedPprint[Object](v, w, indent, pprintObject, writeIndent)
-}
-
-func CountedIndexedFormat(v CountedIndexed, w io.Writer, indent int) int {
-	return corecollections.IndexedFormat[Object](v, w, indent, formatObject, maybeNewLine, isComment, writeIndent)
-}
-
-func CountedIndexedReduce(v CountedIndexed, c Callable) Object {
-	return corecollections.IndexedReduce[Object](v, func() Object { return call0(c) }, func(acc Object, value Object) Object {
-		return c.Call([]Object{acc, value})
-	})
-}
-
-func CountedIndexedReduceInit(v CountedIndexed, c Callable, init Object) Object {
-	return corecollections.IndexedReduceInit[Object](v, init, func(acc Object, value Object) Object {
-		return c.Call([]Object{acc, value})
-	})
 }
 
 func withInfo(obj Object, info *coretypes.ObjectInfo) Object {
