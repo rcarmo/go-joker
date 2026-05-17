@@ -404,11 +404,11 @@ func __until_(_args []Object) Object {
 
 func Init() {
 	ansi_c_ = MakeString(time.ANSIC)
-	hour_ = MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(time.Hour)))
+	hour_ = coretypes.MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(time.Hour)))
 	kitchen_ = MakeString(time.Kitchen)
 	microsecond_ = coretypes.MakeInt(int(time.Microsecond))
 	millisecond_ = coretypes.MakeInt(int(time.Millisecond))
-	minute_ = MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(time.Minute)))
+	minute_ = coretypes.MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(time.Minute)))
 	nanosecond_ = coretypes.MakeInt(int(time.Nanosecond))
 	rfc1123_ = MakeString(time.RFC1123)
 	rfc1123_z_ = MakeString(time.RFC1123Z)

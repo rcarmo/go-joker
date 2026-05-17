@@ -788,7 +788,7 @@ func wasmRawIntObject(v uint64) Object {
 	if i, ok := wasmRawInt(v); ok {
 		return coretypes.Int{I: i}
 	}
-	return MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(v)))
+	return coretypes.MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(v)))
 }
 
 // contextKey for passing the object table through wazero context.

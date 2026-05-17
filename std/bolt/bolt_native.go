@@ -127,7 +127,7 @@ func nextSequence(db *bolt.DB, bucket string) Object {
 	PanicOnErr(err)
 	maxNativeUint := uint64(int(^uint(0) >> 1))
 	if id > maxNativeUint {
-		return MakeBigInt(new(big.Int).SetUint64(id))
+		return coretypes.MakeBigInt(new(big.Int).SetUint64(id))
 	}
 	return coretypes.MakeInt(int(id))
 }

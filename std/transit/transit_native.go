@@ -295,7 +295,7 @@ func transitDecodeString(s string) Object {
 			if bi.IsInt64() {
 				return coretypes.MakeInt(int(bi.Int64()))
 			}
-			return MakeBigInt(bi)
+			return coretypes.MakeBigInt(bi)
 		}
 	}
 	if strings.HasPrefix(s, "~f") {
@@ -305,7 +305,7 @@ func transitDecodeString(s string) Object {
 	}
 	if strings.HasPrefix(s, "~r") {
 		if r, ok := new(big.Rat).SetString(s[2:]); ok {
-			return MakeRatio(r)
+			return coretypes.MakeRatio(r)
 		}
 	}
 	return MakeString(s)

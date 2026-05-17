@@ -154,7 +154,7 @@ func respToMap(resp *http.Response) Map {
 	maxNativeInt := int64(int(^uint(0) >> 1))
 	minNativeInt := -maxNativeInt - 1
 	if resp.ContentLength > maxNativeInt || resp.ContentLength < minNativeInt {
-		res.Add(MakeKeyword("content-length"), MakeBigInt(big.NewInt(resp.ContentLength)))
+		res.Add(MakeKeyword("content-length"), coretypes.MakeBigInt(big.NewInt(resp.ContentLength)))
 	} else {
 		res.Add(MakeKeyword("content-length"), coretypes.MakeInt(int(resp.ContentLength)))
 	}

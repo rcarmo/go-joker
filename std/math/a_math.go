@@ -443,7 +443,7 @@ func __precision_(_args []Object) Object {
 	case _c == 1:
 		f := ExtractNumber(_args, 0)
 		_res := precision(f)
-		return MakeBigInt(_res)
+		return coretypes.MakeBigInt(_res)
 
 	default:
 		PanicArity(_c)
@@ -495,7 +495,7 @@ func __set_precision_(_args []Object) Object {
 		prec := ExtractNumber(_args, 0)
 		f := ExtractBigFloat(_args, 1)
 		_res := setPrecision(prec, f)
-		return MakeBigFloat(_res)
+		return coretypes.MakeBigFloat(_res)
 
 	default:
 		PanicArity(_c)

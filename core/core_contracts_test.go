@@ -1061,7 +1061,7 @@ func TestBigDecimalArithmeticKeepsBigFloat(t *testing.T) {
 }
 
 func TestBigIntIntPanicsOutsideNativeRange(t *testing.T) {
-	tooLarge := MakeBigInt(new(big.Int).Add(maxIntBig, big.NewInt(1)))
+	tooLarge := coretypes.MakeBigInt(new(big.Int).Add(maxIntBig, big.NewInt(1)))
 	defer func() {
 		if recover() == nil {
 			t.Fatal("BigInt.Int should panic outside native int range")
@@ -1071,14 +1071,14 @@ func TestBigIntIntPanicsOutsideNativeRange(t *testing.T) {
 }
 
 func TestBigIntIntConvertsWithinNativeRange(t *testing.T) {
-	got := MakeBigInt(big.NewInt(42)).Int()
+	got := coretypes.MakeBigInt(big.NewInt(42)).Int()
 	if got.I != 42 {
 		t.Fatalf("BigInt.Int = %d, want 42", got.I)
 	}
 }
 
 func TestBigIntDoubleUsesFullMagnitude(t *testing.T) {
-	large := MakeBigInt(new(big.Int).Lsh(big.NewInt(1), 70))
+	large := coretypes.MakeBigInt(new(big.Int).Lsh(big.NewInt(1), 70))
 	got := large.Double().D
 	want := math.Pow(2, 70)
 	if got != want {
