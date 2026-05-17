@@ -35,7 +35,7 @@ func TestHandleStreamSSE(t *testing.T) {
 	if !strings.Contains(body, "event: tick") {
 		t.Fatalf("expected SSE event line, got: %q", body)
 	}
-	if ct := rec.Header().Get("Content-Type"); !strings.Contains(ct, "text/event-stream") {
+	if ct := rec.Header().Get("Content-coretypes.Type"); !strings.Contains(ct, "text/event-stream") {
 		t.Fatalf("expected text/event-stream, got %q", ct)
 	}
 }
@@ -180,7 +180,7 @@ func TestHandleWebSocketCloseCallbackIsIdempotent(t *testing.T) {
 			return NIL
 		}})
 		conf.Add(MakeKeyword("on-close"), Proc{Name: "on-close", Fn: func(args []Object) Object {
-			done <- Boolean{B: true}
+			done <- coretypes.Boolean{B: true}
 			return NIL
 		}})
 		handleWebSocket(w, r, conf)

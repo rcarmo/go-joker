@@ -51,12 +51,12 @@ func newHTTPClient(maxIdle, maxIdlePerHost int, idleTimeout time.Duration) *HTTP
 	return hc
 }
 
-func (hc *HTTPClient) ToString(escape bool) string      { return "#object[HTTPClient]" }
-func (hc *HTTPClient) Equals(other interface{}) bool    { return hc == other }
-func (hc *HTTPClient) GetInfo() *ObjectInfo             { return nil }
-func (hc *HTTPClient) WithInfo(info *ObjectInfo) Object { return hc }
-func (hc *HTTPClient) GetType() *Type                   { return TYPE.Proc }
-func (hc *HTTPClient) Hash() uint32                     { return hc.hash }
+func (hc *HTTPClient) ToString(escape bool) string                { return "#object[HTTPClient]" }
+func (hc *HTTPClient) Equals(other interface{}) bool              { return hc == other }
+func (hc *HTTPClient) GetInfo() *coretypes.ObjectInfo             { return nil }
+func (hc *HTTPClient) WithInfo(info *coretypes.ObjectInfo) Object { return hc }
+func (hc *HTTPClient) GetType() *coretypes.Type                   { return TYPE.Proc }
+func (hc *HTTPClient) Hash() uint32                               { return hc.hash }
 
 var upgrader = ws.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
@@ -406,7 +406,7 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 // handleStream writes an SSE/chunked streaming response.
 // The stream fn receives a send-event callback: (fn [event-data])
 // Response map can include :status and :headers (applied before streaming).
-// Default Content-Type is text/event-stream.
+// Default Content-coretypes.Type is text/event-stream.
 func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
 	closeInfo := sseCloseInfo("completed", nil)
 	if ok, onClose := respMap.Get(MakeKeyword("on-close")); ok {
@@ -427,7 +427,7 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn Callable) {
 
 	// Apply headers
 	header := w.Header()
-	header.Set("Content-Type", "text/event-stream")
+	header.Set("Content-coretypes.Type", "text/event-stream")
 	header.Set("Cache-Control", "no-cache")
 	header.Set("Connection", "keep-alive")
 	if ok, headers := respMap.Get(MakeKeyword("headers")); ok {
