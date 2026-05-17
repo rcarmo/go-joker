@@ -2677,7 +2677,7 @@ type irValue struct {
 	p   unsafe.Pointer // -> string | []byte | map[string]int | []int | Object
 }
 
-func irTypedEligible(a IRAnalysis) bool {
+func irTypedEligible(a coreirx.Analysis) bool {
 	if a.NumOps == 0 || a.UsesTransient {
 		return false
 	}

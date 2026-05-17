@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	coreir "github.com/rcarmo/go-joker/core/ir"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	corert "github.com/rcarmo/go-joker/core/runtime"
@@ -559,7 +560,7 @@ func (RuntimeExecutionAdapter) ProgramEscapeInfo(prog *IRProgram) *EscapeInfo {
 	return prog.escapeInfo
 }
 
-func (RuntimeExecutionAdapter) ProgramAnalysis(prog *IRProgram) IRAnalysis {
+func (RuntimeExecutionAdapter) ProgramAnalysis(prog *IRProgram) coreir.Analysis {
 	return AnalyzeIRProgram(prog)
 }
 

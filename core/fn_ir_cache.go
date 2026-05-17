@@ -526,13 +526,11 @@ const (
 	irBitShiftRight  = coreir.BitShiftRight  // pop 2, push a >> b (arithmetic)
 )
 
-type IRAnalysis = coreir.Analysis
-
 // AnalyzeIRProgram returns a conservative program-shape summary for diagnostics
 // and optimization gates.
-func AnalyzeIRProgram(prog *IRProgram) IRAnalysis {
+func AnalyzeIRProgram(prog *IRProgram) coreir.Analysis {
 	if prog == nil {
-		return IRAnalysis{SuggestedPath: "none"}
+		return coreir.Analysis{SuggestedPath: "none"}
 	}
 	if prog.analysis != nil {
 		return *prog.analysis
@@ -592,7 +590,7 @@ type IRProgram struct {
 	captureSlotIdxs []int    // slot indices for each capture
 	hasSelf         bool
 	escapeInfo      *EscapeInfo
-	analysis        *IRAnalysis
+	analysis        *coreir.Analysis
 	typedFailed     bool
 	execFailed      bool // both typed AND boxed failed — skip IR entirely
 	memNthFailed    bool

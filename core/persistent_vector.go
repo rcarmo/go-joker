@@ -15,16 +15,13 @@ const pvBranching = corecollections.TrieBranching
 const pvShift = 5
 const pvMask = 0x1f
 
-// pvNode is a trie node — either internal (children) or leaf (values).
-type pvNode = corecollections.TrieNode
-
 // PersistentVector is an immutable vector backed by a 32-way trie.
 type PersistentVector struct {
 	InfoHolder
 	MetaHolder
 	count int
 	shift uint // bits to shift for root level (5 * depth)
-	root  *pvNode
+	root  *corecollections.TrieNode
 	tail  []Object
 }
 
@@ -69,7 +66,7 @@ func (v *PersistentVector) arrayFor(i int) []Object {
 	}
 	node := v.root
 	for level := v.shift; level > 0; level -= pvShift {
-		node = node.Get((i >> level) & pvMask).(*pvNode)
+		node = node.Get((i >> level) & pvMask).(*corecollections.TrieNode)
 	}
 	// Convert leaf node to Object slice
 	leafStart := (i >> pvShift) << pvShift
@@ -94,7 +91,7 @@ func (v *PersistentVector) Nth(i int) Object {
 	}
 	node := v.root
 	for level := v.shift; level > 0; level -= pvShift {
-		node = node.Get((i >> level) & pvMask).(*pvNode)
+		node = node.Get((i >> level) & pvMask).(*corecollections.TrieNode)
 	}
 	return node.Get(i & pvMask).(Object)
 }
@@ -112,7 +109,7 @@ func (v *PersistentVector) Conj(val Object) *PersistentVector {
 		}
 	}
 	// Tail is full — push tail into trie, start new tail
-	var newRoot *pvNode
+	var newRoot *corecollections.TrieNode
 	newShift := v.shift
 	tailNode := corecollections.NewTrieNode()
 	for i, obj := range v.tail {
@@ -137,7 +134,7 @@ func (v *PersistentVector) Conj(val Object) *PersistentVector {
 }
 
 // pushTail inserts a tail node into the trie.
-func (v *PersistentVector) pushTail(level uint, parent *pvNode, tailNode *pvNode) *pvNode {
+func (v *PersistentVector) pushTail(level uint, parent *corecollections.TrieNode, tailNode *corecollections.TrieNode) *corecollections.TrieNode {
 	subIdx := ((v.count - 1) >> level) & pvMask
 	ret := cloneNode(parent)
 	if level == pvShift {
@@ -145,7 +142,7 @@ func (v *PersistentVector) pushTail(level uint, parent *pvNode, tailNode *pvNode
 	} else {
 		child := parent.Get(subIdx)
 		if child != nil {
-			ret.Set(subIdx, v.pushTail(level-pvShift, child.(*pvNode), tailNode))
+			ret.Set(subIdx, v.pushTail(level-pvShift, child.(*corecollections.TrieNode), tailNode))
 		} else {
 			ret.Set(subIdx, pvNewPath(level-pvShift, tailNode))
 		}
@@ -179,13 +176,13 @@ func (v *PersistentVector) Assoc(i int, val Object) *PersistentVector {
 	}
 }
 
-func (v *PersistentVector) assocNode(level uint, node *pvNode, i int, val Object) *pvNode {
+func (v *PersistentVector) assocNode(level uint, node *corecollections.TrieNode, i int, val Object) *corecollections.TrieNode {
 	ret := cloneNode(node)
 	if level == 0 {
 		ret.Set(i&pvMask, val)
 	} else {
 		subIdx := (i >> level) & pvMask
-		ret.Set(subIdx, v.assocNode(level-pvShift, node.Get(subIdx).(*pvNode), i, val))
+		ret.Set(subIdx, v.assocNode(level-pvShift, node.Get(subIdx).(*corecollections.TrieNode), i, val))
 	}
 	return ret
 }
@@ -216,7 +213,7 @@ func (v *PersistentVector) Pop() *PersistentVector {
 		newRoot = emptyPVNode
 	}
 	if v.shift > pvShift && newRoot.Get(1) == nil {
-		newRoot = newRoot.Get(0).(*pvNode)
+		newRoot = newRoot.Get(0).(*corecollections.TrieNode)
 		newShift -= pvShift
 	}
 	return &PersistentVector{
@@ -227,10 +224,10 @@ func (v *PersistentVector) Pop() *PersistentVector {
 	}
 }
 
-func (v *PersistentVector) popTail(level uint, node *pvNode) *pvNode {
+func (v *PersistentVector) popTail(level uint, node *corecollections.TrieNode) *corecollections.TrieNode {
 	subIdx := ((v.count - 2) >> level) & pvMask
 	if level > pvShift {
-		newChild := v.popTail(level-pvShift, node.Get(subIdx).(*pvNode))
+		newChild := v.popTail(level-pvShift, node.Get(subIdx).(*corecollections.TrieNode))
 		if newChild == nil && subIdx == 0 {
 			return nil
 		}
@@ -257,11 +254,11 @@ func (v *PersistentVector) ToSlice() []Object {
 
 // --- Helpers ---
 
-func cloneNode(node *pvNode) *pvNode {
+func cloneNode(node *corecollections.TrieNode) *corecollections.TrieNode {
 	return corecollections.CloneTrieNode(node)
 }
 
-func pvNewPath(level uint, node *pvNode) *pvNode {
+func pvNewPath(level uint, node *corecollections.TrieNode) *corecollections.TrieNode {
 	return corecollections.NewTriePath(level, pvShift, node)
 }
 

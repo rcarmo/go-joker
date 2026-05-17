@@ -1195,7 +1195,7 @@ type IRDiagnostic struct {
 	NumOps      int
 	UsesWASM    bool
 	WASM        corewasm.Diagnostic
-	Analysis    IRAnalysis
+	Analysis    coreir.Analysis
 }
 
 func explainIRCompile(loop *LoopExpr) IRDiagnostic {

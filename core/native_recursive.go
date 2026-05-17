@@ -118,10 +118,9 @@ func callNativeRecursive(entry *nativeRecursiveEntry, args []Object) Object {
 
 // --- Arity-1 compiler (fib) ---
 
-type intExpr1 = nativeIntFn1
 type intBool1 func(a int) bool
 
-func compileIntExpr1(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) intExpr1 {
+func compileIntExpr1(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) nativeIntFn1 {
 	switch e := expr.(type) {
 	case *LiteralExpr:
 		if v, ok := e.obj.(Int); ok {
@@ -189,7 +188,7 @@ func compileIntBool1(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntr
 	return nil
 }
 
-func compileArith1(proc string, args []Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) intExpr1 {
+func compileArith1(proc string, args []Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) nativeIntFn1 {
 	switch proc {
 	case "procAdd":
 		if len(args) != 2 {
@@ -252,10 +251,9 @@ func compileArith1(proc string, args []Expr, selfVar *Var, pf int, entry *native
 
 // --- Arity-3 compiler (tak) ---
 
-type intExpr3 = nativeIntFn3
 type intBool3 func(a, b, c int) bool
 
-func compileIntExpr3(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) intExpr3 {
+func compileIntExpr3(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) nativeIntFn3 {
 	switch e := expr.(type) {
 	case *LiteralExpr:
 		if v, ok := e.obj.(Int); ok {
@@ -332,7 +330,7 @@ func compileIntBool3(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntr
 	return nil
 }
 
-func compileArith3(proc string, args []Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) intExpr3 {
+func compileArith3(proc string, args []Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) nativeIntFn3 {
 	switch proc {
 	case "procAdd":
 		if len(args) != 2 {
@@ -395,10 +393,9 @@ func compileArith3(proc string, args []Expr, selfVar *Var, pf int, entry *native
 
 // --- Arity-2 compiler ---
 
-type intExpr2 = nativeIntFn2
 type intBool2 func(a, b int) bool
 
-func compileIntExpr2(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) intExpr2 {
+func compileIntExpr2(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) nativeIntFn2 {
 	switch e := expr.(type) {
 	case *LiteralExpr:
 		if v, ok := e.obj.(Int); ok {
@@ -472,7 +469,7 @@ func compileIntBool2(expr Expr, selfVar *Var, pf int, entry *nativeRecursiveEntr
 	return nil
 }
 
-func compileArith2(proc string, args []Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) intExpr2 {
+func compileArith2(proc string, args []Expr, selfVar *Var, pf int, entry *nativeRecursiveEntry) nativeIntFn2 {
 	switch proc {
 	case "procAdd":
 		if len(args) != 2 {
