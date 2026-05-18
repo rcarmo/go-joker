@@ -48,7 +48,7 @@ var (
 )
 
 var (
-	ARGS   map[int]Symbol
+	ARGS   map[int]coretypes.Symbol
 	GENSYM int
 )
 
@@ -82,7 +82,7 @@ func MakeReadError(reader *Reader, msg string) ReadError {
 
 func makeReadObject(reader *Reader, obj coretypes.Object) coretypes.Object {
 	p := popPos()
-	return withInfo(obj, &coretypes.ObjectInfo{Position: coretypes.Position{
+	return coretypes.WithInfo(obj, &coretypes.ObjectInfo{Position: coretypes.Position{
 		StartColumn: p.Column,
 		StartLine:   p.Line,
 		EndLine:     reader.Line(),
@@ -99,7 +99,7 @@ func deriveReadObject(base coretypes.Object, obj coretypes.Object) coretypes.Obj
 	baseInfo := base.GetInfo()
 	if baseInfo != nil {
 		bi := *baseInfo
-		return withInfo(obj, &bi)
+		return coretypes.WithInfo(obj, &bi)
 	}
 	return obj
 }
@@ -259,7 +259,7 @@ func readNumber(reader *Reader) coretypes.Object {
 	return readerConstruction.NumberFromToken(reader, token)
 }
 
-/* Reads (lexes) a token and returns either a Symbol or Keyword. */
+/* Reads (lexes) a token and returns either a coretypes.Symbol or coretypes.Keyword. */
 func readIdent(reader *Reader, first rune) coretypes.Object {
 	str, lastAdded, scanErr := corereader.ScanIdentToken(reader, first)
 	if scanErr != nil {
@@ -274,19 +274,19 @@ func readIdent(reader *Reader, first rune) coretypes.Object {
 			if FORMAT_MODE {
 				return MakeReadObject(reader, readerConstruction.Keyword(str))
 			}
-			sym := readerConstruction.Symbol(str[1:]).(Symbol)
+			sym := readerConstruction.Symbol(str[1:]).(coretypes.Symbol)
 			ns := GLOBAL_ENV.NamespaceFor(GLOBAL_ENV.CurrentNamespace(), sym)
 			if ns == nil {
-				msg := fmt.Sprintf("Unable to resolve namespace %s in keyword %s", *sym.ns, ":"+str)
+				msg := fmt.Sprintf("Unable to resolve namespace %s in keyword %s", sym.Namespace(), ":"+str)
 				if LINTER_MODE {
 					printReadWarning(reader, msg)
-					return MakeReadObject(reader, readerConstruction.Keyword(*sym.name))
+					return MakeReadObject(reader, readerConstruction.Keyword(sym.Name()))
 				}
 				panic(MakeReadError(reader, msg))
 			}
 			ns.isUsed = true
 			ns.isGloballyUsed = true
-			return MakeReadObject(reader, readerConstruction.Keyword(*ns.Name.name+"/"+*sym.name))
+			return MakeReadObject(reader, readerConstruction.Keyword(ns.Name.Name()+"/"+sym.Name()))
 		}
 		return MakeReadObject(reader, readerConstruction.Keyword(str))
 	default:
@@ -331,14 +331,14 @@ func warnInvalidIdent(reader *Reader, s *string) {
 func readValidatedIdent(reader *Reader, first rune) coretypes.Object {
 	obj := readIdent(reader, first)
 	switch o := obj.(type) {
-	case Keyword:
-		warnInvalidIdent(reader, o.ns)
-		if *o.name != "/" {
-			warnInvalidIdent(reader, o.name)
+	case coretypes.Keyword:
+		warnInvalidIdent(reader, o.NamespaceKey())
+		if o.Name() != "/" {
+			warnInvalidIdent(reader, o.NameKey())
 		}
-	case Symbol:
-		warnInvalidIdent(reader, o.ns)
-		warnInvalidIdent(reader, o.name)
+	case coretypes.Symbol:
+		warnInvalidIdent(reader, o.NamespaceKey())
+		warnInvalidIdent(reader, o.NameKey())
 	}
 	return obj
 }
@@ -423,7 +423,7 @@ func readMulti(reader *Reader, previouslyRead []coretypes.Object) (coretypes.Obj
 		if !multi {
 			return obj, previouslyRead
 		}
-		v := obj.(Vec)
+		v := obj.(coretypes.Vec)
 		for i := 0; i < v.Count(); i++ {
 			previouslyRead = append(previouslyRead, v.At(i))
 		}
@@ -494,7 +494,7 @@ func readList(reader *Reader) coretypes.Object {
 	for r != ')' {
 		obj, multi := readerConstruction.Read(reader)
 		if multi {
-			v := obj.(Vec)
+			v := obj.(coretypes.Vec)
 			for i := 0; i < v.Count(); i++ {
 				s = append(s, v.At(i))
 			}
@@ -515,7 +515,7 @@ func readVector(reader *Reader) coretypes.Object {
 	for r != ']' {
 		obj, multi := readerConstruction.Read(reader)
 		if multi {
-			v := obj.(Vec)
+			v := obj.(coretypes.Vec)
 			for i := 0; i < v.Count(); i++ {
 				items = append(items, v.At(i))
 			}
@@ -534,15 +534,15 @@ func resolveKey(key coretypes.Object, nsname string) coretypes.Object {
 		return key
 	}
 	switch key := key.(type) {
-	case Keyword:
-		if key.ns == nil {
+	case coretypes.Keyword:
+		if key.NamespaceKey() == nil {
 			return DeriveReadObject(key, readerConstruction.Keyword(nsname+"/"+key.Name()))
 		}
 		if key.Namespace() == "_" {
 			return DeriveReadObject(key, readerConstruction.Keyword(key.Name()))
 		}
-	case Symbol:
-		if key.ns == nil {
+	case coretypes.Symbol:
+		if key.NamespaceKey() == nil {
 			return DeriveReadObject(key, readerConstruction.Symbol(nsname+"/"+key.Name()))
 		}
 		if key.Namespace() == "_" {
@@ -575,7 +575,7 @@ func readMapWithNamespace(reader *Reader, nsname string) coretypes.Object {
 		if !multi {
 			objs = appendMapElement(objs, obj)
 		} else {
-			v := obj.(Vec)
+			v := obj.(coretypes.Vec)
 			for i := 0; i < v.Count(); i++ {
 				objs = appendMapElement(objs, v.At(i))
 			}
@@ -599,7 +599,7 @@ func readSet(reader *Reader) coretypes.Object {
 		if !multi {
 			items = append(items, obj)
 		} else {
-			v := obj.(Vec)
+			v := obj.(coretypes.Vec)
 			for i := 0; i < v.Count(); i++ {
 				items = append(items, v.At(i))
 			}
@@ -611,7 +611,7 @@ func readSet(reader *Reader) coretypes.Object {
 	return MakeReadObject(reader, readerConstruction.SetLiteral(reader, items))
 }
 
-func makeQuote(obj coretypes.Object, quote Symbol) coretypes.Object {
+func makeQuote(obj coretypes.Object, quote coretypes.Symbol) coretypes.Object {
 	res := readerConstruction.ListFrom([]coretypes.Object{quote, obj})
 	return DeriveReadObject(obj, res)
 }
@@ -620,9 +620,9 @@ func metadataFromObject(obj coretypes.Object) (*ArrayMap, bool) {
 	switch v := obj.(type) {
 	case *ArrayMap:
 		return v, true
-	case coretypes.String, Symbol:
+	case coretypes.String, coretypes.Symbol:
 		return &ArrayMap{arr: []coretypes.Object{DeriveReadObject(obj, KEYWORDS.tag), obj}}, true
-	case Keyword:
+	case coretypes.Keyword:
 		return &ArrayMap{arr: []coretypes.Object{obj, DeriveReadObject(obj, readerConstruction.Bool(true))}}, true
 	default:
 		return nil, false
@@ -633,16 +633,16 @@ func readMeta(reader *Reader) *ArrayMap {
 	obj := readFirst(reader)
 	meta, ok := readerConstruction.MetadataFromObject(obj)
 	if !ok {
-		panic(MakeReadError(reader, "Metadata must be Symbol, Keyword, String or Map"))
+		panic(MakeReadError(reader, "Metadata must be coretypes.Symbol, coretypes.Keyword, String or coretypes.Map"))
 	}
 	return meta
 }
 
-func fillInMissingArgs(args map[int]Symbol) {
-	corereader.FillMissingArgIndexes(args, func() Symbol { return generateSymbol("p__") })
+func fillInMissingArgs(args map[int]coretypes.Symbol) {
+	corereader.FillMissingArgIndexes(args, func() coretypes.Symbol { return generateSymbol("p__") })
 }
 
-func makeFnForm(args map[int]Symbol, body coretypes.Object) coretypes.Object {
+func makeFnForm(args map[int]coretypes.Symbol, body coretypes.Object) coretypes.Object {
 	fillInMissingArgs(args)
 	a, ok := corereader.OrderedArgValues(args, SYMBOLS.amp)
 	if !ok {
@@ -654,23 +654,23 @@ func makeFnForm(args map[int]Symbol, body coretypes.Object) coretypes.Object {
 	}
 	argVector := readerConstruction.PersistentVectorFromSeq(readerConstruction.VectorFrom(argObjects).(coretypes.Seqable).Seq())
 	if LINTER_MODE {
-		if _, ok := body.(Meta); ok {
+		if _, ok := body.(coretypes.Meta); ok {
 			body, _ = readerConstruction.WithMeta(body, readerConstruction.SkipRedundantDoMeta())
 		}
 	}
 	return DeriveReadObject(body, readerConstruction.ListFrom([]coretypes.Object{readerConstruction.Symbol("joker.core/fn"), argVector, body}))
 }
 
-func genSym(prefix string, postfix string) Symbol {
+func genSym(prefix string, postfix string) coretypes.Symbol {
 	GENSYM++
-	return readerConstruction.Symbol(fmt.Sprintf("%s%d%s", prefix, GENSYM, postfix)).(Symbol)
+	return readerConstruction.Symbol(fmt.Sprintf("%s%d%s", prefix, GENSYM, postfix)).(coretypes.Symbol)
 }
 
-func generateSymbol(prefix string) Symbol {
+func generateSymbol(prefix string) coretypes.Symbol {
 	return genSym(prefix, "#")
 }
 
-func registerArg(index int) Symbol {
+func registerArg(index int) coretypes.Symbol {
 	if s, ok := ARGS[index]; ok {
 		return s
 	}
@@ -700,14 +700,14 @@ func isSelfEvaluating(obj coretypes.Object) bool {
 		return true
 	}
 	switch obj.(type) {
-	case coretypes.Boolean, coretypes.Double, coretypes.Int, coretypes.Char, Keyword, coretypes.String:
+	case coretypes.Boolean, coretypes.Double, coretypes.Int, coretypes.Char, coretypes.Keyword, coretypes.String:
 		return true
 	default:
 		return false
 	}
 }
 
-func isCall(obj coretypes.Object, name Symbol) bool {
+func isCall(obj coretypes.Object, name coretypes.Symbol) bool {
 	switch seq := obj.(type) {
 	case coretypes.Seq:
 		return seq.First().Equals(name)
@@ -716,7 +716,7 @@ func isCall(obj coretypes.Object, name Symbol) bool {
 	}
 }
 
-func syntaxQuoteSeq(seq coretypes.Seq, env map[*string]Symbol, reader *Reader) coretypes.Seq {
+func syntaxQuoteSeq(seq coretypes.Seq, env map[*string]coretypes.Symbol, reader *Reader) coretypes.Seq {
 	res := make([]coretypes.Object, 0)
 	for iter := iter(seq); iter.HasNext(); {
 		obj := iter.Next()
@@ -730,7 +730,7 @@ func syntaxQuoteSeq(seq coretypes.Seq, env map[*string]Symbol, reader *Reader) c
 	return &ArraySeq{arr: res}
 }
 
-func syntaxQuoteColl(seq coretypes.Seq, env map[*string]Symbol, reader *Reader, ctor Symbol, info *coretypes.ObjectInfo) coretypes.Object {
+func syntaxQuoteColl(seq coretypes.Seq, env map[*string]coretypes.Symbol, reader *Reader, ctor coretypes.Symbol, info *coretypes.ObjectInfo) coretypes.Object {
 	q := syntaxQuoteSeq(seq, env, reader)
 	concat := q.Cons(SYMBOLS.concat)
 	seqList := readerConstruction.ListFrom([]coretypes.Object{SYMBOLS.seq, concat})
@@ -738,10 +738,10 @@ func syntaxQuoteColl(seq coretypes.Seq, env map[*string]Symbol, reader *Reader, 
 	if ctor != SYMBOLS.emptySymbol {
 		res = readerConstruction.ListFrom([]coretypes.Object{ctor, seqList}).(coretypes.Seq).Cons(SYMBOLS.apply)
 	}
-	return withInfo(res, info)
+	return coretypes.WithInfo(res, info)
 }
 
-func makeSyntaxQuote(obj coretypes.Object, env map[*string]Symbol, reader *Reader) coretypes.Object {
+func makeSyntaxQuote(obj coretypes.Object, env map[*string]coretypes.Symbol, reader *Reader) coretypes.Object {
 	if isSelfEvaluating(obj) {
 		return obj
 	}
@@ -750,13 +750,14 @@ func makeSyntaxQuote(obj coretypes.Object, env map[*string]Symbol, reader *Reade
 	}
 	info := obj.GetInfo()
 	switch s := obj.(type) {
-	case Symbol:
-		str := *s.name
-		if corereader.IsAutoGensymSymbolName(str, s.ns != nil) {
-			sym, ok := env[s.name]
+	case coretypes.Symbol:
+		str := s.Name()
+		nameKey := s.NameKey()
+		if corereader.IsAutoGensymSymbolName(str, s.NamespaceKey() != nil) {
+			sym, ok := env[nameKey]
 			if !ok {
 				sym = generateSymbol(corereader.AutoGensymPrefix(str))
-				env[s.name] = sym
+				env[nameKey] = sym
 			}
 			obj = DeriveReadObject(obj, sym)
 		} else {
@@ -771,7 +772,7 @@ func makeSyntaxQuote(obj coretypes.Object, env map[*string]Symbol, reader *Reade
 			panic(MakeReadError(reader, "Splice not in list"))
 		}
 		return syntaxQuoteColl(s, env, reader, SYMBOLS.emptySymbol, info)
-	case Vec:
+	case coretypes.Vec:
 		return syntaxQuoteColl(s.Seq(), env, reader, SYMBOLS.vector, info)
 	case *ArrayMap:
 		return syntaxQuoteColl(ArraySeqFromArrayMap(s), env, reader, SYMBOLS.hashMap, info)
@@ -782,11 +783,11 @@ func makeSyntaxQuote(obj coretypes.Object, env map[*string]Symbol, reader *Reade
 	}
 }
 
-func handleNoReaderError(reader *Reader, s Symbol) coretypes.Object {
+func handleNoReaderError(reader *Reader, s coretypes.Symbol) coretypes.Object {
 	return handleNoReaderErrorValue(reader, s, readFirst(reader))
 }
 
-func handleNoReaderErrorValue(reader *Reader, s Symbol, value coretypes.Object) coretypes.Object {
+func handleNoReaderErrorValue(reader *Reader, s coretypes.Symbol, value coretypes.Object) coretypes.Object {
 	msg := "No reader function for tag " + s.ToString(false)
 	switch corereader.ClassifyMissingTaggedReaderAction(SUPPRESS_READ, LINTER_MODE, DIALECT == corereader.EDNDialect) {
 	case corereader.MissingTaggedReaderReturnValue:
@@ -799,13 +800,13 @@ func handleNoReaderErrorValue(reader *Reader, s Symbol, value coretypes.Object) 
 	}
 }
 
-func lookupDataReader(s Symbol) (coretypes.Object, bool) {
+func lookupDataReader(s coretypes.Symbol) (coretypes.Object, bool) {
 	for _, name := range corereader.DataReaderVarNames() {
 		vr := GLOBAL_ENV.CoreNamespace.Resolve(name)
 		if vr == nil {
 			continue
 		}
-		readersMap, ok := vr.Value.(Map)
+		readersMap, ok := vr.Value.(coretypes.Map)
 		if !ok {
 			continue
 		}
@@ -821,7 +822,7 @@ func lookupDefaultDataReaderFn() (coretypes.Callable, bool) {
 	if vr == nil || vr.Value == nil || IsNil(vr.Value) {
 		return nil, false
 	}
-	return EnsureObjectIsCallable(vr.Value, "*default-data-reader-fn* must be callable, got %s"), true
+	return coretypes.EnsureObjectIsCallable(vr.Value, "*default-data-reader-fn* must be callable, got %s"), true
 }
 
 func readTagged(reader *Reader) coretypes.Object {
@@ -832,10 +833,10 @@ func readTagged(reader *Reader) coretypes.Object {
 		return next
 	}
 	switch s := obj.(type) {
-	case Symbol:
+	case coretypes.Symbol:
 		value := readFirst(reader)
 		if readFunc, ok := lookupDataReader(s); ok {
-			return call1(EnsureObjectIsCallable(readFunc, "data reader must be callable, got %s"), value)
+			return call1(coretypes.EnsureObjectIsCallable(readFunc, "data reader must be callable, got %s"), value)
 		}
 		if fallback, ok := lookupDefaultDataReaderFn(); ok {
 			return call2(fallback, s, value)
@@ -921,13 +922,14 @@ func readNamespacedMap(reader *Reader) coretypes.Object {
 		if sym == nil {
 			nsname = GLOBAL_ENV.CurrentNamespace().Name.Name()
 		} else {
-			sym, ok := sym.(Symbol)
-			if !ok || sym.ns != nil {
+			sym, ok := sym.(coretypes.Symbol)
+			if !ok || sym.NamespaceKey() != nil {
 				panic(MakeReadError(reader, "Namespaced map must specify a valid namespace: "+sym.ToString(false)))
 			}
-			ns := GLOBAL_ENV.CurrentNamespace().aliases[sym.name]
+			nameKey := sym.NameKey()
+			ns := GLOBAL_ENV.CurrentNamespace().aliases[nameKey]
 			if ns == nil {
-				ns = GLOBAL_ENV.Namespaces[sym.name]
+				ns = GLOBAL_ENV.Namespaces[nameKey]
 			}
 			if ns == nil {
 				panic(MakeReadError(reader, "Unknown auto-resolved namespace alias: "+sym.ToString(false)))
@@ -940,8 +942,8 @@ func readNamespacedMap(reader *Reader) coretypes.Object {
 		if sym == nil {
 			panic(MakeReadError(reader, "Namespaced map must specify a valid namespace"))
 		}
-		sym, ok := sym.(Symbol)
-		if !ok || sym.ns != nil {
+		sym, ok := sym.(coretypes.Symbol)
+		if !ok || sym.NamespaceKey() != nil {
 			panic(MakeReadError(reader, "Namespaced map must specify a valid namespace: "+sym.ToString(false)))
 		}
 		nsname = sym.Name()
@@ -952,7 +954,7 @@ func readNamespacedMap(reader *Reader) coretypes.Object {
 func readSymbolicValue(reader *Reader) coretypes.Object {
 	obj := readFirst(reader)
 	switch o := obj.(type) {
-	case Symbol:
+	case coretypes.Symbol:
 		if v, found := corereader.SymbolicValue(o.ToString(false)); found {
 			return readerConstruction.Double(v)
 		}
@@ -1005,7 +1007,7 @@ func readDispatch(reader *Reader) (coretypes.Object, bool) {
 			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
-		ARGS = make(map[int]Symbol)
+		ARGS = make(map[int]coretypes.Symbol)
 		fn := readFirst(reader)
 		res := makeFnForm(ARGS, fn)
 		ARGS = nil
@@ -1037,7 +1039,7 @@ func readFirst(reader *Reader) coretypes.Object {
 	if !multi {
 		return obj
 	}
-	v := obj.(Vec)
+	v := obj.(coretypes.Vec)
 	if v.Count() == 0 {
 		return readFirst(reader)
 	}
@@ -1129,7 +1131,7 @@ func Read(reader *Reader) (coretypes.Object, bool) {
 			addPrefix(nextObj, prefix)
 			return nextObj, false
 		}
-		return makeSyntaxQuote(nextObj, make(map[*string]Symbol), reader), false
+		return makeSyntaxQuote(nextObj, make(map[*string]coretypes.Symbol), reader), false
 	case corereader.ReadFormMeta:
 		popPos()
 		if FORMAT_MODE {

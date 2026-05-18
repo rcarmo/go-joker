@@ -178,7 +178,7 @@ func MakeI64Array(size int) *WasmArray {
 // These can be registered as Joker procs for scripting access.
 
 var procMakeF64Array = func(args []coretypes.Object) coretypes.Object {
-	n := EnsureArgIsNumber(args, 0).Int().I
+	n := coretypes.EnsureArgIsNumber(args, 0).Int().I
 	arr := MakeF64Array(n)
 	if arr == nil {
 		return NIL
@@ -191,7 +191,7 @@ var procAgetF64 = func(args []coretypes.Object) coretypes.Object {
 	if !ok {
 		return NIL
 	}
-	i := EnsureArgIsNumber(args, 1).Int().I
+	i := coretypes.EnsureArgIsNumber(args, 1).Int().I
 	return coretypes.Double{D: arr.GetF64(i)}
 }
 
@@ -200,8 +200,8 @@ var procAsetF64 = func(args []coretypes.Object) coretypes.Object {
 	if !ok {
 		return NIL
 	}
-	i := EnsureArgIsNumber(args, 1).Int().I
-	v := EnsureArgIsNumber(args, 2).Double().D
+	i := coretypes.EnsureArgIsNumber(args, 1).Int().I
+	v := coretypes.EnsureArgIsNumber(args, 2).Double().D
 	if !arr.SetF64(i, v) {
 		return NIL
 	}

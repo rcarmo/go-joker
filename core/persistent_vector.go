@@ -5,7 +5,7 @@ import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
-// Persistent Vector — Clojure-style 32-way branching trie with tail optimization.
+// Persistent coretypes.Vector — Clojure-style 32-way branching trie with tail optimization.
 // Provides O(log32 n) assoc and O(1) amortized conj via structural sharing.
 //
 // Design (Bagwell 2001 / Hickey):
@@ -21,7 +21,7 @@ const pvMask = 0x1f
 // PersistentVector is an immutable vector backed by a 32-way trie.
 type PersistentVector struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	count int
 	shift uint // bits to shift for root level (5 * depth)
 	root  *corecollections.TrieNode
@@ -293,9 +293,9 @@ func (v *PersistentVector) WithInfo(info *coretypes.ObjectInfo) coretypes.Object
 	return &res
 }
 
-func (v *PersistentVector) WithMeta(meta Map) coretypes.Object {
+func (v *PersistentVector) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *v
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 

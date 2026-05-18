@@ -15,28 +15,28 @@ var (
 type (
 	ArrayVector struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		arr []coretypes.Object
 	}
 )
 
-func (v *ArrayVector) WithMeta(meta Map) coretypes.Object {
+func (v *ArrayVector) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *v
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
 func (v *ArrayVector) Clone() *ArrayVector {
 	res := ArrayVector{arr: corecollections.CloneSlice(v.arr)}
-	res.meta = v.meta
+	res.Meta = v.Meta
 	return &res
 }
 
-func (v *ArrayVector) Conjoin(obj coretypes.Object) Vec {
+func (v *ArrayVector) Conjoin(obj coretypes.Object) coretypes.Vec {
 	if v.Count() >= VECTOR_THRESHOLD {
 		res := collectionConstruction.NewVectorFrom(v.arr...)
 		res = res.Conjoin(obj)
-		res.meta = v.meta
+		res.Meta = v.Meta
 		return res
 	}
 	res := *v
@@ -105,7 +105,7 @@ func (v *ArrayVector) TryNth(i int, d coretypes.Object) coretypes.Object {
 func (v *ArrayVector) SequentialMarker() {}
 
 func (v *ArrayVector) Compare(other coretypes.Object) int {
-	v2 := EnsureObjectIsCountedIndexed(rootObject(other), "Cannot compare Vector: %s")
+	v2 := coretypes.EnsureObjectIsCountedIndexed(coretypes.RootObject(other), "Cannot compare coretypes.Vector: %s")
 	return CountedIndexedCompare(v, v2)
 }
 

@@ -11,7 +11,7 @@ import (
 
 func fromObject(obj coretypes.Object) interface{} {
 	switch obj := obj.(type) {
-	case Keyword:
+	case coretypes.Keyword:
 		return obj.ToString(false)[1:]
 	case coretypes.Boolean:
 		return obj.B
@@ -19,20 +19,20 @@ func fromObject(obj coretypes.Object) interface{} {
 		return obj.Double().D
 	case Nil:
 		return nil
-	case Vec:
+	case coretypes.Vec:
 		cnt := obj.Count()
 		res := make([]interface{}, cnt)
 		for i := 0; i < cnt; i++ {
 			res[i] = fromObject(obj.Nth(i))
 		}
 		return res
-	case Map:
+	case coretypes.Map:
 		res := make(map[string]interface{})
 		for iter := obj.Iter(); iter.HasNext(); {
 			p := iter.Next()
 			var k string
 			switch p.Key.(type) {
-			case Keyword:
+			case coretypes.Keyword:
 				k = p.Key.ToString(false)[1:]
 			default:
 				k = p.Key.ToString(false)

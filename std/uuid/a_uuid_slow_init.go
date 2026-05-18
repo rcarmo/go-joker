@@ -18,6 +18,6 @@ func InternsOrThunks() {
 	uuidNamespace.InternVar("new", new_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Creates a new random UUID.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Creates a new random UUID.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 }

@@ -81,7 +81,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var jsonNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.json"))
+var jsonNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.json"))
 
 func init() {
 	jsonNamespace.Lazy = Init

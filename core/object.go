@@ -1,11 +1,10 @@
-//go:generate go run gen/gen_types.go assert coretypes.Comparable Vec coretypes.Char String Symbol Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number coretypes.Seqable coretypes.Callable *coretypes.Type Meta coretypes.Int coretypes.Double coretypes.Stack Map Set coretypes.Associative coretypes.Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn coretypes.Deref *Atom Ref coretypes.KVReduce coretypes.Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel coretypes.CountedIndexed
-//go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil Keyword Symbol *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
+//go:generate go run gen/gen_types.go assert coretypes.Comparable coretypes.Vec coretypes.Char coretypes.String coretypes.Symbol coretypes.Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number coretypes.Seqable coretypes.Callable *coretypes.Type coretypes.Meta coretypes.Int coretypes.Double coretypes.Stack coretypes.Map coretypes.Set coretypes.Associative coretypes.Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn coretypes.Deref *Atom coretypes.Ref coretypes.KVReduce coretypes.Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel coretypes.CountedIndexed
+//go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
 //go:generate go run -tags gen_code gen/codegen/main.go
 
 package core
 
 import (
-	"errors"
 	"fmt"
 	"math"
 	"reflect"
@@ -18,39 +17,15 @@ import (
 )
 
 type (
-	Meta interface {
-		GetMeta() Map
-		WithMeta(Map) coretypes.Object
-	}
-	Ref interface {
-		AlterMeta(fn *Fn, args []coretypes.Object) Map
-		ResetMeta(m Map) Map
-	}
-	MetaHolder struct {
-		meta Map
-	}
 	Nil struct {
 		coretypes.InfoHolder
 		n struct{}
 	}
-	Keyword struct {
-		coretypes.InfoHolder
-		ns   *string
-		name *string
-		hash uint32
-	}
-	Symbol struct {
-		coretypes.InfoHolder
-		MetaHolder
-		ns   *string
-		name *string
-		hash uint32
-	}
 	Var struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		ns             *Namespace
-		name           Symbol
+		name           coretypes.Symbol
 		Value          coretypes.Object
 		expr           Expr
 		isMacro        bool
@@ -69,7 +44,7 @@ type (
 	}
 	Fn struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		isMacro       bool
 		fnExpr        *FnExpr
 		env           *LocalEnv
@@ -83,7 +58,7 @@ type (
 		rt *goroutineRT
 	}
 	Atom struct {
-		MetaHolder
+		coretypes.MetaHolder
 		mu    sync.Mutex
 		value coretypes.Object
 	}
@@ -93,45 +68,6 @@ type (
 type stringSeq struct {
 	s   string
 	off int
-}
-
-func newIteratorError() error {
-	return errors.New("Iterator reached the end of collection")
-}
-
-func MakeSymbol(nsname string) Symbol {
-	ns, local, ok := corestr.SplitQualified(nsname)
-	if !ok {
-		return Symbol{
-			ns:   nil,
-			name: STRINGS.Intern(local),
-		}
-	}
-	return Symbol{
-		ns:   STRINGS.Intern(ns),
-		name: STRINGS.Intern(local),
-	}
-}
-
-const KeywordHashMask uint32 = 0x7334c790
-
-func MakeKeyword(nsname string) Keyword {
-	nsName, local, ok := corestr.SplitQualified(nsname)
-	if !ok {
-		name := STRINGS.Intern(local)
-		return Keyword{
-			ns:   nil,
-			name: name,
-			hash: hashutil.Symbol(nil, name) ^ KeywordHashMask,
-		}
-	}
-	ns := STRINGS.Intern(nsName)
-	name := STRINGS.Intern(local)
-	return Keyword{
-		ns:   ns,
-		name: name,
-		hash: hashutil.Symbol(ns, name) ^ KeywordHashMask,
-	}
 }
 
 func PanicArity(n int) {
@@ -166,7 +102,7 @@ func CheckArity(args []coretypes.Object, min int, max int) {
 func getMap(k coretypes.Object, args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 2)
 	switch m := args[0].(type) {
-	case Map:
+	case coretypes.Map:
 		ok, v := m.Get(k)
 		if ok {
 			return v
@@ -211,20 +147,20 @@ func (a *Atom) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return a
 }
 
-func (a *Atom) WithMeta(meta Map) coretypes.Object {
+func (a *Atom) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := &Atom{
 		value: a.value,
 	}
-	res.meta = SafeMerge(a.meta, meta)
+	res.Meta = coretypes.SafeMerge(a.Meta, meta)
 	return res
 }
 
-func (a *Atom) ResetMeta(newMeta Map) Map {
-	a.meta = newMeta
-	return a.meta
+func (a *Atom) ResetMeta(newMeta coretypes.Map) coretypes.Map {
+	a.Meta = newMeta
+	return a.Meta
 }
 
-func (a *Atom) AlterMeta(fn *Fn, args []coretypes.Object) Map {
+func (a *Atom) AlterMeta(fn coretypes.Callable, args []coretypes.Object) coretypes.Map {
 	return AlterMeta(&a.MetaHolder, fn, args)
 }
 
@@ -261,14 +197,14 @@ func (exInfo *ExInfo) Message() coretypes.Object {
 func (exInfo *ExInfo) Error() string {
 	var pos coretypes.Position
 	_, data := exInfo.Get(KEYWORDS.data)
-	ok, form := data.(Map).Get(KEYWORDS.form)
+	ok, form := data.(coretypes.Map).Get(KEYWORDS.form)
 	if ok {
 		if form.GetInfo() != nil {
 			pos = form.GetInfo().Pos()
 		}
 	}
 	prefix := "Exception"
-	if ok, pr := data.(Map).Get(KEYWORDS._prefix); ok {
+	if ok, pr := data.(coretypes.Map).Get(KEYWORDS._prefix); ok {
 		prefix = pr.ToString(false)
 	}
 	_, msg := exInfo.Get(KEYWORDS.message)
@@ -292,9 +228,9 @@ func (fn *Fn) Equals(other interface{}) bool {
 	}
 }
 
-func (fn *Fn) WithMeta(meta Map) coretypes.Object {
+func (fn *Fn) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *fn
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
@@ -357,7 +293,7 @@ func (fn *Fn) Call(args []coretypes.Object) coretypes.Object {
 				return res
 			}
 			// TCO trampoline for self-recursive functions
-			if fn.fnExpr.self.name != nil {
+			if fn.fnExpr.self.NameKey() != nil {
 				// Try native Go codegen for pure-integer recursive fns
 				if fn.defVar != nil {
 					if entry := tryNativeRecursive(fn); entry != nil {
@@ -464,12 +400,12 @@ func compare(c coretypes.Callable, a, b coretypes.Object) int {
 		if r.B {
 			return -1
 		}
-		if EnsureObjectIsBoolean(call2(c, b, a), "").B {
+		if coretypes.EnsureObjectIsBoolean(call2(c, b, a), "").B {
 			return 1
 		}
 		return 0
 	default:
-		return EnsureObjectIsNumber(r, "Function is not a comparator since it returned a non-integer value%.s").Int().I
+		return coretypes.EnsureObjectIsNumber(r, "Function is not a comparator since it returned a non-integer value%.s").Int().I
 	}
 }
 
@@ -518,24 +454,15 @@ func (p Proc) Hash() uint32 {
 	return hashutil.Ptr(reflect.ValueOf(p.Fn).Pointer())
 }
 
-func (m MetaHolder) GetMeta() Map {
-	return m.meta
-}
-
-func AlterMeta(m *MetaHolder, fn *Fn, args []coretypes.Object) Map {
-	meta := m.meta
+func AlterMeta(m *coretypes.MetaHolder, fn coretypes.Callable, args []coretypes.Object) coretypes.Map {
+	meta := m.GetMeta()
 	if meta == nil {
 		meta = NIL
 	}
 	fargs := append([]coretypes.Object{meta}, args...)
-	m.meta = EnsureObjectIsMap(fn.Call(fargs), "")
-	return m.meta
-}
-
-func (sym Symbol) WithMeta(meta Map) coretypes.Object {
-	res := sym
-	res.meta = SafeMerge(res.meta, meta)
-	return res
+	newMeta := coretypes.EnsureObjectIsMap(fn.Call(fargs), "")
+	m.SetMeta(newMeta)
+	return newMeta
 }
 
 func (v *Var) Name() string {
@@ -551,18 +478,18 @@ func (v *Var) Equals(other interface{}) bool {
 	return v == other
 }
 
-func (v *Var) WithMeta(meta Map) coretypes.Object {
+func (v *Var) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *v
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
-func (v *Var) ResetMeta(newMeta Map) Map {
-	v.meta = newMeta
-	return v.meta
+func (v *Var) ResetMeta(newMeta coretypes.Map) coretypes.Map {
+	v.Meta = newMeta
+	return v.Meta
 }
 
-func (v *Var) AlterMeta(fn *Fn, args []coretypes.Object) Map {
+func (v *Var) AlterMeta(fn coretypes.Callable, args []coretypes.Object) coretypes.Map {
 	return AlterMeta(&v.MetaHolder, fn, args)
 }
 
@@ -585,7 +512,7 @@ func (v *Var) Resolve() coretypes.Object {
 
 func (v *Var) Call(args []coretypes.Object) coretypes.Object {
 	vl := v.Resolve()
-	return EnsureObjectIsCallable(
+	return coretypes.EnsureObjectIsCallable(
 		vl,
 		"Var "+v.ToString(false)+" resolves to "+vl.ToString(false)+", which is not a Fn").Call(args)
 }
@@ -639,7 +566,7 @@ func (n Nil) Conj(obj coretypes.Object) coretypes.Conjable {
 	return collectionConstruction.NewListFrom(obj)
 }
 
-func (n Nil) Without(key coretypes.Object) Map {
+func (n Nil) Without(key coretypes.Object) coretypes.Map {
 	return n
 }
 
@@ -647,11 +574,11 @@ func (n Nil) Count() int {
 	return 0
 }
 
-func (n Nil) Iter() MapIterator {
-	return emptyMapIterator
+func (n Nil) Iter() coretypes.MapIterator {
+	return coretypes.EmptyMapIteratorInstance
 }
 
-func (n Nil) Merge(other Map) Map {
+func (n Nil) Merge(other coretypes.Map) coretypes.Map {
 	return other
 }
 
@@ -667,7 +594,7 @@ func (n Nil) Get(key coretypes.Object) (bool, coretypes.Object) {
 	return false, NIL
 }
 
-func (n Nil) Disjoin(key coretypes.Object) Set {
+func (n Nil) Disjoin(key coretypes.Object) coretypes.Set {
 	return n
 }
 
@@ -692,116 +619,6 @@ func charToStringObjectFast(ch rune) coretypes.Object {
 	return coretypes.String{S: corestr.String(ch)}
 }
 
-func EnsureObjectIsStringable(obj coretypes.Object, pattern string) coretypes.String {
-	switch c := obj.(type) {
-	case coretypes.String:
-		return c
-	case coretypes.Char:
-		return coretypes.String{S: string(c.Ch)}
-	default:
-		panic(FailObject(c, "Stringable", pattern))
-	}
-}
-
-func EnsureArgIsStringable(args []coretypes.Object, index int) coretypes.String {
-	switch c := args[index].(type) {
-	case coretypes.String:
-		return c
-	case coretypes.Char:
-		return coretypes.String{S: string(c.Ch)}
-	default:
-		panic(FailArg(c, "Stringable", index))
-	}
-}
-
-func (k Keyword) ToString(escape bool) string {
-	if k.ns != nil {
-		return ":" + *k.ns + "/" + *k.name
-	}
-	return ":" + *k.name
-}
-
-func (k Keyword) Name() string {
-	return *k.name
-}
-
-func (k Keyword) Namespace() string {
-	if k.ns != nil {
-		return *k.ns
-	}
-	return ""
-}
-
-func (k Keyword) Equals(other interface{}) bool {
-	switch other := other.(type) {
-	case Keyword:
-		return k.ns == other.ns && k.name == other.name
-	default:
-		return false
-	}
-}
-
-func (k Keyword) GetType() *coretypes.Type {
-	return TYPE.Keyword
-}
-
-func (k Keyword) Hash() uint32 {
-	return k.hash
-}
-
-func (k Keyword) Compare(other coretypes.Object) int {
-	k2 := EnsureObjectIsKeyword(rootObject(other), "Cannot compare Keyword: %s")
-	return corestr.Compare(k.ToString(false), k2.ToString(false))
-}
-
-func (k Keyword) Call(args []coretypes.Object) coretypes.Object {
-	return getMap(k, args)
-}
-
-func (s Symbol) ToString(escape bool) string {
-	if s.ns != nil {
-		return *s.ns + "/" + *s.name
-	}
-	return *s.name
-}
-
-func (s Symbol) Name() string {
-	return *s.name
-}
-
-func (s Symbol) Namespace() string {
-	if s.ns != nil {
-		return *s.ns
-	}
-	return ""
-}
-
-func (s Symbol) Equals(other interface{}) bool {
-	switch other := other.(type) {
-	case Symbol:
-		return s.ns == other.ns && s.name == other.name
-	default:
-		return false
-	}
-}
-
-func (s Symbol) GetType() *coretypes.Type {
-	return TYPE.Symbol
-}
-
-func (s Symbol) Hash() uint32 {
-	return hashutil.Symbol(s.ns, s.name) + 0x9e3779b9
-}
-
-func (s Symbol) Compare(other coretypes.Object) int {
-	s2 := EnsureObjectIsSymbol(rootObject(other), "Cannot compare Symbol: %s")
-	return corestr.Compare(s.ToString(false), s2.ToString(false))
-}
-
-func (s Symbol) Call(args []coretypes.Object) coretypes.Object {
-	return getMap(s, args)
-}
-
 func MakeStringVector(ss []string) *ArrayVector {
 	res := collectionConstruction.NewEmptyArrayVector()
 	for _, s := range ss {
@@ -812,7 +629,7 @@ func MakeStringVector(ss []string) *ArrayVector {
 
 func IsSymbol(obj coretypes.Object) bool {
 	switch obj.(type) {
-	case Symbol:
+	case coretypes.Symbol:
 		return true
 	default:
 		return false
@@ -820,13 +637,13 @@ func IsSymbol(obj coretypes.Object) bool {
 }
 
 func IsKeyword(obj coretypes.Object) bool {
-	_, ok := obj.(Keyword)
+	_, ok := obj.(coretypes.Keyword)
 	return ok
 }
 
 func IsVector(obj coretypes.Object) bool {
 	switch obj.(type) {
-	case Vec:
+	case coretypes.Vec:
 		return true
 	default:
 		return false
@@ -862,8 +679,8 @@ func IsInstance(t *coretypes.Type, obj coretypes.Object) bool {
 
 func IsSpecialSymbol(obj coretypes.Object) bool {
 	switch obj := obj.(type) {
-	case Symbol:
-		return obj.ns == nil && SPECIAL_SYMBOLS[obj.name]
+	case coretypes.Symbol:
+		return obj.NamespaceKey() == nil && SPECIAL_SYMBOLS[obj.NameKey()]
 	default:
 		return false
 	}
@@ -877,17 +694,4 @@ func MakeMeta(arglists coretypes.Seq, docstring string, added string) *ArrayMap 
 	res.Add(KEYWORDS.doc, coretypes.String{S: docstring})
 	res.Add(KEYWORDS.added, coretypes.String{S: added})
 	return res
-}
-
-func withInfo(obj coretypes.Object, info *coretypes.ObjectInfo) coretypes.Object {
-	if h, ok := obj.(interface {
-		WithInfo(*coretypes.ObjectInfo) coretypes.Object
-	}); ok {
-		return h.WithInfo(info)
-	}
-	return obj
-}
-
-func rootObject(obj coretypes.Object) coretypes.Object {
-	return obj.(coretypes.Object)
 }

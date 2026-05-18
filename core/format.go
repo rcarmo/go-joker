@@ -82,11 +82,11 @@ func seqFirstAfterForcedBreak(seq coretypes.Seq, w io.Writer, indent int) (coret
 	return seq, obj, indent
 }
 
-func formatBindings(v Vec, w io.Writer, indent int) int {
+func formatBindings(v coretypes.Vec, w io.Writer, indent int) int {
 	return v.Format(w, indent)
 }
 
-func formatVectorVertically(v Vec, w io.Writer, indent int) int {
+func formatVectorVertically(v coretypes.Vec, w io.Writer, indent int) int {
 	fmt.Fprint(w, "[")
 	newIndent := indent + 1
 	for i := 0; i < v.Count(); i++ {
@@ -122,10 +122,11 @@ var bodyIndentRegexes []*regexp.Regexp = []*regexp.Regexp{
 
 func isOneAndBodyExpr(obj coretypes.Object) bool {
 	switch s := obj.(type) {
-	case Symbol:
-		return defRegex.MatchString(*s.name) ||
-			ifRegex.MatchString(*s.name) ||
-			whenRegex.MatchString(*s.name)
+	case coretypes.Symbol:
+		name := s.Name()
+		return defRegex.MatchString(name) ||
+			ifRegex.MatchString(name) ||
+			whenRegex.MatchString(name)
 	default:
 		return false
 	}
@@ -133,8 +134,8 @@ func isOneAndBodyExpr(obj coretypes.Object) bool {
 
 func isDoIndent(obj coretypes.Object) bool {
 	switch s := obj.(type) {
-	case Symbol:
-		return doIndentRegex.MatchString(*s.name)
+	case coretypes.Symbol:
+		return doIndentRegex.MatchString(s.Name())
 	default:
 		return false
 	}
@@ -142,9 +143,10 @@ func isDoIndent(obj coretypes.Object) bool {
 
 func isBodyIndent(obj coretypes.Object) bool {
 	switch s := obj.(type) {
-	case Symbol:
+	case coretypes.Symbol:
+		name := s.Name()
 		for _, re := range bodyIndentRegexes {
-			if re.MatchString(*s.name) {
+			if re.MatchString(name) {
 				return true
 			}
 		}
@@ -258,9 +260,9 @@ func formatSeqEx(seq coretypes.Seq, w io.Writer, indent int, formatAsDef bool) i
 	} else if obj.Equals(SYMBOLS.fn) {
 		if !seq.IsEmpty() {
 			switch seq.First().(type) {
-			case Vec:
+			case coretypes.Vec:
 				seq, prevObj, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
-			case Symbol:
+			case coretypes.Symbol:
 				seq, _, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
 				seq, prevObj, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
 			default:
@@ -270,13 +272,13 @@ func formatSeqEx(seq coretypes.Seq, w io.Writer, indent int, formatAsDef bool) i
 			}
 		}
 	} else if obj.Equals(SYMBOLS.let) || obj.Equals(SYMBOLS.loop) {
-		if v, ok := seq.First().(Vec); ok {
+		if v, ok := seq.First().(coretypes.Vec); ok {
 			fmt.Fprint(w, " ")
 			i = formatBindings(v, w, i+1)
 			seq = seq.Rest()
 		}
 	} else if obj.Equals(SYMBOLS.letfn) {
-		if v, ok := seq.First().(Vec); ok {
+		if v, ok := seq.First().(coretypes.Vec); ok {
 			fmt.Fprint(w, " ")
 			i = formatVectorVertically(v, w, i+1)
 			seq = seq.Rest()

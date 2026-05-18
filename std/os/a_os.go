@@ -1025,7 +1025,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var osNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.os"))
+var osNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.os"))
 
 func init() {
 	osNamespace.Lazy = Init

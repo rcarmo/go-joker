@@ -5,6 +5,7 @@ package json
 import (
 	"fmt"
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 )
 
@@ -16,7 +17,7 @@ func InternsOrThunks() {
 
 	jsonNamespace.InternVar("json-seq", json_seq_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("rdr")), NewVectorFrom(MakeSymbol("rdr"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "rdr")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "rdr"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Returns the json records from rdr as a lazy sequence.
   rdr must be a string or implement io.Reader.
   Optional opts map may have the following keys:
@@ -24,14 +25,14 @@ func InternsOrThunks() {
 
 	jsonNamespace.InternVar("read-string", read_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s")), NewVectorFrom(MakeSymbol("s"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Parses the JSON-encoded data and return the result as a Joker value.
   Optional opts map may have the following keys:
   :keywords? - if true, JSON keys will be converted from strings to keywords.`, "1.0"))
 
 	jsonNamespace.InternVar("write-string", write_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("v")), NewVectorFrom(MakeSymbol("v"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "v")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "v"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Returns the JSON encoding of v. Optional opts may include :prefix and :indent keys
   with the same semantics as prefix and indent arguments to Go's json.MarshalIndent function.`, "1.0"))
 

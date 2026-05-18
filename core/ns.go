@@ -10,8 +10,8 @@ import (
 
 type (
 	Namespace struct {
-		MetaHolder
-		Name           Symbol
+		coretypes.MetaHolder
+		Name           coretypes.Symbol
 		Lazy           func()
 		mappings       map[*string]*Var
 		aliases        map[*string]*Namespace
@@ -45,18 +45,18 @@ func (ns *Namespace) GetType() *coretypes.Type {
 	return TYPE.Namespace
 }
 
-func (ns *Namespace) WithMeta(meta Map) coretypes.Object {
+func (ns *Namespace) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *ns
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
-func (ns *Namespace) ResetMeta(newMeta Map) Map {
-	ns.meta = newMeta
-	return ns.meta
+func (ns *Namespace) ResetMeta(newMeta coretypes.Map) coretypes.Map {
+	ns.Meta = newMeta
+	return ns.Meta
 }
 
-func (ns *Namespace) AlterMeta(fn *Fn, args []coretypes.Object) Map {
+func (ns *Namespace) AlterMeta(fn coretypes.Callable, args []coretypes.Object) coretypes.Map {
 	return AlterMeta(&ns.MetaHolder, fn, args)
 }
 
@@ -70,14 +70,14 @@ func (ns *Namespace) MaybeLazy(doc string) {
 		ns.Lazy = nil
 		lazyFn()
 		if VerbosityLevel > 0 {
-			fmt.Fprintf(Stderr, "NamespaceFor: Lazily initialized %s for %s\n", *ns.Name.name, doc)
+			fmt.Fprintf(Stderr, "NamespaceFor: Lazily initialized %s for %s\n", ns.Name.Name(), doc)
 		}
 	}
 }
 
 const nsHashMask uint32 = 0x90569f6f
 
-func NewNamespace(sym Symbol) *Namespace {
+func NewNamespace(sym coretypes.Symbol) *Namespace {
 	return &Namespace{
 		Name:     sym,
 		mappings: make(map[*string]*Var),
@@ -86,11 +86,11 @@ func NewNamespace(sym Symbol) *Namespace {
 	}
 }
 
-func (ns *Namespace) Refer(sym Symbol, vr *Var) *Var {
-	if sym.ns != nil {
+func (ns *Namespace) Refer(sym coretypes.Symbol, vr *Var) *Var {
+	if sym.NamespaceKey() != nil {
 		panic(RT.NewError("Can't intern namespace-qualified symbol " + sym.ToString(false)))
 	}
-	ns.mappings[sym.name] = vr
+	ns.mappings[sym.NameKey()] = vr
 	return vr
 }
 
@@ -102,31 +102,32 @@ func (ns *Namespace) ReferAll(other *Namespace) {
 	}
 }
 
-func (ns *Namespace) InternFake(sym Symbol) *Var {
+func (ns *Namespace) InternFake(sym coretypes.Symbol) *Var {
 	vr := ns.Intern(sym)
 	vr.isFake = true
 	return vr
 }
 
-func (ns *Namespace) Intern(sym Symbol) *Var {
-	if sym.ns != nil {
+func (ns *Namespace) Intern(sym coretypes.Symbol) *Var {
+	if sym.NamespaceKey() != nil {
 		panic(RT.NewError("Can't intern namespace-qualified symbol " + sym.ToString(false)))
 	}
+	nameKey := sym.NameKey()
 	if LINTER_MODE {
-		if LINTER_TYPES[sym.name] {
-			msg := fmt.Sprintf("Expecting var, but %s is a type", *sym.name)
+		if LINTER_TYPES[nameKey] {
+			msg := fmt.Sprintf("Expecting var, but %s is a type", sym.Name())
 			pos := sym.GetInfo().Pos()
 			printParseWarning(pos, msg)
 		}
 	}
-	sym.meta = nil
-	existingVar, ok := ns.mappings[sym.name]
+	sym = sym.WithMeta(nil).(coretypes.Symbol)
+	existingVar, ok := ns.mappings[nameKey]
 	if !ok {
 		newVar := &Var{
 			ns:   ns,
 			name: sym,
 		}
-		ns.mappings[sym.name] = newVar
+		ns.mappings[nameKey] = newVar
 		return newVar
 	}
 	if existingVar.ns != ns {
@@ -135,7 +136,7 @@ func (ns *Namespace) Intern(sym Symbol) *Var {
 				ns:   ns,
 				name: sym,
 			}
-			ns.mappings[sym.name] = newVar
+			ns.mappings[nameKey] = newVar
 			if !corestr.HasJokerNamespacePrefix(ns.Name.Name()) {
 				printParseWarning(GetPosition(sym), fmt.Sprintf("WARNING: %s already refers to: %s in namespace %s, being replaced by: %s\n",
 					sym.ToString(false), existingVar.ToString(false), ns.Name.ToString(false), newVar.ToString(false)))
@@ -174,19 +175,20 @@ func isDeclaredInConfig(vr *Var) bool {
 }
 
 func (ns *Namespace) InternVar(name string, val coretypes.Object, meta *ArrayMap) *Var {
-	vr := ns.Intern(MakeSymbol(name))
+	vr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, name))
 	vr.Value = val
 	meta.Add(KEYWORDS.ns, ns)
 	meta.Add(KEYWORDS.name, vr.name)
-	vr.meta = meta
+	vr.Meta = meta
 	return vr
 }
 
-func (ns *Namespace) AddAlias(alias Symbol, namespace *Namespace) {
-	if alias.ns != nil {
+func (ns *Namespace) AddAlias(alias coretypes.Symbol, namespace *Namespace) {
+	if alias.NamespaceKey() != nil {
 		panic(RT.NewError("Alias can't be namespace-qualified"))
 	}
-	existing := ns.aliases[alias.name]
+	aliasKey := alias.NameKey()
+	existing := ns.aliases[aliasKey]
 	if existing != nil && existing != namespace {
 		msg := "Alias " + alias.ToString(false) + " already exists in namespace " + ns.Name.ToString(false) + ", aliasing " + existing.Name.ToString(false)
 		if LINTER_MODE {
@@ -195,7 +197,7 @@ func (ns *Namespace) AddAlias(alias Symbol, namespace *Namespace) {
 		}
 		panic(RT.NewError(msg))
 	}
-	ns.aliases[alias.name] = namespace
+	ns.aliases[aliasKey] = namespace
 }
 
 func (ns *Namespace) Resolve(name string) *Var {

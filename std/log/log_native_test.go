@@ -18,7 +18,7 @@ func expectLogPanic(t *testing.T, fn func()) {
 }
 
 func TestParseLogLevelAcceptsStringsAndKeywords(t *testing.T) {
-	if got := parseLogLevel(MakeKeyword("debug"), "test"); got != 0 {
+	if got := parseLogLevel(coretypes.MakeKeyword(STRINGS.Intern, "debug"), "test"); got != 0 {
 		t.Fatalf("keyword level = %d", got)
 	}
 	if got := parseLogLevel(coretypes.MakeString("error"), "test"); got != 3 {
@@ -29,5 +29,5 @@ func TestParseLogLevelAcceptsStringsAndKeywords(t *testing.T) {
 func TestLogfChecksArity(t *testing.T) {
 	initLogNamespace()
 	logf := logNamespace.Resolve("logf").Resolve().(coretypes.Callable)
-	expectLogPanic(t, func() { logf.Call([]coretypes.Object{MakeKeyword("info")}) })
+	expectLogPanic(t, func() { logf.Call([]coretypes.Object{coretypes.MakeKeyword(STRINGS.Intern, "info")}) })
 }

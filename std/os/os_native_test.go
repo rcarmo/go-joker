@@ -15,7 +15,7 @@ func TestStartProcessReleasesChild(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("uses Unix shell command")
 	}
-	pid := startProcess("sh", EmptyArrayMap().Assoc(MakeKeyword("args"), NewVectorFrom(coretypes.MakeString("-c"), coretypes.MakeString("exit 0"))).(Map))
+	pid := startProcess("sh", EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "args"), NewVectorFrom(coretypes.MakeString("-c"), coretypes.MakeString("exit 0"))).(coretypes.Map))
 	if pid <= 0 {
 		t.Fatalf("startProcess pid = %d", pid)
 	}

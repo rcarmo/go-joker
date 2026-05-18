@@ -400,14 +400,14 @@ func evalRangeArgs(args []Expr, env *LocalEnv) (start, end, step int, ok bool) {
 
 type FilteringSeq struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	seq  coretypes.Seq
 	pred coretypes.Callable
 }
 
 type TakeSeq struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	seq coretypes.Seq
 	n   int
 }
@@ -421,9 +421,9 @@ func (s *FilteringSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 }
 func (s *FilteringSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
 func (s *FilteringSeq) Hash() uint32             { return hashOrdered(s) }
-func (s *FilteringSeq) WithMeta(m Map) coretypes.Object {
+func (s *FilteringSeq) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *s
-	res.meta = SafeMerge(res.meta, m)
+	res.Meta = coretypes.SafeMerge(res.Meta, m)
 	return &res
 }
 func (s *FilteringSeq) Seq() coretypes.Seq      { return s }
@@ -499,9 +499,9 @@ func (s *TakeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 }
 func (s *TakeSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
 func (s *TakeSeq) Hash() uint32             { return hashOrdered(s) }
-func (s *TakeSeq) WithMeta(m Map) coretypes.Object {
+func (s *TakeSeq) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *s
-	res.meta = SafeMerge(res.meta, m)
+	res.Meta = coretypes.SafeMerge(res.Meta, m)
 	return &res
 }
 func (s *TakeSeq) Seq() coretypes.Seq      { return s }
@@ -622,11 +622,11 @@ func maybeOverrideSeqOps() {
 
 	mapVr.Value = Proc{Name: "procMapSeqFast", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
-			return makeMapTransducer(EnsureArgIsCallable(args, 0))
+			return makeMapTransducer(coretypes.EnsureArgIsCallable(args, 0))
 		}
 		if len(args) == 2 {
-			f := EnsureArgIsCallable(args, 0)
-			s := EnsureObjectIsSeqable(args[1], "map requires seqable").Seq()
+			f := coretypes.EnsureArgIsCallable(args, 0)
+			s := coretypes.EnsureObjectIsSeqable(args[1], "map requires seqable").Seq()
 			if _, ok := s.(*ChunkedCons); ok {
 				return chunkedMapSeq(f, s)
 			}
@@ -636,11 +636,11 @@ func maybeOverrideSeqOps() {
 	}}
 	filterVr.Value = Proc{Name: "procFilterSeqFast", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
-			return makeFilterTransducer(EnsureArgIsCallable(args, 0))
+			return makeFilterTransducer(coretypes.EnsureArgIsCallable(args, 0))
 		}
 		if len(args) == 2 {
-			pred := EnsureArgIsCallable(args, 0)
-			s := EnsureArgIsSeqable(args, 1).Seq()
+			pred := coretypes.EnsureArgIsCallable(args, 0)
+			s := coretypes.EnsureArgIsSeqable(args, 1).Seq()
 			if _, ok := s.(*ChunkedCons); ok {
 				return chunkedFilterSeq(pred, s)
 			}
@@ -650,10 +650,10 @@ func maybeOverrideSeqOps() {
 	}}
 	takeVr.Value = Proc{Name: "procTakeSeqFast", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
-			return makeTakeTransducer(EnsureObjectIsNumber(args[0], "").Int().I)
+			return makeTakeTransducer(coretypes.EnsureObjectIsNumber(args[0], "").Int().I)
 		}
 		if len(args) == 2 {
-			return &TakeSeq{seq: EnsureObjectIsSeqable(args[1], "take requires seqable").Seq(), n: EnsureObjectIsNumber(args[0], "").Int().I}
+			return &TakeSeq{seq: coretypes.EnsureObjectIsSeqable(args[1], "take requires seqable").Seq(), n: coretypes.EnsureObjectIsNumber(args[0], "").Int().I}
 		}
 		return takeOrig.Call(args)
 	}}
@@ -663,18 +663,18 @@ func maybeOverrideSeqOps() {
 // frequencies_fast.go — native fast path for core/frequencies.
 
 func init() {
-	vr := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol("frequencies"))
+	vr := GLOBAL_ENV.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, "frequencies"))
 	vr.Value = Proc{Name: "procFrequencies", Fn: procFrequencies}
-	referToUser(MakeSymbol("frequencies"), vr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "frequencies"), vr)
 
-	sw := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol("split-whitespace__"))
+	sw := GLOBAL_ENV.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, "split-whitespace__"))
 	sw.Value = Proc{Name: "procSplitWhitespace", Fn: procSplitWhitespace}
-	referToUser(MakeSymbol("split-whitespace"), sw)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "split-whitespace"), sw)
 }
 
 var procSplitWhitespace ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	return splitWhitespaceVector(EnsureArgIsString(args, 0).S)
+	return splitWhitespaceVector(coretypes.EnsureArgIsString(args, 0).S)
 }
 
 func splitWhitespaceVector(s string) *ArrayVector {
@@ -687,7 +687,7 @@ func splitWhitespaceVector(s string) *ArrayVector {
 
 var procFrequencies ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	seq := EnsureObjectIsSeqable(args[0], "frequencies requires a seqable collection").Seq()
+	seq := coretypes.EnsureObjectIsSeqable(args[0], "frequencies requires a seqable collection").Seq()
 	if seq.IsEmpty() {
 		return collectionConstruction.NewEmptyArrayMap()
 	}
@@ -746,7 +746,7 @@ var hotReducerFnCache sync.Map // *Fn -> reducer proc name string
 // IntRange represents a range of integers [start, end) with step.
 type IntRange struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	start, end, step int
 }
 
@@ -763,9 +763,9 @@ func (r *IntRange) WithInfo(i *coretypes.ObjectInfo) coretypes.Object {
 }
 func (r *IntRange) GetType() *coretypes.Type { return TYPE.LazySeq }
 func (r *IntRange) Hash() uint32             { return hashOrdered(r.Seq()) }
-func (r *IntRange) WithMeta(m Map) coretypes.Object {
+func (r *IntRange) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *r
-	res.meta = SafeMerge(res.meta, m)
+	res.Meta = coretypes.SafeMerge(res.Meta, m)
 	return &res
 }
 func (r *IntRange) SequentialMarker() {}
@@ -968,7 +968,7 @@ func (r *IntRange) reduceMapAssocFast(f coretypes.Callable, init coretypes.Objec
 	if !ok || fn == nil || fn.fnExpr == nil || len(fn.fnExpr.arities) != 1 || fn.fnExpr.variadic != nil {
 		return nil, false
 	}
-	m, ok := init.(Map)
+	m, ok := init.(coretypes.Map)
 	if !ok {
 		return nil, false
 	}
@@ -1111,7 +1111,7 @@ func hotReducerSymbol(sym string) string {
 // intRangeSeq is the lazy seq view of an IntRange
 type intRangeSeq struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	r   *IntRange
 	cur int
 }
@@ -1125,9 +1125,9 @@ func (s *intRangeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 }
 func (s *intRangeSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
 func (s *intRangeSeq) Hash() uint32             { return hashOrdered(s) }
-func (s *intRangeSeq) WithMeta(m Map) coretypes.Object {
+func (s *intRangeSeq) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *s
-	res.meta = SafeMerge(res.meta, m)
+	res.Meta = coretypes.SafeMerge(res.Meta, m)
 	return &res
 }
 func (s *intRangeSeq) Seq() coretypes.Seq      { return s }

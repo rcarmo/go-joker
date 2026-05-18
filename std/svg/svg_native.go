@@ -54,7 +54,7 @@ func parseStyle(args []coretypes.Object, idx int) string {
 	if idx >= len(args) {
 		return ""
 	}
-	m, ok := args[idx].(Map)
+	m, ok := args[idx].(coretypes.Map)
 	if !ok {
 		// Try as a string
 		if s, ok := args[idx].(coretypes.String); ok {
@@ -79,7 +79,7 @@ func parseStyle(args []coretypes.Object, idx int) string {
 // --- Creation ---
 
 func positiveDimension(obj coretypes.Object, context, name string) int {
-	v := EnsureObjectIsInt(obj, context+" "+name+": %s").I
+	v := coretypes.EnsureObjectIsInt(obj, context+" "+name+": %s").I
 	if v <= 0 {
 		panic(RT.NewError(context + ": " + name + " must be positive"))
 	}
@@ -87,7 +87,7 @@ func positiveDimension(obj coretypes.Object, context, name string) int {
 }
 
 func nonNegativeDimension(obj coretypes.Object, context, name string) int {
-	v := EnsureObjectIsInt(obj, context+" "+name+": %s").I
+	v := coretypes.EnsureObjectIsInt(obj, context+" "+name+": %s").I
 	if v < 0 {
 		panic(RT.NewError(context + ": " + name + " must be non-negative"))
 	}
@@ -239,8 +239,8 @@ var procPolygon ProcFn = func(args []coretypes.Object) coretypes.Object {
 	xs := make([]int, n)
 	ys := make([]int, n)
 	for i := 0; i < n; i++ {
-		xs[i] = EnsureObjectIsInt(xv.Nth(i), "").I
-		ys[i] = EnsureObjectIsInt(yv.Nth(i), "").I
+		xs[i] = coretypes.EnsureObjectIsInt(xv.Nth(i), "").I
+		ys[i] = coretypes.EnsureObjectIsInt(yv.Nth(i), "").I
 	}
 	style := parseStyle(args, 3)
 	if style != "" {
@@ -277,8 +277,8 @@ var procPolyline ProcFn = func(args []coretypes.Object) coretypes.Object {
 	xs := make([]int, n)
 	ys := make([]int, n)
 	for i := 0; i < n; i++ {
-		xs[i] = EnsureObjectIsInt(xv.Nth(i), "").I
-		ys[i] = EnsureObjectIsInt(yv.Nth(i), "").I
+		xs[i] = coretypes.EnsureObjectIsInt(xv.Nth(i), "").I
+		ys[i] = coretypes.EnsureObjectIsInt(yv.Nth(i), "").I
 	}
 	style := parseStyle(args, 3)
 	if style != "" {

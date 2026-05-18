@@ -19,10 +19,10 @@ func registerTaggedLiterals() {
 	}
 
 	// Register #inst reader — parses ISO 8601 date strings to Time
-	instReaderVr := ns.Intern(MakeSymbol("__read-inst"))
+	instReaderVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "__read-inst"))
 	instReaderVr.Value = Proc{Name: "procReadInst", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		s := EnsureObjectIsString(args[0], "#inst argument must be a string, got %s")
+		s := coretypes.EnsureObjectIsString(args[0], "#inst argument must be a string, got %s")
 		// Try RFC3339 first, then other common formats
 		formats := []string{
 			time.RFC3339Nano,
@@ -41,10 +41,10 @@ func registerTaggedLiterals() {
 	instReaderVr.isPrivate = true
 
 	// Register #uuid reader — stores as string (no java.util.UUID equivalent)
-	uuidReaderVr := ns.Intern(MakeSymbol("__read-uuid"))
+	uuidReaderVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "__read-uuid"))
 	uuidReaderVr.Value = Proc{Name: "procReadUuid", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		s := EnsureObjectIsString(args[0], "#uuid argument must be a string, got %s")
+		s := coretypes.EnsureObjectIsString(args[0], "#uuid argument must be a string, got %s")
 		// Basic UUID format validation
 		if len(s.S) != 36 {
 			panic(RT.NewError(fmt.Sprintf("Invalid UUID format: \"%s\"", s.S)))
@@ -56,36 +56,36 @@ func registerTaggedLiterals() {
 	// Install into default-data-readers
 	readersVr := ns.Resolve("default-data-readers")
 	if readersVr == nil {
-		readersVr = ns.Intern(MakeSymbol("default-data-readers"))
+		readersVr = ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "default-data-readers"))
 	}
 
 	m := collectionConstruction.NewEmptyArrayMap()
-	m.Add(MakeSymbol("inst"), instReaderVr)
-	m.Add(MakeSymbol("uuid"), uuidReaderVr)
+	m.Add(coretypes.MakeSymbol(STRINGS.Intern, "inst"), instReaderVr)
+	m.Add(coretypes.MakeSymbol(STRINGS.Intern, "uuid"), uuidReaderVr)
 	readersVr.Value = m
 
 	// Also install *data-readers* dynamic var
 	dataReadersVr := ns.Resolve("*data-readers*")
 	if dataReadersVr == nil {
-		dataReadersVr = ns.Intern(MakeSymbol("*data-readers*"))
+		dataReadersVr = ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "*data-readers*"))
 	}
 	dataReadersVr.Value = m
-	referToUser(MakeSymbol("*data-readers*"), dataReadersVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "*data-readers*"), dataReadersVr)
 
 	// Clojure-compatible fallback hook. If non-nil, called as (f tag value)
 	// when a reader tag is not present in *data-readers* or default-data-readers.
 	fallbackVr := ns.Resolve("*default-data-reader-fn*")
 	if fallbackVr == nil {
-		fallbackVr = ns.Intern(MakeSymbol("*default-data-reader-fn*"))
+		fallbackVr = ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "*default-data-reader-fn*"))
 	}
 	fallbackVr.Value = NIL
-	referToUser(MakeSymbol("*default-data-reader-fn*"), fallbackVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "*default-data-reader-fn*"), fallbackVr)
 
 	// Convenience alias used by some lightweight compatibility tests/docs.
 	fallbackAliasVr := ns.Resolve("default-data-reader-fn")
 	if fallbackAliasVr == nil {
-		fallbackAliasVr = ns.Intern(MakeSymbol("default-data-reader-fn"))
+		fallbackAliasVr = ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "default-data-reader-fn"))
 	}
 	fallbackAliasVr.Value = fallbackVr
-	referToUser(MakeSymbol("default-data-reader-fn"), fallbackAliasVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "default-data-reader-fn"), fallbackAliasVr)
 }

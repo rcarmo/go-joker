@@ -9,24 +9,9 @@ import (
 )
 
 type (
-	Vec interface {
-		coretypes.Object
-		coretypes.CountedIndexed
-		coretypes.Gettable
-		coretypes.Associative
-		coretypes.Sequential
-		coretypes.Comparable
-		coretypes.Indexed
-		coretypes.Stack
-		coretypes.Reversible
-		Meta
-		coretypes.Seqable
-		coretypes.Formatter
-		coretypes.Callable
-	}
 	Vector struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		root  []interface{}
 		tail  []interface{}
 		count int
@@ -34,13 +19,13 @@ type (
 	}
 	VectorSeq struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		vector coretypes.CountedIndexed
 		index  int
 	}
 	VectorRSeq struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		vector coretypes.CountedIndexed
 		index  int
 	}
@@ -48,9 +33,9 @@ type (
 
 var empty_node = make([]interface{}, 32)
 
-func (v *Vector) WithMeta(meta Map) coretypes.Object {
+func (v *Vector) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *v
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
@@ -182,9 +167,9 @@ func (seq *VectorSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *VectorSeq) WithMeta(meta Map) coretypes.Object {
+func (seq *VectorSeq) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *seq
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
@@ -248,9 +233,9 @@ func (seq *VectorRSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *VectorRSeq) WithMeta(meta Map) coretypes.Object {
+func (seq *VectorRSeq) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *seq
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
@@ -319,7 +304,7 @@ func (v *Vector) TryNth(i int, d coretypes.Object) coretypes.Object {
 func (v *Vector) SequentialMarker() {}
 
 func (v *Vector) Compare(other coretypes.Object) int {
-	v2 := EnsureObjectIsCountedIndexed(rootObject(other), "Cannot compare Vector: %s")
+	v2 := coretypes.EnsureObjectIsCountedIndexed(coretypes.RootObject(other), "Cannot compare coretypes.Vector: %s")
 	return CountedIndexedCompare(v, v2)
 }
 
@@ -355,12 +340,12 @@ func (v *Vector) Pop() coretypes.Stack {
 		panic(RT.NewError("Can't pop empty vector"))
 	}
 	if v.count == 1 {
-		return collectionConstruction.NewEmptyVector().WithMeta(v.meta).(coretypes.Stack)
+		return collectionConstruction.NewEmptyVector().WithMeta(v.Meta).(coretypes.Stack)
 	}
 	if v.count-v.tailoff() > 1 {
 		newTail := clone(v.tail)[0 : len(v.tail)-1]
 		res := &Vector{count: v.count - 1, shift: v.shift, root: v.root, tail: newTail}
-		res.meta = v.meta
+		res.Meta = v.Meta
 		return res
 	}
 	newTail := v.arrayFor(v.count - 2)
@@ -374,7 +359,7 @@ func (v *Vector) Pop() coretypes.Stack {
 		newShift -= 5
 	}
 	res := &Vector{count: v.count - 1, shift: newShift, root: newRoot, tail: newTail}
-	res.meta = v.meta
+	res.Meta = v.Meta
 	return res
 }
 
@@ -410,13 +395,13 @@ func (v *Vector) assocN(i int, val coretypes.Object) *Vector {
 	}
 	if i < v.tailoff() {
 		res := &Vector{count: v.count, shift: v.shift, root: doAssoc(v.shift, v.root, i, val), tail: v.tail}
-		res.meta = v.meta
+		res.Meta = v.Meta
 		return res
 	}
 	newTail := clone(v.tail)
 	newTail[i&0x01f] = val
 	res := &Vector{count: v.count, shift: v.shift, root: v.root, tail: newTail}
-	res.meta = v.meta
+	res.Meta = v.Meta
 	return res
 }
 

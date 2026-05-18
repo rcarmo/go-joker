@@ -177,7 +177,7 @@ var procDecode ProcFn = func(args []coretypes.Object) coretypes.Object {
 // --- Geometry ---
 
 func positiveDimension(obj coretypes.Object, name string) int {
-	v := EnsureObjectIsInt(obj, "imaging "+name+": %s").I
+	v := coretypes.EnsureObjectIsInt(obj, "imaging "+name+": %s").I
 	if v <= 0 {
 		panic(RT.NewError("imaging: " + name + " must be positive"))
 	}
@@ -393,7 +393,7 @@ var procBounds ProcFn = func(args []coretypes.Object) coretypes.Object {
 // --- New blank image ---
 
 func colorChannel(obj coretypes.Object, name string) uint8 {
-	v := EnsureObjectIsInt(obj, "imaging/new color "+name+": %s").I
+	v := coretypes.EnsureObjectIsInt(obj, "imaging/new color "+name+": %s").I
 	if v < 0 || v > 255 {
 		panic(RT.NewError("imaging/new: color channel " + name + " must be in [0,255]"))
 	}

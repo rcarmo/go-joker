@@ -10,23 +10,23 @@ import (
 
 func TestTransitRoundTripMap(t *testing.T) {
 	m := EmptyArrayMap()
-	m.Add(MakeKeyword("name"), coretypes.MakeString("joker"))
-	m.Add(MakeKeyword("n"), coretypes.MakeInt(42))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString("joker"))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "n"), coretypes.MakeInt(42))
 	encoded := writeTransit(m).(coretypes.String).S
 	if !strings.Contains(encoded, `"^ "`) || !strings.Contains(encoded, `"~:name"`) {
 		t.Fatalf("unexpected transit map encoding: %s", encoded)
 	}
-	decoded := readTransit(coretypes.MakeString(encoded)).(Map)
-	if ok, v := decoded.Get(MakeKeyword("name")); !ok || v.ToString(false) != "joker" {
+	decoded := readTransit(coretypes.MakeString(encoded)).(coretypes.Map)
+	if ok, v := decoded.Get(coretypes.MakeKeyword(STRINGS.Intern, "name")); !ok || v.ToString(false) != "joker" {
 		t.Fatalf("name roundtrip failed: %v", v)
 	}
-	if ok, v := decoded.Get(MakeKeyword("n")); !ok || v.(coretypes.Int).I != 42 {
+	if ok, v := decoded.Get(coretypes.MakeKeyword(STRINGS.Intern, "n")); !ok || v.(coretypes.Int).I != 42 {
 		t.Fatalf("n roundtrip failed: %v", v)
 	}
 }
 
 func TestTransitCacheRefs(t *testing.T) {
-	v := NewVectorFrom(MakeKeyword("repeat-key"), MakeKeyword("repeat-key"))
+	v := NewVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, "repeat-key"), coretypes.MakeKeyword(STRINGS.Intern, "repeat-key"))
 	encoded := writeTransit(v).(coretypes.String).S
 	if !strings.Contains(encoded, `"^0"`) {
 		t.Fatalf("expected cache ref in encoding: %s", encoded)
@@ -54,8 +54,8 @@ func TestTransitTaggedSetListQuoteCMap(t *testing.T) {
 	if quoted.ToString(false) != ":quoted" {
 		t.Fatalf("quote tag mismatch: %s", quoted.ToString(false))
 	}
-	cmap := readTransit(coretypes.MakeString(`["~#cmap",["~:k",1,"~$sym",2]]`)).(Map)
-	if ok, v := cmap.Get(MakeKeyword("k")); !ok || v.(coretypes.Int).I != 1 {
+	cmap := readTransit(coretypes.MakeString(`["~#cmap",["~:k",1,"~$sym",2]]`)).(coretypes.Map)
+	if ok, v := cmap.Get(coretypes.MakeKeyword(STRINGS.Intern, "k")); !ok || v.(coretypes.Int).I != 1 {
 		t.Fatalf("cmap keyword mismatch: %s", cmap.ToString(false))
 	}
 }
@@ -85,7 +85,7 @@ func TestTransitBigNumbersAndRatio(t *testing.T) {
 }
 
 func TestTransitEscapedStringsAndSymbols(t *testing.T) {
-	v := NewVectorFrom(coretypes.MakeString("~literal"), MakeKeyword("k"), MakeSymbol("sym"))
+	v := NewVectorFrom(coretypes.MakeString("~literal"), coretypes.MakeKeyword(STRINGS.Intern, "k"), coretypes.MakeSymbol(STRINGS.Intern, "sym"))
 	encoded := writeTransit(v).(coretypes.String).S
 	decoded := readTransit(coretypes.MakeString(encoded)).(coretypes.CountedIndexed)
 	if decoded.At(0).ToString(false) != "~literal" {

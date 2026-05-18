@@ -37,7 +37,7 @@ type xformStep struct {
 // It is also coretypes.Callable, so it remains compatible with generic transducer use.
 type XForm struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	steps []xformStep
 }
 
@@ -50,15 +50,15 @@ func (xf *XForm) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res.Info = info
 	return &res
 }
-func (xf *XForm) WithMeta(m Map) coretypes.Object {
+func (xf *XForm) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *xf
-	res.meta = SafeMerge(res.meta, m)
+	res.Meta = coretypes.SafeMerge(res.Meta, m)
 	return &res
 }
 
 func (xf *XForm) Call(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	rf := EnsureArgIsCallable(args, 0)
+	rf := coretypes.EnsureArgIsCallable(args, 0)
 	return buildXFormRF(xf.steps, rf).(coretypes.Object)
 }
 
@@ -150,9 +150,9 @@ func transduceInternal(xform coretypes.Callable, reducingFnObj coretypes.Object,
 		return transducePipeline(xf, reducingFnObj, init, collObj)
 	}
 	rfObj := call1(xform, reducingFnObj)
-	rf := EnsureObjectIsCallable(rfObj, "transduce xform must produce a reducing function, got %s")
+	rf := coretypes.EnsureObjectIsCallable(rfObj, "transduce xform must produce a reducing function, got %s")
 
-	s := EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be coretypes.Seqable, got %s").Seq()
+	s := coretypes.EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be coretypes.Seqable, got %s").Seq()
 	res := init
 	for !s.IsEmpty() {
 		step := call2(rf, res, s.First())
@@ -167,11 +167,11 @@ func transduceInternal(xform coretypes.Callable, reducingFnObj coretypes.Object,
 }
 
 func transducePipeline(xf *XForm, reducingFnObj coretypes.Object, init coretypes.Object, collObj coretypes.Object) coretypes.Object {
-	rf := EnsureObjectIsCallable(reducingFnObj, "transduce reducing function must be coretypes.Callable, got %s")
+	rf := coretypes.EnsureObjectIsCallable(reducingFnObj, "transduce reducing function must be coretypes.Callable, got %s")
 	if r, ok := collObj.(*IntRange); ok {
 		return transducePipelineRange(xf, rf, init, r)
 	}
-	s := EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be coretypes.Seqable, got %s").Seq()
+	s := coretypes.EnsureObjectIsSeqable(collObj, "Arg of core/transduce must be coretypes.Seqable, got %s").Seq()
 	res := init
 	reducerName := hotReducerName(rf)
 	takeRemaining := -1
@@ -334,8 +334,8 @@ func makeTakeTransducer(n int) coretypes.Object {
 	return &XForm{steps: []xformStep{{kind: xformTake, n: n}}}
 }
 
-func referToUser(sym Symbol, vr *Var) {
-	userNs := GLOBAL_ENV.FindNamespace(MakeSymbol("user"))
+func referToUser(sym coretypes.Symbol, vr *Var) {
+	userNs := GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "user"))
 	if userNs != nil {
 		userNs.Refer(sym, vr)
 	}
@@ -368,47 +368,47 @@ func installTransducerCompat() {
 	}
 
 	// reduced — wraps value in Reduced box
-	reducedVr := ns.Intern(MakeSymbol("reduced"))
+	reducedVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "reduced"))
 	reducedVr.Value = Proc{Name: "procReduced", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return MakeReduced(args[0])
 	}}
-	referToUser(MakeSymbol("reduced"), reducedVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "reduced"), reducedVr)
 
 	// reduced? — type check, no map lookup
-	reducedQVr := ns.Intern(MakeSymbol("reduced?"))
+	reducedQVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "reduced?"))
 	reducedQVr.Value = Proc{Name: "procReducedQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeBoolean(IsReduced(args[0]))
 	}}
-	referToUser(MakeSymbol("reduced?"), reducedQVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "reduced?"), reducedQVr)
 
 	// ensure-reduced
-	ensureReducedVr := ns.Intern(MakeSymbol("ensure-reduced"))
+	ensureReducedVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "ensure-reduced"))
 	ensureReducedVr.Value = Proc{Name: "procEnsureReduced", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return EnsureReduced(args[0])
 	}}
-	referToUser(MakeSymbol("ensure-reduced"), ensureReducedVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "ensure-reduced"), ensureReducedVr)
 
 	// unreduced — deref a Reduced box (identity if not reduced)
-	unreducedVr := ns.Intern(MakeSymbol("unreduced"))
+	unreducedVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "unreduced"))
 	unreducedVr.Value = Proc{Name: "procUnreduced", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return DerefReduced(args[0])
 	}}
-	referToUser(MakeSymbol("unreduced"), unreducedVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "unreduced"), unreducedVr)
 
 	// completing — wraps a reducing fn with optional completion step
-	completingVr := ns.Intern(MakeSymbol("completing"))
+	completingVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "completing"))
 	completingVr.Value = Proc{Name: "procCompleting", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) != 1 && len(args) != 2 {
 			PanicArityMinMax(len(args), 1, 2)
 		}
-		f := EnsureArgIsCallable(args, 0)
+		f := coretypes.EnsureArgIsCallable(args, 0)
 		var cf coretypes.Callable
 		if len(args) == 2 {
-			cf = EnsureArgIsCallable(args, 1)
+			cf = coretypes.EnsureArgIsCallable(args, 1)
 		} else {
 			cf = Proc{Name: "procCompletingIdentity", Fn: func(callArgs []coretypes.Object) coretypes.Object {
 				CheckArity(callArgs, 1, 1)
@@ -429,7 +429,7 @@ func installTransducerCompat() {
 			}
 		}}
 	}}
-	referToUser(MakeSymbol("completing"), completingVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "completing"), completingVr)
 
 	mapVr := ns.Resolve("map")
 	filterVr := ns.Resolve("filter")
@@ -452,7 +452,7 @@ func installTransducerCompat() {
 	// map transducer arity: (map f) returns a transducer
 	mapVr.Value = Proc{Name: "procMapXfCompat", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
-			f := EnsureArgIsCallable(args, 0)
+			f := coretypes.EnsureArgIsCallable(args, 0)
 			return makeMapTransducer(f)
 		}
 		return mapOrig.Call(args)
@@ -461,7 +461,7 @@ func installTransducerCompat() {
 	// filter transducer arity: (filter pred) returns a transducer
 	filterVr.Value = Proc{Name: "procFilterXfCompat", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
-			pred := EnsureArgIsCallable(args, 0)
+			pred := coretypes.EnsureArgIsCallable(args, 0)
 			return makeFilterTransducer(pred)
 		}
 		return filterOrig.Call(args)
@@ -470,7 +470,7 @@ func installTransducerCompat() {
 	// take transducer arity: (take n) returns a transducer when used with transduce
 	takeVr.Value = Proc{Name: "procTakeXfCompat", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 1 {
-			n := EnsureArgIsNumber(args, 0).Int().I
+			n := coretypes.EnsureArgIsNumber(args, 0).Int().I
 			return makeTakeTransducer(n)
 		}
 		return takeOrig.Call(args)
@@ -498,9 +498,9 @@ func installTransducerCompat() {
 			PanicArityMinMax(len(args), 3, 4)
 		}
 
-		xform := EnsureArgIsCallable(args, 0)
+		xform := coretypes.EnsureArgIsCallable(args, 0)
 		reducingFnObj := args[1]
-		f := EnsureArgIsCallable(args, 1)
+		f := coretypes.EnsureArgIsCallable(args, 1)
 
 		var init coretypes.Object
 		var collObj coretypes.Object
@@ -514,12 +514,12 @@ func installTransducerCompat() {
 
 		return transduceInternal(xform, reducingFnObj, init, collObj)
 	}}
-	transduceVr := ns.Intern(MakeSymbol("transduce"))
+	transduceVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "transduce"))
 	transduceVr.Value = transduceProc
-	referToUser(MakeSymbol("transduce"), transduceVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "transduce"), transduceVr)
 
 	// eduction — materializes transducer pipeline into a vector
-	eductionVr := ns.Intern(MakeSymbol("eduction"))
+	eductionVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "eduction"))
 	eductionVr.Value = Proc{Name: "procEduction", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
 			PanicArityMinMax(len(args), 2, 999)
@@ -533,10 +533,10 @@ func installTransducerCompat() {
 			if compVr == nil {
 				panic(RT.NewError("Unable to resolve core/comp for eduction"))
 			}
-			compFn := EnsureObjectIsCallable(compVr.Value, "comp must be callable, got %s")
+			compFn := coretypes.EnsureObjectIsCallable(compVr.Value, "comp must be callable, got %s")
 			xformObj = compFn.Call(args[:len(args)-1])
 		}
-		xform := EnsureObjectIsCallable(xformObj, "eduction expected callable xform, got %s")
+		xform := coretypes.EnsureObjectIsCallable(xformObj, "eduction expected callable xform, got %s")
 
 		conjRF := Proc{Name: "procEductionConjRF", Fn: func(callArgs []coretypes.Object) coretypes.Object {
 			switch len(callArgs) {
@@ -558,7 +558,7 @@ func installTransducerCompat() {
 
 		return transduceInternal(xform, conjRF, collectionConstruction.NewEmptyArrayVector(), collObj)
 	}}
-	referToUser(MakeSymbol("eduction"), eductionVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "eduction"), eductionVr)
 
 	// sequence 2-arity: (sequence xform coll) → lazy seq of eduction result
 	sequenceVr.Value = Proc{Name: "procSequenceCompat", Fn: func(args []coretypes.Object) coretypes.Object {

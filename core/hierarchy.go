@@ -17,7 +17,7 @@ import (
 // Hierarchy represents a Clojure hierarchy.
 type Hierarchy struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	mu         sync.RWMutex
 	parents    map[string]map[string]bool  // child key → set of parent keys
 	parentKeys map[string]coretypes.Object // key → object (for iteration)
@@ -40,8 +40,8 @@ func (h *Hierarchy) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	h.Info = info
 	return h
 }
-func (h *Hierarchy) WithMeta(m Map) coretypes.Object {
-	h.meta = SafeMerge(h.meta, m)
+func (h *Hierarchy) WithMeta(m coretypes.Map) coretypes.Object {
+	h.Meta = coretypes.SafeMerge(h.Meta, m)
 	return h
 }
 

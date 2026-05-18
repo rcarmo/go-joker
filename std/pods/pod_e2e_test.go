@@ -76,7 +76,7 @@ func TestPodEndToEndFormats(t *testing.T) {
 			if err := installPodDescribeNamespaces(p, describe); err != nil {
 				t.Fatal(err)
 			}
-			ns := GLOBAL_ENV.EnsureSymbolIsNamespace(MakeSymbol(tc.ns))
+			ns := GLOBAL_ENV.EnsureSymbolIsNamespace(coretypes.MakeSymbol(STRINGS.Intern, tc.ns))
 			vr := ns.Resolve("echo")
 			if vr == nil {
 				t.Fatalf("dynamic var %s/echo missing", tc.ns)
@@ -85,7 +85,7 @@ func TestPodEndToEndFormats(t *testing.T) {
 			if !ok {
 				t.Fatalf("dynamic var is not callable: %T", vr.Value)
 			}
-			res := callable.Call([]coretypes.Object{MakeKeyword("k"), coretypes.MakeInt(7)})
+			res := callable.Call([]coretypes.Object{coretypes.MakeKeyword(STRINGS.Intern, "k"), coretypes.MakeInt(7)})
 			got := res.ToString(false)
 			if got != "[:k 7]" && got != "(:k 7)" {
 				t.Fatalf("%s echo = %s", tc.format, got)
@@ -102,12 +102,12 @@ func TestPodDynamicNamespaceVarSmoke(t *testing.T) {
 	if err := installPodDescribeNamespaces(p, describe); err != nil {
 		t.Fatal(err)
 	}
-	ns := GLOBAL_ENV.EnsureSymbolIsNamespace(MakeSymbol("fake.smoke"))
+	ns := GLOBAL_ENV.EnsureSymbolIsNamespace(coretypes.MakeSymbol(STRINGS.Intern, "fake.smoke"))
 	vr := ns.Resolve("echo")
 	if vr == nil || vr.Value.GetType() != TYPE.Proc {
 		t.Fatalf("bad dynamic var: %#v", vr)
 	}
-	if ok, doc := vr.GetMeta().Get(MakeKeyword("doc")); !ok || doc.ToString(false) != "Echo doc" {
+	if ok, doc := vr.GetMeta().Get(coretypes.MakeKeyword(STRINGS.Intern, "doc")); !ok || doc.ToString(false) != "Echo doc" {
 		t.Fatalf("expected metadata doc, got %#v ok=%v", doc, ok)
 	}
 }

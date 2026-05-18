@@ -11,7 +11,7 @@ import (
 
 func fromObject(obj coretypes.Object) interface{} {
 	switch obj := obj.(type) {
-	case Keyword:
+	case coretypes.Keyword:
 		return obj.ToString(false)[1:]
 	case coretypes.Boolean:
 		return obj.B
@@ -21,13 +21,13 @@ func fromObject(obj coretypes.Object) interface{} {
 		return nil
 	case coretypes.String:
 		return obj.ToString(false)
-	case Map:
+	case coretypes.Map:
 		res := make(map[string]interface{})
 		for iter := obj.Iter(); iter.HasNext(); {
 			p := iter.Next()
 			var k string
 			switch p.Key.(type) {
-			case Keyword:
+			case coretypes.Keyword:
 				k = p.Key.ToString(false)[1:]
 			default:
 				k = p.Key.ToString(false)
@@ -72,7 +72,7 @@ func toObject(v interface{}, keywordize bool) coretypes.Object {
 		for k, v := range v {
 			var key coretypes.Object
 			if keywordize {
-				key = MakeKeyword(k)
+				key = coretypes.MakeKeyword(STRINGS.Intern, k)
 			} else {
 				key = coretypes.MakeString(k)
 			}
@@ -84,21 +84,21 @@ func toObject(v interface{}, keywordize bool) coretypes.Object {
 	}
 }
 
-func readString(s string, opts Map) coretypes.Object {
+func readString(s string, opts coretypes.Map) coretypes.Object {
 	var v interface{}
 	if err := json.Unmarshal([]byte(s), &v); err != nil {
 		panic(RT.NewError("Invalid json: " + err.Error()))
 	}
 	var keywordize bool
 	if opts != nil {
-		if ok, v := opts.Get(MakeKeyword("keywords?")); ok {
+		if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "keywords?")); ok {
 			keywordize = ToBool(v)
 		}
 	}
 	return toObject(v, keywordize)
 }
 
-func jsonSeqOpts(src coretypes.Object, opts Map) coretypes.Object {
+func jsonSeqOpts(src coretypes.Object, opts coretypes.Map) coretypes.Object {
 	var dec *json.Decoder
 	var keywordize bool
 	var jsonLazySeq func() *LazySeq
@@ -111,7 +111,7 @@ func jsonSeqOpts(src coretypes.Object, opts Map) coretypes.Object {
 		panic(RT.NewError("src must be a string or io.Reader"))
 	}
 	if opts != nil {
-		if ok, v := opts.Get(MakeKeyword("keywords?")); ok {
+		if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "keywords?")); ok {
 			keywordize = ToBool(v)
 		}
 	}
@@ -133,7 +133,7 @@ func jsonSeqOpts(src coretypes.Object, opts Map) coretypes.Object {
 	return jsonLazySeq()
 }
 
-func writeString(obj coretypes.Object, opts Map) coretypes.String {
+func writeString(obj coretypes.Object, opts coretypes.Map) coretypes.String {
 	var (
 		prefix coretypes.String
 		indent coretypes.String
@@ -141,11 +141,11 @@ func writeString(obj coretypes.Object, opts Map) coretypes.String {
 		err    error
 	)
 	if opts != nil {
-		if ok, v := opts.Get(MakeKeyword("prefix")); ok {
-			prefix = EnsureObjectIsString(v, "prefix: %s")
+		if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "prefix")); ok {
+			prefix = coretypes.EnsureObjectIsString(v, "prefix: %s")
 		}
-		if ok, v := opts.Get(MakeKeyword("indent")); ok {
-			indent = EnsureObjectIsString(v, "indent: %s")
+		if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "indent")); ok {
+			indent = coretypes.EnsureObjectIsString(v, "indent: %s")
 		}
 	}
 

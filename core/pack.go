@@ -54,7 +54,7 @@ type (
 )
 
 func (b *Binding) Pack(p []byte, env *PackEnv) []byte {
-	p = b.name.Pack(p, env)
+	p = packSymbol(b.name, p, env)
 	p = appendInt(p, b.index)
 	p = appendInt(p, b.frame)
 	p = appendBool(p, b.isUsed)
@@ -288,48 +288,44 @@ func UnpackObjectOrNull(p []byte, header *PackHeader) (coretypes.Object, []byte)
 	return unpackObject(p[1:], header)
 }
 
-func (s Symbol) Pack(p []byte, env *PackEnv) []byte {
+func packSymbol(s coretypes.Symbol, p []byte, env *PackEnv) []byte {
 	p = packObjectInfo(s.Info, p, env)
-	p = PackObjectOrNull(s.meta, p, env)
-	p = appendUint16(p, env.stringIndex(s.name))
-	p = appendUint16(p, env.stringIndex(s.ns))
-	p = appendUint32(p, s.hash)
+	p = PackObjectOrNull(s.Meta, p, env)
+	p = appendUint16(p, env.stringIndex(s.NameKey()))
+	p = appendUint16(p, env.stringIndex(s.NamespaceKey()))
+	p = appendUint32(p, s.PackedHash())
 	return p
 }
 
-func unpackSymbol(p []byte, header *PackHeader) (Symbol, []byte) {
+func unpackSymbol(p []byte, header *PackHeader) (coretypes.Symbol, []byte) {
 	info, p := unpackObjectInfo(p, header)
 	meta, p := UnpackObjectOrNull(p, header)
 	iname, p := extractUInt16(p)
 	ins, p := extractUInt16(p)
 	hash, p := extractUInt32(p)
-	res := Symbol{
-		InfoHolder: coretypes.InfoHolder{Info: info},
-		name:       header.Strings[iname],
-		ns:         header.Strings[ins],
-		hash:       hash,
-	}
+	res := coretypes.MakeSymbolFromKeys(header.Strings[ins], header.Strings[iname]).WithPackedHash(hash)
+	res.InfoHolder = coretypes.InfoHolder{Info: info}
 	if meta != nil {
-		res.meta = meta.(Map)
+		res = res.WithMeta(meta.(coretypes.Map)).(coretypes.Symbol)
 	}
 	return res, p
 }
 
 func packType(t *coretypes.Type, p []byte, env *PackEnv) []byte {
-	s := MakeSymbol(t.Name)
-	return s.Pack(p, env)
+	s := coretypes.MakeSymbol(STRINGS.Intern, t.Name)
+	return packSymbol(s, p, env)
 }
 
 func unpackType(p []byte, header *PackHeader) (*coretypes.Type, []byte) {
 	s, p := unpackSymbol(p, header)
-	return TYPES.Lookup(s.name), p
+	return TYPES.Lookup(s.NameKey()), p
 }
 
 func packObject(obj coretypes.Object, p []byte, env *PackEnv) []byte {
 	switch obj := obj.(type) {
-	case Symbol:
+	case coretypes.Symbol:
 		p = append(p, SYMBOL_OBJ)
-		return obj.Pack(p, env)
+		return packSymbol(obj, p, env)
 	case *Var:
 		p = append(p, VAR_OBJ)
 		p = obj.Pack(p, env)
@@ -409,17 +405,17 @@ func unpackSeq(p []byte, header *PackHeader) ([]Expr, []byte) {
 	return res, p
 }
 
-func packSymbolSeq(p []byte, s []Symbol, env *PackEnv) []byte {
+func packSymbolSeq(p []byte, s []coretypes.Symbol, env *PackEnv) []byte {
 	p = appendInt(p, len(s))
 	for _, e := range s {
-		p = e.Pack(p, env)
+		p = packSymbol(e, p, env)
 	}
 	return p
 }
 
-func unpackSymbolSeq(p []byte, header *PackHeader) ([]Symbol, []byte) {
+func unpackSymbolSeq(p []byte, header *PackHeader) ([]coretypes.Symbol, []byte) {
 	c, p := extractInt(p)
-	res := make([]Symbol, c)
+	res := make([]coretypes.Symbol, c)
 	for i := 0; i < c; i++ {
 		res[i], p = unpackSymbol(p, header)
 	}
@@ -531,7 +527,7 @@ func unpackIfExpr(p []byte, header *PackHeader) (*IfExpr, []byte) {
 func (expr *DefExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, DEF_EXPR)
 	p = packPosition(expr.Pos(), p, env)
-	p = expr.name.Pack(p, env)
+	p = packSymbol(expr.name, p, env)
 	p = PackExprOrNull(expr.value, p, env)
 	p = PackExprOrNull(expr.meta, p, env)
 	p = packObjectInfo(expr.vr.Info, p, env)
@@ -542,8 +538,7 @@ func unpackDefExpr(p []byte, header *PackHeader) (*DefExpr, []byte) {
 	p = p[1:]
 	pos, p := unpackPosition(p, header)
 	name, p := unpackSymbol(p, header)
-	varName := name
-	varName.ns = nil
+	varName := coretypes.MakeSymbolFromKeys(nil, name.NameKey())
 	vr := header.GlobalEnv.CurrentNamespace().Intern(varName)
 	value, p := UnpackExprOrNull(p, header)
 	meta, p := UnpackExprOrNull(p, header)
@@ -599,17 +594,17 @@ func unpackRecurExpr(p []byte, header *PackHeader) (*RecurExpr, []byte) {
 }
 
 func (vr *Var) Pack(p []byte, env *PackEnv) []byte {
-	p = vr.ns.Name.Pack(p, env)
-	p = vr.name.Pack(p, env)
+	p = packSymbol(vr.ns.Name, p, env)
+	p = packSymbol(vr.name, p, env)
 	return p
 }
 
 func unpackVar(p []byte, header *PackHeader) (*Var, []byte) {
 	nsName, p := unpackSymbol(p, header)
 	name, p := unpackSymbol(p, header)
-	vr := GLOBAL_ENV.FindNamespace(nsName).mappings[name.name]
+	vr := GLOBAL_ENV.FindNamespace(nsName).mappings[name.NameKey()]
 	if vr == nil {
-		panic(RT.NewError("coretypes.Error unpacking var: cannot find var " + *nsName.name + "/" + *name.name))
+		panic(RT.NewError("coretypes.Error unpacking var: cannot find var " + nsName.Name() + "/" + name.Name()))
 	}
 	return vr, p
 }
@@ -754,7 +749,7 @@ func (expr *FnExpr) Pack(p []byte, env *PackEnv) []byte {
 		p = append(p, NOT_NULL)
 		p = expr.variadic.Pack(p, env)
 	}
-	p = expr.self.Pack(p, env)
+	p = packSymbol(expr.self, p, env)
 	return p
 }
 
@@ -849,7 +844,7 @@ func (expr *CatchExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = append(p, CATCH_EXPR)
 	p = packPosition(expr.Pos(), p, env)
 	p = appendUint16(p, env.stringIndex(STRINGS.Intern(expr.excType.Name)))
-	p = expr.excSymbol.Pack(p, env)
+	p = packSymbol(expr.excSymbol, p, env)
 	p = packSeq(p, expr.body, env)
 	return p
 }

@@ -25,7 +25,7 @@ type RecordType struct {
 // Record is an instance of a RecordType.
 type Record struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	rtype *RecordType
 	bases []coretypes.Object // values for base fields (same order as rtype.fields)
 	ext   *ArrayMap          // extension fields (nil if none)
@@ -112,9 +112,9 @@ func (r *Record) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return res
 }
 
-func (r *Record) WithMeta(m Map) coretypes.Object {
+func (r *Record) WithMeta(m coretypes.Map) coretypes.Object {
 	res := r.clone()
-	res.meta = SafeMerge(res.meta, m)
+	res.Meta = coretypes.SafeMerge(res.Meta, m)
 	return res
 }
 
@@ -134,11 +134,11 @@ func (r *Record) clone() *Record {
 	}
 }
 
-// --- Map interface ---
+// --- coretypes.Map interface ---
 
 // Get implements coretypes.Gettable for keyword access.
 func (r *Record) Get(key coretypes.Object) (bool, coretypes.Object) {
-	if kw, ok := key.(Keyword); ok {
+	if kw, ok := key.(coretypes.Keyword); ok {
 		name := kw.ToString(false)[1:] // strip leading ":"
 		if idx, ok := r.rtype.fieldIdx[name]; ok {
 			return true, r.bases[idx]
@@ -162,7 +162,7 @@ func (r *Record) EntryAt(key coretypes.Object) coretypes.Object {
 // Assoc returns a new record with the key set to val.
 // If key is a base field, returns a new record. Otherwise extends.
 func (r *Record) Assoc(key, val coretypes.Object) coretypes.Associative {
-	if kw, ok := key.(Keyword); ok {
+	if kw, ok := key.(coretypes.Keyword); ok {
 		name := kw.ToString(false)[1:]
 		if idx, ok := r.rtype.fieldIdx[name]; ok {
 			res := r.clone()
@@ -191,7 +191,7 @@ func (r *Record) Count() int {
 func (r *Record) Seq() coretypes.Seq {
 	entries := make([]coretypes.Object, 0, r.Count())
 	for i, fname := range r.rtype.fields {
-		entries = append(entries, collectionConstruction.NewVectorFrom(MakeKeyword(fname), r.bases[i]))
+		entries = append(entries, collectionConstruction.NewVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, fname), r.bases[i]))
 	}
 	if r.ext != nil {
 		for iter := r.ext.Iter(); iter.HasNext(); {
@@ -206,7 +206,7 @@ func (r *Record) Seq() coretypes.Seq {
 func (r *Record) Keys() coretypes.Seq {
 	keys := make([]coretypes.Object, 0, r.Count())
 	for _, fname := range r.rtype.fields {
-		keys = append(keys, MakeKeyword(fname))
+		keys = append(keys, coretypes.MakeKeyword(STRINGS.Intern, fname))
 	}
 	if r.ext != nil {
 		for iter := r.ext.Iter(); iter.HasNext(); {
@@ -256,7 +256,7 @@ func (r *Record) Call(args []coretypes.Object) coretypes.Object {
 }
 
 // Merge merges a map into the record.
-func (r *Record) Merge(other Map) Map {
+func (r *Record) Merge(other coretypes.Map) coretypes.Map {
 	res := r.clone()
 	for iter := other.Iter(); iter.HasNext(); {
 		p := iter.Next()
@@ -267,7 +267,7 @@ func (r *Record) Merge(other Map) Map {
 }
 
 // Iter returns a map iterator.
-func (r *Record) Iter() MapIterator {
+func (r *Record) Iter() coretypes.MapIterator {
 	return &recordIterator{r: r, idx: 0}
 }
 
@@ -278,15 +278,15 @@ func (r *Record) ContainsKey(key coretypes.Object) bool {
 }
 
 // Without (dissoc) — dissoc of a base field returns a plain map
-func (r *Record) Without(key coretypes.Object) Map {
-	if kw, ok := key.(Keyword); ok {
+func (r *Record) Without(key coretypes.Object) coretypes.Map {
+	if kw, ok := key.(coretypes.Keyword); ok {
 		name := kw.ToString(false)[1:]
 		if _, ok := r.rtype.fieldIdx[name]; ok {
 			// Dissoc base field → degrade to plain map
 			m := collectionConstruction.NewEmptyArrayMap()
 			for i, fname := range r.rtype.fields {
 				if fname != name {
-					m.Add(MakeKeyword(fname), r.bases[i])
+					m.Add(coretypes.MakeKeyword(STRINGS.Intern, fname), r.bases[i])
 				}
 			}
 			if r.ext != nil {
@@ -309,7 +309,7 @@ func (r *Record) Without(key coretypes.Object) Map {
 type recordIterator struct {
 	r       *Record
 	idx     int
-	extIter MapIterator
+	extIter coretypes.MapIterator
 }
 
 func (it *recordIterator) HasNext() bool {
@@ -325,10 +325,10 @@ func (it *recordIterator) HasNext() bool {
 	return false
 }
 
-func (it *recordIterator) Next() *Pair {
+func (it *recordIterator) Next() *coretypes.Pair {
 	if it.idx < len(it.r.rtype.fields) {
-		p := &Pair{
-			Key:   MakeKeyword(it.r.rtype.fields[it.idx]),
+		p := &coretypes.Pair{
+			Key:   coretypes.MakeKeyword(STRINGS.Intern, it.r.rtype.fields[it.idx]),
 			Value: it.r.bases[it.idx],
 		}
 		it.idx++

@@ -103,7 +103,7 @@ func TestInstallPodDescribeNamespaces(t *testing.T) {
 	if err := installPodDescribeNamespaces(p, describe); err != nil {
 		t.Fatal(err)
 	}
-	ns := GLOBAL_ENV.EnsureSymbolIsNamespace(MakeSymbol("fake.dynamic"))
+	ns := GLOBAL_ENV.EnsureSymbolIsNamespace(coretypes.MakeSymbol(STRINGS.Intern, "fake.dynamic"))
 	vr := ns.Resolve("echo")
 	if vr == nil {
 		t.Fatal("dynamic pod var was not installed")
@@ -118,22 +118,22 @@ func TestPodInvokeTimeoutOptionsRejectInvalidValues(t *testing.T) {
 		"non-map": coretypes.MakeString("bad"),
 		"non-integer": func() coretypes.Object {
 			m := EmptyArrayMap()
-			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeString("bad"))
+			m.Add(coretypes.MakeKeyword(STRINGS.Intern, "timeout-ms"), coretypes.MakeString("bad"))
 			return m
 		}(),
 		"zero": func() coretypes.Object {
 			m := EmptyArrayMap()
-			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(0))
+			m.Add(coretypes.MakeKeyword(STRINGS.Intern, "timeout-ms"), coretypes.MakeInt(0))
 			return m
 		}(),
 		"negative": func() coretypes.Object {
 			m := EmptyArrayMap()
-			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(-1))
+			m.Add(coretypes.MakeKeyword(STRINGS.Intern, "timeout-ms"), coretypes.MakeInt(-1))
 			return m
 		}(),
 		"too-large": func() coretypes.Object {
 			m := EmptyArrayMap()
-			m.Add(MakeKeyword("timeout-ms"), coretypes.MakeInt(int(^uint(0)>>1)))
+			m.Add(coretypes.MakeKeyword(STRINGS.Intern, "timeout-ms"), coretypes.MakeInt(int(^uint(0)>>1)))
 			return m
 		}(),
 	} {

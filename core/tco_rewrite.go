@@ -15,7 +15,7 @@ package core
 // rewriteTailCallsToRecur checks if a FnExpr with a self-binding
 // has tail-position self-calls, and if so, rewrites them to recur.
 func rewriteTailCallsToRecur(fnExpr *FnExpr, selfBinding *Binding) {
-	if selfBinding == nil || fnExpr.self.name == nil {
+	if selfBinding == nil || fnExpr.self.NameKey() == nil {
 		return
 	}
 	for i := range fnExpr.arities {
@@ -42,8 +42,8 @@ func hasTailSelfCall(expr Expr, self *Binding) bool {
 		if bind, ok := e.callable.(*BindingExpr); ok {
 			// The self-call may be through the letfn binding or the fn's own self binding.
 			// Match by name since they may have different frame/index.
-			if bind.binding.name.name != nil && self.name.name != nil &&
-				*bind.binding.name.name == *self.name.name {
+			if bind.binding.name.NameKey() != nil && self.name.NameKey() != nil &&
+				*bind.binding.name.NameKey() == *self.name.NameKey() {
 				return true
 			}
 		}
@@ -70,8 +70,8 @@ func rewriteTailExpr(expr Expr, self *Binding) Expr {
 	switch e := expr.(type) {
 	case *CallExpr:
 		if bind, ok := e.callable.(*BindingExpr); ok {
-			if bind.binding.name.name != nil && self.name.name != nil &&
-				*bind.binding.name.name == *self.name.name {
+			if bind.binding.name.NameKey() != nil && self.name.NameKey() != nil &&
+				*bind.binding.name.NameKey() == *self.name.NameKey() {
 				return &RecurExpr{
 					Position: e.Position,
 					args:     e.args,

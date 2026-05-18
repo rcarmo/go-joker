@@ -51,9 +51,13 @@ func (ReaderConstructionAdapter) Int(v int) coretypes.Object { return coretypes.
 
 func (ReaderConstructionAdapter) String(v string) coretypes.Object { return coretypes.MakeString(v) }
 
-func (ReaderConstructionAdapter) Symbol(v string) coretypes.Object { return MakeSymbol(v) }
+func (ReaderConstructionAdapter) Symbol(v string) coretypes.Object {
+	return coretypes.MakeSymbol(STRINGS.Intern, v)
+}
 
-func (ReaderConstructionAdapter) Keyword(v string) coretypes.Object { return MakeKeyword(v) }
+func (ReaderConstructionAdapter) Keyword(v string) coretypes.Object {
+	return coretypes.MakeKeyword(STRINGS.Intern, v)
+}
 
 func (ReaderConstructionAdapter) ListFrom(values []coretypes.Object) coretypes.Object {
 	return collectionConstruction.NewListFrom(values...)
@@ -128,7 +132,7 @@ func (ReaderConstructionAdapter) MetadataFromObject(obj coretypes.Object) (*Arra
 }
 
 func (ReaderConstructionAdapter) WithMeta(obj coretypes.Object, meta *ArrayMap) (coretypes.Object, bool) {
-	v, ok := obj.(Meta)
+	v, ok := obj.(coretypes.Meta)
 	if !ok {
 		return nil, false
 	}
@@ -136,7 +140,7 @@ func (ReaderConstructionAdapter) WithMeta(obj coretypes.Object, meta *ArrayMap) 
 }
 
 func (ReaderConstructionAdapter) SkipRedundantDoMeta() *ArrayMap {
-	return collectionConstruction.NewEmptyArrayMap().Plus(MakeKeyword("skip-redundant-do"), coretypes.Boolean{B: true})
+	return collectionConstruction.NewEmptyArrayMap().Plus(coretypes.MakeKeyword(STRINGS.Intern, "skip-redundant-do"), coretypes.Boolean{B: true})
 }
 
 func (ReaderConstructionAdapter) LiteralExpr(obj coretypes.Object) *LiteralExpr {

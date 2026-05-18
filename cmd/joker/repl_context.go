@@ -36,10 +36,10 @@ type ReplContext struct {
 }
 
 func NewReplContext(env *Env) *ReplContext {
-	first, _ := env.Resolve(MakeSymbol("joker.core/*1"))
-	second, _ := env.Resolve(MakeSymbol("joker.core/*2"))
-	third, _ := env.Resolve(MakeSymbol("joker.core/*3"))
-	exc, _ := env.Resolve(MakeSymbol("joker.core/*e"))
+	first, _ := env.Resolve(coretypes.MakeSymbol(STRINGS.Intern, "joker.core/*1"))
+	second, _ := env.Resolve(coretypes.MakeSymbol(STRINGS.Intern, "joker.core/*2"))
+	third, _ := env.Resolve(coretypes.MakeSymbol(STRINGS.Intern, "joker.core/*3"))
+	exc, _ := env.Resolve(coretypes.MakeSymbol(STRINGS.Intern, "joker.core/*e"))
 	first.Value = NIL
 	second.Value = NIL
 	third.Value = NIL

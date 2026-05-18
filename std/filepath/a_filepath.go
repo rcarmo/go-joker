@@ -314,7 +314,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var filepathNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.filepath"))
+var filepathNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.filepath"))
 
 func init() {
 	filepathNamespace.Lazy = Init

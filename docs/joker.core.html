@@ -1596,7 +1596,7 @@
 </li>
 <li>
   <h3 class="Variable" id="*assert*">*assert*</h3>
-  <span class="var-kind Variable">Boolean</span>
+  <span class="var-kind Variable">coretypes.Boolean</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">When set to logical false, assert is a noop. Defaults to true.</p>
@@ -1605,7 +1605,7 @@
 </li>
 <li>
   <h3 class="Variable" id="*command-line-args*">*command-line-args*</h3>
-  <span class="var-kind Variable">Seq</span>
+  <span class="var-kind Variable">coretypes.Seq</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">A sequence of the supplied command line arguments, or nil if<br>
@@ -1664,7 +1664,7 @@
 </li>
 <li>
   <h3 class="Variable" id="*flush-on-newline*">*flush-on-newline*</h3>
-  <span class="var-kind Variable">Boolean</span>
+  <span class="var-kind Variable">coretypes.Boolean</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">When set to true, output will be flushed whenever a newline is printed.<br>
@@ -1706,7 +1706,7 @@
 </li>
 <li>
   <h3 class="Variable" id="*linter-mode*">*linter-mode*</h3>
-  <span class="var-kind Variable">Boolean</span>
+  <span class="var-kind Variable">coretypes.Boolean</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">true if Joker is running in linter mode</p>
@@ -1746,7 +1746,7 @@
 </li>
 <li>
   <h3 class="Variable" id="*print-readably*">*print-readably*</h3>
-  <span class="var-kind Variable">Boolean</span>
+  <span class="var-kind Variable">coretypes.Boolean</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">When set to logical false, strings and characters will be printed with<br>
@@ -1758,7 +1758,7 @@
 </li>
 <li>
   <h3 class="Variable" id="*repl*">*repl*</h3>
-  <span class="var-kind Variable">Boolean</span>
+  <span class="var-kind Variable">coretypes.Boolean</span>
   <span class="var-added">v1.5</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">true if Joker is running in repl mode</p>
@@ -1915,9 +1915,9 @@
   <h3 class="Function" id="<">&lt;</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(&lt; x)</code><code class="hide">^Boolean (&lt; ^Number x)</code></div>
-<div><code>(&lt; x y)</code><code class="hide">^Boolean (&lt; ^Number x ^Number y)</code></div>
-<div><code>(&lt; x y &amp; more)</code><code class="hide">^Boolean (&lt; ^Number x ^Number y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(&lt; x)</code><code class="hide">^coretypes.Boolean (&lt; ^Number x)</code></div>
+<div><code>(&lt; x y)</code><code class="hide">^coretypes.Boolean (&lt; ^Number x ^Number y)</code></div>
+<div><code>(&lt; x y &amp; more)</code><code class="hide">^coretypes.Boolean (&lt; ^Number x ^Number y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Returns non-nil if nums are in monotonically increasing order,<br>
   otherwise false.</p>
@@ -1940,9 +1940,9 @@
   <h3 class="Function" id="<=">&lt;=</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(&lt;= x)</code><code class="hide">^Boolean (&lt;= ^Number x)</code></div>
-<div><code>(&lt;= x y)</code><code class="hide">^Boolean (&lt;= ^Number x ^Number y)</code></div>
-<div><code>(&lt;= x y &amp; more)</code><code class="hide">^Boolean (&lt;= ^Number x ^Number y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(&lt;= x)</code><code class="hide">^coretypes.Boolean (&lt;= ^Number x)</code></div>
+<div><code>(&lt;= x y)</code><code class="hide">^coretypes.Boolean (&lt;= ^Number x ^Number y)</code></div>
+<div><code>(&lt;= x y &amp; more)</code><code class="hide">^coretypes.Boolean (&lt;= ^Number x ^Number y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Returns non-nil if nums are in monotonically non-decreasing order,<br>
   otherwise false.</p>
@@ -1953,11 +1953,11 @@
   <h3 class="Function" id="=">=</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(= x)</code><code class="hide">^Boolean (= x)</code></div>
-<div><code>(= x y)</code><code class="hide">^Boolean (= x y)</code></div>
-<div><code>(= x y &amp; more)</code><code class="hide">^Boolean (= x y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(= x)</code><code class="hide">^coretypes.Boolean (= x)</code></div>
+<div><code>(= x y)</code><code class="hide">^coretypes.Boolean (= x y)</code></div>
+<div><code>(= x y &amp; more)</code><code class="hide">^coretypes.Boolean (= x y &amp; more)</code></div>
 </pre>
-  <p class="var-docstr">Equality. Returns true if x equals y, false if not. Works for nil, and compares<br>
+  <p class="var-docstr">coretypes.Equality. Returns true if x equals y, false if not. Works for nil, and compares<br>
   numbers and collections in a type-independent manner.  Immutable data<br>
   structures define = as a value, not an identity,<br>
   comparison.</p>
@@ -1968,9 +1968,9 @@
   <h3 class="Function" id="==">==</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(== x)</code><code class="hide">^Boolean (== ^Number x)</code></div>
-<div><code>(== x y)</code><code class="hide">^Boolean (== ^Number x ^Number y)</code></div>
-<div><code>(== x y &amp; more)</code><code class="hide">^Boolean (== ^Number x ^Number y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(== x)</code><code class="hide">^coretypes.Boolean (== ^Number x)</code></div>
+<div><code>(== x y)</code><code class="hide">^coretypes.Boolean (== ^Number x ^Number y)</code></div>
+<div><code>(== x y &amp; more)</code><code class="hide">^coretypes.Boolean (== ^Number x ^Number y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Returns non-nil if nums all have the equivalent<br>
   value (type-independent), otherwise false</p>
@@ -1981,9 +1981,9 @@
   <h3 class="Function" id=">">&gt;</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(&gt; x)</code><code class="hide">^Boolean (&gt; ^Number x)</code></div>
-<div><code>(&gt; x y)</code><code class="hide">^Boolean (&gt; ^Number x ^Number y)</code></div>
-<div><code>(&gt; x y &amp; more)</code><code class="hide">^Boolean (&gt; ^Number x ^Number y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(&gt; x)</code><code class="hide">^coretypes.Boolean (&gt; ^Number x)</code></div>
+<div><code>(&gt; x y)</code><code class="hide">^coretypes.Boolean (&gt; ^Number x ^Number y)</code></div>
+<div><code>(&gt; x y &amp; more)</code><code class="hide">^coretypes.Boolean (&gt; ^Number x ^Number y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Returns non-nil if nums are in monotonically decreasing order,<br>
   otherwise false.</p>
@@ -2007,9 +2007,9 @@
   <h3 class="Function" id=">=">&gt;=</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(&gt;= x)</code><code class="hide">^Boolean (&gt;= ^Number x)</code></div>
-<div><code>(&gt;= x y)</code><code class="hide">^Boolean (&gt;= ^Number x ^Number y)</code></div>
-<div><code>(&gt;= x y &amp; more)</code><code class="hide">^Boolean (&gt;= ^Number x ^Number y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(&gt;= x)</code><code class="hide">^coretypes.Boolean (&gt;= ^Number x)</code></div>
+<div><code>(&gt;= x y)</code><code class="hide">^coretypes.Boolean (&gt;= ^Number x ^Number y)</code></div>
+<div><code>(&gt;= x y &amp; more)</code><code class="hide">^coretypes.Boolean (&gt;= ^Number x ^Number y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Returns non-nil if nums are in monotonically non-increasing order,<br>
   otherwise false.</p>
@@ -2020,7 +2020,7 @@
   <h3 class="Function" id="NaN?">NaN?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.5</span>
-  <pre class="var-usage"><div><code>(NaN? s)</code><code class="hide">^Boolean (NaN? ^Number s)</code></div>
+  <pre class="var-usage"><div><code>(NaN? s)</code><code class="hide">^coretypes.Boolean (NaN? ^Number s)</code></div>
 </pre>
   <p class="var-docstr">Returns true if num is NaN, else false.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L4566">source</a>
@@ -2107,7 +2107,7 @@
   <h3 class="Function" id="all-ns">all-ns</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(all-ns)</code><code class="hide">^Seq (all-ns)</code></div>
+  <pre class="var-usage"><div><code>(all-ns)</code><code class="hide">^coretypes.Seq (all-ns)</code></div>
 </pre>
   <p class="var-docstr">Returns a sequence of all namespaces.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2257">source</a>
@@ -2117,7 +2117,7 @@
   <h3 class="Function" id="alter-meta!">alter-meta!</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(alter-meta! ref f &amp; args)</code><code class="hide">(alter-meta! ^Ref ref ^Callable f &amp; args)</code></div>
+  <pre class="var-usage"><div><code>(alter-meta! ref f &amp; args)</code><code class="hide">(alter-meta! ^Ref ref ^coretypes.Callable f &amp; args)</code></div>
 </pre>
   <p class="var-docstr">Atomically sets the metadata for a namespace/var/atom to be:<br>
 <br>
@@ -2183,11 +2183,11 @@
   <h3 class="Function" id="apply">apply</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(apply f args)</code><code class="hide">(apply ^Callable f ^Seqable args)</code></div>
-<div><code>(apply f x args)</code><code class="hide">(apply ^Callable f x ^Seqable args)</code></div>
-<div><code>(apply f x y args)</code><code class="hide">(apply ^Callable f x y ^Seqable args)</code></div>
-<div><code>(apply f x y z args)</code><code class="hide">(apply ^Callable f x y z ^Seqable args)</code></div>
-<div><code>(apply f a b c d &amp; args)</code><code class="hide">(apply ^Callable f a b c d &amp; args)</code></div>
+  <pre class="var-usage"><div><code>(apply f args)</code><code class="hide">(apply ^coretypes.Callable f ^coretypes.Seqable args)</code></div>
+<div><code>(apply f x args)</code><code class="hide">(apply ^coretypes.Callable f x ^coretypes.Seqable args)</code></div>
+<div><code>(apply f x y args)</code><code class="hide">(apply ^coretypes.Callable f x y ^coretypes.Seqable args)</code></div>
+<div><code>(apply f x y z args)</code><code class="hide">(apply ^coretypes.Callable f x y z ^coretypes.Seqable args)</code></div>
+<div><code>(apply f a b c d &amp; args)</code><code class="hide">(apply ^coretypes.Callable f a b c d &amp; args)</code></div>
 </pre>
   <p class="var-docstr">Applies fn f to the argument list formed by prepending intervening arguments to args.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L482">source</a>
@@ -2264,7 +2264,7 @@
   <h3 class="Function" id="assoc-in">assoc-in</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(assoc-in m ks v)</code><code class="hide">^Map (assoc-in ^Associative m ^Seqable ks v)</code></div>
+  <pre class="var-usage"><div><code>(assoc-in m ks v)</code><code class="hide">^Map (assoc-in ^Associative m ^coretypes.Seqable ks v)</code></div>
 </pre>
   <p class="var-docstr">Associates a value in a nested associative structure, where ks is a<br>
   sequence of keys and v is the new value and returns a new nested structure.<br>
@@ -2276,9 +2276,9 @@
   <h3 class="Function" id="associative?">associative?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(associative? coll)</code><code class="hide">^Boolean (associative? coll)</code></div>
+  <pre class="var-usage"><div><code>(associative? coll)</code><code class="hide">^coretypes.Boolean (associative? coll)</code></div>
 </pre>
-  <p class="var-docstr">Returns true if coll implements Associative</p>
+  <p class="var-docstr">Returns true if coll implements coretypes.Associative</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3604">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -2311,9 +2311,9 @@
   <h3 class="Function" id="bigfloat">bigfloat</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bigfloat x)</code><code class="hide">^BigFloat (bigfloat x)</code></div>
+  <pre class="var-usage"><div><code>(bigfloat x)</code><code class="hide">^coretypes.BigFloat (bigfloat x)</code></div>
 </pre>
-  <p class="var-docstr">Coerce to BigFloat</p>
+  <p class="var-docstr">Coerce to coretypes.BigFloat</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2073">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -2321,9 +2321,9 @@
   <h3 class="Function" id="bigfloat?">bigfloat?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bigfloat? n)</code><code class="hide">^Boolean (bigfloat? n)</code></div>
+  <pre class="var-usage"><div><code>(bigfloat? n)</code><code class="hide">^coretypes.Boolean (bigfloat? n)</code></div>
 </pre>
-  <p class="var-docstr">Returns true if n is a BigFloat</p>
+  <p class="var-docstr">Returns true if n is a coretypes.BigFloat</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2049">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -2331,9 +2331,9 @@
   <h3 class="Function" id="bigint">bigint</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bigint x)</code><code class="hide">^BigInt (bigint x)</code></div>
+  <pre class="var-usage"><div><code>(bigint x)</code><code class="hide">^coretypes.BigInt (bigint x)</code></div>
 </pre>
-  <p class="var-docstr">Coerce to BigInt</p>
+  <p class="var-docstr">Coerce to coretypes.BigInt</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2066">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -2357,8 +2357,8 @@
   <h3 class="Function" id="bit-and">bit-and</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-and x y)</code><code class="hide">^Int (bit-and ^Int x ^Int y)</code></div>
-<div><code>(bit-and x y &amp; more)</code><code class="hide">^Int (bit-and ^Int x ^Int y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(bit-and x y)</code><code class="hide">^coretypes.Int (bit-and ^coretypes.Int x ^coretypes.Int y)</code></div>
+<div><code>(bit-and x y &amp; more)</code><code class="hide">^coretypes.Int (bit-and ^coretypes.Int x ^coretypes.Int y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Bitwise and</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L889">source</a>
@@ -2368,8 +2368,8 @@
   <h3 class="Function" id="bit-and-not">bit-and-not</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-and-not x y)</code><code class="hide">^Int (bit-and-not ^Int x ^Int y)</code></div>
-<div><code>(bit-and-not x y &amp; more)</code><code class="hide">^Int (bit-and-not ^Int x ^Int y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(bit-and-not x y)</code><code class="hide">^coretypes.Int (bit-and-not ^coretypes.Int x ^coretypes.Int y)</code></div>
+<div><code>(bit-and-not x y &amp; more)</code><code class="hide">^coretypes.Int (bit-and-not ^coretypes.Int x ^coretypes.Int y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Bitwise and with complement</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L910">source</a>
@@ -2379,7 +2379,7 @@
   <h3 class="Function" id="bit-clear">bit-clear</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-clear x n)</code><code class="hide">^Int (bit-clear ^Int x ^Int n)</code></div>
+  <pre class="var-usage"><div><code>(bit-clear x n)</code><code class="hide">^coretypes.Int (bit-clear ^coretypes.Int x ^coretypes.Int n)</code></div>
 </pre>
   <p class="var-docstr">Clear bit at index n</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L917">source</a>
@@ -2389,7 +2389,7 @@
   <h3 class="Function" id="bit-flip">bit-flip</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-flip x n)</code><code class="hide">^Int (bit-flip ^Int x ^Int n)</code></div>
+  <pre class="var-usage"><div><code>(bit-flip x n)</code><code class="hide">^coretypes.Int (bit-flip ^coretypes.Int x ^coretypes.Int n)</code></div>
 </pre>
   <p class="var-docstr">Flip bit at index n</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L927">source</a>
@@ -2399,7 +2399,7 @@
   <h3 class="Function" id="bit-not">bit-not</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-not x)</code><code class="hide">^Int (bit-not ^Int x)</code></div>
+  <pre class="var-usage"><div><code>(bit-not x)</code><code class="hide">^coretypes.Int (bit-not ^coretypes.Int x)</code></div>
 </pre>
   <p class="var-docstr">Bitwise complement</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L884">source</a>
@@ -2409,8 +2409,8 @@
   <h3 class="Function" id="bit-or">bit-or</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-or x y)</code><code class="hide">^Int (bit-or ^Int x ^Int y)</code></div>
-<div><code>(bit-or x y &amp; more)</code><code class="hide">^Int (bit-or ^Int x ^Int y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(bit-or x y)</code><code class="hide">^coretypes.Int (bit-or ^coretypes.Int x ^coretypes.Int y)</code></div>
+<div><code>(bit-or x y &amp; more)</code><code class="hide">^coretypes.Int (bit-or ^coretypes.Int x ^coretypes.Int y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Bitwise or</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L896">source</a>
@@ -2420,7 +2420,7 @@
   <h3 class="Function" id="bit-set">bit-set</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-set x n)</code><code class="hide">^Int (bit-set ^Int x ^Int n)</code></div>
+  <pre class="var-usage"><div><code>(bit-set x n)</code><code class="hide">^coretypes.Int (bit-set ^coretypes.Int x ^coretypes.Int n)</code></div>
 </pre>
   <p class="var-docstr">Set bit at index n</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L922">source</a>
@@ -2430,7 +2430,7 @@
   <h3 class="Function" id="bit-shift-left">bit-shift-left</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-shift-left x n)</code><code class="hide">^Int (bit-shift-left ^Int x ^Int n)</code></div>
+  <pre class="var-usage"><div><code>(bit-shift-left x n)</code><code class="hide">^coretypes.Int (bit-shift-left ^coretypes.Int x ^coretypes.Int n)</code></div>
 </pre>
   <p class="var-docstr">Bitwise shift left</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L937">source</a>
@@ -2440,7 +2440,7 @@
   <h3 class="Function" id="bit-shift-right">bit-shift-right</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-shift-right x n)</code><code class="hide">^Int (bit-shift-right ^Int x ^Int n)</code></div>
+  <pre class="var-usage"><div><code>(bit-shift-right x n)</code><code class="hide">^coretypes.Int (bit-shift-right ^coretypes.Int x ^coretypes.Int n)</code></div>
 </pre>
   <p class="var-docstr">Bitwise shift right</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L942">source</a>
@@ -2450,7 +2450,7 @@
   <h3 class="Function" id="bit-test">bit-test</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-test x n)</code><code class="hide">^Boolean (bit-test ^Int x ^Int n)</code></div>
+  <pre class="var-usage"><div><code>(bit-test x n)</code><code class="hide">^coretypes.Boolean (bit-test ^coretypes.Int x ^coretypes.Int n)</code></div>
 </pre>
   <p class="var-docstr">Test bit at index n</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L932">source</a>
@@ -2460,8 +2460,8 @@
   <h3 class="Function" id="bit-xor">bit-xor</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bit-xor x y)</code><code class="hide">^Int (bit-xor ^Int x ^Int y)</code></div>
-<div><code>(bit-xor x y &amp; more)</code><code class="hide">^Int (bit-xor ^Int x ^Int y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(bit-xor x y)</code><code class="hide">^coretypes.Int (bit-xor ^coretypes.Int x ^coretypes.Int y)</code></div>
+<div><code>(bit-xor x y &amp; more)</code><code class="hide">^coretypes.Int (bit-xor ^coretypes.Int x ^coretypes.Int y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Bitwise exclusive or</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L903">source</a>
@@ -2471,7 +2471,7 @@
   <h3 class="Function" id="boolean">boolean</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(boolean x)</code><code class="hide">^Boolean (boolean x)</code></div>
+  <pre class="var-usage"><div><code>(boolean x)</code><code class="hide">^coretypes.Boolean (boolean x)</code></div>
 </pre>
   <p class="var-docstr">Coerce to boolean</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2012">source</a>
@@ -2492,7 +2492,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(boolean? x)</code></div>
 </pre>
-  <p class="var-docstr">Return true if x is a Boolean</p>
+  <p class="var-docstr">Return true if x is a coretypes.Boolean</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L375">source</a>
   
 </li>
@@ -2500,7 +2500,7 @@
   <h3 class="Function" id="bound?">bound?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bound? &amp; vars)</code><code class="hide">^Boolean (bound? &amp; vars)</code></div>
+  <pre class="var-usage"><div><code>(bound? &amp; vars)</code><code class="hide">^coretypes.Boolean (bound? &amp; vars)</code></div>
 </pre>
   <p class="var-docstr">Returns true if all of the vars provided as arguments have any bound value.<br>
   Implies that deref&#39;ing the provided vars will succeed. Returns true if no vars are provided.</p>
@@ -2511,7 +2511,7 @@
   <h3 class="Function" id="bounded-count">bounded-count</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(bounded-count n coll)</code><code class="hide">^Int (bounded-count ^Number n coll)</code></div>
+  <pre class="var-usage"><div><code>(bounded-count n coll)</code><code class="hide">^coretypes.Int (bounded-count ^Number n coll)</code></div>
 </pre>
   <p class="var-docstr">If coll is counted? returns its count, else will count at most the first n<br>
   elements of coll using its seq</p>
@@ -2541,10 +2541,10 @@
   <h3 class="Function" id="callable?">callable?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(callable? x)</code><code class="hide">^Boolean (callable? x)</code></div>
+  <pre class="var-usage"><div><code>(callable? x)</code><code class="hide">^coretypes.Boolean (callable? x)</code></div>
 </pre>
-  <p class="var-docstr">Returns true if x implements Callable. Note that many data structures<br>
-  (e.g. sets and maps) implement Callable.</p>
+  <p class="var-docstr">Returns true if x implements coretypes.Callable. Note that many data structures<br>
+  (e.g. sets and maps) implement coretypes.Callable.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3593">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -2585,7 +2585,7 @@
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(chan)</code><code class="hide">^Channel (chan)</code></div>
-<div><code>(chan n)</code><code class="hide">^Channel (chan ^Int n)</code></div>
+<div><code>(chan n)</code><code class="hide">^Channel (chan ^coretypes.Int n)</code></div>
 </pre>
   <p class="var-docstr">Returns a new channel with an optional buffer of size n.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L4493">source</a>
@@ -2595,7 +2595,7 @@
   <h3 class="Function" id="char">char</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(char x)</code><code class="hide">^Char (char x)</code></div>
+  <pre class="var-usage"><div><code>(char x)</code><code class="hide">^coretypes.Char (char x)</code></div>
 </pre>
   <p class="var-docstr">Coerce to char</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2006">source</a>
@@ -2616,7 +2616,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(char? x)</code></div>
 </pre>
-  <p class="var-docstr">Returns true if x is a Char</p>
+  <p class="var-docstr">Returns true if x is a coretypes.Char</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L123">source</a>
   
 </li>
@@ -2687,7 +2687,7 @@
   <h3 class="Function" id="chunked-seq?">chunked-seq?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(chunked-seq? s)</code><code class="hide">^Boolean (chunked-seq? s)</code></div>
+  <pre class="var-usage"><div><code>(chunked-seq? s)</code><code class="hide">^coretypes.Boolean (chunked-seq? s)</code></div>
 </pre>
   <p class="var-docstr">Always returns false because chunked sequences are not supported</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L512">source</a>
@@ -2724,9 +2724,9 @@
   <h3 class="Function" id="coll?">coll?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(coll? x)</code><code class="hide">^Boolean (coll? x)</code></div>
+  <pre class="var-usage"><div><code>(coll? x)</code><code class="hide">^coretypes.Boolean (coll? x)</code></div>
 </pre>
-  <p class="var-docstr">Returns true if x implements Collection</p>
+  <p class="var-docstr">Returns true if x implements coretypes.Collection</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3576">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -2745,10 +2745,10 @@
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(comp)</code><code class="hide">^Fn (comp)</code></div>
-<div><code>(comp f)</code><code class="hide">^Fn (comp ^Callable f)</code></div>
-<div><code>(comp f g)</code><code class="hide">^Fn (comp ^Callable f ^Callable g)</code></div>
-<div><code>(comp f g h)</code><code class="hide">^Fn (comp ^Callable f ^Callable g ^Callable h)</code></div>
-<div><code>(comp f1 f2 f3 &amp; fs)</code><code class="hide">^Fn (comp ^Callable f1 ^Callable f2 ^Callable f3 &amp; fs)</code></div>
+<div><code>(comp f)</code><code class="hide">^Fn (comp ^coretypes.Callable f)</code></div>
+<div><code>(comp f g)</code><code class="hide">^Fn (comp ^coretypes.Callable f ^coretypes.Callable g)</code></div>
+<div><code>(comp f g h)</code><code class="hide">^Fn (comp ^coretypes.Callable f ^coretypes.Callable g ^coretypes.Callable h)</code></div>
+<div><code>(comp f1 f2 f3 &amp; fs)</code><code class="hide">^Fn (comp ^coretypes.Callable f1 ^coretypes.Callable f2 ^coretypes.Callable f3 &amp; fs)</code></div>
 </pre>
   <p class="var-docstr">Takes a set of functions and returns a fn that is the composition<br>
   of those fns.  The returned fn takes a variable number of args,<br>
@@ -2770,7 +2770,7 @@
   <h3 class="Function" id="compare">compare</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(compare x y)</code><code class="hide">^Int (compare x y)</code></div>
+  <pre class="var-usage"><div><code>(compare x y)</code><code class="hide">^coretypes.Int (compare x y)</code></div>
 </pre>
   <p class="var-docstr">Comparator. Returns a negative number, zero, or a positive number<br>
   when x is logically &#39;less than&#39;, &#39;equal to&#39;, or &#39;greater than&#39;<br>
@@ -2792,7 +2792,7 @@
   <h3 class="Function" id="complement">complement</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(complement f)</code><code class="hide">^Fn (complement ^Callable f)</code></div>
+  <pre class="var-usage"><div><code>(complement f)</code><code class="hide">^Fn (complement ^coretypes.Callable f)</code></div>
 </pre>
   <p class="var-docstr">Takes a fn f and returns a fn that takes the same arguments as f,<br>
   has the same effects, if any, and returns the opposite truth value.</p>
@@ -2812,10 +2812,10 @@
   <h3 class="Function" id="concat">concat</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(concat)</code><code class="hide">^Seq (concat)</code></div>
-<div><code>(concat x)</code><code class="hide">^Seq (concat ^Seqable x)</code></div>
-<div><code>(concat x y)</code><code class="hide">^Seq (concat ^Seqable x ^Seqable y)</code></div>
-<div><code>(concat x y &amp; zs)</code><code class="hide">^Seq (concat ^Seqable x ^Seqable y &amp; zs)</code></div>
+  <pre class="var-usage"><div><code>(concat)</code><code class="hide">^coretypes.Seq (concat)</code></div>
+<div><code>(concat x)</code><code class="hide">^coretypes.Seq (concat ^coretypes.Seqable x)</code></div>
+<div><code>(concat x y)</code><code class="hide">^coretypes.Seq (concat ^coretypes.Seqable x ^coretypes.Seqable y)</code></div>
+<div><code>(concat x y &amp; zs)</code><code class="hide">^coretypes.Seq (concat ^coretypes.Seqable x ^coretypes.Seqable y &amp; zs)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy seq representing the concatenation of the elements in the supplied colls.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L518">source</a>
@@ -2934,7 +2934,7 @@
   <h3 class="Function" id="contains?">contains?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(contains? coll key)</code><code class="hide">^Boolean (contains? ^Gettable coll key)</code></div>
+  <pre class="var-usage"><div><code>(contains? coll key)</code><code class="hide">^coretypes.Boolean (contains? ^coretypes.Gettable coll key)</code></div>
 </pre>
   <p class="var-docstr">Returns true if key is present in the given collection, otherwise<br>
   returns false.  Note that for numerically indexed collections like<br>
@@ -2948,7 +2948,7 @@
   <h3 class="Function" id="count">count</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(count coll)</code><code class="hide">^Int (count coll)</code></div>
+  <pre class="var-usage"><div><code>(count coll)</code><code class="hide">^coretypes.Int (count coll)</code></div>
 </pre>
   <p class="var-docstr">Returns the number of items in the collection. (count nil) returns<br>
   0.  Also works on strings</p>
@@ -2959,7 +2959,7 @@
   <h3 class="Function" id="counted?">counted?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(counted? coll)</code><code class="hide">^Boolean (counted? coll)</code></div>
+  <pre class="var-usage"><div><code>(counted? coll)</code><code class="hide">^coretypes.Boolean (counted? coll)</code></div>
 </pre>
   <p class="var-docstr">Returns true if coll implements count in constant time</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3614">source</a>
@@ -2981,7 +2981,7 @@
   <h3 class="Function" id="cycle">cycle</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(cycle coll)</code><code class="hide">^Seq (cycle ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(cycle coll)</code><code class="hide">^coretypes.Seq (cycle ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy (infinite!) sequence of repetitions of the items in coll.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1731">source</a>
@@ -3023,7 +3023,7 @@
   <h3 class="Function" id="dedupe">dedupe</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(dedupe coll)</code><code class="hide">^Seq (dedupe ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(dedupe coll)</code><code class="hide">^coretypes.Seq (dedupe ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence removing consecutive duplicates in coll.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L4264">source</a>
@@ -3142,7 +3142,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(delay &amp; body)</code></div>
 </pre>
-  <p class="var-docstr">Takes a body of expressions and yields a Delay object that will<br>
+  <p class="var-docstr">Takes a body of expressions and yields a coretypes.Delay object that will<br>
   invoke the body only the first time it is forced (with force or deref/@), and<br>
   will cache the result and return it on all subsequent force<br>
   calls. See also - realized?</p>
@@ -3153,9 +3153,9 @@
   <h3 class="Function" id="delay?">delay?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(delay? x)</code><code class="hide">^Boolean (delay? x)</code></div>
+  <pre class="var-usage"><div><code>(delay? x)</code><code class="hide">^coretypes.Boolean (delay? x)</code></div>
 </pre>
-  <p class="var-docstr">returns true if x is a Delay created with delay</p>
+  <p class="var-docstr">returns true if x is a coretypes.Delay created with delay</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L548">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -3172,9 +3172,9 @@
   <h3 class="Function" id="denominator">denominator</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(denominator r)</code><code class="hide">^Number (denominator ^Ratio r)</code></div>
+  <pre class="var-usage"><div><code>(denominator r)</code><code class="hide">^Number (denominator ^coretypes.Ratio r)</code></div>
 </pre>
-  <p class="var-docstr">Returns the denominator part of a Ratio.</p>
+  <p class="var-docstr">Returns the denominator part of a coretypes.Ratio.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2043">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -3182,7 +3182,7 @@
   <h3 class="Function" id="deref">deref</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(deref ref)</code><code class="hide">(deref ^Deref ref)</code></div>
+  <pre class="var-usage"><div><code>(deref ref)</code><code class="hide">(deref ^coretypes.Deref ref)</code></div>
 </pre>
   <p class="var-docstr">Also reader macro: @var/@atom/@delay. When applied to a var or atom,<br>
   returns its current state. When applied to a delay, forces<br>
@@ -3238,7 +3238,7 @@
   <h3 class="Function" id="distinct">distinct</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(distinct coll)</code><code class="hide">^Seq (distinct ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(distinct coll)</code><code class="hide">^coretypes.Seq (distinct ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of the elements of coll with duplicates removed.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3039">source</a>
@@ -3248,9 +3248,9 @@
   <h3 class="Function" id="distinct?">distinct?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(distinct? x)</code><code class="hide">^Boolean (distinct? x)</code></div>
-<div><code>(distinct? x y)</code><code class="hide">^Boolean (distinct? x y)</code></div>
-<div><code>(distinct? x y &amp; more)</code><code class="hide">^Boolean (distinct? x y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(distinct? x)</code><code class="hide">^coretypes.Boolean (distinct? x)</code></div>
+<div><code>(distinct? x y)</code><code class="hide">^coretypes.Boolean (distinct? x y)</code></div>
+<div><code>(distinct? x y &amp; more)</code><code class="hide">^coretypes.Boolean (distinct? x y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Returns true if no two of the arguments are =</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3100">source</a>
@@ -3260,8 +3260,8 @@
   <h3 class="Function" id="doall">doall</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(doall coll)</code><code class="hide">^Seq (doall ^Seqable coll)</code></div>
-<div><code>(doall n coll)</code><code class="hide">^Seq (doall ^Number n ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(doall coll)</code><code class="hide">^coretypes.Seq (doall ^coretypes.Seqable coll)</code></div>
+<div><code>(doall n coll)</code><code class="hide">^coretypes.Seq (doall ^Number n ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">When lazy sequences are produced via functions that have side<br>
   effects, any effects other than those needed to produce the first<br>
@@ -3276,8 +3276,8 @@
   <h3 class="Function" id="dorun">dorun</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(dorun coll)</code><code class="hide">^Nil (dorun ^Seqable coll)</code></div>
-<div><code>(dorun n coll)</code><code class="hide">^Nil (dorun ^Number n ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(dorun coll)</code><code class="hide">^Nil (dorun ^coretypes.Seqable coll)</code></div>
+<div><code>(dorun n coll)</code><code class="hide">^Nil (dorun ^Number n ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">When lazy sequences are produced via functions that have side<br>
   effects, any effects other than those needed to produce the first<br>
@@ -3328,7 +3328,7 @@
   <h3 class="Function" id="double">double</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(double x)</code><code class="hide">^Double (double ^Number x)</code></div>
+  <pre class="var-usage"><div><code>(double x)</code><code class="hide">^coretypes.Double (double ^Number x)</code></div>
 </pre>
   <p class="var-docstr">Coerce to double</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2001">source</a>
@@ -3347,9 +3347,9 @@
   <h3 class="Function" id="double?">double?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(double? x)</code><code class="hide">^Boolean (double? x)</code></div>
+  <pre class="var-usage"><div><code>(double? x)</code><code class="hide">^coretypes.Boolean (double? x)</code></div>
 </pre>
-  <p class="var-docstr">Return true if x is a Double</p>
+  <p class="var-docstr">Return true if x is a coretypes.Double</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1001">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -3357,7 +3357,7 @@
   <h3 class="Function" id="drop">drop</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(drop n coll)</code><code class="hide">^Seq (drop ^Number n ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(drop n coll)</code><code class="hide">^coretypes.Seq (drop ^Number n ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of all but the first n items in coll.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1692">source</a>
@@ -3367,8 +3367,8 @@
   <h3 class="Function" id="drop-last">drop-last</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(drop-last s)</code><code class="hide">^Seq (drop-last ^Seqable s)</code></div>
-<div><code>(drop-last n s)</code><code class="hide">^Seq (drop-last ^Number n ^Seqable s)</code></div>
+  <pre class="var-usage"><div><code>(drop-last s)</code><code class="hide">^coretypes.Seq (drop-last ^coretypes.Seqable s)</code></div>
+<div><code>(drop-last n s)</code><code class="hide">^coretypes.Seq (drop-last ^Number n ^coretypes.Seqable s)</code></div>
 </pre>
   <p class="var-docstr">Return a lazy sequence of all but the last n (default 1) items in coll</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1703">source</a>
@@ -3378,7 +3378,7 @@
   <h3 class="Function" id="drop-while">drop-while</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(drop-while pred coll)</code><code class="hide">^Seq (drop-while ^Callable pred ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(drop-while pred coll)</code><code class="hide">^coretypes.Seq (drop-while ^coretypes.Callable pred ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of the items in coll starting from the first<br>
   item for which (pred item) returns logical false.</p>
@@ -3408,7 +3408,7 @@
   <h3 class="Function" id="empty?">empty?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(empty? coll)</code><code class="hide">^Boolean (empty? ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(empty? coll)</code><code class="hide">^coretypes.Boolean (empty? ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns true if coll has no items - same as (not (seq coll)).<br>
   Please use the idiom (seq x) rather than (not (empty? x))</p>
@@ -3438,7 +3438,7 @@
   <h3 class="Function" id="even?">even?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(even? n)</code><code class="hide">^Boolean (even? n)</code></div>
+  <pre class="var-usage"><div><code>(even? n)</code><code class="hide">^coretypes.Boolean (even? n)</code></div>
 </pre>
   <p class="var-docstr">Returns true if n is even, throws an exception if n is not an integer</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L959">source</a>
@@ -3448,10 +3448,10 @@
   <h3 class="Function" id="every-pred">every-pred</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(every-pred p)</code><code class="hide">^Fn (every-pred ^Callable p)</code></div>
-<div><code>(every-pred p1 p2)</code><code class="hide">^Fn (every-pred ^Callable p1 ^Callable p2)</code></div>
-<div><code>(every-pred p1 p2 p3)</code><code class="hide">^Fn (every-pred ^Callable p1 ^Callable p2 ^Callable p3)</code></div>
-<div><code>(every-pred p1 p2 p3 &amp; ps)</code><code class="hide">^Fn (every-pred ^Callable p1 ^Callable p2 ^Callable p3 &amp; ps)</code></div>
+  <pre class="var-usage"><div><code>(every-pred p)</code><code class="hide">^Fn (every-pred ^coretypes.Callable p)</code></div>
+<div><code>(every-pred p1 p2)</code><code class="hide">^Fn (every-pred ^coretypes.Callable p1 ^coretypes.Callable p2)</code></div>
+<div><code>(every-pred p1 p2 p3)</code><code class="hide">^Fn (every-pred ^coretypes.Callable p1 ^coretypes.Callable p2 ^coretypes.Callable p3)</code></div>
+<div><code>(every-pred p1 p2 p3 &amp; ps)</code><code class="hide">^Fn (every-pred ^coretypes.Callable p1 ^coretypes.Callable p2 ^coretypes.Callable p3 &amp; ps)</code></div>
 </pre>
   <p class="var-docstr">Takes a set of predicates and returns a function f that returns true if all of its<br>
   composing predicates return a logical true value against all of its arguments, else it returns<br>
@@ -3464,7 +3464,7 @@
   <h3 class="Function" id="every?">every?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(every? pred coll)</code><code class="hide">^Boolean (every? ^Callable pred ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(every? pred coll)</code><code class="hide">^coretypes.Boolean (every? ^coretypes.Callable pred ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns true if (pred x) is logical true for every x in coll, else<br>
   false.</p>
@@ -3475,7 +3475,7 @@
   <h3 class="Function" id="ex-cause">ex-cause</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ex-cause ex)</code><code class="hide">^Error (ex-cause ex)</code></div>
+  <pre class="var-usage"><div><code>(ex-cause ex)</code><code class="hide">^coretypes.Error (ex-cause ex)</code></div>
 </pre>
   <p class="var-docstr">Returns the cause of ex if ex is an ExInfo.<br>
   Otherwise returns nil.</p>
@@ -3500,7 +3500,7 @@
   <pre class="var-usage"><div><code>(ex-info msg map)</code></div>
 <div><code>(ex-info msg map cause)</code></div>
 </pre>
-  <p class="var-docstr">Create an instance of ExInfo, an Error that carries a map of additional data.</p>
+  <p class="var-docstr">Create an instance of ExInfo, an coretypes.Error that carries a map of additional data.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L143">source</a>
   
 </li>
@@ -3520,7 +3520,7 @@
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(exit)</code></div>
-<div><code>(exit code)</code><code class="hide">(exit ^Int code)</code></div>
+<div><code>(exit code)</code><code class="hide">(exit ^coretypes.Int code)</code></div>
 </pre>
   <p class="var-docstr">Causes the current program to exit with the given status code (defaults to 0).</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L4559">source</a>
@@ -3586,7 +3586,7 @@
   <h3 class="Function" id="filter">filter</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(filter pred coll)</code><code class="hide">^Seq (filter ^Callable pred ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(filter pred coll)</code><code class="hide">^coretypes.Seq (filter ^coretypes.Callable pred ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of the items in coll for which<br>
   (pred item) returns true. pred must be free of side-effects.</p>
@@ -3597,7 +3597,7 @@
   <h3 class="Function" id="filterv">filterv</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(filterv pred coll)</code><code class="hide">^Vec (filterv ^Callable pred coll)</code></div>
+  <pre class="var-usage"><div><code>(filterv pred coll)</code><code class="hide">^Vec (filterv ^coretypes.Callable pred coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a vector of the items in coll for which<br>
   (pred item) returns true. pred must be free of side-effects.</p>
@@ -3650,7 +3650,7 @@
   <h3 class="Function" id="flatten">flatten</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(flatten x)</code><code class="hide">^Seq (flatten x)</code></div>
+  <pre class="var-usage"><div><code>(flatten x)</code><code class="hide">^coretypes.Seq (flatten x)</code></div>
 </pre>
   <p class="var-docstr">Takes any nested combination of sequential things (lists, vectors,<br>
   etc.) and returns their contents as a single, flat sequence.<br>
@@ -3671,7 +3671,7 @@
   <h3 class="Function" id="float?">float?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(float? n)</code><code class="hide">^Boolean (float? n)</code></div>
+  <pre class="var-usage"><div><code>(float? n)</code><code class="hide">^coretypes.Boolean (float? n)</code></div>
 </pre>
   <p class="var-docstr">Returns true if n is a floating point number</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2054">source</a>
@@ -3708,7 +3708,7 @@
   <h3 class="Function" id="fn?">fn?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(fn? x)</code><code class="hide">^Boolean (fn? x)</code></div>
+  <pre class="var-usage"><div><code>(fn? x)</code><code class="hide">^coretypes.Boolean (fn? x)</code></div>
 </pre>
   <p class="var-docstr">Returns true if x is Fn, i.e. is an object created via fn.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3599">source</a>
@@ -3728,9 +3728,9 @@
   <h3 class="Function" id="fnil">fnil</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(fnil f x)</code><code class="hide">^Fn (fnil ^Callable f x)</code></div>
-<div><code>(fnil f x y)</code><code class="hide">^Fn (fnil ^Callable f x y)</code></div>
-<div><code>(fnil f x y z)</code><code class="hide">^Fn (fnil ^Callable f x y z)</code></div>
+  <pre class="var-usage"><div><code>(fnil f x)</code><code class="hide">^Fn (fnil ^coretypes.Callable f x)</code></div>
+<div><code>(fnil f x y)</code><code class="hide">^Fn (fnil ^coretypes.Callable f x y)</code></div>
+<div><code>(fnil f x y z)</code><code class="hide">^Fn (fnil ^coretypes.Callable f x y z)</code></div>
 </pre>
   <p class="var-docstr">Takes a function f, and returns a function that calls f, replacing<br>
   a nil first argument to f with the supplied value x. Higher arity<br>
@@ -3764,7 +3764,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(force x)</code></div>
 </pre>
-  <p class="var-docstr">If x is a Delay, returns the (possibly cached) value of its expression, else returns x</p>
+  <p class="var-docstr">If x is a coretypes.Delay, returns the (possibly cached) value of its expression, else returns x</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L554">source</a>
   
 </li>
@@ -3844,8 +3844,8 @@
   <h3 class="Function" id="get-in">get-in</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(get-in m ks)</code><code class="hide">(get-in m ^Seqable ks)</code></div>
-<div><code>(get-in m ks not-found)</code><code class="hide">(get-in m ^Seqable ks not-found)</code></div>
+  <pre class="var-usage"><div><code>(get-in m ks)</code><code class="hide">(get-in m ^coretypes.Seqable ks)</code></div>
+<div><code>(get-in m ks not-found)</code><code class="hide">(get-in m ^coretypes.Seqable ks not-found)</code></div>
 </pre>
   <p class="var-docstr">Returns the value in a nested associative structure,<br>
   where ks is a sequence of keys. Returns nil if the key<br>
@@ -3899,7 +3899,7 @@
   <h3 class="Function" id="group-by">group-by</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(group-by f coll)</code><code class="hide">^Map (group-by ^Callable f coll)</code></div>
+  <pre class="var-usage"><div><code>(group-by f coll)</code><code class="hide">^Map (group-by ^coretypes.Callable f coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a map of the elements of coll keyed by the result of<br>
   f on each element. The value at each key will be a vector of the<br>
@@ -3911,7 +3911,7 @@
   <h3 class="Function" id="hash">hash</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(hash x)</code><code class="hide">^Int (hash x)</code></div>
+  <pre class="var-usage"><div><code>(hash x)</code><code class="hide">^coretypes.Int (hash x)</code></div>
 </pre>
   <p class="var-docstr">Returns the hash code of its argument.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2892">source</a>
@@ -3944,7 +3944,7 @@
   <h3 class="Function" id="ident?">ident?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ident? x)</code><code class="hide">^Boolean (ident? x)</code></div>
+  <pre class="var-usage"><div><code>(ident? x)</code><code class="hide">^coretypes.Boolean (ident? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a symbol or keyword</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1150">source</a>
@@ -3954,7 +3954,7 @@
   <h3 class="Function" id="identical?">identical?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(identical? x y)</code><code class="hide">^Boolean (identical? x y)</code></div>
+  <pre class="var-usage"><div><code>(identical? x y)</code><code class="hide">^coretypes.Boolean (identical? x y)</code></div>
 </pre>
   <p class="var-docstr">Tests if 2 arguments are the same object</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L568">source</a>
@@ -4046,9 +4046,9 @@
   <h3 class="Function" id="indexed?">indexed?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(indexed? coll)</code><code class="hide">^Boolean (indexed? coll)</code></div>
+  <pre class="var-usage"><div><code>(indexed? coll)</code><code class="hide">^coretypes.Boolean (indexed? coll)</code></div>
 </pre>
-  <p class="var-docstr">Return true if coll implements Indexed, indicating efficient lookup by index</p>
+  <p class="var-docstr">Return true if coll implements coretypes.Indexed, indicating efficient lookup by index</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3624">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -4056,7 +4056,7 @@
   <h3 class="Function" id="infinite?">infinite?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.5</span>
-  <pre class="var-usage"><div><code>(infinite? s)</code><code class="hide">^Boolean (infinite? ^Number s)</code></div>
+  <pre class="var-usage"><div><code>(infinite? s)</code><code class="hide">^coretypes.Boolean (infinite? ^Number s)</code></div>
 </pre>
   <p class="var-docstr">Returns true if num is negative or positive infinity, else false.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L4578">source</a>
@@ -4077,7 +4077,7 @@
   <h3 class="Function" id="int">int</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(int x)</code><code class="hide">^Int (int x)</code></div>
+  <pre class="var-usage"><div><code>(int x)</code><code class="hide">^coretypes.Int (int x)</code></div>
 </pre>
   <p class="var-docstr">Coerce to int</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L641">source</a>
@@ -4096,7 +4096,7 @@
   <h3 class="Function" id="int?">int?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(int? x)</code><code class="hide">^Boolean (int? x)</code></div>
+  <pre class="var-usage"><div><code>(int? x)</code><code class="hide">^coretypes.Boolean (int? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a fixed precision integer</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L974">source</a>
@@ -4106,7 +4106,7 @@
   <h3 class="Function" id="integer?">integer?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(integer? n)</code><code class="hide">^Boolean (integer? n)</code></div>
+  <pre class="var-usage"><div><code>(integer? n)</code><code class="hide">^coretypes.Boolean (integer? n)</code></div>
 </pre>
   <p class="var-docstr">Returns true if n is an integer</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L952">source</a>
@@ -4116,10 +4116,10 @@
   <h3 class="Function" id="interleave">interleave</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(interleave)</code><code class="hide">^Seq (interleave)</code></div>
-<div><code>(interleave c1)</code><code class="hide">^Seq (interleave ^Seqable c1)</code></div>
-<div><code>(interleave c1 c2)</code><code class="hide">^Seq (interleave ^Seqable c1 ^Seqable c2)</code></div>
-<div><code>(interleave c1 c2 &amp; colls)</code><code class="hide">^Seq (interleave ^Seqable c1 ^Seqable c2 &amp; colls)</code></div>
+  <pre class="var-usage"><div><code>(interleave)</code><code class="hide">^coretypes.Seq (interleave)</code></div>
+<div><code>(interleave c1)</code><code class="hide">^coretypes.Seq (interleave ^coretypes.Seqable c1)</code></div>
+<div><code>(interleave c1 c2)</code><code class="hide">^coretypes.Seq (interleave ^coretypes.Seqable c1 ^coretypes.Seqable c2)</code></div>
+<div><code>(interleave c1 c2 &amp; colls)</code><code class="hide">^coretypes.Seq (interleave ^coretypes.Seqable c1 ^coretypes.Seqable c2 &amp; colls)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy seq of the first item in each coll, then the second etc.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2430">source</a>
@@ -4143,7 +4143,7 @@
   <h3 class="Function" id="interpose">interpose</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(interpose sep coll)</code><code class="hide">^Seq (interpose sep ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(interpose sep coll)</code><code class="hide">^coretypes.Seq (interpose sep ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy seq of the elements of coll separated by sep.<br>
   Returns a stateful transducer when no collection is provided.</p>
@@ -4174,7 +4174,7 @@
   <h3 class="Function" id="iterate">iterate</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(iterate f x)</code><code class="hide">^Seq (iterate ^Callable f x)</code></div>
+  <pre class="var-usage"><div><code>(iterate f x)</code><code class="hide">^coretypes.Seq (iterate ^coretypes.Callable f x)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of x, (f x), (f (f x)) etc. f must be free of side-effects</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1757">source</a>
@@ -4194,10 +4194,10 @@
   <h3 class="Function" id="juxt">juxt</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(juxt f)</code><code class="hide">^Fn (juxt ^Callable f)</code></div>
-<div><code>(juxt f g)</code><code class="hide">^Fn (juxt ^Callable f ^Callable g)</code></div>
-<div><code>(juxt f g h)</code><code class="hide">^Fn (juxt ^Callable f ^Callable g ^Callable h)</code></div>
-<div><code>(juxt f g h &amp; fs)</code><code class="hide">^Fn (juxt ^Callable f ^Callable g ^Callable h &amp; fs)</code></div>
+  <pre class="var-usage"><div><code>(juxt f)</code><code class="hide">^Fn (juxt ^coretypes.Callable f)</code></div>
+<div><code>(juxt f g)</code><code class="hide">^Fn (juxt ^coretypes.Callable f ^coretypes.Callable g)</code></div>
+<div><code>(juxt f g h)</code><code class="hide">^Fn (juxt ^coretypes.Callable f ^coretypes.Callable g ^coretypes.Callable h)</code></div>
+<div><code>(juxt f g h &amp; fs)</code><code class="hide">^Fn (juxt ^coretypes.Callable f ^coretypes.Callable g ^coretypes.Callable h &amp; fs)</code></div>
 </pre>
   <p class="var-docstr">Takes a set of functions and returns a fn that is the juxtaposition<br>
   of those fns.  The returned fn takes a variable number of args, and<br>
@@ -4211,7 +4211,7 @@
   <h3 class="Function" id="keep">keep</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(keep f coll)</code><code class="hide">^Seq (keep ^Callable f ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(keep f coll)</code><code class="hide">^coretypes.Seq (keep ^coretypes.Callable f ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of the non-nil results of (f item). Note,<br>
   this means false return values will be included.  f must be free of<br>
@@ -4223,7 +4223,7 @@
   <h3 class="Function" id="keep-indexed">keep-indexed</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(keep-indexed f coll)</code><code class="hide">^Seq (keep-indexed ^Callable f ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(keep-indexed f coll)</code><code class="hide">^coretypes.Seq (keep-indexed ^coretypes.Callable f ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of the non-nil results of (f index item). Note,<br>
   this means false return values will be included.  f must be free of<br>
@@ -4245,7 +4245,7 @@
   <h3 class="Function" id="keys">keys</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(keys map)</code><code class="hide">^Seq (keys ^Map map)</code></div>
+  <pre class="var-usage"><div><code>(keys map)</code><code class="hide">^coretypes.Seq (keys ^Map map)</code></div>
 </pre>
   <p class="var-docstr">Returns a sequence of the map&#39;s keys, in the same order as (seq map).</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1106">source</a>
@@ -4258,7 +4258,7 @@
   <pre class="var-usage"><div><code>(keyword name)</code><code class="hide">^Keyword (keyword name)</code></div>
 <div><code>(keyword ns name)</code><code class="hide">^Keyword (keyword ns name)</code></div>
 </pre>
-  <p class="var-docstr">Returns a Keyword with the given namespace and name.  Do not use :<br>
+  <p class="var-docstr">Returns a coretypes.Keyword with the given namespace and name.  Do not use :<br>
   in the keyword strings, it will be added automatically.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L452">source</a>
   <a href="#" class="types">show types</a>
@@ -4267,9 +4267,9 @@
   <h3 class="Function" id="keyword?">keyword?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(keyword? x)</code><code class="hide">^Boolean (keyword? x)</code></div>
+  <pre class="var-usage"><div><code>(keyword? x)</code><code class="hide">^coretypes.Boolean (keyword? x)</code></div>
 </pre>
-  <p class="var-docstr">Return true if x is a Keyword</p>
+  <p class="var-docstr">Return true if x is a coretypes.Keyword</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L412">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -4304,7 +4304,7 @@
   <pre class="var-usage"><div><code>(lazy-seq &amp; body)</code></div>
 </pre>
   <p class="var-docstr">Takes a body of expressions that returns an ISeq or nil, and yields<br>
-  a Seqable object that will invoke the body only the first time seq<br>
+  a coretypes.Seqable object that will invoke the body only the first time seq<br>
   is called, and will cache the result and return it on all subsequent<br>
   seq calls. See also - realized?</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L503">source</a>
@@ -4363,11 +4363,11 @@
   <h3 class="Function" id="list*">list*</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(list* args)</code><code class="hide">^Seq (list* ^Seqable args)</code></div>
-<div><code>(list* a args)</code><code class="hide">^Seq (list* a ^Seqable args)</code></div>
-<div><code>(list* a b args)</code><code class="hide">^Seq (list* a b ^Seqable args)</code></div>
-<div><code>(list* a b c args)</code><code class="hide">^Seq (list* a b c ^Seqable args)</code></div>
-<div><code>(list* a b c d &amp; more)</code><code class="hide">^Seq (list* a b c d &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(list* args)</code><code class="hide">^coretypes.Seq (list* ^coretypes.Seqable args)</code></div>
+<div><code>(list* a args)</code><code class="hide">^coretypes.Seq (list* a ^coretypes.Seqable args)</code></div>
+<div><code>(list* a b args)</code><code class="hide">^coretypes.Seq (list* a b ^coretypes.Seqable args)</code></div>
+<div><code>(list* a b c args)</code><code class="hide">^coretypes.Seq (list* a b c ^coretypes.Seqable args)</code></div>
+<div><code>(list* a b c d &amp; more)</code><code class="hide">^coretypes.Seq (list* a b c d &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Creates a new list containing the items prepended to the rest, the<br>
   last of which will be treated as a sequence.</p>
@@ -4378,7 +4378,7 @@
   <h3 class="Function" id="list?">list?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(list? x)</code><code class="hide">^Boolean (list? x)</code></div>
+  <pre class="var-usage"><div><code>(list? x)</code><code class="hide">^coretypes.Boolean (list? x)</code></div>
 </pre>
   <p class="var-docstr">Returns true if x is a List</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3581">source</a>
@@ -4491,10 +4491,10 @@
   <h3 class="Function" id="map">map</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(map f coll)</code><code class="hide">^Seq (map ^Callable f ^Seqable coll)</code></div>
-<div><code>(map f c1 c2)</code><code class="hide">^Seq (map ^Callable f ^Seqable c1 ^Seqable c2)</code></div>
-<div><code>(map f c1 c2 c3)</code><code class="hide">^Seq (map ^Callable f ^Seqable c1 ^Seqable c2 ^Seqable c3)</code></div>
-<div><code>(map f c1 c2 c3 &amp; colls)</code><code class="hide">^Seq (map ^Callable f ^Seqable c1 ^Seqable c2 ^Seqable c3 &amp; colls)</code></div>
+  <pre class="var-usage"><div><code>(map f coll)</code><code class="hide">^coretypes.Seq (map ^coretypes.Callable f ^coretypes.Seqable coll)</code></div>
+<div><code>(map f c1 c2)</code><code class="hide">^coretypes.Seq (map ^coretypes.Callable f ^coretypes.Seqable c1 ^coretypes.Seqable c2)</code></div>
+<div><code>(map f c1 c2 c3)</code><code class="hide">^coretypes.Seq (map ^coretypes.Callable f ^coretypes.Seqable c1 ^coretypes.Seqable c2 ^coretypes.Seqable c3)</code></div>
+<div><code>(map f c1 c2 c3 &amp; colls)</code><code class="hide">^coretypes.Seq (map ^coretypes.Callable f ^coretypes.Seqable c1 ^coretypes.Seqable c2 ^coretypes.Seqable c3 &amp; colls)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence consisting of the result of applying f to the<br>
   set of first items of each coll, followed by applying f to the set<br>
@@ -4508,7 +4508,7 @@
   <h3 class="Function" id="map-indexed">map-indexed</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(map-indexed f coll)</code><code class="hide">^Seq (map-indexed ^Callable f ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(map-indexed f coll)</code><code class="hide">^coretypes.Seq (map-indexed ^coretypes.Callable f ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence consisting of the result of applying f to 0<br>
   and the first item of coll, followed by applying f to 1 and the second<br>
@@ -4531,7 +4531,7 @@
   <h3 class="Function" id="mapcat">mapcat</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(mapcat f &amp; colls)</code><code class="hide">^Seq (mapcat ^Callable f &amp; colls)</code></div>
+  <pre class="var-usage"><div><code>(mapcat f &amp; colls)</code><code class="hide">^coretypes.Seq (mapcat ^coretypes.Callable f &amp; colls)</code></div>
 </pre>
   <p class="var-docstr">Returns the result of applying concat to the result of applying map<br>
   to f and colls.  Thus function f should return a collection.</p>
@@ -4542,10 +4542,10 @@
   <h3 class="Function" id="mapv">mapv</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(mapv f coll)</code><code class="hide">^Vec (mapv ^Callable f coll)</code></div>
-<div><code>(mapv f c1 c2)</code><code class="hide">^Vec (mapv ^Callable f c1 c2)</code></div>
-<div><code>(mapv f c1 c2 c3)</code><code class="hide">^Vec (mapv ^Callable f c1 c2 c3)</code></div>
-<div><code>(mapv f c1 c2 c3 &amp; colls)</code><code class="hide">^Vec (mapv ^Callable f c1 c2 c3 &amp; colls)</code></div>
+  <pre class="var-usage"><div><code>(mapv f coll)</code><code class="hide">^Vec (mapv ^coretypes.Callable f coll)</code></div>
+<div><code>(mapv f c1 c2)</code><code class="hide">^Vec (mapv ^coretypes.Callable f c1 c2)</code></div>
+<div><code>(mapv f c1 c2 c3)</code><code class="hide">^Vec (mapv ^coretypes.Callable f c1 c2 c3)</code></div>
+<div><code>(mapv f c1 c2 c3 &amp; colls)</code><code class="hide">^Vec (mapv ^coretypes.Callable f c1 c2 c3 &amp; colls)</code></div>
 </pre>
   <p class="var-docstr">Returns a vector consisting of the result of applying f to the<br>
   set of first items of each coll, followed by applying f to the set<br>
@@ -4571,9 +4571,9 @@
   <h3 class="Function" id="max-key">max-key</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(max-key k x)</code><code class="hide">(max-key ^Callable k x)</code></div>
-<div><code>(max-key k x y)</code><code class="hide">(max-key ^Callable k x y)</code></div>
-<div><code>(max-key k x y &amp; more)</code><code class="hide">(max-key ^Callable k x y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(max-key k x)</code><code class="hide">(max-key ^coretypes.Callable k x)</code></div>
+<div><code>(max-key k x y)</code><code class="hide">(max-key ^coretypes.Callable k x y)</code></div>
+<div><code>(max-key k x y &amp; more)</code><code class="hide">(max-key ^coretypes.Callable k x y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Returns the x for which (k x), a number, is greatest.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3023">source</a>
@@ -4583,7 +4583,7 @@
   <h3 class="Function" id="memoize">memoize</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(memoize f)</code><code class="hide">^Fn (memoize ^Callable f)</code></div>
+  <pre class="var-usage"><div><code>(memoize f)</code><code class="hide">^Fn (memoize ^coretypes.Callable f)</code></div>
 </pre>
   <p class="var-docstr">Returns a memoized version of a referentially transparent function. The<br>
   memoized version of the function keeps a cache of the mapping from arguments<br>
@@ -4608,7 +4608,7 @@
   <h3 class="Function" id="merge-with">merge-with</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(merge-with f &amp; maps)</code><code class="hide">^Map (merge-with ^Callable f &amp; maps)</code></div>
+  <pre class="var-usage"><div><code>(merge-with f &amp; maps)</code><code class="hide">^Map (merge-with ^coretypes.Callable f &amp; maps)</code></div>
 </pre>
   <p class="var-docstr">Returns a map that consists of the rest of the maps conj-ed onto<br>
   the first.  If a key occurs in more than one map, the mapping(s)<br>
@@ -4653,9 +4653,9 @@
   <h3 class="Function" id="min-key">min-key</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(min-key k x)</code><code class="hide">(min-key ^Callable k x)</code></div>
-<div><code>(min-key k x y)</code><code class="hide">(min-key ^Callable k x y)</code></div>
-<div><code>(min-key k x y &amp; more)</code><code class="hide">(min-key ^Callable k x y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(min-key k x)</code><code class="hide">(min-key ^coretypes.Callable k x)</code></div>
+<div><code>(min-key k x y)</code><code class="hide">(min-key ^coretypes.Callable k x y)</code></div>
+<div><code>(min-key k x y &amp; more)</code><code class="hide">(min-key ^coretypes.Callable k x y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Returns the x for which (k x), a number, is least.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3031">source</a>
@@ -4677,7 +4677,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(name x)</code><code class="hide">^String (name x)</code></div>
 </pre>
-  <p class="var-docstr">Returns the name String of a string, symbol, keyword or any Named object (e.g. File).</p>
+  <p class="var-docstr">Returns the name String of a string, symbol, keyword or any coretypes.Named object (e.g. File).</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1135">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -4695,7 +4695,7 @@
   <h3 class="Function" id="nat-int?">nat-int?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(nat-int? x)</code><code class="hide">^Boolean (nat-int? x)</code></div>
+  <pre class="var-usage"><div><code>(nat-int? x)</code><code class="hide">^coretypes.Boolean (nat-int? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a non-negative fixed precision integer</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L994">source</a>
@@ -4705,7 +4705,7 @@
   <h3 class="Function" id="neg-int?">neg-int?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(neg-int? x)</code><code class="hide">^Boolean (neg-int? x)</code></div>
+  <pre class="var-usage"><div><code>(neg-int? x)</code><code class="hide">^coretypes.Boolean (neg-int? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a negative fixed precision integer</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L987">source</a>
@@ -4715,7 +4715,7 @@
   <h3 class="Function" id="neg?">neg?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(neg? x)</code><code class="hide">^Boolean (neg? ^Number x)</code></div>
+  <pre class="var-usage"><div><code>(neg? x)</code><code class="hide">^coretypes.Boolean (neg? ^Number x)</code></div>
 </pre>
   <p class="var-docstr">Returns true if num is less than zero, else false</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L867">source</a>
@@ -4776,7 +4776,7 @@
   <h3 class="Function" id="not">not</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(not x)</code><code class="hide">^Boolean (not x)</code></div>
+  <pre class="var-usage"><div><code>(not x)</code><code class="hide">^coretypes.Boolean (not x)</code></div>
 </pre>
   <p class="var-docstr">Returns true if x is logical false, false otherwise.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L387">source</a>
@@ -4797,7 +4797,7 @@
   <h3 class="Function" id="not-empty">not-empty</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(not-empty coll)</code><code class="hide">^Seqable (not-empty ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(not-empty coll)</code><code class="hide">^coretypes.Seqable (not-empty ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">If coll is empty, returns nil, else coll</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3095">source</a>
@@ -4818,9 +4818,9 @@
   <h3 class="Function" id="not=">not=</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(not= x)</code><code class="hide">^Boolean (not= x)</code></div>
-<div><code>(not= x y)</code><code class="hide">^Boolean (not= x y)</code></div>
-<div><code>(not= x y &amp; more)</code><code class="hide">^Boolean (not= x y &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(not= x)</code><code class="hide">^coretypes.Boolean (not= x)</code></div>
+<div><code>(not= x y)</code><code class="hide">^coretypes.Boolean (not= x y)</code></div>
+<div><code>(not= x y &amp; more)</code><code class="hide">^coretypes.Boolean (not= x y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Same as (not (= obj1 obj2))</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L589">source</a>
@@ -4911,7 +4911,7 @@
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(ns-resolve ns sym)</code><code class="hide">^Var (ns-resolve ns ^Symbol sym)</code></div>
-<div><code>(ns-resolve ns env sym)</code><code class="hide">^Var (ns-resolve ns ^Gettable env ^Symbol sym)</code></div>
+<div><code>(ns-resolve ns env sym)</code><code class="hide">^Var (ns-resolve ns ^coretypes.Gettable env ^Symbol sym)</code></div>
 </pre>
   <p class="var-docstr">Returns the var or type to which a symbol will be resolved in the<br>
   namespace (unless found in the environment), else nil.  Note that<br>
@@ -4977,7 +4977,7 @@
   <h3 class="Function" id="nthnext">nthnext</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(nthnext coll n)</code><code class="hide">^Seq (nthnext ^Seqable coll ^Number n)</code></div>
+  <pre class="var-usage"><div><code>(nthnext coll n)</code><code class="hide">^coretypes.Seq (nthnext ^coretypes.Seqable coll ^Number n)</code></div>
 </pre>
   <p class="var-docstr">Returns the nth next of coll, (seq coll) when n is 0.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1890">source</a>
@@ -4987,7 +4987,7 @@
   <h3 class="Function" id="nthrest">nthrest</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(nthrest coll n)</code><code class="hide">^Seq (nthrest ^Seqable coll ^Number n)</code></div>
+  <pre class="var-usage"><div><code>(nthrest coll n)</code><code class="hide">^coretypes.Seq (nthrest ^coretypes.Seqable coll ^Number n)</code></div>
 </pre>
   <p class="var-docstr">Returns the nth rest of coll, coll when n is 0.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1899">source</a>
@@ -5007,7 +5007,7 @@
   <h3 class="Function" id="number?">number?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(number? x)</code><code class="hide">^Boolean (number? x)</code></div>
+  <pre class="var-usage"><div><code>(number? x)</code><code class="hide">^coretypes.Boolean (number? x)</code></div>
 </pre>
   <p class="var-docstr">Returns true if x is a Number</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2017">source</a>
@@ -5017,9 +5017,9 @@
   <h3 class="Function" id="numerator">numerator</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(numerator r)</code><code class="hide">^Number (numerator ^Ratio r)</code></div>
+  <pre class="var-usage"><div><code>(numerator r)</code><code class="hide">^Number (numerator ^coretypes.Ratio r)</code></div>
 </pre>
-  <p class="var-docstr">Returns the numerator part of a Ratio.</p>
+  <p class="var-docstr">Returns the numerator part of a coretypes.Ratio.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2037">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -5036,7 +5036,7 @@
   <h3 class="Function" id="odd?">odd?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(odd? n)</code><code class="hide">^Boolean (odd? n)</code></div>
+  <pre class="var-usage"><div><code>(odd? n)</code><code class="hide">^coretypes.Boolean (odd? n)</code></div>
 </pre>
   <p class="var-docstr">Returns true if n is odd, throws an exception if n is not an integer</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L968">source</a>
@@ -5070,7 +5070,7 @@
   <h3 class="Function" id="parse-boolean">parse-boolean</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.5</span>
-  <pre class="var-usage"><div><code>(parse-boolean s)</code><code class="hide">^Boolean (parse-boolean ^String s)</code></div>
+  <pre class="var-usage"><div><code>(parse-boolean s)</code><code class="hide">^coretypes.Boolean (parse-boolean ^String s)</code></div>
 </pre>
   <p class="var-docstr">Parses strings &#34;true&#34; or &#34;false&#34; and returns a boolean, or nil if invalid</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L4584">source</a>
@@ -5080,9 +5080,9 @@
   <h3 class="Function" id="parse-double">parse-double</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.5</span>
-  <pre class="var-usage"><div><code>(parse-double s)</code><code class="hide">^Double (parse-double ^String s)</code></div>
+  <pre class="var-usage"><div><code>(parse-double s)</code><code class="hide">^coretypes.Double (parse-double ^String s)</code></div>
 </pre>
-  <p class="var-docstr">Parses string with floating point components and return a Double value, or nil if parse fails.</p>
+  <p class="var-docstr">Parses string with floating point components and return a coretypes.Double value, or nil if parse fails.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L4595">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -5092,7 +5092,7 @@
   <span class="var-added">v1.5</span>
   <pre class="var-usage"><div><code>(parse-long s)</code><code class="hide">^Number (parse-long ^String s)</code></div>
 </pre>
-  <p class="var-docstr">Parses string of decimal digits with optional leading -/+ and return an Int value, or nil if parse fails.</p>
+  <p class="var-docstr">Parses string of decimal digits with optional leading -/+ and return an coretypes.Int value, or nil if parse fails.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L4601">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -5100,11 +5100,11 @@
   <h3 class="Function" id="partial">partial</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(partial f)</code><code class="hide">^Fn (partial ^Callable f)</code></div>
-<div><code>(partial f arg1)</code><code class="hide">^Fn (partial ^Callable f arg1)</code></div>
-<div><code>(partial f arg1 arg2)</code><code class="hide">^Fn (partial ^Callable f arg1 arg2)</code></div>
-<div><code>(partial f arg1 arg2 arg3)</code><code class="hide">^Fn (partial ^Callable f arg1 arg2 arg3)</code></div>
-<div><code>(partial f arg1 arg2 arg3 &amp; more)</code><code class="hide">^Fn (partial ^Callable f arg1 arg2 arg3 &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(partial f)</code><code class="hide">^Fn (partial ^coretypes.Callable f)</code></div>
+<div><code>(partial f arg1)</code><code class="hide">^Fn (partial ^coretypes.Callable f arg1)</code></div>
+<div><code>(partial f arg1 arg2)</code><code class="hide">^Fn (partial ^coretypes.Callable f arg1 arg2)</code></div>
+<div><code>(partial f arg1 arg2 arg3)</code><code class="hide">^Fn (partial ^coretypes.Callable f arg1 arg2 arg3)</code></div>
+<div><code>(partial f arg1 arg2 arg3 &amp; more)</code><code class="hide">^Fn (partial ^coretypes.Callable f arg1 arg2 arg3 &amp; more)</code></div>
 </pre>
   <p class="var-docstr">Takes a function f and fewer than the normal arguments to f, and<br>
   returns a fn that takes a variable number of additional args. When<br>
@@ -5116,9 +5116,9 @@
   <h3 class="Function" id="partition">partition</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(partition n coll)</code><code class="hide">^Seq (partition ^Number n ^Seqable coll)</code></div>
-<div><code>(partition n step coll)</code><code class="hide">^Seq (partition ^Number n ^Number step ^Seqable coll)</code></div>
-<div><code>(partition n step pad coll)</code><code class="hide">^Seq (partition ^Number n ^Number step ^Seqable pad ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(partition n coll)</code><code class="hide">^coretypes.Seq (partition ^Number n ^coretypes.Seqable coll)</code></div>
+<div><code>(partition n step coll)</code><code class="hide">^coretypes.Seq (partition ^Number n ^Number step ^coretypes.Seqable coll)</code></div>
+<div><code>(partition n step pad coll)</code><code class="hide">^coretypes.Seq (partition ^Number n ^Number step ^coretypes.Seqable pad ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of lists of n items each, at offsets step<br>
   apart. If step is not supplied, defaults to n, i.e. the partitions<br>
@@ -5132,8 +5132,8 @@
   <h3 class="Function" id="partition-all">partition-all</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(partition-all n coll)</code><code class="hide">^Seq (partition-all ^Number n ^Seqable coll)</code></div>
-<div><code>(partition-all n step coll)</code><code class="hide">^Seq (partition-all ^Number n ^Number step ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(partition-all n coll)</code><code class="hide">^coretypes.Seq (partition-all ^Number n ^coretypes.Seqable coll)</code></div>
+<div><code>(partition-all n step coll)</code><code class="hide">^coretypes.Seq (partition-all ^Number n ^Number step ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of lists like partition, but may include<br>
   partitions with fewer than n items at the end.</p>
@@ -5144,7 +5144,7 @@
   <h3 class="Function" id="partition-by">partition-by</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(partition-by f coll)</code><code class="hide">^Seq (partition-by ^Callable f ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(partition-by f coll)</code><code class="hide">^coretypes.Seq (partition-by ^coretypes.Callable f ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Applies f to each value in coll, splitting it each time f returns a<br>
   new value.  Returns a lazy seq of partitions.</p>
@@ -5192,7 +5192,7 @@
   <h3 class="Function" id="peek">peek</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(peek coll)</code><code class="hide">(peek ^Stack coll)</code></div>
+  <pre class="var-usage"><div><code>(peek coll)</code><code class="hide">(peek ^coretypes.Stack coll)</code></div>
 </pre>
   <p class="var-docstr">For a list, same as first, for a vector, same as, but much<br>
   more efficient than, last. If the collection is empty, returns nil.</p>
@@ -5221,7 +5221,7 @@
   <h3 class="Function" id="pop">pop</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(pop coll)</code><code class="hide">(pop ^Stack coll)</code></div>
+  <pre class="var-usage"><div><code>(pop coll)</code><code class="hide">(pop ^coretypes.Stack coll)</code></div>
 </pre>
   <p class="var-docstr">For a list, returns a new list without the first<br>
   item, for a vector, returns a new vector without the last item. If<br>
@@ -5243,7 +5243,7 @@
   <h3 class="Function" id="pos-int?">pos-int?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(pos-int? x)</code><code class="hide">^Boolean (pos-int? x)</code></div>
+  <pre class="var-usage"><div><code>(pos-int? x)</code><code class="hide">^coretypes.Boolean (pos-int? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a positive fixed precision integer</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L980">source</a>
@@ -5253,7 +5253,7 @@
   <h3 class="Function" id="pos?">pos?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(pos? x)</code><code class="hide">^Boolean (pos? ^Number x)</code></div>
+  <pre class="var-usage"><div><code>(pos? x)</code><code class="hide">^coretypes.Boolean (pos? ^Number x)</code></div>
 </pre>
   <p class="var-docstr">Returns true if num is greater than zero, else false</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L862">source</a>
@@ -5446,7 +5446,7 @@
   <h3 class="Function" id="qualified-ident?">qualified-ident?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(qualified-ident? x)</code><code class="hide">^Boolean (qualified-ident? x)</code></div>
+  <pre class="var-usage"><div><code>(qualified-ident? x)</code><code class="hide">^coretypes.Boolean (qualified-ident? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a symbol or keyword with a namespace</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1161">source</a>
@@ -5456,7 +5456,7 @@
   <h3 class="Function" id="qualified-keyword?">qualified-keyword?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(qualified-keyword? x)</code><code class="hide">^Boolean (qualified-keyword? x)</code></div>
+  <pre class="var-usage"><div><code>(qualified-keyword? x)</code><code class="hide">^coretypes.Boolean (qualified-keyword? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a keyword with a namespace</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1181">source</a>
@@ -5466,7 +5466,7 @@
   <h3 class="Function" id="qualified-symbol?">qualified-symbol?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(qualified-symbol? x)</code><code class="hide">^Boolean (qualified-symbol? x)</code></div>
+  <pre class="var-usage"><div><code>(qualified-symbol? x)</code><code class="hide">^coretypes.Boolean (qualified-symbol? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a symbol with a namespace</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1171">source</a>
@@ -5486,8 +5486,8 @@
   <h3 class="Function" id="rand">rand</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(rand)</code><code class="hide">^Double (rand)</code></div>
-<div><code>(rand n)</code><code class="hide">^Double (rand ^Number n)</code></div>
+  <pre class="var-usage"><div><code>(rand)</code><code class="hide">^coretypes.Double (rand)</code></div>
+<div><code>(rand n)</code><code class="hide">^coretypes.Double (rand ^Number n)</code></div>
 </pre>
   <p class="var-docstr">Returns a random floating point number between 0 (inclusive) and<br>
   n (default 1) (exclusive).</p>
@@ -5498,7 +5498,7 @@
   <h3 class="Function" id="rand-int">rand-int</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(rand-int n)</code><code class="hide">^Int (rand-int ^Number n)</code></div>
+  <pre class="var-usage"><div><code>(rand-int n)</code><code class="hide">^coretypes.Int (rand-int ^Number n)</code></div>
 </pre>
   <p class="var-docstr">Returns a random integer between 0 (inclusive) and n (exclusive).</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2959">source</a>
@@ -5520,7 +5520,7 @@
   <h3 class="Function" id="random-sample">random-sample</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(random-sample prob coll)</code><code class="hide">^Seq (random-sample ^Number prob ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(random-sample prob coll)</code><code class="hide">^coretypes.Seq (random-sample ^Number prob ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns items from coll with random probability of prob (0.0 -<br>
   1.0).</p>
@@ -5531,10 +5531,10 @@
   <h3 class="Function" id="range">range</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(range)</code><code class="hide">^Seq (range)</code></div>
-<div><code>(range end)</code><code class="hide">^Seq (range ^Number end)</code></div>
-<div><code>(range start end)</code><code class="hide">^Seq (range ^Number start ^Number end)</code></div>
-<div><code>(range start end step)</code><code class="hide">^Seq (range ^Number start ^Number end ^Number step)</code></div>
+  <pre class="var-usage"><div><code>(range)</code><code class="hide">^coretypes.Seq (range)</code></div>
+<div><code>(range end)</code><code class="hide">^coretypes.Seq (range ^Number end)</code></div>
+<div><code>(range start end)</code><code class="hide">^coretypes.Seq (range ^Number start ^Number end)</code></div>
+<div><code>(range start end step)</code><code class="hide">^coretypes.Seq (range ^Number start ^Number end ^Number step)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy seq of nums from start (inclusive) to end<br>
   (exclusive), by step, where start defaults to 0, step to 1, and end to<br>
@@ -5547,9 +5547,9 @@
   <h3 class="Function" id="ratio?">ratio?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ratio? n)</code><code class="hide">^Boolean (ratio? n)</code></div>
+  <pre class="var-usage"><div><code>(ratio? n)</code><code class="hide">^coretypes.Boolean (ratio? n)</code></div>
 </pre>
-  <p class="var-docstr">Returns true if n is a Ratio</p>
+  <p class="var-docstr">Returns true if n is a coretypes.Ratio</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2032">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -5557,7 +5557,7 @@
   <h3 class="Function" id="rational?">rational?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(rational? n)</code><code class="hide">^Boolean (rational? n)</code></div>
+  <pre class="var-usage"><div><code>(rational? n)</code><code class="hide">^coretypes.Boolean (rational? n)</code></div>
 </pre>
   <p class="var-docstr">Returns true if n is a rational number</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2060">source</a>
@@ -5567,7 +5567,7 @@
   <h3 class="Function" id="re-find">re-find</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(re-find re s)</code><code class="hide">(re-find ^Regex re ^String s)</code></div>
+  <pre class="var-usage"><div><code>(re-find re s)</code><code class="hide">(re-find ^coretypes.Regex re ^String s)</code></div>
 </pre>
   <p class="var-docstr">Returns the leftmost regex match, if any, of string to pattern.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2935">source</a>
@@ -5586,7 +5586,7 @@
   <h3 class="Function" id="re-matches">re-matches</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(re-matches re s)</code><code class="hide">(re-matches ^Regex re ^String s)</code></div>
+  <pre class="var-usage"><div><code>(re-matches re s)</code><code class="hide">(re-matches ^coretypes.Regex re ^String s)</code></div>
 </pre>
   <p class="var-docstr">Returns the match, if any, of string to pattern.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2941">source</a>
@@ -5596,9 +5596,9 @@
   <h3 class="Function" id="re-pattern">re-pattern</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(re-pattern s)</code><code class="hide">^Regex (re-pattern s)</code></div>
+  <pre class="var-usage"><div><code>(re-pattern s)</code><code class="hide">^coretypes.Regex (re-pattern s)</code></div>
 </pre>
-  <p class="var-docstr">Returns an instance of Regex</p>
+  <p class="var-docstr">Returns an instance of coretypes.Regex</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2920">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -5606,7 +5606,7 @@
   <h3 class="Function" id="re-seq">re-seq</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(re-seq re s)</code><code class="hide">^Seq (re-seq ^Regex re ^String s)</code></div>
+  <pre class="var-usage"><div><code>(re-seq re s)</code><code class="hide">^coretypes.Seq (re-seq ^coretypes.Regex re ^String s)</code></div>
 </pre>
   <p class="var-docstr">Returns a sequence of successive matches of pattern in string</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2929">source</a>
@@ -5647,7 +5647,7 @@
   <h3 class="Function" id="realized?">realized?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(realized? x)</code><code class="hide">^Boolean (realized? ^Pending x)</code></div>
+  <pre class="var-usage"><div><code>(realized? x)</code><code class="hide">^coretypes.Boolean (realized? ^Pending x)</code></div>
 </pre>
   <p class="var-docstr">Returns true if a value has been produced for a delay or lazy sequence.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L4169">source</a>
@@ -5666,8 +5666,8 @@
   <h3 class="Function" id="reduce">reduce</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(reduce f coll)</code><code class="hide">(reduce ^Callable f coll)</code></div>
-<div><code>(reduce f val coll)</code><code class="hide">(reduce ^Callable f val coll)</code></div>
+  <pre class="var-usage"><div><code>(reduce f coll)</code><code class="hide">(reduce ^coretypes.Callable f coll)</code></div>
+<div><code>(reduce f val coll)</code><code class="hide">(reduce ^coretypes.Callable f val coll)</code></div>
 </pre>
   <p class="var-docstr">f should be a function of 2 arguments. If val is not supplied,<br>
   returns the result of applying f to the first 2 items in coll, then<br>
@@ -5685,7 +5685,7 @@
   <h3 class="Function" id="reduce-kv">reduce-kv</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(reduce-kv f init coll)</code><code class="hide">(reduce-kv ^Callable f init coll)</code></div>
+  <pre class="var-usage"><div><code>(reduce-kv f init coll)</code><code class="hide">(reduce-kv ^coretypes.Callable f init coll)</code></div>
 </pre>
   <p class="var-docstr">Reduces an associative collection. f should be a function of 3<br>
   arguments. Returns the result of applying f to init, the first key<br>
@@ -5718,8 +5718,8 @@
   <h3 class="Function" id="reductions">reductions</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(reductions f coll)</code><code class="hide">^Seq (reductions ^Callable f ^Seqable coll)</code></div>
-<div><code>(reductions f init coll)</code><code class="hide">^Seq (reductions ^Callable f init ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(reductions f coll)</code><code class="hide">^coretypes.Seq (reductions ^coretypes.Callable f ^coretypes.Seqable coll)</code></div>
+<div><code>(reductions f init coll)</code><code class="hide">^coretypes.Seq (reductions ^coretypes.Callable f init ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy seq of the intermediate values of the reduction (as<br>
   per reduce) of coll by f, starting with init.</p>
@@ -5773,7 +5773,7 @@
   <h3 class="Function" id="remove">remove</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(remove pred coll)</code><code class="hide">^Seq (remove ^Callable pred ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(remove pred coll)</code><code class="hide">^coretypes.Seq (remove ^coretypes.Callable pred ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of the items in coll for which<br>
   (pred item) returns false. pred must be free of side-effects.</p>
@@ -5824,8 +5824,8 @@
   <h3 class="Function" id="repeat">repeat</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(repeat x)</code><code class="hide">^Seq (repeat x)</code></div>
-<div><code>(repeat n x)</code><code class="hide">^Seq (repeat ^Number n x)</code></div>
+  <pre class="var-usage"><div><code>(repeat x)</code><code class="hide">^coretypes.Seq (repeat x)</code></div>
+<div><code>(repeat n x)</code><code class="hide">^coretypes.Seq (repeat ^Number n x)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy (infinite!, or length n if supplied) sequence of xs.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1751">source</a>
@@ -5835,8 +5835,8 @@
   <h3 class="Function" id="repeatedly">repeatedly</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(repeatedly f)</code><code class="hide">^Seq (repeatedly ^Callable f)</code></div>
-<div><code>(repeatedly n f)</code><code class="hide">^Seq (repeatedly ^Number n ^Callable f)</code></div>
+  <pre class="var-usage"><div><code>(repeatedly f)</code><code class="hide">^coretypes.Seq (repeatedly ^coretypes.Callable f)</code></div>
+<div><code>(repeatedly n f)</code><code class="hide">^coretypes.Seq (repeatedly ^Number n ^coretypes.Callable f)</code></div>
 </pre>
   <p class="var-docstr">Takes a function of no args, presumably with side effects, and<br>
   returns an infinite (or length n if supplied) lazy sequence of calls<br>
@@ -5848,7 +5848,7 @@
   <h3 class="Function" id="replace">replace</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(replace smap coll)</code><code class="hide">(replace ^Associative smap ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(replace smap coll)</code><code class="hide">(replace ^Associative smap ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Given a map of replacement pairs and a vector/collection, returns a<br>
   vector/seq with any elements = a key in smap replaced with the<br>
@@ -5974,7 +5974,7 @@
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(resolve sym)</code><code class="hide">^Var (resolve ^Symbol sym)</code></div>
-<div><code>(resolve env sym)</code><code class="hide">^Var (resolve ^Gettable env ^Symbol sym)</code></div>
+<div><code>(resolve env sym)</code><code class="hide">^Var (resolve ^coretypes.Gettable env ^Symbol sym)</code></div>
 </pre>
   <p class="var-docstr">Same as (ns-resolve *ns* sym) or (ns-resolve *ns* env sym)</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2460">source</a>
@@ -5995,7 +5995,7 @@
   <h3 class="Function" id="reverse">reverse</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(reverse coll)</code><code class="hide">^Collection (reverse ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(reverse coll)</code><code class="hide">^Collection (reverse ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a seq of the items in coll in reverse order. Not lazy.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L707">source</a>
@@ -6005,9 +6005,9 @@
   <h3 class="Function" id="reversible?">reversible?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(reversible? coll)</code><code class="hide">^Boolean (reversible? coll)</code></div>
+  <pre class="var-usage"><div><code>(reversible? coll)</code><code class="hide">^coretypes.Boolean (reversible? coll)</code></div>
 </pre>
-  <p class="var-docstr">Returns true if coll implements Reversible</p>
+  <p class="var-docstr">Returns true if coll implements coretypes.Reversible</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3619">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -6015,7 +6015,7 @@
   <h3 class="Function" id="rseq">rseq</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(rseq rev)</code><code class="hide">^Seq (rseq ^Reversible rev)</code></div>
+  <pre class="var-usage"><div><code>(rseq rev)</code><code class="hide">^coretypes.Seq (rseq ^Reversible rev)</code></div>
 </pre>
   <p class="var-docstr">Returns, in constant time, a seq of the items in rev (which<br>
   can be a vector or sorted-map), in reverse order. If rev is empty returns nil.</p>
@@ -6035,7 +6035,7 @@
   <h3 class="Function" id="run!">run!</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(run! proc coll)</code><code class="hide">^Nil (run! ^Callable proc coll)</code></div>
+  <pre class="var-usage"><div><code>(run! proc coll)</code><code class="hide">^Nil (run! ^coretypes.Callable proc coll)</code></div>
 </pre>
   <p class="var-docstr">Runs the supplied procedure (via reduce), for purposes of side<br>
   effects, on successive items in the collection. Returns nil.</p>
@@ -6065,7 +6065,7 @@
   <h3 class="Function" id="select-keys">select-keys</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(select-keys map keyseq)</code><code class="hide">^Map (select-keys ^Associative map ^Seqable keyseq)</code></div>
+  <pre class="var-usage"><div><code>(select-keys map keyseq)</code><code class="hide">^Map (select-keys ^Associative map ^coretypes.Seqable keyseq)</code></div>
 </pre>
   <p class="var-docstr">Returns a map containing only those entries in map whose key is in keys</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1092">source</a>
@@ -6114,7 +6114,7 @@
   <h3 class="Function" id="seqable?">seqable?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(seqable? x)</code><code class="hide">^Boolean (seqable? x)</code></div>
+  <pre class="var-usage"><div><code>(seqable? x)</code><code class="hide">^coretypes.Boolean (seqable? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if the seq function is supported for x</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3586">source</a>
@@ -6124,7 +6124,7 @@
   <h3 class="Function" id="sequence">sequence</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(sequence coll)</code><code class="hide">^Seq (sequence coll)</code></div>
+  <pre class="var-usage"><div><code>(sequence coll)</code><code class="hide">^coretypes.Seq (sequence coll)</code></div>
 </pre>
   <p class="var-docstr">Coerces coll to a (possibly empty) sequence, if it is not already<br>
   one. Will not force a lazy seq. (sequence nil) yields ()</p>
@@ -6135,7 +6135,7 @@
   <h3 class="Function" id="sequential?">sequential?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(sequential? coll)</code><code class="hide">^Boolean (sequential? coll)</code></div>
+  <pre class="var-usage"><div><code>(sequential? coll)</code><code class="hide">^coretypes.Boolean (sequential? coll)</code></div>
 </pre>
   <p class="var-docstr">Returns true if coll implements Sequential</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3609">source</a>
@@ -6145,7 +6145,7 @@
   <h3 class="Function" id="set">set</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(set coll)</code><code class="hide">^MapSet (set ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(set coll)</code><code class="hide">^MapSet (set ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a set of the distinct elements of coll.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2222">source</a>
@@ -6164,7 +6164,7 @@
   <h3 class="Function" id="set?">set?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(set? x)</code><code class="hide">^Boolean (set? x)</code></div>
+  <pre class="var-usage"><div><code>(set? x)</code><code class="hide">^coretypes.Boolean (set? x)</code></div>
 </pre>
   <p class="var-docstr">Returns true if x implements Set</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2217">source</a>
@@ -6193,7 +6193,7 @@
   <h3 class="Function" id="simple-ident?">simple-ident?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(simple-ident? x)</code><code class="hide">^Boolean (simple-ident? x)</code></div>
+  <pre class="var-usage"><div><code>(simple-ident? x)</code><code class="hide">^coretypes.Boolean (simple-ident? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a symbol or keyword without a namespace</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1156">source</a>
@@ -6203,7 +6203,7 @@
   <h3 class="Function" id="simple-keyword?">simple-keyword?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(simple-keyword? x)</code><code class="hide">^Boolean (simple-keyword? x)</code></div>
+  <pre class="var-usage"><div><code>(simple-keyword? x)</code><code class="hide">^coretypes.Boolean (simple-keyword? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a keyword without a namespace</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1176">source</a>
@@ -6213,7 +6213,7 @@
   <h3 class="Function" id="simple-symbol?">simple-symbol?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(simple-symbol? x)</code><code class="hide">^Boolean (simple-symbol? x)</code></div>
+  <pre class="var-usage"><div><code>(simple-symbol? x)</code><code class="hide">^coretypes.Boolean (simple-symbol? x)</code></div>
 </pre>
   <p class="var-docstr">Return true if x is a symbol without a namespace</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1166">source</a>
@@ -6235,7 +6235,7 @@
   <h3 class="Function" id="some">some</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(some pred coll)</code><code class="hide">(some ^Callable pred ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(some pred coll)</code><code class="hide">(some ^coretypes.Callable pred ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns the first logical true value of (pred x) for any x in coll,<br>
   else nil.  One common idiom is to use a set as pred, for example<br>
@@ -6270,10 +6270,10 @@
   <h3 class="Function" id="some-fn">some-fn</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(some-fn p)</code><code class="hide">^Fn (some-fn ^Callable p)</code></div>
-<div><code>(some-fn p1 p2)</code><code class="hide">^Fn (some-fn ^Callable p1 ^Callable p2)</code></div>
-<div><code>(some-fn p1 p2 p3)</code><code class="hide">^Fn (some-fn ^Callable p1 ^Callable p2 ^Callable p3)</code></div>
-<div><code>(some-fn p1 p2 p3 &amp; ps)</code><code class="hide">^Fn (some-fn ^Callable p1 ^Callable p2 ^Callable p3 &amp; ps)</code></div>
+  <pre class="var-usage"><div><code>(some-fn p)</code><code class="hide">^Fn (some-fn ^coretypes.Callable p)</code></div>
+<div><code>(some-fn p1 p2)</code><code class="hide">^Fn (some-fn ^coretypes.Callable p1 ^coretypes.Callable p2)</code></div>
+<div><code>(some-fn p1 p2 p3)</code><code class="hide">^Fn (some-fn ^coretypes.Callable p1 ^coretypes.Callable p2 ^coretypes.Callable p3)</code></div>
+<div><code>(some-fn p1 p2 p3 &amp; ps)</code><code class="hide">^Fn (some-fn ^coretypes.Callable p1 ^coretypes.Callable p2 ^coretypes.Callable p3 &amp; ps)</code></div>
 </pre>
   <p class="var-docstr">Takes a set of predicates and returns a function f that returns the first logical true value<br>
   returned by one of its composing predicates against any of its arguments, else it returns<br>
@@ -6296,8 +6296,8 @@
   <h3 class="Function" id="sort">sort</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(sort coll)</code><code class="hide">^Seq (sort ^Seqable coll)</code></div>
-<div><code>(sort comp coll)</code><code class="hide">^Seq (sort ^Comparator comp ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(sort coll)</code><code class="hide">^coretypes.Seq (sort ^coretypes.Seqable coll)</code></div>
+<div><code>(sort comp coll)</code><code class="hide">^coretypes.Seq (sort ^Comparator comp ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a sorted sequence of the items in coll. If no comparator is<br>
   supplied, uses compare.</p>
@@ -6308,8 +6308,8 @@
   <h3 class="Function" id="sort-by">sort-by</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(sort-by keyfn coll)</code><code class="hide">^Seq (sort-by ^Callable keyfn ^Seqable coll)</code></div>
-<div><code>(sort-by keyfn comp coll)</code><code class="hide">^Seq (sort-by ^Callable keyfn ^Comparator comp ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(sort-by keyfn coll)</code><code class="hide">^coretypes.Seq (sort-by ^coretypes.Callable keyfn ^coretypes.Seqable coll)</code></div>
+<div><code>(sort-by keyfn comp coll)</code><code class="hide">^coretypes.Seq (sort-by ^coretypes.Callable keyfn ^Comparator comp ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a sorted sequence of the items in coll, where the sort<br>
   order is determined by comparing (keyfn item).  If no comparator is<br>
@@ -6366,7 +6366,7 @@
   <h3 class="Function" id="special-symbol?">special-symbol?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(special-symbol? s)</code><code class="hide">^Boolean (special-symbol? s)</code></div>
+  <pre class="var-usage"><div><code>(special-symbol? s)</code><code class="hide">^coretypes.Boolean (special-symbol? s)</code></div>
 </pre>
   <p class="var-docstr">Returns true if s names a special form</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3005">source</a>
@@ -6389,7 +6389,7 @@
   <h3 class="Function" id="split-at">split-at</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(split-at n coll)</code><code class="hide">^Vec (split-at ^Number n ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(split-at n coll)</code><code class="hide">^Vec (split-at ^Number n ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a vector of [(take n coll) (drop n coll)]</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1739">source</a>
@@ -6408,7 +6408,7 @@
   <h3 class="Function" id="split-with">split-with</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(split-with pred coll)</code><code class="hide">^Vec (split-with ^Callable pred ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(split-with pred coll)</code><code class="hide">^Vec (split-with ^coretypes.Callable pred ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a vector of [(take-while pred coll) (drop-while pred coll)]</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1745">source</a>
@@ -6486,7 +6486,7 @@
   <h3 class="Function" id="swap!">swap!</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(swap! atom f &amp; args)</code><code class="hide">(swap! ^Atom atom ^Callable f &amp; args)</code></div>
+  <pre class="var-usage"><div><code>(swap! atom f &amp; args)</code><code class="hide">(swap! ^Atom atom ^coretypes.Callable f &amp; args)</code></div>
 </pre>
   <p class="var-docstr">Atomically swaps the value of atom to be:<br>
   (apply f current-value-of-atom args).<br>
@@ -6498,7 +6498,7 @@
   <h3 class="Function" id="swap-vals!">swap-vals!</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(swap-vals! atom f &amp; args)</code><code class="hide">^Vec (swap-vals! ^Atom atom ^Callable f &amp; args)</code></div>
+  <pre class="var-usage"><div><code>(swap-vals! atom f &amp; args)</code><code class="hide">^Vec (swap-vals! ^Atom atom ^coretypes.Callable f &amp; args)</code></div>
 </pre>
   <p class="var-docstr">Atomically swaps the value of atom to be:<br>
   (apply f current-value-of-atom args). Note that f may be called<br>
@@ -6514,7 +6514,7 @@
   <pre class="var-usage"><div><code>(symbol name)</code><code class="hide">^Symbol (symbol name)</code></div>
 <div><code>(symbol ns name)</code><code class="hide">^Symbol (symbol ns name)</code></div>
 </pre>
-  <p class="var-docstr">Returns a Symbol with the given namespace and name.</p>
+  <p class="var-docstr">Returns a coretypes.Symbol with the given namespace and name.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L417">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -6522,9 +6522,9 @@
   <h3 class="Function" id="symbol?">symbol?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(symbol? x)</code><code class="hide">^Boolean (symbol? x)</code></div>
+  <pre class="var-usage"><div><code>(symbol? x)</code><code class="hide">^coretypes.Boolean (symbol? x)</code></div>
 </pre>
-  <p class="var-docstr">Return true if x is a Symbol</p>
+  <p class="var-docstr">Return true if x is a coretypes.Symbol</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L407">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -6532,7 +6532,7 @@
   <h3 class="Function" id="take">take</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(take n coll)</code><code class="hide">^Seq (take ^Number n ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(take n coll)</code><code class="hide">^coretypes.Seq (take ^Number n ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of the first n items in coll, or all items if<br>
   there are fewer than n.</p>
@@ -6543,7 +6543,7 @@
   <h3 class="Function" id="take-last">take-last</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(take-last n coll)</code><code class="hide">^Seq (take-last ^Number n ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(take-last n coll)</code><code class="hide">^coretypes.Seq (take-last ^Number n ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a seq of the last n items in coll.  Depending on the type<br>
   of coll may be no better than linear time.  For vectors, see also subvec.</p>
@@ -6554,7 +6554,7 @@
   <h3 class="Function" id="take-nth">take-nth</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(take-nth n coll)</code><code class="hide">^Seq (take-nth ^Number n ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(take-nth n coll)</code><code class="hide">^coretypes.Seq (take-nth ^Number n ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy seq of every nth item in coll.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2422">source</a>
@@ -6564,7 +6564,7 @@
   <h3 class="Function" id="take-while">take-while</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(take-while pred coll)</code><code class="hide">^Seq (take-while ^Callable pred ^Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(take-while pred coll)</code><code class="hide">^coretypes.Seq (take-while ^coretypes.Callable pred ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of successive items from coll while<br>
   (pred item) returns true. pred must be free of side-effects.</p>
@@ -6617,8 +6617,8 @@
   <h3 class="Function" id="trampoline">trampoline</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(trampoline f)</code><code class="hide">(trampoline ^Callable f)</code></div>
-<div><code>(trampoline f &amp; args)</code><code class="hide">(trampoline ^Callable f &amp; args)</code></div>
+  <pre class="var-usage"><div><code>(trampoline f)</code><code class="hide">(trampoline ^coretypes.Callable f)</code></div>
+<div><code>(trampoline f &amp; args)</code><code class="hide">(trampoline ^coretypes.Callable f &amp; args)</code></div>
 </pre>
   <p class="var-docstr">trampoline can be used to convert algorithms requiring mutual<br>
   recursion without stack consumption. Calls f with supplied args, if<br>
@@ -6661,7 +6661,7 @@
   <h3 class="Function" id="tree-seq">tree-seq</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(tree-seq branch? children root)</code><code class="hide">^Seq (tree-seq ^Callable branch? ^Callable children root)</code></div>
+  <pre class="var-usage"><div><code>(tree-seq branch? children root)</code><code class="hide">^coretypes.Seq (tree-seq ^coretypes.Callable branch? ^coretypes.Callable children root)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of the nodes in a tree, via a depth-first walk.<br>
   branch? must be a fn of one arg that returns true if passed a node<br>
@@ -6903,7 +6903,7 @@
   <h3 class="Function" id="unsigned-bit-shift-right">unsigned-bit-shift-right</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(unsigned-bit-shift-right x n)</code><code class="hide">^Int (unsigned-bit-shift-right ^Int x ^Int n)</code></div>
+  <pre class="var-usage"><div><code>(unsigned-bit-shift-right x n)</code><code class="hide">^coretypes.Int (unsigned-bit-shift-right ^coretypes.Int x ^coretypes.Int n)</code></div>
 </pre>
   <p class="var-docstr">Bitwise shift right, without sign-extension.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L947">source</a>
@@ -6913,11 +6913,11 @@
   <h3 class="Function" id="update">update</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(update m k f)</code><code class="hide">^Map (update ^Associative m k ^Callable f)</code></div>
-<div><code>(update m k f x)</code><code class="hide">^Map (update ^Associative m k ^Callable f x)</code></div>
-<div><code>(update m k f x y)</code><code class="hide">^Map (update ^Associative m k ^Callable f x y)</code></div>
-<div><code>(update m k f x y z)</code><code class="hide">^Map (update ^Associative m k ^Callable f x y z)</code></div>
-<div><code>(update m k f x y z &amp; more)</code><code class="hide">^Map (update ^Associative m k ^Callable f x y z &amp; more)</code></div>
+  <pre class="var-usage"><div><code>(update m k f)</code><code class="hide">^Map (update ^Associative m k ^coretypes.Callable f)</code></div>
+<div><code>(update m k f x)</code><code class="hide">^Map (update ^Associative m k ^coretypes.Callable f x)</code></div>
+<div><code>(update m k f x y)</code><code class="hide">^Map (update ^Associative m k ^coretypes.Callable f x y)</code></div>
+<div><code>(update m k f x y z)</code><code class="hide">^Map (update ^Associative m k ^coretypes.Callable f x y z)</code></div>
+<div><code>(update m k f x y z &amp; more)</code><code class="hide">^Map (update ^Associative m k ^coretypes.Callable f x y z &amp; more)</code></div>
 </pre>
   <p class="var-docstr">&#39;Updates&#39; a value in an associative structure, where k is a<br>
   key and f is a function that will take the old value<br>
@@ -6930,7 +6930,7 @@
   <h3 class="Function" id="update-in">update-in</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(update-in m ks f &amp; args)</code><code class="hide">^Map (update-in ^Associative m ^Seqable ks ^Callable f &amp; args)</code></div>
+  <pre class="var-usage"><div><code>(update-in m ks f &amp; args)</code><code class="hide">^Map (update-in ^Associative m ^coretypes.Seqable ks ^coretypes.Callable f &amp; args)</code></div>
 </pre>
   <p class="var-docstr">&#39;Updates&#39; a value in a nested associative structure, where ks is a<br>
   sequence of keys and f is a function that will take the old value<br>
@@ -6944,7 +6944,7 @@
   <h3 class="Function" id="update-keys">update-keys</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.1</span>
-  <pre class="var-usage"><div><code>(update-keys m f)</code><code class="hide">^Map (update-keys m ^Callable f)</code></div>
+  <pre class="var-usage"><div><code>(update-keys m f)</code><code class="hide">^Map (update-keys m ^coretypes.Callable f)</code></div>
 </pre>
   <p class="var-docstr">m f =&gt; {(f k) v ...}<br>
   Given a map m and a function f of 1-argument, returns a new map whose<br>
@@ -6958,7 +6958,7 @@
   <h3 class="Function" id="update-vals">update-vals</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.1</span>
-  <pre class="var-usage"><div><code>(update-vals m f)</code><code class="hide">^Map (update-vals m ^Callable f)</code></div>
+  <pre class="var-usage"><div><code>(update-vals m f)</code><code class="hide">^Map (update-vals m ^coretypes.Callable f)</code></div>
 </pre>
   <p class="var-docstr">m f =&gt; {k (f v) ...}<br>
   Given a map m and a function f of 1-argument, returns a new map where the keys of m<br>
@@ -6996,7 +6996,7 @@
   <h3 class="Function" id="vals">vals</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(vals map)</code><code class="hide">^Seq (vals ^Map map)</code></div>
+  <pre class="var-usage"><div><code>(vals map)</code><code class="hide">^coretypes.Seq (vals ^Map map)</code></div>
 </pre>
   <p class="var-docstr">Returns a sequence of the map&#39;s values, in the same order as (seq map).</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1111">source</a>
@@ -7026,7 +7026,7 @@
   <h3 class="Function" id="var?">var?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(var? v)</code><code class="hide">^Boolean (var? v)</code></div>
+  <pre class="var-usage"><div><code>(var? v)</code><code class="hide">^coretypes.Boolean (var? v)</code></div>
 </pre>
   <p class="var-docstr">Returns true if v is of type Var</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3011">source</a>
@@ -7036,7 +7036,7 @@
   <h3 class="Function" id="vary-meta">vary-meta</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(vary-meta obj f &amp; args)</code><code class="hide">(vary-meta obj ^Callable f &amp; args)</code></div>
+  <pre class="var-usage"><div><code>(vary-meta obj f &amp; args)</code><code class="hide">(vary-meta obj ^coretypes.Callable f &amp; args)</code></div>
 </pre>
   <p class="var-docstr">Returns an object of the same type and value as obj, with<br>
   (apply f (meta obj) args) as its metadata.</p>
@@ -7157,7 +7157,7 @@
   <h3 class="Function" id="with-bindings*">with-bindings*</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(with-bindings* binding-map f &amp; args)</code><code class="hide">(with-bindings* ^Map binding-map ^Callable f &amp; args)</code></div>
+  <pre class="var-usage"><div><code>(with-bindings* binding-map f &amp; args)</code><code class="hide">(with-bindings* ^Map binding-map ^coretypes.Callable f &amp; args)</code></div>
 </pre>
   <p class="var-docstr">Takes a map of Var/value pairs. Sets the vars to the corresponding values.<br>
   Then calls f with the supplied arguments. Resets the vars back to the original<br>
@@ -7223,7 +7223,7 @@
   <h3 class="Function" id="xml-seq">xml-seq</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(xml-seq root)</code><code class="hide">^Seq (xml-seq root)</code></div>
+  <pre class="var-usage"><div><code>(xml-seq root)</code><code class="hide">^coretypes.Seq (xml-seq root)</code></div>
 </pre>
   <p class="var-docstr">A tree seq on the xml elements as per xml/parse</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2996">source</a>
@@ -7233,7 +7233,7 @@
   <h3 class="Function" id="zero?">zero?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(zero? x)</code><code class="hide">^Boolean (zero? ^Number x)</code></div>
+  <pre class="var-usage"><div><code>(zero? x)</code><code class="hide">^coretypes.Boolean (zero? ^Number x)</code></div>
 </pre>
   <p class="var-docstr">Returns true if x is zero, else false</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L629">source</a>
@@ -7243,7 +7243,7 @@
   <h3 class="Function" id="zipmap">zipmap</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(zipmap keys vals)</code><code class="hide">^Map (zipmap ^Seqable keys ^Seqable vals)</code></div>
+  <pre class="var-usage"><div><code>(zipmap keys vals)</code><code class="hide">^Map (zipmap ^coretypes.Seqable keys ^coretypes.Seqable vals)</code></div>
 </pre>
   <p class="var-docstr">Returns a map with the keys mapped to the corresponding vals.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L1807">source</a>

@@ -18,7 +18,7 @@ type (
 		Eval(env *LocalEnv) coretypes.Object
 		InferType() *coretypes.Type
 		Pos() coretypes.Position
-		Dump(includePosition bool) Map
+		Dump(includePosition bool) coretypes.Map
 		Pack(p []byte, env *PackEnv) []byte
 	}
 	LiteralExpr struct {
@@ -48,7 +48,7 @@ type (
 	DefExpr struct {
 		coretypes.Position
 		vr               *Var
-		name             Symbol
+		name             coretypes.Symbol
 		value            Expr
 		meta             Expr
 		isCreatedByMacro bool
@@ -88,7 +88,7 @@ type (
 	}
 	FnArityExpr struct {
 		coretypes.Position
-		args       []Symbol
+		args       []coretypes.Symbol
 		body       []Expr
 		taggedType *coretypes.Type
 	}
@@ -96,13 +96,13 @@ type (
 		coretypes.Position
 		arities       []FnArityExpr
 		variadic      *FnArityExpr
-		self          Symbol
+		self          coretypes.Symbol
 		traceName     string
 		tailRewritten bool
 	}
 	LetExpr struct {
 		coretypes.Position
-		names  []Symbol
+		names  []coretypes.Symbol
 		values []Expr
 		body   []Expr
 	}
@@ -114,7 +114,7 @@ type (
 	CatchExpr struct {
 		coretypes.Position
 		excType   *coretypes.Type
-		excSymbol Symbol
+		excSymbol coretypes.Symbol
 		body      []Expr
 	}
 	TryExpr struct {
@@ -132,7 +132,7 @@ type (
 		msg string
 	}
 	Binding struct {
-		name         Symbol
+		name         coretypes.Symbol
 		index        int
 		frame        int
 		isUsed       bool
@@ -152,7 +152,7 @@ type (
 	ParseContext struct {
 		GlobalEnv              *Env
 		localBindings          *Bindings
-		loopBindings           [][]Symbol
+		loopBindings           [][]coretypes.Symbol
 		linterBindings         *Bindings
 		recur                  bool
 		noRecurAllowed         bool
@@ -162,105 +162,105 @@ type (
 		ifWithoutElse           bool
 		unusedFnParameters      bool
 		fnWithEmptyBody         bool
-		ignoredUnusedNamespaces Set
+		ignoredUnusedNamespaces coretypes.Set
 		IgnoredFileRegexes      []*regexp.Regexp
-		entryPoints             Set
+		entryPoints             coretypes.Set
 	}
 	Keywords struct {
-		tag                Keyword
-		skipUnused         Keyword
-		private            Keyword
-		line               Keyword
-		column             Keyword
-		file               Keyword
-		ns                 Keyword
-		macro              Keyword
-		message            Keyword
-		form               Keyword
-		data               Keyword
-		cause              Keyword
-		arglist            Keyword
-		doc                Keyword
-		added              Keyword
-		meta               Keyword
-		knownMacros        Keyword
-		rules              Keyword
-		ifWithoutElse      Keyword
-		unusedFnParameters Keyword
-		fnWithEmptyBody    Keyword
-		_prefix            Keyword
-		pos                Keyword
-		startLine          Keyword
-		endLine            Keyword
-		startColumn        Keyword
-		endColumn          Keyword
-		filename           Keyword
-		object             Keyword
-		type_              Keyword
-		var_               Keyword
-		value              Keyword
-		vector             Keyword
-		name               Keyword
-		dynamic            Keyword
-		require            Keyword
-		_import            Keyword
-		else_              Keyword
-		none               Keyword
-		validIdent         Keyword
-		characterSet       Keyword
-		encodingRange      Keyword
-		core               Keyword
-		symbol             Keyword
-		visible            Keyword
-		ascii              Keyword
-		unicode            Keyword
-		any                Keyword
+		tag                coretypes.Keyword
+		skipUnused         coretypes.Keyword
+		private            coretypes.Keyword
+		line               coretypes.Keyword
+		column             coretypes.Keyword
+		file               coretypes.Keyword
+		ns                 coretypes.Keyword
+		macro              coretypes.Keyword
+		message            coretypes.Keyword
+		form               coretypes.Keyword
+		data               coretypes.Keyword
+		cause              coretypes.Keyword
+		arglist            coretypes.Keyword
+		doc                coretypes.Keyword
+		added              coretypes.Keyword
+		meta               coretypes.Keyword
+		knownMacros        coretypes.Keyword
+		rules              coretypes.Keyword
+		ifWithoutElse      coretypes.Keyword
+		unusedFnParameters coretypes.Keyword
+		fnWithEmptyBody    coretypes.Keyword
+		_prefix            coretypes.Keyword
+		pos                coretypes.Keyword
+		startLine          coretypes.Keyword
+		endLine            coretypes.Keyword
+		startColumn        coretypes.Keyword
+		endColumn          coretypes.Keyword
+		filename           coretypes.Keyword
+		object             coretypes.Keyword
+		type_              coretypes.Keyword
+		var_               coretypes.Keyword
+		value              coretypes.Keyword
+		vector             coretypes.Keyword
+		name               coretypes.Keyword
+		dynamic            coretypes.Keyword
+		require            coretypes.Keyword
+		_import            coretypes.Keyword
+		else_              coretypes.Keyword
+		none               coretypes.Keyword
+		validIdent         coretypes.Keyword
+		characterSet       coretypes.Keyword
+		encodingRange      coretypes.Keyword
+		core               coretypes.Keyword
+		symbol             coretypes.Keyword
+		visible            coretypes.Keyword
+		ascii              coretypes.Keyword
+		unicode            coretypes.Keyword
+		any                coretypes.Keyword
 	}
 	Symbols struct {
-		joker_core         Symbol
-		underscore         Symbol
-		catch              Symbol
-		finally            Symbol
-		amp                Symbol
-		_if                Symbol
-		quote              Symbol
-		fn_                Symbol
-		fn                 Symbol
-		let_               Symbol
-		let                Symbol
-		letfn_             Symbol
-		letfn              Symbol
-		loop_              Symbol
-		loop               Symbol
-		recur              Symbol
-		setMacro_          Symbol
-		def                Symbol
-		defLinter          Symbol
-		_var               Symbol
-		do                 Symbol
-		throw              Symbol
-		try                Symbol
-		unquoteSplicing    Symbol
-		list               Symbol
-		concat             Symbol
-		seq                Symbol
-		apply              Symbol
-		emptySymbol        Symbol
-		unquote            Symbol
-		vector             Symbol
-		hashMap            Symbol
-		hashSet            Symbol
-		defaultDataReaders Symbol
-		backslash          Symbol
-		deref              Symbol
-		ns                 Symbol
-		defrecord          Symbol
-		defprotocol        Symbol
-		extendProtocol     Symbol
-		extendType         Symbol
-		deftype            Symbol
-		proxy              Symbol
-		reify              Symbol
+		joker_core         coretypes.Symbol
+		underscore         coretypes.Symbol
+		catch              coretypes.Symbol
+		finally            coretypes.Symbol
+		amp                coretypes.Symbol
+		_if                coretypes.Symbol
+		quote              coretypes.Symbol
+		fn_                coretypes.Symbol
+		fn                 coretypes.Symbol
+		let_               coretypes.Symbol
+		let                coretypes.Symbol
+		letfn_             coretypes.Symbol
+		letfn              coretypes.Symbol
+		loop_              coretypes.Symbol
+		loop               coretypes.Symbol
+		recur              coretypes.Symbol
+		setMacro_          coretypes.Symbol
+		def                coretypes.Symbol
+		defLinter          coretypes.Symbol
+		_var               coretypes.Symbol
+		do                 coretypes.Symbol
+		throw              coretypes.Symbol
+		try                coretypes.Symbol
+		unquoteSplicing    coretypes.Symbol
+		list               coretypes.Symbol
+		concat             coretypes.Symbol
+		seq                coretypes.Symbol
+		apply              coretypes.Symbol
+		emptySymbol        coretypes.Symbol
+		unquote            coretypes.Symbol
+		vector             coretypes.Symbol
+		hashMap            coretypes.Symbol
+		hashSet            coretypes.Symbol
+		defaultDataReaders coretypes.Symbol
+		backslash          coretypes.Symbol
+		deref              coretypes.Symbol
+		ns                 coretypes.Symbol
+		defrecord          coretypes.Symbol
+		defprotocol        coretypes.Symbol
+		extendProtocol     coretypes.Symbol
+		extendType         coretypes.Symbol
+		deftype            coretypes.Symbol
+		proxy              coretypes.Symbol
+		reify              coretypes.Symbol
 	}
 	Str struct {
 		_if          *string
@@ -332,11 +332,11 @@ var (
 	}
 )
 
-func (b *Bindings) ToMap() Map {
-	var res Map = collectionConstruction.NewEmptyArrayMap()
+func (b *Bindings) ToMap() coretypes.Map {
+	var res coretypes.Map = collectionConstruction.NewEmptyArrayMap()
 	for b != nil {
 		for _, v := range b.bindings {
-			res = res.Assoc(v.name, NIL).(Map)
+			res = res.Assoc(v.name, NIL).(coretypes.Map)
 		}
 		b = b.parent
 	}
@@ -378,7 +378,7 @@ func (localEnv *LocalEnv) replaceFrame(values []coretypes.Object) *LocalEnv {
 	return &res
 }
 
-func (ctx *ParseContext) PushLoopBindings(bindings []Symbol) {
+func (ctx *ParseContext) PushLoopBindings(bindings []coretypes.Symbol) {
 	ctx.loopBindings = append(ctx.loopBindings, bindings)
 }
 
@@ -386,7 +386,7 @@ func (ctx *ParseContext) PopLoopBindings() {
 	ctx.loopBindings = ctx.loopBindings[:len(ctx.loopBindings)-1]
 }
 
-func (ctx *ParseContext) GetLoopBindings() []Symbol {
+func (ctx *ParseContext) GetLoopBindings() []coretypes.Symbol {
 	n := len(ctx.loopBindings)
 	if n == 0 {
 		return nil
@@ -410,14 +410,15 @@ func (b *Bindings) PopFrame() *Bindings {
 	return b.parent
 }
 
-func (b *Bindings) AddBinding(sym Symbol, index int, skipUnused bool, inferredType *coretypes.Type) {
+func (b *Bindings) AddBinding(sym coretypes.Symbol, index int, skipUnused bool, inferredType *coretypes.Type) {
+	nameKey := sym.NameKey()
 	if LINTER_MODE && !skipUnused {
-		old := b.bindings[sym.name]
+		old := b.bindings[nameKey]
 		if old != nil && needsUnusedWarning(old) {
 			printParseWarning(GetPosition(old.name), "Unused binding: "+old.name.ToString(false))
 		}
 	}
-	b.bindings[sym.name] = &Binding{
+	b.bindings[nameKey] = &Binding{
 		name:         sym,
 		frame:        b.frame,
 		index:        index,
@@ -425,9 +426,10 @@ func (b *Bindings) AddBinding(sym Symbol, index int, skipUnused bool, inferredTy
 	}
 }
 
-func (b *Bindings) GetBinding(sym Symbol) *Binding {
+func (b *Bindings) GetBinding(sym coretypes.Symbol) *Binding {
+	nameKey := sym.NameKey()
 	for b != nil {
-		if binding, ok := b.bindings[sym.name]; ok {
+		if binding, ok := b.bindings[nameKey]; ok {
 			return binding
 		}
 		b = b.parent
@@ -439,7 +441,7 @@ func (ctx *ParseContext) PushEmptyLocalFrame() {
 	ctx.localBindings = ctx.localBindings.PushFrame()
 }
 
-func (ctx *ParseContext) PushLocalFrame(names []Symbol) {
+func (ctx *ParseContext) PushLocalFrame(names []coretypes.Symbol) {
 	ctx.PushEmptyLocalFrame()
 	for i, sym := range names {
 		ctx.localBindings.AddBinding(sym, i, true, nil)
@@ -450,8 +452,8 @@ func (ctx *ParseContext) PopLocalFrame() {
 	ctx.localBindings = ctx.localBindings.PopFrame()
 }
 
-func (ctx *ParseContext) GetLocalBinding(sym Symbol) *Binding {
-	if sym.ns != nil {
+func (ctx *ParseContext) GetLocalBinding(sym coretypes.Symbol) *Binding {
+	if sym.NamespaceKey() != nil {
 		return nil
 	}
 	return ctx.localBindings.GetBinding(sym)
@@ -567,10 +569,7 @@ func isEntryPointVar(vr *Var) bool {
 	if isEntryPointNs(vr.ns) {
 		return true
 	}
-	sym := Symbol{
-		ns:   vr.ns.Name.name,
-		name: vr.name.name,
-	}
+	sym := coretypes.MakeSymbolFromKeys(vr.ns.Name.NameKey(), vr.name.NameKey())
 	ok, _ := WARNINGS.entryPoints.Get(sym)
 	return ok
 }
@@ -613,8 +612,9 @@ func WarnOnUnusedVars() {
 			if vr.ns == ns && !vr.isUsed && vr.isPrivate {
 				pos := vr.GetInfo()
 				if pos != nil {
-					names = append(names, *vr.name.name)
-					positions[*vr.name.name] = pos.Position
+					name := vr.name.Name()
+					names = append(names, name)
+					positions[name] = pos.Position
 				}
 			}
 		}
@@ -687,7 +687,7 @@ func parseSeq(seq coretypes.Seq, ctx *ParseContext) []Expr {
 	return res
 }
 
-func parseVector(v Vec, pos coretypes.Position, ctx *ParseContext) Expr {
+func parseVector(v coretypes.Vec, pos coretypes.Position, ctx *ParseContext) Expr {
 	r := make([]Expr, v.Count())
 	for i := 0; i < v.Count(); i++ {
 		r[i] = Parse(v.At(i), ctx)
@@ -695,7 +695,7 @@ func parseVector(v Vec, pos coretypes.Position, ctx *ParseContext) Expr {
 	return readerConstruction.VectorExpr(r, pos)
 }
 
-func parseMap(m Map, pos coretypes.Position, ctx *ParseContext) *MapExpr {
+func parseMap(m coretypes.Map, pos coretypes.Position, ctx *ParseContext) *MapExpr {
 	res := readerConstruction.MapExpr(m.Count(), pos)
 	for iter, i := m.Iter(), 0; iter.HasNext(); i++ {
 		p := iter.Next()
@@ -733,7 +733,7 @@ func GetPosition(obj coretypes.Object) coretypes.Position {
 	return coretypes.Position{}
 }
 
-func updateVar(vr *Var, info *coretypes.ObjectInfo, valueExpr Expr, sym Symbol) {
+func updateVar(vr *Var, info *coretypes.ObjectInfo, valueExpr Expr, sym coretypes.Symbol) {
 	vr.WithInfo(info)
 	vr.expr = valueExpr
 	meta := sym.GetMeta()
@@ -767,17 +767,16 @@ func parseDef(obj coretypes.Object, ctx *ParseContext, isForLinter bool) *DefExp
 	count := checkForm(obj, 2, 4)
 	seq := obj.(coretypes.Seq)
 	s := Second(seq)
-	var meta Map
+	var meta coretypes.Map
 	switch sym := s.(type) {
-	case Symbol:
-		if sym.ns != nil && (Symbol{name: sym.ns} != ctx.GlobalEnv.CurrentNamespace().Name) {
+	case coretypes.Symbol:
+		if sym.NamespaceKey() != nil && coretypes.MakeSymbolFromKeys(nil, sym.NamespaceKey()) != ctx.GlobalEnv.CurrentNamespace().Name {
 			panic(&ParseError{
 				msg: "Can't create defs outside of current ns",
 				obj: obj,
 			})
 		}
-		symWithoutNs := sym
-		symWithoutNs.ns = nil
+		symWithoutNs := coretypes.MakeSymbolFromKeys(nil, sym.NameKey())
 		vr := ctx.GlobalEnv.CurrentNamespace().Intern(symWithoutNs)
 		if isForLinter {
 			vr.isGloballyUsed = true
@@ -798,9 +797,9 @@ func parseDef(obj coretypes.Object, ctx *ParseContext, isForLinter bool) *DefExp
 			switch docstring.(type) {
 			case coretypes.String:
 				if meta != nil {
-					meta = meta.Assoc(KEYWORDS.doc, docstring).(Map)
+					meta = meta.Assoc(KEYWORDS.doc, docstring).(coretypes.Map)
 				} else {
-					meta = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.doc, docstring).(Map)
+					meta = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.doc, docstring).(coretypes.Map)
 				}
 			default:
 				panic(&ParseError{obj: docstring, msg: "Docstring must be a string"})
@@ -812,14 +811,14 @@ func parseDef(obj coretypes.Object, ctx *ParseContext, isForLinter bool) *DefExp
 		}
 		return res
 	default:
-		panic(&ParseError{obj: s, msg: "First argument to def must be a Symbol"})
+		panic(&ParseError{obj: s, msg: "First argument to def must be a coretypes.Symbol"})
 	}
 }
 
 func skipRedundantDo(obj coretypes.Object) bool {
-	if meta, ok := obj.(Meta); ok {
+	if meta, ok := obj.(coretypes.Meta); ok {
 		if m := meta.GetMeta(); m != nil {
-			if ok, res := m.Get(MakeKeyword("skip-redundant-do")); ok {
+			if ok, res := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "skip-redundant-do")); ok {
 				return res.Equals(coretypes.Boolean{B: true})
 			}
 		}
@@ -851,9 +850,9 @@ func parseBody(seq coretypes.Seq, ctx *ParseContext) []Expr {
 	return res
 }
 
-func parseParams(params coretypes.Object) (bindings []Symbol, isVariadic bool) {
-	res := make([]Symbol, 0)
-	v := params.(Vec)
+func parseParams(params coretypes.Object) (bindings []coretypes.Symbol, isVariadic bool) {
+	res := make([]coretypes.Symbol, 0)
+	v := params.(coretypes.Vec)
 	for i := 0; i < v.Count(); i++ {
 		ro := v.At(i)
 		sym := ro
@@ -878,20 +877,20 @@ func parseParams(params coretypes.Object) (bindings []Symbol, isVariadic bool) {
 						panic(&ParseError{obj: variadic, msg: "Unsupported binding form: " + variadic.ToString(false)})
 					}
 				}
-				res = append(res, variadic.(Symbol))
+				res = append(res, variadic.(coretypes.Symbol))
 				return res, true
 			} else {
 				return res, false
 			}
 		}
-		res = append(res, sym.(Symbol))
+		res = append(res, sym.(coretypes.Symbol))
 	}
 	return res, false
 }
 
 func needsUnusedWarning(b *Binding) bool {
 	return !b.isUsed &&
-		!corestr.IsIgnorableBindingName(*b.name.name) &&
+		!corestr.IsIgnorableBindingName(b.name.Name()) &&
 		!isSkipUnused(b.name)
 }
 
@@ -912,7 +911,7 @@ func addArity(fn *FnExpr, sig coretypes.Seq, ctx *ParseContext) {
 		Position:   GetPosition(sig),
 		args:       args,
 		body:       parseBody(body, ctx),
-		taggedType: getTaggedType(params.(Meta)),
+		taggedType: getTaggedType(params.(coretypes.Meta)),
 	}
 	if isVariadic {
 		if fn.variadic != nil {
@@ -944,13 +943,13 @@ func addArity(fn *FnExpr, sig coretypes.Seq, ctx *ParseContext) {
 		}
 
 		if WARNINGS.unusedFnParameters {
-			var unused []Symbol
+			var unused []coretypes.Symbol
 			for _, b := range ctx.localBindings.bindings {
 				if needsUnusedWarning(b) {
 					unused = append(unused, b.name)
 				}
 			}
-			sort.Sort(coretypes.NamedSlice[Symbol](unused))
+			sort.Sort(coretypes.NamedSlice[coretypes.Symbol](unused))
 			for _, u := range unused {
 				printParseWarning(GetPosition(u), "unused parameter: "+u.ToString(false))
 			}
@@ -959,7 +958,7 @@ func addArity(fn *FnExpr, sig coretypes.Seq, ctx *ParseContext) {
 }
 
 func wrapWithMeta(fnExpr *FnExpr, obj coretypes.Object, ctx *ParseContext) Expr {
-	meta := obj.(Meta).GetMeta()
+	meta := obj.(coretypes.Meta).GetMeta()
 	if meta != nil {
 		return &MetaExpr{
 			meta:     parseMap(meta, fnExpr.Pos(), ctx),
@@ -981,11 +980,11 @@ func parseFn(obj coretypes.Object, ctx *ParseContext) Expr {
 	bodies := obj.(coretypes.Seq).Rest()
 	p := bodies.First()
 	if IsSymbol(p) { // self reference
-		res.self = p.(Symbol)
+		res.self = p.(coretypes.Symbol)
 		res.traceName = res.self.ToString(false)
 		bodies = bodies.Rest()
 		p = bodies.First()
-		ctx.PushLocalFrame([]Symbol{res.self})
+		ctx.PushLocalFrame([]coretypes.Symbol{res.self})
 		defer ctx.PopLocalFrame()
 	}
 	if IsVector(p) { // single arity
@@ -1046,12 +1045,12 @@ func parseCatch(obj coretypes.Object, ctx *ParseContext) *CatchExpr {
 	if !IsSymbol(excSymbol) {
 		panic(&ParseError{obj: excSymbol, msg: "Bad binding form, expected symbol, got: " + excSymbol.ToString(false)})
 	}
-	ctx.PushLocalFrame([]Symbol{excSymbol.(Symbol)})
+	ctx.PushLocalFrame([]coretypes.Symbol{excSymbol.(coretypes.Symbol)})
 	defer ctx.PopLocalFrame()
 	return &CatchExpr{
 		Position:  GetPosition(obj),
 		excType:   excType,
-		excSymbol: excSymbol.(Symbol),
+		excSymbol: excSymbol.(coretypes.Symbol),
 		body:      parseBody(seq.Rest().Rest(), ctx),
 	}
 }
@@ -1119,7 +1118,7 @@ func parseLetfn(obj coretypes.Object, ctx *ParseContext) *LoopExpr {
 	return (*LoopExpr)(parseLetLoop(obj, "letfn", ctx))
 }
 
-func isSkipUnused(obj Meta) bool {
+func isSkipUnused(obj coretypes.Meta) bool {
 	if m := obj.GetMeta(); m != nil {
 		if ok, v := m.Get(KEYWORDS.skipUnused); ok {
 			return ToBool(v)
@@ -1134,7 +1133,7 @@ func parseLetLoop(obj coretypes.Object, formName string, ctx *ParseContext) *Let
 	}
 	bindings := Second(obj.(coretypes.Seq))
 	switch b := bindings.(type) {
-	case Vec:
+	case coretypes.Vec:
 		cnt := b.Count()
 		if cnt%2 != 0 {
 			panic(&ParseError{obj: bindings, msg: formName + " requires an even number of forms in binding vector"})
@@ -1144,7 +1143,7 @@ func parseLetLoop(obj coretypes.Object, formName string, ctx *ParseContext) *Let
 			printParseWarning(pos, formName+" form with empty bindings vector")
 		}
 		skipUnused := isSkipUnused(b)
-		res.names = make([]Symbol, cnt/2)
+		res.names = make([]coretypes.Symbol, cnt/2)
 		res.values = make([]Expr, cnt/2)
 		ctx.PushEmptyLocalFrame()
 		defer ctx.PopLocalFrame()
@@ -1152,8 +1151,8 @@ func parseLetLoop(obj coretypes.Object, formName string, ctx *ParseContext) *Let
 		for i := 0; i < cnt/2; i++ {
 			s := b.At(i * 2)
 			switch sym := s.(type) {
-			case Symbol:
-				if sym.ns != nil {
+			case coretypes.Symbol:
+				if sym.NamespaceKey() != nil {
 					msg := "Can't let qualified name: " + sym.ToString(false)
 					if LINTER_MODE {
 						printParseError(GetPosition(s), msg)
@@ -1219,13 +1218,13 @@ func parseLetLoop(obj coretypes.Object, formName string, ctx *ParseContext) *Let
 			}
 
 			if !skipUnused {
-				var unused []Symbol
+				var unused []coretypes.Symbol
 				for _, b := range ctx.localBindings.bindings {
 					if needsUnusedWarning(b) {
 						unused = append(unused, b.name)
 					}
 				}
-				sort.Sort(coretypes.NamedSlice[Symbol](unused))
+				sort.Sort(coretypes.NamedSlice[coretypes.Symbol](unused))
 				for _, u := range unused {
 					printParseWarning(GetPosition(u), "unused binding: "+u.ToString(false))
 				}
@@ -1260,7 +1259,7 @@ func parseRecur(obj coretypes.Object, ctx *ParseContext) *RecurExpr {
 
 func resolveMacro(obj coretypes.Object, ctx *ParseContext) *Var {
 	switch sym := obj.(type) {
-	case Symbol:
+	case coretypes.Symbol:
 		if ctx.GetLocalBinding(sym) != nil {
 			return nil
 		}
@@ -1300,16 +1299,16 @@ func fixInfo(obj coretypes.Object, info *coretypes.ObjectInfo) coretypes.Object 
 			s = s.Rest()
 		}
 		res := collectionConstruction.NewListFrom(objs...)
-		if s, ok := obj.(Meta); ok {
-			res.meta = s.GetMeta()
+		if s, ok := obj.(coretypes.Meta); ok {
+			res.Meta = s.GetMeta()
 		}
 		if objInfo := obj.GetInfo(); objInfo != nil {
 			return res.WithInfo(objInfo)
 		}
 		return res.WithInfo(info)
-	case Vec:
+	case coretypes.Vec:
 		res := collectionConstruction.NewEmptyArrayVector()
-		res.meta = s.(Meta).GetMeta()
+		res.Meta = s.(coretypes.Meta).GetMeta()
 		for i := 0; i < s.Count(); i++ {
 			t := fixInfo(s.At(i), info)
 			res.Append(t)
@@ -1318,7 +1317,7 @@ func fixInfo(obj coretypes.Object, info *coretypes.ObjectInfo) coretypes.Object 
 			return res.WithInfo(objInfo)
 		}
 		return res.WithInfo(info)
-	case Map:
+	case coretypes.Map:
 		res := collectionConstruction.NewEmptyArrayMap()
 		iter := s.Iter()
 		for iter.HasNext() {
@@ -1327,7 +1326,7 @@ func fixInfo(obj coretypes.Object, info *coretypes.ObjectInfo) coretypes.Object 
 			value := fixInfo(p.Value, info)
 			res.Add(key, value)
 		}
-		res.meta = s.(Meta).GetMeta()
+		res.Meta = s.(coretypes.Meta).GetMeta()
 		if objInfo := obj.GetInfo(); objInfo != nil {
 			return res.WithInfo(objInfo)
 		}
@@ -1357,11 +1356,11 @@ func reportNotAFunction(pos coretypes.Position, name string) {
 	printParseWarning(pos, name+" is not a function")
 }
 
-func getTaggedType(obj Meta) *coretypes.Type {
+func getTaggedType(obj coretypes.Meta) *coretypes.Type {
 	if m := obj.GetMeta(); m != nil {
 		if ok, typeName := m.Get(KEYWORDS.tag); ok {
-			if typeSym, ok := typeName.(Symbol); ok {
-				if t := TYPES.Lookup(typeSym.name); t != nil {
+			if typeSym, ok := typeName.(coretypes.Symbol); ok {
+				if t := TYPES.Lookup(typeSym.NameKey()); t != nil {
 					return t
 				}
 			}
@@ -1370,19 +1369,19 @@ func getTaggedType(obj Meta) *coretypes.Type {
 	return nil
 }
 
-func getTaggedTypes(obj Meta) []*coretypes.Type {
+func getTaggedTypes(obj coretypes.Meta) []*coretypes.Type {
 	var res []*coretypes.Type
 	if m := obj.GetMeta(); m != nil {
 		if ok, typeName := m.Get(KEYWORDS.tag); ok {
 			switch typeDecl := typeName.(type) {
-			case Symbol:
-				if t := TYPES.Lookup(typeDecl.name); t != nil {
+			case coretypes.Symbol:
+				if t := TYPES.Lookup(typeDecl.NameKey()); t != nil {
 					res = append(res, t)
 				}
 			case coretypes.String:
 				parts := corestr.Split(typeDecl.S, '|')
 				for _, p := range parts {
-					if t := TYPES.Lookup(MakeSymbol(p).name); t != nil {
+					if t := TYPES.Lookup(coretypes.MakeSymbol(STRINGS.Intern, p).NameKey()); t != nil {
 						res = append(res, t)
 					}
 				}
@@ -1412,7 +1411,7 @@ func typesString(types []*coretypes.Type) string {
 	return b.String()
 }
 
-func checkTypes(declaredArgs []Symbol, call *CallExpr) bool {
+func checkTypes(declaredArgs []coretypes.Symbol, call *CallExpr) bool {
 	res := false
 	for i, da := range declaredArgs {
 		if declaredTypes := getTaggedTypes(da); len(declaredTypes) > 0 {
@@ -1454,7 +1453,7 @@ func reportWrongArity(expr *FnExpr, isMacro bool, call *CallExpr, pos coretypes.
 
 func checkArglist(arglist coretypes.Seq, passedArgsCount int) bool {
 	for !arglist.IsEmpty() {
-		if v, ok := arglist.First().(Vec); ok {
+		if v, ok := arglist.First().(coretypes.Vec); ok {
 			if v.Count() == passedArgsCount ||
 				v.Count() >= 2 && v.Nth(v.Count()-2).Equals(SYMBOLS.amp) && passedArgsCount >= (v.Count()-2) {
 				return true
@@ -1466,10 +1465,10 @@ func checkArglist(arglist coretypes.Seq, passedArgsCount int) bool {
 }
 
 func setMacroMeta(vr *Var) {
-	if vr.meta == nil {
-		vr.meta = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(Map)
+	if vr.Meta == nil {
+		vr.Meta = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(coretypes.Map)
 	} else {
-		vr.meta = vr.meta.Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(Map)
+		vr.Meta = vr.Meta.Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(coretypes.Map)
 	}
 }
 
@@ -1489,7 +1488,7 @@ func parseSetMacro(obj coretypes.Object, ctx *ParseContext) Expr {
 	panic(&ParseError{obj: obj, msg: "set-macro__ argument must be a var"})
 }
 
-func isKnownMacros(sym Symbol) (bool, coretypes.Seq) {
+func isKnownMacros(sym coretypes.Symbol) (bool, coretypes.Seq) {
 	if KNOWN_MACROS == nil {
 		knownMacros := GLOBAL_ENV.CoreNamespace.Resolve("*known-macros*")
 		if knownMacros == nil {
@@ -1497,7 +1496,7 @@ func isKnownMacros(sym Symbol) (bool, coretypes.Seq) {
 		}
 		KNOWN_MACROS = knownMacros
 	}
-	if ok, v := KNOWN_MACROS.Value.(Map).Get(sym); ok {
+	if ok, v := KNOWN_MACROS.Value.(coretypes.Map).Get(sym); ok {
 		switch v := v.(type) {
 		case coretypes.Seqable:
 			return true, v.Seq()
@@ -1516,14 +1515,11 @@ func isUnknownCallable(expr Expr) (bool, coretypes.Seq) {
 		if c.vr.isMacro {
 			return true, nil
 		}
-		var sym Symbol
+		var sym coretypes.Symbol
 		if c.vr.ns != GLOBAL_ENV.CurrentNamespace() && c.vr.ns != GLOBAL_ENV.CoreNamespace {
-			sym = Symbol{
-				ns:   c.vr.ns.Name.name,
-				name: c.vr.name.name,
-			}
+			sym = coretypes.MakeSymbolFromKeys(c.vr.ns.Name.NameKey(), c.vr.name.NameKey())
 		} else {
-			sym = MakeSymbol(*c.vr.name.name)
+			sym = coretypes.MakeSymbol(STRINGS.Intern, c.vr.name.Name())
 		}
 		b, s := isKnownMacros(sym)
 		if b {
@@ -1532,7 +1528,7 @@ func isUnknownCallable(expr Expr) (bool, coretypes.Seq) {
 		if c.vr.expr != nil {
 			return false, nil
 		}
-		if sym.ns == nil && c.vr.isFake && c.vr.ns != GLOBAL_ENV.CoreNamespace {
+		if sym.NamespaceKey() == nil && c.vr.isFake && c.vr.ns != GLOBAL_ENV.CoreNamespace {
 			return true, nil
 		}
 	}
@@ -1602,7 +1598,7 @@ func checkCall(expr Expr, isMacro bool, call *CallExpr, pos coretypes.Position) 
 			return
 		}
 		switch expr.obj.(type) {
-		case Keyword:
+		case coretypes.Keyword:
 			if argsCount == 0 || argsCount > 2 {
 				printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to %s", argsCount, call.Name()))
 			}
@@ -1633,8 +1629,8 @@ func parseList(obj coretypes.Object, ctx *ParseContext) Expr {
 
 	pos := GetPosition(obj)
 	first := seq.First()
-	if v, ok := first.(Symbol); ok && v.ns == nil {
-		switch v.name {
+	if v, ok := first.(coretypes.Symbol); ok && v.NamespaceKey() == nil {
+		switch v.NameKey() {
 		case STR.quote:
 			return readerConstruction.LiteralExpr(Second(seq))
 		case STR._if:
@@ -1671,7 +1667,7 @@ func parseList(obj coretypes.Object, ctx *ParseContext) Expr {
 		case STR._var:
 			checkForm(obj, 2, 2)
 			switch sym := Second(seq).(type) {
-			case Symbol:
+			case coretypes.Symbol:
 				vr, ok := ctx.GlobalEnv.Resolve(sym)
 				if !ok {
 					if !LINTER_MODE {
@@ -1731,7 +1727,7 @@ func parseList(obj coretypes.Object, ctx *ParseContext) Expr {
 				ctx.linterBindings = ctx.linterBindings.PopFrame()
 			}()
 			for !syms.IsEmpty() {
-				if sym, ok := syms.First().(Symbol); ok {
+				if sym, ok := syms.First().(coretypes.Symbol); ok {
 					ctx.linterBindings.AddBinding(sym, 0, true, nil)
 				}
 				syms = syms.Rest()
@@ -1790,35 +1786,29 @@ func parseList(obj coretypes.Object, ctx *ParseContext) Expr {
 	return res
 }
 
-func InternFakeSymbol(ns *Namespace, sym Symbol) *Var {
+func InternFakeSymbol(ns *Namespace, sym coretypes.Symbol) *Var {
 	if ns != nil {
-		fakeSym := Symbol{
-			ns:   nil,
-			name: sym.name,
-		}
+		fakeSym := coretypes.MakeSymbolFromKeys(nil, sym.NameKey())
 		return ns.InternFake(fakeSym)
 	}
-	fakeSym := Symbol{
-		ns:   nil,
-		name: STRINGS.Intern(sym.ToString(false)),
-	}
+	fakeSym := coretypes.MakeSymbolFromKeys(nil, STRINGS.Intern(sym.ToString(false)))
 	return GLOBAL_ENV.CurrentNamespace().InternFake(fakeSym)
 }
 
-func isInteropSymbol(sym Symbol) bool {
-	return sym.ns == nil && corestr.IsInteropName(*sym.name)
+func isInteropSymbol(sym coretypes.Symbol) bool {
+	return sym.NamespaceKey() == nil && corestr.IsInteropName(sym.Name())
 }
 
-func isRecordConstructor(sym Symbol) bool {
-	return sym.ns == nil && corestr.IsRecordConstructorName(*sym.name)
+func isRecordConstructor(sym coretypes.Symbol) bool {
+	return sym.NamespaceKey() == nil && corestr.IsRecordConstructorName(sym.Name())
 }
 
 var fullClassNameRe = regexp.MustCompile(`.+\..+\.[A-Z].+`)
 
-func isJavaSymbol(sym Symbol) bool {
-	s := *sym.name
-	if sym.ns != nil {
-		s = *sym.ns
+func isJavaSymbol(sym coretypes.Symbol) bool {
+	s := sym.Name()
+	if ns := sym.Namespace(); ns != "" {
+		s = ns
 	}
 	return fullClassNameRe.MatchString(s)
 }
@@ -1835,7 +1825,7 @@ func MakeVarRefExpr(vr *Var, obj coretypes.Object) *VarRefExpr {
 }
 
 func parseSymbol(obj coretypes.Object, ctx *ParseContext) Expr {
-	sym := obj.(Symbol)
+	sym := obj.(coretypes.Symbol)
 	b := ctx.GetLocalBinding(sym)
 	if b != nil {
 		b.isUsed = true
@@ -1847,20 +1837,20 @@ func parseSymbol(obj coretypes.Object, ctx *ParseContext) Expr {
 	if vr, ok := ctx.GlobalEnv.Resolve(sym); ok {
 		return MakeVarRefExpr(vr, obj)
 	}
-	if sym.ns == nil && TYPES.Contains(sym.name) {
+	if sym.NamespaceKey() == nil && TYPES.Contains(sym.NameKey()) {
 		return &LiteralExpr{
 			Position: GetPosition(obj),
-			obj:      TYPES.Lookup(sym.name),
+			obj:      TYPES.Lookup(sym.NameKey()),
 		}
 	}
 	if !LINTER_MODE {
 		panic(&ParseError{obj: obj, msg: "Unable to resolve symbol: " + sym.ToString(false)})
 	}
-	if DIALECT == corereader.CLJSDialect && sym.ns == nil {
+	if DIALECT == corereader.CLJSDialect && sym.NamespaceKey() == nil {
 		// Check if this is a "callable namespace"
 		ns := ctx.GlobalEnv.FindNamespace(sym)
 		if ns == nil {
-			ns = ctx.GlobalEnv.CurrentNamespace().aliases[sym.name]
+			ns = ctx.GlobalEnv.CurrentNamespace().aliases[sym.NameKey()]
 		}
 		if ns != nil {
 			ns.isUsed = true
@@ -1870,11 +1860,11 @@ func parseSymbol(obj coretypes.Object, ctx *ParseContext) Expr {
 		// See if this is a JS interop (i.e. Math.PI)
 		parts := corestr.Split(sym.Name(), '.')
 		if len(parts) > 1 && parts[0] != "" && parts[len(parts)-1] != "" {
-			return parseSymbol(DeriveReadObject(obj, MakeSymbol(corestr.JoinDotted(parts[:len(parts)-1]))), ctx)
+			return parseSymbol(DeriveReadObject(obj, coretypes.MakeSymbol(STRINGS.Intern, corestr.JoinDotted(parts[:len(parts)-1]))), ctx)
 		}
 		// Check if this is a constructor call
 		if len(parts) == 2 && parts[0] != "" && parts[len(parts)-1] == "" {
-			if vr, ok := ctx.GlobalEnv.Resolve(MakeSymbol(parts[0])); ok {
+			if vr, ok := ctx.GlobalEnv.Resolve(coretypes.MakeSymbol(STRINGS.Intern, parts[0])); ok {
 				return MakeVarRefExpr(vr, obj)
 			}
 		}
@@ -1900,10 +1890,10 @@ func Parse(obj coretypes.Object, ctx *ParseContext) Expr {
 	switch v := obj.(type) {
 	case Nil:
 		res = readerConstruction.LiteralExpr(obj)
-	case Vec:
+	case coretypes.Vec:
 		canHaveMeta = true
 		res = parseVector(v, pos, ctx)
-	case Map:
+	case coretypes.Map:
 		canHaveMeta = true
 		res = parseMap(v, pos, ctx)
 	case *MapSet:
@@ -1911,13 +1901,13 @@ func Parse(obj coretypes.Object, ctx *ParseContext) Expr {
 		res = parseSet(v, pos, ctx)
 	case coretypes.Seq:
 		res = parseList(obj, ctx)
-	case Symbol:
+	case coretypes.Symbol:
 		res = parseSymbol(obj, ctx)
 	default:
 		res = readerConstruction.LiteralExpr(obj)
 	}
 	if canHaveMeta {
-		meta := obj.(Meta).GetMeta()
+		meta := obj.(coretypes.Meta).GetMeta()
 		if meta != nil {
 			return &MetaExpr{
 				meta:     parseMap(meta, pos, ctx),

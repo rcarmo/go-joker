@@ -33,16 +33,16 @@ type (
 		IN_NS_VAR     *Var
 		version       *Var
 		libs          *Var
-		Features      Set
+		Features      coretypes.Set
 	}
 )
 
-func versionMap() Map {
+func versionMap() coretypes.Map {
 	res := collectionConstruction.NewEmptyArrayMap()
 	major, minor, incremental := corestr.ParseVersionTriplet(VERSION)
-	res.Add(MakeKeyword("major"), coretypes.Int{I: int(major)})
-	res.Add(MakeKeyword("minor"), coretypes.Int{I: int(minor)})
-	res.Add(MakeKeyword("incremental"), coretypes.Int{I: int(incremental)})
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "major"), coretypes.Int{I: int(major)})
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "minor"), coretypes.Int{I: int(minor)})
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "incremental"), coretypes.Int{I: int(incremental)})
 	return res
 }
 
@@ -137,41 +137,43 @@ func (env *Env) SetCurrentNamespace(ns *Namespace) {
 	env.ns.Value = ns
 }
 
-func (env *Env) EnsureSymbolIsNamespace(sym Symbol) *Namespace {
-	if sym.ns != nil {
+func (env *Env) EnsureSymbolIsNamespace(sym coretypes.Symbol) *Namespace {
+	if sym.NamespaceKey() != nil {
 		panic(RT.NewError("Namespace's name cannot be qualified: " + sym.ToString(false)))
 	}
+	nameKey := sym.NameKey()
 	nsRWMu.RLock()
-	ns := env.Namespaces[sym.name]
+	ns := env.Namespaces[nameKey]
 	nsRWMu.RUnlock()
 	if ns != nil {
 		return ns
 	}
 	nsRWMu.Lock()
 	// Double-check under write lock.
-	if env.Namespaces[sym.name] == nil {
-		env.Namespaces[sym.name] = NewNamespace(sym)
+	if env.Namespaces[nameKey] == nil {
+		env.Namespaces[nameKey] = NewNamespace(sym)
 	}
-	ns = env.Namespaces[sym.name]
+	ns = env.Namespaces[nameKey]
 	nsRWMu.Unlock()
 	return ns
 }
 
-func (env *Env) EnsureSymbolIsLib(sym Symbol) *Namespace {
+func (env *Env) EnsureSymbolIsLib(sym coretypes.Symbol) *Namespace {
 	ns := env.EnsureSymbolIsNamespace(sym)
 	env.libs.Value.(*MapSet).Add(sym)
 	return ns
 }
 
-func (env *Env) NamespaceFor(ns *Namespace, s Symbol) *Namespace {
+func (env *Env) NamespaceFor(ns *Namespace, s coretypes.Symbol) *Namespace {
 	var res *Namespace
-	if s.ns == nil {
+	if s.NamespaceKey() == nil {
 		res = ns
 	} else {
-		res = ns.aliases[s.ns]
+		nsKey := s.NamespaceKey()
+		res = ns.aliases[nsKey]
 		if res == nil {
 			nsRWMu.RLock()
-			res = env.Namespaces[s.ns]
+			res = env.Namespaces[nsKey]
 			nsRWMu.RUnlock()
 		}
 	}
@@ -181,12 +183,12 @@ func (env *Env) NamespaceFor(ns *Namespace, s Symbol) *Namespace {
 	return res
 }
 
-func (env *Env) ResolveIn(n *Namespace, s Symbol) (*Var, bool) {
+func (env *Env) ResolveIn(n *Namespace, s coretypes.Symbol) (*Var, bool) {
 	ns := env.NamespaceFor(n, s)
 	if ns == nil {
 		return nil, false
 	}
-	if v, ok := ns.mappings[s.name]; ok {
+	if v, ok := ns.mappings[s.NameKey()]; ok {
 		traceSymbolResolve(ns, s, true)
 		return v, true
 	}
@@ -201,16 +203,16 @@ func (env *Env) ResolveIn(n *Namespace, s Symbol) (*Var, bool) {
 	return nil, false
 }
 
-func (env *Env) Resolve(s Symbol) (*Var, bool) {
+func (env *Env) Resolve(s coretypes.Symbol) (*Var, bool) {
 	return env.ResolveIn(env.CurrentNamespace(), s)
 }
 
-func (env *Env) FindNamespace(s Symbol) *Namespace {
-	if s.ns != nil {
+func (env *Env) FindNamespace(s coretypes.Symbol) *Namespace {
+	if s.NamespaceKey() != nil {
 		return nil
 	}
 	nsRWMu.RLock()
-	ns := env.Namespaces[s.name]
+	ns := env.Namespaces[s.NameKey()]
 	nsRWMu.RUnlock()
 	if ns != nil {
 		ns.MaybeLazy("FindNameSpace")
@@ -218,31 +220,34 @@ func (env *Env) FindNamespace(s Symbol) *Namespace {
 	return ns
 }
 
-func (env *Env) RemoveNamespace(s Symbol) *Namespace {
-	if s.ns != nil {
+func (env *Env) RemoveNamespace(s coretypes.Symbol) *Namespace {
+	if s.NamespaceKey() != nil {
 		return nil
 	}
 	if s.Equals(SYMBOLS.joker_core) {
 		panic(RT.NewError("Cannot remove core namespace"))
 	}
+	nameKey := s.NameKey()
 	nsRWMu.Lock()
-	ns := env.Namespaces[s.name]
-	delete(env.Namespaces, s.name)
+	ns := env.Namespaces[nameKey]
+	delete(env.Namespaces, nameKey)
 	nsRWMu.Unlock()
 	return ns
 }
 
-func (env *Env) ResolveSymbol(s Symbol) Symbol {
-	if corestr.HasNamespaceSeparator(*s.name, '.') {
+func (env *Env) ResolveSymbol(s coretypes.Symbol) coretypes.Symbol {
+	if corestr.HasNamespaceSeparator(s.Name(), '.') {
 		return s
 	}
-	if s.ns == nil && TYPES.Contains(s.name) {
+	nameKey := s.NameKey()
+	nsKey := s.NamespaceKey()
+	if nsKey == nil && TYPES.Contains(nameKey) {
 		return s
 	}
 	currentNs := env.CurrentNamespace()
-	if s.ns != nil {
+	if nsKey != nil {
 		ns := env.NamespaceFor(currentNs, s)
-		if ns == nil || ns.Name.name == s.ns {
+		if ns == nil || ns.Name.NameKey() == nsKey {
 			if ns != nil {
 				ns.isUsed = true
 				ns.isGloballyUsed = true
@@ -251,28 +256,19 @@ func (env *Env) ResolveSymbol(s Symbol) Symbol {
 		}
 		ns.isUsed = true
 		ns.isGloballyUsed = true
-		return Symbol{
-			name: s.name,
-			ns:   ns.Name.name,
-		}
+		return coretypes.MakeSymbolFromKeys(ns.Name.NameKey(), nameKey)
 	}
-	vr, ok := currentNs.mappings[s.name]
+	vr, ok := currentNs.mappings[nameKey]
 	if !ok {
-		return Symbol{
-			name: s.name,
-			ns:   currentNs.Name.name,
-		}
+		return coretypes.MakeSymbolFromKeys(currentNs.Name.NameKey(), nameKey)
 	}
 	vr.isUsed = true
 	vr.isGloballyUsed = true
 	vr.ns.isUsed = true
 	vr.ns.isGloballyUsed = true
-	return Symbol{
-		name: vr.name.name,
-		ns:   vr.ns.Name.name,
-	}
+	return coretypes.MakeSymbolFromKeys(vr.ns.Name.NameKey(), vr.name.NameKey())
 }
 
 func init() {
-	GLOBAL_ENV.SetCurrentNamespace(GLOBAL_ENV.EnsureSymbolIsNamespace(MakeSymbol("user")))
+	GLOBAL_ENV.SetCurrentNamespace(GLOBAL_ENV.EnsureSymbolIsNamespace(coretypes.MakeSymbol(STRINGS.Intern, "user")))
 }

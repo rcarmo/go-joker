@@ -32,7 +32,7 @@ func InternsOrThunks() {
 
 	boltNamespace.InternVar("by-prefix", by_prefix_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("db"), MakeSymbol("bucket"), MakeSymbol("prefix"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "db"), coretypes.MakeSymbol(STRINGS.Intern, "bucket"), coretypes.MakeSymbol(STRINGS.Intern, "prefix"))),
 			`Retrives key/value pairs for all keys in bucket
   that start with prefix.
   Returns a vector of [key value] tuples. Passing empty prefix
@@ -40,55 +40,55 @@ func InternsOrThunks() {
 
 	boltNamespace.InternVar("close", close_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("db"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "db"))),
 			`Releases all database resources.
   It will block waiting for any open transactions to finish
   before closing the database and returning.`, "1.0"))
 
 	boltNamespace.InternVar("create-bucket", create_bucket_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("db"), MakeSymbol("name"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "db"), coretypes.MakeSymbol(STRINGS.Intern, "name"))),
 			`Creates a new bucket. Throws an error if the bucket already exists,
   if the bucket name is blank, or if the bucket name is too long.`, "1.0"))
 
 	boltNamespace.InternVar("create-bucket-if-not-exists", create_bucket_if_not_exists_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("db"), MakeSymbol("name"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "db"), coretypes.MakeSymbol(STRINGS.Intern, "name"))),
 			`Creates a new bucket if it doesn't already exist.
    Throws an error if the bucket name is blank, or if the bucket name is too long.`, "1.0"))
 
 	boltNamespace.InternVar("delete", delete_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("db"), MakeSymbol("bucket"), MakeSymbol("key"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "db"), coretypes.MakeSymbol(STRINGS.Intern, "bucket"), coretypes.MakeSymbol(STRINGS.Intern, "key"))),
 			`Removes a key from the bucket if it exists.`, "1.0"))
 
 	boltNamespace.InternVar("delete-bucket", delete_bucket_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("db"), MakeSymbol("name"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "db"), coretypes.MakeSymbol(STRINGS.Intern, "name"))),
 			`Deletes a bucket. Throws an error if the bucket doesn't exist.`, "1.0"))
 
 	boltNamespace.InternVar("get", get_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("db"), MakeSymbol("bucket"), MakeSymbol("key"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "db"), coretypes.MakeSymbol(STRINGS.Intern, "bucket"), coretypes.MakeSymbol(STRINGS.Intern, "key"))),
 			`Retrieves the value for a key in the bucket.
   Returns nil if the key does not exist.`, "1.0"))
 
 	boltNamespace.InternVar("next-sequence", next_sequence_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("db"), MakeSymbol("bucket"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "db"), coretypes.MakeSymbol(STRINGS.Intern, "bucket"))),
 			`Returns an autoincrementing integer for the bucket.`, "1.0"))
 
 	boltNamespace.InternVar("open", open_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("filename"), MakeSymbol("mode"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "filename"), coretypes.MakeSymbol(STRINGS.Intern, "mode"))),
 			`Creates and opens a database at the given path.
   If the file does not exist then it will be created automatically
   with mode perm (before umask).
-  mode is normally passed as an octal literal, e.g. 0600`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "BoltDB"}))
+  mode is normally passed as an octal literal, e.g. 0600`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "BoltDB"}))
 
 	boltNamespace.InternVar("put", put_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("db"), MakeSymbol("bucket"), MakeSymbol("key"), MakeSymbol("value"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "db"), coretypes.MakeSymbol(STRINGS.Intern, "bucket"), coretypes.MakeSymbol(STRINGS.Intern, "key"), coretypes.MakeSymbol(STRINGS.Intern, "value"))),
 			`Sets the value for a key in the bucket.
   If the key exist then its previous value will be overwritten.
   Throws an error if the key is blank, if the key is too large, or if the value is too large.`, "1.0"))

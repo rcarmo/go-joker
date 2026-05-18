@@ -37,21 +37,12 @@ func isObjectInfoNil(p *coretypes.ObjectInfo) bool {
 	return p == nil || (p.EndLine == 0 && p.EndColumn == 0 && p.StartLine == 0 && p.StartColumn == 0 && (p.Filename == nil || *p.Filename == ""))
 }
 
-func symAsGo(sym Symbol) string {
-	if sym.name == nil {
+func symAsGo(sym coretypes.Symbol) string {
+	if sym.NameKey() == nil {
 		return "EMPTY"
 	} else {
 		return corestr.SymbolGoName(sym.ToString(false))
 	}
-}
-
-func (sym Symbol) AsGo() string {
-	name := symAsGo(sym)
-	pos := ""
-	if f := sym.Info; !isObjectInfoNil(f) {
-		pos = fmt.Sprintf("_POS_%s", positionAsGo(f.Filename, f.StartLine, f.StartColumn, f.EndLine, f.EndColumn))
-	}
-	return "symbol_" + name + pos
 }
 
 func fnExprAsGo(f *FnExpr) string {
@@ -73,10 +64,11 @@ func (fn *Fn) AsGo() string {
 
 func (ns *Namespace) AsGo() string {
 	file := ""
-	if ns.Name.Info != nil && ns.Name.Info.Filename != nil && *ns.Name.Info.Filename != *ns.Name.name && corestr.FilenameUnbracketed(*ns.Name.Info.Filename) != *ns.Name.name {
+	name := ns.Name.Name()
+	if ns.Name.Info != nil && ns.Name.Info.Filename != nil && *ns.Name.Info.Filename != name && corestr.FilenameUnbracketed(*ns.Name.Info.Filename) != name {
 		file = "_FILE_" + corestr.GoName(*ns.Name.Info.Filename)
 	}
-	return "ns_" + corestr.GoName(*ns.Name.name) + file
+	return "ns_" + corestr.GoName(name) + file
 }
 
 func (e *Env) AsGo() string {
@@ -86,20 +78,8 @@ func (e *Env) AsGo() string {
 	panic("not GLOBAL_ENV")
 }
 
-func kwAsGo(kw Keyword) string {
+func kwAsGo(kw coretypes.Keyword) string {
 	return corestr.KeywordGoName(kw.ToString(false))
-}
-
-func (kw Keyword) AsGo() string {
-	name := kwAsGo(kw)
-	if kw.name == nil {
-		panic("empty keyword")
-	}
-	pos := ""
-	if f := kw.Info; f != nil {
-		pos = fmt.Sprintf("_POS_%s", positionAsGo(f.Filename, f.StartLine, f.StartColumn, f.EndLine, f.EndColumn))
-	}
-	return "kw_" + name + pos
 }
 
 func objectInfoAsGo(oi *coretypes.ObjectInfo) string {
@@ -114,15 +94,16 @@ func (v *Var) AsGo() string {
 	name := symAsGo(sym)
 	ns := ""
 	if v.ns != nil {
-		if sym.ns != nil && *sym.ns != *v.ns.Name.name {
-			msg := fmt.Sprintf("Symbol namespace discrepancy: Var %s has %s, its sym has %s", name, *v.ns.Name.name, *sym.ns)
+		nsName := v.ns.Name.Name()
+		if symNs := sym.Namespace(); symNs != "" && symNs != nsName {
+			msg := fmt.Sprintf("Symbol namespace discrepancy: Var %s has %s, its sym has %s", name, nsName, symNs)
 			fmt.Fprintln(Stderr, msg)
 			panic(msg)
 		}
-		if sym.ns == nil {
+		if sym.NamespaceKey() == nil {
 			i := v.ns.Name.Info
-			if i == nil || i.Filename == nil || corestr.FilenameUnbracketed(*i.Filename) != *v.ns.Name.name {
-				ns = "_NS_" + corestr.GoName(*v.ns.Name.name)
+			if i == nil || i.Filename == nil || corestr.FilenameUnbracketed(*i.Filename) != nsName {
+				ns = "_NS_" + corestr.GoName(nsName)
 			}
 		}
 	}
@@ -138,7 +119,7 @@ func (v *Var) AsGo() string {
 }
 
 func (v *VarRefExpr) AsGo() string {
-	s := *v.vr.name.name
+	s := v.vr.name.Name()
 	if res, ok := infoHolderAsGoName(*v); ok {
 		return "varRef_" + corestr.GoName(s) + "_" + res
 	}

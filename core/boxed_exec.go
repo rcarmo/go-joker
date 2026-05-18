@@ -2756,8 +2756,8 @@ func objectToIRValue(obj coretypes.Object) irValue {
 		}
 	case Nil:
 		return irValue{tag: irValNil}
-	case Keyword:
-		return irValue{tag: irValKeyword, p: unsafe.Pointer(v.name)}
+	case coretypes.Keyword:
+		return irValue{tag: irValKeyword, p: unsafe.Pointer(v.NameKey())}
 	case *StringCursor:
 		return irValue{tag: irValCursor, p: unsafe.Pointer(v)}
 	default:
@@ -2902,7 +2902,7 @@ func keywordObjectFromName(name *string) coretypes.Object {
 	if v, ok := keywordObjectCache.Load(name); ok {
 		return v.(coretypes.Object)
 	}
-	kw := Keyword{name: name}
+	kw := coretypes.MakeKeywordFromKeys(nil, name)
 	// Store as coretypes.Object interface to avoid re-boxing
 	var obj coretypes.Object = kw
 	keywordObjectCache.Store(name, obj)

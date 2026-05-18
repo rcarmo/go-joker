@@ -20,13 +20,13 @@ func registerCoreAPIGaps() {
 	}
 
 	// alter-var-root — (alter-var-root var fn & args)
-	avrVr := ns.Intern(MakeSymbol("alter-var-root"))
+	avrVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "alter-var-root"))
 	avrVr.Value = Proc{Name: "procAlterVarRoot", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
 			PanicArityMinMax(len(args), 2, 999)
 		}
 		vr := EnsureObjectIsVar(args[0], "alter-var-root requires a var, got %s")
-		fn := EnsureObjectIsCallable(args[1], "alter-var-root requires a function, got %s")
+		fn := coretypes.EnsureObjectIsCallable(args[1], "alter-var-root requires a function, got %s")
 		fnArgs := make([]coretypes.Object, 1+len(args)-2)
 		fnArgs[0] = vr.Value
 		for i := 2; i < len(args); i++ {
@@ -35,11 +35,11 @@ func registerCoreAPIGaps() {
 		vr.Value = fn.Call(fnArgs)
 		return vr.Value
 	}}
-	referToUser(MakeSymbol("alter-var-root"), avrVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "alter-var-root"), avrVr)
 
 	// re-groups — (re-groups matcher) — returns groups from last regex match
 	// In Joker, re-find already returns groups. Provide re-groups for compat.
-	rgVr := ns.Intern(MakeSymbol("re-groups"))
+	rgVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "re-groups"))
 	rgVr.Value = Proc{Name: "procReGroups", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		// re-groups expects a Matcher, but Joker doesn't have Matcher objects.
@@ -47,8 +47,8 @@ func registerCoreAPIGaps() {
 		switch v := args[0].(type) {
 		case *ArrayVector:
 			if v.Count() >= 2 {
-				re := EnsureObjectIsRegex(v.At(0), "re-groups requires [regex string]")
-				s := EnsureObjectIsString(v.At(1), "re-groups requires [regex string]")
+				re := coretypes.EnsureObjectIsRegex(v.At(0), "re-groups requires [regex string]")
+				s := coretypes.EnsureObjectIsString(v.At(1), "re-groups requires [regex string]")
 				matches := regexp.MustCompile(re.R.String()).FindStringSubmatch(s.S)
 				if matches == nil {
 					return NIL
@@ -65,13 +65,13 @@ func registerCoreAPIGaps() {
 		}
 		return NIL
 	}}
-	referToUser(MakeSymbol("re-groups"), rgVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "re-groups"), rgVr)
 
 	// file-seq — (file-seq dir) — returns a lazy seq of files
-	fsVr := ns.Intern(MakeSymbol("file-seq"))
+	fsVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "file-seq"))
 	fsVr.Value = Proc{Name: "procFileSeq", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		dir := EnsureObjectIsString(args[0], "file-seq requires a string path, got %s")
+		dir := coretypes.EnsureObjectIsString(args[0], "file-seq requires a string path, got %s")
 		var files []coretypes.Object
 		filepath.Walk(dir.S, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
@@ -85,10 +85,10 @@ func registerCoreAPIGaps() {
 		}
 		return &ArraySeq{arr: files, index: 0}
 	}}
-	referToUser(MakeSymbol("file-seq"), fsVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "file-seq"), fsVr)
 
 	// var-get — (var-get var)
-	vgVr := ns.Intern(MakeSymbol("var-get"))
+	vgVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "var-get"))
 	vgVr.Value = Proc{Name: "procVarGet", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		vr := EnsureObjectIsVar(args[0], "var-get requires a var, got %s")
@@ -97,24 +97,24 @@ func registerCoreAPIGaps() {
 		}
 		return vr.Value
 	}}
-	referToUser(MakeSymbol("var-get"), vgVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "var-get"), vgVr)
 
 	// var-set — (var-set var val)
-	vsVr := ns.Intern(MakeSymbol("var-set"))
+	vsVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "var-set"))
 	vsVr.Value = Proc{Name: "procVarSet", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		vr := EnsureObjectIsVar(args[0], "var-set requires a var, got %s")
 		vr.Value = args[1]
 		return args[1]
 	}}
-	referToUser(MakeSymbol("var-set"), vsVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "var-set"), vsVr)
 
 	// var? — (var? x)
-	vqVr := ns.Intern(MakeSymbol("var?"))
+	vqVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "var?"))
 	vqVr.Value = Proc{Name: "procVarQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		_, ok := args[0].(*Var)
 		return coretypes.MakeBoolean(ok)
 	}}
-	referToUser(MakeSymbol("var?"), vqVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "var?"), vqVr)
 }

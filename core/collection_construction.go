@@ -46,7 +46,7 @@ func CountedIndexedGet(v coretypes.CountedIndexed, key coretypes.Object) (bool, 
 
 func CountedIndexedCompare(v1, v2 coretypes.CountedIndexed) int {
 	return corecollections.IndexedCompare[coretypes.Object](v1, v2, func(a, b coretypes.Object) int {
-		return EnsureObjectIsComparable(a, "").Compare(b)
+		return coretypes.EnsureObjectIsComparable(a, "").Compare(b)
 	})
 }
 

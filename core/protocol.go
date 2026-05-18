@@ -22,8 +22,8 @@ import (
 // Protocol represents a Clojure-style protocol.
 type Protocol struct {
 	coretypes.InfoHolder
-	MetaHolder
-	name    Symbol
+	coretypes.MetaHolder
+	name    coretypes.Symbol
 	methods map[string]*ProtocolMethod // method name → method descriptor
 	ns      *Namespace
 }
@@ -56,9 +56,9 @@ func (p *Protocol) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return &res
 }
 
-func (p *Protocol) WithMeta(m Map) coretypes.Object {
+func (p *Protocol) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *p
-	res.meta = SafeMerge(res.meta, m)
+	res.Meta = coretypes.SafeMerge(res.Meta, m)
 	return &res
 }
 
@@ -96,9 +96,9 @@ func typeNameOf(obj coretypes.Object) string {
 		return "String"
 	case coretypes.Char:
 		return "Char"
-	case Keyword:
+	case coretypes.Keyword:
 		return "Keyword"
-	case Symbol:
+	case coretypes.Symbol:
 		return "Symbol"
 	case *coretypes.Regex:
 		return "Regex"
@@ -156,7 +156,7 @@ func makeProtocolMethodProc(proto *Protocol, methodName string, pm *ProtocolMeth
 
 // DefineProtocol creates a new Protocol and installs its method vars.
 // Called from the defprotocol special form handler.
-func DefineProtocol(ns *Namespace, name Symbol, methods []ProtocolMethodDef) *Protocol {
+func DefineProtocol(ns *Namespace, name coretypes.Symbol, methods []ProtocolMethodDef) *Protocol {
 	proto := &Protocol{
 		name:    name,
 		methods: make(map[string]*ProtocolMethod),
@@ -171,7 +171,7 @@ func DefineProtocol(ns *Namespace, name Symbol, methods []ProtocolMethodDef) *Pr
 		proto.methods[mdef.Name] = pm
 
 		// Install the dispatch proc as a var in the protocol's namespace
-		sym := MakeSymbol(mdef.Name)
+		sym := coretypes.MakeSymbol(STRINGS.Intern, mdef.Name)
 		vr := ns.Intern(sym)
 		vr.Value = makeProtocolMethodProc(proto, mdef.Name, pm)
 	}

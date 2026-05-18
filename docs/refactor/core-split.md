@@ -1,6 +1,6 @@
 # Core package split audit
 
-Updated: 2026-05-15
+Updated: 2026-05-18
 
 ## Purpose
 
@@ -22,6 +22,13 @@ This is the R5 inventory for splitting the remaining `core` monolith after the i
 
 This makes it too easy for features to reach across layers through unexported state and makes architectural intent hard to see from the repository layout.
 
+
+## 2026-05-18 status update
+
+The type/object split has advanced enough that `core/types` is now the canonical object/protocol package. Root `core` no longer defines or aliases `Object`, and the recent cleanup removed transitional root aliases for `Keyword`, `Symbol`, `Map`, `Meta`, `MetaHolder`, `MapIterator`, `Pair`, and `EmptyMapIterator`. Root callers now use explicit `coretypes.*` names for those contracts. Major moved families include scalar values (`Int`, `Double`, `Boolean`, `Char`, `String`, `Time`, `Regex`, `Comment`), big numeric values (`BigInt`, `BigFloat`, `Ratio`), numeric operation implementations, `RecurBindings`, `Delay`, symbol/name values, generic info helpers, shared collection protocols (`Map`, `Set`, `Vec`) and metadata/ref contracts (`Meta`, `MetaHolder`, `Ref`).
+
+Root `core` file count is now 68 total Go files (1 root test file). `core/types` has 23 Go files. Concrete collection implementations remain root-owned, but their public/shared protocols now live in `core/types`; the next collection-move blockers are concrete implementation dependencies, metadata propagation, sorted collection/proc coupling, and construction cycles rather than root protocol aliases. Root generated files remain `core/a_generated_bootstrap_payloads.go`, `core/types_assert_gen.go`, and `core/types_info_gen.go`; `types_assert_gen.go` now contains only root-owned helper assertions (`Namespace`, `Var`, `Fn`, `Atom`, `File`, `Channel`) because `coretypes.*` and stdlib I/O assertions live in `core/types`.
+
 ## Proposed split order
 
 Do not split everything at once. Move leaf or low-cycle families first, then higher-coupling layers.
@@ -31,9 +38,9 @@ Do not split everything at once. Move leaf or low-cycle families first, then hig
 - `core/trace` owns tracing/profiling aggregation state.
 - `core/ir` owns opcode names/constants, bytecode disassembly/counting, shape analysis, and the neutral program model.
 - `core/wasm` owns leaf WASM binary encoding/module/host helpers.
-- `core/collections` owns root-independent collection mechanics such as generic slice storage, pair arrays, bitmap/hash-index helpers, and opaque trie nodes.
+- `core/collections` owns root-independent collection mechanics such as generic slice storage, persistent list-node storage, map equality traversal, indexed operations, pair arrays, bitmap/hash-index helpers, and opaque trie nodes.
 - `core/reader` owns root-independent reader mechanics such as char classes, whitespace/comment/top-level-trivia/line decisions, identifier token scanning/validation/keyword, standalone-slash, and literal classification/issue enumeration, escape/unicode parsing, top-level read-form and number-token classification, delimiter/dispatch/form helpers, rune-window history, line rune readers, and raw IO wrappers.
-- `core/string` and `core/cursor` own root-independent string/cache/cursor mechanics.
+- `core/string` and `core/cursor` own root-independent string/cache/cursor mechanics; the Joker `String` value itself now lives in `core/types`.
 - `cmd/joker` owns the CLI entrypoint.
 
 ### 2. Runtime/object boundary
@@ -96,7 +103,7 @@ Status and risks:
 
 Preferred prerequisite:
 
-- keep object/protocol contracts and the construction adapter guard green, then move concrete collections only when implementation dependencies are explicit and acyclic.
+- keep `coretypes` object/protocol contracts and the construction adapter guard green, then move concrete collections only when implementation dependencies are explicit and acyclic. Most protocols have moved; remaining blockers are concrete implementation return types, metadata propagation, sorted collection/proc coupling, and initialization cycles.
 
 ### 4. Reader/parser boundary
 
@@ -181,7 +188,7 @@ R5 should remain blocked on the rest of R3/R4:
 
 - IR compiler/executor still live in root `core`, although a neutral `core/ir.Program` model and initial `RuntimeExecutionAdapter` contract now reduce the boundary.
 - most generated bootstrap files still live in root `core`; the source manifest and linter payload registry have moved to `core/generated` as data-only package boundaries.
-- object/runtime contracts are broader but still not explicit enough to move collections or reader cleanly, even though construction adapters now cover current production call sites.
+- object/runtime contracts are much narrower: `core/types` owns the canonical object/protocol surface, but root metadata, namespace/proc/bootstrap, concrete collections, and evaluator/runtime state still block broad package moves.
 
 Therefore the next implementation work should continue reducing IR/WASM/generated coupling and codifying object/reader/runtime adapters before moving collections/reader/runtime implementations.
 

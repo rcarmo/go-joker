@@ -15,25 +15,25 @@ type (
 	}
 	ConsSeq struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		first coretypes.Object
 		rest  coretypes.Seq
 	}
 	ArraySeq struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		arr   []coretypes.Object
 		index int
 	}
 	LazySeq struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		fn  coretypes.Callable
 		seq coretypes.Seq
 	}
 	MappingSeq struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		seq coretypes.Seq
 		fn  func(obj coretypes.Object) coretypes.Object
 	}
@@ -83,9 +83,9 @@ func (seq *MappingSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *MappingSeq) WithMeta(meta Map) coretypes.Object {
+func (seq *MappingSeq) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *seq
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
@@ -124,7 +124,7 @@ func (seq *LazySeq) Seq() coretypes.Seq {
 
 func (seq *LazySeq) realize() {
 	if seq.seq == nil {
-		seq.seq = EnsureObjectIsSeqable(call0(seq.fn), "").Seq()
+		seq.seq = coretypes.EnsureObjectIsSeqable(call0(seq.fn), "").Seq()
 	}
 }
 
@@ -148,9 +148,9 @@ func (seq *LazySeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *LazySeq) WithMeta(meta Map) coretypes.Object {
+func (seq *LazySeq) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *seq
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
@@ -207,9 +207,9 @@ func (seq *ArraySeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *ArraySeq) WithMeta(meta Map) coretypes.Object {
+func (seq *ArraySeq) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *seq
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
@@ -267,9 +267,9 @@ func SeqToString(seq coretypes.Seq, escape bool) string {
 	return b.String()
 }
 
-func (seq *ConsSeq) WithMeta(meta Map) coretypes.Object {
+func (seq *ConsSeq) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *seq
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 

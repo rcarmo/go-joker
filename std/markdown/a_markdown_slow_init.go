@@ -17,13 +17,13 @@ func InternsOrThunks() {
 
 	markdownNamespace.InternVar("convert-string", convert_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s")), NewVectorFrom(MakeSymbol("s"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Returns the HTML rendering of Markdown string s.
   opts is an optional map of boolean rendering options (all default to true)
 
   :with-hard-wraps? - Render newlines as <br>.
   :with-xhtml? - Render as XHTML.
   :with-unsafe? - When false, all raw html will be omitted from the output. When true html is passed through unchanged.
-  `, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  `, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 }

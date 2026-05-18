@@ -482,7 +482,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var stringNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.string"))
+var stringNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.string"))
 
 func init() {
 	stringNamespace.Lazy = Init

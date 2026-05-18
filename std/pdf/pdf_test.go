@@ -23,7 +23,7 @@ func expectPanic(t *testing.T, fn func()) {
 func TestDocumentCreate(t *testing.T) {
 	initPDFNamespace()
 
-	doc := procDocument([]coretypes.Object{MakeKeyword("a4")})
+	doc := procDocument([]coretypes.Object{coretypes.MakeKeyword(STRINGS.Intern, "a4")})
 	if doc == nil {
 		t.Fatal("document creation failed")
 	}
@@ -139,7 +139,7 @@ func TestPDFDocumentRejectsInvalidDimensions(t *testing.T) {
 		procDocument([]coretypes.Object{coretypes.Double{D: 100}, coretypes.Double{D: -1}})
 	})
 	expectPanic(t, func() {
-		procDocument([]coretypes.Object{MakeKeyword("bogus")})
+		procDocument([]coretypes.Object{coretypes.MakeKeyword(STRINGS.Intern, "bogus")})
 	})
 	expectPanic(t, func() {
 		procDocument([]coretypes.Object{coretypes.Double{D: 100}})

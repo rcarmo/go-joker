@@ -18,7 +18,7 @@ func loadPod(args []coretypes.Object) coretypes.Object {
 	if len(args) < 1 || len(args) > 2 {
 		panic(RT.NewError("pods/load-pod expects command path or pod name plus optional version/args"))
 	}
-	cmdPath := EnsureArgIsString(args, 0).S
+	cmdPath := coretypes.EnsureArgIsString(args, 0).S
 	cmdArgs := []string{}
 	if len(args) == 2 {
 		switch v := args[1].(type) {
@@ -30,7 +30,7 @@ func loadPod(args []coretypes.Object) coretypes.Object {
 			}
 		case coretypes.Seqable:
 			for s := v.Seq(); !s.IsEmpty(); s = s.Rest() {
-				cmdArgs = append(cmdArgs, EnsureObjectIsString(s.First(), "pods/load-pod args must be strings").S)
+				cmdArgs = append(cmdArgs, coretypes.EnsureObjectIsString(s.First(), "pods/load-pod args must be strings").S)
 			}
 		default:
 			panic(RT.NewError("pods/load-pod second argument must be version string or seq of command args"))

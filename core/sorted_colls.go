@@ -11,14 +11,14 @@ import (
 	"sort"
 )
 
-var sortedMetaCache Map
+var sortedMetaCache coretypes.Map
 
-func sortedCollMeta() Map {
+func sortedCollMeta() coretypes.Map {
 	if sortedMetaCache != nil {
 		return sortedMetaCache
 	}
 	m := collectionConstruction.NewEmptyArrayMap()
-	m.Add(MakeKeyword("sorted"), coretypes.Boolean{B: true})
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "sorted"), coretypes.Boolean{B: true})
 	sortedMetaCache = m
 	return sortedMetaCache
 }
@@ -34,7 +34,7 @@ func registerSortedCollProcs() {
 	}
 
 	// sorted-map — (sorted-map k1 v1 k2 v2 ...)
-	smVr := ns.Intern(MakeSymbol("sorted-map"))
+	smVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sorted-map"))
 	smVr.Value = Proc{Name: "procSortedMap", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args)%2 != 0 {
 			panic(RT.NewError("sorted-map requires an even number of arguments"))
@@ -46,13 +46,13 @@ func registerSortedCollProcs() {
 		}
 		return m.WithMeta(sortedCollMeta())
 	}}
-	referToUser(MakeSymbol("sorted-map"), smVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "sorted-map"), smVr)
 
 	// sorted-map-by — (sorted-map-by comparator k1 v1 k2 v2 ...)
-	smbVr := ns.Intern(MakeSymbol("sorted-map-by"))
+	smbVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sorted-map-by"))
 	smbVr.Value = Proc{Name: "procSortedMapBy", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 999)
-		comp := EnsureArgIsCallable(args, 0)
+		comp := coretypes.EnsureArgIsCallable(args, 0)
 		keyvals := args[1:]
 		if len(keyvals)%2 != 0 {
 			panic(RT.NewError("sorted-map-by requires an even number of key/value arguments"))
@@ -64,57 +64,57 @@ func registerSortedCollProcs() {
 		}
 		return m.WithMeta(sortedCollMeta())
 	}}
-	referToUser(MakeSymbol("sorted-map-by"), smbVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "sorted-map-by"), smbVr)
 
 	// sorted-set — (sorted-set v1 v2 ...)
-	ssVr := ns.Intern(MakeSymbol("sorted-set"))
+	ssVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sorted-set"))
 	ssVr.Value = Proc{Name: "procSortedSet", Fn: func(args []coretypes.Object) coretypes.Object {
 		return sortedSetFrom(args, nil)
 	}}
-	referToUser(MakeSymbol("sorted-set"), ssVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "sorted-set"), ssVr)
 
 	// sorted-set-by — (sorted-set-by comparator v1 v2 ...)
-	ssbVr := ns.Intern(MakeSymbol("sorted-set-by"))
+	ssbVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sorted-set-by"))
 	ssbVr.Value = Proc{Name: "procSortedSetBy", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 999)
-		return sortedSetFrom(args[1:], EnsureArgIsCallable(args, 0))
+		return sortedSetFrom(args[1:], coretypes.EnsureArgIsCallable(args, 0))
 	}}
-	referToUser(MakeSymbol("sorted-set-by"), ssbVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "sorted-set-by"), ssbVr)
 
 	// sorted? — (sorted? coll)
-	sortedQVr := ns.Intern(MakeSymbol("sorted?"))
+	sortedQVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sorted?"))
 	sortedQVr.Value = Proc{Name: "procSortedQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		if m, ok := args[0].(Meta); ok {
+		if m, ok := args[0].(coretypes.Meta); ok {
 			meta := m.GetMeta()
 			if meta != nil {
-				if ok, v := meta.Get(MakeKeyword("sorted")); ok {
+				if ok, v := meta.Get(coretypes.MakeKeyword(STRINGS.Intern, "sorted")); ok {
 					return coretypes.MakeBoolean(ToBool(v))
 				}
 			}
 		}
 		return coretypes.Boolean{B: false}
 	}}
-	referToUser(MakeSymbol("sorted?"), sortedQVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "sorted?"), sortedQVr)
 
 	// subseq/rsubseq — range queries over sorted coll API.
-	subseqVr := ns.Intern(MakeSymbol("subseq"))
+	subseqVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "subseq"))
 	subseqVr.Value = Proc{Name: "procSubseq", Fn: func(args []coretypes.Object) coretypes.Object {
 		return sortedSubseq(args, false)
 	}}
-	referToUser(MakeSymbol("subseq"), subseqVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "subseq"), subseqVr)
 
-	rsubseqVr := ns.Intern(MakeSymbol("rsubseq"))
+	rsubseqVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "rsubseq"))
 	rsubseqVr.Value = Proc{Name: "procRsubseq", Fn: func(args []coretypes.Object) coretypes.Object {
 		return sortedSubseq(args, true)
 	}}
-	referToUser(MakeSymbol("rsubseq"), rsubseqVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "rsubseq"), rsubseqVr)
 
 	// comparator — (comparator pred) — wraps a boolean predicate into a comparator fn
-	compVr := ns.Intern(MakeSymbol("comparator"))
+	compVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "comparator"))
 	compVr.Value = Proc{Name: "procComparator", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		pred := EnsureArgIsCallable(args, 0)
+		pred := coretypes.EnsureArgIsCallable(args, 0)
 		return Proc{Name: "procComparatorFn", Fn: func(cArgs []coretypes.Object) coretypes.Object {
 			CheckArity(cArgs, 2, 2)
 			if ToBool(pred.Call(cArgs)) {
@@ -126,7 +126,7 @@ func registerSortedCollProcs() {
 			return coretypes.Int{I: 0}
 		}}
 	}}
-	referToUser(MakeSymbol("comparator"), compVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "comparator"), compVr)
 }
 
 type sortedKV struct {
@@ -199,12 +199,12 @@ func sortedSubseq(args []coretypes.Object, reverse bool) coretypes.Object {
 			entries[i], entries[j] = entries[j], entries[i]
 		}
 	}
-	startPred := EnsureObjectIsCallable(args[1], "subseq predicate must be callable, got %s")
+	startPred := coretypes.EnsureObjectIsCallable(args[1], "subseq predicate must be callable, got %s")
 	startKey := args[2]
 	var endPred coretypes.Callable
 	var endKey coretypes.Object
 	if len(args) == 5 {
-		endPred = EnsureObjectIsCallable(args[3], "subseq predicate must be callable, got %s")
+		endPred = coretypes.EnsureObjectIsCallable(args[3], "subseq predicate must be callable, got %s")
 		endKey = args[4]
 	}
 	out := make([]coretypes.Object, 0)
@@ -227,7 +227,7 @@ func sortedSubseq(args []coretypes.Object, reverse bool) coretypes.Object {
 func sortedEntries(coll coretypes.Object) []coretypes.Object {
 	out := make([]coretypes.Object, 0)
 	preserveOrder := isSortedColl(coll)
-	if m, ok := coll.(Map); ok {
+	if m, ok := coll.(coretypes.Map); ok {
 		for it := m.Iter(); it.HasNext(); {
 			p := it.Next()
 			out = append(out, collectionConstruction.NewArrayVectorFrom(p.Key, p.Value))
@@ -249,16 +249,16 @@ func sortedEntries(coll coretypes.Object) []coretypes.Object {
 }
 
 func isSortedColl(coll coretypes.Object) bool {
-	m, ok := coll.(Meta)
+	m, ok := coll.(coretypes.Meta)
 	if !ok || m.GetMeta() == nil {
 		return false
 	}
-	ok, v := m.GetMeta().Get(MakeKeyword("sorted"))
+	ok, v := m.GetMeta().Get(coretypes.MakeKeyword(STRINGS.Intern, "sorted"))
 	return ok && ToBool(v)
 }
 
 func rangeKey(entry coretypes.Object) coretypes.Object {
-	if v, ok := entry.(Vec); ok && v.Count() >= 1 {
+	if v, ok := entry.(coretypes.Vec); ok && v.Count() >= 1 {
 		return v.Nth(0)
 	}
 	return entry
@@ -314,8 +314,8 @@ func compareObjects(a, b coretypes.Object) int {
 			}
 			return 0
 		}
-	case Keyword:
-		if bv, ok := b.(Keyword); ok {
+	case coretypes.Keyword:
+		if bv, ok := b.(coretypes.Keyword); ok {
 			as := av.ToString(false)
 			bs := bv.ToString(false)
 			if as < bs {
@@ -326,8 +326,8 @@ func compareObjects(a, b coretypes.Object) int {
 			}
 			return 0
 		}
-	case Symbol:
-		if bv, ok := b.(Symbol); ok {
+	case coretypes.Symbol:
+		if bv, ok := b.(coretypes.Symbol); ok {
 			as := av.ToString(false)
 			bs := bv.ToString(false)
 			if as < bs {

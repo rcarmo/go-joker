@@ -18,220 +18,220 @@ func InternsOrThunks() {
 	timeNamespace.InternVar("ansi-c", ansi_c_,
 		MakeMeta(
 			nil,
-			`Mon Jan _2 15:04:05 2006`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Mon Jan _2 15:04:05 2006`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("hour", hour_,
 		MakeMeta(
 			nil,
-			`Number of nanoseconds in 1 hour`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "BigInt"}))
+			`Number of nanoseconds in 1 hour`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "BigInt"}))
 
 	timeNamespace.InternVar("kitchen", kitchen_,
 		MakeMeta(
 			nil,
-			`3:04PM`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`3:04PM`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("microsecond", microsecond_,
 		MakeMeta(
 			nil,
-			`Number of nanoseconds in 1 microsecond`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "Int"}))
+			`Number of nanoseconds in 1 microsecond`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Int"}))
 
 	timeNamespace.InternVar("millisecond", millisecond_,
 		MakeMeta(
 			nil,
-			`Number of nanoseconds in 1 millisecond`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "Int"}))
+			`Number of nanoseconds in 1 millisecond`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Int"}))
 
 	timeNamespace.InternVar("minute", minute_,
 		MakeMeta(
 			nil,
-			`Number of nanoseconds in 1 minute`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "BigInt"}))
+			`Number of nanoseconds in 1 minute`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "BigInt"}))
 
 	timeNamespace.InternVar("nanosecond", nanosecond_,
 		MakeMeta(
 			nil,
-			`Number of nanoseconds in 1 nanosecond`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "Int"}))
+			`Number of nanoseconds in 1 nanosecond`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Int"}))
 
 	timeNamespace.InternVar("rfc1123", rfc1123_,
 		MakeMeta(
 			nil,
-			`Mon, 02 Jan 2006 15:04:05 MST`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Mon, 02 Jan 2006 15:04:05 MST`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("rfc1123-z", rfc1123_z_,
 		MakeMeta(
 			nil,
-			`Mon, 02 Jan 2006 15:04:05 -0700`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Mon, 02 Jan 2006 15:04:05 -0700`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("rfc3339", rfc3339_,
 		MakeMeta(
 			nil,
-			`2006-01-02T15:04:05Z07:00`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`2006-01-02T15:04:05Z07:00`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("rfc3339-nano", rfc3339_nano_,
 		MakeMeta(
 			nil,
-			`2006-01-02T15:04:05.999999999Z07:00`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`2006-01-02T15:04:05.999999999Z07:00`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("rfc822", rfc822_,
 		MakeMeta(
 			nil,
-			`02 Jan 06 15:04 MST`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`02 Jan 06 15:04 MST`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("rfc822-z", rfc822_z_,
 		MakeMeta(
 			nil,
-			`02 Jan 06 15:04 -0700`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`02 Jan 06 15:04 -0700`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("rfc850", rfc850_,
 		MakeMeta(
 			nil,
-			`Monday, 02-Jan-06 15:04:05 MST`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Monday, 02-Jan-06 15:04:05 MST`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("ruby-date", ruby_date_,
 		MakeMeta(
 			nil,
-			`Mon Jan 02 15:04:05 -0700 2006`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Mon Jan 02 15:04:05 -0700 2006`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("second", second_,
 		MakeMeta(
 			nil,
-			`Number of nanoseconds in 1 second`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "Int"}))
+			`Number of nanoseconds in 1 second`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Int"}))
 
 	timeNamespace.InternVar("stamp", stamp_,
 		MakeMeta(
 			nil,
-			`Jan _2 15:04:05`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Jan _2 15:04:05`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("stamp-micro", stamp_micro_,
 		MakeMeta(
 			nil,
-			`Jan _2 15:04:05.000000`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Jan _2 15:04:05.000000`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("stamp-milli", stamp_milli_,
 		MakeMeta(
 			nil,
-			`Jan _2 15:04:05.000`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Jan _2 15:04:05.000`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("stamp-nano", stamp_nano_,
 		MakeMeta(
 			nil,
-			`Jan _2 15:04:05.000000000`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Jan _2 15:04:05.000000000`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("unix-date", unix_date_,
 		MakeMeta(
 			nil,
-			`Mon Jan _2 15:04:05 MST 2006`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Mon Jan _2 15:04:05 MST 2006`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("add", add_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"), MakeSymbol("d"))),
-			`Returns the time t+d.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "Time"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			`Returns the time t+d.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("add-date", add_date_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"), MakeSymbol("years"), MakeSymbol("months"), MakeSymbol("days"))),
-			`Returns the time t + (years, months, days).`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "Time"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "years"), coretypes.MakeSymbol(STRINGS.Intern, "months"), coretypes.MakeSymbol(STRINGS.Intern, "days"))),
+			`Returns the time t + (years, months, days).`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("day-of-year", day_of_year_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"))),
-			`Returns the day of the year specified by t, in the range [1,365] for non-leap years, and [1,366] in leap years.`, "1.3.4").Plus(MakeKeyword("tag"), coretypes.String{S: "Int"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
+			`Returns the day of the year specified by t, in the range [1,365] for non-leap years, and [1,366] in leap years.`, "1.3.4").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Int"}))
 
 	timeNamespace.InternVar("format", format_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"), MakeSymbol("layout"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "layout"))),
 			`Returns a textual representation of the time value formatted according to layout,
   which defines the format by showing how the reference time, defined to be
   Mon Jan 2 15:04:05 -0700 MST 2006
   would be displayed if it were the value; it serves as an example of the desired output.
-  The same display rules will then be applied to the time value..`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  The same display rules will then be applied to the time value..`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("from-unix", from_unix_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("sec"), MakeSymbol("nsec"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "sec"), coretypes.MakeSymbol(STRINGS.Intern, "nsec"))),
 			`Returns the local Time corresponding to the given Unix time, sec seconds and
-  nsec nanoseconds since January 1, 1970 UTC. It is valid to pass nsec outside the range [0, 999999999].`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "Time"}))
+  nsec nanoseconds since January 1, 1970 UTC. It is valid to pass nsec outside the range [0, 999999999].`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("hours", hours_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"))),
-			`Returns the duration (passed as a number of nanoseconds) as a floating point number of hours.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			`Returns the duration (passed as a number of nanoseconds) as a floating point number of hours.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Double"}))
 
 	timeNamespace.InternVar("in-timezone", in_timezone_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"), MakeSymbol("tz"))),
-			`Returns a copy of t representing the same time instant, but with the copy's timezone information set to tz for display purposes.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "Time"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "tz"))),
+			`Returns a copy of t representing the same time instant, but with the copy's timezone information set to tz for display purposes.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("minutes", minutes_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"))),
-			`Returns the duration (passed as a number of nanoseconds) as a floating point number of minutes.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			`Returns the duration (passed as a number of nanoseconds) as a floating point number of minutes.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Double"}))
 
 	timeNamespace.InternVar("now", now_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the current local time.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "Time"}))
+			`Returns the current local time.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("parse", parse_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("layout"), MakeSymbol("value"))),
-			`Parses a time string.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "Time"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "layout"), coretypes.MakeSymbol(STRINGS.Intern, "value"))),
+			`Parses a time string.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("parse-duration", parse_duration_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Parses a duration string. A duration string is a possibly signed sequence of decimal numbers,
   each with optional fraction and a unit suffix, such as 300ms, -1.5h or 2h45m. Valid time units are
   ns, us (or µs), ms, s, m, h. Returns Int when the duration fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("parse-in-timezone", parse_in_timezone_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("layout"), MakeSymbol("value"), MakeSymbol("tz"))),
-			`Parses a time string in the given timezone.`, "1.7.2").Plus(MakeKeyword("tag"), coretypes.String{S: "Time"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "layout"), coretypes.MakeSymbol(STRINGS.Intern, "value"), coretypes.MakeSymbol(STRINGS.Intern, "tz"))),
+			`Parses a time string in the given timezone.`, "1.7.2").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("round", round_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"), MakeSymbol("m"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"), coretypes.MakeSymbol(STRINGS.Intern, "m"))),
 			`Returns the result of rounding d to the nearest multiple of m. d and m represent time durations in nanoseconds.
   The rounding behavior for halfway values is to round away from zero. If m <= 0, returns d unchanged. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("seconds", seconds_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"))),
-			`Returns the duration (passed as a number of nanoseconds) as a floating point number of seconds.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			`Returns the duration (passed as a number of nanoseconds) as a floating point number of seconds.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Double"}))
 
 	timeNamespace.InternVar("since", since_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
 			`Returns the time in nanoseconds elapsed since t. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("sleep", sleep_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
 			`Pauses the execution thread for at least the duration d (expressed in nanoseconds).
   A negative or zero duration causes sleep to return immediately.`, "1.0"))
 
 	timeNamespace.InternVar("string", string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"))),
-			`Returns a string representing the duration in the form 72h3m0.5s.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			`Returns a string representing the duration in the form 72h3m0.5s.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("sub", sub_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"), MakeSymbol("u"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "u"))),
 			`Returns the duration t-u in nanoseconds. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("truncate", truncate_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"), MakeSymbol("m"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"), coretypes.MakeSymbol(STRINGS.Intern, "m"))),
 			`Returns the result of rounding d toward zero to a multiple of m. If m <= 0, returns d unchanged. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("unix", unix_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
 			`Returns t as a Unix time, the number of seconds elapsed since January 1, 1970 UTC. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("until", until_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
 			`Returns the duration in nanoseconds until t. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 }

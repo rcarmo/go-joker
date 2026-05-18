@@ -1,8 +1,12 @@
 # Collections extraction audit
 
-Updated: 2026-05-17
+Updated: 2026-05-18
 
-Current root collection families are still strongly coupled to root `core` contracts. The current safe path is to keep splitting storage/mechanics from Object/protocol adapters before moving concrete implementations.
+Current root collection families are still strongly coupled to root `core` concrete types, metadata, namespace/proc registration, and generated bootstrap behavior. The object/protocol surface has largely moved to `core/types`, so the current safe path is to keep splitting concrete return types and metadata/proc seams before moving implementations.
+
+## 2026-05-18 protocol cleanup update
+
+The shared collection/protocol surface has moved further into `core/types`: `Map`, `MapIterator`, `Pair`, `EmptyMapIterator` and its singleton/error helper, `Meta`, `MetaHolder`, `Set`, `Vec`, `Ref`, and `SafeMerge` are now `coretypes` contracts. Root compatibility aliases for these contracts were removed, and generated assertion output skips `coretypes.*` helpers entirely. Concrete collection implementations still live in root `core`; the remaining work is now a concrete implementation/package move, not a protocol-alias cleanup.
 
 ## Root collection file groups
 
@@ -15,21 +19,21 @@ Current root collection families are still strongly coupled to root `core` contr
 
 ## Coupling summary
 
-- All concrete collection types currently expose root `Object`, `Seq`, `Map`, `Set`, `Callable`, `InfoHolder`, `MetaHolder`, `TYPE`, `RT`, printing, hashing, equality, and/or evaluator-facing behavior.
-- Maps/sets depend on root object hashing/equality and persistent collection protocols.
-- Vectors depend on root `Object`, seq views, `Vec`/`CountedIndexed`, metadata, printing, and bounds errors through `RT`.
-- Seqs/lists are evaluator-adjacent because they carry `Callable` reduce paths and root seq protocol behavior.
+- Concrete collection types now expose `coretypes.Object`, `coretypes.Seq`, `coretypes.Callable`, `coretypes.CountedIndexed`, `coretypes.Associative`, `coretypes.Collection`, `coretypes.Map`, `coretypes.Set`, `coretypes.Vec`, `coretypes.MetaHolder`, and related moved protocols, but still depend on root concrete implementations such as `ArrayVector`, `VectorSeq`, `ArrayMap`, `HashMap`, `MapSet`, `TYPE`, `RT`, printing, construction adapters, and evaluator-facing behavior.
+- Maps/sets depend on object hashing/equality through `coretypes.Object`; their abstract APIs are now `coretypes.Map`/`coretypes.Set`, but implementations still construct and type-assert root `ArrayMap`, `HashMap`, and `MapSet`.
+- Vectors depend on root seq views, concrete vector implementations, metadata propagation, printing, and bounds errors through `RT`, even though `Vec`/indexed/stack/counting protocols have moved.
+- Seqs/lists are evaluator-adjacent because they carry `coretypes.Callable` reduce paths and concrete root sequence implementations.
 - Transients are coupled both to concrete persistent collections and to root proc registration (`GLOBAL_ENV`, `Proc`, `referToUser`).
 - `map_filter_fast.go` is not a collection implementation move candidate yet; it is AST/evaluator optimization code and should stay root-bound until evaluator extraction.
 - Remaining hash-map expansion/collision code is now mostly coupled to root `Node`, `Object.Hash`, `Object.Equals`, and seq/protocol behavior; pause before forcing larger map moves. Sparse `ArrayNode` compaction delegates to generic collection mechanics while preserving root node ownership.
 
 ## Minimal extraction interface candidates
 
-To move storage/mechanics without importing root `core`, `core/collections` needs generic or minimal interfaces rather than root `Object`:
+To move concrete implementations without importing root `core`, `core/collections` needs generic or minimal interfaces rather than root concrete collection types:
 
 - Equality/hash hooks: `Equal(a, b T) bool`, `Hash(T) uint32` or a `Hasher[T]`/`Equaler[T]` callback set.
 - Bounds/error hooks: return `(value, ok)` or standard errors from mechanics; root adapters translate to `RT.NewError`.
-- Metadata/info stays root-side initially; moved mechanics should not own `InfoHolder`, `MetaHolder`, or `TYPE`.
+- Metadata/info that only needs source `InfoHolder` can use `coretypes.InfoHolder`; collection metadata contracts now use `coretypes.MetaHolder`/`coretypes.Map`, but concrete metadata construction/propagation and `TYPE` registration stay root-side initially.
 - Printing/formatting stays root-side initially.
 - Callable/proc registration stays root-side.
 
@@ -45,7 +49,7 @@ To move storage/mechanics without importing root `core`, `core/collections` need
 - `map_equality.go`: generic map equality loop used by root maps while root supplies Object equality, lookup, and iteration adapters.
 - `format.go`: generic delimited and pair-delimited string rendering used by root map/set string forms while root supplies Object string conversion.
 
-Root `ArrayVector`, legacy `Vector`, `PersistentVector`, and `HashMap` delegate to these helpers where safe. Concrete Object/protocol behavior remains in root.
+Root `ArrayVector`, legacy `Vector`, `PersistentVector`, `List`, maps, and sets delegate to these helpers where safe. Most abstract Object/protocol behavior now lives in `core/types`; concrete collection behavior remains in root.
 
 ## Safe first move candidate
 
@@ -55,7 +59,7 @@ The safest first real package move is a root-independent mechanics helper, not a
 2. Add package-local tests for clone/append/assoc/pop or chunk indexing semantics.
 3. Make root `ArrayVector`/future adapters delegate only storage operations to that primitive while retaining `Object`, metadata, seq, printing, `TYPE`, `RT`, and callable behavior in root.
 
-A good first concrete candidate is an `Object`-agnostic generic slice helper for vector storage operations, e.g. clone/append/assoc/pop with tests. **Started:** `core/collections` now owns generic slice storage helpers, generic persistent list-node storage, generic map equality traversal, generic delimited formatting, pair-array helpers, bitmap/hash-index helpers, sparse indexed-node packing, and opaque trie node/path helpers; root `ArrayVector`, legacy `Vector`, `PersistentVector` tail/trie operations, root `List` storage, root map equality/string rendering loops, root set string rendering loops, and hash-map node/pair-array/bitmap/packing mechanics delegate clone/append/assoc/pop/from-values/list-node/map-equality/formatting/node-copy/path/pair insert/pair remove/bit count/hash mask/single-slot and double-slot assoc mechanics to them while retaining Object/protocol behavior in root. Once that seam is stable, the same pattern can be applied to more map/set bucket mechanics.
+A good first concrete candidate is an `Object`-agnostic generic slice helper for vector storage operations, e.g. clone/append/assoc/pop with tests. **Started:** `core/collections` now owns generic slice storage helpers, generic persistent list-node storage, generic map equality traversal, generic delimited formatting, pair-array helpers, bitmap/hash-index helpers, sparse indexed-node packing, and opaque trie node/path helpers; root `ArrayVector`, legacy `Vector`, `PersistentVector` tail/trie operations, root `List` storage, root map equality/string rendering loops, root set string rendering loops, and hash-map node/pair-array/bitmap/packing mechanics delegate clone/append/assoc/pop/from-values/list-node/map-equality/formatting/node-copy/path/pair insert/pair remove/bit count/hash mask/single-slot and double-slot assoc mechanics to them while retaining concrete collection/metadata behavior in root. Once that seam is stable, the same pattern can be applied to more map/set bucket mechanics.
 
 ## Explicit non-candidates for immediate move
 

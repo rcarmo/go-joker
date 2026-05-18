@@ -315,7 +315,7 @@ func irCompileFnWithFrame(fn *Fn, arity FnArityExpr, fnFrame int) *IRProgram {
 	}
 
 	// If the fn has a self-binding, mark it for self-recursive IR dispatch
-	if fn.fnExpr.self.name != nil {
+	if fn.fnExpr.self.NameKey() != nil {
 		// The self-binding is typically at frame fnFrame-1, index 0
 		// (the letfn/fn frame that holds the fn itself)
 		c.selfSlot = 0 // will use special irCallSelf opcode

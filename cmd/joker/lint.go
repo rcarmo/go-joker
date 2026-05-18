@@ -11,16 +11,16 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
-func makeDialectKeyword(dialect corereader.Dialect) Keyword {
+func makeDialectKeyword(dialect corereader.Dialect) coretypes.Keyword {
 	switch dialect {
 	case corereader.EDNDialect:
-		return MakeKeyword("clj")
+		return coretypes.MakeKeyword(STRINGS.Intern, "clj")
 	case corereader.CLJDialect:
-		return MakeKeyword("clj")
+		return coretypes.MakeKeyword(STRINGS.Intern, "clj")
 	case corereader.CLJSDialect:
-		return MakeKeyword("cljs")
+		return coretypes.MakeKeyword(STRINGS.Intern, "cljs")
 	default:
-		return MakeKeyword("joker")
+		return coretypes.MakeKeyword(STRINGS.Intern, "joker")
 	}
 }
 
@@ -33,9 +33,9 @@ func configureLinterMode(dialect corereader.Dialect, filename string, workingDir
 	GLOBAL_ENV.CoreNamespace.Resolve("*loaded-libs*").Value = EmptySet()
 	LINTER_MODE = true
 	DIALECT = dialect
-	lm, _ := GLOBAL_ENV.Resolve(MakeSymbol("joker.core/*linter-mode*"))
+	lm, _ := GLOBAL_ENV.Resolve(coretypes.MakeSymbol(STRINGS.Intern, "joker.core/*linter-mode*"))
 	lm.Value = coretypes.Boolean{B: true}
-	GLOBAL_ENV.Features = GLOBAL_ENV.Features.Disjoin(MakeKeyword("joker")).Conj(makeDialectKeyword(dialect)).(Set)
+	GLOBAL_ENV.Features = GLOBAL_ENV.Features.Disjoin(coretypes.MakeKeyword(STRINGS.Intern, "joker")).Conj(makeDialectKeyword(dialect)).(coretypes.Set)
 	EnableIdentValidation()
 }
 

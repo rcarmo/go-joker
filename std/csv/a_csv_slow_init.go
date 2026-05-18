@@ -17,7 +17,7 @@ func InternsOrThunks() {
 
 	csvNamespace.InternVar("csv-seq", csv_seq_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("rdr")), NewVectorFrom(MakeSymbol("rdr"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "rdr")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "rdr"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Returns the csv records from rdr as a lazy sequence.
   rdr must be a string or implement io.Reader.
   opts may have the following keys:
@@ -50,7 +50,7 @@ func InternsOrThunks() {
 
 	csvNamespace.InternVar("write", write_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("f"), MakeSymbol("data")), NewVectorFrom(MakeSymbol("f"), MakeSymbol("data"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "f"), coretypes.MakeSymbol(STRINGS.Intern, "data")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "f"), coretypes.MakeSymbol(STRINGS.Intern, "data"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Writes records to a CSV encoded file.
   f must be io.Writer (for example, as returned by joker.os/create).
   data must be coretypes.Seqable, each element of which must be coretypes.Seqable as well.
@@ -58,13 +58,13 @@ func InternsOrThunks() {
 
 	csvNamespace.InternVar("write-string", write_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("data")), NewVectorFrom(MakeSymbol("data"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "data")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "data"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Writes records to a string in CSV format and returns the string.
   data must be coretypes.Seqable, each element of which must be coretypes.Seqable as well.
   opts may have the following keys:
 
   :comma - field delimiter (defaults to ',')
 
-  :use-crlf - if true, uses \r\n as the line terminator. Default value is false.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  :use-crlf - if true, uses \r\n as the line terminator. Default value is false.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 }

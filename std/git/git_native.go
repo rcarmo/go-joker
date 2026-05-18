@@ -77,58 +77,58 @@ func open(path string) *git.Repository {
 
 func addUser(m *ArrayMap, section string, name string, email string) {
 	user := EmptyArrayMap()
-	user.Add(MakeKeyword("name"), coretypes.MakeString(name))
-	user.Add(MakeKeyword("email"), coretypes.MakeString(email))
-	m.Add(MakeKeyword(section), user)
+	user.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(name))
+	user.Add(coretypes.MakeKeyword(STRINGS.Intern, "email"), coretypes.MakeString(email))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, section), user)
 }
 
-func makeRemote(remote *gitConfig.RemoteConfig) Map {
+func makeRemote(remote *gitConfig.RemoteConfig) coretypes.Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("name"), coretypes.MakeString(remote.Name))
-	res.Add(MakeKeyword("urls"), MakeStringVector(remote.URLs))
-	res.Add(MakeKeyword("mirror?"), coretypes.MakeBoolean(remote.Mirror))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(remote.Name))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "urls"), MakeStringVector(remote.URLs))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "mirror?"), coretypes.MakeBoolean(remote.Mirror))
 	return res
 }
 
-func makeSubmodule(submodule *gitConfig.Submodule) Map {
+func makeSubmodule(submodule *gitConfig.Submodule) coretypes.Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("name"), coretypes.MakeString(submodule.Name))
-	res.Add(MakeKeyword("path"), coretypes.MakeString(submodule.Path))
-	res.Add(MakeKeyword("url"), coretypes.MakeString(submodule.URL))
-	res.Add(MakeKeyword("branch"), coretypes.MakeString(submodule.Branch))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(submodule.Name))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "path"), coretypes.MakeString(submodule.Path))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "url"), coretypes.MakeString(submodule.URL))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "branch"), coretypes.MakeString(submodule.Branch))
 	return res
 }
 
-func makeBranch(branch *gitConfig.Branch) Map {
+func makeBranch(branch *gitConfig.Branch) coretypes.Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("name"), coretypes.MakeString(branch.Name))
-	res.Add(MakeKeyword("remote"), coretypes.MakeString(branch.Remote))
-	res.Add(MakeKeyword("merge"), coretypes.MakeString(string(branch.Merge)))
-	res.Add(MakeKeyword("rebase"), coretypes.MakeString(branch.Rebase))
-	res.Add(MakeKeyword("description"), coretypes.MakeString(branch.Description))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(branch.Name))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "remote"), coretypes.MakeString(branch.Remote))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "merge"), coretypes.MakeString(string(branch.Merge)))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "rebase"), coretypes.MakeString(branch.Rebase))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "description"), coretypes.MakeString(branch.Description))
 	return res
 }
 
-func makeUrl(url *gitConfig.URL) Map {
+func makeUrl(url *gitConfig.URL) coretypes.Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("name"), coretypes.MakeString(url.Name))
-	res.Add(MakeKeyword("instead-of"), coretypes.MakeString(url.InsteadOf))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(url.Name))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "instead-of"), coretypes.MakeString(url.InsteadOf))
 	return res
 }
 
-func config(repo *git.Repository) Map {
+func config(repo *git.Repository) coretypes.Map {
 	cfg, err := repo.Config()
 	PanicOnErr(err)
 	return makeConfigMap(cfg)
 }
 
-func makeConfigMap(cfg *gitConfig.Config) Map {
+func makeConfigMap(cfg *gitConfig.Config) coretypes.Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("bare?"), coretypes.MakeBoolean(cfg.Core.IsBare))
-	res.Add(MakeKeyword("worktree"), coretypes.MakeString(cfg.Core.Worktree))
-	res.Add(MakeKeyword("comment-char"), coretypes.MakeString(cfg.Core.CommentChar))
-	res.Add(MakeKeyword("repository-format-version"), coretypes.MakeString(string(cfg.Core.RepositoryFormatVersion)))
-	res.Add(MakeKeyword("default-branch"), coretypes.MakeString(cfg.Init.DefaultBranch))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "bare?"), coretypes.MakeBoolean(cfg.Core.IsBare))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "worktree"), coretypes.MakeString(cfg.Core.Worktree))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "comment-char"), coretypes.MakeString(cfg.Core.CommentChar))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "repository-format-version"), coretypes.MakeString(string(cfg.Core.RepositoryFormatVersion)))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "default-branch"), coretypes.MakeString(cfg.Init.DefaultBranch))
 	addUser(res, "user", cfg.User.Name, cfg.User.Email)
 	addUser(res, "author", cfg.Author.Name, cfg.Author.Email)
 	addUser(res, "committer", cfg.Committer.Name, cfg.Committer.Email)
@@ -136,26 +136,26 @@ func makeConfigMap(cfg *gitConfig.Config) Map {
 	for name, remote := range cfg.Remotes {
 		remotes.Add(coretypes.MakeString(name), makeRemote(remote))
 	}
-	res.Add(MakeKeyword("remotes"), remotes)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "remotes"), remotes)
 	submodules := EmptyArrayMap()
 	for name, submodule := range cfg.Submodules {
 		submodules.Add(coretypes.MakeString(name), makeSubmodule(submodule))
 	}
-	res.Add(MakeKeyword("submodules"), submodules)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "submodules"), submodules)
 	branches := EmptyArrayMap()
 	for name, branch := range cfg.Branches {
 		branches.Add(coretypes.MakeString(name), makeBranch(branch))
 	}
-	res.Add(MakeKeyword("branches"), branches)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "branches"), branches)
 	urls := EmptyArrayMap()
 	for name, url := range cfg.URLs {
 		urls.Add(coretypes.MakeString(name), makeUrl(url))
 	}
-	res.Add(MakeKeyword("urls"), urls)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "urls"), urls)
 	return res
 }
 
-func makeRef(r *plumbing.Reference) Map {
+func makeRef(r *plumbing.Reference) coretypes.Map {
 	res := EmptyArrayMap()
 	refType := "invalid"
 	if r.Type() == plumbing.HashReference {
@@ -163,84 +163,84 @@ func makeRef(r *plumbing.Reference) Map {
 	} else if r.Type() == plumbing.SymbolicReference {
 		refType = "symbolic"
 	}
-	res.Add(MakeKeyword("type"), MakeKeyword(refType))
-	res.Add(MakeKeyword("name"), coretypes.MakeString(string(r.Name())))
-	res.Add(MakeKeyword("target"), coretypes.MakeString(string(r.Target())))
-	res.Add(MakeKeyword("hash"), coretypes.MakeString(r.Hash().String()))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "type"), coretypes.MakeKeyword(STRINGS.Intern, refType))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(string(r.Name())))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "target"), coretypes.MakeString(string(r.Target())))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "hash"), coretypes.MakeString(r.Hash().String()))
 	return res
 }
 
-func ref(repo *git.Repository, name string, resolved bool) Map {
+func ref(repo *git.Repository, name string, resolved bool) coretypes.Map {
 	r, err := repo.Reference(plumbing.ReferenceName(name), resolved)
 	PanicOnErr(err)
 	return makeRef(r)
 }
 
-func head(repo *git.Repository) Map {
+func head(repo *git.Repository) coretypes.Map {
 	r, err := repo.Head()
 	PanicOnErr(err)
 	return makeRef(r)
 }
 
-func makeSignature(s object.Signature) Map {
+func makeSignature(s object.Signature) coretypes.Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("name"), coretypes.MakeString(s.Name))
-	res.Add(MakeKeyword("email"), coretypes.MakeString(s.Email))
-	res.Add(MakeKeyword("when"), coretypes.MakeTime(s.When))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(s.Name))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "email"), coretypes.MakeString(s.Email))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "when"), coretypes.MakeTime(s.When))
 	return res
 }
 
-func makeCommit(cmt *object.Commit) Map {
+func makeCommit(cmt *object.Commit) coretypes.Map {
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("hash"), coretypes.MakeString(cmt.Hash.String()))
-	res.Add(MakeKeyword("author"), makeSignature(cmt.Author))
-	res.Add(MakeKeyword("committer"), makeSignature(cmt.Committer))
-	res.Add(MakeKeyword("pgp-siganture"), coretypes.MakeString(cmt.PGPSignature))
-	res.Add(MakeKeyword("message"), coretypes.MakeString(cmt.Message))
-	res.Add(MakeKeyword("tree-hash"), coretypes.MakeString(cmt.TreeHash.String()))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "hash"), coretypes.MakeString(cmt.Hash.String()))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "author"), makeSignature(cmt.Author))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "committer"), makeSignature(cmt.Committer))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "pgp-siganture"), coretypes.MakeString(cmt.PGPSignature))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "message"), coretypes.MakeString(cmt.Message))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "tree-hash"), coretypes.MakeString(cmt.TreeHash.String()))
 	parentHashes := EmptyVector()
 	for _, v := range cmt.ParentHashes {
 		parentHashes = parentHashes.Conjoin(coretypes.MakeString(v.String()))
 	}
-	res.Add(MakeKeyword("parent-hashes"), parentHashes)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "parent-hashes"), parentHashes)
 	return res
 }
 
-func log(repo *git.Repository, opts Map) Vec {
+func log(repo *git.Repository, opts coretypes.Map) coretypes.Vec {
 	var logOpts git.LogOptions
-	if ok, v := opts.Get(MakeKeyword("from")); ok {
-		logOpts.From = plumbing.NewHash(EnsureObjectIsString(v, "").S)
+	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "from")); ok {
+		logOpts.From = plumbing.NewHash(coretypes.EnsureObjectIsString(v, "").S)
 	}
-	if ok, v := opts.Get(MakeKeyword("order")); ok {
-		if v.Equals(MakeKeyword("default")) {
+	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "order")); ok {
+		if v.Equals(coretypes.MakeKeyword(STRINGS.Intern, "default")) {
 			logOpts.Order = git.LogOrderDefault
-		} else if v.Equals(MakeKeyword("dfs")) {
+		} else if v.Equals(coretypes.MakeKeyword(STRINGS.Intern, "dfs")) {
 			logOpts.Order = git.LogOrderDFS
-		} else if v.Equals(MakeKeyword("dfs-post")) {
+		} else if v.Equals(coretypes.MakeKeyword(STRINGS.Intern, "dfs-post")) {
 			logOpts.Order = git.LogOrderDFSPost
-		} else if v.Equals(MakeKeyword("bsf")) {
+		} else if v.Equals(coretypes.MakeKeyword(STRINGS.Intern, "bsf")) {
 			logOpts.Order = git.LogOrderBSF
-		} else if v.Equals(MakeKeyword("committer-time")) {
+		} else if v.Equals(coretypes.MakeKeyword(STRINGS.Intern, "committer-time")) {
 			logOpts.Order = git.LogOrderCommitterTime
 		} else {
 			panic(RT.NewError(":order must be one of: :default, :dfs, :dfs-post, :bsf, :committer-time"))
 		}
 	}
-	if ok, v := opts.Get(MakeKeyword("path-filter")); ok {
+	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "path-filter")); ok {
 		fn := EnsureObjectIsFn(v, "Invalid :path-filter option: %s")
 		logOpts.PathFilter = func(s string) bool {
 			return ToBool(fn.Call([]coretypes.Object{coretypes.MakeString(s)}))
 		}
 	}
-	if ok, v := opts.Get(MakeKeyword("all")); ok {
+	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "all")); ok {
 		logOpts.All = ToBool(v)
 	}
-	if ok, v := opts.Get(MakeKeyword("since")); ok {
-		t := EnsureObjectIsTime(v, "Invalid :since option: %s").T
+	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "since")); ok {
+		t := coretypes.EnsureObjectIsTime(v, "Invalid :since option: %s").T
 		logOpts.Since = &t
 	}
-	if ok, v := opts.Get(MakeKeyword("until")); ok {
-		t := EnsureObjectIsTime(v, "Invalid :until option: %s").T
+	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "until")); ok {
+		t := coretypes.EnsureObjectIsTime(v, "Invalid :until option: %s").T
 		logOpts.Until = &t
 	}
 	it, err := repo.Log(&logOpts)
@@ -260,7 +260,7 @@ func resolveRevision(repo *git.Repository, rev string) string {
 	return hash.String()
 }
 
-func findCommit(repo *git.Repository, hash string) Map {
+func findCommit(repo *git.Repository, hash string) coretypes.Map {
 	obj, err := repo.CommitObject(plumbing.NewHash(hash))
 	PanicOnErr(err)
 	return makeCommit(obj)
@@ -274,14 +274,14 @@ func addPath(repo *git.Repository, path string) string {
 	return hash.String()
 }
 
-func addCommit(repo *git.Repository, msg string, opts Map) string {
+func addCommit(repo *git.Repository, msg string, opts coretypes.Map) string {
 	workTree, err := repo.Worktree()
 	PanicOnErr(err)
 	var commitOpts git.CommitOptions
-	if ok, v := opts.Get(MakeKeyword("all")); ok {
+	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "all")); ok {
 		commitOpts.All = ToBool(v)
 	}
-	if ok, v := opts.Get(MakeKeyword("allow-empty-commits")); ok {
+	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "allow-empty-commits")); ok {
 		commitOpts.AllowEmptyCommits = ToBool(v)
 	}
 	hash, err := workTree.Commit(msg, &commitOpts)
@@ -289,29 +289,29 @@ func addCommit(repo *git.Repository, msg string, opts Map) string {
 	return hash.String()
 }
 
-func findObject(repo *git.Repository, hash string) Map {
+func findObject(repo *git.Repository, hash string) coretypes.Map {
 	obj, err := repo.Object(plumbing.AnyObject, plumbing.NewHash(hash))
 	PanicOnErr(err)
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("id"), coretypes.MakeString(obj.ID().String()))
-	objType := MakeKeyword("invalid")
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "id"), coretypes.MakeString(obj.ID().String()))
+	objType := coretypes.MakeKeyword(STRINGS.Intern, "invalid")
 	switch obj.Type() {
 	case 1:
-		objType = MakeKeyword("commit")
+		objType = coretypes.MakeKeyword(STRINGS.Intern, "commit")
 	case 2:
-		objType = MakeKeyword("tree")
+		objType = coretypes.MakeKeyword(STRINGS.Intern, "tree")
 	case 3:
-		objType = MakeKeyword("blob")
+		objType = coretypes.MakeKeyword(STRINGS.Intern, "blob")
 	case 4:
-		objType = MakeKeyword("tag")
+		objType = coretypes.MakeKeyword(STRINGS.Intern, "tag")
 	case 6:
-		objType = MakeKeyword("ofs-delta")
+		objType = coretypes.MakeKeyword(STRINGS.Intern, "ofs-delta")
 	case 7:
-		objType = MakeKeyword("ref-delta")
+		objType = coretypes.MakeKeyword(STRINGS.Intern, "ref-delta")
 	case 8:
-		objType = MakeKeyword("any")
+		objType = coretypes.MakeKeyword(STRINGS.Intern, "any")
 	}
-	res.Add(MakeKeyword("type"), objType)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "type"), objType)
 	return res
 }
 

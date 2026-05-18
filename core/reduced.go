@@ -11,7 +11,7 @@ import coretypes "github.com/rcarmo/go-joker/core/types"
 // Reduced wraps a value to signal early termination in reduce/transduce.
 type Reduced struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	Val coretypes.Object
 }
 
@@ -40,9 +40,9 @@ func (r *Reduced) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return &res
 }
 
-func (r *Reduced) WithMeta(m Map) coretypes.Object {
+func (r *Reduced) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *r
-	res.meta = SafeMerge(res.meta, m)
+	res.Meta = coretypes.SafeMerge(res.Meta, m)
 	return &res
 }
 

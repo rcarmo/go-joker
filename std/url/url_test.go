@@ -3,8 +3,6 @@ package url
 import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
-
-	. "github.com/rcarmo/go-joker/core"
 )
 
 func expectURLPanic(t *testing.T, fn func()) {
@@ -24,7 +22,7 @@ func TestURLHelpers(t *testing.T) {
 	if got := queryUnescape("a+b%21"); got != "a b!" {
 		t.Fatalf("queryUnescape mismatch: %s", got)
 	}
-	m := parseQuery("a=1&a=2&b=x").(Map)
+	m := parseQuery("a=1&a=2&b=x").(coretypes.Map)
 	ok, av := m.Get(coretypes.MakeString("a"))
 	if !ok || av.(coretypes.CountedIndexed).Count() != 2 {
 		t.Fatalf("parseQuery a mismatch: %v", av)

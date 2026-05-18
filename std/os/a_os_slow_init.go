@@ -18,62 +18,62 @@ func InternsOrThunks() {
 	osNamespace.InternVar("SIGABRT", SIGABRT_,
 		MakeMeta(
 			nil,
-			`SIGABRT`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGABRT`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGALRM", SIGALRM_,
 		MakeMeta(
 			nil,
-			`SIGALRM`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGALRM`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGFPE", SIGFPE_,
 		MakeMeta(
 			nil,
-			`SIGFPE`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGFPE`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGHUP", SIGHUP_,
 		MakeMeta(
 			nil,
-			`SIGHUP`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGHUP`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGILL", SIGILL_,
 		MakeMeta(
 			nil,
-			`SIGILL`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGILL`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGINT", SIGINT_,
 		MakeMeta(
 			nil,
-			`SIGINT`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGINT`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGKILL", SIGKILL_,
 		MakeMeta(
 			nil,
-			`SIGKILL`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGKILL`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGPIPE", SIGPIPE_,
 		MakeMeta(
 			nil,
-			`SIGPIPE`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGPIPE`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGQUIT", SIGQUIT_,
 		MakeMeta(
 			nil,
-			`SIGQUIT`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGQUIT`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGSEGV", SIGSEGV_,
 		MakeMeta(
 			nil,
-			`SIGSEGV`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGSEGV`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGTERM", SIGTERM_,
 		MakeMeta(
 			nil,
-			`SIGTERM`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGTERM`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("SIGTRAP", SIGTRAP_,
 		MakeMeta(
 			nil,
-			`SIGTRAP`, "1.0.1").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`SIGTRAP`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("args", args_,
 		MakeMeta(
@@ -82,23 +82,23 @@ func InternsOrThunks() {
 
 	osNamespace.InternVar("chdir", chdir_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("dirname"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "dirname"))),
 			`Changes the current working directory to the named directory.`, "1.0"))
 
 	osNamespace.InternVar("chmod", chmod_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("mode"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "mode"))),
 			`Changes the mode of the named file to mode. If the file is a symbolic link, it changes the mode of the link's target.`, "1.0"))
 
 	osNamespace.InternVar("chown", chown_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("uid"), MakeSymbol("gid"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "uid"), coretypes.MakeSymbol(STRINGS.Intern, "gid"))),
 			`Changes the numeric uid and gid of the named file. If the file is a symbolic link,
   it changes the uid and gid of the link's target. A uid or gid of -1 means to not change that value.`, "1.0"))
 
 	osNamespace.InternVar("chtimes", chtimes_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("atime"), MakeSymbol("mtime"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "atime"), coretypes.MakeSymbol(STRINGS.Intern, "mtime"))),
 			`Changes the access and modification times of the named file, similar to the Unix utime() or utimes() functions.`, "1.0"))
 
 	osNamespace.InternVar("clearenv", clearenv_,
@@ -108,35 +108,35 @@ func InternsOrThunks() {
 
 	osNamespace.InternVar("close", close_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("f"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "f"))),
 			`Closes the file, rendering it unusable for I/O.`, "1.0"))
 
 	osNamespace.InternVar("create", create_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"))),
-			`Creates the named file with mode 0666 (before umask), truncating it if it already exists.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "File"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"))),
+			`Creates the named file with mode 0666 (before umask), truncating it if it already exists.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "File"}))
 
 	osNamespace.InternVar("create-temp", create_temp_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("dir"), MakeSymbol("pattern"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "dir"), coretypes.MakeSymbol(STRINGS.Intern, "pattern"))),
 			`Creates a new temporary file in the directory dir, opens the file for reading and writing,
   and returns the resulting File. The filename is generated by taking pattern and adding a
   random string to the end. If pattern includes a "*", the random string replaces the last "*".
   If dir is the empty string, uses the default directory for temporary files (see joker.os/temp-dir).
   Multiple programs calling joker.os/make-temp-file simultaneously will not choose the same file.
   The caller can use (name f) to find the pathname of the file.
-  It is the caller's responsibility to remove the file when no longer needed.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "File"}))
+  It is the caller's responsibility to remove the file when no longer needed.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "File"}))
 
 	osNamespace.InternVar("cwd", cwd_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
 			`Returns a rooted path name corresponding to the current directory. If the current directory can
-  be reached via multiple paths (due to symbolic links), cwd may return any one of them.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  be reached via multiple paths (due to symbolic links), cwd may return any one of them.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	osNamespace.InternVar("egid", egid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the numeric effective group id of the caller.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`Returns the numeric effective group id of the caller.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("env", env_,
 		MakeMeta(
@@ -146,11 +146,11 @@ func InternsOrThunks() {
 	osNamespace.InternVar("euid", euid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the numeric effective user id of the caller.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`Returns the numeric effective user id of the caller.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("exec", exec_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Executes the named program with the given arguments. opts is a map with the following keys (all optional):
   :args - vector of arguments (all arguments must be strings),
   :dir - if specified, working directory will be set to this value before executing the program,
@@ -170,64 +170,64 @@ func InternsOrThunks() {
 	osNamespace.InternVar("executable", executable_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the path name for the executable that started the current process.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Returns the path name for the executable that started the current process.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	osNamespace.InternVar("exists?", isexists_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("path"))),
-			`Returns true if file or directory with the given path exists. Otherwise returns false.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Boolean"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "path"))),
+			`Returns true if file or directory with the given path exists. Otherwise returns false.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Boolean"}))
 
 	osNamespace.InternVar("exit", exit_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("code")), NewVectorFrom()),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "code")), NewVectorFrom()),
 			`Causes the current program to exit with the given status code (defaults to 0).`, "1.0"))
 
 	osNamespace.InternVar("expand-env", expand_env_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Replaces ${var} or $var in the string according to the values of the current environment variables.
-  References to undefined variables are replaced by the empty string.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  References to undefined variables are replaced by the empty string.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	osNamespace.InternVar("get-env", get_env_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("key"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "key"))),
 			`Returns the value of the environment variable named by the key or nil if the variable is not present in the environment.`, "1.0"))
 
 	osNamespace.InternVar("gid", gid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the numeric group id of the caller.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`Returns the numeric group id of the caller.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("groups", groups_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns a list of the numeric ids of groups that the caller belongs to.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "[coretypes.Int]"}))
+			`Returns a list of the numeric ids of groups that the caller belongs to.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "[coretypes.Int]"}))
 
 	osNamespace.InternVar("hostname", hostname_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the host name reported by the kernel.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			`Returns the host name reported by the kernel.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	osNamespace.InternVar("kill", kill_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("pid"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "pid"))),
 			`Causes the process with the given PID to exit immediately.
   Only kills the process itself, not any other processes it may have started.`, "1.0.1"))
 
 	osNamespace.InternVar("lchown", lchown_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("uid"), MakeSymbol("gid"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "uid"), coretypes.MakeSymbol(STRINGS.Intern, "gid"))),
 			`Changes the numeric uid and gid of the named file. If the file is a symbolic link,
   it changes the uid and gid of the link itself.`, "1.0"))
 
 	osNamespace.InternVar("link", link_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("oldname"), MakeSymbol("newname"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "oldname"), coretypes.MakeSymbol(STRINGS.Intern, "newname"))),
 			`Creates newname as a hard link to the oldname file.`, "1.0"))
 
 	osNamespace.InternVar("ls", ls_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("dirname"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "dirname"))),
 			`Reads the directory named by dirname and returns a list of directory entries sorted by filename.
   Each entry is a map with the following keys:
   :name - name (coretypes.String)
@@ -238,71 +238,71 @@ func InternsOrThunks() {
 
 	osNamespace.InternVar("lstat", lstat_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("filename"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "filename"))),
 			`Like stat, but if the file is a symbolic link, the result describes the symbolic link.`, "1.0"))
 
 	osNamespace.InternVar("mkdir", mkdir_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("perm"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "perm"))),
 			`Creates a new directory with the specified name and permission bits.`, "1.0"))
 
 	osNamespace.InternVar("mkdir-all", mkdir_all_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("perm"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "perm"))),
 			`Creates a directory named path, along with any necessary parents, and returns nil, or else throws an error.
   The permission bits perm (before umask) are used for all directories that mkdir-all creates.
   If path is already a directory, mkdir-all does nothing and returns nil.`, "1.0"))
 
 	osNamespace.InternVar("mkdir-temp", mkdir_temp_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("dir"), MakeSymbol("pattern"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "dir"), coretypes.MakeSymbol(STRINGS.Intern, "pattern"))),
 			`Creates a new temporary directory in the directory dir.
   The directory name is generated by taking pattern and applying a random string to the end.
   If pattern includes a "*", the random string replaces the last "*".
   Returns the name of the new directory. If dir is the empty string,
   uses the default directory for temporary files (see joker.os/temp-dir).
   Multiple programs calling joker.os/mkdir-temp simultaneously will not choose the same directory.
-  It is the caller's responsibility to remove the directory when no longer needed.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  It is the caller's responsibility to remove the directory when no longer needed.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	osNamespace.InternVar("open", open_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"))),
 			`Opens the named file for reading. If successful, the file can be used for reading;
-  the associated file descriptor has mode O_RDONLY.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "File"}))
+  the associated file descriptor has mode O_RDONLY.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "File"}))
 
 	osNamespace.InternVar("pagesize", pagesize_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the underlying system's memory page size.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`Returns the underlying system's memory page size.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("path-separator?", ispath_separator_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("c"))),
-			`Reports whether c is a directory separator character.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Boolean"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "c"))),
+			`Reports whether c is a directory separator character.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Boolean"}))
 
 	osNamespace.InternVar("pid", pid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the process id of the caller.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`Returns the process id of the caller.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("ppid", ppid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the process id of the caller's parent.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`Returns the process id of the caller's parent.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("read-link", read_link_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"))),
-			`Returns the destination of the named symbolic link.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"))),
+			`Returns the destination of the named symbolic link.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	osNamespace.InternVar("remove", remove_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"))),
 			`Removes the named file or (empty) directory.`, "1.0"))
 
 	osNamespace.InternVar("remove-all", remove_all_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("path"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "path"))),
 			`Removes path and any children it contains.
 
   It removes everything it can, then panics with the first error (if
@@ -310,17 +310,17 @@ func InternsOrThunks() {
 
 	osNamespace.InternVar("rename", rename_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("oldpath"), MakeSymbol("newpath"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "oldpath"), coretypes.MakeSymbol(STRINGS.Intern, "newpath"))),
 			`Renames (moves) oldpath to newpath. If newpath already exists and is not a directory, rename replaces it.`, "1.0"))
 
 	osNamespace.InternVar("set-env", set_env_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("key"), MakeSymbol("value"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "key"), coretypes.MakeSymbol(STRINGS.Intern, "value"))),
 			`Sets the value of the environment variable named by the key.`, "1.0"))
 
 	osNamespace.InternVar("sh", sh_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("&"), MakeSymbol("arguments"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "arguments"))),
 			`Executes the named program with the given arguments. Returns a map with the following keys:
       :success - whether or not the execution was successful,
       :err-msg (present iff :success if false) - string capturing error object returned by Go runtime
@@ -330,7 +330,7 @@ func InternsOrThunks() {
 
 	osNamespace.InternVar("sh-from", sh_from_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("dir"), MakeSymbol("name"), MakeSymbol("&"), MakeSymbol("arguments"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "dir"), coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "arguments"))),
 			`Executes the named program with the given arguments and working directory set to dir.
   Returns a map with the following keys:
       :success - whether or not the execution was successful,
@@ -341,20 +341,20 @@ func InternsOrThunks() {
 
 	osNamespace.InternVar("signal", signal_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("pid"), MakeSymbol("signal"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "pid"), coretypes.MakeSymbol(STRINGS.Intern, "signal"))),
 			`Sends signal to the process with the given PID.`, "1.0.1"))
 
 	osNamespace.InternVar("start", start_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Starts a new process with the program specified by name.
   opts is a map with the same keys as in exec.
   Doesn't wait for the process to finish.
-  Returns the process's PID.`, "1.0.1").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+  Returns the process's PID.`, "1.0.1").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("stat", stat_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("filename"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "filename"))),
 			`Returns a map describing the named file. The info map has the following attributes:
   :name - base name of the file
   :size - length in bytes for regular files; system-dependent for others
@@ -364,7 +364,7 @@ func InternsOrThunks() {
 
 	osNamespace.InternVar("symlink", symlink_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("oldname"), MakeSymbol("newname"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "oldname"), coretypes.MakeSymbol(STRINGS.Intern, "newname"))),
 			`Creates newname as a symbolic link to oldname.`, "1.0"))
 
 	osNamespace.InternVar("temp-dir", temp_dir_,
@@ -374,21 +374,21 @@ func InternsOrThunks() {
   On Unix systems, it returns $TMPDIR if non-empty, else /tmp.
   On Windows, it uses GetTempPath, returning the first non-empty
   value from %TMP%, %TEMP%, %USERPROFILE%, or the Windows directory.
-  The directory is neither guaranteed to exist nor have accessible permissions.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  The directory is neither guaranteed to exist nor have accessible permissions.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	osNamespace.InternVar("truncate", truncate_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("size"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "size"))),
 			`Changes the size of the named file. If the file is a symbolic link, it changes the size of the link's target.`, "1.0"))
 
 	osNamespace.InternVar("uid", uid_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns the numeric user id of the caller.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Int"}))
+			`Returns the numeric user id of the caller.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Int"}))
 
 	osNamespace.InternVar("unset-env", unset_env_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("key"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "key"))),
 			`Unsets a single environment variable.`, "1.0"))
 
 	osNamespace.InternVar("user-cache-dir", user_cache_dir_,
@@ -401,7 +401,7 @@ func InternsOrThunks() {
   if non-empty, else $HOME/.cache. On Darwin, it returns $HOME/Library/Caches. On Windows, it returns %LocalAppData%.
   On Plan 9, it returns $home/lib/cache.
 
-  If the location cannot be determined (for example, $HOME is not defined), then it will throw an error.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  If the location cannot be determined (for example, $HOME is not defined), then it will throw an error.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	osNamespace.InternVar("user-config-dir", user_config_dir_,
 		MakeMeta(
@@ -413,7 +413,7 @@ func InternsOrThunks() {
   if non-empty, else $HOME/.config. On Darwin, it returns $HOME/Library/Application Support. On Windows, it returns %AppData%.
   On Plan 9, it returns $home/lib.
 
-  If the location cannot be determined (for example, $HOME is not defined), then it will throw an error.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  If the location cannot be determined (for example, $HOME is not defined), then it will throw an error.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	osNamespace.InternVar("user-home-dir", user_home_dir_,
 		MakeMeta(
@@ -421,11 +421,11 @@ func InternsOrThunks() {
 			`Returns the current user's home directory.
 
   On Unix, including macOS, it returns the $HOME environment variable. On Windows, it returns %USERPROFILE%.
-  On Plan 9, it returns the $home environment variable.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  On Plan 9, it returns the $home environment variable.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	osNamespace.InternVar("watch", watch_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("paths"), MakeSymbol("ch")), NewVectorFrom(MakeSymbol("paths"), MakeSymbol("ch"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "paths"), coretypes.MakeSymbol(STRINGS.Intern, "ch")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "paths"), coretypes.MakeSymbol(STRINGS.Intern, "ch"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Watches paths for file system changes, sends event maps to ch, and returns a
   zero-argument cancel function. paths must be coretypes.Seqable and each path must be a
   string. opts may contain :recursive? to watch child directories recursively.

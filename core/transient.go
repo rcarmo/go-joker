@@ -223,8 +223,8 @@ func (tm *TransientMap) ToPersistent() coretypes.Object {
 	return res
 }
 
-// MapToTransient creates a TransientMap from a Map.
-func MapToTransient(m Map) *TransientMap {
+// MapToTransient creates a TransientMap from a coretypes.Map.
+func MapToTransient(m coretypes.Map) *TransientMap {
 	tm := &TransientMap{
 		m: make(map[uint32][]mapEntry),
 	}
@@ -234,7 +234,7 @@ func MapToTransient(m Map) *TransientMap {
 	s := m.Seq()
 	for !s.IsEmpty() {
 		pair := s.First()
-		// Map entries are seqable pairs (key val)
+		// coretypes.Map entries are seqable pairs (key val)
 		if seq, ok := pair.(coretypes.Seqable); ok {
 			ps := seq.Seq()
 			if !ps.IsEmpty() {
@@ -274,20 +274,20 @@ func initTransientProcs() {
 			{"persistent!", procPersistentBang, "procPersistentBang"},
 		}
 		for _, p := range procs {
-			sym := MakeSymbol(p.name)
+			sym := coretypes.MakeSymbol(STRINGS.Intern, p.name)
 			vr := ns.Intern(sym)
 			vr.Value = Proc{Fn: p.fn, Name: p.pname}
 			referToUser(sym, vr)
 		}
 
 		// transient?
-		tqSym := MakeSymbol("transient?")
+		tqSym := coretypes.MakeSymbol(STRINGS.Intern, "transient?")
 		tqVr := ns.Intern(tqSym)
 		tqVr.Value = Proc{Name: "procTransientQ", Fn: procIsTransient}
 		referToUser(tqSym, tqVr)
 
 		// pop! — (pop! tv)
-		popSym := MakeSymbol("pop!")
+		popSym := coretypes.MakeSymbol(STRINGS.Intern, "pop!")
 		popVr := ns.Intern(popSym)
 		popVr.Value = Proc{Name: "procPopBang", Fn: procPopBang}
 		referToUser(popSym, popVr)
@@ -299,7 +299,7 @@ var procTransient = func(args []coretypes.Object) coretypes.Object {
 	switch coll := args[0].(type) {
 	case *ArrayVector:
 		return ToTransient(coll)
-	case Map:
+	case coretypes.Map:
 		return MapToTransient(coll)
 	default:
 		panic(RT.NewError("transient not supported on: " + coll.GetType().ToString(false)))

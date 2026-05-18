@@ -2,9 +2,10 @@ package runtime
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
-var runtimeNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.runtime"))
+var runtimeNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.runtime"))
 
 func init() {
 	runtimeNamespace.Lazy = initRuntimeNamespace

@@ -16,11 +16,11 @@ func podInvokeTimeoutFromOpts(opts coretypes.Object, fallback time.Duration) tim
 	if opts == nil || opts.Equals(NIL) {
 		return fallback
 	}
-	m, ok := opts.(Map)
+	m, ok := opts.(coretypes.Map)
 	if !ok {
 		panic(RT.NewError("pods/invoke: opts must be a map"))
 	}
-	if found, v := m.Get(MakeKeyword("timeout-ms")); found {
+	if found, v := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "timeout-ms")); found {
 		i, ok := v.(coretypes.Int)
 		if !ok {
 			panic(RT.NewError("pods/invoke: :timeout-ms must be an integer"))
@@ -40,12 +40,12 @@ func invokePod(args []coretypes.Object) coretypes.Object {
 	if len(args) < 3 || len(args) > 4 {
 		panic(RT.NewError("pods/invoke expects pod-id, var symbol, args vector, and optional opts"))
 	}
-	podID := EnsureArgIsString(args, 0).S
+	podID := coretypes.EnsureArgIsString(args, 0).S
 	p := lookupPod(podID)
 	if p == nil {
 		panic(RT.NewError(fmt.Sprintf("pods/invoke: no pod with id %q", podID)))
 	}
-	varSym := EnsureArgIsSymbol(args, 1).ToString(false)
+	varSym := coretypes.EnsureArgIsSymbol(args, 1).ToString(false)
 	callArgs := []coretypes.Object{}
 	seqable, ok := args[2].(coretypes.Seqable)
 	if !ok {

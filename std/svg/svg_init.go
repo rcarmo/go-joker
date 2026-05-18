@@ -2,9 +2,10 @@ package svg
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
-var svgNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.svg"))
+var svgNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.svg"))
 
 func init() {
 	svgNamespace.Lazy = initSVGNamespace

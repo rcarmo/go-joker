@@ -12,7 +12,7 @@ import (
 
 // random_native.go — joker.random namespace.
 
-var randomNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.random"))
+var randomNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.random"))
 
 func init() {
 	randomNamespace.Lazy = initRandomNamespace
@@ -31,19 +31,19 @@ func initRandomNamespace() {
 	// int-n — returns a random int in [0, n)
 	randomNamespace.InternVar("int-n", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		n := EnsureArgIsInt(args, 0).I
+		n := coretypes.EnsureArgIsInt(args, 0).I
 		if n <= 0 {
 			panic(RT.NewError("int-n: n must be positive"))
 		}
 		return coretypes.MakeInt(mrand.IntN(n))
 	}, Name: "random-int-n", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("n"))), `Returns a random integer in [0, n).`, "1.0"))
+		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "n"))), `Returns a random integer in [0, n).`, "1.0"))
 
 	// int-between — returns a random int in [lo, hi)
 	randomNamespace.InternVar("int-between", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
-		lo := EnsureArgIsInt(args, 0).I
-		hi := EnsureArgIsInt(args, 1).I
+		lo := coretypes.EnsureArgIsInt(args, 0).I
+		hi := coretypes.EnsureArgIsInt(args, 1).I
 		if hi <= lo {
 			panic(RT.NewError("int-between: hi must be > lo"))
 		}
@@ -53,7 +53,7 @@ func initRandomNamespace() {
 		}
 		return coretypes.MakeInt(lo + mrand.IntN(delta))
 	}, Name: "random-int-between", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("lo"), MakeSymbol("hi"))),
+		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "lo"), coretypes.MakeSymbol(STRINGS.Intern, "hi"))),
 			`Returns a random integer in [lo, hi).`, "1.0"))
 
 	// float — returns a random float64 in [0.0, 1.0)
@@ -73,7 +73,7 @@ func initRandomNamespace() {
 	// choice — picks a random element from a seqable collection
 	randomNamespace.InternVar("choice", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		coll := EnsureObjectIsSeqable(args[0], "choice requires a coretypes.Seqable collection").Seq()
+		coll := coretypes.EnsureObjectIsSeqable(args[0], "choice requires a coretypes.Seqable collection").Seq()
 		var elems []coretypes.Object
 		for s := coll; !s.IsEmpty(); s = s.Rest() {
 			elems = append(elems, s.First())
@@ -83,13 +83,13 @@ func initRandomNamespace() {
 		}
 		return elems[mrand.IntN(len(elems))]
 	}, Name: "random-choice", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("coll"))),
+		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "coll"))),
 			`Returns a random element from coll.`, "1.0"))
 
 	// shuffle — returns a shuffled vector of elements from a seqable
 	randomNamespace.InternVar("shuffle", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		coll := EnsureObjectIsSeqable(args[0], "shuffle requires a coretypes.Seqable collection").Seq()
+		coll := coretypes.EnsureObjectIsSeqable(args[0], "shuffle requires a coretypes.Seqable collection").Seq()
 		var elems []coretypes.Object
 		for s := coll; !s.IsEmpty(); s = s.Rest() {
 			elems = append(elems, s.First())
@@ -99,7 +99,7 @@ func initRandomNamespace() {
 		})
 		return NewVectorFrom(elems...)
 	}, Name: "random-shuffle", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("coll"))),
+		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "coll"))),
 			`Returns a vector with elements of coll in random order.`, "1.0"))
 
 	// uuid — returns a random UUID string (v4)
@@ -120,7 +120,7 @@ func initRandomNamespace() {
 	// secure-bytes — returns n cryptographically random bytes as a hex string
 	randomNamespace.InternVar("secure-bytes", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		n := EnsureArgIsInt(args, 0).I
+		n := coretypes.EnsureArgIsInt(args, 0).I
 		if n <= 0 {
 			panic(RT.NewError("secure-bytes: n must be positive"))
 		}
@@ -131,13 +131,13 @@ func initRandomNamespace() {
 		}
 		return coretypes.MakeString(hex.EncodeToString(b))
 	}, Name: "random-secure-bytes", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("n"))),
+		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "n"))),
 			`Returns n cryptographically random bytes as a hex string.`, "1.0"))
 
 	// secure-int — returns a cryptographically random int in [0, n)
 	randomNamespace.InternVar("secure-int", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		n := EnsureArgIsInt(args, 0).I
+		n := coretypes.EnsureArgIsInt(args, 0).I
 		if n <= 0 {
 			panic(RT.NewError("secure-int: n must be positive"))
 		}
@@ -148,6 +148,6 @@ func initRandomNamespace() {
 		}
 		return coretypes.MakeInt(int(r.Int64()))
 	}, Name: "random-secure-int", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("n"))),
+		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "n"))),
 			`Returns a cryptographically random integer in [0, n).`, "1.0"))
 }

@@ -45,7 +45,7 @@ func objectToBencode(obj coretypes.Object) interface{} {
 		return ""
 	case coretypes.String:
 		return v.S
-	case Keyword, Symbol:
+	case coretypes.Keyword, coretypes.Symbol:
 		return v.ToString(false)
 	case coretypes.Int:
 		return int64(v.I)
@@ -56,7 +56,7 @@ func objectToBencode(obj coretypes.Object) interface{} {
 			return int64(1)
 		}
 		return int64(0)
-	case Map:
+	case coretypes.Map:
 		m := make(map[string]interface{})
 		for it := v.Iter(); it.HasNext(); {
 			p := it.Next()
@@ -78,9 +78,9 @@ func bencodeKeyString(k coretypes.Object) string {
 	switch v := k.(type) {
 	case coretypes.String:
 		return v.S
-	case Keyword:
+	case coretypes.Keyword:
 		return v.ToString(false)[1:]
-	case Symbol:
+	case coretypes.Symbol:
 		return v.ToString(false)
 	default:
 		return v.ToString(false)

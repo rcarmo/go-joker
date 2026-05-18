@@ -25,7 +25,7 @@ func installPodDescribeNamespaces(p *Pod, describe podMessage) error {
 		if name == "" {
 			continue
 		}
-		ns := GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol(name))
+		ns := GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, name))
 		ns.ResetMeta(MakeMeta(nil, "Babashka pod namespace dynamically installed from pod describe.", "1.0"))
 		vars, _ := nsMsg["vars"].([]any)
 		for _, rawVar := range vars {

@@ -16,7 +16,7 @@ func init() {
 // ChunkBuffer is a mutable buffer for building chunks.
 type ChunkBuffer struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	arr   []coretypes.Object
 	count int
 }
@@ -26,12 +26,12 @@ func (cb *ChunkBuffer) Equals(other interface{}) bool                        { r
 func (cb *ChunkBuffer) GetType() *coretypes.Type                             { return TYPE.ArrayVector }
 func (cb *ChunkBuffer) Hash() uint32                                         { return 0 }
 func (cb *ChunkBuffer) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return cb }
-func (cb *ChunkBuffer) WithMeta(m Map) coretypes.Object                      { return cb }
+func (cb *ChunkBuffer) WithMeta(m coretypes.Map) coretypes.Object            { return cb }
 
 // ArrayChunk wraps a slice of objects as a chunk.
 type ArrayChunk struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	arr []coretypes.Object
 	off int
 	end int
@@ -42,7 +42,7 @@ func (ac *ArrayChunk) Equals(other interface{}) bool                        { re
 func (ac *ArrayChunk) GetType() *coretypes.Type                             { return TYPE.ArrayVector }
 func (ac *ArrayChunk) Hash() uint32                                         { return 0 }
 func (ac *ArrayChunk) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return ac }
-func (ac *ArrayChunk) WithMeta(m Map) coretypes.Object                      { return ac }
+func (ac *ArrayChunk) WithMeta(m coretypes.Map) coretypes.Object            { return ac }
 
 func (ac *ArrayChunk) Count() int { return ac.end - ac.off }
 func (ac *ArrayChunk) Nth(i int) coretypes.Object {
@@ -62,7 +62,7 @@ func (ac *ArrayChunk) DropFirst() *ArrayChunk {
 // ChunkedCons wraps a chunk + rest seq for chunked-seq? compatibility.
 type ChunkedCons struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	chunk *ArrayChunk
 	rest  coretypes.Seq
 	idx   int
@@ -77,9 +77,9 @@ func (cc *ChunkedCons) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res.Info = info
 	return &res
 }
-func (cc *ChunkedCons) WithMeta(m Map) coretypes.Object {
+func (cc *ChunkedCons) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *cc
-	res.meta = SafeMerge(res.meta, m)
+	res.Meta = coretypes.SafeMerge(res.Meta, m)
 	return &res
 }
 func (cc *ChunkedCons) Seq() coretypes.Seq { return cc }
@@ -114,16 +114,16 @@ func registerChunkedSeqProcs() {
 	}
 
 	// chunk-buffer — (chunk-buffer size)
-	cbVr := ns.Intern(MakeSymbol("chunk-buffer"))
+	cbVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-buffer"))
 	cbVr.Value = Proc{Name: "procChunkBuffer", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		n := EnsureArgIsInt(args, 0).I
+		n := coretypes.EnsureArgIsInt(args, 0).I
 		return &ChunkBuffer{arr: make([]coretypes.Object, 0, n)}
 	}}
-	referToUser(MakeSymbol("chunk-buffer"), cbVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-buffer"), cbVr)
 
 	// chunk-append — (chunk-append buffer val)
-	caVr := ns.Intern(MakeSymbol("chunk-append"))
+	caVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-append"))
 	caVr.Value = Proc{Name: "procChunkAppend", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		buf, ok := args[0].(*ChunkBuffer)
@@ -134,10 +134,10 @@ func registerChunkedSeqProcs() {
 		buf.count++
 		return NIL
 	}}
-	referToUser(MakeSymbol("chunk-append"), caVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-append"), caVr)
 
 	// chunk — (chunk buffer) — converts buffer to chunk
-	chunkVr := ns.Intern(MakeSymbol("chunk"))
+	chunkVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk"))
 	chunkVr.Value = Proc{Name: "procChunk", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		buf, ok := args[0].(*ChunkBuffer)
@@ -146,26 +146,26 @@ func registerChunkedSeqProcs() {
 		}
 		return &ArrayChunk{arr: buf.arr, off: 0, end: len(buf.arr)}
 	}}
-	referToUser(MakeSymbol("chunk"), chunkVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk"), chunkVr)
 
 	// chunk-first — (chunk-first chunked-seq)
-	cfVr := ns.Intern(MakeSymbol("chunk-first"))
+	cfVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-first"))
 	cfVr.Value = Proc{Name: "procChunkFirst", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		if cc, ok := args[0].(*ChunkedCons); ok {
 			return cc.chunk
 		}
 		// For non-chunked seqs, wrap first element in a single-element chunk
-		s := EnsureObjectIsSeqable(args[0], "chunk-first requires a seq").Seq()
+		s := coretypes.EnsureObjectIsSeqable(args[0], "chunk-first requires a seq").Seq()
 		if s.IsEmpty() {
 			return &ArrayChunk{arr: nil, off: 0, end: 0}
 		}
 		return &ArrayChunk{arr: []coretypes.Object{s.First()}, off: 0, end: 1}
 	}}
-	referToUser(MakeSymbol("chunk-first"), cfVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-first"), cfVr)
 
 	// chunk-rest — (chunk-rest chunked-seq)
-	crVr := ns.Intern(MakeSymbol("chunk-rest"))
+	crVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-rest"))
 	crVr.Value = Proc{Name: "procChunkRest", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		if cc, ok := args[0].(*ChunkedCons); ok {
@@ -174,13 +174,13 @@ func registerChunkedSeqProcs() {
 			}
 			return EmptyList
 		}
-		s := EnsureObjectIsSeqable(args[0], "chunk-rest requires a seq").Seq()
+		s := coretypes.EnsureObjectIsSeqable(args[0], "chunk-rest requires a seq").Seq()
 		return s.Rest()
 	}}
-	referToUser(MakeSymbol("chunk-rest"), crVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-rest"), crVr)
 
 	// chunk-next — (chunk-next chunked-seq)
-	cnVr := ns.Intern(MakeSymbol("chunk-next"))
+	cnVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-next"))
 	cnVr.Value = Proc{Name: "procChunkNext", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		if cc, ok := args[0].(*ChunkedCons); ok {
@@ -189,17 +189,17 @@ func registerChunkedSeqProcs() {
 			}
 			return NIL
 		}
-		s := EnsureObjectIsSeqable(args[0], "chunk-next requires a seq").Seq()
+		s := coretypes.EnsureObjectIsSeqable(args[0], "chunk-next requires a seq").Seq()
 		r := s.Rest()
 		if r.IsEmpty() {
 			return NIL
 		}
 		return r
 	}}
-	referToUser(MakeSymbol("chunk-next"), cnVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-next"), cnVr)
 
 	// chunk-cons — (chunk-cons chunk rest)
-	ccVr := ns.Intern(MakeSymbol("chunk-cons"))
+	ccVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-cons"))
 	ccVr.Value = Proc{Name: "procChunkCons", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		ac, ok := args[0].(*ArrayChunk)
@@ -223,7 +223,7 @@ func registerChunkedSeqProcs() {
 		}
 		return &ChunkedCons{chunk: ac, rest: rest, idx: 0}
 	}}
-	referToUser(MakeSymbol("chunk-cons"), ccVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-cons"), ccVr)
 
 	// Override chunked-seq? to detect ChunkedCons
 	csqVr := ns.Resolve("chunked-seq?")

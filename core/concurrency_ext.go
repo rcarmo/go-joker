@@ -36,10 +36,10 @@ func installConcurrencyExt() {
 
 	// timeout — returns a channel that closes after ms milliseconds.
 	// (timeout ms) -> Channel
-	toVr := ns.Intern(MakeSymbol("timeout"))
+	toVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "timeout"))
 	toVr.Value = Proc{Name: "procTimeout", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		delay := checkedMillisecondDuration(EnsureArgIsInt(args, 0).I, "timeout")
+		delay := checkedMillisecondDuration(coretypes.EnsureArgIsInt(args, 0).I, "timeout")
 		ch := MakeChannel(make(chan FutureResult, 1))
 		go func() {
 			time.Sleep(delay)
@@ -47,23 +47,23 @@ func installConcurrencyExt() {
 		}()
 		return ch
 	}}
-	referToUser(MakeSymbol("timeout"), toVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "timeout"), toVr)
 
 	// alts! — select-style multi-channel wait.
 	// (alts! ports & opts) where ports is a vector of channels (take) or
 	// [channel value] pairs (put).
 	// Returns [value channel].
 	// Options: :default val — return immediately if nothing ready.
-	altsVr := ns.Intern(MakeSymbol("alts!"))
+	altsVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "alts!"))
 	altsVr.Value = Proc{Name: "procAlts", Fn: procAlts}
-	referToUser(MakeSymbol("alts!"), altsVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "alts!"), altsVr)
 
 	// future — runs body in a goroutine, returns a deref-able object.
 	// (future body...) is a macro defined in core.joke; the runtime primitive is future-call.
-	fcVr := ns.Intern(MakeSymbol("future-call"))
+	fcVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "future-call"))
 	fcVr.Value = Proc{Name: "procFutureCall", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		f := EnsureArgIsCallable(args, 0)
+		f := coretypes.EnsureArgIsCallable(args, 0)
 		fut := &Future{runtime: corert.NewFuture[coretypes.Object, coretypes.Error]()}
 		go func() {
 			registerGoroutineRT()
@@ -85,37 +85,37 @@ func installConcurrencyExt() {
 		}()
 		return fut
 	}}
-	referToUser(MakeSymbol("future-call"), fcVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "future-call"), fcVr)
 
 	// future — macro: (future body...) -> (future-call (fn [] body...))
 	installMacro(ns, "future", func(args []coretypes.Object) coretypes.Object {
 		// args: &form, &env, body...
 		body := args[2:]
-		fnForm := collectionConstruction.NewListFrom(append([]coretypes.Object{MakeSymbol("fn"), collectionConstruction.NewVectorFrom()}, body...)...)
-		return collectionConstruction.NewListFrom(MakeSymbol("future-call"), fnForm)
+		fnForm := collectionConstruction.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "fn"), collectionConstruction.NewVectorFrom()}, body...)...)
+		return collectionConstruction.NewListFrom(coretypes.MakeSymbol(STRINGS.Intern, "future-call"), fnForm)
 	})
 
 	// future? — true if obj is a Future.
-	fqVr := ns.Intern(MakeSymbol("future?"))
+	fqVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "future?"))
 	fqVr.Value = Proc{Name: "procFutureQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		_, ok := args[0].(*Future)
 		return coretypes.MakeBoolean(ok)
 	}}
-	referToUser(MakeSymbol("future?"), fqVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "future?"), fqVr)
 
 	// promise — creates a promise that can be delivered once.
 	// (promise) -> Promise
-	prVr := ns.Intern(MakeSymbol("promise"))
+	prVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "promise"))
 	prVr.Value = Proc{Name: "procPromise", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 0, 0)
 		return &Promise{runtime: corert.NewPromise[coretypes.Object]()}
 	}}
-	referToUser(MakeSymbol("promise"), prVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "promise"), prVr)
 
 	// deliver — delivers a value to a promise. Returns the promise.
 	// (deliver p val) -> Promise
-	dlVr := ns.Intern(MakeSymbol("deliver"))
+	dlVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "deliver"))
 	dlVr.Value = Proc{Name: "procDeliver", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
 		p, ok := args[0].(*Promise)
@@ -125,19 +125,19 @@ func installConcurrencyExt() {
 		p.runtime.Deliver(args[1])
 		return p
 	}}
-	referToUser(MakeSymbol("deliver"), dlVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "deliver"), dlVr)
 
 	// promise? — true if obj is a Promise.
-	pqVr := ns.Intern(MakeSymbol("promise?"))
+	pqVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "promise?"))
 	pqVr.Value = Proc{Name: "procPromiseQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		_, ok := args[0].(*Promise)
 		return coretypes.MakeBoolean(ok)
 	}}
-	referToUser(MakeSymbol("promise?"), pqVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "promise?"), pqVr)
 
 	// realized? — true if a Future/Promise/coretypes.Delay has been realized.
-	rzVr := ns.Intern(MakeSymbol("realized?"))
+	rzVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "realized?"))
 	rzVr.Value = Proc{Name: "procRealizedQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		if p, ok := args[0].(coretypes.Pending); ok {
@@ -145,15 +145,15 @@ func installConcurrencyExt() {
 		}
 		return coretypes.Boolean{B: false}
 	}}
-	referToUser(MakeSymbol("realized?"), rzVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "realized?"), rzVr)
 
 	// pmap — parallel map. (pmap f coll)
 	// Applies f to each element in parallel goroutines, returns lazy seq of results in order.
-	pmapVr := ns.Intern(MakeSymbol("pmap"))
+	pmapVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "pmap"))
 	pmapVr.Value = Proc{Name: "procPmap", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
-		f := EnsureArgIsCallable(args, 0)
-		coll := EnsureObjectIsSeqable(args[1], "pmap requires a coretypes.Seqable collection").Seq()
+		f := coretypes.EnsureArgIsCallable(args, 0)
+		coll := coretypes.EnsureObjectIsSeqable(args[1], "pmap requires a coretypes.Seqable collection").Seq()
 		// Collect all elements first (pmap is not lazy in this impl).
 		var elems []coretypes.Object
 		for s := coll; !s.IsEmpty(); s = s.Rest() {
@@ -188,11 +188,11 @@ func installConcurrencyExt() {
 		}
 		return collectionConstruction.NewListFrom(results...)
 	}}
-	referToUser(MakeSymbol("pmap"), pmapVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "pmap"), pmapVr)
 
 	// pcalls — parallel calls. (pcalls & fns)
 	// Calls each no-arg fn in parallel, returns list of results.
-	pcVr := ns.Intern(MakeSymbol("pcalls"))
+	pcVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "pcalls"))
 	pcVr.Value = Proc{Name: "procPcalls", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) == 0 {
 			return NIL
@@ -201,7 +201,7 @@ func installConcurrencyExt() {
 		done := make(chan int, len(args))
 		panicCh := make(chan interface{}, len(args))
 		for i, arg := range args {
-			f := EnsureObjectIsCallable(arg, "pcalls requires callable arguments")
+			f := coretypes.EnsureObjectIsCallable(arg, "pcalls requires callable arguments")
 			go func(idx int, fn coretypes.Callable) {
 				registerGoroutineRT()
 				defer unregisterGoroutineRT()
@@ -224,7 +224,7 @@ func installConcurrencyExt() {
 		}
 		return collectionConstruction.NewListFrom(results...)
 	}}
-	referToUser(MakeSymbol("pcalls"), pcVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "pcalls"), pcVr)
 }
 
 // procAlts implements (alts! ports & opts).
@@ -232,7 +232,7 @@ func procAlts(args []coretypes.Object) coretypes.Object {
 	if len(args) < 1 {
 		panic(RT.NewError("alts! requires at least one argument (ports vector)"))
 	}
-	ports := EnsureObjectIsSeqable(args[0], "alts! first arg must be a vector of ports").Seq()
+	ports := coretypes.EnsureObjectIsSeqable(args[0], "alts! first arg must be a vector of ports").Seq()
 
 	// Parse options.
 	if len(args[1:])%2 != 0 {
@@ -241,7 +241,7 @@ func procAlts(args []coretypes.Object) coretypes.Object {
 	var defaultVal coretypes.Object
 	hasDefault := false
 	for i := 1; i+1 < len(args); i += 2 {
-		if k, ok := args[i].(Keyword); ok && k.ToString(false) == ":default" {
+		if k, ok := args[i].(coretypes.Keyword); ok && k.ToString(false) == ":default" {
 			defaultVal = args[i+1]
 			hasDefault = true
 		}
@@ -300,7 +300,7 @@ func procAlts(args []coretypes.Object) coretypes.Object {
 
 	// Default case.
 	if hasDefault && chosen == len(cases)-1 {
-		return collectionConstruction.NewVectorFrom(defaultVal, MakeKeyword("default"))
+		return collectionConstruction.NewVectorFrom(defaultVal, coretypes.MakeKeyword(STRINGS.Intern, "default"))
 	}
 
 	info := infos[chosen]
@@ -339,7 +339,7 @@ func (f *Future) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return 
 func (f *Future) Deref() coretypes.Object {
 	value, err := f.runtime.Await()
 	if err != nil {
-		panic(err)
+		panic(coretypes.Object(err))
 	}
 	return value
 }
@@ -381,7 +381,7 @@ func init() {
 
 // Agent holds mutable state that is updated asynchronously via send/send-off.
 type Agent struct {
-	MetaHolder
+	coretypes.MetaHolder
 	mu    sync.Mutex
 	value coretypes.Object
 	queue chan agentAction
@@ -445,15 +445,15 @@ func installAgentExt() {
 	}
 
 	// agent — creates a new agent with initial value.
-	agVr := ns.Intern(MakeSymbol("agent"))
+	agVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "agent"))
 	agVr.Value = Proc{Name: "procAgent", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		return newAgent(args[0])
 	}}
-	referToUser(MakeSymbol("agent"), agVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "agent"), agVr)
 
 	// send — dispatches action to agent (returns agent immediately).
-	sendVr := ns.Intern(MakeSymbol("send"))
+	sendVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "send"))
 	sendVr.Value = Proc{Name: "procSend", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
 			panic(RT.NewError("send requires at least 2 args: agent and fn"))
@@ -462,14 +462,14 @@ func installAgentExt() {
 		if !ok {
 			panic(RT.NewError("send first arg must be an agent"))
 		}
-		f := EnsureObjectIsCallable(args[1], "send second arg must be a fn")
+		f := coretypes.EnsureObjectIsCallable(args[1], "send second arg must be a fn")
 		a.queue <- agentAction{fn: f, args: args[2:]}
 		return a
 	}}
-	referToUser(MakeSymbol("send"), sendVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "send"), sendVr)
 
 	// send-off — same as send for this implementation (no thread pool distinction).
-	soVr := ns.Intern(MakeSymbol("send-off"))
+	soVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "send-off"))
 	soVr.Value = Proc{Name: "procSendOff", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
 			panic(RT.NewError("send-off requires at least 2 args: agent and fn"))
@@ -478,15 +478,15 @@ func installAgentExt() {
 		if !ok {
 			panic(RT.NewError("send-off first arg must be an agent"))
 		}
-		f := EnsureObjectIsCallable(args[1], "send-off second arg must be a fn")
+		f := coretypes.EnsureObjectIsCallable(args[1], "send-off second arg must be a fn")
 		a.queue <- agentAction{fn: f, args: args[2:]}
 		return a
 	}}
-	referToUser(MakeSymbol("send-off"), soVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "send-off"), soVr)
 
 	// await — blocks until all actions dispatched to agents have completed.
 	// Simple implementation: sends a sentinel and waits for it to be processed.
-	awaitVr := ns.Intern(MakeSymbol("await"))
+	awaitVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "await"))
 	awaitVr.Value = Proc{Name: "procAwait", Fn: func(args []coretypes.Object) coretypes.Object {
 		for _, arg := range args {
 			a, ok := arg.(*Agent)
@@ -504,10 +504,10 @@ func installAgentExt() {
 		}
 		return NIL
 	}}
-	referToUser(MakeSymbol("await"), awaitVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "await"), awaitVr)
 
 	// agent-error — returns any error that has occurred on the agent.
-	aeVr := ns.Intern(MakeSymbol("agent-error"))
+	aeVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "agent-error"))
 	aeVr.Value = Proc{Name: "procAgentError", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		a, ok := args[0].(*Agent)
@@ -525,5 +525,5 @@ func installAgentExt() {
 		}
 		return coretypes.MakeString(e.Error())
 	}}
-	referToUser(MakeSymbol("agent-error"), aeVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "agent-error"), aeVr)
 }

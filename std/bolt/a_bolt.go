@@ -196,7 +196,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var boltNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.bolt"))
+var boltNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.bolt"))
 
 func init() {
 	boltNamespace.Lazy = Init

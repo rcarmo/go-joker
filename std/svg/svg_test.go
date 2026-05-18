@@ -86,8 +86,8 @@ func TestCanvasWithStyle(t *testing.T) {
 	canvas := procCanvas([]coretypes.Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
 
 	style := &ArrayMap{}
-	style = style.Assoc(MakeKeyword("fill"), coretypes.MakeString("red")).(*ArrayMap)
-	style = style.Assoc(MakeKeyword("stroke"), coretypes.MakeString("black")).(*ArrayMap)
+	style = style.Assoc(coretypes.MakeKeyword(STRINGS.Intern, "fill"), coretypes.MakeString("red")).(*ArrayMap)
+	style = style.Assoc(coretypes.MakeKeyword(STRINGS.Intern, "stroke"), coretypes.MakeString("black")).(*ArrayMap)
 	procRect([]coretypes.Object{canvas, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(50), coretypes.MakeInt(50), style})
 
 	result := procToString([]coretypes.Object{canvas})

@@ -1,7 +1,7 @@
 # Code structure, module boundaries, and coverage audit
 
 Generated: 2026-05-10
-Updated: 2026-05-15
+Updated: 2026-05-18
 
 ## Executive summary
 
@@ -14,7 +14,7 @@ Recent feature work improved boundaries for new code (`std/transit`, `std/system
 - `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
 - `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/collections`, `core/reader`, `core/string`, and `core/cursor` own extracted helpers with direct package tests.
 - `core/` is still the runtime kernel and contains:
-  - object/type model (`object.go`, `types_*`)
+  - remaining root runtime object systems (`object.go`, root generated helpers) plus `core/types` for the canonical object/type/protocol model
   - persistent collection implementations
   - reader/parser/evaluator (`read.go`, `parse.go`, `eval.go`)
   - namespace/Var/runtime environment (`ns.go`, `environment*.go`)
@@ -64,13 +64,13 @@ Recent `std/transit` and `std/system` match this pattern.
 `core` has too many responsibilities for easy maintenance. The largest hand-maintained files should be treated as decomposition candidates:
 
 - `core/procs.go` — many unrelated public procs in one file.
-- `core/object.go` — type definitions plus stringification/comparison helpers.
+- `core/object.go` — remaining root runtime values (`Nil`, `Var`, `Proc`, `Fn`, `ExInfo`, `Atom`) and root-specific helpers; object/protocol/scalar/shared collection contracts have moved to `core/types`.
 - `core/parse.go`, `core/read.go`, `core/eval.go` — acceptable for an interpreter but should remain isolated from feature-specific extensions.
-- `core/numbers.go` — numeric contracts are critical and now need focused tests after BigInt/BigDecimal changes.
-- remaining `core/ir_*` / `core/wasm_*` — partially extracted, but compiler/executor/runtime pieces still depend on root-core object and call contracts.
+- `core/types/ops_impl.go` and `core/types/numbers.go` — numeric contracts are now type-package owned and remain critical; keep focused tests around promotion, ratio, and native-int bounds.
+- remaining root IR/WASM/executor files — partially extracted, but compiler/executor/runtime pieces still depend on root `Fn`/`Var`/`Expr`, namespace/frame, and call contracts.
 - `core/persistent_vector.go` — object semantics have been tightened and storage/trie mechanics now delegate into `core/collections`, making it a better template for eventual collection extraction.
 
-Recommendation: avoid broad collection/reader/evaluator moves until `docs/refactor/object-protocol-contracts.md` contracts are made concrete. Current production collection and reader construction call sites are routed through adapters and guarded against drift. Pure collection mechanics have started moving to `core/collections`, and `core/reader` now owns a broad set of root-independent rune/token/scanning/form helpers. Concrete implementations still depend on root object/evaluator internals. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
+Recommendation: avoid broad collection/reader/evaluator moves until `docs/refactor/object-protocol-contracts.md` contracts are made concrete. The latest cleanup removed transitional root aliases for moved `coretypes` contracts; future work should keep using explicit package boundaries rather than adding root shims back. Current production collection and reader construction call sites are routed through adapters and guarded against drift. Pure collection mechanics have started moving to `core/collections`, and `core/reader` now owns a broad set of root-independent rune/token/scanning/form helpers. Concrete implementations still depend on root object/evaluator internals. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
 
 ### 2. Runtime-installed Var metadata is implicit
 

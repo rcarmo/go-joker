@@ -17,12 +17,12 @@ func InternsOrThunks() {
 
 	ioNamespace.InternVar("close", close_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("f"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "f"))),
 			`Closes f (IOWriter, IOReader, or File) if possible. Otherwise throws an error.`, "1.0"))
 
 	ioNamespace.InternVar("copy", copy_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("dst"), MakeSymbol("src"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "dst"), coretypes.MakeSymbol(STRINGS.Intern, "src"))),
 			`Copies from src to dst until either EOF is reached on src or an error occurs.
   Returns the number of bytes copied as an Int, or BigInt if the count exceeds the native int range.
   src must be IOReader, e.g. as returned by joker.os/open.
@@ -37,8 +37,8 @@ func InternsOrThunks() {
 
 	ioNamespace.InternVar("read", read_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("r"), MakeSymbol("n"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "r"), coretypes.MakeSymbol(STRINGS.Intern, "n"))),
 			`Reads up to n bytes from IOReader r and returns a string of the read bytes.
-  May return a shorter (or blank) string if EOF is encountered.`, "1.3.6").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+  May return a shorter (or blank) string if EOF is encountered.`, "1.3.6").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 }

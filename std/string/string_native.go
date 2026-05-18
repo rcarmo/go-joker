@@ -115,7 +115,7 @@ func isBlank(s coretypes.Object) bool {
 	if s.Equals(NIL) {
 		return true
 	}
-	str := EnsureObjectIsString(s, "").S
+	str := coretypes.EnsureObjectIsString(s, "").S
 	for _, r := range str {
 		if !unicode.IsSpace(r) {
 			return false

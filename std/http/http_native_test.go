@@ -17,10 +17,10 @@ import (
 func TestHandleStreamSSE(t *testing.T) {
 	rec := httptest.NewRecorder()
 	respMap := EmptyArrayMap()
-	respMap.Add(MakeKeyword("status"), coretypes.MakeInt(200))
+	respMap.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(200))
 
 	streamFn := Proc{Name: "test-stream", Fn: func(args []coretypes.Object) coretypes.Object {
-		send := EnsureArgIsCallable(args, 0)
+		send := coretypes.EnsureArgIsCallable(args, 0)
 		send.Call([]coretypes.Object{coretypes.MakeString("hello")})
 		send.Call([]coretypes.Object{coretypes.MakeString("tick"), coretypes.MakeString("42")})
 		return NIL
@@ -58,7 +58,7 @@ func (w *failingStreamWriter) Flush() {}
 
 func TestMapToRespRejectsInvalidStatus(t *testing.T) {
 	respMap := EmptyArrayMap()
-	respMap.Add(MakeKeyword("status"), coretypes.MakeInt(99))
+	respMap.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(99))
 	defer func() {
 		if recover() == nil {
 			t.Fatal("invalid response status did not panic")
@@ -69,7 +69,7 @@ func TestMapToRespRejectsInvalidStatus(t *testing.T) {
 
 func TestMapToRespWriteErrorsSurface(t *testing.T) {
 	respMap := EmptyArrayMap()
-	respMap.Add(MakeKeyword("body"), coretypes.MakeString("hello"))
+	respMap.Add(coretypes.MakeKeyword(STRINGS.Intern, "body"), coretypes.MakeString("hello"))
 	defer func() {
 		r := recover()
 		err, ok := r.(coretypes.Error)
@@ -85,7 +85,7 @@ func TestMapToRespWriteErrorsSurface(t *testing.T) {
 
 func TestHandleStreamRejectsInvalidStatus(t *testing.T) {
 	respMap := EmptyArrayMap()
-	respMap.Add(MakeKeyword("status"), coretypes.MakeInt(1000))
+	respMap.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(1000))
 	defer func() {
 		if recover() == nil {
 			t.Fatal("invalid stream status did not panic")
@@ -96,7 +96,7 @@ func TestHandleStreamRejectsInvalidStatus(t *testing.T) {
 
 func TestHandleStreamWriteErrorsSurface(t *testing.T) {
 	streamFn := Proc{Name: "test-stream", Fn: func(args []coretypes.Object) coretypes.Object {
-		send := EnsureArgIsCallable(args, 0)
+		send := coretypes.EnsureArgIsCallable(args, 0)
 		send.Call([]coretypes.Object{coretypes.MakeString("hello")})
 		return NIL
 	}}
@@ -121,15 +121,15 @@ func TestHandleWebSocketUpgradeAndCallbacks(t *testing.T) {
 
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		conf := EmptyArrayMap()
-		conf.Add(MakeKeyword("on-open"), Proc{Name: "on-open", Fn: func(args []coretypes.Object) coretypes.Object {
+		conf.Add(coretypes.MakeKeyword(STRINGS.Intern, "on-open"), Proc{Name: "on-open", Fn: func(args []coretypes.Object) coretypes.Object {
 			sendMu.Lock()
-			sendFn = EnsureArgIsCallable(args, 0)
+			sendFn = coretypes.EnsureArgIsCallable(args, 0)
 			s := sendFn
 			sendMu.Unlock()
 			s.Call([]coretypes.Object{coretypes.MakeString("welcome")})
 			return NIL
 		}})
-		conf.Add(MakeKeyword("on-message"), Proc{Name: "on-message", Fn: func(args []coretypes.Object) coretypes.Object {
+		conf.Add(coretypes.MakeKeyword(STRINGS.Intern, "on-message"), Proc{Name: "on-message", Fn: func(args []coretypes.Object) coretypes.Object {
 			sendMu.Lock()
 			s := sendFn
 			sendMu.Unlock()
@@ -173,13 +173,13 @@ func TestHandleWebSocketCloseCallbackIsIdempotent(t *testing.T) {
 	done := make(chan coretypes.Object, 1)
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		conf := EmptyArrayMap()
-		conf.Add(MakeKeyword("on-open"), Proc{Name: "on-open", Fn: func(args []coretypes.Object) coretypes.Object {
-			closeFn := EnsureArgIsCallable(args, 1)
+		conf.Add(coretypes.MakeKeyword(STRINGS.Intern, "on-open"), Proc{Name: "on-open", Fn: func(args []coretypes.Object) coretypes.Object {
+			closeFn := coretypes.EnsureArgIsCallable(args, 1)
 			closeFn.Call(nil)
 			closeFn.Call(nil)
 			return NIL
 		}})
-		conf.Add(MakeKeyword("on-close"), Proc{Name: "on-close", Fn: func(args []coretypes.Object) coretypes.Object {
+		conf.Add(coretypes.MakeKeyword(STRINGS.Intern, "on-close"), Proc{Name: "on-close", Fn: func(args []coretypes.Object) coretypes.Object {
 			done <- coretypes.Boolean{B: true}
 			return NIL
 		}})
@@ -225,7 +225,7 @@ func TestReqToMapRemoteAddrIPv6(t *testing.T) {
 		req := httptest.NewRequest("GET", "http://example.com/path?q=1", nil)
 		req.RemoteAddr = remote
 		m := reqToMap(coretypes.MakeString("host"), coretypes.MakeString("8080"), req)
-		ok, got := m.Get(MakeKeyword("remote-addr"))
+		ok, got := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "remote-addr"))
 		if !ok || got.ToString(false) != want {
 			t.Fatalf("remote %q mapped to %v, want %q", remote, got, want)
 		}

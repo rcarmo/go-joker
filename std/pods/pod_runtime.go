@@ -206,7 +206,7 @@ func closePodStream(name string, stream any) {
 
 func objectMapToPodMessage(obj any) podMessage {
 	m := podMessage{}
-	jm, ok := obj.(Map)
+	jm, ok := obj.(coretypes.Map)
 	if !ok {
 		return m
 	}
@@ -221,9 +221,9 @@ func podMessageKeyString(k coretypes.Object) string {
 	switch v := k.(type) {
 	case coretypes.String:
 		return v.S
-	case Keyword:
+	case coretypes.Keyword:
 		return v.ToString(false)[1:]
-	case Symbol:
+	case coretypes.Symbol:
 		return v.ToString(false)
 	default:
 		return v.ToString(false)
@@ -234,7 +234,7 @@ func podMessageValue(v coretypes.Object) any {
 	switch x := v.(type) {
 	case coretypes.String:
 		return x.S
-	case Keyword, Symbol:
+	case coretypes.Keyword, coretypes.Symbol:
 		return x.ToString(false)
 	case coretypes.Int:
 		return x.I
@@ -242,7 +242,7 @@ func podMessageValue(v coretypes.Object) any {
 		return x.B
 	case Nil:
 		return nil
-	case Map:
+	case coretypes.Map:
 		return objectMapToPodMessage(x)
 	case coretypes.Seqable:
 		vals := []any{}

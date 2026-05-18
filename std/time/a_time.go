@@ -427,7 +427,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var timeNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.time"))
+var timeNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.time"))
 
 func init() {
 	timeNamespace.Lazy = Init

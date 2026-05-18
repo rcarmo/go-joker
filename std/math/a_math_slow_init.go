@@ -18,167 +18,167 @@ func InternsOrThunks() {
 	mathNamespace.InternVar("e", e_,
 		MakeMeta(
 			nil,
-			`e`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`e`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("ln-of-10", ln_of_10_,
 		MakeMeta(
 			nil,
-			`Natural logarithm of 10`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Natural logarithm of 10`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("ln-of-2", ln_of_2_,
 		MakeMeta(
 			nil,
-			`Natural logarithm of 2`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Natural logarithm of 2`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("log-10-of-e", log_10_of_e_,
 		MakeMeta(
 			nil,
-			`Base-10 logarithm of e`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Base-10 logarithm of e`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("log-2-of-e", log_2_of_e_,
 		MakeMeta(
 			nil,
-			`Base-2 logarithm of e`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Base-2 logarithm of e`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("max-double", max_double_,
 		MakeMeta(
 			nil,
-			`Largest finite value representable by coretypes.Double`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Largest finite value representable by coretypes.Double`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("phi", phi_,
 		MakeMeta(
 			nil,
-			`Phi`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Phi`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("pi", pi_,
 		MakeMeta(
 			nil,
-			`pi`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`pi`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("smallest-nonzero-double", smallest_nonzero_double_,
 		MakeMeta(
 			nil,
-			`Smallest positive, non-zero value representable by coretypes.Double`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Smallest positive, non-zero value representable by coretypes.Double`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("sqrt-of-2", sqrt_of_2_,
 		MakeMeta(
 			nil,
-			`Square root of 2`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Square root of 2`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("sqrt-of-e", sqrt_of_e_,
 		MakeMeta(
 			nil,
-			`Square root of e`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Square root of e`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("sqrt-of-phi", sqrt_of_phi_,
 		MakeMeta(
 			nil,
-			`Square root of phi`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Square root of phi`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("sqrt-of-pi", sqrt_of_pi_,
 		MakeMeta(
 			nil,
-			`Square root of pi`, "1.0").Plus(MakeKeyword("const"), coretypes.String{S: "true"}).Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Square root of pi`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "const"), coretypes.String{S: "true"}).Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("abs", abs_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the absolute value of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the absolute value of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("ceil", ceil_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the least integer value greater than or equal to x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the least integer value greater than or equal to x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("copy-sign", copy_sign_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"), MakeSymbol("y"))),
-			`Returns value with the magnitude of x and the sign of y.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
+			`Returns value with the magnitude of x and the sign of y.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("cos", cos_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the cosine of the radian argument x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the cosine of the radian argument x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("cube-root", cube_root_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the cube root of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the cube root of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("dim", dim_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"), MakeSymbol("y"))),
-			`Returns the maximum of x-y and 0.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
+			`Returns the maximum of x-y and 0.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("exp", exp_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns e**x, the base-e exponential of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns e**x, the base-e exponential of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("exp-2", exp_2_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns 2**x, the base-2 exponential of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns 2**x, the base-2 exponential of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("exp-minus-1", exp_minus_1_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns e**x - 1, the base-e exponential of x minus 1.
 
-  This is more accurate than (- (exp x) 1.) when x is near zero.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+  This is more accurate than (- (exp x) 1.) when x is near zero.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("floor", floor_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the greatest integer value greater than or equal to x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the greatest integer value greater than or equal to x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("hypot", hypot_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("p"), MakeSymbol("q"))),
-			`Returns Sqrt(p*p + q*q), taking care to avoid unnecessary overflow and underflow.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "p"), coretypes.MakeSymbol(STRINGS.Intern, "q"))),
+			`Returns Sqrt(p*p + q*q), taking care to avoid unnecessary overflow and underflow.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("inf", inf_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("sign"))),
-			`Returns positive infinity if sign >= 0, negative infinity if sign < 0.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "sign"))),
+			`Returns positive infinity if sign >= 0, negative infinity if sign < 0.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("inf?", isinf_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"), MakeSymbol("sign"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "sign"))),
 			`Returns whether x is an infinity.
 
-  If sign > 0, returns whether x is positive infinity; if < 0, whether negative infinity; if == 0, whether either infinity.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Boolean"}))
+  If sign > 0, returns whether x is positive infinity; if < 0, whether negative infinity; if == 0, whether either infinity.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Boolean"}))
 
 	mathNamespace.InternVar("log", log_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the natural logarithm of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the natural logarithm of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("log-10", log_10_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the decimal logarithm of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the decimal logarithm of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("log-2", log_2_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the binary logarithm of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the binary logarithm of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("log-binary", log_binary_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the binary exponent of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the binary exponent of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("log-plus-1", log_plus_1_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns the natural logarithm of 1 plus x.
 
-  This is more accurate than (log (+ 1 x)) when x is near zero.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+  This is more accurate than (log (+ 1 x)) when x is near zero.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("modf", modf_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns a vector with the integer and fractional floating-point numbers that sum to x.
 
   Both values have the same sign as x.`, "1.0"))
@@ -186,31 +186,31 @@ func InternsOrThunks() {
 	mathNamespace.InternVar("nan", nan_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom()),
-			`Returns an IEEE 754 "not-a-number" value.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			`Returns an IEEE 754 "not-a-number" value.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("nan?", isnan_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns whether x is an IEEE 754 "not-a-number" value.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Boolean"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns whether x is an IEEE 754 "not-a-number" value.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Boolean"}))
 
 	mathNamespace.InternVar("next-after", next_after_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"), MakeSymbol("y"))),
-			`Returns the next representable coretypes.Double value after x towards y.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
+			`Returns the next representable coretypes.Double value after x towards y.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("pow", pow_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"), MakeSymbol("y"))),
-			`Returns x**y, the base-x exponential of y.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
+			`Returns x**y, the base-x exponential of y.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("pow-10", pow_10_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns 10**x, the base-10 exponential of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns 10**x, the base-10 exponential of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("precision", precision_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("f"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "f"))),
 			`Returns the precision of a Number.
 
   The precision excludes any sign or exponent. For a BigInt, it's the
@@ -224,44 +224,44 @@ func InternsOrThunks() {
   reported.
 
   If f is not a supported Number type (such as Ratio), a panic
-  results.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "BigInt"}))
+  results.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "BigInt"}))
 
 	mathNamespace.InternVar("round", round_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the integer nearest to x, rounding half away from zero.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the integer nearest to x, rounding half away from zero.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("round-to-even", round_to_even_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the integer nearest to x, rounding ties to the nearest even integer.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the integer nearest to x, rounding ties to the nearest even integer.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("set-precision", set_precision_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("prec"), MakeSymbol("f"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "prec"), coretypes.MakeSymbol(STRINGS.Intern, "f"))),
 			`Returns a copy of a BigFloat with the specified precision.
 
   Calls Go's math/big.(*Float)SetPrec(prec) on a copy of f. prec must
-  evaluate to a non-negative integer. Returns the resulting BigFloat.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "BigFloat"}))
+  evaluate to a non-negative integer. Returns the resulting BigFloat.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "BigFloat"}))
 
 	mathNamespace.InternVar("sign-bit", sign_bit_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns whether x is negative or negative zero.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Boolean"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns whether x is negative or negative zero.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Boolean"}))
 
 	mathNamespace.InternVar("sin", sin_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the sine of the radian argument x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the sine of the radian argument x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("sqrt", sqrt_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the square root of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the square root of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	mathNamespace.InternVar("trunc", trunc_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("x"))),
-			`Returns the integer value of x.`, "1.0").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.Double"}))
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+			`Returns the integer value of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 }

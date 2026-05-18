@@ -25,7 +25,7 @@ import (
 // ---- concurrency_ext_test.go ----
 func requireKeyword(tb testing.TB, obj coretypes.Object, want string) {
 	tb.Helper()
-	got, ok := obj.(Keyword)
+	got, ok := obj.(coretypes.Keyword)
 	if !ok {
 		tb.Fatalf("expected Keyword(%s), got %T (%s)", want, obj, obj.ToString(false))
 	}
@@ -239,10 +239,10 @@ func TestCollectionConstructionAdapterVectors(t *testing.T) {
 
 func TestCollectionConstructionAdapterMapsAndSets(t *testing.T) {
 	adapter := collectionConstruction
-	key := MakeKeyword("k")
+	key := coretypes.MakeKeyword(STRINGS.Intern, "k")
 	value := coretypes.MakeInt(42)
 
-	arrayMap := adapter.EmptyArrayMap().Assoc(key, value).(Map)
+	arrayMap := adapter.EmptyArrayMap().Assoc(key, value).(coretypes.Map)
 	hashMap := adapter.HashMapFrom(key, value)
 	if !arrayMap.Equals(hashMap) || arrayMap.Hash() != hashMap.Hash() {
 		t.Fatalf("map constructors should build equivalent maps: %s / %s", arrayMap.ToString(false), hashMap.ToString(false))
@@ -877,14 +877,14 @@ func TestTypedExecutorStringOps(t *testing.T) {
 
 func TestIrValueKeywordRoundtrip(t *testing.T) {
 	clbgInit()
-	kw := Eval(compileBenchExpr(t, `:test`), nil).(Keyword)
+	kw := Eval(compileBenchExpr(t, `:test`), nil).(coretypes.Keyword)
 	v := objectToIRValue(kw)
 	if v.tag != irValKeyword {
 		t.Fatalf("expected irValKeyword, got %d", v.tag)
 	}
-	back := v.object().(Keyword)
-	if *back.name != *kw.name {
-		t.Fatalf("keyword roundtrip: %v != %v", *back.name, *kw.name)
+	back := v.object().(coretypes.Keyword)
+	if back.Name() != kw.Name() {
+		t.Fatalf("keyword roundtrip: %v != %v", back.Name(), kw.Name())
 	}
 }
 
@@ -1099,7 +1099,7 @@ func (fi contractFileInfo) Sys() any           { return nil }
 
 func TestFileInfoMapPromotesLargeSize(t *testing.T) {
 	m := FileInfoMap("contract", contractFileInfo{size: math.MaxInt64})
-	found, got := m.Get(MakeKeyword("size"))
+	found, got := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "size"))
 	if !found {
 		t.Fatal("FileInfoMap missing :size")
 	}
@@ -1142,7 +1142,7 @@ func TestRatioOrIntWithOriginalPreservesBigIntOriginal(t *testing.T) {
 
 // ---- object_protocol_contract_test.go ----
 func TestExtendTypeInternalRejectsOddMethodPairs(t *testing.T) {
-	proto := &Protocol{name: MakeSymbol("AuditProto")}
+	proto := &Protocol{name: coretypes.MakeSymbol(STRINGS.Intern, "AuditProto")}
 	extendType := GLOBAL_ENV.CoreNamespace.Resolve("__extend-type")
 	if extendType == nil {
 		t.Fatal("missing __extend-type var")
@@ -1157,7 +1157,7 @@ func TestExtendTypeInternalRejectsOddMethodPairs(t *testing.T) {
 }
 
 func TestCountedIndexedVectorContract(t *testing.T) {
-	items := []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeString("two"), MakeKeyword("three")}
+	items := []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeString("two"), coretypes.MakeKeyword(STRINGS.Intern, "three")}
 	vectors := []struct {
 		name string
 		v    coretypes.Object
@@ -1196,26 +1196,26 @@ func TestCountedIndexedVectorContract(t *testing.T) {
 }
 
 func TestAssociativeMapContract(t *testing.T) {
-	entries := []coretypes.Object{MakeKeyword("a"), coretypes.MakeInt(1), MakeKeyword("b"), coretypes.MakeString("two")}
+	entries := []coretypes.Object{coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.MakeInt(1), coretypes.MakeKeyword(STRINGS.Intern, "b"), coretypes.MakeString("two")}
 	maps := []struct {
 		name string
-		m    Map
+		m    coretypes.Map
 	}{
-		{name: "array", m: EmptyArrayMap().Assoc(entries[0], entries[1]).Assoc(entries[2], entries[3]).(Map)},
+		{name: "array", m: EmptyArrayMap().Assoc(entries[0], entries[1]).Assoc(entries[2], entries[3]).(coretypes.Map)},
 		{name: "hash", m: NewHashMap(entries...)},
 	}
 	for _, tc := range maps {
 		if tc.m.Count() != 2 {
 			t.Fatalf("%s Count = %d", tc.name, tc.m.Count())
 		}
-		if found, got := tc.m.Get(MakeKeyword("a")); !found || !got.Equals(coretypes.MakeInt(1)) {
+		if found, got := tc.m.Get(coretypes.MakeKeyword(STRINGS.Intern, "a")); !found || !got.Equals(coretypes.MakeInt(1)) {
 			t.Fatalf("%s Get(:a) = %v %v", tc.name, found, got)
 		}
-		updated := tc.m.Assoc(MakeKeyword("a"), coretypes.MakeInt(10)).(Map)
-		if found, got := updated.Get(MakeKeyword("a")); !found || !got.Equals(coretypes.MakeInt(10)) {
+		updated := tc.m.Assoc(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.MakeInt(10)).(coretypes.Map)
+		if found, got := updated.Get(coretypes.MakeKeyword(STRINGS.Intern, "a")); !found || !got.Equals(coretypes.MakeInt(10)) {
 			t.Fatalf("%s updated Get(:a) = %v %v", tc.name, found, got)
 		}
-		if found, got := tc.m.Get(MakeKeyword("a")); !found || !got.Equals(coretypes.MakeInt(1)) {
+		if found, got := tc.m.Get(coretypes.MakeKeyword(STRINGS.Intern, "a")); !found || !got.Equals(coretypes.MakeInt(1)) {
 			t.Fatalf("%s Assoc mutated original: %v %v", tc.name, found, got)
 		}
 	}
@@ -1265,14 +1265,14 @@ func TestSetContract(t *testing.T) {
 	if !set.Equals(set2) || set.Hash() != set2.Hash() {
 		t.Fatalf("equivalent sets should compare equal with same hash: %s / %s", set.ToString(false), set2.ToString(false))
 	}
-	meta := EmptyArrayMap().Assoc(MakeKeyword("tag"), coretypes.MakeString("kept")).(Map)
+	meta := EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.MakeString("kept")).(coretypes.Map)
 	withMeta := set.WithMeta(meta).(*MapSet)
-	conjMeta := withMeta.Conj(coretypes.MakeInt(3)).(Meta)
-	if found, got := conjMeta.GetMeta().Get(MakeKeyword("tag")); !found || !got.Equals(coretypes.MakeString("kept")) {
+	conjMeta := withMeta.Conj(coretypes.MakeInt(3)).(coretypes.Meta)
+	if found, got := conjMeta.GetMeta().Get(coretypes.MakeKeyword(STRINGS.Intern, "tag")); !found || !got.Equals(coretypes.MakeString("kept")) {
 		t.Fatal("set Conj did not preserve metadata")
 	}
-	disjoinMeta := withMeta.Disjoin(coretypes.MakeInt(1)).(Meta)
-	if found, got := disjoinMeta.GetMeta().Get(MakeKeyword("tag")); !found || !got.Equals(coretypes.MakeString("kept")) {
+	disjoinMeta := withMeta.Disjoin(coretypes.MakeInt(1)).(coretypes.Meta)
+	if found, got := disjoinMeta.GetMeta().Get(coretypes.MakeKeyword(STRINGS.Intern, "tag")); !found || !got.Equals(coretypes.MakeString("kept")) {
 		t.Fatal("set Disjoin did not preserve metadata")
 	}
 }
@@ -1290,7 +1290,7 @@ func TestSortedCollectionContract(t *testing.T) {
 		return coretypes.MakeBoolean(compareObjects(args[0], args[1]) > 0)
 	}}
 
-	m := sortedMapProc.Call([]coretypes.Object{coretypes.MakeInt(2), coretypes.MakeString("b"), coretypes.MakeInt(1), coretypes.MakeString("a")}).(Map)
+	m := sortedMapProc.Call([]coretypes.Object{coretypes.MakeInt(2), coretypes.MakeString("b"), coretypes.MakeInt(1), coretypes.MakeString("a")}).(coretypes.Map)
 	if got := sortedQProc.Call([]coretypes.Object{m}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("sorted? sorted-map = %s", got.ToString(false))
 	}
@@ -1301,7 +1301,7 @@ func TestSortedCollectionContract(t *testing.T) {
 	if found, got := m.Get(coretypes.MakeInt(1)); !found || !got.Equals(coretypes.MakeString("a")) {
 		t.Fatalf("sorted-map lookup = %v %v", found, got)
 	}
-	dup := sortedMapProc.Call([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeString("old"), coretypes.MakeInt(1), coretypes.MakeString("new")}).(Map)
+	dup := sortedMapProc.Call([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeString("old"), coretypes.MakeInt(1), coretypes.MakeString("new")}).(coretypes.Map)
 	if dup.Count() != 1 {
 		t.Fatalf("sorted-map duplicate count = %d, want 1", dup.Count())
 	}
@@ -1326,7 +1326,7 @@ func TestSortedCollectionContract(t *testing.T) {
 	if SeqCount(rsub) != 2 || !rsub.First().Equals(coretypes.MakeInt(3)) || !Second(rsub).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("rsubseq contract failed: %s", rsub.ToString(false))
 	}
-	mBy := sortedMapByProc.Call([]coretypes.Object{desc, coretypes.MakeInt(1), coretypes.MakeString("a"), coretypes.MakeInt(3), coretypes.MakeString("c"), coretypes.MakeInt(2), coretypes.MakeString("b")}).(Map)
+	mBy := sortedMapByProc.Call([]coretypes.Object{desc, coretypes.MakeInt(1), coretypes.MakeString("a"), coretypes.MakeInt(3), coretypes.MakeString("c"), coretypes.MakeInt(2), coretypes.MakeString("b")}).(coretypes.Map)
 	mByEntries := sortedEntries(mBy)
 	if len(mByEntries) != 3 || !rangeKey(mByEntries[0]).Equals(coretypes.MakeInt(3)) || !rangeKey(mByEntries[2]).Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("sorted-map-by should preserve comparator order: %v", mByEntries)
@@ -1343,7 +1343,7 @@ func TestSortedCollectionContract(t *testing.T) {
 		}
 		return coretypes.Int{I: 0}
 	}}
-	mByDup := sortedMapByProc.Call([]coretypes.Object{byParity, coretypes.MakeInt(1), coretypes.MakeString("one"), coretypes.MakeInt(3), coretypes.MakeString("three"), coretypes.MakeInt(2), coretypes.MakeString("two")}).(Map)
+	mByDup := sortedMapByProc.Call([]coretypes.Object{byParity, coretypes.MakeInt(1), coretypes.MakeString("one"), coretypes.MakeInt(3), coretypes.MakeString("three"), coretypes.MakeInt(2), coretypes.MakeString("two")}).(coretypes.Map)
 	mByDupEntries := sortedEntries(mByDup)
 	if len(mByDupEntries) != 2 || !rangeKey(mByDupEntries[1]).Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("sorted-map-by comparator duplicate entries = %v", mByDupEntries)
@@ -1377,26 +1377,26 @@ func TestTransientContract(t *testing.T) {
 	}
 	assertPanics(t, "mutating frozen transient vector", func() { tv.ConjInPlace(coretypes.MakeInt(4)) })
 
-	m := EmptyArrayMap().Assoc(MakeKeyword("a"), coretypes.MakeInt(1)).Assoc(coretypes.MakeString("s"), coretypes.MakeInt(2)).(Map)
+	m := EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.MakeInt(1)).Assoc(coretypes.MakeString("s"), coretypes.MakeInt(2)).(coretypes.Map)
 	tm := MapToTransient(m)
-	tm.AssocInPlace(MakeKeyword("a"), coretypes.MakeInt(10)).AssocInPlace(coretypes.MakeString("t"), coretypes.MakeInt(3))
+	tm.AssocInPlace(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.MakeInt(10)).AssocInPlace(coretypes.MakeString("t"), coretypes.MakeInt(3))
 	if tm.Count() != 3 {
 		t.Fatalf("transient map Count = %d, want 3", tm.Count())
 	}
-	if found, got := tm.Get(MakeKeyword("a")); !found || !got.Equals(coretypes.MakeInt(10)) {
+	if found, got := tm.Get(coretypes.MakeKeyword(STRINGS.Intern, "a")); !found || !got.Equals(coretypes.MakeInt(10)) {
 		t.Fatalf("transient map keyword get = %v %v", found, got)
 	}
 	if found, got := tm.Get(coretypes.MakeString("t")); !found || !got.Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("transient map string get = %v %v", found, got)
 	}
-	pm := tm.ToPersistent().(Map)
+	pm := tm.ToPersistent().(coretypes.Map)
 	if pm.Count() != 3 {
 		t.Fatalf("persistent map Count = %d, want 3", pm.Count())
 	}
 	if found, got := pm.Get(coretypes.MakeString("t")); !found || !got.Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("persistent map string get = %v %v", found, got)
 	}
-	assertPanics(t, "mutating frozen transient map", func() { tm.AssocInPlace(MakeKeyword("z"), coretypes.MakeInt(0)) })
+	assertPanics(t, "mutating frozen transient map", func() { tm.AssocInPlace(coretypes.MakeKeyword(STRINGS.Intern, "z"), coretypes.MakeInt(0)) })
 	if got := procIsTransient([]coretypes.Object{ToTransient(NewArrayVectorFrom())}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatal("transient? should recognize transient vectors")
 	}
@@ -1406,8 +1406,12 @@ func TestTransientContract(t *testing.T) {
 	if got := procIsTransient([]coretypes.Object{NewArrayVectorFrom()}); !got.Equals(coretypes.Boolean{B: false}) {
 		t.Fatal("transient? should reject persistent collections")
 	}
-	assertPanics(t, "assoc! arity", func() { procAssocBang([]coretypes.Object{MapToTransient(nil), MakeKeyword("k")}) })
-	assertPanics(t, "conj! map arity", func() { procConjBang([]coretypes.Object{MapToTransient(nil), MakeKeyword("k")}) })
+	assertPanics(t, "assoc! arity", func() {
+		procAssocBang([]coretypes.Object{MapToTransient(nil), coretypes.MakeKeyword(STRINGS.Intern, "k")})
+	})
+	assertPanics(t, "conj! map arity", func() {
+		procConjBang([]coretypes.Object{MapToTransient(nil), coretypes.MakeKeyword(STRINGS.Intern, "k")})
+	})
 }
 
 func assertPanics(t *testing.T, name string, f func()) {
@@ -1468,27 +1472,27 @@ func TestSeqContract(t *testing.T) {
 
 func TestInfoAndMetaContract(t *testing.T) {
 	info := &coretypes.ObjectInfo{Position: coretypes.Position{StartLine: 42}}
-	meta := EmptyArrayMap().Assoc(MakeKeyword("doc"), coretypes.MakeString("sample")).(Map)
+	meta := EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "doc"), coretypes.MakeString("sample")).(coretypes.Map)
 	values := []coretypes.Object{
 		NewArrayVectorFrom(coretypes.MakeInt(1)),
 		NewVectorFrom(coretypes.MakeInt(1)),
 		PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1)}),
 	}
 	for _, v := range values {
-		withInfo := withInfo(v, info)
+		withInfo := coretypes.WithInfo(v, info)
 		if withInfo.GetInfo() != info {
 			t.Fatalf("%T WithInfo did not retain info", v)
 		}
-		withMeta, ok := withInfo.(Meta)
+		withMeta, ok := withInfo.(coretypes.Meta)
 		if !ok {
-			t.Fatalf("%T does not implement Meta after WithInfo", withInfo)
+			t.Fatalf("%T does not implement coretypes.Meta after WithInfo", withInfo)
 		}
-		updated := withMeta.WithMeta(meta).(Meta)
-		if found, got := updated.GetMeta().Get(MakeKeyword("doc")); !found || !got.Equals(coretypes.MakeString("sample")) {
+		updated := withMeta.WithMeta(meta).(coretypes.Meta)
+		if found, got := updated.GetMeta().Get(coretypes.MakeKeyword(STRINGS.Intern, "doc")); !found || !got.Equals(coretypes.MakeString("sample")) {
 			t.Fatalf("%T WithMeta did not retain metadata", v)
 		}
-		if originalMeta, ok := v.(Meta); ok && originalMeta.GetMeta() != nil {
-			if found, _ := originalMeta.GetMeta().Get(MakeKeyword("doc")); found {
+		if originalMeta, ok := v.(coretypes.Meta); ok && originalMeta.GetMeta() != nil {
+			if found, _ := originalMeta.GetMeta().Get(coretypes.MakeKeyword(STRINGS.Intern, "doc")); found {
 				t.Fatalf("%T WithMeta mutated original metadata", v)
 			}
 		}
@@ -1689,7 +1693,7 @@ func TestOptimizationRegressionMapGetAssoc(t *testing.T) {
 
 func TestFrequenciesFastStringSeq(t *testing.T) {
 	res := evalTestScript(t, `(frequencies ["alpha" "beta" "alpha" "theta" "beta" "alpha"])`)
-	m, ok := res.(Map)
+	m, ok := res.(coretypes.Map)
 	if !ok {
 		t.Fatalf("expected map, got %T", res)
 	}
@@ -1725,11 +1729,11 @@ func TestGeneratedCoreNamespacesDriveCoreNamespaceVar(t *testing.T) {
 		t.Fatalf("*core-namespaces* = %T, want *MapSet", vr.Value)
 	}
 	for _, ns := range coregenerated.CoreNamespaces() {
-		if found, _ := set.Get(MakeSymbol(ns)); !found {
+		if found, _ := set.Get(coretypes.MakeSymbol(STRINGS.Intern, ns)); !found {
 			t.Fatalf("*core-namespaces* missing generated namespace %s", ns)
 		}
 	}
-	if found, _ := set.Get(MakeSymbol("user")); !found {
+	if found, _ := set.Get(coretypes.MakeSymbol(STRINGS.Intern, "user")); !found {
 		t.Fatal("*core-namespaces* missing user namespace")
 	}
 }
@@ -2130,8 +2134,8 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 		{`true`, coretypes.Boolean{B: true}},
 		{`42`, coretypes.MakeInt(42)},
 		{`"hi"`, coretypes.MakeString("hi")},
-		{`:kw`, MakeKeyword("kw")},
-		{`sym`, MakeSymbol("sym")},
+		{`:kw`, coretypes.MakeKeyword(STRINGS.Intern, "kw")},
+		{`sym`, coretypes.MakeSymbol(STRINGS.Intern, "sym")},
 	}
 	for _, tc := range cases {
 		got := readOneForContract(t, tc.src)
@@ -2145,22 +2149,22 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 		t.Fatalf("vector did not retain source Info: %#v", vecObj.GetInfo())
 	}
 	vec := vecObj.(coretypes.CountedIndexed)
-	if vec.Count() != 3 || !vec.At(0).Equals(coretypes.MakeInt(1)) || !vec.At(1).Equals(MakeKeyword("two")) || !vec.At(2).Equals(coretypes.MakeString("three")) {
+	if vec.Count() != 3 || !vec.At(0).Equals(coretypes.MakeInt(1)) || !vec.At(1).Equals(coretypes.MakeKeyword(STRINGS.Intern, "two")) || !vec.At(2).Equals(coretypes.MakeString("three")) {
 		t.Fatalf("vector construction mismatch: %s", vec.(coretypes.Object).ToString(false))
 	}
-	m := readOneForContract(t, `{:a 1 "b" 2}`).(Map)
+	m := readOneForContract(t, `{:a 1 "b" 2}`).(coretypes.Map)
 	if m.Count() != 2 {
 		t.Fatalf("map count = %d, want 2", m.Count())
 	}
-	if ok, got := m.Get(MakeKeyword("a")); !ok || !got.Equals(coretypes.MakeInt(1)) {
+	if ok, got := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "a")); !ok || !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("map keyword entry = %v %v", ok, got)
 	}
 	set := readOneForContract(t, `#{3 1 2}`).(*MapSet)
 	if set.Count() != 3 {
 		t.Fatalf("set count = %d, want 3", set.Count())
 	}
-	namespaced := readOneForContract(t, `#:contract{:a 1 :b 2}`).(Map)
-	if found, got := namespaced.Get(MakeKeyword("contract/a")); !found || !got.Equals(coretypes.MakeInt(1)) {
+	namespaced := readOneForContract(t, `#:contract{:a 1 :b 2}`).(coretypes.Map)
+	if found, got := namespaced.Get(coretypes.MakeKeyword(STRINGS.Intern, "contract/a")); !found || !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("namespaced map keyword entry = %v %v", found, got)
 	}
 	list := readOneForContract(t, `(1 2 3)`).(coretypes.Seq)
@@ -2182,11 +2186,11 @@ func TestReaderConstructionContractRejectsInvalidArgLiteral(t *testing.T) {
 
 func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testing.T) {
 	metaObj := readOneForContract(t, `^:private [1 2]`)
-	meta, ok := metaObj.(Meta)
+	meta, ok := metaObj.(coretypes.Meta)
 	if !ok || meta.GetMeta() == nil {
-		t.Fatalf("metadata reader should produce Meta object: %T", metaObj)
+		t.Fatalf("metadata reader should produce coretypes.Meta object: %T", metaObj)
 	}
-	if found, got := meta.GetMeta().Get(MakeKeyword("private")); !found || !got.Equals(coretypes.Boolean{B: true}) {
+	if found, got := meta.GetMeta().Get(coretypes.MakeKeyword(STRINGS.Intern, "private")); !found || !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("metadata did not contain :private true: %v %v", found, got)
 	}
 	if metaObj.GetInfo() == nil || metaObj.GetInfo().FilenameOrUnknown() != "<reader-contract>" {
@@ -2199,15 +2203,15 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 	}
 	oldDataReaders := dataReadersVar.Value
 	readers := EmptyArrayMap()
-	readers.Add(MakeSymbol("contract/direct"), Proc{Name: "readerContractDirect", Fn: func(args []coretypes.Object) coretypes.Object {
+	readers.Add(coretypes.MakeSymbol(STRINGS.Intern, "contract/direct"), Proc{Name: "readerContractDirect", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		return NewArrayVectorFrom(MakeKeyword("direct"), args[0])
+		return NewArrayVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, "direct"), args[0])
 	}})
 	dataReadersVar.Value = readers
 	defer func() { dataReadersVar.Value = oldDataReaders }()
 
 	direct := readOneForContract(t, `#contract/direct 7`).(coretypes.CountedIndexed)
-	if direct.Count() != 2 || !direct.At(0).Equals(MakeKeyword("direct")) || !direct.At(1).Equals(coretypes.MakeInt(7)) {
+	if direct.Count() != 2 || !direct.At(0).Equals(coretypes.MakeKeyword(STRINGS.Intern, "direct")) || !direct.At(1).Equals(coretypes.MakeInt(7)) {
 		t.Fatalf("direct tagged reader mismatch: %s", direct.(coretypes.Object).ToString(false))
 	}
 
@@ -2223,14 +2227,14 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 	defer func() { fallbackVar.Value = oldFallback }()
 
 	tagged := readOneForContract(t, `#contract/tag {:x 1}`).(coretypes.CountedIndexed)
-	if tagged.Count() != 2 || !tagged.At(0).Equals(MakeSymbol("contract/tag")) {
+	if tagged.Count() != 2 || !tagged.At(0).Equals(coretypes.MakeSymbol(STRINGS.Intern, "contract/tag")) {
 		t.Fatalf("tagged fallback mismatch: %s", tagged.(coretypes.Object).ToString(false))
 	}
-	payload, ok := tagged.At(1).(Map)
+	payload, ok := tagged.At(1).(coretypes.Map)
 	if !ok {
-		t.Fatalf("tagged fallback payload = %T, want Map", tagged.At(1))
+		t.Fatalf("tagged fallback payload = %T, want coretypes.Map", tagged.At(1))
 	}
-	if found, got := payload.Get(MakeKeyword("x")); !found || !got.Equals(coretypes.MakeInt(1)) {
+	if found, got := payload.Get(coretypes.MakeKeyword(STRINGS.Intern, "x")); !found || !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("tagged fallback payload entry = %v %v", found, got)
 	}
 
@@ -2281,7 +2285,7 @@ func TestReaderConstructionAdapterReadObjectAndError(t *testing.T) {
 	r := readerConstruction.NewReader(strings.NewReader("x"), "<adapter-contract>")
 	pushPos(r)
 	_ = r.Get()
-	obj := readerConstruction.ReadObject(r, MakeSymbol("x"))
+	obj := readerConstruction.ReadObject(r, coretypes.MakeSymbol(STRINGS.Intern, "x"))
 	info := obj.GetInfo()
 	if info == nil || info.FilenameOrUnknown() != "<adapter-contract>" || info.StartLine != 1 || info.StartColumn != 0 || info.EndLine != 1 || info.EndColumn != 1 {
 		t.Fatalf("adapter ReadObject info = %#v", info)
@@ -2318,10 +2322,10 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 	if !readerConstruction.String("x").Equals(coretypes.MakeString("x")) {
 		t.Fatal("adapter String mismatch")
 	}
-	if !readerConstruction.Symbol("x").Equals(MakeSymbol("x")) {
+	if !readerConstruction.Symbol("x").Equals(coretypes.MakeSymbol(STRINGS.Intern, "x")) {
 		t.Fatal("adapter Symbol mismatch")
 	}
-	if !readerConstruction.Keyword("x").Equals(MakeKeyword("x")) {
+	if !readerConstruction.Keyword("x").Equals(coretypes.MakeKeyword(STRINGS.Intern, "x")) {
 		t.Fatal("adapter Keyword mismatch")
 	}
 }
@@ -2342,8 +2346,8 @@ func TestReaderConstructionAdapterSetLiteral(t *testing.T) {
 func TestReaderConstructionAdapterMapLiteral(t *testing.T) {
 	r := readerConstruction.NewReader(strings.NewReader("{}"), "<adapter-contract>")
 	pushPos(r)
-	m := readerConstruction.MapLiteral(r, []coretypes.Object{MakeKeyword("a"), coretypes.MakeInt(1)}, "").(Map)
-	if found, got := m.Get(MakeKeyword("a")); !found || !got.Equals(coretypes.MakeInt(1)) {
+	m := readerConstruction.MapLiteral(r, []coretypes.Object{coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.MakeInt(1)}, "").(coretypes.Map)
+	if found, got := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "a")); !found || !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("MapLiteral entry = %v %v", found, got)
 	}
 	obj := readerConstruction.ReadObject(r, m)
@@ -2353,16 +2357,16 @@ func TestReaderConstructionAdapterMapLiteral(t *testing.T) {
 }
 
 func TestReaderConstructionAdapterMetadata(t *testing.T) {
-	meta, ok := readerConstruction.MetadataFromObject(MakeKeyword("private"))
+	meta, ok := readerConstruction.MetadataFromObject(coretypes.MakeKeyword(STRINGS.Intern, "private"))
 	if !ok {
 		t.Fatal("keyword metadata not accepted")
 	}
-	if found, got := meta.Get(MakeKeyword("private")); !found || !got.Equals(coretypes.Boolean{B: true}) {
+	if found, got := meta.Get(coretypes.MakeKeyword(STRINGS.Intern, "private")); !found || !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("keyword metadata entry = %v %v", found, got)
 	}
 	vec := collectionConstruction.NewArrayVectorFrom(coretypes.MakeInt(1))
 	withMeta, ok := readerConstruction.WithMeta(vec, meta)
-	if !ok || withMeta.(Meta).GetMeta() == nil {
+	if !ok || withMeta.(coretypes.Meta).GetMeta() == nil {
 		t.Fatalf("WithMeta = %T %v", withMeta, ok)
 	}
 	if _, ok := readerConstruction.MetadataFromObject(coretypes.MakeInt(1)); ok {
@@ -2372,7 +2376,7 @@ func TestReaderConstructionAdapterMetadata(t *testing.T) {
 		t.Fatal("metadata applied to int")
 	}
 	skip := readerConstruction.SkipRedundantDoMeta()
-	if found, got := skip.Get(MakeKeyword("skip-redundant-do")); !found || !got.Equals(coretypes.Boolean{B: true}) {
+	if found, got := skip.Get(coretypes.MakeKeyword(STRINGS.Intern, "skip-redundant-do")); !found || !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("SkipRedundantDoMeta entry = %v %v", found, got)
 	}
 }
@@ -2407,16 +2411,16 @@ func TestReaderConstructionAdapterCollectionObjects(t *testing.T) {
 	if SeqCount(list) != 2 || !list.First().Equals(coretypes.MakeInt(1)) || !Second(list).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("adapter ListFrom mismatch: %s", list.ToString(false))
 	}
-	vec := readerConstruction.VectorFrom([]coretypes.Object{MakeKeyword("a"), MakeKeyword("b")}).(coretypes.CountedIndexed)
-	if vec.Count() != 2 || !vec.At(0).Equals(MakeKeyword("a")) || !vec.At(1).Equals(MakeKeyword("b")) {
-		t.Fatalf("adapter VectorFrom mismatch: %s", vec.(coretypes.Object).ToString(false))
+	vec := readerConstruction.VectorFrom([]coretypes.Object{coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.MakeKeyword(STRINGS.Intern, "b")}).(coretypes.CountedIndexed)
+	if vec.Count() != 2 || !vec.At(0).Equals(coretypes.MakeKeyword(STRINGS.Intern, "a")) || !vec.At(1).Equals(coretypes.MakeKeyword(STRINGS.Intern, "b")) {
+		t.Fatalf("adapter coretypes.VectorFrom mismatch: %s", vec.(coretypes.Object).ToString(false))
 	}
 	persistent := readerConstruction.PersistentVectorFromSeq(vec.(coretypes.Seqable).Seq()).(coretypes.CountedIndexed)
-	if persistent.Count() != 2 || !persistent.At(0).Equals(MakeKeyword("a")) || !persistent.At(1).Equals(MakeKeyword("b")) {
+	if persistent.Count() != 2 || !persistent.At(0).Equals(coretypes.MakeKeyword(STRINGS.Intern, "a")) || !persistent.At(1).Equals(coretypes.MakeKeyword(STRINGS.Intern, "b")) {
 		t.Fatalf("adapter PersistentVectorFromSeq mismatch: %s", persistent.(coretypes.Object).ToString(false))
 	}
 	if readerConstruction.VectorFrom(nil).(coretypes.Counted).Count() != 0 {
-		t.Fatal("adapter empty VectorFrom not empty")
+		t.Fatal("adapter empty coretypes.VectorFrom not empty")
 	}
 }
 
@@ -2424,8 +2428,8 @@ func TestReaderConstructionAdapterDeriveReadObject(t *testing.T) {
 	r := readerConstruction.NewReader(strings.NewReader("x"), "<adapter-contract>")
 	pushPos(r)
 	_ = r.Get()
-	base := readerConstruction.ReadObject(r, MakeSymbol("x"))
-	derived := readerConstruction.DeriveReadObject(base, MakeKeyword("x"))
+	base := readerConstruction.ReadObject(r, coretypes.MakeSymbol(STRINGS.Intern, "x"))
+	derived := readerConstruction.DeriveReadObject(base, coretypes.MakeKeyword(STRINGS.Intern, "x"))
 	if derived.GetInfo() == nil || derived.GetInfo().FilenameOrUnknown() != "<adapter-contract>" {
 		t.Fatalf("derived info = %#v", derived.GetInfo())
 	}
@@ -2739,7 +2743,7 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	if !adapter.HasMutableSlotCandidate([]coretypes.Object{coretypes.MakeInt(1), vec}) {
 		t.Fatal("HasMutableSlotCandidate missed vector")
 	}
-	if adapter.HasMutableSlotCandidate([]coretypes.Object{coretypes.MakeInt(1), MakeSymbol("x")}) {
+	if adapter.HasMutableSlotCandidate([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeSymbol(STRINGS.Intern, "x")}) {
 		t.Fatal("HasMutableSlotCandidate should ignore non-candidate objects")
 	}
 	if got := adapter.MutableSlotObject(vec, &EscapeInfo{SafeMutableSlots: []bool{true}}, 0); got == vec {
@@ -3198,13 +3202,13 @@ var clbgInitOnce sync.Once
 func clbgInit() {
 	clbgInitOnce.Do(func() {
 		sqrtProc := Proc{Fn: func(args []coretypes.Object) coretypes.Object {
-			x := EnsureArgIsNumber(args, 0).Double().D
+			x := coretypes.EnsureArgIsNumber(args, 0).Double().D
 			return coretypes.Double{D: math.Sqrt(x)}
 		}, Name: "procSqrt"}
-		vr := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol("sqrt"))
+		vr := GLOBAL_ENV.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sqrt"))
 		vr.Value = sqrtProc
 		ns := GLOBAL_ENV.CurrentNamespace()
-		uv := ns.Intern(MakeSymbol("sqrt"))
+		uv := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sqrt"))
 		uv.Value = sqrtProc
 	})
 }
@@ -3410,23 +3414,23 @@ func TestTransientVector(t *testing.T) {
 
 func TestTransientMapZeroValueAssoc(t *testing.T) {
 	tm := &TransientMap{}
-	tm.AssocInPlace(MakeKeyword("a"), coretypes.Int{I: 1})
-	if ok, got := tm.Get(MakeKeyword("a")); !ok || !got.Equals(coretypes.Int{I: 1}) {
+	tm.AssocInPlace(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.Int{I: 1})
+	if ok, got := tm.Get(coretypes.MakeKeyword(STRINGS.Intern, "a")); !ok || !got.Equals(coretypes.Int{I: 1}) {
 		t.Fatalf("zero-value transient map lookup = %v %v", ok, got)
 	}
 }
 
 func TestTransientMap(t *testing.T) {
 	m := EmptyArrayMap()
-	m.Add(MakeKeyword("a"), coretypes.Int{I: 1})
-	m.Add(MakeKeyword("b"), coretypes.Int{I: 2})
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.Int{I: 1})
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "b"), coretypes.Int{I: 2})
 	tm := MapToTransient(m)
-	tm.AssocInPlace(MakeKeyword("c"), coretypes.Int{I: 3})
-	tm.AssocInPlace(MakeKeyword("a"), coretypes.Int{I: 99})
+	tm.AssocInPlace(coretypes.MakeKeyword(STRINGS.Intern, "c"), coretypes.Int{I: 3})
+	tm.AssocInPlace(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.Int{I: 99})
 	if tm.Count() != 3 {
 		t.Fatalf("expected 3, got %d", tm.Count())
 	}
-	ok, v := tm.Get(MakeKeyword("a"))
+	ok, v := tm.Get(coretypes.MakeKeyword(STRINGS.Intern, "a"))
 	if !ok || v.(coretypes.Int).I != 99 {
 		t.Fatalf("expected 99 for :a")
 	}
@@ -3448,7 +3452,7 @@ func TestTransientMapStringKeys(t *testing.T) {
 	if !ok || v.(coretypes.Int).I != 3 {
 		t.Fatalf("expected 3 for alpha")
 	}
-	pm := tm.ToPersistent().(Map)
+	pm := tm.ToPersistent().(coretypes.Map)
 	ok, v = pm.Get(coretypes.String{S: "beta"})
 	if !ok || v.(coretypes.Int).I != 2 {
 		t.Fatalf("expected persistent beta=2")
@@ -3468,7 +3472,7 @@ func TestTransientVectorProcs(t *testing.T) {
 		t.Fatal("assoc! should return the same transient vector")
 	}
 	assertPanics(t, "assoc! transient vector key type", func() {
-		procAssocBang([]coretypes.Object{tv, MakeKeyword("bad"), coretypes.Int{I: 0}})
+		procAssocBang([]coretypes.Object{tv, coretypes.MakeKeyword(STRINGS.Intern, "bad"), coretypes.Int{I: 0}})
 	})
 	if procConjBang([]coretypes.Object{tv, coretypes.Int{I: 3}}) != tv {
 		t.Fatal("conj! should return the same transient vector")
@@ -3493,13 +3497,13 @@ func TestTransientMapProcs(t *testing.T) {
 	if got := procIsTransient([]coretypes.Object{tm}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("transient? returned %s", got.ToString(false))
 	}
-	if procAssocBang([]coretypes.Object{tm, MakeKeyword("a"), coretypes.Int{I: 1}}) != tm {
+	if procAssocBang([]coretypes.Object{tm, coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.Int{I: 1}}) != tm {
 		t.Fatal("assoc! should return the same transient map")
 	}
 	if procConjBang([]coretypes.Object{tm, coretypes.String{S: "b"}, coretypes.Int{I: 2}}) != tm {
 		t.Fatal("conj! should return the same transient map")
 	}
-	persisted := procPersistentBang([]coretypes.Object{tm}).(Map)
+	persisted := procPersistentBang([]coretypes.Object{tm}).(coretypes.Map)
 	if persisted.Count() != 2 {
 		t.Fatalf("persistent map count = %d", persisted.Count())
 	}

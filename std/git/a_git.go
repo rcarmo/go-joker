@@ -191,7 +191,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var gitNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.git"))
+var gitNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.git"))
 
 func init() {
 	gitNamespace.Lazy = Init

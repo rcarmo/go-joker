@@ -8,9 +8,10 @@ import (
 
 type (
 	TypeInfo struct {
-		Name     string
-		TypeName string
-		ShowName string
+		Name      string
+		TypeName  string
+		ShowName  string
+		Delegated bool
 	}
 )
 
@@ -20,34 +21,38 @@ package core
 `
 
 var importFmt string = `
-import (
-	"io"
-
-	coretypes "github.com/rcarmo/go-joker/core/types"
-)
+import coretypes "github.com/rcarmo/go-joker/core/types"
 `
 
 var ensureObjectIsTemplate string = `
-func EnsureObjectIs{{.Name}}(obj Object, pattern string) {{.TypeName}} {
+func EnsureObjectIs{{.Name}}(obj coretypes.Object, pattern string) {{.TypeName}} {
+{{- if .Delegated }}
+	return coretypes.EnsureObjectIs{{.Name}}(obj, pattern)
+{{- else }}
 	if c, yes := obj.({{.TypeName}}); yes {
 		return c
 	}
 	panic(FailObject(obj, "{{.ShowName}}", pattern))
+{{- end }}
 }
 `
 
 var ensureArgIsTemplate string = `
-func EnsureArgIs{{.Name}}(args []Object, index int) {{.TypeName}} {
+func EnsureArgIs{{.Name}}(args []coretypes.Object, index int) {{.TypeName}} {
+{{- if .Delegated }}
+	return coretypes.EnsureArgIs{{.Name}}(args, index)
+{{- else }}
 	obj := args[index]
 	if c, yes := obj.({{.TypeName}}); yes {
 		return c
 	}
 	panic(FailArg(obj, "{{.ShowName}}", index))
+{{- end }}
 }
 `
 
 var infoTemplate string = `
-func (x {{.TypeName}}) WithInfo(info *coretypes.ObjectInfo) Object {
+func (x {{.TypeName}}) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	x.Info = info
 	return x
 }
@@ -88,8 +93,8 @@ func generateAssertions(types []string) {
 		if strings.ContainsRune(typeInfo.Name, '.') {
 			typeInfo.Name = strings.ReplaceAll(typeInfo.Name, ".", "_")
 		}
-		if strings.HasPrefix(typeInfo.Name, "coretypes_") {
-			typeInfo.Name = strings.TrimPrefix(typeInfo.Name, "coretypes_")
+		if strings.HasPrefix(typeInfo.Name, "coretypes_") || strings.HasPrefix(typeInfo.Name, "io_") {
+			continue
 		}
 		checkError(ensureObjectIs.Execute(f, typeInfo))
 		checkError(ensureArgIs.Execute(f, typeInfo))

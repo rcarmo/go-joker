@@ -35,7 +35,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var markdownNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.markdown"))
+var markdownNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.markdown"))
 
 func init() {
 	markdownNamespace.Lazy = Init

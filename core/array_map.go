@@ -9,7 +9,7 @@ import (
 type (
 	ArrayMap struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		arr []coretypes.Object
 	}
 	ArrayMapIterator struct {
@@ -18,7 +18,7 @@ type (
 	}
 	ArrayMapSeq struct {
 		coretypes.InfoHolder
-		MetaHolder
+		coretypes.MetaHolder
 		m     *ArrayMap
 		index int
 	}
@@ -34,16 +34,6 @@ func EmptyArrayMap() *ArrayMap {
 
 func ArraySeqFromArrayMap(m *ArrayMap) *ArraySeq {
 	return &ArraySeq{arr: m.arr}
-}
-
-func SafeMerge(m1, m2 Map) Map {
-	if m1 == nil {
-		return m2
-	}
-	if m2 == nil {
-		return m1
-	}
-	return m1.Merge(m2)
 }
 
 func (seq *ArrayMapSeq) SequentialMarker() {}
@@ -64,9 +54,9 @@ func (seq *ArrayMapSeq) Format(w io.Writer, indent int) int {
 	return formatSeq(seq, w, indent)
 }
 
-func (seq *ArrayMapSeq) WithMeta(meta Map) coretypes.Object {
+func (seq *ArrayMapSeq) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *seq
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
@@ -104,8 +94,8 @@ func (seq *ArrayMapSeq) Cons(obj coretypes.Object) coretypes.Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
 
-func (iter *ArrayMapIterator) Next() *Pair {
-	res := Pair{
+func (iter *ArrayMapIterator) Next() *coretypes.Pair {
+	res := coretypes.Pair{
 		Key:   iter.m.arr[iter.current],
 		Value: iter.m.arr[iter.current+1],
 	}
@@ -117,9 +107,9 @@ func (iter *ArrayMapIterator) HasNext() bool {
 	return iter.current < len(iter.m.arr)
 }
 
-func (v *ArrayMap) WithMeta(meta Map) coretypes.Object {
+func (v *ArrayMap) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *v
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
@@ -195,7 +185,7 @@ func (m *ArrayMap) Count() int {
 
 func (m *ArrayMap) Clone() *ArrayMap {
 	result := ArrayMap{arr: make([]coretypes.Object, len(m.arr), cap(m.arr))}
-	result.meta = m.meta
+	result.Meta = m.Meta
 	copy(result.arr, m.arr)
 	return &result
 }
@@ -224,7 +214,7 @@ func (m *ArrayMap) EntryAt(key coretypes.Object) coretypes.Object {
 	return nil
 }
 
-func (m *ArrayMap) Without(key coretypes.Object) Map {
+func (m *ArrayMap) Without(key coretypes.Object) coretypes.Map {
 	result := ArrayMap{arr: make([]coretypes.Object, len(m.arr), cap(m.arr))}
 	var i, j int
 	for i, j = 0, 0; i < len(m.arr); i += 2 {
@@ -241,7 +231,7 @@ func (m *ArrayMap) Without(key coretypes.Object) Map {
 	return &result
 }
 
-func (m *ArrayMap) Merge(other Map) Map {
+func (m *ArrayMap) Merge(other coretypes.Map) coretypes.Map {
 	if other.Count() == 0 {
 		return m
 	}
@@ -277,7 +267,7 @@ func (m *ArrayMap) Vals() coretypes.Seq {
 	return &ArraySeq{arr: res}
 }
 
-func (m *ArrayMap) Iter() MapIterator {
+func (m *ArrayMap) Iter() coretypes.MapIterator {
 	return &ArrayMapIterator{m: m}
 }
 

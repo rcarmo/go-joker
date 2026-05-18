@@ -9,7 +9,7 @@ func (expr *LiteralExpr) InferType() *coretypes.Type {
 	return expr.obj.GetType()
 }
 
-func dumpPosition(p coretypes.Position) Map {
+func dumpPosition(p coretypes.Position) coretypes.Map {
 	res := collectionConstruction.NewEmptyArrayMap()
 	res.Add(KEYWORDS.startLine, coretypes.Int{I: p.StartLine})
 	res.Add(KEYWORDS.endLine, coretypes.Int{I: p.EndLine})
@@ -21,7 +21,7 @@ func dumpPosition(p coretypes.Position) Map {
 
 func exprArrayMap(expr Expr, exprType string, pos bool) *ArrayMap {
 	res := collectionConstruction.NewEmptyArrayMap()
-	res.Add(KEYWORDS.type_, MakeKeyword(exprType))
+	res.Add(KEYWORDS.type_, coretypes.MakeKeyword(STRINGS.Intern, exprType))
 	if pos {
 		res.Add(KEYWORDS.pos, dumpPosition(expr.Pos()))
 	}
@@ -33,10 +33,10 @@ func addVector(res *ArrayMap, body []Expr, name string, pos bool) {
 	for _, e := range body {
 		b = b.Conjoin(e.Dump(pos))
 	}
-	res.Add(MakeKeyword(name), b)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, name), b)
 }
 
-func (expr *LiteralExpr) Dump(pos bool) Map {
+func (expr *LiteralExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "literal", pos)
 	res.Add(KEYWORDS.object, expr.obj)
 	return res
@@ -46,7 +46,7 @@ func (expr *VectorExpr) InferType() *coretypes.Type {
 	return TYPE.Vec
 }
 
-func (expr *VectorExpr) Dump(pos bool) Map {
+func (expr *VectorExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "vector", pos)
 	addVector(res, expr.v, "vector", pos)
 	return res
@@ -56,7 +56,7 @@ func (expr *MapExpr) InferType() *coretypes.Type {
 	return TYPE.ArrayMap
 }
 
-func (expr *MapExpr) Dump(pos bool) Map {
+func (expr *MapExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "map", pos)
 	addVector(res, expr.keys, "keys", pos)
 	addVector(res, expr.values, "values", pos)
@@ -67,7 +67,7 @@ func (expr *SetExpr) InferType() *coretypes.Type {
 	return TYPE.MapSet
 }
 
-func (expr *SetExpr) Dump(pos bool) Map {
+func (expr *SetExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "set", pos)
 	addVector(res, expr.elements, "set", pos)
 	return res
@@ -77,11 +77,11 @@ func (expr *IfExpr) InferType() *coretypes.Type {
 	return nil
 }
 
-func (expr *IfExpr) Dump(pos bool) Map {
+func (expr *IfExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "if", pos)
-	res.Add(MakeKeyword("condition"), expr.cond.Dump(pos))
-	res.Add(MakeKeyword("positive"), expr.positive.Dump(pos))
-	res.Add(MakeKeyword("negative"), expr.negative.Dump(pos))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "condition"), expr.cond.Dump(pos))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "positive"), expr.positive.Dump(pos))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "negative"), expr.negative.Dump(pos))
 	return res
 }
 
@@ -89,7 +89,7 @@ func (expr *DefExpr) InferType() *coretypes.Type {
 	return TYPE.Var
 }
 
-func (expr *DefExpr) Dump(pos bool) Map {
+func (expr *DefExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "def", pos)
 	res.Add(KEYWORDS.var_, expr.vr)
 	res.Add(KEYWORDS.name, expr.name)
@@ -116,10 +116,10 @@ func (expr *CallExpr) InferType() *coretypes.Type {
 	return nil
 }
 
-func (expr *CallExpr) Dump(pos bool) Map {
+func (expr *CallExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "call", pos)
-	res.Add(MakeKeyword("name"), coretypes.String{S: expr.Name()})
-	res.Add(MakeKeyword("callable"), expr.callable.Dump(pos))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.String{S: expr.Name()})
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "callable"), expr.callable.Dump(pos))
 	addVector(res, expr.args, "args", pos)
 	return res
 }
@@ -128,14 +128,14 @@ func (expr *MacroCallExpr) InferType() *coretypes.Type {
 	return nil
 }
 
-func (expr *MacroCallExpr) Dump(pos bool) Map {
+func (expr *MacroCallExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "macro-call", pos)
-	res.Add(MakeKeyword("name"), coretypes.String{S: expr.name})
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.String{S: expr.name})
 	args := collectionConstruction.NewEmptyVector()
 	for _, arg := range expr.args {
 		args = args.Conjoin(arg)
 	}
-	res.Add(MakeKeyword("args"), args)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "args"), args)
 	return res
 }
 
@@ -143,7 +143,7 @@ func (expr *RecurExpr) InferType() *coretypes.Type {
 	return nil
 }
 
-func (expr *RecurExpr) Dump(pos bool) Map {
+func (expr *RecurExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "recur", pos)
 	addVector(res, expr.args, "args", pos)
 	return res
@@ -162,7 +162,7 @@ func (expr *VarRefExpr) InferType() *coretypes.Type {
 	return expr.vr.expr.InferType()
 }
 
-func (expr *VarRefExpr) Dump(pos bool) Map {
+func (expr *VarRefExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "var-ref", pos)
 	res.Add(KEYWORDS.var_, expr.vr)
 	return res
@@ -172,7 +172,7 @@ func (expr *SetMacroExpr) InferType() *coretypes.Type {
 	return nil
 }
 
-func (expr *SetMacroExpr) Dump(pos bool) Map {
+func (expr *SetMacroExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "set-macro", pos)
 	res.Add(KEYWORDS.var_, expr.vr)
 	return res
@@ -182,9 +182,9 @@ func (expr *BindingExpr) InferType() *coretypes.Type {
 	return expr.binding.inferredType
 }
 
-func (expr *BindingExpr) Dump(pos bool) Map {
+func (expr *BindingExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "binding", pos)
-	res.Add(MakeKeyword("name"), expr.binding.name)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), expr.binding.name)
 	return res
 }
 
@@ -192,10 +192,10 @@ func (expr *MetaExpr) InferType() *coretypes.Type {
 	return expr.expr.InferType()
 }
 
-func (expr *MetaExpr) Dump(pos bool) Map {
+func (expr *MetaExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "meta", pos)
 	res.Add(KEYWORDS.meta, expr.meta.Dump(pos))
-	res.Add(MakeKeyword("expr"), expr.expr.Dump(pos))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "expr"), expr.expr.Dump(pos))
 	return res
 }
 
@@ -211,7 +211,7 @@ func (expr *DoExpr) InferType() *coretypes.Type {
 	return typeOfLast(expr.body)
 }
 
-func (expr *DoExpr) Dump(pos bool) Map {
+func (expr *DoExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "do", pos)
 	addVector(res, expr.body, "body", pos)
 	return res
@@ -225,30 +225,30 @@ func (expr *FnArityExpr) InferType() *coretypes.Type {
 	return nil
 }
 
-func (expr *FnArityExpr) Dump(pos bool) Map {
+func (expr *FnArityExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "arity", pos)
 	args := collectionConstruction.NewEmptyVector()
 	for _, arg := range expr.args {
 		args = args.Conjoin(arg)
 	}
-	res.Add(MakeKeyword("args"), args)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "args"), args)
 	addVector(res, expr.body, "body", pos)
 	return res
 }
 
-func (expr *FnExpr) Dump(pos bool) Map {
+func (expr *FnExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "fn", pos)
-	if expr.self.name != nil {
-		res.Add(MakeKeyword("self"), expr.self)
+	if expr.self.NameKey() != nil {
+		res.Add(coretypes.MakeKeyword(STRINGS.Intern, "self"), expr.self)
 	}
 	if expr.variadic != nil {
-		res.Add(MakeKeyword("variadic"), expr.variadic.Dump(pos))
+		res.Add(coretypes.MakeKeyword(STRINGS.Intern, "variadic"), expr.variadic.Dump(pos))
 	}
 	arities := collectionConstruction.NewEmptyVector()
 	for _, a := range expr.arities {
 		arities = arities.Conjoin(a.Dump(pos))
 	}
-	res.Add(MakeKeyword("arities"), arities)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "arities"), arities)
 	return res
 }
 
@@ -256,7 +256,7 @@ func (expr *LetExpr) InferType() *coretypes.Type {
 	return typeOfLast(expr.body)
 }
 
-func (expr *LetExpr) Dump(pos bool) Map {
+func (expr *LetExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "let", pos)
 	names := collectionConstruction.NewEmptyVector()
 	for _, name := range expr.names {
@@ -271,7 +271,7 @@ func (expr *LoopExpr) InferType() *coretypes.Type {
 	return typeOfLast(expr.body)
 }
 
-func (expr *LoopExpr) Dump(pos bool) Map {
+func (expr *LoopExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "loop", pos)
 	names := collectionConstruction.NewEmptyVector()
 	for _, name := range expr.names {
@@ -286,9 +286,9 @@ func (expr *ThrowExpr) InferType() *coretypes.Type {
 	return nil
 }
 
-func (expr *ThrowExpr) Dump(pos bool) Map {
+func (expr *ThrowExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "throw", pos)
-	res.Add(MakeKeyword("expr"), expr.e.Dump(pos))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "expr"), expr.e.Dump(pos))
 	return res
 }
 
@@ -296,10 +296,10 @@ func (expr *CatchExpr) InferType() *coretypes.Type {
 	return typeOfLast(expr.body)
 }
 
-func (expr *CatchExpr) Dump(pos bool) Map {
+func (expr *CatchExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "catch", pos)
-	res.Add(MakeKeyword("error-type"), expr.excType)
-	res.Add(MakeKeyword("error-symbol"), expr.excSymbol)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "error-type"), expr.excType)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "error-symbol"), expr.excSymbol)
 	addVector(res, expr.body, "body", pos)
 	return res
 }
@@ -308,7 +308,7 @@ func (expr *TryExpr) InferType() *coretypes.Type {
 	return typeOfLast(expr.body)
 }
 
-func (expr *TryExpr) Dump(pos bool) Map {
+func (expr *TryExpr) Dump(pos bool) coretypes.Map {
 	res := exprArrayMap(expr, "try", pos)
 	addVector(res, expr.body, "body", pos)
 	addVector(res, expr.finallyExpr, "finally", pos)
@@ -316,6 +316,6 @@ func (expr *TryExpr) Dump(pos bool) Map {
 	for _, c := range expr.catches {
 		catches = catches.Conjoin(c.Dump(pos))
 	}
-	res.Add(MakeKeyword("catches"), catches)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "catches"), catches)
 	return res
 }

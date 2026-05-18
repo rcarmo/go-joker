@@ -1,6 +1,6 @@
 # Module structure follow-up audit
 
-Updated: 2026-05-15
+Updated: 2026-05-18
 
 ## Snapshot
 
@@ -12,13 +12,14 @@ Current package/file snapshot:
 |---|---:|---:|---|
 | root | 0 | 0 | clean: no root package remains |
 | `cmd/joker` | 19 | 3 | startup/orchestration is now split across cohesive helper files with focused arg/lint/compile tests; keep shrinking `main.go` rather than regrowing it |
-| `core` root | 136 | 29 | still the main monolith; many tiny tests were consolidated and benchmarks moved to `benchmarks/core`; generated files and still-coupled runtime/object code remain in root |
+| `core` root | 68 | 1 | still the runtime/evaluator/collection/bootstrap hotspot, but root tests are consolidated and the canonical object/protocol/type/numeric surface has moved to `core/types` |
+| `core/types` | 15 | 0 | canonical object/type/protocol package: `Object`, type descriptors/registry, scalar and big numeric values, numeric ops, simple runtime values, and most package-independent protocols |
 | `core/generated` | 11 | 2 | data-only generated bootstrap contract, source manifest, linter byte payloads, and generated linter payload registry |
 | `core/ir` | 13 | 5 | opcodes, disassembly/counting, shape analysis, neutral Program model, and IR leaf helpers |
 | `core/trace` | 6 | 2 | aggregation state with direct JSON-shape tests |
 | `core/wasm` | 13 | 5 | encoding/module/host/opcode/value leaf helpers |
 | `core/runtime` | 11 | 5 | feature flags and runtime leaf helpers live here; executor/object-bound runtime code remains in root `core` |
-| `core/collections` | 9 | 4 | real mechanics package for generic slice storage, pair arrays, bitmap/hash-index helpers, and opaque trie nodes; root keeps Object/protocol adapters |
+| `core/collections` | 17 | 8 | real mechanics package for generic slice/list storage, pair arrays, map equality, formatting/indexed ops, bitmap/hash-index helpers, and opaque trie nodes; root keeps concrete collection implementations |
 | `core/reader` | 39 | 19 | reader leaf helpers now include chars, whitespace/comment/top-level-trivia/line decisions, identifier classification/token scanning/keyword, standalone-slash, and literal classification/validation issue scans, unicode/string escapes, top-level read-form and number-token classification, dispatch/format-prefix/character/form helpers, rune-window history, line rune reader, and raw IO mechanics; parser/object implementation remains root-bound |
 | `core/string` | 39 | 19 | real helper package for root-independent string mechanics; root keeps Object/error wrappers |
 | `core/cursor` | 3 | 1 | real leaf package for string cursor mechanics; root keeps Object protocol adapter |
@@ -156,10 +157,15 @@ Staged migration order should remain:
 ## Recommended immediate next steps
 
 1. Continue narrowing runtime call/object/frame access behind `RuntimeExecutionAdapter`; keep `core/runtime` as the reserved extraction target, but do not move executor files until those seams are explicit and tested.
-2. Continue collection extraction by moving only root-independent mechanics into `core/collections`; do not force concrete vector/map/set/seq implementations across the package boundary while they depend on root Object/protocol/equality/hash behavior.
+2. Continue collection extraction now that most object/protocol/equality/hash behavior is in `core/types`; do not force concrete vector/map/set/seq implementations across the package boundary until remaining root concrete return types, metadata, and initialization cycles are explicit.
 3. Continue reader extraction by moving lexical/token helpers into `core/reader`; keep concrete Object construction, FORMAT/LINTER behavior, namespace resolution, tagged literals, and parser/evaluator handoff in root until adapter contracts are explicit.
 4. Extend generated bootstrap emission beyond the source manifest and linter registry only with broader equivalence tests.
 5. Keep audit hardening in the validation cadence (`staticcheck-sa`, `vuln`, vet, race tests for leaf packages) because recent passes found real HTTP/WASM/osutil edge cases.
 6. Keep WASM leaf extraction opportunistic, but avoid moving runtime/object-handle paths until execution metadata is explicit.
 7. Keep std resource namespaces under the documented `std/<namespace>/<subns>/...` tree and reject any return to loose `lib/` placement.
 8. Keep transient root build artifacts (`core.test`, `joker`, `transit.test`) out of the repository root; `layout-check` should fail when they reappear.
+
+
+## 2026-05-18 core/types cleanup note
+
+The root object/protocol split progressed: shared contracts such as `Map`, `Meta`, `Set`, `Vec`, `Ref`, assertion helpers for moved types/std I/O, and generic `WithInfo`/`RootObject` helpers now live in `core/types`, and root compatibility aliases were removed. This reduces protocol-level blockers but does not by itself move concrete reader/evaluator/runtime/collection implementations; those packages should continue to rely on explicit adapters and avoid importing root-only concrete state.

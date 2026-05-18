@@ -24,12 +24,12 @@ func expectCSVPanic(t *testing.T, fn func()) {
 
 func TestCSVOptionsRejectInvalidDelimiters(t *testing.T) {
 	opts := EmptyArrayMap()
-	opts.Add(MakeKeyword("comma"), coretypes.Char{Ch: '\n'})
+	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "comma"), coretypes.Char{Ch: '\n'})
 	expectCSVPanic(t, func() { _ = writeString(NewVectorFrom(NewVectorFrom(coretypes.MakeString("a"))), opts) })
 
 	readOpts := EmptyArrayMap()
-	readOpts.Add(MakeKeyword("comma"), coretypes.Char{Ch: ';'})
-	readOpts.Add(MakeKeyword("comment"), coretypes.Char{Ch: ';'})
+	readOpts.Add(coretypes.MakeKeyword(STRINGS.Intern, "comma"), coretypes.Char{Ch: ';'})
+	readOpts.Add(coretypes.MakeKeyword(STRINGS.Intern, "comment"), coretypes.Char{Ch: ';'})
 	expectCSVPanic(t, func() { _ = csvSeqOpts(coretypes.MakeString("a;b\n"), readOpts) })
 }
 

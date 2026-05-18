@@ -3,8 +3,6 @@ package hex
 import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
-
-	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestHexEncodeDecodeString(t *testing.T) {

@@ -1,6 +1,7 @@
 package http
 
 import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	stdhttp "net/http"
 	"strconv"
@@ -21,7 +22,7 @@ func TestRespToMapPromotesLargeContentLengthOn32Bit(t *testing.T) {
 		Body:          io.NopCloser(strings.NewReader("ok")),
 	}
 	m := respToMap(resp)
-	ok, got := m.Get(MakeKeyword("content-length"))
+	ok, got := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "content-length"))
 	if !ok {
 		t.Fatal("response map missing :content-length")
 	}

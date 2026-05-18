@@ -80,22 +80,22 @@ func info(fn *Fn) coretypes.Object {
 	m := EmptyArrayMap()
 	prog := IrCompileFn(fn)
 	if prog == nil {
-		m.Add(MakeKeyword("compiled"), coretypes.Boolean{B: false})
+		m.Add(coretypes.MakeKeyword(STRINGS.Intern, "compiled"), coretypes.Boolean{B: false})
 		return m
 	}
-	m.Add(MakeKeyword("compiled"), coretypes.Boolean{B: true})
-	m.Add(MakeKeyword("slots"), coretypes.Int{I: prog.NumSlots()})
-	m.Add(MakeKeyword("captures"), coretypes.Int{I: len(prog.CaptureSlots())})
-	m.Add(MakeKeyword("self-recursive"), coretypes.Boolean{B: prog.HasSelf()})
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "compiled"), coretypes.Boolean{B: true})
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "slots"), coretypes.Int{I: prog.NumSlots()})
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "captures"), coretypes.Int{I: len(prog.CaptureSlots())})
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "self-recursive"), coretypes.Boolean{B: prog.HasSelf()})
 
 	if prog.GetNativeHelper() != nil {
-		m.Add(MakeKeyword("path"), coretypes.String{S: "native-f64"})
+		m.Add(coretypes.MakeKeyword(STRINGS.Intern, "path"), coretypes.String{S: "native-f64"})
 	} else {
 		a := AnalyzeIRProgramExported(prog)
 		if a.Eligible {
-			m.Add(MakeKeyword("path"), coretypes.String{S: "typed-ir"})
+			m.Add(coretypes.MakeKeyword(STRINGS.Intern, "path"), coretypes.String{S: "typed-ir"})
 		} else {
-			m.Add(MakeKeyword("path"), coretypes.String{S: "boxed-ir"})
+			m.Add(coretypes.MakeKeyword(STRINGS.Intern, "path"), coretypes.String{S: "boxed-ir"})
 		}
 	}
 	return m
@@ -136,9 +136,9 @@ func exportConst(o coretypes.Object) irExportConst {
 		return irExportConst{Type: "string", Value: v.S}
 	case coretypes.Boolean:
 		return irExportConst{Type: "boolean", Value: v.B}
-	case Keyword:
+	case coretypes.Keyword:
 		return irExportConst{Type: "keyword", Value: v.ToString(false)}
-	case Symbol:
+	case coretypes.Symbol:
 		return irExportConst{Type: "symbol", Value: v.ToString(false)}
 	case Nil:
 		return irExportConst{Type: "nil", Value: nil}

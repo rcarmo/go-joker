@@ -8,63 +8,28 @@ import (
 	corecollections "github.com/rcarmo/go-joker/core/collections"
 )
 
-type (
-	Map interface {
-		coretypes.Associative
-		coretypes.Seqable
-		coretypes.Counted
-		Without(key coretypes.Object) Map
-		Keys() coretypes.Seq
-		Vals() coretypes.Seq
-		Merge(m Map) Map
-		Iter() MapIterator
-	}
-	MapIterator interface {
-		HasNext() bool
-		Next() *Pair
-	}
-	EmptyMapIterator struct {
-	}
-	Pair struct {
-		Key   coretypes.Object
-		Value coretypes.Object
-	}
-)
-
-var (
-	emptyMapIterator = &EmptyMapIterator{}
-)
-
-func (iter *EmptyMapIterator) HasNext() bool {
-	return false
-}
-
-func (iter *EmptyMapIterator) Next() *Pair {
-	panic(newIteratorError())
-}
-
-func mapConj(m Map, obj coretypes.Object) coretypes.Conjable {
+func mapConj(m coretypes.Map, obj coretypes.Object) coretypes.Conjable {
 	switch obj := obj.(type) {
-	case Vec:
+	case coretypes.Vec:
 		if obj.Count() != 2 {
 			panic(RT.NewError("Vector argument to map's conj must be a vector with two elements"))
 		}
 		return m.Assoc(obj.At(0), obj.At(1))
-	case Map:
+	case coretypes.Map:
 		return m.Merge(obj)
 	default:
 		panic(RT.NewError("Argument to map's conj must be a vector with two elements or a map"))
 	}
 }
 
-func mapEquals(m Map, other interface{}) bool {
+func mapEquals(m coretypes.Map, other interface{}) bool {
 	if m == other {
 		return true
 	}
 	switch otherMap := other.(type) {
 	case Nil:
 		return false
-	case Map:
+	case coretypes.Map:
 		if m.Count() != otherMap.Count() {
 			return false
 		}
@@ -110,7 +75,7 @@ func mapEquals(m Map, other interface{}) bool {
 	}
 }
 
-func mapToString(m Map, escape bool) string {
+func mapToString(m coretypes.Map, escape bool) string {
 	return corecollections.FormatPairDelimited(
 		"{",
 		"}",
@@ -129,7 +94,7 @@ func mapToString(m Map, escape bool) string {
 	)
 }
 
-func callMap(m Map, args []coretypes.Object) coretypes.Object {
+func callMap(m coretypes.Map, args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 2)
 	if ok, v := m.Get(args[0]); ok {
 		return v
@@ -140,7 +105,7 @@ func callMap(m Map, args []coretypes.Object) coretypes.Object {
 	return NIL
 }
 
-func pprintMap(m Map, w io.Writer, indent int) int {
+func pprintMap(m coretypes.Map, w io.Writer, indent int) int {
 	i := indent + 1
 	fmt.Fprint(w, "{")
 	if m.Count() > 0 {

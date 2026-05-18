@@ -28,16 +28,16 @@ func fillNativeVarMetadata() {
 			if vr == nil || vr.ns != ns || vr.isFake {
 				continue
 			}
-			m, _ := vr.meta.(*ArrayMap)
+			m, _ := vr.Meta.(*ArrayMap)
 			if m == nil {
 				m = collectionConstruction.NewEmptyArrayMap()
-				if vr.meta != nil {
-					for it := vr.meta.Iter(); it.HasNext(); {
+				if vr.Meta != nil {
+					for it := vr.Meta.Iter(); it.HasNext(); {
 						p := it.Next()
 						m.Add(p.Key, p.Value)
 					}
 				}
-				vr.meta = m
+				vr.Meta = m
 			}
 			if ok, _ := m.Get(KEYWORDS.ns); !ok {
 				m.Add(KEYWORDS.ns, ns)

@@ -1,6 +1,6 @@
 # Runtime/executor extraction audit
 
-Updated: 2026-05-17
+Updated: 2026-05-18
 
 ## Purpose
 
@@ -63,7 +63,7 @@ Current state:
 Safe next steps:
 
 - Keep escape analysis in root until it consumes neutral IR/expression facts rather than root AST/runtime structures.
-- Move only leaf helper predicates if they do not mention root `Object`, `Expr`, `LocalEnv`, `FnExpr`, `Var`, or binding keys.
+- Move only leaf helper predicates if they do not mention root `Expr`, `LocalEnv`, `FnExpr`, `Var`, namespace/frame state, or binding keys.
 
 ### WASM/native helper runtime
 
@@ -100,13 +100,13 @@ Current state:
 - Generic close-state, send, and receive mechanics now live in `core/runtime.Channel[T]` with package-local tests.
 - Generic pending-value mechanics now live in `core/runtime.Future[T,E]` and `core/runtime.Promise[T]` with package-local tests.
 - Root `core.Channel` wraps `runtime.Channel[FutureResult]`, preserving `Object`, `Error`, type/hash, proc registration, and `alts!` reflection integration in root.
-- Root `core.Future`, `core.Promise`, and `core.Delay` wrap runtime pending primitives, preserving Object/Error/proc semantics in root while moving blocking/realization/deliver-once mechanics out.
+- Root `core.Future` and `core.Promise` wrap runtime pending primitives, preserving Object/Error/proc semantics in root while moving blocking/realization/deliver-once mechanics out. `Delay` has moved to `core/types` and calls back through an installed callable hook for forcing.
 - Core send/receive/go/future/promise/delay procs now call root wrappers instead of manipulating raw done channels or value slots directly.
 
 Safe next steps:
 
 - Keep `alts!` root-bound until Object/vector/result construction seams are explicit.
-- Avoid exposing raw runtime channels except for reflection-select integration that cannot currently be moved without root Object semantics.
+- Avoid exposing raw runtime channels except for reflection-select integration that cannot currently be moved without root object/vector/result construction seams.
 
 ### Environment, frames, and parse/eval handoff
 
@@ -136,3 +136,8 @@ Current state:
 2. Add/extend contract tests for any newly adapterized behavior before moving files.
 3. Move only root-independent runtime leaf helpers first; do not move executor loops or escape analysis by force.
 4. Keep `docs/refactor/runtime-execution-contract.md` synchronized with adapter coverage and blockers.
+
+
+## 2026-05-18 core/types cleanup note
+
+The root object/protocol split progressed: shared contracts such as `Map`, `Meta`, `Set`, `Vec`, `Ref`, assertion helpers for moved types/std I/O, and generic `WithInfo`/`RootObject` helpers now live in `core/types`, and root compatibility aliases were removed. This reduces protocol-level blockers but does not by itself move concrete reader/evaluator/runtime/collection implementations; those packages should continue to rely on explicit adapters and avoid importing root-only concrete state.

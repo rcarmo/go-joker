@@ -17,38 +17,38 @@ func InternsOrThunks() {
 
 	gitNamespace.InternVar("add-commit", add_commit_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("repo"), MakeSymbol("msg"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "repo"), coretypes.MakeSymbol(STRINGS.Intern, "msg"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Stores the current contents of the index in a new commit along with
-   a log message from the user describing the changes.`, "1.4").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+   a log message from the user describing the changes.`, "1.4").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	gitNamespace.InternVar("add-path", add_path_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("repo"), MakeSymbol("path"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "repo"), coretypes.MakeSymbol(STRINGS.Intern, "path"))),
 			`Adds the file contents of a file in the worktree to the index. If the
    file is already staged in the index no error is thrown. If a file deleted
    from the workspace is given, the file is removed from the index. If a
    directory given, adds the files and all his sub-directories recursively in
    the worktree to the index. If any of the files is already staged in the index
-   no error is thrown. When path is a file, the hash is returned.`, "1.4").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+   no error is thrown. When path is a file, the hash is returned.`, "1.4").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	gitNamespace.InternVar("commit", commit_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("repo"), MakeSymbol("hash"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "repo"), coretypes.MakeSymbol(STRINGS.Intern, "hash"))),
 			`Returns a commit with the given hash.`, "1.3"))
 
 	gitNamespace.InternVar("config", config_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("repo"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "repo"))),
 			`Returns git repo's config`, "1.3"))
 
 	gitNamespace.InternVar("head", head_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("repo"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "repo"))),
 			`Returns the reference where HEAD is pointing to.`, "1.3"))
 
 	gitNamespace.InternVar("log", log_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("repo"), MakeSymbol("opts"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "repo"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Returns the commit history from the given opts.
   opts may have the following keys:
 
@@ -78,25 +78,25 @@ func InternsOrThunks() {
 
 	gitNamespace.InternVar("object", object_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("repo"), MakeSymbol("hash"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "repo"), coretypes.MakeSymbol(STRINGS.Intern, "hash"))),
 			`Returns an coretypes.Object with the given hash.`, "1.3"))
 
 	gitNamespace.InternVar("open", open_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("path"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "path"))),
 			`Opens a git repository from the given path. It detects if the
-   repository is bare or a normal one. Throws an error if the path doesn't contain a valid repository.`, "1.3").Plus(MakeKeyword("tag"), coretypes.String{S: "GitRepo"}))
+   repository is bare or a normal one. Throws an error if the path doesn't contain a valid repository.`, "1.3").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "GitRepo"}))
 
 	gitNamespace.InternVar("ref", ref_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("repo"), MakeSymbol("name"), MakeSymbol("resolved"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "repo"), coretypes.MakeSymbol(STRINGS.Intern, "name"), coretypes.MakeSymbol(STRINGS.Intern, "resolved"))),
 			`Returns the reference for a given reference name. If resolved is
    true, any symbolic reference will be resolved.`, "1.3"))
 
 	gitNamespace.InternVar("resolve-revision", resolve_revision_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("repo"), MakeSymbol("revision"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "repo"), coretypes.MakeSymbol(STRINGS.Intern, "revision"))),
 			`Resolves revision to corresponding hash. It will always
-   resolve to a commit hash, not a tree or annotated tag.`, "1.3").Plus(MakeKeyword("tag"), coretypes.String{S: "coretypes.String"}))
+   resolve to a commit hash, not a tree or annotated tag.`, "1.3").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 }

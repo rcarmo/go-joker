@@ -1232,7 +1232,7 @@ func wasmMemNthCompileAndExec(prog *IRProgram, slots []coretypes.Object) coretyp
 		case coretypes.Double:
 			c.paramsBuf[i] = math.Float64bits(v.D)
 		default:
-			// Vector slot: pass memory byte offset
+			// coretypes.Vector slot: pass memory byte offset
 			for vi, si := range c.vecSlotIdx {
 				if si == i {
 					c.paramsBuf[i] = math.Float64bits(float64(c.memOffsets[vi]))

@@ -150,7 +150,7 @@ func Eval(expr Expr, env *LocalEnv) coretypes.Object {
 		return evalBody(expr.body, env)
 	case *FnExpr:
 		res := &Fn{fnExpr: expr}
-		if expr.self.name != nil {
+		if expr.self.NameKey() != nil {
 			selfEnv := LocalEnv{bindings: []coretypes.Object{res}, parent: env}
 			if env != nil {
 				selfEnv.frame = env.frame + 1
@@ -422,13 +422,13 @@ func (expr *DefExpr) Eval(env *LocalEnv) coretypes.Object {
 	meta.Add(KEYWORDS.file, coretypes.String{S: *expr.Filename})
 	meta.Add(KEYWORDS.ns, expr.vr.ns)
 	meta.Add(KEYWORDS.name, expr.vr.name)
-	expr.vr.meta = meta
+	expr.vr.Meta = meta
 	if expr.meta != nil {
-		expr.vr.meta = expr.vr.meta.Merge(Eval(expr.meta, env).(Map))
+		expr.vr.Meta = expr.vr.Meta.Merge(Eval(expr.meta, env).(coretypes.Map))
 	}
 	// isMacro can be set by set-macro__ during parse stage
 	if expr.vr.isMacro {
-		expr.vr.meta = expr.vr.meta.Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(Map)
+		expr.vr.Meta = expr.vr.Meta.Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(coretypes.Map)
 	}
 	return expr.vr
 }
@@ -436,7 +436,7 @@ func (expr *DefExpr) Eval(env *LocalEnv) coretypes.Object {
 func (expr *MetaExpr) Eval(env *LocalEnv) coretypes.Object {
 	meta := Eval(expr.meta, env)
 	res := Eval(expr.expr, env)
-	return res.(Meta).WithMeta(meta.(Map))
+	return res.(coretypes.Meta).WithMeta(meta.(coretypes.Map))
 }
 
 func evalSeq(exprs []Expr, env *LocalEnv) []coretypes.Object {
@@ -739,7 +739,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 				coll := Eval(expr.args[0], env)
 				key := Eval(expr.args[1], env)
 				val := Eval(expr.args[2], env)
-				return EnsureObjectIsAssociative(coll, "").Assoc(key, val)
+				return coretypes.EnsureObjectIsAssociative(coll, "").Assoc(key, val)
 			}
 			var args [3]coretypes.Object
 			args[0] = Eval(expr.args[0], env)
@@ -934,7 +934,7 @@ func (expr *IfExpr) Eval(env *LocalEnv) coretypes.Object {
 
 func (expr *FnExpr) Eval(env *LocalEnv) coretypes.Object {
 	res := &Fn{fnExpr: expr}
-	if expr.self.name != nil {
+	if expr.self.NameKey() != nil {
 		selfEnv := LocalEnv{bindings: []coretypes.Object{res}, parent: env}
 		if env != nil {
 			selfEnv.frame = env.frame + 1

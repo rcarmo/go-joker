@@ -22,7 +22,7 @@ func typeBuilder() coretypes.Builder {
 		MetaFactory: func(kind coretypes.Kind, name string, doc string) any {
 			meta := MakeMeta(nil, coretypes.TypeMetadataDoc(kind, doc), "1.0")
 			meta.Add(KEYWORDS.name, coretypes.MakeString(name))
-			return MetaHolder{meta}
+			return coretypes.MetaHolder{meta}
 		},
 	}
 }
@@ -44,17 +44,17 @@ func init() {
 		IOWriter:       typeBuilder().RegisterInterface("IOWriter", (*io.Writer)(nil), ""),
 		KVReduce:       typeBuilder().RegisterInterface("coretypes.KVReduce", (*coretypes.KVReduce)(nil), ""),
 		Reduce:         typeBuilder().RegisterInterface("coretypes.Reduce", (*coretypes.Reduce)(nil), ""),
-		Map:            typeBuilder().RegisterInterface("Map", (*Map)(nil), ""),
-		Meta:           typeBuilder().RegisterInterface("Meta", (*Meta)(nil), ""),
+		Map:            typeBuilder().RegisterInterface("Map", (*coretypes.Map)(nil), ""),
+		Meta:           typeBuilder().RegisterInterface("Meta", (*coretypes.Meta)(nil), ""),
 		Named:          typeBuilder().RegisterInterface("Named", (*coretypes.Named)(nil), ""),
 		Number:         typeBuilder().RegisterInterface("Number", (*coretypes.Number)(nil), ""),
 		Pending:        typeBuilder().RegisterInterface("Pending", (*coretypes.Pending)(nil), ""),
-		Ref:            typeBuilder().RegisterInterface("Ref", (*Ref)(nil), ""),
+		Ref:            typeBuilder().RegisterInterface("Ref", (*coretypes.Ref)(nil), ""),
 		Reversible:     typeBuilder().RegisterInterface("Reversible", (*coretypes.Reversible)(nil), ""),
 		Seq:            typeBuilder().RegisterInterface("coretypes.Seq", (*coretypes.Seq)(nil), ""),
 		Seqable:        typeBuilder().RegisterInterface("coretypes.Seqable", (*coretypes.Seqable)(nil), ""),
 		Sequential:     typeBuilder().RegisterInterface("Sequential", (*coretypes.Sequential)(nil), ""),
-		Set:            typeBuilder().RegisterInterface("Set", (*Set)(nil), ""),
+		Set:            typeBuilder().RegisterInterface("Set", (*coretypes.Set)(nil), ""),
 		Stack:          typeBuilder().RegisterInterface("coretypes.Stack", (*coretypes.Stack)(nil), ""),
 		ArrayMap:       typeBuilder().RegisterReference("ArrayMap", (*ArrayMap)(nil), ""),
 		ArrayMapSeq:    typeBuilder().RegisterReference("ArrayMapSeq", (*ArrayMapSeq)(nil), ""),
@@ -80,7 +80,7 @@ func init() {
 		HashMap:        typeBuilder().RegisterReference("HashMap", (*HashMap)(nil), ""),
 		Int: typeBuilder().RegisterValue("Int", (*coretypes.Int)(nil),
 			"Wraps the Go 'int' type, which is 32 bits wide on 32-bit hosts, 64 bits wide on 64-bit hosts, etc."),
-		Keyword:       typeBuilder().RegisterValue("Keyword", (*Keyword)(nil), "A possibly-namespace-qualified name prefixed by ':'"),
+		Keyword:       typeBuilder().RegisterValue("Keyword", (*coretypes.Keyword)(nil), "A possibly-namespace-qualified name prefixed by ':'"),
 		LazySeq:       typeBuilder().RegisterReference("LazySeq", (*LazySeq)(nil), ""),
 		List:          typeBuilder().RegisterReference("List", (*List)(nil), ""),
 		MappingSeq:    typeBuilder().RegisterReference("MappingSeq", (*MappingSeq)(nil), ""),
@@ -93,11 +93,11 @@ func init() {
 		RecurBindings: typeBuilder().RegisterReference("RecurBindings", (*coretypes.RecurBindings)(nil), ""),
 		Regex:         typeBuilder().RegisterReference("Regex", (*coretypes.Regex)(nil), "Wraps the Go 'regexp.Regexp' type"),
 		String:        typeBuilder().RegisterValue("String", (*coretypes.String)(nil), "Wraps the Go 'string' type"),
-		Symbol:        typeBuilder().RegisterValue("Symbol", (*Symbol)(nil), ""),
+		Symbol:        typeBuilder().RegisterValue("Symbol", (*coretypes.Symbol)(nil), ""),
 		Type:          typeBuilder().RegisterReference("Type", (*coretypes.Type)(nil), ""),
 		Var:           typeBuilder().RegisterReference("Var", (*Var)(nil), ""),
 		Vector:        typeBuilder().RegisterReference("Vector", (*Vector)(nil), ""),
-		Vec:           typeBuilder().RegisterInterface("Vec", (*Vec)(nil), ""),
+		Vec:           typeBuilder().RegisterInterface("Vec", (*coretypes.Vec)(nil), ""),
 		ArrayVector:   typeBuilder().RegisterReference("ArrayVector", (*ArrayVector)(nil), ""),
 		VectorRSeq:    typeBuilder().RegisterReference("VectorRSeq", (*VectorRSeq)(nil), ""),
 		VectorSeq:     typeBuilder().RegisterReference("VectorSeq", (*VectorSeq)(nil), ""),
@@ -106,5 +106,7 @@ func init() {
 	coretypes.RuntimeTypes = &TYPE
 	coretypes.NumberCompare = coretypes.CompareNumbers
 	coretypes.NumberEquals = equalsNumbers
+	coretypes.NamedLookup = getMap
+	installAssertionErrors()
 	coretypes.DelayCall = call0
 }

@@ -22,6 +22,7 @@ import (
 	gen_go "github.com/rcarmo/go-joker/core/gen/gengo"
 	corereader "github.com/rcarmo/go-joker/core/reader"
 	corestr "github.com/rcarmo/go-joker/core/string"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 type FileInfo struct {
@@ -688,6 +689,32 @@ Proc{
 		fnName, strconv.Quote(fnName), newPackage)
 }
 
+func (genEnv *GenEnv) ptrValueExpr(target string, ptr *string) string {
+	if ptr == nil {
+		return "nil"
+	}
+	return genEnv.GenGo.ValueExpr(target, reflect.TypeOf((*string)(nil)), reflect.ValueOf(ptr))
+}
+
+func (genEnv *GenEnv) emitKeyword(target string, k coretypes.Keyword) string {
+	expr := fmt.Sprintf("coretypes.MakeKeywordFromKeys(%s, %s)", genEnv.ptrValueExpr(target+".ns", k.NamespaceKey()), genEnv.ptrValueExpr(target+".name", k.NameKey()))
+	if k.Info == nil {
+		return expr
+	}
+	info := genEnv.GenGo.ValueExpr(target+".Info", reflect.TypeOf((*coretypes.ObjectInfo)(nil)), reflect.ValueOf(k.Info))
+	return fmt.Sprintf("func() coretypes.Keyword { x := %s; x.Info = %s; return x }()", expr, info)
+}
+
+func (genEnv *GenEnv) emitSymbol(target string, s coretypes.Symbol) string {
+	expr := fmt.Sprintf("coretypes.MakeSymbolFromKeys(%s, %s).WithPackedHash(%d)", genEnv.ptrValueExpr(target+".ns", s.NamespaceKey()), genEnv.ptrValueExpr(target+".name", s.NameKey()), s.PackedHash())
+	if s.Info == nil && s.GetMeta() == nil {
+		return expr
+	}
+	info := genEnv.GenGo.ValueExpr(target+".Info", reflect.TypeOf((*coretypes.ObjectInfo)(nil)), reflect.ValueOf(s.Info))
+	meta := genEnv.GenGo.ValueExpr(target+".Meta", reflect.TypeOf((*ArrayMap)(nil)), reflect.ValueOf(s.GetMeta()))
+	return fmt.Sprintf("func() coretypes.Symbol { x := %s; x.Info = %s; x.Meta = %s; return x }()", expr, info, meta)
+}
+
 func (genEnv *GenEnv) emitPtrToRegexp(target string, v reflect.Value) string {
 	importedAs := AddImport(genEnv.Import, "", "regexp", true)
 	source := fmt.Sprintf("%s.MustCompile(%s)", importedAs, strconv.Quote(v.Interface().(*regexp.Regexp).String()))
@@ -841,6 +868,10 @@ func (genEnv *GenEnv) sortValues(keys []reflect.Value) {
 func (genEnv *GenEnv) structHookFn(target string, obj interface{}) (res string, deferredFunc func(target string, obj interface{})) {
 	res = "-" // Means no result, continue processing
 	switch obj := obj.(type) {
+	case coretypes.Keyword:
+		return genEnv.emitKeyword(target, obj), nil
+	case coretypes.Symbol:
+		return genEnv.emitSymbol(target, obj), nil
 	case Proc:
 		return genEnv.emitProc(target, obj), nil
 	case Namespace:

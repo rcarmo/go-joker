@@ -18,7 +18,7 @@ func TestBencodeRoundTripPodMessage(t *testing.T) {
 	if !bytes.Contains(encoded, []byte("2:id7:joker-1")) || !bytes.Contains(encoded, []byte("2:op8:describe")) {
 		t.Fatalf("unexpected bencode message: %q", string(encoded))
 	}
-	decoded := bencodeDecodeBytes(encoded).(Map)
+	decoded := bencodeDecodeBytes(encoded).(coretypes.Map)
 	if ok, op := decoded.Get(coretypes.MakeString("op")); !ok || op.ToString(false) != "describe" {
 		t.Fatalf("op mismatch: %v", op)
 	}
@@ -32,7 +32,7 @@ func TestBencodeDecodeReader(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	m := obj.(Map)
+	m := obj.(coretypes.Map)
 	if ok, id := m.Get(coretypes.MakeString("id")); !ok || id.ToString(false) != "x" {
 		t.Fatalf("id mismatch: %v", id)
 	}

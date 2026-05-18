@@ -32,21 +32,21 @@ func sh(dir string, stdin io.Reader, stdout io.Writer, stderr io.Writer, name st
 	err = cmd.Wait()
 
 	res := EmptyArrayMap()
-	res.Add(MakeKeyword("success"), coretypes.Boolean{B: err == nil})
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "success"), coretypes.Boolean{B: err == nil})
 
 	var exitCode int
 	if err != nil {
-		res.Add(MakeKeyword("err-msg"), coretypes.String{S: err.Error()})
+		res.Add(coretypes.MakeKeyword(STRINGS.Intern, "err-msg"), coretypes.String{S: err.Error()})
 		exitCode = defaultFailedCode
 	} else {
 		exitCode = 0
 	}
-	res.Add(MakeKeyword("exit"), coretypes.Int{I: exitCode})
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "exit"), coretypes.Int{I: exitCode})
 	if stdout == nil {
-		res.Add(MakeKeyword("out"), coretypes.String{S: string(stdoutBuffer.Bytes())})
+		res.Add(coretypes.MakeKeyword(STRINGS.Intern, "out"), coretypes.String{S: string(stdoutBuffer.Bytes())})
 	}
 	if stderr == nil {
-		res.Add(MakeKeyword("err"), coretypes.String{S: string(stderrBuffer.Bytes())})
+		res.Add(coretypes.MakeKeyword(STRINGS.Intern, "err"), coretypes.String{S: string(stderrBuffer.Bytes())})
 	}
 	return res
 }

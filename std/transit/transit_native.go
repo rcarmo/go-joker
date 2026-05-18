@@ -135,9 +135,9 @@ func (e *transitEncoder) encode(obj coretypes.Object, asKey bool) interface{} {
 		return e.cacheString("~r"+v.Ratio().String(), asKey)
 	case coretypes.String:
 		return e.cacheString(transitEncodeString(v.S), asKey)
-	case Keyword:
+	case coretypes.Keyword:
 		return e.cacheString("~:"+strings.TrimPrefix(v.ToString(false), ":"), asKey)
-	case Symbol:
+	case coretypes.Symbol:
 		return e.cacheString("~$"+v.ToString(false), asKey)
 	}
 	if set, ok := obj.(*MapSet); ok {
@@ -147,7 +147,7 @@ func (e *transitEncoder) encode(obj coretypes.Object, asKey bool) interface{} {
 		}
 		return []interface{}{e.cacheString("~#set", false), items}
 	}
-	if m, ok := obj.(Map); ok {
+	if m, ok := obj.(coretypes.Map); ok {
 		arr := []interface{}{transitMapTag}
 		for it := m.Iter(); it.HasNext(); {
 			p := it.Next()
@@ -289,10 +289,10 @@ func transitDecodeString(s string) coretypes.Object {
 		return coretypes.MakeString(s[1:])
 	}
 	if strings.HasPrefix(s, "~:") {
-		return MakeKeyword(s[2:])
+		return coretypes.MakeKeyword(STRINGS.Intern, s[2:])
 	}
 	if strings.HasPrefix(s, "~$") {
-		return MakeSymbol(s[2:])
+		return coretypes.MakeSymbol(STRINGS.Intern, s[2:])
 	}
 	if strings.HasPrefix(s, "~i") {
 		if bi, ok := new(big.Int).SetString(s[2:], 10); ok {

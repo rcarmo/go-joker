@@ -21,37 +21,37 @@ var procGoSpew = func(args []coretypes.Object) (res coretypes.Object) {
 	scs := spew.NewDefaultConfig()
 	if len(args) > 1 {
 		m := ExtractMap(args, 1)
-		if yes, k := m.Get(MakeKeyword("Indent")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "Indent")); yes {
 			scs.Indent = k.(coretypes.Native).Native().(string)
 		}
-		if yes, k := m.Get(MakeKeyword("MaxDepth")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "MaxDepth")); yes {
 			scs.MaxDepth = k.(coretypes.Native).Native().(int)
 		}
-		if yes, k := m.Get(MakeKeyword("DisableMethods")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "DisableMethods")); yes {
 			scs.DisableMethods = k.(coretypes.Native).Native().(bool)
 		}
-		if yes, k := m.Get(MakeKeyword("DisablePointerMethods")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "DisablePointerMethods")); yes {
 			scs.DisablePointerMethods = k.(coretypes.Native).Native().(bool)
 		}
-		if yes, k := m.Get(MakeKeyword("DisablePointerAddresses")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "DisablePointerAddresses")); yes {
 			scs.DisablePointerAddresses = k.(coretypes.Native).Native().(bool)
 		}
-		if yes, k := m.Get(MakeKeyword("DisableCapacities")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "DisableCapacities")); yes {
 			scs.DisableCapacities = k.(coretypes.Native).Native().(bool)
 		}
-		if yes, k := m.Get(MakeKeyword("ContinueOnMethod")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "ContinueOnMethod")); yes {
 			scs.ContinueOnMethod = k.(coretypes.Native).Native().(bool)
 		}
-		if yes, k := m.Get(MakeKeyword("SortKeys")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "SortKeys")); yes {
 			scs.SortKeys = k.(coretypes.Native).Native().(bool)
 		}
-		if yes, k := m.Get(MakeKeyword("SpewKeys")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "SpewKeys")); yes {
 			scs.SpewKeys = k.(coretypes.Native).Native().(bool)
 		}
-		if yes, k := m.Get(MakeKeyword("NoDuplicates")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "NoDuplicates")); yes {
 			scs.NoDuplicates = k.(coretypes.Native).Native().(bool)
 		}
-		if yes, k := m.Get(MakeKeyword("UseOrdinals")); yes {
+		if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "UseOrdinals")); yes {
 			scs.UseOrdinals = k.(coretypes.Native).Native().(bool)
 		}
 	}

@@ -2,6 +2,7 @@ package markdown
 
 import (
 	"bytes"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
@@ -16,15 +17,15 @@ func convertString(source string) string {
 	return convert(source, []renderer.Option{html.WithHardWraps(), html.WithXHTML(), html.WithUnsafe()})
 }
 
-func getKeywordFlag(opts Map, name string, def bool) bool {
-	ok, entry := opts.Get(MakeKeyword(name))
+func getKeywordFlag(opts coretypes.Map, name string, def bool) bool {
+	ok, entry := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, name))
 	if !ok {
 		return def
 	}
-	return EnsureObjectIsBoolean(entry, name+": %s").B
+	return coretypes.EnsureObjectIsBoolean(entry, name+": %s").B
 }
 
-func convertStringOpts(source string, options Map) string {
+func convertStringOpts(source string, options coretypes.Map) string {
 	renderOptions := []renderer.Option{}
 	if flag := getKeywordFlag(options, "with-hard-wraps?", true); flag {
 		renderOptions = append(renderOptions, html.WithHardWraps())

@@ -12,7 +12,7 @@ import (
 
 func srepl(port string, phase corereader.Phase) {
 	ProcessReplData()
-	GLOBAL_ENV.FindNamespace(MakeSymbol("user")).ReferAll(GLOBAL_ENV.FindNamespace(MakeSymbol("joker.repl")))
+	GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "user")).ReferAll(GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "joker.repl")))
 	GLOBAL_ENV.CoreNamespace.Resolve("*repl*").Value = coretypes.Boolean{B: true}
 	l, err := net.Listen("tcp", replSocket)
 	if err != nil {

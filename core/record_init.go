@@ -15,30 +15,30 @@ func registerRecordProcs() {
 	}
 
 	// record? — always available
-	recordQVr := ns.Intern(MakeSymbol("record?"))
+	recordQVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "record?"))
 	recordQVr.Value = Proc{Name: "procRecordQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		_, ok := args[0].(*Record)
 		return coretypes.MakeBoolean(ok)
 	}}
-	referToUser(MakeSymbol("record?"), recordQVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "record?"), recordQVr)
 
 	// __defrecord — internal helper
 	// Args: [record-name-symbol field1-string field2-string ...]
 	// Returns: the RecordType, and installs:
 	//   - ->RecordName constructor fn
 	//   - map->RecordName factory fn
-	defRecordVr := ns.Intern(MakeSymbol("__defrecord"))
+	defRecordVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "__defrecord"))
 	defRecordVr.Value = Proc{Name: "procDefRecordInternal", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 1 {
 			panic(RT.NewError("__defrecord requires at least a name"))
 		}
-		name := EnsureObjectIsSymbol(args[0], "defrecord name must be a symbol")
+		name := coretypes.EnsureObjectIsSymbol(args[0], "defrecord name must be a symbol")
 		nameStr := name.ToString(false)
 
 		fields := make([]string, len(args)-1)
 		for i := 1; i < len(args); i++ {
-			fields[i-1] = EnsureObjectIsString(args[i], "field name must be a string").S
+			fields[i-1] = coretypes.EnsureObjectIsString(args[i], "field name must be a string").S
 		}
 
 		rtype := MakeRecordType(nameStr, fields)
@@ -47,20 +47,20 @@ func registerRecordProcs() {
 
 		// Install positional constructor: (->RecordName field1 field2 ...)
 		ctorName := "->" + nameStr
-		ctorVr := currentNs.Intern(MakeSymbol(ctorName))
+		ctorVr := currentNs.Intern(coretypes.MakeSymbol(STRINGS.Intern, ctorName))
 		ctorVr.Value = Proc{Name: "proc" + ctorName, Fn: func(ctorArgs []coretypes.Object) coretypes.Object {
 			return NewRecord(rtype, ctorArgs)
 		}}
 
 		// Install map factory: (map->RecordName {:field1 v1 :field2 v2})
 		mapCtorName := "map->" + nameStr
-		mapCtorVr := currentNs.Intern(MakeSymbol(mapCtorName))
+		mapCtorVr := currentNs.Intern(coretypes.MakeSymbol(STRINGS.Intern, mapCtorName))
 		mapCtorVr.Value = Proc{Name: "proc" + mapCtorName, Fn: func(ctorArgs []coretypes.Object) coretypes.Object {
 			CheckArity(ctorArgs, 1, 1)
-			m := EnsureObjectIsMap(ctorArgs[0], "map->"+nameStr+" requires a map argument")
+			m := coretypes.EnsureObjectIsMap(ctorArgs[0], "map->"+nameStr+" requires a map argument")
 			vals := make([]coretypes.Object, len(fields))
 			for i, fname := range fields {
-				kw := MakeKeyword(fname)
+				kw := coretypes.MakeKeyword(STRINGS.Intern, fname)
 				if ok, v := m.Get(kw); ok {
 					vals[i] = v
 				} else {
@@ -71,7 +71,7 @@ func registerRecordProcs() {
 			// Add any extra keys as extension fields
 			for iter := m.Iter(); iter.HasNext(); {
 				p := iter.Next()
-				if kw, ok := p.Key.(Keyword); ok {
+				if kw, ok := p.Key.(coretypes.Keyword); ok {
 					kwName := kw.ToString(false)[1:]
 					if _, isBase := rtype.fieldIdx[kwName]; isBase {
 						continue
@@ -85,5 +85,5 @@ func registerRecordProcs() {
 		return NIL
 	}}
 	defRecordVr.isPrivate = true
-	referToUser(MakeSymbol("__defrecord"), defRecordVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "__defrecord"), defRecordVr)
 }

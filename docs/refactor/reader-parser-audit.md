@@ -1,6 +1,6 @@
 # Reader/parser extraction audit
 
-Updated: 2026-05-17
+Updated: 2026-05-18
 
 ## Current extracted reader package ownership
 
@@ -58,6 +58,11 @@ No parser orchestration should move to `core/reader` until `Object`, `Expr`, `Va
 
 ## Next safe reader steps
 
-1. Continue extracting pure decision/configuration helpers from `read.go` when they do not mention root `Object`, `Symbol`, `Seq`, `Meta`, `GLOBAL_ENV`, or root collection types.
+1. Continue extracting pure decision/configuration helpers from `read.go` when they do not mention root-owned `Symbol`, `Meta`, `GLOBAL_ENV`, evaluator state, or concrete collection types.
 2. Continue extending `ReaderConstructionAdapter` only for stable root-owned semantics; do not move tagged literal or top-level orchestration while namespace/runtime side effects remain direct.
 3. Keep package guards ensuring `core/reader` never imports root `core`.
+
+
+## 2026-05-18 core/types cleanup note
+
+The root object/protocol split progressed: shared contracts such as `Map`, `Meta`, `Set`, `Vec`, `Ref`, assertion helpers for moved types/std I/O, and generic `WithInfo`/`RootObject` helpers now live in `core/types`, and root compatibility aliases were removed. This reduces protocol-level blockers but does not by itself move concrete reader/evaluator/runtime/collection implementations; those packages should continue to rely on explicit adapters and avoid importing root-only concrete state.

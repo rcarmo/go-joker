@@ -28,7 +28,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var uuidNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.uuid"))
+var uuidNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.uuid"))
 
 func init() {
 	uuidNamespace.Lazy = Init

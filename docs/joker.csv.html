@@ -98,7 +98,7 @@
 </pre>
   <p class="var-docstr">Writes records to a CSV encoded file.<br>
   f must be io.Writer (for example, as returned by joker.os/create).<br>
-  data must be Seqable, each element of which must be Seqable as well.<br>
+  data must be coretypes.Seqable, each element of which must be coretypes.Seqable as well.<br>
   opts is as in joker.csv/write-string.</p>
   
   
@@ -111,7 +111,7 @@
 <div><code>(write-string data opts)</code></div>
 </pre>
   <p class="var-docstr">Writes records to a string in CSV format and returns the string.<br>
-  data must be Seqable, each element of which must be Seqable as well.<br>
+  data must be coretypes.Seqable, each element of which must be coretypes.Seqable as well.<br>
   opts may have the following keys:<br>
 <br>
   :comma - field delimiter (defaults to &#39;,&#39;)<br>

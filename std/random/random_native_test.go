@@ -3,8 +3,6 @@ package random
 import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
-
-	. "github.com/rcarmo/go-joker/core"
 )
 
 func expectRandomPanic(t *testing.T, fn func()) {

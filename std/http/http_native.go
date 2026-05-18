@@ -62,14 +62,14 @@ var upgrader = ws.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
-func extractMethod(request Map) string {
-	if ok, m := request.Get(MakeKeyword("method")); ok {
+func extractMethod(request coretypes.Map) string {
+	if ok, m := request.Get(coretypes.MakeKeyword(STRINGS.Intern, "method")); ok {
 		switch m := m.(type) {
 		case coretypes.String:
 			return m.S
-		case Keyword:
+		case coretypes.Keyword:
 			return m.ToString(false)[1:]
-		case Symbol:
+		case coretypes.Symbol:
 			return m.ToString(false)
 		default:
 			panic(RT.NewError(fmt.Sprintf("method must be a string, keyword or symbol, got %s", m.GetType().ToString(false))))
@@ -78,31 +78,31 @@ func extractMethod(request Map) string {
 	return "get"
 }
 
-func getOrPanic(m Map, k coretypes.Object, errMsg string) coretypes.Object {
+func getOrPanic(m coretypes.Map, k coretypes.Object, errMsg string) coretypes.Object {
 	if ok, v := m.Get(k); ok {
 		return v
 	}
 	panic(RT.NewError(errMsg))
 }
 
-func mapToReq(request Map) *http.Request {
+func mapToReq(request coretypes.Map) *http.Request {
 	method := strings.ToUpper(extractMethod(request))
-	url := EnsureObjectIsString(getOrPanic(request, MakeKeyword("url"), ":url key must be present in request map"), "url: %s").S
+	url := coretypes.EnsureObjectIsString(getOrPanic(request, coretypes.MakeKeyword(STRINGS.Intern, "url"), ":url key must be present in request map"), "url: %s").S
 	var reqBody io.Reader
-	if ok, b := request.Get(MakeKeyword("body")); ok {
-		reqBody = strings.NewReader(EnsureObjectIsString(b, "body: %s").S)
+	if ok, b := request.Get(coretypes.MakeKeyword(STRINGS.Intern, "body")); ok {
+		reqBody = strings.NewReader(coretypes.EnsureObjectIsString(b, "body: %s").S)
 	}
 	req, err := http.NewRequest(method, url, reqBody)
 	PanicOnErr(err)
-	if ok, headers := request.Get(MakeKeyword("headers")); ok {
-		h := EnsureObjectIsMap(headers, "headers: %s")
+	if ok, headers := request.Get(coretypes.MakeKeyword(STRINGS.Intern, "headers")); ok {
+		h := coretypes.EnsureObjectIsMap(headers, "headers: %s")
 		for iter := h.Iter(); iter.HasNext(); {
 			p := iter.Next()
-			req.Header.Add(EnsureObjectIsString(p.Key, "header name: %s").S, EnsureObjectIsString(p.Value, "header value: %s").S)
+			req.Header.Add(coretypes.EnsureObjectIsString(p.Key, "header name: %s").S, coretypes.EnsureObjectIsString(p.Value, "header value: %s").S)
 		}
 	}
-	if ok, host := request.Get(MakeKeyword("host")); ok {
-		req.Host = EnsureObjectIsString(host, "host: %s").S
+	if ok, host := request.Get(coretypes.MakeKeyword(STRINGS.Intern, "host")); ok {
+		req.Host = coretypes.EnsureObjectIsString(host, "host: %s").S
 	}
 	return req
 }
@@ -114,49 +114,49 @@ func remoteHost(remoteAddr string) string {
 	return strings.Trim(remoteAddr, "[]")
 }
 
-func reqToMap(host coretypes.String, port coretypes.String, req *http.Request) Map {
+func reqToMap(host coretypes.String, port coretypes.String, req *http.Request) coretypes.Map {
 	res := EmptyArrayMap()
 	body, err := io.ReadAll(req.Body)
 	closeErr := req.Body.Close()
 	PanicOnErr(err)
 	PanicOnErr(closeErr)
-	res.Add(MakeKeyword("request-method"), MakeKeyword(strings.ToLower(req.Method)))
-	res.Add(MakeKeyword("body"), coretypes.MakeString(string(body)))
-	res.Add(MakeKeyword("uri"), coretypes.MakeString(req.URL.Path))
-	res.Add(MakeKeyword("query-string"), coretypes.MakeString(req.URL.RawQuery))
-	res.Add(MakeKeyword("server-name"), host)
-	res.Add(MakeKeyword("server-port"), port)
-	res.Add(MakeKeyword("remote-addr"), coretypes.MakeString(remoteHost(req.RemoteAddr)))
-	res.Add(MakeKeyword("protocol"), coretypes.MakeString(req.Proto))
-	res.Add(MakeKeyword("scheme"), MakeKeyword("http"))
-	res.Add(MakeKeyword("host"), coretypes.MakeString(req.Host))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "request-method"), coretypes.MakeKeyword(STRINGS.Intern, strings.ToLower(req.Method)))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "body"), coretypes.MakeString(string(body)))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "uri"), coretypes.MakeString(req.URL.Path))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "query-string"), coretypes.MakeString(req.URL.RawQuery))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "server-name"), host)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "server-port"), port)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "remote-addr"), coretypes.MakeString(remoteHost(req.RemoteAddr)))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "protocol"), coretypes.MakeString(req.Proto))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "scheme"), coretypes.MakeKeyword(STRINGS.Intern, "http"))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "host"), coretypes.MakeString(req.Host))
 	headers := EmptyArrayMap()
 	for k, v := range req.Header {
 		headers.Add(coretypes.MakeString(strings.ToLower(k)), coretypes.MakeString(strings.Join(v, ",")))
 	}
-	res.Add(MakeKeyword("headers"), headers)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "headers"), headers)
 	return res
 }
 
-func respToMap(resp *http.Response) Map {
+func respToMap(resp *http.Response) coretypes.Map {
 	res := EmptyArrayMap()
 	body, err := io.ReadAll(resp.Body)
 	closeErr := resp.Body.Close()
 	PanicOnErr(err)
 	PanicOnErr(closeErr)
-	res.Add(MakeKeyword("body"), coretypes.MakeString(string(body)))
-	res.Add(MakeKeyword("status"), coretypes.MakeInt(resp.StatusCode))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "body"), coretypes.MakeString(string(body)))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(resp.StatusCode))
 	respHeaders := EmptyArrayMap()
 	for k, v := range resp.Header {
 		respHeaders.Add(coretypes.MakeString(k), MakeStringVector(v))
 	}
-	res.Add(MakeKeyword("headers"), respHeaders)
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "headers"), respHeaders)
 	maxNativeInt := int64(int(^uint(0) >> 1))
 	minNativeInt := -maxNativeInt - 1
 	if resp.ContentLength > maxNativeInt || resp.ContentLength < minNativeInt {
-		res.Add(MakeKeyword("content-length"), coretypes.MakeBigInt(big.NewInt(resp.ContentLength)))
+		res.Add(coretypes.MakeKeyword(STRINGS.Intern, "content-length"), coretypes.MakeBigInt(big.NewInt(resp.ContentLength)))
 	} else {
-		res.Add(MakeKeyword("content-length"), coretypes.MakeInt(int(resp.ContentLength)))
+		res.Add(coretypes.MakeKeyword(STRINGS.Intern, "content-length"), coretypes.MakeInt(int(resp.ContentLength)))
 	}
 	return res
 }
@@ -166,35 +166,35 @@ func validHTTPStatus(status int) bool {
 }
 
 func responseStatus(obj coretypes.Object, context string) int {
-	status := EnsureObjectIsInt(obj, context+": %s").I
+	status := coretypes.EnsureObjectIsInt(obj, context+": %s").I
 	if !validHTTPStatus(status) {
 		panic(RT.NewError(context + " must be between 100 and 999"))
 	}
 	return status
 }
 
-func mapToResp(response Map, w http.ResponseWriter) {
+func mapToResp(response coretypes.Map, w http.ResponseWriter) {
 	status := 0
-	if ok, s := response.Get(MakeKeyword("status")); ok {
+	if ok, s := response.Get(coretypes.MakeKeyword(STRINGS.Intern, "status")); ok {
 		status = responseStatus(s, "HTTP response status")
 	}
 	body := ""
-	if ok, b := response.Get(MakeKeyword("body")); ok {
-		body = EnsureObjectIsString(b, "HTTP response body: %s").S
+	if ok, b := response.Get(coretypes.MakeKeyword(STRINGS.Intern, "body")); ok {
+		body = coretypes.EnsureObjectIsString(b, "HTTP response body: %s").S
 	}
-	if ok, headers := response.Get(MakeKeyword("headers")); ok {
+	if ok, headers := response.Get(coretypes.MakeKeyword(STRINGS.Intern, "headers")); ok {
 		header := w.Header()
-		h := EnsureObjectIsMap(headers, "HTTP response headers: %s")
+		h := coretypes.EnsureObjectIsMap(headers, "HTTP response headers: %s")
 		for iter := h.Iter(); iter.HasNext(); {
 			p := iter.Next()
-			hname := EnsureObjectIsString(p.Key, "HTTP response header name %s").S
+			hname := coretypes.EnsureObjectIsString(p.Key, "HTTP response header name %s").S
 			switch pvalue := p.Value.(type) {
 			case coretypes.String:
 				header.Add(hname, pvalue.S)
 			case coretypes.Seqable:
 				s := pvalue.Seq()
 				for !s.IsEmpty() {
-					header.Add(hname, EnsureObjectIsString(s.First(), "HTTP response header value: %s").S)
+					header.Add(hname, coretypes.EnsureObjectIsString(s.First(), "HTTP response header value: %s").S)
 					s = s.Rest()
 				}
 			default:
@@ -209,8 +209,8 @@ func mapToResp(response Map, w http.ResponseWriter) {
 	PanicOnErr(err)
 }
 
-func clientFromRequest(request Map) *http.Client {
-	if ok, c := request.Get(MakeKeyword("client")); ok {
+func clientFromRequest(request coretypes.Map) *http.Client {
+	if ok, c := request.Get(coretypes.MakeKeyword(STRINGS.Intern, "client")); ok {
 		hc, ok := c.(*HTTPClient)
 		if !ok {
 			panic(RT.NewError(":client must be an HTTP client created by joker.http/client"))
@@ -220,7 +220,7 @@ func clientFromRequest(request Map) *http.Client {
 	return client
 }
 
-func sendRequest(request Map) Map {
+func sendRequest(request coretypes.Map) coretypes.Map {
 	req := mapToReq(request)
 	resp, err := clientFromRequest(request).Do(req)
 	PanicOnErr(err)
@@ -230,7 +230,7 @@ func sendRequest(request Map) Map {
 const maxHTTPMillisecondDuration = int64(1<<63-1) / int64(time.Millisecond)
 
 func nonNegativeHTTPOption(obj coretypes.Object, name string) int {
-	v := EnsureObjectIsInt(obj, name+": %s").I
+	v := coretypes.EnsureObjectIsInt(obj, name+": %s").I
 	if v < 0 {
 		panic(RT.NewError(name + " must be non-negative"))
 	}
@@ -252,14 +252,14 @@ func makeClient(args []coretypes.Object) coretypes.Object {
 	maxIdlePerHost := 100
 	idleTimeoutMs := 90000
 	if len(args) == 1 && !args[0].Equals(NIL) {
-		opts := EnsureObjectIsMap(args[0], "client options must be a map: %s")
-		if ok, v := opts.Get(MakeKeyword("max-idle-conns")); ok {
+		opts := coretypes.EnsureObjectIsMap(args[0], "client options must be a map: %s")
+		if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "max-idle-conns")); ok {
 			maxIdle = nonNegativeHTTPOption(v, ":max-idle-conns")
 		}
-		if ok, v := opts.Get(MakeKeyword("max-idle-conns-per-host")); ok {
+		if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "max-idle-conns-per-host")); ok {
 			maxIdlePerHost = nonNegativeHTTPOption(v, ":max-idle-conns-per-host")
 		}
-		if ok, v := opts.Get(MakeKeyword("idle-timeout-ms")); ok {
+		if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "idle-timeout-ms")); ok {
 			idleTimeoutMs = nonNegativeHTTPOption(v, ":idle-timeout-ms")
 		}
 	}
@@ -296,17 +296,17 @@ func startServer(addr string, handler coretypes.Callable) coretypes.Object {
 			}
 		}()
 		response := handler.Call([]coretypes.Object{reqToMap(host, port, req)})
-		respMap := EnsureObjectIsMap(response, "HTTP response: %s")
+		respMap := coretypes.EnsureObjectIsMap(response, "HTTP response: %s")
 
 		// Check for WebSocket upgrade
-		if ok, wsConf := respMap.Get(MakeKeyword("websocket")); ok {
-			handleWebSocket(w, req, EnsureObjectIsMap(wsConf, "websocket config: %s"))
+		if ok, wsConf := respMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "websocket")); ok {
+			handleWebSocket(w, req, coretypes.EnsureObjectIsMap(wsConf, "websocket config: %s"))
 			return
 		}
 
 		// Check for SSE/streaming response
-		if ok, streamFn := respMap.Get(MakeKeyword("stream")); ok {
-			handleStream(w, respMap, EnsureObjectIsCallable(streamFn, "stream value must be callable: %s"))
+		if ok, streamFn := respMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "stream")); ok {
+			handleStream(w, respMap, coretypes.EnsureObjectIsCallable(streamFn, "stream value must be callable: %s"))
 			return
 		}
 
@@ -328,7 +328,7 @@ func startFileServer(addr string, root string) coretypes.Object {
 //	:on-open    (fn [send-fn close-fn]) — called once after upgrade
 //	:on-message (fn [msg]) — called for each text message received
 //	:on-close   (fn []) — called when connection closes
-func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
+func handleWebSocket(w http.ResponseWriter, req *http.Request, conf coretypes.Map) {
 	conn, err := upgrader.Upgrade(w, req, nil)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "websocket upgrade error:", err)
@@ -376,15 +376,15 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 	}}
 
 	// Call on-open
-	if ok, onOpen := conf.Get(MakeKeyword("on-open")); ok {
-		EnsureObjectIsCallable(onOpen, "on-open must be callable: %s").Call([]coretypes.Object{sendFn, closeFn})
+	if ok, onOpen := conf.Get(coretypes.MakeKeyword(STRINGS.Intern, "on-open")); ok {
+		coretypes.EnsureObjectIsCallable(onOpen, "on-open must be callable: %s").Call([]coretypes.Object{sendFn, closeFn})
 	}
 
 	// Read loop
-	_, onMsg := conf.Get(MakeKeyword("on-message"))
+	_, onMsg := conf.Get(coretypes.MakeKeyword(STRINGS.Intern, "on-message"))
 	var onMsgFn coretypes.Callable
 	if onMsg != nil {
-		onMsgFn = EnsureObjectIsCallable(onMsg, "on-message must be callable: %s")
+		onMsgFn = coretypes.EnsureObjectIsCallable(onMsg, "on-message must be callable: %s")
 	}
 
 	for {
@@ -398,8 +398,8 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 	}
 
 	// Call on-close
-	if ok, onClose := conf.Get(MakeKeyword("on-close")); ok {
-		EnsureObjectIsCallable(onClose, "on-close must be callable: %s").Call([]coretypes.Object{})
+	if ok, onClose := conf.Get(coretypes.MakeKeyword(STRINGS.Intern, "on-close")); ok {
+		coretypes.EnsureObjectIsCallable(onClose, "on-close must be callable: %s").Call([]coretypes.Object{})
 	}
 }
 
@@ -407,10 +407,10 @@ func handleWebSocket(w http.ResponseWriter, req *http.Request, conf Map) {
 // The stream fn receives a send-event callback: (fn [event-data])
 // Response map can include :status and :headers (applied before streaming).
 // Default Content-coretypes.Type is text/event-stream.
-func handleStream(w http.ResponseWriter, respMap Map, streamFn coretypes.Callable) {
+func handleStream(w http.ResponseWriter, respMap coretypes.Map, streamFn coretypes.Callable) {
 	closeInfo := sseCloseInfo("completed", nil)
-	if ok, onClose := respMap.Get(MakeKeyword("on-close")); ok {
-		onCloseFn := EnsureObjectIsCallable(onClose, "stream on-close must be callable: %s")
+	if ok, onClose := respMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "on-close")); ok {
+		onCloseFn := coretypes.EnsureObjectIsCallable(onClose, "stream on-close must be callable: %s")
 		defer func() {
 			onCloseFn.Call([]coretypes.Object{closeInfo})
 		}()
@@ -430,18 +430,18 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn coretypes.Callabl
 	header.Set("Content-coretypes.Type", "text/event-stream")
 	header.Set("Cache-Control", "no-cache")
 	header.Set("Connection", "keep-alive")
-	if ok, headers := respMap.Get(MakeKeyword("headers")); ok {
-		h := EnsureObjectIsMap(headers, "stream headers: %s")
+	if ok, headers := respMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "headers")); ok {
+		h := coretypes.EnsureObjectIsMap(headers, "stream headers: %s")
 		for iter := h.Iter(); iter.HasNext(); {
 			p := iter.Next()
-			hname := EnsureObjectIsString(p.Key, "header name: %s").S
+			hname := coretypes.EnsureObjectIsString(p.Key, "header name: %s").S
 			switch pvalue := p.Value.(type) {
 			case coretypes.String:
 				header.Add(hname, pvalue.S)
 			case coretypes.Seqable:
 				s := pvalue.Seq()
 				for !s.IsEmpty() {
-					header.Add(hname, EnsureObjectIsString(s.First(), "header value: %s").S)
+					header.Add(hname, coretypes.EnsureObjectIsString(s.First(), "header value: %s").S)
 					s = s.Rest()
 				}
 			default:
@@ -452,7 +452,7 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn coretypes.Callabl
 
 	// Apply status
 	status := 200
-	if ok, s := respMap.Get(MakeKeyword("status")); ok {
+	if ok, s := respMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "status")); ok {
 		status = responseStatus(s, "stream status")
 	}
 	w.WriteHeader(status)
@@ -507,9 +507,9 @@ func handleStream(w http.ResponseWriter, respMap Map, streamFn coretypes.Callabl
 
 func sseCloseInfo(reason string, err error) coretypes.Object {
 	m := EmptyArrayMap()
-	m.Add(MakeKeyword("reason"), MakeKeyword(reason))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "reason"), coretypes.MakeKeyword(STRINGS.Intern, reason))
 	if err != nil {
-		m.Add(MakeKeyword("error"), RT.NewError(err.Error()))
+		m.Add(coretypes.MakeKeyword(STRINGS.Intern, "error"), RT.NewError(err.Error()))
 	}
 	return m
 }

@@ -1,6 +1,6 @@
 # Object/protocol contract audit
 
-Updated: 2026-05-14
+Updated: 2026-05-18
 
 ## Purpose
 
@@ -10,17 +10,27 @@ Breaking internal package paths are acceptable. Compatibility wrappers are not a
 
 ## Current object-model anchors
 
-The root `core` package currently owns the central runtime object model:
+The canonical object/protocol surface has moved substantially out of root `core` and into `core/types`. Root `core` no longer owns or aliases `Object`; callers now use `coretypes.Object` directly. `core/types` currently owns:
 
-- `Object`
-- concrete scalar types (`Int`, `Double`, `Boolean`, `String`, `Char`, `Symbol`, `Keyword`, etc.)
-- aggregate interfaces (`Seqable`, `Map`, `Set`, `Associative`, `Vec`, `Callable`, `CountedIndexed`, etc.)
-- protocol and metadata behavior
-- equality, hashing, comparison, printing, and object info/source metadata
-- runtime singletons (`NIL`, booleans, EOF-like sentinels)
-- constructors such as `MakeString`, `MakeKeyword`, collection builders, numeric builders
+- the canonical `Object` protocol, including `GetType() *Type`;
+- source metadata (`Position`, `ObjectInfo`, `InfoHolder`);
+- type descriptors/registry/builders and type metadata labels;
+- scalar and reader values: `Int`, `Double`, `Boolean`, `Char`, `String`, `Time`, `Regex`, `Comment`;
+- big numeric values and numeric mechanics: `BigInt`, `BigFloat`, `Ratio`, `Number`, `Precision`, `Ops`, promotion helpers, numeric compare/min/max/category helpers, rune/native-int bounds, and `MakeMathBigInt*` helpers;
+- simple runtime values such as `RecurBindings` and `Delay`;
+- protocol contracts that are now package-independent: `Equality`, `Counted`, `Named`, `Printer`, `Pprinter`, `Formatter`, `Native`, `Pending`, `Comparable`, `Comparator`, `Sequential`, `StringReader`, `Callable`, `Conjable`, `Deref`, `CountedIndexed`, `Indexed`, `Stack`, `Gettable`, `Seq`, `Seqable`, `Associative`, `Reversible`, `Collection`, `KVReduce`, `Reduce`, `Error`, `Map`, `Set`, `Vec`, `Meta`, and `Ref`;
+- shared collection helpers/contracts such as `MapIterator`, `Pair`, `EmptyMapIterator`, `SafeMerge`, `EmptyMapIteratorInstance`, and iterator error construction;
+- assertion helpers for `coretypes.*` and stdlib I/O return types, using root-installed error callbacks so root `EvalError` behavior is preserved;
+- small generic helpers such as `NamedSlice`, `ComparatorSlice`, `NewHash32`, `WithInfo`, and `RootObject`.
 
-Because these are used by almost every subsystem, extracting collections or reader before this contract is explicit would create broad exports or cycles.
+Root `core` still owns higher-level runtime/object systems that carry root-only concrete types or mutable namespace/evaluator state:
+
+- `Nil`, `Var`, `Proc`, `Fn`, `ExInfo`, and `Atom`;
+- concrete collection implementations (`ArrayMap`, `HashMap`, `MapSet`, vectors, seq/list/chunked/transient/sorted families) that still depend on root construction, metadata propagation, proc/sorted helpers, or concrete implementation return types;
+- namespace/bootstrap/proc systems and generated runtime mutation payloads;
+- evaluator/parser/runtime/executor files that still require root `Fn`, `Var`, `Expr`, `LocalEnv`, namespace, and frame state.
+
+This means future extraction work should treat `core/types` as the durable object/protocol package and focus on the remaining root-owned concrete systems rather than adding new root protocol aliases.
 
 ## Collections move prerequisites
 
@@ -104,19 +114,19 @@ core/eval/ (future target; not reserved yet)
 
 Safe moves before broad object extraction:
 
-- Continue moving pure helpers with no `core.Object` dependency into `core/ir` and `core/wasm`.
+- Continue moving pure helpers with no root `Fn`/`Var`/`Expr`/namespace dependency into `core/ir`, `core/wasm`, and `core/types`.
 - Add tests for extracted helpers before moving callers.
 - Keep root-core adapter functions temporary only while their surrounding subsystem is still coupled.
 - Use the construction boundary guard before moving collection or reader files; a failing guard means new direct root construction has drifted in and must be routed through `collectionConstruction` or `readerConstruction` first.
 
-Do not yet move:
+Do not yet move wholesale:
 
-- concrete collections
-- reader/parser
-- evaluator/forms
-- runtime errors/frames
+- concrete collections whose methods still depend on root construction helpers, sorted/proc coupling, metadata propagation, or concrete implementation details;
+- reader/parser orchestration with namespace/tagged-literal/evaluator side effects;
+- evaluator/forms/runtime frames;
+- namespace/proc/bootstrap systems.
 
-until the above contracts are made concrete in code or a narrower design doc.
+The next safe moves should either continue protocol/value extraction into `core/types` (for remaining root-owned values that can avoid cycles) or move concrete collection families only after their root concrete return types are replaced by package-independent contracts.
 
 ## Checklist status
 

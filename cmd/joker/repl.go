@@ -33,7 +33,7 @@ func completer(line string, pos int) (head string, c []string, tail string) {
 	if match = qualifiedSymbolRe.FindStringSubmatch(head); match != nil {
 		nsName := match[1]
 		prefix = match[2]
-		ns = GLOBAL_ENV.NamespaceFor(GLOBAL_ENV.CurrentNamespace(), MakeSymbol(nsName+"/"+prefix))
+		ns = GLOBAL_ENV.NamespaceFor(GLOBAL_ENV.CurrentNamespace(), coretypes.MakeSymbol(STRINGS.Intern, nsName+"/"+prefix))
 	} else if match = callRe.FindStringSubmatch(head); match != nil {
 		prefix = match[1]
 		ns = GLOBAL_ENV.CurrentNamespace()
@@ -85,7 +85,7 @@ func saveReplHistory(rl *liner.State, filename string) {
 
 func repl(phase corereader.Phase) {
 	ProcessReplData()
-	GLOBAL_ENV.FindNamespace(MakeSymbol("user")).ReferAll(GLOBAL_ENV.FindNamespace(MakeSymbol("joker.repl")))
+	GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "user")).ReferAll(GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "joker.repl")))
 	GLOBAL_ENV.CoreNamespace.Resolve("*repl*").Value = coretypes.Boolean{B: true}
 	fmt.Printf("Welcome to joker %s. Use '(exit)', %s to exit.\n", VERSION, EXITERS)
 	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}

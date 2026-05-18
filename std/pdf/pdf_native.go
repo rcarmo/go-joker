@@ -86,7 +86,7 @@ var procDocument ProcFn = func(args []coretypes.Object) coretypes.Object {
 	w := 595.0 // A4 default
 	h := 842.0
 	if len(args) > 0 {
-		if kw, ok := args[0].(Keyword); ok {
+		if kw, ok := args[0].(coretypes.Keyword); ok {
 			size := pageSizes[kw.Name()]
 			if size == nil {
 				panic(RT.NewError("pdf: unknown page size " + kw.ToString(false)))
@@ -238,7 +238,7 @@ var procOval ProcFn = func(args []coretypes.Object) coretypes.Object {
 // --- Color ---
 
 func pdfColorChannel(obj coretypes.Object, name string) uint8 {
-	v := EnsureObjectIsInt(obj, "pdf color "+name+": %s").I
+	v := coretypes.EnsureObjectIsInt(obj, "pdf color "+name+": %s").I
 	if v < 0 || v > 255 {
 		panic(RT.NewError("pdf color " + name + " must be in [0,255]"))
 	}

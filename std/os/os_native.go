@@ -54,7 +54,7 @@ func processOutputOrDiscard(w io.Writer) io.Writer {
 	return io.Discard
 }
 
-func startProcess(name string, opts Map) int {
+func startProcess(name string, opts coretypes.Map) int {
 	dir, args, stdin, stdout, stderr := parseExecOpts(opts)
 
 	cmd := exec.Command(name, args...)
@@ -91,18 +91,18 @@ func killProcess(pid int) coretypes.Object {
 	return NIL
 }
 
-func parseExecOpts(opts Map) (dir string, args []string, stdin io.Reader, stdout, stderr io.Writer) {
-	if ok, dirObj := opts.Get(MakeKeyword("dir")); ok && !dirObj.Equals(NIL) {
-		dir = EnsureObjectIsString(dirObj, "dir: %s").S
+func parseExecOpts(opts coretypes.Map) (dir string, args []string, stdin io.Reader, stdout, stderr io.Writer) {
+	if ok, dirObj := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "dir")); ok && !dirObj.Equals(NIL) {
+		dir = coretypes.EnsureObjectIsString(dirObj, "dir: %s").S
 	}
-	if ok, argsObj := opts.Get(MakeKeyword("args")); ok {
-		s := EnsureObjectIsSeqable(argsObj, "args: %s").Seq()
+	if ok, argsObj := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "args")); ok {
+		s := coretypes.EnsureObjectIsSeqable(argsObj, "args: %s").Seq()
 		for !s.IsEmpty() {
-			args = append(args, EnsureObjectIsString(s.First(), "args: %s").S)
+			args = append(args, coretypes.EnsureObjectIsString(s.First(), "args: %s").S)
 			s = s.Rest()
 		}
 	}
-	if ok, stdinObj := opts.Get(MakeKeyword("stdin")); ok {
+	if ok, stdinObj := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "stdin")); ok {
 		// Check if the intent was to pipe stdin into the program being called and
 		// use Stdin directly rather than GLOBAL_ENV.stdin.Value, which is a buffered wrapper.
 		// TODO: this won't work correctly if GLOBAL_ENV.stdin is bound to something other than Stdin
@@ -122,7 +122,7 @@ func parseExecOpts(opts Map) (dir string, args []string, stdin io.Reader, stdout
 			}
 		}
 	}
-	if ok, stdoutObj := opts.Get(MakeKeyword("stdout")); ok {
+	if ok, stdoutObj := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "stdout")); ok {
 		switch s := stdoutObj.(type) {
 		case Nil:
 		case *IOWriter:
@@ -133,7 +133,7 @@ func parseExecOpts(opts Map) (dir string, args []string, stdin io.Reader, stdout
 			panic(RT.NewError("stdout option must be an IOWriter, got " + stdoutObj.GetType().ToString(false)))
 		}
 	}
-	if ok, stderrObj := opts.Get(MakeKeyword("stderr")); ok {
+	if ok, stderrObj := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "stderr")); ok {
 		switch s := stderrObj.(type) {
 		case Nil:
 		case *IOWriter:
@@ -147,7 +147,7 @@ func parseExecOpts(opts Map) (dir string, args []string, stdin io.Reader, stdout
 	return
 }
 
-func execute(name string, opts Map) coretypes.Object {
+func execute(name string, opts coretypes.Map) coretypes.Object {
 	dir, args, stdin, stdout, stderr := parseExecOpts(opts)
 	return sh(dir, stdin, stdout, stderr, name, args)
 }
@@ -156,11 +156,11 @@ func readDir(dirname string) coretypes.Object {
 	entries, err := os.ReadDir(dirname)
 	PanicOnErr(err)
 	res := EmptyVector()
-	name := MakeKeyword("name")
-	size := MakeKeyword("size")
-	mode := MakeKeyword("mode")
-	isDir := MakeKeyword("dir?")
-	modTime := MakeKeyword("modtime")
+	name := coretypes.MakeKeyword(STRINGS.Intern, "name")
+	size := coretypes.MakeKeyword(STRINGS.Intern, "size")
+	mode := coretypes.MakeKeyword(STRINGS.Intern, "mode")
+	isDir := coretypes.MakeKeyword(STRINGS.Intern, "dir?")
+	modTime := coretypes.MakeKeyword(STRINGS.Intern, "modtime")
 	for _, e := range entries {
 		info, err := e.Info()
 		PanicOnErr(err)

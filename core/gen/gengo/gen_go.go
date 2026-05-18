@@ -55,6 +55,11 @@ var %s %s = %s`[1:],
 	g.Generated[name] = obj // Generation is complete.
 }
 
+// ValueExpr generates code specifying the value as it would be assigned to a given target with a given declared type.
+func (g *GenGo) ValueExpr(target string, t reflect.Type, v reflect.Value) string {
+	return g.value(target, t, v)
+}
+
 // Generate code specifying the value as it would be assigned to a given target with a given declared type.
 func (g *GenGo) value(target string, t reflect.Type, v reflect.Value) string {
 	v = UnsafeReflectValue(v)

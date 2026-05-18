@@ -5,13 +5,13 @@ package core
 
 import coretypes "github.com/rcarmo/go-joker/core/types"
 
-var privateMeta Map = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.private, coretypes.Boolean{B: true}).(Map)
+var privateMeta coretypes.Map = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.private, coretypes.Boolean{B: true}).(coretypes.Map)
 
 func intern(name string, proc ProcFn, procName string) {
-	vr := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol(name))
+	vr := GLOBAL_ENV.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, name))
 	vr.Value = Proc{Fn: proc, Name: procName}
 	vr.isPrivate = true
-	vr.meta = privateMeta
+	vr.Meta = privateMeta
 }
 
 func init() {
@@ -220,7 +220,7 @@ func init() {
 		{"persistent!", procPersistentBang, "procPersistentBang"},
 		{"transient?", procIsTransient, "procIsTransient"},
 	} {
-		vr := ns.Intern(MakeSymbol(r.name))
+		vr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, r.name))
 		vr.Value = Proc{Fn: r.fn, Name: r.pname}
 	}
 }

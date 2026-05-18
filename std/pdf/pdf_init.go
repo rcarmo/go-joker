@@ -2,9 +2,10 @@ package pdf
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
-var pdfNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.pdf"))
+var pdfNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.pdf"))
 
 func init() {
 	pdfNamespace.Lazy = initPDFNamespace

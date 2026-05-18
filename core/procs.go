@@ -18,7 +18,6 @@ import (
 
 	"github.com/rcarmo/go-joker/core/deps"
 	coregenerated "github.com/rcarmo/go-joker/core/generated"
-	"github.com/rcarmo/go-joker/core/hashutil"
 	"github.com/rcarmo/go-joker/core/numutil"
 	"github.com/rcarmo/go-joker/core/osutil"
 	corereader "github.com/rcarmo/go-joker/core/reader"
@@ -28,7 +27,7 @@ import (
 const VERSION = "v42.8.2"
 
 func ExtractCallable(args []coretypes.Object, index int) coretypes.Callable {
-	return EnsureArgIsCallable(args, index)
+	return coretypes.EnsureArgIsCallable(args, index)
 }
 
 func ExtractObject(args []coretypes.Object, index int) coretypes.Object {
@@ -36,27 +35,27 @@ func ExtractObject(args []coretypes.Object, index int) coretypes.Object {
 }
 
 func ExtractString(args []coretypes.Object, index int) string {
-	return EnsureArgIsString(args, index).S
+	return coretypes.EnsureArgIsString(args, index).S
 }
 
 func ExtractKeyword(args []coretypes.Object, index int) string {
-	return EnsureArgIsKeyword(args, index).ToString(false)
+	return coretypes.EnsureArgIsKeyword(args, index).ToString(false)
 }
 
 func ExtractStringable(args []coretypes.Object, index int) string {
-	return EnsureArgIsStringable(args, index).S
+	return coretypes.EnsureArgIsStringable(args, index).S
 }
 
 func ExtractStrings(args []coretypes.Object, index int) []string {
 	strs := make([]string, 0)
 	for i := index; i < len(args); i++ {
-		strs = append(strs, EnsureArgIsString(args, i).S)
+		strs = append(strs, coretypes.EnsureArgIsString(args, i).S)
 	}
 	return strs
 }
 
 func ExtractInt(args []coretypes.Object, index int) int {
-	return EnsureArgIsInt(args, index).I
+	return coretypes.EnsureArgIsInt(args, index).I
 }
 
 func ExtractInteger(args []coretypes.Object, index int) int {
@@ -69,7 +68,7 @@ func ExtractInteger(args []coretypes.Object, index int) int {
 }
 
 func ExtractBoolean(args []coretypes.Object, index int) bool {
-	return EnsureArgIsBoolean(args, index).B
+	return coretypes.EnsureArgIsBoolean(args, index).B
 }
 
 func FailArg(obj coretypes.Object, typeName string, index int) *EvalError {
@@ -84,54 +83,63 @@ func FailObject(obj coretypes.Object, typeName, pattern string) *EvalError {
 	return RT.NewError(fmt.Sprintf(pattern, msg))
 }
 
+func installAssertionErrors() {
+	coretypes.AssertionFailArg = func(obj coretypes.Object, typeName string, index int) any {
+		return FailArg(obj, typeName, index)
+	}
+	coretypes.AssertionFailObject = func(obj coretypes.Object, typeName, pattern string) any {
+		return FailObject(obj, typeName, pattern)
+	}
+}
+
 func ExtractChar(args []coretypes.Object, index int) rune {
-	return EnsureArgIsChar(args, index).Ch
+	return coretypes.EnsureArgIsChar(args, index).Ch
 }
 
 func ExtractTime(args []coretypes.Object, index int) time.Time {
-	return EnsureArgIsTime(args, index).T
+	return coretypes.EnsureArgIsTime(args, index).T
 }
 
 func ExtractDouble(args []coretypes.Object, index int) float64 {
-	return EnsureArgIsDouble(args, index).D
+	return coretypes.EnsureArgIsDouble(args, index).D
 }
 
 func ExtractNumber(args []coretypes.Object, index int) coretypes.Number {
-	return EnsureArgIsNumber(args, index)
+	return coretypes.EnsureArgIsNumber(args, index)
 }
 
 func ExtractBigInt(args []coretypes.Object, index int) *big.Int {
-	return EnsureArgIsBigInt(args, index).B
+	return coretypes.EnsureArgIsBigInt(args, index).B
 }
 
 func ExtractBigFloat(args []coretypes.Object, index int) *big.Float {
-	return EnsureArgIsBigFloat(args, index).B
+	return coretypes.EnsureArgIsBigFloat(args, index).B
 }
 
 func ExtractRegex(args []coretypes.Object, index int) *regexp.Regexp {
-	return EnsureArgIsRegex(args, index).R
+	return coretypes.EnsureArgIsRegex(args, index).R
 }
 
 func ExtractSeqable(args []coretypes.Object, index int) coretypes.Seqable {
-	return EnsureArgIsSeqable(args, index)
+	return coretypes.EnsureArgIsSeqable(args, index)
 }
 
-func ExtractMap(args []coretypes.Object, index int) Map {
-	return EnsureArgIsMap(args, index)
+func ExtractMap(args []coretypes.Object, index int) coretypes.Map {
+	return coretypes.EnsureArgIsMap(args, index)
 }
 
 func ExtractIOReader(args []coretypes.Object, index int) io.Reader {
-	return EnsureArgIsio_Reader(args, index)
+	return coretypes.EnsureArgIsio_Reader(args, index)
 }
 
 func ExtractIOWriter(args []coretypes.Object, index int) io.Writer {
-	return EnsureArgIsio_Writer(args, index)
+	return coretypes.EnsureArgIsio_Writer(args, index)
 }
 
 var procMeta = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	switch obj := args[0].(type) {
-	case Meta:
+	case coretypes.Meta:
 		meta := obj.GetMeta()
 		if meta != nil {
 			return meta
@@ -142,11 +150,11 @@ var procMeta = func(args []coretypes.Object) coretypes.Object {
 
 var procWithMeta = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
-	m := EnsureArgIsMeta(args, 0)
+	m := coretypes.EnsureArgIsMeta(args, 0)
 	if args[1].Equals(NIL) {
 		return args[0]
 	}
-	return m.WithMeta(EnsureArgIsMap(args, 1))
+	return m.WithMeta(coretypes.EnsureArgIsMap(args, 1))
 }
 
 var procIsZero = func(args []coretypes.Object) coretypes.Object {
@@ -156,19 +164,19 @@ var procIsZero = func(args []coretypes.Object) coretypes.Object {
 	case coretypes.Double:
 		return coretypes.Boolean{B: n.D == 0}
 	}
-	n := EnsureArgIsNumber(args, 0)
+	n := coretypes.EnsureArgIsNumber(args, 0)
 	ops := coretypes.GetOps(n)
 	return coretypes.Boolean{B: ops.IsZero(n)}
 }
 
 var procIsPos = func(args []coretypes.Object) coretypes.Object {
-	n := EnsureArgIsNumber(args, 0)
+	n := coretypes.EnsureArgIsNumber(args, 0)
 	ops := coretypes.GetOps(n)
 	return coretypes.Boolean{B: ops.Gt(n, coretypes.Int{I: 0})}
 }
 
 var procIsNeg = func(args []coretypes.Object) coretypes.Object {
-	n := EnsureArgIsNumber(args, 0)
+	n := coretypes.EnsureArgIsNumber(args, 0)
 	ops := coretypes.GetOps(n)
 	return coretypes.Boolean{B: ops.Lt(n, coretypes.Int{I: 0})}
 }
@@ -190,15 +198,15 @@ var procAdd = func(args []coretypes.Object) coretypes.Object {
 			return coretypes.Double{D: x.D + y.D}
 		}
 	}
-	x := EnsureObjectIsNumber(args[0], "")
-	y := EnsureObjectIsNumber(args[1], "")
+	x := coretypes.EnsureObjectIsNumber(args[0], "")
+	y := coretypes.EnsureObjectIsNumber(args[1], "")
 	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y))
 	return ops.Add(x, y)
 }
 
 var procAddEx = func(args []coretypes.Object) coretypes.Object {
-	x := EnsureObjectIsNumber(args[0], "")
-	y := EnsureObjectIsNumber(args[1], "")
+	x := coretypes.EnsureObjectIsNumber(args[0], "")
+	y := coretypes.EnsureObjectIsNumber(args[1], "")
 	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y)).Combine(coretypes.BIGINT_OPS)
 	return ops.Add(x, y)
 }
@@ -220,15 +228,15 @@ var procMultiply = func(args []coretypes.Object) coretypes.Object {
 			return coretypes.Double{D: x.D * y.D}
 		}
 	}
-	x := EnsureObjectIsNumber(args[0], "")
-	y := EnsureObjectIsNumber(args[1], "")
+	x := coretypes.EnsureObjectIsNumber(args[0], "")
+	y := coretypes.EnsureObjectIsNumber(args[1], "")
 	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y))
 	return ops.Multiply(x, y)
 }
 
 var procMultiplyEx = func(args []coretypes.Object) coretypes.Object {
-	x := EnsureObjectIsNumber(args[0], "")
-	y := EnsureObjectIsNumber(args[1], "")
+	x := coretypes.EnsureObjectIsNumber(args[0], "")
+	y := coretypes.EnsureObjectIsNumber(args[1], "")
 	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y)).Combine(coretypes.BIGINT_OPS)
 	return ops.Multiply(x, y)
 }
@@ -242,7 +250,7 @@ var procSubtract = func(args []coretypes.Object) coretypes.Object {
 			return coretypes.Double{D: -x.D}
 		}
 		a := coretypes.Int{I: 0}
-		b := EnsureObjectIsNumber(args[0], "")
+		b := coretypes.EnsureObjectIsNumber(args[0], "")
 		ops := coretypes.GetOps(a).Combine(coretypes.GetOps(b))
 		return ops.Subtract(a, b)
 	}
@@ -262,8 +270,8 @@ var procSubtract = func(args []coretypes.Object) coretypes.Object {
 			return coretypes.Double{D: a.D - b.D}
 		}
 	}
-	a := EnsureObjectIsNumber(args[0], "")
-	b := EnsureObjectIsNumber(args[1], "")
+	a := coretypes.EnsureObjectIsNumber(args[0], "")
+	b := coretypes.EnsureObjectIsNumber(args[1], "")
 	ops := coretypes.GetOps(a).Combine(coretypes.GetOps(b))
 	return ops.Subtract(a, b)
 }
@@ -277,22 +285,22 @@ var procSubtractEx = func(args []coretypes.Object) coretypes.Object {
 		a = args[0]
 		b = args[1]
 	}
-	an := EnsureObjectIsNumber(a, "")
-	bn := EnsureObjectIsNumber(b, "")
+	an := coretypes.EnsureObjectIsNumber(a, "")
+	bn := coretypes.EnsureObjectIsNumber(b, "")
 	ops := coretypes.GetOps(an).Combine(coretypes.GetOps(bn)).Combine(coretypes.BIGINT_OPS)
 	return ops.Subtract(an, bn)
 }
 
 var procDivide = func(args []coretypes.Object) coretypes.Object {
-	x := EnsureArgIsNumber(args, 0)
-	y := EnsureArgIsNumber(args, 1)
+	x := coretypes.EnsureArgIsNumber(args, 0)
+	y := coretypes.EnsureArgIsNumber(args, 1)
 	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y))
 	return ops.Divide(x, y)
 }
 
 var procQuot = func(args []coretypes.Object) coretypes.Object {
-	x := EnsureArgIsNumber(args, 0)
-	y := EnsureArgIsNumber(args, 1)
+	x := coretypes.EnsureArgIsNumber(args, 0)
+	y := coretypes.EnsureArgIsNumber(args, 1)
 	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y))
 	return ops.Quotient(x, y)
 }
@@ -307,20 +315,20 @@ var procRem = func(args []coretypes.Object) coretypes.Object {
 			return coretypes.Int{I: x.I % y.I}
 		}
 	}
-	x := EnsureArgIsNumber(args, 0)
-	y := EnsureArgIsNumber(args, 1)
+	x := coretypes.EnsureArgIsNumber(args, 0)
+	y := coretypes.EnsureArgIsNumber(args, 1)
 	ops := coretypes.GetOps(x).Combine(coretypes.GetOps(y))
 	return ops.Rem(x, y)
 }
 
 var procBitNot = func(args []coretypes.Object) coretypes.Object {
-	x := EnsureObjectIsInt(args[0], "Bit operation not supported for "+args[0].GetType().ToString(false))
+	x := coretypes.EnsureObjectIsInt(args[0], "Bit operation not supported for "+args[0].GetType().ToString(false))
 	return coretypes.Int{I: ^x.I}
 }
 
 func EnsureObjectIsInts(args []coretypes.Object) (coretypes.Int, coretypes.Int) {
-	x := EnsureObjectIsInt(args[0], "Bit operation not supported: %s")
-	y := EnsureObjectIsInt(args[1], "Bit operation not supported: %s")
+	x := coretypes.EnsureObjectIsInt(args[0], "Bit operation not supported: %s")
+	y := coretypes.EnsureObjectIsInt(args[1], "Bit operation not supported: %s")
 	return x, y
 }
 
@@ -401,10 +409,10 @@ var procExInfo = func(args []coretypes.Object) coretypes.Object {
 	res := &ExInfo{
 		rt: cloneGRT(),
 	}
-	res.Add(KEYWORDS.message, EnsureArgIsString(args, 0))
-	res.Add(KEYWORDS.data, EnsureArgIsMap(args, 1))
+	res.Add(KEYWORDS.message, coretypes.EnsureArgIsString(args, 0))
+	res.Add(KEYWORDS.data, coretypes.EnsureArgIsMap(args, 1))
 	if len(args) == 3 {
-		res.Add(KEYWORDS.cause, EnsureArgIsError(args, 2))
+		res.Add(KEYWORDS.cause, coretypes.EnsureArgIsError(args, 2))
 	}
 	return res
 }
@@ -428,7 +436,7 @@ var procExMessage = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procRegex = func(args []coretypes.Object) coretypes.Object {
-	r, err := regexp.Compile(EnsureArgIsString(args, 0).S)
+	r, err := regexp.Compile(coretypes.EnsureArgIsString(args, 0).S)
 	if err != nil {
 		panic(RT.NewError("Invalid regex: " + err.Error()))
 	}
@@ -458,8 +466,8 @@ func reGroups(s string, indexes []int) coretypes.Object {
 }
 
 var procReSeq = func(args []coretypes.Object) coretypes.Object {
-	re := EnsureArgIsRegex(args, 0)
-	s := EnsureArgIsString(args, 1)
+	re := coretypes.EnsureArgIsRegex(args, 0)
+	s := coretypes.EnsureArgIsString(args, 1)
 	matches := re.R.FindAllStringSubmatchIndex(s.S, -1)
 	if matches == nil {
 		return NIL
@@ -472,8 +480,8 @@ var procReSeq = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procReFind = func(args []coretypes.Object) coretypes.Object {
-	re := EnsureArgIsRegex(args, 0)
-	s := EnsureArgIsString(args, 1)
+	re := coretypes.EnsureArgIsRegex(args, 0)
+	s := coretypes.EnsureArgIsString(args, 1)
 	match := re.R.FindStringSubmatchIndex(s.S)
 	return reGroups(s.S, match)
 }
@@ -488,12 +496,12 @@ var procIsSpecialSymbol = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procSubs = func(args []coretypes.Object) coretypes.Object {
-	s := EnsureArgIsString(args, 0).S
-	start := EnsureArgIsInt(args, 1).I
+	s := coretypes.EnsureArgIsString(args, 0).S
+	start := coretypes.EnsureArgIsInt(args, 1).I
 	slen := utf8.RuneCountInString(s)
 	end := slen
 	if len(args) > 2 {
-		end = EnsureArgIsInt(args, 2).I
+		end = coretypes.EnsureArgIsInt(args, 2).I
 	}
 	if start < 0 || start > slen {
 		panic(RT.NewError(fmt.Sprintf("String index out of range: %d", start)))
@@ -506,7 +514,7 @@ var procSubs = func(args []coretypes.Object) coretypes.Object {
 
 var procIntern = func(args []coretypes.Object) coretypes.Object {
 	ns := EnsureArgIsNamespace(args, 0)
-	sym := EnsureArgIsSymbol(args, 1)
+	sym := coretypes.EnsureArgIsSymbol(args, 1)
 	vr := ns.Intern(sym)
 	if len(args) == 3 {
 		vr.Value = args[2]
@@ -516,8 +524,8 @@ var procIntern = func(args []coretypes.Object) coretypes.Object {
 
 var procSetMeta = func(args []coretypes.Object) coretypes.Object {
 	vr := EnsureArgIsVar(args, 0)
-	meta := EnsureArgIsMap(args, 1)
-	vr.meta = meta
+	meta := coretypes.EnsureArgIsMap(args, 1)
+	vr.Meta = meta
 	return NIL
 }
 
@@ -528,19 +536,19 @@ var procAtom = func(args []coretypes.Object) coretypes.Object {
 	if len(args) > 1 {
 		m := collectionConstruction.NewHashMapFrom(args[1:]...)
 		if ok, v := m.Get(KEYWORDS.meta); ok {
-			res.meta = EnsureObjectIsMap(v, "")
+			res.Meta = coretypes.EnsureObjectIsMap(v, "")
 		}
 	}
 	return res
 }
 
 var procDeref = func(args []coretypes.Object) coretypes.Object {
-	return EnsureArgIsDeref(args, 0).Deref()
+	return coretypes.EnsureArgIsDeref(args, 0).Deref()
 }
 
 var procSwap = func(args []coretypes.Object) coretypes.Object {
 	a := EnsureArgIsAtom(args, 0)
-	f := EnsureArgIsCallable(args, 1)
+	f := coretypes.EnsureArgIsCallable(args, 1)
 	a.mu.Lock()
 	fargs := append([]coretypes.Object{a.value}, args[2:]...)
 	oldValue := a.value
@@ -554,7 +562,7 @@ var procSwap = func(args []coretypes.Object) coretypes.Object {
 
 var procSwapVals = func(args []coretypes.Object) coretypes.Object {
 	a := EnsureArgIsAtom(args, 0)
-	f := EnsureArgIsCallable(args, 1)
+	f := coretypes.EnsureArgIsCallable(args, 1)
 	a.mu.Lock()
 	fargs := append([]coretypes.Object{a.value}, args[2:]...)
 	oldValue := a.value
@@ -591,14 +599,14 @@ var procResetVals = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procAlterMeta = func(args []coretypes.Object) coretypes.Object {
-	r := EnsureArgIsRef(args, 0)
+	r := coretypes.EnsureArgIsRef(args, 0)
 	f := EnsureArgIsFn(args, 1)
 	return r.AlterMeta(f, args[2:])
 }
 
 var procResetMeta = func(args []coretypes.Object) coretypes.Object {
-	r := EnsureArgIsRef(args, 0)
-	m := EnsureArgIsMap(args, 1)
+	r := coretypes.EnsureArgIsRef(args, 0)
+	m := coretypes.EnsureArgIsMap(args, 1)
 	return r.ResetMeta(m)
 }
 
@@ -651,7 +659,7 @@ func ToNative(obj coretypes.Object) interface{} {
 }
 
 var procFormat = func(args []coretypes.Object) coretypes.Object {
-	s := EnsureArgIsString(args, 0)
+	s := coretypes.EnsureArgIsString(args, 0)
 	objs := args[1:]
 	fargs := make([]interface{}, len(objs))
 	for i, v := range objs {
@@ -667,19 +675,19 @@ var procList = func(args []coretypes.Object) coretypes.Object {
 
 var procCons = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
-	s := EnsureArgIsSeqable(args, 1).Seq()
+	s := coretypes.EnsureArgIsSeqable(args, 1).Seq()
 	return s.Cons(args[0])
 }
 
 var procFirst = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	s := EnsureArgIsSeqable(args, 0).Seq()
+	s := coretypes.EnsureArgIsSeqable(args, 0).Seq()
 	return s.First()
 }
 
 var procNext = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	s := EnsureArgIsSeqable(args, 0).Seq()
+	s := coretypes.EnsureArgIsSeqable(args, 0).Seq()
 	res := s.Rest()
 	if res.IsEmpty() {
 		return NIL
@@ -689,7 +697,7 @@ var procNext = func(args []coretypes.Object) coretypes.Object {
 
 var procRest = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	s := EnsureArgIsSeqable(args, 0).Seq()
+	s := coretypes.EnsureArgIsSeqable(args, 0).Seq()
 	return s.Rest()
 }
 
@@ -706,7 +714,7 @@ var procConj = func(args []coretypes.Object) coretypes.Object {
 
 var procSeq = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	s := EnsureArgIsSeqable(args, 0).Seq()
+	s := coretypes.EnsureArgIsSeqable(args, 0).Seq()
 	if s.IsEmpty() {
 		return NIL
 	}
@@ -715,12 +723,12 @@ var procSeq = func(args []coretypes.Object) coretypes.Object {
 
 var procIsInstance = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
-	t := EnsureArgIsType(args, 0)
+	t := coretypes.EnsureArgIsType(args, 0)
 	return coretypes.Boolean{B: IsInstance(t, args[1])}
 }
 
 var procAssoc = func(args []coretypes.Object) coretypes.Object {
-	return EnsureArgIsAssociative(args, 0).Assoc(args[1], args[2])
+	return coretypes.EnsureArgIsAssociative(args, 0).Assoc(args[1], args[2])
 }
 
 var procEquals = func(args []coretypes.Object) coretypes.Object {
@@ -732,16 +740,16 @@ var procCount = func(args []coretypes.Object) coretypes.Object {
 	case coretypes.Counted:
 		return coretypes.Int{I: obj.Count()}
 	default:
-		s := EnsureObjectIsSeqable(obj, "count not supported on this type: %s")
+		s := coretypes.EnsureObjectIsSeqable(obj, "count not supported on this type: %s")
 		return coretypes.Int{I: SeqCount(s.Seq())}
 	}
 }
 
 var procSubvec = func(args []coretypes.Object) coretypes.Object {
 	// TODO: implement proper Subvector structure
-	v := EnsureArgIsVec(args, 0)
-	start := EnsureArgIsInt(args, 1).I
-	end := EnsureArgIsInt(args, 2).I
+	v := coretypes.EnsureArgIsVec(args, 0)
+	start := coretypes.EnsureArgIsInt(args, 1).I
+	end := coretypes.EnsureArgIsInt(args, 2).I
 	if start > end {
 		panic(RT.NewError(fmt.Sprintf("subvec's start index (%d) is greater than end index (%d)", start, end)))
 	}
@@ -756,7 +764,7 @@ var procSubvec = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procCast = func(args []coretypes.Object) coretypes.Object {
-	t := EnsureArgIsType(args, 0)
+	t := coretypes.EnsureArgIsType(args, 0)
 	if coretypes.IsEqualOrImplements(t, args[1].GetType()) {
 		return args[1]
 	}
@@ -764,7 +772,7 @@ var procCast = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procVec = func(args []coretypes.Object) coretypes.Object {
-	return collectionConstruction.NewVectorFromSeq(EnsureArgIsSeqable(args, 0).Seq())
+	return collectionConstruction.NewVectorFromSeq(coretypes.EnsureArgIsSeqable(args, 0).Seq())
 }
 
 var procHashMap = func(args []coretypes.Object) coretypes.Object {
@@ -836,55 +844,44 @@ var procStr = func(args []coretypes.Object) coretypes.Object {
 
 var procSymbol = func(args []coretypes.Object) coretypes.Object {
 	if len(args) == 1 {
-		return MakeSymbol(EnsureArgIsString(args, 0).S)
+		return coretypes.MakeSymbol(STRINGS.Intern, coretypes.EnsureArgIsString(args, 0).S)
 	}
 	var ns *string = nil
 	if !args[0].Equals(NIL) {
-		ns = STRINGS.Intern(EnsureArgIsString(args, 0).S)
+		ns = STRINGS.Intern(coretypes.EnsureArgIsString(args, 0).S)
 	}
-	return Symbol{
-		ns:   ns,
-		name: STRINGS.Intern(EnsureArgIsString(args, 1).S),
-	}
+	return coretypes.MakeSymbolFromKeys(ns, STRINGS.Intern(coretypes.EnsureArgIsString(args, 1).S))
 }
 
 var procKeyword = func(args []coretypes.Object) coretypes.Object {
 	if len(args) == 1 {
 		switch obj := args[0].(type) {
 		case coretypes.String:
-			return MakeKeyword(obj.S)
-		case Symbol:
-			return Keyword{
-				ns:   obj.ns,
-				name: obj.name,
-				hash: hashutil.Symbol(obj.ns, obj.name) ^ KeywordHashMask,
-			}
+			return coretypes.MakeKeyword(STRINGS.Intern, obj.S)
+		case coretypes.Symbol:
+			return coretypes.MakeKeywordFromKeys(obj.NamespaceKey(), obj.NameKey())
 		default:
 			return NIL
 		}
 	}
 	var ns *string = nil
 	if !args[0].Equals(NIL) {
-		ns = STRINGS.Intern(EnsureArgIsString(args, 0).S)
+		ns = STRINGS.Intern(coretypes.EnsureArgIsString(args, 0).S)
 	}
-	name := STRINGS.Intern(EnsureArgIsString(args, 1).S)
-	return Keyword{
-		ns:   ns,
-		name: name,
-		hash: hashutil.Symbol(ns, name) ^ KeywordHashMask,
-	}
+	name := STRINGS.Intern(coretypes.EnsureArgIsString(args, 1).S)
+	return coretypes.MakeKeywordFromKeys(ns, name)
 }
 
 var procGensym = func(args []coretypes.Object) coretypes.Object {
-	return genSym(EnsureArgIsString(args, 0).S, "")
+	return genSym(coretypes.EnsureArgIsString(args, 0).S, "")
 }
 
 var procApply = func(args []coretypes.Object) coretypes.Object {
 	// TODO:
 	// coretypes.Stacktrace is broken. Need to somehow know
 	// the name of the function passed ...
-	f := EnsureArgIsCallable(args, 0)
-	return f.Call(ToSlice(EnsureArgIsSeqable(args, 1).Seq()))
+	f := coretypes.EnsureArgIsCallable(args, 0)
+	return f.Call(ToSlice(coretypes.EnsureArgIsSeqable(args, 1).Seq()))
 }
 
 var procLazySeq = func(args []coretypes.Object) coretypes.Object {
@@ -940,11 +937,11 @@ var procInt = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procNumber = func(args []coretypes.Object) coretypes.Object {
-	return EnsureObjectIsNumber(args[0], "Cannot cast "+args[0].ToString(true)+": %s")
+	return coretypes.EnsureObjectIsNumber(args[0], "Cannot cast "+args[0].ToString(true)+": %s")
 }
 
 var procDouble = func(args []coretypes.Object) coretypes.Object {
-	n := EnsureObjectIsNumber(args[0], "Cannot cast "+args[0].ToString(true)+": %s")
+	n := coretypes.EnsureObjectIsNumber(args[0], "Cannot cast "+args[0].ToString(true)+": %s")
 	return n.Double()
 }
 
@@ -968,12 +965,12 @@ var procBoolean = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procNumerator = func(args []coretypes.Object) coretypes.Object {
-	bi := EnsureArgIsRatio(args, 0).R.Num()
+	bi := coretypes.EnsureArgIsRatio(args, 0).R.Num()
 	return &coretypes.BigInt{B: bi}
 }
 
 var procDenominator = func(args []coretypes.Object) coretypes.Object {
-	bi := EnsureArgIsRatio(args, 0).R.Denom()
+	bi := coretypes.EnsureArgIsRatio(args, 0).R.Denom()
 	return &coretypes.BigInt{B: bi}
 }
 
@@ -1008,7 +1005,7 @@ var procBigFloat = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procNth = func(args []coretypes.Object) coretypes.Object {
-	n := EnsureArgIsNumber(args, 1).Int().I
+	n := coretypes.EnsureArgIsNumber(args, 1).Int().I
 	switch coll := args[0].(type) {
 	case coretypes.Indexed:
 		if len(args) == 3 {
@@ -1046,26 +1043,26 @@ var procLt = func(args []coretypes.Object) coretypes.Object {
 			return coretypes.Boolean{B: a.D < b.D}
 		}
 	}
-	a := EnsureObjectIsNumber(args[0], "")
-	b := EnsureObjectIsNumber(args[1], "")
+	a := coretypes.EnsureObjectIsNumber(args[0], "")
+	b := coretypes.EnsureObjectIsNumber(args[1], "")
 	return coretypes.Boolean{B: coretypes.GetOps(a).Combine(coretypes.GetOps(b)).Lt(a, b)}
 }
 
 var procLte = func(args []coretypes.Object) coretypes.Object {
-	a := EnsureObjectIsNumber(args[0], "")
-	b := EnsureObjectIsNumber(args[1], "")
+	a := coretypes.EnsureObjectIsNumber(args[0], "")
+	b := coretypes.EnsureObjectIsNumber(args[1], "")
 	return coretypes.Boolean{B: coretypes.GetOps(a).Combine(coretypes.GetOps(b)).Lte(a, b)}
 }
 
 var procGt = func(args []coretypes.Object) coretypes.Object {
-	a := EnsureObjectIsNumber(args[0], "")
-	b := EnsureObjectIsNumber(args[1], "")
+	a := coretypes.EnsureObjectIsNumber(args[0], "")
+	b := coretypes.EnsureObjectIsNumber(args[1], "")
 	return coretypes.Boolean{B: coretypes.GetOps(a).Combine(coretypes.GetOps(b)).Gt(a, b)}
 }
 
 var procGte = func(args []coretypes.Object) coretypes.Object {
-	a := EnsureObjectIsNumber(args[0], "")
-	b := EnsureObjectIsNumber(args[1], "")
+	a := coretypes.EnsureObjectIsNumber(args[0], "")
+	b := coretypes.EnsureObjectIsNumber(args[1], "")
 	return coretypes.Boolean{B: coretypes.GetOps(a).Combine(coretypes.GetOps(b)).Gte(a, b)}
 }
 
@@ -1086,31 +1083,31 @@ var procEq = func(args []coretypes.Object) coretypes.Object {
 			return coretypes.Boolean{B: a.D == b.D}
 		}
 	}
-	a := EnsureObjectIsNumber(args[0], "")
-	b := EnsureObjectIsNumber(args[1], "")
+	a := coretypes.EnsureObjectIsNumber(args[0], "")
+	b := coretypes.EnsureObjectIsNumber(args[1], "")
 	return coretypes.Boolean{B: coretypes.NumbersEq(a, b)}
 }
 
 var procMax = func(args []coretypes.Object) coretypes.Object {
-	a := EnsureObjectIsNumber(args[0], "")
-	b := EnsureObjectIsNumber(args[1], "")
+	a := coretypes.EnsureObjectIsNumber(args[0], "")
+	b := coretypes.EnsureObjectIsNumber(args[1], "")
 	return coretypes.Max(a, b)
 }
 
 var procMin = func(args []coretypes.Object) coretypes.Object {
-	a := EnsureObjectIsNumber(args[0], "")
-	b := EnsureObjectIsNumber(args[1], "")
+	a := coretypes.EnsureObjectIsNumber(args[0], "")
+	b := coretypes.EnsureObjectIsNumber(args[1], "")
 	return coretypes.Min(a, b)
 }
 
 var procIncEx = func(args []coretypes.Object) coretypes.Object {
-	x := EnsureArgIsNumber(args, 0)
+	x := coretypes.EnsureArgIsNumber(args, 0)
 	ops := coretypes.GetOps(x).Combine(coretypes.BIGINT_OPS)
 	return ops.Add(x, coretypes.Int{I: 1})
 }
 
 var procDecEx = func(args []coretypes.Object) coretypes.Object {
-	x := EnsureArgIsNumber(args, 0)
+	x := coretypes.EnsureArgIsNumber(args, 0)
 	ops := coretypes.GetOps(x).Combine(coretypes.BIGINT_OPS)
 	return ops.Subtract(x, coretypes.Int{I: 1})
 }
@@ -1122,7 +1119,7 @@ var procInc = func(args []coretypes.Object) coretypes.Object {
 	case coretypes.Double:
 		return coretypes.Double{D: x.D + 1}
 	}
-	x := EnsureArgIsNumber(args, 0)
+	x := coretypes.EnsureArgIsNumber(args, 0)
 	ops := coretypes.GetOps(x).Combine(coretypes.INT_OPS)
 	return ops.Add(x, coretypes.Int{I: 1})
 }
@@ -1134,18 +1131,18 @@ var procDec = func(args []coretypes.Object) coretypes.Object {
 	case coretypes.Double:
 		return coretypes.Double{D: x.D - 1}
 	}
-	x := EnsureArgIsNumber(args, 0)
+	x := coretypes.EnsureArgIsNumber(args, 0)
 	ops := coretypes.GetOps(x).Combine(coretypes.INT_OPS)
 	return ops.Subtract(x, coretypes.Int{I: 1})
 }
 
 var procPeek = func(args []coretypes.Object) coretypes.Object {
-	s := EnsureObjectIsStack(args[0], "")
+	s := coretypes.EnsureObjectIsStack(args[0], "")
 	return s.Peek()
 }
 
 var procPop = func(args []coretypes.Object) coretypes.Object {
-	s := EnsureObjectIsStack(args[0], "")
+	s := coretypes.EnsureObjectIsStack(args[0], "")
 	return s.Pop().(coretypes.Object)
 }
 
@@ -1176,15 +1173,15 @@ var procGet = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procDissoc = func(args []coretypes.Object) coretypes.Object {
-	return EnsureArgIsMap(args, 0).Without(args[1])
+	return coretypes.EnsureArgIsMap(args, 0).Without(args[1])
 }
 
 var procDisj = func(args []coretypes.Object) coretypes.Object {
-	return EnsureArgIsSet(args, 0).Disjoin(args[1])
+	return coretypes.EnsureArgIsSet(args, 0).Disjoin(args[1])
 }
 
 var procFind = func(args []coretypes.Object) coretypes.Object {
-	res := EnsureArgIsAssociative(args, 0).EntryAt(args[1])
+	res := coretypes.EnsureArgIsAssociative(args, 0).EntryAt(args[1])
 	if res == nil {
 		return NIL
 	}
@@ -1192,23 +1189,23 @@ var procFind = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procKeys = func(args []coretypes.Object) coretypes.Object {
-	return EnsureArgIsMap(args, 0).Keys()
+	return coretypes.EnsureArgIsMap(args, 0).Keys()
 }
 
 var procVals = func(args []coretypes.Object) coretypes.Object {
-	return EnsureArgIsMap(args, 0).Vals()
+	return coretypes.EnsureArgIsMap(args, 0).Vals()
 }
 
 var procRseq = func(args []coretypes.Object) coretypes.Object {
-	return EnsureArgIsReversible(args, 0).Rseq()
+	return coretypes.EnsureArgIsReversible(args, 0).Rseq()
 }
 
 var procName = func(args []coretypes.Object) coretypes.Object {
-	return coretypes.String{S: EnsureArgIsNamed(args, 0).Name()}
+	return coretypes.String{S: coretypes.EnsureArgIsNamed(args, 0).Name()}
 }
 
 var procNamespace = func(args []coretypes.Object) coretypes.Object {
-	ns := EnsureArgIsNamed(args, 0).Namespace()
+	ns := coretypes.EnsureArgIsNamed(args, 0).Namespace()
 	if ns == "" {
 		return NIL
 	}
@@ -1216,8 +1213,8 @@ var procNamespace = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procFindVar = func(args []coretypes.Object) coretypes.Object {
-	sym := EnsureArgIsSymbol(args, 0)
-	if sym.ns == nil {
+	sym := coretypes.EnsureArgIsSymbol(args, 0)
+	if sym.NamespaceKey() == nil {
 		panic(RT.NewError("find-var argument must be namespace-qualified symbol"))
 	}
 	if v, ok := GLOBAL_ENV.Resolve(sym); ok {
@@ -1227,8 +1224,8 @@ var procFindVar = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procSort = func(args []coretypes.Object) coretypes.Object {
-	cmp := EnsureArgIsComparator(args, 0)
-	coll := EnsureArgIsSeqable(args, 1)
+	cmp := coretypes.EnsureArgIsComparator(args, 0)
+	coll := coretypes.EnsureArgIsSeqable(args, 1)
 	s := coretypes.ComparatorSlice[coretypes.Object]{
 		Items: ToSlice(coll.Seq()),
 		Cmp:   cmp,
@@ -1249,7 +1246,7 @@ var procType = func(args []coretypes.Object) coretypes.Object {
 
 var procPprint = func(args []coretypes.Object) coretypes.Object {
 	obj := args[0]
-	w := EnsureObjectIsio_Writer(GLOBAL_ENV.stdout.Value, "")
+	w := coretypes.EnsureObjectIsio_Writer(GLOBAL_ENV.stdout.Value, "")
 	pprintObject(obj, 0, w)
 	fmt.Fprint(w, "\n")
 	return NIL
@@ -1268,7 +1265,7 @@ func PrintObject(obj coretypes.Object, w io.Writer) {
 var procPr = func(args []coretypes.Object) coretypes.Object {
 	n := len(args)
 	if n > 0 {
-		f := EnsureObjectIsio_Writer(GLOBAL_ENV.stdout.Value, "")
+		f := coretypes.EnsureObjectIsio_Writer(GLOBAL_ENV.stdout.Value, "")
 		for _, arg := range args[:n-1] {
 			PrintObject(arg, f)
 			fmt.Fprint(f, " ")
@@ -1279,7 +1276,7 @@ var procPr = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procNewline = func(args []coretypes.Object) coretypes.Object {
-	f := EnsureObjectIsio_Writer(GLOBAL_ENV.stdout.Value, "")
+	f := coretypes.EnsureObjectIsio_Writer(GLOBAL_ENV.stdout.Value, "")
 	fmt.Fprintln(f)
 	return NIL
 }
@@ -1312,12 +1309,12 @@ var procRead = func(args []coretypes.Object) coretypes.Object {
 
 var procReadString = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	return readFromReader(osutil.StringRuneReader(EnsureArgIsString(args, 0).S))
+	return readFromReader(osutil.StringRuneReader(coretypes.EnsureArgIsString(args, 0).S))
 }
 
 var procReadLine = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
-	f := EnsureObjectIsStringReader(GLOBAL_ENV.stdin.Value, "")
+	f := coretypes.EnsureObjectIsStringReader(GLOBAL_ENV.stdin.Value, "")
 	line, err := osutil.ReadLine(f)
 	if err != nil {
 		return NIL
@@ -1327,7 +1324,7 @@ var procReadLine = func(args []coretypes.Object) coretypes.Object {
 
 var procReaderReadLine = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	rdr := EnsureArgIsStringReader(args, 0)
+	rdr := coretypes.EnsureArgIsStringReader(args, 0)
 	line, err := osutil.ReadLine(rdr)
 	if err != nil {
 		return NIL
@@ -1372,7 +1369,7 @@ func loadReader(reader *Reader) (coretypes.Object, error) {
 }
 
 var procLoadString = func(args []coretypes.Object) coretypes.Object {
-	s := EnsureArgIsString(args, 0)
+	s := coretypes.EnsureArgIsString(args, 0)
 	obj, err := loadReader(readerConstruction.NewReader(osutil.StringRuneReader(s.S), "<string>"))
 	if err != nil {
 		panic(RT.NewError(err.Error()))
@@ -1381,7 +1378,7 @@ var procLoadString = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procFindNamespace = func(args []coretypes.Object) coretypes.Object {
-	ns := GLOBAL_ENV.FindNamespace(EnsureArgIsSymbol(args, 0))
+	ns := GLOBAL_ENV.FindNamespace(coretypes.EnsureArgIsSymbol(args, 0))
 	if ns == nil {
 		return NIL
 	}
@@ -1389,20 +1386,20 @@ var procFindNamespace = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procCreateNamespace = func(args []coretypes.Object) coretypes.Object {
-	sym := EnsureArgIsSymbol(args, 0)
+	sym := coretypes.EnsureArgIsSymbol(args, 0)
 	res := GLOBAL_ENV.EnsureSymbolIsNamespace(sym)
 	// In linter mode the latest create-ns call overrides position info.
 	// This is for the cases when (ns ...) is called in .jokerd/linter.clj file and alike.
 	// Also, isUsed needs to be reset in this case.
 	if LINTER_MODE {
-		res.Name = res.Name.WithInfo(sym.GetInfo()).(Symbol)
+		res.Name = res.Name.WithInfo(sym.GetInfo()).(coretypes.Symbol)
 		res.isUsed = false
 	}
 	return res
 }
 
 var procInjectNamespace = func(args []coretypes.Object) coretypes.Object {
-	sym := EnsureArgIsSymbol(args, 0)
+	sym := coretypes.EnsureArgIsSymbol(args, 0)
 	ns := GLOBAL_ENV.EnsureSymbolIsNamespace(sym)
 	ns.isUsed = true
 	ns.isGloballyUsed = true
@@ -1410,13 +1407,13 @@ var procInjectNamespace = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procInjectLinterType = func(args []coretypes.Object) coretypes.Object {
-	sym := EnsureArgIsSymbol(args, 0)
-	LINTER_TYPES[sym.name] = true
+	sym := coretypes.EnsureArgIsSymbol(args, 0)
+	LINTER_TYPES[sym.NameKey()] = true
 	return NIL
 }
 
 var procRemoveNamespace = func(args []coretypes.Object) coretypes.Object {
-	ns := GLOBAL_ENV.RemoveNamespace(EnsureArgIsSymbol(args, 0))
+	ns := GLOBAL_ENV.RemoveNamespace(coretypes.EnsureArgIsSymbol(args, 0))
 	if ns == nil {
 		return NIL
 	}
@@ -1438,18 +1435,18 @@ var procNamespaceName = func(args []coretypes.Object) coretypes.Object {
 var procNamespaceMap = func(args []coretypes.Object) coretypes.Object {
 	r := &ArrayMap{}
 	for k, v := range EnsureArgIsNamespace(args, 0).mappings {
-		r.Add(MakeSymbol(*k), v)
+		r.Add(coretypes.MakeSymbol(STRINGS.Intern, *k), v)
 	}
 	return r
 }
 
 var procNamespaceUnmap = func(args []coretypes.Object) coretypes.Object {
 	ns := EnsureArgIsNamespace(args, 0)
-	sym := EnsureArgIsSymbol(args, 1)
-	if sym.ns != nil {
+	sym := coretypes.EnsureArgIsSymbol(args, 1)
+	if sym.NamespaceKey() != nil {
 		panic(RT.NewError("Can't unintern namespace-qualified symbol"))
 	}
-	delete(ns.mappings, sym.name)
+	delete(ns.mappings, sym.NameKey())
 	return NIL
 }
 
@@ -1460,31 +1457,31 @@ var procVarNamespace = func(args []coretypes.Object) coretypes.Object {
 
 var procRefer = func(args []coretypes.Object) coretypes.Object {
 	ns := EnsureArgIsNamespace(args, 0)
-	sym := EnsureArgIsSymbol(args, 1)
+	sym := coretypes.EnsureArgIsSymbol(args, 1)
 	v := EnsureArgIsVar(args, 2)
 	return ns.Refer(sym, v)
 }
 
 var procAlias = func(args []coretypes.Object) coretypes.Object {
-	EnsureArgIsNamespace(args, 0).AddAlias(EnsureArgIsSymbol(args, 1), EnsureArgIsNamespace(args, 2))
+	EnsureArgIsNamespace(args, 0).AddAlias(coretypes.EnsureArgIsSymbol(args, 1), EnsureArgIsNamespace(args, 2))
 	return NIL
 }
 
 var procNamespaceAliases = func(args []coretypes.Object) coretypes.Object {
 	r := &ArrayMap{}
 	for k, v := range EnsureArgIsNamespace(args, 0).aliases {
-		r.Add(MakeSymbol(*k), v)
+		r.Add(coretypes.MakeSymbol(STRINGS.Intern, *k), v)
 	}
 	return r
 }
 
 var procNamespaceUnalias = func(args []coretypes.Object) coretypes.Object {
 	ns := EnsureArgIsNamespace(args, 0)
-	sym := EnsureArgIsSymbol(args, 1)
-	if sym.ns != nil {
+	sym := coretypes.EnsureArgIsSymbol(args, 1)
+	if sym.NamespaceKey() != nil {
 		panic(RT.NewError("Alias can't be namespace-qualified"))
 	}
-	delete(ns.aliases, sym.name)
+	delete(ns.aliases, sym.NameKey())
 	return NIL
 }
 
@@ -1499,9 +1496,9 @@ var procVarSet = func(args []coretypes.Object) coretypes.Object {
 
 var procNsResolve = func(args []coretypes.Object) coretypes.Object {
 	ns := EnsureArgIsNamespace(args, 0)
-	sym := EnsureArgIsSymbol(args, 1)
-	if sym.ns == nil && TYPES.Contains(sym.name) {
-		return TYPES.Lookup(sym.name)
+	sym := coretypes.EnsureArgIsSymbol(args, 1)
+	if sym.NamespaceKey() == nil && TYPES.Contains(sym.NameKey()) {
+		return TYPES.Lookup(sym.NameKey())
 	}
 	if vr, ok := GLOBAL_ENV.ResolveIn(ns, sym); ok {
 		return vr
@@ -1524,7 +1521,7 @@ const bufferHashMask uint32 = 0x5ed19e84
 
 var procBuffer = func(args []coretypes.Object) coretypes.Object {
 	if len(args) > 0 {
-		s := EnsureArgIsString(args, 0)
+		s := coretypes.EnsureArgIsString(args, 0)
 		return MakeBuffer(bytes.NewBufferString(s.S))
 	}
 	return MakeBuffer(&bytes.Buffer{})
@@ -1557,9 +1554,9 @@ var procSlurp = func(args []coretypes.Object) coretypes.Object {
 var procSpit = func(args []coretypes.Object) coretypes.Object {
 	f := args[0]
 	content := args[1]
-	opts := EnsureArgIsMap(args, 2)
+	opts := coretypes.EnsureArgIsMap(args, 2)
 	appendFile := false
-	if ok, append := opts.Get(MakeKeyword("append")); ok {
+	if ok, append := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "append")); ok {
 		appendFile = ToBool(append)
 	}
 	switch f := f.(type) {
@@ -1576,7 +1573,7 @@ var procSpit = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procShuffle = func(args []coretypes.Object) coretypes.Object {
-	s := ToSlice(EnsureArgIsSeqable(args, 0).Seq())
+	s := ToSlice(coretypes.EnsureArgIsSeqable(args, 0).Seq())
 	for i := range s {
 		j := rand.Intn(i + 1)
 		s[i], s[j] = s[j], s[i]
@@ -1585,13 +1582,13 @@ var procShuffle = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procIsRealized = func(args []coretypes.Object) coretypes.Object {
-	return coretypes.Boolean{B: EnsureArgIsPending(args, 0).IsRealized()}
+	return coretypes.Boolean{B: coretypes.EnsureArgIsPending(args, 0).IsRealized()}
 }
 
 var procDeriveInfo = func(args []coretypes.Object) coretypes.Object {
 	dest := args[0]
 	src := args[1]
-	return withInfo(dest, src.GetInfo())
+	return coretypes.WithInfo(dest, src.GetInfo())
 }
 
 var procJokerVersion = func(args []coretypes.Object) coretypes.Object {
@@ -1613,15 +1610,15 @@ func loadFile(filename string) coretypes.Object {
 }
 
 var procLoadFile = func(args []coretypes.Object) coretypes.Object {
-	filename := EnsureArgIsString(args, 0)
+	filename := coretypes.EnsureArgIsString(args, 0)
 	return loadFile(filename.S)
 }
 
 var procLoadLibFromPath = func(args []coretypes.Object) coretypes.Object {
-	libname := EnsureArgIsSymbol(args, 0).Name()
-	pathname := EnsureArgIsString(args, 1).S
+	libname := coretypes.EnsureArgIsSymbol(args, 0).Name()
+	pathname := coretypes.EnsureArgIsString(args, 1).S
 	cp := GLOBAL_ENV.classPath.Value
-	cpvec := EnsureObjectIsVec(cp, "*classpath*: %s")
+	cpvec := coretypes.EnsureObjectIsVec(cp, "*classpath*: %s")
 	count := cpvec.Count()
 	var f *os.File
 	var err error
@@ -1629,7 +1626,7 @@ var procLoadLibFromPath = func(args []coretypes.Object) coretypes.Object {
 	var filename string
 	for i := 0; i < count; i++ {
 		elem := cpvec.At(i)
-		cpelem := EnsureObjectIsString(elem, "*classpath*["+strconv.Itoa(i)+"]: %s")
+		cpelem := coretypes.EnsureObjectIsString(elem, "*classpath*["+strconv.Itoa(i)+"]: %s")
 		s := cpelem.S
 		if s == "" {
 			filename = pathname
@@ -1654,26 +1651,26 @@ var procLoadLibFromPath = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procReduceKv = func(args []coretypes.Object) coretypes.Object {
-	f := EnsureArgIsCallable(args, 0)
+	f := coretypes.EnsureArgIsCallable(args, 0)
 	init := args[1]
-	coll := EnsureArgIsKVReduce(args, 2)
+	coll := coretypes.EnsureArgIsKVReduce(args, 2)
 	return coll.KVReduce(f, init)
 }
 
 var procReduce = func(args []coretypes.Object) coretypes.Object {
-	f := EnsureArgIsCallable(args, 0)
+	f := coretypes.EnsureArgIsCallable(args, 0)
 	if len(args) == 2 {
-		coll := EnsureArgIsReduce(args, 1)
+		coll := coretypes.EnsureArgIsReduce(args, 1)
 		return coll.Reduce(f)
 	}
 	init := args[1]
-	coll := EnsureArgIsReduce(args, 2)
+	coll := coretypes.EnsureArgIsReduce(args, 2)
 	return coll.ReduceInit(f, init)
 }
 
 var procIndexOf = func(args []coretypes.Object) coretypes.Object {
-	s := EnsureArgIsString(args, 0)
-	ch := EnsureArgIsChar(args, 1)
+	s := coretypes.EnsureArgIsString(args, 0)
+	ch := coretypes.EnsureArgIsChar(args, 1)
 	for i, r := range s.S {
 		if r == ch.Ch {
 			return coretypes.Int{I: i}
@@ -1682,22 +1679,22 @@ var procIndexOf = func(args []coretypes.Object) coretypes.Object {
 	return coretypes.Int{I: -1}
 }
 
-func libExternalPath(sym Symbol) (path string, ok bool) {
-	nsSourcesVar, _ := GLOBAL_ENV.Resolve(MakeSymbol("joker.core/*ns-sources*"))
-	nsSources := ToSlice(nsSourcesVar.Value.(Vec).Seq())
+func libExternalPath(sym coretypes.Symbol) (path string, ok bool) {
+	nsSourcesVar, _ := GLOBAL_ENV.Resolve(coretypes.MakeSymbol(STRINGS.Intern, "joker.core/*ns-sources*"))
+	nsSources := ToSlice(nsSourcesVar.Value.(coretypes.Vec).Seq())
 
 	var sourceKey string
-	var sourceMap Map
+	var sourceMap coretypes.Map
 	for _, source := range nsSources {
-		sourceKey = source.(Vec).Nth(0).ToString(false)
+		sourceKey = source.(coretypes.Vec).Nth(0).ToString(false)
 		match, _ := regexp.MatchString(sourceKey, sym.Name())
 		if match {
-			sourceMap = source.(Vec).Nth(1).(Map)
+			sourceMap = source.(coretypes.Vec).Nth(1).(coretypes.Map)
 			break
 		}
 	}
 	if sourceMap != nil {
-		ok, url := sourceMap.Get(MakeKeyword("url"))
+		ok, url := sourceMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "url"))
 		if !ok {
 			panic(RT.NewError("Key :url not found in ns-sources for: " + sourceKey))
 		} else {
@@ -1710,7 +1707,7 @@ func libExternalPath(sym Symbol) (path string, ok bool) {
 }
 
 var procLibPath = func(args []coretypes.Object) coretypes.Object {
-	sym := EnsureArgIsSymbol(args, 0)
+	sym := coretypes.EnsureArgIsSymbol(args, 0)
 	var path string
 
 	path, ok := libExternalPath(sym)
@@ -1722,7 +1719,7 @@ var procLibPath = func(args []coretypes.Object) coretypes.Object {
 			file, err = osutil.Abs("user")
 			PanicOnErr(err)
 		} else {
-			file = EnsureObjectIsString(GLOBAL_ENV.file.Value, "").S
+			file = coretypes.EnsureObjectIsString(GLOBAL_ENV.file.Value, "").S
 			file = osutil.ResolveSymlink(file)
 		}
 		ns := GLOBAL_ENV.CurrentNamespace().Name
@@ -1732,8 +1729,8 @@ var procLibPath = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procInternFakeVar = func(args []coretypes.Object) coretypes.Object {
-	nsSym := EnsureArgIsSymbol(args, 0)
-	sym := EnsureArgIsSymbol(args, 1)
+	nsSym := coretypes.EnsureArgIsSymbol(args, 0)
+	sym := coretypes.EnsureArgIsSymbol(args, 1)
 	isMacro := ToBool(args[2])
 	res := InternFakeSymbol(GLOBAL_ENV.FindNamespace(nsSym), sym)
 	res.isMacro = isMacro
@@ -1741,7 +1738,7 @@ var procInternFakeVar = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procParse = func(args []coretypes.Object) coretypes.Object {
-	lm, _ := GLOBAL_ENV.Resolve(MakeSymbol("joker.core/*linter-mode*"))
+	lm, _ := GLOBAL_ENV.Resolve(coretypes.MakeSymbol(STRINGS.Intern, "joker.core/*linter-mode*"))
 	lm.Value = coretypes.Boolean{B: true}
 	LINTER_MODE = true
 	defer func() {
@@ -1764,7 +1761,7 @@ var procTypes = func(args []coretypes.Object) coretypes.Object {
 
 var procCreateChan = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	n := EnsureArgIsInt(args, 0)
+	n := coretypes.EnsureArgIsInt(args, 0)
 	ch := make(chan FutureResult, n.I)
 	return MakeChannel(ch)
 }
@@ -1803,7 +1800,7 @@ var procReceive = func(args []coretypes.Object) coretypes.Object {
 
 var procGo = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	f := EnsureArgIsCallable(args, 0)
+	f := coretypes.EnsureArgIsCallable(args, 0)
 	ch := MakeChannel(make(chan FutureResult, 1))
 	go func() {
 		registerGoroutineRT()
@@ -1834,17 +1831,17 @@ var procVerbosityLevel = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procExit = func(args []coretypes.Object) coretypes.Object {
-	ExitJoker(EnsureArgIsInt(args, 0).I)
+	ExitJoker(coretypes.EnsureArgIsInt(args, 0).I)
 	return NIL
 }
 
 var procIsNaN = func(args []coretypes.Object) coretypes.Object {
-	n := EnsureArgIsNumber(args, 0)
+	n := coretypes.EnsureArgIsNumber(args, 0)
 	return coretypes.Boolean{B: math.IsNaN(n.Double().D)}
 }
 
 var procAbs = func(args []coretypes.Object) coretypes.Object {
-	n := EnsureArgIsNumber(args, 0)
+	n := coretypes.EnsureArgIsNumber(args, 0)
 	switch n := n.(type) {
 	case coretypes.Double:
 		return coretypes.Double{D: math.Abs(n.D)}
@@ -1868,12 +1865,12 @@ var procAbs = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procIsInfinite = func(args []coretypes.Object) coretypes.Object {
-	n := EnsureArgIsNumber(args, 0)
+	n := coretypes.EnsureArgIsNumber(args, 0)
 	return coretypes.Boolean{B: math.IsInf(n.Double().D, 0)}
 }
 
 var procParseDouble = func(args []coretypes.Object) coretypes.Object {
-	s := EnsureArgIsString(args, 0)
+	s := coretypes.EnsureArgIsString(args, 0)
 	d, err := numutil.ParseFloat64(s.S)
 	if err != nil {
 		return NIL
@@ -1882,7 +1879,7 @@ var procParseDouble = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procParseLong = func(args []coretypes.Object) coretypes.Object {
-	s := EnsureArgIsString(args, 0)
+	s := coretypes.EnsureArgIsString(args, 0)
 	i, err := numutil.ParseInt(s.S, 10, 64)
 	if err != nil {
 		return NIL
@@ -2093,9 +2090,9 @@ func setCoreNamespaces() {
 	vr := ns.Resolve("*core-namespaces*")
 	set := vr.Value.(*MapSet)
 	for _, ns := range coregenerated.CoreNamespaces() {
-		set = set.Conj(MakeSymbol(ns)).(*MapSet)
+		set = set.Conj(coretypes.MakeSymbol(STRINGS.Intern, ns)).(*MapSet)
 	}
-	set = set.Conj(MakeSymbol("user")).(*MapSet)
+	set = set.Conj(coretypes.MakeSymbol(STRINGS.Intern, "user")).(*MapSet)
 	vr.Value = set
 
 	// Add 'joker.core to *loaded-libs*, now that it's loaded.
@@ -2109,12 +2106,12 @@ func setCoreNamespaces() {
 }
 
 var procIsNamespaceInitialized = func(args []coretypes.Object) coretypes.Object {
-	sym := EnsureArgIsSymbol(args, 0)
-	if sym.ns != nil {
+	sym := coretypes.EnsureArgIsSymbol(args, 0)
+	if sym.NamespaceKey() != nil {
 		panic(RT.NewError("Can't ask for namespace info on namespace-qualified symbol"))
 	}
 	// First look for registered (e.g. std) libs
-	ns, found := GLOBAL_ENV.Namespaces[sym.name]
+	ns, found := GLOBAL_ENV.Namespaces[sym.NameKey()]
 	return coretypes.MakeBoolean(found && ns.Lazy == nil)
 }
 
@@ -2135,15 +2132,15 @@ func printConfigError(filename, msg string) {
 	fmt.Fprintln(Stderr, "coretypes.Error reading config file "+filename+": ", msg)
 }
 
-func knownMacrosToMap(km coretypes.Object) (Map, error) {
+func knownMacrosToMap(km coretypes.Object) (coretypes.Map, error) {
 	s := km.(coretypes.Seqable).Seq()
 	res := collectionConstruction.NewEmptyArrayMap()
 	for !s.IsEmpty() {
 		obj := s.First()
 		switch obj := obj.(type) {
-		case Symbol:
+		case coretypes.Symbol:
 			res.Add(obj, NIL)
-		case Vec:
+		case coretypes.Vec:
 			if obj.Count() != 2 {
 				return nil, errors.New(":known-macros item must be a symbol or a vector with two elements")
 			}
@@ -2157,7 +2154,7 @@ func knownMacrosToMap(km coretypes.Object) (Map, error) {
 }
 
 func ReadConfig(filename string, workingDir string) {
-	LINTER_CONFIG = GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol("*linter-config*"))
+	LINTER_CONFIG = GLOBAL_ENV.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, "*linter-config*"))
 	LINTER_CONFIG.Value = collectionConstruction.NewEmptyArrayMap()
 	configFileName := findConfigFile(filename, workingDir, false)
 	if configFileName == "" {
@@ -2179,12 +2176,12 @@ func ReadConfig(filename string, workingDir string) {
 		printConfigError(configFileName, err.Error())
 		return
 	}
-	configMap, ok := config.(Map)
+	configMap, ok := config.(coretypes.Map)
 	if !ok {
 		printConfigError(configFileName, "config root object must be a map, got "+config.GetType().ToString(false))
 		return
 	}
-	ok, ignoredUnusedNamespaces := configMap.Get(MakeKeyword("ignored-unused-namespaces"))
+	ok, ignoredUnusedNamespaces := configMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "ignored-unused-namespaces"))
 	if ok {
 		seq, ok1 := ignoredUnusedNamespaces.(coretypes.Seqable)
 		if ok1 {
@@ -2194,7 +2191,7 @@ func ReadConfig(filename string, workingDir string) {
 			return
 		}
 	}
-	ok, ignoredFileRegexes := configMap.Get(MakeKeyword("ignored-file-regexes"))
+	ok, ignoredFileRegexes := configMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "ignored-file-regexes"))
 	if ok {
 		seq, ok1 := ignoredFileRegexes.(coretypes.Seqable)
 		if ok1 {
@@ -2213,7 +2210,7 @@ func ReadConfig(filename string, workingDir string) {
 			return
 		}
 	}
-	ok, entryPoints := configMap.Get(MakeKeyword("entry-points"))
+	ok, entryPoints := configMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "entry-points"))
 	if ok {
 		seq, ok1 := entryPoints.(coretypes.Seqable)
 		if ok1 {
@@ -2223,14 +2220,14 @@ func ReadConfig(filename string, workingDir string) {
 			return
 		}
 	}
-	ok, knownNamespaces := configMap.Get(MakeKeyword("known-namespaces"))
+	ok, knownNamespaces := configMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "known-namespaces"))
 	if ok {
 		if _, ok1 := knownNamespaces.(coretypes.Seqable); !ok1 {
 			printConfigError(configFileName, ":known-namespaces value must be a vector, got "+knownNamespaces.GetType().ToString(false))
 			return
 		}
 	}
-	ok, knownTags := configMap.Get(MakeKeyword("known-tags"))
+	ok, knownTags := configMap.Get(coretypes.MakeKeyword(STRINGS.Intern, "known-tags"))
 	if ok {
 		if _, ok1 := knownTags.(coretypes.Seqable); !ok1 {
 			printConfigError(configFileName, ":known-tags value must be a vector, got "+knownTags.GetType().ToString(false))
@@ -2249,11 +2246,11 @@ func ReadConfig(filename string, workingDir string) {
 			printConfigError(configFileName, err.Error())
 			return
 		}
-		configMap = configMap.Assoc(KEYWORDS.knownMacros, m).(Map)
+		configMap = configMap.Assoc(KEYWORDS.knownMacros, m).(coretypes.Map)
 	}
 	ok, rules := configMap.Get(KEYWORDS.rules)
 	if ok {
-		m, ok := rules.(Map)
+		m, ok := rules.(coretypes.Map)
 		if !ok {
 			printConfigError(configFileName, ":rules value must be a map, got "+rules.GetType().ToString(false))
 			return
@@ -2269,7 +2266,7 @@ func ReadConfig(filename string, workingDir string) {
 		}
 	}
 	if ok, valid := configMap.Get(KEYWORDS.validIdent); ok {
-		m, ok := valid.(Map)
+		m, ok := valid.(coretypes.Map)
 		if !ok {
 			printConfigError(configFileName, ":valid-ident value must be a map, got "+valid.GetType().ToString(false))
 			return

@@ -65,7 +65,7 @@ func TestBenchmarkFn(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected result type: %T", result)
 	}
-	if ok, v := am.Get(MakeKeyword("iterations")); !ok || v.(coretypes.Int).I <= 0 {
+	if ok, v := am.Get(coretypes.MakeKeyword(STRINGS.Intern, "iterations")); !ok || v.(coretypes.Int).I <= 0 {
 		t.Fatalf("invalid iterations in result: %s", result.ToString(false))
 	}
 	t.Logf("benchmark: %s", result.ToString(false))

@@ -5,7 +5,7 @@ import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
-var jitNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.jit"))
+var jitNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.jit"))
 
 func init() {
 	jitNamespace.Lazy = Init
@@ -16,7 +16,7 @@ func Init() {
 
 	jitNamespace.InternVar("compile", compile_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("fn"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
 			`Compiles a function to the fastest available execution path.
 For pure arithmetic fns, returns a native Go f64 closure.
 For other fns, returns an IR-compiled wrapper.
@@ -24,19 +24,19 @@ The returned function can be called like any other fn.`, "1.0"))
 
 	jitNamespace.InternVar("info", info_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("fn"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
 			`Returns a map with compilation information about a function.
 Keys: :compiled, :path, :slots, :captures, :self-recursive.
 :path is one of "native-f64", "typed-ir", "boxed-ir".`, "1.0"))
 
 	jitNamespace.InternVar("compiled?", compiled_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("fn"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
 			"Returns true if the function can be compiled to IR.", "1.0"))
 
 	jitNamespace.InternVar("export-ir", export_ir_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("fn"), MakeSymbol("path"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"), coretypes.MakeSymbol(STRINGS.Intern, "path"))),
 			`Compiles fn to Joker IR and writes a portable .ir JSON file to path.
 
 The file contains format/version metadata, numSlots, base64-encoded IR
@@ -45,7 +45,7 @@ intended for external runners/tooling that implement the go-joker IR ABI.`, "1.0
 
 	jitNamespace.InternVar("export-wasm", export_wasm_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("fn"), MakeSymbol("path"))),
+			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"), coretypes.MakeSymbol(STRINGS.Intern, "path"))),
 			`Compiles fn to a standalone numeric WASM module and writes raw .wasm bytes.
 
 The exported module exposes an exec function. Parameters and return values are
@@ -69,12 +69,12 @@ var compiled_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 
 var export_ir_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	fn := EnsureArgIsFn(args, 0)
-	path := EnsureArgIsString(args, 1)
+	path := coretypes.EnsureArgIsString(args, 1)
 	return exportIR(fn, path)
 }, Name: "export-ir", Package: "std/jit"}
 
 var export_wasm_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	fn := EnsureArgIsFn(args, 0)
-	path := EnsureArgIsString(args, 1)
+	path := coretypes.EnsureArgIsString(args, 1)
 	return exportWASM(fn, path)
 }, Name: "export-wasm", Package: "std/jit"}

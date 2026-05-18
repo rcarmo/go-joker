@@ -15,15 +15,15 @@ func registerHierarchyProcs() {
 	}
 
 	// make-hierarchy
-	mhVr := ns.Intern(MakeSymbol("make-hierarchy"))
+	mhVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "make-hierarchy"))
 	mhVr.Value = Proc{Name: "procMakeHierarchy", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 0, 0)
 		return MakeHierarchy()
 	}}
-	referToUser(MakeSymbol("make-hierarchy"), mhVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "make-hierarchy"), mhVr)
 
 	// derive — (derive child parent) or (derive h child parent)
-	deriveVr := ns.Intern(MakeSymbol("derive"))
+	deriveVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "derive"))
 	deriveVr.Value = Proc{Name: "procDerive", Fn: func(args []coretypes.Object) coretypes.Object {
 		switch len(args) {
 		case 2:
@@ -41,10 +41,10 @@ func registerHierarchyProcs() {
 			return NIL
 		}
 	}}
-	referToUser(MakeSymbol("derive"), deriveVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "derive"), deriveVr)
 
 	// underive — (underive child parent) or (underive h child parent)
-	underiveVr := ns.Intern(MakeSymbol("underive"))
+	underiveVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "underive"))
 	underiveVr.Value = Proc{Name: "procUnderive", Fn: func(args []coretypes.Object) coretypes.Object {
 		switch len(args) {
 		case 2:
@@ -62,10 +62,10 @@ func registerHierarchyProcs() {
 			return NIL
 		}
 	}}
-	referToUser(MakeSymbol("underive"), underiveVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "underive"), underiveVr)
 
 	// isa? — (isa? child parent) or (isa? h child parent)
-	isaVr := ns.Intern(MakeSymbol("isa?"))
+	isaVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "isa?"))
 	isaVr.Value = Proc{Name: "procIsaQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		switch len(args) {
 		case 2:
@@ -81,10 +81,10 @@ func registerHierarchyProcs() {
 			return NIL
 		}
 	}}
-	referToUser(MakeSymbol("isa?"), isaVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "isa?"), isaVr)
 
 	// parents — (parents tag) or (parents h tag)
-	parentsVr := ns.Intern(MakeSymbol("parents"))
+	parentsVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "parents"))
 	parentsVr.Value = Proc{Name: "procParents", Fn: func(args []coretypes.Object) coretypes.Object {
 		var h *Hierarchy
 		var tag coretypes.Object
@@ -113,10 +113,10 @@ func registerHierarchyProcs() {
 		}
 		return s
 	}}
-	referToUser(MakeSymbol("parents"), parentsVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "parents"), parentsVr)
 
 	// ancestors — (ancestors tag) or (ancestors h tag)
-	ancestorsVr := ns.Intern(MakeSymbol("ancestors"))
+	ancestorsVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "ancestors"))
 	ancestorsVr.Value = Proc{Name: "procAncestors", Fn: func(args []coretypes.Object) coretypes.Object {
 		var h *Hierarchy
 		var tag coretypes.Object
@@ -145,10 +145,10 @@ func registerHierarchyProcs() {
 		}
 		return s
 	}}
-	referToUser(MakeSymbol("ancestors"), ancestorsVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "ancestors"), ancestorsVr)
 
 	// descendants — (descendants tag) or (descendants h tag)
-	descendantsVr := ns.Intern(MakeSymbol("descendants"))
+	descendantsVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "descendants"))
 	descendantsVr.Value = Proc{Name: "procDescendants", Fn: func(args []coretypes.Object) coretypes.Object {
 		var h *Hierarchy
 		var tag coretypes.Object
@@ -177,5 +177,5 @@ func registerHierarchyProcs() {
 		}
 		return s
 	}}
-	referToUser(MakeSymbol("descendants"), descendantsVr)
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "descendants"), descendantsVr)
 }

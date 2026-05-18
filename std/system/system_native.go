@@ -18,7 +18,7 @@ func lineSeparator() string {
 	return "\n"
 }
 
-func systemProperties() Map {
+func systemProperties() coretypes.Map {
 	home := os.Getenv("HOME")
 	uname := os.Getenv("USER")
 	if u, err := user.Current(); err == nil {
@@ -58,7 +58,7 @@ func getProperty(args []coretypes.Object) coretypes.Object {
 	if len(args) < 1 || len(args) > 2 {
 		panic(RT.NewError("System/getProperty expects 1 or 2 args"))
 	}
-	key := EnsureArgIsString(args, 0)
+	key := coretypes.EnsureArgIsString(args, 0)
 	props := systemProperties()
 	if ok, v := props.Get(key); ok {
 		return v
@@ -71,7 +71,7 @@ func getProperty(args []coretypes.Object) coretypes.Object {
 
 func systemGetenv(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	key := EnsureArgIsString(args, 0).S
+	key := coretypes.EnsureArgIsString(args, 0).S
 	if v, ok := os.LookupEnv(key); ok {
 		return coretypes.MakeString(v)
 	}
@@ -80,7 +80,7 @@ func systemGetenv(args []coretypes.Object) coretypes.Object {
 
 func systemExit(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	code := EnsureArgIsInt(args, 0).I
+	code := coretypes.EnsureArgIsInt(args, 0).I
 	os.Exit(code)
 	return NIL
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	coreir "github.com/rcarmo/go-joker/core/ir"
 	coretrace "github.com/rcarmo/go-joker/core/trace"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 	"time"
 )
 
@@ -45,7 +46,7 @@ func fnTraceName(fn *Fn, argc int) string {
 	if fn.fnExpr != nil && fn.fnExpr.traceName != "" {
 		return fmt.Sprintf("%s/%d", fn.fnExpr.traceName, argc)
 	}
-	if fn.fnExpr != nil && fn.fnExpr.self.name != nil {
+	if fn.fnExpr != nil && fn.fnExpr.self.NameKey() != nil {
 		return fmt.Sprintf("%s/%d", fn.fnExpr.self.ToString(false), argc)
 	}
 	if info := fn.GetInfo(); info != nil {
@@ -59,12 +60,12 @@ var symbolTracer = coretrace.NewSymbolTracerFromEnv()
 var zeroTime time.Time
 var irProfile = coretrace.NewIRProfileFromEnv()
 
-func traceSymbolResolve(ns *Namespace, sym Symbol, ok bool) {
+func traceSymbolResolve(ns *Namespace, sym coretypes.Symbol, ok bool) {
 	if !symbolTracer.Enabled() || !ok {
 		return
 	}
 	name := sym.ToString(false)
-	if ns != nil && sym.ns == nil {
+	if ns != nil && sym.NamespaceKey() == nil {
 		name = ns.Name.ToString(false) + "/" + name
 	}
 	symbolTracer.Resolve(name)

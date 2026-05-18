@@ -47,7 +47,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var htmlNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.html"))
+var htmlNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.html"))
 
 func init() {
 	htmlNamespace.Lazy = Init

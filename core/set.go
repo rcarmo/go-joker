@@ -9,29 +9,24 @@ import (
 )
 
 type (
-	Set interface {
-		coretypes.Conjable
-		coretypes.Gettable
-		Disjoin(key coretypes.Object) Set
-	}
 	MapSet struct {
 		coretypes.InfoHolder
-		MetaHolder
-		m Map
+		coretypes.MetaHolder
+		m coretypes.Map
 	}
 )
 
-func (v *MapSet) WithMeta(meta Map) coretypes.Object {
+func (v *MapSet) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *v
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 
-func (set *MapSet) Disjoin(key coretypes.Object) Set {
+func (set *MapSet) Disjoin(key coretypes.Object) coretypes.Set {
 	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.m.Without(key)}
 }
 
-func (set *MapSet) ensureMap() Map {
+func (set *MapSet) ensureMap() coretypes.Map {
 	if set.m == nil {
 		set.m = EmptyArrayMap()
 	}
@@ -46,7 +41,7 @@ func (set *MapSet) Add(obj coretypes.Object) bool {
 		if m.containsKey(obj) {
 			return false
 		}
-		set.m = set.m.Assoc(obj, coretypes.Boolean{B: true}).(Map)
+		set.m = set.m.Assoc(obj, coretypes.Boolean{B: true}).(coretypes.Map)
 		return true
 	default:
 		return false
@@ -54,7 +49,7 @@ func (set *MapSet) Add(obj coretypes.Object) bool {
 }
 
 func (set *MapSet) Conj(obj coretypes.Object) coretypes.Conjable {
-	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.ensureMap().Assoc(obj, coretypes.Boolean{B: true}).(Map)}
+	return &MapSet{InfoHolder: set.InfoHolder, MetaHolder: set.MetaHolder, m: set.ensureMap().Assoc(obj, coretypes.Boolean{B: true}).(coretypes.Map)}
 }
 
 func EmptySet() *MapSet {

@@ -212,7 +212,7 @@
     <ul>
       <li>
   <h3 class="Constant" id="e">e</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">e</p>
@@ -221,7 +221,7 @@
 </li>
 <li>
   <h3 class="Constant" id="ln-of-10">ln-of-10</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Natural logarithm of 10</p>
@@ -230,7 +230,7 @@
 </li>
 <li>
   <h3 class="Constant" id="ln-of-2">ln-of-2</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Natural logarithm of 2</p>
@@ -239,7 +239,7 @@
 </li>
 <li>
   <h3 class="Constant" id="log-10-of-e">log-10-of-e</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Base-10 logarithm of e</p>
@@ -248,7 +248,7 @@
 </li>
 <li>
   <h3 class="Constant" id="log-2-of-e">log-2-of-e</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Base-2 logarithm of e</p>
@@ -257,16 +257,16 @@
 </li>
 <li>
   <h3 class="Constant" id="max-double">max-double</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
-  <p class="var-docstr">Largest finite value representable by Double</p>
+  <p class="var-docstr">Largest finite value representable by coretypes.Double</p>
   
   
 </li>
 <li>
   <h3 class="Constant" id="phi">phi</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Phi</p>
@@ -275,7 +275,7 @@
 </li>
 <li>
   <h3 class="Constant" id="pi">pi</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">pi</p>
@@ -284,16 +284,16 @@
 </li>
 <li>
   <h3 class="Constant" id="smallest-nonzero-double">smallest-nonzero-double</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
-  <p class="var-docstr">Smallest positive, non-zero value representable by Double</p>
+  <p class="var-docstr">Smallest positive, non-zero value representable by coretypes.Double</p>
   
   
 </li>
 <li>
   <h3 class="Constant" id="sqrt-of-2">sqrt-of-2</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Square root of 2</p>
@@ -302,7 +302,7 @@
 </li>
 <li>
   <h3 class="Constant" id="sqrt-of-e">sqrt-of-e</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Square root of e</p>
@@ -311,7 +311,7 @@
 </li>
 <li>
   <h3 class="Constant" id="sqrt-of-phi">sqrt-of-phi</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Square root of phi</p>
@@ -320,7 +320,7 @@
 </li>
 <li>
   <h3 class="Constant" id="sqrt-of-pi">sqrt-of-pi</h3>
-  <span class="var-kind Constant">Double</span>
+  <span class="var-kind Constant">coretypes.Double</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Square root of pi</p>
@@ -649,7 +649,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(next-after x y)</code></div>
 </pre>
-  <p class="var-docstr">Returns the next representable Double value after x towards y.</p>
+  <p class="var-docstr">Returns the next representable coretypes.Double value after x towards y.</p>
   
   
 </li>
@@ -682,11 +682,11 @@
   <p class="var-docstr">Returns the precision of a Number.<br>
 <br>
   The precision excludes any sign or exponent. For a BigInt, it&#39;s the<br>
-  number of bits needed to represent the number; for a BigFloat, Int,<br>
-  or Double, it&#39;s the number of bits available in that instance or<br>
+  number of bits needed to represent the number; for a BigFloat, coretypes.Int,<br>
+  or coretypes.Double, it&#39;s the number of bits available in that instance or<br>
   type. E.g. (precision 1) returns either 31 or 63, depending on<br>
   whether the Joker executable is 32-bit or 64-bit (for integers);<br>
-  (precision 1.0) returns 53 (as Double is always a float64); and<br>
+  (precision 1.0) returns 53 (as coretypes.Double is always a float64); and<br>
   (precision 1.0M) returns 53 as well, though prepending or appending<br>
   enough 0 digits will result in a BigFloat with more precision<br>
   reported.<br>

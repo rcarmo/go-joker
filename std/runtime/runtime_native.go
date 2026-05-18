@@ -26,7 +26,7 @@ var procDisassemble ProcFn = func(args []coretypes.Object) coretypes.Object {
 
 var procProfile ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 2)
-	callable := EnsureArgIsCallable(args, 0)
+	callable := coretypes.EnsureArgIsCallable(args, 0)
 	iterations := 1
 	if len(args) > 1 {
 		iterations = ensureArgIsIntLocal(args, 1)
@@ -53,12 +53,12 @@ var procProfile ProcFn = func(args []coretypes.Object) coretypes.Object {
 	bytes := memAfter.TotalAlloc - memBefore.TotalAlloc
 
 	m := EmptyArrayMap()
-	m = assocM(m, MakeKeyword("time-ns"), runtimeIntObject(elapsed.Nanoseconds()/int64(iterations)))
-	m = assocM(m, MakeKeyword("time-ms"), coretypes.Double{D: float64(elapsed.Milliseconds()) / float64(iterations)})
-	m = assocM(m, MakeKeyword("allocs"), runtimeUintObject(allocs/uint64(iterations)))
-	m = assocM(m, MakeKeyword("bytes"), runtimeUintObject(bytes/uint64(iterations)))
-	m = assocM(m, MakeKeyword("iterations"), coretypes.Int{I: iterations})
-	m = assocM(m, MakeKeyword("result"), result)
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "time-ns"), runtimeIntObject(elapsed.Nanoseconds()/int64(iterations)))
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "time-ms"), coretypes.Double{D: float64(elapsed.Milliseconds()) / float64(iterations)})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "allocs"), runtimeUintObject(allocs/uint64(iterations)))
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "bytes"), runtimeUintObject(bytes/uint64(iterations)))
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "iterations"), coretypes.Int{I: iterations})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "result"), result)
 	return m
 }
 
@@ -70,18 +70,18 @@ var procWasmDiagnostic ProcFn = func(args []coretypes.Object) coretypes.Object {
 	prog := IrCompileFn(fn)
 	if prog == nil {
 		m := EmptyArrayMap()
-		m = assocM(m, MakeKeyword("eligible"), coretypes.Boolean{B: false})
-		m = assocM(m, MakeKeyword("reason"), coretypes.MakeString("cannot compile to IR"))
+		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "eligible"), coretypes.Boolean{B: false})
+		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "reason"), coretypes.MakeString("cannot compile to IR"))
 		return m
 	}
 	diag := ExplainWASMEligibility(prog)
 	m := EmptyArrayMap()
-	m = assocM(m, MakeKeyword("eligible"), coretypes.Boolean{B: diag.Reason == ""})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "eligible"), coretypes.Boolean{B: diag.Reason == ""})
 	if diag.Reason != "" {
-		m = assocM(m, MakeKeyword("reason"), coretypes.MakeString(diag.Reason))
+		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "reason"), coretypes.MakeString(diag.Reason))
 	}
-	m = assocM(m, MakeKeyword("uses-float"), coretypes.Boolean{B: diag.UsesFloat})
-	m = assocM(m, MakeKeyword("has-imports"), coretypes.Boolean{B: diag.HasImports})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "uses-float"), coretypes.Boolean{B: diag.UsesFloat})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "has-imports"), coretypes.Boolean{B: diag.HasImports})
 	return m
 }
 
@@ -93,30 +93,30 @@ var procAnalyze ProcFn = func(args []coretypes.Object) coretypes.Object {
 	prog := IrCompileFn(fn)
 	if prog == nil {
 		m := EmptyArrayMap()
-		m = assocM(m, MakeKeyword("compiled"), coretypes.Boolean{B: false})
+		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "compiled"), coretypes.Boolean{B: false})
 		return m
 	}
 	a := AnalyzeIRProgramExported(prog)
 	m := EmptyArrayMap()
-	m = assocM(m, MakeKeyword("compiled"), coretypes.Boolean{B: true})
-	m = assocM(m, MakeKeyword("slots"), coretypes.Int{I: prog.NumSlots()})
-	m = assocM(m, MakeKeyword("code-bytes"), coretypes.Int{I: prog.CodeLen()})
-	m = assocM(m, MakeKeyword("captures"), coretypes.Int{I: len(prog.CaptureSlots())})
-	m = assocM(m, MakeKeyword("self-recursive"), coretypes.Boolean{B: prog.HasSelf()})
-	m = assocM(m, MakeKeyword("eligible-typed"), coretypes.Boolean{B: a.Eligible})
-	m = assocM(m, MakeKeyword("has-call-slot"), coretypes.Boolean{B: a.HasCallSlot})
-	m = assocM(m, MakeKeyword("has-self-call"), coretypes.Boolean{B: a.HasSelfCall})
-	m = assocM(m, MakeKeyword("uses-collection"), coretypes.Boolean{B: a.UsesCollection})
-	m = assocM(m, MakeKeyword("uses-string"), coretypes.Boolean{B: a.UsesString})
-	m = assocM(m, MakeKeyword("has-map-ops"), coretypes.Boolean{B: a.HasMapOps})
-	m = assocM(m, MakeKeyword("has-assoc"), coretypes.Boolean{B: a.HasAssoc})
-	m = assocM(m, MakeKeyword("has-generic-nth"), coretypes.Boolean{B: a.HasGenericNth})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "compiled"), coretypes.Boolean{B: true})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "slots"), coretypes.Int{I: prog.NumSlots()})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "code-bytes"), coretypes.Int{I: prog.CodeLen()})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "captures"), coretypes.Int{I: len(prog.CaptureSlots())})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "self-recursive"), coretypes.Boolean{B: prog.HasSelf()})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "eligible-typed"), coretypes.Boolean{B: a.Eligible})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "has-call-slot"), coretypes.Boolean{B: a.HasCallSlot})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "has-self-call"), coretypes.Boolean{B: a.HasSelfCall})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "uses-collection"), coretypes.Boolean{B: a.UsesCollection})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "uses-string"), coretypes.Boolean{B: a.UsesString})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "has-map-ops"), coretypes.Boolean{B: a.HasMapOps})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "has-assoc"), coretypes.Boolean{B: a.HasAssoc})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "has-generic-nth"), coretypes.Boolean{B: a.HasGenericNth})
 	if prog.GetNativeHelper() != nil {
-		m = assocM(m, MakeKeyword("path"), coretypes.MakeString("native-f64"))
+		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "path"), coretypes.MakeString("native-f64"))
 	} else if a.Eligible {
-		m = assocM(m, MakeKeyword("path"), coretypes.MakeString("typed-ir"))
+		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "path"), coretypes.MakeString("typed-ir"))
 	} else {
-		m = assocM(m, MakeKeyword("path"), coretypes.MakeString("boxed-ir"))
+		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "path"), coretypes.MakeString("boxed-ir"))
 	}
 	return m
 }
@@ -136,8 +136,8 @@ var procEscapeAnalysis ProcFn = func(args []coretypes.Object) coretypes.Object {
 		slots[i] = coretypes.Boolean{B: safe}
 	}
 	m := EmptyArrayMap()
-	m = assocM(m, MakeKeyword("safe-mutable-slots"), NewVectorFrom(slots...))
-	m = assocM(m, MakeKeyword("num-slots"), coretypes.Int{I: prog.NumSlots()})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "safe-mutable-slots"), NewVectorFrom(slots...))
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "num-slots"), coretypes.Int{I: prog.NumSlots()})
 	return m
 }
 
@@ -148,11 +148,11 @@ var procMemStats ProcFn = func(args []coretypes.Object) coretypes.Object {
 	var ms runtime.MemStats
 	runtime.ReadMemStats(&ms)
 	m := EmptyArrayMap()
-	m = assocM(m, MakeKeyword("heap-alloc-mb"), coretypes.Double{D: float64(ms.HeapAlloc) / 1e6})
-	m = assocM(m, MakeKeyword("heap-objects"), runtimeUintObject(ms.HeapObjects))
-	m = assocM(m, MakeKeyword("gc-cycles"), runtimeUintObject(uint64(ms.NumGC)))
-	m = assocM(m, MakeKeyword("total-alloc-mb"), coretypes.Double{D: float64(ms.TotalAlloc) / 1e6})
-	m = assocM(m, MakeKeyword("goroutines"), coretypes.Int{I: runtime.NumGoroutine()})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "heap-alloc-mb"), coretypes.Double{D: float64(ms.HeapAlloc) / 1e6})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "heap-objects"), runtimeUintObject(ms.HeapObjects))
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "gc-cycles"), runtimeUintObject(uint64(ms.NumGC)))
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "total-alloc-mb"), coretypes.Double{D: float64(ms.TotalAlloc) / 1e6})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "goroutines"), coretypes.Int{I: runtime.NumGoroutine()})
 	return m
 }
 
@@ -168,7 +168,7 @@ var procGC ProcFn = func(args []coretypes.Object) coretypes.Object {
 
 var procBenchmark ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	callable := EnsureArgIsCallable(args, 0)
+	callable := coretypes.EnsureArgIsCallable(args, 0)
 	// Warm up a little to reduce one-off effects.
 	for i := 0; i < 3; i++ {
 		callable.Call(nil)
@@ -208,10 +208,10 @@ var procBenchmark ProcFn = func(args []coretypes.Object) coretypes.Object {
 	}
 
 	m := EmptyArrayMap()
-	m = assocM(m, MakeKeyword("ns-per-op"), runtimeIntObject(nsPerOp))
-	m = assocM(m, MakeKeyword("ms-per-op"), coretypes.Double{D: float64(nsPerOp) / 1e6})
-	m = assocM(m, MakeKeyword("iterations"), coretypes.Int{I: n})
-	m = assocM(m, MakeKeyword("total-ms"), coretypes.Double{D: float64(elapsed.Milliseconds())})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "ns-per-op"), runtimeIntObject(nsPerOp))
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "ms-per-op"), coretypes.Double{D: float64(nsPerOp) / 1e6})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "iterations"), coretypes.Int{I: n})
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "total-ms"), coretypes.Double{D: float64(elapsed.Milliseconds())})
 	return m
 }
 

@@ -59,11 +59,11 @@ func podPayloadFromObject(obj coretypes.Object) interface{} {
 		return v.D
 	case coretypes.String:
 		return v.S
-	case Keyword:
+	case coretypes.Keyword:
 		return v.ToString(false)
-	case Symbol:
+	case coretypes.Symbol:
 		return v.ToString(false)
-	case Map:
+	case coretypes.Map:
 		m := make(map[string]interface{})
 		for it := v.Iter(); it.HasNext(); {
 			p := it.Next()

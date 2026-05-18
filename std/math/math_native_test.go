@@ -4,8 +4,6 @@ import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	stdmath "math"
 	"testing"
-
-	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestModfBoundary(t *testing.T) {

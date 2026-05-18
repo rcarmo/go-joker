@@ -9,7 +9,7 @@ import (
 
 type List struct {
 	coretypes.InfoHolder
-	MetaHolder
+	coretypes.MetaHolder
 	first coretypes.Object
 	rest  *List
 	count int
@@ -49,9 +49,9 @@ func NewListFrom(objs ...coretypes.Object) *List {
 	return res
 }
 
-func (list *List) WithMeta(meta Map) coretypes.Object {
+func (list *List) WithMeta(meta coretypes.Map) coretypes.Object {
 	res := *list
-	res.meta = SafeMerge(res.meta, meta)
+	res.Meta = coretypes.SafeMerge(res.Meta, meta)
 	return &res
 }
 

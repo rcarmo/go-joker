@@ -233,7 +233,7 @@
     <ul>
       <li>
   <h3 class="Constant" id="SIGABRT">SIGABRT</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGABRT</p>
@@ -242,7 +242,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGALRM">SIGALRM</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGALRM</p>
@@ -251,7 +251,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGFPE">SIGFPE</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGFPE</p>
@@ -260,7 +260,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGHUP">SIGHUP</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGHUP</p>
@@ -269,7 +269,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGILL">SIGILL</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGILL</p>
@@ -278,7 +278,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGINT">SIGINT</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGINT</p>
@@ -287,7 +287,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGKILL">SIGKILL</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGKILL</p>
@@ -296,7 +296,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGPIPE">SIGPIPE</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGPIPE</p>
@@ -305,7 +305,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGQUIT">SIGQUIT</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGQUIT</p>
@@ -314,7 +314,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGSEGV">SIGSEGV</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGSEGV</p>
@@ -323,7 +323,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGTERM">SIGTERM</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGTERM</p>
@@ -332,7 +332,7 @@
 </li>
 <li>
   <h3 class="Constant" id="SIGTRAP">SIGTRAP</h3>
-  <span class="var-kind Constant">Int</span>
+  <span class="var-kind Constant">coretypes.Int</span>
   <span class="var-added">v1.0.1</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">SIGTRAP</p>
@@ -631,11 +631,11 @@
 </pre>
   <p class="var-docstr">Reads the directory named by dirname and returns a list of directory entries sorted by filename.<br>
   Each entry is a map with the following keys:<br>
-  :name - name (String)<br>
-  :size - size in bytes (Int, or BigInt when it exceeds the native int range)<br>
-  :mode - mode (Int)<br>
-  :dir? - true if the file is a directory (Boolean)<br>
-  :modtime - modification time as a Unix timestamp (Int, or BigInt when it exceeds the native int range)</p>
+  :name - name (coretypes.String)<br>
+  :size - size in bytes (coretypes.Int, or BigInt when it exceeds the native int range)<br>
+  :mode - mode (coretypes.Int)<br>
+  :dir? - true if the file is a directory (coretypes.Boolean)<br>
+  :modtime - modification time as a Unix timestamp (coretypes.Int, or BigInt when it exceeds the native int range)</p>
   
   
 </li>
@@ -969,7 +969,7 @@
 <div><code>(watch paths ch opts)</code></div>
 </pre>
   <p class="var-docstr">Watches paths for file system changes, sends event maps to ch, and returns a<br>
-  zero-argument cancel function. paths must be Seqable and each path must be a<br>
+  zero-argument cancel function. paths must be coretypes.Seqable and each path must be a<br>
   string. opts may contain :recursive? to watch child directories recursively.<br>
 <br>
   Event maps have {:type :event :path path :ops ops}, where ops is a set<br>

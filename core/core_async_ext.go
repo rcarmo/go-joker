@@ -21,19 +21,19 @@ func installCoreAsyncNamespace() {
 	if GLOBAL_ENV == nil || GLOBAL_ENV.CoreNamespace == nil {
 		return
 	}
-	ns := GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("clojure.core.async"))
-	ns.meta = MakeMeta(nil, "Clojure core.async-compatible channel helpers backed by Go goroutines.", "1.0")
+	ns := GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "clojure.core.async"))
+	ns.Meta = MakeMeta(nil, "Clojure core.async-compatible channel helpers backed by Go goroutines.", "1.0")
 	core := GLOBAL_ENV.CoreNamespace
 	for _, name := range []string{"chan", "<!", ">!", "close!", "alts!", "timeout", "go"} {
 		if vr := core.Resolve(name); vr != nil {
-			ns.Refer(MakeSymbol(name), vr)
+			ns.Refer(coretypes.MakeSymbol(STRINGS.Intern, name), vr)
 		}
 	}
 	if vr := core.Resolve("<!"); vr != nil {
-		ns.Refer(MakeSymbol("<!!"), vr)
+		ns.Refer(coretypes.MakeSymbol(STRINGS.Intern, "<!!"), vr)
 	}
 	if vr := core.Resolve(">!"); vr != nil {
-		ns.Refer(MakeSymbol(">!!"), vr)
+		ns.Refer(coretypes.MakeSymbol(STRINGS.Intern, ">!!"), vr)
 	}
 	installAsyncMacro(ns, "go-loop", "Like core.async/go with an initial loop/recur binding vector.", macroCoreAsyncGoLoop)
 	installAsyncMacro(ns, "thread", "Runs body asynchronously on a native goroutine and returns a future.", macroCoreAsyncThread)
@@ -81,19 +81,19 @@ func macroCoreAsyncGoLoop(args []coretypes.Object) coretypes.Object {
 	if len(args) < 3 {
 		panic(RT.NewError("go-loop requires bindings and body"))
 	}
-	return listObjs(MakeSymbol("go"), collectionConstruction.NewListFrom(append([]coretypes.Object{MakeSymbol("loop"), args[2]}, args[3:]...)...))
+	return listObjs(coretypes.MakeSymbol(STRINGS.Intern, "go"), collectionConstruction.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "loop"), args[2]}, args[3:]...)...))
 }
 func macroCoreAsyncThread(args []coretypes.Object) coretypes.Object {
 	if len(args) < 2 {
 		panic(RT.NewError("thread requires body"))
 	}
-	return listObjs(MakeSymbol("future"), doObj(args[2:]...))
+	return listObjs(coretypes.MakeSymbol(STRINGS.Intern, "future"), doObj(args[2:]...))
 }
 func macroCoreAsyncThreadCall(args []coretypes.Object) coretypes.Object {
 	if len(args) != 3 {
 		panic(RT.NewError("thread-call requires one fn"))
 	}
-	return listObjs(MakeSymbol("future-call"), args[2])
+	return listObjs(coretypes.MakeSymbol(STRINGS.Intern, "future-call"), args[2])
 }
 
 func asyncBufferSize(o coretypes.Object) int {
@@ -109,7 +109,7 @@ func asyncBufferSize(o coretypes.Object) int {
 }
 func procAsyncBuffer(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
-	return EnsureArgIsInt(args, 0)
+	return coretypes.EnsureArgIsInt(args, 0)
 }
 func procAsyncPromiseChan(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
@@ -141,7 +141,7 @@ func procAsyncPutBang(args []coretypes.Object) coretypes.Object {
 	v := args[1]
 	var cb coretypes.Callable
 	if len(args) == 3 {
-		cb = EnsureArgIsCallable(args, 2)
+		cb = coretypes.EnsureArgIsCallable(args, 2)
 	}
 	go func() {
 		registerGoroutineRT()
@@ -158,7 +158,7 @@ func procAsyncTakeBang(args []coretypes.Object) coretypes.Object {
 		panic(RT.NewError("take! requires channel, callback, optional on-caller?"))
 	}
 	ch := channelFromArg(args, 0)
-	cb := EnsureArgIsCallable(args, 1)
+	cb := coretypes.EnsureArgIsCallable(args, 1)
 	go func() { registerGoroutineRT(); call1(cb, asyncRecv(ch)) }()
 	return NIL
 }
@@ -172,7 +172,7 @@ func procAsyncToChan(args []coretypes.Object) coretypes.Object {
 	if len(args) == 2 {
 		closeOut = ToBool(args[1])
 	}
-	seq := EnsureObjectIsSeqable(args[0], "to-chan requires seqable").Seq()
+	seq := coretypes.EnsureObjectIsSeqable(args[0], "to-chan requires seqable").Seq()
 	go func() {
 		registerGoroutineRT()
 		for !seq.IsEmpty() {
@@ -191,7 +191,7 @@ func procAsyncOntoChan(args []coretypes.Object) coretypes.Object {
 		panic(RT.NewError("onto-chan requires channel, coll, optional close?"))
 	}
 	ch := channelFromArg(args, 0)
-	seq := EnsureObjectIsSeqable(args[1], "onto-chan requires seqable").Seq()
+	seq := coretypes.EnsureObjectIsSeqable(args[1], "onto-chan requires seqable").Seq()
 	closeOut := true
 	if len(args) == 3 {
 		closeOut = ToBool(args[2])
@@ -238,7 +238,7 @@ func procAsyncMerge(args []coretypes.Object) coretypes.Object {
 	if len(args) < 1 || len(args) > 2 {
 		panic(RT.NewError("merge requires channels and optional buffer"))
 	}
-	chsSeq := EnsureObjectIsSeqable(args[0], "merge requires seqable channels").Seq()
+	chsSeq := coretypes.EnsureObjectIsSeqable(args[0], "merge requires seqable channels").Seq()
 	out := MakeChannel(make(chan FutureResult, 0))
 	var wg sync.WaitGroup
 	for !chsSeq.IsEmpty() {
@@ -263,7 +263,7 @@ func procAsyncMerge(args []coretypes.Object) coretypes.Object {
 
 func procAsyncSplit(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
-	pred := EnsureArgIsCallable(args, 0)
+	pred := coretypes.EnsureArgIsCallable(args, 0)
 	in := channelFromArg(args, 1)
 	t := MakeChannel(make(chan FutureResult))
 	f := MakeChannel(make(chan FutureResult))
@@ -288,7 +288,7 @@ func procAsyncSplit(args []coretypes.Object) coretypes.Object {
 
 func procAsyncMapFrom(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
-	xf := EnsureArgIsCallable(args, 0)
+	xf := coretypes.EnsureArgIsCallable(args, 0)
 	in := channelFromArg(args, 1)
 	out := MakeChannel(make(chan FutureResult))
 	go func() {
@@ -306,7 +306,7 @@ func procAsyncMapFrom(args []coretypes.Object) coretypes.Object {
 }
 func procAsyncFilterFrom(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
-	pred := EnsureArgIsCallable(args, 0)
+	pred := coretypes.EnsureArgIsCallable(args, 0)
 	in := channelFromArg(args, 1)
 	out := MakeChannel(make(chan FutureResult))
 	go func() {
@@ -326,7 +326,7 @@ func procAsyncFilterFrom(args []coretypes.Object) coretypes.Object {
 }
 func procAsyncMapTo(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
-	xf := EnsureArgIsCallable(args, 0)
+	xf := coretypes.EnsureArgIsCallable(args, 0)
 	ch := channelFromArg(args, 1)
 	out := MakeChannel(make(chan FutureResult))
 	go func() {
@@ -344,7 +344,7 @@ func procAsyncMapTo(args []coretypes.Object) coretypes.Object {
 }
 func procAsyncFilterTo(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
-	pred := EnsureArgIsCallable(args, 0)
+	pred := coretypes.EnsureArgIsCallable(args, 0)
 	ch := channelFromArg(args, 1)
 	out := MakeChannel(make(chan FutureResult))
 	go func() {
@@ -365,7 +365,7 @@ func procAsyncFilterTo(args []coretypes.Object) coretypes.Object {
 
 func procAsyncReduce(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 3)
-	f := EnsureArgIsCallable(args, 0)
+	f := coretypes.EnsureArgIsCallable(args, 0)
 	acc := args[1]
 	ch := channelFromArg(args, 2)
 	out := MakeChannel(make(chan FutureResult, 1))
@@ -511,7 +511,7 @@ func procAsyncUntapAll(args []coretypes.Object) coretypes.Object {
 func procAsyncPub(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	src := channelFromArg(args, 0)
-	tf := EnsureArgIsCallable(args, 1)
+	tf := coretypes.EnsureArgIsCallable(args, 1)
 	p := &asyncPub{src: src, topicFn: tf, subs: map[string][]*Channel{}}
 	p.hash = hashutil.Ptr(uintptr(unsafe.Pointer(p)))
 	go func() {

@@ -44,16 +44,6 @@ func (x Nil) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return x
 }
 
-func (x Keyword) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x Symbol) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
 func (x *LazySeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	x.Info = info
 	return x

@@ -23,10 +23,10 @@ type fileWatcher struct {
 	cancelOnce sync.Once
 }
 
-func watch(paths coretypes.Seqable, ch *Channel, opts Map) coretypes.Object {
+func watch(paths coretypes.Seqable, ch *Channel, opts coretypes.Map) coretypes.Object {
 	recursive := false
-	if ok, obj := opts.Get(MakeKeyword("recursive?")); ok {
-		recursive = EnsureObjectIsBoolean(obj, "recursive?: %s").B
+	if ok, obj := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "recursive?")); ok {
+		recursive = coretypes.EnsureObjectIsBoolean(obj, "recursive?: %s").B
 	}
 
 	watcher, err := fsnotify.NewWatcher()
@@ -75,7 +75,7 @@ func (fw *fileWatcher) closeWatcher() {
 
 func (fw *fileWatcher) addPaths(paths coretypes.Seqable) error {
 	for s := paths.Seq(); !s.IsEmpty(); s = s.Rest() {
-		path := EnsureObjectIsString(s.First(), "watch path: %s").S
+		path := coretypes.EnsureObjectIsString(s.First(), "watch path: %s").S
 		if err := fw.addPath(path); err != nil {
 			return err
 		}
@@ -158,35 +158,35 @@ func (fw *fileWatcher) send(obj coretypes.Object) bool {
 
 func watchEvent(event fsnotify.Event) coretypes.Object {
 	m := EmptyArrayMap()
-	m.Add(MakeKeyword("type"), MakeKeyword("event"))
-	m.Add(MakeKeyword("path"), coretypes.MakeString(event.Name))
-	m.Add(MakeKeyword("ops"), watchOps(event.Op))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "type"), coretypes.MakeKeyword(STRINGS.Intern, "event"))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "path"), coretypes.MakeString(event.Name))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "ops"), watchOps(event.Op))
 	return m
 }
 
 func watchError(err error) coretypes.Object {
 	m := EmptyArrayMap()
-	m.Add(MakeKeyword("type"), MakeKeyword("error"))
-	m.Add(MakeKeyword("error"), RT.NewError(err.Error()))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "type"), coretypes.MakeKeyword(STRINGS.Intern, "error"))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "error"), RT.NewError(err.Error()))
 	return m
 }
 
 func watchOps(op fsnotify.Op) *MapSet {
 	ops := EmptySet()
 	if op&fsnotify.Create != 0 {
-		ops.Add(MakeKeyword("create"))
+		ops.Add(coretypes.MakeKeyword(STRINGS.Intern, "create"))
 	}
 	if op&fsnotify.Write != 0 {
-		ops.Add(MakeKeyword("write"))
+		ops.Add(coretypes.MakeKeyword(STRINGS.Intern, "write"))
 	}
 	if op&fsnotify.Remove != 0 {
-		ops.Add(MakeKeyword("remove"))
+		ops.Add(coretypes.MakeKeyword(STRINGS.Intern, "remove"))
 	}
 	if op&fsnotify.Rename != 0 {
-		ops.Add(MakeKeyword("rename"))
+		ops.Add(coretypes.MakeKeyword(STRINGS.Intern, "rename"))
 	}
 	if op&fsnotify.Chmod != 0 {
-		ops.Add(MakeKeyword("chmod"))
+		ops.Add(coretypes.MakeKeyword(STRINGS.Intern, "chmod"))
 	}
 	return ops
 }

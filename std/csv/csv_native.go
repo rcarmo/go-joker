@@ -11,7 +11,7 @@ import (
 )
 
 func csvDelimiter(obj coretypes.Object, name string) rune {
-	r := EnsureObjectIsChar(obj, name+": %s").Ch
+	r := coretypes.EnsureObjectIsChar(obj, name+": %s").Ch
 	if r == '\n' || r == '\r' || r == 0 || r == utf8.RuneError {
 		panic(RT.NewError("csv/" + name + " must be a valid delimiter"))
 	}
@@ -30,7 +30,7 @@ func csvLazySeq(rdr *csv.Reader) *LazySeq {
 	return NewLazySeq(Proc{Fn: c})
 }
 
-func csvSeqOpts(src coretypes.Object, opts Map) coretypes.Object {
+func csvSeqOpts(src coretypes.Object, opts coretypes.Map) coretypes.Object {
 	var rdr io.Reader
 	switch src := src.(type) {
 	case coretypes.String:
@@ -42,29 +42,29 @@ func csvSeqOpts(src coretypes.Object, opts Map) coretypes.Object {
 	}
 	csvReader := csv.NewReader(rdr)
 	csvReader.ReuseRecord = true
-	if ok, c := opts.Get(MakeKeyword("comma")); ok {
+	if ok, c := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "comma")); ok {
 		csvReader.Comma = csvDelimiter(c, "comma")
 	}
-	if ok, c := opts.Get(MakeKeyword("comment")); ok {
+	if ok, c := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "comment")); ok {
 		csvReader.Comment = csvDelimiter(c, "comment")
 		if csvReader.Comment == csvReader.Comma {
 			panic(RT.NewError("csv/comment must differ from comma"))
 		}
 	}
-	if ok, c := opts.Get(MakeKeyword("fields-per-record")); ok {
-		csvReader.FieldsPerRecord = EnsureObjectIsInt(c, "fields-per-record: %s").I
+	if ok, c := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "fields-per-record")); ok {
+		csvReader.FieldsPerRecord = coretypes.EnsureObjectIsInt(c, "fields-per-record: %s").I
 	}
-	if ok, c := opts.Get(MakeKeyword("lazy-quotes")); ok {
-		csvReader.LazyQuotes = EnsureObjectIsBoolean(c, "lazy-quotes: %s").B
+	if ok, c := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "lazy-quotes")); ok {
+		csvReader.LazyQuotes = coretypes.EnsureObjectIsBoolean(c, "lazy-quotes: %s").B
 	}
-	if ok, c := opts.Get(MakeKeyword("trim-leading-space")); ok {
-		csvReader.TrimLeadingSpace = EnsureObjectIsBoolean(c, "trim-leading-space: %s").B
+	if ok, c := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "trim-leading-space")); ok {
+		csvReader.TrimLeadingSpace = coretypes.EnsureObjectIsBoolean(c, "trim-leading-space: %s").B
 	}
 	return csvLazySeq(csvReader)
 }
 
 func sliceOfStrings(obj coretypes.Object) (res []string) {
-	s := EnsureObjectIsSeqable(obj, "CSV record: %s").Seq()
+	s := coretypes.EnsureObjectIsSeqable(obj, "CSV record: %s").Seq()
 	for !s.IsEmpty() {
 		res = append(res, s.First().ToString(false))
 		s = s.Rest()
@@ -72,13 +72,13 @@ func sliceOfStrings(obj coretypes.Object) (res []string) {
 	return
 }
 
-func writeWriter(wr io.Writer, data coretypes.Seqable, opts Map) {
+func writeWriter(wr io.Writer, data coretypes.Seqable, opts coretypes.Map) {
 	csvWriter := csv.NewWriter(wr)
-	if ok, c := opts.Get(MakeKeyword("comma")); ok {
+	if ok, c := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "comma")); ok {
 		csvWriter.Comma = csvDelimiter(c, "comma")
 	}
-	if ok, c := opts.Get(MakeKeyword("use-crlf")); ok {
-		csvWriter.UseCRLF = EnsureObjectIsBoolean(c, "use-crlf: %s").B
+	if ok, c := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "use-crlf")); ok {
+		csvWriter.UseCRLF = coretypes.EnsureObjectIsBoolean(c, "use-crlf: %s").B
 	}
 	s := data.Seq()
 	for !s.IsEmpty() {
@@ -92,12 +92,12 @@ func writeWriter(wr io.Writer, data coretypes.Seqable, opts Map) {
 	}
 }
 
-func write(wr io.Writer, data coretypes.Seqable, opts Map) coretypes.Object {
+func write(wr io.Writer, data coretypes.Seqable, opts coretypes.Map) coretypes.Object {
 	writeWriter(wr, data, opts)
 	return NIL
 }
 
-func writeString(data coretypes.Seqable, opts Map) string {
+func writeString(data coretypes.Seqable, opts coretypes.Map) string {
 	var b strings.Builder
 	writeWriter(&b, data, opts)
 	return b.String()
