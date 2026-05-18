@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
-	"github.com/rcarmo/go-joker/core/numutil"
+	"github.com/rcarmo/go-joker/core/types/numerical"
 )
 
 // Number is the numeric object protocol shared by scalar and big numeric values.
@@ -87,7 +87,7 @@ func MakeRatio(r *big.Rat) *Ratio         { return &Ratio{R: r} }
 func MakeBigFloat(b *big.Float) *BigFloat { return &BigFloat{B: b} }
 
 func MakeBigFloatWithOrig(s, orig string) (*BigFloat, bool) {
-	prec := numutil.ComputeFloatPrecision(s)
+	prec := numerical.ComputeFloatPrecision(s)
 	f := new(big.Float)
 	f.SetPrec(prec)
 	if _, ok := f.SetString(s); ok {

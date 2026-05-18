@@ -3,9 +3,7 @@ package core
 // tagged_literals.go — Built-in tagged literal readers (#inst, #uuid).
 
 import (
-	"fmt"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"time"
 )
 
 func init() {
@@ -23,20 +21,11 @@ func registerTaggedLiterals() {
 	instReaderVr.Value = Proc{Name: "procReadInst", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		s := coretypes.EnsureObjectIsString(args[0], "#inst argument must be a string, got %s")
-		// Try RFC3339 first, then other common formats
-		formats := []string{
-			time.RFC3339Nano,
-			time.RFC3339,
-			"2006-01-02T15:04:05.000-07:00",
-			"2006-01-02T15:04:05",
-			"2006-01-02",
+		t, err := coretypes.ParseInstString(s.S)
+		if err != nil {
+			panic(RT.NewError(err.Error()))
 		}
-		for _, f := range formats {
-			if t, err := time.Parse(f, s.S); err == nil {
-				return coretypes.Time{T: t}
-			}
-		}
-		panic(RT.NewError(fmt.Sprintf("Cannot parse #inst \"%s\"", s.S)))
+		return t
 	}}
 	instReaderVr.isPrivate = true
 
@@ -45,9 +34,8 @@ func registerTaggedLiterals() {
 	uuidReaderVr.Value = Proc{Name: "procReadUuid", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
 		s := coretypes.EnsureObjectIsString(args[0], "#uuid argument must be a string, got %s")
-		// Basic UUID format validation
-		if len(s.S) != 36 {
-			panic(RT.NewError(fmt.Sprintf("Invalid UUID format: \"%s\"", s.S)))
+		if err := coretypes.ValidateUUIDString(s.S); err != nil {
+			panic(RT.NewError(err.Error()))
 		}
 		return s
 	}}

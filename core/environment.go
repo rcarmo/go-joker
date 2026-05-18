@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/rcarmo/go-joker/core/osutil"
-	corestr "github.com/rcarmo/go-joker/core/string"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 var (

@@ -142,7 +142,7 @@ benchmark-docs-check:
 	cd benchmarks && python3 -m unittest run_benchmarks_test.py
 
 refactor-internals-check:
-	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/string ./core/osutil ./core/bufferpool ./core/reader -count=$(TEST_COUNT)
+	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/types/string ./core/types/numerical ./core/osutil ./core/bufferpool ./core/reader -count=$(TEST_COUNT)
 
 core-contract-check:
 	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestSortedCollectionContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics|TestBigIntInt|TestRatioOrInt|TestReadIntegerUsesNativeIntRange|TestFileInfoMapPromotesLargeSize|TestReaderConstructionContract' -count=$(TEST_COUNT) -timeout=120s

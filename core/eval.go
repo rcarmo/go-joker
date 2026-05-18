@@ -8,7 +8,7 @@ import (
 	"github.com/rcarmo/go-joker/core/bufferpool"
 	"github.com/rcarmo/go-joker/core/hashutil"
 	corert "github.com/rcarmo/go-joker/core/runtime"
-	corestr "github.com/rcarmo/go-joker/core/string"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 type (
@@ -880,7 +880,7 @@ func (expr *TryExpr) Eval(env *LocalEnv) (obj coretypes.Object) {
 			switch r := r.(type) {
 			case coretypes.Error:
 				for _, catchExpr := range expr.catches {
-					if IsInstance(catchExpr.excType, r) {
+					if coretypes.IsInstance(catchExpr.excType, r) {
 						obj = evalBody(catchExpr.body, env.addFrame([]coretypes.Object{r}))
 						return
 					}

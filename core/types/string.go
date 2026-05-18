@@ -7,7 +7,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
-	corestr "github.com/rcarmo/go-joker/core/string"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 type String struct {

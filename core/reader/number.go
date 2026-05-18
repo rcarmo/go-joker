@@ -4,7 +4,7 @@ import (
 	"errors"
 	"unicode"
 
-	"github.com/rcarmo/go-joker/core/numutil"
+	"github.com/rcarmo/go-joker/core/types/numerical"
 )
 
 type NumberTokenKind int
@@ -53,7 +53,7 @@ func AnalyzeNumberToken(str string) (NumberToken, error) {
 		last = r
 	}
 	if baseLen != 0 {
-		baseInt, err := numutil.ParseInt(str[0:baseLen], 0, 0)
+		baseInt, err := numerical.ParseInt(str[0:baseLen], 0, 0)
 		if err != nil {
 			return NumberToken{}, err
 		}

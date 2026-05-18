@@ -1,4 +1,4 @@
-package numutil
+package numerical
 
 import (
 	"math"

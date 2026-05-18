@@ -41,7 +41,7 @@ func registerRecordProcs() {
 			fields[i-1] = coretypes.EnsureObjectIsString(args[i], "field name must be a string").S
 		}
 
-		rtype := MakeRecordType(nameStr, fields)
+		rtype := coretypes.MakeRecordType(nameStr, fields)
 
 		currentNs := GLOBAL_ENV.CurrentNamespace()
 
@@ -73,7 +73,7 @@ func registerRecordProcs() {
 				p := iter.Next()
 				if kw, ok := p.Key.(coretypes.Keyword); ok {
 					kwName := kw.ToString(false)[1:]
-					if _, isBase := rtype.fieldIdx[kwName]; isBase {
+					if _, isBase := rtype.FieldIdx[kwName]; isBase {
 						continue
 					}
 				}

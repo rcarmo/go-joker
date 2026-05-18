@@ -10,7 +10,7 @@ import (
 
 	"github.com/rcarmo/go-joker/core/hashutil"
 	corereader "github.com/rcarmo/go-joker/core/reader"
-	corestr "github.com/rcarmo/go-joker/core/string"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 type (

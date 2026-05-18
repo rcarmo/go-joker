@@ -129,7 +129,7 @@ func typeNameOf(obj coretypes.Object) string {
 	case *Atom:
 		return "Atom"
 	case *Record:
-		return obj.rtype.name
+		return obj.rtype.Name
 	default:
 		return obj.GetType().ToString(false)
 	}

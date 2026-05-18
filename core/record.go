@@ -15,18 +15,11 @@ import (
 	"strings"
 )
 
-// RecordType describes a record class created by defrecord.
-type RecordType struct {
-	name     string
-	fields   []string       // ordered base field names
-	fieldIdx map[string]int // field name → index in bases
-}
-
 // Record is an instance of a RecordType.
 type Record struct {
 	coretypes.InfoHolder
 	coretypes.MetaHolder
-	rtype *RecordType
+	rtype *coretypes.RecordType
 	bases []coretypes.Object // values for base fields (same order as rtype.fields)
 	ext   *ArrayMap          // extension fields (nil if none)
 }
@@ -34,10 +27,10 @@ type Record struct {
 func (r *Record) ToString(escape bool) string {
 	var b strings.Builder
 	b.WriteString("#")
-	b.WriteString(r.rtype.name)
+	b.WriteString(r.rtype.Name)
 	b.WriteString("{")
 	first := true
-	for i, fname := range r.rtype.fields {
+	for i, fname := range r.rtype.Fields {
 		if !first {
 			b.WriteString(", ")
 		}
@@ -140,7 +133,7 @@ func (r *Record) clone() *Record {
 func (r *Record) Get(key coretypes.Object) (bool, coretypes.Object) {
 	if kw, ok := key.(coretypes.Keyword); ok {
 		name := kw.ToString(false)[1:] // strip leading ":"
-		if idx, ok := r.rtype.fieldIdx[name]; ok {
+		if idx, ok := r.rtype.FieldIdx[name]; ok {
 			return true, r.bases[idx]
 		}
 	}
@@ -164,7 +157,7 @@ func (r *Record) EntryAt(key coretypes.Object) coretypes.Object {
 func (r *Record) Assoc(key, val coretypes.Object) coretypes.Associative {
 	if kw, ok := key.(coretypes.Keyword); ok {
 		name := kw.ToString(false)[1:]
-		if idx, ok := r.rtype.fieldIdx[name]; ok {
+		if idx, ok := r.rtype.FieldIdx[name]; ok {
 			res := r.clone()
 			res.bases[idx] = val
 			return res
@@ -190,7 +183,7 @@ func (r *Record) Count() int {
 // coretypes.Seq returns a sequence of MapEntry pairs.
 func (r *Record) Seq() coretypes.Seq {
 	entries := make([]coretypes.Object, 0, r.Count())
-	for i, fname := range r.rtype.fields {
+	for i, fname := range r.rtype.Fields {
 		entries = append(entries, collectionConstruction.NewVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, fname), r.bases[i]))
 	}
 	if r.ext != nil {
@@ -205,7 +198,7 @@ func (r *Record) Seq() coretypes.Seq {
 // Keys returns all keys.
 func (r *Record) Keys() coretypes.Seq {
 	keys := make([]coretypes.Object, 0, r.Count())
-	for _, fname := range r.rtype.fields {
+	for _, fname := range r.rtype.Fields {
 		keys = append(keys, coretypes.MakeKeyword(STRINGS.Intern, fname))
 	}
 	if r.ext != nil {
@@ -281,10 +274,10 @@ func (r *Record) ContainsKey(key coretypes.Object) bool {
 func (r *Record) Without(key coretypes.Object) coretypes.Map {
 	if kw, ok := key.(coretypes.Keyword); ok {
 		name := kw.ToString(false)[1:]
-		if _, ok := r.rtype.fieldIdx[name]; ok {
+		if _, ok := r.rtype.FieldIdx[name]; ok {
 			// Dissoc base field → degrade to plain map
 			m := collectionConstruction.NewEmptyArrayMap()
-			for i, fname := range r.rtype.fields {
+			for i, fname := range r.rtype.Fields {
 				if fname != name {
 					m.Add(coretypes.MakeKeyword(STRINGS.Intern, fname), r.bases[i])
 				}
@@ -313,7 +306,7 @@ type recordIterator struct {
 }
 
 func (it *recordIterator) HasNext() bool {
-	if it.idx < len(it.r.rtype.fields) {
+	if it.idx < len(it.r.rtype.Fields) {
 		return true
 	}
 	if it.r.ext != nil {
@@ -326,9 +319,9 @@ func (it *recordIterator) HasNext() bool {
 }
 
 func (it *recordIterator) Next() *coretypes.Pair {
-	if it.idx < len(it.r.rtype.fields) {
+	if it.idx < len(it.r.rtype.Fields) {
 		p := &coretypes.Pair{
-			Key:   coretypes.MakeKeyword(STRINGS.Intern, it.r.rtype.fields[it.idx]),
+			Key:   coretypes.MakeKeyword(STRINGS.Intern, it.r.rtype.Fields[it.idx]),
 			Value: it.r.bases[it.idx],
 		}
 		it.idx++
@@ -341,21 +334,12 @@ func (it *recordIterator) Next() *coretypes.Pair {
 }
 
 // NewRecord creates a new record instance.
-func NewRecord(rtype *RecordType, fields []coretypes.Object) *Record {
-	if len(fields) != len(rtype.fields) {
+func NewRecord(rtype *coretypes.RecordType, fields []coretypes.Object) *Record {
+	if len(fields) != len(rtype.Fields) {
 		panic(RT.NewError(fmt.Sprintf("Wrong number of fields for record %s: expected %d, got %d",
-			rtype.name, len(rtype.fields), len(fields))))
+			rtype.Name, len(rtype.Fields), len(fields))))
 	}
 	bases := make([]coretypes.Object, len(fields))
 	copy(bases, fields)
 	return &Record{rtype: rtype, bases: bases}
-}
-
-// MakeRecordType creates a new record type descriptor.
-func MakeRecordType(name string, fields []string) *RecordType {
-	idx := make(map[string]int)
-	for i, f := range fields {
-		idx[f] = i
-	}
-	return &RecordType{name: name, fields: fields, fieldIdx: idx}
 }

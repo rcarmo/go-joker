@@ -39,26 +39,12 @@ func (v *Vector) WithMeta(meta coretypes.Map) coretypes.Object {
 	return &res
 }
 
-func clone(s []interface{}) []interface{} {
-	return corecollections.CloneSlice(s)
-}
-
 func (v *Vector) tailoff() int {
-	if v.count < 32 {
-		return 0
-	}
-	return ((v.count - 1) >> 5) << 5
+	return corecollections.VectorTailOffset(v.count)
 }
 
 func (v *Vector) arrayFor(i int) []interface{} {
-	if i >= v.tailoff() {
-		return v.tail
-	}
-	node := v.root
-	for level := v.shift; level > 0; level -= 5 {
-		node = node[(i>>level)&0x01F].([]interface{})
-	}
-	return node
+	return corecollections.VectorArrayFor(i, v.count, v.shift, v.root, v.tail)
 }
 
 func (v *Vector) at(i int) coretypes.Object {
@@ -76,36 +62,14 @@ func (v *Vector) At(i int) coretypes.Object {
 	return v.uncheckedAt(i)
 }
 
-func newPath(level uint, node []interface{}) []interface{} {
-	if level == 0 {
-		return node
-	}
-	result := make([]interface{}, 32)
-	result[0] = newPath(level-5, node)
-	return result
-}
-
 func (v *Vector) pushTail(level uint, parent []interface{}, tailNode []interface{}) []interface{} {
-	subidx := ((v.count - 1) >> level) & 0x01F
-	result := clone(parent)
-	var nodeToInsert []interface{}
-	if level == 5 {
-		nodeToInsert = tailNode
-	} else {
-		if parent[subidx] != nil {
-			nodeToInsert = v.pushTail(level-5, parent[subidx].([]interface{}), tailNode)
-		} else {
-			nodeToInsert = newPath(level-5, tailNode)
-		}
-	}
-	result[subidx] = nodeToInsert
-	return result
+	return corecollections.VectorPushTail(level, v.count, parent, tailNode)
 }
 
 func (v *Vector) Conjoin(obj coretypes.Object) *Vector {
 	var newTail []interface{}
 	if v.count-v.tailoff() < 32 {
-		newTail = append(clone(v.tail), obj)
+		newTail = append(corecollections.CloneInterfaces(v.tail), obj)
 		return &Vector{count: v.count + 1, shift: v.shift, root: v.root, tail: newTail}
 	}
 	var newRoot []interface{}
@@ -113,7 +77,7 @@ func (v *Vector) Conjoin(obj coretypes.Object) *Vector {
 	if (v.count >> 5) > (1 << v.shift) {
 		newRoot = make([]interface{}, 32)
 		newRoot[0] = v.root
-		newRoot[1] = newPath(v.shift, v.tail)
+		newRoot[1] = corecollections.VectorNewPath(v.shift, v.tail)
 		newShift += 5
 	} else {
 		newRoot = v.pushTail(v.shift, v.root, v.tail)
@@ -135,7 +99,7 @@ func (v *Vector) Equals(other interface{}) bool {
 	case coretypes.CountedIndexed:
 		return AreCountedIndexedEqual(v, other)
 	default:
-		return IsSeqEqual(v.Seq(), other)
+		return coretypes.IsSeqEqual(v.Seq(), other)
 	}
 }
 
@@ -152,7 +116,7 @@ func (seq *VectorSeq) Seq() coretypes.Seq {
 }
 
 func (seq *VectorSeq) Equals(other interface{}) bool {
-	return IsSeqEqual(seq, other)
+	return coretypes.IsSeqEqual(seq, other)
 }
 
 func (seq *VectorSeq) ToString(escape bool) string {
@@ -218,7 +182,7 @@ func (seq *VectorRSeq) Seq() coretypes.Seq {
 }
 
 func (seq *VectorRSeq) Equals(other interface{}) bool {
-	return IsSeqEqual(seq, other)
+	return coretypes.IsSeqEqual(seq, other)
 }
 
 func (seq *VectorRSeq) ToString(escape bool) string {
@@ -316,23 +280,7 @@ func (v *Vector) Peek() coretypes.Object {
 }
 
 func (v *Vector) popTail(level uint, node []interface{}) []interface{} {
-	subidx := ((v.count - 2) >> level) & 0x01F
-	if level > 5 {
-		newChild := v.popTail(level-5, node[subidx].([]interface{}))
-		if newChild == nil && subidx == 0 {
-			return nil
-		} else {
-			ret := clone(node)
-			ret[subidx] = newChild
-			return ret
-		}
-	} else if subidx == 0 {
-		return nil
-	} else {
-		ret := clone(node)
-		ret[subidx] = nil
-		return ret
-	}
+	return corecollections.VectorPopTail(level, v.count, node)
 }
 
 func (v *Vector) Pop() coretypes.Stack {
@@ -343,7 +291,7 @@ func (v *Vector) Pop() coretypes.Stack {
 		return collectionConstruction.NewEmptyVector().WithMeta(v.Meta).(coretypes.Stack)
 	}
 	if v.count-v.tailoff() > 1 {
-		newTail := clone(v.tail)[0 : len(v.tail)-1]
+		newTail := corecollections.CloneInterfaces(v.tail)[0 : len(v.tail)-1]
 		res := &Vector{count: v.count - 1, shift: v.shift, root: v.root, tail: newTail}
 		res.Meta = v.Meta
 		return res
@@ -375,17 +323,6 @@ func (v *Vector) EntryAt(key coretypes.Object) coretypes.Object {
 	return nil
 }
 
-func doAssoc(level uint, node []interface{}, i int, val coretypes.Object) []interface{} {
-	ret := clone(node)
-	if level == 0 {
-		ret[i&0x01f] = val
-	} else {
-		subidx := (i >> level) & 0x01f
-		ret[subidx] = doAssoc(level-5, node[subidx].([]interface{}), i, val)
-	}
-	return ret
-}
-
 func (v *Vector) assocN(i int, val coretypes.Object) *Vector {
 	if i < 0 || i > v.count {
 		panic(RT.NewError((fmt.Sprintf("Index %d is out of bounds [0..%d]", i, v.count))))
@@ -394,11 +331,11 @@ func (v *Vector) assocN(i int, val coretypes.Object) *Vector {
 		return v.Conjoin(val)
 	}
 	if i < v.tailoff() {
-		res := &Vector{count: v.count, shift: v.shift, root: doAssoc(v.shift, v.root, i, val), tail: v.tail}
+		res := &Vector{count: v.count, shift: v.shift, root: corecollections.VectorAssocNode(v.shift, v.root, i, val), tail: v.tail}
 		res.Meta = v.Meta
 		return res
 	}
-	newTail := clone(v.tail)
+	newTail := corecollections.CloneInterfaces(v.tail)
 	newTail[i&0x01f] = val
 	res := &Vector{count: v.count, shift: v.shift, root: v.root, tail: newTail}
 	res.Meta = v.Meta

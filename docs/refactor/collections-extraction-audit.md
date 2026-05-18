@@ -8,6 +8,11 @@ Current root collection families are still strongly coupled to root `core` concr
 
 The shared collection/protocol surface has moved further into `core/types`: `Map`, `MapIterator`, `Pair`, `EmptyMapIterator` and its singleton/error helper, `Meta`, `MetaHolder`, `Set`, `Vec`, `Ref`, and `SafeMerge` are now `coretypes` contracts. Root compatibility aliases for these contracts were removed, and generated assertion output skips `coretypes.*` helpers entirely. Concrete collection implementations still live in root `core`; the remaining work is now a concrete implementation/package move, not a protocol-alias cleanup.
 
+
+## 2026-05-18 mechanics follow-up update
+
+Collection mechanics moved further into `core/collections`: persistent-vector trie operations, vector trie/storage helpers, hash-map iterator traversal helpers, list-node materialization accessors, and sorted key/value sorting/reverse helpers now live in collections. Root files (`vector.go`, `persistent_vector.go`, `hash_map.go`, `list.go`, `sorted_colls.go`) now delegate those mechanics through explicit `corecollections` helpers while keeping root runtime/proc/type registration behavior.
+
 ## Root collection file groups
 
 - Vectors: `array_vector.go`, `vector.go`, `persistent_vector.go`, `persistent_vector_test.go`.

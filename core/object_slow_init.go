@@ -7,7 +7,7 @@ import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
-	corestr "github.com/rcarmo/go-joker/core/string"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 var STRINGS corestr.Pool = corestr.Pool{}
@@ -104,9 +104,40 @@ func init() {
 		StringSeq:     typeBuilder().RegisterReference("StringSeq", (*stringSeq)(nil), ""),
 	}
 	coretypes.RuntimeTypes = &TYPE
+	coretypes.RuntimeNil = NIL
+	coretypes.RuntimeReduceType = TYPE.Reduce
+	coretypes.RuntimeKVReduceType = TYPE.KVReduce
+	coretypes.SpecialSymbolLookup = func(sym coretypes.Symbol) bool { return SPECIAL_SYMBOLS[sym.NameKey()] }
 	coretypes.NumberCompare = coretypes.CompareNumbers
 	coretypes.NumberEquals = equalsNumbers
 	coretypes.NamedLookup = getMap
+	coretypes.TransientMutationError = func() any { return RT.NewError("Cannot mutate a frozen transient") }
+	coretypes.TransientVectorIndexTypeError = func(obj coretypes.Object) any { return RT.NewArgTypeError(1, obj, "Int") }
+	coretypes.TransientVectorToPersistent = func(arr []coretypes.Object) coretypes.Object { return &ArrayVector{arr: arr} }
+	coretypes.TransientMapToPersistent = func(tm *coretypes.TransientMap) coretypes.Object {
+		if tm.CountN <= int(HASHMAP_THRESHOLD/2) {
+			res := collectionConstruction.NewEmptyArrayMap()
+			for k, v := range tm.SM {
+				res.Add(coretypes.String{S: k}, v)
+			}
+			for _, bucket := range tm.M {
+				for _, e := range bucket {
+					res.Add(e.Key, e.Val)
+				}
+			}
+			return res
+		}
+		res := EmptyHashMap
+		for k, v := range tm.SM {
+			res = res.Assoc(coretypes.String{S: k}, v).(*HashMap)
+		}
+		for _, bucket := range tm.M {
+			for _, e := range bucket {
+				res = res.Assoc(e.Key, e.Val).(*HashMap)
+			}
+		}
+		return res
+	}
 	installAssertionErrors()
 	coretypes.DelayCall = call0
 }

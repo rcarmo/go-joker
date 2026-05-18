@@ -9,8 +9,8 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/rcarmo/go-joker/core/numutil"
 	corereader "github.com/rcarmo/go-joker/core/reader"
+	"github.com/rcarmo/go-joker/core/types/numerical"
 )
 
 type (
@@ -220,7 +220,7 @@ func scanBigFloat(orig, str string, reader *Reader) coretypes.Object {
 }
 
 func scanInt(orig, str string, base int, reader *Reader) coretypes.Object {
-	i, e := numutil.ParseInt(str, base, strconv.IntSize)
+	i, e := numerical.ParseInt(str, base, strconv.IntSize)
 	if e != nil {
 		return scanBigInt(orig, str, base, reader)
 	}
@@ -228,7 +228,7 @@ func scanInt(orig, str string, base int, reader *Reader) coretypes.Object {
 }
 
 func scanFloat(str string, reader *Reader) coretypes.Object {
-	dbl, e := numutil.ParseFloat64(str)
+	dbl, e := numerical.ParseFloat64(str)
 	if e != nil {
 		panic(invalidNumberError(reader, str))
 	}
@@ -745,7 +745,7 @@ func makeSyntaxQuote(obj coretypes.Object, env map[*string]coretypes.Symbol, rea
 	if isSelfEvaluating(obj) {
 		return obj
 	}
-	if IsSpecialSymbol(obj) {
+	if coretypes.IsSpecialSymbol(obj) {
 		return makeQuote(obj, SYMBOLS.quote)
 	}
 	info := obj.GetInfo()

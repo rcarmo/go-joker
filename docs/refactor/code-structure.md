@@ -7,12 +7,12 @@ Updated: 2026-05-18
 
 The repository is functional and well-tested at the behavior/regression level, but it has a classic interpreter/runtime shape: a large `core` package owns most object model, evaluator, reader/parser, namespace, numeric, concurrency, IR, and WASM responsibilities. `std/*` packages are better bounded: each namespace has a small registration wrapper plus native implementation/tests.
 
-Recent feature work improved boundaries for new code (`std/transit`, `std/system`, `std/jit` export APIs), and the refactor pass has now moved the CLI to `cmd/joker`, extracted leaf packages under `core/{trace,ir,wasm,runtime,collections,reader,string,cursor}`, introduced data-only generated payloads under `core/generated`, and added construction adapters/guards for collection and reader boundaries. The older `core` package still needs gradual decomposition. The safest path is to keep defining internal contracts first and enforce them with small tests, docs, and Makefile targets.
+Recent feature work improved boundaries for new code (`std/transit`, `std/system`, `std/jit` export APIs), and the refactor pass has now moved the CLI to `cmd/joker`, extracted leaf packages under `core/{trace,ir,wasm,runtime,collections,reader,types/string,types/numerical,cursor}`, introduced data-only generated payloads under `core/generated`, and added construction adapters/guards for collection and reader boundaries. The older `core` package still needs gradual decomposition. The safest path is to keep defining internal contracts first and enforce them with small tests, docs, and Makefile targets.
 
 ## Current package/module shape
 
 - `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
-- `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/collections`, `core/reader`, `core/string`, and `core/cursor` own extracted helpers with direct package tests.
+- `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/collections`, `core/reader`, `core/types/string`, `core/types/numerical`, and `core/cursor` own extracted helpers with direct package tests.
 - `core/` is still the runtime kernel and contains:
   - remaining root runtime object systems (`object.go`, root generated helpers) plus `core/types` for the canonical object/type/protocol model
   - persistent collection implementations

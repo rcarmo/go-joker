@@ -3,7 +3,7 @@ package deps
 import (
 	"path/filepath"
 
-	corestr "github.com/rcarmo/go-joker/core/string"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 // LibNamePath converts a dotted Joker lib name into a relative source path.

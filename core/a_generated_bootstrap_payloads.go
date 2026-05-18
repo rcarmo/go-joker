@@ -6,8 +6,8 @@
 package core
 
 import (
-	corestr "github.com/rcarmo/go-joker/core/string"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 	"io"
 	"reflect"
 	"regexp"

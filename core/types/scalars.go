@@ -11,8 +11,8 @@ import (
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
-	"github.com/rcarmo/go-joker/core/numutil"
-	corestr "github.com/rcarmo/go-joker/core/string"
+	"github.com/rcarmo/go-joker/core/types/numerical"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 var RuntimeTypes *Types
@@ -83,7 +83,7 @@ func (d Double) ToString(escape bool) string {
 		return "##NaN"
 	}
 	res := fmt.Sprintf("%g", dbl)
-	if numutil.NeedsDecimalSuffix(res) {
+	if numerical.NeedsDecimalSuffix(res) {
 		return res + ".0"
 	}
 	return res

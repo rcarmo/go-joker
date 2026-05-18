@@ -64,7 +64,7 @@ func (v *ArrayVector) Equals(other interface{}) bool {
 	case coretypes.CountedIndexed:
 		return AreCountedIndexedEqual(v, other)
 	default:
-		return IsSeqEqual(v.Seq(), other)
+		return coretypes.IsSeqEqual(v.Seq(), other)
 	}
 }
 

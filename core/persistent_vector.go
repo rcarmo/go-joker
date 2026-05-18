@@ -56,32 +56,12 @@ func (v *PersistentVector) Count() int {
 
 // tailOffset returns the index where the tail starts.
 func (v *PersistentVector) tailOffset() int {
-	if v.count < pvBranching {
-		return 0
-	}
-	return ((v.count - 1) >> pvShift) << pvShift
+	return corecollections.PersistentVectorTailOffset(v.count)
 }
 
 // arrayFor returns the leaf array containing index i.
 func (v *PersistentVector) arrayFor(i int) []coretypes.Object {
-	if i >= v.tailOffset() {
-		return v.tail
-	}
-	node := v.root
-	for level := v.shift; level > 0; level -= pvShift {
-		node = node.Get((i >> level) & pvMask).(*corecollections.TrieNode)
-	}
-	// Convert leaf node to coretypes.Object slice
-	leafStart := (i >> pvShift) << pvShift
-	leafEnd := leafStart + pvBranching
-	if leafEnd > v.tailOffset() {
-		leafEnd = v.tailOffset()
-	}
-	result := make([]coretypes.Object, leafEnd-leafStart)
-	for j := range result {
-		result[j] = node.Get(j).(coretypes.Object)
-	}
-	return result
+	return corecollections.PersistentVectorArrayFor(v.count, v.shift, v.root, v.tail, i)
 }
 
 // Nth returns the element at index i.
@@ -114,16 +94,13 @@ func (v *PersistentVector) Conj(val coretypes.Object) *PersistentVector {
 	// Tail is full — push tail into trie, start new tail
 	var newRoot *corecollections.TrieNode
 	newShift := v.shift
-	tailNode := corecollections.NewTrieNode()
-	for i, obj := range v.tail {
-		tailNode.Set(i, obj)
-	}
+	tailNode := corecollections.PersistentVectorTailNode(v.tail)
 	// Is there room in the existing trie?
-	if (v.count >> pvShift) > (1 << v.shift) {
+	if corecollections.PersistentVectorTrieOverflow(v.count, v.shift) {
 		// Trie overflow — add a new level
 		newRoot = corecollections.NewTrieNode()
 		newRoot.Set(0, v.root)
-		newRoot.Set(1, pvNewPath(v.shift, tailNode))
+		newRoot.Set(1, corecollections.NewTriePath(v.shift, pvShift, tailNode))
 		newShift += pvShift
 	} else {
 		newRoot = v.pushTail(v.shift, v.root, tailNode)
@@ -138,19 +115,7 @@ func (v *PersistentVector) Conj(val coretypes.Object) *PersistentVector {
 
 // pushTail inserts a tail node into the trie.
 func (v *PersistentVector) pushTail(level uint, parent *corecollections.TrieNode, tailNode *corecollections.TrieNode) *corecollections.TrieNode {
-	subIdx := ((v.count - 1) >> level) & pvMask
-	ret := cloneNode(parent)
-	if level == pvShift {
-		ret.Set(subIdx, tailNode)
-	} else {
-		child := parent.Get(subIdx)
-		if child != nil {
-			ret.Set(subIdx, v.pushTail(level-pvShift, child.(*corecollections.TrieNode), tailNode))
-		} else {
-			ret.Set(subIdx, pvNewPath(level-pvShift, tailNode))
-		}
-	}
-	return ret
+	return corecollections.PersistentVectorPushTail(level, v.count, parent, tailNode)
 }
 
 // Assoc returns a new vector with index i set to val.
@@ -180,14 +145,7 @@ func (v *PersistentVector) Assoc(i int, val coretypes.Object) *PersistentVector 
 }
 
 func (v *PersistentVector) assocNode(level uint, node *corecollections.TrieNode, i int, val coretypes.Object) *corecollections.TrieNode {
-	ret := cloneNode(node)
-	if level == 0 {
-		ret.Set(i&pvMask, val)
-	} else {
-		subIdx := (i >> level) & pvMask
-		ret.Set(subIdx, v.assocNode(level-pvShift, node.Get(subIdx).(*corecollections.TrieNode), i, val))
-	}
-	return ret
+	return corecollections.PersistentVectorAssocNode(level, node, i, val)
 }
 
 // Pop returns a new vector without the last element.
@@ -228,22 +186,7 @@ func (v *PersistentVector) Pop() *PersistentVector {
 }
 
 func (v *PersistentVector) popTail(level uint, node *corecollections.TrieNode) *corecollections.TrieNode {
-	subIdx := ((v.count - 2) >> level) & pvMask
-	if level > pvShift {
-		newChild := v.popTail(level-pvShift, node.Get(subIdx).(*corecollections.TrieNode))
-		if newChild == nil && subIdx == 0 {
-			return nil
-		}
-		ret := cloneNode(node)
-		ret.Set(subIdx, newChild)
-		return ret
-	} else if subIdx == 0 {
-		return nil
-	} else {
-		ret := cloneNode(node)
-		ret.Set(subIdx, nil)
-		return ret
-	}
+	return corecollections.PersistentVectorPopTail(level, v.count, node)
 }
 
 // ToSlice returns all elements as a flat slice.
@@ -253,16 +196,6 @@ func (v *PersistentVector) ToSlice() []coretypes.Object {
 		result[i] = v.Nth(i)
 	}
 	return result
-}
-
-// --- Helpers ---
-
-func cloneNode(node *corecollections.TrieNode) *corecollections.TrieNode {
-	return corecollections.CloneTrieNode(node)
-}
-
-func pvNewPath(level uint, node *corecollections.TrieNode) *corecollections.TrieNode {
-	return corecollections.NewTriePath(level, pvShift, node)
 }
 
 // --- coretypes.Object interface ---
@@ -283,7 +216,7 @@ func (v *PersistentVector) Equals(other interface{}) bool {
 	case coretypes.CountedIndexed:
 		return AreCountedIndexedEqual(v, other)
 	default:
-		return IsSeqEqual(v.Seq(), other)
+		return coretypes.IsSeqEqual(v.Seq(), other)
 	}
 }
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
-	corestr "github.com/rcarmo/go-joker/core/string"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 const KeywordHashMask uint32 = 0x7334c790

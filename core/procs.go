@@ -18,10 +18,10 @@ import (
 
 	"github.com/rcarmo/go-joker/core/deps"
 	coregenerated "github.com/rcarmo/go-joker/core/generated"
-	"github.com/rcarmo/go-joker/core/numutil"
 	"github.com/rcarmo/go-joker/core/osutil"
 	corereader "github.com/rcarmo/go-joker/core/reader"
-	corestr "github.com/rcarmo/go-joker/core/string"
+	"github.com/rcarmo/go-joker/core/types/numerical"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 const VERSION = "v42.8.2"
@@ -492,7 +492,7 @@ var procRand = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procIsSpecialSymbol = func(args []coretypes.Object) coretypes.Object {
-	return coretypes.Boolean{B: IsSpecialSymbol(args[0])}
+	return coretypes.Boolean{B: coretypes.IsSpecialSymbol(args[0])}
 }
 
 var procSubs = func(args []coretypes.Object) coretypes.Object {
@@ -724,7 +724,7 @@ var procSeq = func(args []coretypes.Object) coretypes.Object {
 var procIsInstance = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	t := coretypes.EnsureArgIsType(args, 0)
-	return coretypes.Boolean{B: IsInstance(t, args[1])}
+	return coretypes.Boolean{B: coretypes.IsInstance(t, args[1])}
 }
 
 var procAssoc = func(args []coretypes.Object) coretypes.Object {
@@ -1871,7 +1871,7 @@ var procIsInfinite = func(args []coretypes.Object) coretypes.Object {
 
 var procParseDouble = func(args []coretypes.Object) coretypes.Object {
 	s := coretypes.EnsureArgIsString(args, 0)
-	d, err := numutil.ParseFloat64(s.S)
+	d, err := numerical.ParseFloat64(s.S)
 	if err != nil {
 		return NIL
 	}
@@ -1880,7 +1880,7 @@ var procParseDouble = func(args []coretypes.Object) coretypes.Object {
 
 var procParseLong = func(args []coretypes.Object) coretypes.Object {
 	s := coretypes.EnsureArgIsString(args, 0)
-	i, err := numutil.ParseInt(s.S, 10, 64)
+	i, err := numerical.ParseInt(s.S, 10, 64)
 	if err != nil {
 		return NIL
 	}

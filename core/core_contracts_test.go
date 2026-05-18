@@ -1371,9 +1371,9 @@ func TestTransientContract(t *testing.T) {
 	if tv.Count() != 3 || !tv.At(1).Equals(coretypes.MakeInt(20)) || !tv.At(2).Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("transient vector mutation mismatch: %s %s %s", tv.At(0).ToString(false), tv.At(1).ToString(false), tv.At(2).ToString(false))
 	}
-	pv := tv.ToPersistent()
+	pv := coretypes.EnsureObjectIsCountedIndexed(tv.ToPersistent(), "")
 	if pv.Count() != 3 || !pv.At(1).Equals(coretypes.MakeInt(20)) {
-		t.Fatalf("persistent vector round trip mismatch: %s", pv.ToString(false))
+		t.Fatalf("persistent vector round trip mismatch")
 	}
 	assertPanics(t, "mutating frozen transient vector", func() { tv.ConjInPlace(coretypes.MakeInt(4)) })
 
@@ -1456,7 +1456,7 @@ func TestSeqContract(t *testing.T) {
 		if got := SeqNth(tc.seq, 2); !got.Equals(coretypes.MakeInt(3)) {
 			t.Fatalf("%s SeqNth(2) = %s, want 3", tc.name, got.ToString(false))
 		}
-		if !SeqsEqual(tc.seq, base) || !tc.seq.Equals(base) || tc.seq.Hash() != base.Hash() {
+		if !coretypes.SeqsEqual(tc.seq, base) || !tc.seq.Equals(base) || tc.seq.Hash() != base.Hash() {
 			t.Fatalf("%s should equal/hash like base sequence", tc.name)
 		}
 		withHead := tc.seq.Cons(coretypes.MakeInt(0))
@@ -3406,7 +3406,7 @@ func TestTransientVector(t *testing.T) {
 	if tv.Nth(1).(coretypes.Int).I != 99 {
 		t.Fatalf("expected 99 at index 1")
 	}
-	pv := tv.ToPersistent()
+	pv := coretypes.EnsureObjectIsCountedIndexed(tv.ToPersistent(), "")
 	if pv.Count() != 4 {
 		t.Fatalf("persistent count wrong")
 	}

@@ -70,24 +70,10 @@ var (
 )
 
 func (iter *ArrayNodeIterator) HasNext() bool {
-	for {
-		if iter.nestedIter != nil {
-			if iter.nestedIter.HasNext() {
-				return true
-			} else {
-				iter.nestedIter = nil
-			}
-		}
-		if iter.i < len(iter.array) {
-			node := iter.array[iter.i]
-			iter.i++
-			if node != nil {
-				iter.nestedIter = node.iter()
-			}
-		} else {
-			return false
-		}
-	}
+	nextI, nextNested, has := corecollections.ArrayNodeIterHasNext(iter.array, iter.i, iter.nestedIter, func(n Node) bool { return n == nil }, func(n Node) corecollections.Iterator[*coretypes.Pair] { return n.iter() })
+	iter.i = nextI
+	iter.nestedIter = nextNested
+	return has
 }
 
 func (iter *ArrayNodeIterator) Next() *coretypes.Pair {
@@ -98,20 +84,19 @@ func (iter *ArrayNodeIterator) Next() *coretypes.Pair {
 }
 
 func (iter *NodeIterator) advance() bool {
-	for iter.i < len(iter.array) {
-		key := iter.array[iter.i]
-		nodeOrVal := iter.array[iter.i+1]
-		iter.i += 2
-		if key != nil {
-			iter.nextEntry = &coretypes.Pair{Key: key.(coretypes.Object), Value: nodeOrVal.(coretypes.Object)}
-			return true
-		} else if nodeOrVal != nil {
-			iter1 := nodeOrVal.(Node).iter()
-			if iter1 != nil && iter1.HasNext() {
-				iter.nextIter = iter1
-				return true
-			}
-		}
+	nextI, entry, hasEntry, nested, hasNested := corecollections.NodeArrayAdvance(iter.array, iter.i, func(v any) corecollections.Iterator[*coretypes.Pair] {
+		return v.(Node).iter()
+	}, func(key any, value any) *coretypes.Pair {
+		return &coretypes.Pair{Key: key.(coretypes.Object), Value: value.(coretypes.Object)}
+	})
+	iter.i = nextI
+	if hasEntry {
+		iter.nextEntry = entry
+		return true
+	}
+	if hasNested {
+		iter.nextIter = nested
+		return true
 	}
 	return false
 }
@@ -174,7 +159,7 @@ func (s *ArrayNodeSeq) Seq() coretypes.Seq {
 }
 
 func (s *ArrayNodeSeq) Equals(other interface{}) bool {
-	return IsSeqEqual(s, other)
+	return coretypes.IsSeqEqual(s, other)
 }
 
 func (s *ArrayNodeSeq) ToString(escape bool) string {
@@ -267,7 +252,7 @@ func (s *NodeSeq) Seq() coretypes.Seq {
 }
 
 func (s *NodeSeq) Equals(other interface{}) bool {
-	return IsSeqEqual(s, other)
+	return coretypes.IsSeqEqual(s, other)
 }
 
 func (s *NodeSeq) ToString(escape bool) string {

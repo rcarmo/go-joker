@@ -6,7 +6,7 @@ import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	corert "github.com/rcarmo/go-joker/core/runtime"
-	corestr "github.com/rcarmo/go-joker/core/string"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 // RuntimeExecutionAdapter is the narrow root-owned runtime surface that future
@@ -238,8 +238,8 @@ func (RuntimeExecutionAdapter) Nth(coll coretypes.Object, idx int) (coretypes.Ob
 			return c.arr[idx], true
 		}
 	case *TransientVector:
-		if idx >= 0 && idx < len(c.arr) {
-			return c.arr[idx], true
+		if idx >= 0 && idx < len(c.Arr) {
+			return c.Arr[idx], true
 		}
 	case coretypes.String:
 		return stringNthFast(c.S, idx), true
@@ -268,8 +268,8 @@ func (RuntimeExecutionAdapter) First(coll coretypes.Object) (coretypes.Object, b
 		}
 		return NIL, true
 	case *TransientVector:
-		if len(c.arr) > 0 {
-			return c.arr[0], true
+		if len(c.Arr) > 0 {
+			return c.Arr[0], true
 		}
 		return NIL, true
 	case coretypes.Seqable:

@@ -12,8 +12,8 @@ import (
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
-	corestr "github.com/rcarmo/go-joker/core/string"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 type (
@@ -654,33 +654,6 @@ func IsSeq(obj coretypes.Object) bool {
 	switch obj.(type) {
 	case coretypes.Seq:
 		return true
-	default:
-		return false
-	}
-}
-
-func IsInstance(t *coretypes.Type, obj coretypes.Object) bool {
-	if obj.Equals(NIL) {
-		return false
-	}
-	// Interface-typed extension objects may report a concrete sequence/map type
-	// from GetType while still satisfying runtime interfaces such as coretypes.Reduce.
-	// Check the actual Go interface first for hot extension paths.
-	if t == TYPE.Reduce {
-		_, ok := obj.(coretypes.Reduce)
-		return ok
-	}
-	if t == TYPE.KVReduce {
-		_, ok := obj.(coretypes.KVReduce)
-		return ok
-	}
-	return coretypes.IsEqualOrImplements(t, obj.GetType())
-}
-
-func IsSpecialSymbol(obj coretypes.Object) bool {
-	switch obj := obj.(type) {
-	case coretypes.Symbol:
-		return obj.NamespaceKey() == nil && SPECIAL_SYMBOLS[obj.NameKey()]
 	default:
 		return false
 	}

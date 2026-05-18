@@ -1,8 +1,8 @@
 package core
 
 import (
-	corestr "github.com/rcarmo/go-joker/core/string"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 	"sync"
 )
 
@@ -413,7 +413,7 @@ type TakeSeq struct {
 }
 
 func (s *FilteringSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
-func (s *FilteringSeq) Equals(other interface{}) bool { return IsSeqEqual(s, other) }
+func (s *FilteringSeq) Equals(other interface{}) bool { return coretypes.IsSeqEqual(s, other) }
 func (s *FilteringSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *s
 	res.Info = info
@@ -491,7 +491,7 @@ func (s *FilteringSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) c
 }
 
 func (s *TakeSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
-func (s *TakeSeq) Equals(other interface{}) bool { return IsSeqEqual(s, other) }
+func (s *TakeSeq) Equals(other interface{}) bool { return coretypes.IsSeqEqual(s, other) }
 func (s *TakeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *s
 	res.Info = info
@@ -755,7 +755,7 @@ func NewIntRange(start, end, step int) *IntRange {
 }
 
 func (r *IntRange) ToString(escape bool) string   { return SeqToString(r.Seq(), escape) }
-func (r *IntRange) Equals(other interface{}) bool { return IsSeqEqual(r.Seq(), other) }
+func (r *IntRange) Equals(other interface{}) bool { return coretypes.IsSeqEqual(r.Seq(), other) }
 func (r *IntRange) WithInfo(i *coretypes.ObjectInfo) coretypes.Object {
 	res := *r
 	res.Info = i
@@ -1117,7 +1117,7 @@ type intRangeSeq struct {
 }
 
 func (s *intRangeSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
-func (s *intRangeSeq) Equals(other interface{}) bool { return IsSeqEqual(s, other) }
+func (s *intRangeSeq) Equals(other interface{}) bool { return coretypes.IsSeqEqual(s, other) }
 func (s *intRangeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *s
 	res.Info = info

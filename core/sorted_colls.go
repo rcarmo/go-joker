@@ -7,8 +7,8 @@ package core
 // Sufficient for parity; can be upgraded to a tree later.
 
 import (
+	corecollections "github.com/rcarmo/go-joker/core/collections"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"sort"
 )
 
 var sortedMetaCache coretypes.Map
@@ -42,7 +42,7 @@ func registerSortedCollProcs() {
 		pairs := sortedKeyValuePairs(args, nil)
 		m := collectionConstruction.NewEmptyArrayMap()
 		for _, p := range pairs {
-			addOrReplaceSortedMap(m, p.key, p.val, nil)
+			addOrReplaceSortedMap(m, p.Key, p.Val, nil)
 		}
 		return m.WithMeta(sortedCollMeta())
 	}}
@@ -60,7 +60,7 @@ func registerSortedCollProcs() {
 		pairs := sortedKeyValuePairs(keyvals, comp)
 		m := collectionConstruction.NewEmptyArrayMap()
 		for _, p := range pairs {
-			addOrReplaceSortedMap(m, p.key, p.val, comp)
+			addOrReplaceSortedMap(m, p.Key, p.Val, comp)
 		}
 		return m.WithMeta(sortedCollMeta())
 	}}
@@ -129,21 +129,13 @@ func registerSortedCollProcs() {
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "comparator"), compVr)
 }
 
-type sortedKV struct {
-	key coretypes.Object
-	val coretypes.Object
-}
-
-func sortedKeyValuePairs(keyvals []coretypes.Object, comp coretypes.Callable) []sortedKV {
-	pairs := make([]sortedKV, len(keyvals)/2)
-	for i := 0; i < len(keyvals); i += 2 {
-		pairs[i/2] = sortedKV{key: keyvals[i], val: keyvals[i+1]}
-	}
-	sort.SliceStable(pairs, func(i, j int) bool {
+func sortedKeyValuePairs(keyvals []coretypes.Object, comp coretypes.Callable) []corecollections.KV[coretypes.Object, coretypes.Object] {
+	pairs := corecollections.FlatToKVs(keyvals)
+	corecollections.SortKVsBy(pairs, func(a, b coretypes.Object) bool {
 		if comp != nil {
-			return compareWith(comp, pairs[i].key, pairs[j].key) < 0
+			return compareWith(comp, a, b) < 0
 		}
-		return compareObjects(pairs[i].key, pairs[j].key) < 0
+		return compareObjects(a, b) < 0
 	})
 	return pairs
 }
@@ -171,11 +163,11 @@ func addOrReplaceSortedMap(m *ArrayMap, key coretypes.Object, val coretypes.Obje
 func sortedSetFrom(values []coretypes.Object, comp coretypes.Callable) coretypes.Object {
 	sorted := make([]coretypes.Object, len(values))
 	copy(sorted, values)
-	sort.Slice(sorted, func(i, j int) bool {
+	corecollections.SortBy(sorted, func(a, b coretypes.Object) bool {
 		if comp != nil {
-			return compareWith(comp, sorted[i], sorted[j]) < 0
+			return compareWith(comp, a, b) < 0
 		}
-		return compareObjects(sorted[i], sorted[j]) < 0
+		return compareObjects(a, b) < 0
 	})
 	s := collectionConstruction.NewEmptySet()
 	for _, v := range sorted {
@@ -195,9 +187,7 @@ func sortedSubseq(args []coretypes.Object, reverse bool) coretypes.Object {
 	coll := args[0]
 	entries := sortedEntries(coll)
 	if reverse {
-		for i, j := 0, len(entries)-1; i < j; i, j = i+1, j-1 {
-			entries[i], entries[j] = entries[j], entries[i]
-		}
+		corecollections.Reverse(entries)
 	}
 	startPred := coretypes.EnsureObjectIsCallable(args[1], "subseq predicate must be callable, got %s")
 	startKey := args[2]
@@ -233,7 +223,7 @@ func sortedEntries(coll coretypes.Object) []coretypes.Object {
 			out = append(out, collectionConstruction.NewArrayVectorFrom(p.Key, p.Value))
 		}
 		if !preserveOrder {
-			sort.Slice(out, func(i, j int) bool { return compareObjects(rangeKey(out[i]), rangeKey(out[j])) < 0 })
+			corecollections.SortBy(out, func(a, b coretypes.Object) bool { return compareObjects(rangeKey(a), rangeKey(b)) < 0 })
 		}
 		return out
 	}
@@ -242,7 +232,7 @@ func sortedEntries(coll coretypes.Object) []coretypes.Object {
 			out = append(out, seq.First())
 		}
 		if !preserveOrder {
-			sort.Slice(out, func(i, j int) bool { return compareObjects(out[i], out[j]) < 0 })
+			corecollections.SortBy(out, func(a, b coretypes.Object) bool { return compareObjects(a, b) < 0 })
 		}
 	}
 	return out

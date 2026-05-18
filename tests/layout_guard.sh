@@ -8,12 +8,13 @@ status=0
 fail() { echo "layout guard: $*" >&2; status=1; }
 
 [[ -f cmd/joker/main.go ]] || fail "missing CLI entrypoint cmd/joker/main.go"
-for dir in trace ir wasm generated runtime collections reader string cursor types objectmodel evaluator bootstrap procsystem; do
+for dir in trace ir wasm generated runtime collections reader cursor types objectmodel evaluator bootstrap procsystem; do
   [[ -d "core/${dir}" ]] || fail "missing core/${dir}"
 done
-for dir in runtime collections reader ir wasm generated string cursor types objectmodel evaluator bootstrap procsystem; do
+for dir in runtime collections reader ir wasm generated cursor types objectmodel evaluator bootstrap procsystem; do
   [[ -f "core/${dir}/doc.go" ]] || fail "missing core/${dir}/doc.go"
 done
+[[ -f core/types/string/doc.go ]] || fail "missing core/types/string/doc.go"
 [[ -f std/http/router/router.joke ]] || fail "missing std/http/router/router.joke"
 
 if [[ -d lib/joker/http ]]; then

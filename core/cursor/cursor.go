@@ -3,7 +3,7 @@ package cursor
 import (
 	"unicode/utf8"
 
-	corestr "github.com/rcarmo/go-joker/core/string"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 // Cursor is an efficient iterator over a string's runes.

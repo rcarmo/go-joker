@@ -69,7 +69,7 @@ type ChunkedCons struct {
 }
 
 func (cc *ChunkedCons) ToString(escape bool) string   { return SeqToString(cc, escape) }
-func (cc *ChunkedCons) Equals(other interface{}) bool { return IsSeqEqual(cc, other) }
+func (cc *ChunkedCons) Equals(other interface{}) bool { return coretypes.IsSeqEqual(cc, other) }
 func (cc *ChunkedCons) GetType() *coretypes.Type      { return TYPE.LazySeq }
 func (cc *ChunkedCons) Hash() uint32                  { return hashOrdered(cc) }
 func (cc *ChunkedCons) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {

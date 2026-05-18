@@ -21,7 +21,7 @@ func NewList(first coretypes.Object, rest *List) *List {
 	if rest != nil {
 		restNode = rest.listNode()
 	}
-	node := corecollections.NewListNode(first, restNode)
+	node := corecollections.MaterializeListNode(nil, 1, first, restNode)
 	return &List{first: first, rest: rest, count: node.Count(), node: node}
 }
 
@@ -30,14 +30,14 @@ func (list *List) listNode() *corecollections.ListNode[coretypes.Object] {
 		return list.node
 	}
 	if list.count == 0 {
-		list.node = corecollections.NewEmptyListNode[coretypes.Object](list.first)
+		list.node = corecollections.MaterializeListNode(nil, 0, list.first, nil)
 		return list.node
 	}
 	var restNode *corecollections.ListNode[coretypes.Object]
 	if list.rest != nil {
 		restNode = list.rest.listNode()
 	}
-	list.node = corecollections.NewListNode(list.first, restNode)
+	list.node = corecollections.MaterializeListNode(nil, list.count, list.first, restNode)
 	return list.node
 }
 
@@ -76,7 +76,7 @@ func (seq *List) Format(w io.Writer, indent int) int {
 }
 
 func (list *List) Equals(other interface{}) bool {
-	return IsSeqEqual(list, other)
+	return coretypes.IsSeqEqual(list, other)
 }
 
 func (list *List) GetType() *coretypes.Type {
@@ -111,15 +111,15 @@ func (list *List) Seq() coretypes.Seq {
 }
 
 func (list *List) Second() coretypes.Object {
-	return list.listNode().Rest().First()
+	return corecollections.ListSecond(list.listNode())
 }
 
 func (list *List) Third() coretypes.Object {
-	return list.listNode().Rest().Rest().First()
+	return corecollections.ListThird(list.listNode())
 }
 
 func (list *List) Forth() coretypes.Object {
-	return list.listNode().Rest().Rest().Rest().First()
+	return corecollections.ListFourth(list.listNode())
 }
 
 func (list *List) Count() int {

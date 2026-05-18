@@ -39,36 +39,12 @@ type (
 	}
 )
 
-func SeqsEqual(seq1, seq2 coretypes.Seq) bool {
-	iter2 := iter(seq2)
-	for iter1 := iter(seq1); iter1.HasNext(); {
-		if !iter2.HasNext() || !iter2.Next().Equals(iter1.Next()) {
-			return false
-		}
-	}
-	return !iter2.HasNext()
-}
-
-func IsSeqEqual(seq coretypes.Seq, other interface{}) bool {
-	if seq == other {
-		return true
-	}
-	switch other := other.(type) {
-	case coretypes.Sequential:
-		switch other := other.(type) {
-		case coretypes.Seqable:
-			return SeqsEqual(seq, other.Seq())
-		}
-	}
-	return false
-}
-
 func (seq *MappingSeq) Seq() coretypes.Seq {
 	return seq
 }
 
 func (seq *MappingSeq) Equals(other interface{}) bool {
-	return IsSeqEqual(seq, other)
+	return coretypes.IsSeqEqual(seq, other)
 }
 
 func (seq *MappingSeq) ToString(escape bool) string {
@@ -133,7 +109,7 @@ func (seq *LazySeq) IsRealized() bool {
 }
 
 func (seq *LazySeq) Equals(other interface{}) bool {
-	return IsSeqEqual(seq, other)
+	return coretypes.IsSeqEqual(seq, other)
 }
 
 func (seq *LazySeq) ToString(escape bool) string {
@@ -192,7 +168,7 @@ func (seq *ArraySeq) Seq() coretypes.Seq {
 }
 
 func (seq *ArraySeq) Equals(other interface{}) bool {
-	return IsSeqEqual(seq, other)
+	return coretypes.IsSeqEqual(seq, other)
 }
 
 func (seq *ArraySeq) ToString(escape bool) string {
@@ -278,7 +254,7 @@ func (seq *ConsSeq) Seq() coretypes.Seq {
 }
 
 func (seq *ConsSeq) Equals(other interface{}) bool {
-	return IsSeqEqual(seq, other)
+	return coretypes.IsSeqEqual(seq, other)
 }
 
 func (seq *ConsSeq) ToString(escape bool) string {

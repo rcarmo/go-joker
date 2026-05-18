@@ -11,7 +11,7 @@ import (
 	"reflect"
 
 	gen_go "github.com/rcarmo/go-joker/core/gen/gengo"
-	corestr "github.com/rcarmo/go-joker/core/string"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 func filenameAsGo(name string) string {

@@ -28,10 +28,7 @@ Generated from `go:generate` directives in `core/object.go`:
 
 | File | Current classification | Why it remains root-bound |
 |---|---|---|
-| `core/types_assert_gen.go` | object-model helper code | Generated `EnsureObjectIs*`/`EnsureArgIs*` functions return root interfaces/concrete types and call root error helpers. |
-| `core/types_info_gen.go` | object-model helper code | Generated `WithInfo` methods attach root `ObjectInfo` to root concrete object types. |
-
-These are not data-only payloads. They should remain near the object model unless the object/protocol boundary itself is split.
+These generated files were removed in favor of explicit non-generated root files (`core/assert_root.go`, `core/with_info_root.go`) plus moved helper implementations in `core/types`.
 
 ### Generator source packages
 

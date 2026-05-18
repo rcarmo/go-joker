@@ -39,7 +39,7 @@ func ArraySeqFromArrayMap(m *ArrayMap) *ArraySeq {
 func (seq *ArrayMapSeq) SequentialMarker() {}
 
 func (seq *ArrayMapSeq) Equals(other interface{}) bool {
-	return IsSeqEqual(seq, other)
+	return coretypes.IsSeqEqual(seq, other)
 }
 
 func (seq *ArrayMapSeq) ToString(escape bool) string {

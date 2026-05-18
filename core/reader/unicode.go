@@ -3,14 +3,14 @@ package reader
 import (
 	"strings"
 
-	"github.com/rcarmo/go-joker/core/numutil"
+	"github.com/rcarmo/go-joker/core/types/numerical"
 )
 
 // ParseUnicodeCode parses a reader unicode escape/code point using base and
 // returns the decoded rune. Callers keep reader-position/error construction in
 // their own package.
 func ParseUnicodeCode(str string, base int) (rune, error) {
-	i, err := numutil.ParseInt(str, base, 32)
+	i, err := numerical.ParseInt(str, base, 32)
 	if err != nil {
 		return 0, err
 	}

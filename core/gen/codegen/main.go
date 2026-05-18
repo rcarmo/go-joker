@@ -21,8 +21,8 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 	gen_go "github.com/rcarmo/go-joker/core/gen/gengo"
 	corereader "github.com/rcarmo/go-joker/core/reader"
-	corestr "github.com/rcarmo/go-joker/core/string"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 type FileInfo struct {

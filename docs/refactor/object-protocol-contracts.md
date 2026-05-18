@@ -17,7 +17,7 @@ The canonical object/protocol surface has moved substantially out of root `core`
 - type descriptors/registry/builders and type metadata labels;
 - scalar and reader values: `Int`, `Double`, `Boolean`, `Char`, `String`, `Time`, `Regex`, `Comment`;
 - big numeric values and numeric mechanics: `BigInt`, `BigFloat`, `Ratio`, `Number`, `Precision`, `Ops`, promotion helpers, numeric compare/min/max/category helpers, rune/native-int bounds, and `MakeMathBigInt*` helpers;
-- simple runtime values such as `RecurBindings` and `Delay`;
+- simple runtime values such as `RecurBindings`, `Delay`, and transient collection implementations (`TransientVector`, `TransientMap`);
 - protocol contracts that are now package-independent: `Equality`, `Counted`, `Named`, `Printer`, `Pprinter`, `Formatter`, `Native`, `Pending`, `Comparable`, `Comparator`, `Sequential`, `StringReader`, `Callable`, `Conjable`, `Deref`, `CountedIndexed`, `Indexed`, `Stack`, `Gettable`, `Seq`, `Seqable`, `Associative`, `Reversible`, `Collection`, `KVReduce`, `Reduce`, `Error`, `Map`, `Set`, `Vec`, `Meta`, and `Ref`;
 - shared collection helpers/contracts such as `MapIterator`, `Pair`, `EmptyMapIterator`, `SafeMerge`, `EmptyMapIteratorInstance`, and iterator error construction;
 - assertion helpers for `coretypes.*` and stdlib I/O return types, using root-installed error callbacks so root `EvalError` behavior is preserved;
@@ -26,7 +26,7 @@ The canonical object/protocol surface has moved substantially out of root `core`
 Root `core` still owns higher-level runtime/object systems that carry root-only concrete types or mutable namespace/evaluator state:
 
 - `Nil`, `Var`, `Proc`, `Fn`, `ExInfo`, and `Atom`;
-- concrete collection implementations (`ArrayMap`, `HashMap`, `MapSet`, vectors, seq/list/chunked/transient/sorted families) that still depend on root construction, metadata propagation, proc/sorted helpers, or concrete implementation return types;
+- concrete collection implementations (`ArrayMap`, `HashMap`, `MapSet`, vectors, seq/list/chunked/sorted families) that still depend on root construction, metadata propagation, proc/sorted helpers, or concrete implementation return types;
 - namespace/bootstrap/proc systems and generated runtime mutation payloads;
 - evaluator/parser/runtime/executor files that still require root `Fn`, `Var`, `Expr`, `LocalEnv`, namespace, and frame state.
 
