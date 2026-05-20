@@ -14,14 +14,8 @@ Recent feature work improved boundaries for new code (`std/transit`, `std/system
 - `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
 - `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/types/collections`, `core/reader`, `core/types/string`, and `core/types/numerical` own extracted helpers and moved concrete families with direct package tests.
 - `core/` is still the runtime kernel and contains:
-  - remaining root runtime object systems (`object.go`, root generated helpers) plus `core/types` for the canonical object/type/protocol model
-  - proc/env/evaluator glue for moved collection/runtime objects
-  - reader/parser/evaluator (coalesced in `eval.go`)
-  - namespace/Var/runtime environment (`ns.go`, `environment*.go`)
-  - core proc implementations (`procs.go`, generated `a_code.go`)
-  - concurrency/core.async/atom registration glue over runtime-owned channel/future/promise/agent/atom wrappers
-  - numeric tower (`numbers.go`)
-  - IR/JIT/WASM machinery (`ir_*`, `wasm_*`)
+  - root runtime object systems, proc/env glue, reader/parser/evaluator, namespace/Var runtime, core proc implementations, concurrency/core.async/atom registration, numeric tower, and IR/JIT/WASM machinery coalesced into `eval.go`
+  - generated/bootstrap runtime payloads in `a_generated_bootstrap_payloads.go` and gen-code helpers in `bootstrap_gen_code.go`
 - `std/*` packages follow a clearer contract:
   - `a_<namespace>.go`: namespace registration and arity/type adapter layer
   - `*_native.go`: implementation logic
@@ -63,14 +57,12 @@ Recent `std/transit` and `std/system` match this pattern.
 
 `core` has too many responsibilities for easy maintenance. The largest hand-maintained files should be treated as decomposition candidates:
 
-- `core/procs.go` — many unrelated public procs in one file.
-- `core/object.go` — remaining root runtime values (`Nil`, `Var`, `Proc`, `Fn`, `ExInfo`) and root-specific helpers; object/protocol/scalar/shared collection contracts have moved to `core/types`, while Atom/Channel/Future/Promise/Agent wrappers now live in `core/runtime`.
-- `core/eval.go` — acceptable for an interpreter but should remain isolated from feature-specific extensions.
+- `core/eval.go` — now the consolidated handwritten runtime kernel: root runtime values (`Nil`, `Var`, `Proc`, `Fn`, `ExInfo`), proc/env/evaluator glue, reader/parser integration, IR/WASM execution, and root-specific helpers; object/protocol/scalar/shared collection contracts have moved to `core/types`, while Atom/Channel/Future/Promise/Agent wrappers now live in `core/runtime`.
 - `core/types/ops_impl.go` and `core/types/numbers.go` — numeric contracts are now type-package owned and remain critical; keep focused tests around promotion, ratio, and native-int bounds.
-- remaining root IR/WASM/executor files — partially extracted, but compiler/executor/runtime pieces still depend on root `Fn`/`Var`/`Expr`, namespace/frame, and call contracts.
+- remaining root IR/WASM/executor sections in `eval.go` are partially extracted, but compiler/executor/runtime pieces still depend on root `Fn`/`Var`/`Expr`, namespace/frame, and call contracts.
 - moved concrete collection families now live in `core/types/collections`; root `core` should not grow new collection-owned files.
 
-Recommendation: keep collection ownership in `core/types/collections` and runtime wrapper ownership in `core/runtime`; use direct imports from root/runtime/generator code instead of root aliases. `tests/layout_guard.sh` now rejects reintroducing moved root collection files plus root channel/future/promise/agent/atom wrappers/literals. Current production collection and reader construction call sites use `corecollections.*`, and runtime-adjacent procs use `corert.*`; further root shrinking should focus on runtime/env/proc ownership, generated/bootstrap placement, and IR/WASM clusters rather than recreating shims. Continue adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
+Recommendation: keep collection ownership in `core/types/collections` and runtime wrapper ownership in `core/runtime`; use direct imports from root/runtime/generator code instead of root aliases. `tests/layout_guard.sh` now rejects reintroducing moved root collection files plus root channel/future/promise/agent/atom wrappers/literals. Current production collection and reader construction call sites use `corecollections.*`, and runtime-adjacent procs use `corert.*`; further root shrinking should focus on runtime/env/proc ownership, generated/bootstrap placement, and IR/WASM clusters rather than recreating shims. New feature code should not grow `eval.go`; create/move code by responsibility once a real package boundary is available.
 
 ### 2. Runtime-installed Var metadata is implicit
 
@@ -80,7 +72,7 @@ Recommendation: all new Go-installed public vars should use `InternVar(..., Make
 
 ### 3. Generated files skew coverage and file-size metrics
 
-`core/a_code.go` is generated and dominates line counts. Coverage should be interpreted in two tracks:
+`core/a_generated_bootstrap_payloads.go` is generated and dominates line counts. Coverage should be interpreted in two tracks:
 
 - generated/runtime aggregate coverage for CI trend visibility
 - non-generated feature coverage for meaningful maintenance decisions
