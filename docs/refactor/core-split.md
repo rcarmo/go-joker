@@ -27,7 +27,7 @@ This makes it too easy for features to reach across layers through unexported st
 
 The type/object split has advanced enough that `core/types` is now the canonical object/protocol package. Root `core` no longer defines or aliases `Object`, and the recent cleanup removed transitional root aliases for `Keyword`, `Symbol`, `Map`, `Meta`, `MetaHolder`, `MapIterator`, `Pair`, and `EmptyMapIterator`. Root callers now use explicit `coretypes.*` names for those contracts. Major moved families include scalar values (`Int`, `Double`, `Boolean`, `Char`, `String`, `Time`, `Regex`, `Comment`), big numeric values (`BigInt`, `BigFloat`, `Ratio`), numeric operation implementations, `RecurBindings`, `Delay`, symbol/name values, generic info helpers, shared collection protocols (`Map`, `Set`, `Vec`) and metadata/ref contracts (`Meta`, `MetaHolder`, `Ref`).
 
-Root `core` file count is now 22 total Go files (1 root test file). `core/types` has 19 Go files. Concrete collection implementations have moved to `core/types/collections`; root collection files are deleted and guarded against reintroduction. Runtime-owned object wrappers for channels, futures/promises, agents, and atoms now live in `core/runtime`; root proc/env glue uses exported runtime methods and `coretypes` runtime hooks for errors/arity instead of reaching into moved state directly. Root generated bootstrap still remains `core/a_generated_bootstrap_payloads.go`; previous root `types_assert_gen.go`/`types_info_gen.go` were replaced by explicit root support co-located in `object.go` while moved helpers live in `core/types`.
+Root `core` file count is now 18 total Go files (1 root test file). `core/types` has 19 Go files. Concrete collection implementations have moved to `core/types/collections`; root collection files are deleted and guarded against reintroduction. Runtime-owned object wrappers for channels, futures/promises, agents, and atoms now live in `core/runtime`; root proc/env glue uses exported runtime methods and `coretypes` runtime hooks for errors/arity instead of reaching into moved state directly. Root generated bootstrap still remains `core/a_generated_bootstrap_payloads.go`; previous root `types_assert_gen.go`/`types_info_gen.go` were replaced by explicit root support co-located in `object.go` while moved helpers live in `core/types`.
 
 ## Proposed split order
 
@@ -139,7 +139,7 @@ core/eval/ (future target; not reserved yet)
 Current candidate files:
 
 - `eval.go`
-- `expr.go`
+- expression dump/inference helpers now coalesced into `eval.go`
 - tail-call runtime trampoline and parse-time recur rewrite now coalesced into `eval.go`
 - public protocol/record forms now coalesced into `protocol.go`
 - form/compiler pieces in `parse.go`

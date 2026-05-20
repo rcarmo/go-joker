@@ -25,7 +25,7 @@ The former `core/ir*.go` grab-bag has now been split into two categories:
 - `core/program_envelope.go` — root IR program envelope, cache, and analysis adapter layer
 - `core/fn_ir_cache.go` — function IR cache plus call dispatch bridge from `Fn`/`Proc` (the former tiny `fn_ir_dispatch.go` was folded into this file)
 - `core/fn_ir_compile.go` — function compilation
-- `core/loop_compiler.go` — loop/expression lowering
+- loop/expression lowering now coalesced into `core/fn_ir_cache.go`
 - `core/loop_wasm_diagnostics.go` — diagnostics tied to root `Expr` / `LoopExpr`
 - `core/boxed_exec.go` — boxed interpreter
 - `core/typed_exec_nanbox.go` — typed/nanbox execution path

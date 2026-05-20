@@ -69,7 +69,7 @@ Safe next steps:
 
 Files:
 
-- `wasm_compile.go`
+- WASM compile/lowering glue now coalesced into `fn_ir_cache.go`
 - `wasm_compile_host.go`
 - `wasm_exec_runtime.go`
 - `wasm_host_funcs.go`

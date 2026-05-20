@@ -180,7 +180,28 @@ def eleventh_pass() -> None:
     append_body("native_recursive.go", "fn_ir_cache.go")
 
 
+
+def twelfth_pass() -> None:
+    # Expression dump/pack helpers are evaluator/expression mechanics.
+    if append_body("expr.go", "eval.go"):
+        pass
+    if append_body("pack.go", "eval.go"):
+        for spec in ['"bytes"', '"encoding/binary"', '"maps"', '"slices"']:
+            ensure_import("eval.go", spec)
+
+    # IR compiler and WASM lowering are one executor/compiler cluster until moved to core/ir+core/wasm.
+    if append_body("loop_compiler.go", "fn_ir_cache.go"):
+        ensure_import("fn_ir_cache.go", '"fmt"')
+        ensure_import("fn_ir_cache.go", '"math"')
+        ensure_import("fn_ir_cache.go", 'corert "github.com/rcarmo/go-joker/core/runtime"')
+        ensure_import("fn_ir_cache.go", 'corecollections "github.com/rcarmo/go-joker/core/types/collections"')
+    if append_body("wasm_compile.go", "fn_ir_cache.go"):
+        for spec in ['"context"', '"encoding/binary"', '"math"', '"reflect"']:
+            ensure_import("fn_ir_cache.go", spec)
+        ensure_import("fn_ir_cache.go", 'corewasm "github.com/rcarmo/go-joker/core/wasm"')
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass()
 
 if __name__ == "__main__": main()
