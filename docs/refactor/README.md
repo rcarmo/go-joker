@@ -21,7 +21,7 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 - Tracing/profiling aggregation state is extracted into `core/trace`.
 
 
-Current focused cleanup metrics (2026-05-20): root `core/*.go` is 45 files with one consolidated root test file; `core/types` is 19 files and owns the canonical object/type/protocol/value contracts plus shared protocols (`Map`, `Meta`, `Set`, `Vec`, `Ref`), transient implementations, tagged-literal parsing helpers, runtime hooks, and generated/assertion replacements for `coretypes.*` and stdlib I/O return types. `core/types/collections` owns concrete vectors/maps/sets/lists/seqs/chunks, and `core/runtime` owns channel/future/promise/agent/atom wrappers plus runtime primitives.
+Current focused cleanup metrics (2026-05-20): root `core/*.go` is 43 files with one consolidated root test file; `core/types` is 19 files and owns the canonical object/type/protocol/value contracts plus shared protocols (`Map`, `Meta`, `Set`, `Vec`, `Ref`), transient implementations, tagged-literal parsing helpers, runtime hooks, and generated/assertion replacements for `coretypes.*` and stdlib I/O return types. `core/types/collections` owns concrete vectors/maps/sets/lists/seqs/chunks, and `core/runtime` owns channel/future/promise/agent/atom wrappers plus runtime primitives.
 
 ## Refactor document set
 
@@ -74,7 +74,7 @@ Planned package boundaries:
 ### R1 — Extract leaf tracing state
 
 - [x] Move function tracing aggregation/writing into `core/trace`.
-- [x] Leave core-specific name derivation in `core/function_trace.go`.
+- [x] Leave core-specific name derivation co-located with core call mechanics in `core/object.go`.
 - [x] Preserve JSON output shape.
 - [x] Run tracing smoke test and full validation.
 

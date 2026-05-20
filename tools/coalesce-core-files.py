@@ -67,7 +67,24 @@ def repeat_pass() -> None:
         ensure_import("environment.go", 'corert "github.com/rcarmo/go-joker/core/runtime"')
     append_body("io_objects.go", "procs.go")
 
+
+def third_pass() -> None:
+    # TCO runtime trampoline and parse-time recur rewrite are one optimization domain.
+    append_body("tco_rewrite.go", "tco.go")
+    rename_file("tco.go", "tail_call.go")
+
+    # Function tracing is call/proc instrumentation; co-locate with core call mechanics.
+    append_body("function_trace.go", "object.go")
+    for spec in [
+        '"fmt"',
+        '"time"',
+        'coreir "github.com/rcarmo/go-joker/core/ir"',
+        'coretrace "github.com/rcarmo/go-joker/core/trace"',
+    ]:
+        ensure_import("object.go", spec)
+
+
 def main() -> None:
-    first_pass(); repeat_pass()
+    first_pass(); repeat_pass(); third_pass()
 
 if __name__ == "__main__": main()
