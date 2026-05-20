@@ -224,8 +224,7 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_arena.go` | — | (removed — arena caused corruption) |
 | `noescape.go` | ~22 | unsafe.Pointer noescape trick |
 | `range_fast.go` | ~130 | IntRange with fast reduce |
-| `reduce_fast.go` | ~55 | Seq-walking reduce support |
-| transducer compatibility in `reduce_fast.go` | ~420 | Full transducer semantics wiring plus dedicated `Reduced` runtime type |
+| reduce/transducer fast paths in `eval.go` | ~475 | Seq-walking reduce support, full transducer semantics wiring, and dedicated `Reduced` runtime type |
 | `protocol.go` | ~1380 | Protocol dispatch/registration, public protocol/record forms, record type/constructors, and hierarchy derive/isa APIs |
 | `chunked_seq.go` | ~230 | Chunked-seq API compatibility layer |
 | atom extensions in `procs.go` | ~170 | Validators, watches, CAS for atoms |

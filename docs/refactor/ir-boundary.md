@@ -27,7 +27,7 @@ The former `core/ir*.go` grab-bag has now been split into two categories:
 - `core/fn_ir_compile.go` — function compilation
 - loop/expression lowering now coalesced into `core/fn_ir_cache.go`
 - `core/loop_wasm_diagnostics.go` — diagnostics tied to root `Expr` / `LoopExpr`
-- `core/boxed_exec.go` — boxed interpreter
+- boxed interpreter now coalesced into `core/fn_ir_cache.go`
 - `core/typed_exec_nanbox.go` — typed/nanbox execution path
 - `core/runtime_ir_exports.go` — exported runtime/JIT artifact APIs; stale debug-only IR exports were removed instead of kept as bridges
 - `core/fn_ir_cache.go` — function IR cache and dispatch bridge

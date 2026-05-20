@@ -218,7 +218,20 @@ def thirteenth_pass() -> None:
         ensure_import("code.go", 'corecollections "github.com/rcarmo/go-joker/core/types/collections"')
 
 
+
+def fourteenth_pass() -> None:
+    # Boxed executor belongs with the IR compile/cache/execution cluster until core/ir owns it.
+    if append_body("boxed_exec.go", "fn_ir_cache.go"):
+        for spec in ['"strconv"', '"unicode/utf8"', '"unsafe"']:
+            ensure_import("fn_ir_cache.go", spec)
+        ensure_import("fn_ir_cache.go", 'coreirx "github.com/rcarmo/go-joker/core/ir"')
+
+    # Reduce/transducer fast paths are evaluator execution mechanics.
+    if append_body("reduce_fast.go", "eval.go"):
+        ensure_import("eval.go", '"sync"')
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass(); thirteenth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass(); thirteenth_pass(); fourteenth_pass()
 
 if __name__ == "__main__": main()
