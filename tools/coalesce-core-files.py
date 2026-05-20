@@ -12,10 +12,12 @@ def strip_package_and_imports(path: Path) -> str:
     if not lines or not lines[0].startswith("package "):
         raise SystemExit(f"{path}: expected package declaration on first line")
     rest = "".join(lines[1:]).lstrip("\n")
-    if rest.startswith("import ("):
-        rest = rest[rest.index("\n)") + 3:].lstrip("\n")
-    else:
-        rest = re.sub(r'^import\s+[^\n]+\n\n?', '', rest, count=1)
+    # Drop the first import block or single-line import even when file comments sit
+    # between the package declaration and imports.
+    rest = re.sub(r'\nimport \(\n.*?\n\)\n', '\n', rest, count=1, flags=re.S)
+    rest = re.sub(r'^import \(\n.*?\n\)\n', '', rest, count=1, flags=re.S)
+    rest = re.sub(r'\nimport\s+[^\n]+\n', '\n', rest, count=1)
+    rest = re.sub(r'^import\s+[^\n]+\n\n?', '', rest, count=1)
     return rest.rstrip() + "\n"
 
 def append_body(src_name: str, dst_name: str, marker: str | None = None) -> bool:
@@ -136,7 +138,18 @@ def eighth_pass() -> None:
     append_body("tail_call.go", "eval.go")
 
 
+
+def ninth_pass() -> None:
+    # Reader construction adapter belongs with the root reader implementation.
+    append_body("reader_construction.go", "read.go")
+
+    # Protocols, records, and hierarchies form one Clojure parity/type-extension domain.
+    if append_body("record.go", "protocol.go"):
+        ensure_import("protocol.go", '"strings"')
+    append_body("hierarchy.go", "protocol.go")
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass()
 
 if __name__ == "__main__": main()

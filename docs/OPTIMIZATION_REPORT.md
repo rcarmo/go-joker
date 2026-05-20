@@ -226,9 +226,7 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `range_fast.go` | ~130 | IntRange with fast reduce |
 | `reduce_fast.go` | ~55 | Seq-walking reduce support |
 | `transducer_compat.go` | ~420 | Full transducer semantics wiring plus dedicated `Reduced` runtime type |
-| `protocol.go` | ~430 | Protocol dispatch + registration + public protocol/record forms |
-| `record.go` | ~500 | Record type + constructors (`->Type`, `map->Type`) |
-| `hierarchy.go` | ~450 | Hierarchy DAG + derive/isa APIs and proc registration |
+| `protocol.go` | ~1380 | Protocol dispatch/registration, public protocol/record forms, record type/constructors, and hierarchy derive/isa APIs |
 | `chunked_seq.go` | ~230 | Chunked-seq API compatibility layer |
 | atom extensions in `procs.go` | ~170 | Validators, watches, CAS for atoms |
 | unchecked/core API compatibility in `procs.go` | ~600 | `unchecked-*`, primitive array helper surface, and remaining compatibility APIs (`alter-var-root`, etc.) |

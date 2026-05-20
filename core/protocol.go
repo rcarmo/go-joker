@@ -12,6 +12,7 @@ package core
 
 import (
 	"fmt"
+	"strings"
 	"sync"
 	"unsafe"
 
@@ -525,4 +526,802 @@ func macroTypeName(obj coretypes.Object) string {
 	default:
 		return obj.ToString(false)
 	}
+}
+
+// ---- record.go ----
+// record.go — Record support for Clojure parity.
+//
+// A Record is a named, typed map with fixed fields plus optional extension fields.
+// Records support:
+// - Keyword access: (:field record)
+// - get/assoc/dissoc (dissoc to extension fields only; dissoc of base field returns plain map)
+// - coretypes.Equality by type + fields
+// - Protocol satisfaction via extend-type with the record's type name
+
+// Record is an instance of a RecordType.
+type Record struct {
+	coretypes.InfoHolder
+	coretypes.MetaHolder
+	rtype *coretypes.RecordType
+	bases []coretypes.Object        // values for base fields (same order as rtype.fields)
+	ext   *corecollections.ArrayMap // extension fields (nil if none)
+}
+
+func (r *Record) ToString(escape bool) string {
+	var b strings.Builder
+	b.WriteString("#")
+	b.WriteString(r.rtype.Name)
+	b.WriteString("{")
+	first := true
+	for i, fname := range r.rtype.Fields {
+		if !first {
+			b.WriteString(", ")
+		}
+		first = false
+		b.WriteString(":")
+		b.WriteString(fname)
+		b.WriteString(" ")
+		b.WriteString(r.bases[i].ToString(escape))
+	}
+	if r.ext != nil {
+		for iter := r.ext.Iter(); iter.HasNext(); {
+			p := iter.Next()
+			if !first {
+				b.WriteString(", ")
+			}
+			first = false
+			b.WriteString(p.Key.ToString(escape))
+			b.WriteString(" ")
+			b.WriteString(p.Value.ToString(escape))
+		}
+	}
+	b.WriteString("}")
+	return b.String()
+}
+
+func (r *Record) Equals(other interface{}) bool {
+	o, ok := other.(*Record)
+	if !ok {
+		return false
+	}
+	if r.rtype != o.rtype {
+		return false
+	}
+	for i := range r.bases {
+		if !r.bases[i].Equals(o.bases[i]) {
+			return false
+		}
+	}
+	// Compare extension fields
+	if r.ext == nil && o.ext == nil {
+		return true
+	}
+	if r.ext == nil || o.ext == nil {
+		rCount := 0
+		oCount := 0
+		if r.ext != nil {
+			rCount = r.ext.Count()
+		}
+		if o.ext != nil {
+			oCount = o.ext.Count()
+		}
+		return rCount == 0 && oCount == 0
+	}
+	return r.ext.Equals(o.ext)
+}
+
+func (r *Record) GetType() *coretypes.Type { return TYPE.ArrayMap }
+func (r *Record) Hash() uint32 {
+	h := uint32(0x9e3779b9)
+	for _, v := range r.bases {
+		h = h*31 + v.Hash()
+	}
+	if r.ext != nil {
+		h = h*31 + r.ext.Hash()
+	}
+	return h
+}
+
+func (r *Record) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
+	res := r.clone()
+	res.Info = info
+	return res
+}
+
+func (r *Record) WithMeta(m coretypes.Map) coretypes.Object {
+	res := r.clone()
+	res.Meta = coretypes.SafeMerge(res.Meta, m)
+	return res
+}
+
+func (r *Record) clone() *Record {
+	bases := make([]coretypes.Object, len(r.bases))
+	copy(bases, r.bases)
+	var ext *corecollections.ArrayMap
+	if r.ext != nil {
+		ext = r.ext.Clone()
+	}
+	return &Record{
+		InfoHolder: r.InfoHolder,
+		MetaHolder: r.MetaHolder,
+		rtype:      r.rtype,
+		bases:      bases,
+		ext:        ext,
+	}
+}
+
+// --- coretypes.Map interface ---
+
+// Get implements coretypes.Gettable for keyword access.
+func (r *Record) Get(key coretypes.Object) (bool, coretypes.Object) {
+	if kw, ok := key.(coretypes.Keyword); ok {
+		name := kw.ToString(false)[1:] // strip leading ":"
+		if idx, ok := r.rtype.FieldIdx[name]; ok {
+			return true, r.bases[idx]
+		}
+	}
+	if r.ext != nil {
+		return r.ext.Get(key)
+	}
+	return false, nil
+}
+
+// EntryAt returns a MapEntry for the given key.
+func (r *Record) EntryAt(key coretypes.Object) coretypes.Object {
+	if ok, v := r.Get(key); ok {
+		av := corecollections.EmptyArrayVector().Conj(key).(*corecollections.ArrayVector).Conj(v).(*corecollections.ArrayVector)
+		return av
+	}
+	return nil
+}
+
+// Assoc returns a new record with the key set to val.
+// If key is a base field, returns a new record. Otherwise extends.
+func (r *Record) Assoc(key, val coretypes.Object) coretypes.Associative {
+	if kw, ok := key.(coretypes.Keyword); ok {
+		name := kw.ToString(false)[1:]
+		if idx, ok := r.rtype.FieldIdx[name]; ok {
+			res := r.clone()
+			res.bases[idx] = val
+			return res
+		}
+	}
+	res := r.clone()
+	if res.ext == nil {
+		res.ext = corecollections.EmptyArrayMap()
+	}
+	res.ext = res.ext.Assoc(key, val).(*corecollections.ArrayMap)
+	return res
+}
+
+// Count returns the number of fields (base + extension).
+func (r *Record) Count() int {
+	n := len(r.bases)
+	if r.ext != nil {
+		n += r.ext.Count()
+	}
+	return n
+}
+
+// coretypes.Seq returns a sequence of MapEntry pairs.
+func (r *Record) Seq() coretypes.Seq {
+	entries := make([]coretypes.Object, 0, r.Count())
+	for i, fname := range r.rtype.Fields {
+		entries = append(entries, corecollections.NewVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, fname), r.bases[i]))
+	}
+	if r.ext != nil {
+		for iter := r.ext.Iter(); iter.HasNext(); {
+			p := iter.Next()
+			entries = append(entries, corecollections.NewVectorFrom(p.Key, p.Value))
+		}
+	}
+	return &corecollections.ArraySeq{Arr: entries, Index: 0}
+}
+
+// Keys returns all keys.
+func (r *Record) Keys() coretypes.Seq {
+	keys := make([]coretypes.Object, 0, r.Count())
+	for _, fname := range r.rtype.Fields {
+		keys = append(keys, coretypes.MakeKeyword(STRINGS.Intern, fname))
+	}
+	if r.ext != nil {
+		for iter := r.ext.Iter(); iter.HasNext(); {
+			p := iter.Next()
+			keys = append(keys, p.Key)
+		}
+	}
+	return &corecollections.ArraySeq{Arr: keys, Index: 0}
+}
+
+// Vals returns all values.
+func (r *Record) Vals() coretypes.Seq {
+	vals := make([]coretypes.Object, 0, r.Count())
+	vals = append(vals, r.bases...)
+	if r.ext != nil {
+		for iter := r.ext.Iter(); iter.HasNext(); {
+			p := iter.Next()
+			vals = append(vals, p.Value)
+		}
+	}
+	return &corecollections.ArraySeq{Arr: vals, Index: 0}
+}
+
+// Conj adds a map entry to the record.
+func (r *Record) Conj(obj coretypes.Object) coretypes.Conjable {
+	switch v := obj.(type) {
+	case *corecollections.Vector:
+		if v.Count() != 2 {
+			panic(coretypes.RuntimeError("corecollections.Vector arg to conj on record must be a pair"))
+		}
+		return r.Assoc(v.At(0), v.At(1)).(coretypes.Conjable)
+	}
+	panic(coretypes.RuntimeError(fmt.Sprintf("Cannot conj %s onto record", obj.GetType().ToString(false))))
+}
+
+// Call implements keyword-style access: (record :field)
+func (r *Record) Call(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 1, 2)
+	ok, v := r.Get(args[0])
+	if ok {
+		return v
+	}
+	if len(args) == 2 {
+		return args[1]
+	}
+	return NIL
+}
+
+// Merge merges a map into the record.
+func (r *Record) Merge(other coretypes.Map) coretypes.Map {
+	res := r.clone()
+	for iter := other.Iter(); iter.HasNext(); {
+		p := iter.Next()
+		assocResult := res.Assoc(p.Key, p.Value)
+		res = assocResult.(*Record)
+	}
+	return res
+}
+
+// Iter returns a map iterator.
+func (r *Record) Iter() coretypes.MapIterator {
+	return &recordIterator{r: r, idx: 0}
+}
+
+// Containskey
+func (r *Record) ContainsKey(key coretypes.Object) bool {
+	ok, _ := r.Get(key)
+	return ok
+}
+
+// Without (dissoc) — dissoc of a base field returns a plain map
+func (r *Record) Without(key coretypes.Object) coretypes.Map {
+	if kw, ok := key.(coretypes.Keyword); ok {
+		name := kw.ToString(false)[1:]
+		if _, ok := r.rtype.FieldIdx[name]; ok {
+			// Dissoc base field → degrade to plain map
+			m := corecollections.EmptyArrayMap()
+			for i, fname := range r.rtype.Fields {
+				if fname != name {
+					m.Add(coretypes.MakeKeyword(STRINGS.Intern, fname), r.bases[i])
+				}
+			}
+			if r.ext != nil {
+				for iter := r.ext.Iter(); iter.HasNext(); {
+					p := iter.Next()
+					m.Add(p.Key, p.Value)
+				}
+			}
+			return m
+		}
+	}
+	if r.ext != nil {
+		res := r.clone()
+		res.ext = res.ext.Without(key).(*corecollections.ArrayMap)
+		return res
+	}
+	return r
+}
+
+type recordIterator struct {
+	r       *Record
+	idx     int
+	extIter coretypes.MapIterator
+}
+
+func (it *recordIterator) HasNext() bool {
+	if it.idx < len(it.r.rtype.Fields) {
+		return true
+	}
+	if it.r.ext != nil {
+		if it.extIter == nil {
+			it.extIter = it.r.ext.Iter()
+		}
+		return it.extIter.HasNext()
+	}
+	return false
+}
+
+func (it *recordIterator) Next() *coretypes.Pair {
+	if it.idx < len(it.r.rtype.Fields) {
+		p := &coretypes.Pair{
+			Key:   coretypes.MakeKeyword(STRINGS.Intern, it.r.rtype.Fields[it.idx]),
+			Value: it.r.bases[it.idx],
+		}
+		it.idx++
+		return p
+	}
+	if it.extIter == nil {
+		it.extIter = it.r.ext.Iter()
+	}
+	return it.extIter.Next()
+}
+
+// NewRecord creates a new record instance.
+func NewRecord(rtype *coretypes.RecordType, fields []coretypes.Object) *Record {
+	if len(fields) != len(rtype.Fields) {
+		panic(coretypes.RuntimeError(fmt.Sprintf("Wrong number of fields for record %s: expected %d, got %d",
+			rtype.Name, len(rtype.Fields), len(fields))))
+	}
+	bases := make([]coretypes.Object, len(fields))
+	copy(bases, fields)
+	return &Record{rtype: rtype, bases: bases}
+}
+
+// ---- record_init.go ----
+// record_init.go — Register __defrecord and record constructors.
+
+func init() {
+	registerRecordProcs()
+}
+
+func registerRecordProcs() {
+	ns := GLOBAL_ENV.CoreNamespace
+	if ns == nil {
+		return
+	}
+
+	// record? — always available
+	recordQVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "record?"))
+	recordQVr.Value = Proc{Name: "procRecordQ", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		_, ok := args[0].(*Record)
+		return coretypes.MakeBoolean(ok)
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "record?"), recordQVr)
+
+	// __defrecord — internal helper
+	// Args: [record-name-symbol field1-string field2-string ...]
+	// Returns: the RecordType, and installs:
+	//   - ->RecordName constructor fn
+	//   - map->RecordName factory fn
+	defRecordVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "__defrecord"))
+	defRecordVr.Value = Proc{Name: "procDefRecordInternal", Fn: func(args []coretypes.Object) coretypes.Object {
+		if len(args) < 1 {
+			panic(coretypes.RuntimeError("__defrecord requires at least a name"))
+		}
+		name := coretypes.EnsureObjectIsSymbol(args[0], "defrecord name must be a symbol")
+		nameStr := name.ToString(false)
+
+		fields := make([]string, len(args)-1)
+		for i := 1; i < len(args); i++ {
+			fields[i-1] = coretypes.EnsureObjectIsString(args[i], "field name must be a string").S
+		}
+
+		rtype := coretypes.MakeRecordType(nameStr, fields)
+
+		currentNs := GLOBAL_ENV.CurrentNamespace()
+
+		// Install positional constructor: (->RecordName field1 field2 ...)
+		ctorName := "->" + nameStr
+		ctorVr := currentNs.Intern(coretypes.MakeSymbol(STRINGS.Intern, ctorName))
+		ctorVr.Value = Proc{Name: "proc" + ctorName, Fn: func(ctorArgs []coretypes.Object) coretypes.Object {
+			return NewRecord(rtype, ctorArgs)
+		}}
+
+		// Install map factory: (map->RecordName {:field1 v1 :field2 v2})
+		mapCtorName := "map->" + nameStr
+		mapCtorVr := currentNs.Intern(coretypes.MakeSymbol(STRINGS.Intern, mapCtorName))
+		mapCtorVr.Value = Proc{Name: "proc" + mapCtorName, Fn: func(ctorArgs []coretypes.Object) coretypes.Object {
+			runtimeCheckArity(ctorArgs, 1, 1)
+			m := coretypes.EnsureObjectIsMap(ctorArgs[0], "map->"+nameStr+" requires a map argument")
+			vals := make([]coretypes.Object, len(fields))
+			for i, fname := range fields {
+				kw := coretypes.MakeKeyword(STRINGS.Intern, fname)
+				if ok, v := m.Get(kw); ok {
+					vals[i] = v
+				} else {
+					vals[i] = NIL
+				}
+			}
+			rec := NewRecord(rtype, vals)
+			// Add any extra keys as extension fields
+			for iter := m.Iter(); iter.HasNext(); {
+				p := iter.Next()
+				if kw, ok := p.Key.(coretypes.Keyword); ok {
+					kwName := kw.ToString(false)[1:]
+					if _, isBase := rtype.FieldIdx[kwName]; isBase {
+						continue
+					}
+				}
+				rec = rec.Assoc(p.Key, p.Value).(*Record)
+			}
+			return rec
+		}}
+
+		return NIL
+	}}
+	defRecordVr.isPrivate = true
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "__defrecord"), defRecordVr)
+}
+
+// ---- hierarchy.go ----
+// hierarchy.go — Clojure hierarchy support for isa?/derive/underive.
+//
+// A hierarchy is a directed acyclic graph (DAG) of parent-child
+// relationships between keywords and symbols. The global hierarchy
+// is stored as a var and used by default for isa?/derive/underive.
+
+// Hierarchy represents a Clojure hierarchy.
+type Hierarchy struct {
+	coretypes.InfoHolder
+	coretypes.MetaHolder
+	mu         sync.RWMutex
+	parents    map[string]map[string]bool  // child key → set of parent keys
+	parentKeys map[string]coretypes.Object // key → object (for iteration)
+	childKeys  map[string]coretypes.Object
+}
+
+func MakeHierarchy() *Hierarchy {
+	return &Hierarchy{
+		parents:    make(map[string]map[string]bool),
+		parentKeys: make(map[string]coretypes.Object),
+		childKeys:  make(map[string]coretypes.Object),
+	}
+}
+
+func (h *Hierarchy) ToString(escape bool) string   { return "#object[Hierarchy]" }
+func (h *Hierarchy) Equals(other interface{}) bool { return h == other }
+func (h *Hierarchy) GetType() *coretypes.Type      { return TYPE.Fn }
+func (h *Hierarchy) Hash() uint32                  { return hashutil.Ptr(uintptr(unsafe.Pointer(h))) }
+func (h *Hierarchy) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
+	h.Info = info
+	return h
+}
+func (h *Hierarchy) WithMeta(m coretypes.Map) coretypes.Object {
+	h.Meta = coretypes.SafeMerge(h.Meta, m)
+	return h
+}
+
+func objKey(obj coretypes.Object) string {
+	if obj == nil {
+		return "nil"
+	}
+	return obj.GetType().ToString(false) + "|" + obj.ToString(false)
+}
+
+// Derive adds a parent relationship: child isa? parent
+func (h *Hierarchy) Derive(child, parent coretypes.Object) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
+	ck := objKey(child)
+	pk := objKey(parent)
+
+	if h.parents[ck] == nil {
+		h.parents[ck] = make(map[string]bool)
+	}
+	h.parents[ck][pk] = true
+	h.parentKeys[pk] = parent
+	h.childKeys[ck] = child
+}
+
+// Underive removes a parent relationship.
+func (h *Hierarchy) Underive(child, parent coretypes.Object) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
+	ck := objKey(child)
+	pk := objKey(parent)
+
+	if ps, ok := h.parents[ck]; ok {
+		delete(ps, pk)
+		if len(ps) == 0 {
+			delete(h.parents, ck)
+		}
+	}
+}
+
+// IsA checks if child isa? parent (direct or transitive).
+func (h *Hierarchy) IsA(child, parent coretypes.Object) bool {
+	if child.Equals(parent) {
+		return true
+	}
+
+	h.mu.RLock()
+	defer h.mu.RUnlock()
+
+	return h.isALocked(objKey(child), objKey(parent), make(map[string]bool))
+}
+
+func (h *Hierarchy) isALocked(ck, pk string, visited map[string]bool) bool {
+	if visited[ck] {
+		return false
+	}
+	visited[ck] = true
+
+	ps, ok := h.parents[ck]
+	if !ok {
+		return false
+	}
+	if ps[pk] {
+		return true
+	}
+	// Transitive check
+	for parentKey := range ps {
+		if h.isALocked(parentKey, pk, visited) {
+			return true
+		}
+	}
+	return false
+}
+
+// Parents returns direct parents of tag.
+func (h *Hierarchy) Parents(tag coretypes.Object) []coretypes.Object {
+	h.mu.RLock()
+	defer h.mu.RUnlock()
+
+	tk := objKey(tag)
+	ps, ok := h.parents[tk]
+	if !ok {
+		return nil
+	}
+	result := make([]coretypes.Object, 0, len(ps))
+	for pk := range ps {
+		if obj, ok := h.parentKeys[pk]; ok {
+			result = append(result, obj)
+		}
+	}
+	return result
+}
+
+// Ancestors returns all transitive ancestors of tag.
+func (h *Hierarchy) Ancestors(tag coretypes.Object) []coretypes.Object {
+	h.mu.RLock()
+	defer h.mu.RUnlock()
+
+	result := make([]coretypes.Object, 0)
+	visited := make(map[string]bool)
+	h.collectAncestors(objKey(tag), &result, visited)
+	return result
+}
+
+func (h *Hierarchy) collectAncestors(tk string, result *[]coretypes.Object, visited map[string]bool) {
+	ps, ok := h.parents[tk]
+	if !ok {
+		return
+	}
+	for pk := range ps {
+		if !visited[pk] {
+			visited[pk] = true
+			if obj, ok := h.parentKeys[pk]; ok {
+				*result = append(*result, obj)
+			}
+			h.collectAncestors(pk, result, visited)
+		}
+	}
+}
+
+// Descendants returns all transitive descendants of tag.
+func (h *Hierarchy) Descendants(tag coretypes.Object) []coretypes.Object {
+	h.mu.RLock()
+	defer h.mu.RUnlock()
+
+	pk := objKey(tag)
+	result := make([]coretypes.Object, 0)
+	visited := make(map[string]bool)
+
+	for ck, ps := range h.parents {
+		if ps[pk] && !visited[ck] {
+			visited[ck] = true
+			if obj, ok := h.childKeys[ck]; ok {
+				result = append(result, obj)
+			}
+			h.collectDescendants(ck, &result, visited)
+		}
+	}
+	return result
+}
+
+func (h *Hierarchy) collectDescendants(pk string, result *[]coretypes.Object, visited map[string]bool) {
+	for ck, ps := range h.parents {
+		if ps[pk] && !visited[ck] {
+			visited[ck] = true
+			if obj, ok := h.childKeys[ck]; ok {
+				*result = append(*result, obj)
+			}
+			h.collectDescendants(ck, result, visited)
+		}
+	}
+}
+
+// Global hierarchy
+var globalHierarchy = MakeHierarchy()
+
+// ---- hierarchy_init.go ----
+// hierarchy_init.go — Register derive, underive, isa?, ancestors, descendants, parents, make-hierarchy.
+
+func init() {
+	registerHierarchyProcs()
+}
+
+func registerHierarchyProcs() {
+	ns := GLOBAL_ENV.CoreNamespace
+	if ns == nil {
+		return
+	}
+
+	// make-hierarchy
+	mhVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "make-hierarchy"))
+	mhVr.Value = Proc{Name: "procMakeHierarchy", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 0, 0)
+		return MakeHierarchy()
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "make-hierarchy"), mhVr)
+
+	// derive — (derive child parent) or (derive h child parent)
+	deriveVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "derive"))
+	deriveVr.Value = Proc{Name: "procDerive", Fn: func(args []coretypes.Object) coretypes.Object {
+		switch len(args) {
+		case 2:
+			globalHierarchy.Derive(args[0], args[1])
+			return NIL
+		case 3:
+			h, ok := args[0].(*Hierarchy)
+			if !ok {
+				panic(coretypes.RuntimeError("First argument to 3-arity derive must be a hierarchy"))
+			}
+			h.Derive(args[1], args[2])
+			return h
+		default:
+			PanicArityMinMax(len(args), 2, 3)
+			return NIL
+		}
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "derive"), deriveVr)
+
+	// underive — (underive child parent) or (underive h child parent)
+	underiveVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "underive"))
+	underiveVr.Value = Proc{Name: "procUnderive", Fn: func(args []coretypes.Object) coretypes.Object {
+		switch len(args) {
+		case 2:
+			globalHierarchy.Underive(args[0], args[1])
+			return NIL
+		case 3:
+			h, ok := args[0].(*Hierarchy)
+			if !ok {
+				panic(coretypes.RuntimeError("First argument to 3-arity underive must be a hierarchy"))
+			}
+			h.Underive(args[1], args[2])
+			return h
+		default:
+			PanicArityMinMax(len(args), 2, 3)
+			return NIL
+		}
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "underive"), underiveVr)
+
+	// isa? — (isa? child parent) or (isa? h child parent)
+	isaVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "isa?"))
+	isaVr.Value = Proc{Name: "procIsaQ", Fn: func(args []coretypes.Object) coretypes.Object {
+		switch len(args) {
+		case 2:
+			return coretypes.MakeBoolean(globalHierarchy.IsA(args[0], args[1]))
+		case 3:
+			h, ok := args[0].(*Hierarchy)
+			if !ok {
+				panic(coretypes.RuntimeError("First argument to 3-arity isa? must be a hierarchy"))
+			}
+			return coretypes.MakeBoolean(h.IsA(args[1], args[2]))
+		default:
+			PanicArityMinMax(len(args), 2, 3)
+			return NIL
+		}
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "isa?"), isaVr)
+
+	// parents — (parents tag) or (parents h tag)
+	parentsVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "parents"))
+	parentsVr.Value = Proc{Name: "procParents", Fn: func(args []coretypes.Object) coretypes.Object {
+		var h *Hierarchy
+		var tag coretypes.Object
+		switch len(args) {
+		case 1:
+			h = globalHierarchy
+			tag = args[0]
+		case 2:
+			var ok bool
+			h, ok = args[0].(*Hierarchy)
+			if !ok {
+				panic(coretypes.RuntimeError("First argument to 2-arity parents must be a hierarchy"))
+			}
+			tag = args[1]
+		default:
+			PanicArityMinMax(len(args), 1, 2)
+			return NIL
+		}
+		ps := h.Parents(tag)
+		if len(ps) == 0 {
+			return NIL
+		}
+		s := corecollections.EmptySet()
+		for _, p := range ps {
+			s = s.Conj(p).(*corecollections.MapSet)
+		}
+		return s
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "parents"), parentsVr)
+
+	// ancestors — (ancestors tag) or (ancestors h tag)
+	ancestorsVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "ancestors"))
+	ancestorsVr.Value = Proc{Name: "procAncestors", Fn: func(args []coretypes.Object) coretypes.Object {
+		var h *Hierarchy
+		var tag coretypes.Object
+		switch len(args) {
+		case 1:
+			h = globalHierarchy
+			tag = args[0]
+		case 2:
+			var ok bool
+			h, ok = args[0].(*Hierarchy)
+			if !ok {
+				panic(coretypes.RuntimeError("First argument to 2-arity ancestors must be a hierarchy"))
+			}
+			tag = args[1]
+		default:
+			PanicArityMinMax(len(args), 1, 2)
+			return NIL
+		}
+		as := h.Ancestors(tag)
+		if len(as) == 0 {
+			return NIL
+		}
+		s := corecollections.EmptySet()
+		for _, a := range as {
+			s = s.Conj(a).(*corecollections.MapSet)
+		}
+		return s
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "ancestors"), ancestorsVr)
+
+	// descendants — (descendants tag) or (descendants h tag)
+	descendantsVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "descendants"))
+	descendantsVr.Value = Proc{Name: "procDescendants", Fn: func(args []coretypes.Object) coretypes.Object {
+		var h *Hierarchy
+		var tag coretypes.Object
+		switch len(args) {
+		case 1:
+			h = globalHierarchy
+			tag = args[0]
+		case 2:
+			var ok bool
+			h, ok = args[0].(*Hierarchy)
+			if !ok {
+				panic(coretypes.RuntimeError("First argument to 2-arity descendants must be a hierarchy"))
+			}
+			tag = args[1]
+		default:
+			PanicArityMinMax(len(args), 1, 2)
+			return NIL
+		}
+		ds := h.Descendants(tag)
+		if len(ds) == 0 {
+			return NIL
+		}
+		s := corecollections.EmptySet()
+		for _, d := range ds {
+			s = s.Conj(d).(*corecollections.MapSet)
+		}
+		return s
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "descendants"), descendantsVr)
 }
