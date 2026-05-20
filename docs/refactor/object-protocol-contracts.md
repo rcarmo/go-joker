@@ -99,7 +99,7 @@ core/runtime/
 core/eval/ (future target; not reserved yet)
 ├── eval.go
 ├── forms.go
-├── tail_call.go
+├── eval.go (including tail-call rewrite/trampoline)
 └── compiler_bridge.go
 ```
 

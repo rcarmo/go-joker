@@ -216,7 +216,7 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_native_helper.go` | ~170 | Native f64 closure compiler |
 | `native_recursive.go` | ~450 | Native int closure compiler (fib/tak) |
 | `ir_fn_cache.go` | ~155 | Fn→IRProgram caching + loop wrapper |
-| `string_runtime.go` | ~150 | StringCursor/TransientString wrappers and cursor proc registration |
+| string runtime wrappers in `object.go` | ~150 | StringCursor/TransientString wrappers and cursor proc registration |
 | `ir_analysis.go` | ~155 | IR program analysis |
 | `ir_value_accessors.go` | ~140 | irValue unsafe.Pointer accessors |
 | `ir_nanbox.go` | ~100 | NaN-boxing encode/decode |

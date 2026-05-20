@@ -13,11 +13,13 @@ import (
 	"math/big"
 	"os"
 	"reflect"
+	"sync"
 	"time"
 	"unicode/utf8"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	corestr "github.com/rcarmo/go-joker/core/types/string"
@@ -841,4 +843,255 @@ func ToBool(obj coretypes.Object) bool {
 	default:
 		return true
 	}
+}
+
+// ---- root_object_support.go ----
+func EnsureObjectIsNamespace(obj coretypes.Object, pattern string) *Namespace {
+	if c, yes := obj.(*Namespace); yes {
+		return c
+	}
+	panic(FailObject(obj, "Namespace", pattern))
+}
+
+func EnsureArgIsNamespace(args []coretypes.Object, index int) *Namespace {
+	obj := args[index]
+	if c, yes := obj.(*Namespace); yes {
+		return c
+	}
+	panic(FailArg(obj, "Namespace", index))
+}
+
+func EnsureObjectIsVar(obj coretypes.Object, pattern string) *Var {
+	if c, yes := obj.(*Var); yes {
+		return c
+	}
+	panic(FailObject(obj, "Var", pattern))
+}
+
+func EnsureArgIsVar(args []coretypes.Object, index int) *Var {
+	obj := args[index]
+	if c, yes := obj.(*Var); yes {
+		return c
+	}
+	panic(FailArg(obj, "Var", index))
+}
+
+func EnsureObjectIsFn(obj coretypes.Object, pattern string) *Fn {
+	if c, yes := obj.(*Fn); yes {
+		return c
+	}
+	panic(FailObject(obj, "Fn", pattern))
+}
+
+func EnsureArgIsFn(args []coretypes.Object, index int) *Fn {
+	obj := args[index]
+	if c, yes := obj.(*Fn); yes {
+		return c
+	}
+	panic(FailArg(obj, "Fn", index))
+}
+
+func EnsureObjectIsAtom(obj coretypes.Object, pattern string) *corert.Atom {
+	if c, yes := obj.(*corert.Atom); yes {
+		return c
+	}
+	panic(FailObject(obj, "Atom", pattern))
+}
+
+func EnsureArgIsAtom(args []coretypes.Object, index int) *corert.Atom {
+	obj := args[index]
+	if c, yes := obj.(*corert.Atom); yes {
+		return c
+	}
+	panic(FailArg(obj, "Atom", index))
+}
+
+func EnsureObjectIsFile(obj coretypes.Object, pattern string) *File {
+	if c, yes := obj.(*File); yes {
+		return c
+	}
+	panic(FailObject(obj, "File", pattern))
+}
+
+func EnsureArgIsFile(args []coretypes.Object, index int) *File {
+	obj := args[index]
+	if c, yes := obj.(*File); yes {
+		return c
+	}
+	panic(FailArg(obj, "File", index))
+}
+
+func EnsureObjectIsChannel(obj coretypes.Object, pattern string) *corert.ObjectChannel {
+	if c, yes := obj.(*corert.ObjectChannel); yes {
+		return c
+	}
+	panic(FailObject(obj, "Channel", pattern))
+}
+
+func EnsureArgIsChannel(args []coretypes.Object, index int) *corert.ObjectChannel {
+	obj := args[index]
+	if c, yes := obj.(*corert.ObjectChannel); yes {
+		return c
+	}
+	panic(FailArg(obj, "Channel", index))
+}
+
+// ---- with_info_root.go ----
+func (x *ExInfo) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
+	x.Info = info
+	return x
+}
+
+func (x *Fn) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
+	x.Info = info
+	return x
+}
+
+func (x *Var) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
+	x.Info = info
+	return x
+}
+
+func (x Nil) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
+	x.Info = info
+	return x
+}
+
+// ---- string_runtime.go ----
+type StringCursor struct {
+	coretypes.InfoHolder
+	rt *corestr.CursorRuntime
+}
+
+func NewStringCursor(s string) *StringCursor { return &StringCursor{rt: corestr.NewCursorRuntime(s)} }
+func (c *StringCursor) Done() bool           { return c.rt.Done() }
+func (c *StringCursor) Char() rune           { return c.rt.Char() }
+func (c *StringCursor) Index() int           { return c.rt.Index() }
+func (c *StringCursor) Next() *StringCursor {
+	next := c.rt.Next()
+	if next == c.rt {
+		return c
+	}
+	return &StringCursor{rt: next}
+}
+func (c *StringCursor) ToString(escape bool) string { return c.rt.String() }
+func (c *StringCursor) Equals(other interface{}) bool {
+	o, ok := other.(*StringCursor)
+	return ok && c.rt.Equal(o.rt)
+}
+func (c *StringCursor) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (c *StringCursor) Hash() uint32                                         { return c.rt.Hash() }
+func (c *StringCursor) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return c }
+func (c *StringCursor) GetType() *coretypes.Type                             { return typeStringCursor }
+
+var typeStringCursor = &coretypes.Type{Name: "StringCursor"}
+
+type TransientString struct {
+	rt *corestr.RuntimeTransientString
+}
+
+func NewTransientString(s coretypes.String) coretypes.Object {
+	return &TransientString{rt: corestr.NewRuntimeTransientString(s.S)}
+}
+
+func (ts *TransientString) ToString(escape bool) string { return ts.rt.String() }
+func (ts *TransientString) Equals(other interface{}) bool {
+	switch v := other.(type) {
+	case *TransientString:
+		return ts.rt.String() == v.rt.String()
+	case coretypes.String:
+		return ts.rt.String() == v.S
+	default:
+		return false
+	}
+}
+func (ts *TransientString) GetInfo() *coretypes.ObjectInfo                  { return nil }
+func (ts *TransientString) WithInfo(*coretypes.ObjectInfo) coretypes.Object { return ts }
+func (ts *TransientString) GetType() *coretypes.Type                        { return TYPE.String }
+func (ts *TransientString) Hash() uint32                                    { return coretypes.String{S: ts.rt.String()}.Hash() }
+func (ts *TransientString) Count() int                                      { return ts.rt.Count() }
+func (ts *TransientString) AppendChar(ch rune) *TransientString             { ts.rt.AppendChar(ch); return ts }
+func (ts *TransientString) AppendString(s string) *TransientString          { ts.rt.AppendString(s); return ts }
+func (ts *TransientString) PrependChar(ch rune) *TransientString            { ts.rt.PrependChar(ch); return ts }
+func (ts *TransientString) PrependString(s string) *TransientString {
+	ts.rt.PrependString(s)
+	return ts
+}
+func (ts *TransientString) ToPersistent() coretypes.String {
+	return coretypes.String{S: ts.rt.Freeze()}
+}
+
+// ---- string_cursor.go ----
+// ---- string_cursor_procs.go ----
+
+var stringCursorInitOnce sync.Once
+
+func initStringCursorProcs() {
+	stringCursorInitOnce.Do(func() {
+		ns := GLOBAL_ENV.CoreNamespace
+		procs := []struct {
+			name  string
+			fn    func([]coretypes.Object) coretypes.Object
+			pname string
+		}{
+			{"string-cursor", procStringCursor, "procStringCursor"},
+			{"cursor-char", procCursorChar, "procCursorChar"},
+			{"cursor-next", procCursorNext, "procCursorNext"},
+			{"cursor-done?", procCursorDone, "procCursorDone"},
+			{"cursor-index", procCursorIndex, "procCursorIndex"},
+		}
+		for _, p := range procs {
+			sym := coretypes.MakeSymbol(STRINGS.Intern, p.name)
+			vr := ns.Intern(sym)
+			vr.Value = Proc{Fn: p.fn, Name: p.pname}
+			curNs := GLOBAL_ENV.CurrentNamespace()
+			if curNs != nil && curNs != ns {
+				curNs.mappings[sym.NameKey()] = vr
+			}
+		}
+	})
+}
+
+func procStringCursor(args []coretypes.Object) coretypes.Object {
+	s, ok := args[0].(coretypes.String)
+	if !ok {
+		panic(RT.NewError("string-cursor expects a string argument"))
+	}
+	return NewStringCursor(s.S)
+}
+
+func procCursorChar(args []coretypes.Object) coretypes.Object {
+	c, ok := args[0].(*StringCursor)
+	if !ok {
+		panic(RT.NewError("cursor-char expects a StringCursor"))
+	}
+	r := c.Char()
+	if r < 0 {
+		return NIL
+	}
+	return coretypes.Char{Ch: r}
+}
+
+func procCursorNext(args []coretypes.Object) coretypes.Object {
+	c, ok := args[0].(*StringCursor)
+	if !ok {
+		panic(RT.NewError("cursor-next expects a StringCursor"))
+	}
+	return c.Next()
+}
+
+func procCursorDone(args []coretypes.Object) coretypes.Object {
+	c, ok := args[0].(*StringCursor)
+	if !ok {
+		panic(RT.NewError("cursor-done? expects a StringCursor"))
+	}
+	return coretypes.Boolean{B: c.Done()}
+}
+
+func procCursorIndex(args []coretypes.Object) coretypes.Object {
+	c, ok := args[0].(*StringCursor)
+	if !ok {
+		panic(RT.NewError("cursor-index expects a StringCursor"))
+	}
+	return coretypes.Int{I: c.Index()}
 }

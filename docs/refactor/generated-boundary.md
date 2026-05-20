@@ -28,7 +28,7 @@ Generated from `go:generate` directives in `core/object.go`:
 
 | File | Current classification | Why it remains root-bound |
 |---|---|---|
-These generated files were removed in favor of explicit non-generated root support (`core/root_object_support.go`) plus moved helper implementations in `core/types`.
+These generated files were removed in favor of explicit non-generated root support co-located in `core/object.go` plus moved helper implementations in `core/types`.
 
 ### Generator source packages
 

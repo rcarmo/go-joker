@@ -125,7 +125,18 @@ def seventh_pass() -> None:
             ensure_import("object.go", spec)
 
 
+
+def eighth_pass() -> None:
+    # Root object assertions/WithInfo and root-owned string wrappers belong with object mechanics.
+    append_body("root_object_support.go", "object.go")
+    if append_body("string_runtime.go", "object.go"):
+        ensure_import("object.go", '"sync"')
+
+    # Tail-call evaluation/rewrite is evaluator machinery.
+    append_body("tail_call.go", "eval.go")
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass()
 
 if __name__ == "__main__": main()
