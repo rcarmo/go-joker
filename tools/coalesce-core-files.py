@@ -201,7 +201,24 @@ def twelfth_pass() -> None:
         ensure_import("fn_ir_cache.go", 'corewasm "github.com/rcarmo/go-joker/core/wasm"')
 
 
+
+def thirteenth_pass() -> None:
+    # Namespace state belongs with Env until runtime/env package extraction.
+    if append_body("ns.go", "environment.go"):
+        ensure_import("environment.go", '"fmt"')
+
+    # Reader implementation and parser share root expression/reader construction ownership.
+    if append_body("read.go", "parse.go"):
+        for spec in ['"io"', '"math/big"', '"math/rand"', '"strconv"']:
+            ensure_import("parse.go", spec)
+        ensure_import("parse.go", '"github.com/rcarmo/go-joker/core/types/numerical"')
+
+    # gen_code Env construction belongs with the rest of gen_code bootstrap helpers.
+    if append_body("environment_slow_init.go", "code.go"):
+        ensure_import("code.go", 'corecollections "github.com/rcarmo/go-joker/core/types/collections"')
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass(); thirteenth_pass()
 
 if __name__ == "__main__": main()

@@ -119,7 +119,7 @@ Files:
 
 - `environment.go`
 - `environment_fast_init.go`
-- `environment_slow_init.go`
+- gen-code environment construction now coalesced into `code.go`
 - parser/eval-facing parts of `parse.go`/`eval.go`
 
 Current state:
