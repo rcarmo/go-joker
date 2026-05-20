@@ -95,7 +95,14 @@ def fourth_pass() -> None:
     append_body("tagged_literals.go", "read.go")
 
 
+
+def fifth_pass() -> None:
+    # Sorted collections and transient bridges are collection/proc glue; root keeps registration only until proc/env moves.
+    append_body("sorted_colls.go", "procs.go")
+    append_body("transient.go", "procs.go")
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass()
 
 if __name__ == "__main__": main()

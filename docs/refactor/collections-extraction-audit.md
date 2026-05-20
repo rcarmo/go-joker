@@ -30,9 +30,9 @@ Chunk proc registration remains root-owned intentionally but has been coalesced 
 
 ## Current root collection-adjacent file groups
 
-- Sorted collections: `sorted_colls.go` still belongs to root for proc registration and comparator/callable behavior; arity/error behavior now goes through `core/types` runtime hooks rather than direct root helpers.
+- Sorted collections: sorted collection proc registration and comparator/callable behavior are coalesced into `procs.go`; arity/error behavior goes through `core/types` runtime hooks rather than direct root helpers.
 - Records and namespaces: `record.go`, `ns.go`, and related files use moved collection types but remain root-owned runtime/object glue; record registration has been coalesced into `record.go`, and record object arity/error behavior goes through `core/types` runtime hooks rather than direct root helpers.
-- Transients: `transient.go` still owns transient proc behavior and conversion hooks, while persistent map/vector implementations are in `core/types/collections`; arity/error behavior now goes through `core/types` runtime hooks rather than direct root helpers.
+- Transients: transient proc behavior and conversion hooks are coalesced into `procs.go`, while persistent map/vector implementations are in `core/types/collections`; arity/error behavior goes through `core/types` runtime hooks rather than direct root helpers.
 - Reducer/pipeline helpers: `reduce_fast.go`, `transducer_compat.go`, and map/filter/take/range/transducer fast paths are evaluator/runtime optimizations, not collection storage ownership; the `Reduced` runtime type is co-located with transducer compatibility, and arity/error behavior in the range/frequencies/transducer glue goes through `core/types` runtime hooks rather than direct root helpers.
 - Generated/bootstrap payloads: generated files now reference moved collection types through `corecollections.*`, but generated payload placement is still a separate boundary.
 
