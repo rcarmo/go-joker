@@ -231,7 +231,23 @@ def fourteenth_pass() -> None:
         ensure_import("eval.go", '"sync"')
 
 
+
+def fifteenth_pass() -> None:
+    # Root object model now owns env/namespace and protocol/record/hierarchy runtime glue.
+    if append_body("environment.go", "object.go"):
+        ensure_import("object.go", '"github.com/rcarmo/go-joker/core/osutil"')
+    if append_body("protocol.go", "object.go"):
+        ensure_import("object.go", '"strings"')
+
+    # Parser/reader integration belongs with evaluator front-end until a true package move.
+    if append_body("parse.go", "eval.go"):
+        for spec in ['"io"', '"math/big"', '"math/rand"', '"regexp"', '"strconv"']:
+            ensure_import("eval.go", spec)
+        ensure_import("eval.go", 'corereader "github.com/rcarmo/go-joker/core/reader"')
+        ensure_import("eval.go", '"github.com/rcarmo/go-joker/core/types/numerical"')
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass(); thirteenth_pass(); fourteenth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass(); thirteenth_pass(); fourteenth_pass(); fifteenth_pass()
 
 if __name__ == "__main__": main()

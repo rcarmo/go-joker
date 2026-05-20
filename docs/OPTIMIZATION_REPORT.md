@@ -225,7 +225,7 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `noescape.go` | ~22 | unsafe.Pointer noescape trick |
 | `range_fast.go` | ~130 | IntRange with fast reduce |
 | reduce/transducer fast paths in `eval.go` | ~475 | Seq-walking reduce support, full transducer semantics wiring, and dedicated `Reduced` runtime type |
-| `protocol.go` | ~1380 | Protocol dispatch/registration, public protocol/record forms, record type/constructors, and hierarchy derive/isa APIs |
+| protocol/record/hierarchy runtime glue in `object.go` | ~1380 | Protocol dispatch/registration, public protocol/record forms, record type/constructors, and hierarchy derive/isa APIs |
 | `chunked_seq.go` | ~230 | Chunked-seq API compatibility layer |
 | atom extensions in `procs.go` | ~170 | Validators, watches, CAS for atoms |
 | unchecked/core API compatibility in `procs.go` | ~600 | `unchecked-*`, primitive array helper surface, and remaining compatibility APIs (`alter-var-root`, etc.) |

@@ -256,8 +256,9 @@ func TestCollectionConstructorsBuildExpectedValues(t *testing.T) {
 func TestReaderConstructionCallSitesUseAdapter(t *testing.T) {
 	direct := regexp.MustCompile(`(^|[^.])\b(NewReader|TryRead|Read|NewLiteralExpr|NewSurrogateExpr)\(|&(VectorExpr|MapExpr|SetExpr)\b`)
 	allowed := map[string]bool{
-		"parse.go":                            true, // owns parser expression constructor implementations.
-		"read.go":                             true, // owns reader read-loop implementations.
+		"parse.go":                            true, // legacy/parser expression constructor implementations when split.
+		"read.go":                             true, // legacy reader read-loop implementations when split.
+		"eval.go":                             true, // currently coalesces parser/reader/evaluator construction.
 		"reader.go":                           true, // owns Reader constructor implementation.
 		"reader_construction.go":              true,
 		"construction_boundary_guard_test.go": true,

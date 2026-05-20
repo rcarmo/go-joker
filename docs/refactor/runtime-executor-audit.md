@@ -117,10 +117,10 @@ Safe next steps:
 
 Files:
 
-- `environment.go`
+- environment/namespace runtime glue now coalesced into `object.go`
 - `environment_fast_init.go`
 - gen-code environment construction now coalesced into `code.go`
-- parser/eval-facing parts of `parse.go`/`eval.go`
+- parser/eval-facing parts now coalesced into `eval.go`
 
 Current state:
 
