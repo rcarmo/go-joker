@@ -231,10 +231,9 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `hierarchy.go` | ~450 | Hierarchy DAG + derive/isa APIs and proc registration |
 | `chunked_seq.go` | ~230 | Chunked-seq API compatibility layer |
 | atom extensions in `procs.go` | ~170 | Validators, watches, CAS for atoms |
-| `unchecked_arith.go` | ~400 | `unchecked-*` + primitive array helper surface |
-| `core_api_gaps.go` | ~200 | Remaining compatibility APIs (`alter-var-root`, etc.) |
+| unchecked/core API compatibility in `procs.go` | ~600 | `unchecked-*`, primitive array helper surface, and remaining compatibility APIs (`alter-var-root`, etc.) |
 | `sorted_colls.go` | ~180 | sorted-map/set API and metadata support |
-| `tagged_literals.go` | ~130 | `#inst`/`#uuid` data readers |
+| tagged literal registration in `read.go` | ~130 | `#inst`/`#uuid` data readers |
 | `escape_analysis.go` | ~230 | Transient auto-promotion |
 | `wasm_*.go` | ~2500 | WASM compilation + runtime (10 files) |
 | `std/jit/` | ~200 | joker.jit namespace |

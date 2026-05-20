@@ -84,7 +84,18 @@ def third_pass() -> None:
         ensure_import("object.go", spec)
 
 
+
+def fourth_pass() -> None:
+    # Core API compatibility gaps and unchecked arithmetic are root proc registrations; co-locate with procs.
+    if append_body("core_api_gaps.go", "procs.go"):
+        ensure_import("procs.go", '"path/filepath"')
+    append_body("unchecked_arith.go", "procs.go")
+
+    # Tagged literal reader registration belongs with reader/runtime construction until reader ownership moves.
+    append_body("tagged_literals.go", "read.go")
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass()
 
 if __name__ == "__main__": main()
