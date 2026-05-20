@@ -14,7 +14,7 @@ Recent feature work improved boundaries for new code (`std/transit`, `std/system
 - `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
 - `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/types/collections`, `core/reader`, `core/types/string`, and `core/types/numerical` own extracted helpers and moved concrete families with direct package tests.
 - `core/` is still the runtime kernel and contains:
-  - root runtime object systems, proc/env glue, reader/parser/evaluator, namespace/Var runtime, core proc implementations, concurrency/core.async/atom registration, numeric tower, and IR/JIT/WASM machinery coalesced into `eval.go`
+  - root runtime object systems, proc/env glue, reader/parser/evaluator, namespace/Var runtime, core proc implementations, concurrency/core.async/atom registration, numeric tower, and IR/JIT/WASM machinery coalesced into `runtime_kernel.go`
   - generated/bootstrap runtime payloads in `a_generated_bootstrap_payloads.go` and gen-code helpers in `bootstrap_gen_code.go`
 - `std/*` packages follow a clearer contract:
   - `a_<namespace>.go`: namespace registration and arity/type adapter layer
@@ -57,12 +57,12 @@ Recent `std/transit` and `std/system` match this pattern.
 
 `core` has too many responsibilities for easy maintenance. The largest hand-maintained files should be treated as decomposition candidates:
 
-- `core/eval.go` — now the consolidated handwritten runtime kernel: root runtime values (`Nil`, `Var`, `Proc`, `Fn`, `ExInfo`), proc/env/evaluator glue, reader/parser integration, IR/WASM execution, and root-specific helpers; object/protocol/scalar/shared collection contracts have moved to `core/types`, while Atom/Channel/Future/Promise/Agent wrappers now live in `core/runtime`.
+- `core/runtime_kernel.go` — now the consolidated handwritten runtime kernel: root runtime values (`Nil`, `Var`, `Proc`, `Fn`, `ExInfo`), proc/env/evaluator glue, reader/parser integration, IR/WASM execution, and root-specific helpers; object/protocol/scalar/shared collection contracts have moved to `core/types`, while Atom/Channel/Future/Promise/Agent wrappers now live in `core/runtime`.
 - `core/types/ops_impl.go` and `core/types/numbers.go` — numeric contracts are now type-package owned and remain critical; keep focused tests around promotion, ratio, and native-int bounds.
-- remaining root IR/WASM/executor sections in `eval.go` are partially extracted, but compiler/executor/runtime pieces still depend on root `Fn`/`Var`/`Expr`, namespace/frame, and call contracts.
+- remaining root IR/WASM/executor sections in `runtime_kernel.go` are partially extracted, but compiler/executor/runtime pieces still depend on root `Fn`/`Var`/`Expr`, namespace/frame, and call contracts.
 - moved concrete collection families now live in `core/types/collections`; root `core` should not grow new collection-owned files.
 
-Recommendation: keep collection ownership in `core/types/collections` and runtime wrapper ownership in `core/runtime`; use direct imports from root/runtime/generator code instead of root aliases. `tests/layout_guard.sh` now rejects reintroducing moved root collection files plus root channel/future/promise/agent/atom wrappers/literals. Current production collection and reader construction call sites use `corecollections.*`, and runtime-adjacent procs use `corert.*`; further root shrinking should focus on runtime/env/proc ownership, generated/bootstrap placement, and IR/WASM clusters rather than recreating shims. New feature code should not grow `eval.go`; create/move code by responsibility once a real package boundary is available.
+Recommendation: keep collection ownership in `core/types/collections` and runtime wrapper ownership in `core/runtime`; use direct imports from root/runtime/generator code instead of root aliases. `tests/layout_guard.sh` now rejects reintroducing moved root collection files plus root channel/future/promise/agent/atom wrappers/literals. Current production collection and reader construction call sites use `corecollections.*`, and runtime-adjacent procs use `corert.*`; further root shrinking should focus on runtime/env/proc ownership, generated/bootstrap placement, and IR/WASM clusters rather than recreating shims. New feature code should not grow `runtime_kernel.go`; create/move code by responsibility once a real package boundary is available.
 
 ### 2. Runtime-installed Var metadata is implicit
 

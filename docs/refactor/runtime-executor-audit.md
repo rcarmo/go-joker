@@ -12,8 +12,8 @@ This audit records the remaining root-owned executor/runtime families before any
 
 Files:
 
-- boxed executor now coalesced into `eval.go`
-- IR cache/compiler/executor cluster now coalesced into `eval.go` (also owns the former tiny `fn_ir_dispatch.go` dispatch bridge)
+- boxed executor now coalesced into `runtime_kernel.go`
+- IR cache/compiler/executor cluster now coalesced into `runtime_kernel.go` (also owns the former tiny `fn_ir_dispatch.go` dispatch bridge)
 - `fn_ir_compile.go`
 
 Current state:
@@ -69,13 +69,13 @@ Safe next steps:
 
 Files:
 
-- WASM compile/lowering glue now coalesced into `eval.go`
+- WASM compile/lowering glue now coalesced into `runtime_kernel.go`
 - `wasm_compile_host.go`
 - `wasm_exec_runtime.go`
 - `wasm_host_funcs.go`
 - `wasm_helper_backend.go`
 - `wasm_mem_nth_backend.go`
-- native recursive specialization now coalesced into `eval.go`
+- native recursive specialization now coalesced into `runtime_kernel.go`
 - `loop_wasm_diagnostics.go`
 
 Current state:
@@ -95,7 +95,7 @@ Files:
 - `core/runtime/channel.go`
 - `core/runtime/pending.go`
 - `core/runtime/agent.go`
-- root `eval.go` for concurrency/core.async registration glue
+- root `runtime_kernel.go` for concurrency/core.async registration glue
 
 Current state:
 
@@ -111,16 +111,16 @@ Safe next steps:
 
 - Keep `alts!` root-bound until Object/vector/result construction seams are explicit; it still performs reflection-select setup and vector result construction in root proc glue.
 - Avoid exposing raw runtime channels except for reflection-select integration that cannot currently be moved without root object/vector/result construction seams.
-- Keep concurrency/core.async proc/env registration glue in root `eval.go` until `Proc`, `Fn`, `GLOBAL_ENV`, `NIL`, and call helpers have an acyclic runtime boundary.
+- Keep concurrency/core.async proc/env registration glue in root `runtime_kernel.go` until `Proc`, `Fn`, `GLOBAL_ENV`, `NIL`, and call helpers have an acyclic runtime boundary.
 
 ### Environment, frames, and parse/eval handoff
 
 Files:
 
-- environment/namespace runtime glue now coalesced into `eval.go`
+- environment/namespace runtime glue now coalesced into `runtime_kernel.go`
 - fast-startup `ReferCoreToUser` hook now coalesced into `a_generated_bootstrap_payloads.go`
 - gen-code environment construction now coalesced into `bootstrap_gen_code.go`
-- parser/eval-facing parts now coalesced into `eval.go`
+- parser/eval-facing parts now coalesced into `runtime_kernel.go`
 
 Current state:
 

@@ -258,7 +258,7 @@ func TestReaderConstructionCallSitesUseAdapter(t *testing.T) {
 	allowed := map[string]bool{
 		"parse.go":                            true, // legacy/parser expression constructor implementations when split.
 		"read.go":                             true, // legacy reader read-loop implementations when split.
-		"eval.go":                             true, // currently coalesces parser/reader/evaluator construction.
+		"runtime_kernel.go":                   true, // currently coalesces parser/reader/evaluator construction.
 		"reader.go":                           true, // owns Reader constructor implementation.
 		"reader_construction.go":              true,
 		"construction_boundary_guard_test.go": true,

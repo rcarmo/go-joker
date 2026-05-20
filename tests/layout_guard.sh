@@ -67,8 +67,8 @@ for file in "${moved_collection_files[@]}"; do
     fail "collection-owned file core/${file} has moved to core/types/collections; do not reintroduce root copies"
   fi
 done
-if [[ -e core/chunked_eval.go ]]; then
-  fail "chunk proc registration has been coalesced into core/eval.go; do not reintroduce standalone core/chunked_eval.go"
+if [[ -e core/chunked_procs.go ]]; then
+  fail "chunk proc registration has been coalesced into core/runtime_kernel.go; do not reintroduce standalone core/chunked_procs.go"
 fi
 
 moved_runtime_files=(

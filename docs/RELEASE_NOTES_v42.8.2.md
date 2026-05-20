@@ -64,7 +64,7 @@ Added or finalized best-Joker/native variants for:
 Fixed a pathological slowdown in `pcalls` and captured/self-recursive function calls:
 
 - Root cause: captured or self-recursive `*Fn` calls could bypass `irDispatchFnCall`.
-- Changed direct `*Fn` call paths in `core/eval.go` to route through IR-aware dispatch.
+- Changed direct `*Fn` call paths in `core/runtime_kernel.go` to route through IR-aware dispatch.
 - Added regression coverage via `TestConcurrencyPcallsRecursiveFn`.
 
 ### Parallel benchmark audit

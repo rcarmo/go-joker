@@ -72,7 +72,7 @@ Coverage includes:
 - Added `joker.edn` and alias `edn` with `read-string`/`write-string` over reader/printer semantics without eval.
 - Expanded `joker.transit` with cache refs, set/list/quote/cmap tags, BigInt/BigDecimal/BigFloat/ratio/keyword/symbol payloads, verbose writing, and pod helper functions.
 - Added `make bb-compat` portable Babashka-style fixtures plus expected non-goal failure fixtures for Java interop, `bb.edn` tasks/deps, SCI internals, and broad bundled-library catalog APIs.
-- Replaced map-tag reduced shim with a proper runtime `Reduced` type, now co-located with transducer/reduce compatibility in `core/eval.go`.
+- Replaced map-tag reduced shim with a proper runtime `Reduced` type, now co-located with transducer/reduce compatibility in `core/runtime_kernel.go`.
 - Added public protocol support (`defprotocol`, `extend-type`, `extend-protocol`), dispatch, and `satisfies?`.
 - Added public record support (`defrecord`, generated `->Type`/`map->Type`, protocol clauses, `record?`) with map interop semantics.
 - Added hierarchy support (`derive`, `underive`, `isa?`, `parents`, `ancestors`, `descendants`, `make-hierarchy`).

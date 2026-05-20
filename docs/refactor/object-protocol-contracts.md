@@ -97,9 +97,9 @@ core/runtime/
 └── tracing_hooks.go
 
 core/eval/ (future target; not reserved yet)
-├── eval.go
+├── runtime_kernel.go
 ├── forms.go
-├── eval.go (including tail-call rewrite/trampoline)
+├── runtime_kernel.go (including tail-call rewrite/trampoline)
 └── compiler_bridge.go
 ```
 

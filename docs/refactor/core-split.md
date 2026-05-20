@@ -27,7 +27,7 @@ This makes it too easy for features to reach across layers through unexported st
 
 The type/object split has advanced enough that `core/types` is now the canonical object/protocol package. Root `core` no longer defines or aliases `Object`, and the recent cleanup removed transitional root aliases for `Keyword`, `Symbol`, `Map`, `Meta`, `MetaHolder`, `MapIterator`, `Pair`, and `EmptyMapIterator`. Root callers now use explicit `coretypes.*` names for those contracts. Major moved families include scalar values (`Int`, `Double`, `Boolean`, `Char`, `String`, `Time`, `Regex`, `Comment`), big numeric values (`BigInt`, `BigFloat`, `Ratio`), numeric operation implementations, `RecurBindings`, `Delay`, symbol/name values, generic info helpers, shared collection protocols (`Map`, `Set`, `Vec`) and metadata/ref contracts (`Meta`, `MetaHolder`, `Ref`).
 
-Root `core` file count is now 5 total Go files (1 root test file). `core/types` has 19 Go files. Concrete collection implementations have moved to `core/types/collections`; root collection files are deleted and guarded against reintroduction. Runtime-owned object wrappers for channels, futures/promises, agents, and atoms now live in `core/runtime`; root proc/env glue uses exported runtime methods and `coretypes` runtime hooks for errors/arity instead of reaching into moved state directly. Root generated bootstrap still remains `core/a_generated_bootstrap_payloads.go`; previous root `types_assert_gen.go`/`types_info_gen.go` were replaced by explicit root support co-located in `eval.go` while moved helpers live in `core/types`.
+Root `core` file count is now 5 total Go files (1 root test file). `core/types` has 19 Go files. Concrete collection implementations have moved to `core/types/collections`; root collection files are deleted and guarded against reintroduction. Runtime-owned object wrappers for channels, futures/promises, agents, and atoms now live in `core/runtime`; root proc/env glue uses exported runtime methods and `coretypes` runtime hooks for errors/arity instead of reaching into moved state directly. Root generated bootstrap still remains `core/a_generated_bootstrap_payloads.go`; previous root `types_assert_gen.go`/`types_info_gen.go` were replaced by explicit root support co-located in `runtime_kernel.go` while moved helpers live in `core/types`.
 
 ## Proposed split order
 
@@ -60,7 +60,7 @@ Likely contents or responsibilities:
 
 Current candidate files:
 
-- environment/namespace/goroutine runtime glue now coalesced into `eval.go`; next runtime candidates are frame/call scaffolding currently mixed through evaluator and IR files
+- environment/namespace/goroutine runtime glue now coalesced into `runtime_kernel.go`; next runtime candidates are frame/call scaffolding currently mixed through evaluator and IR files
 - selected parts of `call_fast.go`, only after call contracts are explicit
 
 Risks:
@@ -80,7 +80,7 @@ Moved concrete collection files:
 
 - `array_map.go`
 - `array_vector.go`
-- `chunked_seq.go` collection mechanics (root chunk proc registration is coalesced into `eval.go` until proc/env ownership moves)
+- `chunked_seq.go` collection mechanics (root chunk proc registration is coalesced into `runtime_kernel.go` until proc/env ownership moves)
 - `hash_map.go`
 - `list.go`
 - `map.go` helper functionality
@@ -91,9 +91,9 @@ Moved concrete collection files:
 
 Still root-owned collection-adjacent files:
 
-- sorted/transient collection proc glue now coalesced into `eval.go`
+- sorted/transient collection proc glue now coalesced into `runtime_kernel.go`
 - `transient_string.go`
-- related evaluator/runtime fast paths now coalesced into `eval.go`
+- related evaluator/runtime fast paths now coalesced into `runtime_kernel.go`
 
 Status and risks:
 
@@ -116,13 +116,13 @@ core/reader/
 
 Current candidate files:
 
-- parser/reader/evaluator integration now coalesced into `eval.go`; gen-code slow bootstrap helpers are coalesced into `bootstrap_gen_code.go`
+- parser/reader/evaluator integration now coalesced into `runtime_kernel.go`; gen-code slow bootstrap helpers are coalesced into `bootstrap_gen_code.go`
 - `read_conditional_test.go`
 
 Status and risks:
 
 - `core/reader` now owns leaf mechanics: rune-window history, rune-stream Get/Unget/Peek position accounting, reader position stacks, line rune reader, raw file/buffer/buffered/IO wrappers, char classes, whitespace/comment/top-level-trivia/line scanning decisions/runs, identifier token scanning/checks/keyword, standalone-slash, and literal classification/validation issue enumeration, unicode/string escape parsing, top-level read-form and number-token classification, dispatch/format-prefix/delimiter/form helpers, and conditional read-error/suppression/result, conditional/unquote/namespaced-map start/prefix/splice, and syntax-quote auto-gensym name decisions.
-- reader/parser still owns namespace/tagged-literal/runtime side effects; current production call sites route construction through `ReaderConstructionAdapter`, guarded by `construction_boundary_guard_test.go`. The former tiny root `reader.go` wrapper has been folded into `eval.go`.
+- reader/parser still owns namespace/tagged-literal/runtime side effects; current production call sites route construction through `ReaderConstructionAdapter`, guarded by `construction_boundary_guard_test.go`. The former tiny root `reader.go` wrapper has been folded into `runtime_kernel.go`.
 - tagged literal handling touches namespace/runtime metadata.
 - parse/eval boundaries are not yet clean.
 
@@ -136,11 +136,11 @@ core/eval/ (future target; not reserved yet)
 
 Current candidate files:
 
-- `eval.go`
-- expression dump/inference helpers now coalesced into `eval.go`
-- tail-call runtime trampoline and parse-time recur rewrite now coalesced into `eval.go`
-- public protocol/record/hierarchy forms now coalesced into `eval.go`
-- form/compiler pieces now coalesced into `eval.go`
+- `runtime_kernel.go`
+- expression dump/inference helpers now coalesced into `runtime_kernel.go`
+- tail-call runtime trampoline and parse-time recur rewrite now coalesced into `runtime_kernel.go`
+- public protocol/record/hierarchy forms now coalesced into `runtime_kernel.go`
+- form/compiler pieces now coalesced into `runtime_kernel.go`
 
 Risks:
 

@@ -38,7 +38,7 @@ Joker's execution engine uses a **tiered dispatch** model with five execution pa
 - **Zero-alloc:** No Object boxing, no interface dispatch, no slice allocation
 - **Dispatch:** Checked first in `Fn.Call` when `defVar != nil`; falls through if fn body isn't pure-integer
 - **Impact:** fib(35) 26s → 0.5s (53×), tak(30,22,12) 25s → 0.7s (35×)
-- **File:** `core/eval.go`
+- **File:** `core/runtime_kernel.go`
 
 ### Tier 1: NaN-boxed Typed Executor (`irExecTypedNB`)
 - **Stack:** `[]uint64` — 8 bytes per entry
@@ -214,9 +214,9 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_frame_stack.go` | ~60 | Object frame stack for boxed executor |
 | `ir_frame_detect.go` | ~85 | Precise let/loop frame detection |
 | `ir_native_helper.go` | ~170 | Native f64 closure compiler |
-| native recursive specialization in `eval.go` | ~450 | Native int closure compiler (fib/tak) |
+| native recursive specialization in `runtime_kernel.go` | ~450 | Native int closure compiler (fib/tak) |
 | `ir_fn_cache.go` | ~155 | Fn→IRProgram caching + loop wrapper |
-| string runtime wrappers in `eval.go` | ~150 | StringCursor/TransientString wrappers and cursor proc registration |
+| string runtime wrappers in `runtime_kernel.go` | ~150 | StringCursor/TransientString wrappers and cursor proc registration |
 | `ir_analysis.go` | ~155 | IR program analysis |
 | `ir_value_accessors.go` | ~140 | irValue unsafe.Pointer accessors |
 | `ir_nanbox.go` | ~100 | NaN-boxing encode/decode |
@@ -224,13 +224,13 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_arena.go` | — | (removed — arena caused corruption) |
 | `noescape.go` | ~22 | unsafe.Pointer noescape trick |
 | `range_fast.go` | ~130 | IntRange with fast reduce |
-| reduce/transducer fast paths in `eval.go` | ~475 | Seq-walking reduce support, full transducer semantics wiring, and dedicated `Reduced` runtime type |
-| protocol/record/hierarchy runtime glue in `eval.go` | ~1380 | Protocol dispatch/registration, public protocol/record forms, record type/constructors, and hierarchy derive/isa APIs |
+| reduce/transducer fast paths in `runtime_kernel.go` | ~475 | Seq-walking reduce support, full transducer semantics wiring, and dedicated `Reduced` runtime type |
+| protocol/record/hierarchy runtime glue in `runtime_kernel.go` | ~1380 | Protocol dispatch/registration, public protocol/record forms, record type/constructors, and hierarchy derive/isa APIs |
 | `chunked_seq.go` | ~230 | Chunked-seq API compatibility layer |
-| atom extensions in `eval.go` | ~170 | Validators, watches, CAS for atoms |
-| unchecked/core API compatibility in `eval.go` | ~600 | `unchecked-*`, primitive array helper surface, and remaining compatibility APIs (`alter-var-root`, etc.) |
-| sorted/transient collection proc glue in `eval.go` | ~340 | sorted-map/set API, metadata support, transient bridges/procs |
-| tagged literal registration in `eval.go` | ~130 | `#inst`/`#uuid` data readers |
+| atom extensions in `runtime_kernel.go` | ~170 | Validators, watches, CAS for atoms |
+| unchecked/core API compatibility in `runtime_kernel.go` | ~600 | `unchecked-*`, primitive array helper surface, and remaining compatibility APIs (`alter-var-root`, etc.) |
+| sorted/transient collection proc glue in `runtime_kernel.go` | ~340 | sorted-map/set API, metadata support, transient bridges/procs |
+| tagged literal registration in `runtime_kernel.go` | ~130 | `#inst`/`#uuid` data readers |
 | `escape_analysis.go` | ~230 | Transient auto-promotion |
 | `wasm_*.go` | ~2500 | WASM compilation + runtime (10 files) |
 | `std/jit/` | ~200 | joker.jit namespace |

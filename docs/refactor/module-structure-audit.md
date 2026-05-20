@@ -133,7 +133,7 @@ These layers are highly coupled to object construction, namespaces, errors, and 
 Next improvement:
 
 - keep reader/evaluator in root until object construction, expression construction, tagged literal, and evaluator handoff contracts are explicit and acyclic;
-- avoid new feature code in the coalesced `eval.go` unless it is truly core language behavior.
+- avoid new feature code in the coalesced `runtime_kernel.go` unless it is truly core language behavior.
 
 ### 7. Benchmark/tooling layout can be cleaner
 
