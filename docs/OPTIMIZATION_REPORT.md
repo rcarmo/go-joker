@@ -227,9 +227,9 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | reduce/transducer fast paths in `eval.go` | ~475 | Seq-walking reduce support, full transducer semantics wiring, and dedicated `Reduced` runtime type |
 | protocol/record/hierarchy runtime glue in `object.go` | ~1380 | Protocol dispatch/registration, public protocol/record forms, record type/constructors, and hierarchy derive/isa APIs |
 | `chunked_seq.go` | ~230 | Chunked-seq API compatibility layer |
-| atom extensions in `procs.go` | ~170 | Validators, watches, CAS for atoms |
-| unchecked/core API compatibility in `procs.go` | ~600 | `unchecked-*`, primitive array helper surface, and remaining compatibility APIs (`alter-var-root`, etc.) |
-| sorted/transient collection proc glue in `procs.go` | ~340 | sorted-map/set API, metadata support, transient bridges/procs |
+| atom extensions in `object.go` | ~170 | Validators, watches, CAS for atoms |
+| unchecked/core API compatibility in `object.go` | ~600 | `unchecked-*`, primitive array helper surface, and remaining compatibility APIs (`alter-var-root`, etc.) |
+| sorted/transient collection proc glue in `object.go` | ~340 | sorted-map/set API, metadata support, transient bridges/procs |
 | tagged literal registration in `read.go` | ~130 | `#inst`/`#uuid` data readers |
 | `escape_analysis.go` | ~230 | Transient auto-promotion |
 | `wasm_*.go` | ~2500 | WASM compilation + runtime (10 files) |

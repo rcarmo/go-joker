@@ -247,7 +247,22 @@ def fifteenth_pass() -> None:
         ensure_import("eval.go", '"github.com/rcarmo/go-joker/core/types/numerical"')
 
 
+
+def sixteenth_pass() -> None:
+    # Root proc registration/call helpers are object/runtime glue until proc/env extraction.
+    if append_body("procs.go", "object.go"):
+        for spec in [
+            '"bytes"', '"errors"', '"math/rand"', '"path/filepath"',
+            'coregenerated "github.com/rcarmo/go-joker/core/generated"',
+            'corereader "github.com/rcarmo/go-joker/core/reader"',
+            '"github.com/rcarmo/go-joker/core/deps"',
+            '"github.com/rcarmo/go-joker/core/types/numerical"',
+            '"github.com/tetratelabs/wazero/api"',
+        ]:
+            ensure_import("object.go", spec)
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass(); thirteenth_pass(); fourteenth_pass(); fifteenth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass(); thirteenth_pass(); fourteenth_pass(); fifteenth_pass(); sixteenth_pass()
 
 if __name__ == "__main__": main()

@@ -68,7 +68,7 @@ for file in "${moved_collection_files[@]}"; do
   fi
 done
 if [[ -e core/chunked_procs.go ]]; then
-  fail "chunk proc registration has been coalesced into core/procs.go; do not reintroduce standalone core/chunked_procs.go"
+  fail "chunk proc registration has been coalesced into core/object.go; do not reintroduce standalone core/chunked_procs.go"
 fi
 
 moved_runtime_files=(

@@ -26,13 +26,13 @@ The old root files are deleted and guarded against reintroduction by `tests/layo
 - `core/set.go`
 - `core/vector.go`
 
-Chunk proc registration remains root-owned intentionally but has been coalesced into `core/procs.go`: it registers chunk procs into `GLOBAL_ENV` and uses `Proc`, `STRINGS`, and `referToUser`; arity/error behavior goes through `core/types` runtime hooks. It is proc/env registration, not collection data ownership.
+Chunk proc registration remains root-owned intentionally but has been coalesced into `core/object.go`: it registers chunk procs into `GLOBAL_ENV` and uses `Proc`, `STRINGS`, and `referToUser`; arity/error behavior goes through `core/types` runtime hooks. It is proc/env registration, not collection data ownership.
 
 ## Current root collection-adjacent file groups
 
-- Sorted collections: sorted collection proc registration and comparator/callable behavior are coalesced into `procs.go`; arity/error behavior goes through `core/types` runtime hooks rather than direct root helpers.
+- Sorted collections: sorted collection proc registration and comparator/callable behavior are coalesced into `object.go`; arity/error behavior goes through `core/types` runtime hooks rather than direct root helpers.
 - Records, protocols, hierarchy, and namespaces: record, hierarchy, protocol, namespace, and environment behavior is coalesced into `object.go`; these use moved collection types but remain root-owned runtime/object glue, and record object arity/error behavior goes through `core/types` runtime hooks rather than direct root helpers.
-- Transients: transient proc behavior and conversion hooks are coalesced into `procs.go`, while persistent map/vector implementations are in `core/types/collections`; arity/error behavior goes through `core/types` runtime hooks rather than direct root helpers.
+- Transients: transient proc behavior and conversion hooks are coalesced into `object.go`, while persistent map/vector implementations are in `core/types/collections`; arity/error behavior goes through `core/types` runtime hooks rather than direct root helpers.
 - Reducer/pipeline helpers: `eval.go` now owns reduce, transducer compatibility, `Reduced`, and map/filter/take/range/transducer fast paths as evaluator/runtime optimizations, not collection storage ownership; arity/error behavior in the range/frequencies/transducer glue goes through `core/types` runtime hooks rather than direct root helpers.
 - Generated/bootstrap payloads: generated files now reference moved collection types through `corecollections.*`, but generated payload placement is still a separate boundary.
 
