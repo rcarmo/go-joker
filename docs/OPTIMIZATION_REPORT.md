@@ -216,7 +216,7 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_native_helper.go` | ~170 | Native f64 closure compiler |
 | native recursive specialization in `eval.go` | ~450 | Native int closure compiler (fib/tak) |
 | `ir_fn_cache.go` | ~155 | Fn→IRProgram caching + loop wrapper |
-| string runtime wrappers in `object.go` | ~150 | StringCursor/TransientString wrappers and cursor proc registration |
+| string runtime wrappers in `eval.go` | ~150 | StringCursor/TransientString wrappers and cursor proc registration |
 | `ir_analysis.go` | ~155 | IR program analysis |
 | `ir_value_accessors.go` | ~140 | irValue unsafe.Pointer accessors |
 | `ir_nanbox.go` | ~100 | NaN-boxing encode/decode |
@@ -225,12 +225,12 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `noescape.go` | ~22 | unsafe.Pointer noescape trick |
 | `range_fast.go` | ~130 | IntRange with fast reduce |
 | reduce/transducer fast paths in `eval.go` | ~475 | Seq-walking reduce support, full transducer semantics wiring, and dedicated `Reduced` runtime type |
-| protocol/record/hierarchy runtime glue in `object.go` | ~1380 | Protocol dispatch/registration, public protocol/record forms, record type/constructors, and hierarchy derive/isa APIs |
+| protocol/record/hierarchy runtime glue in `eval.go` | ~1380 | Protocol dispatch/registration, public protocol/record forms, record type/constructors, and hierarchy derive/isa APIs |
 | `chunked_seq.go` | ~230 | Chunked-seq API compatibility layer |
-| atom extensions in `object.go` | ~170 | Validators, watches, CAS for atoms |
-| unchecked/core API compatibility in `object.go` | ~600 | `unchecked-*`, primitive array helper surface, and remaining compatibility APIs (`alter-var-root`, etc.) |
-| sorted/transient collection proc glue in `object.go` | ~340 | sorted-map/set API, metadata support, transient bridges/procs |
-| tagged literal registration in `read.go` | ~130 | `#inst`/`#uuid` data readers |
+| atom extensions in `eval.go` | ~170 | Validators, watches, CAS for atoms |
+| unchecked/core API compatibility in `eval.go` | ~600 | `unchecked-*`, primitive array helper surface, and remaining compatibility APIs (`alter-var-root`, etc.) |
+| sorted/transient collection proc glue in `eval.go` | ~340 | sorted-map/set API, metadata support, transient bridges/procs |
+| tagged literal registration in `eval.go` | ~130 | `#inst`/`#uuid` data readers |
 | `escape_analysis.go` | ~230 | Transient auto-promotion |
 | `wasm_*.go` | ~2500 | WASM compilation + runtime (10 files) |
 | `std/jit/` | ~200 | joker.jit namespace |
