@@ -1,6 +1,6 @@
 # Reader/parser extraction audit
 
-Updated: 2026-05-18
+Updated: 2026-05-20
 
 ## Current extracted reader package ownership
 
@@ -18,7 +18,7 @@ The package still does **not** import root `core` and must remain that way.
 
 ## Remaining root-bound reader wrapper
 
-The former tiny `core/reader.go` wrapper has been folded into `core/read.go` so root reader ownership is not split across a standalone file. The remaining root wrapper responsibilities are still:
+The former root reader files have been coalesced into `core/eval.go` while the root-independent mechanics remain in `core/reader`. The remaining root wrapper responsibilities are still:
 
 - root `Reader` embeds `reader.RuneStream`;
 - root keeps filename interning through `STRINGS.Intern`;
@@ -26,9 +26,9 @@ The former tiny `core/reader.go` wrapper has been folded into `core/read.go` so 
 
 Moving this wrapper completely requires a reader construction adapter for filename/string interning and error conversion, or accepting non-interned filename storage in `core/reader` plus a root wrapper for core errors.
 
-## Remaining root-bound `core/read.go`
+## Remaining root-bound reader code in `core/eval.go`
 
-`read.go` still owns concrete object semantics and global reader behavior, but most construction now goes through `ReaderConstructionAdapter`:
+The coalesced evaluator file still owns concrete object semantics and global reader behavior, but most construction now goes through `ReaderConstructionAdapter`:
 
 - `ReadError`, root `ObjectInfo`, `MakeReadObject`, and `DeriveReadObject` adapter seams;
 - `FORMAT_MODE`, `LINTER_MODE`, `DIALECT`, `SUPPRESS_READ`, `PROBLEM_COUNT`, and lint warning/error emission;
@@ -44,9 +44,9 @@ Moving this wrapper completely requires a reader construction adapter for filena
 
 Safe next extractions from this file are limited to pure decision/configuration helpers or further adapterization of explicitly root-owned semantics. Concrete reader orchestration remains blocked by namespace/tagged-literal/runtime side effects even though scalar/collection construction is now mostly adapterized.
 
-## Remaining parser-adjacent `core/parse.go` blockers
+## Remaining parser-adjacent `core/eval.go` blockers
 
-`parse.go` is still evaluator/compiler front-end code rather than reader mechanics:
+Parser code is now coalesced into `eval.go` and is still evaluator/compiler front-end code rather than reader mechanics:
 
 - `Callable` call helpers and dynamic argument dispatch;
 - `LocalEnv`, `Bindings`, frame and closure/capture handling;
@@ -58,7 +58,7 @@ No parser orchestration should move to `core/reader` until `Object`, `Expr`, `Va
 
 ## Next safe reader steps
 
-1. Continue extracting pure decision/configuration helpers from `read.go` when they do not mention root-owned `Symbol`, `Meta`, `GLOBAL_ENV`, evaluator state, or concrete collection types.
+1. Continue extracting pure decision/configuration helpers from the reader section in `eval.go` when they do not mention root-owned `Symbol`, `Meta`, `GLOBAL_ENV`, evaluator state, or concrete collection types.
 2. Continue extending `ReaderConstructionAdapter` only for stable root-owned semantics; do not move tagged literal or top-level orchestration while namespace/runtime side effects remain direct.
 3. Keep package guards ensuring `core/reader` never imports root `core`.
 

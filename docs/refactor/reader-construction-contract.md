@@ -1,10 +1,10 @@
 # Reader construction contract
 
-Updated: 2026-05-18
+Updated: 2026-05-20
 
 ## Purpose
 
-This note records the boundary required before moving `read.go`, parser helpers, or tagged-literal handling out of root `core`.
+This note records the boundary required before moving the coalesced reader/parser helpers or tagged-literal handling out of root `core`.
 
 The reader currently constructs concrete root objects directly and also attaches source metadata. Moving it before this contract becomes code would force broad exports from `core` or create import cycles.
 
@@ -73,4 +73,4 @@ This is a design sketch, not an implementation API. The important rule is that e
 
 ## Current status
 
-Reader extraction remains blocked on object-model/package-cycle ownership for concrete reading/parsing, but the construction boundary is now code rather than a sketch. Collection/object contracts are much stronger now, reader construction contract tests run from `make core-contract-check`, `ReaderConstructionAdapter` owns the narrow root construction surface, and `construction_boundary_guard_test.go` prevents new production call sites from bypassing that adapter. The adapter now also covers root read errors, source metadata attachment/derivation, scalar/comment/regex/numeric construction, metadata application, list/vector/map/set literals with duplicate checks, conditional vector construction, and expression construction, which are prerequisites for eventually moving orchestration into `core/reader` without importing root `core`. Pure reader mechanics have continued moving to `core/reader`; the remaining blocker is moving concrete reader/parser implementation without exporting the whole root object/evaluator surface. Root `read.go` should now keep namespace/tagged-literal semantics, FORMAT/LINTER side effects, and parser/evaluator handoff, while new root-independent rune/token/form decisions should be added to `core/reader` with package tests first.
+Reader extraction remains blocked on object-model/package-cycle ownership for concrete reading/parsing, but the construction boundary is now code rather than a sketch. Collection/object contracts are much stronger now, reader construction contract tests run from `make core-contract-check`, `ReaderConstructionAdapter` owns the narrow root construction surface, and `construction_boundary_guard_test.go` prevents new production call sites from bypassing that adapter. The adapter now also covers root read errors, source metadata attachment/derivation, scalar/comment/regex/numeric construction, metadata application, list/vector/map/set literals with duplicate checks, conditional vector construction, and expression construction, which are prerequisites for eventually moving orchestration into `core/reader` without importing root `core`. Pure reader mechanics have continued moving to `core/reader`; the remaining blocker is moving concrete reader/parser implementation without exporting the whole root object/evaluator surface. Root `eval.go` now keeps the coalesced namespace/tagged-literal semantics, FORMAT/LINTER side effects, reader/parser code, and evaluator handoff, while new root-independent rune/token/form decisions should be added to `core/reader` with package tests first.

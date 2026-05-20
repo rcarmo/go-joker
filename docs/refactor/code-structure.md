@@ -16,7 +16,7 @@ Recent feature work improved boundaries for new code (`std/transit`, `std/system
 - `core/` is still the runtime kernel and contains:
   - remaining root runtime object systems (`object.go`, root generated helpers) plus `core/types` for the canonical object/type/protocol model
   - proc/env/evaluator glue for moved collection/runtime objects
-  - reader/parser/evaluator (`read.go`, `parse.go`, `eval.go`)
+  - reader/parser/evaluator (coalesced in `eval.go`)
   - namespace/Var/runtime environment (`ns.go`, `environment*.go`)
   - core proc implementations (`procs.go`, generated `a_code.go`)
   - concurrency/core.async/atom registration glue over runtime-owned channel/future/promise/agent/atom wrappers
@@ -65,7 +65,7 @@ Recent `std/transit` and `std/system` match this pattern.
 
 - `core/procs.go` — many unrelated public procs in one file.
 - `core/object.go` — remaining root runtime values (`Nil`, `Var`, `Proc`, `Fn`, `ExInfo`) and root-specific helpers; object/protocol/scalar/shared collection contracts have moved to `core/types`, while Atom/Channel/Future/Promise/Agent wrappers now live in `core/runtime`.
-- `core/parse.go`, `core/read.go`, `core/eval.go` — acceptable for an interpreter but should remain isolated from feature-specific extensions.
+- `core/eval.go` — acceptable for an interpreter but should remain isolated from feature-specific extensions.
 - `core/types/ops_impl.go` and `core/types/numbers.go` — numeric contracts are now type-package owned and remain critical; keep focused tests around promotion, ratio, and native-int bounds.
 - remaining root IR/WASM/executor files — partially extracted, but compiler/executor/runtime pieces still depend on root `Fn`/`Var`/`Expr`, namespace/frame, and call contracts.
 - moved concrete collection families now live in `core/types/collections`; root `core` should not grow new collection-owned files.
