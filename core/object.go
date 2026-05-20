@@ -7698,3 +7698,8 @@ func procAsyncUnsubAll(args []coretypes.Object) coretypes.Object {
 	p.mu.Unlock()
 	return NIL
 }
+
+// ---- go-spew default ----
+var procGoSpew = func(args []coretypes.Object) (res coretypes.Object) {
+	return coretypes.MakeBoolean(false)
+}
