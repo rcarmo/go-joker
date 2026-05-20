@@ -1,6 +1,9 @@
 package core
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+)
 
 // z_doc_meta.go — metadata hygiene for native/runtime-installed Vars.
 //
@@ -28,9 +31,9 @@ func fillNativeVarMetadata() {
 			if vr == nil || vr.ns != ns || vr.isFake {
 				continue
 			}
-			m, _ := vr.Meta.(*ArrayMap)
+			m, _ := vr.Meta.(*corecollections.ArrayMap)
 			if m == nil {
-				m = collectionConstruction.NewEmptyArrayMap()
+				m = corecollections.EmptyArrayMap()
 				if vr.Meta != nil {
 					for it := vr.Meta.Iter(); it.HasNext(); {
 						p := it.Next()

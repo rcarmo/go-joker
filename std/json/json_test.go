@@ -1,8 +1,10 @@
 package json
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -18,14 +20,14 @@ func expectJSONPanic(t *testing.T, fn func()) {
 }
 
 func TestJSONReadStringKeywordizeAndFromObject(t *testing.T) {
-	opts := EmptyArrayMap()
+	opts := corecollections.EmptyArrayMap()
 	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "keywords?"), coretypes.Boolean{B: true})
 	obj := readString(`{"a":1,"b":[true,"x"]}`, opts).(coretypes.Map)
 	ok, a := obj.Get(coretypes.MakeKeyword(STRINGS.Intern, "a"))
 	if !ok || a.(coretypes.Int).I != 1 {
 		t.Fatalf("keywordized a mismatch: %v", a)
 	}
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "k"), coretypes.MakeString("v"))
 	encoded := fromObject(m).(map[string]interface{})
 	if encoded["k"] != "v" {

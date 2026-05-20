@@ -7,9 +7,11 @@ package html
 
 import (
 	"fmt"
+	"os"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"os"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func InternsOrThunks() {
@@ -20,12 +22,12 @@ func InternsOrThunks() {
 
 	htmlNamespace.InternVar("escape", escape_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Escapes special characters like < to become &lt;. It escapes only five such characters: <, >, &, ' and ".`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	htmlNamespace.InternVar("unescape", unescape_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Unescapes entities like &lt; to become <.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 }

@@ -2,8 +2,10 @@ package core
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
@@ -174,7 +176,7 @@ func isDeclaredInConfig(vr *Var) bool {
 	return corestr.IsJokerdPath(s.S)
 }
 
-func (ns *Namespace) InternVar(name string, val coretypes.Object, meta *ArrayMap) *Var {
+func (ns *Namespace) InternVar(name string, val coretypes.Object, meta *corecollections.ArrayMap) *Var {
 	vr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, name))
 	vr.Value = val
 	meta.Add(KEYWORDS.ns, ns)

@@ -1,15 +1,17 @@
 package transit
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
 	"testing"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestTransitRoundTripMap(t *testing.T) {
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString("joker"))
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "n"), coretypes.MakeInt(42))
 	encoded := writeTransit(m).(coretypes.String).S
@@ -26,7 +28,7 @@ func TestTransitRoundTripMap(t *testing.T) {
 }
 
 func TestTransitCacheRefs(t *testing.T) {
-	v := NewVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, "repeat-key"), coretypes.MakeKeyword(STRINGS.Intern, "repeat-key"))
+	v := corecollections.NewVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, "repeat-key"), coretypes.MakeKeyword(STRINGS.Intern, "repeat-key"))
 	encoded := writeTransit(v).(coretypes.String).S
 	if !strings.Contains(encoded, `"^0"`) {
 		t.Fatalf("expected cache ref in encoding: %s", encoded)
@@ -42,7 +44,7 @@ func TestTransitCacheRefs(t *testing.T) {
 }
 
 func TestTransitTaggedSetListQuoteCMap(t *testing.T) {
-	set := readTransit(coretypes.MakeString(`["~#set",[1,"~:a"]]`)).(*MapSet)
+	set := readTransit(coretypes.MakeString(`["~#set",[1,"~:a"]]`)).(*corecollections.MapSet)
 	if ok, _ := set.Get(coretypes.MakeInt(1)); !ok {
 		t.Fatalf("set missing int: %s", set.ToString(false))
 	}
@@ -85,7 +87,7 @@ func TestTransitBigNumbersAndRatio(t *testing.T) {
 }
 
 func TestTransitEscapedStringsAndSymbols(t *testing.T) {
-	v := NewVectorFrom(coretypes.MakeString("~literal"), coretypes.MakeKeyword(STRINGS.Intern, "k"), coretypes.MakeSymbol(STRINGS.Intern, "sym"))
+	v := corecollections.NewVectorFrom(coretypes.MakeString("~literal"), coretypes.MakeKeyword(STRINGS.Intern, "k"), coretypes.MakeSymbol(STRINGS.Intern, "sym"))
 	encoded := writeTransit(v).(coretypes.String).S
 	decoded := readTransit(coretypes.MakeString(encoded)).(coretypes.CountedIndexed)
 	if decoded.At(0).ToString(false) != "~literal" {

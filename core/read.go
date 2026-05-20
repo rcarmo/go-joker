@@ -2,12 +2,14 @@ package core
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 	"math/rand"
 	"regexp"
 	"strconv"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	corereader "github.com/rcarmo/go-joker/core/reader"
 	"github.com/rcarmo/go-joker/core/types/numerical"
@@ -52,7 +54,6 @@ var (
 	GENSYM int
 )
 
-var NIL = Nil{}
 var posStack = corereader.NewPositionStack(8)
 
 func pushPos(reader *Reader) {
@@ -616,20 +617,20 @@ func makeQuote(obj coretypes.Object, quote coretypes.Symbol) coretypes.Object {
 	return DeriveReadObject(obj, res)
 }
 
-func metadataFromObject(obj coretypes.Object) (*ArrayMap, bool) {
+func metadataFromObject(obj coretypes.Object) (*corecollections.ArrayMap, bool) {
 	switch v := obj.(type) {
-	case *ArrayMap:
+	case *corecollections.ArrayMap:
 		return v, true
 	case coretypes.String, coretypes.Symbol:
-		return &ArrayMap{arr: []coretypes.Object{DeriveReadObject(obj, KEYWORDS.tag), obj}}, true
+		return &corecollections.ArrayMap{Arr: []coretypes.Object{DeriveReadObject(obj, KEYWORDS.tag), obj}}, true
 	case coretypes.Keyword:
-		return &ArrayMap{arr: []coretypes.Object{obj, DeriveReadObject(obj, readerConstruction.Bool(true))}}, true
+		return &corecollections.ArrayMap{Arr: []coretypes.Object{obj, DeriveReadObject(obj, readerConstruction.Bool(true))}}, true
 	default:
 		return nil, false
 	}
 }
 
-func readMeta(reader *Reader) *ArrayMap {
+func readMeta(reader *Reader) *corecollections.ArrayMap {
 	obj := readFirst(reader)
 	meta, ok := readerConstruction.MetadataFromObject(obj)
 	if !ok {
@@ -696,7 +697,7 @@ func readArgSymbol(reader *Reader) coretypes.Object {
 }
 
 func isSelfEvaluating(obj coretypes.Object) bool {
-	if obj == EmptyList {
+	if obj == corecollections.EmptyList {
 		return true
 	}
 	switch obj.(type) {
@@ -718,7 +719,7 @@ func isCall(obj coretypes.Object, name coretypes.Symbol) bool {
 
 func syntaxQuoteSeq(seq coretypes.Seq, env map[*string]coretypes.Symbol, reader *Reader) coretypes.Seq {
 	res := make([]coretypes.Object, 0)
-	for iter := iter(seq); iter.HasNext(); {
+	for iter := corecollections.NewSeqIterator(seq); iter.HasNext(); {
 		obj := iter.Next()
 		if isCall(obj, SYMBOLS.unquoteSplicing) {
 			res = append(res, (obj).(coretypes.Seq).Rest().First())
@@ -727,7 +728,7 @@ func syntaxQuoteSeq(seq coretypes.Seq, env map[*string]coretypes.Symbol, reader 
 			res = append(res, DeriveReadObject(q, readerConstruction.ListFrom([]coretypes.Object{SYMBOLS.list, q})))
 		}
 	}
-	return &ArraySeq{arr: res}
+	return &corecollections.ArraySeq{Arr: res}
 }
 
 func syntaxQuoteColl(seq coretypes.Seq, env map[*string]coretypes.Symbol, reader *Reader, ctor coretypes.Symbol, info *coretypes.ObjectInfo) coretypes.Object {
@@ -766,7 +767,7 @@ func makeSyntaxQuote(obj coretypes.Object, env map[*string]coretypes.Symbol, rea
 		return makeQuote(obj, SYMBOLS.quote)
 	case coretypes.Seq:
 		if isCall(obj, SYMBOLS.unquote) {
-			return Second(s)
+			return corecollections.Second(s)
 		}
 		if isCall(obj, SYMBOLS.unquoteSplicing) {
 			panic(MakeReadError(reader, "Splice not in list"))
@@ -774,9 +775,9 @@ func makeSyntaxQuote(obj coretypes.Object, env map[*string]coretypes.Symbol, rea
 		return syntaxQuoteColl(s, env, reader, SYMBOLS.emptySymbol, info)
 	case coretypes.Vec:
 		return syntaxQuoteColl(s.Seq(), env, reader, SYMBOLS.vector, info)
-	case *ArrayMap:
-		return syntaxQuoteColl(ArraySeqFromArrayMap(s), env, reader, SYMBOLS.hashMap, info)
-	case *MapSet:
+	case *corecollections.ArrayMap:
+		return syntaxQuoteColl(corecollections.ArraySeqFromArrayMap(s), env, reader, SYMBOLS.hashMap, info)
+	case *corecollections.MapSet:
 		return syntaxQuoteColl(s.Seq(), env, reader, SYMBOLS.hashSet, info)
 	default:
 		return obj
@@ -858,7 +859,7 @@ func readConditional(reader *Reader) (coretypes.Object, bool) {
 		panic(MakeReadError(reader, "Reader conditional body must be a list"))
 	}
 	if FORMAT_MODE {
-		cond := readList(reader).(*List)
+		cond := readList(reader).(*corecollections.List)
 		addPrefix(cond, corereader.ConditionalPrefix(isSplicing))
 		return cond, false
 	}

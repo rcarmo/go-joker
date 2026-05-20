@@ -2,11 +2,13 @@ package core
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"regexp"
 	"sort"
 	"unicode/utf8"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func seqFirst(seq coretypes.Seq, w io.Writer, indent int) (coretypes.Seq, int) {
@@ -216,9 +218,9 @@ func (rs RequireSort) Less(i, j int) bool {
 }
 
 func sortRequire(seq coretypes.Seq) coretypes.Seq {
-	s := RequireSort(ToSlice(seq))
+	s := RequireSort(corecollections.ToSlice(seq))
 	sort.Sort(s)
-	return &ArraySeq{arr: s}
+	return &corecollections.ArraySeq{Arr: s}
 }
 
 func formatSeqEx(seq coretypes.Seq, w io.Writer, indent int, formatAsDef bool) int {

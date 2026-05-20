@@ -12,7 +12,9 @@ func initBenchStringCursorProcs() {
 		name string
 		fn   ProcFn
 	}{
-		{"string-cursor", func(args []coretypes.Object) coretypes.Object { return NewStringCursor(EnsureArgIsString(args, 0).S) }},
+		{"string-cursor", func(args []coretypes.Object) coretypes.Object {
+			return NewStringCursor(coretypes.EnsureArgIsString(args, 0).S)
+		}},
 		{"cursor-char", func(args []coretypes.Object) coretypes.Object {
 			c := args[0].(*StringCursor)
 			r := c.Char()
@@ -26,7 +28,7 @@ func initBenchStringCursorProcs() {
 			return coretypes.Boolean{B: args[0].(*StringCursor).Done()}
 		}},
 	} {
-		sym := MakeSymbol(p.name)
+		sym := coretypes.MakeSymbol(STRINGS.Intern, p.name)
 		vr := ns.Intern(sym)
 		vr.Value = Proc{Name: "bench-" + p.name, Fn: p.fn}
 		GLOBAL_ENV.CurrentNamespace().Intern(sym).Value = vr.Value

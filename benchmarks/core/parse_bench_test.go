@@ -1,9 +1,11 @@
 package core_test
 
 import (
+	"testing"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"testing"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 // Pure-Clojure JSON parser (integers only, no floats).
@@ -108,7 +110,7 @@ func TestJSONParserCorrectness(t *testing.T) {
 	if r2 == nil {
 		t.Fatal("medium JSON failed")
 	}
-	t.Logf("medium: %d items", r2.(*ArrayVector).Count())
+	t.Logf("medium: %d items", r2.(*corecollections.ArrayVector).Count())
 }
 
 func BenchmarkParseJSONSmall(b *testing.B) {
@@ -219,7 +221,7 @@ func TestXMLParserCorrectness(t *testing.T) {
 	if r3 == nil {
 		t.Fatal("medium nil")
 	}
-	v := EnsureObjectIsCountedIndexed(r3, "medium XML result: %s")
+	v := coretypes.EnsureObjectIsCountedIndexed(r3, "medium XML result: %s")
 	if v.Count() != 3 || v.At(0).ToString(false) != "users" {
 		t.Fatalf("medium XML root = %s, want users element", r3.ToString(false))
 	}
@@ -304,7 +306,7 @@ func getYAMLParser(tb testing.TB) coretypes.Callable {
 
 func TestYAMLParserCorrectness(t *testing.T) {
 	parse := getYAMLParser(t)
-	r := EnsureObjectIsMap(parse.Call([]coretypes.Object{coretypes.String{S: yamlSmall}}), "small YAML result: %s")
+	r := coretypes.EnsureObjectIsMap(parse.Call([]coretypes.Object{coretypes.String{S: yamlSmall}}), "small YAML result: %s")
 	if ok, got := r.Get(coretypes.MakeString("age")); !ok || !got.Equals(coretypes.MakeInt(30)) {
 		t.Fatalf("small YAML age = %v, want 30", got)
 	}
@@ -315,7 +317,7 @@ func TestYAMLParserCorrectness(t *testing.T) {
 		t.Fatalf("small YAML city = %v, want New York", got)
 	}
 
-	r2 := EnsureObjectIsMap(parse.Call([]coretypes.Object{coretypes.String{S: yamlMedium}}), "medium YAML result: %s")
+	r2 := coretypes.EnsureObjectIsMap(parse.Call([]coretypes.Object{coretypes.String{S: yamlMedium}}), "medium YAML result: %s")
 	if ok, got := r2.Get(coretypes.MakeString("score2")); !ok || !got.Equals(coretypes.MakeInt(87)) {
 		t.Fatalf("medium YAML score2 = %v, want 87", got)
 	}

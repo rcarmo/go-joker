@@ -3,6 +3,7 @@ package jit
 import (
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 var jitNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.jit"))
@@ -16,7 +17,7 @@ func Init() {
 
 	jitNamespace.InternVar("compile", compile_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
 			`Compiles a function to the fastest available execution path.
 For pure arithmetic fns, returns a native Go f64 closure.
 For other fns, returns an IR-compiled wrapper.
@@ -24,19 +25,19 @@ The returned function can be called like any other fn.`, "1.0"))
 
 	jitNamespace.InternVar("info", info_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
 			`Returns a map with compilation information about a function.
 Keys: :compiled, :path, :slots, :captures, :self-recursive.
 :path is one of "native-f64", "typed-ir", "boxed-ir".`, "1.0"))
 
 	jitNamespace.InternVar("compiled?", compiled_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
 			"Returns true if the function can be compiled to IR.", "1.0"))
 
 	jitNamespace.InternVar("export-ir", export_ir_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"), coretypes.MakeSymbol(STRINGS.Intern, "path"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"), coretypes.MakeSymbol(STRINGS.Intern, "path"))),
 			`Compiles fn to Joker IR and writes a portable .ir JSON file to path.
 
 The file contains format/version metadata, numSlots, base64-encoded IR
@@ -45,7 +46,7 @@ intended for external runners/tooling that implement the go-joker IR ABI.`, "1.0
 
 	jitNamespace.InternVar("export-wasm", export_wasm_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"), coretypes.MakeSymbol(STRINGS.Intern, "path"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"), coretypes.MakeSymbol(STRINGS.Intern, "path"))),
 			`Compiles fn to a standalone numeric WASM module and writes raw .wasm bytes.
 
 The exported module exposes an exec function. Parameters and return values are

@@ -2,6 +2,14 @@ package string
 
 import "bytes"
 
+// CharString renders a rune with optional escaping.
+func CharString(ch rune, escape bool) string {
+	if escape {
+		return EscapeRune(ch)
+	}
+	return String(ch)
+}
+
 func EscapeRune(r rune) string {
 	switch r {
 	case ' ':

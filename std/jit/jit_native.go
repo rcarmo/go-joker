@@ -4,8 +4,10 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -77,7 +79,7 @@ func compile(fn *Fn) coretypes.Object {
 
 // info returns a map with compilation information about a fn.
 func info(fn *Fn) coretypes.Object {
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	prog := IrCompileFn(fn)
 	if prog == nil {
 		m.Add(coretypes.MakeKeyword(STRINGS.Intern, "compiled"), coretypes.Boolean{B: false})

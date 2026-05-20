@@ -1,25 +1,25 @@
 # Code structure, module boundaries, and coverage audit
 
 Generated: 2026-05-10
-Updated: 2026-05-18
+Updated: 2026-05-20
 
 ## Executive summary
 
 The repository is functional and well-tested at the behavior/regression level, but it has a classic interpreter/runtime shape: a large `core` package owns most object model, evaluator, reader/parser, namespace, numeric, concurrency, IR, and WASM responsibilities. `std/*` packages are better bounded: each namespace has a small registration wrapper plus native implementation/tests.
 
-Recent feature work improved boundaries for new code (`std/transit`, `std/system`, `std/jit` export APIs), and the refactor pass has now moved the CLI to `cmd/joker`, extracted leaf packages under `core/{trace,ir,wasm,runtime,collections,reader,types/string,types/numerical,cursor}`, introduced data-only generated payloads under `core/generated`, and added construction adapters/guards for collection and reader boundaries. The older `core` package still needs gradual decomposition. The safest path is to keep defining internal contracts first and enforce them with small tests, docs, and Makefile targets.
+Recent feature work improved boundaries for new code (`std/transit`, `std/system`, `std/jit` export APIs), and the refactor pass has now moved the CLI to `cmd/joker`, extracted leaf packages under `core/{trace,ir,wasm,runtime,reader,types/collections,types/string,types/numerical}`, introduced data-only generated payloads under `core/generated`, and added guards for moved collection/runtime boundaries. The older `core` package still needs gradual decomposition. The safest path is to keep defining internal contracts first and enforce them with small tests, docs, and Makefile targets.
 
 ## Current package/module shape
 
 - `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
-- `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/collections`, `core/reader`, `core/types/string`, `core/types/numerical`, and `core/cursor` own extracted helpers with direct package tests.
+- `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/types/collections`, `core/reader`, `core/types/string`, and `core/types/numerical` own extracted helpers and moved concrete families with direct package tests.
 - `core/` is still the runtime kernel and contains:
   - remaining root runtime object systems (`object.go`, root generated helpers) plus `core/types` for the canonical object/type/protocol model
-  - persistent collection implementations
+  - proc/env/evaluator glue for moved collection/runtime objects
   - reader/parser/evaluator (`read.go`, `parse.go`, `eval.go`)
   - namespace/Var/runtime environment (`ns.go`, `environment*.go`)
   - core proc implementations (`procs.go`, generated `a_code.go`)
-  - concurrency/channel/future/agent additions
+  - concurrency/core.async/atom registration glue over runtime-owned channel/future/promise/agent/atom wrappers
   - numeric tower (`numbers.go`)
   - IR/JIT/WASM machinery (`ir_*`, `wasm_*`)
 - `std/*` packages follow a clearer contract:
@@ -64,13 +64,13 @@ Recent `std/transit` and `std/system` match this pattern.
 `core` has too many responsibilities for easy maintenance. The largest hand-maintained files should be treated as decomposition candidates:
 
 - `core/procs.go` — many unrelated public procs in one file.
-- `core/object.go` — remaining root runtime values (`Nil`, `Var`, `Proc`, `Fn`, `ExInfo`, `Atom`) and root-specific helpers; object/protocol/scalar/shared collection contracts have moved to `core/types`.
+- `core/object.go` — remaining root runtime values (`Nil`, `Var`, `Proc`, `Fn`, `ExInfo`) and root-specific helpers; object/protocol/scalar/shared collection contracts have moved to `core/types`, while Atom/Channel/Future/Promise/Agent wrappers now live in `core/runtime`.
 - `core/parse.go`, `core/read.go`, `core/eval.go` — acceptable for an interpreter but should remain isolated from feature-specific extensions.
 - `core/types/ops_impl.go` and `core/types/numbers.go` — numeric contracts are now type-package owned and remain critical; keep focused tests around promotion, ratio, and native-int bounds.
 - remaining root IR/WASM/executor files — partially extracted, but compiler/executor/runtime pieces still depend on root `Fn`/`Var`/`Expr`, namespace/frame, and call contracts.
-- `core/persistent_vector.go` — object semantics have been tightened and storage/trie mechanics now delegate into `core/collections`, making it a better template for eventual collection extraction.
+- moved concrete collection families now live in `core/types/collections`; root `core` should not grow new collection-owned files.
 
-Recommendation: avoid broad collection/reader/evaluator moves until `docs/refactor/object-protocol-contracts.md` contracts are made concrete. The latest cleanup removed transitional root aliases for moved `coretypes` contracts; future work should keep using explicit package boundaries rather than adding root shims back. Current production collection and reader construction call sites are routed through adapters and guarded against drift. Pure collection mechanics have started moving to `core/collections`, and `core/reader` now owns a broad set of root-independent rune/token/scanning/form helpers. Concrete implementations still depend on root object/evaluator internals. Continue extracting pure leaf helpers and keep adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
+Recommendation: keep collection ownership in `core/types/collections` and runtime wrapper ownership in `core/runtime`; use direct imports from root/runtime/generator code instead of root aliases. `tests/layout_guard.sh` now rejects reintroducing moved root collection files plus root channel/future/promise/agent/atom wrappers/literals. Current production collection and reader construction call sites use `corecollections.*`, and runtime-adjacent procs use `corert.*`; further root shrinking should focus on runtime/env/proc ownership, generated/bootstrap placement, and IR/WASM clusters rather than recreating shims. Continue adding feature files by responsibility (`*_ext.go`, `*_init.go`, `*_test.go`) rather than growing `procs.go`.
 
 ### 2. Runtime-installed Var metadata is implicit
 

@@ -1,6 +1,6 @@
 # Runtime/executor extraction audit
 
-Updated: 2026-05-18
+Updated: 2026-05-20
 
 ## Purpose
 
@@ -92,21 +92,26 @@ Safe next steps:
 
 Files:
 
-- `channel.go`
-- `concurrency_ext.go`
+- `core/runtime/channel.go`
+- `core/runtime/pending.go`
+- `core/runtime/agent.go`
+- root `concurrency_ext.go` / `core_async_ext.go` / proc files for registration glue
 
 Current state:
 
 - Generic close-state, send, and receive mechanics now live in `core/runtime.Channel[T]` with package-local tests.
 - Generic pending-value mechanics now live in `core/runtime.Future[T,E]` and `core/runtime.Promise[T]` with package-local tests.
-- Root `core.Channel` wraps `runtime.Channel[FutureResult]`, preserving `Object`, `Error`, type/hash, proc registration, and `alts!` reflection integration in root.
-- Root `core.Future` and `core.Promise` wrap runtime pending primitives, preserving Object/Error/proc semantics in root while moving blocking/realization/deliver-once mechanics out. `Delay` has moved to `core/types` and calls back through an installed callable hook for forcing.
-- Core send/receive/go/future/promise/delay procs now call root wrappers instead of manipulating raw done channels or value slots directly.
+- `core/runtime.ObjectChannel` wraps `runtime.Channel[FutureResult]`, preserving `Object`, `Error`, type/hash, proc registration, and `alts!` reflection integration while removing the old root `core.Channel` wrapper file.
+- `core/runtime.ObjectFuture` and `core/runtime.ObjectPromise` wrap runtime pending primitives, preserving Object/Error/proc semantics while moving blocking/realization/deliver-once mechanics out of root; package-local tests cover deref, realized state, error propagation, and deliver-once behavior. `Delay` now owns a local promise primitive in `core/types`, avoiding a `core/types` → `core/runtime` import cycle.
+- `core/runtime.Agent` owns the agent object wrapper, queue, worker loop, and error state; root proc registration uses exported `Send`, `Await`, and `Error` methods plus goroutine registration hooks, and package-local tests cover send/await/error behavior.
+- `core/runtime.Atom` owns atom value/meta/object/ref behavior and exposes `Swap`, `Reset`, and `CompareAndSet` methods; root atom proc/validator/watch glue no longer reaches into atom mutex/value fields directly.
+- Core send/receive/go/future/promise/delay/agent/atom procs now call runtime-owned wrappers instead of manipulating raw done channels, queues, or value slots directly.
 
 Safe next steps:
 
-- Keep `alts!` root-bound until Object/vector/result construction seams are explicit.
+- Keep `alts!` root-bound until Object/vector/result construction seams are explicit; it still performs reflection-select setup and vector result construction in root proc glue.
 - Avoid exposing raw runtime channels except for reflection-select integration that cannot currently be moved without root object/vector/result construction seams.
+- Keep root `concurrency_ext.go` as proc/env registration glue until `Proc`, `Fn`, `GLOBAL_ENV`, `NIL`, and call helpers have an acyclic runtime boundary.
 
 ### Environment, frames, and parse/eval handoff
 

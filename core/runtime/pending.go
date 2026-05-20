@@ -1,6 +1,12 @@
 package runtime
 
-import "sync"
+import (
+	"reflect"
+	"sync"
+
+	"github.com/rcarmo/go-joker/core/hashutil"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+)
 
 type Future[T any, E any] struct {
 	value T
@@ -68,3 +74,60 @@ func (p *Promise[T]) IsRealized() bool {
 		return false
 	}
 }
+
+// ObjectFuture holds a value computed asynchronously and exposes Joker object
+// protocols while reusing the runtime Future primitive.
+type ObjectFuture struct {
+	runtime *Future[coretypes.Object, coretypes.Error]
+}
+
+func NewObjectFuture() *ObjectFuture {
+	return &ObjectFuture{runtime: NewFuture[coretypes.Object, coretypes.Error]()}
+}
+
+func (f *ObjectFuture) Complete(value coretypes.Object, err coretypes.Error) {
+	f.runtime.Complete(value, err)
+}
+
+func (f *ObjectFuture) ToString(escape bool) string    { return "#object[Future]" }
+func (f *ObjectFuture) Equals(other interface{}) bool  { return f == other }
+func (f *ObjectFuture) GetInfo() *coretypes.ObjectInfo { return nil }
+func (f *ObjectFuture) GetType() *coretypes.Type       { return coretypes.RuntimeTypes.Fn }
+func (f *ObjectFuture) Hash() uint32 {
+	return hashutil.Ptr(uintptr(reflect.ValueOf(f).Pointer()))
+}
+func (f *ObjectFuture) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return f }
+
+func (f *ObjectFuture) Deref() coretypes.Object {
+	value, err := f.runtime.Await()
+	if err != nil {
+		panic(coretypes.Object(err))
+	}
+	return value
+}
+
+func (f *ObjectFuture) IsRealized() bool { return f.runtime.IsRealized() }
+
+// ObjectPromise holds a value that can be delivered once and exposes Joker
+// object protocols while reusing the runtime Promise primitive.
+type ObjectPromise struct {
+	runtime *Promise[coretypes.Object]
+}
+
+func NewObjectPromise() *ObjectPromise {
+	return &ObjectPromise{runtime: NewPromise[coretypes.Object]()}
+}
+
+func (p *ObjectPromise) Deliver(value coretypes.Object) bool { return p.runtime.Deliver(value) }
+
+func (p *ObjectPromise) ToString(escape bool) string    { return "#object[Promise]" }
+func (p *ObjectPromise) Equals(other interface{}) bool  { return p == other }
+func (p *ObjectPromise) GetInfo() *coretypes.ObjectInfo { return nil }
+func (p *ObjectPromise) GetType() *coretypes.Type       { return coretypes.RuntimeTypes.Fn }
+func (p *ObjectPromise) Hash() uint32 {
+	return hashutil.Ptr(uintptr(reflect.ValueOf(p).Pointer()))
+}
+func (p *ObjectPromise) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return p }
+
+func (p *ObjectPromise) Deref() coretypes.Object { return p.runtime.Await() }
+func (p *ObjectPromise) IsRealized() bool        { return p.runtime.IsRealized() }

@@ -15,6 +15,8 @@ func (r Registry) Contains(name *string) bool {
 	return r.Lookup(name) != nil
 }
 
+var RuntimeTypes *Types
+
 type Types struct {
 	Associative    *Type
 	Callable       *Type

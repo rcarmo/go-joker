@@ -1,12 +1,6 @@
 package core
 
 import (
-	coregenerated "github.com/rcarmo/go-joker/core/generated"
-	coreirx "github.com/rcarmo/go-joker/core/ir"
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corewasm "github.com/rcarmo/go-joker/core/wasm"
-	"github.com/rcarmo/go-joker/tests/clbgscripts"
 	"io"
 	"io/fs"
 	"math"
@@ -20,6 +14,16 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
+
+	coregenerated "github.com/rcarmo/go-joker/core/generated"
+	coreirx "github.com/rcarmo/go-joker/core/ir"
+	corereader "github.com/rcarmo/go-joker/core/reader"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
+	"github.com/rcarmo/go-joker/tests/clbgscripts"
 )
 
 // ---- concurrency_ext_test.go ----
@@ -35,7 +39,7 @@ func requireKeyword(tb testing.TB, obj coretypes.Object, want string) {
 }
 
 func TestChannelCloseIsIdempotentUnderConcurrency(t *testing.T) {
-	ch := MakeChannel(make(chan FutureResult, 1))
+	ch := corert.NewObjectChannel(make(chan corert.FutureResult, 1))
 	var wg sync.WaitGroup
 	for i := 0; i < 16; i++ {
 		wg.Add(1)
@@ -216,62 +220,37 @@ func TestConcurrencyPcallsPanicPropagates(t *testing.T) {
 }
 
 // ---- construction_boundary_guard_test.go ----
-func TestCollectionConstructionAdapterVectors(t *testing.T) {
-	adapter := collectionConstruction
+func TestCollectionConstructorsBuildExpectedValues(t *testing.T) {
 	items := []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeString("two")}
 
-	vector := adapter.VectorFrom(items...)
+	vector := corecollections.NewVectorFrom(items...)
 	if vector.Count() != 2 || !vector.At(1).Equals(items[1]) {
 		t.Fatalf("VectorFrom mismatch: %s", vector.ToString(false))
 	}
-	fromSeq := adapter.VectorFromSeq(NewListFrom(items...).Seq())
+	fromSeq := corecollections.NewVectorFromSeq(corecollections.NewListFrom(items...).Seq())
 	if !fromSeq.Equals(vector) {
 		t.Fatalf("VectorFromSeq = %s, want %s", fromSeq.ToString(false), vector.ToString(false))
 	}
-	array := adapter.ArrayVectorFrom(items...)
+	array := corecollections.NewArrayVectorFrom(items...)
 	if array.Count() != 2 || !array.At(0).Equals(items[0]) {
 		t.Fatalf("ArrayVectorFrom mismatch: %s", array.ToString(false))
 	}
-	if adapter.EmptyVector().Count() != 0 || adapter.EmptyArrayVector().Count() != 0 {
+	if corecollections.EmptyVector().Count() != 0 || corecollections.EmptyArrayVector().Count() != 0 {
 		t.Fatal("empty vector constructors should return empty collections")
 	}
-}
 
-func TestCollectionConstructionAdapterMapsAndSets(t *testing.T) {
-	adapter := collectionConstruction
 	key := coretypes.MakeKeyword(STRINGS.Intern, "k")
 	value := coretypes.MakeInt(42)
-
-	arrayMap := adapter.EmptyArrayMap().Assoc(key, value).(coretypes.Map)
-	hashMap := adapter.HashMapFrom(key, value)
+	arrayMap := corecollections.EmptyArrayMap().Assoc(key, value).(coretypes.Map)
+	hashMap := corecollections.NewHashMap(key, value)
 	if !arrayMap.Equals(hashMap) || arrayMap.Hash() != hashMap.Hash() {
 		t.Fatalf("map constructors should build equivalent maps: %s / %s", arrayMap.ToString(false), hashMap.ToString(false))
 	}
-	if found, got := hashMap.Get(key); !found || !got.Equals(value) {
-		t.Fatalf("HashMapFrom lookup = %v %v", found, got)
+	set := corecollections.EmptySet().Conj(coretypes.MakeInt(1)).Conj(coretypes.MakeInt(2)).(*corecollections.MapSet)
+	fromSetSeq := corecollections.NewSetFromSeq(corecollections.NewListFrom(coretypes.MakeInt(2), coretypes.MakeInt(1)).Seq())
+	if !set.Equals(fromSetSeq) || set.Hash() != fromSetSeq.Hash() {
+		t.Fatalf("set constructors should build equivalent sets: %s / %s", set.ToString(false), fromSetSeq.ToString(false))
 	}
-
-	set := adapter.EmptySet().Conj(coretypes.MakeInt(1)).Conj(coretypes.MakeInt(2)).(*MapSet)
-	fromSeq := adapter.SetFromSeq(NewListFrom(coretypes.MakeInt(2), coretypes.MakeInt(1)).Seq())
-	if !set.Equals(fromSeq) || set.Hash() != fromSeq.Hash() {
-		t.Fatalf("set constructors should build equivalent sets: %s / %s", set.ToString(false), fromSeq.ToString(false))
-	}
-}
-
-func TestCollectionConstructionCallSitesUseAdapter(t *testing.T) {
-	direct := regexp.MustCompile(`(^|[^.])\b(EmptyVector|NewVectorFrom|NewVectorFromSeq|EmptyArrayVector|NewArrayVectorFrom|EmptyArrayMap|NewHashMap|EmptySet|NewSetFromSeq)\(`)
-	allowed := map[string]bool{
-		"array_map.go":                        true,
-		"array_vector.go":                     true,
-		"collection_construction.go":          true,
-		"hash_map.go":                         true,
-		"object.go":                           true,
-		"persistent_vector.go":                true,
-		"set.go":                              true,
-		"vector.go":                           true,
-		"construction_boundary_guard_test.go": true,
-	}
-	assertNoDirectConstructionOutside(t, direct, allowed)
 }
 
 func TestReaderConstructionCallSitesUseAdapter(t *testing.T) {
@@ -497,13 +476,13 @@ func TestIrCompileFnFlip(t *testing.T) {
 	if prog == nil {
 		t.Fatal("irCompileFn failed for flip fn")
 	}
-	perm := &ArrayVector{arr: []coretypes.Object{coretypes.Int{I: 1}, coretypes.Int{I: 0}, coretypes.Int{I: 2}}}
+	perm := &corecollections.ArrayVector{Arr: []coretypes.Object{coretypes.Int{I: 1}, coretypes.Int{I: 0}, coretypes.Int{I: 2}}}
 	r := irExec(prog, []coretypes.Object{perm})
 	if r == nil {
 		t.Fatal("flip returned nil")
 	}
-	av := r.(*ArrayVector)
-	if av.arr[0].(coretypes.Int).I != 0 || av.arr[1].(coretypes.Int).I != 1 {
+	av := r.(*corecollections.ArrayVector)
+	if av.Arr[0].(coretypes.Int).I != 0 || av.Arr[1].(coretypes.Int).I != 1 {
 		t.Fatalf("flip([1,0,2]) = %s, want [0 1 2]", r.ToString(false))
 	}
 }
@@ -572,13 +551,13 @@ func TestIrValueStringRoundtrip(t *testing.T) {
 
 func TestIrValueObjectRoundtrip(t *testing.T) {
 	clbgInit()
-	vec := &ArrayVector{arr: []coretypes.Object{coretypes.Int{I: 1}, coretypes.Int{I: 2}}}
+	vec := &corecollections.ArrayVector{Arr: []coretypes.Object{coretypes.Int{I: 1}, coretypes.Int{I: 2}}}
 	v := irMakeObject(vec)
 	got := v.obj()
 	if got == nil {
 		t.Fatal("irMakeObject roundtrip returned nil")
 	}
-	if got.(*ArrayVector).arr[0].(coretypes.Int).I != 1 {
+	if got.(*corecollections.ArrayVector).Arr[0].(coretypes.Int).I != 1 {
 		t.Fatal("vector content mismatch")
 	}
 }
@@ -676,13 +655,13 @@ func TestTypedIREligibleCallSlotWithNth(t *testing.T) {
 	}
 }
 
-// --- TransientVector in IR ---
+// --- coretypes.TransientVector in IR ---
 
 func TestIRFirstTransientVector(t *testing.T) {
 	clbgInit()
 	r := Eval(compileBenchExpr(t, binaryTreesScript), nil)
 	if r == nil {
-		t.Fatal("binary-trees returned nil (irFirst/irNth TransientVector)")
+		t.Fatal("binary-trees returned nil (irFirst/irNth coretypes.TransientVector)")
 	}
 }
 
@@ -847,9 +826,9 @@ func TestTypedExecutorTransientOps(t *testing.T) {
 	if r == nil {
 		t.Fatal("transient loop returned nil")
 	}
-	av := r.(*ArrayVector)
-	if av.arr[4].(coretypes.Int).I != 16 {
-		t.Fatalf("v[4] = %v, want 16", av.arr[4])
+	av := r.(*corecollections.ArrayVector)
+	if av.Arr[4].(coretypes.Int).I != 16 {
+		t.Fatalf("v[4] = %v, want 16", av.Arr[4])
 	}
 }
 
@@ -1162,9 +1141,9 @@ func TestCountedIndexedVectorContract(t *testing.T) {
 		name string
 		v    coretypes.Object
 	}{
-		{name: "array", v: NewArrayVectorFrom(items...)},
-		{name: "vector", v: NewVectorFrom(items...)},
-		{name: "persistent", v: PersistentVectorFrom(items)},
+		{name: "array", v: corecollections.NewArrayVectorFrom(items...)},
+		{name: "vector", v: corecollections.NewVectorFrom(items...)},
+		{name: "persistent", v: corecollections.PersistentVectorFrom(items)},
 	}
 	for _, tc := range vectors {
 		ci, ok := tc.v.(coretypes.CountedIndexed)
@@ -1201,8 +1180,8 @@ func TestAssociativeMapContract(t *testing.T) {
 		name string
 		m    coretypes.Map
 	}{
-		{name: "array", m: EmptyArrayMap().Assoc(entries[0], entries[1]).Assoc(entries[2], entries[3]).(coretypes.Map)},
-		{name: "hash", m: NewHashMap(entries...)},
+		{name: "array", m: corecollections.EmptyArrayMap().Assoc(entries[0], entries[1]).Assoc(entries[2], entries[3]).(coretypes.Map)},
+		{name: "hash", m: corecollections.NewHashMap(entries...)},
 	}
 	for _, tc := range maps {
 		if tc.m.Count() != 2 {
@@ -1228,7 +1207,7 @@ func TestAssociativeMapContract(t *testing.T) {
 }
 
 func TestMapSetZeroValueContract(t *testing.T) {
-	var set MapSet
+	var set corecollections.MapSet
 	if set.Count() != 0 || !set.Seq().IsEmpty() {
 		t.Fatalf("zero-value set should be empty")
 	}
@@ -1241,7 +1220,7 @@ func TestMapSetZeroValueContract(t *testing.T) {
 }
 
 func TestSetContract(t *testing.T) {
-	set := EmptySet().Conj(coretypes.MakeInt(1)).Conj(coretypes.MakeInt(2)).(*MapSet)
+	set := corecollections.EmptySet().Conj(coretypes.MakeInt(1)).Conj(coretypes.MakeInt(2)).(*corecollections.MapSet)
 	if set.Count() != 2 {
 		t.Fatalf("Count = %d, want 2", set.Count())
 	}
@@ -1254,19 +1233,19 @@ func TestSetContract(t *testing.T) {
 	if got := set.Call([]coretypes.Object{coretypes.MakeInt(3)}); got != NIL {
 		t.Fatalf("Call(3) = %s, want nil", got.ToString(false))
 	}
-	removed := set.Disjoin(coretypes.MakeInt(1)).(*MapSet)
+	removed := set.Disjoin(coretypes.MakeInt(1)).(*corecollections.MapSet)
 	if found, _ := removed.Get(coretypes.MakeInt(1)); found {
 		t.Fatal("Disjoin result still contains removed value")
 	}
 	if found, _ := set.Get(coretypes.MakeInt(1)); !found {
 		t.Fatal("Disjoin mutated original set")
 	}
-	set2 := NewSetFromSeq(NewListFrom(coretypes.MakeInt(2), coretypes.MakeInt(1)).Seq())
+	set2 := corecollections.NewSetFromSeq(corecollections.NewListFrom(coretypes.MakeInt(2), coretypes.MakeInt(1)).Seq())
 	if !set.Equals(set2) || set.Hash() != set2.Hash() {
 		t.Fatalf("equivalent sets should compare equal with same hash: %s / %s", set.ToString(false), set2.ToString(false))
 	}
-	meta := EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.MakeString("kept")).(coretypes.Map)
-	withMeta := set.WithMeta(meta).(*MapSet)
+	meta := corecollections.EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.MakeString("kept")).(coretypes.Map)
+	withMeta := set.WithMeta(meta).(*corecollections.MapSet)
 	conjMeta := withMeta.Conj(coretypes.MakeInt(3)).(coretypes.Meta)
 	if found, got := conjMeta.GetMeta().Get(coretypes.MakeKeyword(STRINGS.Intern, "tag")); !found || !got.Equals(coretypes.MakeString("kept")) {
 		t.Fatal("set Conj did not preserve metadata")
@@ -1309,7 +1288,7 @@ func TestSortedCollectionContract(t *testing.T) {
 		t.Fatalf("sorted-map duplicate lookup = %v %v", found, got)
 	}
 
-	s := sortedSetProc.Call([]coretypes.Object{coretypes.MakeInt(3), coretypes.MakeInt(1), coretypes.MakeInt(2)}).(*MapSet)
+	s := sortedSetProc.Call([]coretypes.Object{coretypes.MakeInt(3), coretypes.MakeInt(1), coretypes.MakeInt(2)}).(*corecollections.MapSet)
 	if got := sortedQProc.Call([]coretypes.Object{s}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("sorted? sorted-set = %s", got.ToString(false))
 	}
@@ -1319,11 +1298,11 @@ func TestSortedCollectionContract(t *testing.T) {
 	}
 
 	sub := subseqProc.Call([]coretypes.Object{s, Proc{Fn: procGte, Name: "procGte"}, coretypes.MakeInt(2)}).(coretypes.Seq)
-	if SeqCount(sub) != 2 || !sub.First().Equals(coretypes.MakeInt(2)) || !Second(sub).Equals(coretypes.MakeInt(3)) {
+	if corecollections.SeqCount(sub) != 2 || !sub.First().Equals(coretypes.MakeInt(2)) || !corecollections.Second(sub).Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("subseq contract failed: %s", sub.ToString(false))
 	}
 	rsub := rsubseqProc.Call([]coretypes.Object{s, Proc{Fn: procGte, Name: "procGte"}, coretypes.MakeInt(2)}).(coretypes.Seq)
-	if SeqCount(rsub) != 2 || !rsub.First().Equals(coretypes.MakeInt(3)) || !Second(rsub).Equals(coretypes.MakeInt(2)) {
+	if corecollections.SeqCount(rsub) != 2 || !rsub.First().Equals(coretypes.MakeInt(3)) || !corecollections.Second(rsub).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("rsubseq contract failed: %s", rsub.ToString(false))
 	}
 	mBy := sortedMapByProc.Call([]coretypes.Object{desc, coretypes.MakeInt(1), coretypes.MakeString("a"), coretypes.MakeInt(3), coretypes.MakeString("c"), coretypes.MakeInt(2), coretypes.MakeString("b")}).(coretypes.Map)
@@ -1351,7 +1330,7 @@ func TestSortedCollectionContract(t *testing.T) {
 	if found, got := mByDup.Get(coretypes.MakeInt(3)); !found || !got.Equals(coretypes.MakeString("three")) {
 		t.Fatalf("sorted-map-by comparator duplicate lookup = %v %v", found, got)
 	}
-	sBy := sortedSetByProc.Call([]coretypes.Object{desc, coretypes.MakeInt(1), coretypes.MakeInt(3), coretypes.MakeInt(2)}).(*MapSet)
+	sBy := sortedSetByProc.Call([]coretypes.Object{desc, coretypes.MakeInt(1), coretypes.MakeInt(3), coretypes.MakeInt(2)}).(*corecollections.MapSet)
 	sByEntries := sortedEntries(sBy)
 	if len(sByEntries) != 3 || !sByEntries[0].Equals(coretypes.MakeInt(3)) || !sByEntries[2].Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("sorted-set-by should preserve comparator order: %v", sByEntries)
@@ -1359,10 +1338,10 @@ func TestSortedCollectionContract(t *testing.T) {
 }
 
 func TestTransientContract(t *testing.T) {
-	vec := NewArrayVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2))
-	tv := ToTransient(vec)
+	vec := corecollections.NewArrayVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2))
+	tv := coretypes.ToTransient(vec.Arr)
 	if _, ok := any(tv).(coretypes.CountedIndexed); !ok {
-		t.Fatal("TransientVector should implement coretypes.CountedIndexed")
+		t.Fatal("coretypes.TransientVector should implement coretypes.CountedIndexed")
 	}
 	if tv.Count() != 2 || !tv.At(1).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("transient vector Count/At mismatch: count=%d at1=%s", tv.Count(), tv.At(1).ToString(false))
@@ -1377,8 +1356,8 @@ func TestTransientContract(t *testing.T) {
 	}
 	assertPanics(t, "mutating frozen transient vector", func() { tv.ConjInPlace(coretypes.MakeInt(4)) })
 
-	m := EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.MakeInt(1)).Assoc(coretypes.MakeString("s"), coretypes.MakeInt(2)).(coretypes.Map)
-	tm := MapToTransient(m)
+	m := corecollections.EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.MakeInt(1)).Assoc(coretypes.MakeString("s"), coretypes.MakeInt(2)).(coretypes.Map)
+	tm := coretypes.MapToTransient(m)
 	tm.AssocInPlace(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.MakeInt(10)).AssocInPlace(coretypes.MakeString("t"), coretypes.MakeInt(3))
 	if tm.Count() != 3 {
 		t.Fatalf("transient map Count = %d, want 3", tm.Count())
@@ -1397,20 +1376,20 @@ func TestTransientContract(t *testing.T) {
 		t.Fatalf("persistent map string get = %v %v", found, got)
 	}
 	assertPanics(t, "mutating frozen transient map", func() { tm.AssocInPlace(coretypes.MakeKeyword(STRINGS.Intern, "z"), coretypes.MakeInt(0)) })
-	if got := procIsTransient([]coretypes.Object{ToTransient(NewArrayVectorFrom())}); !got.Equals(coretypes.Boolean{B: true}) {
+	if got := procIsTransient([]coretypes.Object{coretypes.ToTransient(corecollections.NewArrayVectorFrom().Arr)}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatal("transient? should recognize transient vectors")
 	}
-	if got := procIsTransient([]coretypes.Object{MapToTransient(nil)}); !got.Equals(coretypes.Boolean{B: true}) {
+	if got := procIsTransient([]coretypes.Object{coretypes.MapToTransient(nil)}); !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatal("transient? should recognize transient maps")
 	}
-	if got := procIsTransient([]coretypes.Object{NewArrayVectorFrom()}); !got.Equals(coretypes.Boolean{B: false}) {
+	if got := procIsTransient([]coretypes.Object{corecollections.NewArrayVectorFrom()}); !got.Equals(coretypes.Boolean{B: false}) {
 		t.Fatal("transient? should reject persistent collections")
 	}
 	assertPanics(t, "assoc! arity", func() {
-		procAssocBang([]coretypes.Object{MapToTransient(nil), coretypes.MakeKeyword(STRINGS.Intern, "k")})
+		procAssocBang([]coretypes.Object{coretypes.MapToTransient(nil), coretypes.MakeKeyword(STRINGS.Intern, "k")})
 	})
 	assertPanics(t, "conj! map arity", func() {
-		procConjBang([]coretypes.Object{MapToTransient(nil), coretypes.MakeKeyword(STRINGS.Intern, "k")})
+		procConjBang([]coretypes.Object{coretypes.MapToTransient(nil), coretypes.MakeKeyword(STRINGS.Intern, "k")})
 	})
 }
 
@@ -1425,15 +1404,15 @@ func assertPanics(t *testing.T, name string, f func()) {
 }
 
 func TestSeqContract(t *testing.T) {
-	base := NewListFrom(coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)).Seq()
+	base := corecollections.NewListFrom(coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)).Seq()
 	seqs := []struct {
 		name string
 		seq  coretypes.Seq
 	}{
 		{name: "list", seq: base},
-		{name: "array", seq: &ArraySeq{arr: []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)}}},
-		{name: "vector", seq: NewVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)).Seq()},
-		{name: "cons", seq: NewConsSeq(coretypes.MakeInt(1), NewListFrom(coretypes.MakeInt(2), coretypes.MakeInt(3)).Seq())},
+		{name: "array", seq: &corecollections.ArraySeq{Arr: []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)}}},
+		{name: "vector", seq: corecollections.NewVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)).Seq()},
+		{name: "cons", seq: corecollections.NewConsSeq(coretypes.MakeInt(1), corecollections.NewListFrom(coretypes.MakeInt(2), coretypes.MakeInt(3)).Seq())},
 		{name: "take", seq: (&TakeSeq{seq: base, n: 3}).Seq()},
 		{name: "filter", seq: (&FilteringSeq{seq: base, pred: Proc{Fn: func(args []coretypes.Object) coretypes.Object { return coretypes.Boolean{B: true} }}}).Seq()},
 	}
@@ -1444,39 +1423,39 @@ func TestSeqContract(t *testing.T) {
 		if !tc.seq.First().Equals(coretypes.MakeInt(1)) {
 			t.Fatalf("%s First = %s, want 1", tc.name, tc.seq.First().ToString(false))
 		}
-		if got := Second(tc.seq); !got.Equals(coretypes.MakeInt(2)) {
-			t.Fatalf("%s Second = %s, want 2", tc.name, got.ToString(false))
+		if got := corecollections.Second(tc.seq); !got.Equals(coretypes.MakeInt(2)) {
+			t.Fatalf("%s corecollections.Second = %s, want 2", tc.name, got.ToString(false))
 		}
-		if got := Third(tc.seq); !got.Equals(coretypes.MakeInt(3)) {
-			t.Fatalf("%s Third = %s, want 3", tc.name, got.ToString(false))
+		if got := corecollections.Third(tc.seq); !got.Equals(coretypes.MakeInt(3)) {
+			t.Fatalf("%s corecollections.Third = %s, want 3", tc.name, got.ToString(false))
 		}
-		if got := SeqCount(tc.seq); got != 3 {
-			t.Fatalf("%s SeqCount = %d, want 3", tc.name, got)
+		if got := corecollections.SeqCount(tc.seq); got != 3 {
+			t.Fatalf("%s corecollections.SeqCount = %d, want 3", tc.name, got)
 		}
-		if got := SeqNth(tc.seq, 2); !got.Equals(coretypes.MakeInt(3)) {
-			t.Fatalf("%s SeqNth(2) = %s, want 3", tc.name, got.ToString(false))
+		if got := corecollections.SeqNth(tc.seq, 2); !got.Equals(coretypes.MakeInt(3)) {
+			t.Fatalf("%s corecollections.SeqNth(2) = %s, want 3", tc.name, got.ToString(false))
 		}
 		if !coretypes.SeqsEqual(tc.seq, base) || !tc.seq.Equals(base) || tc.seq.Hash() != base.Hash() {
 			t.Fatalf("%s should equal/hash like base sequence", tc.name)
 		}
 		withHead := tc.seq.Cons(coretypes.MakeInt(0))
-		if SeqCount(withHead) != 4 || !withHead.First().Equals(coretypes.MakeInt(0)) || !Second(withHead).Equals(coretypes.MakeInt(1)) {
+		if corecollections.SeqCount(withHead) != 4 || !withHead.First().Equals(coretypes.MakeInt(0)) || !corecollections.Second(withHead).Equals(coretypes.MakeInt(1)) {
 			t.Fatalf("%s Cons contract failed: %s", tc.name, withHead.ToString(false))
 		}
 	}
-	if !EmptyList.IsEmpty() || SeqCount(EmptyList) != 0 || !EmptyList.Rest().IsEmpty() {
+	if !corecollections.EmptyList.IsEmpty() || corecollections.SeqCount(corecollections.EmptyList) != 0 || !corecollections.EmptyList.Rest().IsEmpty() {
 		t.Fatal("empty list sequence contract failed")
 	}
-	assertPanics(t, "negative SeqNth", func() { SeqNth(base, -1) })
+	assertPanics(t, "negative corecollections.SeqNth", func() { corecollections.SeqNth(base, -1) })
 }
 
 func TestInfoAndMetaContract(t *testing.T) {
 	info := &coretypes.ObjectInfo{Position: coretypes.Position{StartLine: 42}}
-	meta := EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "doc"), coretypes.MakeString("sample")).(coretypes.Map)
+	meta := corecollections.EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "doc"), coretypes.MakeString("sample")).(coretypes.Map)
 	values := []coretypes.Object{
-		NewArrayVectorFrom(coretypes.MakeInt(1)),
-		NewVectorFrom(coretypes.MakeInt(1)),
-		PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1)}),
+		corecollections.NewArrayVectorFrom(coretypes.MakeInt(1)),
+		corecollections.NewVectorFrom(coretypes.MakeInt(1)),
+		corecollections.PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1)}),
 	}
 	for _, v := range values {
 		withInfo := coretypes.WithInfo(v, info)
@@ -1572,7 +1551,7 @@ func TestIRInlineSlotCollision(t *testing.T) {
 	// matches the caller's loop frame.
 	t.Setenv("JOKER_IR_INLINE", "force")
 
-	// sq's x param was at {frame:1, index:0} — same as loop var i
+	// sq's x param was at {frame:1, Index:0} — same as loop var i
 	requireInt(t, evalTestScript(t, `(let [sq (fn [x] (* x x))
 	              v [10 20 30]]
 	  (loop [i 0 s 0]
@@ -1709,7 +1688,7 @@ func TestFrequenciesFastStringSeq(t *testing.T) {
 
 func TestSplitWhitespace(t *testing.T) {
 	res := evalTestScript(t, `(split-whitespace " alpha\tbeta  gamma\n")`)
-	v, ok := res.(*ArrayVector)
+	v, ok := res.(*corecollections.ArrayVector)
 	if !ok {
 		t.Fatalf("expected vector, got %T", res)
 	}
@@ -1724,9 +1703,9 @@ func TestGeneratedCoreNamespacesDriveCoreNamespaceVar(t *testing.T) {
 	if vr == nil {
 		t.Fatal("*core-namespaces* var not found")
 	}
-	set, ok := vr.Value.(*MapSet)
+	set, ok := vr.Value.(*corecollections.MapSet)
 	if !ok {
-		t.Fatalf("*core-namespaces* = %T, want *MapSet", vr.Value)
+		t.Fatalf("*core-namespaces* = %T, want *corecollections.MapSet", vr.Value)
 	}
 	for _, ns := range coregenerated.CoreNamespaces() {
 		if found, _ := set.Get(coretypes.MakeSymbol(STRINGS.Intern, ns)); !found {
@@ -1740,8 +1719,8 @@ func TestGeneratedCoreNamespacesDriveCoreNamespaceVar(t *testing.T) {
 
 // ---- persistent_vector_test.go ----
 func TestPVObjectSemantics(t *testing.T) {
-	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
-	av := NewArrayVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3))
+	pv := corecollections.PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
+	av := corecollections.NewArrayVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3))
 	if got := pv.ToString(false); got != "[1 2 3]" {
 		t.Fatalf("ToString = %q", got)
 	}
@@ -1760,16 +1739,16 @@ func TestPVObjectSemantics(t *testing.T) {
 }
 
 func TestPVEmpty(t *testing.T) {
-	pv := EmptyPersistentVector()
+	pv := corecollections.EmptyPersistentVector()
 	if pv.Count() != 0 {
 		t.Fatalf("expected count 0, got %d", pv.Count())
 	}
 }
 
 func TestPVConjSmall(t *testing.T) {
-	pv := EmptyPersistentVector()
+	pv := corecollections.EmptyPersistentVector()
 	for i := 0; i < 10; i++ {
-		pv = pv.Conj(coretypes.MakeInt(i))
+		pv = pv.Conjoin(coretypes.MakeInt(i))
 	}
 	if pv.Count() != 10 {
 		t.Fatalf("expected 10, got %d", pv.Count())
@@ -1783,9 +1762,9 @@ func TestPVConjSmall(t *testing.T) {
 }
 
 func TestPVConjBeyondTail(t *testing.T) {
-	pv := EmptyPersistentVector()
+	pv := corecollections.EmptyPersistentVector()
 	for i := 0; i < 100; i++ {
-		pv = pv.Conj(coretypes.MakeInt(i))
+		pv = pv.Conjoin(coretypes.MakeInt(i))
 	}
 	if pv.Count() != 100 {
 		t.Fatalf("expected 100, got %d", pv.Count())
@@ -1799,10 +1778,10 @@ func TestPVConjBeyondTail(t *testing.T) {
 }
 
 func TestPVConjLarge(t *testing.T) {
-	pv := EmptyPersistentVector()
+	pv := corecollections.EmptyPersistentVector()
 	n := 2000
 	for i := 0; i < n; i++ {
-		pv = pv.Conj(coretypes.MakeInt(i))
+		pv = pv.Conjoin(coretypes.MakeInt(i))
 	}
 	if pv.Count() != n {
 		t.Fatalf("expected %d, got %d", n, pv.Count())
@@ -1816,8 +1795,8 @@ func TestPVConjLarge(t *testing.T) {
 }
 
 func TestPVAssocTail(t *testing.T) {
-	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(1), coretypes.MakeInt(2)})
-	pv2 := pv.Assoc(1, coretypes.MakeInt(99))
+	pv := corecollections.PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(1), coretypes.MakeInt(2)})
+	pv2 := pv.AssocIndex(1, coretypes.MakeInt(99))
 	// Original unchanged
 	if pv.Nth(1).(coretypes.Int).I != 1 {
 		t.Fatal("original modified")
@@ -1834,12 +1813,12 @@ func TestPVAssocTail(t *testing.T) {
 
 func TestPVAssocInTrie(t *testing.T) {
 	// Build a vector larger than 32 elements
-	pv := EmptyPersistentVector()
+	pv := corecollections.EmptyPersistentVector()
 	for i := 0; i < 50; i++ {
-		pv = pv.Conj(coretypes.MakeInt(i))
+		pv = pv.Conjoin(coretypes.MakeInt(i))
 	}
 	// Assoc in the trie portion (index < 32)
-	pv2 := pv.Assoc(10, coretypes.MakeInt(999))
+	pv2 := pv.AssocIndex(10, coretypes.MakeInt(999))
 	if pv.Nth(10).(coretypes.Int).I != 10 {
 		t.Fatal("original modified")
 	}
@@ -1858,9 +1837,9 @@ func TestPVAssocInTrie(t *testing.T) {
 }
 
 func TestPVAssocAtEnd(t *testing.T) {
-	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
+	pv := corecollections.PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
 	// Assoc at count = conj
-	pv2 := pv.Assoc(3, coretypes.MakeInt(4))
+	pv2 := pv.AssocIndex(3, coretypes.MakeInt(4))
 	if pv2.Count() != 4 {
 		t.Fatalf("expected 4, got %d", pv2.Count())
 	}
@@ -1871,12 +1850,12 @@ func TestPVAssocAtEnd(t *testing.T) {
 
 func TestPVStructuralSharing(t *testing.T) {
 	// Build vector, create two versions via assoc
-	pv := EmptyPersistentVector()
+	pv := corecollections.EmptyPersistentVector()
 	for i := 0; i < 64; i++ {
-		pv = pv.Conj(coretypes.MakeInt(i))
+		pv = pv.Conjoin(coretypes.MakeInt(i))
 	}
-	v1 := pv.Assoc(5, coretypes.MakeInt(500))
-	v2 := pv.Assoc(40, coretypes.MakeInt(400))
+	v1 := pv.AssocIndex(5, coretypes.MakeInt(500))
+	v2 := pv.AssocIndex(40, coretypes.MakeInt(400))
 
 	// All three versions are independent
 	if pv.Nth(5).(coretypes.Int).I != 5 {
@@ -1897,8 +1876,8 @@ func TestPVStructuralSharing(t *testing.T) {
 }
 
 func TestPVPop(t *testing.T) {
-	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
-	pv2 := pv.Pop()
+	pv := corecollections.PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2), coretypes.MakeInt(3)})
+	pv2 := pv.Pop().(*corecollections.PersistentVector)
 	if pv2.Count() != 2 {
 		t.Fatalf("expected 2, got %d", pv2.Count())
 	}
@@ -1911,9 +1890,9 @@ func TestPVPop(t *testing.T) {
 }
 
 func TestPVPopLarge(t *testing.T) {
-	pv := EmptyPersistentVector()
+	pv := corecollections.EmptyPersistentVector()
 	for i := 0; i < 100; i++ {
-		pv = pv.Conj(coretypes.MakeInt(i))
+		pv = pv.Conjoin(coretypes.MakeInt(i))
 	}
 	for i := 99; i >= 0; i-- {
 		if pv.Count() != i+1 {
@@ -1922,7 +1901,7 @@ func TestPVPopLarge(t *testing.T) {
 		if pv.Nth(i).(coretypes.Int).I != i {
 			t.Fatalf("last element wrong before pop %d", 100-i)
 		}
-		pv = pv.Pop()
+		pv = pv.Pop().(*corecollections.PersistentVector)
 	}
 	if pv.Count() != 0 {
 		t.Fatal("not empty after all pops")
@@ -1931,7 +1910,7 @@ func TestPVPopLarge(t *testing.T) {
 
 func TestPVToSlice(t *testing.T) {
 	items := []coretypes.Object{coretypes.MakeInt(10), coretypes.MakeInt(20), coretypes.MakeInt(30)}
-	pv := PersistentVectorFrom(items)
+	pv := corecollections.PersistentVectorFrom(items)
 	s := pv.ToSlice()
 	if len(s) != 3 {
 		t.Fatalf("expected 3, got %d", len(s))
@@ -1944,7 +1923,7 @@ func TestPVToSlice(t *testing.T) {
 }
 
 func TestPVNthOutOfBounds(t *testing.T) {
-	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1)})
+	pv := corecollections.PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1)})
 	defer func() {
 		if r := recover(); r == nil {
 			t.Fatal("expected panic for out-of-bounds nth")
@@ -1954,25 +1933,25 @@ func TestPVNthOutOfBounds(t *testing.T) {
 }
 
 func TestPVAssocOutOfBounds(t *testing.T) {
-	pv := PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1)})
+	pv := corecollections.PersistentVectorFrom([]coretypes.Object{coretypes.MakeInt(1)})
 	defer func() {
 		if r := recover(); r == nil {
 			t.Fatal("expected panic for out-of-bounds assoc")
 		}
 	}()
-	pv.Assoc(5, coretypes.MakeInt(99))
+	pv.AssocIndex(5, coretypes.MakeInt(99))
 }
 
 func TestPVMultipleAssocSameBase(t *testing.T) {
 	// Simulate n-body pattern: multiple assocs on same base vector
-	pv := EmptyPersistentVector()
+	pv := corecollections.EmptyPersistentVector()
 	for i := 0; i < 35; i++ {
-		pv = pv.Conj(coretypes.Double{D: float64(i)})
+		pv = pv.Conjoin(coretypes.Double{D: float64(i)})
 	}
 	// Assoc 3 consecutive indices (like setting vx, vy, vz)
-	v1 := pv.Assoc(3, coretypes.Double{D: 100.0})
-	v2 := v1.Assoc(4, coretypes.Double{D: 200.0})
-	v3 := v2.Assoc(5, coretypes.Double{D: 300.0})
+	v1 := pv.AssocIndex(3, coretypes.Double{D: 100.0})
+	v2 := v1.AssocIndex(4, coretypes.Double{D: 200.0})
+	v3 := v2.AssocIndex(5, coretypes.Double{D: 300.0})
 
 	// Original unchanged
 	if pv.Nth(3).(coretypes.Double).D != 3.0 {
@@ -1984,7 +1963,7 @@ func TestPVMultipleAssocSameBase(t *testing.T) {
 	}
 }
 
-// Benchmark: PersistentVector assoc vs ArrayVector assoc
+// Benchmark: PersistentVector assoc vs corecollections.ArrayVector assoc
 
 // ---- program_analysis_test.go ----
 func TestIRAnalysisNumericWASMPath(t *testing.T) {
@@ -2159,7 +2138,7 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 	if ok, got := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "a")); !ok || !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("map keyword entry = %v %v", ok, got)
 	}
-	set := readOneForContract(t, `#{3 1 2}`).(*MapSet)
+	set := readOneForContract(t, `#{3 1 2}`).(*corecollections.MapSet)
 	if set.Count() != 3 {
 		t.Fatalf("set count = %d, want 3", set.Count())
 	}
@@ -2168,7 +2147,7 @@ func TestReaderConstructionContractPrimitivesAndCollections(t *testing.T) {
 		t.Fatalf("namespaced map keyword entry = %v %v", found, got)
 	}
 	list := readOneForContract(t, `(1 2 3)`).(coretypes.Seq)
-	if SeqCount(list) != 3 || !list.First().Equals(coretypes.MakeInt(1)) || !Third(list).Equals(coretypes.MakeInt(3)) {
+	if corecollections.SeqCount(list) != 3 || !list.First().Equals(coretypes.MakeInt(1)) || !corecollections.Third(list).Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("list construction mismatch: %s", list.ToString(false))
 	}
 
@@ -2202,10 +2181,10 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 		t.Fatal("*data-readers* var not found")
 	}
 	oldDataReaders := dataReadersVar.Value
-	readers := EmptyArrayMap()
+	readers := corecollections.EmptyArrayMap()
 	readers.Add(coretypes.MakeSymbol(STRINGS.Intern, "contract/direct"), Proc{Name: "readerContractDirect", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 1, 1)
-		return NewArrayVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, "direct"), args[0])
+		return corecollections.NewArrayVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, "direct"), args[0])
 	}})
 	dataReadersVar.Value = readers
 	defer func() { dataReadersVar.Value = oldDataReaders }()
@@ -2222,7 +2201,7 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 	oldFallback := fallbackVar.Value
 	fallbackVar.Value = Proc{Name: "readerContractFallback", Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 2, 2)
-		return NewArrayVectorFrom(args[0], args[1])
+		return corecollections.NewArrayVectorFrom(args[0], args[1])
 	}}
 	defer func() { fallbackVar.Value = oldFallback }()
 
@@ -2244,7 +2223,7 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 		t.Fatalf("reader conditional selected wrong form: %s", selected.ToString(false))
 	}
 	spliced := readOneForContract(t, `(#?@(:missing [:no] :joker [1 2]) 3)`).(coretypes.Seq)
-	if SeqCount(spliced) != 3 || !spliced.First().Equals(coretypes.MakeInt(1)) || !Second(spliced).Equals(coretypes.MakeInt(2)) || !Third(spliced).Equals(coretypes.MakeInt(3)) {
+	if corecollections.SeqCount(spliced) != 3 || !spliced.First().Equals(coretypes.MakeInt(1)) || !corecollections.Second(spliced).Equals(coretypes.MakeInt(2)) || !corecollections.Third(spliced).Equals(coretypes.MakeInt(3)) {
 		t.Fatalf("reader conditional splice mismatch: %s", spliced.ToString(false))
 	}
 }
@@ -2255,7 +2234,7 @@ func TestReadConditionalSpliceEmptyInList(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected read error: %v", err)
 	}
-	lst, ok := obj.(*List)
+	lst, ok := obj.(*corecollections.List)
 	if !ok {
 		t.Fatalf("expected list, got %T", obj)
 	}
@@ -2333,7 +2312,7 @@ func TestReaderConstructionAdapterScalarObjects(t *testing.T) {
 func TestReaderConstructionAdapterSetLiteral(t *testing.T) {
 	r := readerConstruction.NewReader(strings.NewReader("#{}"), "<adapter-contract>")
 	pushPos(r)
-	set := readerConstruction.SetLiteral(r, []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2)}).(*MapSet)
+	set := readerConstruction.SetLiteral(r, []coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2)}).(*corecollections.MapSet)
 	if set.Count() != 2 {
 		t.Fatalf("SetLiteral count = %d, want 2", set.Count())
 	}
@@ -2364,7 +2343,7 @@ func TestReaderConstructionAdapterMetadata(t *testing.T) {
 	if found, got := meta.Get(coretypes.MakeKeyword(STRINGS.Intern, "private")); !found || !got.Equals(coretypes.Boolean{B: true}) {
 		t.Fatalf("keyword metadata entry = %v %v", found, got)
 	}
-	vec := collectionConstruction.NewArrayVectorFrom(coretypes.MakeInt(1))
+	vec := corecollections.NewArrayVectorFrom(coretypes.MakeInt(1))
 	withMeta, ok := readerConstruction.WithMeta(vec, meta)
 	if !ok || withMeta.(coretypes.Meta).GetMeta() == nil {
 		t.Fatalf("WithMeta = %T %v", withMeta, ok)
@@ -2408,16 +2387,20 @@ func TestReaderConstructionAdapterNumberFromToken(t *testing.T) {
 
 func TestReaderConstructionAdapterCollectionObjects(t *testing.T) {
 	list := readerConstruction.ListFrom([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(2)}).(coretypes.Seq)
-	if SeqCount(list) != 2 || !list.First().Equals(coretypes.MakeInt(1)) || !Second(list).Equals(coretypes.MakeInt(2)) {
+	if corecollections.SeqCount(list) != 2 || !list.First().Equals(coretypes.MakeInt(1)) || !corecollections.Second(list).Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("adapter ListFrom mismatch: %s", list.ToString(false))
 	}
 	vec := readerConstruction.VectorFrom([]coretypes.Object{coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.MakeKeyword(STRINGS.Intern, "b")}).(coretypes.CountedIndexed)
 	if vec.Count() != 2 || !vec.At(0).Equals(coretypes.MakeKeyword(STRINGS.Intern, "a")) || !vec.At(1).Equals(coretypes.MakeKeyword(STRINGS.Intern, "b")) {
 		t.Fatalf("adapter coretypes.VectorFrom mismatch: %s", vec.(coretypes.Object).ToString(false))
 	}
-	persistent := readerConstruction.PersistentVectorFromSeq(vec.(coretypes.Seqable).Seq()).(coretypes.CountedIndexed)
+	persistentObj := readerConstruction.PersistentVectorFromSeq(vec.(coretypes.Seqable).Seq())
+	persistent, ok := persistentObj.(*corecollections.PersistentVector)
+	if !ok {
+		t.Fatalf("adapter PersistentVectorFromSeq type = %T, want *corecollections.PersistentVector", persistentObj)
+	}
 	if persistent.Count() != 2 || !persistent.At(0).Equals(coretypes.MakeKeyword(STRINGS.Intern, "a")) || !persistent.At(1).Equals(coretypes.MakeKeyword(STRINGS.Intern, "b")) {
-		t.Fatalf("adapter PersistentVectorFromSeq mismatch: %s", persistent.(coretypes.Object).ToString(false))
+		t.Fatalf("adapter PersistentVectorFromSeq mismatch: %s", persistent.ToString(false))
 	}
 	if readerConstruction.VectorFrom(nil).(coretypes.Counted).Count() != 0 {
 		t.Fatal("adapter empty coretypes.VectorFrom not empty")
@@ -2470,14 +2453,14 @@ func TestExecutorFilesUseRuntimeExecutionAdapterForProgramState(t *testing.T) {
 			if strings.Contains(line, ".Equals(") {
 				t.Fatalf("%s:%d performs equality instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
 			}
-			if strings.Contains(line, "ToSlice(") || strings.Contains(line, "(coretypes.Seqable)") {
+			if strings.Contains(line, "corecollections.ToSlice(") || strings.Contains(line, "(coretypes.Seqable)") {
 				t.Fatalf("%s:%d prepares call args instead of runtimeExec adapter: %s", file, lineNo+1, strings.TrimSpace(line))
 			}
 			lineText = strings.TrimSpace(line)
-			if lineText == "case *ArrayVector:" || lineText == "case *TransientVector:" || lineText == "return (*ArrayVector)(v.p)" || lineText == "return (*TransientVector)(v.p)" {
+			if lineText == "case *corecollections.ArrayVector:" || lineText == "case *coretypes.TransientVector:" || lineText == "return (*corecollections.ArrayVector)(v.p)" || lineText == "return (*coretypes.TransientVector)(v.p)" {
 				continue
 			}
-			if strings.Contains(line, "coretypes.Seqable") || strings.Contains(line, "coretypes.Conjable") || strings.Contains(line, "Counted") || strings.Contains(line, "coretypes.Associative") || strings.Contains(line, "*TransientVector") || strings.Contains(line, "*ArrayVector") || strings.Contains(line, "&ArrayVector") {
+			if strings.Contains(line, "coretypes.Seqable") || strings.Contains(line, "coretypes.Conjable") || strings.Contains(line, "Counted") || strings.Contains(line, "coretypes.Associative") || strings.Contains(line, "*coretypes.TransientVector") || strings.Contains(line, "*corecollections.ArrayVector") || strings.Contains(line, "&corecollections.ArrayVector") {
 				t.Fatalf("%s:%d performs collection construction/access instead of runtimeExec adapter: %s", file, lineNo+1, lineText)
 			}
 			if lineText == "case *StringCursor:" || lineText == "return (*StringCursor)(v.p)" {
@@ -2671,7 +2654,7 @@ func TestRuntimeExecutionAdapterMakeFnCapturesSlots(t *testing.T) {
 
 func TestRuntimeExecutionAdapterCallObject(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
-	args, ok := adapter.CallArgs(NewArrayVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2)))
+	args, ok := adapter.CallArgs(corecollections.NewArrayVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2)))
 	if !ok || len(args) != 2 || !args[1].Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("CallArgs = %#v, %v", args, ok)
 	}
@@ -2708,14 +2691,14 @@ func TestRuntimeExecutionAdapterCallObject(t *testing.T) {
 
 func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	adapter := RuntimeExecutionAdapter{}
-	vec := NewArrayVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2))
+	vec := corecollections.NewArrayVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2))
 	if got, ok := adapter.Nth(vec, 1); !ok || !got.Equals(coretypes.MakeInt(2)) {
 		t.Fatalf("Nth = %#v, %v", got, ok)
 	}
 	if _, ok := adapter.Nth(vec, 9); ok {
 		t.Fatal("Nth accepted out-of-range index")
 	}
-	mapObj := EmptyArrayMap().Assoc(coretypes.MakeString("k"), coretypes.MakeInt(7)).(coretypes.Object)
+	mapObj := corecollections.EmptyArrayMap().Assoc(coretypes.MakeString("k"), coretypes.MakeInt(7)).(coretypes.Object)
 	if got := adapter.Get(mapObj, coretypes.MakeString("k"), NIL); !got.Equals(coretypes.MakeInt(7)) {
 		t.Fatalf("Get = %#v", got)
 	}
@@ -2733,13 +2716,13 @@ func TestRuntimeExecutionAdapterCollectionOps(t *testing.T) {
 	if got, ok := adapter.First(vec); !ok || !got.Equals(coretypes.MakeInt(1)) {
 		t.Fatalf("First returned %#v, %v", got, ok)
 	}
-	if got, ok := adapter.First(EmptyArrayVector()); !ok || got != NIL {
+	if got, ok := adapter.First(corecollections.EmptyArrayVector()); !ok || got != NIL {
 		t.Fatalf("First empty returned %#v, %v", got, ok)
 	}
 	if got := adapter.BuildVector([]coretypes.Object{coretypes.MakeInt(4), coretypes.MakeInt(5)}); got.(coretypes.Counted).Count() != 2 {
 		t.Fatalf("BuildVector returned %#v", got)
 	}
-	transient := ToTransient(vec)
+	transient := coretypes.ToTransient(vec.Arr)
 	if !adapter.HasMutableSlotCandidate([]coretypes.Object{coretypes.MakeInt(1), vec}) {
 		t.Fatal("HasMutableSlotCandidate missed vector")
 	}
@@ -3396,8 +3379,8 @@ const jsonMedium = `[{"id":1,"name":"Alice","email":"alice@test.com","tags":["ad
 
 // ---- transient_test.go ----
 func TestTransientVector(t *testing.T) {
-	v := &ArrayVector{arr: []coretypes.Object{coretypes.Int{I: 1}, coretypes.Int{I: 2}, coretypes.Int{I: 3}}}
-	tv := ToTransient(v)
+	v := &corecollections.ArrayVector{Arr: []coretypes.Object{coretypes.Int{I: 1}, coretypes.Int{I: 2}, coretypes.Int{I: 3}}}
+	tv := coretypes.ToTransient(v.Arr)
 	tv.AssocInPlace(coretypes.Int{I: 1}, coretypes.Int{I: 99})
 	tv.ConjInPlace(coretypes.Int{I: 4})
 	if tv.Count() != 4 {
@@ -3413,7 +3396,7 @@ func TestTransientVector(t *testing.T) {
 }
 
 func TestTransientMapZeroValueAssoc(t *testing.T) {
-	tm := &TransientMap{}
+	tm := &coretypes.TransientMap{}
 	tm.AssocInPlace(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.Int{I: 1})
 	if ok, got := tm.Get(coretypes.MakeKeyword(STRINGS.Intern, "a")); !ok || !got.Equals(coretypes.Int{I: 1}) {
 		t.Fatalf("zero-value transient map lookup = %v %v", ok, got)
@@ -3421,10 +3404,10 @@ func TestTransientMapZeroValueAssoc(t *testing.T) {
 }
 
 func TestTransientMap(t *testing.T) {
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.Int{I: 1})
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "b"), coretypes.Int{I: 2})
-	tm := MapToTransient(m)
+	tm := coretypes.MapToTransient(m)
 	tm.AssocInPlace(coretypes.MakeKeyword(STRINGS.Intern, "c"), coretypes.Int{I: 3})
 	tm.AssocInPlace(coretypes.MakeKeyword(STRINGS.Intern, "a"), coretypes.Int{I: 99})
 	if tm.Count() != 3 {
@@ -3441,7 +3424,7 @@ func TestTransientMap(t *testing.T) {
 }
 
 func TestTransientMapStringKeys(t *testing.T) {
-	tm := MapToTransient(nil)
+	tm := coretypes.MapToTransient(nil)
 	tm.AssocInPlace(coretypes.String{S: "alpha"}, coretypes.Int{I: 1})
 	tm.AssocInPlace(coretypes.String{S: "beta"}, coretypes.Int{I: 2})
 	tm.AssocInPlace(coretypes.String{S: "alpha"}, coretypes.Int{I: 3})
@@ -3460,8 +3443,8 @@ func TestTransientMapStringKeys(t *testing.T) {
 }
 
 func TestTransientVectorProcs(t *testing.T) {
-	vec := NewArrayVectorFrom(coretypes.Int{I: 1}, coretypes.Int{I: 2})
-	tv, ok := procTransient([]coretypes.Object{vec}).(*TransientVector)
+	vec := corecollections.NewArrayVectorFrom(coretypes.Int{I: 1}, coretypes.Int{I: 2})
+	tv, ok := procTransient([]coretypes.Object{vec}).(*coretypes.TransientVector)
 	if !ok {
 		t.Fatalf("transient vector proc returned %T", tv)
 	}
@@ -3483,14 +3466,14 @@ func TestTransientVectorProcs(t *testing.T) {
 	if procPopBang([]coretypes.Object{tv}) != tv {
 		t.Fatal("pop! should return the same transient vector")
 	}
-	persisted := procPersistentBang([]coretypes.Object{tv}).(*ArrayVector)
+	persisted := procPersistentBang([]coretypes.Object{tv}).(*corecollections.ArrayVector)
 	if persisted.Count() != 2 || !persisted.At(1).Equals(coretypes.Int{I: 20}) {
 		t.Fatalf("unexpected persistent vector: %s", persisted.ToString(false))
 	}
 }
 
 func TestTransientMapProcs(t *testing.T) {
-	tm, ok := procTransient([]coretypes.Object{EmptyArrayMap()}).(*TransientMap)
+	tm, ok := procTransient([]coretypes.Object{corecollections.EmptyArrayMap()}).(*coretypes.TransientMap)
 	if !ok {
 		t.Fatalf("transient map proc returned %T", tm)
 	}
@@ -3761,16 +3744,16 @@ func TestWasmFloatLoop(t *testing.T) {
 }
 
 func TestWasmArrayRejectsInvalidSizes(t *testing.T) {
-	if arr := MakeF64Array(-1); arr != nil {
+	if arr := corewasm.MakeF64ArrayWithRuntime(getWasmRT, -1, TYPE.ArrayVector); arr != nil {
 		t.Fatalf("MakeF64Array(-1) = %#v, want nil", arr)
 	}
-	if arr := MakeI64Array(-1); arr != nil {
+	if arr := corewasm.MakeI64ArrayWithRuntime(getWasmRT, -1, TYPE.ArrayVector); arr != nil {
 		t.Fatalf("MakeI64Array(-1) = %#v, want nil", arr)
 	}
 }
 
 func TestWasmArrayF64(t *testing.T) {
-	arr := MakeF64Array(10)
+	arr := corewasm.MakeF64ArrayWithRuntime(getWasmRT, 10, TYPE.ArrayVector)
 	if arr == nil {
 		t.Skip("WASM array allocation failed")
 	}
@@ -3791,7 +3774,7 @@ func TestWasmArrayF64(t *testing.T) {
 }
 
 func TestWasmRawIntObjectPromotesOutsideNativeRange(t *testing.T) {
-	got := wasmRawIntObject(uint64(math.MaxInt64))
+	got := corewasm.RawIntObject(uint64(math.MaxInt64))
 	if math.MaxInt64 > int64(coretypes.MaxInt) {
 		if got.GetType() != TYPE.BigInt {
 			t.Fatalf("wasm raw int object type = %s, want coretypes.BigInt", got.GetType().ToString(false))
@@ -3804,13 +3787,13 @@ func TestWasmRawIntObjectPromotesOutsideNativeRange(t *testing.T) {
 }
 
 func TestWasmRawIntRejectsOutOfRangeIndex(t *testing.T) {
-	if _, ok := wasmRawInt(uint64(math.MaxInt64)); ok && math.MaxInt64 > int64(coretypes.MaxInt) {
+	if _, ok := corewasm.RawInt(uint64(math.MaxInt64)); ok && math.MaxInt64 > int64(coretypes.MaxInt) {
 		t.Fatal("wasmRawInt should reject values outside native int range")
 	}
 }
 
 func TestWasmExecRawIntegerResultUsesNativeRange(t *testing.T) {
-	got := wasmRawIntObject(uint64(math.MaxInt64))
+	got := corewasm.RawIntObject(uint64(math.MaxInt64))
 	if math.MaxInt64 > int64(coretypes.MaxInt) && got.GetType() != TYPE.BigInt {
 		t.Fatalf("raw wasm result type = %s, want coretypes.BigInt", got.GetType().ToString(false))
 	}

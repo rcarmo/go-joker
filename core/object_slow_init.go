@@ -4,8 +4,12 @@
 package core
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
@@ -56,37 +60,37 @@ func init() {
 		Sequential:     typeBuilder().RegisterInterface("Sequential", (*coretypes.Sequential)(nil), ""),
 		Set:            typeBuilder().RegisterInterface("Set", (*coretypes.Set)(nil), ""),
 		Stack:          typeBuilder().RegisterInterface("coretypes.Stack", (*coretypes.Stack)(nil), ""),
-		ArrayMap:       typeBuilder().RegisterReference("ArrayMap", (*ArrayMap)(nil), ""),
-		ArrayMapSeq:    typeBuilder().RegisterReference("ArrayMapSeq", (*ArrayMapSeq)(nil), ""),
-		ArrayNodeSeq:   typeBuilder().RegisterReference("ArrayNodeSeq", (*ArrayNodeSeq)(nil), ""),
-		ArraySeq:       typeBuilder().RegisterReference("ArraySeq", (*ArraySeq)(nil), ""),
-		MapSet:         typeBuilder().RegisterReference("MapSet", (*MapSet)(nil), ""),
-		Atom:           typeBuilder().RegisterReference("Atom", (*Atom)(nil), ""),
+		ArrayMap:       typeBuilder().RegisterReference("corecollections.ArrayMap", (*corecollections.ArrayMap)(nil), ""),
+		ArrayMapSeq:    typeBuilder().RegisterReference("corecollections.ArrayMapSeq", (*corecollections.ArrayMapSeq)(nil), ""),
+		ArrayNodeSeq:   typeBuilder().RegisterReference("corecollections.ArrayNodeSeq", (*corecollections.ArrayNodeSeq)(nil), ""),
+		ArraySeq:       typeBuilder().RegisterReference("corecollections.ArraySeq", (*corecollections.ArraySeq)(nil), ""),
+		MapSet:         typeBuilder().RegisterReference("corecollections.MapSet", (*corecollections.MapSet)(nil), ""),
+		Atom:           typeBuilder().RegisterReference("Atom", (*corert.Atom)(nil), ""),
 		BigFloat:       typeBuilder().RegisterReference("coretypes.BigFloat", (*coretypes.BigFloat)(nil), "Wraps the Go 'math/big.Float' type"),
 		BigInt:         typeBuilder().RegisterReference("coretypes.BigInt", (*coretypes.BigInt)(nil), "Wraps the Go 'math/big.Int' type"),
 		Boolean:        typeBuilder().RegisterValue("Boolean", (*coretypes.Boolean)(nil), "Wraps the Go 'bool' type"),
 		Time:           typeBuilder().RegisterValue("Time", (*coretypes.Time)(nil), "Wraps the Go 'time.Time' type"),
 		Buffer:         typeBuilder().RegisterReference("Buffer", (*Buffer)(nil), ""),
 		Char:           typeBuilder().RegisterValue("Char", (*coretypes.Char)(nil), "Wraps the Go 'rune' type"),
-		ConsSeq:        typeBuilder().RegisterReference("ConsSeq", (*ConsSeq)(nil), ""),
+		ConsSeq:        typeBuilder().RegisterReference("corecollections.ConsSeq", (*corecollections.ConsSeq)(nil), ""),
 		Delay:          typeBuilder().RegisterReference("coretypes.Delay", (*coretypes.Delay)(nil), ""),
-		Channel:        typeBuilder().RegisterReference("Channel", (*Channel)(nil), ""),
+		Channel:        typeBuilder().RegisterReference("Channel", (*corert.ObjectChannel)(nil), ""),
 		Double:         typeBuilder().RegisterValue("Double", (*coretypes.Double)(nil), "Wraps the Go 'float64' type"),
 		EvalError:      typeBuilder().RegisterReference("EvalError", (*EvalError)(nil), ""),
 		ExInfo:         typeBuilder().RegisterReference("ExInfo", (*ExInfo)(nil), ""),
 		Fn:             typeBuilder().RegisterReference("Fn", (*Fn)(nil), "A callable function or macro implemented via Joker code"),
 		File:           typeBuilder().RegisterReference("File", (*File)(nil), ""),
 		BufferedReader: typeBuilder().RegisterReference("BufferedReader", (*BufferedReader)(nil), ""),
-		HashMap:        typeBuilder().RegisterReference("HashMap", (*HashMap)(nil), ""),
+		HashMap:        typeBuilder().RegisterReference("corecollections.HashMap", (*corecollections.HashMap)(nil), ""),
 		Int: typeBuilder().RegisterValue("Int", (*coretypes.Int)(nil),
 			"Wraps the Go 'int' type, which is 32 bits wide on 32-bit hosts, 64 bits wide on 64-bit hosts, etc."),
 		Keyword:       typeBuilder().RegisterValue("Keyword", (*coretypes.Keyword)(nil), "A possibly-namespace-qualified name prefixed by ':'"),
-		LazySeq:       typeBuilder().RegisterReference("LazySeq", (*LazySeq)(nil), ""),
-		List:          typeBuilder().RegisterReference("List", (*List)(nil), ""),
-		MappingSeq:    typeBuilder().RegisterReference("MappingSeq", (*MappingSeq)(nil), ""),
+		LazySeq:       typeBuilder().RegisterReference("corecollections.LazySeq", (*corecollections.LazySeq)(nil), ""),
+		List:          typeBuilder().RegisterReference("corecollections.List", (*corecollections.List)(nil), ""),
+		MappingSeq:    typeBuilder().RegisterReference("corecollections.MappingSeq", (*corecollections.MappingSeq)(nil), ""),
 		Namespace:     typeBuilder().RegisterReference("Namespace", (*Namespace)(nil), ""),
 		Nil:           typeBuilder().RegisterValue("Nil", (*Nil)(nil), "The 'nil' value"),
-		NodeSeq:       typeBuilder().RegisterReference("NodeSeq", (*NodeSeq)(nil), ""),
+		NodeSeq:       typeBuilder().RegisterReference("corecollections.NodeSeq", (*corecollections.NodeSeq)(nil), ""),
 		ParseError:    typeBuilder().RegisterReference("ParseError", (*ParseError)(nil), ""),
 		Proc:          typeBuilder().RegisterReference("Proc", (*Proc)(nil), "A callable function implemented via Go code"),
 		Ratio:         typeBuilder().RegisterReference("coretypes.Ratio", (*coretypes.Ratio)(nil), "Wraps the Go 'math.big/Rat' type"),
@@ -96,15 +100,24 @@ func init() {
 		Symbol:        typeBuilder().RegisterValue("Symbol", (*coretypes.Symbol)(nil), ""),
 		Type:          typeBuilder().RegisterReference("Type", (*coretypes.Type)(nil), ""),
 		Var:           typeBuilder().RegisterReference("Var", (*Var)(nil), ""),
-		Vector:        typeBuilder().RegisterReference("Vector", (*Vector)(nil), ""),
+		Vector:        typeBuilder().RegisterReference("corecollections.Vector", (*corecollections.Vector)(nil), ""),
 		Vec:           typeBuilder().RegisterInterface("Vec", (*coretypes.Vec)(nil), ""),
-		ArrayVector:   typeBuilder().RegisterReference("ArrayVector", (*ArrayVector)(nil), ""),
-		VectorRSeq:    typeBuilder().RegisterReference("VectorRSeq", (*VectorRSeq)(nil), ""),
-		VectorSeq:     typeBuilder().RegisterReference("VectorSeq", (*VectorSeq)(nil), ""),
+		ArrayVector:   typeBuilder().RegisterReference("corecollections.ArrayVector", (*corecollections.ArrayVector)(nil), ""),
+		VectorRSeq:    typeBuilder().RegisterReference("corecollections.VectorRSeq", (*corecollections.VectorRSeq)(nil), ""),
+		VectorSeq:     typeBuilder().RegisterReference("corecollections.VectorSeq", (*corecollections.VectorSeq)(nil), ""),
 		StringSeq:     typeBuilder().RegisterReference("StringSeq", (*stringSeq)(nil), ""),
 	}
 	coretypes.RuntimeTypes = &TYPE
 	coretypes.RuntimeNil = NIL
+	coretypes.RuntimeError = func(msg string) any { return RT.NewError(msg) }
+	coretypes.RuntimePanicArityMinMax = PanicArityMinMax
+	coretypes.RuntimePprintObject = pprintObject
+	coretypes.RuntimeFormatObject = formatObject
+	coretypes.RuntimeMaybeNewLine = maybeNewLine
+	coretypes.RuntimeWriteIndent = writeIndent
+	coretypes.RuntimeIsComment = isComment
+	coretypes.RuntimeIsReduced = IsReduced
+	coretypes.RuntimeDerefReduced = DerefReduced
 	coretypes.RuntimeReduceType = TYPE.Reduce
 	coretypes.RuntimeKVReduceType = TYPE.KVReduce
 	coretypes.SpecialSymbolLookup = func(sym coretypes.Symbol) bool { return SPECIAL_SYMBOLS[sym.NameKey()] }
@@ -113,10 +126,10 @@ func init() {
 	coretypes.NamedLookup = getMap
 	coretypes.TransientMutationError = func() any { return RT.NewError("Cannot mutate a frozen transient") }
 	coretypes.TransientVectorIndexTypeError = func(obj coretypes.Object) any { return RT.NewArgTypeError(1, obj, "Int") }
-	coretypes.TransientVectorToPersistent = func(arr []coretypes.Object) coretypes.Object { return &ArrayVector{arr: arr} }
+	coretypes.TransientVectorToPersistent = func(arr []coretypes.Object) coretypes.Object { return &corecollections.ArrayVector{Arr: arr} }
 	coretypes.TransientMapToPersistent = func(tm *coretypes.TransientMap) coretypes.Object {
-		if tm.CountN <= int(HASHMAP_THRESHOLD/2) {
-			res := collectionConstruction.NewEmptyArrayMap()
+		if tm.CountN <= int(corecollections.HASHMAP_THRESHOLD/2) {
+			res := corecollections.EmptyArrayMap()
 			for k, v := range tm.SM {
 				res.Add(coretypes.String{S: k}, v)
 			}
@@ -127,13 +140,13 @@ func init() {
 			}
 			return res
 		}
-		res := EmptyHashMap
+		res := corecollections.EmptyHashMap
 		for k, v := range tm.SM {
-			res = res.Assoc(coretypes.String{S: k}, v).(*HashMap)
+			res = res.Assoc(coretypes.String{S: k}, v).(*corecollections.HashMap)
 		}
 		for _, bucket := range tm.M {
 			for _, e := range bucket {
-				res = res.Assoc(e.Key, e.Val).(*HashMap)
+				res = res.Assoc(e.Key, e.Val).(*corecollections.HashMap)
 			}
 		}
 		return res

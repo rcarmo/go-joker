@@ -125,7 +125,7 @@ If the result of this process is an empty string, returns the string \".\"."
   If there is no separator in path, returns an empty dir and file set to path. The returned values have
   the property that path = dir+file."
   {:added "1.0"
-   :go "! _dir, _file := filepath.Split(path); _res := NewVectorFrom(MakeString(_dir), MakeString(_file))"}
+   :go "! _dir, _file := filepath.Split(path); _res := corecollections.NewVectorFrom(MakeString(_dir), MakeString(_file))"}
   [^String path])
 
 (defn ^{:tag [String]} split-list

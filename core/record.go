@@ -11,8 +11,10 @@ package core
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 // Record is an instance of a RecordType.
@@ -20,8 +22,8 @@ type Record struct {
 	coretypes.InfoHolder
 	coretypes.MetaHolder
 	rtype *coretypes.RecordType
-	bases []coretypes.Object // values for base fields (same order as rtype.fields)
-	ext   *ArrayMap          // extension fields (nil if none)
+	bases []coretypes.Object        // values for base fields (same order as rtype.fields)
+	ext   *corecollections.ArrayMap // extension fields (nil if none)
 }
 
 func (r *Record) ToString(escape bool) string {
@@ -114,7 +116,7 @@ func (r *Record) WithMeta(m coretypes.Map) coretypes.Object {
 func (r *Record) clone() *Record {
 	bases := make([]coretypes.Object, len(r.bases))
 	copy(bases, r.bases)
-	var ext *ArrayMap
+	var ext *corecollections.ArrayMap
 	if r.ext != nil {
 		ext = r.ext.Clone()
 	}
@@ -146,7 +148,7 @@ func (r *Record) Get(key coretypes.Object) (bool, coretypes.Object) {
 // EntryAt returns a MapEntry for the given key.
 func (r *Record) EntryAt(key coretypes.Object) coretypes.Object {
 	if ok, v := r.Get(key); ok {
-		av := collectionConstruction.NewEmptyArrayVector().Conj(key).(*ArrayVector).Conj(v).(*ArrayVector)
+		av := corecollections.EmptyArrayVector().Conj(key).(*corecollections.ArrayVector).Conj(v).(*corecollections.ArrayVector)
 		return av
 	}
 	return nil
@@ -165,9 +167,9 @@ func (r *Record) Assoc(key, val coretypes.Object) coretypes.Associative {
 	}
 	res := r.clone()
 	if res.ext == nil {
-		res.ext = collectionConstruction.NewEmptyArrayMap()
+		res.ext = corecollections.EmptyArrayMap()
 	}
-	res.ext = res.ext.Assoc(key, val).(*ArrayMap)
+	res.ext = res.ext.Assoc(key, val).(*corecollections.ArrayMap)
 	return res
 }
 
@@ -184,15 +186,15 @@ func (r *Record) Count() int {
 func (r *Record) Seq() coretypes.Seq {
 	entries := make([]coretypes.Object, 0, r.Count())
 	for i, fname := range r.rtype.Fields {
-		entries = append(entries, collectionConstruction.NewVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, fname), r.bases[i]))
+		entries = append(entries, corecollections.NewVectorFrom(coretypes.MakeKeyword(STRINGS.Intern, fname), r.bases[i]))
 	}
 	if r.ext != nil {
 		for iter := r.ext.Iter(); iter.HasNext(); {
 			p := iter.Next()
-			entries = append(entries, collectionConstruction.NewVectorFrom(p.Key, p.Value))
+			entries = append(entries, corecollections.NewVectorFrom(p.Key, p.Value))
 		}
 	}
-	return &ArraySeq{arr: entries, index: 0}
+	return &corecollections.ArraySeq{Arr: entries, Index: 0}
 }
 
 // Keys returns all keys.
@@ -207,7 +209,7 @@ func (r *Record) Keys() coretypes.Seq {
 			keys = append(keys, p.Key)
 		}
 	}
-	return &ArraySeq{arr: keys, index: 0}
+	return &corecollections.ArraySeq{Arr: keys, Index: 0}
 }
 
 // Vals returns all values.
@@ -220,24 +222,24 @@ func (r *Record) Vals() coretypes.Seq {
 			vals = append(vals, p.Value)
 		}
 	}
-	return &ArraySeq{arr: vals, index: 0}
+	return &corecollections.ArraySeq{Arr: vals, Index: 0}
 }
 
 // Conj adds a map entry to the record.
 func (r *Record) Conj(obj coretypes.Object) coretypes.Conjable {
 	switch v := obj.(type) {
-	case *Vector:
-		if v.count != 2 {
-			panic(RT.NewError("Vector arg to conj on record must be a pair"))
+	case *corecollections.Vector:
+		if v.Count() != 2 {
+			panic(coretypes.RuntimeError("corecollections.Vector arg to conj on record must be a pair"))
 		}
-		return r.Assoc(v.at(0), v.at(1)).(coretypes.Conjable)
+		return r.Assoc(v.At(0), v.At(1)).(coretypes.Conjable)
 	}
-	panic(RT.NewError(fmt.Sprintf("Cannot conj %s onto record", obj.GetType().ToString(false))))
+	panic(coretypes.RuntimeError(fmt.Sprintf("Cannot conj %s onto record", obj.GetType().ToString(false))))
 }
 
 // Call implements keyword-style access: (record :field)
 func (r *Record) Call(args []coretypes.Object) coretypes.Object {
-	CheckArity(args, 1, 2)
+	runtimeCheckArity(args, 1, 2)
 	ok, v := r.Get(args[0])
 	if ok {
 		return v
@@ -276,7 +278,7 @@ func (r *Record) Without(key coretypes.Object) coretypes.Map {
 		name := kw.ToString(false)[1:]
 		if _, ok := r.rtype.FieldIdx[name]; ok {
 			// Dissoc base field → degrade to plain map
-			m := collectionConstruction.NewEmptyArrayMap()
+			m := corecollections.EmptyArrayMap()
 			for i, fname := range r.rtype.Fields {
 				if fname != name {
 					m.Add(coretypes.MakeKeyword(STRINGS.Intern, fname), r.bases[i])
@@ -293,7 +295,7 @@ func (r *Record) Without(key coretypes.Object) coretypes.Map {
 	}
 	if r.ext != nil {
 		res := r.clone()
-		res.ext = res.ext.Without(key).(*ArrayMap)
+		res.ext = res.ext.Without(key).(*corecollections.ArrayMap)
 		return res
 	}
 	return r
@@ -336,7 +338,7 @@ func (it *recordIterator) Next() *coretypes.Pair {
 // NewRecord creates a new record instance.
 func NewRecord(rtype *coretypes.RecordType, fields []coretypes.Object) *Record {
 	if len(fields) != len(rtype.Fields) {
-		panic(RT.NewError(fmt.Sprintf("Wrong number of fields for record %s: expected %d, got %d",
+		panic(coretypes.RuntimeError(fmt.Sprintf("Wrong number of fields for record %s: expected %d, got %d",
 			rtype.Name, len(rtype.Fields), len(fields))))
 	}
 	bases := make([]coretypes.Object, len(fields))

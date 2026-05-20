@@ -5,6 +5,7 @@ package csv
 import (
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 var __csv_seq__P ProcFn = __csv_seq_
@@ -15,7 +16,7 @@ func __csv_seq_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 1:
 		rdr := ExtractObject(_args, 0)
-		_res := csvSeqOpts(rdr, EmptyArrayMap())
+		_res := csvSeqOpts(rdr, corecollections.EmptyArrayMap())
 		return _res
 
 	case _c == 2:
@@ -39,7 +40,7 @@ func __write_(_args []coretypes.Object) coretypes.Object {
 	case _c == 2:
 		f := ExtractIOWriter(_args, 0)
 		data := ExtractSeqable(_args, 1)
-		_res := write(f, data, EmptyArrayMap())
+		_res := write(f, data, corecollections.EmptyArrayMap())
 		return _res
 
 	case _c == 3:
@@ -63,7 +64,7 @@ func __write_string_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 1:
 		data := ExtractSeqable(_args, 0)
-		_res := writeString(data, EmptyArrayMap())
+		_res := writeString(data, corecollections.EmptyArrayMap())
 		return coretypes.MakeString(_res)
 
 	case _c == 2:

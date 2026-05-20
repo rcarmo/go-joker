@@ -3,15 +3,17 @@ package core
 import (
 	"context"
 	"encoding/binary"
+	"math"
+	"reflect"
+	"sync"
+
 	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	"github.com/rcarmo/go-joker/core/wasm"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/api"
-	"math"
-	"reflect"
-	"sync"
 )
 
 // ---- wasm_compile.go ----
@@ -723,7 +725,7 @@ func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRPro
 	if err != nil {
 		return nil
 	}
-	mod, err := rt.InstantiateModule(ctx, compiled, wazero.NewModuleConfig().WithName(corert.NextWasmModuleName()))
+	mod, err := rt.InstantiateModule(ctx, compiled, wazero.NewModuleConfig().WithName(corewasm.NextWasmModuleName()))
 	if err != nil {
 		return nil
 	}
@@ -746,65 +748,6 @@ func wasmCompileWithOneHelper(prog *IRProgram, helperSlot int, helperProg *IRPro
 // The object table is thread-local to each wasmExec call, stored in a
 // context value so host functions can access it.
 
-// objectTable holds Joker Objects referenced by WASM code via handles.
-type objectTable struct {
-	objects []coretypes.Object
-	mu      sync.Mutex
-}
-
-// store adds an object and returns its handle.
-func (t *objectTable) store(obj coretypes.Object) uint64 {
-	t.mu.Lock()
-	defer t.mu.Unlock()
-	idx := len(t.objects)
-	t.objects = append(t.objects, obj)
-	// Handles use high bit 1 to distinguish from plain i64 values
-	return uint64(idx) | (1 << 62)
-}
-
-// load retrieves an object by handle.
-func (t *objectTable) load(handle uint64) coretypes.Object {
-	idx := int(handle &^ (1 << 62))
-	if idx >= 0 && idx < len(t.objects) {
-		return t.objects[idx]
-	}
-	return NIL
-}
-
-// isHandle checks if a uint64 value is an object handle (vs plain i64).
-func isHandle(v uint64) bool {
-	return v&(1<<62) != 0
-}
-
-func wasmRawInt(v uint64) (int, bool) {
-	i := int64(v)
-	if i < int64(coretypes.MinInt) || i > int64(coretypes.MaxInt) {
-		return 0, false
-	}
-	return int(i), true
-}
-
-func wasmRawIntObject(v uint64) coretypes.Object {
-	if i, ok := wasmRawInt(v); ok {
-		return coretypes.Int{I: i}
-	}
-	return coretypes.MakeBigInt(coretypes.MakeMathBigIntFromInt64(int64(v)))
-}
-
-// contextKey for passing the object table through wazero context.
-type ctxKey struct{}
-
-func withObjectTable(ctx context.Context, t *objectTable) context.Context {
-	return context.WithValue(ctx, ctxKey{}, t)
-}
-
-func getObjectTable(ctx context.Context) *objectTable {
-	if t, ok := ctx.Value(ctxKey{}).(*objectTable); ok {
-		return t
-	}
-	return nil
-}
-
 // wasmHostModuleName is the import module name for Joker host functions.
 const wasmHostModuleName = wasm.HostModuleName
 
@@ -816,170 +759,46 @@ func registerWasmHost(rt wazero.Runtime) {
 		ctx := context.Background()
 		builder := rt.NewHostModuleBuilder(wasmHostModuleName)
 
-		// joker.get(coll_handle, key_i64) -> result_i64_or_handle
-		builder.NewFunctionBuilder().
-			WithFunc(func(ctx context.Context, collHandle uint64, key uint64) uint64 {
-				t := getObjectTable(ctx)
-				if t == nil {
-					return 0
-				}
-				coll := t.load(collHandle)
-				var keyObj coretypes.Object
-				if isHandle(key) {
-					keyObj = t.load(key)
-				} else {
-					keyObj = wasmRawIntObject(key)
-				}
-				if g, ok := coll.(coretypes.Gettable); ok {
-					ok, v := g.Get(keyObj)
-					if ok {
-						return objToWasm(t, v)
-					}
-				}
-				return 0 // NIL
-			}).Export("get")
+		builder.NewFunctionBuilder().WithFunc(func(ctx context.Context, collHandle uint64, key uint64) uint64 {
+			return corewasm.HostGet(corewasm.GetObjectTable(ctx), collHandle, key, 0)
+		}).Export("get")
 
-		// joker.get3(coll_handle, key_i64, default_i64) -> result
-		builder.NewFunctionBuilder().
-			WithFunc(func(ctx context.Context, collHandle uint64, key uint64, def uint64) uint64 {
-				t := getObjectTable(ctx)
-				if t == nil {
-					return def
-				}
-				coll := t.load(collHandle)
-				var keyObj coretypes.Object
-				if isHandle(key) {
-					keyObj = t.load(key)
-				} else {
-					keyObj = wasmRawIntObject(key)
-				}
-				if g, ok := coll.(coretypes.Gettable); ok {
-					ok, v := g.Get(keyObj)
-					if ok {
-						return objToWasm(t, v)
-					}
-				}
-				return def
-			}).Export("get3")
+		builder.NewFunctionBuilder().WithFunc(func(ctx context.Context, collHandle uint64, key uint64, def uint64) uint64 {
+			return corewasm.HostGet(corewasm.GetObjectTable(ctx), collHandle, key, def)
+		}).Export("get3")
 
-		// joker.assoc(coll_handle, key_i64, val_i64) -> new_coll_handle
-		builder.NewFunctionBuilder().
-			WithFunc(func(ctx context.Context, collHandle uint64, key uint64, val uint64) uint64 {
-				t := getObjectTable(ctx)
-				if t == nil {
-					return collHandle
-				}
-				coll := t.load(collHandle)
-				keyObj := wasmToObj(t, key)
-				valObj := wasmToObj(t, val)
-				if a, ok := coll.(coretypes.Associative); ok {
-					result := a.Assoc(keyObj, valObj)
-					return t.store(result)
-				}
-				return collHandle
-			}).Export("assoc")
+		builder.NewFunctionBuilder().WithFunc(func(ctx context.Context, collHandle uint64, key uint64, val uint64) uint64 {
+			return corewasm.HostAssoc(corewasm.GetObjectTable(ctx), collHandle, key, val)
+		}).Export("assoc")
 
-		// joker.nth(coll_handle, idx_i64) -> result
-		builder.NewFunctionBuilder().
-			WithFunc(func(ctx context.Context, collHandle uint64, idx uint64) uint64 {
-				t := getObjectTable(ctx)
-				if t == nil {
-					return 0
+		builder.NewFunctionBuilder().WithFunc(func(ctx context.Context, collHandle uint64, idx uint64) uint64 {
+			return corewasm.HostNth(corewasm.GetObjectTable(ctx), collHandle, idx, 0, func(coll coretypes.Object, i int) (coretypes.Object, bool) {
+				if v, ok := coll.(*corecollections.ArrayVector); ok && i >= 0 && i < len(v.Arr) {
+					return v.Arr[i], true
 				}
-				coll := t.load(collHandle)
-				i, ok := wasmRawInt(idx)
-				if !ok {
-					return 0
-				}
-				switch c := coll.(type) {
-				case *ArrayVector:
-					if i >= 0 && i < len(c.arr) {
-						return objToWasm(t, c.arr[i])
-					}
-				case coretypes.Indexed:
-					return objToWasm(t, c.Nth(i))
-				}
-				return 0
-			}).Export("nth")
+				return nil, false
+			})
+		}).Export("nth")
 
-		// joker.conj(coll_handle, val_i64) -> new_coll_handle
-		builder.NewFunctionBuilder().
-			WithFunc(func(ctx context.Context, collHandle uint64, val uint64) uint64 {
-				t := getObjectTable(ctx)
-				if t == nil {
-					return collHandle
-				}
-				coll := t.load(collHandle)
-				valObj := wasmToObj(t, val)
-				if c, ok := coll.(coretypes.Conjable); ok {
-					return t.store(c.Conj(valObj))
-				}
-				return collHandle
-			}).Export("conj")
+		builder.NewFunctionBuilder().WithFunc(func(ctx context.Context, collHandle uint64, val uint64) uint64 {
+			return corewasm.HostConj(corewasm.GetObjectTable(ctx), collHandle, val)
+		}).Export("conj")
 
-		// joker.first(coll_handle) -> result
-		builder.NewFunctionBuilder().
-			WithFunc(func(ctx context.Context, collHandle uint64) uint64 {
-				t := getObjectTable(ctx)
-				if t == nil {
-					return 0
+		builder.NewFunctionBuilder().WithFunc(func(ctx context.Context, collHandle uint64) uint64 {
+			return corewasm.HostFirst(corewasm.GetObjectTable(ctx), collHandle, 0, func(coll coretypes.Object) (coretypes.Object, bool) {
+				if v, ok := coll.(*corecollections.ArrayVector); ok && len(v.Arr) > 0 {
+					return v.Arr[0], true
 				}
-				coll := t.load(collHandle)
-				switch v := coll.(type) {
-				case *ArrayVector:
-					if len(v.arr) > 0 {
-						return objToWasm(t, v.arr[0])
-					}
-				case coretypes.Seqable:
-					s := v.Seq()
-					if !s.IsEmpty() {
-						return objToWasm(t, s.First())
-					}
-				}
-				return 0
-			}).Export("first")
+				return nil, false
+			})
+		}).Export("first")
 
-		// joker.count(coll_handle) -> i64
-		builder.NewFunctionBuilder().
-			WithFunc(func(ctx context.Context, collHandle uint64) uint64 {
-				t := getObjectTable(ctx)
-				if t == nil {
-					return 0
-				}
-				coll := t.load(collHandle)
-				switch v := coll.(type) {
-				case coretypes.Counted:
-					return uint64(v.Count())
-				}
-				return 0
-			}).Export("count")
+		builder.NewFunctionBuilder().WithFunc(func(ctx context.Context, collHandle uint64) uint64 {
+			return corewasm.HostCount(corewasm.GetObjectTable(ctx), collHandle)
+		}).Export("count")
 
 		builder.Instantiate(ctx)
 	})
-}
-
-// objToWasm converts a Joker coretypes.Object to a WASM uint64 (handle or direct value).
-func objToWasm(t *objectTable, obj coretypes.Object) uint64 {
-	switch v := obj.(type) {
-	case coretypes.Int:
-		return uint64(v.I)
-	case coretypes.Double:
-		return math.Float64bits(v.D) | (1 << 63) // tag bit for float
-	default:
-		return t.store(obj)
-	}
-}
-
-// wasmToObj converts a WASM uint64 back to a Joker coretypes.Object.
-func wasmToObj(t *objectTable, v uint64) coretypes.Object {
-	if isHandle(v) {
-		return t.load(v)
-	}
-	if v&(1<<63) != 0 {
-		// Float tagged value
-		return coretypes.Double{D: math.Float64frombits(v &^ (1 << 63))}
-	}
-	return wasmRawIntObject(v)
 }
 
 // Ensure api import is used
@@ -1134,7 +953,7 @@ func wasmMemNthEligible(prog *IRProgram, slots []coretypes.Object) bool {
 		if slot >= len(slots) {
 			return false
 		}
-		if _, ok := slots[slot].(*ArrayVector); !ok {
+		if _, ok := slots[slot].(*corecollections.ArrayVector); !ok {
 			return false
 		}
 	}
@@ -1178,7 +997,7 @@ func wasmMemNthCompileAndExec(prog *IRProgram, slots []coretypes.Object) coretyp
 		for _, vs := range vecSlots {
 			vecIdx = append(vecIdx, vs.slot)
 			memOff = append(memOff, offset)
-			offset += len(vs.vec.arr) * 8
+			offset += len(vs.vec.Arr) * 8
 		}
 		model := prog.neutralModel()
 		if model == nil {
@@ -1201,11 +1020,11 @@ func wasmMemNthCompileAndExec(prog *IRProgram, slots []coretypes.Object) coretyp
 		return nil
 	}
 	for vi, slotIdx := range c.vecSlotIdx {
-		vec := slots[slotIdx].(*ArrayVector)
+		vec := slots[slotIdx].(*corecollections.ArrayVector)
 		vecPtr := reflect.ValueOf(vec).Pointer()
 		if vecPtr != c.lastVecPtr[vi] {
 			base := c.memOffsets[vi]
-			for i, obj := range vec.arr {
+			for i, obj := range vec.Arr {
 				var fv float64
 				switch v := obj.(type) {
 				case coretypes.Double:
@@ -1251,7 +1070,7 @@ func wasmMemNthCompileAndExec(prog *IRProgram, slots []coretypes.Object) coretyp
 
 type vecSlotInfo struct {
 	slot int
-	vec  *ArrayVector
+	vec  *corecollections.ArrayVector
 }
 
 func findVecSlots(prog *IRProgram, slots []coretypes.Object) []vecSlotInfo {
@@ -1273,7 +1092,7 @@ func findVecSlots(prog *IRProgram, slots []coretypes.Object) []vecSlotInfo {
 			pc += 2
 			if pc+3 < len(code) && code[pc] == irLoadSlot && code[pc+3] == irNth {
 				if !seen[slotIdx] {
-					if v, ok := slots[slotIdx].(*ArrayVector); ok {
+					if v, ok := slots[slotIdx].(*corecollections.ArrayVector); ok {
 						result = append(result, vecSlotInfo{slot: slotIdx, vec: v})
 						seen[slotIdx] = true
 					}
@@ -1381,7 +1200,7 @@ func buildMemNthModule(prog *IRProgram, helperSlot int, helperProg *IRProgram) *
 	if err != nil {
 		return nil
 	}
-	mod, err := rt.InstantiateModule(ctx, compiled, wazero.NewModuleConfig().WithName(corert.NextWasmModuleName()))
+	mod, err := rt.InstantiateModule(ctx, compiled, wazero.NewModuleConfig().WithName(corewasm.NextWasmModuleName()))
 	if err != nil {
 		return nil
 	}

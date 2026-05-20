@@ -2,7 +2,6 @@ package http
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 	"net"
@@ -12,6 +11,9 @@ import (
 	"sync"
 	"time"
 	"unsafe"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	ws "github.com/gorilla/websocket"
 	. "github.com/rcarmo/go-joker/core"
@@ -115,7 +117,7 @@ func remoteHost(remoteAddr string) string {
 }
 
 func reqToMap(host coretypes.String, port coretypes.String, req *http.Request) coretypes.Map {
-	res := EmptyArrayMap()
+	res := corecollections.EmptyArrayMap()
 	body, err := io.ReadAll(req.Body)
 	closeErr := req.Body.Close()
 	PanicOnErr(err)
@@ -130,7 +132,7 @@ func reqToMap(host coretypes.String, port coretypes.String, req *http.Request) c
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "protocol"), coretypes.MakeString(req.Proto))
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "scheme"), coretypes.MakeKeyword(STRINGS.Intern, "http"))
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "host"), coretypes.MakeString(req.Host))
-	headers := EmptyArrayMap()
+	headers := corecollections.EmptyArrayMap()
 	for k, v := range req.Header {
 		headers.Add(coretypes.MakeString(strings.ToLower(k)), coretypes.MakeString(strings.Join(v, ",")))
 	}
@@ -139,14 +141,14 @@ func reqToMap(host coretypes.String, port coretypes.String, req *http.Request) c
 }
 
 func respToMap(resp *http.Response) coretypes.Map {
-	res := EmptyArrayMap()
+	res := corecollections.EmptyArrayMap()
 	body, err := io.ReadAll(resp.Body)
 	closeErr := resp.Body.Close()
 	PanicOnErr(err)
 	PanicOnErr(closeErr)
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "body"), coretypes.MakeString(string(body)))
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(resp.StatusCode))
-	respHeaders := EmptyArrayMap()
+	respHeaders := corecollections.EmptyArrayMap()
 	for k, v := range resp.Header {
 		respHeaders.Add(coretypes.MakeString(k), MakeStringVector(v))
 	}
@@ -506,7 +508,7 @@ func handleStream(w http.ResponseWriter, respMap coretypes.Map, streamFn coretyp
 }
 
 func sseCloseInfo(reason string, err error) coretypes.Object {
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "reason"), coretypes.MakeKeyword(STRINGS.Intern, reason))
 	if err != nil {
 		m.Add(coretypes.MakeKeyword(STRINGS.Intern, "error"), RT.NewError(err.Error()))

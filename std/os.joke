@@ -311,7 +311,7 @@
 
   Calling the returned cancel function stops the watcher and closes ch."
   {:added "1.7.2"
-   :go {2 "watch(paths, ch, EmptyArrayMap())"
+   :go {2 "watch(paths, ch, corecollections.EmptyArrayMap())"
         3 "watch(paths, ch, opts)"}}
   ([^Seqable paths ^Channel ch])
   ([^Seqable paths ^Channel ch ^Map opts]))

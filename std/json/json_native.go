@@ -3,10 +3,12 @@ package json
 import (
 	"encoding/json"
 	"fmt"
-	. "github.com/rcarmo/go-joker/core"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"strings"
+
+	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func fromObject(obj coretypes.Object) interface{} {
@@ -62,13 +64,13 @@ func toObject(v interface{}, keywordize bool) coretypes.Object {
 	case nil:
 		return NIL
 	case []interface{}:
-		res := EmptyVector()
+		res := corecollections.EmptyVector()
 		for _, v := range v {
 			res = res.Conjoin(toObject(v, keywordize))
 		}
 		return res
 	case map[string]interface{}:
-		res := EmptyArrayMap()
+		res := corecollections.EmptyArrayMap()
 		for k, v := range v {
 			var key coretypes.Object
 			if keywordize {
@@ -101,7 +103,7 @@ func readString(s string, opts coretypes.Map) coretypes.Object {
 func jsonSeqOpts(src coretypes.Object, opts coretypes.Map) coretypes.Object {
 	var dec *json.Decoder
 	var keywordize bool
-	var jsonLazySeq func() *LazySeq
+	var jsonLazySeq func() *corecollections.LazySeq
 	switch src := src.(type) {
 	case coretypes.String:
 		dec = json.NewDecoder(strings.NewReader(src.S))
@@ -115,20 +117,20 @@ func jsonSeqOpts(src coretypes.Object, opts coretypes.Map) coretypes.Object {
 			keywordize = ToBool(v)
 		}
 	}
-	jsonLazySeq = func() *LazySeq {
+	jsonLazySeq = func() *corecollections.LazySeq {
 		var c = func(args []coretypes.Object) coretypes.Object {
 			var o interface{}
 			err := dec.Decode(&o)
 			if err == io.EOF {
-				return EmptyList
+				return corecollections.EmptyList
 			}
 			if err != nil {
 				panic(RT.NewError("Cannot decode json stream: " + err.Error()))
 			}
 			obj := toObject(o, keywordize)
-			return NewConsSeq(obj, jsonLazySeq())
+			return corecollections.NewConsSeq(obj, jsonLazySeq())
 		}
-		return NewLazySeq(Proc{Fn: c})
+		return corecollections.NewLazySeq(Proc{Fn: c})
 	}
 	return jsonLazySeq()
 }

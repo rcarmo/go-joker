@@ -1,9 +1,11 @@
 package imaging
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"testing"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -12,7 +14,7 @@ func TestNewAndInfo(t *testing.T) {
 	initImagingNamespace()
 
 	// Create a 100x50 red image
-	color := NewVectorFrom(coretypes.MakeInt(255), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(255))
+	color := corecollections.NewVectorFrom(coretypes.MakeInt(255), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(255))
 	img := procNewImage([]coretypes.Object{coretypes.MakeInt(100), coretypes.MakeInt(50), color})
 
 	w := procWidth([]coretypes.Object{img})
@@ -31,7 +33,7 @@ func TestNewAndInfo(t *testing.T) {
 func TestResize(t *testing.T) {
 	initImagingNamespace()
 
-	img := procNewImage([]coretypes.Object{coretypes.MakeInt(200), coretypes.MakeInt(100), NewVectorFrom(coretypes.MakeInt(0), coretypes.MakeInt(128), coretypes.MakeInt(255), coretypes.MakeInt(255))})
+	img := procNewImage([]coretypes.Object{coretypes.MakeInt(200), coretypes.MakeInt(100), corecollections.NewVectorFrom(coretypes.MakeInt(0), coretypes.MakeInt(128), coretypes.MakeInt(255), coretypes.MakeInt(255))})
 	resized := procResize([]coretypes.Object{img, coretypes.MakeInt(50), coretypes.MakeInt(25)})
 
 	w := procWidth([]coretypes.Object{resized})
@@ -63,7 +65,7 @@ func TestAdjustmentsRejectInvalidFloats(t *testing.T) {
 func TestGrayscaleAndBlur(t *testing.T) {
 	initImagingNamespace()
 
-	img := procNewImage([]coretypes.Object{coretypes.MakeInt(64), coretypes.MakeInt(64), NewVectorFrom(coretypes.MakeInt(200), coretypes.MakeInt(100), coretypes.MakeInt(50), coretypes.MakeInt(255))})
+	img := procNewImage([]coretypes.Object{coretypes.MakeInt(64), coretypes.MakeInt(64), corecollections.NewVectorFrom(coretypes.MakeInt(200), coretypes.MakeInt(100), coretypes.MakeInt(50), coretypes.MakeInt(255))})
 	gray := procGrayscale([]coretypes.Object{img})
 	blurred := procBlur([]coretypes.Object{gray, coretypes.Double{D: 2.0}})
 
@@ -76,7 +78,7 @@ func TestGrayscaleAndBlur(t *testing.T) {
 func TestCropAndFlip(t *testing.T) {
 	initImagingNamespace()
 
-	img := procNewImage([]coretypes.Object{coretypes.MakeInt(100), coretypes.MakeInt(100), NewVectorFrom(coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(255))})
+	img := procNewImage([]coretypes.Object{coretypes.MakeInt(100), coretypes.MakeInt(100), corecollections.NewVectorFrom(coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(255))})
 	cropped := procCrop([]coretypes.Object{img, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(50), coretypes.MakeInt(30)})
 
 	w := procWidth([]coretypes.Object{cropped})
@@ -107,13 +109,13 @@ func assertImagingPanic(t *testing.T, name string, f func()) {
 
 func TestNewImageRejectsInvalidInputs(t *testing.T) {
 	assertImagingPanic(t, "short color vector", func() {
-		procNewImage([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(1), NewVectorFrom(coretypes.MakeInt(255))})
+		procNewImage([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(1), corecollections.NewVectorFrom(coretypes.MakeInt(255))})
 	})
 	assertImagingPanic(t, "negative dimension", func() {
 		procNewImage([]coretypes.Object{coretypes.MakeInt(-1), coretypes.MakeInt(1)})
 	})
 	assertImagingPanic(t, "color overflow", func() {
-		procNewImage([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(1), NewVectorFrom(coretypes.MakeInt(256), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(255))})
+		procNewImage([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(1), corecollections.NewVectorFrom(coretypes.MakeInt(256), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(255))})
 	})
 }
 

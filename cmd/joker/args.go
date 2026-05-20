@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	. "github.com/rcarmo/go-joker/core"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 var (
@@ -170,9 +171,9 @@ func parseArgs(args []string) {
 					return
 				}
 				if thresh < 0 {
-					HASHMAP_THRESHOLD = math.MaxInt64
+					corecollections.HASHMAP_THRESHOLD = math.MaxInt64
 				} else {
-					HASHMAP_THRESHOLD = thresh
+					corecollections.HASHMAP_THRESHOLD = thresh
 				}
 			} else {
 				missing = true

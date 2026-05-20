@@ -1,12 +1,14 @@
 package system
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	"os"
 	"os/user"
 	"runtime"
 	"time"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -33,7 +35,7 @@ func systemProperties() coretypes.Map {
 	if dir, err := os.Getwd(); err == nil {
 		cwd = dir
 	}
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	for _, kv := range [][2]string{
 		{"user.home", home},
 		{"user.name", uname},

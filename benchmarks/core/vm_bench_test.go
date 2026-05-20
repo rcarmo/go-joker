@@ -1,11 +1,12 @@
 package core_test
 
 import (
-	. "github.com/rcarmo/go-joker/core"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"strings"
 	"testing"
+
+	. "github.com/rcarmo/go-joker/core"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 // VM microbenchmarks for call overhead, closure recursion, and allocation retention.
@@ -172,7 +173,7 @@ func BenchmarkMapAssoc100(b *testing.B) {
 	}
 }
 
-// --- Vector conj ---
+// --- corecollections.Vector conj ---
 
 func BenchmarkVectorConj100(b *testing.B) {
 	expr := compileBenchExpr(b,

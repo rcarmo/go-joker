@@ -4,9 +4,11 @@ package csv
 
 import (
 	"fmt"
+	"os"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"os"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func InternsOrThunks() {
@@ -17,7 +19,7 @@ func InternsOrThunks() {
 
 	csvNamespace.InternVar("csv-seq", csv_seq_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "rdr")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "rdr"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "rdr")), corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "rdr"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Returns the csv records from rdr as a lazy sequence.
   rdr must be a string or implement io.Reader.
   opts may have the following keys:
@@ -50,7 +52,7 @@ func InternsOrThunks() {
 
 	csvNamespace.InternVar("write", write_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "f"), coretypes.MakeSymbol(STRINGS.Intern, "data")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "f"), coretypes.MakeSymbol(STRINGS.Intern, "data"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "f"), coretypes.MakeSymbol(STRINGS.Intern, "data")), corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "f"), coretypes.MakeSymbol(STRINGS.Intern, "data"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Writes records to a CSV encoded file.
   f must be io.Writer (for example, as returned by joker.os/create).
   data must be coretypes.Seqable, each element of which must be coretypes.Seqable as well.
@@ -58,7 +60,7 @@ func InternsOrThunks() {
 
 	csvNamespace.InternVar("write-string", write_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "data")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "data"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "data")), corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "data"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Writes records to a string in CSV format and returns the string.
   data must be coretypes.Seqable, each element of which must be coretypes.Seqable as well.
   opts may have the following keys:

@@ -1,10 +1,10 @@
 # Object/protocol contract audit
 
-Updated: 2026-05-18
+Updated: 2026-05-20
 
 ## Purpose
 
-This is a prerequisite audit for moving collections, reader, runtime, and evaluator code out of the root `core` package. The goal is to identify the contracts that must become explicit before concrete types can move into `core/collections`, `core/reader`, or `core/runtime`.
+This is a prerequisite audit for moving collections, reader, runtime, and evaluator code out of the root `core` package. The goal is to identify the contracts that must become explicit before concrete types can move into `core/types/collections`, `core/reader`, or `core/runtime`.
 
 Breaking internal package paths are acceptable. Compatibility wrappers are not a goal. The risk to avoid is import cycles and vague cross-package reach-through.
 
@@ -25,18 +25,20 @@ The canonical object/protocol surface has moved substantially out of root `core`
 
 Root `core` still owns higher-level runtime/object systems that carry root-only concrete types or mutable namespace/evaluator state:
 
-- `Nil`, `Var`, `Proc`, `Fn`, `ExInfo`, and `Atom`;
-- concrete collection implementations (`ArrayMap`, `HashMap`, `MapSet`, vectors, seq/list/chunked/sorted families) that still depend on root construction, metadata propagation, proc/sorted helpers, or concrete implementation return types;
+- `Nil`, `Var`, `Proc`, `Fn`, and `ExInfo`;
+- sorted collections, transients, records, protocol dispatch, unchecked arithmetic procs, hierarchy/protocol/public-form installers, and collection-adjacent runtime/proc helpers that still depend on root construction, metadata propagation, proc/sorted helpers, or evaluator/runtime behavior; their recent arity/error cleanup routes through `core/types` runtime hooks where practical;
 - namespace/bootstrap/proc systems and generated runtime mutation payloads;
 - evaluator/parser/runtime/executor files that still require root `Fn`, `Var`, `Expr`, `LocalEnv`, namespace, and frame state.
 
-This means future extraction work should treat `core/types` as the durable object/protocol package and focus on the remaining root-owned concrete systems rather than adding new root protocol aliases.
+This means future extraction work should treat `core/types` as the durable object/protocol package and `core/runtime` as the owner of runtime leaf primitives/object wrappers where cycles permit, rather than adding new root protocol aliases.
 
-## Collections move prerequisites
+## Collections move status and remaining prerequisites
 
-Recent audit work completed `PersistentVector` object semantics in root `core`: it now uses the standard counted/indexed print, equality, hash, `At`, and `Seq` contracts and preserves info/meta. `core/object_protocol_contract_test.go` now exercises these contracts across `ArrayVector`, `Vector`, and `PersistentVector`; it also covers associative map behavior across `ArrayMap` and `HashMap` for lookup, persistent `Assoc`, equality, and hash consistency. Set contracts cover membership, call behavior, persistent `Disjoin`, equality/hash, and metadata preservation across persistent `Conj`/`Disjoin`. Transient contracts cover vector `CountedIndexed` behavior, vector/map mutable updates, persistent round-trips, string-key side-table persistence, and post-`persistent!` mutation panics. Seq contracts cover list, array, vector, cons, take, and filtering sequences for first/rest/count/nth/equality/hash/cons behavior and empty/negative-index edge cases. Sorted collection contracts cover sorted-map/sorted-set ordering, sorted-map-by/sorted-set-by comparator ordering, sorted metadata, lookup, and subseq/rsubseq ordering. Numeric object contracts now include native-int range-aware integer parsing, integer ratio promotion, and guarded `BigInt.Int()` conversion. The info/meta test deliberately checks metadata copy-on-write without assuming `WithInfo` is copy-on-write, because some generated `WithInfo` methods mutate existing objects. `make core-contract-check` runs that focused contract subset from the standard docs/check path. This is a useful template for future collection/object moves, but the broader boundary still needs explicit contracts before package extraction.
+Concrete collection implementations have moved to `core/types/collections`: vectors, persistent vectors, maps, sets, lists, seqs, and chunks are no longer root `core` files. Root code constructs them through `corecollections.*`, and `tests/layout_guard.sh` rejects reintroducing the old root collection files.
 
-Before moving concrete collection implementations, define or document:
+The contract tests still exercise `ArrayVector`, `Vector`, `PersistentVector`, `ArrayMap`, `HashMap`, `MapSet`, list/array/vector/cons sequences, transient round-trips, and sorted collection behavior. Sorted collections and transients remain root-owned or root-adjacent because they are tied to proc registration, comparator callables, and evaluator/runtime behavior.
+
+For any further collection-adjacent movement, preserve or document:
 
 1. Equality/hash contract for keys and values.
 2. Seq contract (`Seqable`, empty seq representation, `First`/`Rest` behavior).
@@ -44,20 +46,11 @@ Before moving concrete collection implementations, define or document:
 4. Transient mutation contract and ownership/lifetime rules.
 5. Metadata propagation rules.
 6. Printing/`ToString` contract.
-7. Construction API the reader/evaluator/std packages should use. **Done for current root production callers: `CollectionConstructionAdapter` provides the construction surface, and `construction_boundary_guard_test.go` rejects new direct constructor drift outside implementation/adapter files.**
+7. Construction API the reader/evaluator/std/generated packages should use. **Current state: stale `CollectionConstructionAdapter` and its guard have been removed; call sites use `corecollections.*` direct constructors.**
 8. Protocol dispatch surface required by moved concrete types.
+9. Runtime hook initialization for errors, arity, formatting, reduced values, nil, and type descriptors.
 
-Candidate collection package should own concrete data structures, not the whole object universe:
-
-```text
-core/collections/
-├── vector.go
-├── map.go
-├── set.go
-├── seq.go
-├── transient.go
-└── hash.go
-```
+The collection package owns concrete data structures, not the whole object universe. Runtime/proc/env behavior should move only as coherent runtime batches.
 
 ## Reader move prerequisites
 
@@ -117,16 +110,16 @@ Safe moves before broad object extraction:
 - Continue moving pure helpers with no root `Fn`/`Var`/`Expr`/namespace dependency into `core/ir`, `core/wasm`, and `core/types`.
 - Add tests for extracted helpers before moving callers.
 - Keep root-core adapter functions temporary only while their surrounding subsystem is still coupled.
-- Use the construction boundary guard before moving collection or reader files; a failing guard means new direct root construction has drifted in and must be routed through `collectionConstruction` or `readerConstruction` first.
+- Keep reader construction behind `readerConstruction` while reader ownership is still root-coupled; collection construction adapters have been removed in favor of direct constructors until concrete types move fully into `core/types/collections`.
 
 Do not yet move wholesale:
 
-- concrete collections whose methods still depend on root construction helpers, sorted/proc coupling, metadata propagation, or concrete implementation details;
+- sorted collections/transients whose methods still depend on root proc/comparator/evaluator coupling;
 - reader/parser orchestration with namespace/tagged-literal/evaluator side effects;
 - evaluator/forms/runtime frames;
 - namespace/proc/bootstrap systems.
 
-The next safe moves should either continue protocol/value extraction into `core/types` (for remaining root-owned values that can avoid cycles) or move concrete collection families only after their root concrete return types are replaced by package-independent contracts.
+The next safe moves should continue coherent runtime/env/proc boundary work, generated/bootstrap placement cleanup, or IR/WASM executor work only when their root dependencies are explicit and acyclic.
 
 ## Checklist status
 

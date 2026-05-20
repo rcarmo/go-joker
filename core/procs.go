@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math"
 	"math/big"
@@ -15,6 +14,11 @@ import (
 	"strconv"
 	"time"
 	"unicode/utf8"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	"github.com/rcarmo/go-joker/core/deps"
 	coregenerated "github.com/rcarmo/go-joker/core/generated"
@@ -453,7 +457,7 @@ func reGroups(s string, indexes []int) coretypes.Object {
 			return coretypes.String{S: s[indexes[0]:indexes[1]]}
 		}
 	} else {
-		v := collectionConstruction.NewEmptyVector()
+		v := corecollections.EmptyVector()
 		for i := 0; i < len(indexes); i += 2 {
 			if indexes[i] == -1 {
 				v = v.Conjoin(NIL)
@@ -476,7 +480,7 @@ var procReSeq = func(args []coretypes.Object) coretypes.Object {
 	for i, match := range matches {
 		res[i] = reGroups(s.S, match)
 	}
-	return &ArraySeq{arr: res}
+	return &corecollections.ArraySeq{Arr: res}
 }
 
 var procReFind = func(args []coretypes.Object) coretypes.Object {
@@ -530,13 +534,11 @@ var procSetMeta = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procAtom = func(args []coretypes.Object) coretypes.Object {
-	res := &Atom{
-		value: args[0],
-	}
+	res := corert.NewAtom(args[0], nil)
 	if len(args) > 1 {
-		m := collectionConstruction.NewHashMapFrom(args[1:]...)
+		m := corecollections.NewHashMap(args[1:]...)
 		if ok, v := m.Get(KEYWORDS.meta); ok {
-			res.Meta = coretypes.EnsureObjectIsMap(v, "")
+			res = corert.NewAtom(args[0], coretypes.EnsureObjectIsMap(v, ""))
 		}
 	}
 	return res
@@ -549,13 +551,7 @@ var procDeref = func(args []coretypes.Object) coretypes.Object {
 var procSwap = func(args []coretypes.Object) coretypes.Object {
 	a := EnsureArgIsAtom(args, 0)
 	f := coretypes.EnsureArgIsCallable(args, 1)
-	a.mu.Lock()
-	fargs := append([]coretypes.Object{a.value}, args[2:]...)
-	oldValue := a.value
-	newValue := f.Call(fargs)
-	validateAtom(a, newValue)
-	a.value = newValue
-	a.mu.Unlock()
+	oldValue, newValue := a.Swap(f, args[2:], func(v coretypes.Object) { validateAtom(a, v) })
 	notifyWatches(a, oldValue, newValue)
 	return newValue
 }
@@ -563,39 +559,25 @@ var procSwap = func(args []coretypes.Object) coretypes.Object {
 var procSwapVals = func(args []coretypes.Object) coretypes.Object {
 	a := EnsureArgIsAtom(args, 0)
 	f := coretypes.EnsureArgIsCallable(args, 1)
-	a.mu.Lock()
-	fargs := append([]coretypes.Object{a.value}, args[2:]...)
-	oldValue := a.value
-	newValue := f.Call(fargs)
-	validateAtom(a, newValue)
-	a.value = newValue
-	a.mu.Unlock()
+	oldValue, newValue := a.Swap(f, args[2:], func(v coretypes.Object) { validateAtom(a, v) })
 	notifyWatches(a, oldValue, newValue)
-	return collectionConstruction.NewVectorFrom(oldValue, newValue)
+	return corecollections.NewVectorFrom(oldValue, newValue)
 }
 
 var procReset = func(args []coretypes.Object) coretypes.Object {
 	a := EnsureArgIsAtom(args, 0)
-	a.mu.Lock()
-	oldValue := a.value
 	newValue := args[1]
-	validateAtom(a, newValue)
-	a.value = newValue
-	a.mu.Unlock()
+	oldValue := a.Reset(newValue, func(v coretypes.Object) { validateAtom(a, v) })
 	notifyWatches(a, oldValue, newValue)
 	return newValue
 }
 
 var procResetVals = func(args []coretypes.Object) coretypes.Object {
 	a := EnsureArgIsAtom(args, 0)
-	a.mu.Lock()
-	oldValue := a.value
 	newValue := args[1]
-	validateAtom(a, newValue)
-	a.value = newValue
-	a.mu.Unlock()
+	oldValue := a.Reset(newValue, func(v coretypes.Object) { validateAtom(a, v) })
 	notifyWatches(a, oldValue, newValue)
-	return collectionConstruction.NewVectorFrom(oldValue, newValue)
+	return corecollections.NewVectorFrom(oldValue, newValue)
 }
 
 var procAlterMeta = func(args []coretypes.Object) coretypes.Object {
@@ -670,7 +652,7 @@ var procFormat = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procList = func(args []coretypes.Object) coretypes.Object {
-	return collectionConstruction.NewListFrom(args...)
+	return corecollections.NewListFrom(args...)
 }
 
 var procCons = func(args []coretypes.Object) coretypes.Object {
@@ -741,7 +723,7 @@ var procCount = func(args []coretypes.Object) coretypes.Object {
 		return coretypes.Int{I: obj.Count()}
 	default:
 		s := coretypes.EnsureObjectIsSeqable(obj, "count not supported on this type: %s")
-		return coretypes.Int{I: SeqCount(s.Seq())}
+		return coretypes.Int{I: corecollections.SeqCount(s.Seq())}
 	}
 }
 
@@ -760,7 +742,7 @@ var procSubvec = func(args []coretypes.Object) coretypes.Object {
 	for i := start; i < end; i++ {
 		subv = append(subv, v.At(i))
 	}
-	return collectionConstruction.NewVectorFrom(subv...)
+	return corecollections.NewVectorFrom(subv...)
 }
 
 var procCast = func(args []coretypes.Object) coretypes.Object {
@@ -772,18 +754,18 @@ var procCast = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procVec = func(args []coretypes.Object) coretypes.Object {
-	return collectionConstruction.NewVectorFromSeq(coretypes.EnsureArgIsSeqable(args, 0).Seq())
+	return corecollections.NewVectorFromSeq(coretypes.EnsureArgIsSeqable(args, 0).Seq())
 }
 
 var procHashMap = func(args []coretypes.Object) coretypes.Object {
 	if len(args)%2 != 0 {
 		panic(RT.NewError("No value supplied for key " + args[len(args)-1].ToString(false)))
 	}
-	return collectionConstruction.NewHashMapFrom(args...)
+	return corecollections.NewHashMap(args...)
 }
 
 var procHashSet = func(args []coretypes.Object) coretypes.Object {
-	res := collectionConstruction.NewEmptySet()
+	res := corecollections.EmptySet()
 	for i := 0; i < len(args); i++ {
 		res.Add(args[i])
 	}
@@ -881,12 +863,12 @@ var procApply = func(args []coretypes.Object) coretypes.Object {
 	// coretypes.Stacktrace is broken. Need to somehow know
 	// the name of the function passed ...
 	f := coretypes.EnsureArgIsCallable(args, 0)
-	return f.Call(ToSlice(coretypes.EnsureArgIsSeqable(args, 1).Seq()))
+	return f.Call(corecollections.ToSlice(coretypes.EnsureArgIsSeqable(args, 1).Seq()))
 }
 
 var procLazySeq = func(args []coretypes.Object) coretypes.Object {
-	return &LazySeq{
-		fn: args[0].(*Fn),
+	return &corecollections.LazySeq{
+		Fn: args[0].(*Fn),
 	}
 }
 
@@ -1018,9 +1000,9 @@ var procNth = func(args []coretypes.Object) coretypes.Object {
 		switch coll := args[0].(type) {
 		case coretypes.Seqable:
 			if len(args) == 3 {
-				return SeqTryNth(coll.Seq(), n, args[2])
+				return corecollections.SeqTryNth(coll.Seq(), n, args[2])
 			}
-			return SeqNth(coll.Seq(), n)
+			return corecollections.SeqNth(coll.Seq(), n)
 		}
 	}
 	panic(RT.NewError("nth not supported on this type: " + args[0].GetType().ToString(false)))
@@ -1227,11 +1209,11 @@ var procSort = func(args []coretypes.Object) coretypes.Object {
 	cmp := coretypes.EnsureArgIsComparator(args, 0)
 	coll := coretypes.EnsureArgIsSeqable(args, 1)
 	s := coretypes.ComparatorSlice[coretypes.Object]{
-		Items: ToSlice(coll.Seq()),
+		Items: corecollections.ToSlice(coll.Seq()),
 		Cmp:   cmp,
 	}
 	sort.Sort(s)
-	return &ArraySeq{arr: s.Items}
+	return &corecollections.ArraySeq{Arr: s.Items}
 }
 
 var procEval = func(args []coretypes.Object) coretypes.Object {
@@ -1425,7 +1407,7 @@ var procAllNamespaces = func(args []coretypes.Object) coretypes.Object {
 	for _, ns := range GLOBAL_ENV.Namespaces {
 		s = append(s, ns)
 	}
-	return &ArraySeq{arr: s}
+	return &corecollections.ArraySeq{Arr: s}
 }
 
 var procNamespaceName = func(args []coretypes.Object) coretypes.Object {
@@ -1433,7 +1415,7 @@ var procNamespaceName = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procNamespaceMap = func(args []coretypes.Object) coretypes.Object {
-	r := &ArrayMap{}
+	r := &corecollections.ArrayMap{}
 	for k, v := range EnsureArgIsNamespace(args, 0).mappings {
 		r.Add(coretypes.MakeSymbol(STRINGS.Intern, *k), v)
 	}
@@ -1468,7 +1450,7 @@ var procAlias = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procNamespaceAliases = func(args []coretypes.Object) coretypes.Object {
-	r := &ArrayMap{}
+	r := &corecollections.ArrayMap{}
 	for k, v := range EnsureArgIsNamespace(args, 0).aliases {
 		r.Add(coretypes.MakeSymbol(STRINGS.Intern, *k), v)
 	}
@@ -1510,7 +1492,7 @@ var procArrayMap = func(args []coretypes.Object) coretypes.Object {
 	if len(args)%2 == 1 {
 		panic(RT.NewError("No value supplied for key " + args[len(args)-1].ToString(false)))
 	}
-	res := collectionConstruction.NewEmptyArrayMap()
+	res := corecollections.EmptyArrayMap()
 	for i := 0; i < len(args); i += 2 {
 		res.Set(args[i], args[i+1])
 	}
@@ -1573,12 +1555,12 @@ var procSpit = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procShuffle = func(args []coretypes.Object) coretypes.Object {
-	s := ToSlice(coretypes.EnsureArgIsSeqable(args, 0).Seq())
+	s := corecollections.ToSlice(coretypes.EnsureArgIsSeqable(args, 0).Seq())
 	for i := range s {
 		j := rand.Intn(i + 1)
 		s[i], s[j] = s[j], s[i]
 	}
-	return collectionConstruction.NewVectorFrom(s...)
+	return corecollections.NewVectorFrom(s...)
 }
 
 var procIsRealized = func(args []coretypes.Object) coretypes.Object {
@@ -1681,7 +1663,7 @@ var procIndexOf = func(args []coretypes.Object) coretypes.Object {
 
 func libExternalPath(sym coretypes.Symbol) (path string, ok bool) {
 	nsSourcesVar, _ := GLOBAL_ENV.Resolve(coretypes.MakeSymbol(STRINGS.Intern, "joker.core/*ns-sources*"))
-	nsSources := ToSlice(nsSourcesVar.Value.(coretypes.Vec).Seq())
+	nsSources := corecollections.ToSlice(nsSourcesVar.Value.(coretypes.Vec).Seq())
 
 	var sourceKey string
 	var sourceMap coretypes.Map
@@ -1752,7 +1734,7 @@ var procParse = func(args []coretypes.Object) coretypes.Object {
 
 var procTypes = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
-	res := collectionConstruction.NewEmptyArrayMap()
+	res := corecollections.EmptyArrayMap()
 	for k, v := range TYPES {
 		res.Add(coretypes.String{S: *k}, v)
 	}
@@ -1762,8 +1744,8 @@ var procTypes = func(args []coretypes.Object) coretypes.Object {
 var procCreateChan = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	n := coretypes.EnsureArgIsInt(args, 0)
-	ch := make(chan FutureResult, n.I)
-	return MakeChannel(ch)
+	ch := make(chan corert.FutureResult, n.I)
+	return corert.NewObjectChannel(ch)
 }
 
 var procCloseChan = func(args []coretypes.Object) coretypes.Object {
@@ -1788,20 +1770,20 @@ var procSend = func(args []coretypes.Object) (obj coretypes.Object) {
 var procReceive = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	ch := EnsureArgIsChannel(args, 0)
-	res, status := ch.runtime.Receive(nil)
-	if status == ChannelReceiveClosed {
+	value, status, err := ch.Receive(nil)
+	if status == corert.ChannelReceiveClosed {
 		return NIL
 	}
-	if res.err != nil {
-		panic(res.err)
+	if err != nil {
+		panic(coretypes.Object(err))
 	}
-	return res.value
+	return value
 }
 
 var procGo = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	f := coretypes.EnsureArgIsCallable(args, 0)
-	ch := MakeChannel(make(chan FutureResult, 1))
+	ch := corert.NewObjectChannel(make(chan corert.FutureResult, 1))
 	go func() {
 		registerGoroutineRT()
 		defer unregisterGoroutineRT()
@@ -1810,7 +1792,7 @@ var procGo = func(args []coretypes.Object) coretypes.Object {
 			if r := recover(); r != nil {
 				switch r := r.(type) {
 				case coretypes.Error:
-					ch.SendResult(MakeFutureResult(NIL, r))
+					ch.SendResult(corert.NewFutureResult(NIL, r))
 					ch.Close()
 				default:
 					panic(r)
@@ -1819,7 +1801,7 @@ var procGo = func(args []coretypes.Object) coretypes.Object {
 		}()
 
 		res := call0(f)
-		ch.SendResult(MakeFutureResult(res, nil))
+		ch.SendResult(corert.NewFutureResult(res, nil))
 		ch.Close()
 	}()
 	return ch
@@ -1934,7 +1916,7 @@ func ProcessReader(reader *Reader, filename string, phase corereader.Phase) erro
 	if phase == corereader.FormatPhase {
 		FORMAT_MODE = true
 		coretypes.FormatMode = true
-		HASHMAP_THRESHOLD = 100000
+		corecollections.HASHMAP_THRESHOLD = 100000
 	}
 	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
 	if filename != "" {
@@ -2088,16 +2070,16 @@ func setCoreNamespaces() {
 	ns.MaybeLazy("joker.core")
 
 	vr := ns.Resolve("*core-namespaces*")
-	set := vr.Value.(*MapSet)
+	set := vr.Value.(*corecollections.MapSet)
 	for _, ns := range coregenerated.CoreNamespaces() {
-		set = set.Conj(coretypes.MakeSymbol(STRINGS.Intern, ns)).(*MapSet)
+		set = set.Conj(coretypes.MakeSymbol(STRINGS.Intern, ns)).(*corecollections.MapSet)
 	}
-	set = set.Conj(coretypes.MakeSymbol(STRINGS.Intern, "user")).(*MapSet)
+	set = set.Conj(coretypes.MakeSymbol(STRINGS.Intern, "user")).(*corecollections.MapSet)
 	vr.Value = set
 
 	// Add 'joker.core to *loaded-libs*, now that it's loaded.
 	vr = ns.Resolve("*loaded-libs*")
-	set = vr.Value.(*MapSet).Conj(ns.Name).(*MapSet)
+	set = vr.Value.(*corecollections.MapSet).Conj(ns.Name).(*corecollections.MapSet)
 	vr.Value = set
 
 	// Install runtime overrides that depend on core.joke vars existing.
@@ -2134,7 +2116,7 @@ func printConfigError(filename, msg string) {
 
 func knownMacrosToMap(km coretypes.Object) (coretypes.Map, error) {
 	s := km.(coretypes.Seqable).Seq()
-	res := collectionConstruction.NewEmptyArrayMap()
+	res := corecollections.EmptyArrayMap()
 	for !s.IsEmpty() {
 		obj := s.First()
 		switch obj := obj.(type) {
@@ -2155,7 +2137,7 @@ func knownMacrosToMap(km coretypes.Object) (coretypes.Map, error) {
 
 func ReadConfig(filename string, workingDir string) {
 	LINTER_CONFIG = GLOBAL_ENV.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, "*linter-config*"))
-	LINTER_CONFIG.Value = collectionConstruction.NewEmptyArrayMap()
+	LINTER_CONFIG.Value = corecollections.EmptyArrayMap()
 	configFileName := findConfigFile(filename, workingDir, false)
 	if configFileName == "" {
 		return
@@ -2185,7 +2167,7 @@ func ReadConfig(filename string, workingDir string) {
 	if ok {
 		seq, ok1 := ignoredUnusedNamespaces.(coretypes.Seqable)
 		if ok1 {
-			WARNINGS.ignoredUnusedNamespaces = collectionConstruction.NewSetFromSeq(seq.Seq())
+			WARNINGS.ignoredUnusedNamespaces = corecollections.NewSetFromSeq(seq.Seq())
 		} else {
 			printConfigError(configFileName, ":ignored-unused-namespaces value must be a vector, got "+ignoredUnusedNamespaces.GetType().ToString(false))
 			return
@@ -2214,7 +2196,7 @@ func ReadConfig(filename string, workingDir string) {
 	if ok {
 		seq, ok1 := entryPoints.(coretypes.Seqable)
 		if ok1 {
-			WARNINGS.entryPoints = collectionConstruction.NewSetFromSeq(seq.Seq())
+			WARNINGS.entryPoints = corecollections.NewSetFromSeq(seq.Seq())
 		} else {
 			printConfigError(configFileName, ":entry-points value must be a vector, got "+entryPoints.GetType().ToString(false))
 			return

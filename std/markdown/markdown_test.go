@@ -1,9 +1,11 @@
 package markdown
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
 	"testing"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -16,7 +18,7 @@ func TestConvertStringRendersMarkdown(t *testing.T) {
 }
 
 func TestConvertStringOptsCanDisableUnsafeHTML(t *testing.T) {
-	opts := EmptyArrayMap()
+	opts := corecollections.EmptyArrayMap()
 	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "with-hard-wraps?"), coretypes.Boolean{B: true})
 	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "with-xhtml?"), coretypes.Boolean{B: true})
 	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "with-unsafe?"), coretypes.Boolean{B: false})

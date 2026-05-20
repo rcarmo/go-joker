@@ -1,5 +1,5 @@
-//go:generate go run gen/gen_types.go assert coretypes.Comparable coretypes.Vec coretypes.Char coretypes.String coretypes.Symbol coretypes.Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number coretypes.Seqable coretypes.Callable *coretypes.Type coretypes.Meta coretypes.Int coretypes.Double coretypes.Stack coretypes.Map coretypes.Set coretypes.Associative coretypes.Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn coretypes.Deref *Atom coretypes.Ref coretypes.KVReduce coretypes.Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *Channel coretypes.CountedIndexed
-//go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
+//go:generate go run gen/gen_types.go assert coretypes.Comparable coretypes.Vec coretypes.Char coretypes.String coretypes.Symbol coretypes.Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number coretypes.Seqable coretypes.Callable *coretypes.Type coretypes.Meta coretypes.Int coretypes.Double coretypes.Stack coretypes.Map coretypes.Set coretypes.Associative coretypes.Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn coretypes.Deref *corert.Atom coretypes.Ref coretypes.KVReduce coretypes.Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *corert.ObjectChannel coretypes.CountedIndexed
+//go:generate go run gen/gen_types.go info *corecollections.List *corecollections.ArrayMapSeq *corecollections.ArrayMap *corecollections.HashMap *ExInfo *Fn *Var Nil *corecollections.LazySeq *corecollections.MappingSeq *corecollections.ArraySeq *corecollections.ConsSeq *corecollections.NodeSeq *corecollections.ArrayNodeSeq *corecollections.MapSet *corecollections.Vector *corecollections.ArrayVector *corecollections.VectorSeq *corecollections.VectorRSeq
 //go:generate go run -tags gen_code gen/codegen/main.go
 
 package core
@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"math"
 	"reflect"
-	"sync"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
@@ -54,15 +54,25 @@ type (
 		defVar        *Var       // set when this fn is the value of a defn-created var
 	}
 	ExInfo struct {
-		ArrayMap
+		corecollections.ArrayMap
 		rt *goroutineRT
 	}
-	Atom struct {
-		coretypes.MetaHolder
-		mu    sync.Mutex
-		value coretypes.Object
-	}
 )
+
+var NIL = Nil{}
+
+func init() {
+	coretypes.RuntimeNil = NIL
+	coretypes.RuntimeError = func(msg string) any { return RT.NewError(msg) }
+	coretypes.RuntimePanicArityMinMax = PanicArityMinMax
+	coretypes.RuntimePprintObject = pprintObject
+	coretypes.RuntimeFormatObject = formatObject
+	coretypes.RuntimeMaybeNewLine = maybeNewLine
+	coretypes.RuntimeWriteIndent = writeIndent
+	coretypes.RuntimeIsComment = isComment
+	coretypes.RuntimeIsReduced = IsReduced
+	coretypes.RuntimeDerefReduced = DerefReduced
+}
 
 // stringSeq is a lazy seq over a string's runes; yields Chars on demand.
 type stringSeq struct {
@@ -99,6 +109,13 @@ func CheckArity(args []coretypes.Object, min int, max int) {
 	}
 }
 
+func runtimeCheckArity(args []coretypes.Object, min int, max int) {
+	n := len(args)
+	if n < min || n > max {
+		coretypes.RuntimePanicArityMinMax(n, min, max)
+	}
+}
+
 func getMap(k coretypes.Object, args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 2)
 	switch m := args[0].(type) {
@@ -121,54 +138,6 @@ func equalsNumbers(x coretypes.Number, y interface{}) bool {
 	default:
 		return false
 	}
-}
-
-func (a *Atom) ToString(escape bool) string {
-	return "#object[Atom {:val " + a.value.ToString(escape) + "}]"
-}
-
-func (a *Atom) Equals(other interface{}) bool {
-	return a == other
-}
-
-func (a *Atom) GetInfo() *coretypes.ObjectInfo {
-	return nil
-}
-
-func (a *Atom) GetType() *coretypes.Type {
-	return TYPE.Atom
-}
-
-func (a *Atom) Hash() uint32 {
-	return hashutil.Ptr(uintptr(unsafe.Pointer(a)))
-}
-
-func (a *Atom) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	return a
-}
-
-func (a *Atom) WithMeta(meta coretypes.Map) coretypes.Object {
-	res := &Atom{
-		value: a.value,
-	}
-	res.Meta = coretypes.SafeMerge(a.Meta, meta)
-	return res
-}
-
-func (a *Atom) ResetMeta(newMeta coretypes.Map) coretypes.Map {
-	a.Meta = newMeta
-	return a.Meta
-}
-
-func (a *Atom) AlterMeta(fn coretypes.Callable, args []coretypes.Object) coretypes.Map {
-	return AlterMeta(&a.MetaHolder, fn, args)
-}
-
-func (a *Atom) Deref() coretypes.Object {
-	a.mu.Lock()
-	v := a.value
-	a.mu.Unlock()
-	return v
 }
 
 func (exInfo *ExInfo) ToString(escape bool) string {
@@ -377,7 +346,7 @@ func (fn *Fn) Call(args []coretypes.Object) coretypes.Object {
 	}
 	var restArgs coretypes.Object = NIL
 	if len(v.args)-1 < len(args) {
-		restArgs = &ArraySeq{arr: args, index: len(v.args) - 1}
+		restArgs = &corecollections.ArraySeq{Arr: args, Index: len(v.args) - 1}
 	}
 	vargs := make([]coretypes.Object, len(v.args))
 	for i := 0; i < len(vargs)-1; i++ {
@@ -474,7 +443,6 @@ func (v *Var) ToString(escape bool) string {
 }
 
 func (v *Var) Equals(other interface{}) bool {
-	// TODO: revisit this
 	return v == other
 }
 
@@ -559,11 +527,11 @@ func (n Nil) IsEmpty() bool {
 }
 
 func (n Nil) Cons(obj coretypes.Object) coretypes.Seq {
-	return collectionConstruction.NewListFrom(obj)
+	return corecollections.NewListFrom(obj)
 }
 
 func (n Nil) Conj(obj coretypes.Object) coretypes.Conjable {
-	return collectionConstruction.NewListFrom(obj)
+	return corecollections.NewListFrom(obj)
 }
 
 func (n Nil) Without(key coretypes.Object) coretypes.Map {
@@ -583,7 +551,7 @@ func (n Nil) Merge(other coretypes.Map) coretypes.Map {
 }
 
 func (n Nil) Assoc(key, value coretypes.Object) coretypes.Associative {
-	return collectionConstruction.NewEmptyArrayMap().Assoc(key, value)
+	return corecollections.EmptyArrayMap().Assoc(key, value)
 }
 
 func (n Nil) EntryAt(key coretypes.Object) coretypes.Object {
@@ -619,8 +587,8 @@ func charToStringObjectFast(ch rune) coretypes.Object {
 	return coretypes.String{S: corestr.String(ch)}
 }
 
-func MakeStringVector(ss []string) *ArrayVector {
-	res := collectionConstruction.NewEmptyArrayVector()
+func MakeStringVector(ss []string) *corecollections.ArrayVector {
+	res := corecollections.EmptyArrayVector()
 	for _, s := range ss {
 		res.Append(coretypes.MakeString(s))
 	}
@@ -659,8 +627,8 @@ func IsSeq(obj coretypes.Object) bool {
 	}
 }
 
-func MakeMeta(arglists coretypes.Seq, docstring string, added string) *ArrayMap {
-	res := collectionConstruction.NewEmptyArrayMap()
+func MakeMeta(arglists coretypes.Seq, docstring string, added string) *corecollections.ArrayMap {
+	res := corecollections.EmptyArrayMap()
 	if arglists != nil {
 		res.Add(KEYWORDS.arglist, arglists)
 	}

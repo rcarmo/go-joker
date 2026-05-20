@@ -1,6 +1,6 @@
 # Core package split audit
 
-Updated: 2026-05-18
+Updated: 2026-05-20
 
 ## Purpose
 
@@ -23,11 +23,11 @@ This is the R5 inventory for splitting the remaining `core` monolith after the i
 This makes it too easy for features to reach across layers through unexported state and makes architectural intent hard to see from the repository layout.
 
 
-## 2026-05-18 status update
+## 2026-05-20 status update
 
 The type/object split has advanced enough that `core/types` is now the canonical object/protocol package. Root `core` no longer defines or aliases `Object`, and the recent cleanup removed transitional root aliases for `Keyword`, `Symbol`, `Map`, `Meta`, `MetaHolder`, `MapIterator`, `Pair`, and `EmptyMapIterator`. Root callers now use explicit `coretypes.*` names for those contracts. Major moved families include scalar values (`Int`, `Double`, `Boolean`, `Char`, `String`, `Time`, `Regex`, `Comment`), big numeric values (`BigInt`, `BigFloat`, `Ratio`), numeric operation implementations, `RecurBindings`, `Delay`, symbol/name values, generic info helpers, shared collection protocols (`Map`, `Set`, `Vec`) and metadata/ref contracts (`Meta`, `MetaHolder`, `Ref`).
 
-Root `core` file count is now 69 total Go files (1 root test file). `core/types` has 28 Go files. Concrete collection implementations remain root-owned, but their public/shared protocols now live in `core/types`; the next collection-move blockers are concrete implementation dependencies, metadata propagation, sorted collection/proc coupling, and construction cycles rather than root protocol aliases. Root generated bootstrap now remains `core/a_generated_bootstrap_payloads.go`; previous root `types_assert_gen.go`/`types_info_gen.go` were replaced by explicit root files (`assert_root.go`, `with_info_root.go`) while moved helpers live in `core/types`.
+Root `core` file count is now 57 total Go files (1 root test file). `core/types` has 19 Go files. Concrete collection implementations have moved to `core/types/collections`; root collection files are deleted and guarded against reintroduction. Runtime-owned object wrappers for channels, futures/promises, agents, and atoms now live in `core/runtime`; root proc/env glue uses exported runtime methods and `coretypes` runtime hooks for errors/arity instead of reaching into moved state directly. Root generated bootstrap still remains `core/a_generated_bootstrap_payloads.go`; previous root `types_assert_gen.go`/`types_info_gen.go` were replaced by explicit root files (`assert_root.go`, `with_info_root.go`) while moved helpers live in `core/types`.
 
 ## Proposed split order
 
@@ -38,9 +38,9 @@ Do not split everything at once. Move leaf or low-cycle families first, then hig
 - `core/trace` owns tracing/profiling aggregation state.
 - `core/ir` owns opcode names/constants, bytecode disassembly/counting, shape analysis, and the neutral program model.
 - `core/wasm` owns leaf WASM binary encoding/module/host helpers.
-- `core/collections` owns root-independent collection mechanics such as generic slice storage, persistent list-node storage, map equality traversal, indexed operations, pair arrays, bitmap/hash-index helpers, and opaque trie nodes.
+- `core/types/collections` owns concrete collection types and mechanics: vectors, persistent vectors, lists/seqs, array/hash maps, sets, chunks, formatting/indexed ops, and bitmap/hash-index helpers.
 - `core/reader` owns root-independent reader mechanics such as char classes, whitespace/comment/top-level-trivia/line decisions, identifier token scanning/validation/keyword, standalone-slash, and literal classification/issue enumeration, escape/unicode parsing, top-level read-form and number-token classification, delimiter/dispatch/form helpers, rune-window history, line rune readers, and raw IO wrappers.
-- `core/types/string`, `core/types/numerical`, and `core/cursor` own root-independent string/cache/numeric-lexing/cursor mechanics; the Joker `String` value itself lives in `core/types`.
+- `core/types/string` and `core/types/numerical` own string/cache/cursor and numeric parsing/hash/comparison mechanics; the Joker scalar values themselves live in `core/types`.
 - `cmd/joker` owns the CLI entrypoint.
 
 ### 2. Runtime/object boundary
@@ -53,9 +53,9 @@ core/runtime/
 
 Likely contents or responsibilities:
 
-- goroutine runtime bookkeeping
-- eval frame stack helpers
-- call dispatch scaffolding that is not IR-specific
+- generic goroutine runtime bookkeeping and pending/channel primitives already in `core/runtime`
+- runtime-owned wrappers for `ObjectChannel`, `ObjectFuture`, `ObjectPromise`, `Agent`, and `Atom`
+- eval frame stack helpers and call dispatch scaffolding that is not IR-specific
 - panic/error helpers only after object/error contracts are clear
 
 Current candidate files:
@@ -74,36 +74,39 @@ Risks:
 Candidate future package:
 
 ```text
-core/collections/
+core/types/collections/
 ```
 
-Current candidate files:
+Moved concrete collection files:
 
 - `array_map.go`
 - `array_vector.go`
-- `chunked_seq.go`
+- `chunked_seq.go` collection mechanics (root proc registration is isolated as `chunked_procs.go`)
 - `hash_map.go`
 - `list.go`
-- `map.go`
+- `map.go` helper functionality
 - `persistent_vector.go`
 - `seq.go`
 - `set.go`
+- `vector.go`
+
+Still root-owned collection-adjacent files:
+
 - `sorted_colls.go`
 - `transient.go`
 - `transient_string.go`
-- `vector.go`
-- related fast paths such as `reduce_fast.go`, `seq_ops_fast.go`, `range_fast.go` once interfaces are clear
+- related evaluator/runtime fast paths such as `reduce_fast.go`, `seq_ops_fast.go`, and `range_fast.go`
 
 Status and risks:
 
-- `core/collections` now owns pure mechanics helpers used by `ArrayVector`, legacy `Vector`, `PersistentVector`, and `HashMap` where safe.
-- collection types remain part of the public runtime object model.
-- reader/evaluator/std packages used to construct concrete collection types directly; current production call sites now route through `CollectionConstructionAdapter`, guarded by `construction_boundary_guard_test.go`.
-- numeric/hash/equality/protocol behavior crosses package boundaries.
+- `core/types/collections` owns concrete vectors, maps, sets, lists, seqs, chunks, and their mechanics.
+- collection types remain part of the public runtime object model through `coretypes` protocols and runtime hooks.
+- reader/evaluator/std/generated packages now construct moved concrete collection types via `corecollections.*` direct imports.
+- sorted collection proc registration, transients, evaluator fast paths, runtime hooks, and generated/bootstrap placement are the remaining collection-adjacent risks.
 
 Preferred prerequisite:
 
-- keep `coretypes` object/protocol contracts and the construction adapter guard green, then move concrete collections only when implementation dependencies are explicit and acyclic. Most protocols have moved; remaining blockers are concrete implementation return types, metadata propagation, sorted collection/proc coupling, and initialization cycles.
+- keep `coretypes` object/protocol contracts, generated guards, and layout guard green; do not reintroduce root collection aliases. Further movement should target runtime/env/proc ownership or generated/bootstrap placement as coherent batches.
 
 ### 4. Reader/parser boundary
 

@@ -1,15 +1,50 @@
 package types
 
 import (
+	"sync"
 	"unsafe"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
-	corert "github.com/rcarmo/go-joker/core/runtime"
 )
 
 type Delay struct {
 	Fn      Callable
-	Runtime *corert.Promise[Object]
+	Runtime *DelayPromise
+}
+
+type DelayPromise struct {
+	mu        sync.Mutex
+	value     Object
+	delivered bool
+	done      chan struct{}
+}
+
+func NewDelayPromise() *DelayPromise { return &DelayPromise{done: make(chan struct{})} }
+
+func (p *DelayPromise) Deliver(value Object) bool {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if p.delivered {
+		return false
+	}
+	p.value = value
+	p.delivered = true
+	close(p.done)
+	return true
+}
+
+func (p *DelayPromise) Await() Object {
+	<-p.done
+	return p.value
+}
+
+func (p *DelayPromise) IsRealized() bool {
+	select {
+	case <-p.done:
+		return true
+	default:
+		return false
+	}
 }
 
 var DelayCall func(Callable) Object
@@ -24,7 +59,7 @@ func (d *Delay) Hash() uint32                     { return hashutil.Ptr(uintptr(
 func (d *Delay) WithInfo(info *ObjectInfo) Object { return d }
 func (d *Delay) Force() Object {
 	if d.Runtime == nil {
-		d.Runtime = corert.NewPromise[Object]()
+		d.Runtime = NewDelayPromise()
 	}
 	if d.Runtime.IsRealized() {
 		return d.Runtime.Await()

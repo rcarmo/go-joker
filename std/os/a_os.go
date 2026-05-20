@@ -3,9 +3,13 @@
 package os
 
 import (
+	"os"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"os"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 var SIGABRT_ coretypes.Int
@@ -387,7 +391,7 @@ func __groups_(_args []coretypes.Object) coretypes.Object {
 	case _c == 0:
 		_res, err := os.Getgroups()
 		PanicOnErr(err)
-		_vec := EmptyVector()
+		_vec := corecollections.EmptyVector()
 		for _, _v := range _res {
 			_vec = _vec.Conjoin(coretypes.MakeInt(_v))
 		}
@@ -992,13 +996,13 @@ func __watch_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		paths := ExtractSeqable(_args, 0)
-		ch := ExtractChannel(_args, 1)
-		_res := watch(paths, ch, EmptyArrayMap())
+		ch := corert.ExtractChannel(_args, 1)
+		_res := watch(paths, ch, corecollections.EmptyArrayMap())
 		return _res
 
 	case _c == 3:
 		paths := ExtractSeqable(_args, 0)
-		ch := ExtractChannel(_args, 1)
+		ch := corert.ExtractChannel(_args, 1)
 		opts := ExtractMap(_args, 2)
 		_res := watch(paths, ch, opts)
 		return _res

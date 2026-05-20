@@ -4,9 +4,11 @@ package http
 
 import (
 	"fmt"
+	"os"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"os"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func InternsOrThunks() {
@@ -17,7 +19,7 @@ func InternsOrThunks() {
 
 	httpNamespace.InternVar("send", send_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "request"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "request"))),
 			`Sends an HTTP request and returns an HTTP response.
   request is a map with the following keys:
   - url (string)
@@ -34,13 +36,13 @@ func InternsOrThunks() {
 
 	httpNamespace.InternVar("start-file-server", start_file_server_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "addr"), coretypes.MakeSymbol(STRINGS.Intern, "root"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "addr"), coretypes.MakeSymbol(STRINGS.Intern, "root"))),
 			`Starts HTTP server on the TCP network address addr that
   serves HTTP requests with the contents of the file system rooted at root.`, "1.0"))
 
 	httpNamespace.InternVar("start-server", start_server_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "addr"), coretypes.MakeSymbol(STRINGS.Intern, "handler"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "addr"), coretypes.MakeSymbol(STRINGS.Intern, "handler"))),
 			`Starts an HTTP server on the TCP network address addr.
 
   handler is called as (handler request-map) and should return a response map.

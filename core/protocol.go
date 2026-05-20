@@ -12,9 +12,12 @@ package core
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"sync"
 	"unsafe"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
 )
@@ -102,31 +105,31 @@ func typeNameOf(obj coretypes.Object) string {
 		return "Symbol"
 	case *coretypes.Regex:
 		return "Regex"
-	case *Vector:
-		return "Vector"
-	case *ArrayVector:
-		return "Vector"
-	case *ArrayMap:
+	case *corecollections.Vector:
+		return "corecollections.Vector"
+	case *corecollections.ArrayVector:
+		return "corecollections.Vector"
+	case *corecollections.ArrayMap:
 		return "Map"
-	case *HashMap:
+	case *corecollections.HashMap:
 		return "Map"
-	case *MapSet:
+	case *corecollections.MapSet:
 		return "Set"
-	case *List:
-		return "List"
-	case *LazySeq:
-		return "LazySeq"
-	case *ConsSeq:
+	case *corecollections.List:
+		return "corecollections.List"
+	case *corecollections.LazySeq:
+		return "corecollections.LazySeq"
+	case *corecollections.ConsSeq:
 		return "coretypes.Seq"
-	case *ArraySeq:
+	case *corecollections.ArraySeq:
 		return "coretypes.Seq"
-	case *MappingSeq:
+	case *corecollections.MappingSeq:
 		return "coretypes.Seq"
 	case *Fn:
 		return "Fn"
 	case Proc:
 		return "Fn"
-	case *Atom:
+	case *corert.Atom:
 		return "Atom"
 	case *Record:
 		return obj.rtype.Name
@@ -141,12 +144,12 @@ func makeProtocolMethodProc(proto *Protocol, methodName string, pm *ProtocolMeth
 		Name: proto.name.ToString(false) + "/" + methodName,
 		Fn: func(args []coretypes.Object) coretypes.Object {
 			if len(args) == 0 {
-				panic(RT.NewError(fmt.Sprintf("Protocol method %s/%s called with no arguments",
+				panic(coretypes.RuntimeError(fmt.Sprintf("Protocol method %s/%s called with no arguments",
 					proto.name.ToString(false), methodName)))
 			}
 			impl := pm.lookupMethod(args[0])
 			if impl == nil {
-				panic(RT.NewError(fmt.Sprintf("No implementation of protocol method %s/%s for type %s",
+				panic(coretypes.RuntimeError(fmt.Sprintf("No implementation of protocol method %s/%s for type %s",
 					proto.name.ToString(false), methodName, typeNameOf(args[0]))))
 			}
 			return impl.Call(args)
@@ -194,7 +197,7 @@ func ExtendType(proto *Protocol, typeName string, impls map[string]coretypes.Cal
 	for methodName, impl := range impls {
 		pm, ok := proto.methods[methodName]
 		if !ok {
-			panic(RT.NewError(fmt.Sprintf("No method %s in protocol %s",
+			panic(coretypes.RuntimeError(fmt.Sprintf("No method %s in protocol %s",
 				methodName, proto.name.ToString(false))))
 		}
 		pm.dispatch.Store(typeName, impl)

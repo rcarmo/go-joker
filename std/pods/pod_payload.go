@@ -3,7 +3,9 @@ package pods
 import (
 	"encoding/json"
 	"fmt"
+
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 	edn "github.com/rcarmo/go-joker/std/edn"
@@ -22,7 +24,7 @@ func (p *Pod) encodeArgs(args []coretypes.Object) (string, error) {
 	case "edn":
 		objs := make([]coretypes.Object, len(args))
 		copy(objs, args)
-		return edn.WriteEDNString(NewVectorFrom(objs...)), nil
+		return edn.WriteEDNString(corecollections.NewVectorFrom(objs...)), nil
 	case "transit+json":
 		return transit.TransitEncodeArgs(args)
 	default:
@@ -99,9 +101,9 @@ func podPayloadToObject(v interface{}) coretypes.Object {
 		for i, e := range x {
 			objs[i] = podPayloadToObject(e)
 		}
-		return NewVectorFrom(objs...)
+		return corecollections.NewVectorFrom(objs...)
 	case map[string]interface{}:
-		m := EmptyArrayMap()
+		m := corecollections.EmptyArrayMap()
 		for k, val := range x {
 			m.Add(coretypes.MakeString(k), podPayloadToObject(val))
 		}

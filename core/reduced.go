@@ -1,11 +1,13 @@
 package core
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
+)
 
 // reduced.go — Proper Reduced type for transducer early termination.
 //
 // In Clojure, (reduced x) wraps x in a Reduced box that signals
-// early termination to reduce/transduce. This replaces the ArrayMap-based
+// early termination to reduce/transduce. This replaces the corecollections.ArrayMap-based
 // shim with a proper type that's fast to create, check, and unwrap.
 
 // Reduced wraps a value to signal early termination in reduce/transduce.

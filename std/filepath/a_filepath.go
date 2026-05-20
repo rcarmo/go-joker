@@ -3,9 +3,11 @@
 package filepath
 
 import (
+	"path/filepath"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"path/filepath"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 var list_separator_ coretypes.String
@@ -248,7 +250,7 @@ func __split_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		path := ExtractString(_args, 0)
 		_dir, _file := filepath.Split(path)
-		_res := NewVectorFrom(coretypes.MakeString(_dir), coretypes.MakeString(_file))
+		_res := corecollections.NewVectorFrom(coretypes.MakeString(_dir), coretypes.MakeString(_file))
 		return _res
 
 	default:

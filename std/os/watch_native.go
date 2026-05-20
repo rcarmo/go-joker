@@ -2,10 +2,14 @@ package os
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	stdos "os"
 	"path/filepath"
 	"sync"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	"github.com/fsnotify/fsnotify"
 
@@ -14,7 +18,7 @@ import (
 
 type fileWatcher struct {
 	watcher *fsnotify.Watcher
-	ch      *Channel
+	ch      *corert.ObjectChannel
 
 	recursive bool
 	done      chan struct{}
@@ -23,7 +27,7 @@ type fileWatcher struct {
 	cancelOnce sync.Once
 }
 
-func watch(paths coretypes.Seqable, ch *Channel, opts coretypes.Map) coretypes.Object {
+func watch(paths coretypes.Seqable, ch *corert.ObjectChannel, opts coretypes.Map) coretypes.Object {
 	recursive := false
 	if ok, obj := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "recursive?")); ok {
 		recursive = coretypes.EnsureObjectIsBoolean(obj, "recursive?: %s").B
@@ -157,7 +161,7 @@ func (fw *fileWatcher) send(obj coretypes.Object) bool {
 }
 
 func watchEvent(event fsnotify.Event) coretypes.Object {
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "type"), coretypes.MakeKeyword(STRINGS.Intern, "event"))
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "path"), coretypes.MakeString(event.Name))
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "ops"), watchOps(event.Op))
@@ -165,14 +169,14 @@ func watchEvent(event fsnotify.Event) coretypes.Object {
 }
 
 func watchError(err error) coretypes.Object {
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "type"), coretypes.MakeKeyword(STRINGS.Intern, "error"))
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "error"), RT.NewError(err.Error()))
 	return m
 }
 
-func watchOps(op fsnotify.Op) *MapSet {
-	ops := EmptySet()
+func watchOps(op fsnotify.Op) *corecollections.MapSet {
+	ops := corecollections.EmptySet()
 	if op&fsnotify.Create != 0 {
 		ops.Add(coretypes.MakeKeyword(STRINGS.Intern, "create"))
 	}

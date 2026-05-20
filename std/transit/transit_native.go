@@ -3,9 +3,11 @@ package transit
 import (
 	"encoding/json"
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	"strings"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -140,7 +142,7 @@ func (e *transitEncoder) encode(obj coretypes.Object, asKey bool) interface{} {
 	case coretypes.Symbol:
 		return e.cacheString("~$"+v.ToString(false), asKey)
 	}
-	if set, ok := obj.(*MapSet); ok {
+	if set, ok := obj.(*corecollections.MapSet); ok {
 		items := []interface{}{}
 		for s := set.Seq(); !s.IsEmpty(); s = s.Rest() {
 			items = append(items, e.encode(s.First(), false))
@@ -197,7 +199,7 @@ func (d *transitDecoder) decode(v interface{}, asKey bool) coretypes.Object {
 	case []interface{}:
 		return d.decodeArray(x)
 	case map[string]interface{}:
-		m := EmptyArrayMap()
+		m := corecollections.EmptyArrayMap()
 		for k, val := range x {
 			m.Add(coretypes.MakeString(k), d.decode(val, false))
 		}
@@ -225,7 +227,7 @@ func (d *transitDecoder) decodeArray(x []interface{}) coretypes.Object {
 				if (len(x)-1)%2 != 0 {
 					panic(RT.NewError("transit/read: map array has odd number of entries"))
 				}
-				m := EmptyArrayMap()
+				m := corecollections.EmptyArrayMap()
 				for i := 1; i < len(x); i += 2 {
 					m.Add(d.decode(x[i], true), d.decode(x[i+1], false))
 				}
@@ -240,7 +242,7 @@ func (d *transitDecoder) decodeArray(x []interface{}) coretypes.Object {
 	for i, e := range x {
 		objs[i] = d.decode(e, false)
 	}
-	return NewVectorFrom(objs...)
+	return corecollections.NewVectorFrom(objs...)
 }
 
 func (d *transitDecoder) decodeTagged(tag string, payload interface{}) coretypes.Object {
@@ -250,7 +252,7 @@ func (d *transitDecoder) decodeTagged(tag string, payload interface{}) coretypes
 		if !ok {
 			break
 		}
-		set := EmptySet()
+		set := corecollections.EmptySet()
 		for _, item := range items {
 			set.Add(d.decode(item, false))
 		}
@@ -264,7 +266,7 @@ func (d *transitDecoder) decodeTagged(tag string, payload interface{}) coretypes
 		for i, item := range items {
 			objs[i] = d.decode(item, false)
 		}
-		return NewListFrom(objs...)
+		return corecollections.NewListFrom(objs...)
 	case "'":
 		return d.decode(payload, false)
 	case "cmap":
@@ -275,7 +277,7 @@ func (d *transitDecoder) decodeTagged(tag string, payload interface{}) coretypes
 		if len(items)%2 != 0 {
 			panic(RT.NewError("transit/read: cmap has odd number of entries"))
 		}
-		m := EmptyArrayMap()
+		m := corecollections.EmptyArrayMap()
 		for i := 0; i < len(items); i += 2 {
 			m.Add(d.decode(items[i], false), d.decode(items[i+1], false))
 		}

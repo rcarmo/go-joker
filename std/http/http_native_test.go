@@ -2,7 +2,6 @@ package http
 
 import (
 	"errors"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -10,13 +9,16 @@ import (
 	"testing"
 	"time"
 
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+
 	ws "github.com/gorilla/websocket"
 	. "github.com/rcarmo/go-joker/core"
 )
 
 func TestHandleStreamSSE(t *testing.T) {
 	rec := httptest.NewRecorder()
-	respMap := EmptyArrayMap()
+	respMap := corecollections.EmptyArrayMap()
 	respMap.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(200))
 
 	streamFn := Proc{Name: "test-stream", Fn: func(args []coretypes.Object) coretypes.Object {
@@ -57,7 +59,7 @@ func (w *failingStreamWriter) WriteHeader(statusCode int) {}
 func (w *failingStreamWriter) Flush() {}
 
 func TestMapToRespRejectsInvalidStatus(t *testing.T) {
-	respMap := EmptyArrayMap()
+	respMap := corecollections.EmptyArrayMap()
 	respMap.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(99))
 	defer func() {
 		if recover() == nil {
@@ -68,7 +70,7 @@ func TestMapToRespRejectsInvalidStatus(t *testing.T) {
 }
 
 func TestMapToRespWriteErrorsSurface(t *testing.T) {
-	respMap := EmptyArrayMap()
+	respMap := corecollections.EmptyArrayMap()
 	respMap.Add(coretypes.MakeKeyword(STRINGS.Intern, "body"), coretypes.MakeString("hello"))
 	defer func() {
 		r := recover()
@@ -84,7 +86,7 @@ func TestMapToRespWriteErrorsSurface(t *testing.T) {
 }
 
 func TestHandleStreamRejectsInvalidStatus(t *testing.T) {
-	respMap := EmptyArrayMap()
+	respMap := corecollections.EmptyArrayMap()
 	respMap.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(1000))
 	defer func() {
 		if recover() == nil {
@@ -110,7 +112,7 @@ func TestHandleStreamWriteErrorsSurface(t *testing.T) {
 			t.Fatalf("unexpected stream error: %s", err.Error())
 		}
 	}()
-	handleStream(&failingStreamWriter{header: make(http.Header)}, EmptyArrayMap(), streamFn)
+	handleStream(&failingStreamWriter{header: make(http.Header)}, corecollections.EmptyArrayMap(), streamFn)
 }
 
 func TestHandleWebSocketUpgradeAndCallbacks(t *testing.T) {
@@ -120,7 +122,7 @@ func TestHandleWebSocketUpgradeAndCallbacks(t *testing.T) {
 	)
 
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		conf := EmptyArrayMap()
+		conf := corecollections.EmptyArrayMap()
 		conf.Add(coretypes.MakeKeyword(STRINGS.Intern, "on-open"), Proc{Name: "on-open", Fn: func(args []coretypes.Object) coretypes.Object {
 			sendMu.Lock()
 			sendFn = coretypes.EnsureArgIsCallable(args, 0)
@@ -172,7 +174,7 @@ func TestHandleWebSocketUpgradeAndCallbacks(t *testing.T) {
 func TestHandleWebSocketCloseCallbackIsIdempotent(t *testing.T) {
 	done := make(chan coretypes.Object, 1)
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		conf := EmptyArrayMap()
+		conf := corecollections.EmptyArrayMap()
 		conf.Add(coretypes.MakeKeyword(STRINGS.Intern, "on-open"), Proc{Name: "on-open", Fn: func(args []coretypes.Object) coretypes.Object {
 			closeFn := coretypes.EnsureArgIsCallable(args, 1)
 			closeFn.Call(nil)

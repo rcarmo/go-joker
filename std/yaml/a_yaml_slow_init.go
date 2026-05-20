@@ -4,9 +4,11 @@ package yaml
 
 import (
 	"fmt"
+	"os"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"os"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func InternsOrThunks() {
@@ -17,12 +19,12 @@ func InternsOrThunks() {
 
 	yamlNamespace.InternVar("read-string", read_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Parses the YAML-encoded data and return the result as a Joker value.`, "1.0"))
 
 	yamlNamespace.InternVar("write-string", write_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "v"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "v"))),
 			`Returns the YAML encoding of v.`, "1.0"))
 
 }

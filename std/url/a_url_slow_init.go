@@ -4,9 +4,11 @@ package url
 
 import (
 	"fmt"
+	"os"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"os"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func InternsOrThunks() {
@@ -17,7 +19,7 @@ func InternsOrThunks() {
 
 	urlNamespace.InternVar("parse-query", parse_query_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Parses the URL-encoded query string and returns a map listing the vectors of values specified for each key.
   Always returns a non-nil map containing all the valid query parameters found.
   Query is expected to be a list of key=value settings separated by ampersands. A setting without
@@ -26,12 +28,12 @@ func InternsOrThunks() {
 
 	urlNamespace.InternVar("path-escape", path_escape_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Escapes the string so it can be safely placed inside a URL path segment.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	urlNamespace.InternVar("path-unescape", path_unescape_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Does the inverse transformation of path-escape, converting each 3-byte encoded
   substring of the form "%AB" into the hex-decoded byte 0xAB. It also converts
   '+' into ' ' (space). It returns an error if any % is not followed by two hexadecimal digits.
@@ -40,12 +42,12 @@ func InternsOrThunks() {
 
 	urlNamespace.InternVar("query-escape", query_escape_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Escapes the string so it can be safely placed inside a URL query.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	urlNamespace.InternVar("query-unescape", query_unescape_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Does the inverse transformation of query-escape, converting each 3-byte encoded
   substring of the form "%AB" into the hex-decoded byte 0xAB. It also converts
   '+' into ' ' (space). It returns an error if any % is not followed by two hexadecimal digits.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))

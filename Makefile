@@ -142,16 +142,17 @@ benchmark-docs-check:
 	cd benchmarks && python3 -m unittest run_benchmarks_test.py
 
 refactor-internals-check:
-	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/types/string ./core/types/numerical ./core/osutil ./core/bufferpool ./core/reader -count=$(TEST_COUNT)
+	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/types ./core/types/collections ./core/types/string ./core/types/numerical ./core/osutil ./core/bufferpool ./core/reader -count=$(TEST_COUNT)
 
 core-contract-check:
 	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestSortedCollectionContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics|TestBigIntInt|TestRatioOrInt|TestReadIntegerUsesNativeIntRange|TestFileInfoMapPromotesLargeSize|TestReaderConstructionContract' -count=$(TEST_COUNT) -timeout=120s
 
 runtime-contract-check:
 	$(GO) test ./core -run 'TestIRExecutionMetadata|TestEscapeAnalysis|TestIRMakeFn|TestIRFunctionCache|TestRuntimeExecutionAdapter|TestExecutorFilesUseRuntimeExecutionAdapter|TestIRCompileFailure|TestNativeHelperEligibility|TestChannelCloseIsIdempotentUnderConcurrency|TestWasmRawInt|TestWasmExecRawIntegerResultUsesNativeRange' -count=$(TEST_COUNT) -timeout=120s
+	$(GO) test ./core/runtime -run 'TestAgent|TestAtom|TestChannel|TestObjectChannel|TestFuture|TestObjectFuture|TestPromise|TestObjectPromise|TestCheckedMillisecondDuration|TestRunParallel|TestFeatureFlag|TestIRInlineMode|TestIRTypedMapMode|TestGoID' -count=$(TEST_COUNT) -timeout=120s
 
 std-contract-check:
-	$(GO) test ./std/http ./std/io ./std/strconv ./std/time ./std/markdown ./std/os ./std/system ./std/runtime ./std/imaging ./std/pdf ./std/svg ./std/random ./std/bolt ./std/url ./std/git ./std/log ./std/csv ./std/json ./std/filepath ./std/crypto ./std/math ./std/string ./std/uuid -count=$(TEST_COUNT) -timeout=120s
+	$(GO) test ./std/... -count=$(TEST_COUNT) -timeout=120s
 
 docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md

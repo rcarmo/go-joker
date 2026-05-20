@@ -3,6 +3,7 @@ package imaging
 import (
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 var imagingNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.imaging"))
@@ -61,7 +62,7 @@ func initImagingNamespace() {
 	for _, p := range procs {
 		imagingNamespace.InternVar(p.name, Proc{Fn: p.fn, Name: "imaging/" + p.name},
 			MakeMeta(
-				NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, p.args))),
+				corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, p.args))),
 				p.doc, "1.0"))
 	}
 }

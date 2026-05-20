@@ -17,7 +17,7 @@ func registerRecordProcs() {
 	// record? — always available
 	recordQVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "record?"))
 	recordQVr.Value = Proc{Name: "procRecordQ", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		_, ok := args[0].(*Record)
 		return coretypes.MakeBoolean(ok)
 	}}
@@ -31,7 +31,7 @@ func registerRecordProcs() {
 	defRecordVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "__defrecord"))
 	defRecordVr.Value = Proc{Name: "procDefRecordInternal", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 1 {
-			panic(RT.NewError("__defrecord requires at least a name"))
+			panic(coretypes.RuntimeError("__defrecord requires at least a name"))
 		}
 		name := coretypes.EnsureObjectIsSymbol(args[0], "defrecord name must be a symbol")
 		nameStr := name.ToString(false)
@@ -56,7 +56,7 @@ func registerRecordProcs() {
 		mapCtorName := "map->" + nameStr
 		mapCtorVr := currentNs.Intern(coretypes.MakeSymbol(STRINGS.Intern, mapCtorName))
 		mapCtorVr.Value = Proc{Name: "proc" + mapCtorName, Fn: func(ctorArgs []coretypes.Object) coretypes.Object {
-			CheckArity(ctorArgs, 1, 1)
+			runtimeCheckArity(ctorArgs, 1, 1)
 			m := coretypes.EnsureObjectIsMap(ctorArgs[0], "map->"+nameStr+" requires a map argument")
 			vals := make([]coretypes.Object, len(fields))
 			for i, fname := range fields {

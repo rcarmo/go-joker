@@ -1,9 +1,11 @@
 package core
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corestr "github.com/rcarmo/go-joker/core/types/string"
 	"sync"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
 // ---- reduce_fast.go ----
@@ -33,54 +35,6 @@ func seqReduce(s coretypes.Seq, f coretypes.Callable) coretypes.Object {
 			return DerefReduced(acc)
 		}
 		s = s.Rest()
-	}
-	return acc
-}
-
-// LazySeq coretypes.Reduce support — implements the coretypes.Reduce interface so (reduce f init lazy-seq) works.
-func (seq *LazySeq) Reduce(f coretypes.Callable) coretypes.Object {
-	return seqReduce(seq.Seq(), f)
-}
-
-func (seq *LazySeq) ReduceInit(f coretypes.Callable, init coretypes.Object) coretypes.Object {
-	return seqReduceInit(seq.Seq(), f, init)
-}
-
-// ConsSeq coretypes.Reduce support
-func (seq *ConsSeq) Reduce(f coretypes.Callable) coretypes.Object {
-	return seqReduce(seq, f)
-}
-
-func (seq *ConsSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) coretypes.Object {
-	return seqReduceInit(seq, f, init)
-}
-
-// MappingSeq coretypes.Reduce support
-func (seq *MappingSeq) Reduce(f coretypes.Callable) coretypes.Object {
-	if seq.seq.IsEmpty() {
-		return call0(f)
-	}
-	acc := seq.fn(seq.seq.First())
-	cur := seq.seq.Rest()
-	for !cur.IsEmpty() {
-		acc = call2(f, acc, seq.fn(cur.First()))
-		if IsReduced(acc) {
-			return DerefReduced(acc)
-		}
-		cur = cur.Rest()
-	}
-	return acc
-}
-
-func (seq *MappingSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) coretypes.Object {
-	acc := init
-	cur := seq.seq
-	for !cur.IsEmpty() {
-		acc = call2(f, acc, seq.fn(cur.First()))
-		if IsReduced(acc) {
-			return DerefReduced(acc)
-		}
-		cur = cur.Rest()
 	}
 	return acc
 }
@@ -412,7 +366,9 @@ type TakeSeq struct {
 	n   int
 }
 
-func (s *FilteringSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
+func (s *FilteringSeq) ToString(escape bool) string {
+	return corecollections.SeqToString(s, func(obj coretypes.Object) string { return obj.ToString(escape) })
+}
 func (s *FilteringSeq) Equals(other interface{}) bool { return coretypes.IsSeqEqual(s, other) }
 func (s *FilteringSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *s
@@ -420,7 +376,7 @@ func (s *FilteringSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return &res
 }
 func (s *FilteringSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
-func (s *FilteringSeq) Hash() uint32             { return hashOrdered(s) }
+func (s *FilteringSeq) Hash() uint32             { return corecollections.HashOrdered(s) }
 func (s *FilteringSeq) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *s
 	res.Meta = coretypes.SafeMerge(res.Meta, m)
@@ -433,11 +389,13 @@ func (s *FilteringSeq) First() coretypes.Object { return s.nextSeq().First() }
 func (s *FilteringSeq) Rest() coretypes.Seq {
 	ns := s.nextSeq()
 	if ns.IsEmpty() {
-		return EmptyList
+		return corecollections.EmptyList
 	}
 	return &FilteringSeq{seq: ns.Rest(), pred: s.pred}
 }
-func (s *FilteringSeq) Cons(obj coretypes.Object) coretypes.Seq { return &ConsSeq{first: obj, rest: s} }
+func (s *FilteringSeq) Cons(obj coretypes.Object) coretypes.Seq {
+	return &corecollections.ConsSeq{FirstValue: obj, RestValue: s}
+}
 
 func (s *FilteringSeq) nextSeq() coretypes.Seq {
 	cur := s.seq
@@ -447,7 +405,7 @@ func (s *FilteringSeq) nextSeq() coretypes.Seq {
 		}
 		cur = cur.Rest()
 	}
-	return EmptyList
+	return corecollections.EmptyList
 }
 
 func (s *FilteringSeq) Reduce(f coretypes.Callable) coretypes.Object {
@@ -490,7 +448,9 @@ func (s *FilteringSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) c
 	return acc
 }
 
-func (s *TakeSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
+func (s *TakeSeq) ToString(escape bool) string {
+	return corecollections.SeqToString(s, func(obj coretypes.Object) string { return obj.ToString(escape) })
+}
 func (s *TakeSeq) Equals(other interface{}) bool { return coretypes.IsSeqEqual(s, other) }
 func (s *TakeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *s
@@ -498,7 +458,7 @@ func (s *TakeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return &res
 }
 func (s *TakeSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
-func (s *TakeSeq) Hash() uint32             { return hashOrdered(s) }
+func (s *TakeSeq) Hash() uint32             { return corecollections.HashOrdered(s) }
 func (s *TakeSeq) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *s
 	res.Meta = coretypes.SafeMerge(res.Meta, m)
@@ -510,11 +470,13 @@ func (s *TakeSeq) IsEmpty() bool           { return s.n <= 0 || s.seq.IsEmpty() 
 func (s *TakeSeq) First() coretypes.Object { return s.seq.First() }
 func (s *TakeSeq) Rest() coretypes.Seq {
 	if s.n <= 1 {
-		return EmptyList
+		return corecollections.EmptyList
 	}
 	return &TakeSeq{seq: s.seq.Rest(), n: s.n - 1}
 }
-func (s *TakeSeq) Cons(obj coretypes.Object) coretypes.Seq { return &ConsSeq{first: obj, rest: s} }
+func (s *TakeSeq) Cons(obj coretypes.Object) coretypes.Seq {
+	return &corecollections.ConsSeq{FirstValue: obj, RestValue: s}
+}
 
 func (s *TakeSeq) Reduce(f coretypes.Callable) coretypes.Object {
 	if result, ok := s.reduceFused(f); ok {
@@ -554,7 +516,7 @@ func (s *TakeSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) corety
 
 func chunkedMapSeq(f coretypes.Callable, src coretypes.Seq) coretypes.Seq {
 	if src == nil || src.IsEmpty() {
-		return EmptyList
+		return corecollections.EmptyList
 	}
 	buf := make([]coretypes.Object, 0, 32)
 	cur := src
@@ -562,22 +524,22 @@ func chunkedMapSeq(f coretypes.Callable, src coretypes.Seq) coretypes.Seq {
 		buf = append(buf, call1(f, cur.First()))
 		cur = cur.Rest()
 	}
-	chunk := &ArrayChunk{arr: buf, off: 0, end: len(buf)}
+	chunk := &corecollections.ArrayChunk{Arr: buf, Off: 0, End: len(buf)}
 	var rest coretypes.Seq
 	if !cur.IsEmpty() {
 		restCur := cur
-		rest = &LazySeq{fn: Proc{Name: "procChunkedMapRest", Fn: func(args []coretypes.Object) coretypes.Object {
+		rest = &corecollections.LazySeq{Fn: Proc{Name: "procChunkedMapRest", Fn: func(args []coretypes.Object) coretypes.Object {
 			return chunkedMapSeq(f, restCur)
 		}}}
 	}
-	return &ChunkedCons{chunk: chunk, rest: rest, idx: 0}
+	return &corecollections.ChunkedCons{Chunk: chunk, RestSeq: rest, Idx: 0}
 }
 
 func chunkedFilterSeq(pred coretypes.Callable, src coretypes.Seq) coretypes.Seq {
 	cur := src
 	for {
 		if cur == nil || cur.IsEmpty() {
-			return EmptyList
+			return corecollections.EmptyList
 		}
 		buf := make([]coretypes.Object, 0, 32)
 		for len(buf) < 32 && !cur.IsEmpty() {
@@ -588,15 +550,15 @@ func chunkedFilterSeq(pred coretypes.Callable, src coretypes.Seq) coretypes.Seq 
 			cur = cur.Rest()
 		}
 		if len(buf) > 0 {
-			chunk := &ArrayChunk{arr: buf, off: 0, end: len(buf)}
+			chunk := &corecollections.ArrayChunk{Arr: buf, Off: 0, End: len(buf)}
 			var rest coretypes.Seq
 			if !cur.IsEmpty() {
 				restCur := cur
-				rest = &LazySeq{fn: Proc{Name: "procChunkedFilterRest", Fn: func(args []coretypes.Object) coretypes.Object {
+				rest = &corecollections.LazySeq{Fn: Proc{Name: "procChunkedFilterRest", Fn: func(args []coretypes.Object) coretypes.Object {
 					return chunkedFilterSeq(pred, restCur)
 				}}}
 			}
-			return &ChunkedCons{chunk: chunk, rest: rest, idx: 0}
+			return &corecollections.ChunkedCons{Chunk: chunk, RestSeq: rest, Idx: 0}
 		}
 	}
 }
@@ -627,10 +589,10 @@ func maybeOverrideSeqOps() {
 		if len(args) == 2 {
 			f := coretypes.EnsureArgIsCallable(args, 0)
 			s := coretypes.EnsureObjectIsSeqable(args[1], "map requires seqable").Seq()
-			if _, ok := s.(*ChunkedCons); ok {
+			if _, ok := s.(*corecollections.ChunkedCons); ok {
 				return chunkedMapSeq(f, s)
 			}
-			return &MappingSeq{seq: s, fn: func(o coretypes.Object) coretypes.Object { return call1(f, o) }}
+			return &corecollections.MappingSeq{SeqValue: s, Fn: func(o coretypes.Object) coretypes.Object { return call1(f, o) }}
 		}
 		return mapOrig.Call(args)
 	}}
@@ -641,7 +603,7 @@ func maybeOverrideSeqOps() {
 		if len(args) == 2 {
 			pred := coretypes.EnsureArgIsCallable(args, 0)
 			s := coretypes.EnsureArgIsSeqable(args, 1).Seq()
-			if _, ok := s.(*ChunkedCons); ok {
+			if _, ok := s.(*corecollections.ChunkedCons); ok {
 				return chunkedFilterSeq(pred, s)
 			}
 			return &FilteringSeq{seq: s, pred: pred}
@@ -673,12 +635,12 @@ func init() {
 }
 
 var procSplitWhitespace ProcFn = func(args []coretypes.Object) coretypes.Object {
-	CheckArity(args, 1, 1)
+	runtimeCheckArity(args, 1, 1)
 	return splitWhitespaceVector(coretypes.EnsureArgIsString(args, 0).S)
 }
 
-func splitWhitespaceVector(s string) *ArrayVector {
-	res := collectionConstruction.NewEmptyArrayVector()
+func splitWhitespaceVector(s string) *corecollections.ArrayVector {
+	res := corecollections.EmptyArrayVector()
 	for _, token := range corestr.SplitWhitespace(s) {
 		res.Append(coretypes.String{S: token})
 	}
@@ -686,17 +648,17 @@ func splitWhitespaceVector(s string) *ArrayVector {
 }
 
 var procFrequencies ProcFn = func(args []coretypes.Object) coretypes.Object {
-	CheckArity(args, 1, 1)
+	runtimeCheckArity(args, 1, 1)
 	seq := coretypes.EnsureObjectIsSeqable(args[0], "frequencies requires a seqable collection").Seq()
 	if seq.IsEmpty() {
-		return collectionConstruction.NewEmptyArrayMap()
+		return corecollections.EmptyArrayMap()
 	}
 
 	// Specialize the common text-token case: String keys and integer counts.
 	// Avoids persistent map churn and repeated coretypes.Object hash calculation in the
 	// hot loop, then emits a normal persistent map at the boundary.
 	stringCounts := make(map[string]int)
-	var tm *TransientMap
+	var tm *coretypes.TransientMap
 	stringOnly := true
 	for !seq.IsEmpty() {
 		obj := seq.First()
@@ -707,7 +669,7 @@ var procFrequencies ProcFn = func(args []coretypes.Object) coretypes.Object {
 				continue
 			}
 			stringOnly = false
-			tm = MapToTransient(nil)
+			tm = coretypes.MapToTransient(nil)
 			for k, v := range stringCounts {
 				tm.AssocInPlace(coretypes.String{S: k}, coretypes.Int{I: v})
 			}
@@ -722,16 +684,16 @@ var procFrequencies ProcFn = func(args []coretypes.Object) coretypes.Object {
 		seq = seq.Rest()
 	}
 	if stringOnly {
-		if len(stringCounts) <= int(HASHMAP_THRESHOLD/2) {
-			res := collectionConstruction.NewEmptyArrayMap()
+		if len(stringCounts) <= int(corecollections.HASHMAP_THRESHOLD/2) {
+			res := corecollections.EmptyArrayMap()
 			for k, v := range stringCounts {
 				res.Add(coretypes.String{S: k}, coretypes.Int{I: v})
 			}
 			return res
 		}
-		res := EmptyHashMap
+		res := corecollections.EmptyHashMap
 		for k, v := range stringCounts {
-			res = res.Assoc(coretypes.String{S: k}, coretypes.Int{I: v}).(*HashMap)
+			res = res.Assoc(coretypes.String{S: k}, coretypes.Int{I: v}).(*corecollections.HashMap)
 		}
 		return res
 	}
@@ -754,7 +716,9 @@ func NewIntRange(start, end, step int) *IntRange {
 	return &IntRange{start: start, end: end, step: step}
 }
 
-func (r *IntRange) ToString(escape bool) string   { return SeqToString(r.Seq(), escape) }
+func (r *IntRange) ToString(escape bool) string {
+	return corecollections.SeqToString(r.Seq(), func(obj coretypes.Object) string { return obj.ToString(escape) })
+}
 func (r *IntRange) Equals(other interface{}) bool { return coretypes.IsSeqEqual(r.Seq(), other) }
 func (r *IntRange) WithInfo(i *coretypes.ObjectInfo) coretypes.Object {
 	res := *r
@@ -762,7 +726,7 @@ func (r *IntRange) WithInfo(i *coretypes.ObjectInfo) coretypes.Object {
 	return &res
 }
 func (r *IntRange) GetType() *coretypes.Type { return TYPE.LazySeq }
-func (r *IntRange) Hash() uint32             { return hashOrdered(r.Seq()) }
+func (r *IntRange) Hash() uint32             { return corecollections.HashOrdered(r.Seq()) }
 func (r *IntRange) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *r
 	res.Meta = coretypes.SafeMerge(res.Meta, m)
@@ -772,17 +736,17 @@ func (r *IntRange) SequentialMarker() {}
 
 func (r *IntRange) Seq() coretypes.Seq {
 	if r.step > 0 && r.start >= r.end {
-		return EmptyList
+		return corecollections.EmptyList
 	}
 	if r.step < 0 && r.start <= r.end {
-		return EmptyList
+		return corecollections.EmptyList
 	}
 	return r.chunkedSeqFrom(r.start)
 }
 
 func (r *IntRange) chunkedSeqFrom(cur int) coretypes.Seq {
 	if !r.contains(cur) {
-		return EmptyList
+		return corecollections.EmptyList
 	}
 	buf := make([]coretypes.Object, 0, 32)
 	v := cur
@@ -790,14 +754,14 @@ func (r *IntRange) chunkedSeqFrom(cur int) coretypes.Seq {
 		buf = append(buf, coretypes.Int{I: v})
 		v += r.step
 	}
-	chunk := &ArrayChunk{arr: buf, off: 0, end: len(buf)}
+	chunk := &corecollections.ArrayChunk{Arr: buf, Off: 0, End: len(buf)}
 	var rest coretypes.Seq
 	if r.contains(v) {
-		rest = &LazySeq{fn: Proc{Name: "procIntRangeChunkRest", Fn: func(args []coretypes.Object) coretypes.Object {
+		rest = &corecollections.LazySeq{Fn: Proc{Name: "procIntRangeChunkRest", Fn: func(args []coretypes.Object) coretypes.Object {
 			return r.chunkedSeqFrom(v)
 		}}}
 	}
-	return &ChunkedCons{chunk: chunk, rest: rest, idx: 0}
+	return &corecollections.ChunkedCons{Chunk: chunk, RestSeq: rest, Idx: 0}
 }
 
 func (r *IntRange) Count() int {
@@ -816,7 +780,7 @@ func (r *IntRange) Count() int {
 		return n
 	}
 	if r.step == 0 {
-		panic(RT.NewError("range: step must not be 0"))
+		panic(coretypes.RuntimeError("range: step must not be 0"))
 	}
 	return 0
 }
@@ -997,7 +961,7 @@ func (r *IntRange) reduceMapAssocFast(f coretypes.Callable, init coretypes.Objec
 	if keyFn == nil || valFn == nil {
 		return nil, false
 	}
-	tm := MapToTransient(m)
+	tm := coretypes.MapToTransient(m)
 	for i := r.start; r.contains(i); i += r.step {
 		tm.AssocInPlace(coretypes.Int{I: keyFn(0, i)}, coretypes.Int{I: valFn(0, i)})
 	}
@@ -1116,7 +1080,9 @@ type intRangeSeq struct {
 	cur int
 }
 
-func (s *intRangeSeq) ToString(escape bool) string   { return SeqToString(s, escape) }
+func (s *intRangeSeq) ToString(escape bool) string {
+	return corecollections.SeqToString(s, func(obj coretypes.Object) string { return obj.ToString(escape) })
+}
 func (s *intRangeSeq) Equals(other interface{}) bool { return coretypes.IsSeqEqual(s, other) }
 func (s *intRangeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	res := *s
@@ -1124,7 +1090,7 @@ func (s *intRangeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	return &res
 }
 func (s *intRangeSeq) GetType() *coretypes.Type { return TYPE.LazySeq }
-func (s *intRangeSeq) Hash() uint32             { return hashOrdered(s) }
+func (s *intRangeSeq) Hash() uint32             { return corecollections.HashOrdered(s) }
 func (s *intRangeSeq) WithMeta(m coretypes.Map) coretypes.Object {
 	res := *s
 	res.Meta = coretypes.SafeMerge(res.Meta, m)
@@ -1136,10 +1102,10 @@ func (s *intRangeSeq) First() coretypes.Object { return coretypes.Int{I: s.cur} 
 func (s *intRangeSeq) Rest() coretypes.Seq {
 	next := s.cur + s.r.step
 	if s.r.step > 0 && next >= s.r.end {
-		return EmptyList
+		return corecollections.EmptyList
 	}
 	if s.r.step < 0 && next <= s.r.end {
-		return EmptyList
+		return corecollections.EmptyList
 	}
 	return &intRangeSeq{r: s.r, cur: next}
 }
@@ -1152,7 +1118,9 @@ func (s *intRangeSeq) IsEmpty() bool {
 	}
 	return s.cur <= s.r.end
 }
-func (s *intRangeSeq) Cons(obj coretypes.Object) coretypes.Seq { return &ConsSeq{first: obj, rest: s} }
+func (s *intRangeSeq) Cons(obj coretypes.Object) coretypes.Seq {
+	return &corecollections.ConsSeq{FirstValue: obj, RestValue: s}
+}
 
 // maybeOverrideRange installs the IntRange-backed range wrapper after core.joke is loaded.
 // It may be called multiple times; it only wraps the original range once.

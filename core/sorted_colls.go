@@ -2,13 +2,13 @@ package core
 
 // sorted_colls.go — sorted-map, sorted-set, sorted-map-by, sorted-set-by.
 //
-// Implementation: delegates to ArrayMap/MapSet but sorts entries on creation.
+// Implementation: delegates to corecollections.ArrayMap/corecollections.MapSet but sorts entries on creation.
 // Not a true balanced tree — O(n log n) creation, O(n) lookup.
 // Sufficient for parity; can be upgraded to a tree later.
 
 import (
-	corecollections "github.com/rcarmo/go-joker/core/collections"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 var sortedMetaCache coretypes.Map
@@ -17,7 +17,7 @@ func sortedCollMeta() coretypes.Map {
 	if sortedMetaCache != nil {
 		return sortedMetaCache
 	}
-	m := collectionConstruction.NewEmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "sorted"), coretypes.Boolean{B: true})
 	sortedMetaCache = m
 	return sortedMetaCache
@@ -37,10 +37,10 @@ func registerSortedCollProcs() {
 	smVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sorted-map"))
 	smVr.Value = Proc{Name: "procSortedMap", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args)%2 != 0 {
-			panic(RT.NewError("sorted-map requires an even number of arguments"))
+			panic(coretypes.RuntimeError("sorted-map requires an even number of arguments"))
 		}
 		pairs := sortedKeyValuePairs(args, nil)
-		m := collectionConstruction.NewEmptyArrayMap()
+		m := corecollections.EmptyArrayMap()
 		for _, p := range pairs {
 			addOrReplaceSortedMap(m, p.Key, p.Val, nil)
 		}
@@ -51,14 +51,14 @@ func registerSortedCollProcs() {
 	// sorted-map-by — (sorted-map-by comparator k1 v1 k2 v2 ...)
 	smbVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sorted-map-by"))
 	smbVr.Value = Proc{Name: "procSortedMapBy", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 999)
+		runtimeCheckArity(args, 1, 999)
 		comp := coretypes.EnsureArgIsCallable(args, 0)
 		keyvals := args[1:]
 		if len(keyvals)%2 != 0 {
-			panic(RT.NewError("sorted-map-by requires an even number of key/value arguments"))
+			panic(coretypes.RuntimeError("sorted-map-by requires an even number of key/value arguments"))
 		}
 		pairs := sortedKeyValuePairs(keyvals, comp)
-		m := collectionConstruction.NewEmptyArrayMap()
+		m := corecollections.EmptyArrayMap()
 		for _, p := range pairs {
 			addOrReplaceSortedMap(m, p.Key, p.Val, comp)
 		}
@@ -76,7 +76,7 @@ func registerSortedCollProcs() {
 	// sorted-set-by — (sorted-set-by comparator v1 v2 ...)
 	ssbVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sorted-set-by"))
 	ssbVr.Value = Proc{Name: "procSortedSetBy", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 999)
+		runtimeCheckArity(args, 1, 999)
 		return sortedSetFrom(args[1:], coretypes.EnsureArgIsCallable(args, 0))
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "sorted-set-by"), ssbVr)
@@ -84,7 +84,7 @@ func registerSortedCollProcs() {
 	// sorted? — (sorted? coll)
 	sortedQVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sorted?"))
 	sortedQVr.Value = Proc{Name: "procSortedQ", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		if m, ok := args[0].(coretypes.Meta); ok {
 			meta := m.GetMeta()
 			if meta != nil {
@@ -113,10 +113,10 @@ func registerSortedCollProcs() {
 	// comparator — (comparator pred) — wraps a boolean predicate into a comparator fn
 	compVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "comparator"))
 	compVr.Value = Proc{Name: "procComparator", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		pred := coretypes.EnsureArgIsCallable(args, 0)
 		return Proc{Name: "procComparatorFn", Fn: func(cArgs []coretypes.Object) coretypes.Object {
-			CheckArity(cArgs, 2, 2)
+			runtimeCheckArity(cArgs, 2, 2)
 			if ToBool(pred.Call(cArgs)) {
 				return coretypes.Int{I: -1}
 			}
@@ -140,12 +140,12 @@ func sortedKeyValuePairs(keyvals []coretypes.Object, comp coretypes.Callable) []
 	return pairs
 }
 
-func addOrReplaceSortedMap(m *ArrayMap, key coretypes.Object, val coretypes.Object, comp coretypes.Callable) {
+func addOrReplaceSortedMap(m *corecollections.ArrayMap, key coretypes.Object, val coretypes.Object, comp coretypes.Callable) {
 	if comp != nil {
-		for i := 0; i < len(m.arr); i += 2 {
-			if compareWith(comp, m.arr[i], key) == 0 {
-				m.arr[i] = key
-				m.arr[i+1] = val
+		for i := 0; i < len(m.Arr); i += 2 {
+			if compareWith(comp, m.Arr[i], key) == 0 {
+				m.Arr[i] = key
+				m.Arr[i+1] = val
 				return
 			}
 		}
@@ -155,8 +155,8 @@ func addOrReplaceSortedMap(m *ArrayMap, key coretypes.Object, val coretypes.Obje
 	if m.Add(key, val) {
 		return
 	}
-	if i := m.indexOf(key); i != -1 {
-		m.arr[i+1] = val
+	if i := corecollections.MapIndexOf(m.Arr, key); i != -1 {
+		m.Arr[i+1] = val
 	}
 }
 
@@ -169,9 +169,9 @@ func sortedSetFrom(values []coretypes.Object, comp coretypes.Callable) coretypes
 		}
 		return compareObjects(a, b) < 0
 	})
-	s := collectionConstruction.NewEmptySet()
+	s := corecollections.EmptySet()
 	for _, v := range sorted {
-		s = s.Conj(v).(*MapSet)
+		s = s.Conj(v).(*corecollections.MapSet)
 	}
 	return s.WithMeta(sortedCollMeta())
 }
@@ -182,7 +182,7 @@ func compareWith(comp coretypes.Callable, a, b coretypes.Object) int {
 
 func sortedSubseq(args []coretypes.Object, reverse bool) coretypes.Object {
 	if len(args) != 3 && len(args) != 5 {
-		PanicArityMinMax(len(args), 3, 5)
+		coretypes.RuntimePanicArityMinMax(len(args), 3, 5)
 	}
 	coll := args[0]
 	entries := sortedEntries(coll)
@@ -211,7 +211,7 @@ func sortedSubseq(args []coretypes.Object, reverse bool) coretypes.Object {
 	if len(out) == 0 {
 		return NIL
 	}
-	return &ArraySeq{arr: out, index: 0}
+	return &corecollections.ArraySeq{Arr: out, Index: 0}
 }
 
 func sortedEntries(coll coretypes.Object) []coretypes.Object {
@@ -220,7 +220,7 @@ func sortedEntries(coll coretypes.Object) []coretypes.Object {
 	if m, ok := coll.(coretypes.Map); ok {
 		for it := m.Iter(); it.HasNext(); {
 			p := it.Next()
-			out = append(out, collectionConstruction.NewArrayVectorFrom(p.Key, p.Value))
+			out = append(out, corecollections.NewArrayVectorFrom(p.Key, p.Value))
 		}
 		if !preserveOrder {
 			corecollections.SortBy(out, func(a, b coretypes.Object) bool { return compareObjects(rangeKey(a), rangeKey(b)) < 0 })
@@ -272,71 +272,5 @@ func rangePred(pred coretypes.Callable, a, b coretypes.Object) bool {
 
 // compareObjects provides a default ordering for Clojure values.
 func compareObjects(a, b coretypes.Object) int {
-	// Same type comparisons
-	switch av := a.(type) {
-	case coretypes.Int:
-		if bv, ok := b.(coretypes.Int); ok {
-			if av.I < bv.I {
-				return -1
-			}
-			if av.I > bv.I {
-				return 1
-			}
-			return 0
-		}
-	case coretypes.Double:
-		if bv, ok := b.(coretypes.Double); ok {
-			if av.D < bv.D {
-				return -1
-			}
-			if av.D > bv.D {
-				return 1
-			}
-			return 0
-		}
-	case coretypes.String:
-		if bv, ok := b.(coretypes.String); ok {
-			if av.S < bv.S {
-				return -1
-			}
-			if av.S > bv.S {
-				return 1
-			}
-			return 0
-		}
-	case coretypes.Keyword:
-		if bv, ok := b.(coretypes.Keyword); ok {
-			as := av.ToString(false)
-			bs := bv.ToString(false)
-			if as < bs {
-				return -1
-			}
-			if as > bs {
-				return 1
-			}
-			return 0
-		}
-	case coretypes.Symbol:
-		if bv, ok := b.(coretypes.Symbol); ok {
-			as := av.ToString(false)
-			bs := bv.ToString(false)
-			if as < bs {
-				return -1
-			}
-			if as > bs {
-				return 1
-			}
-			return 0
-		}
-	}
-	// Fall back to string comparison
-	as := a.ToString(false)
-	bs := b.ToString(false)
-	if as < bs {
-		return -1
-	}
-	if as > bs {
-		return 1
-	}
-	return 0
+	return corecollections.CompareObjectsDefault(a, b)
 }

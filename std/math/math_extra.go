@@ -1,8 +1,10 @@
 package math
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -20,7 +22,7 @@ func init() {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeDouble(math.Tan(coretypes.EnsureArgIsNumber(args, 0).Double().D))
 	}, Name: "tan_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns the tangent of the radian argument x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// asin — arcsine
@@ -28,7 +30,7 @@ func init() {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeDouble(math.Asin(coretypes.EnsureArgIsNumber(args, 0).Double().D))
 	}, Name: "asin_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns the arcsine (in radians) of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// acos — arccosine
@@ -36,7 +38,7 @@ func init() {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeDouble(math.Acos(coretypes.EnsureArgIsNumber(args, 0).Double().D))
 	}, Name: "acos_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns the arccosine (in radians) of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// atan — arctangent
@@ -44,7 +46,7 @@ func init() {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeDouble(math.Atan(coretypes.EnsureArgIsNumber(args, 0).Double().D))
 	}, Name: "atan_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns the arctangent (in radians) of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// atan2 — two-argument arctangent
@@ -54,7 +56,7 @@ func init() {
 		x := coretypes.EnsureArgIsNumber(args, 1).Double().D
 		return coretypes.MakeDouble(math.Atan2(y, x))
 	}, Name: "atan2_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "y"), coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "y"), coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns the arc tangent of y/x, using the signs to determine the quadrant.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// sinh — hyperbolic sine
@@ -62,7 +64,7 @@ func init() {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeDouble(math.Sinh(coretypes.EnsureArgIsNumber(args, 0).Double().D))
 	}, Name: "sinh_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns the hyperbolic sine of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// cosh — hyperbolic cosine
@@ -70,7 +72,7 @@ func init() {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeDouble(math.Cosh(coretypes.EnsureArgIsNumber(args, 0).Double().D))
 	}, Name: "cosh_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns the hyperbolic cosine of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// tanh — hyperbolic tangent
@@ -78,7 +80,7 @@ func init() {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeDouble(math.Tanh(coretypes.EnsureArgIsNumber(args, 0).Double().D))
 	}, Name: "tanh_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Returns the hyperbolic tangent of x.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// remainder — IEEE 754 floating-point remainder
@@ -88,7 +90,7 @@ func init() {
 		y := coretypes.EnsureArgIsNumber(args, 1).Double().D
 		return coretypes.MakeDouble(math.Remainder(x, y))
 	}, Name: "remainder_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
 			`Returns the IEEE 754 floating-point remainder of x/y.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// fmod — floating-point modulus (same sign as x)
@@ -98,7 +100,7 @@ func init() {
 		y := coretypes.EnsureArgIsNumber(args, 1).Double().D
 		return coretypes.MakeDouble(math.Mod(x, y))
 	}, Name: "fmod_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
 			`Returns the floating-point remainder of x/y (same sign as x).`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// max-val — numeric max of two values
@@ -108,7 +110,7 @@ func init() {
 		y := coretypes.EnsureArgIsNumber(args, 1).Double().D
 		return coretypes.MakeDouble(math.Max(x, y))
 	}, Name: "max_val_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
 			`Returns the larger of x or y.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// min-val — numeric min of two values
@@ -118,7 +120,7 @@ func init() {
 		y := coretypes.EnsureArgIsNumber(args, 1).Double().D
 		return coretypes.MakeDouble(math.Min(x, y))
 	}, Name: "min_val_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"), coretypes.MakeSymbol(STRINGS.Intern, "y"))),
 			`Returns the smaller of x or y.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// degrees — convert radians to degrees
@@ -126,7 +128,7 @@ func init() {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeDouble(coretypes.EnsureArgIsNumber(args, 0).Double().D * 180.0 / math.Pi)
 	}, Name: "degrees_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Converts angle x from radians to degrees.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 
 	// radians — convert degrees to radians
@@ -134,6 +136,6 @@ func init() {
 		CheckArity(args, 1, 1)
 		return coretypes.MakeDouble(coretypes.EnsureArgIsNumber(args, 0).Double().D * math.Pi / 180.0)
 	}, Name: "radians_", Package: "std/math"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "x"))),
 			`Converts angle x from degrees to radians.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.Double"}))
 }

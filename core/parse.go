@@ -3,13 +3,15 @@ package core
 import (
 	"bytes"
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"regexp"
 	"sort"
 	"unsafe"
 
+	coretypes "github.com/rcarmo/go-joker/core/types"
+
 	"github.com/rcarmo/go-joker/core/hashutil"
 	corereader "github.com/rcarmo/go-joker/core/reader"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
@@ -328,12 +330,12 @@ var (
 	IN_NS_VAR      *Var
 	WARNINGS       = Warnings{
 		fnWithEmptyBody: true,
-		entryPoints:     collectionConstruction.NewEmptySet(),
+		entryPoints:     corecollections.EmptySet(),
 	}
 )
 
 func (b *Bindings) ToMap() coretypes.Map {
-	var res coretypes.Map = collectionConstruction.NewEmptyArrayMap()
+	var res coretypes.Map = corecollections.EmptyArrayMap()
 	for b != nil {
 		for _, v := range b.bindings {
 			res = res.Assoc(v.name, NIL).(coretypes.Map)
@@ -705,9 +707,9 @@ func parseMap(m coretypes.Map, pos coretypes.Position, ctx *ParseContext) *MapEx
 	return res
 }
 
-func parseSet(s *MapSet, pos coretypes.Position, ctx *ParseContext) Expr {
-	res := readerConstruction.SetExpr(s.m.Count(), pos)
-	for iter, i := iter(s.Seq()), 0; iter.HasNext(); i++ {
+func parseSet(s *corecollections.MapSet, pos coretypes.Position, ctx *ParseContext) Expr {
+	res := readerConstruction.SetExpr(s.M.Count(), pos)
+	for iter, i := corecollections.NewSeqIterator(s.Seq()), 0; iter.HasNext(); i++ {
 		res.elements[i] = Parse(iter.Next(), ctx)
 	}
 	return res
@@ -715,7 +717,7 @@ func parseSet(s *MapSet, pos coretypes.Position, ctx *ParseContext) Expr {
 
 func checkForm(obj coretypes.Object, min int, max int) int {
 	seq := obj.(coretypes.Seq)
-	c := SeqCount(seq)
+	c := corecollections.SeqCount(seq)
 	if c < min {
 		panic(&ParseError{obj: obj, msg: "Too few arguments to " + seq.First().ToString(false)})
 	}
@@ -766,7 +768,7 @@ func isCreatedByMacro(formSeq coretypes.Seq) bool {
 func parseDef(obj coretypes.Object, ctx *ParseContext, isForLinter bool) *DefExpr {
 	count := checkForm(obj, 2, 4)
 	seq := obj.(coretypes.Seq)
-	s := Second(seq)
+	s := corecollections.Second(seq)
 	var meta coretypes.Map
 	switch sym := s.(type) {
 	case coretypes.Symbol:
@@ -790,16 +792,16 @@ func parseDef(obj coretypes.Object, ctx *ParseContext, isForLinter bool) *DefExp
 		}
 		meta = sym.GetMeta()
 		if count == 3 {
-			res.value = Parse(Third(seq), ctx)
+			res.value = Parse(corecollections.Third(seq), ctx)
 		} else if count == 4 {
-			res.value = Parse(Fourth(seq), ctx)
-			docstring := Third(seq)
+			res.value = Parse(corecollections.Fourth(seq), ctx)
+			docstring := corecollections.Third(seq)
 			switch docstring.(type) {
 			case coretypes.String:
 				if meta != nil {
 					meta = meta.Assoc(KEYWORDS.doc, docstring).(coretypes.Map)
 				} else {
-					meta = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.doc, docstring).(coretypes.Map)
+					meta = corecollections.EmptyArrayMap().Assoc(KEYWORDS.doc, docstring).(coretypes.Map)
 				}
 			default:
 				panic(&ParseError{obj: docstring, msg: "Docstring must be a string"})
@@ -1040,7 +1042,7 @@ func parseCatch(obj coretypes.Object, ctx *ParseContext) *CatchExpr {
 	if seq.IsEmpty() || seq.Rest().IsEmpty() {
 		panic(&ParseError{obj: obj, msg: "catch requires at least two arguments: type symbol and binding symbol"})
 	}
-	excSymbol := Second(seq)
+	excSymbol := corecollections.Second(seq)
 	excType := resolveType(seq.First(), ctx)
 	if !IsSymbol(excSymbol) {
 		panic(&ParseError{obj: excSymbol, msg: "Bad binding form, expected symbol, got: " + excSymbol.ToString(false)})
@@ -1131,7 +1133,7 @@ func parseLetLoop(obj coretypes.Object, formName string, ctx *ParseContext) *Let
 	res := &LetExpr{
 		Position: GetPosition(obj),
 	}
-	bindings := Second(obj.(coretypes.Seq))
+	bindings := corecollections.Second(obj.(coretypes.Seq))
 	switch b := bindings.(type) {
 	case coretypes.Vec:
 		cnt := b.Count()
@@ -1298,7 +1300,7 @@ func fixInfo(obj coretypes.Object, info *coretypes.ObjectInfo) coretypes.Object 
 			objs = append(objs, t)
 			s = s.Rest()
 		}
-		res := collectionConstruction.NewListFrom(objs...)
+		res := corecollections.NewListFrom(objs...)
 		if s, ok := obj.(coretypes.Meta); ok {
 			res.Meta = s.GetMeta()
 		}
@@ -1307,7 +1309,7 @@ func fixInfo(obj coretypes.Object, info *coretypes.ObjectInfo) coretypes.Object 
 		}
 		return res.WithInfo(info)
 	case coretypes.Vec:
-		res := collectionConstruction.NewEmptyArrayVector()
+		res := corecollections.EmptyArrayVector()
 		res.Meta = s.(coretypes.Meta).GetMeta()
 		for i := 0; i < s.Count(); i++ {
 			t := fixInfo(s.At(i), info)
@@ -1318,7 +1320,7 @@ func fixInfo(obj coretypes.Object, info *coretypes.ObjectInfo) coretypes.Object 
 		}
 		return res.WithInfo(info)
 	case coretypes.Map:
-		res := collectionConstruction.NewEmptyArrayMap()
+		res := corecollections.EmptyArrayMap()
 		iter := s.Iter()
 		for iter.HasNext() {
 			p := iter.Next()
@@ -1343,7 +1345,7 @@ func macroexpand1(seq coretypes.Seq, ctx *ParseContext) coretypes.Object {
 		expr := &MacroCallExpr{
 			Position: GetPosition(seq),
 			macro:    vr.Value.(coretypes.Callable),
-			args:     ToSlice(seq.Rest().Cons(ctx.localBindings.ToMap()).Cons(seq)),
+			args:     corecollections.ToSlice(seq.Rest().Cons(ctx.localBindings.ToMap()).Cons(seq)),
 			name:     varCallableString(vr),
 		}
 		return fixInfo(Eval(expr, nil), seq.GetInfo())
@@ -1466,14 +1468,14 @@ func checkArglist(arglist coretypes.Seq, passedArgsCount int) bool {
 
 func setMacroMeta(vr *Var) {
 	if vr.Meta == nil {
-		vr.Meta = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(coretypes.Map)
+		vr.Meta = corecollections.EmptyArrayMap().Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(coretypes.Map)
 	} else {
 		vr.Meta = vr.Meta.Assoc(KEYWORDS.macro, coretypes.Boolean{B: true}).(coretypes.Map)
 	}
 }
 
 func parseSetMacro(obj coretypes.Object, ctx *ParseContext) Expr {
-	expr := Parse(Second(obj.(coretypes.Seq)), ctx)
+	expr := Parse(corecollections.Second(obj.(coretypes.Seq)), ctx)
 	switch expr := expr.(type) {
 	case *LiteralExpr:
 		switch vr := expr.obj.(type) {
@@ -1632,16 +1634,16 @@ func parseList(obj coretypes.Object, ctx *ParseContext) Expr {
 	if v, ok := first.(coretypes.Symbol); ok && v.NamespaceKey() == nil {
 		switch v.NameKey() {
 		case STR.quote:
-			return readerConstruction.LiteralExpr(Second(seq))
+			return readerConstruction.LiteralExpr(corecollections.Second(seq))
 		case STR._if:
 			checkForm(obj, 3, 4)
-			if LINTER_MODE && SeqCount(seq) < 4 && WARNINGS.ifWithoutElse {
+			if LINTER_MODE && corecollections.SeqCount(seq) < 4 && WARNINGS.ifWithoutElse {
 				printParseWarning(pos, "missing else branch")
 			}
 			return &IfExpr{
-				cond:     Parse(Second(seq), ctx),
-				positive: Parse(Third(seq), ctx),
-				negative: Parse(Fourth(seq), ctx),
+				cond:     Parse(corecollections.Second(seq), ctx),
+				positive: Parse(corecollections.Third(seq), ctx),
+				negative: Parse(corecollections.Fourth(seq), ctx),
 				Position: pos,
 			}
 		case STR.fn_:
@@ -1666,7 +1668,7 @@ func parseList(obj coretypes.Object, ctx *ParseContext) Expr {
 			return parseDef(obj, ctx, true)
 		case STR._var:
 			checkForm(obj, 2, 2)
-			switch sym := Second(seq).(type) {
+			switch sym := corecollections.Second(seq).(type) {
 			case coretypes.Symbol:
 				vr, ok := ctx.GlobalEnv.Resolve(sym)
 				if !ok {
@@ -1709,7 +1711,7 @@ func parseList(obj coretypes.Object, ctx *ParseContext) Expr {
 		case STR.throw:
 			return &ThrowExpr{
 				Position: pos,
-				e:        Parse(Second(seq), ctx),
+				e:        Parse(corecollections.Second(seq), ctx),
 			}
 		case STR.try:
 			return parseTry(obj, ctx)
@@ -1896,7 +1898,7 @@ func Parse(obj coretypes.Object, ctx *ParseContext) Expr {
 	case coretypes.Map:
 		canHaveMeta = true
 		res = parseMap(v, pos, ctx)
-	case *MapSet:
+	case *corecollections.MapSet:
 		canHaveMeta = true
 		res = parseSet(v, pos, ctx)
 	case coretypes.Seq:

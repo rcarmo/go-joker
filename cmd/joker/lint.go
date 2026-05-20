@@ -4,6 +4,7 @@ import (
 	"fmt"
 	corereader "github.com/rcarmo/go-joker/core/reader"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	"os"
 	"path/filepath"
 	"strings"
@@ -30,7 +31,7 @@ func configureLinterMode(dialect corereader.Dialect, filename string, workingDir
 	if dialect != corereader.JokerDialect {
 		RemoveJokerNamespaces()
 	}
-	GLOBAL_ENV.CoreNamespace.Resolve("*loaded-libs*").Value = EmptySet()
+	GLOBAL_ENV.CoreNamespace.Resolve("*loaded-libs*").Value = corecollections.EmptySet()
 	LINTER_MODE = true
 	DIALECT = dialect
 	lm, _ := GLOBAL_ENV.Resolve(coretypes.MakeSymbol(STRINGS.Intern, "joker.core/*linter-mode*"))
@@ -104,7 +105,7 @@ func lintDir(dirname string, dialect corereader.Dialect, reportGloballyUnused bo
 			return nil
 		}
 		if !info.IsDir() && matchesDialect(path, dialect) && !isIgnored(path) {
-			GLOBAL_ENV.CoreNamespace.Resolve("*loaded-libs*").Value = EmptySet()
+			GLOBAL_ENV.CoreNamespace.Resolve("*loaded-libs*").Value = corecollections.EmptySet()
 			processErr = processFile(path, phase)
 			if processErr == nil {
 				WarnOnUnusedNamespaces()

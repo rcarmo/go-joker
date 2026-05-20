@@ -4,9 +4,11 @@ package hex
 
 import (
 	"fmt"
+	"os"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"os"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func InternsOrThunks() {
@@ -17,12 +19,12 @@ func InternsOrThunks() {
 
 	hexNamespace.InternVar("decode-string", decode_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Returns the bytes represented by the hexadecimal string s.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	hexNamespace.InternVar("encode-string", encode_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Returns the hexadecimal encoding of s.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 }

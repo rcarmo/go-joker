@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	. "github.com/rcarmo/go-joker/core"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func runEmbeddedSource(src string) {
@@ -42,7 +43,7 @@ func dumpDebugState() {
 	fmt.Fprintf(debugOut, "reportGloballyUnusedFlag=%v\n", reportGloballyUnusedFlag)
 	fmt.Fprintf(debugOut, "dialect=%v\n", dialect)
 	fmt.Fprintf(debugOut, "workingDir=%v\n", workingDir)
-	fmt.Fprintf(debugOut, "HASHMAP_THRESHOLD=%v\n", HASHMAP_THRESHOLD)
+	fmt.Fprintf(debugOut, "HASHMAP_THRESHOLD=%v\n", corecollections.HASHMAP_THRESHOLD)
 	fmt.Fprintf(debugOut, "eval=%v\n", eval)
 	fmt.Fprintf(debugOut, "replFlag=%v\n", replFlag)
 	fmt.Fprintf(debugOut, "replSocket=%v\n", replSocket)

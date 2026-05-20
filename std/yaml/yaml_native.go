@@ -2,7 +2,9 @@ package yaml
 
 import (
 	"fmt"
+
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	"gopkg.in/yaml.v2"
 
@@ -58,13 +60,13 @@ func toObject(v interface{}) coretypes.Object {
 	case nil:
 		return NIL
 	case []interface{}:
-		res := EmptyVector()
+		res := corecollections.EmptyVector()
 		for _, v := range v {
 			res = res.Conjoin(toObject(v))
 		}
 		return res
 	case map[interface{}]interface{}:
-		res := EmptyArrayMap()
+		res := corecollections.EmptyArrayMap()
 		for k, v := range v {
 			res.Add(toObject(k), toObject(v))
 		}

@@ -1,12 +1,12 @@
 # Generated bootstrap contract design note
 
-Updated: 2026-05-14
+Updated: 2026-05-20
 
 ## Purpose
 
 This note narrows R4's next step before moving generated artifacts out of root `core`: define the minimum bootstrap contract between generated namespace data and the handwritten runtime.
 
-Most current generated files still stay in package `core` because they freely reference runtime object constructors, namespace internals, vars, metadata, and init ordering. The former root `core/a_data.go` namespace list has moved behind the data-only generated manifest. Moving the remaining generated files blindly would either force broad exports or create compatibility wrappers, both of which are non-goals.
+Most current generated files still stay in package `core` because they freely reference namespace internals, vars, metadata, Fn/proc state, and init ordering. The former root `core/a_data.go` namespace list has moved behind the data-only generated manifest, and bootstrap output now imports moved collection/runtime owners directly for values such as `corecollections.ArrayMap`, `corert.ObjectChannel`, and `corert.Atom`/`corert.NewAtom`. Moving the remaining generated files blindly would still force broad exports or create compatibility wrappers, both of which are non-goals.
 
 ## Current generated responsibilities
 
@@ -64,7 +64,7 @@ This keeps generated output data-oriented and avoids importing root `core` from 
 
 1. Keep existing root generated files guarded by `tests/generated_files.txt`.
 2. Define the data-only payload structs under `core/generated`. **Done: `NamespaceSource` and `VarDoc` are in place with direct tests.**
-3. Teach generators to emit data-only payloads under `core/generated` while still emitting the current root files. **Started: `core_sources_gen.go` now emits the core source manifest, and `linter_payloads_gen.go` now emits the generated linter payload registry.**
+3. Teach generators to emit data-only payloads under `core/generated` while still emitting the current root files. **Started: `core_sources_gen.go` now emits the core source manifest, `linter_payloads_gen.go` now emits the generated linter payload registry, and root bootstrap emission now uses moved package references for concrete collections and runtime-owned Atom/Channel wrappers.**
 4. Add tests comparing data-only payloads with current root generated behavior. **Started: root-core tests compare generated source-manifest namespaces with current bootstrap behavior; internal generated tests verify manifest source paths exist and generated linter payloads match manifest linter entries; `tests/generated_source_manifest_guard.py` verifies the emitted manifest stays in sync with `CoreSourceFiles`; `tests/generated_guard.sh` now tracks the generated linter registry; `make generated-bootstrap-check` and `make docs-check` guard this equivalence.**
 5. Switch root bootstrap to consume `core/generated` payloads. **Done for `*core-namespaces*`: `core/generated.CoreNamespaces()` consumes the generated source manifest, and root `setCoreNamespaces` populates `*core-namespaces*` from that helper plus the always-present `user` namespace.**
 6. Remove root generated bootstrap files from `tests/generated_files.txt` only after equivalent behavior is proven. **Done for `core/a_data.go`; it is no longer emitted or tracked. The linter byte slices remain generated data files, but their registry is now emitted under `core/generated/linter_payloads_gen.go` and tracked by the generated-file guard.**

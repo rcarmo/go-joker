@@ -1,6 +1,9 @@
 package core
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+)
 
 // hierarchy_init.go — Register derive, underive, isa?, ancestors, descendants, parents, make-hierarchy.
 
@@ -17,7 +20,7 @@ func registerHierarchyProcs() {
 	// make-hierarchy
 	mhVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "make-hierarchy"))
 	mhVr.Value = Proc{Name: "procMakeHierarchy", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 0, 0)
+		runtimeCheckArity(args, 0, 0)
 		return MakeHierarchy()
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "make-hierarchy"), mhVr)
@@ -32,7 +35,7 @@ func registerHierarchyProcs() {
 		case 3:
 			h, ok := args[0].(*Hierarchy)
 			if !ok {
-				panic(RT.NewError("First argument to 3-arity derive must be a hierarchy"))
+				panic(coretypes.RuntimeError("First argument to 3-arity derive must be a hierarchy"))
 			}
 			h.Derive(args[1], args[2])
 			return h
@@ -53,7 +56,7 @@ func registerHierarchyProcs() {
 		case 3:
 			h, ok := args[0].(*Hierarchy)
 			if !ok {
-				panic(RT.NewError("First argument to 3-arity underive must be a hierarchy"))
+				panic(coretypes.RuntimeError("First argument to 3-arity underive must be a hierarchy"))
 			}
 			h.Underive(args[1], args[2])
 			return h
@@ -73,7 +76,7 @@ func registerHierarchyProcs() {
 		case 3:
 			h, ok := args[0].(*Hierarchy)
 			if !ok {
-				panic(RT.NewError("First argument to 3-arity isa? must be a hierarchy"))
+				panic(coretypes.RuntimeError("First argument to 3-arity isa? must be a hierarchy"))
 			}
 			return coretypes.MakeBoolean(h.IsA(args[1], args[2]))
 		default:
@@ -96,7 +99,7 @@ func registerHierarchyProcs() {
 			var ok bool
 			h, ok = args[0].(*Hierarchy)
 			if !ok {
-				panic(RT.NewError("First argument to 2-arity parents must be a hierarchy"))
+				panic(coretypes.RuntimeError("First argument to 2-arity parents must be a hierarchy"))
 			}
 			tag = args[1]
 		default:
@@ -107,9 +110,9 @@ func registerHierarchyProcs() {
 		if len(ps) == 0 {
 			return NIL
 		}
-		s := collectionConstruction.NewEmptySet()
+		s := corecollections.EmptySet()
 		for _, p := range ps {
-			s = s.Conj(p).(*MapSet)
+			s = s.Conj(p).(*corecollections.MapSet)
 		}
 		return s
 	}}
@@ -128,7 +131,7 @@ func registerHierarchyProcs() {
 			var ok bool
 			h, ok = args[0].(*Hierarchy)
 			if !ok {
-				panic(RT.NewError("First argument to 2-arity ancestors must be a hierarchy"))
+				panic(coretypes.RuntimeError("First argument to 2-arity ancestors must be a hierarchy"))
 			}
 			tag = args[1]
 		default:
@@ -139,9 +142,9 @@ func registerHierarchyProcs() {
 		if len(as) == 0 {
 			return NIL
 		}
-		s := collectionConstruction.NewEmptySet()
+		s := corecollections.EmptySet()
 		for _, a := range as {
-			s = s.Conj(a).(*MapSet)
+			s = s.Conj(a).(*corecollections.MapSet)
 		}
 		return s
 	}}
@@ -160,7 +163,7 @@ func registerHierarchyProcs() {
 			var ok bool
 			h, ok = args[0].(*Hierarchy)
 			if !ok {
-				panic(RT.NewError("First argument to 2-arity descendants must be a hierarchy"))
+				panic(coretypes.RuntimeError("First argument to 2-arity descendants must be a hierarchy"))
 			}
 			tag = args[1]
 		default:
@@ -171,9 +174,9 @@ func registerHierarchyProcs() {
 		if len(ds) == 0 {
 			return NIL
 		}
-		s := collectionConstruction.NewEmptySet()
+		s := corecollections.EmptySet()
 		for _, d := range ds {
-			s = s.Conj(d).(*MapSet)
+			s = s.Conj(d).(*corecollections.MapSet)
 		}
 		return s
 	}}

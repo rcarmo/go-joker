@@ -3,17 +3,13 @@
 
 package core
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+)
 
-/*
-Called by parse_init.go in an outer var block, this runs before any
-
-	func init() as well as before func main(). InitEnv() and others are
-	called at runtime to set some of these Values based on the current
-	invocation.
-*/
 func NewEnv() *Env {
-	features := collectionConstruction.NewEmptySet()
+	features := corecollections.EmptySet()
 	features.Add(coretypes.MakeKeyword(STRINGS.Intern, "default"))
 	features.Add(coretypes.MakeKeyword(STRINGS.Intern, "joker"))
 	res := &Env{
@@ -44,10 +40,10 @@ func NewEnv() *Env {
 		MakeMeta(nil, "true if Joker is running in repl mode", "1.5"))
 	res.CoreNamespace.InternVar("*linter-mode*", coretypes.Boolean{B: LINTER_MODE},
 		MakeMeta(nil, "true if Joker is running in linter mode", "1.0"))
-	res.CoreNamespace.InternVar("*linter-config*", collectionConstruction.NewEmptyArrayMap(),
+	res.CoreNamespace.InternVar("*linter-config*", corecollections.EmptyArrayMap(),
 		MakeMeta(nil, "Map of configuration key/value pairs for linter mode", "1.0"))
 	res.libs = res.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, "*loaded-libs*"))
-	res.libs.Value = collectionConstruction.NewEmptySet()
+	res.libs.Value = corecollections.EmptySet()
 	res.libs.isPrivate = true
 	return res
 }

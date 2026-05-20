@@ -16,7 +16,7 @@
   "Returns the JSON encoding of v. Optional opts may include :prefix and :indent keys
   with the same semantics as prefix and indent arguments to Go's json.MarshalIndent function."
   {:added "1.0"
-   :go {1 "writeString(v, EmptyArrayMap())"
+   :go {1 "writeString(v, corecollections.EmptyArrayMap())"
         2 "writeString(v, opts)"}}
   ([^Object v])
   ([^Object v ^Map opts]))
@@ -27,7 +27,7 @@
   Optional opts map may have the following keys:
   :keywords? - if true, JSON keys will be converted from strings to keywords."
   {:added "1.0"
-   :go {1 "jsonSeqOpts(rdr, EmptyArrayMap())"
+   :go {1 "jsonSeqOpts(rdr, corecollections.EmptyArrayMap())"
         2 "jsonSeqOpts(rdr, opts)"}}
   ([^Object rdr])
   ([^Object rdr ^Map opts]))

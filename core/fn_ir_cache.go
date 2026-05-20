@@ -1,11 +1,12 @@
 package core
 
 import (
+	"sync"
+	"sync/atomic"
+
 	coreir "github.com/rcarmo/go-joker/core/ir"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
-	"sync"
-	"sync/atomic"
 )
 
 // ---- fn_ir_cache.go ----
@@ -225,9 +226,7 @@ func irDispatchFnCall(fn *Fn, args []coretypes.Object) coretypes.Object {
 		// fn.Call stores the argument slice in the lexical environment, so a
 		// closure returned from that call must not retain stack-backed storage
 		// that a later call can overwrite.
-		stableArgs := make([]coretypes.Object, len(args))
-		copy(stableArgs, args)
-		args = stableArgs
+		args = coreir.StableArgs(args)
 	}
 	return fn.Call(args)
 }
@@ -501,9 +500,9 @@ const (
 	irStr1           = coreir.Str1           // pop 1, push string conversion
 	irNthStringASCII = coreir.NthStringASCII // operand: constant string index; pop idx, push char
 	irCount          = coreir.Count          // pop 1, push count
-	irToTransient    = coreir.ToTransient    // pop 1 (ArrayVector), push TransientVector
+	irToTransient    = coreir.ToTransient    // pop 1 (corecollections.ArrayVector), push TransientVector
 	irAssocBang      = coreir.AssocBang      // pop 3 (tv, key, val), mutate in place, push tv
-	irToPersistent   = coreir.ToPersistent   // pop 1 (TransientVector), push ArrayVector
+	irToPersistent   = coreir.ToPersistent   // pop 1 (TransientVector), push corecollections.ArrayVector
 	irFallback       = coreir.Fallback       // cannot execute in IR; fall back to tree Eval
 	irIntCast        = coreir.IntCast        // pop 1 (Char or coretypes.Number), push Int
 	irSubs           = coreir.Subs           // pop 2 or 3 (string, start [, end]), push substring

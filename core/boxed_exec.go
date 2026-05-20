@@ -3,17 +3,19 @@ package core
 import (
 	"context"
 	"fmt"
-	coreirx "github.com/rcarmo/go-joker/core/ir"
-	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corewasm "github.com/rcarmo/go-joker/core/wasm"
-	"github.com/tetratelabs/wazero"
-	"github.com/tetratelabs/wazero/api"
 	"math"
 	"strconv"
 	"sync"
 	"unicode/utf8"
 	"unsafe"
+
+	coreirx "github.com/rcarmo/go-joker/core/ir"
+	corert "github.com/rcarmo/go-joker/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
+	"github.com/tetratelabs/wazero"
+	"github.com/tetratelabs/wazero/api"
 )
 
 // ---- boxed_exec.go ----
@@ -2116,45 +2118,6 @@ func irExecTypedInline(prog *IRProgram, slots []irValue) irValue {
 // This is the typed executor's hot path for numeric loops.
 // Falls back to nil (letting irExecTyped handle it) for unsupported patterns.
 
-func nbFromObject(obj coretypes.Object, table *[]coretypes.Object) uint64 {
-	switch v := obj.(type) {
-	case coretypes.Int:
-		return coreirx.BoxInt(v.I)
-	case coretypes.Double:
-		return coreirx.BoxDouble(v.D)
-	case coretypes.Boolean:
-		return coreirx.BoxBool(v.B)
-	case Nil:
-		return coreirx.BoxNil()
-	default:
-		idx := len(*table)
-		*table = append(*table, obj)
-		return coreirx.BoxObj(idx)
-	}
-}
-
-func nbToObject(v uint64, table []coretypes.Object) coretypes.Object {
-	if coreirx.IsDouble(v) {
-		return coretypes.Double{D: coreirx.ToDouble(v)}
-	}
-	if coreirx.IsInt(v) {
-		return coretypes.Int{I: coreirx.ToInt(v)}
-	}
-	if coreirx.IsBool(v) {
-		return coretypes.Boolean{B: coreirx.ToBool(v)}
-	}
-	if coreirx.IsNil(v) {
-		return NIL
-	}
-	if coreirx.IsObj(v) {
-		idx := coreirx.ToObjIdx(v)
-		if idx < len(table) {
-			return table[idx]
-		}
-	}
-	return NIL
-}
-
 func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object {
 	analysis := AnalyzeIRProgram(prog)
 	// Only handle numeric-dominant programs without complex collection ops
@@ -2182,7 +2145,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 
 	// Convert init slots
 	for i := 0; i < numSlots && i < len(initSlots); i++ {
-		slots[i] = nbFromObject(initSlots[i], &objTable)
+		slots[i] = coreirx.NBFromObject(initSlots[i], &objTable, IsNil)
 	}
 	// Pre-fill captures
 	captureIdxs, captureSlots := runtimeExec.ProgramCaptureSlots(prog)
@@ -2190,14 +2153,14 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 		if i >= len(captureIdxs) || captureIdxs[i] < 0 || captureIdxs[i] >= len(slots) {
 			return nil
 		}
-		slots[captureIdxs[i]] = nbFromObject(obj, &objTable)
+		slots[captureIdxs[i]] = coreirx.NBFromObject(obj, &objTable, IsNil)
 	}
 
 	// Pre-convert constants
 	constants := runtimeExec.ProgramConstants(prog)
 	consts := make([]uint64, len(constants))
 	for i, c := range constants {
-		consts[i] = nbFromObject(c, &objTable)
+		consts[i] = coreirx.NBFromObject(c, &objTable, IsNil)
 	}
 
 	var stackBuf [32]uint64
@@ -2337,8 +2300,8 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 			} else if coreirx.IsDouble(a) || coreirx.IsDouble(b) {
 				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToFloat(a) == coreirx.ToFloat(b))
 			} else {
-				oa := nbToObject(a, objTable)
-				ob := nbToObject(b, objTable)
+				oa := coreirx.NBToObject(a, objTable, NIL)
+				ob := coreirx.NBToObject(b, objTable, NIL)
 				stackBuf[sp-1] = coreirx.BoxBool(runtimeExec.Equal(oa, ob))
 			}
 
@@ -2368,7 +2331,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 				return NIL
 			}
 			sp--
-			return nbToObject(stackBuf[sp], objTable)
+			return coreirx.NBToObject(stackBuf[sp], objTable, NIL)
 
 		case irRecur:
 			nargs := int(code[pc])<<8 | int(code[pc+1])
@@ -2394,7 +2357,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 		// coretypes.Collection ops: convert at boundary
 		case irNth:
 			sp -= 2
-			coll := nbToObject(stackBuf[sp], objTable)
+			coll := coreirx.NBToObject(stackBuf[sp], objTable, NIL)
 			idxV := stackBuf[sp+1]
 			var idx int
 			if coreirx.IsInt(idxV) {
@@ -2406,7 +2369,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 			if !ok {
 				return nil
 			}
-			stackBuf[sp] = nbFromObject(obj, &objTable)
+			stackBuf[sp] = coreirx.NBFromObject(obj, &objTable, IsNil)
 			sp++
 
 		case irCallSlot:
@@ -2414,7 +2377,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 			pc += 2
 			nargs := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
-			fnObj := nbToObject(slots[slotIdx], objTable)
+			fnObj := coreirx.NBToObject(slots[slotIdx], objTable, NIL)
 			// coretypes.Native f64 fast path
 			if fnProg, ok := runtimeExec.FnProgram(fnObj); ok {
 				if nativeHelper, ok := runtimeExec.NativeHelper(fnProg); ok {
@@ -2434,11 +2397,11 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 					continue
 				}
 			}
-			// Box args and call
+			// corecollections.Box args and call
 			args := make([]coretypes.Object, nargs)
 			for i := nargs - 1; i >= 0; i-- {
 				sp--
-				args[i] = nbToObject(stackBuf[sp], objTable)
+				args[i] = coreirx.NBToObject(stackBuf[sp], objTable, NIL)
 			}
 			var result coretypes.Object
 			if fnProg, ok := runtimeExec.CompileFnProgram(fnObj); ok {
@@ -2460,18 +2423,18 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 					return nil
 				}
 			}
-			stackBuf[sp] = nbFromObject(result, &objTable)
+			stackBuf[sp] = coreirx.NBFromObject(result, &objTable, IsNil)
 			sp++
 
 		case irConj:
 			sp -= 2
-			coll := nbToObject(stackBuf[sp], objTable)
-			val := nbToObject(stackBuf[sp+1], objTable)
+			coll := coreirx.NBToObject(stackBuf[sp], objTable, NIL)
+			val := coreirx.NBToObject(stackBuf[sp+1], objTable, NIL)
 			result, ok := runtimeExec.Conj(coll, val)
 			if !ok {
 				return nil
 			}
-			stackBuf[sp] = nbFromObject(result, &objTable)
+			stackBuf[sp] = coreirx.NBFromObject(result, &objTable, IsNil)
 			sp++
 
 		case irCount:
@@ -2480,7 +2443,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 			if !coreirx.IsObj(v) {
 				return nil
 			}
-			count, ok := runtimeExec.Count(nbToObject(v, objTable))
+			count, ok := runtimeExec.Count(coreirx.NBToObject(v, objTable, NIL))
 			if !ok {
 				return nil
 			}
@@ -2493,7 +2456,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 	}
 
 	if sp > 0 {
-		return nbToObject(stackBuf[sp-1], objTable)
+		return coreirx.NBToObject(stackBuf[sp-1], objTable, NIL)
 	}
 	return NIL
 }
@@ -2613,9 +2576,9 @@ func irMakeObject(obj coretypes.Object) irValue {
 	// For common concrete pointer types, store directly to avoid
 	// allocating an coretypes.Object interface box. Use i field as sub-tag.
 	switch v := obj.(type) {
-	case *ArrayVector:
+	case *corecollections.ArrayVector:
 		return irValue{tag: irValObject, i: 1, p: unsafe.Pointer(v)}
-	case *TransientVector:
+	case *coretypes.TransientVector:
 		return irValue{tag: irValObject, i: 2, p: unsafe.Pointer(v)}
 	case *Fn:
 		return irValue{tag: irValObject, i: 3, p: unsafe.Pointer(v)}
@@ -2632,9 +2595,9 @@ func (v irValue) obj() coretypes.Object {
 	}
 	switch v.i {
 	case 1:
-		return (*ArrayVector)(v.p)
+		return (*corecollections.ArrayVector)(v.p)
 	case 2:
-		return (*TransientVector)(v.p)
+		return (*coretypes.TransientVector)(v.p)
 	case 3:
 		return (*Fn)(v.p)
 	default:
@@ -2734,10 +2697,10 @@ func objectToIRValue(obj coretypes.Object) irValue {
 		return irMakeChar(v.Ch)
 	case coretypes.String:
 		return stringToIRValue(v.S)
-	case *ArrayVector:
+	case *corecollections.ArrayVector:
 		if corert.IRTypedVecEnabled() {
-			iv := make([]int, len(v.arr))
-			for i, obj := range v.arr {
+			iv := make([]int, len(v.Arr))
+			for i, obj := range v.Arr {
 				x, ok := obj.(coretypes.Int)
 				if !ok {
 					return irMakeObject(obj)
@@ -2746,11 +2709,11 @@ func objectToIRValue(obj coretypes.Object) irValue {
 			}
 			return irMakeIntVector(iv)
 		}
-	case *ArrayMap:
+	case *corecollections.ArrayMap:
 		if v.Count() == 0 {
 			return irMakeStringIntMap(make(map[string]int))
 		}
-	case *HashMap:
+	case *corecollections.HashMap:
 		if v.Count() == 0 {
 			return irMakeStringIntMap(make(map[string]int))
 		}
@@ -2781,7 +2744,7 @@ func (v irValue) object() coretypes.Object {
 	case irValStringBuilder:
 		return coretypes.String{S: string(v.bytes())}
 	case irValStringIntMap:
-		res := collectionConstruction.NewEmptyArrayMap()
+		res := corecollections.EmptyArrayMap()
 		for k, v := range v.stringIntMap() {
 			res.Add(coretypes.String{S: k}, coretypes.Int{I: v})
 		}
@@ -2985,7 +2948,7 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 		return nil
 	}
 
-	cfg := wazero.NewModuleConfig().WithName(corert.NextWasmModuleName())
+	cfg := wazero.NewModuleConfig().WithName(corewasm.NextWasmModuleName())
 	mod, err := rt.InstantiateModule(ctx, compiled, cfg)
 	if err != nil {
 		return nil
@@ -3015,12 +2978,12 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 
 func wasmExec(wp *WasmProgram, slots []coretypes.Object) coretypes.Object {
 	// Create object table for this execution
-	table := &objectTable{objects: make([]coretypes.Object, 0, 16)}
+	table := corewasm.NewObjectTable(NIL)
 
 	// Pre-populate with IR program constants (for handle references)
 	if wp.hasImports && len(wp.constants) > 0 {
 		for _, c := range wp.constants {
-			table.objects = append(table.objects, c)
+			table.Store(c)
 		}
 	}
 
@@ -3046,11 +3009,11 @@ func wasmExec(wp *WasmProgram, slots []coretypes.Object) coretypes.Object {
 				return nil
 			}
 		default:
-			stack[i] = table.store(s)
+			stack[i] = table.Store(s)
 		}
 	}
 
-	ctx := withObjectTable(context.Background(), table)
+	ctx := corewasm.WithObjectTable(context.Background(), table)
 	if err := wp.execFn.CallWithStack(ctx, stack); err != nil {
 		return nil
 	}
@@ -3060,10 +3023,10 @@ func wasmExec(wp *WasmProgram, slots []coretypes.Object) coretypes.Object {
 		return coretypes.Double{D: math.Float64frombits(r)}
 	}
 	// Check if result is a handle
-	if isHandle(r) {
-		return table.load(r)
+	if corewasm.IsHandle(r) {
+		return table.Load(r)
 	}
-	return wasmRawIntObject(r)
+	return corewasm.RawIntObject(r)
 }
 
 // Ensure math import is used

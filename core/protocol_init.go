@@ -18,10 +18,10 @@ func registerProtocolProcs() {
 	// satisfies? — checks if an object satisfies a protocol
 	satVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "satisfies?"))
 	satVr.Value = Proc{Name: "procSatisfiesQ", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 2, 2)
+		runtimeCheckArity(args, 2, 2)
 		proto, ok := args[0].(*Protocol)
 		if !ok {
-			panic(RT.NewError("First argument to satisfies? must be a Protocol"))
+			panic(coretypes.RuntimeError("First argument to satisfies? must be a Protocol"))
 		}
 		return coretypes.MakeBoolean(Satisfies(proto, args[1]))
 	}}
@@ -30,10 +30,10 @@ func registerProtocolProcs() {
 	// extends? — checks if a type extends a protocol
 	extVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "extends?"))
 	extVr.Value = Proc{Name: "procExtendsQ", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 2, 2)
+		runtimeCheckArity(args, 2, 2)
 		proto, ok := args[0].(*Protocol)
 		if !ok {
-			panic(RT.NewError("First argument to extends? must be a Protocol"))
+			panic(coretypes.RuntimeError("First argument to extends? must be a Protocol"))
 		}
 		return coretypes.MakeBoolean(Satisfies(proto, args[1]))
 	}}
@@ -44,7 +44,7 @@ func registerProtocolProcs() {
 	defProtoVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "__defprotocol"))
 	defProtoVr.Value = Proc{Name: "procDefProtocolInternal", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 1 {
-			panic(RT.NewError("__defprotocol requires at least a name"))
+			panic(coretypes.RuntimeError("__defprotocol requires at least a name"))
 		}
 		name := coretypes.EnsureObjectIsSymbol(args[0], "defprotocol name must be a symbol")
 
@@ -76,16 +76,16 @@ func registerProtocolProcs() {
 	extTypeVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "__extend-type"))
 	extTypeVr.Value = Proc{Name: "procExtendTypeInternal", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
-			panic(RT.NewError("__extend-type requires protocol and type-name"))
+			panic(coretypes.RuntimeError("__extend-type requires protocol and type-name"))
 		}
 		proto, ok := args[0].(*Protocol)
 		if !ok {
-			panic(RT.NewError("First argument to __extend-type must be a Protocol"))
+			panic(coretypes.RuntimeError("First argument to __extend-type must be a Protocol"))
 		}
 		typeName := coretypes.EnsureObjectIsString(args[1], "type name must be a string").S
 
 		if len(args[2:])%2 != 0 {
-			panic(RT.NewError("__extend-type method implementations must be name/function pairs"))
+			panic(coretypes.RuntimeError("__extend-type method implementations must be name/function pairs"))
 		}
 		impls := make(map[string]coretypes.Callable)
 		i := 2

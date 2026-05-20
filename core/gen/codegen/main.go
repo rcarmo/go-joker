@@ -21,7 +21,9 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 	gen_go "github.com/rcarmo/go-joker/core/gen/gengo"
 	corereader "github.com/rcarmo/go-joker/core/reader"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
@@ -368,6 +370,8 @@ func main() {
 	statics := []string{}
 	runtime := []string{}
 	imports := NewImports()
+	AddImport(imports, "corert", "github.com/rcarmo/go-joker/core/runtime", false)
+	AddImport(imports, "corecollections", "github.com/rcarmo/go-joker/core/types/collections", false)
 
 	// Mark "everything" as used.
 	ResetUsage()
@@ -711,7 +715,7 @@ func (genEnv *GenEnv) emitSymbol(target string, s coretypes.Symbol) string {
 		return expr
 	}
 	info := genEnv.GenGo.ValueExpr(target+".Info", reflect.TypeOf((*coretypes.ObjectInfo)(nil)), reflect.ValueOf(s.Info))
-	meta := genEnv.GenGo.ValueExpr(target+".Meta", reflect.TypeOf((*ArrayMap)(nil)), reflect.ValueOf(s.GetMeta()))
+	meta := genEnv.GenGo.ValueExpr(target+".Meta", reflect.TypeOf((*corecollections.ArrayMap)(nil)), reflect.ValueOf(s.GetMeta()))
 	return fmt.Sprintf("func() coretypes.Symbol { x := %s; x.Info = %s; x.Meta = %s; return x }()", expr, info, meta)
 }
 
@@ -735,6 +739,28 @@ func coreTypeString(s string) string {
 		}
 		if strings.HasPrefix(s, "[]"+moved) {
 			return "[]coretypes." + moved
+		}
+	}
+	for _, moved := range []string{"Atom", "ObjectChannel"} {
+		if (s == "Channel" && moved == "ObjectChannel") || s == moved {
+			return "corert." + moved
+		}
+		if (strings.HasPrefix(s, "*Channel") && moved == "ObjectChannel") || strings.HasPrefix(s, "*"+moved) {
+			return "*corert." + moved
+		}
+		if (strings.HasPrefix(s, "[]Channel") && moved == "ObjectChannel") || strings.HasPrefix(s, "[]"+moved) {
+			return "[]corert." + moved
+		}
+	}
+	for _, moved := range []string{"ArrayMap", "ArrayMapSeq", "ArrayNodeSeq", "ArraySeq", "ArrayVector", "BitmapIndexedNode", "ConsSeq", "HashMap", "LazySeq", "List", "MapSet", "MappingSeq", "NodeSeq", "PersistentVector", "Vector", "VectorRSeq", "VectorSeq"} {
+		if s == moved {
+			return "corecollections." + moved
+		}
+		if strings.HasPrefix(s, "*"+moved) {
+			return "*corecollections." + moved
+		}
+		if strings.HasPrefix(s, "[]"+moved) {
+			return "[]corecollections." + moved
 		}
 	}
 	return s
@@ -874,6 +900,13 @@ func (genEnv *GenEnv) structHookFn(target string, obj interface{}) (res string, 
 		return genEnv.emitSymbol(target, obj), nil
 	case Proc:
 		return genEnv.emitProc(target, obj), nil
+	case corert.Atom:
+		value := genEnv.GenGo.ValueExpr(target+".value", reflect.TypeOf((*coretypes.Object)(nil)).Elem(), reflect.ValueOf(obj.Deref()))
+		meta := "nil"
+		if obj.GetMeta() != nil {
+			meta = genEnv.GenGo.ValueExpr(target+".Meta", reflect.TypeOf((*coretypes.Map)(nil)).Elem(), reflect.ValueOf(obj.GetMeta()))
+		}
+		return fmt.Sprintf("*corert.NewAtom(%s, %s)", value, meta), nil
 	case Namespace:
 		nsName := obj.Name.Name()
 		if VerbosityLevel > 0 {
@@ -919,7 +952,7 @@ func (genEnv *GenEnv) valueHookFn(target string, t reflect.Type, v reflect.Value
 	}
 
 	switch pkg := path.Base(v.Type().PkgPath()); pkg {
-	case "core":
+	case "core", "runtime":
 	case ".":
 	default:
 		panic(fmt.Sprintf("unexpected PkgPath `%s' for %+v", pkg, v.Interface()))
@@ -934,7 +967,7 @@ func (genEnv *GenEnv) pointerHookFn(target string, ptr, v reflect.Value) string 
 	}
 
 	switch pkg := path.Base(v.Type().PkgPath()); pkg {
-	case "core":
+	case "core", "runtime":
 	case ".":
 	default:
 		panic(fmt.Sprintf("unexpected PkgPath `%s' for &%+v", pkg, v.Interface()))

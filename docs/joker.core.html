@@ -1615,7 +1615,7 @@
 </li>
 <li>
   <h3 class="Variable" id="*data-readers*">*data-readers*</h3>
-  <span class="var-kind Variable">ArrayMap</span>
+  <span class="var-kind Variable">corecollections.ArrayMap</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Native runtime helper installed by go-joker.</p>
@@ -1686,7 +1686,7 @@
 </li>
 <li>
   <h3 class="Variable" id="*joker-version*">*joker-version*</h3>
-  <span class="var-kind Variable">ArrayMap</span>
+  <span class="var-kind Variable">corecollections.ArrayMap</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">The version info for Clojure core, as a map containing :major :minor<br>
@@ -1697,7 +1697,7 @@
 </li>
 <li>
   <h3 class="Variable" id="*linter-config*">*linter-config*</h3>
-  <span class="var-kind Variable">ArrayMap</span>
+  <span class="var-kind Variable">corecollections.ArrayMap</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Map of configuration key/value pairs for linter mode</p>
@@ -1776,7 +1776,7 @@
 </li>
 <li>
   <h3 class="Variable" id="default-data-readers">default-data-readers</h3>
-  <span class="var-kind Variable">ArrayMap</span>
+  <span class="var-kind Variable">corecollections.ArrayMap</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Default map of data reader functions provided by Joker. May be<br>
@@ -3212,9 +3212,9 @@
   <h3 class="Function" id="disj">disj</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(disj set)</code><code class="hide">^MapSet (disj ^Set set)</code></div>
-<div><code>(disj set key)</code><code class="hide">^MapSet (disj ^Set set key)</code></div>
-<div><code>(disj set key &amp; ks)</code><code class="hide">^MapSet (disj ^Set set key &amp; ks)</code></div>
+  <pre class="var-usage"><div><code>(disj set)</code><code class="hide">^corecollections.MapSet (disj ^Set set)</code></div>
+<div><code>(disj set key)</code><code class="hide">^corecollections.MapSet (disj ^Set set key)</code></div>
+<div><code>(disj set key &amp; ks)</code><code class="hide">^corecollections.MapSet (disj ^Set set key &amp; ks)</code></div>
 </pre>
   <p class="var-docstr">disj[oin]. Returns a new set of the same (hashed/sorted) type, that<br>
   does not contain key(s).</p>
@@ -3746,7 +3746,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(for seq-exprs body-expr)</code></div>
 </pre>
-  <p class="var-docstr">List comprehension. Takes a vector of one or more<br>
+  <p class="var-docstr">corecollections.List comprehension. Takes a vector of one or more<br>
   binding-form/collection-expr pairs, each followed by zero or more<br>
   modifiers, and yields a lazy sequence of evaluations of expr.<br>
   Collections are iterated in a nested fashion, rightmost fastest,<br>
@@ -4380,7 +4380,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(list? x)</code><code class="hide">^coretypes.Boolean (list? x)</code></div>
 </pre>
-  <p class="var-docstr">Returns true if x is a List</p>
+  <p class="var-docstr">Returns true if x is a corecollections.List</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3581">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -4420,7 +4420,7 @@
   <h3 class="Function" id="loaded-libs">loaded-libs</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(loaded-libs)</code><code class="hide">^MapSet (loaded-libs)</code></div>
+  <pre class="var-usage"><div><code>(loaded-libs)</code><code class="hide">^corecollections.MapSet (loaded-libs)</code></div>
 </pre>
   <p class="var-docstr">Returns an UNSORTED set of symbols naming the currently loaded libs</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L3487">source</a>
@@ -6145,7 +6145,7 @@
   <h3 class="Function" id="set">set</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(set coll)</code><code class="hide">^MapSet (set ^coretypes.Seqable coll)</code></div>
+  <pre class="var-usage"><div><code>(set coll)</code><code class="hide">^corecollections.MapSet (set ^coretypes.Seqable coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a set of the distinct elements of coll.</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L2222">source</a>

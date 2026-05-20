@@ -1,11 +1,8 @@
 package types
 
 import (
-	"encoding/gob"
 	"math/big"
-	"strconv"
 
-	"github.com/rcarmo/go-joker/core/hashutil"
 	"github.com/rcarmo/go-joker/core/types/numerical"
 )
 
@@ -43,20 +40,16 @@ type Ops interface {
 }
 
 // MakeMathBigIntFromInt returns a math/big.Int for a native int.
-func MakeMathBigIntFromInt(i int) *big.Int { return MakeMathBigIntFromInt64(int64(i)) }
+func MakeMathBigIntFromInt(i int) *big.Int { return numerical.MakeMathBigIntFromInt(i) }
 
 // MakeMathBigIntFromInt64 returns a math/big.Int for an int64.
-func MakeMathBigIntFromInt64(i int64) *big.Int { return big.NewInt(i) }
+func MakeMathBigIntFromInt64(i int64) *big.Int { return numerical.MakeMathBigIntFromInt64(i) }
 
 // MakeMathBigIntFromUint returns a math/big.Int for a native uint.
-func MakeMathBigIntFromUint(b uint) *big.Int { return MakeMathBigIntFromUint64(uint64(b)) }
+func MakeMathBigIntFromUint(b uint) *big.Int { return numerical.MakeMathBigIntFromUint(b) }
 
 // MakeMathBigIntFromUint64 returns a math/big.Int for a uint64.
-func MakeMathBigIntFromUint64(b uint64) *big.Int {
-	bigint := big.NewInt(0)
-	bigint.SetUint64(b)
-	return bigint
-}
+func MakeMathBigIntFromUint64(b uint64) *big.Int { return numerical.MakeMathBigIntFromUint64(b) }
 
 type BigInt struct {
 	InfoHolder
@@ -150,6 +143,7 @@ func (bf *BigFloat) Compare(other Object) int { return compareNumbers(bf, other.
 
 func (b *BigInt) Int() Int {
 	bi := b.BigInt()
+	minIntBig, maxIntBig := numerical.NativeIntBigBounds()
 	if bi.Cmp(minIntBig) < 0 || bi.Cmp(maxIntBig) > 0 {
 		panic("BigInt value out of native int range: " + b.ToString(false))
 	}
@@ -184,15 +178,9 @@ func compareNumbers(x, y Number) int {
 	if NumberCompare != nil {
 		return NumberCompare(x, y)
 	}
-	return x.BigFloat().Cmp(y.BigFloat())
+	return numerical.CompareNumbers(x, y)
 }
-func hashBig(v gob.GobEncoder) uint32 { return hashutil.GobEncoder(v) }
-
-var maxInt = int(^uint(0) >> 1)
-var minInt = -maxInt - 1
-var maxIntBig = big.NewInt(int64(maxInt))
-var minIntBig = big.NewInt(int64(minInt))
-var _ = strconv.IntSize
+func hashBig(v interface{ GobEncode() ([]byte, error) }) uint32 { return numerical.HashGob(v) }
 
 func (n *BigInt) Precision() *big.Int   { return MakeMathBigIntFromInt(n.B.BitLen()) }
 func (n *BigFloat) Precision() *big.Int { return MakeMathBigIntFromUint(n.B.Prec()) }

@@ -1,6 +1,9 @@
 package core
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import (
+	corert "github.com/rcarmo/go-joker/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+)
 
 func EnsureObjectIsNamespace(obj coretypes.Object, pattern string) *Namespace {
 	if c, yes := obj.(*Namespace); yes {
@@ -47,16 +50,16 @@ func EnsureArgIsFn(args []coretypes.Object, index int) *Fn {
 	panic(FailArg(obj, "Fn", index))
 }
 
-func EnsureObjectIsAtom(obj coretypes.Object, pattern string) *Atom {
-	if c, yes := obj.(*Atom); yes {
+func EnsureObjectIsAtom(obj coretypes.Object, pattern string) *corert.Atom {
+	if c, yes := obj.(*corert.Atom); yes {
 		return c
 	}
 	panic(FailObject(obj, "Atom", pattern))
 }
 
-func EnsureArgIsAtom(args []coretypes.Object, index int) *Atom {
+func EnsureArgIsAtom(args []coretypes.Object, index int) *corert.Atom {
 	obj := args[index]
-	if c, yes := obj.(*Atom); yes {
+	if c, yes := obj.(*corert.Atom); yes {
 		return c
 	}
 	panic(FailArg(obj, "Atom", index))
@@ -77,16 +80,16 @@ func EnsureArgIsFile(args []coretypes.Object, index int) *File {
 	panic(FailArg(obj, "File", index))
 }
 
-func EnsureObjectIsChannel(obj coretypes.Object, pattern string) *Channel {
-	if c, yes := obj.(*Channel); yes {
+func EnsureObjectIsChannel(obj coretypes.Object, pattern string) *corert.ObjectChannel {
+	if c, yes := obj.(*corert.ObjectChannel); yes {
 		return c
 	}
 	panic(FailObject(obj, "Channel", pattern))
 }
 
-func EnsureArgIsChannel(args []coretypes.Object, index int) *Channel {
+func EnsureArgIsChannel(args []coretypes.Object, index int) *corert.ObjectChannel {
 	obj := args[index]
-	if c, yes := obj.(*Channel); yes {
+	if c, yes := obj.(*corert.ObjectChannel); yes {
 		return c
 	}
 	panic(FailArg(obj, "Channel", index))

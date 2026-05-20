@@ -3,10 +3,12 @@ package core
 // core_api_gaps.go — Fills remaining core API gaps from divergence matrix.
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 	"path/filepath"
 	"regexp"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func init() {
@@ -45,7 +47,7 @@ func registerCoreAPIGaps() {
 		// re-groups expects a Matcher, but Joker doesn't have Matcher objects.
 		// Instead, accept [pattern string] and return groups.
 		switch v := args[0].(type) {
-		case *ArrayVector:
+		case *corecollections.ArrayVector:
 			if v.Count() >= 2 {
 				re := coretypes.EnsureObjectIsRegex(v.At(0), "re-groups requires [regex string]")
 				s := coretypes.EnsureObjectIsString(v.At(1), "re-groups requires [regex string]")
@@ -56,9 +58,9 @@ func registerCoreAPIGaps() {
 				if len(matches) == 1 {
 					return coretypes.String{S: matches[0]}
 				}
-				result := collectionConstruction.NewEmptyArrayVector()
+				result := corecollections.EmptyArrayVector()
 				for _, m := range matches {
-					result = result.Conj(coretypes.String{S: m}).(*ArrayVector)
+					result = result.Conj(coretypes.String{S: m}).(*corecollections.ArrayVector)
 				}
 				return result
 			}
@@ -83,7 +85,7 @@ func registerCoreAPIGaps() {
 		if len(files) == 0 {
 			return NIL
 		}
-		return &ArraySeq{arr: files, index: 0}
+		return &corecollections.ArraySeq{Arr: files, Index: 0}
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "file-seq"), fsVr)
 

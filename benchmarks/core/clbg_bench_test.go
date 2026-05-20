@@ -16,15 +16,15 @@ var clbgInitOnce sync.Once
 func clbgInit() {
 	clbgInitOnce.Do(func() {
 		sqrtProc := Proc{Fn: func(args []coretypes.Object) coretypes.Object {
-			x := EnsureArgIsNumber(args, 0).Double().D
+			x := coretypes.EnsureArgIsNumber(args, 0).Double().D
 			return coretypes.Double{D: math.Sqrt(x)}
 		}, Name: "procSqrt"}
 		// Register in core namespace
-		vr := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol("sqrt"))
+		vr := GLOBAL_ENV.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sqrt"))
 		vr.Value = sqrtProc
 		// Also map into user namespace so the parser can resolve it
 		ns := GLOBAL_ENV.CurrentNamespace()
-		uv := ns.Intern(MakeSymbol("sqrt"))
+		uv := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "sqrt"))
 		uv.Value = sqrtProc
 	})
 }

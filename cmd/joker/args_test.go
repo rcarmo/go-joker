@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	corereader "github.com/rcarmo/go-joker/core/reader"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	"runtime"
 	"strings"
 	"testing"
@@ -14,12 +15,12 @@ func resetArgsForTest(t *testing.T) {
 	t.Helper()
 
 	oldVerbosity := VerbosityLevel
-	oldHashmapThreshold := HASHMAP_THRESHOLD
+	oldHashmapThreshold := corecollections.HASHMAP_THRESHOLD
 	oldStderr := Stderr
 	oldMemProfileRate := runtime.MemProfileRate
 	t.Cleanup(func() {
 		VerbosityLevel = oldVerbosity
-		HASHMAP_THRESHOLD = oldHashmapThreshold
+		corecollections.HASHMAP_THRESHOLD = oldHashmapThreshold
 		Stderr = oldStderr
 		runtime.MemProfileRate = oldMemProfileRate
 		resetParsedArgsForTest()

@@ -3,9 +3,11 @@ package random
 import (
 	"crypto/rand"
 	"encoding/hex"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	mrand "math/rand/v2"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -26,7 +28,7 @@ func initRandomNamespace() {
 		CheckArity(args, 0, 0)
 		return coretypes.MakeInt(mrand.Int())
 	}, Name: "random-int", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom()), `Returns a non-negative random integer.`, "1.0"))
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom()), `Returns a non-negative random integer.`, "1.0"))
 
 	// int-n — returns a random int in [0, n)
 	randomNamespace.InternVar("int-n", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
@@ -37,7 +39,7 @@ func initRandomNamespace() {
 		}
 		return coretypes.MakeInt(mrand.IntN(n))
 	}, Name: "random-int-n", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "n"))), `Returns a random integer in [0, n).`, "1.0"))
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "n"))), `Returns a random integer in [0, n).`, "1.0"))
 
 	// int-between — returns a random int in [lo, hi)
 	randomNamespace.InternVar("int-between", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
@@ -53,7 +55,7 @@ func initRandomNamespace() {
 		}
 		return coretypes.MakeInt(lo + mrand.IntN(delta))
 	}, Name: "random-int-between", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "lo"), coretypes.MakeSymbol(STRINGS.Intern, "hi"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "lo"), coretypes.MakeSymbol(STRINGS.Intern, "hi"))),
 			`Returns a random integer in [lo, hi).`, "1.0"))
 
 	// float — returns a random float64 in [0.0, 1.0)
@@ -61,14 +63,14 @@ func initRandomNamespace() {
 		CheckArity(args, 0, 0)
 		return coretypes.MakeDouble(mrand.Float64())
 	}, Name: "random-float", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom()), `Returns a random float in [0.0, 1.0).`, "1.0"))
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom()), `Returns a random float in [0.0, 1.0).`, "1.0"))
 
 	// boolean — returns a random boolean
 	randomNamespace.InternVar("boolean", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 		CheckArity(args, 0, 0)
 		return coretypes.MakeBoolean(mrand.IntN(2) == 1)
 	}, Name: "random-boolean", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom()), `Returns a random boolean.`, "1.0"))
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom()), `Returns a random boolean.`, "1.0"))
 
 	// choice — picks a random element from a seqable collection
 	randomNamespace.InternVar("choice", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
@@ -83,7 +85,7 @@ func initRandomNamespace() {
 		}
 		return elems[mrand.IntN(len(elems))]
 	}, Name: "random-choice", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "coll"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "coll"))),
 			`Returns a random element from coll.`, "1.0"))
 
 	// shuffle — returns a shuffled vector of elements from a seqable
@@ -97,9 +99,9 @@ func initRandomNamespace() {
 		mrand.Shuffle(len(elems), func(i, j int) {
 			elems[i], elems[j] = elems[j], elems[i]
 		})
-		return NewVectorFrom(elems...)
+		return corecollections.NewVectorFrom(elems...)
 	}, Name: "random-shuffle", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "coll"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "coll"))),
 			`Returns a vector with elements of coll in random order.`, "1.0"))
 
 	// uuid — returns a random UUID string (v4)
@@ -115,7 +117,7 @@ func initRandomNamespace() {
 		s := hex.EncodeToString(b[:])
 		return coretypes.MakeString(s[:8] + "-" + s[8:12] + "-" + s[12:16] + "-" + s[16:20] + "-" + s[20:])
 	}, Name: "random-uuid", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom()), `Returns a random UUID v4 string.`, "1.0"))
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom()), `Returns a random UUID v4 string.`, "1.0"))
 
 	// secure-bytes — returns n cryptographically random bytes as a hex string
 	randomNamespace.InternVar("secure-bytes", Proc{Fn: func(args []coretypes.Object) coretypes.Object {
@@ -131,7 +133,7 @@ func initRandomNamespace() {
 		}
 		return coretypes.MakeString(hex.EncodeToString(b))
 	}, Name: "random-secure-bytes", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "n"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "n"))),
 			`Returns n cryptographically random bytes as a hex string.`, "1.0"))
 
 	// secure-int — returns a cryptographically random int in [0, n)
@@ -148,6 +150,6 @@ func initRandomNamespace() {
 		}
 		return coretypes.MakeInt(int(r.Int64()))
 	}, Name: "random-secure-int", Package: "std/random"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "n"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "n"))),
 			`Returns a cryptographically random integer in [0, n).`, "1.0"))
 }

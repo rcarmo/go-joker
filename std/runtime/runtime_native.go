@@ -2,10 +2,12 @@ package runtime
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	"runtime"
 	"time"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -52,7 +54,7 @@ var procProfile ProcFn = func(args []coretypes.Object) coretypes.Object {
 	allocs := memAfter.Mallocs - memBefore.Mallocs
 	bytes := memAfter.TotalAlloc - memBefore.TotalAlloc
 
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "time-ns"), runtimeIntObject(elapsed.Nanoseconds()/int64(iterations)))
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "time-ms"), coretypes.Double{D: float64(elapsed.Milliseconds()) / float64(iterations)})
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "allocs"), runtimeUintObject(allocs/uint64(iterations)))
@@ -69,13 +71,13 @@ var procWasmDiagnostic ProcFn = func(args []coretypes.Object) coretypes.Object {
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
 	if prog == nil {
-		m := EmptyArrayMap()
+		m := corecollections.EmptyArrayMap()
 		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "eligible"), coretypes.Boolean{B: false})
 		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "reason"), coretypes.MakeString("cannot compile to IR"))
 		return m
 	}
 	diag := ExplainWASMEligibility(prog)
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "eligible"), coretypes.Boolean{B: diag.Reason == ""})
 	if diag.Reason != "" {
 		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "reason"), coretypes.MakeString(diag.Reason))
@@ -92,12 +94,12 @@ var procAnalyze ProcFn = func(args []coretypes.Object) coretypes.Object {
 	fn := ensureArgIsFnLocal(args, 0)
 	prog := IrCompileFn(fn)
 	if prog == nil {
-		m := EmptyArrayMap()
+		m := corecollections.EmptyArrayMap()
 		m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "compiled"), coretypes.Boolean{B: false})
 		return m
 	}
 	a := AnalyzeIRProgramExported(prog)
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "compiled"), coretypes.Boolean{B: true})
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "slots"), coretypes.Int{I: prog.NumSlots()})
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "code-bytes"), coretypes.Int{I: prog.CodeLen()})
@@ -135,8 +137,8 @@ var procEscapeAnalysis ProcFn = func(args []coretypes.Object) coretypes.Object {
 	for i, safe := range info {
 		slots[i] = coretypes.Boolean{B: safe}
 	}
-	m := EmptyArrayMap()
-	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "safe-mutable-slots"), NewVectorFrom(slots...))
+	m := corecollections.EmptyArrayMap()
+	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "safe-mutable-slots"), corecollections.NewVectorFrom(slots...))
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "num-slots"), coretypes.Int{I: prog.NumSlots()})
 	return m
 }
@@ -147,7 +149,7 @@ var procMemStats ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 0, 0)
 	var ms runtime.MemStats
 	runtime.ReadMemStats(&ms)
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "heap-alloc-mb"), coretypes.Double{D: float64(ms.HeapAlloc) / 1e6})
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "heap-objects"), runtimeUintObject(ms.HeapObjects))
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "gc-cycles"), runtimeUintObject(uint64(ms.NumGC)))
@@ -207,7 +209,7 @@ var procBenchmark ProcFn = func(args []coretypes.Object) coretypes.Object {
 		nsPerOp = 0
 	}
 
-	m := EmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "ns-per-op"), runtimeIntObject(nsPerOp))
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "ms-per-op"), coretypes.Double{D: float64(nsPerOp) / 1e6})
 	m = assocM(m, coretypes.MakeKeyword(STRINGS.Intern, "iterations"), coretypes.Int{I: n})
@@ -251,9 +253,9 @@ func ensureArgIsIntLocal(args []coretypes.Object, idx int) int {
 	}
 }
 
-func assocM(m *ArrayMap, k, v coretypes.Object) *ArrayMap {
+func assocM(m *corecollections.ArrayMap, k, v coretypes.Object) *corecollections.ArrayMap {
 	result := m.Assoc(k, v)
-	if am, ok := result.(*ArrayMap); ok {
+	if am, ok := result.(*corecollections.ArrayMap); ok {
 		return am
 	}
 	// Shouldn't happen for small maps but handle gracefully

@@ -2,12 +2,14 @@ package core
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"unsafe"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	"github.com/rcarmo/go-joker/core/bufferpool"
 	"github.com/rcarmo/go-joker/core/hashutil"
 	corert "github.com/rcarmo/go-joker/core/runtime"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
@@ -366,28 +368,28 @@ func (expr *LiteralExpr) Eval(env *LocalEnv) coretypes.Object {
 func (expr *VectorExpr) Eval(env *LocalEnv) coretypes.Object {
 	n := len(expr.v)
 	if n == 0 {
-		return collectionConstruction.NewEmptyArrayVector()
+		return corecollections.EmptyArrayVector()
 	}
 	arr := make([]coretypes.Object, n)
 	for i, e := range expr.v {
 		arr[i] = Eval(e, env)
 	}
-	return &ArrayVector{arr: arr}
+	return &corecollections.ArrayVector{Arr: arr}
 }
 
 func (expr *MapExpr) Eval(env *LocalEnv) coretypes.Object {
-	if int64(len(expr.keys)) > HASHMAP_THRESHOLD/2 {
-		res := EmptyHashMap
+	if int64(len(expr.keys)) > corecollections.HASHMAP_THRESHOLD/2 {
+		res := corecollections.EmptyHashMap
 		for i := range expr.keys {
 			key := Eval(expr.keys[i], env)
-			if res.containsKey(key) {
+			if res.ContainsKey(key) {
 				panic(RT.NewError("Duplicate key: " + key.ToString(false)))
 			}
-			res = res.Assoc(key, Eval(expr.values[i], env)).(*HashMap)
+			res = res.Assoc(key, Eval(expr.values[i], env)).(*corecollections.HashMap)
 		}
 		return res
 	}
-	res := collectionConstruction.NewEmptyArrayMap()
+	res := corecollections.EmptyArrayMap()
 	for i := range expr.keys {
 		key := Eval(expr.keys[i], env)
 		if !res.Add(key, Eval(expr.values[i], env)) {
@@ -398,7 +400,7 @@ func (expr *MapExpr) Eval(env *LocalEnv) coretypes.Object {
 }
 
 func (expr *SetExpr) Eval(env *LocalEnv) coretypes.Object {
-	res := collectionConstruction.NewEmptySet()
+	res := corecollections.EmptySet()
 	for _, elemExpr := range expr.elements {
 		el := Eval(elemExpr, env)
 		if !res.Add(el) {
@@ -416,7 +418,7 @@ func (expr *DefExpr) Eval(env *LocalEnv) coretypes.Object {
 			fn.defVar = expr.vr
 		}
 	}
-	meta := collectionConstruction.NewEmptyArrayMap()
+	meta := corecollections.EmptyArrayMap()
 	meta.Add(KEYWORDS.line, coretypes.Int{I: expr.StartLine})
 	meta.Add(KEYWORDS.column, coretypes.Int{I: expr.StartColumn})
 	meta.Add(KEYWORDS.file, coretypes.String{S: *expr.Filename})

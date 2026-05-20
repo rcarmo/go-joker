@@ -260,8 +260,8 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 ## PersistentVector (HAMT trie)
 
 A 32-way persistent vector trie with tail optimization is implemented in
-`core/persistent_vector.go`. It provides O(log32 n) assoc with structural
-sharing between versions.
+`core/types/collections/persistent_vector.go`. It provides O(log32 n) assoc
+with structural sharing between versions.
 
 ### Performance characteristics
 

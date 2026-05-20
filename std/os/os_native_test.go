@@ -1,12 +1,14 @@
 package os
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math"
 	"runtime"
 	"testing"
 	"time"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -15,7 +17,7 @@ func TestStartProcessReleasesChild(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("uses Unix shell command")
 	}
-	pid := startProcess("sh", EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "args"), NewVectorFrom(coretypes.MakeString("-c"), coretypes.MakeString("exit 0"))).(coretypes.Map))
+	pid := startProcess("sh", corecollections.EmptyArrayMap().Assoc(coretypes.MakeKeyword(STRINGS.Intern, "args"), corecollections.NewVectorFrom(coretypes.MakeString("-c"), coretypes.MakeString("exit 0"))).(coretypes.Map))
 	if pid <= 0 {
 		t.Fatalf("startProcess pid = %d", pid)
 	}

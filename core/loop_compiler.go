@@ -2,11 +2,13 @@ package core
 
 import (
 	"fmt"
+	"math"
+
 	coreir "github.com/rcarmo/go-joker/core/ir"
 	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	corewasm "github.com/rcarmo/go-joker/core/wasm"
-	"math"
 )
 
 // ---- loop_compiler.go ----
@@ -360,7 +362,7 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 			for i, elem := range e.v {
 				arr[i] = elem.(*LiteralExpr).obj
 			}
-			idx := c.addConstant(&ArrayVector{arr: arr})
+			idx := c.addConstant(&corecollections.ArrayVector{Arr: arr})
 			c.emitWithOperand(irLiteral, idx)
 		} else {
 			// Compile each element, then emit a vector-build opcode
@@ -392,18 +394,18 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 			return c.reject("unsupported dynamic map literal in IR")
 		}
 		var obj coretypes.Object
-		if int64(len(e.keys)) > HASHMAP_THRESHOLD/2 {
-			res := EmptyHashMap
+		if int64(len(e.keys)) > corecollections.HASHMAP_THRESHOLD/2 {
+			res := corecollections.EmptyHashMap
 			for i := range e.keys {
 				key := e.keys[i].(*LiteralExpr).obj
-				if res.containsKey(key) {
+				if res.ContainsKey(key) {
 					return c.reject("duplicate key in IR map literal: %s", key.ToString(false))
 				}
-				res = res.Assoc(key, e.values[i].(*LiteralExpr).obj).(*HashMap)
+				res = res.Assoc(key, e.values[i].(*LiteralExpr).obj).(*corecollections.HashMap)
 			}
 			obj = res
 		} else {
-			res := collectionConstruction.NewEmptyArrayMap()
+			res := corecollections.EmptyArrayMap()
 			for i := range e.keys {
 				key := e.keys[i].(*LiteralExpr).obj
 				if !res.Add(key, e.values[i].(*LiteralExpr).obj) {

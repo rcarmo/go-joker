@@ -2,26 +2,6 @@ package core
 
 import coretypes "github.com/rcarmo/go-joker/core/types"
 
-func (x *List) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *ArrayMapSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *ArrayMap) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *HashMap) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
 func (x *ExInfo) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	x.Info = info
 	return x
@@ -38,61 +18,6 @@ func (x *Var) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 }
 
 func (x Nil) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *LazySeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *MappingSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *ArraySeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *ConsSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *NodeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *ArrayNodeSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *MapSet) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *Vector) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *ArrayVector) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *VectorSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x *VectorRSeq) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	x.Info = info
 	return x
 }

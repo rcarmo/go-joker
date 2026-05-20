@@ -4,9 +4,11 @@ package markdown
 
 import (
 	"fmt"
+	"os"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"os"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func InternsOrThunks() {
@@ -17,7 +19,7 @@ func InternsOrThunks() {
 
 	markdownNamespace.InternVar("convert-string", convert_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s")), NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s")), corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"), coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
 			`Returns the HTML rendering of Markdown string s.
   opts is an optional map of boolean rendering options (all default to true)
 

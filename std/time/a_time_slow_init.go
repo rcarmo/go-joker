@@ -4,9 +4,11 @@ package time
 
 import (
 	"fmt"
+	"os"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"os"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func InternsOrThunks() {
@@ -122,22 +124,22 @@ func InternsOrThunks() {
 
 	timeNamespace.InternVar("add", add_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "d"))),
 			`Returns the time t+d.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("add-date", add_date_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "years"), coretypes.MakeSymbol(STRINGS.Intern, "months"), coretypes.MakeSymbol(STRINGS.Intern, "days"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "years"), coretypes.MakeSymbol(STRINGS.Intern, "months"), coretypes.MakeSymbol(STRINGS.Intern, "days"))),
 			`Returns the time t + (years, months, days).`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("day-of-year", day_of_year_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
 			`Returns the day of the year specified by t, in the range [1,365] for non-leap years, and [1,366] in leap years.`, "1.3.4").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Int"}))
 
 	timeNamespace.InternVar("format", format_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "layout"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "layout"))),
 			`Returns a textual representation of the time value formatted according to layout,
   which defines the format by showing how the reference time, defined to be
   Mon Jan 2 15:04:05 -0700 MST 2006
@@ -146,92 +148,92 @@ func InternsOrThunks() {
 
 	timeNamespace.InternVar("from-unix", from_unix_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "sec"), coretypes.MakeSymbol(STRINGS.Intern, "nsec"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "sec"), coretypes.MakeSymbol(STRINGS.Intern, "nsec"))),
 			`Returns the local Time corresponding to the given Unix time, sec seconds and
   nsec nanoseconds since January 1, 1970 UTC. It is valid to pass nsec outside the range [0, 999999999].`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("hours", hours_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
 			`Returns the duration (passed as a number of nanoseconds) as a floating point number of hours.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Double"}))
 
 	timeNamespace.InternVar("in-timezone", in_timezone_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "tz"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "tz"))),
 			`Returns a copy of t representing the same time instant, but with the copy's timezone information set to tz for display purposes.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("minutes", minutes_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
 			`Returns the duration (passed as a number of nanoseconds) as a floating point number of minutes.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Double"}))
 
 	timeNamespace.InternVar("now", now_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom()),
+			corecollections.NewListFrom(corecollections.NewVectorFrom()),
 			`Returns the current local time.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("parse", parse_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "layout"), coretypes.MakeSymbol(STRINGS.Intern, "value"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "layout"), coretypes.MakeSymbol(STRINGS.Intern, "value"))),
 			`Parses a time string.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("parse-duration", parse_duration_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "s"))),
 			`Parses a duration string. A duration string is a possibly signed sequence of decimal numbers,
   each with optional fraction and a unit suffix, such as 300ms, -1.5h or 2h45m. Valid time units are
   ns, us (or µs), ms, s, m, h. Returns Int when the duration fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("parse-in-timezone", parse_in_timezone_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "layout"), coretypes.MakeSymbol(STRINGS.Intern, "value"), coretypes.MakeSymbol(STRINGS.Intern, "tz"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "layout"), coretypes.MakeSymbol(STRINGS.Intern, "value"), coretypes.MakeSymbol(STRINGS.Intern, "tz"))),
 			`Parses a time string in the given timezone.`, "1.7.2").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Time"}))
 
 	timeNamespace.InternVar("round", round_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"), coretypes.MakeSymbol(STRINGS.Intern, "m"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"), coretypes.MakeSymbol(STRINGS.Intern, "m"))),
 			`Returns the result of rounding d to the nearest multiple of m. d and m represent time durations in nanoseconds.
   The rounding behavior for halfway values is to round away from zero. If m <= 0, returns d unchanged. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("seconds", seconds_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
 			`Returns the duration (passed as a number of nanoseconds) as a floating point number of seconds.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "Double"}))
 
 	timeNamespace.InternVar("since", since_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
 			`Returns the time in nanoseconds elapsed since t. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("sleep", sleep_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
 			`Pauses the execution thread for at least the duration d (expressed in nanoseconds).
   A negative or zero duration causes sleep to return immediately.`, "1.0"))
 
 	timeNamespace.InternVar("string", string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"))),
 			`Returns a string representing the duration in the form 72h3m0.5s.`, "1.0").Plus(coretypes.MakeKeyword(STRINGS.Intern, "tag"), coretypes.String{S: "coretypes.String"}))
 
 	timeNamespace.InternVar("sub", sub_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "u"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"), coretypes.MakeSymbol(STRINGS.Intern, "u"))),
 			`Returns the duration t-u in nanoseconds. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("truncate", truncate_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"), coretypes.MakeSymbol(STRINGS.Intern, "m"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "d"), coretypes.MakeSymbol(STRINGS.Intern, "m"))),
 			`Returns the result of rounding d toward zero to a multiple of m. If m <= 0, returns d unchanged. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("unix", unix_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
 			`Returns t as a Unix time, the number of seconds elapsed since January 1, 1970 UTC. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 	timeNamespace.InternVar("until", until_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "t"))),
 			`Returns the duration in nanoseconds until t. Returns Int when the value fits the native int range, otherwise BigInt.`, "1.0"))
 
 }

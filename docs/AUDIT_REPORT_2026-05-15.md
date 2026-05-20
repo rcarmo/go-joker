@@ -29,7 +29,7 @@ Additional targeted checks included race tests for leaf packages:
 
 ```sh
 TMPDIR=$PWD/.cache/tmp GOTMPDIR=$PWD/.cache/go-build-tmp \
-  go test -race ./core/reader ./core/collections ./core/string ./core/cursor
+  go test -race ./core/reader ./core/types/collections ./core/types/string
 ```
 
 Current status: all above checks pass, and `govulncheck` reports no vulnerabilities.
@@ -94,7 +94,7 @@ Current status: all above checks pass, and `govulncheck` reports no vulnerabilit
 
 ## Refactor documentation state
 
-- `core/collections` is no longer only a marker package. It owns root-independent slice, pair-array, bitmap/hash-index, and opaque trie node/path mechanics.
+- `core/types/collections` owns root-independent slice, pair-array, bitmap/hash-index, opaque trie node/path mechanics, and consolidated collection helper code.
 - `core/reader` owns root-independent character classes, whitespace/comment/line scanning, reader position-stack snapshots, identifier token scanning/validation/issue enumeration, unicode/string escape parsing, number-token classification, dispatch/form/prefix helpers, line rune reader, and raw IO mechanics.
 - Concrete collection Object/protocol behavior and concrete reader Object/tagged-literal/parser behavior remain root-bound until dependencies are explicit and acyclic.
 - Go benchmarks live under `benchmarks/core`; root `core` should not regain `Benchmark*` functions.

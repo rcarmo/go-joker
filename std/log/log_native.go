@@ -2,11 +2,13 @@ package log
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"os"
 	"strings"
 	"sync"
 	"time"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -61,7 +63,7 @@ func initLogNamespace() {
 		logMsg(0, args)
 		return NIL
 	}, Name: "log-debug", Package: "std/log"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "args"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "args"))),
 			`Logs a DEBUG message to stderr.`, "1.0"))
 
 	// info
@@ -69,7 +71,7 @@ func initLogNamespace() {
 		logMsg(1, args)
 		return NIL
 	}, Name: "log-info", Package: "std/log"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "args"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "args"))),
 			`Logs an INFO message to stderr.`, "1.0"))
 
 	// warn
@@ -77,7 +79,7 @@ func initLogNamespace() {
 		logMsg(2, args)
 		return NIL
 	}, Name: "log-warn", Package: "std/log"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "args"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "args"))),
 			`Logs a WARN message to stderr.`, "1.0"))
 
 	// error
@@ -85,7 +87,7 @@ func initLogNamespace() {
 		logMsg(3, args)
 		return NIL
 	}, Name: "log-error", Package: "std/log"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "args"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "args"))),
 			`Logs an ERROR message to stderr.`, "1.0"))
 
 	// set-level! — set the minimum log level
@@ -97,7 +99,7 @@ func initLogNamespace() {
 		logMu.Unlock()
 		return NIL
 	}, Name: "log-set-level", Package: "std/log"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "level"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "level"))),
 			`Sets the minimum log level (:debug, :info, :warn, :error). Default is :warn.`, "1.0"))
 
 	// get-level — returns the current log level as a keyword
@@ -108,7 +110,7 @@ func initLogNamespace() {
 		logMu.Unlock()
 		return coretypes.MakeKeyword(STRINGS.Intern, strings.ToLower(levelNames[l]))
 	}, Name: "log-get-level", Package: "std/log"},
-		MakeMeta(NewListFrom(NewVectorFrom()),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom()),
 			`Returns the current log level as a keyword.`, "1.0"))
 
 	// logf — formatted log message
@@ -118,6 +120,6 @@ func initLogNamespace() {
 		logMsg(lvl, args[1:])
 		return NIL
 	}, Name: "log-logf", Package: "std/log"},
-		MakeMeta(NewListFrom(NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "level"), coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "args"))),
+		MakeMeta(corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "level"), coretypes.MakeSymbol(STRINGS.Intern, "&"), coretypes.MakeSymbol(STRINGS.Intern, "args"))),
 			`Logs a message at the specified level.`, "1.0"))
 }

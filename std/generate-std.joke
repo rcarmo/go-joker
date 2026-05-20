@@ -132,7 +132,7 @@
 
 (defn generate-arglist
   [args]
-  (str "NewVectorFrom("
+  (str "corecollections.NewVectorFrom("
        (s/join ", " (for [arg args]
                       (str "MakeSymbol(" (q (str arg)) ")")))
        ")"))
@@ -176,7 +176,7 @@
                        (rpl "{added}" (:added m))
                        (rpl "{moreMeta}" (add-other-meta m))
                        (rpl "{args}"
-                            (str "NewListFrom("
+                            (str "corecollections.NewListFrom("
                                  (s/join ", " (for [args arglists]
                                                 (generate-arglist args)))
                                  ")")))]
@@ -309,6 +309,7 @@
                 (rpl "{imports}"
                      (s/join "\n\t" (sort compare-imports (conj
                                                            (mapv q (:go-imports m))
+                                                           "corecollections \"github.com/rcarmo/go-joker/core/types/collections\""
                                                            ". \"github.com/rcarmo/go-joker/core\""))))
                 (rpl "{non-fn-decls}" (s/join "\n" (map first non-fn-decls)))
                 (rpl "{non-fn-inits}" (s/join "\n" non-fn-inits))
@@ -336,7 +337,8 @@
                 (rpl "{maybeSlowOnly}" (if pre "//go:build gen_code\n// +build gen_code\n" ""))
                 (rpl "{nsFullName}" ns-name)
                 (rpl "{nsName}" ns-name-final)
-                (rpl "{imports}" ". \"github.com/rcarmo/go-joker/core\"")
+                (rpl "{imports}" (s/join "\n\t" [". \"github.com/rcarmo/go-joker/core\""
+                                                   "corecollections \"github.com/rcarmo/go-joker/core/types/collections\""]))
                 (rpl "{nsDocstring}" (raw-quoted-string (:doc m)))
                 (rpl "{non-fn-interns}" (s/join "\n\t" (map second non-fn-decls)))
                 (rpl "{fn-interns}" (s/join "\n\t" (map second fn-decls))))
@@ -358,7 +360,8 @@
                  (generate-thunk ns-name ns-name-final k v))
         res (-> package-fast-template
                 (rpl "{nsName}" ns-name-final)
-                (rpl "{imports}" ". \"github.com/rcarmo/go-joker/core\"")
+                (rpl "{imports}" (s/join "\n\t" [". \"github.com/rcarmo/go-joker/core\""
+                                                   "corecollections \"github.com/rcarmo/go-joker/core/types/collections\""]))
                 (rpl "{thunks}" (s/join "\n\t" thunks)))
         res (if (:empty m)
               (comment-out res)

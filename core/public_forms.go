@@ -1,6 +1,9 @@
 package core
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+)
 
 // public_forms.go — Public macro forms for protocols and records.
 //
@@ -32,22 +35,24 @@ func installMacro(ns *Namespace, name string, fn func([]coretypes.Object) corety
 	referToUser(sym, vr)
 }
 
-func listObjs(objs ...coretypes.Object) *List { return collectionConstruction.NewListFrom(objs...) }
-func quoteObj(obj coretypes.Object) *List {
+func listObjs(objs ...coretypes.Object) *corecollections.List {
+	return corecollections.NewListFrom(objs...)
+}
+func quoteObj(obj coretypes.Object) *corecollections.List {
 	return listObjs(coretypes.MakeSymbol(STRINGS.Intern, "quote"), obj)
 }
-func doObj(forms ...coretypes.Object) *List {
-	return collectionConstruction.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "do")}, forms...)...)
+func doObj(forms ...coretypes.Object) *corecollections.List {
+	return corecollections.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "do")}, forms...)...)
 }
 
 func macroDefProtocol(args []coretypes.Object) coretypes.Object {
 	// macro args: &form, &env, name, method...
 	if len(args) < 3 {
-		panic(RT.NewError("defprotocol requires a name"))
+		panic(coretypes.RuntimeError("defprotocol requires a name"))
 	}
 	name, ok := args[2].(coretypes.Symbol)
 	if !ok {
-		panic(RT.NewError("defprotocol name must be a symbol"))
+		panic(coretypes.RuntimeError("defprotocol name must be a symbol"))
 	}
 	forms := []coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "__defprotocol"), quoteObj(name)}
 	for _, raw := range args[3:] {
@@ -73,13 +78,13 @@ func macroDefProtocol(args []coretypes.Object) coretypes.Object {
 		}
 		forms = append(forms, coretypes.String{S: mname.ToString(false)}, coretypes.Int{I: argv.Count()})
 	}
-	return collectionConstruction.NewListFrom(forms...)
+	return corecollections.NewListFrom(forms...)
 }
 
 func macroExtendType(args []coretypes.Object) coretypes.Object {
 	// (extend-type Type Proto (method [args] body...) Proto2 ...)
 	if len(args) < 5 {
-		panic(RT.NewError("extend-type requires a type, protocol, and method implementations"))
+		panic(coretypes.RuntimeError("extend-type requires a type, protocol, and method implementations"))
 	}
 	typeName := macroTypeName(args[2])
 	forms := make([]coretypes.Object, 0)
@@ -108,12 +113,12 @@ func macroExtendType(args []coretypes.Object) coretypes.Object {
 				i++
 				continue
 			}
-			fnTail := ToSlice(s.Rest())
-			fnForm := collectionConstruction.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "fn")}, fnTail...)...)
+			fnTail := corecollections.ToSlice(s.Rest())
+			fnForm := corecollections.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "fn")}, fnTail...)...)
 			call = append(call, coretypes.String{S: mname.ToString(false)}, fnForm)
 			i++
 		}
-		forms = append(forms, collectionConstruction.NewListFrom(call...))
+		forms = append(forms, corecollections.NewListFrom(call...))
 	}
 	return doObj(forms...)
 }
@@ -121,7 +126,7 @@ func macroExtendType(args []coretypes.Object) coretypes.Object {
 func macroExtendProtocol(args []coretypes.Object) coretypes.Object {
 	// (extend-protocol Proto Type (method [args] body...) Type2 ...)
 	if len(args) < 5 {
-		panic(RT.NewError("extend-protocol requires a protocol, type, and method implementations"))
+		panic(coretypes.RuntimeError("extend-protocol requires a protocol, type, and method implementations"))
 	}
 	proto := args[2]
 	forms := make([]coretypes.Object, 0)
@@ -145,8 +150,8 @@ func macroExtendProtocol(args []coretypes.Object) coretypes.Object {
 				i++
 				continue
 			}
-			fnTail := ToSlice(s.Rest())
-			fnForm := collectionConstruction.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "fn")}, fnTail...)...)
+			fnTail := corecollections.ToSlice(s.Rest())
+			fnForm := corecollections.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "fn")}, fnTail...)...)
 			call = append(call, coretypes.String{S: mname.ToString(false)}, fnForm)
 			i++
 			// Stop if the next form looks like a type followed by methods. In practice
@@ -157,7 +162,7 @@ func macroExtendProtocol(args []coretypes.Object) coretypes.Object {
 				}
 			}
 		}
-		forms = append(forms, collectionConstruction.NewListFrom(call...))
+		forms = append(forms, corecollections.NewListFrom(call...))
 	}
 	return doObj(forms...)
 }
@@ -165,25 +170,25 @@ func macroExtendProtocol(args []coretypes.Object) coretypes.Object {
 func macroDefRecord(args []coretypes.Object) coretypes.Object {
 	// (defrecord Name [fields] Protocol (method [args] body...) ...)
 	if len(args) < 4 {
-		panic(RT.NewError("defrecord requires a name and fields vector"))
+		panic(coretypes.RuntimeError("defrecord requires a name and fields vector"))
 	}
 	name, ok := args[2].(coretypes.Symbol)
 	if !ok {
-		panic(RT.NewError("defrecord name must be a symbol"))
+		panic(coretypes.RuntimeError("defrecord name must be a symbol"))
 	}
 	fieldsSeq, ok := args[3].(coretypes.Seqable)
 	if !ok {
-		panic(RT.NewError("defrecord fields must be seqable"))
+		panic(coretypes.RuntimeError("defrecord fields must be seqable"))
 	}
 	defCall := []coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "__defrecord"), quoteObj(name)}
 	for s := fieldsSeq.Seq(); !s.IsEmpty(); s = s.Rest() {
 		field, ok := s.First().(coretypes.Symbol)
 		if !ok {
-			panic(RT.NewError("defrecord field must be a symbol"))
+			panic(coretypes.RuntimeError("defrecord field must be a symbol"))
 		}
 		defCall = append(defCall, coretypes.String{S: field.ToString(false)})
 	}
-	forms := []coretypes.Object{collectionConstruction.NewListFrom(defCall...)}
+	forms := []coretypes.Object{corecollections.NewListFrom(defCall...)}
 	if len(args) > 4 {
 		// Reuse extend-type semantics with the record's dispatch type name.
 		extendArgs := append([]coretypes.Object{args[0], args[1], name}, args[4:]...)

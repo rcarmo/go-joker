@@ -1,6 +1,6 @@
 # Repository architecture refactor plan
 
-Updated: 2026-05-18
+Updated: 2026-05-20
 
 ## Goal
 
@@ -15,13 +15,13 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 - Module identity is now `github.com/rcarmo/go-joker`; remaining `candid82` references should be attribution/upstream history or third-party dependencies only.
 - CLI entrypoint now lives under `cmd/joker`.
 - `std/*` is already package-oriented and increasingly guarded by focused native-boundary contracts and explicit resource-layout rules.
-- `core` remains the main monolith, but the object/type split is now real: `core/types` owns the canonical `Object` protocol, type descriptors/registry, scalar values, big numeric values/ops, simple runtime values (`Delay`, `RecurBindings`), most root-independent protocols, and the shared collection/runtime contracts already decoupled from root (`Map`, `MapIterator`, `Pair`, `Meta`, `MetaHolder`, `Set`, `Vec`, `Ref`). Leaf packages also exist under `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/collections`, `core/reader`, `core/types/string`, `core/types/numerical`, and `core/cursor`, and data-only generated payloads under `core/generated`.
+- `core` remains the main monolith, but the object/type split is now real: `core/types` owns the canonical `Object` protocol, type descriptors/registry, scalar values, big numeric values/ops, simple runtime values (`Delay`, `RecurBindings`), most root-independent protocols, and shared collection/runtime contracts (`Map`, `MapIterator`, `Pair`, `Meta`, `MetaHolder`, `Set`, `Vec`, `Ref`). Concrete collections now live in `core/types/collections`, and runtime-owned wrappers for channels, futures/promises, agents, and atoms now live in `core/runtime`. Leaf packages also exist under `core/trace`, `core/ir`, `core/wasm`, `core/reader`, `core/types/string`, and `core/types/numerical`, with data-only generated payloads under `core/generated`.
 - Generated `core/a_*.go` files still matter, but the root generated set has shrunk; `tests/generated_files.txt` now tracks root generated files plus data-only generated package artifacts such as `core/generated/linter_payloads_gen.go`. Remaining root generated files stay there only while they still require `package core` access. Moving them to a subdirectory must be a real package split, not a cosmetic file move.
 - IR/JIT/WASM compiler and executor files are still coupled to root `Fn`, `Expr`, `LocalEnv`, namespace/frame state, and unexported runtime helpers, but opcode/diagnostic helpers, WASM leaf helpers, and the canonical `coretypes.Object` surface have been extracted. `RuntimeExecutionAdapter` now covers equality, mutable-slot candidate detection, object assoc/nth fallbacks, Fn/runtime call dispatch, program model/constant access, and many executable-envelope seams, but executor loops remain root-owned until frame/call contracts are narrower.
 - Tracing/profiling aggregation state is extracted into `core/trace`.
 
 
-Current focused cleanup metrics (2026-05-18): root `core/*.go` is 69 files with one consolidated root test file; `core/types` is 28 files and owns the canonical object/type/protocol/value contracts plus moved collection/shared protocols (`Map`, `Meta`, `Set`, `Vec`, `Ref`), transient implementations, tagged-literal parsing helpers, and generated/assertion replacements for `coretypes.*` and stdlib I/O return types.
+Current focused cleanup metrics (2026-05-20): root `core/*.go` is 57 files with one consolidated root test file; `core/types` is 19 files and owns the canonical object/type/protocol/value contracts plus shared protocols (`Map`, `Meta`, `Set`, `Vec`, `Ref`), transient implementations, tagged-literal parsing helpers, runtime hooks, and generated/assertion replacements for `coretypes.*` and stdlib I/O return types. `core/types/collections` owns concrete vectors/maps/sets/lists/seqs/chunks, and `core/runtime` owns channel/future/promise/agent/atom wrappers plus runtime primitives.
 
 ## Refactor document set
 
@@ -53,11 +53,10 @@ Planned package boundaries:
 | `core/trace` | function, symbol, and IR profile state machinery | Extracted leaf package. No dependency on `core`; root `trace_adapters.go` only passes names/events/op names in. |
 | `core/ir` | `ir*.go`, IR tests | Extracted neutral IR helpers/model exist; executor/compiler movement still requires exported runtime interfaces for `Object`, `Fn`, `Expr`, call dispatch, slots, and errors. |
 | `core/wasm` | `wasm*.go` leaf helpers first | Extracted encoding/module/host metadata helpers exist, but full lowering/runtime still depends on IR program shape and runtime contracts. |
-| `core/runtime` | feature flags, goroutine IDs, future eval frames/errors/tracing hooks | Small runtime leaf helpers exist; production executor/runtime moves require explicit object/call/error/frame contracts first. |
-| `core/collections` | vectors, maps, sets, seqs, transients | Real mechanics package exists: generic slice storage, persistent list-node storage, generic map equality traversal, generic delimited formatting, pair-array helpers, bitmap/hash-index helpers, and opaque trie node/path helpers are extracted. Root collections delegate mechanics where safe while retaining concrete collection behavior. Most package-independent protocols now live in `core/types`; move concrete collection implementations only after remaining concrete collection return types, metadata propagation, sorted/proc coupling, and construction cycles are resolved. |
+| `core/runtime` | feature flags, goroutine IDs, pending/channel primitives, runtime wrappers, future eval frames/errors/tracing hooks | Runtime leaf helpers and wrappers for `ObjectChannel`, `ObjectFuture`, `ObjectPromise`, `Agent`, and `Atom` exist; production executor/runtime/env moves still require explicit object/call/error/frame/namespace contracts first. |
+| `core/types/collections` | vectors, maps, sets, seqs, chunks | Concrete collection package exists: vectors, persistent vectors, lists/seqs, array/hash maps, sets, chunks, formatting/indexed ops, bitmap/hash-index helpers, and trie/path helpers are extracted. Root code uses `corecollections.*` direct constructors. Remaining collection-adjacent work is sorted/proc coupling, transients, evaluator fast paths, and generated/bootstrap placement. |
 | `core/reader` | `read.go`, tagged literals | Real reader mechanics package exists: rune-window history, line rune reading, rune-stream Get/Unget/Peek position mechanics, reader position-stack snapshots, character classification, whitespace/comment/line scanning, identifier token scanning/validation configuration/issue enumeration, unicode/string escape parsing, number-token classification, dispatch/form/prefix helpers, and raw file/buffer/buffered/IO mechanics have moved. Root reader still owns filename interning, errors, FORMAT/LINTER behavior, namespace/tagged-literal handling, concrete Object construction, and parser/evaluator handoff; the tiny root `reader.go` wrapper has been folded into `read.go`. `ReaderConstructionAdapter` now covers read errors, source metadata, scalar/comment/regex/numeric literals, metadata, list/vector/map/set literal construction, conditional vectors, and expression constructors. |
-| `core/types/string` | string caches and string-focused support helpers | Real helper package owns root-independent string mechanics such as char/rune caching, escaping, joining, and nth-rune lookup; root `core` keeps object/error wrappers. |
-| `core/cursor` | string cursor mechanics | Real leaf package owns string cursor iteration mechanics; root `core.StringCursor` is only the Joker Object protocol adapter. |
+| `core/types/string` | string caches, cursor mechanics, and string-focused support helpers | Real helper package owns root-independent string mechanics such as char/rune caching, escaping, joining, nth-rune lookup, and cursor iteration; root keeps object/error adapters where needed. |
 | `core/generated` | source manifest, linter payload bytes/registry, future data-only payloads | Real generated package boundary exists for data-only payloads. Only move additional generated families when generator output can declare/import a real package with explicit contracts; do not place `package core` files in subdirectories. Root `types_assert_gen.go`/`types_info_gen.go` have been replaced by explicit files (`assert_root.go`, `with_info_root.go`). |
 | `tools/tracing` or skill scripts | pprof/IR/function trace renderers | External tooling can move independently of Go runtime packages. |
 
@@ -123,7 +122,7 @@ Planned package boundaries:
 - [x] Add `make generated-check` guardrail and run it from `make docs-check`.
 - [x] Track generated root-core file set in `tests/generated_files.txt`.
 - [x] Add a collections extraction audit (`collections-extraction-audit.md`) before the first real collection mechanics move.
-- [x] Start collection mechanics extraction with generic vector slice helpers in `core/collections`.
+- [x] Start collection mechanics extraction with generic vector slice helpers in `core/types/collections`.
 - [x] Move reader identifier rune classification into `core/reader`.
 - [x] Move reader identifier validation predicates/reasons/configuration/issue enumeration/explanations into `core/reader` and remove stale root wrappers.
 - [x] Move reader unicode escape parsing helpers into `core/reader`.

@@ -8,13 +8,15 @@ status=0
 fail() { echo "layout guard: $*" >&2; status=1; }
 
 [[ -f cmd/joker/main.go ]] || fail "missing CLI entrypoint cmd/joker/main.go"
-for dir in trace ir wasm generated runtime collections reader cursor types; do
+for dir in trace ir wasm generated runtime reader types; do
   [[ -d "core/${dir}" ]] || fail "missing core/${dir}"
 done
-for dir in runtime collections reader ir wasm generated cursor types; do
+for dir in runtime reader ir wasm generated types; do
   [[ -f "core/${dir}/doc.go" ]] || fail "missing core/${dir}/doc.go"
 done
+[[ -f core/types/collections/doc.go ]] || fail "missing core/types/collections/doc.go"
 [[ -f core/types/string/doc.go ]] || fail "missing core/types/string/doc.go"
+[[ -f core/types/numerical/doc.go ]] || fail "missing core/types/numerical/doc.go"
 [[ -f std/http/router/router.joke ]] || fail "missing std/http/router/router.joke"
 
 if [[ -d lib/joker/http ]]; then
@@ -48,11 +50,53 @@ if grep -R '^func Benchmark' core --include='*_test.go' >/dev/null; then
   fail "core package benchmark functions belong under benchmarks/core, not root core"
 fi
 
-for pkg in runtime collections reader cursor; do
+moved_collection_files=(
+  array_map.go
+  array_vector.go
+  chunked_seq.go
+  hash_map.go
+  list.go
+  map.go
+  persistent_vector.go
+  seq.go
+  set.go
+  vector.go
+)
+for file in "${moved_collection_files[@]}"; do
+  if [[ -e "core/${file}" ]]; then
+    fail "collection-owned file core/${file} has moved to core/types/collections; do not reintroduce root copies"
+  fi
+done
+if [[ ! -f core/chunked_procs.go ]]; then
+  fail "chunk proc registration should remain isolated in core/chunked_procs.go until env/proc ownership moves"
+fi
+
+moved_runtime_files=(
+  channel.go
+)
+for file in "${moved_runtime_files[@]}"; do
+  if [[ -e "core/${file}" ]]; then
+    fail "runtime-owned file core/${file} has moved to core/runtime; do not reintroduce root copies"
+  fi
+done
+if grep -R '^type \(Future\|Promise\|Agent\|Atom\) struct' core --include='*.go' --exclude-dir=runtime >/dev/null; then
+  grep -R '^type \(Future\|Promise\|Agent\|Atom\) struct' core --include='*.go' --exclude-dir=runtime >&2
+  fail "Future/Promise/Agent/Atom object wrappers are runtime-owned; do not reintroduce root copies"
+fi
+if grep -R -E 'var atom_NUM_[0-9]+ Atom|Atom = Atom\{|\*Atom\)\(nil\)' core --include='*.go' --exclude-dir=runtime >/dev/null; then
+  grep -R -E 'var atom_NUM_[0-9]+ Atom|Atom = Atom\{|\*Atom\)\(nil\)' core --include='*.go' --exclude-dir=runtime >&2
+  fail "generated/root code must use corert.Atom and corert.NewAtom, not root Atom literals or reflect references"
+fi
+
+for pkg in runtime reader types/collections types/string types/numerical; do
   if grep -R 'github.com/rcarmo/go-joker/core"' "core/${pkg}" --include='*.go' >/dev/null; then
     fail "core/${pkg} must not import root core; define an adapter contract before moving coupled code"
   fi
 done
+if grep -R 'github.com/rcarmo/go-joker/core/runtime' core/types --include='*.go' >/dev/null; then
+  grep -R 'github.com/rcarmo/go-joker/core/runtime' core/types --include='*.go' >&2
+  fail "core/types must not import core/runtime; runtime object wrappers own runtime-dependent behavior"
+fi
 
 for artifact in core.test joker transit.test; do
   if [[ -e "$artifact" ]]; then

@@ -3,8 +3,10 @@ package core
 // atom_ext.go — Atom extensions: validators, watches, compare-and-set!
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"sync"
+
+	corert "github.com/rcarmo/go-joker/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 // atomExtras holds validator and watches for an Atom.
@@ -17,16 +19,16 @@ type atomExtras struct {
 	} // key.ToString → watch
 }
 
-var atomExtrasMap sync.Map // *Atom → *atomExtras
+var atomExtrasMap sync.Map // *corert.Atom → *atomExtras
 
-func getAtomExtras(a *Atom) *atomExtras {
+func getAtomExtras(a *corert.Atom) *atomExtras {
 	if v, ok := atomExtrasMap.Load(a); ok {
 		return v.(*atomExtras)
 	}
 	return nil
 }
 
-func getOrCreateAtomExtras(a *Atom) *atomExtras {
+func getOrCreateAtomExtras(a *corert.Atom) *atomExtras {
 	if v, ok := atomExtrasMap.Load(a); ok {
 		return v.(*atomExtras)
 	}
@@ -39,7 +41,7 @@ func getOrCreateAtomExtras(a *Atom) *atomExtras {
 }
 
 // notifyWatches calls all watch functions with (key atom old-val new-val).
-func notifyWatches(a *Atom, oldVal, newVal coretypes.Object) {
+func notifyWatches(a *corert.Atom, oldVal, newVal coretypes.Object) {
 	ext := getAtomExtras(a)
 	if ext == nil || len(ext.watches) == 0 {
 		return
@@ -50,14 +52,14 @@ func notifyWatches(a *Atom, oldVal, newVal coretypes.Object) {
 }
 
 // validateAtom checks the validator, panics if invalid.
-func validateAtom(a *Atom, newVal coretypes.Object) {
+func validateAtom(a *corert.Atom, newVal coretypes.Object) {
 	ext := getAtomExtras(a)
 	if ext == nil || ext.validator == nil {
 		return
 	}
 	result := call1(ext.validator, newVal)
 	if !ToBool(result) {
-		panic(RT.NewError("Invalid reference state"))
+		panic(coretypes.RuntimeError("Invalid reference state"))
 	}
 }
 
@@ -74,7 +76,7 @@ func registerAtomExtProcs() {
 	// set-validator! — (set-validator! atom fn)
 	svVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "set-validator!"))
 	svVr.Value = Proc{Name: "procSetValidator", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 2, 2)
+		runtimeCheckArity(args, 2, 2)
 		a := EnsureObjectIsAtom(args[0], "set-validator! requires an atom, got %s")
 		ext := getOrCreateAtomExtras(a)
 		if args[1] == nil || IsNil(args[1]) {
@@ -84,7 +86,7 @@ func registerAtomExtProcs() {
 			// Validate current value
 			result := call1(fn, a.Deref())
 			if !ToBool(result) {
-				panic(RT.NewError("Invalid reference state"))
+				panic(coretypes.RuntimeError("Invalid reference state"))
 			}
 			ext.validator = fn
 		}
@@ -95,7 +97,7 @@ func registerAtomExtProcs() {
 	// get-validator — (get-validator atom)
 	gvVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "get-validator"))
 	gvVr.Value = Proc{Name: "procGetValidator", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		a := EnsureObjectIsAtom(args[0], "get-validator requires an atom, got %s")
 		ext := getAtomExtras(a)
 		if ext == nil || ext.validator == nil {
@@ -108,7 +110,7 @@ func registerAtomExtProcs() {
 	// add-watch — (add-watch atom key fn)
 	awVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "add-watch"))
 	awVr.Value = Proc{Name: "procAddWatch", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 3, 3)
+		runtimeCheckArity(args, 3, 3)
 		a := EnsureObjectIsAtom(args[0], "add-watch requires an atom, got %s")
 		key := args[1]
 		fn := coretypes.EnsureObjectIsCallable(args[2], "watch function must be callable, got %s")
@@ -124,7 +126,7 @@ func registerAtomExtProcs() {
 	// remove-watch — (remove-watch atom key)
 	rwVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "remove-watch"))
 	rwVr.Value = Proc{Name: "procRemoveWatch", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 2, 2)
+		runtimeCheckArity(args, 2, 2)
 		a := EnsureObjectIsAtom(args[0], "remove-watch requires an atom, got %s")
 		key := args[1]
 		ext := getAtomExtras(a)
@@ -138,21 +140,15 @@ func registerAtomExtProcs() {
 	// compare-and-set! — (compare-and-set! atom oldval newval)
 	casVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "compare-and-set!"))
 	casVr.Value = Proc{Name: "procCompareAndSet", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 3, 3)
+		runtimeCheckArity(args, 3, 3)
 		a := EnsureObjectIsAtom(args[0], "compare-and-set! requires an atom, got %s")
 		oldVal := args[1]
 		newVal := args[2]
-		a.mu.Lock()
-		if a.value.Equals(oldVal) {
-			validateAtom(a, newVal)
-			old := a.value
-			a.value = newVal
-			a.mu.Unlock()
+		old, ok := a.CompareAndSet(oldVal, newVal, func(v coretypes.Object) { validateAtom(a, v) })
+		if ok {
 			notifyWatches(a, old, newVal)
-			return coretypes.Boolean{B: true}
 		}
-		a.mu.Unlock()
-		return coretypes.Boolean{B: false}
+		return coretypes.Boolean{B: ok}
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "compare-and-set!"), casVr)
 }

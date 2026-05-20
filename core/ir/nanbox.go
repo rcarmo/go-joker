@@ -1,6 +1,10 @@
 package ir
 
-import "math"
+import (
+	"math"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+)
 
 const (
 	nbQuiet  uint64 = 0x7FF8_0000_0000_0000
@@ -51,4 +55,44 @@ func ToFloat(v uint64) float64 {
 		return float64(ToInt(v))
 	}
 	return 0
+}
+
+func NBFromObject(obj coretypes.Object, table *[]coretypes.Object, isNil func(coretypes.Object) bool) uint64 {
+	switch v := obj.(type) {
+	case coretypes.Int:
+		return BoxInt(v.I)
+	case coretypes.Double:
+		return BoxDouble(v.D)
+	case coretypes.Boolean:
+		return BoxBool(v.B)
+	default:
+		if isNil != nil && isNil(obj) {
+			return BoxNil()
+		}
+		idx := len(*table)
+		*table = append(*table, obj)
+		return BoxObj(idx)
+	}
+}
+
+func NBToObject(v uint64, table []coretypes.Object, nilObj coretypes.Object) coretypes.Object {
+	if IsDouble(v) {
+		return coretypes.Double{D: ToDouble(v)}
+	}
+	if IsInt(v) {
+		return coretypes.Int{I: ToInt(v)}
+	}
+	if IsBool(v) {
+		return coretypes.Boolean{B: ToBool(v)}
+	}
+	if IsNil(v) {
+		return nilObj
+	}
+	if IsObj(v) {
+		idx := ToObjIdx(v)
+		if idx < len(table) {
+			return table[idx]
+		}
+	}
+	return nilObj
 }

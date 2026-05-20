@@ -1,6 +1,6 @@
 # Runtime execution metadata contract
 
-Updated: 2026-05-18
+Updated: 2026-05-20
 
 ## Purpose
 
@@ -25,14 +25,14 @@ These fields are not pure IR shape. Moving them into `core/ir` would leak root r
 
 ## Runtime/channel concurrency contract
 
-Generic channel close/send/receive mechanics now live in `core/runtime.Channel[T]`; generic pending-value mechanics now live in `core/runtime.Future[T,E]` and `core/runtime.Promise[T]`. Root `core.Channel`, `core.Future`, `core.Promise`, and `core.Delay` wrap those runtime mechanics so root keeps `Object`, `Error`, hashing, type, proc, and `alts!` integration while runtime owns the root-independent concurrency mechanics. Its current contract is:
+Generic channel close/send/receive mechanics now live in `core/runtime.Channel[T]`; generic pending-value mechanics now live in `core/runtime.Future[T,E]` and `core/runtime.Promise[T]`. Runtime-owned Joker wrappers (`core/runtime.ObjectChannel`, `ObjectFuture`, `ObjectPromise`, `Agent`, and `Atom`) now keep `Object`, `Error`, hashing, type, queue/realization, and atom value semantics outside root; root `concurrency_ext.go`, atom/core.async glue, and proc files keep only proc/env registration, `alts!` vector construction, validators/watches, `NIL`, and call-helper glue. `Delay` owns a local promise primitive in `core/types` to avoid a `core/types` ↔ `core/runtime` cycle while still using the installed callable hook for forcing. Its current contract is:
 
 - `Channel.Close()` is idempotent and safe under concurrent callers.
 - `Channel.IsClosed()` is the only supported closed-state accessor; callers must not read runtime fields directly.
 - Sending after close returns false rather than panicking.
-- Receiving from a closed channel returns `NIL` with `ChannelReceiveClosed`.
+- Receiving from a closed channel returns runtime nil with `ChannelReceiveClosed`; root proc glue translates that to `NIL` where needed.
 
-`channel_contract_test.go`, `core/runtime/channel_test.go`, and `core/runtime/pending_test.go` guard close/idempotency and pending-value realization behavior. This matters for future runtime extraction because async helpers, `alts!`, futures, promises, delays, and core send/receive procs must all share the same concurrency semantics.
+`channel_contract_test.go`, `core/runtime/channel_test.go`, `core/runtime/pending_test.go`, `core/runtime/agent_test.go`, `core/runtime/atom_test.go`, and `core/runtime/concurrency_helpers_test.go` guard close/idempotency, object-channel result/error propagation, pending-value realization, Future/Promise wrapper behavior, runtime-owned Agent send/await/error behavior, runtime-owned Atom mutation behavior, checked millisecond durations, and parallel panic propagation. This matters for future runtime extraction because async helpers, `alts!`, futures, promises, agents, delays, atoms, pmap/pcalls, and core send/receive procs must all share the same concurrency semantics.
 
 ## Required execution boundary
 
@@ -98,5 +98,5 @@ This is a sketch, not an implementation API. The important boundary is ownership
 
 - Neutral IR model: started and guarded by `core/ir` tests.
 - Diagnostics/export/WASM/native helper readers: migrated to the neutral model where appropriate.
-- Runtime/execution-envelope tests, including WASM/native integer conversion, stable IR function-cache keys, `RuntimeExecutionAdapter` error/function/capture/failure/native-helper/fallback contracts, and executor-file adapter reach-through guards: gated by `make runtime-contract-check`, which is run by `make docs-check`.
+- Runtime/execution-envelope tests, including WASM/native integer conversion, stable IR function-cache keys, `RuntimeExecutionAdapter` error/function/capture/failure/native-helper/fallback contracts, executor-file adapter reach-through guards, and `core/runtime` package tests for runtime-owned channel/pending/agent/atom wrappers: gated by `make runtime-contract-check`, which is run by `make docs-check`.
 - Executors and escape analysis: intentionally root-bound pending object/frame contracts becoming narrow enough for real package moves. Boxed, typed, inline typed, and nanbox typed executor files now use `runtimeExec` for executable-envelope state, Fn internals, callable dispatch, typed argument boxing, and many collection/string/cursor operations, but they remain in root `core` because they still depend on `Object`, `irValue`, opcode-local primitive handling, frame-stack result handling, and object conversion internals.

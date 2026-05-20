@@ -1,8 +1,10 @@
 package core
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"unsafe"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	"github.com/rcarmo/go-joker/core/hashutil"
 )
@@ -57,7 +59,7 @@ func (xf *XForm) WithMeta(m coretypes.Map) coretypes.Object {
 }
 
 func (xf *XForm) Call(args []coretypes.Object) coretypes.Object {
-	CheckArity(args, 1, 1)
+	runtimeCheckArity(args, 1, 1)
 	rf := coretypes.EnsureArgIsCallable(args, 0)
 	return buildXFormRF(xf.steps, rf).(coretypes.Object)
 }
@@ -79,7 +81,7 @@ func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
 				case 2:
 					return call2(downstream, callArgs[0], call1(f, callArgs[1]))
 				default:
-					PanicArityMinMax(len(callArgs), 0, 2)
+					coretypes.RuntimePanicArityMinMax(len(callArgs), 0, 2)
 					return NIL
 				}
 			}}
@@ -98,7 +100,7 @@ func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
 					}
 					return callArgs[0]
 				default:
-					PanicArityMinMax(len(callArgs), 0, 2)
+					coretypes.RuntimePanicArityMinMax(len(callArgs), 0, 2)
 					return NIL
 				}
 			}}
@@ -123,7 +125,7 @@ func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
 					}
 					return out
 				default:
-					PanicArityMinMax(len(callArgs), 0, 2)
+					coretypes.RuntimePanicArityMinMax(len(callArgs), 0, 2)
 					return NIL
 				}
 			}}
@@ -370,7 +372,7 @@ func installTransducerCompat() {
 	// reduced — wraps value in Reduced box
 	reducedVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "reduced"))
 	reducedVr.Value = Proc{Name: "procReduced", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		return MakeReduced(args[0])
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "reduced"), reducedVr)
@@ -378,7 +380,7 @@ func installTransducerCompat() {
 	// reduced? — type check, no map lookup
 	reducedQVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "reduced?"))
 	reducedQVr.Value = Proc{Name: "procReducedQ", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		return coretypes.MakeBoolean(IsReduced(args[0]))
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "reduced?"), reducedQVr)
@@ -386,7 +388,7 @@ func installTransducerCompat() {
 	// ensure-reduced
 	ensureReducedVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "ensure-reduced"))
 	ensureReducedVr.Value = Proc{Name: "procEnsureReduced", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		return EnsureReduced(args[0])
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "ensure-reduced"), ensureReducedVr)
@@ -394,7 +396,7 @@ func installTransducerCompat() {
 	// unreduced — deref a Reduced box (identity if not reduced)
 	unreducedVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "unreduced"))
 	unreducedVr.Value = Proc{Name: "procUnreduced", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		return DerefReduced(args[0])
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "unreduced"), unreducedVr)
@@ -403,7 +405,7 @@ func installTransducerCompat() {
 	completingVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "completing"))
 	completingVr.Value = Proc{Name: "procCompleting", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) != 1 && len(args) != 2 {
-			PanicArityMinMax(len(args), 1, 2)
+			coretypes.RuntimePanicArityMinMax(len(args), 1, 2)
 		}
 		f := coretypes.EnsureArgIsCallable(args, 0)
 		var cf coretypes.Callable
@@ -411,7 +413,7 @@ func installTransducerCompat() {
 			cf = coretypes.EnsureArgIsCallable(args, 1)
 		} else {
 			cf = Proc{Name: "procCompletingIdentity", Fn: func(callArgs []coretypes.Object) coretypes.Object {
-				CheckArity(callArgs, 1, 1)
+				runtimeCheckArity(callArgs, 1, 1)
 				return callArgs[0]
 			}}
 		}
@@ -424,7 +426,7 @@ func installTransducerCompat() {
 			case 2:
 				return f.Call(callArgs)
 			default:
-				PanicArityMinMax(len(callArgs), 0, 2)
+				coretypes.RuntimePanicArityMinMax(len(callArgs), 0, 2)
 				return NIL
 			}
 		}}
@@ -495,7 +497,7 @@ func installTransducerCompat() {
 	// transduce — full 3 and 4-arity support
 	transduceProc := Proc{Name: "procTransduce", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) != 3 && len(args) != 4 {
-			PanicArityMinMax(len(args), 3, 4)
+			coretypes.RuntimePanicArityMinMax(len(args), 3, 4)
 		}
 
 		xform := coretypes.EnsureArgIsCallable(args, 0)
@@ -522,7 +524,7 @@ func installTransducerCompat() {
 	eductionVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "eduction"))
 	eductionVr.Value = Proc{Name: "procEduction", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
-			PanicArityMinMax(len(args), 2, 999)
+			coretypes.RuntimePanicArityMinMax(len(args), 2, 999)
 		}
 		collObj := args[len(args)-1]
 		var xformObj coretypes.Object
@@ -531,7 +533,7 @@ func installTransducerCompat() {
 		} else {
 			compVr := ns.Resolve("comp")
 			if compVr == nil {
-				panic(RT.NewError("Unable to resolve core/comp for eduction"))
+				panic(coretypes.RuntimeError("Unable to resolve core/comp for eduction"))
 			}
 			compFn := coretypes.EnsureObjectIsCallable(compVr.Value, "comp must be callable, got %s")
 			xformObj = compFn.Call(args[:len(args)-1])
@@ -541,7 +543,7 @@ func installTransducerCompat() {
 		conjRF := Proc{Name: "procEductionConjRF", Fn: func(callArgs []coretypes.Object) coretypes.Object {
 			switch len(callArgs) {
 			case 0:
-				return collectionConstruction.NewEmptyArrayVector()
+				return corecollections.EmptyArrayVector()
 			case 1:
 				return callArgs[0]
 			case 2:
@@ -551,12 +553,12 @@ func installTransducerCompat() {
 				}
 				return acc.Conj(callArgs[1]).(coretypes.Object)
 			default:
-				PanicArityMinMax(len(callArgs), 0, 2)
+				coretypes.RuntimePanicArityMinMax(len(callArgs), 0, 2)
 				return NIL
 			}
 		}}
 
-		return transduceInternal(xform, conjRF, collectionConstruction.NewEmptyArrayVector(), collObj)
+		return transduceInternal(xform, conjRF, corecollections.EmptyArrayVector(), collObj)
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "eduction"), eductionVr)
 

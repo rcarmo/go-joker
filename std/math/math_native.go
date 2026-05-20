@@ -2,16 +2,18 @@ package math
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"math/big"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
 
 func modf(x float64) coretypes.Object {
 	i, f := math.Modf(x)
-	res := EmptyVector()
+	res := corecollections.EmptyVector()
 	res = res.Conjoin(coretypes.MakeDouble(i))
 	res = res.Conjoin(coretypes.MakeDouble(f))
 	return res

@@ -2,10 +2,12 @@ package bolt
 
 import (
 	"bytes"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math/big"
 	"os"
 	"unsafe"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 	"github.com/rcarmo/go-joker/core/hashutil"
@@ -164,13 +166,13 @@ func get(db *bolt.DB, bucket, key string) coretypes.Object {
 	return coretypes.MakeString(string(v))
 }
 
-func byPrefix(db *bolt.DB, bucket, prefix string) *ArrayVector {
-	res := EmptyArrayVector()
+func byPrefix(db *bolt.DB, bucket, prefix string) *corecollections.ArrayVector {
+	res := corecollections.EmptyArrayVector()
 	err := db.View(func(tx *bolt.Tx) error {
 		c := getBucket(tx, bucket).Cursor()
 		pr := []byte(prefix)
 		for k, v := c.Seek(pr); k != nil && bytes.HasPrefix(k, pr); k, v = c.Next() {
-			res.Append(NewVectorFrom(coretypes.MakeString(string(k)), coretypes.MakeString(string(v))))
+			res.Append(corecollections.NewVectorFrom(coretypes.MakeString(string(k)), coretypes.MakeString(string(v))))
 		}
 		return nil
 	})

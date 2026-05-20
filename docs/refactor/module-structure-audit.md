@@ -24,10 +24,10 @@ core/generated           # data-only generated bootstrap payload contracts/sourc
 core/ir                  # extracted IR opcode/diagnostic/analysis helpers and neutral Program model
 core/runtime             # extracted runtime feature flags and leaf helpers
 core/wasm                # extracted WASM encoding/module/host metadata helpers
-core/collections         # extracted collection storage/bitmap/trie mechanics
+core/types/collections         # extracted collection storage/bitmap/trie mechanics
 core/reader              # extracted reader lexical/token/scanning/form/IO mechanics
-core/string              # extracted string mechanics
-core/cursor              # extracted string cursor mechanics
+core/types/string              # extracted string mechanics
+core/types/string              # extracted string cursor mechanics
 std/*                             # namespace-oriented standard library packages
 tests                             # integration/parity/Babashka fixture tests
 benchmarks                        # benchmark/report tooling

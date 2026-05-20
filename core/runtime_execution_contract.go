@@ -2,10 +2,12 @@ package core
 
 import (
 	"fmt"
+
 	coreir "github.com/rcarmo/go-joker/core/ir"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	corert "github.com/rcarmo/go-joker/core/runtime"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
@@ -124,7 +126,7 @@ func (RuntimeExecutionAdapter) CallArgs(argsSeq coretypes.Object) ([]coretypes.O
 	if seq == nil {
 		return nil, true
 	}
-	return ToSlice(seq), true
+	return corecollections.ToSlice(seq), true
 }
 
 func (RuntimeExecutionAdapter) CallObject(fnObj coretypes.Object, args []coretypes.Object) (coretypes.Object, bool) {
@@ -146,7 +148,7 @@ func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj cor
 func (RuntimeExecutionAdapter) HasMutableSlotCandidate(slots []coretypes.Object) bool {
 	for _, s := range slots {
 		switch s.(type) {
-		case *ArrayVector, *ArrayMap, *HashMap, coretypes.String:
+		case *corecollections.ArrayVector, *corecollections.ArrayMap, *corecollections.HashMap, coretypes.String:
 			return true
 		}
 	}
@@ -158,21 +160,18 @@ func (RuntimeExecutionAdapter) MutableSlotObject(obj coretypes.Object, escapeInf
 		return obj
 	}
 	switch v := obj.(type) {
-	case *ArrayVector:
-		return ToTransient(v)
-	case *ArrayMap:
-		return MapToTransient(v)
-	case *HashMap:
-		return MapToTransient(v)
+	case *corecollections.ArrayVector:
+		return coretypes.ToTransient(v.Arr)
+	case *corecollections.ArrayMap:
+		return coretypes.MapToTransient(v)
+	case *corecollections.HashMap:
+		return coretypes.MapToTransient(v)
 	case coretypes.String:
 		if !corert.IRStringBuilderDisabled() && slot < len(escapeInfo.StringPrependSlots) {
 			builder := slot < len(escapeInfo.StringBuilderSlots) && escapeInfo.StringBuilderSlots[slot]
 			prepend := escapeInfo.StringPrependSlots[slot]
-			if corert.IRStringBuilderForce() && (builder || prepend) {
-				return ToTransientString(v)
-			}
-			if !corert.IRStringBuilderForce() && prepend {
-				return ToTransientString(v)
+			if (corert.IRStringBuilderForce() && (builder || prepend)) || (!corert.IRStringBuilderForce() && prepend) {
+				return NewTransientString(v)
 			}
 		}
 	}
@@ -181,9 +180,9 @@ func (RuntimeExecutionAdapter) MutableSlotObject(obj coretypes.Object, escapeInf
 
 func (RuntimeExecutionAdapter) PersistentResult(result coretypes.Object) coretypes.Object {
 	switch v := result.(type) {
-	case *TransientVector:
+	case *coretypes.TransientVector:
 		return v.ToPersistent()
-	case *TransientMap:
+	case *coretypes.TransientMap:
 		return v.ToPersistent()
 	case *TransientString:
 		return v.ToPersistent()
@@ -203,9 +202,9 @@ func (RuntimeExecutionAdapter) Get(coll coretypes.Object, key coretypes.Object, 
 
 func (RuntimeExecutionAdapter) Assoc(coll coretypes.Object, key coretypes.Object, val coretypes.Object) (coretypes.Object, bool) {
 	switch c := coll.(type) {
-	case *TransientVector:
+	case *coretypes.TransientVector:
 		return c.AssocInPlace(key, val), true
-	case *TransientMap:
+	case *coretypes.TransientMap:
 		return c.AssocInPlace(key, val), true
 	case coretypes.Associative:
 		return c.Assoc(key, val), true
@@ -233,11 +232,11 @@ func stringNthFast(s string, i int) coretypes.Object {
 
 func (RuntimeExecutionAdapter) Nth(coll coretypes.Object, idx int) (coretypes.Object, bool) {
 	switch c := coll.(type) {
-	case *ArrayVector:
-		if idx >= 0 && idx < len(c.arr) {
-			return c.arr[idx], true
+	case *corecollections.ArrayVector:
+		if idx >= 0 && idx < len(c.Arr) {
+			return c.Arr[idx], true
 		}
-	case *TransientVector:
+	case *coretypes.TransientVector:
 		if idx >= 0 && idx < len(c.Arr) {
 			return c.Arr[idx], true
 		}
@@ -251,7 +250,7 @@ func (RuntimeExecutionAdapter) Nth(coll coretypes.Object, idx int) (coretypes.Ob
 
 func (RuntimeExecutionAdapter) Conj(coll coretypes.Object, val coretypes.Object) (coretypes.Object, bool) {
 	switch c := coll.(type) {
-	case *TransientVector:
+	case *coretypes.TransientVector:
 		return c.ConjInPlace(val), true
 	case coretypes.Conjable:
 		return c.Conj(val), true
@@ -262,12 +261,12 @@ func (RuntimeExecutionAdapter) Conj(coll coretypes.Object, val coretypes.Object)
 
 func (RuntimeExecutionAdapter) First(coll coretypes.Object) (coretypes.Object, bool) {
 	switch c := coll.(type) {
-	case *ArrayVector:
-		if len(c.arr) > 0 {
-			return c.arr[0], true
+	case *corecollections.ArrayVector:
+		if len(c.Arr) > 0 {
+			return c.Arr[0], true
 		}
 		return NIL, true
-	case *TransientVector:
+	case *coretypes.TransientVector:
 		if len(c.Arr) > 0 {
 			return c.Arr[0], true
 		}
@@ -286,21 +285,21 @@ func (RuntimeExecutionAdapter) First(coll coretypes.Object) (coretypes.Object, b
 func (RuntimeExecutionAdapter) BuildVector(items []coretypes.Object) coretypes.Object {
 	arr := make([]coretypes.Object, len(items))
 	copy(arr, items)
-	return &ArrayVector{arr: arr}
+	return &corecollections.ArrayVector{Arr: arr}
 }
 
 func (RuntimeExecutionAdapter) ToTransient(coll coretypes.Object) (coretypes.Object, bool) {
-	if av, ok := coll.(*ArrayVector); ok {
-		return ToTransient(av), true
+	if av, ok := coll.(*corecollections.ArrayVector); ok {
+		return coretypes.ToTransient(av.Arr), true
 	}
 	return nil, false
 }
 
 func (RuntimeExecutionAdapter) AssocBang(coll coretypes.Object, key coretypes.Object, val coretypes.Object) (coretypes.Object, bool) {
 	switch c := coll.(type) {
-	case *TransientVector:
+	case *coretypes.TransientVector:
 		return c.AssocInPlace(key, val), true
-	case *TransientMap:
+	case *coretypes.TransientMap:
 		return c.AssocInPlace(key, val), true
 	default:
 		return nil, false
@@ -309,9 +308,9 @@ func (RuntimeExecutionAdapter) AssocBang(coll coretypes.Object, key coretypes.Ob
 
 func (RuntimeExecutionAdapter) ToPersistent(coll coretypes.Object) (coretypes.Object, bool) {
 	switch c := coll.(type) {
-	case *TransientVector:
+	case *coretypes.TransientVector:
 		return c.ToPersistent(), true
-	case *TransientMap:
+	case *coretypes.TransientMap:
 		return c.ToPersistent(), true
 	default:
 		return nil, false

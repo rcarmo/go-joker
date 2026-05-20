@@ -1,10 +1,12 @@
 package core
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 	"regexp"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	corereader "github.com/rcarmo/go-joker/core/reader"
 )
@@ -60,30 +62,30 @@ func (ReaderConstructionAdapter) Keyword(v string) coretypes.Object {
 }
 
 func (ReaderConstructionAdapter) ListFrom(values []coretypes.Object) coretypes.Object {
-	return collectionConstruction.NewListFrom(values...)
+	return corecollections.NewListFrom(values...)
 }
 
 func (ReaderConstructionAdapter) VectorFrom(values []coretypes.Object) coretypes.Object {
-	return collectionConstruction.NewArrayVectorFrom(values...)
+	return corecollections.NewArrayVectorFrom(values...)
 }
 
 func (ReaderConstructionAdapter) PersistentVectorFromSeq(seq coretypes.Seq) coretypes.Object {
-	return collectionConstruction.NewVectorFromSeq(seq)
+	return corecollections.PersistentVectorFrom(corecollections.SeqToSlice(seq))
 }
 
 func (ReaderConstructionAdapter) MapLiteral(reader *Reader, values []coretypes.Object, nsname string) coretypes.Object {
-	if int64(len(values)) >= HASHMAP_THRESHOLD {
-		hashMap := collectionConstruction.NewHashMapFrom()
+	if int64(len(values)) >= corecollections.HASHMAP_THRESHOLD {
+		hashMap := corecollections.NewHashMap()
 		for i := 0; i < len(values); i += 2 {
 			key := resolveKey(values[i], nsname)
-			if hashMap.containsKey(key) {
+			if hashMap.ContainsKey(key) {
 				panic(MakeReadError(reader, "Duplicate key "+key.ToString(false)))
 			}
-			hashMap = hashMap.Assoc(key, values[i+1]).(*HashMap)
+			hashMap = hashMap.Assoc(key, values[i+1]).(*corecollections.HashMap)
 		}
 		return hashMap
 	}
-	m := collectionConstruction.NewEmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	for i := 0; i < len(values); i += 2 {
 		key := resolveKey(values[i], nsname)
 		if !m.Add(key, values[i+1]) {
@@ -94,7 +96,7 @@ func (ReaderConstructionAdapter) MapLiteral(reader *Reader, values []coretypes.O
 }
 
 func (ReaderConstructionAdapter) SetLiteral(reader *Reader, values []coretypes.Object) coretypes.Object {
-	set := collectionConstruction.NewEmptySet()
+	set := corecollections.EmptySet()
 	for _, obj := range values {
 		if !set.Add(obj) {
 			panic(MakeReadError(reader, "Duplicate set element "+obj.ToString(false)))
@@ -127,11 +129,11 @@ func (ReaderConstructionAdapter) NumberFromToken(reader *Reader, token corereade
 	return numberFromToken(reader, token)
 }
 
-func (ReaderConstructionAdapter) MetadataFromObject(obj coretypes.Object) (*ArrayMap, bool) {
+func (ReaderConstructionAdapter) MetadataFromObject(obj coretypes.Object) (*corecollections.ArrayMap, bool) {
 	return metadataFromObject(obj)
 }
 
-func (ReaderConstructionAdapter) WithMeta(obj coretypes.Object, meta *ArrayMap) (coretypes.Object, bool) {
+func (ReaderConstructionAdapter) WithMeta(obj coretypes.Object, meta *corecollections.ArrayMap) (coretypes.Object, bool) {
 	v, ok := obj.(coretypes.Meta)
 	if !ok {
 		return nil, false
@@ -139,8 +141,8 @@ func (ReaderConstructionAdapter) WithMeta(obj coretypes.Object, meta *ArrayMap) 
 	return deriveReadObject(obj, v.WithMeta(meta)), true
 }
 
-func (ReaderConstructionAdapter) SkipRedundantDoMeta() *ArrayMap {
-	return collectionConstruction.NewEmptyArrayMap().Plus(coretypes.MakeKeyword(STRINGS.Intern, "skip-redundant-do"), coretypes.Boolean{B: true})
+func (ReaderConstructionAdapter) SkipRedundantDoMeta() *corecollections.ArrayMap {
+	return corecollections.EmptyArrayMap().Plus(coretypes.MakeKeyword(STRINGS.Intern, "skip-redundant-do"), coretypes.Boolean{B: true})
 }
 
 func (ReaderConstructionAdapter) LiteralExpr(obj coretypes.Object) *LiteralExpr {

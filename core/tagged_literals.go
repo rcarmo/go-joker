@@ -4,6 +4,7 @@ package core
 
 import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 func init() {
@@ -47,7 +48,7 @@ func registerTaggedLiterals() {
 		readersVr = ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "default-data-readers"))
 	}
 
-	m := collectionConstruction.NewEmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m.Add(coretypes.MakeSymbol(STRINGS.Intern, "inst"), instReaderVr)
 	m.Add(coretypes.MakeSymbol(STRINGS.Intern, "uuid"), uuidReaderVr)
 	readersVr.Value = m

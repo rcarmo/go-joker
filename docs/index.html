@@ -177,21 +177,6 @@
     <h2>Index of <a href="#joker-std-types">Types</a></h2>
     <ul class="index">
       <li>
-  <a href="#ArrayMap">ArrayMap</a>
-</li>
-<li>
-  <a href="#ArrayMapSeq">ArrayMapSeq</a>
-</li>
-<li>
-  <a href="#ArrayNodeSeq">ArrayNodeSeq</a>
-</li>
-<li>
-  <a href="#ArraySeq">ArraySeq</a>
-</li>
-<li>
-  <a href="#ArrayVector">ArrayVector</a>
-</li>
-<li>
   <a href="#Associative">Associative</a>
 </li>
 <li>
@@ -216,9 +201,6 @@
   <a href="#Comparator">Comparator</a>
 </li>
 <li>
-  <a href="#ConsSeq">ConsSeq</a>
-</li>
-<li>
   <a href="#Counted">Counted</a>
 </li>
 <li>
@@ -234,9 +216,6 @@
   <a href="#Fn">Fn</a>
 </li>
 <li>
-  <a href="#HashMap">HashMap</a>
-</li>
-<li>
   <a href="#IOReader">IOReader</a>
 </li>
 <li>
@@ -246,19 +225,7 @@
   <a href="#Keyword">Keyword</a>
 </li>
 <li>
-  <a href="#LazySeq">LazySeq</a>
-</li>
-<li>
-  <a href="#List">List</a>
-</li>
-<li>
   <a href="#Map">Map</a>
-</li>
-<li>
-  <a href="#MapSet">MapSet</a>
-</li>
-<li>
-  <a href="#MappingSeq">MappingSeq</a>
 </li>
 <li>
   <a href="#Meta">Meta</a>
@@ -271,9 +238,6 @@
 </li>
 <li>
   <a href="#Nil">Nil</a>
-</li>
-<li>
-  <a href="#NodeSeq">NodeSeq</a>
 </li>
 <li>
   <a href="#Number">Number</a>
@@ -318,13 +282,46 @@
   <a href="#Vec">Vec</a>
 </li>
 <li>
-  <a href="#Vector">Vector</a>
+  <a href="#corecollections.ArrayMap">corecollections.ArrayMap</a>
 </li>
 <li>
-  <a href="#VectorRSeq">VectorRSeq</a>
+  <a href="#corecollections.ArrayMapSeq">corecollections.ArrayMapSeq</a>
 </li>
 <li>
-  <a href="#VectorSeq">VectorSeq</a>
+  <a href="#corecollections.ArrayNodeSeq">corecollections.ArrayNodeSeq</a>
+</li>
+<li>
+  <a href="#corecollections.ArraySeq">corecollections.ArraySeq</a>
+</li>
+<li>
+  <a href="#corecollections.ArrayVector">corecollections.ArrayVector</a>
+</li>
+<li>
+  <a href="#corecollections.ConsSeq">corecollections.ConsSeq</a>
+</li>
+<li>
+  <a href="#corecollections.HashMap">corecollections.HashMap</a>
+</li>
+<li>
+  <a href="#corecollections.LazySeq">corecollections.LazySeq</a>
+</li>
+<li>
+  <a href="#corecollections.List">corecollections.List</a>
+</li>
+<li>
+  <a href="#corecollections.MapSet">corecollections.MapSet</a>
+</li>
+<li>
+  <a href="#corecollections.MappingSeq">corecollections.MappingSeq</a>
+</li>
+<li>
+  <a href="#corecollections.NodeSeq">corecollections.NodeSeq</a>
+</li>
+<li>
+  <a href="#corecollections.VectorRSeq">corecollections.VectorRSeq</a>
+</li>
+<li>
+  <a href="#corecollections.VectorSeq">corecollections.VectorSeq</a>
 </li>
 <li>
   <a href="#coretypes.BigFloat">coretypes.BigFloat</a>
@@ -391,6 +388,9 @@
 </li>
 <li>
   <a href="#coretypes.Time">coretypes.Time</a>
+</li>
+<li>
+  <a href="#vector">vector</a>
 </li>
 
     </ul>
@@ -733,31 +733,6 @@
     <p><em>Note:</em> These types are "omnipresent", in that they're not members of any particular namespace, but are available for resolution regardless of the current value of <tt>*ns*</tt> (the current namespace).</p>
     <ul>
       <li>
-  <h3 class="type" id="ArrayMap">ArrayMap</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
-</li>
-<li>
-  <h3 class="type" id="ArrayMapSeq">ArrayMapSeq</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
-</li>
-<li>
-  <h3 class="type" id="ArrayNodeSeq">ArrayNodeSeq</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
-</li>
-<li>
-  <h3 class="type" id="ArraySeq">ArraySeq</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
-</li>
-<li>
-  <h3 class="type" id="ArrayVector">ArrayVector</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
-</li>
-<li>
   <h3 class="type" id="Associative">Associative</h3>
   <span class="var-added">v1.0</span>
   <p class="var-docstr">(Interface type)</p>
@@ -798,11 +773,6 @@
   <p class="var-docstr">(Interface type)</p>
 </li>
 <li>
-  <h3 class="type" id="ConsSeq">ConsSeq</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
-</li>
-<li>
   <h3 class="type" id="Counted">Counted</h3>
   <span class="var-added">v1.0</span>
   <p class="var-docstr">(Interface type)</p>
@@ -829,11 +799,6 @@
   A callable function or macro implemented via Joker code</p>
 </li>
 <li>
-  <h3 class="type" id="HashMap">HashMap</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
-</li>
-<li>
   <h3 class="type" id="IOReader">IOReader</h3>
   <span class="var-added">v1.0</span>
   <p class="var-docstr">(Interface type)</p>
@@ -850,29 +815,9 @@
   A possibly-namespace-qualified name prefixed by &#39;:&#39;</p>
 </li>
 <li>
-  <h3 class="type" id="LazySeq">LazySeq</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
-</li>
-<li>
-  <h3 class="type" id="List">List</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
-</li>
-<li>
   <h3 class="type" id="Map">Map</h3>
   <span class="var-added">v1.0</span>
   <p class="var-docstr">(Interface type)</p>
-</li>
-<li>
-  <h3 class="type" id="MapSet">MapSet</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
-</li>
-<li>
-  <h3 class="type" id="MappingSeq">MappingSeq</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
 </li>
 <li>
   <h3 class="type" id="Meta">Meta</h3>
@@ -894,11 +839,6 @@
   <span class="var-added">v1.0</span>
   <p class="var-docstr">(Concrete type)<br>
   The &#39;nil&#39; value</p>
-</li>
-<li>
-  <h3 class="type" id="NodeSeq">NodeSeq</h3>
-  <span class="var-added">v1.0</span>
-  <p class="var-docstr">(Concrete reference type)</p>
 </li>
 <li>
   <h3 class="type" id="Number">Number</h3>
@@ -973,17 +913,72 @@
   <p class="var-docstr">(Interface type)</p>
 </li>
 <li>
-  <h3 class="type" id="Vector">Vector</h3>
+  <h3 class="type" id="corecollections.ArrayMap">corecollections.ArrayMap</h3>
   <span class="var-added">v1.0</span>
   <p class="var-docstr">(Concrete reference type)</p>
 </li>
 <li>
-  <h3 class="type" id="VectorRSeq">VectorRSeq</h3>
+  <h3 class="type" id="corecollections.ArrayMapSeq">corecollections.ArrayMapSeq</h3>
   <span class="var-added">v1.0</span>
   <p class="var-docstr">(Concrete reference type)</p>
 </li>
 <li>
-  <h3 class="type" id="VectorSeq">VectorSeq</h3>
+  <h3 class="type" id="corecollections.ArrayNodeSeq">corecollections.ArrayNodeSeq</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.ArraySeq">corecollections.ArraySeq</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.ArrayVector">corecollections.ArrayVector</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.ConsSeq">corecollections.ConsSeq</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.HashMap">corecollections.HashMap</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.LazySeq">corecollections.LazySeq</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.List">corecollections.List</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.MapSet">corecollections.MapSet</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.MappingSeq">corecollections.MappingSeq</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.NodeSeq">corecollections.NodeSeq</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.VectorRSeq">corecollections.VectorRSeq</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
+</li>
+<li>
+  <h3 class="type" id="corecollections.VectorSeq">corecollections.VectorSeq</h3>
   <span class="var-added">v1.0</span>
   <p class="var-docstr">(Concrete reference type)</p>
 </li>
@@ -1105,6 +1100,11 @@
   <span class="var-added">v1.0</span>
   <p class="var-docstr">(Concrete type)<br>
   Wraps the Go &#39;time.Time&#39; type</p>
+</li>
+<li>
+  <h3 class="type" id="vector">vector</h3>
+  <span class="var-added">v1.0</span>
+  <p class="var-docstr">(Concrete reference type)</p>
 </li>
 
     </ul>

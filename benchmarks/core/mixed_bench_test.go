@@ -1,9 +1,13 @@
 package core_test
 
 import (
+	"testing"
+
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
-	"testing"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	corewasm "github.com/rcarmo/go-joker/core/wasm"
+	"github.com/tetratelabs/wazero"
 )
 
 // From core/inline_rewrites_test.go
@@ -78,15 +82,15 @@ func BenchmarkIRStringPrependBuilderLoop(b *testing.B) {
 // From core/string_cursor_parse_test.go
 // From core/persistent_vector_test.go
 func BenchmarkPVAssoc35(b *testing.B) {
-	pv := EmptyPersistentVector()
+	pv := corecollections.EmptyPersistentVector()
 	for i := 0; i < 35; i++ {
-		pv = pv.Conj(coretypes.Double{D: float64(i)})
+		pv = pv.Conjoin(coretypes.Double{D: float64(i)})
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		v := pv
 		for j := 0; j < 9; j++ {
-			v = v.Assoc(j*3+3, coretypes.Double{D: float64(i + j)})
+			v = v.AssocIndex(j*3+3, coretypes.Double{D: float64(i + j)})
 		}
 		_ = v
 	}
@@ -98,7 +102,7 @@ func BenchmarkArrayVectorAssoc35(b *testing.B) {
 	for i := range arr {
 		arr[i] = coretypes.Double{D: float64(i)}
 	}
-	av := NewArrayVectorFrom(arr...)
+	av := corecollections.NewArrayVectorFrom(arr...)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		var v coretypes.Associative = av
@@ -125,7 +129,7 @@ func BenchmarkIRTypedStringLoop(b *testing.B) {
 
 // From core/mem_array_test.go
 func BenchmarkWasmArrayF64Sum(b *testing.B) {
-	arr := MakeF64Array(10000)
+	arr := corewasm.MakeF64ArrayWithRuntime(func() wazero.Runtime { return wazero.NewRuntime(nil) }, 10000, TYPE.ArrayVector)
 	if arr == nil {
 		b.Skip("WASM array failed")
 	}

@@ -2,11 +2,13 @@ package string
 
 import (
 	"bytes"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"regexp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -56,7 +58,7 @@ func padLeft(s, pad string, n int) string {
 func split(s string, r *regexp.Regexp, n int) coretypes.Object {
 	indexes := r.FindAllStringIndex(s, n-1)
 	lastStart := 0
-	result := EmptyVector()
+	result := corecollections.EmptyVector()
 	for _, el := range indexes {
 		result = result.Conjoin(coretypes.String{S: s[lastStart:el[0]]})
 		lastStart = el[1]
@@ -86,7 +88,7 @@ func splitOnStringOrRegex(s string, sep coretypes.Object, n int) coretypes.Objec
 		} else {
 			v = strings.SplitN(s, sep.S, n)
 		}
-		result := EmptyArrayVector()
+		result := corecollections.EmptyArrayVector()
 		for _, el := range v {
 			result.Append(coretypes.String{S: el})
 		}

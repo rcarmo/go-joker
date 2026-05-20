@@ -1,10 +1,12 @@
 package svg
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
 	"strings"
 	"testing"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -85,9 +87,9 @@ func TestCanvasWithStyle(t *testing.T) {
 
 	canvas := procCanvas([]coretypes.Object{coretypes.MakeInt(100), coretypes.MakeInt(100)})
 
-	style := &ArrayMap{}
-	style = style.Assoc(coretypes.MakeKeyword(STRINGS.Intern, "fill"), coretypes.MakeString("red")).(*ArrayMap)
-	style = style.Assoc(coretypes.MakeKeyword(STRINGS.Intern, "stroke"), coretypes.MakeString("black")).(*ArrayMap)
+	style := &corecollections.ArrayMap{}
+	style = style.Assoc(coretypes.MakeKeyword(STRINGS.Intern, "fill"), coretypes.MakeString("red")).(*corecollections.ArrayMap)
+	style = style.Assoc(coretypes.MakeKeyword(STRINGS.Intern, "stroke"), coretypes.MakeString("black")).(*corecollections.ArrayMap)
 	procRect([]coretypes.Object{canvas, coretypes.MakeInt(10), coretypes.MakeInt(10), coretypes.MakeInt(50), coretypes.MakeInt(50), style})
 
 	result := procToString([]coretypes.Object{canvas})
@@ -129,7 +131,7 @@ func expectSVGPanic(t *testing.T, fn func()) {
 func TestPolylineRejectsMismatchedCoordinates(t *testing.T) {
 	canvas := procCanvas([]coretypes.Object{coretypes.MakeInt(10), coretypes.MakeInt(10)})
 	expectSVGPanic(t, func() {
-		procPolyline([]coretypes.Object{canvas, NewVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2)), NewVectorFrom(coretypes.MakeInt(1))})
+		procPolyline([]coretypes.Object{canvas, corecollections.NewVectorFrom(coretypes.MakeInt(1), coretypes.MakeInt(2)), corecollections.NewVectorFrom(coretypes.MakeInt(1))})
 	})
 }
 

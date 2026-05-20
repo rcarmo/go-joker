@@ -3,8 +3,10 @@ package pods
 import (
 	"bytes"
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	"github.com/zeebo/bencode"
 
@@ -104,15 +106,15 @@ func bencodeToObject(v interface{}) coretypes.Object {
 		for i, e := range x {
 			objs[i] = bencodeToObject(e)
 		}
-		return NewVectorFrom(objs...)
+		return corecollections.NewVectorFrom(objs...)
 	case map[string]interface{}:
-		m := EmptyArrayMap()
+		m := corecollections.EmptyArrayMap()
 		for k, val := range x {
 			m.Add(coretypes.MakeString(k), bencodeToObject(val))
 		}
 		return m
 	case map[interface{}]interface{}:
-		m := EmptyArrayMap()
+		m := corecollections.EmptyArrayMap()
 		for k, val := range x {
 			m.Add(coretypes.MakeString(fmt.Sprint(k)), bencodeToObject(val))
 		}

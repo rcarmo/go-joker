@@ -217,7 +217,7 @@ func main() {
 	var b strings.Builder
 	b.WriteString("# Direct runtime comparison\n\n")
 	b.WriteString("Generated from `benchmark-history.json` (Joker) and cross-language runtime scripts. Values are ms/op; lower is better.\n\n")
-	b.WriteString("| Benchmark | Joker | Python | Bun/Node | Goja | let-go | Winner |\n")
+	b.WriteString("| Benchmark | Joker | Python | Bun/corecollections.Node | Goja | let-go | Winner |\n")
 	b.WriteString("|---|---:|---:|---:|---:|---:|---|\n")
 
 	for _, k := range keys {
@@ -240,7 +240,7 @@ func main() {
 		}
 		pick("Joker", jok, j)
 		pick("Python", pok, p)
-		pick("Bun/Node", buok, bu)
+		pick("Bun/corecollections.Node", buok, bu)
 		pick("Goja", gok, g)
 		pick("let-go", lok, l)
 

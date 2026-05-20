@@ -2,11 +2,13 @@ package pods
 
 import (
 	"bytes"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"os"
 	"testing"
 	"time"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -117,22 +119,22 @@ func TestPodInvokeTimeoutOptionsRejectInvalidValues(t *testing.T) {
 	for name, opt := range map[string]coretypes.Object{
 		"non-map": coretypes.MakeString("bad"),
 		"non-integer": func() coretypes.Object {
-			m := EmptyArrayMap()
+			m := corecollections.EmptyArrayMap()
 			m.Add(coretypes.MakeKeyword(STRINGS.Intern, "timeout-ms"), coretypes.MakeString("bad"))
 			return m
 		}(),
 		"zero": func() coretypes.Object {
-			m := EmptyArrayMap()
+			m := corecollections.EmptyArrayMap()
 			m.Add(coretypes.MakeKeyword(STRINGS.Intern, "timeout-ms"), coretypes.MakeInt(0))
 			return m
 		}(),
 		"negative": func() coretypes.Object {
-			m := EmptyArrayMap()
+			m := corecollections.EmptyArrayMap()
 			m.Add(coretypes.MakeKeyword(STRINGS.Intern, "timeout-ms"), coretypes.MakeInt(-1))
 			return m
 		}(),
 		"too-large": func() coretypes.Object {
-			m := EmptyArrayMap()
+			m := corecollections.EmptyArrayMap()
 			m.Add(coretypes.MakeKeyword(STRINGS.Intern, "timeout-ms"), coretypes.MakeInt(int(^uint(0)>>1)))
 			return m
 		}(),
@@ -193,7 +195,7 @@ func TestPodInvokeJSON(t *testing.T) {
 
 func TestPodRouterReadsBencodeMessages(t *testing.T) {
 	shutdownAllPods()
-	msg := EmptyArrayMap()
+	msg := corecollections.EmptyArrayMap()
 	msg.Add(coretypes.MakeString("id"), coretypes.MakeString("req-1"))
 	msg.Add(coretypes.MakeString("value"), coretypes.MakeString("ok"))
 	msg.Add(coretypes.MakeString("done"), coretypes.Boolean{B: true})

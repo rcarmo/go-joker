@@ -1,13 +1,15 @@
 package os
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 	"os"
 	"os/exec"
 	"strings"
 	"syscall"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -22,7 +24,7 @@ func nativeIntObject(n int64) coretypes.Object {
 }
 
 func env() coretypes.Object {
-	res := EmptyArrayMap()
+	res := corecollections.EmptyArrayMap()
 	for _, v := range os.Environ() {
 		parts := strings.SplitN(v, "=", 2)
 		res.Add(coretypes.String{S: parts[0]}, coretypes.String{S: parts[1]})
@@ -38,7 +40,7 @@ func getEnv(key string) coretypes.Object {
 }
 
 func commandArgs() coretypes.Object {
-	res := EmptyVector()
+	res := corecollections.EmptyVector()
 	for _, arg := range os.Args {
 		res = res.Conjoin(coretypes.String{S: arg})
 	}
@@ -155,7 +157,7 @@ func execute(name string, opts coretypes.Map) coretypes.Object {
 func readDir(dirname string) coretypes.Object {
 	entries, err := os.ReadDir(dirname)
 	PanicOnErr(err)
-	res := EmptyVector()
+	res := corecollections.EmptyVector()
 	name := coretypes.MakeKeyword(STRINGS.Intern, "name")
 	size := coretypes.MakeKeyword(STRINGS.Intern, "size")
 	mode := coretypes.MakeKeyword(STRINGS.Intern, "mode")
@@ -164,7 +166,7 @@ func readDir(dirname string) coretypes.Object {
 	for _, e := range entries {
 		info, err := e.Info()
 		PanicOnErr(err)
-		m := EmptyArrayMap()
+		m := corecollections.EmptyArrayMap()
 		m.Add(name, coretypes.MakeString(e.Name()))
 		m.Add(size, nativeIntObject(info.Size()))
 		m.Add(mode, coretypes.MakeInt(int(info.Mode())))

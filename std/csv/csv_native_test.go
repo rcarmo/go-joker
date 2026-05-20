@@ -2,8 +2,10 @@ package csv
 
 import (
 	"errors"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -23,24 +25,26 @@ func expectCSVPanic(t *testing.T, fn func()) {
 }
 
 func TestCSVOptionsRejectInvalidDelimiters(t *testing.T) {
-	opts := EmptyArrayMap()
+	opts := corecollections.EmptyArrayMap()
 	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "comma"), coretypes.Char{Ch: '\n'})
-	expectCSVPanic(t, func() { _ = writeString(NewVectorFrom(NewVectorFrom(coretypes.MakeString("a"))), opts) })
+	expectCSVPanic(t, func() {
+		_ = writeString(corecollections.NewVectorFrom(corecollections.NewVectorFrom(coretypes.MakeString("a"))), opts)
+	})
 
-	readOpts := EmptyArrayMap()
+	readOpts := corecollections.EmptyArrayMap()
 	readOpts.Add(coretypes.MakeKeyword(STRINGS.Intern, "comma"), coretypes.Char{Ch: ';'})
 	readOpts.Add(coretypes.MakeKeyword(STRINGS.Intern, "comment"), coretypes.Char{Ch: ';'})
 	expectCSVPanic(t, func() { _ = csvSeqOpts(coretypes.MakeString("a;b\n"), readOpts) })
 }
 
 func TestWriteWriterSurfacesFlushErrors(t *testing.T) {
-	data := NewVectorFrom(NewVectorFrom(coretypes.MakeString("a"), coretypes.MakeString("b")))
-	expectCSVPanic(t, func() { writeWriter(failingWriter{}, data, EmptyArrayMap()) })
+	data := corecollections.NewVectorFrom(corecollections.NewVectorFrom(coretypes.MakeString("a"), coretypes.MakeString("b")))
+	expectCSVPanic(t, func() { writeWriter(failingWriter{}, data, corecollections.EmptyArrayMap()) })
 }
 
 func TestWriteStringBasic(t *testing.T) {
-	data := NewVectorFrom(NewVectorFrom(coretypes.MakeString("a"), coretypes.MakeString("b")))
-	if got := writeString(data, EmptyArrayMap()); got != "a,b\n" {
+	data := corecollections.NewVectorFrom(corecollections.NewVectorFrom(coretypes.MakeString("a"), coretypes.MakeString("b")))
+	if got := writeString(data, corecollections.EmptyArrayMap()); got != "a,b\n" {
 		t.Fatalf("writeString = %q", got)
 	}
 }

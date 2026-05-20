@@ -5,6 +5,7 @@ package json
 import (
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 var __json_seq__P ProcFn = __json_seq_
@@ -15,7 +16,7 @@ func __json_seq_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 1:
 		rdr := ExtractObject(_args, 0)
-		_res := jsonSeqOpts(rdr, EmptyArrayMap())
+		_res := jsonSeqOpts(rdr, corecollections.EmptyArrayMap())
 		return _res
 
 	case _c == 2:
@@ -61,7 +62,7 @@ func __write_string_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 1:
 		v := ExtractObject(_args, 0)
-		_res := writeString(v, EmptyArrayMap())
+		_res := writeString(v, corecollections.EmptyArrayMap())
 		return _res
 
 	case _c == 2:

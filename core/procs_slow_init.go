@@ -3,9 +3,12 @@
 
 package core
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import (
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+)
 
-var privateMeta coretypes.Map = collectionConstruction.NewEmptyArrayMap().Assoc(KEYWORDS.private, coretypes.Boolean{B: true}).(coretypes.Map)
+var privateMeta coretypes.Map = corecollections.EmptyArrayMap().Assoc(KEYWORDS.private, coretypes.Boolean{B: true}).(coretypes.Map)
 
 func intern(name string, proc ProcFn, procName string) {
 	vr := GLOBAL_ENV.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, name))

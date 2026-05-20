@@ -1,11 +1,13 @@
 package core
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"os"
 
+	coretypes "github.com/rcarmo/go-joker/core/types"
+
 	"github.com/rcarmo/go-joker/core/osutil"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 	corestr "github.com/rcarmo/go-joker/core/types/string"
 )
 
@@ -38,7 +40,7 @@ type (
 )
 
 func versionMap() coretypes.Map {
-	res := collectionConstruction.NewEmptyArrayMap()
+	res := corecollections.EmptyArrayMap()
 	major, minor, incremental := corestr.ParseVersionTriplet(VERSION)
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "major"), coretypes.Int{I: int(major)})
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "minor"), coretypes.Int{I: int(minor)})
@@ -47,7 +49,7 @@ func versionMap() coretypes.Map {
 }
 
 func (env *Env) SetEnvArgs(newArgs []string) {
-	args := collectionConstruction.NewEmptyArrayVector()
+	args := corecollections.EmptyArrayVector()
 	for _, arg := range newArgs {
 		args.Append(coretypes.MakeString(arg))
 	}
@@ -58,36 +60,21 @@ func (env *Env) SetEnvArgs(newArgs []string) {
 	}
 }
 
-/*
-This runs after invariant initialization, which includes calling
-
-	NewEnv().  NOTE: Any changes to the list of run-time
-	initializations must be reflected in gen/codegen/main.go.
-*/
 func (env *Env) SetClassPath(cp string) {
-	cpVec := collectionConstruction.NewEmptyArrayVector()
+	cpVec := corecollections.EmptyArrayVector()
 	for _, cpelem := range osutil.ClassPathElements(cp) {
 		cpVec.Append(coretypes.MakeString(cpelem))
 	}
 	env.classPath.Value = cpVec
 }
 
-/*
-This runs after invariant initialization, which includes calling
-
-	NewEnv().  NOTE: Any changes to the list of run-time
-	initializations must be reflected in gen/codegen/main.go.
-*/
 func (env *Env) InitEnv(stdin io.Reader, stdout, stderr io.Writer, args []string) {
 	env.stdin.Value = MakeBufferedReader(stdin)
 	env.stdout.Value = MakeIOWriter(stdout)
 	env.stderr.Value = MakeIOWriter(stderr)
-	// Keep constantly capture-correct even when the evaluator's fixed-arity
-	// call fast paths are active; the core.joke closure shape is sensitive to
-	// local frame reuse in this optimized fork.
 	if vr := env.CoreNamespace.Resolve("constantly"); vr != nil {
 		vr.Value = Proc{Name: "procConstantly", Fn: func(args []coretypes.Object) coretypes.Object {
-			CheckArity(args, 1, 1)
+			runtimeCheckArity(args, 1, 1)
 			x := args[0]
 			return Proc{Name: "procConstantlyValue", Fn: func(_ []coretypes.Object) coretypes.Object { return x }}
 		}}
@@ -105,22 +92,10 @@ func (env *Env) StdIO() (stdin, stdout, stderr coretypes.Object) {
 	return env.stdin.Value, env.stdout.Value, env.stderr.Value
 }
 
-/*
-This runs after invariant initialization, which includes calling
-
-	NewEnv().  NOTE: Any changes to the list of run-time
-	initializations must be reflected in gen/codegen/main.go.
-*/
 func (env *Env) SetMainFilename(filename string) {
 	env.MainFile.Value = coretypes.MakeString(filename)
 }
 
-/*
-This runs after invariant initialization, which includes calling
-
-	NewEnv().  NOTE: Any changes to the list of run-time
-	initializations must be reflected in gen/codegen/main.go.
-*/
 func (env *Env) SetFilename(obj coretypes.Object) {
 	env.file.Value = obj
 }
@@ -139,7 +114,7 @@ func (env *Env) SetCurrentNamespace(ns *Namespace) {
 
 func (env *Env) EnsureSymbolIsNamespace(sym coretypes.Symbol) *Namespace {
 	if sym.NamespaceKey() != nil {
-		panic(RT.NewError("Namespace's name cannot be qualified: " + sym.ToString(false)))
+		panic(coretypes.RuntimeError("Namespace's name cannot be qualified: " + sym.ToString(false)))
 	}
 	nameKey := sym.NameKey()
 	nsRWMu.RLock()
@@ -149,7 +124,6 @@ func (env *Env) EnsureSymbolIsNamespace(sym coretypes.Symbol) *Namespace {
 		return ns
 	}
 	nsRWMu.Lock()
-	// Double-check under write lock.
 	if env.Namespaces[nameKey] == nil {
 		env.Namespaces[nameKey] = NewNamespace(sym)
 	}
@@ -160,7 +134,7 @@ func (env *Env) EnsureSymbolIsNamespace(sym coretypes.Symbol) *Namespace {
 
 func (env *Env) EnsureSymbolIsLib(sym coretypes.Symbol) *Namespace {
 	ns := env.EnsureSymbolIsNamespace(sym)
-	env.libs.Value.(*MapSet).Add(sym)
+	env.libs.Value.(*corecollections.MapSet).Add(sym)
 	return ns
 }
 
@@ -225,7 +199,7 @@ func (env *Env) RemoveNamespace(s coretypes.Symbol) *Namespace {
 		return nil
 	}
 	if s.Equals(SYMBOLS.joker_core) {
-		panic(RT.NewError("Cannot remove core namespace"))
+		panic(coretypes.RuntimeError("Cannot remove core namespace"))
 	}
 	nameKey := s.NameKey()
 	nsRWMu.Lock()

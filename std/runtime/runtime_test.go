@@ -1,10 +1,12 @@
 package runtime
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strings"
 	"testing"
 	"time"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -61,7 +63,7 @@ func TestBenchmarkFn(t *testing.T) {
 		t.Fatal("procBenchmark timed out")
 	}
 
-	am, ok := result.(*ArrayMap)
+	am, ok := result.(*corecollections.ArrayMap)
 	if !ok {
 		t.Fatalf("unexpected result type: %T", result)
 	}

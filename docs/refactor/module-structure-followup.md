@@ -1,6 +1,6 @@
 # Module structure follow-up audit
 
-Updated: 2026-05-18
+Updated: 2026-05-20
 
 ## Snapshot
 
@@ -12,17 +12,17 @@ Current package/file snapshot:
 |---|---:|---:|---|
 | root | 0 | 0 | clean: no root package remains |
 | `cmd/joker` | 19 | 3 | startup/orchestration is now split across cohesive helper files with focused arg/lint/compile tests; keep shrinking `main.go` rather than regrowing it |
-| `core` root | 68 | 1 | still the runtime/evaluator/collection/bootstrap hotspot, but root tests are consolidated and the canonical object/protocol/type/numeric surface has moved to `core/types` |
-| `core/types` | 15 | 0 | canonical object/type/protocol package: `Object`, type descriptors/registry, scalar and big numeric values, numeric ops, simple runtime values, and most package-independent protocols |
-| `core/generated` | 11 | 2 | data-only generated bootstrap contract, source manifest, linter byte payloads, and generated linter payload registry |
-| `core/ir` | 13 | 5 | opcodes, disassembly/counting, shape analysis, neutral Program model, and IR leaf helpers |
-| `core/trace` | 6 | 2 | aggregation state with direct JSON-shape tests |
-| `core/wasm` | 13 | 5 | encoding/module/host/opcode/value leaf helpers |
-| `core/runtime` | 11 | 5 | feature flags and runtime leaf helpers live here; executor/object-bound runtime code remains in root `core` |
-| `core/collections` | 17 | 8 | real mechanics package for generic slice/list storage, pair arrays, map equality, formatting/indexed ops, bitmap/hash-index helpers, and opaque trie nodes; root keeps concrete collection implementations |
-| `core/reader` | 39 | 19 | reader leaf helpers now include chars, whitespace/comment/top-level-trivia/line decisions, identifier classification/token scanning/keyword, standalone-slash, and literal classification/validation issue scans, unicode/string escapes, top-level read-form and number-token classification, dispatch/format-prefix/character/form helpers, rune-window history, line rune reader, and raw IO mechanics; parser/object implementation remains root-bound |
-| `core/string` | 39 | 19 | real helper package for root-independent string mechanics; root keeps Object/error wrappers |
-| `core/cursor` | 3 | 1 | real leaf package for string cursor mechanics; root keeps Object protocol adapter |
+| `core` root | 56 | 1 | still the runtime/evaluator/bootstrap hotspot, but concrete collection files and runtime object wrappers for channels, futures/promises, agents, and atoms have moved out |
+| `core/types` | 19 | 0 | canonical object/type/protocol package: `Object`, type descriptors/registry, scalar and big numeric values, numeric ops, simple runtime values, runtime hooks, and most package-independent protocols |
+| `core/generated` | 9 | 2 | data-only generated bootstrap contract, source manifest, linter byte payloads, and generated linter payload registry |
+| `core/ir` | 6 | 4 | opcodes, disassembly/counting, shape analysis, neutral Program model, and IR leaf helpers |
+| `core/trace` | 4 | 2 | aggregation state with direct JSON-shape tests |
+| `core/wasm` | 8 | 3 | encoding/module/host/opcode/value leaf helpers |
+| `core/runtime` | 9 | 7 | feature flags, goroutine/pending/channel/concurrency primitives, and runtime-owned object wrappers (`ObjectChannel`, `ObjectFuture`, `ObjectPromise`, `Agent`, `Atom`) live here with package-local primitive/wrapper tests; channel and pending primitives are co-located with their object wrappers; proc/env/evaluator glue remains in root `core` |
+| `core/types/collections` | 17 | 5 | owns concrete collection types and mechanics: vectors, persistent vectors, lists/seqs, array/hash maps, sets, chunks, formatting/indexed ops, and bitmap/hash-index helpers |
+| `core/reader` | 30 | 28 | reader leaf helpers now include chars, whitespace/comment/top-level-trivia/line decisions, identifier classification/token scanning/keyword, standalone-slash, literal classification/validation issue scans, unicode/string escapes, top-level read-form and number-token classification, dispatch/format-prefix/character/form helpers, rune-window history, line rune reader, and raw IO mechanics; parser/object implementation remains root-bound |
+| `core/types/string` | 10 | 7 | string-owned mechanics and cursor behavior; root keeps Object protocol adapter where needed |
+| `core/types/numerical` | 4 | 1 | numeric parsing/hash/comparison/rendering helpers used by root and scalar types |
 | `std/*` | many small packages | mixed | namespace-oriented; now explicitly documented as `std/<namespace>.joke` + `std/<namespace>/*.go` + `std/<namespace>/<subns>/...` |
 | `benchmarks` | 1 | 0 | benchmark data/fixtures remain here; report generators should not live here anymore |
 | `tools/benchmarks` | 4 | 0 | build-ignore report/chart generators and Goja helper moved out of `benchmarks/` |
@@ -35,8 +35,8 @@ Root `core` clustering remains the structural hotspot:
 | `wasm*.go` | about 15 |
 | generated `a_*.go` | 10 |
 | `types_*_gen.go` | 2 |
-| vector-related | 4 |
-| map-related | 7 |
+| vector/map/list/set concrete collection files | 0 |
+| runtime object wrapper files moved | channel/future/promise/agent/atom wrappers now in `core/runtime` |
 | read/reader/parse/eval | 8 |
 | root tests | 29 |
 
@@ -150,14 +150,14 @@ Staged migration order should remain:
 1. `cmd/joker` split while staying in one package.
 2. Runtime/executor adapter narrowing for `core/runtime`.
 3. Generated payload conversion into real generated packages when equivalence is proven. **In progress: source manifest plus linter registry now have real `core/generated` package boundaries.**
-4. Collection construction adapters before `core/collections` moves. **Done for current production callers: `CollectionConstructionAdapter` plus a boundary guard are in place. Pure vector/map storage mechanics have started moving; concrete Object/protocol implementations remain root-bound.**
+4. Collection construction adapters before `core/types/collections` moves. **Superseded: the stale `CollectionConstructionAdapter` and boundary guard have been removed. Current callers use `corecollections.*` direct constructors, and concrete collection Object/protocol implementations have moved wholesale into `core/types/collections`.**
 5. Reader construction adapters before `core/reader` moves. **Done for current production callers and unpacked expression construction: `ReaderConstructionAdapter` plus a boundary guard are in place. Pure lexical/token helpers have started moving; tagged literals/object/parser orchestration remain root-bound.**
 6. Low-priority tooling moves such as `tools/benchmarks`, `tools/codegen`, `tools/scripts`, and `tools/release` last, once references and CI paths are updated.
 
 ## Recommended immediate next steps
 
 1. Continue narrowing runtime call/object/frame access behind `RuntimeExecutionAdapter`; keep `core/runtime` as the reserved extraction target, but do not move executor files until those seams are explicit and tested.
-2. Continue collection extraction now that most object/protocol/equality/hash behavior is in `core/types`; do not force concrete vector/map/set/seq implementations across the package boundary until remaining root concrete return types, metadata, and initialization cycles are explicit.
+2. Keep collection ownership in `core/types/collections`; do not reintroduce root vector/map/set/seq files or compatibility aliases. Further collection-adjacent work should target sorted collections, transients, runtime hooks, and generated/bootstrap placement only as coherent batches.
 3. Continue reader extraction by moving lexical/token helpers into `core/reader`; keep concrete Object construction, FORMAT/LINTER behavior, namespace resolution, tagged literals, and parser/evaluator handoff in root until adapter contracts are explicit.
 4. Extend generated bootstrap emission beyond the source manifest and linter registry only with broader equivalence tests.
 5. Keep audit hardening in the validation cadence (`staticcheck-sa`, `vuln`, vet, race tests for leaf packages) because recent passes found real HTTP/WASM/osutil edge cases.

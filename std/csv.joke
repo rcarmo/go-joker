@@ -33,7 +33,7 @@
   This is done even if the field delimiter, comma, is white space.
   Default value is false."
   {:added "1.0"
-   :go {1 "csvSeqOpts(rdr, EmptyArrayMap())"
+   :go {1 "csvSeqOpts(rdr, corecollections.EmptyArrayMap())"
         2 "csvSeqOpts(rdr, opts)"}}
   ([^Object rdr])
   ([^Object rdr ^Map opts]))
@@ -47,7 +47,7 @@
 
   :use-crlf - if true, uses \\r\\n as the line terminator. Default value is false."
   {:added "1.0"
-   :go {1 "writeString(data, EmptyArrayMap())"
+   :go {1 "writeString(data, corecollections.EmptyArrayMap())"
         2 "writeString(data, opts)"}}
   ([^Seqable data])
   ([^Seqable data ^Map opts]))
@@ -58,7 +58,7 @@
   data must be Seqable, each element of which must be Seqable as well.
   opts is as in joker.csv/write-string."
   {:added "1.0"
-   :go {2 "write(f, data, EmptyArrayMap())"
+   :go {2 "write(f, data, corecollections.EmptyArrayMap())"
         3 "write(f, data, opts)"}}
   ([^IOWriter f ^Seqable data])
   ([^IOWriter f ^Seqable data ^Map opts]))

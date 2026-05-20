@@ -5,10 +5,12 @@ package os
 
 import (
 	"bytes"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"os/exec"
 	"syscall"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -35,7 +37,7 @@ func sh(dir string, stdin io.Reader, stdout io.Writer, stderr io.Writer, name st
 
 	err = cmd.Wait()
 
-	res := EmptyArrayMap()
+	res := corecollections.EmptyArrayMap()
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "success"), coretypes.Boolean{B: err == nil})
 
 	var exitCode int

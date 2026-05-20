@@ -1,12 +1,12 @@
 package core
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"reflect"
-	"sync"
 	"time"
 
-	"github.com/rcarmo/go-joker/core/hashutil"
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+
 	corert "github.com/rcarmo/go-joker/core/runtime"
 )
 
@@ -14,16 +14,8 @@ import (
 //
 // These require the GIL-free runtime (goroutine_rt.go).
 
-const maxMillisecondDuration = int64(1<<63-1) / int64(time.Millisecond)
-
 func checkedMillisecondDuration(ms int, context string) time.Duration {
-	if ms < 0 {
-		panic(RT.NewError(context + " requires a non-negative millisecond value"))
-	}
-	if int64(ms) > maxMillisecondDuration {
-		panic(RT.NewError(context + " millisecond value is too large"))
-	}
-	return time.Duration(ms) * time.Millisecond
+	return corert.CheckedMillisecondDuration(ms, context, func(msg string) any { return coretypes.RuntimeError(msg) })
 }
 
 // installConcurrencyExt registers alts!, timeout, future, promise, deliver,
@@ -38,9 +30,9 @@ func installConcurrencyExt() {
 	// (timeout ms) -> Channel
 	toVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "timeout"))
 	toVr.Value = Proc{Name: "procTimeout", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		delay := checkedMillisecondDuration(coretypes.EnsureArgIsInt(args, 0).I, "timeout")
-		ch := MakeChannel(make(chan FutureResult, 1))
+		ch := corert.NewObjectChannel(make(chan corert.FutureResult, 1))
 		go func() {
 			time.Sleep(delay)
 			ch.Close()
@@ -62,9 +54,9 @@ func installConcurrencyExt() {
 	// (future body...) is a macro defined in core.joke; the runtime primitive is future-call.
 	fcVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "future-call"))
 	fcVr.Value = Proc{Name: "procFutureCall", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		f := coretypes.EnsureArgIsCallable(args, 0)
-		fut := &Future{runtime: corert.NewFuture[coretypes.Object, coretypes.Error]()}
+		fut := corert.NewObjectFuture()
 		go func() {
 			registerGoroutineRT()
 			defer unregisterGoroutineRT()
@@ -76,10 +68,10 @@ func installConcurrencyExt() {
 					case coretypes.Error:
 						err = e
 					default:
-						err = RT.NewError("future panic")
+						err = coretypes.RuntimeError("future panic").(coretypes.Error)
 					}
 				}
-				fut.runtime.Complete(value, err)
+				fut.Complete(value, err)
 			}()
 			value = call0(f)
 		}()
@@ -91,15 +83,15 @@ func installConcurrencyExt() {
 	installMacro(ns, "future", func(args []coretypes.Object) coretypes.Object {
 		// args: &form, &env, body...
 		body := args[2:]
-		fnForm := collectionConstruction.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "fn"), collectionConstruction.NewVectorFrom()}, body...)...)
-		return collectionConstruction.NewListFrom(coretypes.MakeSymbol(STRINGS.Intern, "future-call"), fnForm)
+		fnForm := corecollections.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "fn"), corecollections.NewVectorFrom()}, body...)...)
+		return corecollections.NewListFrom(coretypes.MakeSymbol(STRINGS.Intern, "future-call"), fnForm)
 	})
 
 	// future? — true if obj is a Future.
 	fqVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "future?"))
 	fqVr.Value = Proc{Name: "procFutureQ", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
-		_, ok := args[0].(*Future)
+		runtimeCheckArity(args, 1, 1)
+		_, ok := args[0].(*corert.ObjectFuture)
 		return coretypes.MakeBoolean(ok)
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "future?"), fqVr)
@@ -108,8 +100,8 @@ func installConcurrencyExt() {
 	// (promise) -> Promise
 	prVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "promise"))
 	prVr.Value = Proc{Name: "procPromise", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 0, 0)
-		return &Promise{runtime: corert.NewPromise[coretypes.Object]()}
+		runtimeCheckArity(args, 0, 0)
+		return corert.NewObjectPromise()
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "promise"), prVr)
 
@@ -117,12 +109,12 @@ func installConcurrencyExt() {
 	// (deliver p val) -> Promise
 	dlVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "deliver"))
 	dlVr.Value = Proc{Name: "procDeliver", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 2, 2)
-		p, ok := args[0].(*Promise)
+		runtimeCheckArity(args, 2, 2)
+		p, ok := args[0].(*corert.ObjectPromise)
 		if !ok {
-			panic(RT.NewError("deliver requires a promise"))
+			panic(coretypes.RuntimeError("deliver requires a promise"))
 		}
-		p.runtime.Deliver(args[1])
+		p.Deliver(args[1])
 		return p
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "deliver"), dlVr)
@@ -130,8 +122,8 @@ func installConcurrencyExt() {
 	// promise? — true if obj is a Promise.
 	pqVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "promise?"))
 	pqVr.Value = Proc{Name: "procPromiseQ", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
-		_, ok := args[0].(*Promise)
+		runtimeCheckArity(args, 1, 1)
+		_, ok := args[0].(*corert.ObjectPromise)
 		return coretypes.MakeBoolean(ok)
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "promise?"), pqVr)
@@ -139,7 +131,7 @@ func installConcurrencyExt() {
 	// realized? — true if a Future/Promise/coretypes.Delay has been realized.
 	rzVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "realized?"))
 	rzVr.Value = Proc{Name: "procRealizedQ", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
+		runtimeCheckArity(args, 1, 1)
 		if p, ok := args[0].(coretypes.Pending); ok {
 			return coretypes.MakeBoolean(p.IsRealized())
 		}
@@ -151,7 +143,7 @@ func installConcurrencyExt() {
 	// Applies f to each element in parallel goroutines, returns lazy seq of results in order.
 	pmapVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "pmap"))
 	pmapVr.Value = Proc{Name: "procPmap", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 2, 2)
+		runtimeCheckArity(args, 2, 2)
 		f := coretypes.EnsureArgIsCallable(args, 0)
 		coll := coretypes.EnsureObjectIsSeqable(args[1], "pmap requires a coretypes.Seqable collection").Seq()
 		// Collect all elements first (pmap is not lazy in this impl).
@@ -163,30 +155,12 @@ func installConcurrencyExt() {
 			return NIL
 		}
 		results := make([]coretypes.Object, len(elems))
-		done := make(chan int, len(elems))
-		panicCh := make(chan interface{}, len(elems))
-		for i, elem := range elems {
-			go func(idx int, val coretypes.Object) {
-				registerGoroutineRT()
-				defer unregisterGoroutineRT()
-				defer func() {
-					if r := recover(); r != nil {
-						panicCh <- r
-					}
-					done <- idx
-				}()
-				results[idx] = call1(f, val)
-			}(i, elem)
-		}
-		for range elems {
-			<-done
-		}
-		select {
-		case r := <-panicCh:
+		if r, panicked := corert.RunParallel(len(elems), func() { registerGoroutineRT() }, unregisterGoroutineRT, func(i int) {
+			results[i] = call1(f, elems[i])
+		}); panicked {
 			panic(r)
-		default:
 		}
-		return collectionConstruction.NewListFrom(results...)
+		return corecollections.NewListFrom(results...)
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "pmap"), pmapVr)
 
@@ -198,31 +172,16 @@ func installConcurrencyExt() {
 			return NIL
 		}
 		results := make([]coretypes.Object, len(args))
-		done := make(chan int, len(args))
-		panicCh := make(chan interface{}, len(args))
+		fns := make([]coretypes.Callable, len(args))
 		for i, arg := range args {
-			f := coretypes.EnsureObjectIsCallable(arg, "pcalls requires callable arguments")
-			go func(idx int, fn coretypes.Callable) {
-				registerGoroutineRT()
-				defer unregisterGoroutineRT()
-				defer func() {
-					if r := recover(); r != nil {
-						panicCh <- r
-					}
-					done <- idx
-				}()
-				results[idx] = call0(fn)
-			}(i, f)
+			fns[i] = coretypes.EnsureObjectIsCallable(arg, "pcalls requires callable arguments")
 		}
-		for range args {
-			<-done
-		}
-		select {
-		case r := <-panicCh:
+		if r, panicked := corert.RunParallel(len(args), func() { registerGoroutineRT() }, unregisterGoroutineRT, func(i int) {
+			results[i] = call0(fns[i])
+		}); panicked {
 			panic(r)
-		default:
 		}
-		return collectionConstruction.NewListFrom(results...)
+		return corecollections.NewListFrom(results...)
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "pcalls"), pcVr)
 }
@@ -230,13 +189,13 @@ func installConcurrencyExt() {
 // procAlts implements (alts! ports & opts).
 func procAlts(args []coretypes.Object) coretypes.Object {
 	if len(args) < 1 {
-		panic(RT.NewError("alts! requires at least one argument (ports vector)"))
+		panic(coretypes.RuntimeError("alts! requires at least one argument (ports vector)"))
 	}
 	ports := coretypes.EnsureObjectIsSeqable(args[0], "alts! first arg must be a vector of ports").Seq()
 
 	// Parse options.
 	if len(args[1:])%2 != 0 {
-		panic(RT.NewError("alts! options must be key/value pairs"))
+		panic(coretypes.RuntimeError("alts! options must be key/value pairs"))
 	}
 	var defaultVal coretypes.Object
 	hasDefault := false
@@ -249,7 +208,7 @@ func procAlts(args []coretypes.Object) coretypes.Object {
 
 	// Build reflect.Select cases.
 	type portInfo struct {
-		ch    *Channel
+		ch    *corert.ObjectChannel
 		isPut bool
 	}
 	var cases []reflect.SelectCase
@@ -258,11 +217,11 @@ func procAlts(args []coretypes.Object) coretypes.Object {
 	for s := ports; !s.IsEmpty(); s = s.Rest() {
 		item := s.First()
 		switch v := item.(type) {
-		case *Channel:
+		case *corert.ObjectChannel:
 			// Take operation.
 			cases = append(cases, reflect.SelectCase{
 				Dir:  reflect.SelectRecv,
-				Chan: reflect.ValueOf(v.raw()),
+				Chan: reflect.ValueOf(v.Raw()),
 			})
 			infos = append(infos, portInfo{ch: v, isPut: false})
 		default:
@@ -271,23 +230,23 @@ func procAlts(args []coretypes.Object) coretypes.Object {
 				ch := EnsureObjectIsChannel(ci.At(0), "alts! put port first element must be a channel")
 				if ch.IsClosed() {
 					// Clojure-like semantics: put on closed channel returns false immediately.
-					return collectionConstruction.NewVectorFrom(coretypes.MakeBoolean(false), ch)
+					return corecollections.NewVectorFrom(coretypes.MakeBoolean(false), ch)
 				}
 				val := ci.At(1)
 				cases = append(cases, reflect.SelectCase{
 					Dir:  reflect.SelectSend,
-					Chan: reflect.ValueOf(ch.raw()),
-					Send: reflect.ValueOf(MakeFutureResult(val, nil)),
+					Chan: reflect.ValueOf(ch.Raw()),
+					Send: reflect.ValueOf(corert.NewFutureResult(val, nil)),
 				})
 				infos = append(infos, portInfo{ch: ch, isPut: true})
 			} else {
-				panic(RT.NewError("alts! port must be a channel or [channel value] vector"))
+				panic(coretypes.RuntimeError("alts! port must be a channel or [channel value] vector"))
 			}
 		}
 	}
 
 	if len(cases) == 0 {
-		panic(RT.NewError("alts! requires at least one port"))
+		panic(coretypes.RuntimeError("alts! requires at least one port"))
 	}
 
 	// Add default case if :default option provided.
@@ -300,142 +259,31 @@ func procAlts(args []coretypes.Object) coretypes.Object {
 
 	// Default case.
 	if hasDefault && chosen == len(cases)-1 {
-		return collectionConstruction.NewVectorFrom(defaultVal, coretypes.MakeKeyword(STRINGS.Intern, "default"))
+		return corecollections.NewVectorFrom(defaultVal, coretypes.MakeKeyword(STRINGS.Intern, "default"))
 	}
 
 	info := infos[chosen]
 	if info.isPut {
 		// Put completed.
-		return collectionConstruction.NewVectorFrom(coretypes.MakeBoolean(true), info.ch)
+		return corecollections.NewVectorFrom(coretypes.MakeBoolean(true), info.ch)
 	}
 	// Take completed.
 	if !recvOK {
 		// Channel closed.
-		return collectionConstruction.NewVectorFrom(NIL, info.ch)
+		return corecollections.NewVectorFrom(NIL, info.ch)
 	}
-	fr := recv.Interface().(FutureResult)
-	if fr.err != nil {
-		panic(fr.err)
+	fr := recv.Interface().(corert.FutureResult)
+	if fr.Err != nil {
+		panic(fr.Err)
 	}
-	return collectionConstruction.NewVectorFrom(fr.value, info.ch)
-}
-
-// --- Future type ---
-
-// Future holds a value computed asynchronously.
-type Future struct {
-	runtime *corert.Future[coretypes.Object, coretypes.Error]
-}
-
-func (f *Future) ToString(escape bool) string    { return "#object[Future]" }
-func (f *Future) Equals(other interface{}) bool  { return f == other }
-func (f *Future) GetInfo() *coretypes.ObjectInfo { return nil }
-func (f *Future) GetType() *coretypes.Type       { return TYPE.Fn } // Clojure: futures are IFn
-func (f *Future) Hash() uint32 {
-	return hashutil.Ptr(uintptr(reflect.ValueOf(f).Pointer()))
-}
-func (f *Future) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return f }
-
-func (f *Future) Deref() coretypes.Object {
-	value, err := f.runtime.Await()
-	if err != nil {
-		panic(coretypes.Object(err))
-	}
-	return value
-}
-
-func (f *Future) IsRealized() bool {
-	return f.runtime.IsRealized()
-}
-
-// --- Promise type ---
-
-// Promise holds a value that can be delivered once.
-type Promise struct {
-	runtime *corert.Promise[coretypes.Object]
-}
-
-func (p *Promise) ToString(escape bool) string    { return "#object[Promise]" }
-func (p *Promise) Equals(other interface{}) bool  { return p == other }
-func (p *Promise) GetInfo() *coretypes.ObjectInfo { return nil }
-func (p *Promise) GetType() *coretypes.Type       { return TYPE.Fn }
-func (p *Promise) Hash() uint32 {
-	return hashutil.Ptr(uintptr(reflect.ValueOf(p).Pointer()))
-}
-func (p *Promise) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return p }
-
-func (p *Promise) Deref() coretypes.Object {
-	return p.runtime.Await()
-}
-
-func (p *Promise) IsRealized() bool {
-	return p.runtime.IsRealized()
+	return corecollections.NewVectorFrom(fr.Value, info.ch)
 }
 
 func init() {
+	corert.AgentRegisterGoroutine = func() { registerGoroutineRT() }
+	corert.AgentUnregisterGoroutine = unregisterGoroutineRT
 	installConcurrencyExt()
 	installAgentExt()
-}
-
-// --- Agent type ---
-
-// Agent holds mutable state that is updated asynchronously via send/send-off.
-type Agent struct {
-	coretypes.MetaHolder
-	mu    sync.Mutex
-	value coretypes.Object
-	queue chan agentAction
-	err   coretypes.Error
-}
-
-type agentAction struct {
-	fn   coretypes.Callable
-	args []coretypes.Object
-}
-
-func newAgent(initVal coretypes.Object) *Agent {
-	a := &Agent{
-		value: initVal,
-		queue: make(chan agentAction, 256),
-	}
-	go a.processLoop()
-	return a
-}
-
-func (a *Agent) processLoop() {
-	registerGoroutineRT()
-	defer unregisterGoroutineRT()
-	for action := range a.queue {
-		a.mu.Lock()
-		func() {
-			defer func() {
-				if r := recover(); r != nil {
-					if e, ok := r.(coretypes.Error); ok {
-						a.err = e
-					}
-				}
-			}()
-			args := append([]coretypes.Object{a.value}, action.args...)
-			a.value = action.fn.Call(args)
-		}()
-		a.mu.Unlock()
-	}
-}
-
-func (a *Agent) ToString(escape bool) string    { return "#object[Agent]" }
-func (a *Agent) Equals(other interface{}) bool  { return a == other }
-func (a *Agent) GetInfo() *coretypes.ObjectInfo { return nil }
-func (a *Agent) GetType() *coretypes.Type       { return TYPE.Fn }
-func (a *Agent) Hash() uint32 {
-	return hashutil.Ptr(uintptr(reflect.ValueOf(a).Pointer()))
-}
-func (a *Agent) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return a }
-
-func (a *Agent) Deref() coretypes.Object {
-	a.mu.Lock()
-	v := a.value
-	a.mu.Unlock()
-	return v
 }
 
 func installAgentExt() {
@@ -447,8 +295,8 @@ func installAgentExt() {
 	// agent — creates a new agent with initial value.
 	agVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "agent"))
 	agVr.Value = Proc{Name: "procAgent", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
-		return newAgent(args[0])
+		runtimeCheckArity(args, 1, 1)
+		return corert.NewAgent(args[0])
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "agent"), agVr)
 
@@ -456,14 +304,14 @@ func installAgentExt() {
 	sendVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "send"))
 	sendVr.Value = Proc{Name: "procSend", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
-			panic(RT.NewError("send requires at least 2 args: agent and fn"))
+			panic(coretypes.RuntimeError("send requires at least 2 args: agent and fn"))
 		}
-		a, ok := args[0].(*Agent)
+		a, ok := args[0].(*corert.Agent)
 		if !ok {
-			panic(RT.NewError("send first arg must be an agent"))
+			panic(coretypes.RuntimeError("send first arg must be an agent"))
 		}
 		f := coretypes.EnsureObjectIsCallable(args[1], "send second arg must be a fn")
-		a.queue <- agentAction{fn: f, args: args[2:]}
+		a.Send(f, args[2:])
 		return a
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "send"), sendVr)
@@ -472,14 +320,14 @@ func installAgentExt() {
 	soVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "send-off"))
 	soVr.Value = Proc{Name: "procSendOff", Fn: func(args []coretypes.Object) coretypes.Object {
 		if len(args) < 2 {
-			panic(RT.NewError("send-off requires at least 2 args: agent and fn"))
+			panic(coretypes.RuntimeError("send-off requires at least 2 args: agent and fn"))
 		}
-		a, ok := args[0].(*Agent)
+		a, ok := args[0].(*corert.Agent)
 		if !ok {
-			panic(RT.NewError("send-off first arg must be an agent"))
+			panic(coretypes.RuntimeError("send-off first arg must be an agent"))
 		}
 		f := coretypes.EnsureObjectIsCallable(args[1], "send-off second arg must be a fn")
-		a.queue <- agentAction{fn: f, args: args[2:]}
+		a.Send(f, args[2:])
 		return a
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "send-off"), soVr)
@@ -489,18 +337,11 @@ func installAgentExt() {
 	awaitVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "await"))
 	awaitVr.Value = Proc{Name: "procAwait", Fn: func(args []coretypes.Object) coretypes.Object {
 		for _, arg := range args {
-			a, ok := arg.(*Agent)
+			a, ok := arg.(*corert.Agent)
 			if !ok {
-				panic(RT.NewError("await requires agent arguments"))
+				panic(coretypes.RuntimeError("await requires agent arguments"))
 			}
-			done := make(chan struct{})
-			a.queue <- agentAction{
-				fn: Proc{Name: "awaitSentinel", Fn: func(fnArgs []coretypes.Object) coretypes.Object {
-					close(done)
-					return fnArgs[0] // identity — don't change value
-				}},
-			}
-			<-done
+			a.Await()
 		}
 		return NIL
 	}}
@@ -509,14 +350,12 @@ func installAgentExt() {
 	// agent-error — returns any error that has occurred on the agent.
 	aeVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "agent-error"))
 	aeVr.Value = Proc{Name: "procAgentError", Fn: func(args []coretypes.Object) coretypes.Object {
-		CheckArity(args, 1, 1)
-		a, ok := args[0].(*Agent)
+		runtimeCheckArity(args, 1, 1)
+		a, ok := args[0].(*corert.Agent)
 		if !ok {
-			panic(RT.NewError("agent-error requires an agent"))
+			panic(coretypes.RuntimeError("agent-error requires an agent"))
 		}
-		a.mu.Lock()
-		e := a.err
-		a.mu.Unlock()
+		e := a.Error()
 		if e == nil {
 			return NIL
 		}

@@ -2,11 +2,13 @@ package core
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"math/big"
 	"os"
 	"unicode/utf8"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 var exitCallbacks []func()
@@ -85,7 +87,7 @@ func maybeNewLine(w io.Writer, obj, nextObj coretypes.Object, baseIndent, curren
 }
 
 func FileInfoMap(name string, info os.FileInfo) coretypes.Map {
-	m := collectionConstruction.NewEmptyArrayMap()
+	m := corecollections.EmptyArrayMap()
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(name))
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "size"), coretypes.IntOrBigInt(big.NewInt(info.Size())))
 	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "mode"), coretypes.MakeInt(int(info.Mode())))

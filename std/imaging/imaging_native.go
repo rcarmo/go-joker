@@ -3,11 +3,13 @@ package imaging
 import (
 	"bytes"
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"image"
 	"image/color"
 	"image/png"
 	"math"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	"github.com/disintegration/imaging"
 
@@ -382,7 +384,7 @@ var procBounds ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 1, 1)
 	im := extractImage(args, 0)
 	b := im.img.Bounds()
-	return NewVectorFrom(
+	return corecollections.NewVectorFrom(
 		coretypes.MakeInt(b.Min.X),
 		coretypes.MakeInt(b.Min.Y),
 		coretypes.MakeInt(b.Dx()),

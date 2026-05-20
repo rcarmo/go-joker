@@ -2,10 +2,12 @@ package http
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -22,7 +24,7 @@ func TestPersistentClientReusesConnection(t *testing.T) {
 	defer closeClient(hc)
 
 	for i := 0; i < 3; i++ {
-		req := EmptyArrayMap()
+		req := corecollections.EmptyArrayMap()
 		req.Add(coretypes.MakeKeyword(STRINGS.Intern, "url"), coretypes.MakeString(srv.URL))
 		req.Add(coretypes.MakeKeyword(STRINGS.Intern, "client"), hc)
 		resp := sendRequest(req)
@@ -36,7 +38,7 @@ func TestPersistentClientReusesConnection(t *testing.T) {
 }
 
 func TestPersistentClientRejectsOverflowingIdleTimeout(t *testing.T) {
-	opts := EmptyArrayMap()
+	opts := corecollections.EmptyArrayMap()
 	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "idle-timeout-ms"), coretypes.MakeInt(int(^uint(0)>>1)))
 	defer func() {
 		if recover() == nil {
@@ -47,7 +49,7 @@ func TestPersistentClientRejectsOverflowingIdleTimeout(t *testing.T) {
 }
 
 func TestPersistentClientRejectsNegativeOptions(t *testing.T) {
-	opts := EmptyArrayMap()
+	opts := corecollections.EmptyArrayMap()
 	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "idle-timeout-ms"), coretypes.MakeInt(-1))
 	defer func() {
 		if recover() == nil {
@@ -58,7 +60,7 @@ func TestPersistentClientRejectsNegativeOptions(t *testing.T) {
 }
 
 func TestPersistentClientOptions(t *testing.T) {
-	opts := EmptyArrayMap()
+	opts := corecollections.EmptyArrayMap()
 	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "max-idle-conns"), coretypes.MakeInt(7))
 	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "max-idle-conns-per-host"), coretypes.MakeInt(3))
 	opts.Add(coretypes.MakeKeyword(STRINGS.Intern, "idle-timeout-ms"), coretypes.MakeInt(1234))

@@ -2,10 +2,12 @@ package csv
 
 import (
 	"encoding/csv"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"strings"
 	"unicode/utf8"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -18,16 +20,16 @@ func csvDelimiter(obj coretypes.Object, name string) rune {
 	return r
 }
 
-func csvLazySeq(rdr *csv.Reader) *LazySeq {
+func csvLazySeq(rdr *csv.Reader) *corecollections.LazySeq {
 	var c = func(args []coretypes.Object) coretypes.Object {
 		t, err := rdr.Read()
 		if err == io.EOF {
-			return EmptyList
+			return corecollections.EmptyList
 		}
 		PanicOnErr(err)
-		return NewConsSeq(MakeStringVector(t), csvLazySeq(rdr))
+		return corecollections.NewConsSeq(MakeStringVector(t), csvLazySeq(rdr))
 	}
-	return NewLazySeq(Proc{Fn: c})
+	return corecollections.NewLazySeq(Proc{Fn: c})
 }
 
 func csvSeqOpts(src coretypes.Object, opts coretypes.Map) coretypes.Object {
