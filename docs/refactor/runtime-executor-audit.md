@@ -95,7 +95,7 @@ Files:
 - `core/runtime/channel.go`
 - `core/runtime/pending.go`
 - `core/runtime/agent.go`
-- root `concurrency_ext.go` / `core_async_ext.go` / proc files for registration glue
+- root `procs.go` for concurrency/core.async registration glue
 
 Current state:
 
@@ -111,7 +111,7 @@ Safe next steps:
 
 - Keep `alts!` root-bound until Object/vector/result construction seams are explicit; it still performs reflection-select setup and vector result construction in root proc glue.
 - Avoid exposing raw runtime channels except for reflection-select integration that cannot currently be moved without root object/vector/result construction seams.
-- Keep root `concurrency_ext.go` as proc/env registration glue until `Proc`, `Fn`, `GLOBAL_ENV`, `NIL`, and call helpers have an acyclic runtime boundary.
+- Keep concurrency/core.async proc/env registration glue in root `procs.go` until `Proc`, `Fn`, `GLOBAL_ENV`, `NIL`, and call helpers have an acyclic runtime boundary.
 
 ### Environment, frames, and parse/eval handoff
 

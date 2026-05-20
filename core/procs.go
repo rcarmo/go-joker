@@ -4,18 +4,21 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/rcarmo/go-joker/core/hashutil"
 	"io"
 	"math"
 	"math/big"
 	"math/rand"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"sort"
 	"strconv"
 	"sync"
 	"time"
 	"unicode/utf8"
+	"unsafe"
 
 	corert "github.com/rcarmo/go-joker/core/runtime"
 
@@ -3486,4 +3489,949 @@ var procPopBang = func(args []coretypes.Object) coretypes.Object {
 	default:
 		panic(coretypes.RuntimeError("pop! requires a transient vector, got: " + coll.GetType().ToString(false)))
 	}
+}
+
+// ---- concurrency_ext.go ----
+// concurrency_ext.go — Extended concurrency primitives: alts!, timeout, future, promise, pmap.
+//
+// These require the GIL-free runtime (goroutine_rt.go).
+
+func checkedMillisecondDuration(ms int, context string) time.Duration {
+	return corert.CheckedMillisecondDuration(ms, context, func(msg string) any { return coretypes.RuntimeError(msg) })
+}
+
+// installConcurrencyExt registers alts!, timeout, future, promise, deliver,
+// future?, promise?, realized?, pmap, and pcalls.
+func installConcurrencyExt() {
+	ns := GLOBAL_ENV.CoreNamespace
+	if ns == nil {
+		return
+	}
+
+	// timeout — returns a channel that closes after ms milliseconds.
+	// (timeout ms) -> Channel
+	toVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "timeout"))
+	toVr.Value = Proc{Name: "procTimeout", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		delay := checkedMillisecondDuration(coretypes.EnsureArgIsInt(args, 0).I, "timeout")
+		ch := corert.NewObjectChannel(make(chan corert.FutureResult, 1))
+		go func() {
+			time.Sleep(delay)
+			ch.Close()
+		}()
+		return ch
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "timeout"), toVr)
+
+	// alts! — select-style multi-channel wait.
+	// (alts! ports & opts) where ports is a vector of channels (take) or
+	// [channel value] pairs (put).
+	// Returns [value channel].
+	// Options: :default val — return immediately if nothing ready.
+	altsVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "alts!"))
+	altsVr.Value = Proc{Name: "procAlts", Fn: procAlts}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "alts!"), altsVr)
+
+	// future — runs body in a goroutine, returns a deref-able object.
+	// (future body...) is a macro defined in core.joke; the runtime primitive is future-call.
+	fcVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "future-call"))
+	fcVr.Value = Proc{Name: "procFutureCall", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		f := coretypes.EnsureArgIsCallable(args, 0)
+		fut := corert.NewObjectFuture()
+		go func() {
+			registerGoroutineRT()
+			defer unregisterGoroutineRT()
+			var value coretypes.Object = NIL
+			var err coretypes.Error
+			defer func() {
+				if r := recover(); r != nil {
+					switch e := r.(type) {
+					case coretypes.Error:
+						err = e
+					default:
+						err = coretypes.RuntimeError("future panic").(coretypes.Error)
+					}
+				}
+				fut.Complete(value, err)
+			}()
+			value = call0(f)
+		}()
+		return fut
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "future-call"), fcVr)
+
+	// future — macro: (future body...) -> (future-call (fn [] body...))
+	installMacro(ns, "future", func(args []coretypes.Object) coretypes.Object {
+		// args: &form, &env, body...
+		body := args[2:]
+		fnForm := corecollections.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "fn"), corecollections.NewVectorFrom()}, body...)...)
+		return corecollections.NewListFrom(coretypes.MakeSymbol(STRINGS.Intern, "future-call"), fnForm)
+	})
+
+	// future? — true if obj is a Future.
+	fqVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "future?"))
+	fqVr.Value = Proc{Name: "procFutureQ", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		_, ok := args[0].(*corert.ObjectFuture)
+		return coretypes.MakeBoolean(ok)
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "future?"), fqVr)
+
+	// promise — creates a promise that can be delivered once.
+	// (promise) -> Promise
+	prVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "promise"))
+	prVr.Value = Proc{Name: "procPromise", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 0, 0)
+		return corert.NewObjectPromise()
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "promise"), prVr)
+
+	// deliver — delivers a value to a promise. Returns the promise.
+	// (deliver p val) -> Promise
+	dlVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "deliver"))
+	dlVr.Value = Proc{Name: "procDeliver", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 2, 2)
+		p, ok := args[0].(*corert.ObjectPromise)
+		if !ok {
+			panic(coretypes.RuntimeError("deliver requires a promise"))
+		}
+		p.Deliver(args[1])
+		return p
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "deliver"), dlVr)
+
+	// promise? — true if obj is a Promise.
+	pqVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "promise?"))
+	pqVr.Value = Proc{Name: "procPromiseQ", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		_, ok := args[0].(*corert.ObjectPromise)
+		return coretypes.MakeBoolean(ok)
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "promise?"), pqVr)
+
+	// realized? — true if a Future/Promise/coretypes.Delay has been realized.
+	rzVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "realized?"))
+	rzVr.Value = Proc{Name: "procRealizedQ", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		if p, ok := args[0].(coretypes.Pending); ok {
+			return coretypes.MakeBoolean(p.IsRealized())
+		}
+		return coretypes.Boolean{B: false}
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "realized?"), rzVr)
+
+	// pmap — parallel map. (pmap f coll)
+	// Applies f to each element in parallel goroutines, returns lazy seq of results in order.
+	pmapVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "pmap"))
+	pmapVr.Value = Proc{Name: "procPmap", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 2, 2)
+		f := coretypes.EnsureArgIsCallable(args, 0)
+		coll := coretypes.EnsureObjectIsSeqable(args[1], "pmap requires a coretypes.Seqable collection").Seq()
+		// Collect all elements first (pmap is not lazy in this impl).
+		var elems []coretypes.Object
+		for s := coll; !s.IsEmpty(); s = s.Rest() {
+			elems = append(elems, s.First())
+		}
+		if len(elems) == 0 {
+			return NIL
+		}
+		results := make([]coretypes.Object, len(elems))
+		if r, panicked := corert.RunParallel(len(elems), func() { registerGoroutineRT() }, unregisterGoroutineRT, func(i int) {
+			results[i] = call1(f, elems[i])
+		}); panicked {
+			panic(r)
+		}
+		return corecollections.NewListFrom(results...)
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "pmap"), pmapVr)
+
+	// pcalls — parallel calls. (pcalls & fns)
+	// Calls each no-arg fn in parallel, returns list of results.
+	pcVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "pcalls"))
+	pcVr.Value = Proc{Name: "procPcalls", Fn: func(args []coretypes.Object) coretypes.Object {
+		if len(args) == 0 {
+			return NIL
+		}
+		results := make([]coretypes.Object, len(args))
+		fns := make([]coretypes.Callable, len(args))
+		for i, arg := range args {
+			fns[i] = coretypes.EnsureObjectIsCallable(arg, "pcalls requires callable arguments")
+		}
+		if r, panicked := corert.RunParallel(len(args), func() { registerGoroutineRT() }, unregisterGoroutineRT, func(i int) {
+			results[i] = call0(fns[i])
+		}); panicked {
+			panic(r)
+		}
+		return corecollections.NewListFrom(results...)
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "pcalls"), pcVr)
+}
+
+// procAlts implements (alts! ports & opts).
+func procAlts(args []coretypes.Object) coretypes.Object {
+	if len(args) < 1 {
+		panic(coretypes.RuntimeError("alts! requires at least one argument (ports vector)"))
+	}
+	ports := coretypes.EnsureObjectIsSeqable(args[0], "alts! first arg must be a vector of ports").Seq()
+
+	// Parse options.
+	if len(args[1:])%2 != 0 {
+		panic(coretypes.RuntimeError("alts! options must be key/value pairs"))
+	}
+	var defaultVal coretypes.Object
+	hasDefault := false
+	for i := 1; i+1 < len(args); i += 2 {
+		if k, ok := args[i].(coretypes.Keyword); ok && k.ToString(false) == ":default" {
+			defaultVal = args[i+1]
+			hasDefault = true
+		}
+	}
+
+	// Build reflect.Select cases.
+	type portInfo struct {
+		ch    *corert.ObjectChannel
+		isPut bool
+	}
+	var cases []reflect.SelectCase
+	var infos []portInfo
+
+	for s := ports; !s.IsEmpty(); s = s.Rest() {
+		item := s.First()
+		switch v := item.(type) {
+		case *corert.ObjectChannel:
+			// Take operation.
+			cases = append(cases, reflect.SelectCase{
+				Dir:  reflect.SelectRecv,
+				Chan: reflect.ValueOf(v.Raw()),
+			})
+			infos = append(infos, portInfo{ch: v, isPut: false})
+		default:
+			// Check if it's a vector-like [channel value] for put.
+			if ci, ok := item.(coretypes.CountedIndexed); ok && ci.Count() == 2 {
+				ch := EnsureObjectIsChannel(ci.At(0), "alts! put port first element must be a channel")
+				if ch.IsClosed() {
+					// Clojure-like semantics: put on closed channel returns false immediately.
+					return corecollections.NewVectorFrom(coretypes.MakeBoolean(false), ch)
+				}
+				val := ci.At(1)
+				cases = append(cases, reflect.SelectCase{
+					Dir:  reflect.SelectSend,
+					Chan: reflect.ValueOf(ch.Raw()),
+					Send: reflect.ValueOf(corert.NewFutureResult(val, nil)),
+				})
+				infos = append(infos, portInfo{ch: ch, isPut: true})
+			} else {
+				panic(coretypes.RuntimeError("alts! port must be a channel or [channel value] vector"))
+			}
+		}
+	}
+
+	if len(cases) == 0 {
+		panic(coretypes.RuntimeError("alts! requires at least one port"))
+	}
+
+	// Add default case if :default option provided.
+	if hasDefault {
+		cases = append(cases, reflect.SelectCase{Dir: reflect.SelectDefault})
+	}
+
+	// Select.
+	chosen, recv, recvOK := reflect.Select(cases)
+
+	// Default case.
+	if hasDefault && chosen == len(cases)-1 {
+		return corecollections.NewVectorFrom(defaultVal, coretypes.MakeKeyword(STRINGS.Intern, "default"))
+	}
+
+	info := infos[chosen]
+	if info.isPut {
+		// Put completed.
+		return corecollections.NewVectorFrom(coretypes.MakeBoolean(true), info.ch)
+	}
+	// Take completed.
+	if !recvOK {
+		// Channel closed.
+		return corecollections.NewVectorFrom(NIL, info.ch)
+	}
+	fr := recv.Interface().(corert.FutureResult)
+	if fr.Err != nil {
+		panic(fr.Err)
+	}
+	return corecollections.NewVectorFrom(fr.Value, info.ch)
+}
+
+func init() {
+	corert.AgentRegisterGoroutine = func() { registerGoroutineRT() }
+	corert.AgentUnregisterGoroutine = unregisterGoroutineRT
+	installConcurrencyExt()
+	installAgentExt()
+}
+
+func installAgentExt() {
+	ns := GLOBAL_ENV.CoreNamespace
+	if ns == nil {
+		return
+	}
+
+	// agent — creates a new agent with initial value.
+	agVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "agent"))
+	agVr.Value = Proc{Name: "procAgent", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		return corert.NewAgent(args[0])
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "agent"), agVr)
+
+	// send — dispatches action to agent (returns agent immediately).
+	sendVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "send"))
+	sendVr.Value = Proc{Name: "procSend", Fn: func(args []coretypes.Object) coretypes.Object {
+		if len(args) < 2 {
+			panic(coretypes.RuntimeError("send requires at least 2 args: agent and fn"))
+		}
+		a, ok := args[0].(*corert.Agent)
+		if !ok {
+			panic(coretypes.RuntimeError("send first arg must be an agent"))
+		}
+		f := coretypes.EnsureObjectIsCallable(args[1], "send second arg must be a fn")
+		a.Send(f, args[2:])
+		return a
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "send"), sendVr)
+
+	// send-off — same as send for this implementation (no thread pool distinction).
+	soVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "send-off"))
+	soVr.Value = Proc{Name: "procSendOff", Fn: func(args []coretypes.Object) coretypes.Object {
+		if len(args) < 2 {
+			panic(coretypes.RuntimeError("send-off requires at least 2 args: agent and fn"))
+		}
+		a, ok := args[0].(*corert.Agent)
+		if !ok {
+			panic(coretypes.RuntimeError("send-off first arg must be an agent"))
+		}
+		f := coretypes.EnsureObjectIsCallable(args[1], "send-off second arg must be a fn")
+		a.Send(f, args[2:])
+		return a
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "send-off"), soVr)
+
+	// await — blocks until all actions dispatched to agents have completed.
+	// Simple implementation: sends a sentinel and waits for it to be processed.
+	awaitVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "await"))
+	awaitVr.Value = Proc{Name: "procAwait", Fn: func(args []coretypes.Object) coretypes.Object {
+		for _, arg := range args {
+			a, ok := arg.(*corert.Agent)
+			if !ok {
+				panic(coretypes.RuntimeError("await requires agent arguments"))
+			}
+			a.Await()
+		}
+		return NIL
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "await"), awaitVr)
+
+	// agent-error — returns any error that has occurred on the agent.
+	aeVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "agent-error"))
+	aeVr.Value = Proc{Name: "procAgentError", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		a, ok := args[0].(*corert.Agent)
+		if !ok {
+			panic(coretypes.RuntimeError("agent-error requires an agent"))
+		}
+		e := a.Error()
+		if e == nil {
+			return NIL
+		}
+		if eo, ok := e.(coretypes.Object); ok {
+			return eo
+		}
+		return coretypes.MakeString(e.Error())
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "agent-error"), aeVr)
+}
+
+// ---- core_async_ext.go ----
+// core_async_ext.go — clojure.core.async compatibility namespace.
+//
+// Joker's core already provides channels, go, alts!, timeout and blocking
+// <!/>! operations. This file exposes a Clojure-shaped clojure.core.async
+// namespace plus the most commonly used higher-level coordination helpers.
+
+func init() { installCoreAsyncNamespace() }
+
+func installCoreAsyncNamespace() {
+	if GLOBAL_ENV == nil || GLOBAL_ENV.CoreNamespace == nil {
+		return
+	}
+	ns := GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "clojure.core.async"))
+	ns.Meta = MakeMeta(nil, "Clojure core.async-compatible channel helpers backed by Go goroutines.", "1.0")
+	core := GLOBAL_ENV.CoreNamespace
+	for _, name := range []string{"chan", "<!", ">!", "close!", "alts!", "timeout", "go"} {
+		if vr := core.Resolve(name); vr != nil {
+			ns.Refer(coretypes.MakeSymbol(STRINGS.Intern, name), vr)
+		}
+	}
+	if vr := core.Resolve("<!"); vr != nil {
+		ns.Refer(coretypes.MakeSymbol(STRINGS.Intern, "<!!"), vr)
+	}
+	if vr := core.Resolve(">!"); vr != nil {
+		ns.Refer(coretypes.MakeSymbol(STRINGS.Intern, ">!!"), vr)
+	}
+	installAsyncMacro(ns, "go-loop", "Like core.async/go with an initial loop/recur binding vector.", macroCoreAsyncGoLoop)
+	installAsyncMacro(ns, "thread", "Runs body asynchronously on a native goroutine and returns a future.", macroCoreAsyncThread)
+	installAsyncMacro(ns, "thread-call", "Runs a zero-argument function asynchronously and returns a future.", macroCoreAsyncThreadCall)
+
+	installAsyncProc(ns, "buffer", "Returns a fixed-size channel buffer descriptor.", procAsyncBuffer)
+	installAsyncProc(ns, "dropping-buffer", "Returns a dropping channel buffer descriptor.", procAsyncBuffer)
+	installAsyncProc(ns, "sliding-buffer", "Returns a sliding channel buffer descriptor.", procAsyncBuffer)
+	installAsyncProc(ns, "promise-chan", "Returns a channel that accepts exactly one value then closes.", procAsyncPromiseChan)
+	installAsyncProc(ns, "to-chan", "Copies a collection onto a new channel and closes it.", procAsyncToChan)
+	installAsyncProc(ns, "to-chan!", "Alias for to-chan.", procAsyncToChan)
+	installAsyncProc(ns, "onto-chan", "Copies a collection onto a channel, optionally closing it.", procAsyncOntoChan)
+	installAsyncProc(ns, "onto-chan!", "Alias for onto-chan.", procAsyncOntoChan)
+	installAsyncProc(ns, "put!", "Asynchronously puts a value on a channel and optionally invokes a callback.", procAsyncPutBang)
+	installAsyncProc(ns, "take!", "Asynchronously takes a value from a channel and invokes a callback.", procAsyncTakeBang)
+	installAsyncProc(ns, "pipe", "Pipes values from one channel to another.", procAsyncPipe)
+	installAsyncProc(ns, "merge", "Merges multiple input channels onto one output channel.", procAsyncMerge)
+	installAsyncProc(ns, "split", "Splits an input channel into true/false output channels by predicate.", procAsyncSplit)
+	installAsyncProc(ns, "map<", "Maps a function over values taken from a channel.", procAsyncMapFrom)
+	installAsyncProc(ns, "filter<", "Filters values taken from a channel by predicate.", procAsyncFilterFrom)
+	installAsyncProc(ns, "map>", "Maps values before putting them on a channel.", procAsyncMapTo)
+	installAsyncProc(ns, "filter>", "Filters values before putting them on a channel.", procAsyncFilterTo)
+	installAsyncProc(ns, "reduce", "Reduces values from a channel and returns a result channel.", procAsyncReduce)
+	installAsyncProc(ns, "into", "Collects values from a channel into a collection.", procAsyncInto)
+	installAsyncProc(ns, "mult", "Creates a multicast source from a channel.", procAsyncMult)
+	installAsyncProc(ns, "tap", "Adds a tap channel to a mult.", procAsyncTap)
+	installAsyncProc(ns, "untap", "Removes a tap channel from a mult.", procAsyncUntap)
+	installAsyncProc(ns, "untap-all", "Removes all tap channels from a mult.", procAsyncUntapAll)
+	installAsyncProc(ns, "pub", "Creates a topic publication from a channel.", procAsyncPub)
+	installAsyncProc(ns, "sub", "Subscribes a channel to a publication topic.", procAsyncSub)
+	installAsyncProc(ns, "unsub", "Unsubscribes a channel from a publication topic.", procAsyncUnsub)
+	installAsyncProc(ns, "unsub-all", "Unsubscribes channels from publication topics.", procAsyncUnsubAll)
+}
+
+func installAsyncProc(ns *Namespace, name, doc string, fn ProcFn) {
+	ns.InternVar(name, Proc{Name: "procCoreAsync" + name, Fn: fn}, MakeMeta(nil, doc, "1.0"))
+}
+
+func installAsyncMacro(ns *Namespace, name, doc string, fn func([]coretypes.Object) coretypes.Object) {
+	vr := ns.InternVar(name, Proc{Name: "macro" + name, Fn: fn}, MakeMeta(nil, doc, "1.0"))
+	vr.isMacro = true
+}
+
+func macroCoreAsyncGoLoop(args []coretypes.Object) coretypes.Object {
+	if len(args) < 3 {
+		panic(coretypes.RuntimeError("go-loop requires bindings and body"))
+	}
+	return listObjs(coretypes.MakeSymbol(STRINGS.Intern, "go"), corecollections.NewListFrom(append([]coretypes.Object{coretypes.MakeSymbol(STRINGS.Intern, "loop"), args[2]}, args[3:]...)...))
+}
+func macroCoreAsyncThread(args []coretypes.Object) coretypes.Object {
+	if len(args) < 2 {
+		panic(coretypes.RuntimeError("thread requires body"))
+	}
+	return listObjs(coretypes.MakeSymbol(STRINGS.Intern, "future"), doObj(args[2:]...))
+}
+func macroCoreAsyncThreadCall(args []coretypes.Object) coretypes.Object {
+	if len(args) != 3 {
+		panic(coretypes.RuntimeError("thread-call requires one fn"))
+	}
+	return listObjs(coretypes.MakeSymbol(STRINGS.Intern, "future-call"), args[2])
+}
+
+func asyncBufferSize(o coretypes.Object) int {
+	if o == nil || o.Equals(NIL) {
+		return 0
+	}
+	switch v := o.(type) {
+	case coretypes.Int:
+		return v.I
+	default:
+		panic(coretypes.RuntimeError("buffer size must be an integer"))
+	}
+}
+func procAsyncBuffer(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 1, 1)
+	return coretypes.EnsureArgIsInt(args, 0)
+}
+func procAsyncPromiseChan(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 0, 0)
+	return corert.NewObjectChannel(make(chan corert.FutureResult, 1))
+}
+
+func channelFromArg(args []coretypes.Object, i int) *corert.ObjectChannel {
+	return EnsureObjectIsChannel(args[i], fmt.Sprintf("arg %d must be a channel", i))
+}
+func asyncSend(ch *corert.ObjectChannel, v coretypes.Object) bool {
+	if v == nil || v.Equals(NIL) {
+		panic(coretypes.RuntimeError("Can't put nil on channel"))
+	}
+	return ch.Send(v)
+}
+func asyncRecv(ch *corert.ObjectChannel) coretypes.Object {
+	v, _, err := ch.Receive(nil)
+	if err != nil {
+		panic(coretypes.RuntimeError(err.Error()))
+	}
+	return v
+}
+
+func procAsyncPutBang(args []coretypes.Object) coretypes.Object {
+	if len(args) != 2 && len(args) != 3 {
+		panic(coretypes.RuntimeError("put! requires channel, value, optional callback"))
+	}
+	ch := channelFromArg(args, 0)
+	v := args[1]
+	var cb coretypes.Callable
+	if len(args) == 3 {
+		cb = coretypes.EnsureArgIsCallable(args, 2)
+	}
+	go func() {
+		registerGoroutineRT()
+		ok := asyncSend(ch, v)
+		if cb != nil {
+			call1(cb, coretypes.MakeBoolean(ok))
+		}
+	}()
+	return coretypes.MakeBoolean(!ch.IsClosed())
+}
+
+func procAsyncTakeBang(args []coretypes.Object) coretypes.Object {
+	if len(args) != 2 && len(args) != 3 {
+		panic(coretypes.RuntimeError("take! requires channel, callback, optional on-caller?"))
+	}
+	ch := channelFromArg(args, 0)
+	cb := coretypes.EnsureArgIsCallable(args, 1)
+	go func() { registerGoroutineRT(); call1(cb, asyncRecv(ch)) }()
+	return NIL
+}
+
+func procAsyncToChan(args []coretypes.Object) coretypes.Object {
+	if len(args) < 1 || len(args) > 2 {
+		panic(coretypes.RuntimeError("to-chan requires coll and optional close?"))
+	}
+	ch := corert.NewObjectChannel(make(chan corert.FutureResult, 0))
+	closeOut := true
+	if len(args) == 2 {
+		closeOut = ToBool(args[1])
+	}
+	seq := coretypes.EnsureObjectIsSeqable(args[0], "to-chan requires seqable").Seq()
+	go func() {
+		registerGoroutineRT()
+		for !seq.IsEmpty() {
+			asyncSend(ch, seq.First())
+			seq = seq.Rest()
+		}
+		if closeOut {
+			ch.Close()
+		}
+	}()
+	return ch
+}
+
+func procAsyncOntoChan(args []coretypes.Object) coretypes.Object {
+	if len(args) < 2 || len(args) > 3 {
+		panic(coretypes.RuntimeError("onto-chan requires channel, coll, optional close?"))
+	}
+	ch := channelFromArg(args, 0)
+	seq := coretypes.EnsureObjectIsSeqable(args[1], "onto-chan requires seqable").Seq()
+	closeOut := true
+	if len(args) == 3 {
+		closeOut = ToBool(args[2])
+	}
+	go func() {
+		registerGoroutineRT()
+		for !seq.IsEmpty() {
+			asyncSend(ch, seq.First())
+			seq = seq.Rest()
+		}
+		if closeOut {
+			ch.Close()
+		}
+	}()
+	return ch
+}
+
+func procAsyncPipe(args []coretypes.Object) coretypes.Object {
+	if len(args) < 2 || len(args) > 3 {
+		panic(coretypes.RuntimeError("pipe requires from, to, optional close?"))
+	}
+	from, to := channelFromArg(args, 0), channelFromArg(args, 1)
+	closeOut := true
+	if len(args) == 3 {
+		closeOut = ToBool(args[2])
+	}
+	go func() {
+		registerGoroutineRT()
+		for {
+			v := asyncRecv(from)
+			if v.Equals(NIL) {
+				if closeOut {
+					to.Close()
+				}
+				return
+			}
+			asyncSend(to, v)
+		}
+	}()
+	return to
+}
+
+func procAsyncMerge(args []coretypes.Object) coretypes.Object {
+	if len(args) < 1 || len(args) > 2 {
+		panic(coretypes.RuntimeError("merge requires channels and optional buffer"))
+	}
+	chsSeq := coretypes.EnsureObjectIsSeqable(args[0], "merge requires seqable channels").Seq()
+	out := corert.NewObjectChannel(make(chan corert.FutureResult, 0))
+	var wg sync.WaitGroup
+	for !chsSeq.IsEmpty() {
+		ch := EnsureObjectIsChannel(chsSeq.First(), "merge element must be channel")
+		wg.Add(1)
+		go func(c *corert.ObjectChannel) {
+			defer wg.Done()
+			registerGoroutineRT()
+			for {
+				v := asyncRecv(c)
+				if v.Equals(NIL) {
+					return
+				}
+				asyncSend(out, v)
+			}
+		}(ch)
+		chsSeq = chsSeq.Rest()
+	}
+	go func() { wg.Wait(); out.Close() }()
+	return out
+}
+
+func procAsyncSplit(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 2, 2)
+	pred := coretypes.EnsureArgIsCallable(args, 0)
+	in := channelFromArg(args, 1)
+	t := corert.NewObjectChannel(make(chan corert.FutureResult))
+	f := corert.NewObjectChannel(make(chan corert.FutureResult))
+	go func() {
+		registerGoroutineRT()
+		for {
+			v := asyncRecv(in)
+			if v.Equals(NIL) {
+				t.Close()
+				f.Close()
+				return
+			}
+			if ToBool(call1(pred, v)) {
+				asyncSend(t, v)
+			} else {
+				asyncSend(f, v)
+			}
+		}
+	}()
+	return corecollections.NewVectorFrom(t, f)
+}
+
+func procAsyncMapFrom(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 2, 2)
+	xf := coretypes.EnsureArgIsCallable(args, 0)
+	in := channelFromArg(args, 1)
+	out := corert.NewObjectChannel(make(chan corert.FutureResult))
+	go func() {
+		registerGoroutineRT()
+		for {
+			v := asyncRecv(in)
+			if v.Equals(NIL) {
+				out.Close()
+				return
+			}
+			asyncSend(out, call1(xf, v))
+		}
+	}()
+	return out
+}
+func procAsyncFilterFrom(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 2, 2)
+	pred := coretypes.EnsureArgIsCallable(args, 0)
+	in := channelFromArg(args, 1)
+	out := corert.NewObjectChannel(make(chan corert.FutureResult))
+	go func() {
+		registerGoroutineRT()
+		for {
+			v := asyncRecv(in)
+			if v.Equals(NIL) {
+				out.Close()
+				return
+			}
+			if ToBool(call1(pred, v)) {
+				asyncSend(out, v)
+			}
+		}
+	}()
+	return out
+}
+func procAsyncMapTo(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 2, 2)
+	xf := coretypes.EnsureArgIsCallable(args, 0)
+	ch := channelFromArg(args, 1)
+	out := corert.NewObjectChannel(make(chan corert.FutureResult))
+	go func() {
+		registerGoroutineRT()
+		for {
+			v := asyncRecv(out)
+			if v.Equals(NIL) {
+				ch.Close()
+				return
+			}
+			asyncSend(ch, call1(xf, v))
+		}
+	}()
+	return out
+}
+func procAsyncFilterTo(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 2, 2)
+	pred := coretypes.EnsureArgIsCallable(args, 0)
+	ch := channelFromArg(args, 1)
+	out := corert.NewObjectChannel(make(chan corert.FutureResult))
+	go func() {
+		registerGoroutineRT()
+		for {
+			v := asyncRecv(out)
+			if v.Equals(NIL) {
+				ch.Close()
+				return
+			}
+			if ToBool(call1(pred, v)) {
+				asyncSend(ch, v)
+			}
+		}
+	}()
+	return out
+}
+
+func procAsyncReduce(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 3, 3)
+	f := coretypes.EnsureArgIsCallable(args, 0)
+	acc := args[1]
+	ch := channelFromArg(args, 2)
+	out := corert.NewObjectChannel(make(chan corert.FutureResult, 1))
+	go func() {
+		registerGoroutineRT()
+		for {
+			v := asyncRecv(ch)
+			if v.Equals(NIL) {
+				asyncSend(out, acc)
+				out.Close()
+				return
+			}
+			acc = call2(f, acc, v)
+		}
+	}()
+	return out
+}
+func procAsyncInto(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 2, 2)
+	init := args[0]
+	ch := channelFromArg(args, 1)
+	out := corert.NewObjectChannel(make(chan corert.FutureResult, 1))
+	go func() {
+		registerGoroutineRT()
+		acc := init
+		for {
+			v := asyncRecv(ch)
+			if v.Equals(NIL) {
+				asyncSend(out, acc)
+				out.Close()
+				return
+			}
+			if c, ok := acc.(coretypes.Conjable); ok {
+				acc = c.Conj(v).(coretypes.Object)
+			} else {
+				panic(coretypes.RuntimeError("into init is not conjable"))
+			}
+		}
+	}()
+	return out
+}
+
+type asyncMult struct {
+	mu   sync.Mutex
+	src  *corert.ObjectChannel
+	taps map[*corert.ObjectChannel]bool
+	hash uint32
+}
+
+func (m *asyncMult) ToString(bool) string                            { return "#object[core.async.Mult]" }
+func (m *asyncMult) Print(w fmt.State, printReadably bool)           {}
+func (m *asyncMult) Equals(o interface{}) bool                       { return m == o }
+func (m *asyncMult) GetInfo() *coretypes.ObjectInfo                  { return nil }
+func (m *asyncMult) WithInfo(*coretypes.ObjectInfo) coretypes.Object { return m }
+func (m *asyncMult) GetType() *coretypes.Type                        { return TYPE.Proc }
+func (m *asyncMult) Hash() uint32                                    { return m.hash }
+
+type asyncPub struct {
+	mu      sync.Mutex
+	src     *corert.ObjectChannel
+	topicFn coretypes.Callable
+	subs    map[string][]*corert.ObjectChannel
+	hash    uint32
+}
+
+func (p *asyncPub) ToString(bool) string                            { return "#object[core.async.Pub]" }
+func (p *asyncPub) Equals(o interface{}) bool                       { return p == o }
+func (p *asyncPub) GetInfo() *coretypes.ObjectInfo                  { return nil }
+func (p *asyncPub) WithInfo(*coretypes.ObjectInfo) coretypes.Object { return p }
+func (p *asyncPub) GetType() *coretypes.Type                        { return TYPE.Proc }
+func (p *asyncPub) Hash() uint32                                    { return p.hash }
+
+func procAsyncMult(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 1, 1)
+	src := channelFromArg(args, 0)
+	m := &asyncMult{src: src, taps: map[*corert.ObjectChannel]bool{}}
+	m.hash = hashutil.Ptr(uintptr(unsafe.Pointer(m)))
+	go func() {
+		registerGoroutineRT()
+		for {
+			v := asyncRecv(src)
+			m.mu.Lock()
+			taps := make([]*corert.ObjectChannel, 0, len(m.taps))
+			for t := range m.taps {
+				taps = append(taps, t)
+			}
+			m.mu.Unlock()
+			if v.Equals(NIL) {
+				for _, t := range taps {
+					t.Close()
+				}
+				return
+			}
+			for _, t := range taps {
+				asyncSend(t, v)
+			}
+		}
+	}()
+	return m
+}
+func procAsyncTap(args []coretypes.Object) coretypes.Object {
+	if len(args) < 2 || len(args) > 3 {
+		panic(coretypes.RuntimeError("tap requires mult, channel, optional close?"))
+	}
+	m, ok := args[0].(*asyncMult)
+	if !ok {
+		panic(coretypes.RuntimeError("tap requires mult"))
+	}
+	ch := channelFromArg(args, 1)
+	closep := true
+	if len(args) == 3 {
+		closep = ToBool(args[2])
+	}
+	m.mu.Lock()
+	m.taps[ch] = closep
+	m.mu.Unlock()
+	return ch
+}
+func procAsyncUntap(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 2, 2)
+	m, ok := args[0].(*asyncMult)
+	if !ok {
+		panic(coretypes.RuntimeError("untap requires mult"))
+	}
+	ch := channelFromArg(args, 1)
+	m.mu.Lock()
+	delete(m.taps, ch)
+	m.mu.Unlock()
+	return NIL
+}
+func procAsyncUntapAll(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 1, 1)
+	m, ok := args[0].(*asyncMult)
+	if !ok {
+		panic(coretypes.RuntimeError("untap-all requires mult"))
+	}
+	m.mu.Lock()
+	m.taps = map[*corert.ObjectChannel]bool{}
+	m.mu.Unlock()
+	return NIL
+}
+
+func procAsyncPub(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 2, 2)
+	src := channelFromArg(args, 0)
+	tf := coretypes.EnsureArgIsCallable(args, 1)
+	p := &asyncPub{src: src, topicFn: tf, subs: map[string][]*corert.ObjectChannel{}}
+	p.hash = hashutil.Ptr(uintptr(unsafe.Pointer(p)))
+	go func() {
+		registerGoroutineRT()
+		for {
+			v := asyncRecv(src)
+			p.mu.Lock()
+			if v.Equals(NIL) {
+				for _, ss := range p.subs {
+					for _, ch := range ss {
+						ch.Close()
+					}
+				}
+				p.mu.Unlock()
+				return
+			}
+			topic := call1(tf, v).ToString(false)
+			ss := append([]*corert.ObjectChannel(nil), p.subs[topic]...)
+			p.mu.Unlock()
+			for _, ch := range ss {
+				asyncSend(ch, v)
+			}
+		}
+	}()
+	return p
+}
+func procAsyncSub(args []coretypes.Object) coretypes.Object {
+	if len(args) < 3 || len(args) > 4 {
+		panic(coretypes.RuntimeError("sub requires pub, topic, channel, optional close?"))
+	}
+	p, ok := args[0].(*asyncPub)
+	if !ok {
+		panic(coretypes.RuntimeError("sub requires pub"))
+	}
+	topic := args[1].ToString(false)
+	ch := channelFromArg(args, 2)
+	p.mu.Lock()
+	p.subs[topic] = append(p.subs[topic], ch)
+	p.mu.Unlock()
+	return ch
+}
+func procAsyncUnsub(args []coretypes.Object) coretypes.Object {
+	runtimeCheckArity(args, 3, 3)
+	p, ok := args[0].(*asyncPub)
+	if !ok {
+		panic(coretypes.RuntimeError("unsub requires pub"))
+	}
+	topic := args[1].ToString(false)
+	ch := channelFromArg(args, 2)
+	p.mu.Lock()
+	xs := p.subs[topic]
+	ys := xs[:0]
+	for _, c := range xs {
+		if c != ch {
+			ys = append(ys, c)
+		}
+	}
+	if len(ys) == 0 {
+		delete(p.subs, topic)
+	} else {
+		p.subs[topic] = ys
+	}
+	p.mu.Unlock()
+	return NIL
+}
+func procAsyncUnsubAll(args []coretypes.Object) coretypes.Object {
+	if len(args) < 1 || len(args) > 2 {
+		panic(coretypes.RuntimeError("unsub-all requires pub and optional topic"))
+	}
+	p, ok := args[0].(*asyncPub)
+	if !ok {
+		panic(coretypes.RuntimeError("unsub-all requires pub"))
+	}
+	p.mu.Lock()
+	if len(args) == 2 {
+		delete(p.subs, args[1].ToString(false))
+	} else {
+		p.subs = map[string][]*corert.ObjectChannel{}
+	}
+	p.mu.Unlock()
+	return NIL
 }

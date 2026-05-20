@@ -102,7 +102,17 @@ def fifth_pass() -> None:
     append_body("transient.go", "procs.go")
 
 
+
+def sixth_pass() -> None:
+    # Concurrency and core.async namespace glue are root proc/env registrations; co-locate with procs.
+    if append_body("concurrency_ext.go", "procs.go"):
+        ensure_import("procs.go", '"reflect"')
+    if append_body("core_async_ext.go", "procs.go"):
+        ensure_import("procs.go", '"unsafe"')
+        ensure_import("procs.go", '"github.com/rcarmo/go-joker/core/hashutil"')
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass()
 
 if __name__ == "__main__": main()
