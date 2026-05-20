@@ -112,7 +112,20 @@ def sixth_pass() -> None:
         ensure_import("procs.go", '"github.com/rcarmo/go-joker/core/hashutil"')
 
 
+
+def seventh_pass() -> None:
+    # Misc root runtime support: exit hooks, formatting callbacks, file-info maps, truthiness.
+    if append_body("common.go", "object.go"):
+        for spec in [
+            '"io"',
+            '"math/big"',
+            '"os"',
+            '"unicode/utf8"',
+        ]:
+            ensure_import("object.go", spec)
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass()
 
 if __name__ == "__main__": main()
