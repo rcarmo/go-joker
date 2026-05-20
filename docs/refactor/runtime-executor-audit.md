@@ -118,7 +118,7 @@ Safe next steps:
 Files:
 
 - environment/namespace runtime glue now coalesced into `object.go`
-- `environment_fast_init.go`
+- fast-startup `ReferCoreToUser` hook now coalesced into `a_generated_bootstrap_payloads.go`
 - gen-code environment construction now coalesced into `code.go`
 - parser/eval-facing parts now coalesced into `eval.go`
 

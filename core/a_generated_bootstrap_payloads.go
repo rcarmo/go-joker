@@ -371738,3 +371738,8 @@ func walkLazyInit() {
 	varRef_postwalk_POS_joker_DOT_walk__62_18__62_25.vr = &var_NAME_postwalk_POS_joker_DOT_walk_56_1__62_37
 	varRef_prewalk_POS_joker_DOT_walk__68_18__68_24.vr = &var_NAME_prewalk_POS_joker_DOT_walk_64_1__68_47
 }
+
+// ---- environment_fast_init.go ----
+func (env *Env) ReferCoreToUser() {
+	// Nothing need be done; it's already "baked in" in the fast-startup version.
+}
