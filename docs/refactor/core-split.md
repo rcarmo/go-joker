@@ -116,7 +116,7 @@ core/reader/
 
 Current candidate files:
 
-- parser/reader/evaluator integration now coalesced into `eval.go`; gen-code slow bootstrap helpers are coalesced into `code.go`
+- parser/reader/evaluator integration now coalesced into `eval.go`; gen-code slow bootstrap helpers are coalesced into `bootstrap_gen_code.go`
 - `read_conditional_test.go`
 
 Status and risks:

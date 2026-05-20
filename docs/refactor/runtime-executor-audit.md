@@ -119,7 +119,7 @@ Files:
 
 - environment/namespace runtime glue now coalesced into `object.go`
 - fast-startup `ReferCoreToUser` hook now coalesced into `a_generated_bootstrap_payloads.go`
-- gen-code environment construction now coalesced into `code.go`
+- gen-code environment construction now coalesced into `bootstrap_gen_code.go`
 - parser/eval-facing parts now coalesced into `eval.go`
 
 Current state:
