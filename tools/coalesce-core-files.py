@@ -262,7 +262,22 @@ def sixteenth_pass() -> None:
             ensure_import("object.go", spec)
 
 
+
+def seventeenth_pass() -> None:
+    # IR cache/compiler/executor cluster is evaluator execution machinery until core/ir owns it.
+    if append_body("fn_ir_cache.go", "eval.go"):
+        for spec in [
+            '"context"', '"math"', '"reflect"', '"strconv"', '"sync/atomic"', '"unicode/utf8"',
+            'coreir "github.com/rcarmo/go-joker/core/ir"',
+            'coreirx "github.com/rcarmo/go-joker/core/ir"',
+            'corewasm "github.com/rcarmo/go-joker/core/wasm"',
+            '"github.com/tetratelabs/wazero"',
+            '"github.com/tetratelabs/wazero/api"',
+        ]:
+            ensure_import("eval.go", spec)
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass(); thirteenth_pass(); fourteenth_pass(); fifteenth_pass(); sixteenth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass(); twelfth_pass(); thirteenth_pass(); fourteenth_pass(); fifteenth_pass(); sixteenth_pass(); seventeenth_pass()
 
 if __name__ == "__main__": main()

@@ -23,14 +23,14 @@ The former `core/ir*.go` grab-bag has now been split into two categories:
 
 - `core/program_envelope.go` — cache and executable `IRProgram` envelope
 - `core/program_envelope.go` — root IR program envelope, cache, and analysis adapter layer
-- `core/fn_ir_cache.go` — function IR cache plus call dispatch bridge from `Fn`/`Proc` (the former tiny `fn_ir_dispatch.go` was folded into this file)
+- `core/eval.go` — function IR cache plus call dispatch bridge from `Fn`/`Proc` (the former tiny `fn_ir_dispatch.go` was folded into this file)
 - `core/fn_ir_compile.go` — function compilation
-- loop/expression lowering now coalesced into `core/fn_ir_cache.go`
+- loop/expression lowering now coalesced into `core/eval.go`
 - `core/loop_wasm_diagnostics.go` — diagnostics tied to root `Expr` / `LoopExpr`
-- boxed interpreter now coalesced into `core/fn_ir_cache.go`
+- boxed interpreter now coalesced into `core/eval.go`
 - `core/typed_exec_nanbox.go` — typed/nanbox execution path
 - `core/runtime_ir_exports.go` — exported runtime/JIT artifact APIs; stale debug-only IR exports were removed instead of kept as bridges
-- `core/fn_ir_cache.go` — function IR cache and dispatch bridge
+- `core/eval.go` — function IR cache and dispatch bridge
 - `core/loop_frame_detect.go` — frame-detection helpers
 - `core/inline_rewrites.go` — inline compilation/fast paths
 - `core/loop_native_helpers.go` — native numeric helpers

@@ -38,7 +38,7 @@ Joker's execution engine uses a **tiered dispatch** model with five execution pa
 - **Zero-alloc:** No Object boxing, no interface dispatch, no slice allocation
 - **Dispatch:** Checked first in `Fn.Call` when `defVar != nil`; falls through if fn body isn't pure-integer
 - **Impact:** fib(35) 26s → 0.5s (53×), tak(30,22,12) 25s → 0.7s (35×)
-- **File:** `core/fn_ir_cache.go`
+- **File:** `core/eval.go`
 
 ### Tier 1: NaN-boxed Typed Executor (`irExecTypedNB`)
 - **Stack:** `[]uint64` — 8 bytes per entry
@@ -214,7 +214,7 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_frame_stack.go` | ~60 | Object frame stack for boxed executor |
 | `ir_frame_detect.go` | ~85 | Precise let/loop frame detection |
 | `ir_native_helper.go` | ~170 | Native f64 closure compiler |
-| native recursive specialization in `fn_ir_cache.go` | ~450 | Native int closure compiler (fib/tak) |
+| native recursive specialization in `eval.go` | ~450 | Native int closure compiler (fib/tak) |
 | `ir_fn_cache.go` | ~155 | Fn→IRProgram caching + loop wrapper |
 | string runtime wrappers in `object.go` | ~150 | StringCursor/TransientString wrappers and cursor proc registration |
 | `ir_analysis.go` | ~155 | IR program analysis |

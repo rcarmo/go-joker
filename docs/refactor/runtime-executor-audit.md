@@ -12,8 +12,8 @@ This audit records the remaining root-owned executor/runtime families before any
 
 Files:
 
-- boxed executor now coalesced into `fn_ir_cache.go`
-- `fn_ir_cache.go` (also owns the former tiny `fn_ir_dispatch.go` dispatch bridge)
+- boxed executor now coalesced into `eval.go`
+- IR cache/compiler/executor cluster now coalesced into `eval.go` (also owns the former tiny `fn_ir_dispatch.go` dispatch bridge)
 - `fn_ir_compile.go`
 
 Current state:
@@ -69,13 +69,13 @@ Safe next steps:
 
 Files:
 
-- WASM compile/lowering glue now coalesced into `fn_ir_cache.go`
+- WASM compile/lowering glue now coalesced into `eval.go`
 - `wasm_compile_host.go`
 - `wasm_exec_runtime.go`
 - `wasm_host_funcs.go`
 - `wasm_helper_backend.go`
 - `wasm_mem_nth_backend.go`
-- native recursive specialization now coalesced into `fn_ir_cache.go`
+- native recursive specialization now coalesced into `eval.go`
 - `loop_wasm_diagnostics.go`
 
 Current state:
