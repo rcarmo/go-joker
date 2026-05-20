@@ -75,7 +75,7 @@ Files:
 - `wasm_host_funcs.go`
 - `wasm_helper_backend.go`
 - `wasm_mem_nth_backend.go`
-- `native_recursive.go`
+- native recursive specialization now coalesced into `fn_ir_cache.go`
 - `loop_wasm_diagnostics.go`
 
 Current state:

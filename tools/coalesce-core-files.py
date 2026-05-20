@@ -163,7 +163,24 @@ def tenth_pass() -> None:
         ensure_import("code.go", 'corecollections "github.com/rcarmo/go-joker/core/types/collections"')
 
 
+
+def eleventh_pass() -> None:
+    # Formatting callbacks are object/runtime presentation mechanics.
+    if append_body("format.go", "object.go"):
+        ensure_import("object.go", '"regexp"')
+        ensure_import("object.go", '"sort"')
+
+    # Reduced/transducer compatibility belongs with reduce fast paths.
+    append_body("transducer_compat.go", "reduce_fast.go")
+
+    # Runtime execution adapter belongs beside boxed executor glue until IR package extraction.
+    append_body("runtime_execution_contract.go", "boxed_exec.go")
+
+    # Native recursive specialization is part of fn IR cache/compilation ownership.
+    append_body("native_recursive.go", "fn_ir_cache.go")
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass(); eleventh_pass()
 
 if __name__ == "__main__": main()
