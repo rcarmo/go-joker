@@ -12,13 +12,13 @@ Current package/file snapshot:
 |---|---:|---:|---|
 | root | 0 | 0 | clean: no root package remains |
 | `cmd/joker` | 19 | 3 | startup/orchestration is now split across cohesive helper files with focused arg/lint/compile tests; keep shrinking `main.go` rather than regrowing it |
-| `core` root | 56 | 1 | still the runtime/evaluator/bootstrap hotspot, but concrete collection files and runtime object wrappers for channels, futures/promises, agents, and atoms have moved out |
+| `core` root | 45 | 1 | still the runtime/evaluator/bootstrap hotspot, but concrete collection files and runtime object wrappers for channels, futures/promises, agents, and atoms have moved out, and atom/chunk/record/protocol/public-form/string/hierarchy/reduced/root-support/IO/goroutine/doc-metadata glue has been coalesced into domain files |
 | `core/types` | 19 | 0 | canonical object/type/protocol package: `Object`, type descriptors/registry, scalar and big numeric values, numeric ops, simple runtime values, runtime hooks, and most package-independent protocols |
 | `core/generated` | 9 | 2 | data-only generated bootstrap contract, source manifest, linter byte payloads, and generated linter payload registry |
 | `core/ir` | 6 | 4 | opcodes, disassembly/counting, shape analysis, neutral Program model, and IR leaf helpers |
 | `core/trace` | 4 | 2 | aggregation state with direct JSON-shape tests |
 | `core/wasm` | 8 | 3 | encoding/module/host/opcode/value leaf helpers |
-| `core/runtime` | 9 | 7 | feature flags, goroutine/pending/channel/concurrency primitives, and runtime-owned object wrappers (`ObjectChannel`, `ObjectFuture`, `ObjectPromise`, `Agent`, `Atom`) live here with package-local primitive/wrapper tests; channel and pending primitives are co-located with their object wrappers; proc/env/evaluator glue remains in root `core` |
+| `core/runtime` | 8 | 7 | feature flags, goroutine/pending/channel/concurrency primitives, and runtime-owned object wrappers (`ObjectChannel`, `ObjectFuture`, `ObjectPromise`, `Agent`, `Atom`) live here with package-local primitive/wrapper tests; channel, pending, and goroutine ID/state mechanics are co-located by domain; proc/env/evaluator glue remains in root `core` |
 | `core/types/collections` | 17 | 5 | owns concrete collection types and mechanics: vectors, persistent vectors, lists/seqs, array/hash maps, sets, chunks, formatting/indexed ops, and bitmap/hash-index helpers |
 | `core/reader` | 30 | 28 | reader leaf helpers now include chars, whitespace/comment/top-level-trivia/line decisions, identifier classification/token scanning/keyword, standalone-slash, literal classification/validation issue scans, unicode/string escapes, top-level read-form and number-token classification, dispatch/format-prefix/character/form helpers, rune-window history, line rune reader, and raw IO mechanics; parser/object implementation remains root-bound |
 | `core/types/string` | 10 | 7 | string-owned mechanics and cursor behavior; root keeps Object protocol adapter where needed |

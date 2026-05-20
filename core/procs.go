@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"sort"
 	"strconv"
+	"sync"
 	"time"
 	"unicode/utf8"
 
@@ -2338,4 +2339,349 @@ func ProcessLinterFiles(dialect corereader.Dialect, filename string, workingDir 
 	case corereader.CLJDialect:
 		ProcessLinterFile(configDir, "linter.clj")
 	}
+}
+
+// ---- atom_ext.go ----
+// atom_ext.go — Atom extensions: validators, watches, compare-and-set!
+
+// atomExtras holds validator and watches for an Atom.
+// Stored in a side table to avoid changing the Atom struct.
+type atomExtras struct {
+	validator coretypes.Callable
+	watches   map[string]struct {
+		key coretypes.Object
+		fn  coretypes.Callable
+	} // key.ToString → watch
+}
+
+var atomExtrasMap sync.Map // *corert.Atom → *atomExtras
+
+func getAtomExtras(a *corert.Atom) *atomExtras {
+	if v, ok := atomExtrasMap.Load(a); ok {
+		return v.(*atomExtras)
+	}
+	return nil
+}
+
+func getOrCreateAtomExtras(a *corert.Atom) *atomExtras {
+	if v, ok := atomExtrasMap.Load(a); ok {
+		return v.(*atomExtras)
+	}
+	ext := &atomExtras{watches: make(map[string]struct {
+		key coretypes.Object
+		fn  coretypes.Callable
+	})}
+	atomExtrasMap.Store(a, ext)
+	return ext
+}
+
+// notifyWatches calls all watch functions with (key atom old-val new-val).
+func notifyWatches(a *corert.Atom, oldVal, newVal coretypes.Object) {
+	ext := getAtomExtras(a)
+	if ext == nil || len(ext.watches) == 0 {
+		return
+	}
+	for _, w := range ext.watches {
+		call4(w.fn, w.key, a, oldVal, newVal)
+	}
+}
+
+// validateAtom checks the validator, panics if invalid.
+func validateAtom(a *corert.Atom, newVal coretypes.Object) {
+	ext := getAtomExtras(a)
+	if ext == nil || ext.validator == nil {
+		return
+	}
+	result := call1(ext.validator, newVal)
+	if !ToBool(result) {
+		panic(coretypes.RuntimeError("Invalid reference state"))
+	}
+}
+
+func init() {
+	registerAtomExtProcs()
+}
+
+func registerAtomExtProcs() {
+	ns := GLOBAL_ENV.CoreNamespace
+	if ns == nil {
+		return
+	}
+
+	// set-validator! — (set-validator! atom fn)
+	svVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "set-validator!"))
+	svVr.Value = Proc{Name: "procSetValidator", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 2, 2)
+		a := EnsureObjectIsAtom(args[0], "set-validator! requires an atom, got %s")
+		ext := getOrCreateAtomExtras(a)
+		if args[1] == nil || IsNil(args[1]) {
+			ext.validator = nil
+		} else {
+			fn := coretypes.EnsureObjectIsCallable(args[1], "validator must be a function, got %s")
+			// Validate current value
+			result := call1(fn, a.Deref())
+			if !ToBool(result) {
+				panic(coretypes.RuntimeError("Invalid reference state"))
+			}
+			ext.validator = fn
+		}
+		return NIL
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "set-validator!"), svVr)
+
+	// get-validator — (get-validator atom)
+	gvVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "get-validator"))
+	gvVr.Value = Proc{Name: "procGetValidator", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		a := EnsureObjectIsAtom(args[0], "get-validator requires an atom, got %s")
+		ext := getAtomExtras(a)
+		if ext == nil || ext.validator == nil {
+			return NIL
+		}
+		return ext.validator.(coretypes.Object)
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "get-validator"), gvVr)
+
+	// add-watch — (add-watch atom key fn)
+	awVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "add-watch"))
+	awVr.Value = Proc{Name: "procAddWatch", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 3, 3)
+		a := EnsureObjectIsAtom(args[0], "add-watch requires an atom, got %s")
+		key := args[1]
+		fn := coretypes.EnsureObjectIsCallable(args[2], "watch function must be callable, got %s")
+		ext := getOrCreateAtomExtras(a)
+		ext.watches[key.ToString(false)] = struct {
+			key coretypes.Object
+			fn  coretypes.Callable
+		}{key, fn}
+		return a
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "add-watch"), awVr)
+
+	// remove-watch — (remove-watch atom key)
+	rwVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "remove-watch"))
+	rwVr.Value = Proc{Name: "procRemoveWatch", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 2, 2)
+		a := EnsureObjectIsAtom(args[0], "remove-watch requires an atom, got %s")
+		key := args[1]
+		ext := getAtomExtras(a)
+		if ext != nil {
+			delete(ext.watches, key.ToString(false))
+		}
+		return a
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "remove-watch"), rwVr)
+
+	// compare-and-set! — (compare-and-set! atom oldval newval)
+	casVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "compare-and-set!"))
+	casVr.Value = Proc{Name: "procCompareAndSet", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 3, 3)
+		a := EnsureObjectIsAtom(args[0], "compare-and-set! requires an atom, got %s")
+		oldVal := args[1]
+		newVal := args[2]
+		old, ok := a.CompareAndSet(oldVal, newVal, func(v coretypes.Object) { validateAtom(a, v) })
+		if ok {
+			notifyWatches(a, old, newVal)
+		}
+		return coretypes.Boolean{B: ok}
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "compare-and-set!"), casVr)
+}
+
+// IsNil checks if an coretypes.Object is nil or Nil.
+func IsNil(obj coretypes.Object) bool {
+	if obj == nil {
+		return true
+	}
+	_, ok := obj.(Nil)
+	return ok
+}
+
+// ---- chunked_procs.go ----
+func init() {
+	registerChunkedSeqProcs()
+}
+
+func registerChunkedSeqProcs() {
+	ns := GLOBAL_ENV.CoreNamespace
+	if ns == nil {
+		return
+	}
+
+	cbVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-buffer"))
+	cbVr.Value = Proc{Name: "procChunkBuffer", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		n := coretypes.EnsureArgIsInt(args, 0).I
+		return &corecollections.ChunkBuffer{Arr: make([]coretypes.Object, 0, n)}
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-buffer"), cbVr)
+
+	caVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-append"))
+	caVr.Value = Proc{Name: "procChunkAppend", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 2, 2)
+		buf, ok := args[0].(*corecollections.ChunkBuffer)
+		if !ok {
+			panic(coretypes.RuntimeError("chunk-append requires a ChunkBuffer"))
+		}
+		buf.Arr, buf.CountN = corecollections.ChunkAppend(buf.Arr, args[1])
+		return coretypes.RuntimeNil
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-append"), caVr)
+
+	chunkVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk"))
+	chunkVr.Value = Proc{Name: "procChunk", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		buf, ok := args[0].(*corecollections.ChunkBuffer)
+		if !ok {
+			panic(coretypes.RuntimeError("chunk requires a ChunkBuffer"))
+		}
+		return &corecollections.ArrayChunk{Arr: buf.Arr, Off: 0, End: len(buf.Arr)}
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk"), chunkVr)
+
+	cfVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-first"))
+	cfVr.Value = Proc{Name: "procChunkFirst", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		if cc, ok := args[0].(*corecollections.ChunkedCons); ok {
+			return cc.Chunk
+		}
+		s := coretypes.EnsureObjectIsSeqable(args[0], "chunk-first requires a seq").Seq()
+		arr := corecollections.ChunkFirstSingle(s)
+		return &corecollections.ArrayChunk{Arr: arr, Off: 0, End: len(arr)}
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-first"), cfVr)
+
+	crVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-rest"))
+	crVr.Value = Proc{Name: "procChunkRest", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		if cc, ok := args[0].(*corecollections.ChunkedCons); ok {
+			return corecollections.ChunkRestFromRest(cc.RestSeq, corecollections.EmptyList)
+		}
+		s := coretypes.EnsureObjectIsSeqable(args[0], "chunk-rest requires a seq").Seq()
+		return s.Rest()
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-rest"), crVr)
+
+	cnVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-next"))
+	cnVr.Value = Proc{Name: "procChunkNext", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 1, 1)
+		if cc, ok := args[0].(*corecollections.ChunkedCons); ok {
+			return corecollections.ChunkNextFromRest(cc.RestSeq, coretypes.RuntimeNil)
+		}
+		s := coretypes.EnsureObjectIsSeqable(args[0], "chunk-next requires a seq").Seq()
+		r := s.Rest()
+		if r.IsEmpty() {
+			return coretypes.RuntimeNil
+		}
+		return r
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-next"), cnVr)
+
+	ccVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "chunk-cons"))
+	ccVr.Value = Proc{Name: "procChunkCons", Fn: func(args []coretypes.Object) coretypes.Object {
+		runtimeCheckArity(args, 2, 2)
+		ac, ok := args[0].(*corecollections.ArrayChunk)
+		if !ok {
+			panic(coretypes.RuntimeError("chunk-cons requires an ArrayChunk as first argument"))
+		}
+		if ac.Count() == 0 {
+			if args[1] == nil || IsNil(args[1]) {
+				return corecollections.EmptyList
+			}
+			if s, ok := args[1].(coretypes.Seqable); ok {
+				return s.Seq()
+			}
+			return corecollections.EmptyList
+		}
+		rest := corecollections.ChunkConsRest(args[1], IsNil)
+		return &corecollections.ChunkedCons{Chunk: ac, RestSeq: rest, Idx: 0}
+	}}
+	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-cons"), ccVr)
+
+	csqVr := ns.Resolve("chunked-seq?")
+	if csqVr != nil {
+		csqVr.Value = Proc{Name: "procChunkedSeqQ", Fn: func(args []coretypes.Object) coretypes.Object {
+			runtimeCheckArity(args, 1, 1)
+			_, ok := args[0].(*corecollections.ChunkedCons)
+			return coretypes.MakeBoolean(ok)
+		}}
+	}
+}
+
+// ---- io_objects.go ----
+type File struct{ *corereader.File }
+
+func MakeFile(f *os.File) *File { return &File{File: corereader.NewFile(f)} }
+
+func (f *File) ToString(escape bool) string                          { return "#object[File]" }
+func (f *File) Equals(other interface{}) bool                        { return f == other }
+func (f *File) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (f *File) GetType() *coretypes.Type                             { return TYPE.File }
+func (f *File) Hash() uint32                                         { return f.File.Hash() }
+func (f *File) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return f }
+func (f *File) Namespace() string                                    { return "" }
+func ExtractFile(args []coretypes.Object, index int) *File           { return EnsureArgIsFile(args, index) }
+
+type Buffer struct{ *corereader.Buffer }
+
+func MakeBuffer(b *bytes.Buffer) *Buffer { return &Buffer{Buffer: corereader.NewBuffer(b)} }
+
+func (b *Buffer) ToString(escape bool) string                          { return b.String() }
+func (b *Buffer) Equals(other interface{}) bool                        { return b == other }
+func (b *Buffer) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (b *Buffer) GetType() *coretypes.Type                             { return TYPE.Buffer }
+func (b *Buffer) Hash() uint32                                         { return b.Buffer.Hash() }
+func (b *Buffer) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return b }
+
+type BufferedReader struct{ *corereader.Buffered }
+
+func MakeBufferedReader(rd io.Reader) *BufferedReader {
+	return &BufferedReader{Buffered: corereader.NewBuffered(rd)}
+}
+
+func (br *BufferedReader) ToString(escape bool) string                          { return "#object[BufferedReader]" }
+func (br *BufferedReader) Equals(other interface{}) bool                        { return br == other }
+func (br *BufferedReader) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (br *BufferedReader) GetType() *coretypes.Type                             { return TYPE.BufferedReader }
+func (br *BufferedReader) Hash() uint32                                         { return br.Buffered.Hash() }
+func (br *BufferedReader) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return br }
+
+type IOReader struct{ *corereader.IOReader }
+
+func MakeIOReader(r io.Reader) *IOReader { return &IOReader{IOReader: corereader.NewIOReader(r)} }
+
+func (ior *IOReader) ToString(escape bool) string                          { return "#object[IOReader]" }
+func (ior *IOReader) Equals(other interface{}) bool                        { return ior == other }
+func (ior *IOReader) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (ior *IOReader) GetType() *coretypes.Type                             { return TYPE.IOReader }
+func (ior *IOReader) Hash() uint32                                         { return ior.IOReader.Hash() }
+func (ior *IOReader) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return ior }
+func (ior *IOReader) Close() error {
+	if err := ior.IOReader.Close(); err != nil {
+		if errors.Is(err, corereader.ErrNotClosable) {
+			return RT.NewError("coretypes.Object is not closable: " + ior.ToString(false))
+		}
+		return err
+	}
+	return nil
+}
+
+type IOWriter struct{ *corereader.IOWriter }
+
+func MakeIOWriter(w io.Writer) *IOWriter { return &IOWriter{IOWriter: corereader.NewIOWriter(w)} }
+
+func (iow *IOWriter) ToString(escape bool) string                          { return "#object[IOWriter]" }
+func (iow *IOWriter) Equals(other interface{}) bool                        { return iow == other }
+func (iow *IOWriter) GetInfo() *coretypes.ObjectInfo                       { return nil }
+func (iow *IOWriter) GetType() *coretypes.Type                             { return TYPE.IOWriter }
+func (iow *IOWriter) Hash() uint32                                         { return iow.IOWriter.Hash() }
+func (iow *IOWriter) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return iow }
+func (iow *IOWriter) Close() error {
+	if err := iow.IOWriter.Close(); err != nil {
+		if errors.Is(err, corereader.ErrNotClosable) {
+			return RT.NewError("coretypes.Object is not closable: " + iow.ToString(false))
+		}
+		return err
+	}
+	return nil
 }

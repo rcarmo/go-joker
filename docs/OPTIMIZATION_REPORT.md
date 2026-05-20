@@ -216,9 +216,7 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_native_helper.go` | ~170 | Native f64 closure compiler |
 | `native_recursive.go` | ~450 | Native int closure compiler (fib/tak) |
 | `ir_fn_cache.go` | ~155 | Fn→IRProgram caching + loop wrapper |
-| `string_cursor.go` | ~110 | StringCursor type (O(1) advance) |
-| `string_cursor_procs.go` | ~55 | Cursor procs (string-cursor, cursor-char, etc.) |
-| `string_cursor_init.go` | ~30 | Runtime proc registration |
+| `string_runtime.go` | ~150 | StringCursor/TransientString wrappers and cursor proc registration |
 | `ir_analysis.go` | ~155 | IR program analysis |
 | `ir_value_accessors.go` | ~140 | irValue unsafe.Pointer accessors |
 | `ir_nanbox.go` | ~100 | NaN-boxing encode/decode |
@@ -227,13 +225,12 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `noescape.go` | ~22 | unsafe.Pointer noescape trick |
 | `range_fast.go` | ~130 | IntRange with fast reduce |
 | `reduce_fast.go` | ~55 | Seq-walking reduce support |
-| `reduced.go` | ~80 | Dedicated `Reduced` runtime type |
-| `transducer_compat.go` | ~340 | Full transducer semantics wiring |
-| `protocol.go` / `protocol_init.go` | ~430 | Protocol dispatch + registration |
-| `record.go` / `record_init.go` | ~500 | Record type + constructors (`->Type`, `map->Type`) |
-| `hierarchy.go` / `hierarchy_init.go` | ~450 | Hierarchy DAG + derive/isa APIs |
+| `transducer_compat.go` | ~420 | Full transducer semantics wiring plus dedicated `Reduced` runtime type |
+| `protocol.go` | ~430 | Protocol dispatch + registration + public protocol/record forms |
+| `record.go` | ~500 | Record type + constructors (`->Type`, `map->Type`) |
+| `hierarchy.go` | ~450 | Hierarchy DAG + derive/isa APIs and proc registration |
 | `chunked_seq.go` | ~230 | Chunked-seq API compatibility layer |
-| `atom_ext.go` | ~170 | Validators, watches, CAS for atoms |
+| atom extensions in `procs.go` | ~170 | Validators, watches, CAS for atoms |
 | `unchecked_arith.go` | ~400 | `unchecked-*` + primitive array helper surface |
 | `core_api_gaps.go` | ~200 | Remaining compatibility APIs (`alter-var-root`, etc.) |
 | `sorted_colls.go` | ~180 | sorted-map/set API and metadata support |

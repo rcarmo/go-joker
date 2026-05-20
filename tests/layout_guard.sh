@@ -67,8 +67,8 @@ for file in "${moved_collection_files[@]}"; do
     fail "collection-owned file core/${file} has moved to core/types/collections; do not reintroduce root copies"
   fi
 done
-if [[ ! -f core/chunked_procs.go ]]; then
-  fail "chunk proc registration should remain isolated in core/chunked_procs.go until env/proc ownership moves"
+if [[ -e core/chunked_procs.go ]]; then
+  fail "chunk proc registration has been coalesced into core/procs.go; do not reintroduce standalone core/chunked_procs.go"
 fi
 
 moved_runtime_files=(

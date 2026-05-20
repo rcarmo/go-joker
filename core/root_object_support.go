@@ -94,3 +94,24 @@ func EnsureArgIsChannel(args []coretypes.Object, index int) *corert.ObjectChanne
 	}
 	panic(FailArg(obj, "Channel", index))
 }
+
+// ---- with_info_root.go ----
+func (x *ExInfo) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
+	x.Info = info
+	return x
+}
+
+func (x *Fn) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
+	x.Info = info
+	return x
+}
+
+func (x *Var) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
+	x.Info = info
+	return x
+}
+
+func (x Nil) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
+	x.Info = info
+	return x
+}
