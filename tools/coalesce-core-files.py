@@ -9,9 +9,10 @@ CORE = ROOT / "core"
 
 def strip_package_and_imports(path: Path) -> str:
     src = path.read_text(); lines = src.splitlines(True)
-    if not lines or not lines[0].startswith("package "):
-        raise SystemExit(f"{path}: expected package declaration on first line")
-    rest = "".join(lines[1:]).lstrip("\n")
+    pkg_idx = next((i for i, line in enumerate(lines) if line.startswith("package ")), -1)
+    if pkg_idx < 0:
+        raise SystemExit(f"{path}: expected package declaration")
+    rest = "".join(lines[pkg_idx + 1:]).lstrip("\n")
     # Drop the first import block or single-line import even when file comments sit
     # between the package declaration and imports.
     rest = re.sub(r'\nimport \(\n.*?\n\)\n', '\n', rest, count=1, flags=re.S)
@@ -149,7 +150,20 @@ def ninth_pass() -> None:
     append_body("hierarchy.go", "protocol.go")
 
 
+
+def tenth_pass() -> None:
+    # gen_code-only slow bootstrap helpers are one generator/bootstrap domain.
+    if append_body("parse_slow_init.go", "code.go"):
+        pass
+    if append_body("procs_slow_init.go", "code.go"):
+        ensure_import("code.go", 'corecollections "github.com/rcarmo/go-joker/core/types/collections"')
+    if append_body("object_slow_init.go", "code.go"):
+        ensure_import("code.go", '"io"')
+        ensure_import("code.go", 'corert "github.com/rcarmo/go-joker/core/runtime"')
+        ensure_import("code.go", 'corecollections "github.com/rcarmo/go-joker/core/types/collections"')
+
+
 def main() -> None:
-    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass()
+    first_pass(); repeat_pass(); third_pass(); fourth_pass(); fifth_pass(); sixth_pass(); seventh_pass(); eighth_pass(); ninth_pass(); tenth_pass()
 
 if __name__ == "__main__": main()
