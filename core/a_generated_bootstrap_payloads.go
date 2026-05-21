@@ -5404,7 +5404,7 @@ var ty_StringSeq coretypes.Type = coretypes.Type{
 		Meta: &arrayMap_NUM_72,
 	},
 	Name:        "StringSeq",
-	ReflectType: reflect.TypeOf((*stringSeq)(nil)),
+	ReflectType: reflect.TypeOf((*corert.StringSeq)(nil)),
 }
 var TYPE coretypes.Types = coretypes.Types{
 	ArrayMap:       &ty_ArrayMap,

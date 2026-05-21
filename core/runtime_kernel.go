@@ -16122,12 +16122,6 @@ func init() {
 	coretypes.RuntimeDerefReduced = corert.DerefReduced
 }
 
-// stringSeq is a lazy seq over a string's runes; yields Chars on demand.
-type stringSeq struct {
-	s   string
-	off int
-}
-
 func PanicArity(n int) {
 	grt := currentGRT()
 	name := "<unknown>"
