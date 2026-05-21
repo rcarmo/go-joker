@@ -12,7 +12,7 @@ Recent feature work improved boundaries for new code (`std/transit`, `std/system
 ## Current package/module shape
 
 - `cmd/joker/` owns the CLI entrypoint, REPL, standalone compilation helpers, and platform exit handling.
-- `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/types/collections`, `core/reader`, `core/types/string`, and `core/types/numerical` own extracted helpers and moved concrete families with direct package tests.
+- `core/trace`, `core/ir`, `core/wasm`, `core/runtime`, `core/types`, `core/types/collections`, `core/reader`, `core/types/string`, and `core/types/numerical` own extracted helpers and moved concrete families with direct package tests.
 - `core/` is still the runtime kernel and contains:
   - root runtime object systems, proc/env glue, reader/parser/evaluator, namespace/Var runtime, core proc implementations, concurrency/core.async/atom registration, numeric tower, and IR/JIT/WASM machinery coalesced into `runtime_kernel.go`
   - generated/bootstrap runtime payloads in `a_generated_bootstrap_payloads.go` and gen-code helpers in `bootstrap_gen_code.go`
