@@ -731,8 +731,8 @@ func init() {
 	coretypes.RuntimeMaybeNewLine = maybeNewLine
 	coretypes.RuntimeWriteIndent = writeIndent
 	coretypes.RuntimeIsComment = isComment
-	coretypes.RuntimeIsReduced = IsReduced
-	coretypes.RuntimeDerefReduced = DerefReduced
+	coretypes.RuntimeIsReduced = corert.IsReduced
+	coretypes.RuntimeDerefReduced = corert.DerefReduced
 	coretypes.RuntimeReduceType = TYPE.Reduce
 	coretypes.RuntimeKVReduceType = TYPE.KVReduce
 	coretypes.SpecialSymbolLookup = func(sym coretypes.Symbol) bool { return SPECIAL_SYMBOLS[sym.NameKey()] }

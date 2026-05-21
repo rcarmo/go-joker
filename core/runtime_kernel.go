@@ -2586,8 +2586,8 @@ func seqReduceInit(s coretypes.Seq, f coretypes.Callable, init coretypes.Object)
 	acc := init
 	for !s.IsEmpty() {
 		acc = call2(f, acc, s.First())
-		if IsReduced(acc) {
-			return DerefReduced(acc)
+		if corert.IsReduced(acc) {
+			return corert.DerefReduced(acc)
 		}
 		s = s.Rest()
 	}
@@ -2602,8 +2602,8 @@ func seqReduce(s coretypes.Seq, f coretypes.Callable) coretypes.Object {
 	s = s.Rest()
 	for !s.IsEmpty() {
 		acc = call2(f, acc, s.First())
-		if IsReduced(acc) {
-			return DerefReduced(acc)
+		if corert.IsReduced(acc) {
+			return corert.DerefReduced(acc)
 		}
 		s = s.Rest()
 	}
@@ -2755,13 +2755,13 @@ func reducePipelineNoInit(reducer coretypes.Callable, p reducibleRangePipeline) 
 			return false
 		}
 		acc = reduceStepFast(reducer, acc, v)
-		return IsReduced(acc)
+		return corert.IsReduced(acc)
 	})
 	if !seen {
 		return call0(reducer), true
 	}
-	if stopped && IsReduced(acc) {
-		return DerefReduced(acc), true
+	if stopped && corert.IsReduced(acc) {
+		return corert.DerefReduced(acc), true
 	}
 	return acc, true
 }
@@ -2771,10 +2771,10 @@ func reducePipelineInit(reducer coretypes.Callable, init coretypes.Object, p red
 	reducerName := hotReducerName(reducer)
 	_, stopped := walkReducibleRangePipeline(p, func(v coretypes.Object) bool {
 		acc = reduceStepFastByName(reducer, reducerName, acc, v)
-		return IsReduced(acc)
+		return corert.IsReduced(acc)
 	})
-	if stopped && IsReduced(acc) {
-		return DerefReduced(acc)
+	if stopped && corert.IsReduced(acc) {
+		return corert.DerefReduced(acc)
 	}
 	return acc
 }
@@ -2990,8 +2990,8 @@ func (s *FilteringSeq) Reduce(f coretypes.Callable) coretypes.Object {
 				v = cur.First()
 				if ToBool(call1(s.pred, v)) {
 					acc = call2(f, acc, v)
-					if IsReduced(acc) {
-						return DerefReduced(acc)
+					if corert.IsReduced(acc) {
+						return corert.DerefReduced(acc)
 					}
 				}
 				cur = cur.Rest()
@@ -3010,8 +3010,8 @@ func (s *FilteringSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) c
 		v := cur.First()
 		if ToBool(call1(s.pred, v)) {
 			acc = call2(f, acc, v)
-			if IsReduced(acc) {
-				return DerefReduced(acc)
+			if corert.IsReduced(acc) {
+				return corert.DerefReduced(acc)
 			}
 		}
 		cur = cur.Rest()
@@ -3060,8 +3060,8 @@ func (s *TakeSeq) Reduce(f coretypes.Callable) coretypes.Object {
 	cur := s.seq.Rest()
 	for i := 1; i < s.n && !cur.IsEmpty(); i++ {
 		acc = call2(f, acc, cur.First())
-		if IsReduced(acc) {
-			return DerefReduced(acc)
+		if corert.IsReduced(acc) {
+			return corert.DerefReduced(acc)
 		}
 		cur = cur.Rest()
 	}
@@ -3077,8 +3077,8 @@ func (s *TakeSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) corety
 	cur := s.seq
 	for i := 0; i < s.n && !cur.IsEmpty(); i++ {
 		acc = call2(f, acc, cur.First())
-		if IsReduced(acc) {
-			return DerefReduced(acc)
+		if corert.IsReduced(acc) {
+			return corert.DerefReduced(acc)
 		}
 		cur = cur.Rest()
 	}
@@ -3366,8 +3366,8 @@ func (r *IntRange) Reduce(f coretypes.Callable) coretypes.Object {
 	acc := coretypes.Object(coretypes.Int{I: r.start})
 	for i := r.start + r.step; r.contains(i); i += r.step {
 		acc = call2(f, acc, coretypes.Int{I: i})
-		if IsReduced(acc) {
-			return DerefReduced(acc)
+		if corert.IsReduced(acc) {
+			return corert.DerefReduced(acc)
 		}
 	}
 	return acc
@@ -3380,8 +3380,8 @@ func (r *IntRange) ReduceInit(f coretypes.Callable, init coretypes.Object) coret
 	acc := init
 	for i := r.start; r.contains(i); i += r.step {
 		acc = call2(f, acc, coretypes.Int{I: i})
-		if IsReduced(acc) {
-			return DerefReduced(acc)
+		if corert.IsReduced(acc) {
+			return corert.DerefReduced(acc)
 		}
 	}
 	return acc
@@ -3846,12 +3846,12 @@ func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
 					return downstream.Call(callArgs)
 				case 2:
 					if remaining <= 0 {
-						return EnsureReduced(callArgs[0])
+						return corert.EnsureReduced(callArgs[0])
 					}
 					out := downstream.Call(callArgs)
 					remaining--
 					if remaining <= 0 {
-						return EnsureReduced(out)
+						return corert.EnsureReduced(out)
 					}
 					return out
 				default:
@@ -3874,7 +3874,7 @@ func completeReducingFn(rf coretypes.Callable, res coretypes.Object) coretypes.O
 		}()
 		completed = call1(rf, res)
 	}()
-	return DerefReduced(completed)
+	return corert.DerefReduced(completed)
 }
 
 func transduceInternal(xform coretypes.Callable, reducingFnObj coretypes.Object, init coretypes.Object, collObj coretypes.Object) coretypes.Object {
@@ -3888,8 +3888,8 @@ func transduceInternal(xform coretypes.Callable, reducingFnObj coretypes.Object,
 	res := init
 	for !s.IsEmpty() {
 		step := call2(rf, res, s.First())
-		if IsReduced(step) {
-			res = DerefReduced(step)
+		if corert.IsReduced(step) {
+			res = corert.DerefReduced(step)
 			return completeReducingFn(rf, res)
 		}
 		res = step
@@ -3940,8 +3940,8 @@ func transducePipeline(xf *XForm, reducingFnObj coretypes.Object, init coretypes
 		}
 		if include {
 			step := reduceStepFastByName(rf, reducerName, res, val)
-			if IsReduced(step) {
-				return completeReducingFn(rf, DerefReduced(step))
+			if corert.IsReduced(step) {
+				return completeReducingFn(rf, corert.DerefReduced(step))
 			}
 			res = step
 			if stopAfter {
@@ -3990,8 +3990,8 @@ func transducePipelineRange(xf *XForm, rf coretypes.Callable, init coretypes.Obj
 		}
 		if include {
 			step := reduceStepFastByName(rf, reducerName, res, val)
-			if IsReduced(step) {
-				return completeReducingFn(rf, DerefReduced(step))
+			if corert.IsReduced(step) {
+				return completeReducingFn(rf, corert.DerefReduced(step))
 			}
 			res = step
 			if stopAfter {
@@ -4103,7 +4103,7 @@ func installTransducerCompat() {
 	reducedVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "reduced"))
 	reducedVr.Value = Proc{Name: "procReduced", Fn: func(args []coretypes.Object) coretypes.Object {
 		runtimeCheckArity(args, 1, 1)
-		return MakeReduced(args[0])
+		return corert.MakeReduced(args[0])
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "reduced"), reducedVr)
 
@@ -4111,7 +4111,7 @@ func installTransducerCompat() {
 	reducedQVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "reduced?"))
 	reducedQVr.Value = Proc{Name: "procReducedQ", Fn: func(args []coretypes.Object) coretypes.Object {
 		runtimeCheckArity(args, 1, 1)
-		return coretypes.MakeBoolean(IsReduced(args[0]))
+		return coretypes.MakeBoolean(corert.IsReduced(args[0]))
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "reduced?"), reducedQVr)
 
@@ -4119,7 +4119,7 @@ func installTransducerCompat() {
 	ensureReducedVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "ensure-reduced"))
 	ensureReducedVr.Value = Proc{Name: "procEnsureReduced", Fn: func(args []coretypes.Object) coretypes.Object {
 		runtimeCheckArity(args, 1, 1)
-		return EnsureReduced(args[0])
+		return corert.EnsureReduced(args[0])
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "ensure-reduced"), ensureReducedVr)
 
@@ -4127,7 +4127,7 @@ func installTransducerCompat() {
 	unreducedVr := ns.Intern(coretypes.MakeSymbol(STRINGS.Intern, "unreduced"))
 	unreducedVr.Value = Proc{Name: "procUnreduced", Fn: func(args []coretypes.Object) coretypes.Object {
 		runtimeCheckArity(args, 1, 1)
-		return DerefReduced(args[0])
+		return corert.DerefReduced(args[0])
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "unreduced"), unreducedVr)
 
@@ -4316,72 +4316,6 @@ func init() {
 // In Clojure, (reduced x) wraps x in a Reduced box that signals
 // early termination to reduce/transduce. This replaces the corecollections.ArrayMap-based
 // shim with a proper type that's fast to create, check, and unwrap.
-
-// Reduced wraps a value to signal early termination in reduce/transduce.
-type Reduced struct {
-	coretypes.InfoHolder
-	coretypes.MetaHolder
-	Val coretypes.Object
-}
-
-func (r *Reduced) ToString(escape bool) string {
-	return "#object[Reduced " + r.Val.ToString(escape) + "]"
-}
-
-func (r *Reduced) Equals(other interface{}) bool {
-	if o, ok := other.(*Reduced); ok {
-		return r.Val.Equals(o.Val)
-	}
-	return false
-}
-
-func (r *Reduced) GetType() *coretypes.Type {
-	return TYPE.Fn // reuse Fn type slot for now
-}
-
-func (r *Reduced) Hash() uint32 {
-	return r.Val.Hash() ^ 0xDEADBEEF
-}
-
-func (r *Reduced) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	res := *r
-	res.Info = info
-	return &res
-}
-
-func (r *Reduced) WithMeta(m coretypes.Map) coretypes.Object {
-	res := *r
-	res.Meta = coretypes.SafeMerge(res.Meta, m)
-	return &res
-}
-
-// MakeReduced wraps a value in a Reduced box.
-func MakeReduced(val coretypes.Object) *Reduced {
-	return &Reduced{Val: val}
-}
-
-// IsReduced checks if an object is a Reduced box (type assertion, no map lookup).
-func IsReduced(obj coretypes.Object) bool {
-	_, ok := obj.(*Reduced)
-	return ok
-}
-
-// DerefReduced unwraps a Reduced box, returning the inner value.
-// If not reduced, returns the value as-is.
-func DerefReduced(obj coretypes.Object) coretypes.Object {
-	if r, ok := obj.(*Reduced); ok {
-		return r.Val
-	}
-	return obj
-}
-
-// EnsureReduced wraps a value in Reduced if it isn't already.
-func EnsureReduced(obj coretypes.Object) *Reduced {
-	if r, ok := obj.(*Reduced); ok {
-		return r
-	}
-	return MakeReduced(obj)
-}
 
 // ---- parse.go ----
 
@@ -16244,8 +16178,8 @@ func init() {
 	coretypes.RuntimeMaybeNewLine = maybeNewLine
 	coretypes.RuntimeWriteIndent = writeIndent
 	coretypes.RuntimeIsComment = isComment
-	coretypes.RuntimeIsReduced = IsReduced
-	coretypes.RuntimeDerefReduced = DerefReduced
+	coretypes.RuntimeIsReduced = corert.IsReduced
+	coretypes.RuntimeDerefReduced = corert.DerefReduced
 }
 
 // stringSeq is a lazy seq over a string's runes; yields Chars on demand.
