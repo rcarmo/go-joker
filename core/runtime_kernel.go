@@ -17680,18 +17680,18 @@ func (env *Env) EnsureSymbolIsNamespace(sym coretypes.Symbol) *Namespace {
 		panic(coretypes.RuntimeError("Namespace's name cannot be qualified: " + sym.ToString(false)))
 	}
 	nameKey := sym.NameKey()
-	nsRWMu.RLock()
+	corert.NamespaceMu.RLock()
 	ns := env.Namespaces[nameKey]
-	nsRWMu.RUnlock()
+	corert.NamespaceMu.RUnlock()
 	if ns != nil {
 		return ns
 	}
-	nsRWMu.Lock()
+	corert.NamespaceMu.Lock()
 	if env.Namespaces[nameKey] == nil {
 		env.Namespaces[nameKey] = NewNamespace(sym)
 	}
 	ns = env.Namespaces[nameKey]
-	nsRWMu.Unlock()
+	corert.NamespaceMu.Unlock()
 	return ns
 }
 
@@ -17709,9 +17709,9 @@ func (env *Env) NamespaceFor(ns *Namespace, s coretypes.Symbol) *Namespace {
 		nsKey := s.NamespaceKey()
 		res = ns.aliases[nsKey]
 		if res == nil {
-			nsRWMu.RLock()
+			corert.NamespaceMu.RLock()
 			res = env.Namespaces[nsKey]
-			nsRWMu.RUnlock()
+			corert.NamespaceMu.RUnlock()
 		}
 	}
 	if res != nil {
@@ -17748,9 +17748,9 @@ func (env *Env) FindNamespace(s coretypes.Symbol) *Namespace {
 	if s.NamespaceKey() != nil {
 		return nil
 	}
-	nsRWMu.RLock()
+	corert.NamespaceMu.RLock()
 	ns := env.Namespaces[s.NameKey()]
-	nsRWMu.RUnlock()
+	corert.NamespaceMu.RUnlock()
 	if ns != nil {
 		ns.MaybeLazy("FindNameSpace")
 	}
@@ -17765,10 +17765,10 @@ func (env *Env) RemoveNamespace(s coretypes.Symbol) *Namespace {
 		panic(coretypes.RuntimeError("Cannot remove core namespace"))
 	}
 	nameKey := s.NameKey()
-	nsRWMu.Lock()
+	corert.NamespaceMu.Lock()
 	ns := env.Namespaces[nameKey]
 	delete(env.Namespaces, nameKey)
-	nsRWMu.Unlock()
+	corert.NamespaceMu.Unlock()
 	return ns
 }
 
@@ -17822,7 +17822,7 @@ func init() {
 // - Atoms use a per-atom mutex for swap!/reset!/compare-and-set! correctness.
 // - Var.Value writes (def, alter-var-root) are rare and only safe from the main
 //   goroutine or under user coordination (same semantics as Clojure's JVM runtime).
-// - Namespace map mutations are protected by nsRWMu.
+// - Namespace map mutations are protected by corert.NamespaceMu.
 
 // goroutineRT is runtime-owned per-goroutine interpreter state.
 type goroutineRT = corert.GoroutineRT
@@ -17831,9 +17831,6 @@ var (
 	// mainRT is the default runtime for the main goroutine (hot path).
 	mainRT         = *corert.NewGoroutineRT(50)
 	goroutineState *corert.GoRTPool
-
-	// nsRWMu protects GLOBAL_ENV.Namespaces map mutations.
-	nsRWMu sync.RWMutex
 )
 
 func init() {
@@ -18083,12 +18080,12 @@ func fillNativeVarMetadata() {
 	if GLOBAL_ENV == nil {
 		return
 	}
-	nsRWMu.RLock()
+	corert.NamespaceMu.RLock()
 	namespaces := make([]*Namespace, 0, len(GLOBAL_ENV.Namespaces))
 	for _, ns := range GLOBAL_ENV.Namespaces {
 		namespaces = append(namespaces, ns)
 	}
-	nsRWMu.RUnlock()
+	corert.NamespaceMu.RUnlock()
 	for _, ns := range namespaces {
 		for _, vr := range ns.mappings {
 			if vr == nil || vr.ns != ns || vr.isFake {
