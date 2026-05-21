@@ -1,6 +1,7 @@
 package git
 
 import (
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"unsafe"
 
 	coretypes "github.com/rcarmo/go-joker/core/types"
@@ -87,7 +88,7 @@ func addUser(m *corecollections.ArrayMap, section string, name string, email str
 func makeRemote(remote *gitConfig.RemoteConfig) coretypes.Map {
 	res := corecollections.EmptyArrayMap()
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(remote.Name))
-	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "urls"), MakeStringVector(remote.URLs))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "urls"), corert.MakeStringVector(remote.URLs))
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "mirror?"), coretypes.MakeBoolean(remote.Mirror))
 	return res
 }
@@ -231,11 +232,11 @@ func log(repo *git.Repository, opts coretypes.Map) coretypes.Vec {
 	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "path-filter")); ok {
 		fn := EnsureObjectIsFn(v, "Invalid :path-filter option: %s")
 		logOpts.PathFilter = func(s string) bool {
-			return ToBool(fn.Call([]coretypes.Object{coretypes.MakeString(s)}))
+			return corert.ToBool(fn.Call([]coretypes.Object{coretypes.MakeString(s)}))
 		}
 	}
 	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "all")); ok {
-		logOpts.All = ToBool(v)
+		logOpts.All = corert.ToBool(v)
 	}
 	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "since")); ok {
 		t := coretypes.EnsureObjectIsTime(v, "Invalid :since option: %s").T
@@ -281,10 +282,10 @@ func addCommit(repo *git.Repository, msg string, opts coretypes.Map) string {
 	PanicOnErr(err)
 	var commitOpts git.CommitOptions
 	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "all")); ok {
-		commitOpts.All = ToBool(v)
+		commitOpts.All = corert.ToBool(v)
 	}
 	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "allow-empty-commits")); ok {
-		commitOpts.AllowEmptyCommits = ToBool(v)
+		commitOpts.AllowEmptyCommits = corert.ToBool(v)
 	}
 	hash, err := workTree.Commit(msg, &commitOpts)
 	PanicOnErr(err)

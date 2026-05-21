@@ -6,6 +6,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 	"os"
@@ -108,7 +109,7 @@ func repl(phase corereader.Phase) {
 			historyFilename = filepath.Join(jokerd, ".repl_history")
 		}
 		rl = liner.NewLiner()
-		OnExit(func() {
+		corert.OnExit(func() {
 			saveReplHistory(rl, historyFilename)
 			rl.Close()
 		})

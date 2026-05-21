@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -21,21 +22,21 @@ func handleCompile(args []string) {
 				outputFile = args[i]
 			} else {
 				fmt.Fprintln(Stderr, "Error: -o requires an argument")
-				ExitJoker(1)
+				corert.ExitJoker(1)
 			}
 		default:
 			if sourceFile == "" {
 				sourceFile = args[i]
 			} else {
 				fmt.Fprintf(Stderr, "Error: unexpected argument: %s\n", args[i])
-				ExitJoker(1)
+				corert.ExitJoker(1)
 			}
 		}
 	}
 
 	if sourceFile == "" {
 		fmt.Fprintln(Stderr, "Usage: joker compile <source.clj> -o <output>")
-		ExitJoker(1)
+		corert.ExitJoker(1)
 	}
 
 	if outputFile == "" {
@@ -50,7 +51,7 @@ func handleCompile(args []string) {
 
 	if err := compileStandalone(sourceFile, outputFile); err != nil {
 		fmt.Fprintf(Stderr, "Error: %v\n", err)
-		ExitJoker(1)
+		corert.ExitJoker(1)
 	}
 
 	// Report size when available; do not panic if the output vanished or stat fails.

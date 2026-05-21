@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	corereader "github.com/rcarmo/go-joker/core/reader"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
 	"math"
 	"os"
@@ -267,7 +268,7 @@ func parseArgs(args []string) {
 		default:
 			if strings.HasPrefix(args[i], "-") {
 				fmt.Fprintf(Stderr, "Error: Unrecognized option '%s'\n", args[i])
-				ExitJoker(2)
+				corert.ExitJoker(2)
 			}
 			stop = true
 		}
@@ -277,7 +278,7 @@ func parseArgs(args []string) {
 	}
 	if missing {
 		fmt.Fprintf(Stderr, "Error: Missing argument for '%s' option\n", args[i])
-		ExitJoker(3)
+		corert.ExitJoker(3)
 	}
 	if i < length && !noFileFlag && filename == "" {
 		if debugOut != nil {

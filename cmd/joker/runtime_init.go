@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	corereader "github.com/rcarmo/go-joker/core/reader"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"os"
 	"strings"
 
@@ -17,7 +18,7 @@ func runEmbeddedSource(src string) {
 	GLOBAL_ENV.SetEnvArgs(os.Args[1:])
 	reader := NewReader(strings.NewReader(src), "<standalone>")
 	if err := ProcessReader(reader, "", corereader.EvalPhase); err != nil {
-		ExitJoker(1)
+		corert.ExitJoker(1)
 	}
 }
 
@@ -63,10 +64,10 @@ func validateRemainingArgs() {
 	}
 	if lintFlag {
 		fmt.Fprintf(Stderr, "Error: Cannot provide arguments to code while linting it.\n")
-		ExitJoker(4)
+		corert.ExitJoker(4)
 	}
 	if phase != corereader.EvalPhase && phase != corereader.PrintIfNotNilPhase {
 		fmt.Fprintf(Stderr, "Error: Cannot provide arguments to code without evaluating it.\n")
-		ExitJoker(5)
+		corert.ExitJoker(5)
 	}
 }

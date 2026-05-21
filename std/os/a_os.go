@@ -319,11 +319,11 @@ func __exit_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 1:
 		code := ExtractInt(_args, 0)
-		ExitJoker(code)
+		corert.ExitJoker(code)
 		return NIL
 
 	case _c == 0:
-		ExitJoker(0)
+		corert.ExitJoker(0)
 		return NIL
 
 	default:

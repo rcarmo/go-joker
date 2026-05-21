@@ -3,6 +3,7 @@ package json
 import (
 	"encoding/json"
 	"fmt"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
 	"strings"
 
@@ -94,7 +95,7 @@ func readString(s string, opts coretypes.Map) coretypes.Object {
 	var keywordize bool
 	if opts != nil {
 		if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "keywords?")); ok {
-			keywordize = ToBool(v)
+			keywordize = corert.ToBool(v)
 		}
 	}
 	return toObject(v, keywordize)
@@ -114,7 +115,7 @@ func jsonSeqOpts(src coretypes.Object, opts coretypes.Map) coretypes.Object {
 	}
 	if opts != nil {
 		if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "keywords?")); ok {
-			keywordize = ToBool(v)
+			keywordize = corert.ToBool(v)
 		}
 	}
 	jsonLazySeq = func() *corecollections.LazySeq {

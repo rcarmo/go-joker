@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"os"
 
 	. "github.com/rcarmo/go-joker/core"
 )
 
 func main() {
-	OnExit(finish)
+	corert.OnExit(finish)
 
 	// Handle compile subcommand before embedded source check
 	if len(os.Args) >= 2 && os.Args[1] == "compile" {
@@ -39,7 +40,7 @@ func main() {
 
 	if err := startProfiling(); err != nil {
 		fmt.Fprintln(Stderr, err)
-		ExitJoker(96)
+		corert.ExitJoker(96)
 	}
 
 	if runEvalMode() {

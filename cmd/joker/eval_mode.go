@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"strings"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -13,23 +14,23 @@ func runEvalMode() bool {
 	}
 	if lintFlag {
 		fmt.Fprintf(Stderr, "Error: Cannot combine --eval/-e and --lint.\n")
-		ExitJoker(6)
+		corert.ExitJoker(6)
 	}
 	if replFlag {
 		fmt.Fprintf(Stderr, "Error: Cannot combine --eval/-e and --repl.\n")
-		ExitJoker(7)
+		corert.ExitJoker(7)
 	}
 	if workingDir != "" {
 		fmt.Fprintf(Stderr, "Error: Cannot combine --eval/-e and --working-dir.\n")
-		ExitJoker(8)
+		corert.ExitJoker(8)
 	}
 	if reportGloballyUnusedFlag {
 		fmt.Fprintf(Stderr, "Error: Cannot combine --eval/-e and --report-globally-unused.\n")
-		ExitJoker(17)
+		corert.ExitJoker(17)
 	}
 	if filename != "" {
 		fmt.Fprintf(Stderr, "Error: Cannot combine --eval/-e and a <filename> argument.\n")
-		ExitJoker(9)
+		corert.ExitJoker(9)
 	}
 	reader := NewReader(strings.NewReader(eval), "<expr>")
 	if saveForRepl {
@@ -37,7 +38,7 @@ func runEvalMode() bool {
 	}
 	if err := ProcessReader(reader, "", phase); err != nil {
 		if !errorToRepl {
-			ExitJoker(1)
+			corert.ExitJoker(1)
 		}
 	} else if !exitToRepl {
 		return true

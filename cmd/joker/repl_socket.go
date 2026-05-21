@@ -19,7 +19,7 @@ func srepl(port string, phase corereader.Phase) {
 	if err != nil {
 		fmt.Fprintf(Stderr, "Cannot start srepl listening on %s: %s\n",
 			replSocket, err.Error())
-		ExitJoker(12)
+		corert.ExitJoker(12)
 	}
 	defer func() {
 		if err := l.Close(); err != nil {
@@ -32,7 +32,7 @@ func srepl(port string, phase corereader.Phase) {
 	if err != nil {
 		fmt.Fprintf(Stderr, "Cannot start repl accepting on %s: %s\n",
 			l.Addr(), err.Error())
-		ExitJoker(13)
+		corert.ExitJoker(13)
 	}
 
 	oldStdIn := Stdin

@@ -16641,19 +16641,6 @@ func irProfileMaybeWrite() {
 }
 
 // ---- common.go ----
-var exitCallbacks []func()
-
-func ExitJoker(rc int) {
-	for _, f := range exitCallbacks {
-		f()
-	}
-	os.Exit(rc)
-}
-
-func OnExit(f func()) {
-	exitCallbacks = append(exitCallbacks, f)
-}
-
 func writeIndent(w io.Writer, n int) {
 	space := []byte(" ")
 	for i := 0; i < n; i++ {
@@ -20856,7 +20843,7 @@ var procVerbosityLevel = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procExit = func(args []coretypes.Object) coretypes.Object {
-	ExitJoker(coretypes.EnsureArgIsInt(args, 0).I)
+	corert.ExitJoker(coretypes.EnsureArgIsInt(args, 0).I)
 	return NIL
 }
 
