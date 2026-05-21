@@ -18,7 +18,7 @@ The root `core` package has been coalesced to the smallest practical file set wi
 
 | Priority | Domain inside `runtime_kernel.go` | Target package | Main blockers to resolve first | Non-goal |
 |---:|---|---|---|---|
-| 1 | `Runtime`, `EvalError`, call stack/current expression, goroutine root glue | `core/runtime` | Define a runtime-facing expression/frame interface that does not import root `Expr`, `Fn`, `Proc`, `Var`, or namespace state. | Do not add hook shims that simply call back into root. |
+| 1 | `Runtime`, `EvalError`, current expression, goroutine root glue | `core/runtime` | Started: call stack frame storage/formatting now lives in `core/runtime.Callstack` behind the root-independent `core/runtime.Traceable` interface. Remaining blockers are root `Expr`, `Fn`, `Proc`, `Var`, namespace state, and root error/type rendering. | Do not add hook shims that simply call back into root. |
 | 2 | IR program/cache/compiler/boxed executor/WASM lowering cluster | `core/ir` plus `core/wasm` for WASM leaves | Move or contract root `Fn`, `Var`, `Expr`, local env/frame slots, call dispatch, errors, and tracing-facing names. | Do not move `boxed_exec` alone. |
 | 3 | Reader/parser orchestration now in the kernel | `core/reader` for reader mechanics; parser remains root/eval until expression contracts exist | Finish construction/tag/metadata/error adapters so reader code does not need root object/evaluator state. | Do not let `core/reader` import root `core`. |
 | 4 | Namespace/env/proc registration glue | `core/runtime` or a dedicated env package | Break cycles around `GLOBAL_ENV`, `Namespace`, `Var`, `Proc`, `STRINGS`, `TYPE`, generated bootstrap mutation, and `referToUser`. | Do not create aliases/wrappers for old root env APIs. |

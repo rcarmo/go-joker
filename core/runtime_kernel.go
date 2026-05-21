@@ -42,7 +42,6 @@ import (
 
 	coretypes "github.com/rcarmo/go-joker/core/types"
 
-	"github.com/rcarmo/go-joker/core/bufferpool"
 	"github.com/rcarmo/go-joker/core/hashutil"
 	corert "github.com/rcarmo/go-joker/core/runtime"
 	corecollections "github.com/rcarmo/go-joker/core/types/collections"
@@ -50,21 +49,12 @@ import (
 )
 
 type (
-	Traceable interface {
-		Name() string
-		Pos() coretypes.Position
-	}
+	Traceable = corert.Traceable
 	EvalError struct {
 		msg  string
 		pos  coretypes.Position
 		rt   *goroutineRT
 		hash uint32
-	}
-	Frame struct {
-		traceable Traceable
-	}
-	Callstack struct {
-		frames []Frame
 	}
 	Runtime struct{}
 )
@@ -75,7 +65,7 @@ var RT *Runtime = &Runtime{}
 func cloneGRT() *goroutineRT {
 	grt := currentGRT()
 	return &goroutineRT{
-		callstack:   grt.callstack.clone(),
+		callstack:   grt.callstack.Clone(),
 		currentExpr: grt.currentExpr,
 	}
 }
@@ -118,20 +108,11 @@ func (rt *Runtime) stacktrace() string {
 }
 
 func (grt *goroutineRT) stacktrace() string {
-	b := bufferpool.Get()
-	defer bufferpool.Put(b)
-	pos := coretypes.Position{}
+	var current Traceable
 	if grt.currentExpr != nil {
-		pos = grt.currentExpr.Pos()
+		current, _ = grt.currentExpr.(Traceable)
 	}
-	name := "global"
-	for _, f := range grt.callstack.frames {
-		framePos := f.traceable.Pos()
-		b.WriteString(fmt.Sprintf("  %s %s:%d:%d\n", name, framePos.FilenameOrUnknown(), framePos.StartLine, framePos.StartColumn))
-		name = corestr.TrimVarQuotePrefix(f.traceable.Name())
-	}
-	b.WriteString(fmt.Sprintf("  %s %s:%d:%d", name, pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn))
-	return b.String()
+	return grt.callstack.Stacktrace(current)
 }
 
 func (rt *Runtime) pushFrame() {
@@ -146,12 +127,12 @@ func (rt *Runtime) pushFrame() {
 	} else {
 		tr = &CallExpr{}
 	}
-	grt.callstack.pushFrame(Frame{traceable: tr})
+	grt.callstack.Push(tr)
 }
 
 func (rt *Runtime) popFrame() {
 	grt := currentGRT()
-	grt.callstack.popFrame()
+	grt.callstack.Pop()
 }
 
 func restoreCurrentExpr(expr Expr) {
@@ -293,33 +274,6 @@ func Eval(expr Expr, env *LocalEnv) coretypes.Object {
 	}
 }
 
-func (s *Callstack) pushFrame(frame Frame) {
-	s.frames = append(s.frames, frame)
-}
-
-func (s *Callstack) popFrame() {
-	s.frames = s.frames[:len(s.frames)-1]
-}
-
-func (s *Callstack) clone() *Callstack {
-	res := &Callstack{frames: make([]Frame, len(s.frames))}
-	copy(res.frames, s.frames)
-	return res
-}
-
-func (s *Callstack) String() string {
-	b := bufferpool.Get()
-	defer bufferpool.Put(b)
-	for _, f := range s.frames {
-		pos := f.traceable.Pos()
-		b.WriteString(fmt.Sprintf("%s %s:%d:%d\n", f.traceable.Name(), pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn))
-	}
-	if b.Len() > 0 {
-		b.Truncate(b.Len() - 1)
-	}
-	return b.String()
-}
-
 func MakeEvalError(msg string, pos coretypes.Position, grt *goroutineRT) *EvalError {
 	res := &EvalError{msg, pos, grt, 0}
 	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(res)))
@@ -356,11 +310,11 @@ func (err *EvalError) Message() coretypes.Object {
 
 func (err *EvalError) Error() string {
 	pos := err.pos
-	if len(err.rt.callstack.frames) > 0 && !LINTER_MODE {
+	if err.rt.callstack.Len() > 0 && !LINTER_MODE {
 		return fmt.Sprintf("%s:%d:%d: Eval error: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, err.msg, err.rt.stacktrace())
 	} else {
-		if len(err.rt.callstack.frames) > 0 {
-			pos = err.rt.callstack.frames[0].traceable.Pos()
+		if err.rt.callstack.Len() > 0 {
+			pos = err.rt.callstack.FirstPos()
 		}
 		return fmt.Sprintf("%s:%d:%d: Eval error: %s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, err.msg)
 	}
@@ -16397,7 +16351,7 @@ func (exInfo *ExInfo) Error() string {
 		prefix = pr.ToString(false)
 	}
 	_, msg := exInfo.Get(KEYWORDS.message)
-	if len(exInfo.rt.callstack.frames) > 0 && !LINTER_MODE {
+	if exInfo.rt.callstack.Len() > 0 && !LINTER_MODE {
 		return fmt.Sprintf("%s:%d:%d: %s: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(coretypes.String).S, exInfo.rt.stacktrace())
 	} else {
 		return fmt.Sprintf("%s:%d:%d: %s: %s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(coretypes.String).S)
@@ -17872,14 +17826,14 @@ func init() {
 
 // goroutineRT holds per-goroutine interpreter state.
 type goroutineRT struct {
-	callstack   *Callstack
+	callstack   *corert.Callstack
 	currentExpr Expr
 }
 
 var (
 	// mainRT is the default runtime for the main goroutine (hot path).
 	mainRT = goroutineRT{
-		callstack: &Callstack{frames: make([]Frame, 0, 50)},
+		callstack: corert.NewCallstack(50),
 	}
 	goroutineState *corert.GoRTPool
 
@@ -17901,7 +17855,7 @@ func currentGRT() *goroutineRT {
 // registerGoroutineRT sets up a new goroutineRT for the current goroutine.
 // Called once at goroutine start.
 func registerGoroutineRT() *goroutineRT {
-	grt := &goroutineRT{callstack: &Callstack{frames: make([]Frame, 0, 20)}}
+	grt := &goroutineRT{callstack: corert.NewCallstack(20)}
 	goroutineState.Register(grt)
 	return grt
 }
