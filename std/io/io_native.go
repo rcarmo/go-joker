@@ -1,6 +1,7 @@
 package io
 
 import (
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
 	"math/big"
 
@@ -21,8 +22,8 @@ func copyCountObject(n int64) coretypes.Object {
 func pipe() coretypes.Object {
 	r, w := io.Pipe()
 	res := corecollections.EmptyVector()
-	res = res.Conjoin(MakeIOReader(r))
-	res = res.Conjoin(MakeIOWriter(w))
+	res = res.Conjoin(corert.MakeIOReader(r))
+	res = res.Conjoin(corert.MakeIOWriter(w))
 	return res
 }
 

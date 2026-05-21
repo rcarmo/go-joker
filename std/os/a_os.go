@@ -145,7 +145,7 @@ func __close_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		f := ExtractFile(_args, 0)
+		f := EnsureArgIsFile(_args, 0)
 		err := f.Close()
 		PanicOnErr(err)
 		_res := NIL
@@ -167,7 +167,7 @@ func __create_(_args []coretypes.Object) coretypes.Object {
 		name := ExtractString(_args, 0)
 		_res, err := os.Create(name)
 		PanicOnErr(err)
-		return MakeFile(_res)
+		return corert.MakeFile(_res)
 
 	default:
 		PanicArity(_c)
@@ -186,7 +186,7 @@ func __create_temp_(_args []coretypes.Object) coretypes.Object {
 		pattern := ExtractString(_args, 1)
 		_res, err := os.CreateTemp(dir, pattern)
 		PanicOnErr(err)
-		return MakeFile(_res)
+		return corert.MakeFile(_res)
 
 	default:
 		PanicArity(_c)
@@ -583,7 +583,7 @@ func __open_(_args []coretypes.Object) coretypes.Object {
 		name := ExtractString(_args, 0)
 		_res, err := os.Open(name)
 		PanicOnErr(err)
-		return MakeFile(_res)
+		return corert.MakeFile(_res)
 
 	default:
 		PanicArity(_c)

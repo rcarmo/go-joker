@@ -691,7 +691,7 @@ func init() {
 		Delay:          typeBuilder().RegisterReference("coretypes.Delay", (*coretypes.Delay)(nil), ""),
 		Channel:        typeBuilder().RegisterReference("Channel", (*corert.ObjectChannel)(nil), ""),
 		Double:         typeBuilder().RegisterValue("Double", (*coretypes.Double)(nil), "Wraps the Go 'float64' type"),
-		EvalError:      typeBuilder().RegisterReference("EvalError", (*EvalError)(nil), ""),
+		EvalError:      typeBuilder().RegisterReference("EvalError", (*corert.EvalError)(nil), ""),
 		ExInfo:         typeBuilder().RegisterReference("ExInfo", (*ExInfo)(nil), ""),
 		Fn:             typeBuilder().RegisterReference("Fn", (*Fn)(nil), "A callable function or macro implemented via Joker code"),
 		File:           typeBuilder().RegisterReference("File", (*corert.File)(nil), ""),

@@ -50,13 +50,7 @@ import (
 
 type (
 	Traceable = corert.Traceable
-	EvalError struct {
-		msg  string
-		pos  coretypes.Position
-		rt   *goroutineRT
-		hash uint32
-	}
-	Runtime struct{}
+	Runtime   struct{}
 )
 
 var RT *Runtime = &Runtime{}
@@ -70,19 +64,16 @@ func cloneGRT() *goroutineRT {
 	}
 }
 
-func (rt *Runtime) NewError(msg string) *EvalError {
+func (rt *Runtime) NewError(msg string) *corert.EvalError {
 	grt := cloneGRT()
-	res := &EvalError{
-		msg: msg,
-		rt:  grt,
-	}
+	pos := coretypes.Position{}
 	if grt.CurrentExpr != nil {
-		res.pos = grt.CurrentExpr.(Expr).Pos()
+		pos = grt.CurrentExpr.(Expr).Pos()
 	}
-	return res
+	return corert.NewEvalError(msg, pos, grt, LINTER_MODE)
 }
 
-func (rt *Runtime) NewArgTypeError(index int, obj coretypes.Object, expectedType string) *EvalError {
+func (rt *Runtime) NewArgTypeError(index int, obj coretypes.Object, expectedType string) *corert.EvalError {
 	grt := currentGRT()
 	name := "<unknown>"
 	if grt.CurrentExpr != nil {
@@ -93,13 +84,8 @@ func (rt *Runtime) NewArgTypeError(index int, obj coretypes.Object, expectedType
 	return rt.NewError(fmt.Sprintf("Arg[%d] of %s must have type %s, got %s", index, name, expectedType, obj.GetType().ToString(false)))
 }
 
-func (rt *Runtime) NewErrorWithPos(msg string, pos coretypes.Position) *EvalError {
-	grt := cloneGRT()
-	return &EvalError{
-		msg: msg,
-		pos: pos,
-		rt:  grt,
-	}
+func (rt *Runtime) NewErrorWithPos(msg string, pos coretypes.Position) *corert.EvalError {
+	return corert.NewEvalError(msg, pos, cloneGRT(), LINTER_MODE)
 }
 
 func (rt *Runtime) stacktrace() string {
@@ -271,52 +257,6 @@ func Eval(expr Expr, env *LocalEnv) coretypes.Object {
 		return evalLoop(expr.body, &childEnv)
 	default:
 		return expr.Eval(env)
-	}
-}
-
-func MakeEvalError(msg string, pos coretypes.Position, grt *goroutineRT) *EvalError {
-	res := &EvalError{msg, pos, grt, 0}
-	res.hash = hashutil.Ptr(uintptr(unsafe.Pointer(res)))
-	return res
-}
-
-func (err *EvalError) ToString(escape bool) string {
-	return err.Error()
-}
-
-func (err *EvalError) Equals(other interface{}) bool {
-	return err == other
-}
-
-func (err *EvalError) GetInfo() *coretypes.ObjectInfo {
-	return nil
-}
-
-func (err *EvalError) GetType() *coretypes.Type {
-	return TYPE.EvalError
-}
-
-func (err *EvalError) Hash() uint32 {
-	return err.hash
-}
-
-func (err *EvalError) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	return err
-}
-
-func (err *EvalError) Message() coretypes.Object {
-	return coretypes.MakeString(err.msg)
-}
-
-func (err *EvalError) Error() string {
-	pos := err.pos
-	if err.rt.Callstack.Len() > 0 && !LINTER_MODE {
-		return fmt.Sprintf("%s:%d:%d: Eval error: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, err.msg, runtimeStacktrace(err.rt))
-	} else {
-		if err.rt.Callstack.Len() > 0 {
-			pos = err.rt.Callstack.FirstPos()
-		}
-		return fmt.Sprintf("%s:%d:%d: Eval error: %s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, err.msg)
 	}
 }
 
@@ -1071,7 +1011,7 @@ func TryEval(expr Expr) (obj coretypes.Object, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			switch r.(type) {
-			case *EvalError:
+			case *corert.EvalError:
 				err = r.(error)
 			case *ExInfo:
 				err = r.(error)
@@ -6232,7 +6172,7 @@ func TryParse(obj coretypes.Object, ctx *ParseContext) (expr Expr, err error) {
 			switch r.(type) {
 			case *ParseError:
 				err = r.(error)
-			case *EvalError:
+			case *corert.EvalError:
 				err = r.(error)
 			case *ExInfo:
 				err = r.(error)
@@ -7395,7 +7335,7 @@ func TryRead(reader *Reader) (obj coretypes.Object, err error) {
 				err = r.(error)
 			case *ParseError:
 				err = r.(error)
-			case *EvalError:
+			case *corert.EvalError:
 				err = r.(error)
 			case *ExInfo:
 				err = r.(error)
@@ -19351,11 +19291,11 @@ func ExtractBoolean(args []coretypes.Object, index int) bool {
 	return coretypes.EnsureArgIsBoolean(args, index).B
 }
 
-func FailArg(obj coretypes.Object, typeName string, index int) *EvalError {
+func FailArg(obj coretypes.Object, typeName string, index int) *corert.EvalError {
 	return RT.NewArgTypeError(index, obj, typeName)
 }
 
-func FailObject(obj coretypes.Object, typeName, pattern string) *EvalError {
+func FailObject(obj coretypes.Object, typeName, pattern string) *corert.EvalError {
 	if pattern == "" {
 		pattern = "%s"
 	}

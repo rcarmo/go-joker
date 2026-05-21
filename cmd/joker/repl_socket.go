@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	corereader "github.com/rcarmo/go-joker/core/reader"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"net"
 
@@ -41,8 +42,8 @@ func srepl(port string, phase corereader.Phase) {
 	Stdin = conn
 	Stdout = conn
 	Stderr = conn
-	newIn := MakeBufferedReader(conn)
-	newOut := MakeIOWriter(conn)
+	newIn := corert.MakeBufferedReader(conn)
+	newOut := corert.MakeIOWriter(conn)
 	GLOBAL_ENV.SetStdIO(newIn, newOut, newOut)
 	defer func() {
 		if err := conn.Close(); err != nil {

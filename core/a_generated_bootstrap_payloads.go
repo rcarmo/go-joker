@@ -4760,7 +4760,7 @@ var ty_EvalError coretypes.Type = coretypes.Type{
 		Meta: &arrayMap_NUM_44,
 	},
 	Name:        "EvalError",
-	ReflectType: reflect.TypeOf((*EvalError)(nil)),
+	ReflectType: reflect.TypeOf((*corert.EvalError)(nil)),
 }
 var arrayMap_NUM_45 corecollections.ArrayMap = corecollections.ArrayMap{
 	Arr: []coretypes.Object{

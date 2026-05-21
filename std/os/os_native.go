@@ -1,6 +1,7 @@
 package os
 
 import (
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
 	"math/big"
 	"os"
@@ -113,7 +114,7 @@ func parseExecOpts(opts coretypes.Map) (dir string, args []string, stdin io.Read
 		} else {
 			switch s := stdinObj.(type) {
 			case Nil:
-			case *IOReader:
+			case *corert.IOReader:
 				stdin = s.Reader
 			case io.Reader:
 				stdin = s
@@ -127,7 +128,7 @@ func parseExecOpts(opts coretypes.Map) (dir string, args []string, stdin io.Read
 	if ok, stdoutObj := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "stdout")); ok {
 		switch s := stdoutObj.(type) {
 		case Nil:
-		case *IOWriter:
+		case *corert.IOWriter:
 			stdout = s.Writer
 		case io.Writer:
 			stdout = s
@@ -138,7 +139,7 @@ func parseExecOpts(opts coretypes.Map) (dir string, args []string, stdin io.Read
 	if ok, stderrObj := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "stderr")); ok {
 		switch s := stderrObj.(type) {
 		case Nil:
-		case *IOWriter:
+		case *corert.IOWriter:
 			stderr = s.Writer
 		case io.Writer:
 			stderr = s
