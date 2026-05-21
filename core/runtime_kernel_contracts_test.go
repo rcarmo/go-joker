@@ -2675,7 +2675,7 @@ func TestRuntimeExecutionAdapterCallObject(t *testing.T) {
 		t.Fatalf("CallObjectWithSyntheticCallExpr = %#v, %v", got, ok)
 	}
 	grt := currentGRT()
-	prevExpr := grt.currentExpr
+	prevExpr := grt.CurrentExpr
 	panicking := Proc{Name: "contract-panic", Fn: func(args []coretypes.Object) coretypes.Object { panic("boom") }}
 	func() {
 		defer func() {
@@ -2685,7 +2685,7 @@ func TestRuntimeExecutionAdapterCallObject(t *testing.T) {
 		}()
 		_, _ = adapter.CallObjectWithSyntheticCallExpr(panicking, nil)
 	}()
-	if grt.currentExpr != prevExpr {
+	if grt.CurrentExpr != prevExpr {
 		t.Fatal("CallObjectWithSyntheticCallExpr did not restore current expression after panic")
 	}
 }

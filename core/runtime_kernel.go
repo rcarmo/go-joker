@@ -65,8 +65,8 @@ var RT *Runtime = &Runtime{}
 func cloneGRT() *goroutineRT {
 	grt := currentGRT()
 	return &goroutineRT{
-		callstack:   grt.callstack.Clone(),
-		currentExpr: grt.currentExpr,
+		Callstack:   grt.Callstack.Clone(),
+		CurrentExpr: grt.CurrentExpr,
 	}
 }
 
@@ -76,8 +76,8 @@ func (rt *Runtime) NewError(msg string) *EvalError {
 		msg: msg,
 		rt:  grt,
 	}
-	if grt.currentExpr != nil {
-		res.pos = grt.currentExpr.Pos()
+	if grt.CurrentExpr != nil {
+		res.pos = grt.CurrentExpr.(Expr).Pos()
 	}
 	return res
 }
@@ -85,8 +85,8 @@ func (rt *Runtime) NewError(msg string) *EvalError {
 func (rt *Runtime) NewArgTypeError(index int, obj coretypes.Object, expectedType string) *EvalError {
 	grt := currentGRT()
 	name := "<unknown>"
-	if grt.currentExpr != nil {
-		if tr, ok := grt.currentExpr.(Traceable); ok {
+	if grt.CurrentExpr != nil {
+		if tr, ok := grt.CurrentExpr.(Traceable); ok {
 			name = tr.Name()
 		}
 	}
@@ -104,22 +104,22 @@ func (rt *Runtime) NewErrorWithPos(msg string, pos coretypes.Position) *EvalErro
 
 func (rt *Runtime) stacktrace() string {
 	grt := currentGRT()
-	return grt.stacktrace()
+	return runtimeStacktrace(grt)
 }
 
-func (grt *goroutineRT) stacktrace() string {
+func runtimeStacktrace(grt *goroutineRT) string {
 	var current Traceable
-	if grt.currentExpr != nil {
-		current, _ = grt.currentExpr.(Traceable)
+	if grt.CurrentExpr != nil {
+		current, _ = grt.CurrentExpr.(Traceable)
 	}
-	return grt.callstack.Stacktrace(current)
+	return grt.Callstack.Stacktrace(current)
 }
 
 func (rt *Runtime) pushFrame() {
 	grt := currentGRT()
 	var tr Traceable
-	if grt.currentExpr != nil {
-		if t, ok := grt.currentExpr.(Traceable); ok {
+	if grt.CurrentExpr != nil {
+		if t, ok := grt.CurrentExpr.(Traceable); ok {
 			tr = t
 		} else {
 			tr = &CallExpr{}
@@ -127,16 +127,16 @@ func (rt *Runtime) pushFrame() {
 	} else {
 		tr = &CallExpr{}
 	}
-	grt.callstack.Push(tr)
+	grt.Callstack.Push(tr)
 }
 
 func (rt *Runtime) popFrame() {
 	grt := currentGRT()
-	grt.callstack.Pop()
+	grt.Callstack.Pop()
 }
 
-func restoreCurrentExpr(expr Expr) {
-	currentGRT().currentExpr = expr
+func restoreCurrentExpr(expr any) {
+	currentGRT().CurrentExpr = expr
 }
 
 func Eval(expr Expr, env *LocalEnv) coretypes.Object {
@@ -149,8 +149,8 @@ func Eval(expr Expr, env *LocalEnv) coretypes.Object {
 		return expr.vr.Resolve()
 	}
 	grt := currentGRT()
-	parentExpr := grt.currentExpr
-	grt.currentExpr = expr
+	parentExpr := grt.CurrentExpr
+	grt.CurrentExpr = expr
 	defer restoreCurrentExpr(parentExpr)
 	switch expr := expr.(type) {
 	case *IfExpr:
@@ -310,11 +310,11 @@ func (err *EvalError) Message() coretypes.Object {
 
 func (err *EvalError) Error() string {
 	pos := err.pos
-	if err.rt.callstack.Len() > 0 && !LINTER_MODE {
-		return fmt.Sprintf("%s:%d:%d: Eval error: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, err.msg, err.rt.stacktrace())
+	if err.rt.Callstack.Len() > 0 && !LINTER_MODE {
+		return fmt.Sprintf("%s:%d:%d: Eval error: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, err.msg, runtimeStacktrace(err.rt))
 	} else {
-		if err.rt.callstack.Len() > 0 {
-			pos = err.rt.callstack.FirstPos()
+		if err.rt.Callstack.Len() > 0 {
+			pos = err.rt.Callstack.FirstPos()
 		}
 		return fmt.Sprintf("%s:%d:%d: Eval error: %s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, err.msg)
 	}
@@ -15672,9 +15672,9 @@ func (RuntimeExecutionAdapter) CallObject(fnObj coretypes.Object, args []coretyp
 
 func (adapter RuntimeExecutionAdapter) CallObjectWithSyntheticCallExpr(fnObj coretypes.Object, args []coretypes.Object) (coretypes.Object, bool) {
 	grt := currentGRT()
-	prevExpr := grt.currentExpr
-	grt.currentExpr = &CallExpr{}
-	defer func() { grt.currentExpr = prevExpr }()
+	prevExpr := grt.CurrentExpr
+	grt.CurrentExpr = &CallExpr{}
+	defer func() { grt.CurrentExpr = prevExpr }()
 	return adapter.CallObject(fnObj, args)
 }
 
@@ -16257,8 +16257,8 @@ type stringSeq struct {
 func PanicArity(n int) {
 	grt := currentGRT()
 	name := "<unknown>"
-	if grt.currentExpr != nil {
-		if tr, ok := grt.currentExpr.(Traceable); ok {
+	if grt.CurrentExpr != nil {
+		if tr, ok := grt.CurrentExpr.(Traceable); ok {
 			name = tr.Name()
 		}
 	}
@@ -16268,8 +16268,8 @@ func PanicArity(n int) {
 func PanicArityMinMax(n, min, max int) {
 	grt := currentGRT()
 	name := "<unknown>"
-	if grt.currentExpr != nil {
-		if tr, ok := grt.currentExpr.(Traceable); ok {
+	if grt.CurrentExpr != nil {
+		if tr, ok := grt.CurrentExpr.(Traceable); ok {
 			name = tr.Name()
 		}
 	}
@@ -16351,8 +16351,8 @@ func (exInfo *ExInfo) Error() string {
 		prefix = pr.ToString(false)
 	}
 	_, msg := exInfo.Get(KEYWORDS.message)
-	if exInfo.rt.callstack.Len() > 0 && !LINTER_MODE {
-		return fmt.Sprintf("%s:%d:%d: %s: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(coretypes.String).S, exInfo.rt.stacktrace())
+	if exInfo.rt.Callstack.Len() > 0 && !LINTER_MODE {
+		return fmt.Sprintf("%s:%d:%d: %s: %s\nStacktrace:\n%s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(coretypes.String).S, runtimeStacktrace(exInfo.rt))
 	} else {
 		return fmt.Sprintf("%s:%d:%d: %s: %s", pos.FilenameOrUnknown(), pos.StartLine, pos.StartColumn, prefix, msg.(coretypes.String).S)
 	}
@@ -17824,17 +17824,12 @@ func init() {
 //   goroutine or under user coordination (same semantics as Clojure's JVM runtime).
 // - Namespace map mutations are protected by nsRWMu.
 
-// goroutineRT holds per-goroutine interpreter state.
-type goroutineRT struct {
-	callstack   *corert.Callstack
-	currentExpr Expr
-}
+// goroutineRT is runtime-owned per-goroutine interpreter state.
+type goroutineRT = corert.GoroutineRT
 
 var (
 	// mainRT is the default runtime for the main goroutine (hot path).
-	mainRT = goroutineRT{
-		callstack: corert.NewCallstack(50),
-	}
+	mainRT         = *corert.NewGoroutineRT(50)
 	goroutineState *corert.GoRTPool
 
 	// nsRWMu protects GLOBAL_ENV.Namespaces map mutations.
@@ -17855,7 +17850,7 @@ func currentGRT() *goroutineRT {
 // registerGoroutineRT sets up a new goroutineRT for the current goroutine.
 // Called once at goroutine start.
 func registerGoroutineRT() *goroutineRT {
-	grt := &goroutineRT{callstack: corert.NewCallstack(20)}
+	grt := corert.NewGoroutineRT(20)
 	goroutineState.Register(grt)
 	return grt
 }
