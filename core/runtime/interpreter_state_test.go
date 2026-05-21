@@ -16,3 +16,15 @@ func TestGoroutineRTCloneCopiesStackAndCurrentExpr(t *testing.T) {
 		t.Fatalf("clone Callstack Len = %d, want 1", clone.Callstack.Len())
 	}
 }
+
+func TestInterpreterStatePoolCurrentRegisterUnregister(t *testing.T) {
+	pool := NewInterpreterStatePool(NewGoroutineRT(2))
+	if pool.Current() == nil {
+		t.Fatal("Current returned nil")
+	}
+	registered := pool.Register(3)
+	if registered == nil || registered.Callstack == nil {
+		t.Fatalf("Register returned invalid state: %#v", registered)
+	}
+	pool.Unregister()
+}

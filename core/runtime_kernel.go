@@ -17827,29 +17827,23 @@ func init() {
 // goroutineRT is runtime-owned per-goroutine interpreter state.
 type goroutineRT = corert.GoroutineRT
 
-var (
-	// mainRT is the default runtime for the main goroutine (hot path).
-	mainRT         = *corert.NewGoroutineRT(50)
-	goroutineState *corert.GoRTPool
-)
+var goroutineState *corert.InterpreterStatePool
 
 func init() {
-	goroutineState = corert.NewGoRTPool(corert.GoID, &mainRT)
+	goroutineState = corert.NewInterpreterStatePool(corert.NewGoroutineRT(50))
 }
 
 // currentGRT returns the goroutineRT for the current goroutine.
 // HOT PATH: When no spawned goroutines exist (the common case for
 // single-threaded execution), returns &mainRT with a single atomic load.
 func currentGRT() *goroutineRT {
-	return goroutineState.Current().(*goroutineRT)
+	return goroutineState.Current()
 }
 
 // registerGoroutineRT sets up a new goroutineRT for the current goroutine.
 // Called once at goroutine start.
 func registerGoroutineRT() *goroutineRT {
-	grt := corert.NewGoroutineRT(20)
-	goroutineState.Register(grt)
-	return grt
+	return goroutineState.Register(20)
 }
 
 // unregisterGoroutineRT removes the current goroutine's state.
