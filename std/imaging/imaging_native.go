@@ -109,7 +109,7 @@ func parseAnchor(s string) imaging.Anchor {
 // --- I/O ---
 
 var procOpen ProcFn = func(args []coretypes.Object) coretypes.Object {
-	path := ExtractString(args, 0)
+	path := coretypes.ExtractString(args, 0)
 	img, err := imaging.Open(path)
 	if err != nil {
 		panic(RT.NewError("imaging/open: " + err.Error()))
@@ -119,7 +119,7 @@ var procOpen ProcFn = func(args []coretypes.Object) coretypes.Object {
 
 var procSave ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
-	path := ExtractString(args, 1)
+	path := coretypes.ExtractString(args, 1)
 	err := imaging.Save(im.img, path)
 	if err != nil {
 		panic(RT.NewError("imaging/save: " + err.Error()))
@@ -129,7 +129,7 @@ var procSave ProcFn = func(args []coretypes.Object) coretypes.Object {
 
 var procEncode ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
-	format := ExtractKeyword(args, 1)
+	format := coretypes.ExtractKeyword(args, 1)
 	var buf bytes.Buffer
 	switch format {
 	case "png":
@@ -140,7 +140,7 @@ var procEncode ProcFn = func(args []coretypes.Object) coretypes.Object {
 	case "jpeg", "jpg":
 		quality := 90
 		if len(args) > 2 {
-			quality = ExtractInt(args, 2)
+			quality = coretypes.ExtractInt(args, 2)
 		}
 		err := imaging.Encode(&buf, im.img, imaging.JPEG, imaging.JPEGQuality(quality))
 		if err != nil {
@@ -168,7 +168,7 @@ var procEncode ProcFn = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procDecode ProcFn = func(args []coretypes.Object) coretypes.Object {
-	data := ExtractString(args, 0)
+	data := coretypes.ExtractString(args, 0)
 	img, _, err := image.Decode(bytes.NewReader([]byte(data)))
 	if err != nil {
 		panic(RT.NewError("imaging/decode: " + err.Error()))
@@ -187,7 +187,7 @@ func positiveDimension(obj coretypes.Object, name string) int {
 }
 
 func finiteFloat(obj coretypes.Object, name string) float64 {
-	v := ExtractDouble([]coretypes.Object{obj}, 0)
+	v := coretypes.ExtractDouble([]coretypes.Object{obj}, 0)
 	if math.IsNaN(v) || math.IsInf(v, 0) {
 		panic(RT.NewError("imaging: " + name + " must be finite"))
 	}
@@ -238,15 +238,15 @@ var procFill ProcFn = func(args []coretypes.Object) coretypes.Object {
 	h := positiveDimension(args[2], "height")
 	anchor := "center"
 	if len(args) > 3 {
-		anchor = ExtractKeyword(args, 3)
+		anchor = coretypes.ExtractKeyword(args, 3)
 	}
 	return wrapImage(toNRGBA(imaging.Fill(im.img, w, h, parseAnchor(anchor), imaging.Lanczos)))
 }
 
 var procCrop ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
-	x := ExtractInt(args, 1)
-	y := ExtractInt(args, 2)
+	x := coretypes.ExtractInt(args, 1)
+	y := coretypes.ExtractInt(args, 2)
 	w := positiveDimension(args[3], "width")
 	h := positiveDimension(args[4], "height")
 	rect := image.Rect(x, y, x+w, y+h)
@@ -349,8 +349,8 @@ var procSharpen ProcFn = func(args []coretypes.Object) coretypes.Object {
 var procOverlay ProcFn = func(args []coretypes.Object) coretypes.Object {
 	base := extractImage(args, 0)
 	overlay := extractImage(args, 1)
-	x := ExtractInt(args, 2)
-	y := ExtractInt(args, 3)
+	x := coretypes.ExtractInt(args, 2)
+	y := coretypes.ExtractInt(args, 3)
 	opacity := 1.0
 	if len(args) > 4 {
 		opacity = opacityFloat(args[4])
@@ -361,8 +361,8 @@ var procOverlay ProcFn = func(args []coretypes.Object) coretypes.Object {
 var procPaste ProcFn = func(args []coretypes.Object) coretypes.Object {
 	base := extractImage(args, 0)
 	overlay := extractImage(args, 1)
-	x := ExtractInt(args, 2)
-	y := ExtractInt(args, 3)
+	x := coretypes.ExtractInt(args, 2)
+	y := coretypes.ExtractInt(args, 3)
 	return wrapImage(toNRGBA(imaging.Paste(base.img, overlay.img, image.Pt(x, y))))
 }
 
@@ -404,8 +404,8 @@ func colorChannel(obj coretypes.Object, name string) uint8 {
 
 var procNewImage ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 3)
-	w := ExtractInt(args, 0)
-	h := ExtractInt(args, 1)
+	w := coretypes.ExtractInt(args, 0)
+	h := coretypes.ExtractInt(args, 1)
 	if w < 0 || h < 0 {
 		panic(RT.NewError("imaging/new: dimensions must be non-negative"))
 	}

@@ -17,7 +17,7 @@ func __isblank_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractObject(_args, 0)
+		s := coretypes.ExtractObject(_args, 0)
 		_res := isBlank(s)
 		return coretypes.MakeBoolean(_res)
 
@@ -34,7 +34,7 @@ func __capitalize_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractStringable(_args, 0)
+		s := coretypes.ExtractStringable(_args, 0)
 		_res := capitalize(s)
 		return coretypes.MakeString(_res)
 
@@ -51,8 +51,8 @@ func __isends_with_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		s := ExtractString(_args, 0)
-		substr := ExtractStringable(_args, 1)
+		s := coretypes.ExtractString(_args, 0)
+		substr := coretypes.ExtractStringable(_args, 1)
 		_res := strings.HasSuffix(s, substr)
 		return coretypes.MakeBoolean(_res)
 
@@ -69,8 +69,8 @@ func __escape_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		s := ExtractString(_args, 0)
-		cmap := ExtractCallable(_args, 1)
+		s := coretypes.ExtractString(_args, 0)
+		cmap := coretypes.ExtractCallable(_args, 1)
 		_res := escape(s, cmap)
 		return coretypes.MakeString(_res)
 
@@ -87,8 +87,8 @@ func __isincludes_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		s := ExtractString(_args, 0)
-		substr := ExtractStringable(_args, 1)
+		s := coretypes.ExtractString(_args, 0)
+		substr := coretypes.ExtractStringable(_args, 1)
 		_res := strings.Contains(s, substr)
 		return coretypes.MakeBoolean(_res)
 
@@ -105,15 +105,15 @@ func __index_of_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		s := ExtractString(_args, 0)
-		value := ExtractObject(_args, 1)
+		s := coretypes.ExtractString(_args, 0)
+		value := coretypes.ExtractObject(_args, 1)
 		_res := indexOf(s, value, 0)
 		return _res
 
 	case _c == 3:
-		s := ExtractString(_args, 0)
-		value := ExtractObject(_args, 1)
-		from := ExtractInt(_args, 2)
+		s := coretypes.ExtractString(_args, 0)
+		value := coretypes.ExtractObject(_args, 1)
+		from := coretypes.ExtractInt(_args, 2)
 		_res := indexOf(s, value, from)
 		return _res
 
@@ -130,13 +130,13 @@ func __join_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		coll := ExtractSeqable(_args, 0)
+		coll := coretypes.ExtractSeqable(_args, 0)
 		_res := join("", coll)
 		return coretypes.MakeString(_res)
 
 	case _c == 2:
-		separator := ExtractStringable(_args, 0)
-		coll := ExtractSeqable(_args, 1)
+		separator := coretypes.ExtractStringable(_args, 0)
+		coll := coretypes.ExtractSeqable(_args, 1)
 		_res := join(separator, coll)
 		return coretypes.MakeString(_res)
 
@@ -153,15 +153,15 @@ func __last_index_of_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		s := ExtractString(_args, 0)
-		value := ExtractObject(_args, 1)
+		s := coretypes.ExtractString(_args, 0)
+		value := coretypes.ExtractObject(_args, 1)
 		_res := lastIndexOf(s, value, 0)
 		return _res
 
 	case _c == 3:
-		s := ExtractString(_args, 0)
-		value := ExtractObject(_args, 1)
-		from := ExtractInt(_args, 2)
+		s := coretypes.ExtractString(_args, 0)
+		value := coretypes.ExtractObject(_args, 1)
+		from := coretypes.ExtractInt(_args, 2)
 		_res := lastIndexOf(s, value, from)
 		return _res
 
@@ -178,7 +178,7 @@ func __lower_case_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractStringable(_args, 0)
+		s := coretypes.ExtractStringable(_args, 0)
 		_res := strings.ToLower(s)
 		return coretypes.MakeString(_res)
 
@@ -195,9 +195,9 @@ func __pad_left_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
-		s := ExtractString(_args, 0)
-		pad := ExtractStringable(_args, 1)
-		n := ExtractInt(_args, 2)
+		s := coretypes.ExtractString(_args, 0)
+		pad := coretypes.ExtractStringable(_args, 1)
+		n := coretypes.ExtractInt(_args, 2)
 		_res := padLeft(s, pad, n)
 		return coretypes.MakeString(_res)
 
@@ -214,9 +214,9 @@ func __pad_right_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
-		s := ExtractString(_args, 0)
-		pad := ExtractStringable(_args, 1)
-		n := ExtractInt(_args, 2)
+		s := coretypes.ExtractString(_args, 0)
+		pad := coretypes.ExtractStringable(_args, 1)
+		n := coretypes.ExtractInt(_args, 2)
 		_res := padRight(s, pad, n)
 		return coretypes.MakeString(_res)
 
@@ -233,7 +233,7 @@ func __re_quote_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := regexp.MustCompile(regexp.QuoteMeta(s))
 		return coretypes.MakeRegex(_res)
 
@@ -250,9 +250,9 @@ func __replace_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
-		s := ExtractString(_args, 0)
-		match := ExtractObject(_args, 1)
-		repl := ExtractStringable(_args, 2)
+		s := coretypes.ExtractString(_args, 0)
+		match := coretypes.ExtractObject(_args, 1)
+		repl := coretypes.ExtractStringable(_args, 2)
 		_res := replace(s, match, repl)
 		return coretypes.MakeString(_res)
 
@@ -269,9 +269,9 @@ func __replace_first_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
-		s := ExtractString(_args, 0)
-		match := ExtractObject(_args, 1)
-		repl := ExtractStringable(_args, 2)
+		s := coretypes.ExtractString(_args, 0)
+		match := coretypes.ExtractObject(_args, 1)
+		repl := coretypes.ExtractStringable(_args, 2)
 		_res := replaceFirst(s, match, repl)
 		return coretypes.MakeString(_res)
 
@@ -288,7 +288,7 @@ func __reverse_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := reverse(s)
 		return coretypes.MakeString(_res)
 
@@ -305,15 +305,15 @@ func __split_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		s := ExtractString(_args, 0)
-		sep := ExtractObject(_args, 1)
+		s := coretypes.ExtractString(_args, 0)
+		sep := coretypes.ExtractObject(_args, 1)
 		_res := splitOnStringOrRegex(s, sep, 0)
 		return _res
 
 	case _c == 3:
-		s := ExtractString(_args, 0)
-		sep := ExtractObject(_args, 1)
-		n := ExtractInt(_args, 2)
+		s := coretypes.ExtractString(_args, 0)
+		sep := coretypes.ExtractObject(_args, 1)
+		n := coretypes.ExtractInt(_args, 2)
 		_res := splitOnStringOrRegex(s, sep, n)
 		return _res
 
@@ -330,7 +330,7 @@ func __split_lines_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := split(s, newLine, 0)
 		return _res
 
@@ -347,8 +347,8 @@ func __isstarts_with_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		s := ExtractString(_args, 0)
-		substr := ExtractStringable(_args, 1)
+		s := coretypes.ExtractString(_args, 0)
+		substr := coretypes.ExtractStringable(_args, 1)
 		_res := strings.HasPrefix(s, substr)
 		return coretypes.MakeBoolean(_res)
 
@@ -365,7 +365,7 @@ func __trim_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := strings.TrimSpace(s)
 		return coretypes.MakeString(_res)
 
@@ -382,7 +382,7 @@ func __trim_left_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := strings.TrimLeftFunc(s, unicode.IsSpace)
 		return coretypes.MakeString(_res)
 
@@ -399,7 +399,7 @@ func __trim_newline_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := strings.TrimRight(s, "\n\r")
 		return coretypes.MakeString(_res)
 
@@ -416,7 +416,7 @@ func __trim_right_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := strings.TrimRightFunc(s, unicode.IsSpace)
 		return coretypes.MakeString(_res)
 
@@ -433,7 +433,7 @@ func __triml_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := strings.TrimLeftFunc(s, unicode.IsSpace)
 		return coretypes.MakeString(_res)
 
@@ -450,7 +450,7 @@ func __trimr_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := strings.TrimRightFunc(s, unicode.IsSpace)
 		return coretypes.MakeString(_res)
 
@@ -467,7 +467,7 @@ func __upper_case_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractStringable(_args, 0)
+		s := coretypes.ExtractStringable(_args, 0)
 		_res := strings.ToUpper(s)
 		return coretypes.MakeString(_res)
 

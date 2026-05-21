@@ -14,7 +14,7 @@ func __read_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := readString(s)
 		return _res
 
@@ -31,7 +31,7 @@ func __write_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		v := ExtractObject(_args, 0)
+		v := coretypes.ExtractObject(_args, 0)
 		_res := writeString(v)
 		return _res
 

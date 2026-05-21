@@ -15,8 +15,8 @@ func __by_prefix_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 3:
 		db := ExtractBoltDB(_args, 0)
-		bucket := ExtractString(_args, 1)
-		prefix := ExtractString(_args, 2)
+		bucket := coretypes.ExtractString(_args, 1)
+		prefix := coretypes.ExtractString(_args, 2)
 		_res := byPrefix(db, bucket, prefix)
 		return _res
 
@@ -51,7 +51,7 @@ func __create_bucket_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		db := ExtractBoltDB(_args, 0)
-		name := ExtractString(_args, 1)
+		name := coretypes.ExtractString(_args, 1)
 		_res := createBucket(db, name)
 		return _res
 
@@ -69,7 +69,7 @@ func __create_bucket_if_not_exists_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		db := ExtractBoltDB(_args, 0)
-		name := ExtractString(_args, 1)
+		name := coretypes.ExtractString(_args, 1)
 		_res := createBucketIfNotExists(db, name)
 		return _res
 
@@ -87,8 +87,8 @@ func __delete_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 3:
 		db := ExtractBoltDB(_args, 0)
-		bucket := ExtractString(_args, 1)
-		key := ExtractString(_args, 2)
+		bucket := coretypes.ExtractString(_args, 1)
+		key := coretypes.ExtractString(_args, 2)
 		_res := delete(db, bucket, key)
 		return _res
 
@@ -106,7 +106,7 @@ func __delete_bucket_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		db := ExtractBoltDB(_args, 0)
-		name := ExtractString(_args, 1)
+		name := coretypes.ExtractString(_args, 1)
 		_res := deleteBucket(db, name)
 		return _res
 
@@ -124,8 +124,8 @@ func __get_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 3:
 		db := ExtractBoltDB(_args, 0)
-		bucket := ExtractString(_args, 1)
-		key := ExtractString(_args, 2)
+		bucket := coretypes.ExtractString(_args, 1)
+		key := coretypes.ExtractString(_args, 2)
 		_res := get(db, bucket, key)
 		return _res
 
@@ -143,7 +143,7 @@ func __next_sequence_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		db := ExtractBoltDB(_args, 0)
-		bucket := ExtractString(_args, 1)
+		bucket := coretypes.ExtractString(_args, 1)
 		_res := nextSequence(db, bucket)
 		return _res
 
@@ -160,8 +160,8 @@ func __open_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		filename := ExtractString(_args, 0)
-		mode := ExtractInt(_args, 1)
+		filename := coretypes.ExtractString(_args, 0)
+		mode := coretypes.ExtractInt(_args, 1)
 		_res := open(filename, mode)
 		return MakeBoltDB(_res)
 
@@ -179,9 +179,9 @@ func __put_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 4:
 		db := ExtractBoltDB(_args, 0)
-		bucket := ExtractString(_args, 1)
-		key := ExtractString(_args, 2)
-		value := ExtractString(_args, 3)
+		bucket := coretypes.ExtractString(_args, 1)
+		key := coretypes.ExtractString(_args, 2)
+		value := coretypes.ExtractString(_args, 3)
 		_res := put(db, bucket, key, value)
 		return _res
 

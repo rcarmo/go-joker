@@ -18957,38 +18957,6 @@ func registerHierarchyProcs() {
 
 // ---- procs.go ----
 
-func ExtractCallable(args []coretypes.Object, index int) coretypes.Callable {
-	return coretypes.EnsureArgIsCallable(args, index)
-}
-
-func ExtractObject(args []coretypes.Object, index int) coretypes.Object {
-	return args[index]
-}
-
-func ExtractString(args []coretypes.Object, index int) string {
-	return coretypes.EnsureArgIsString(args, index).S
-}
-
-func ExtractKeyword(args []coretypes.Object, index int) string {
-	return coretypes.EnsureArgIsKeyword(args, index).ToString(false)
-}
-
-func ExtractStringable(args []coretypes.Object, index int) string {
-	return coretypes.EnsureArgIsStringable(args, index).S
-}
-
-func ExtractStrings(args []coretypes.Object, index int) []string {
-	strs := make([]string, 0)
-	for i := index; i < len(args); i++ {
-		strs = append(strs, coretypes.EnsureArgIsString(args, i).S)
-	}
-	return strs
-}
-
-func ExtractInt(args []coretypes.Object, index int) int {
-	return coretypes.EnsureArgIsInt(args, index).I
-}
-
 func ExtractInteger(args []coretypes.Object, index int) int {
 	switch c := args[index].(type) {
 	case coretypes.Number:
@@ -18996,10 +18964,6 @@ func ExtractInteger(args []coretypes.Object, index int) int {
 	default:
 		panic(RT.NewArgTypeError(index, c, "coretypes.Number"))
 	}
-}
-
-func ExtractBoolean(args []coretypes.Object, index int) bool {
-	return coretypes.EnsureArgIsBoolean(args, index).B
 }
 
 func FailArg(obj coretypes.Object, typeName string, index int) *corert.EvalError {
@@ -19021,50 +18985,6 @@ func installAssertionErrors() {
 	coretypes.AssertionFailObject = func(obj coretypes.Object, typeName, pattern string) any {
 		return FailObject(obj, typeName, pattern)
 	}
-}
-
-func ExtractChar(args []coretypes.Object, index int) rune {
-	return coretypes.EnsureArgIsChar(args, index).Ch
-}
-
-func ExtractTime(args []coretypes.Object, index int) time.Time {
-	return coretypes.EnsureArgIsTime(args, index).T
-}
-
-func ExtractDouble(args []coretypes.Object, index int) float64 {
-	return coretypes.EnsureArgIsDouble(args, index).D
-}
-
-func ExtractNumber(args []coretypes.Object, index int) coretypes.Number {
-	return coretypes.EnsureArgIsNumber(args, index)
-}
-
-func ExtractBigInt(args []coretypes.Object, index int) *big.Int {
-	return coretypes.EnsureArgIsBigInt(args, index).B
-}
-
-func ExtractBigFloat(args []coretypes.Object, index int) *big.Float {
-	return coretypes.EnsureArgIsBigFloat(args, index).B
-}
-
-func ExtractRegex(args []coretypes.Object, index int) *regexp.Regexp {
-	return coretypes.EnsureArgIsRegex(args, index).R
-}
-
-func ExtractSeqable(args []coretypes.Object, index int) coretypes.Seqable {
-	return coretypes.EnsureArgIsSeqable(args, index)
-}
-
-func ExtractMap(args []coretypes.Object, index int) coretypes.Map {
-	return coretypes.EnsureArgIsMap(args, index)
-}
-
-func ExtractIOReader(args []coretypes.Object, index int) io.Reader {
-	return coretypes.EnsureArgIsio_Reader(args, index)
-}
-
-func ExtractIOWriter(args []coretypes.Object, index int) io.Writer {
-	return coretypes.EnsureArgIsio_Writer(args, index)
 }
 
 var procMeta = func(args []coretypes.Object) coretypes.Object {

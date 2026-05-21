@@ -36,7 +36,7 @@ func __add_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		t := ExtractTime(_args, 0)
+		t := coretypes.ExtractTime(_args, 0)
 		d := ExtractInteger(_args, 1)
 		_res := t.Add(time.Duration(d))
 		return coretypes.MakeTime(_res)
@@ -54,7 +54,7 @@ func __add_date_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 4:
-		t := ExtractTime(_args, 0)
+		t := coretypes.ExtractTime(_args, 0)
 		years := ExtractInteger(_args, 1)
 		months := ExtractInteger(_args, 2)
 		days := ExtractInteger(_args, 3)
@@ -74,7 +74,7 @@ func __day_of_year_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		t := ExtractTime(_args, 0)
+		t := coretypes.ExtractTime(_args, 0)
 		_res := t.YearDay()
 		return coretypes.MakeInt(_res)
 
@@ -91,8 +91,8 @@ func __format_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		t := ExtractTime(_args, 0)
-		layout := ExtractString(_args, 1)
+		t := coretypes.ExtractTime(_args, 0)
+		layout := coretypes.ExtractString(_args, 1)
 		_res := t.Format(layout)
 		return coretypes.MakeString(_res)
 
@@ -144,8 +144,8 @@ func __in_timezone_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		t := ExtractTime(_args, 0)
-		tz := ExtractString(_args, 1)
+		t := coretypes.ExtractTime(_args, 0)
+		tz := coretypes.ExtractString(_args, 1)
 		_res := inTimezone(t, tz)
 		return coretypes.MakeTime(_res)
 
@@ -195,8 +195,8 @@ func __parse_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		layout := ExtractString(_args, 0)
-		value := ExtractString(_args, 1)
+		layout := coretypes.ExtractString(_args, 0)
+		value := coretypes.ExtractString(_args, 1)
 		_res, err := time.Parse(layout, value)
 		PanicOnErr(err)
 		return coretypes.MakeTime(_res)
@@ -214,7 +214,7 @@ func __parse_duration_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		t, err := time.ParseDuration(s)
 		PanicOnErr(err)
 		_res := timeIntObject(int64(t))
@@ -233,9 +233,9 @@ func __parse_in_timezone_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
-		layout := ExtractString(_args, 0)
-		value := ExtractString(_args, 1)
-		tz := ExtractString(_args, 2)
+		layout := coretypes.ExtractString(_args, 0)
+		value := coretypes.ExtractString(_args, 1)
+		tz := coretypes.ExtractString(_args, 2)
 		_res := parseInTimezone(layout, value, tz)
 		return coretypes.MakeTime(_res)
 
@@ -287,7 +287,7 @@ func __since_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		t := ExtractTime(_args, 0)
+		t := coretypes.ExtractTime(_args, 0)
 		_res := timeIntObject(int64(time.Since(t)))
 		return _res
 
@@ -339,8 +339,8 @@ func __sub_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		t := ExtractTime(_args, 0)
-		u := ExtractTime(_args, 1)
+		t := coretypes.ExtractTime(_args, 0)
+		u := coretypes.ExtractTime(_args, 1)
 		_res := timeIntObject(int64(t.Sub(u)))
 		return _res
 
@@ -375,7 +375,7 @@ func __unix_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		t := ExtractTime(_args, 0)
+		t := coretypes.ExtractTime(_args, 0)
 		_res := timeIntObject(t.Unix())
 		return _res
 
@@ -392,7 +392,7 @@ func __until_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		t := ExtractTime(_args, 0)
+		t := coretypes.ExtractTime(_args, 0)
 		_res := timeIntObject(int64(time.Until(t)))
 		return _res
 

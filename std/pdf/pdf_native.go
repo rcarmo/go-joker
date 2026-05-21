@@ -62,7 +62,7 @@ func finitePDFNumber(v float64, name string) float64 {
 }
 
 func pdfNumber(obj coretypes.Object, name string) float64 {
-	return finitePDFNumber(ExtractDouble([]coretypes.Object{obj}, 0), name)
+	return finitePDFNumber(coretypes.ExtractDouble([]coretypes.Object{obj}, 0), name)
 }
 
 func positivePDFDimension(v float64, name string) float64 {
@@ -93,8 +93,8 @@ var procDocument ProcFn = func(args []coretypes.Object) coretypes.Object {
 			}
 			w, h = size.W, size.H
 		} else if len(args) >= 2 {
-			w = positivePDFDimension(ExtractDouble(args, 0), "width")
-			h = positivePDFDimension(ExtractDouble(args, 1), "height")
+			w = positivePDFDimension(coretypes.ExtractDouble(args, 0), "width")
+			h = positivePDFDimension(coretypes.ExtractDouble(args, 1), "height")
 		} else {
 			panic(RT.NewError("pdf: document expects a page-size keyword or width and height"))
 		}
@@ -117,8 +117,8 @@ var procPage ProcFn = func(args []coretypes.Object) coretypes.Object {
 var procFont ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 3)
 	d := extractDoc(args, 0)
-	name := ExtractString(args, 1)
-	size := positivePDFDimension(ExtractDouble(args, 2), "font size")
+	name := coretypes.ExtractString(args, 1)
+	size := positivePDFDimension(coretypes.ExtractDouble(args, 2), "font size")
 
 	// Check if font already added, if not try to add it
 	err := d.pdf.SetFont(name, "", int(size))
@@ -139,11 +139,11 @@ var procFont ProcFn = func(args []coretypes.Object) coretypes.Object {
 var procFontFile ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 3, 4)
 	d := extractDoc(args, 0)
-	name := ExtractString(args, 1)
-	path := ExtractString(args, 2)
+	name := coretypes.ExtractString(args, 1)
+	path := coretypes.ExtractString(args, 2)
 	size := 12.0
 	if len(args) > 3 {
-		size = positivePDFDimension(ExtractDouble(args, 3), "font size")
+		size = positivePDFDimension(coretypes.ExtractDouble(args, 3), "font size")
 	}
 	err := d.pdf.AddTTFFont(name, path)
 	if err != nil {
@@ -159,7 +159,7 @@ var procFontFile ProcFn = func(args []coretypes.Object) coretypes.Object {
 var procFontSize ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
-	size := positivePDFDimension(ExtractDouble(args, 1), "font size")
+	size := positivePDFDimension(coretypes.ExtractDouble(args, 1), "font size")
 	if err := d.pdf.SetFontSize(size); err != nil {
 		panic(RT.NewError("pdf/font-size: " + err.Error()))
 	}
@@ -173,7 +173,7 @@ var procText ProcFn = func(args []coretypes.Object) coretypes.Object {
 	d := extractDoc(args, 0)
 	x := pdfNumber(args[1], "text x")
 	y := pdfNumber(args[2], "text y")
-	text := ExtractString(args, 3)
+	text := coretypes.ExtractString(args, 3)
 	d.pdf.SetXY(x, y)
 	if err := d.pdf.Cell(nil, text); err != nil {
 		panic(RT.NewError("pdf/text: " + err.Error()))
@@ -186,8 +186,8 @@ var procTextWrap ProcFn = func(args []coretypes.Object) coretypes.Object {
 	d := extractDoc(args, 0)
 	x := pdfNumber(args[1], "text-wrap x")
 	y := pdfNumber(args[2], "text-wrap y")
-	w := positivePDFDimension(ExtractDouble(args, 3), "text width")
-	text := ExtractString(args, 4)
+	w := positivePDFDimension(coretypes.ExtractDouble(args, 3), "text width")
+	text := coretypes.ExtractString(args, 4)
 	d.pdf.SetXY(x, y)
 	rect := &gopdf.Rect{W: w, H: 0}
 	if err := d.pdf.MultiCell(rect, text); err != nil {
@@ -214,11 +214,11 @@ var procRect ProcFn = func(args []coretypes.Object) coretypes.Object {
 	d := extractDoc(args, 0)
 	x := pdfNumber(args[1], "rect x")
 	y := pdfNumber(args[2], "rect y")
-	w := positivePDFDimension(ExtractDouble(args, 3), "rect width")
-	h := positivePDFDimension(ExtractDouble(args, 4), "rect height")
+	w := positivePDFDimension(coretypes.ExtractDouble(args, 3), "rect width")
+	h := positivePDFDimension(coretypes.ExtractDouble(args, 4), "rect height")
 	style := "D" // draw border
 	if len(args) > 5 {
-		style = ExtractKeyword(args, 5)
+		style = coretypes.ExtractKeyword(args, 5)
 	}
 	d.pdf.RectFromUpperLeftWithStyle(x, y, w, h, style)
 	return args[0]
@@ -229,8 +229,8 @@ var procOval ProcFn = func(args []coretypes.Object) coretypes.Object {
 	d := extractDoc(args, 0)
 	x := pdfNumber(args[1], "oval x")
 	y := pdfNumber(args[2], "oval y")
-	rx := positivePDFDimension(ExtractDouble(args, 3), "oval rx")
-	ry := positivePDFDimension(ExtractDouble(args, 4), "oval ry")
+	rx := positivePDFDimension(coretypes.ExtractDouble(args, 3), "oval rx")
+	ry := positivePDFDimension(coretypes.ExtractDouble(args, 4), "oval ry")
 	d.pdf.Oval(x, y, rx, ry)
 	return args[0]
 }
@@ -278,7 +278,7 @@ var procFillColor ProcFn = func(args []coretypes.Object) coretypes.Object {
 var procLineWidth ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
-	w := positivePDFDimension(ExtractDouble(args, 1), "line width")
+	w := positivePDFDimension(coretypes.ExtractDouble(args, 1), "line width")
 	d.pdf.SetLineWidth(w)
 	return args[0]
 }
@@ -288,16 +288,16 @@ var procLineWidth ProcFn = func(args []coretypes.Object) coretypes.Object {
 var procImage ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 4, 6)
 	d := extractDoc(args, 0)
-	path := ExtractString(args, 1)
+	path := coretypes.ExtractString(args, 1)
 	x := pdfNumber(args[2], "image x")
 	y := pdfNumber(args[3], "image y")
 
 	opts := &gopdf.Rect{}
 	if len(args) > 4 {
-		opts.W = positivePDFDimension(ExtractDouble(args, 4), "image width")
+		opts.W = positivePDFDimension(coretypes.ExtractDouble(args, 4), "image width")
 	}
 	if len(args) > 5 {
-		opts.H = positivePDFDimension(ExtractDouble(args, 5), "image height")
+		opts.H = positivePDFDimension(coretypes.ExtractDouble(args, 5), "image height")
 	}
 
 	if err := d.pdf.Image(path, x, y, opts); err != nil {
@@ -334,11 +334,11 @@ var procGetY ProcFn = func(args []coretypes.Object) coretypes.Object {
 var procLink ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 6, 6)
 	d := extractDoc(args, 0)
-	url := ExtractString(args, 1)
+	url := coretypes.ExtractString(args, 1)
 	x := pdfNumber(args[2], "link x")
 	y := pdfNumber(args[3], "link y")
-	w := positivePDFDimension(ExtractDouble(args, 4), "link width")
-	h := positivePDFDimension(ExtractDouble(args, 5), "link height")
+	w := positivePDFDimension(coretypes.ExtractDouble(args, 4), "link width")
+	h := positivePDFDimension(coretypes.ExtractDouble(args, 5), "link height")
 	d.pdf.AddExternalLink(url, x, y, w, h)
 	return args[0]
 }
@@ -348,7 +348,7 @@ var procLink ProcFn = func(args []coretypes.Object) coretypes.Object {
 var procSave ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 2)
 	d := extractDoc(args, 0)
-	path := ExtractString(args, 1)
+	path := coretypes.ExtractString(args, 1)
 	err := d.pdf.WritePdf(path)
 	if err != nil {
 		panic(RT.NewError("pdf/save: " + err.Error()))
@@ -380,10 +380,10 @@ var procPageCount ProcFn = func(args []coretypes.Object) coretypes.Object {
 var procMargins ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 5, 5)
 	d := extractDoc(args, 0)
-	left := nonNegativePDFDimension(ExtractDouble(args, 1), "left margin")
-	top := nonNegativePDFDimension(ExtractDouble(args, 2), "top margin")
-	right := nonNegativePDFDimension(ExtractDouble(args, 3), "right margin")
-	bottom := nonNegativePDFDimension(ExtractDouble(args, 4), "bottom margin")
+	left := nonNegativePDFDimension(coretypes.ExtractDouble(args, 1), "left margin")
+	top := nonNegativePDFDimension(coretypes.ExtractDouble(args, 2), "top margin")
+	right := nonNegativePDFDimension(coretypes.ExtractDouble(args, 3), "right margin")
+	bottom := nonNegativePDFDimension(coretypes.ExtractDouble(args, 4), "bottom margin")
 	d.pdf.SetMargins(left, top, right, bottom)
 	return args[0]
 }

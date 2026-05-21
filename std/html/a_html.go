@@ -15,7 +15,7 @@ func __escape_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := html.EscapeString(s)
 		return coretypes.MakeString(_res)
 
@@ -32,7 +32,7 @@ func __unescape_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := html.UnescapeString(s)
 		return coretypes.MakeString(_res)
 

@@ -15,7 +15,7 @@ func __parse_query_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := parseQuery(s)
 		return _res
 
@@ -32,7 +32,7 @@ func __path_escape_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := url.PathEscape(s)
 		return coretypes.MakeString(_res)
 
@@ -49,7 +49,7 @@ func __path_unescape_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := pathUnescape(s)
 		return coretypes.MakeString(_res)
 
@@ -66,7 +66,7 @@ func __query_escape_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := url.QueryEscape(s)
 		return coretypes.MakeString(_res)
 
@@ -83,7 +83,7 @@ func __query_unescape_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := queryUnescape(s)
 		return coretypes.MakeString(_res)
 

@@ -15,13 +15,13 @@ func __csv_seq_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		rdr := ExtractObject(_args, 0)
+		rdr := coretypes.ExtractObject(_args, 0)
 		_res := csvSeqOpts(rdr, corecollections.EmptyArrayMap())
 		return _res
 
 	case _c == 2:
-		rdr := ExtractObject(_args, 0)
-		opts := ExtractMap(_args, 1)
+		rdr := coretypes.ExtractObject(_args, 0)
+		opts := coretypes.ExtractMap(_args, 1)
 		_res := csvSeqOpts(rdr, opts)
 		return _res
 
@@ -38,15 +38,15 @@ func __write_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		f := ExtractIOWriter(_args, 0)
-		data := ExtractSeqable(_args, 1)
+		f := coretypes.ExtractIOWriter(_args, 0)
+		data := coretypes.ExtractSeqable(_args, 1)
 		_res := write(f, data, corecollections.EmptyArrayMap())
 		return _res
 
 	case _c == 3:
-		f := ExtractIOWriter(_args, 0)
-		data := ExtractSeqable(_args, 1)
-		opts := ExtractMap(_args, 2)
+		f := coretypes.ExtractIOWriter(_args, 0)
+		data := coretypes.ExtractSeqable(_args, 1)
+		opts := coretypes.ExtractMap(_args, 2)
 		_res := write(f, data, opts)
 		return _res
 
@@ -63,13 +63,13 @@ func __write_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		data := ExtractSeqable(_args, 0)
+		data := coretypes.ExtractSeqable(_args, 0)
 		_res := writeString(data, corecollections.EmptyArrayMap())
 		return coretypes.MakeString(_res)
 
 	case _c == 2:
-		data := ExtractSeqable(_args, 0)
-		opts := ExtractMap(_args, 1)
+		data := coretypes.ExtractSeqable(_args, 0)
+		opts := coretypes.ExtractMap(_args, 1)
 		_res := writeString(data, opts)
 		return coretypes.MakeString(_res)
 

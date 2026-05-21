@@ -14,7 +14,7 @@ func __decode_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := decodeString(s)
 		return coretypes.MakeString(_res)
 
@@ -31,7 +31,7 @@ func __encode_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := encodeString(s)
 		return coretypes.MakeString(_res)
 

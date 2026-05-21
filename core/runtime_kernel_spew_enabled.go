@@ -21,7 +21,7 @@ func init() {
 		}()
 		scs := spew.NewDefaultConfig()
 		if len(args) > 1 {
-			m := ExtractMap(args, 1)
+			m := coretypes.ExtractMap(args, 1)
 			if yes, k := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "Indent")); yes {
 				scs.Indent = k.(coretypes.Native).Native().(string)
 			}

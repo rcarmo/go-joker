@@ -14,13 +14,13 @@ func __convert_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := convertString(s)
 		return coretypes.MakeString(_res)
 
 	case _c == 2:
-		s := ExtractString(_args, 0)
-		opts := ExtractMap(_args, 1)
+		s := coretypes.ExtractString(_args, 0)
+		opts := coretypes.ExtractMap(_args, 1)
 		_res := convertStringOpts(s, opts)
 		return coretypes.MakeString(_res)
 

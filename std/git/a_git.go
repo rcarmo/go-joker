@@ -15,8 +15,8 @@ func __add_commit_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 3:
 		repo := ExtractGitRepo(_args, 0)
-		msg := ExtractString(_args, 1)
-		opts := ExtractMap(_args, 2)
+		msg := coretypes.ExtractString(_args, 1)
+		opts := coretypes.ExtractMap(_args, 2)
 		_res := addCommit(repo, msg, opts)
 		return coretypes.MakeString(_res)
 
@@ -34,7 +34,7 @@ func __add_path_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		repo := ExtractGitRepo(_args, 0)
-		path := ExtractString(_args, 1)
+		path := coretypes.ExtractString(_args, 1)
 		_res := addPath(repo, path)
 		return coretypes.MakeString(_res)
 
@@ -52,7 +52,7 @@ func __commit_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		repo := ExtractGitRepo(_args, 0)
-		hash := ExtractString(_args, 1)
+		hash := coretypes.ExtractString(_args, 1)
 		_res := findCommit(repo, hash)
 		return _res
 
@@ -104,7 +104,7 @@ func __log_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		repo := ExtractGitRepo(_args, 0)
-		opts := ExtractMap(_args, 1)
+		opts := coretypes.ExtractMap(_args, 1)
 		_res := log(repo, opts)
 		return _res
 
@@ -122,7 +122,7 @@ func __object_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		repo := ExtractGitRepo(_args, 0)
-		hash := ExtractString(_args, 1)
+		hash := coretypes.ExtractString(_args, 1)
 		_res := findObject(repo, hash)
 		return _res
 
@@ -139,7 +139,7 @@ func __open_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res := open(path)
 		return MakeGitRepo(_res)
 
@@ -157,8 +157,8 @@ func __ref_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 3:
 		repo := ExtractGitRepo(_args, 0)
-		name := ExtractString(_args, 1)
-		resolved := ExtractBoolean(_args, 2)
+		name := coretypes.ExtractString(_args, 1)
+		resolved := coretypes.ExtractBoolean(_args, 2)
 		_res := ref(repo, name, resolved)
 		return _res
 
@@ -176,7 +176,7 @@ func __resolve_revision_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		repo := ExtractGitRepo(_args, 0)
-		revision := ExtractString(_args, 1)
+		revision := coretypes.ExtractString(_args, 1)
 		_res := resolveRevision(repo, revision)
 		return coretypes.MakeString(_res)
 

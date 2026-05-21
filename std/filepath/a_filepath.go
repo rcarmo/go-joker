@@ -20,7 +20,7 @@ func __abs_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res, err := filepath.Abs(path)
 		PanicOnErr(err)
 		return coretypes.MakeString(_res)
@@ -38,7 +38,7 @@ func __isabs_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res := filepath.IsAbs(path)
 		return coretypes.MakeBoolean(_res)
 
@@ -55,7 +55,7 @@ func __base_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res := filepath.Base(path)
 		return coretypes.MakeString(_res)
 
@@ -72,7 +72,7 @@ func __clean_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res := filepath.Clean(path)
 		return coretypes.MakeString(_res)
 
@@ -89,7 +89,7 @@ func __dir_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res := filepath.Dir(path)
 		return coretypes.MakeString(_res)
 
@@ -106,7 +106,7 @@ func __eval_symlinks_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res, err := filepath.EvalSymlinks(path)
 		PanicOnErr(err)
 		return coretypes.MakeString(_res)
@@ -124,7 +124,7 @@ func __ext_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res := filepath.Ext(path)
 		return coretypes.MakeString(_res)
 
@@ -141,7 +141,7 @@ func __file_seq_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		root := ExtractString(_args, 0)
+		root := coretypes.ExtractString(_args, 0)
 		_res := fileSeq(root)
 		return _res
 
@@ -158,7 +158,7 @@ func __from_slash_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res := filepath.FromSlash(path)
 		return coretypes.MakeString(_res)
 
@@ -175,7 +175,7 @@ func __glob_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		pattern := ExtractString(_args, 0)
+		pattern := coretypes.ExtractString(_args, 0)
 		_res, err := filepath.Glob(pattern)
 		PanicOnErr(err)
 		return corert.MakeStringVector(_res)
@@ -194,7 +194,7 @@ func __join_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case true:
 		CheckArity(_args, 0, 999)
-		elems := ExtractStrings(_args, 0)
+		elems := coretypes.ExtractStrings(_args, 0)
 		_res := filepath.Join(elems...)
 		return coretypes.MakeString(_res)
 
@@ -211,8 +211,8 @@ func __ismatches_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		pattern := ExtractString(_args, 0)
-		name := ExtractString(_args, 1)
+		pattern := coretypes.ExtractString(_args, 0)
+		name := coretypes.ExtractString(_args, 1)
 		_res, err := filepath.Match(pattern, name)
 		PanicOnErr(err)
 		return coretypes.MakeBoolean(_res)
@@ -230,8 +230,8 @@ func __rel_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		basepath := ExtractString(_args, 0)
-		targpath := ExtractString(_args, 1)
+		basepath := coretypes.ExtractString(_args, 0)
+		targpath := coretypes.ExtractString(_args, 1)
 		_res, err := filepath.Rel(basepath, targpath)
 		PanicOnErr(err)
 		return coretypes.MakeString(_res)
@@ -249,7 +249,7 @@ func __split_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_dir, _file := filepath.Split(path)
 		_res := corecollections.NewVectorFrom(coretypes.MakeString(_dir), coretypes.MakeString(_file))
 		return _res
@@ -267,7 +267,7 @@ func __split_list_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res := filepath.SplitList(path)
 		return corert.MakeStringVector(_res)
 
@@ -284,7 +284,7 @@ func __to_slash_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res := filepath.ToSlash(path)
 		return coretypes.MakeString(_res)
 
@@ -301,7 +301,7 @@ func __volume_name_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		path := ExtractString(_args, 0)
+		path := coretypes.ExtractString(_args, 0)
 		_res := filepath.VolumeName(path)
 		return coretypes.MakeString(_res)
 

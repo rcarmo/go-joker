@@ -15,7 +15,7 @@ func __decode_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		t, err := hex.DecodeString(s)
 		PanicOnErr(err)
 		_res := string(t)
@@ -34,7 +34,7 @@ func __encode_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := hex.EncodeToString([]byte(s))
 		return coretypes.MakeString(_res)
 

@@ -15,13 +15,13 @@ func __json_seq_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		rdr := ExtractObject(_args, 0)
+		rdr := coretypes.ExtractObject(_args, 0)
 		_res := jsonSeqOpts(rdr, corecollections.EmptyArrayMap())
 		return _res
 
 	case _c == 2:
-		rdr := ExtractObject(_args, 0)
-		opts := ExtractMap(_args, 1)
+		rdr := coretypes.ExtractObject(_args, 0)
+		opts := coretypes.ExtractMap(_args, 1)
 		_res := jsonSeqOpts(rdr, opts)
 		return _res
 
@@ -38,13 +38,13 @@ func __read_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := readString(s, nil)
 		return _res
 
 	case _c == 2:
-		s := ExtractString(_args, 0)
-		opts := ExtractMap(_args, 1)
+		s := coretypes.ExtractString(_args, 0)
+		opts := coretypes.ExtractMap(_args, 1)
 		_res := readString(s, opts)
 		return _res
 
@@ -61,13 +61,13 @@ func __write_string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		v := ExtractObject(_args, 0)
+		v := coretypes.ExtractObject(_args, 0)
 		_res := writeString(v, corecollections.EmptyArrayMap())
 		return _res
 
 	case _c == 2:
-		v := ExtractObject(_args, 0)
-		opts := ExtractMap(_args, 1)
+		v := coretypes.ExtractObject(_args, 0)
+		opts := coretypes.ExtractMap(_args, 1)
 		_res := writeString(v, opts)
 		return _res
 

@@ -15,7 +15,7 @@ func __atoi_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res, err := strconv.Atoi(s)
 		PanicOnErr(err)
 		return coretypes.MakeInt(_res)
@@ -33,7 +33,7 @@ func __iscan_backquote_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := strconv.CanBackquote(s)
 		return coretypes.MakeBoolean(_res)
 
@@ -50,7 +50,7 @@ func __format_bool_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		b := ExtractBoolean(_args, 0)
+		b := coretypes.ExtractBoolean(_args, 0)
 		_res := strconv.FormatBool(b)
 		return coretypes.MakeString(_res)
 
@@ -67,10 +67,10 @@ func __format_double_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 4:
-		f := ExtractDouble(_args, 0)
-		fmt := ExtractChar(_args, 1)
-		prec := ExtractInt(_args, 2)
-		bitSize := ExtractInt(_args, 3)
+		f := coretypes.ExtractDouble(_args, 0)
+		fmt := coretypes.ExtractChar(_args, 1)
+		prec := coretypes.ExtractInt(_args, 2)
+		bitSize := coretypes.ExtractInt(_args, 3)
 		_res := strconv.FormatFloat(f, byte(fmt), prec, bitSize)
 		return coretypes.MakeString(_res)
 
@@ -87,8 +87,8 @@ func __format_int_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		i := ExtractInt(_args, 0)
-		base := ExtractInt(_args, 1)
+		i := coretypes.ExtractInt(_args, 0)
+		base := coretypes.ExtractInt(_args, 1)
 		_res := strconv.FormatInt(int64(i), base)
 		return coretypes.MakeString(_res)
 
@@ -105,7 +105,7 @@ func __isgraphic_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		c := ExtractChar(_args, 0)
+		c := coretypes.ExtractChar(_args, 0)
 		_res := strconv.IsGraphic(c)
 		return coretypes.MakeBoolean(_res)
 
@@ -122,7 +122,7 @@ func __itoa_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		i := ExtractInt(_args, 0)
+		i := coretypes.ExtractInt(_args, 0)
 		_res := strconv.Itoa(i)
 		return coretypes.MakeString(_res)
 
@@ -139,7 +139,7 @@ func __parse_bool_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res, err := strconv.ParseBool(s)
 		PanicOnErr(err)
 		return coretypes.MakeBoolean(_res)
@@ -157,7 +157,7 @@ func __parse_double_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res, err := strconv.ParseFloat(s, 64)
 		PanicOnErr(err)
 		return coretypes.MakeDouble(_res)
@@ -175,9 +175,9 @@ func __parse_int_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 3:
-		s := ExtractString(_args, 0)
-		base := ExtractInt(_args, 1)
-		bitSize := ExtractInt(_args, 2)
+		s := coretypes.ExtractString(_args, 0)
+		base := coretypes.ExtractInt(_args, 1)
+		bitSize := coretypes.ExtractInt(_args, 2)
 		t, err := strconv.ParseInt(s, base, bitSize)
 		PanicOnErr(err)
 		_res := strconvIntObject(t)
@@ -196,7 +196,7 @@ func __isprintable_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		c := ExtractChar(_args, 0)
+		c := coretypes.ExtractChar(_args, 0)
 		_res := strconv.IsPrint(c)
 		return coretypes.MakeBoolean(_res)
 
@@ -213,7 +213,7 @@ func __quote_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := strconv.Quote(s)
 		return coretypes.MakeString(_res)
 
@@ -230,7 +230,7 @@ func __quote_char_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		c := ExtractChar(_args, 0)
+		c := coretypes.ExtractChar(_args, 0)
 		_res := strconv.QuoteRune(c)
 		return coretypes.MakeString(_res)
 
@@ -247,7 +247,7 @@ func __quote_char_to_ascii_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		c := ExtractChar(_args, 0)
+		c := coretypes.ExtractChar(_args, 0)
 		_res := strconv.QuoteRuneToASCII(c)
 		return coretypes.MakeString(_res)
 
@@ -264,7 +264,7 @@ func __quote_char_to_graphic_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		c := ExtractChar(_args, 0)
+		c := coretypes.ExtractChar(_args, 0)
 		_res := strconv.QuoteRuneToGraphic(c)
 		return coretypes.MakeString(_res)
 
@@ -281,7 +281,7 @@ func __quote_to_ascii_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := strconv.QuoteToASCII(s)
 		return coretypes.MakeString(_res)
 
@@ -298,7 +298,7 @@ func __quote_to_graphic_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res := strconv.QuoteToGraphic(s)
 		return coretypes.MakeString(_res)
 
@@ -315,7 +315,7 @@ func __unquote_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := coretypes.ExtractString(_args, 0)
 		_res, err := strconv.Unquote(s)
 		PanicOnErr(err)
 		return coretypes.MakeString(_res)

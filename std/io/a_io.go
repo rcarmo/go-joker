@@ -15,7 +15,7 @@ func __close_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		f := ExtractObject(_args, 0)
+		f := coretypes.ExtractObject(_args, 0)
 		_res := close(f)
 		return _res
 
@@ -32,8 +32,8 @@ func __copy_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		dst := ExtractIOWriter(_args, 0)
-		src := ExtractIOReader(_args, 1)
+		dst := coretypes.ExtractIOWriter(_args, 0)
+		src := coretypes.ExtractIOReader(_args, 1)
 		n, err := io.Copy(dst, src)
 		PanicOnErr(err)
 		_res := copyCountObject(n)
@@ -68,8 +68,8 @@ func __read_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		r := ExtractIOReader(_args, 0)
-		n := ExtractInt(_args, 1)
+		r := coretypes.ExtractIOReader(_args, 0)
+		n := coretypes.ExtractInt(_args, 1)
 		_res := read(r, n)
 		return coretypes.MakeString(_res)
 
