@@ -790,7 +790,7 @@ func NewEnv() *Env {
 	res.stderr = res.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, "*err*"))
 	res.file = res.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, "*file*"))
 	res.MainFile = res.CoreNamespace.Intern(coretypes.MakeSymbol(STRINGS.Intern, "*main-file*"))
-	res.version = res.CoreNamespace.InternVar("*joker-version*", versionMap(),
+	res.version = res.CoreNamespace.InternVar("*joker-version*", corert.VersionMap(STRINGS.Intern),
 		MakeMeta(nil, `The version info for Clojure core, as a map containing :major :minor
 			:incremental and :qualifier keys. Feature releases may increment
 			:minor and/or :major, bugfix releases will increment :incremental.`, "1.0"))

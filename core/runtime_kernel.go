@@ -17139,15 +17139,6 @@ type (
 	}
 )
 
-func versionMap() coretypes.Map {
-	res := corecollections.EmptyArrayMap()
-	major, minor, incremental := corestr.ParseVersionTriplet(corert.VERSION)
-	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "major"), coretypes.Int{I: int(major)})
-	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "minor"), coretypes.Int{I: int(minor)})
-	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "incremental"), coretypes.Int{I: int(incremental)})
-	return res
-}
-
 func (env *Env) SetEnvArgs(newArgs []string) {
 	args := corecollections.EmptyArrayVector()
 	for _, arg := range newArgs {
