@@ -858,7 +858,7 @@ func (doExpr *DoExpr) Eval(env *LocalEnv) coretypes.Object {
 }
 
 func (expr *IfExpr) Eval(env *LocalEnv) coretypes.Object {
-	if ToBool(Eval(expr.cond, env)) {
+	if corert.ToBool(Eval(expr.cond, env)) {
 		return Eval(expr.positive, env)
 	}
 	return Eval(expr.negative, env)
@@ -1097,7 +1097,7 @@ loop:
 func evalTailExpr(expr Expr, env *LocalEnv, self *Fn) coretypes.Object {
 	switch e := expr.(type) {
 	case *IfExpr:
-		if ToBool(Eval(e.cond, env)) {
+		if corert.ToBool(Eval(e.cond, env)) {
 			return evalTailExpr(e.positive, env, self)
 		}
 		return evalTailExpr(e.negative, env, self)
@@ -2754,7 +2754,7 @@ func walkReducibleRangePipeline(p reducibleRangePipeline, emit func(coretypes.Ob
 					} else {
 						alive = false
 					}
-				} else if !ToBool(call1(step.fn, v)) {
+				} else if !corert.ToBool(call1(step.fn, v)) {
 					alive = false
 				}
 			case reducibleTake:
@@ -2911,7 +2911,7 @@ func (s *FilteringSeq) Cons(obj coretypes.Object) coretypes.Seq {
 func (s *FilteringSeq) nextSeq() coretypes.Seq {
 	cur := s.seq
 	for !cur.IsEmpty() {
-		if ToBool(call1(s.pred, cur.First())) {
+		if corert.ToBool(call1(s.pred, cur.First())) {
 			return cur
 		}
 		cur = cur.Rest()
@@ -2923,12 +2923,12 @@ func (s *FilteringSeq) Reduce(f coretypes.Callable) coretypes.Object {
 	cur := s.seq
 	for !cur.IsEmpty() {
 		v := cur.First()
-		if ToBool(call1(s.pred, v)) {
+		if corert.ToBool(call1(s.pred, v)) {
 			acc := v
 			cur = cur.Rest()
 			for !cur.IsEmpty() {
 				v = cur.First()
-				if ToBool(call1(s.pred, v)) {
+				if corert.ToBool(call1(s.pred, v)) {
 					acc = call2(f, acc, v)
 					if corert.IsReduced(acc) {
 						return corert.DerefReduced(acc)
@@ -2948,7 +2948,7 @@ func (s *FilteringSeq) ReduceInit(f coretypes.Callable, init coretypes.Object) c
 	cur := s.seq
 	for !cur.IsEmpty() {
 		v := cur.First()
-		if ToBool(call1(s.pred, v)) {
+		if corert.ToBool(call1(s.pred, v)) {
 			acc = call2(f, acc, v)
 			if corert.IsReduced(acc) {
 				return corert.DerefReduced(acc)
@@ -3055,7 +3055,7 @@ func chunkedFilterSeq(pred coretypes.Callable, src coretypes.Seq) coretypes.Seq 
 		buf := make([]coretypes.Object, 0, 32)
 		for len(buf) < 32 && !cur.IsEmpty() {
 			v := cur.First()
-			if ToBool(call1(pred, v)) {
+			if corert.ToBool(call1(pred, v)) {
 				buf = append(buf, v)
 			}
 			cur = cur.Rest()
@@ -3765,7 +3765,7 @@ func buildXFormRF(steps []xformStep, rf coretypes.Callable) coretypes.Callable {
 				case 1:
 					return downstream.Call(callArgs)
 				case 2:
-					if ToBool(call1(pred, callArgs[1])) {
+					if corert.ToBool(call1(pred, callArgs[1])) {
 						return downstream.Call(callArgs)
 					}
 					return callArgs[0]
@@ -3958,7 +3958,7 @@ func applyXFormFilterStep(step xformStep, val coretypes.Object) bool {
 		}
 		return false
 	}
-	return ToBool(call1(step.fn, val))
+	return corert.ToBool(call1(step.fn, val))
 }
 
 func reduceStepFast(rf coretypes.Callable, acc coretypes.Object, val coretypes.Object) coretypes.Object {
@@ -4985,10 +4985,10 @@ func updateVar(vr *Var, info *coretypes.ObjectInfo, valueExpr Expr, sym coretype
 	meta := sym.GetMeta()
 	if meta != nil {
 		if ok, p := meta.Get(KEYWORDS.private); ok {
-			vr.isPrivate = ToBool(p)
+			vr.isPrivate = corert.ToBool(p)
 		}
 		if ok, p := meta.Get(KEYWORDS.dynamic); ok {
-			vr.isDynamic = ToBool(p)
+			vr.isDynamic = corert.ToBool(p)
 		}
 		vr.taggedType = getTaggedType(sym)
 	}
@@ -5367,7 +5367,7 @@ func parseLetfn(obj coretypes.Object, ctx *ParseContext) *LoopExpr {
 func isSkipUnused(obj coretypes.Meta) bool {
 	if m := obj.GetMeta(); m != nil {
 		if ok, v := m.Get(KEYWORDS.skipUnused); ok {
-			return ToBool(v)
+			return corert.ToBool(v)
 		}
 	}
 	return false
@@ -16769,17 +16769,6 @@ func maybeNewLine(w io.Writer, obj, nextObj coretypes.Object, baseIndent, curren
 	return currentIndent + 1
 }
 
-func ToBool(obj coretypes.Object) bool {
-	switch obj := obj.(type) {
-	case Nil:
-		return false
-	case coretypes.Boolean:
-		return obj.B
-	default:
-		return true
-	}
-}
-
 // ---- root_object_support.go ----
 func EnsureObjectIsNamespace(obj coretypes.Object, pattern string) *Namespace {
 	if c, yes := obj.(*Namespace); yes {
@@ -20050,7 +20039,7 @@ var procChar = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procBoolean = func(args []coretypes.Object) coretypes.Object {
-	return coretypes.Boolean{B: ToBool(args[0])}
+	return coretypes.Boolean{B: corert.ToBool(args[0])}
 }
 
 var procNumerator = func(args []coretypes.Object) coretypes.Object {
@@ -20342,7 +20331,7 @@ var procPprint = func(args []coretypes.Object) coretypes.Object {
 }
 
 func PrintObject(obj coretypes.Object, w io.Writer) {
-	printReadably := ToBool(GLOBAL_ENV.printReadably.Value)
+	printReadably := corert.ToBool(GLOBAL_ENV.printReadably.Value)
 	switch obj := obj.(type) {
 	case coretypes.Printer:
 		obj.Print(w, printReadably)
@@ -20646,7 +20635,7 @@ var procSpit = func(args []coretypes.Object) coretypes.Object {
 	opts := coretypes.EnsureArgIsMap(args, 2)
 	appendFile := false
 	if ok, append := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "append")); ok {
-		appendFile = ToBool(append)
+		appendFile = corert.ToBool(append)
 	}
 	switch f := f.(type) {
 	case coretypes.String:
@@ -20820,7 +20809,7 @@ var procLibPath = func(args []coretypes.Object) coretypes.Object {
 var procInternFakeVar = func(args []coretypes.Object) coretypes.Object {
 	nsSym := coretypes.EnsureArgIsSymbol(args, 0)
 	sym := coretypes.EnsureArgIsSymbol(args, 1)
-	isMacro := ToBool(args[2])
+	isMacro := corert.ToBool(args[2])
 	res := InternFakeSymbol(GLOBAL_ENV.FindNamespace(nsSym), sym)
 	res.isMacro = isMacro
 	return res
@@ -21345,13 +21334,13 @@ func ReadConfig(filename string, workingDir string) {
 			return
 		}
 		if ok, v := m.Get(KEYWORDS.ifWithoutElse); ok {
-			WARNINGS.ifWithoutElse = ToBool(v)
+			WARNINGS.ifWithoutElse = corert.ToBool(v)
 		}
 		if ok, v := m.Get(KEYWORDS.unusedFnParameters); ok {
-			WARNINGS.unusedFnParameters = ToBool(v)
+			WARNINGS.unusedFnParameters = corert.ToBool(v)
 		}
 		if ok, v := m.Get(KEYWORDS.fnWithEmptyBody); ok {
-			WARNINGS.fnWithEmptyBody = ToBool(v)
+			WARNINGS.fnWithEmptyBody = corert.ToBool(v)
 		}
 	}
 	if ok, valid := configMap.Get(KEYWORDS.validIdent); ok {
@@ -21499,7 +21488,7 @@ func validateAtom(a *corert.Atom, newVal coretypes.Object) {
 		return
 	}
 	result := call1(ext.validator, newVal)
-	if !ToBool(result) {
+	if !corert.ToBool(result) {
 		panic(coretypes.RuntimeError("Invalid reference state"))
 	}
 }
@@ -21526,7 +21515,7 @@ func registerAtomExtProcs() {
 			fn := coretypes.EnsureObjectIsCallable(args[1], "validator must be a function, got %s")
 			// Validate current value
 			result := call1(fn, a.Deref())
-			if !ToBool(result) {
+			if !corert.ToBool(result) {
 				panic(coretypes.RuntimeError("Invalid reference state"))
 			}
 			ext.validator = fn
@@ -22179,7 +22168,7 @@ func registerSortedCollProcs() {
 			meta := m.GetMeta()
 			if meta != nil {
 				if ok, v := meta.Get(coretypes.MakeKeyword(STRINGS.Intern, "sorted")); ok {
-					return coretypes.MakeBoolean(ToBool(v))
+					return coretypes.MakeBoolean(corert.ToBool(v))
 				}
 			}
 		}
@@ -22207,10 +22196,10 @@ func registerSortedCollProcs() {
 		pred := coretypes.EnsureArgIsCallable(args, 0)
 		return Proc{Name: "procComparatorFn", Fn: func(cArgs []coretypes.Object) coretypes.Object {
 			runtimeCheckArity(cArgs, 2, 2)
-			if ToBool(pred.Call(cArgs)) {
+			if corert.ToBool(pred.Call(cArgs)) {
 				return coretypes.Int{I: -1}
 			}
-			if ToBool(call2(pred, cArgs[1], cArgs[0])) {
+			if corert.ToBool(call2(pred, cArgs[1], cArgs[0])) {
 				return coretypes.Int{I: 1}
 			}
 			return coretypes.Int{I: 0}
@@ -22334,7 +22323,7 @@ func isSortedColl(coll coretypes.Object) bool {
 		return false
 	}
 	ok, v := m.GetMeta().Get(coretypes.MakeKeyword(STRINGS.Intern, "sorted"))
-	return ok && ToBool(v)
+	return ok && corert.ToBool(v)
 }
 
 func rangeKey(entry coretypes.Object) coretypes.Object {
@@ -22357,7 +22346,7 @@ func rangePred(pred coretypes.Callable, a, b coretypes.Object) bool {
 			return compareObjects(a, b) >= 0
 		}
 	}
-	return ToBool(call2(pred, a, b))
+	return corert.ToBool(call2(pred, a, b))
 }
 
 // compareObjects provides a default ordering for Clojure values.
@@ -23035,7 +23024,7 @@ func procAsyncToChan(args []coretypes.Object) coretypes.Object {
 	ch := corert.NewObjectChannel(make(chan corert.FutureResult, 0))
 	closeOut := true
 	if len(args) == 2 {
-		closeOut = ToBool(args[1])
+		closeOut = corert.ToBool(args[1])
 	}
 	seq := coretypes.EnsureObjectIsSeqable(args[0], "to-chan requires seqable").Seq()
 	go func() {
@@ -23059,7 +23048,7 @@ func procAsyncOntoChan(args []coretypes.Object) coretypes.Object {
 	seq := coretypes.EnsureObjectIsSeqable(args[1], "onto-chan requires seqable").Seq()
 	closeOut := true
 	if len(args) == 3 {
-		closeOut = ToBool(args[2])
+		closeOut = corert.ToBool(args[2])
 	}
 	go func() {
 		registerGoroutineRT()
@@ -23081,7 +23070,7 @@ func procAsyncPipe(args []coretypes.Object) coretypes.Object {
 	from, to := channelFromArg(args, 0), channelFromArg(args, 1)
 	closeOut := true
 	if len(args) == 3 {
-		closeOut = ToBool(args[2])
+		closeOut = corert.ToBool(args[2])
 	}
 	go func() {
 		registerGoroutineRT()
@@ -23141,7 +23130,7 @@ func procAsyncSplit(args []coretypes.Object) coretypes.Object {
 				f.Close()
 				return
 			}
-			if ToBool(call1(pred, v)) {
+			if corert.ToBool(call1(pred, v)) {
 				asyncSend(t, v)
 			} else {
 				asyncSend(f, v)
@@ -23182,7 +23171,7 @@ func procAsyncFilterFrom(args []coretypes.Object) coretypes.Object {
 				out.Close()
 				return
 			}
-			if ToBool(call1(pred, v)) {
+			if corert.ToBool(call1(pred, v)) {
 				asyncSend(out, v)
 			}
 		}
@@ -23220,7 +23209,7 @@ func procAsyncFilterTo(args []coretypes.Object) coretypes.Object {
 				ch.Close()
 				return
 			}
-			if ToBool(call1(pred, v)) {
+			if corert.ToBool(call1(pred, v)) {
 				asyncSend(ch, v)
 			}
 		}
@@ -23342,7 +23331,7 @@ func procAsyncTap(args []coretypes.Object) coretypes.Object {
 	ch := channelFromArg(args, 1)
 	closep := true
 	if len(args) == 3 {
-		closep = ToBool(args[2])
+		closep = corert.ToBool(args[2])
 	}
 	m.mu.Lock()
 	m.taps[ch] = closep
