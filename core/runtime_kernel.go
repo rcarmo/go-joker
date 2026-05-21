@@ -16541,14 +16541,6 @@ func charToStringObjectFast(ch rune) coretypes.Object {
 	return coretypes.String{S: corestr.String(ch)}
 }
 
-func MakeStringVector(ss []string) *corecollections.ArrayVector {
-	res := corecollections.EmptyArrayVector()
-	for _, s := range ss {
-		res.Append(coretypes.MakeString(s))
-	}
-	return res
-}
-
 func IsSymbol(obj coretypes.Object) bool {
 	switch obj.(type) {
 	case coretypes.Symbol:
