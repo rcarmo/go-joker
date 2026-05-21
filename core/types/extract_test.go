@@ -10,6 +10,9 @@ func TestExtractHelpers(t *testing.T) {
 	if got := ExtractInt(args, 1); got != 3 {
 		t.Fatalf("ExtractInt = %d, want 3", got)
 	}
+	if got := ExtractInteger(args, 1); got != 3 {
+		t.Fatalf("ExtractInteger = %d, want 3", got)
+	}
 	if got := ExtractBoolean(args, 2); !got {
 		t.Fatal("ExtractBoolean = false, want true")
 	}

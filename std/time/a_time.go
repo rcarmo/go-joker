@@ -37,7 +37,7 @@ func __add_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 2:
 		t := coretypes.ExtractTime(_args, 0)
-		d := ExtractInteger(_args, 1)
+		d := coretypes.ExtractInteger(_args, 1)
 		_res := t.Add(time.Duration(d))
 		return coretypes.MakeTime(_res)
 
@@ -55,9 +55,9 @@ func __add_date_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 4:
 		t := coretypes.ExtractTime(_args, 0)
-		years := ExtractInteger(_args, 1)
-		months := ExtractInteger(_args, 2)
-		days := ExtractInteger(_args, 3)
+		years := coretypes.ExtractInteger(_args, 1)
+		months := coretypes.ExtractInteger(_args, 2)
+		days := coretypes.ExtractInteger(_args, 3)
 		_res := t.AddDate(years, months, days)
 		return coretypes.MakeTime(_res)
 
@@ -109,8 +109,8 @@ func __from_unix_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		sec := ExtractInteger(_args, 0)
-		nsec := ExtractInteger(_args, 1)
+		sec := coretypes.ExtractInteger(_args, 0)
+		nsec := coretypes.ExtractInteger(_args, 1)
 		_res := time.Unix(int64(sec), int64(nsec))
 		return coretypes.MakeTime(_res)
 
@@ -127,7 +127,7 @@ func __hours_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		d := ExtractInteger(_args, 0)
+		d := coretypes.ExtractInteger(_args, 0)
 		_res := time.Duration(d).Hours()
 		return coretypes.MakeDouble(_res)
 
@@ -162,7 +162,7 @@ func __minutes_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		d := ExtractInteger(_args, 0)
+		d := coretypes.ExtractInteger(_args, 0)
 		_res := time.Duration(d).Minutes()
 		return coretypes.MakeDouble(_res)
 
@@ -252,8 +252,8 @@ func __round_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		d := ExtractInteger(_args, 0)
-		m := ExtractInteger(_args, 1)
+		d := coretypes.ExtractInteger(_args, 0)
+		m := coretypes.ExtractInteger(_args, 1)
 		_res := timeIntObject(int64(time.Duration(d).Round(time.Duration(m))))
 		return _res
 
@@ -270,7 +270,7 @@ func __seconds_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		d := ExtractInteger(_args, 0)
+		d := coretypes.ExtractInteger(_args, 0)
 		_res := time.Duration(d).Seconds()
 		return coretypes.MakeDouble(_res)
 
@@ -304,7 +304,7 @@ func __sleep_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		d := ExtractInteger(_args, 0)
+		d := coretypes.ExtractInteger(_args, 0)
 		time.Sleep(time.Duration(d))
 		_res := NIL
 		return _res
@@ -322,7 +322,7 @@ func __string_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		d := ExtractInteger(_args, 0)
+		d := coretypes.ExtractInteger(_args, 0)
 		_res := time.Duration(d).String()
 		return coretypes.MakeString(_res)
 
@@ -357,8 +357,8 @@ func __truncate_(_args []coretypes.Object) coretypes.Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
-		d := ExtractInteger(_args, 0)
-		m := ExtractInteger(_args, 1)
+		d := coretypes.ExtractInteger(_args, 0)
+		m := coretypes.ExtractInteger(_args, 1)
 		_res := timeIntObject(int64(time.Duration(d).Truncate(time.Duration(m))))
 		return _res
 

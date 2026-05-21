@@ -23,7 +23,10 @@ func ExtractStrings(args []Object, index int) []string {
 	return strs
 }
 
-func ExtractInt(args []Object, index int) int         { return EnsureArgIsInt(args, index).I }
+func ExtractInt(args []Object, index int) int { return EnsureArgIsInt(args, index).I }
+func ExtractInteger(args []Object, index int) int {
+	return EnsureArgIsNumber(args, index).Int().I
+}
 func ExtractBoolean(args []Object, index int) bool    { return EnsureArgIsBoolean(args, index).B }
 func ExtractChar(args []Object, index int) rune       { return EnsureArgIsChar(args, index).Ch }
 func ExtractTime(args []Object, index int) time.Time  { return EnsureArgIsTime(args, index).T }

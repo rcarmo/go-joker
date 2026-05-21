@@ -26,7 +26,7 @@ The root `core` package has been coalesced to the smallest practical file set wi
 
 ## Recent small extractions
 
-- Generic root-independent object predicates (`IsSymbol`, `IsKeyword`, `IsVector`, `IsSeq`), extraction helpers (`ExtractString`, `ExtractMap`, etc.), and default number equality now live in `core/types`.
+- Generic root-independent object predicates (`IsSymbol`, `IsKeyword`, `IsVector`, `IsSeq`), extraction helpers (`ExtractString`, `ExtractInteger`, `ExtractMap`, etc.), and default number equality now live in `core/types`.
 - String sequence descriptor and pure character-to-string fast path now live in `core/types/string`; string cursor/transient-string object wrappers remain in `core/types` because moving them into `core/types/string` would reintroduce a `core/types` ↔ `core/types/string` import cycle.
 - String vector construction now lives in `core/types/collections`.
 - Generic formatting hooks (`PprintObject`, `FormatObject`, indentation/comment/newline helpers) now live in `core/runtime`.

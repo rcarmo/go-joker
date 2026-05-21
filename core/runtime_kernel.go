@@ -18957,15 +18957,6 @@ func registerHierarchyProcs() {
 
 // ---- procs.go ----
 
-func ExtractInteger(args []coretypes.Object, index int) int {
-	switch c := args[index].(type) {
-	case coretypes.Number:
-		return c.Int().I
-	default:
-		panic(RT.NewArgTypeError(index, c, "coretypes.Number"))
-	}
-}
-
 func FailArg(obj coretypes.Object, typeName string, index int) *corert.EvalError {
 	return RT.NewArgTypeError(index, obj, typeName)
 }
