@@ -6991,7 +6991,7 @@ func lookupDataReader(s coretypes.Symbol) (coretypes.Object, bool) {
 
 func lookupDefaultDataReaderFn() (coretypes.Callable, bool) {
 	vr := GLOBAL_ENV.CoreNamespace.Resolve(corereader.DefaultDataReaderFnVarName())
-	if vr == nil || vr.Value == nil || IsNil(vr.Value) {
+	if vr == nil || vr.Value == nil || corert.IsNil(vr.Value) {
 		return nil, false
 	}
 	return coretypes.EnsureObjectIsCallable(vr.Value, "*default-data-reader-fn* must be callable, got %s"), true
@@ -14529,7 +14529,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 
 	// Convert init slots
 	for i := 0; i < numSlots && i < len(initSlots); i++ {
-		slots[i] = coreirx.NBFromObject(initSlots[i], &objTable, IsNil)
+		slots[i] = coreirx.NBFromObject(initSlots[i], &objTable, corert.IsNil)
 	}
 	// Pre-fill captures
 	captureIdxs, captureSlots := runtimeExec.ProgramCaptureSlots(prog)
@@ -14537,14 +14537,14 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 		if i >= len(captureIdxs) || captureIdxs[i] < 0 || captureIdxs[i] >= len(slots) {
 			return nil
 		}
-		slots[captureIdxs[i]] = coreirx.NBFromObject(obj, &objTable, IsNil)
+		slots[captureIdxs[i]] = coreirx.NBFromObject(obj, &objTable, corert.IsNil)
 	}
 
 	// Pre-convert constants
 	constants := runtimeExec.ProgramConstants(prog)
 	consts := make([]uint64, len(constants))
 	for i, c := range constants {
-		consts[i] = coreirx.NBFromObject(c, &objTable, IsNil)
+		consts[i] = coreirx.NBFromObject(c, &objTable, corert.IsNil)
 	}
 
 	var stackBuf [32]uint64
@@ -14753,7 +14753,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 			if !ok {
 				return nil
 			}
-			stackBuf[sp] = coreirx.NBFromObject(obj, &objTable, IsNil)
+			stackBuf[sp] = coreirx.NBFromObject(obj, &objTable, corert.IsNil)
 			sp++
 
 		case irCallSlot:
@@ -14807,7 +14807,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 					return nil
 				}
 			}
-			stackBuf[sp] = coreirx.NBFromObject(result, &objTable, IsNil)
+			stackBuf[sp] = coreirx.NBFromObject(result, &objTable, corert.IsNil)
 			sp++
 
 		case irConj:
@@ -14818,7 +14818,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 			if !ok {
 				return nil
 			}
-			stackBuf[sp] = coreirx.NBFromObject(result, &objTable, IsNil)
+			stackBuf[sp] = coreirx.NBFromObject(result, &objTable, corert.IsNil)
 			sp++
 
 		case irCount:
@@ -21354,7 +21354,7 @@ func registerAtomExtProcs() {
 		runtimeCheckArity(args, 2, 2)
 		a := EnsureObjectIsAtom(args[0], "set-validator! requires an atom, got %s")
 		ext := getOrCreateAtomExtras(a)
-		if args[1] == nil || IsNil(args[1]) {
+		if args[1] == nil || corert.IsNil(args[1]) {
 			ext.validator = nil
 		} else {
 			fn := coretypes.EnsureObjectIsCallable(args[1], "validator must be a function, got %s")
@@ -21426,15 +21426,6 @@ func registerAtomExtProcs() {
 		return coretypes.Boolean{B: ok}
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "compare-and-set!"), casVr)
-}
-
-// IsNil checks if an coretypes.Object is nil or Nil.
-func IsNil(obj coretypes.Object) bool {
-	if obj == nil {
-		return true
-	}
-	_, ok := obj.(Nil)
-	return ok
 }
 
 // ---- chunked_procs.go ----
@@ -21525,7 +21516,7 @@ func registerChunkedSeqProcs() {
 			panic(coretypes.RuntimeError("chunk-cons requires an ArrayChunk as first argument"))
 		}
 		if ac.Count() == 0 {
-			if args[1] == nil || IsNil(args[1]) {
+			if args[1] == nil || corert.IsNil(args[1]) {
 				return corecollections.EmptyList
 			}
 			if s, ok := args[1].(coretypes.Seqable); ok {
@@ -21533,7 +21524,7 @@ func registerChunkedSeqProcs() {
 			}
 			return corecollections.EmptyList
 		}
-		rest := corecollections.ChunkConsRest(args[1], IsNil)
+		rest := corecollections.ChunkConsRest(args[1], corert.IsNil)
 		return &corecollections.ChunkedCons{Chunk: ac, RestSeq: rest, Idx: 0}
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "chunk-cons"), ccVr)

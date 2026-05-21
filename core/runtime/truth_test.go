@@ -7,6 +7,9 @@ import (
 )
 
 func TestToBool(t *testing.T) {
+	if !IsNil(Nil{}) || !IsNil(nil) {
+		t.Fatal("IsNil should detect nil values")
+	}
 	if ToBool(Nil{}) {
 		t.Fatal("Nil should be false")
 	}
