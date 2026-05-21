@@ -16065,10 +16065,7 @@ func (RuntimeExecutionAdapter) MarkMemNthFailed(prog *IRProgram) {
 // ---- object.go ----
 
 type (
-	Nil struct {
-		coretypes.InfoHolder
-		n struct{}
-	}
+	Nil = corert.Nil
 	Var struct {
 		coretypes.InfoHolder
 		coretypes.MetaHolder
@@ -16107,7 +16104,7 @@ type (
 	}
 )
 
-var NIL = Nil{}
+var NIL = corert.Nil{}
 
 func init() {
 	coretypes.RuntimeNil = NIL
@@ -16531,91 +16528,6 @@ func (v *Var) Deref() coretypes.Object {
 	return v.Resolve()
 }
 
-func (n Nil) ToString(escape bool) string {
-	return "nil"
-}
-
-func (n Nil) Equals(other interface{}) bool {
-	switch other.(type) {
-	case Nil:
-		return true
-	default:
-		return false
-	}
-}
-
-func (n Nil) GetType() *coretypes.Type {
-	return TYPE.Nil
-}
-
-func (n Nil) Hash() uint32 {
-	return 0
-}
-
-func (n Nil) Seq() coretypes.Seq {
-	return n
-}
-
-func (n Nil) First() coretypes.Object {
-	return NIL
-}
-
-func (n Nil) Rest() coretypes.Seq {
-	return NIL
-}
-
-func (n Nil) IsEmpty() bool {
-	return true
-}
-
-func (n Nil) Cons(obj coretypes.Object) coretypes.Seq {
-	return corecollections.NewListFrom(obj)
-}
-
-func (n Nil) Conj(obj coretypes.Object) coretypes.Conjable {
-	return corecollections.NewListFrom(obj)
-}
-
-func (n Nil) Without(key coretypes.Object) coretypes.Map {
-	return n
-}
-
-func (n Nil) Count() int {
-	return 0
-}
-
-func (n Nil) Iter() coretypes.MapIterator {
-	return coretypes.EmptyMapIteratorInstance
-}
-
-func (n Nil) Merge(other coretypes.Map) coretypes.Map {
-	return other
-}
-
-func (n Nil) Assoc(key, value coretypes.Object) coretypes.Associative {
-	return corecollections.EmptyArrayMap().Assoc(key, value)
-}
-
-func (n Nil) EntryAt(key coretypes.Object) coretypes.Object {
-	return nil
-}
-
-func (n Nil) Get(key coretypes.Object) (bool, coretypes.Object) {
-	return false, NIL
-}
-
-func (n Nil) Disjoin(key coretypes.Object) coretypes.Set {
-	return n
-}
-
-func (n Nil) Keys() coretypes.Seq {
-	return NIL
-}
-
-func (n Nil) Vals() coretypes.Seq {
-	return NIL
-}
-
 var asciiCharStringObjects = corestr.NewObjectCache(func(ch rune) coretypes.Object {
 	return coretypes.String{S: corestr.String(ch)}
 })
@@ -16971,11 +16883,6 @@ func (x *Fn) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 }
 
 func (x *Var) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
-	x.Info = info
-	return x
-}
-
-func (x Nil) WithInfo(info *coretypes.ObjectInfo) coretypes.Object {
 	x.Info = info
 	return x
 }
