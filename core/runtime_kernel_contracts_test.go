@@ -2464,10 +2464,10 @@ func TestExecutorFilesUseRuntimeExecutionAdapterForProgramState(t *testing.T) {
 			if strings.Contains(line, "coretypes.Seqable") || strings.Contains(line, "coretypes.Conjable") || strings.Contains(line, "Counted") || strings.Contains(line, "coretypes.Associative") || strings.Contains(line, "*coretypes.TransientVector") || strings.Contains(line, "*corecollections.ArrayVector") || strings.Contains(line, "&corecollections.ArrayVector") {
 				t.Fatalf("%s:%d performs collection construction/access instead of runtimeExec adapter: %s", file, lineNo+1, lineText)
 			}
-			if lineText == "case *StringCursor:" || lineText == "return (*StringCursor)(v.p)" {
+			if lineText == "case *corert.StringCursor:" || lineText == "return (*corert.StringCursor)(v.p)" {
 				continue
 			}
-			if strings.Contains(line, "*StringCursor") || strings.Contains(line, ".Char()") || strings.Contains(line, ".Next()") || strings.Contains(line, ".Done()") {
+			if strings.Contains(line, "*corert.StringCursor") || strings.Contains(line, ".Char()") || strings.Contains(line, ".Next()") || strings.Contains(line, ".Done()") {
 				t.Fatalf("%s:%d performs cursor access instead of runtimeExec adapter: %s", file, lineNo+1, lineText)
 			}
 		}
@@ -2762,7 +2762,7 @@ func TestRuntimeExecutionAdapterStringOps(t *testing.T) {
 	if got, ok := adapter.NthASCIIStringConst(prog, 0, 1); !ok || !got.Equals(coretypes.MakeChar('b')) {
 		t.Fatalf("NthASCIIStringConst = %#v, %v", got, ok)
 	}
-	cur := NewStringCursor("x")
+	cur := corert.NewStringCursor("x")
 	if got, ok := adapter.CursorChar(cur); !ok || !got.Equals(coretypes.MakeChar('x')) {
 		t.Fatalf("CursorChar = %#v, %v", got, ok)
 	}
