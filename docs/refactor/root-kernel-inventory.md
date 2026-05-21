@@ -24,6 +24,10 @@ The root `core` package has been coalesced to the smallest practical file set wi
 | 4 | Namespace/env/proc registration glue | `core/runtime` or a dedicated env package | Started: namespace map locking now lives in `core/runtime.NamespaceMu`. Remaining blockers are `GLOBAL_ENV`, `Namespace`, `Var`, `Proc`, `STRINGS`, `TYPE`, generated bootstrap mutation, and `referToUser`. | Do not create aliases/wrappers for old root env APIs. |
 | 5 | Generated bootstrap payload mutation | `core/generated` or a generated bootstrap package | Generator must emit a real package contract and install through explicit root/runtime APIs instead of direct root variable mutation. | Do not place `package core` files in subdirectories. |
 
+## Recent small extractions
+
+- Generic root-independent object predicates (`IsSymbol`, `IsKeyword`, `IsVector`, `IsSeq`) now live in `core/types`.
+
 ## Guardrails
 
 - `tests/layout_guard.sh` is the authoritative guard for the allowed root file set.

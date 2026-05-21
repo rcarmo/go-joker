@@ -5102,7 +5102,7 @@ func parseParams(params coretypes.Object) (bindings []coretypes.Symbol, isVariad
 	for i := 0; i < v.Count(); i++ {
 		ro := v.At(i)
 		sym := ro
-		if !IsSymbol(sym) {
+		if !coretypes.IsSymbol(sym) {
 			if LINTER_MODE {
 				sym = generateSymbol("linter")
 			} else {
@@ -5116,7 +5116,7 @@ func parseParams(params coretypes.Object) (bindings []coretypes.Symbol, isVariad
 			}
 			if v.Count() == i+2 {
 				variadic := v.At(i + 1)
-				if !IsSymbol(variadic) {
+				if !coretypes.IsSymbol(variadic) {
 					if LINTER_MODE {
 						variadic = generateSymbol("linter")
 					} else {
@@ -5225,7 +5225,7 @@ func parseFn(obj coretypes.Object, ctx *ParseContext) Expr {
 	res := &FnExpr{Position: GetPosition(obj)}
 	bodies := obj.(coretypes.Seq).Rest()
 	p := bodies.First()
-	if IsSymbol(p) { // self reference
+	if coretypes.IsSymbol(p) { // self reference
 		res.self = p.(coretypes.Symbol)
 		res.traceName = res.self.ToString(false)
 		bodies = bodies.Rest()
@@ -5233,7 +5233,7 @@ func parseFn(obj coretypes.Object, ctx *ParseContext) Expr {
 		ctx.PushLocalFrame([]coretypes.Symbol{res.self})
 		defer ctx.PopLocalFrame()
 	}
-	if IsVector(p) { // single arity
+	if coretypes.IsVector(p) { // single arity
 		addArity(res, bodies, ctx)
 		return wrapWithMeta(res, obj, ctx)
 	}
@@ -5246,7 +5246,7 @@ func parseFn(obj coretypes.Object, ctx *ParseContext) Expr {
 		switch s := body.(type) {
 		case coretypes.Seq:
 			params := s.First()
-			if !IsVector(params) {
+			if !coretypes.IsVector(params) {
 				panic(&ParseError{obj: params, msg: "Parameter declaration must be a vector. Got: " + params.ToString(false)})
 			}
 			addArity(res, s, ctx)
@@ -5259,11 +5259,11 @@ func parseFn(obj coretypes.Object, ctx *ParseContext) Expr {
 }
 
 func isCatch(obj coretypes.Object) bool {
-	return IsSeq(obj) && obj.(coretypes.Seq).First().Equals(SYMBOLS.catch)
+	return coretypes.IsSeq(obj) && obj.(coretypes.Seq).First().Equals(SYMBOLS.catch)
 }
 
 func isFinally(obj coretypes.Object) bool {
-	return IsSeq(obj) && obj.(coretypes.Seq).First().Equals(SYMBOLS.finally)
+	return coretypes.IsSeq(obj) && obj.(coretypes.Seq).First().Equals(SYMBOLS.finally)
 }
 
 func resolveType(obj coretypes.Object, ctx *ParseContext) *coretypes.Type {
@@ -5288,7 +5288,7 @@ func parseCatch(obj coretypes.Object, ctx *ParseContext) *CatchExpr {
 	}
 	excSymbol := corecollections.Second(seq)
 	excType := resolveType(seq.First(), ctx)
-	if !IsSymbol(excSymbol) {
+	if !coretypes.IsSymbol(excSymbol) {
 		panic(&ParseError{obj: excSymbol, msg: "Bad binding form, expected symbol, got: " + excSymbol.ToString(false)})
 	}
 	ctx.PushLocalFrame([]coretypes.Symbol{excSymbol.(coretypes.Symbol)})
@@ -6630,7 +6630,7 @@ func readCondList(reader *Reader) coretypes.Object {
 			if feature.Equals(KEYWORDS.none) || feature.Equals(KEYWORDS.else_) {
 				panic(MakeReadError(reader, "Feature name "+feature.ToString(false)+" is reserved"))
 			}
-			if !IsKeyword(feature) {
+			if !coretypes.IsKeyword(feature) {
 				panic(MakeReadError(reader, "Feature should be a keyword"))
 			}
 			eatWhitespace(reader)
@@ -16539,38 +16539,6 @@ func charToStringObjectFast(ch rune) coretypes.Object {
 		return obj
 	}
 	return coretypes.String{S: corestr.String(ch)}
-}
-
-func IsSymbol(obj coretypes.Object) bool {
-	switch obj.(type) {
-	case coretypes.Symbol:
-		return true
-	default:
-		return false
-	}
-}
-
-func IsKeyword(obj coretypes.Object) bool {
-	_, ok := obj.(coretypes.Keyword)
-	return ok
-}
-
-func IsVector(obj coretypes.Object) bool {
-	switch obj.(type) {
-	case coretypes.Vec:
-		return true
-	default:
-		return false
-	}
-}
-
-func IsSeq(obj coretypes.Object) bool {
-	switch obj.(type) {
-	case coretypes.Seq:
-		return true
-	default:
-		return false
-	}
 }
 
 func MakeMeta(arglists coretypes.Seq, docstring string, added string) *corecollections.ArrayMap {
