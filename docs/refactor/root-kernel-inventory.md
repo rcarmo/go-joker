@@ -30,7 +30,7 @@ The root `core` package has been coalesced to the smallest practical file set wi
 - String sequence descriptor and pure character-to-string fast path now live in `core/types/string`; string cursor/transient-string object wrappers remain in `core/types` because moving them into `core/types/string` would reintroduce a `core/types` ↔ `core/types/string` import cycle.
 - String vector construction now lives in `core/types/collections`.
 - Generic formatting hooks (`PprintObject`, `FormatObject`, indentation/comment/newline helpers) now live in `core/runtime`.
-- Process exit callback plumbing, the runtime version constant, and version-map construction now live in `core/runtime`.
+- Process exit callback plumbing, generic error panic helper, the runtime version constant, and version-map construction now live in `core/runtime`.
 
 ## Guardrails
 

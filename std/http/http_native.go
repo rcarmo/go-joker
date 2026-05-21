@@ -2,6 +2,7 @@ package http
 
 import (
 	"fmt"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
 	"math/big"
 	"net"
@@ -95,7 +96,7 @@ func mapToReq(request coretypes.Map) *http.Request {
 		reqBody = strings.NewReader(coretypes.EnsureObjectIsString(b, "body: %s").S)
 	}
 	req, err := http.NewRequest(method, url, reqBody)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	if ok, headers := request.Get(coretypes.MakeKeyword(STRINGS.Intern, "headers")); ok {
 		h := coretypes.EnsureObjectIsMap(headers, "headers: %s")
 		for iter := h.Iter(); iter.HasNext(); {
@@ -120,8 +121,8 @@ func reqToMap(host coretypes.String, port coretypes.String, req *http.Request) c
 	res := corecollections.EmptyArrayMap()
 	body, err := io.ReadAll(req.Body)
 	closeErr := req.Body.Close()
-	PanicOnErr(err)
-	PanicOnErr(closeErr)
+	corert.PanicOnErr(err)
+	corert.PanicOnErr(closeErr)
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "request-method"), coretypes.MakeKeyword(STRINGS.Intern, strings.ToLower(req.Method)))
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "body"), coretypes.MakeString(string(body)))
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "uri"), coretypes.MakeString(req.URL.Path))
@@ -144,8 +145,8 @@ func respToMap(resp *http.Response) coretypes.Map {
 	res := corecollections.EmptyArrayMap()
 	body, err := io.ReadAll(resp.Body)
 	closeErr := resp.Body.Close()
-	PanicOnErr(err)
-	PanicOnErr(closeErr)
+	corert.PanicOnErr(err)
+	corert.PanicOnErr(closeErr)
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "body"), coretypes.MakeString(string(body)))
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(resp.StatusCode))
 	respHeaders := corecollections.EmptyArrayMap()
@@ -208,7 +209,7 @@ func mapToResp(response coretypes.Map, w http.ResponseWriter) {
 		w.WriteHeader(status)
 	}
 	_, err := io.WriteString(w, body)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 }
 
 func clientFromRequest(request coretypes.Map) *http.Client {
@@ -225,7 +226,7 @@ func clientFromRequest(request coretypes.Map) *http.Client {
 func sendRequest(request coretypes.Map) coretypes.Map {
 	req := mapToReq(request)
 	resp, err := clientFromRequest(request).Do(req)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return respToMap(resp)
 }
 
@@ -314,13 +315,13 @@ func startServer(addr string, handler coretypes.Callable) coretypes.Object {
 
 		mapToResp(respMap, w)
 	}))
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return NIL
 }
 
 func startFileServer(addr string, root string) coretypes.Object {
 	err := http.ListenAndServe(addr, http.FileServer(http.Dir(root)))
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return NIL
 }
 

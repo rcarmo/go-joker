@@ -49,7 +49,7 @@ func __chdir_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		dirname := coretypes.ExtractString(_args, 0)
 		err := os.Chdir(dirname)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -69,7 +69,7 @@ func __chmod_(_args []coretypes.Object) coretypes.Object {
 		name := coretypes.ExtractString(_args, 0)
 		mode := coretypes.ExtractInt(_args, 1)
 		err := os.Chmod(name, os.FileMode(mode))
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -90,7 +90,7 @@ func __chown_(_args []coretypes.Object) coretypes.Object {
 		uid := coretypes.ExtractInt(_args, 1)
 		gid := coretypes.ExtractInt(_args, 2)
 		err := os.Chown(name, uid, gid)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -111,7 +111,7 @@ func __chtimes_(_args []coretypes.Object) coretypes.Object {
 		atime := coretypes.ExtractTime(_args, 1)
 		mtime := coretypes.ExtractTime(_args, 2)
 		err := os.Chtimes(name, atime, mtime)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -147,7 +147,7 @@ func __close_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		f := EnsureArgIsFile(_args, 0)
 		err := f.Close()
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -166,7 +166,7 @@ func __create_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		name := coretypes.ExtractString(_args, 0)
 		_res, err := os.Create(name)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return corert.MakeFile(_res)
 
 	default:
@@ -185,7 +185,7 @@ func __create_temp_(_args []coretypes.Object) coretypes.Object {
 		dir := coretypes.ExtractString(_args, 0)
 		pattern := coretypes.ExtractString(_args, 1)
 		_res, err := os.CreateTemp(dir, pattern)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return corert.MakeFile(_res)
 
 	default:
@@ -202,7 +202,7 @@ func __cwd_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 0:
 		_res, err := os.Getwd()
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:
@@ -285,7 +285,7 @@ func __executable_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 0:
 		_res, err := os.Executable()
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:
@@ -390,7 +390,7 @@ func __groups_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 0:
 		_res, err := os.Getgroups()
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_vec := corecollections.EmptyVector()
 		for _, _v := range _res {
 			_vec = _vec.Conjoin(coretypes.MakeInt(_v))
@@ -411,7 +411,7 @@ func __hostname_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 0:
 		_res, err := os.Hostname()
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:
@@ -448,7 +448,7 @@ func __lchown_(_args []coretypes.Object) coretypes.Object {
 		uid := coretypes.ExtractInt(_args, 1)
 		gid := coretypes.ExtractInt(_args, 2)
 		err := os.Lchown(name, uid, gid)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -468,7 +468,7 @@ func __link_(_args []coretypes.Object) coretypes.Object {
 		oldname := coretypes.ExtractString(_args, 0)
 		newname := coretypes.ExtractString(_args, 1)
 		err := os.Link(oldname, newname)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -504,7 +504,7 @@ func __lstat_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		filename := coretypes.ExtractString(_args, 0)
 		_info, err := os.Lstat(filename)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := corert.FileInfoMap(_info.Name(), _info, STRINGS.Intern)
 		return _res
 
@@ -524,7 +524,7 @@ func __mkdir_(_args []coretypes.Object) coretypes.Object {
 		name := coretypes.ExtractString(_args, 0)
 		perm := coretypes.ExtractInt(_args, 1)
 		err := os.Mkdir(name, os.FileMode(perm))
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -544,7 +544,7 @@ func __mkdir_all_(_args []coretypes.Object) coretypes.Object {
 		name := coretypes.ExtractString(_args, 0)
 		perm := coretypes.ExtractInt(_args, 1)
 		err := os.MkdirAll(name, os.FileMode(perm))
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -564,7 +564,7 @@ func __mkdir_temp_(_args []coretypes.Object) coretypes.Object {
 		dir := coretypes.ExtractString(_args, 0)
 		pattern := coretypes.ExtractString(_args, 1)
 		_res, err := os.MkdirTemp(dir, pattern)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:
@@ -582,7 +582,7 @@ func __open_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		name := coretypes.ExtractString(_args, 0)
 		_res, err := os.Open(name)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return corert.MakeFile(_res)
 
 	default:
@@ -665,7 +665,7 @@ func __read_link_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		name := coretypes.ExtractString(_args, 0)
 		_res, err := os.Readlink(name)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:
@@ -683,7 +683,7 @@ func __remove_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		name := coretypes.ExtractString(_args, 0)
 		err := os.Remove(name)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -702,7 +702,7 @@ func __remove_all_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		path := coretypes.ExtractString(_args, 0)
 		err := os.RemoveAll(path)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -722,7 +722,7 @@ func __rename_(_args []coretypes.Object) coretypes.Object {
 		oldpath := coretypes.ExtractString(_args, 0)
 		newpath := coretypes.ExtractString(_args, 1)
 		err := os.Rename(oldpath, newpath)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -742,7 +742,7 @@ func __set_env_(_args []coretypes.Object) coretypes.Object {
 		key := coretypes.ExtractString(_args, 0)
 		value := coretypes.ExtractString(_args, 1)
 		err := os.Setenv(key, value)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -836,7 +836,7 @@ func __stat_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		filename := coretypes.ExtractString(_args, 0)
 		_info, err := os.Stat(filename)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := corert.FileInfoMap(_info.Name(), _info, STRINGS.Intern)
 		return _res
 
@@ -856,7 +856,7 @@ func __symlink_(_args []coretypes.Object) coretypes.Object {
 		oldname := coretypes.ExtractString(_args, 0)
 		newname := coretypes.ExtractString(_args, 1)
 		err := os.Symlink(oldname, newname)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -892,7 +892,7 @@ func __truncate_(_args []coretypes.Object) coretypes.Object {
 		name := coretypes.ExtractString(_args, 0)
 		size := coretypes.ExtractInt(_args, 1)
 		err := os.Truncate(name, int64(size))
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -927,7 +927,7 @@ func __unset_env_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		key := coretypes.ExtractString(_args, 0)
 		err := os.Unsetenv(key)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := NIL
 		return _res
 
@@ -945,7 +945,7 @@ func __user_cache_dir_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 0:
 		_res, err := os.UserCacheDir()
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:
@@ -962,7 +962,7 @@ func __user_config_dir_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 0:
 		_res, err := os.UserConfigDir()
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:
@@ -979,7 +979,7 @@ func __user_home_dir_(_args []coretypes.Object) coretypes.Object {
 	switch {
 	case _c == 0:
 		_res, err := os.UserHomeDir()
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:

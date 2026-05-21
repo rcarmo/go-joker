@@ -4,6 +4,7 @@ package strconv
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"strconv"
 )
@@ -17,7 +18,7 @@ func __atoi_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		s := coretypes.ExtractString(_args, 0)
 		_res, err := strconv.Atoi(s)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeInt(_res)
 
 	default:
@@ -141,7 +142,7 @@ func __parse_bool_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		s := coretypes.ExtractString(_args, 0)
 		_res, err := strconv.ParseBool(s)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeBoolean(_res)
 
 	default:
@@ -159,7 +160,7 @@ func __parse_double_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		s := coretypes.ExtractString(_args, 0)
 		_res, err := strconv.ParseFloat(s, 64)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeDouble(_res)
 
 	default:
@@ -179,7 +180,7 @@ func __parse_int_(_args []coretypes.Object) coretypes.Object {
 		base := coretypes.ExtractInt(_args, 1)
 		bitSize := coretypes.ExtractInt(_args, 2)
 		t, err := strconv.ParseInt(s, base, bitSize)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := strconvIntObject(t)
 		return _res
 
@@ -317,7 +318,7 @@ func __unquote_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		s := coretypes.ExtractString(_args, 0)
 		_res, err := strconv.Unquote(s)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:

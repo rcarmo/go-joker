@@ -68,26 +68,26 @@ func startProcess(name string, opts coretypes.Map) int {
 	cmd.Stderr = processOutputOrDiscard(stderr)
 
 	err := cmd.Start()
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	pid := cmd.Process.Pid
-	PanicOnErr(cmd.Process.Release())
+	corert.PanicOnErr(cmd.Process.Release())
 
 	return pid
 }
 
 func sendSignal(pid, signal int) coretypes.Object {
 	p, err := os.FindProcess(pid)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	err = p.Signal(syscall.Signal(signal))
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return NIL
 }
 
 func killProcess(pid int) coretypes.Object {
 	p, err := os.FindProcess(pid)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	err = p.Kill()
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	// Wait to avoid zombie child processes.
 	// Ignore result and error (which may occur if p is not a child process)
 	p.Wait()
@@ -157,7 +157,7 @@ func execute(name string, opts coretypes.Map) coretypes.Object {
 
 func readDir(dirname string) coretypes.Object {
 	entries, err := os.ReadDir(dirname)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	res := corecollections.EmptyVector()
 	name := coretypes.MakeKeyword(STRINGS.Intern, "name")
 	size := coretypes.MakeKeyword(STRINGS.Intern, "size")
@@ -166,7 +166,7 @@ func readDir(dirname string) coretypes.Object {
 	modTime := coretypes.MakeKeyword(STRINGS.Intern, "modtime")
 	for _, e := range entries {
 		info, err := e.Info()
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		m := corecollections.EmptyArrayMap()
 		m.Add(name, coretypes.MakeString(e.Name()))
 		m.Add(size, nativeIntObject(info.Size()))

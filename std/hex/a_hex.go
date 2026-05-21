@@ -5,6 +5,7 @@ package hex
 import (
 	"encoding/hex"
 	. "github.com/rcarmo/go-joker/core"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
@@ -17,7 +18,7 @@ func __decode_string_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		s := coretypes.ExtractString(_args, 0)
 		t, err := hex.DecodeString(s)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := string(t)
 		return coretypes.MakeString(_res)
 

@@ -3,6 +3,7 @@
 package filepath
 
 import (
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"path/filepath"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -21,7 +22,7 @@ func __abs_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		path := coretypes.ExtractString(_args, 0)
 		_res, err := filepath.Abs(path)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:
@@ -107,7 +108,7 @@ func __eval_symlinks_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		path := coretypes.ExtractString(_args, 0)
 		_res, err := filepath.EvalSymlinks(path)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:
@@ -176,7 +177,7 @@ func __glob_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		pattern := coretypes.ExtractString(_args, 0)
 		_res, err := filepath.Glob(pattern)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return corecollections.MakeStringVector(_res)
 
 	default:
@@ -213,7 +214,7 @@ func __ismatches_(_args []coretypes.Object) coretypes.Object {
 		pattern := coretypes.ExtractString(_args, 0)
 		name := coretypes.ExtractString(_args, 1)
 		_res, err := filepath.Match(pattern, name)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeBoolean(_res)
 
 	default:
@@ -232,7 +233,7 @@ func __rel_(_args []coretypes.Object) coretypes.Object {
 		basepath := coretypes.ExtractString(_args, 0)
 		targpath := coretypes.ExtractString(_args, 1)
 		_res, err := filepath.Rel(basepath, targpath)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeString(_res)
 
 	default:

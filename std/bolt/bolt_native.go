@@ -2,6 +2,7 @@ package bolt
 
 import (
 	"bytes"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"math/big"
 	"os"
 	"unsafe"
@@ -74,13 +75,13 @@ func ExtractBoltDB(args []coretypes.Object, index int) *bolt.DB {
 
 func open(filename string, mode int) *bolt.DB {
 	db, err := bolt.Open(filename, os.FileMode(mode), nil)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return db
 }
 
 func close(db *bolt.DB) Nil {
 	err := db.Close()
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return NIL
 }
 
@@ -89,7 +90,7 @@ func createBucket(db *bolt.DB, name string) Nil {
 		_, err := tx.CreateBucket([]byte(name))
 		return err
 	})
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return NIL
 }
 
@@ -98,7 +99,7 @@ func createBucketIfNotExists(db *bolt.DB, name string) Nil {
 		_, err := tx.CreateBucketIfNotExists([]byte(name))
 		return err
 	})
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return NIL
 }
 
@@ -106,7 +107,7 @@ func deleteBucket(db *bolt.DB, name string) Nil {
 	err := db.Update(func(tx *bolt.Tx) error {
 		return tx.DeleteBucket([]byte(name))
 	})
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return NIL
 }
 
@@ -126,7 +127,7 @@ func nextSequence(db *bolt.DB, bucket string) coretypes.Object {
 		id, err = b.NextSequence()
 		return err
 	})
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	maxNativeUint := uint64(int(^uint(0) >> 1))
 	if id > maxNativeUint {
 		return coretypes.MakeBigInt(new(big.Int).SetUint64(id))
@@ -139,7 +140,7 @@ func put(db *bolt.DB, bucket, key, value string) Nil {
 		b := getBucket(tx, bucket)
 		return b.Put([]byte(key), []byte(value))
 	})
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return NIL
 }
 
@@ -148,7 +149,7 @@ func delete(db *bolt.DB, bucket, key string) Nil {
 		b := getBucket(tx, bucket)
 		return b.Delete([]byte(key))
 	})
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return NIL
 }
 
@@ -159,7 +160,7 @@ func get(db *bolt.DB, bucket, key string) coretypes.Object {
 		v = b.Get([]byte(key))
 		return nil
 	})
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	if v == nil {
 		return NIL
 	}
@@ -176,7 +177,7 @@ func byPrefix(db *bolt.DB, bucket, prefix string) *corecollections.ArrayVector {
 		}
 		return nil
 	})
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return res
 }
 

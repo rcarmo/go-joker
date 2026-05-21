@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	corereader "github.com/rcarmo/go-joker/core/reader"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
 	"os"
 	"path/filepath"
@@ -43,7 +44,7 @@ func processFile(filename string, phase corereader.Phase) error {
 	}
 	if filename != "" {
 		f, err := filepath.Abs(filename)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		GLOBAL_ENV.SetMainFilename(f)
 	}
 	if saveForRepl {

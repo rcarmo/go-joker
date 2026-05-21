@@ -74,7 +74,7 @@ func ExtractGitRepo(args []coretypes.Object, index int) *git.Repository {
 
 func open(path string) *git.Repository {
 	repo, err := git.PlainOpen(path)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return repo
 }
 
@@ -121,7 +121,7 @@ func makeUrl(url *gitConfig.URL) coretypes.Map {
 
 func config(repo *git.Repository) coretypes.Map {
 	cfg, err := repo.Config()
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return makeConfigMap(cfg)
 }
 
@@ -175,13 +175,13 @@ func makeRef(r *plumbing.Reference) coretypes.Map {
 
 func ref(repo *git.Repository, name string, resolved bool) coretypes.Map {
 	r, err := repo.Reference(plumbing.ReferenceName(name), resolved)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return makeRef(r)
 }
 
 func head(repo *git.Repository) coretypes.Map {
 	r, err := repo.Head()
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return makeRef(r)
 }
 
@@ -247,39 +247,39 @@ func log(repo *git.Repository, opts coretypes.Map) coretypes.Vec {
 		logOpts.Until = &t
 	}
 	it, err := repo.Log(&logOpts)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	res := corecollections.EmptyArrayVector()
 	err = it.ForEach(func(cmt *object.Commit) error {
 		res.Append(makeCommit(cmt))
 		return nil
 	})
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return res
 }
 
 func resolveRevision(repo *git.Repository, rev string) string {
 	hash, err := repo.ResolveRevision(plumbing.Revision(rev))
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return hash.String()
 }
 
 func findCommit(repo *git.Repository, hash string) coretypes.Map {
 	obj, err := repo.CommitObject(plumbing.NewHash(hash))
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return makeCommit(obj)
 }
 
 func addPath(repo *git.Repository, path string) string {
 	workTree, err := repo.Worktree()
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	hash, err := workTree.Add(path)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return hash.String()
 }
 
 func addCommit(repo *git.Repository, msg string, opts coretypes.Map) string {
 	workTree, err := repo.Worktree()
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	var commitOpts git.CommitOptions
 	if ok, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "all")); ok {
 		commitOpts.All = corert.ToBool(v)
@@ -288,13 +288,13 @@ func addCommit(repo *git.Repository, msg string, opts coretypes.Map) string {
 		commitOpts.AllowEmptyCommits = corert.ToBool(v)
 	}
 	hash, err := workTree.Commit(msg, &commitOpts)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return hash.String()
 }
 
 func findObject(repo *git.Repository, hash string) coretypes.Map {
 	obj, err := repo.Object(plumbing.AnyObject, plumbing.NewHash(hash))
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	res := corecollections.EmptyArrayMap()
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "id"), coretypes.MakeString(obj.ID().String()))
 	objType := coretypes.MakeKeyword(STRINGS.Intern, "invalid")

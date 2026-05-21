@@ -41,7 +41,7 @@ func read(r io.Reader, n int) string {
 	buf := make([]byte, n)
 	cnt, err := r.Read(buf)
 	if err != io.EOF {
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 	}
 	return string(buf[:cnt])
 }

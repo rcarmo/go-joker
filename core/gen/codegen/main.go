@@ -246,10 +246,10 @@ func init() {
 	GLOBAL_ENV.SetCurrentNamespace(GLOBAL_ENV.CoreNamespace)
 
 	file, err := os.Open("data/" + f.Filename)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	content, err := PackReader(NewReader(bufio.NewReader(file), f.Name), f.Filename)
-	PanicOnErr(err)
-	PanicOnErr(file.Close())
+	corert.PanicOnErr(err)
+	corert.PanicOnErr(file.Close())
 
 	dst := packContent(content)
 
@@ -257,8 +257,8 @@ func init() {
 	varName := linterDataVarName(f.Filename)
 	fileContent := strings.ReplaceAll(dataTemplate, "{varName}", varName)
 	fileContent = strings.Replace(fileContent, "{content}", string(dst), 1)
-	PanicOnErr(os.MkdirAll("generated", 0755))
-	PanicOnErr(os.WriteFile(fmt.Sprintf(generatedDataFilenamePattern, name), []byte(fileContent), 0644))
+	corert.PanicOnErr(os.MkdirAll("generated", 0755))
+	corert.PanicOnErr(os.WriteFile(fmt.Sprintf(generatedDataFilenamePattern, name), []byte(fileContent), 0644))
 }
 
 func generateLinterPayloadRegistry(linterFiles []FileInfo) {
@@ -290,8 +290,8 @@ func LinterDataByPath(path string) ([]byte, bool) {
 		rows = append(rows, fmt.Sprintf("\t\t{Path: %s, Data: %s},", strconv.Quote(f.Filename), linterDataVarName(f.Filename)))
 	}
 	content := strings.Replace(dataTemplate, "{payloads}", strings.Join(rows, "\n"), 1)
-	PanicOnErr(os.MkdirAll("generated", 0755))
-	PanicOnErr(os.WriteFile(generatedLinterPayloadsFilename, []byte(content), 0644))
+	corert.PanicOnErr(os.MkdirAll("generated", 0755))
+	corert.PanicOnErr(os.WriteFile(generatedLinterPayloadsFilename, []byte(content), 0644))
 }
 
 func generateBootstrapContractFile() {
@@ -311,8 +311,8 @@ func CoreSourceManifest() []NamespaceSource {
 		rows = append(rows, fmt.Sprintf("\t\t{Name: %s, Path: %s},", strconv.Quote(corestr.CoreNamespaceName(f.Name)), strconv.Quote(f.Filename)))
 	}
 	content := strings.Replace(dataTemplate, "{sources}", strings.Join(rows, "\n"), 1)
-	PanicOnErr(os.MkdirAll("generated", 0755))
-	PanicOnErr(os.WriteFile("generated/core_sources_gen.go", []byte(content), 0644))
+	corert.PanicOnErr(os.MkdirAll("generated", 0755))
+	corert.PanicOnErr(os.WriteFile("generated/core_sources_gen.go", []byte(content), 0644))
 }
 
 func main() {
@@ -353,10 +353,10 @@ func main() {
 		namespaceIndex++
 
 		file, err := os.Open("data/" + f.Filename)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		err = ProcessReader(NewReader(bufio.NewReader(file), f.Name), f.Filename, corereader.EvalPhase)
-		PanicOnErr(err)
-		PanicOnErr(file.Close())
+		corert.PanicOnErr(err)
+		corert.PanicOnErr(file.Close())
 
 		ns := GLOBAL_ENV.Namespaces[nsNamePtr]
 
@@ -645,7 +645,7 @@ import (
 		fileContent = strings.Replace(fileContent, t[0], t[1], 1)
 	}
 
-	PanicOnErr(os.WriteFile(masterCodeFilename, []byte(fileContent), 0644))
+	corert.PanicOnErr(os.WriteFile(masterCodeFilename, []byte(fileContent), 0644))
 
 	/* Now do linter files, which change joker.core, so this is
 	/* postponed until code gen is done. */

@@ -1023,12 +1023,6 @@ func TryEval(expr Expr) (obj coretypes.Object, err error) {
 	return Eval(expr, nil), nil
 }
 
-func PanicOnErr(err error) {
-	if err != nil {
-		panic(RT.NewError(err.Error()))
-	}
-}
-
 // ---- tail_call.go ----
 // tco.go — generic tail-call optimization via trampoline.
 //
@@ -20112,7 +20106,7 @@ var procFlush = func(args []coretypes.Object) coretypes.Object {
 func readFromReader(reader io.RuneReader) coretypes.Object {
 	r := readerConstruction.NewReader(reader, "<>")
 	obj, err := readerConstruction.TryRead(r)
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 	return obj
 }
 
@@ -20360,11 +20354,11 @@ var procSlurp = func(args []coretypes.Object) coretypes.Object {
 	switch f := args[0].(type) {
 	case coretypes.String:
 		s, err := osutil.ReadFileString(f.S)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.String{S: s}
 	case io.Reader:
 		s, err := osutil.ReadAllString(f)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.String{S: s}
 	default:
 		panic(RT.NewArgTypeError(0, args[0], "String or IOReader"))
@@ -20382,10 +20376,10 @@ var procSpit = func(args []coretypes.Object) coretypes.Object {
 	switch f := f.(type) {
 	case coretypes.String:
 		err := osutil.WriteFileString(f.S, str(content), appendFile)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 	case io.Writer:
 		err := osutil.WriteString(f, str(content))
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 	default:
 		panic(RT.NewArgTypeError(0, args[0], "String or IOWriter"))
 	}
@@ -20422,8 +20416,8 @@ var procHash = func(args []coretypes.Object) coretypes.Object {
 func loadFile(filename string) coretypes.Object {
 	var reader *Reader
 	f, rr, err := osutil.OpenRuneFile(filename)
-	PanicOnErr(err)
-	defer func() { PanicOnErr(f.Close()) }()
+	corert.PanicOnErr(err)
+	defer func() { corert.PanicOnErr(f.Close()) }()
 	reader = readerConstruction.NewReader(rr, filename)
 	ProcessReaderFromEval(reader, filename)
 	return NIL
@@ -20462,9 +20456,9 @@ var procLoadLibFromPath = func(args []coretypes.Object) coretypes.Object {
 			canonicalErr = err
 		}
 	}
-	PanicOnErr(canonicalErr)
-	PanicOnErr(err)
-	defer func() { PanicOnErr(f.Close()) }()
+	corert.PanicOnErr(canonicalErr)
+	corert.PanicOnErr(err)
+	defer func() { corert.PanicOnErr(f.Close()) }()
 	reader := readerConstruction.NewReader(osutil.AsRuneReader(f), filename)
 	ProcessReaderFromEval(reader, filename)
 	return NIL
@@ -20519,7 +20513,7 @@ func libExternalPath(sym coretypes.Symbol) (path string, ok bool) {
 			panic(RT.NewError("Key :url not found in ns-sources for: " + sourceKey))
 		} else {
 			path, err := deps.ExternalSourceToPath(osutil.HomeDir(), sym.Name(), url.ToString(false))
-			PanicOnErr(err)
+			corert.PanicOnErr(err)
 			return path, true
 		}
 	}
@@ -20537,7 +20531,7 @@ var procLibPath = func(args []coretypes.Object) coretypes.Object {
 		if GLOBAL_ENV.file.Value == nil {
 			var err error
 			file, err = osutil.Abs("user")
-			PanicOnErr(err)
+			corert.PanicOnErr(err)
 		} else {
 			file = coretypes.EnsureObjectIsString(GLOBAL_ENV.file.Value, "").S
 			file = osutil.ResolveSymlink(file)
@@ -20717,7 +20711,7 @@ func PackReader(reader *Reader, filename string) ([]byte, error) {
 			parseContext.GlobalEnv.SetFilename(currentFilename)
 		}()
 		s, err := osutil.Abs(filename)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		parseContext.GlobalEnv.SetFilename(coretypes.MakeString(s))
 	}
 	for {
@@ -20763,7 +20757,7 @@ func ProcessReader(reader *Reader, filename string, phase corereader.Phase) erro
 			parseContext.GlobalEnv.SetFilename(currentFilename)
 		}()
 		s, err := osutil.Abs(filename)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		parseContext.GlobalEnv.SetFilename(coretypes.MakeString(s))
 	}
 	var prevObj coretypes.Object
@@ -20829,7 +20823,7 @@ func ProcessReaderFromEval(reader *Reader, filename string) {
 			parseContext.GlobalEnv.SetFilename(currentFilename)
 		}()
 		s, err := osutil.Abs(filename)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		parseContext.GlobalEnv.SetFilename(coretypes.MakeString(s))
 	}
 	for {
@@ -20837,11 +20831,11 @@ func ProcessReaderFromEval(reader *Reader, filename string) {
 		if err == io.EOF {
 			return
 		}
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		expr, err := TryParse(obj, parseContext)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_, err = TryEval(expr)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 	}
 }
 
@@ -20896,7 +20890,7 @@ func processData(data []byte) {
 		var expr Expr
 		expr, p = UnpackExpr(p, header)
 		_, err := TryEval(expr)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 	}
 	if VerbosityLevel > 0 {
 		fmt.Fprintf(Stderr, "processData: Evaluated code for %s\n", GLOBAL_ENV.CurrentNamespace().ToString(false))

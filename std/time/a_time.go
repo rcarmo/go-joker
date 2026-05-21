@@ -4,6 +4,7 @@ package time
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"time"
 )
@@ -198,7 +199,7 @@ func __parse_(_args []coretypes.Object) coretypes.Object {
 		layout := coretypes.ExtractString(_args, 0)
 		value := coretypes.ExtractString(_args, 1)
 		_res, err := time.Parse(layout, value)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return coretypes.MakeTime(_res)
 
 	default:
@@ -216,7 +217,7 @@ func __parse_duration_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		s := coretypes.ExtractString(_args, 0)
 		t, err := time.ParseDuration(s)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := timeIntObject(int64(t))
 		return _res
 

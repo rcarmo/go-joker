@@ -2,6 +2,7 @@ package csv
 
 import (
 	"encoding/csv"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
 	"strings"
 	"unicode/utf8"
@@ -26,7 +27,7 @@ func csvLazySeq(rdr *csv.Reader) *corecollections.LazySeq {
 		if err == io.EOF {
 			return corecollections.EmptyList
 		}
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		return corecollections.NewConsSeq(corecollections.MakeStringVector(t), csvLazySeq(rdr))
 	}
 	return corecollections.NewLazySeq(Proc{Fn: c})
@@ -85,7 +86,7 @@ func writeWriter(wr io.Writer, data coretypes.Seqable, opts coretypes.Map) {
 	s := data.Seq()
 	for !s.IsEmpty() {
 		err := csvWriter.Write(sliceOfStrings(s.First()))
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		s = s.Rest()
 	}
 	csvWriter.Flush()

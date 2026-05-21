@@ -4,6 +4,7 @@ package io
 
 import (
 	. "github.com/rcarmo/go-joker/core"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 )
@@ -35,7 +36,7 @@ func __copy_(_args []coretypes.Object) coretypes.Object {
 		dst := coretypes.ExtractIOWriter(_args, 0)
 		src := coretypes.ExtractIOReader(_args, 1)
 		n, err := io.Copy(dst, src)
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 		_res := copyCountObject(n)
 		return _res
 

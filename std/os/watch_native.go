@@ -34,7 +34,7 @@ func watch(paths coretypes.Seqable, ch *corert.ObjectChannel, opts coretypes.Map
 	}
 
 	watcher, err := fsnotify.NewWatcher()
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 
 	fw := &fileWatcher{
 		watcher:   watcher,
@@ -45,7 +45,7 @@ func watch(paths coretypes.Seqable, ch *corert.ObjectChannel, opts coretypes.Map
 
 	if err := fw.addPaths(paths); err != nil {
 		fw.closeWatcher()
-		PanicOnErr(err)
+		corert.PanicOnErr(err)
 	}
 
 	go fw.run()

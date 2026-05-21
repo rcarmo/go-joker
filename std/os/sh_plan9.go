@@ -2,6 +2,7 @@ package os
 
 import (
 	"bytes"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
 	"os/exec"
 
@@ -29,7 +30,7 @@ func sh(dir string, stdin io.Reader, stdout io.Writer, stderr io.Writer, name st
 	}
 
 	err := cmd.Start()
-	PanicOnErr(err)
+	corert.PanicOnErr(err)
 
 	err = cmd.Wait()
 
