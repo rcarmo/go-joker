@@ -39,6 +39,29 @@ if find . -maxdepth 1 -type f -name '*.go' | grep -q .; then
   fail "root package Go files are not allowed; CLI belongs in cmd/joker and runtime code belongs in packages"
 fi
 
+allowed_root_core_files=(
+  core/a_generated_bootstrap_payloads.go
+  core/bootstrap_gen_code.go
+  core/runtime_kernel.go
+  core/runtime_kernel_contracts_test.go
+  core/runtime_kernel_spew_enabled.go
+)
+for required in "${allowed_root_core_files[@]}"; do
+  [[ -f "$required" ]] || fail "missing expected coalesced root kernel file: $required"
+done
+while IFS= read -r file; do
+  allowed=false
+  for expected in "${allowed_root_core_files[@]}"; do
+    if [[ "$file" == "$expected" ]]; then
+      allowed=true
+      break
+    fi
+  done
+  if [[ "$allowed" != true ]]; then
+    fail "unexpected root core file $file; coalesce into runtime_kernel.go or move to a real package"
+  fi
+done < <(find core -maxdepth 1 -type f -name '*.go' | sort)
+
 while IFS= read -r file; do
   if grep -q '^package core$' "$file"; then
     fail "package core file in subpackage directory is not a real package move: $file"
