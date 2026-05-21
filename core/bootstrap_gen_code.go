@@ -726,11 +726,11 @@ func init() {
 	coretypes.RuntimeNil = NIL
 	coretypes.RuntimeError = func(msg string) any { return RT.NewError(msg) }
 	coretypes.RuntimePanicArityMinMax = PanicArityMinMax
-	coretypes.RuntimePprintObject = pprintObject
-	coretypes.RuntimeFormatObject = formatObject
-	coretypes.RuntimeMaybeNewLine = maybeNewLine
-	coretypes.RuntimeWriteIndent = writeIndent
-	coretypes.RuntimeIsComment = isComment
+	coretypes.RuntimePprintObject = corert.PprintObject
+	coretypes.RuntimeFormatObject = corert.FormatObject
+	coretypes.RuntimeMaybeNewLine = corert.MaybeNewLine
+	coretypes.RuntimeWriteIndent = corert.WriteIndent
+	coretypes.RuntimeIsComment = corert.IsComment
 	coretypes.RuntimeIsReduced = corert.IsReduced
 	coretypes.RuntimeDerefReduced = corert.DerefReduced
 	coretypes.RuntimeReduceType = TYPE.Reduce

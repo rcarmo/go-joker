@@ -6730,7 +6730,7 @@ func readMap(reader *Reader) coretypes.Object {
 
 func appendMapElement(objs []coretypes.Object, obj coretypes.Object) []coretypes.Object {
 	objs = append(objs, obj)
-	if corereader.ShouldAppendMapCommentSurrogate(FORMAT_MODE, isComment(obj)) {
+	if corereader.ShouldAppendMapCommentSurrogate(FORMAT_MODE, corert.IsComment(obj)) {
 		// Add surrogate object to always have even number of elements in the map.
 		// Use rand to avoid duplicate keys.
 		objs = append(objs, readerConstruction.Double(rand.Float64()))
@@ -16110,11 +16110,11 @@ func init() {
 	coretypes.RuntimeNil = NIL
 	coretypes.RuntimeError = func(msg string) any { return RT.NewError(msg) }
 	coretypes.RuntimePanicArityMinMax = PanicArityMinMax
-	coretypes.RuntimePprintObject = pprintObject
-	coretypes.RuntimeFormatObject = formatObject
-	coretypes.RuntimeMaybeNewLine = maybeNewLine
-	coretypes.RuntimeWriteIndent = writeIndent
-	coretypes.RuntimeIsComment = isComment
+	coretypes.RuntimePprintObject = corert.PprintObject
+	coretypes.RuntimeFormatObject = corert.FormatObject
+	coretypes.RuntimeMaybeNewLine = corert.MaybeNewLine
+	coretypes.RuntimeWriteIndent = corert.WriteIndent
+	coretypes.RuntimeIsComment = corert.IsComment
 	coretypes.RuntimeIsReduced = corert.IsReduced
 	coretypes.RuntimeDerefReduced = corert.DerefReduced
 }
@@ -16641,68 +16641,6 @@ func irProfileMaybeWrite() {
 }
 
 // ---- common.go ----
-func writeIndent(w io.Writer, n int) {
-	space := []byte(" ")
-	for i := 0; i < n; i++ {
-		w.Write(space)
-	}
-}
-
-func pprintObject(obj coretypes.Object, indent int, w io.Writer) int {
-	switch obj := obj.(type) {
-	case coretypes.Pprinter:
-		return obj.Pprint(w, indent)
-	default:
-		s := obj.ToString(true)
-		fmt.Fprint(w, s)
-		return indent + len(s)
-	}
-}
-
-func formatObject(obj coretypes.Object, indent int, w io.Writer) int {
-	if info := obj.GetInfo(); info != nil {
-		fmt.Fprint(w, info.Prefix)
-		indent += utf8.RuneCountInString(info.Prefix)
-	}
-	switch obj := obj.(type) {
-	case coretypes.Formatter:
-		return obj.Format(w, indent)
-	default:
-		s := obj.ToString(true)
-		fmt.Fprint(w, s)
-		return indent + utf8.RuneCountInString(s)
-	}
-}
-
-func isComment(obj coretypes.Object) bool {
-	if _, ok := obj.(coretypes.Comment); ok {
-		return true
-	}
-	info := obj.GetInfo()
-	if info == nil {
-		return false
-	}
-	return info.Prefix == "^" || info.Prefix == "#^" || info.Prefix == "#_"
-}
-
-func isComma(obj coretypes.Object) bool {
-	if c, ok := obj.(coretypes.Comment); ok && c.C == "," {
-		return true
-	}
-	return false
-}
-
-func maybeNewLine(w io.Writer, obj, nextObj coretypes.Object, baseIndent, currentIndent int) int {
-	if writeNewLines(w, obj, nextObj) > 0 {
-		writeIndent(w, baseIndent)
-		return baseIndent
-	}
-	if !isComma(nextObj) {
-		fmt.Fprint(w, " ")
-	}
-	return currentIndent + 1
-}
-
 // ---- root_object_support.go ----
 func EnsureObjectIsNamespace(obj coretypes.Object, pattern string) *Namespace {
 	if c, yes := obj.(*Namespace); yes {
@@ -16889,7 +16827,7 @@ func procCursorIndex(args []coretypes.Object) coretypes.Object {
 
 func seqFirst(seq coretypes.Seq, w io.Writer, indent int) (coretypes.Seq, int) {
 	if !seq.IsEmpty() {
-		indent = formatObject(seq.First(), indent, w)
+		indent = corert.FormatObject(seq.First(), indent, w)
 		seq = seq.Rest()
 	}
 	return seq, indent
@@ -16911,27 +16849,19 @@ func seqFirstAfterSpace(seq coretypes.Seq, w io.Writer, indent int, insideDefRec
 			}
 			indent = formatSeqEx(s, w, indent+1, insideDefRecord)
 		} else {
-			indent = formatObject(obj, indent+1, w)
+			indent = corert.FormatObject(obj, indent+1, w)
 		}
 		seq = seq.Rest()
 	}
 	return seq, obj, indent
 }
 
-func writeNewLines(w io.Writer, prevObj coretypes.Object, obj coretypes.Object) int {
-	cnt := newLineCount(prevObj, obj)
-	for i := 0; i < cnt; i++ {
-		fmt.Fprint(w, "\n")
-	}
-	return cnt
-}
-
 func seqFirstAfterBreak(prevObj coretypes.Object, seq coretypes.Seq, w io.Writer, indent int, insideDefRecord bool) (coretypes.Seq, coretypes.Object, int) {
 	var obj coretypes.Object
 	if !seq.IsEmpty() {
 		obj = seq.First()
-		writeNewLines(w, prevObj, obj)
-		writeIndent(w, indent)
+		corert.WriteNewLines(w, prevObj, obj)
+		corert.WriteIndent(w, indent)
 		// coretypes.Seq handling here is needed to properly format methods
 		// inside defrecord
 		if s, ok := obj.(coretypes.Seq); ok && !obj.Equals(NIL) {
@@ -16941,7 +16871,7 @@ func seqFirstAfterBreak(prevObj coretypes.Object, seq coretypes.Seq, w io.Writer
 			}
 			indent = formatSeqEx(s, w, indent, insideDefRecord)
 		} else {
-			indent = formatObject(obj, indent, w)
+			indent = corert.FormatObject(obj, indent, w)
 		}
 		seq = seq.Rest()
 	}
@@ -16953,8 +16883,8 @@ func seqFirstAfterForcedBreak(seq coretypes.Seq, w io.Writer, indent int) (coret
 	if !seq.IsEmpty() {
 		obj = seq.First()
 		fmt.Fprint(w, "\n")
-		writeIndent(w, indent)
-		indent = formatObject(obj, indent, w)
+		corert.WriteIndent(w, indent)
+		indent = corert.FormatObject(obj, indent, w)
 		seq = seq.Rest()
 	}
 	return seq, obj, indent
@@ -16968,16 +16898,16 @@ func formatVectorVertically(v coretypes.Vec, w io.Writer, indent int) int {
 	fmt.Fprint(w, "[")
 	newIndent := indent + 1
 	for i := 0; i < v.Count(); i++ {
-		newIndent = formatObject(v.At(i), indent+1, w)
+		newIndent = corert.FormatObject(v.At(i), indent+1, w)
 		if i+1 < v.Count() {
 			fmt.Fprint(w, "\n")
-			writeIndent(w, indent+1)
+			corert.WriteIndent(w, indent+1)
 		}
 	}
 	if v.Count() > 0 {
-		if isComment(v.At(v.Count() - 1)) {
+		if corert.IsComment(v.At(v.Count() - 1)) {
 			fmt.Fprint(w, "\n")
-			writeIndent(w, indent+1)
+			corert.WriteIndent(w, indent+1)
 			newIndent = indent + 1
 		}
 	}
@@ -17039,14 +16969,6 @@ func isNewLine(obj, nextObj coretypes.Object) bool {
 	return !(info == nil || nextInfo == nil || info.EndLine == nextInfo.StartLine)
 }
 
-func newLineCount(obj, nextObj coretypes.Object) int {
-	info, nextInfo := obj.GetInfo(), nextObj.GetInfo()
-	if info == nil || nextInfo == nil {
-		return 0
-	}
-	return nextInfo.StartLine - info.EndLine
-}
-
 func formatSeq(seq coretypes.Seq, w io.Writer, indent int) int {
 	return formatSeqEx(seq, w, indent, false)
 }
@@ -17058,17 +16980,17 @@ func formatSeqSimple(seq coretypes.Seq, w io.Writer, indent int) int {
 	for !seq.IsEmpty() {
 		obj := seq.First()
 		if prevObj != nil {
-			ind = maybeNewLine(w, prevObj, obj, indent+1, ind)
+			ind = corert.MaybeNewLine(w, prevObj, obj, indent+1, ind)
 		}
-		ind = formatObject(obj, ind, w)
+		ind = corert.FormatObject(obj, ind, w)
 		prevObj = obj
 		seq = seq.Rest()
 	}
 
 	if prevObj != nil {
-		if isComment(prevObj) {
+		if corert.IsComment(prevObj) {
 			fmt.Fprint(w, "\n")
-			writeIndent(w, indent+1)
+			corert.WriteIndent(w, indent+1)
 			ind = indent + 1
 		}
 	}
@@ -17186,9 +17108,9 @@ func formatSeqEx(seq coretypes.Seq, w io.Writer, indent int, formatAsDef bool) i
 		obj = nextObj
 	}
 
-	if isComment(obj) {
+	if corert.IsComment(obj) {
 		fmt.Fprint(w, "\n")
-		writeIndent(w, restIndent)
+		corert.WriteIndent(w, restIndent)
 		i = restIndent
 	}
 
@@ -20259,7 +20181,7 @@ var procType = func(args []coretypes.Object) coretypes.Object {
 var procPprint = func(args []coretypes.Object) coretypes.Object {
 	obj := args[0]
 	w := coretypes.EnsureObjectIsio_Writer(GLOBAL_ENV.stdout.Value, "")
-	pprintObject(obj, 0, w)
+	corert.PprintObject(obj, 0, w)
 	fmt.Fprint(w, "\n")
 	return NIL
 }
@@ -20976,7 +20898,7 @@ func ProcessReader(reader *Reader, filename string, phase corereader.Phase) erro
 		}
 		if phase == corereader.FormatPhase {
 			if prevObj != nil {
-				cnt := newLineCount(prevObj, obj)
+				cnt := corert.NewLineCount(prevObj, obj)
 				for i := 0; i < cnt; i++ {
 					fmt.Fprint(Stdout, "\n")
 				}
@@ -20984,7 +20906,7 @@ func ProcessReader(reader *Reader, filename string, phase corereader.Phase) erro
 					fmt.Fprint(Stdout, " ")
 				}
 			}
-			formatObject(obj, 0, Stdout)
+			corert.FormatObject(obj, 0, Stdout)
 			prevObj = obj
 			continue
 		}
