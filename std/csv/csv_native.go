@@ -2,7 +2,6 @@ package csv
 
 import (
 	"encoding/csv"
-	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
 	"strings"
 	"unicode/utf8"
@@ -28,7 +27,7 @@ func csvLazySeq(rdr *csv.Reader) *corecollections.LazySeq {
 			return corecollections.EmptyList
 		}
 		PanicOnErr(err)
-		return corecollections.NewConsSeq(corert.MakeStringVector(t), csvLazySeq(rdr))
+		return corecollections.NewConsSeq(corecollections.MakeStringVector(t), csvLazySeq(rdr))
 	}
 	return corecollections.NewLazySeq(Proc{Fn: c})
 }

@@ -18,7 +18,7 @@ The root `core` package has been coalesced to the smallest practical file set wi
 
 | Priority | Domain inside `runtime_kernel.go` | Target package | Main blockers to resolve first | Non-goal |
 |---:|---|---|---|---|
-| 1 | `Runtime`, `EvalError`, current expression, goroutine root glue | `core/runtime` | Started: call stack frame storage/formatting now lives in `core/runtime.Callstack` behind the root-independent `core/runtime.Traceable` interface, per-goroutine interpreter state now lives in `core/runtime.GoroutineRT` with root `Expr` held as `any`, the typed state pool lives in `core/runtime.InterpreterStatePool`, and `Nil`, nil checks/truthiness, `EvalError`, `Reduced`, file-info maps, string vector construction, stdlib I/O, string sequence descriptor, and string cursor/transient-string runtime wrappers live in `core/runtime`. Remaining blockers are root `Expr`, `Fn`, `Proc`, `Var`, namespace state, and root runtime/type construction. | Do not add hook shims that simply call back into root. |
+| 1 | `Runtime`, `EvalError`, current expression, goroutine root glue | `core/runtime` | Started: call stack frame storage/formatting now lives in `core/runtime.Callstack` behind the root-independent `core/runtime.Traceable` interface, per-goroutine interpreter state now lives in `core/runtime.GoroutineRT` with root `Expr` held as `any`, the typed state pool lives in `core/runtime.InterpreterStatePool`, and `Nil`, nil checks/truthiness, `EvalError`, `Reduced`, file-info maps, stdlib I/O, and process/version plumbing live in `core/runtime`. Remaining blockers are root `Expr`, `Fn`, `Proc`, `Var`, namespace state, and root runtime/type construction. | Do not add hook shims that simply call back into root. |
 | 2 | IR program/cache/compiler/boxed executor/WASM lowering cluster | `core/ir` plus `core/wasm` for WASM leaves | Move or contract root `Fn`, `Var`, `Expr`, local env/frame slots, call dispatch, errors, and tracing-facing names. | Do not move `boxed_exec` alone. |
 | 3 | Reader/parser orchestration now in the kernel | `core/reader` for reader mechanics; parser remains root/eval until expression contracts exist | Finish construction/tag/metadata/error adapters so reader code does not need root object/evaluator state. | Do not let `core/reader` import root `core`. |
 | 4 | Namespace/env/proc registration glue | `core/runtime` or a dedicated env package | Started: namespace map locking now lives in `core/runtime.NamespaceMu`. Remaining blockers are `GLOBAL_ENV`, `Namespace`, `Var`, `Proc`, `STRINGS`, `TYPE`, generated bootstrap mutation, and `referToUser`. | Do not create aliases/wrappers for old root env APIs. |
@@ -26,8 +26,8 @@ The root `core` package has been coalesced to the smallest practical file set wi
 
 ## Recent small extractions
 
-- Generic root-independent object predicates (`IsSymbol`, `IsKeyword`, `IsVector`, `IsSeq`), extraction helpers (`ExtractString`, `ExtractMap`, etc.), and default number equality now live in `core/types`.
-- Character-to-string fast-path helpers now live in `core/runtime`.
+- Generic root-independent object predicates (`IsSymbol`, `IsKeyword`, `IsVector`, `IsSeq`), extraction helpers (`ExtractString`, `ExtractMap`, etc.), default number equality, string cursor/transient-string wrappers, string sequence descriptor, and character-to-string fast-path helpers now live in `core/types`.
+- String vector construction now lives in `core/types/collections`.
 - Generic formatting hooks (`PprintObject`, `FormatObject`, indentation/comment/newline helpers) now live in `core/runtime`.
 - Process exit callback plumbing, the runtime version constant, and version-map construction now live in `core/runtime`.
 

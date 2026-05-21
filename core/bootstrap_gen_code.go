@@ -720,7 +720,7 @@ func init() {
 		ArrayVector:   typeBuilder().RegisterReference("corecollections.ArrayVector", (*corecollections.ArrayVector)(nil), ""),
 		VectorRSeq:    typeBuilder().RegisterReference("corecollections.VectorRSeq", (*corecollections.VectorRSeq)(nil), ""),
 		VectorSeq:     typeBuilder().RegisterReference("corecollections.VectorSeq", (*corecollections.VectorSeq)(nil), ""),
-		StringSeq:     typeBuilder().RegisterReference("StringSeq", (*corert.StringSeq)(nil), ""),
+		StringSeq:     typeBuilder().RegisterReference("StringSeq", (*coretypes.StringSeq)(nil), ""),
 	}
 	coretypes.RuntimeTypes = &TYPE
 	coretypes.RuntimeNil = NIL

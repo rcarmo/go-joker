@@ -3,7 +3,6 @@
 package filepath
 
 import (
-	corert "github.com/rcarmo/go-joker/core/runtime"
 	"path/filepath"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -178,7 +177,7 @@ func __glob_(_args []coretypes.Object) coretypes.Object {
 		pattern := coretypes.ExtractString(_args, 0)
 		_res, err := filepath.Glob(pattern)
 		PanicOnErr(err)
-		return corert.MakeStringVector(_res)
+		return corecollections.MakeStringVector(_res)
 
 	default:
 		PanicArity(_c)
@@ -269,7 +268,7 @@ func __split_list_(_args []coretypes.Object) coretypes.Object {
 	case _c == 1:
 		path := coretypes.ExtractString(_args, 0)
 		_res := filepath.SplitList(path)
-		return corert.MakeStringVector(_res)
+		return corecollections.MakeStringVector(_res)
 
 	default:
 		PanicArity(_c)

@@ -1,9 +1,7 @@
-package runtime
+package types
 
 import (
 	"testing"
-
-	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
 func TestStringCursorAndTransientString(t *testing.T) {
@@ -15,7 +13,7 @@ func TestStringCursorAndTransientString(t *testing.T) {
 	if next == cursor || next.Char() != 'b' || next.Index() <= cursor.Index() {
 		t.Fatalf("next cursor mismatch: %#v -> %#v", cursor, next)
 	}
-	builder := NewTransientString(coretypes.MakeString("b")).(*TransientString)
+	builder := NewTransientString(MakeString("b")).(*TransientString)
 	builder.PrependString("a").AppendChar('c')
 	if got := builder.ToPersistent(); got.S != "abc" {
 		t.Fatalf("persistent string = %q, want abc", got.S)

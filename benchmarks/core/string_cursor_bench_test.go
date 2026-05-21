@@ -2,7 +2,6 @@ package core_test
 
 import (
 	. "github.com/rcarmo/go-joker/core"
-	corert "github.com/rcarmo/go-joker/core/runtime"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	"testing"
 )
@@ -14,19 +13,19 @@ func initBenchStringCursorProcs() {
 		fn   ProcFn
 	}{
 		{"string-cursor", func(args []coretypes.Object) coretypes.Object {
-			return corert.NewStringCursor(coretypes.EnsureArgIsString(args, 0).S)
+			return coretypes.NewStringCursor(coretypes.EnsureArgIsString(args, 0).S)
 		}},
 		{"cursor-char", func(args []coretypes.Object) coretypes.Object {
-			c := args[0].(*corert.StringCursor)
+			c := args[0].(*coretypes.StringCursor)
 			r := c.Char()
 			if r < 0 {
 				return NIL
 			}
 			return coretypes.Char{Ch: r}
 		}},
-		{"cursor-next", func(args []coretypes.Object) coretypes.Object { return args[0].(*corert.StringCursor).Next() }},
+		{"cursor-next", func(args []coretypes.Object) coretypes.Object { return args[0].(*coretypes.StringCursor).Next() }},
 		{"cursor-done?", func(args []coretypes.Object) coretypes.Object {
-			return coretypes.Boolean{B: args[0].(*corert.StringCursor).Done()}
+			return coretypes.Boolean{B: args[0].(*coretypes.StringCursor).Done()}
 		}},
 	} {
 		sym := coretypes.MakeSymbol(STRINGS.Intern, p.name)

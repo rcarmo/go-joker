@@ -15105,7 +15105,7 @@ func objectToIRValue(obj coretypes.Object) irValue {
 		return irValue{tag: irValNil}
 	case coretypes.Keyword:
 		return irValue{tag: irValKeyword, p: unsafe.Pointer(v.NameKey())}
-	case *corert.StringCursor:
+	case *coretypes.StringCursor:
 		return irValue{tag: irValCursor, p: unsafe.Pointer(v)}
 	default:
 		return irMakeObject(obj)
@@ -15144,7 +15144,7 @@ func (v irValue) object() coretypes.Object {
 	case irValKeyword:
 		return keywordObjectFromName((*string)(v.p))
 	case irValCursor:
-		return (*corert.StringCursor)(v.p)
+		return (*coretypes.StringCursor)(v.p)
 	default:
 		if v.obj() == nil {
 			return NIL
@@ -15171,7 +15171,7 @@ func irValueToString(v irValue) string {
 	case irValStringBuilder:
 		return string(v.bytes())
 	case irValChar:
-		return corert.CharToStringFast(v.char())
+		return coretypes.CharToStringFast(v.char())
 	case irValNil:
 		return ""
 	case irValInt:
@@ -15195,7 +15195,7 @@ func irValueStringKey(v irValue) (string, bool) {
 	case irValStringBuilder:
 		return string(v.bytes()), true
 	case irValChar:
-		return corert.CharToStringFast(v.char()), true
+		return coretypes.CharToStringFast(v.char()), true
 	default:
 		return "", false
 	}
@@ -15578,7 +15578,7 @@ func (RuntimeExecutionAdapter) MutableSlotObject(obj coretypes.Object, escapeInf
 			builder := slot < len(escapeInfo.StringBuilderSlots) && escapeInfo.StringBuilderSlots[slot]
 			prepend := escapeInfo.StringPrependSlots[slot]
 			if (corert.IRStringBuilderForce() && (builder || prepend)) || (!corert.IRStringBuilderForce() && prepend) {
-				return corert.NewTransientString(v)
+				return coretypes.NewTransientString(v)
 			}
 		}
 	}
@@ -15591,7 +15591,7 @@ func (RuntimeExecutionAdapter) PersistentResult(result coretypes.Object) coretyp
 		return v.ToPersistent()
 	case *coretypes.TransientMap:
 		return v.ToPersistent()
-	case *corert.TransientString:
+	case *coretypes.TransientString:
 		return v.ToPersistent()
 	default:
 		return result
@@ -15731,7 +15731,7 @@ func (RuntimeExecutionAdapter) Str1(obj coretypes.Object) coretypes.Object {
 	case coretypes.String:
 		return v
 	case coretypes.Char:
-		return corert.CharToStringObjectFast(v.Ch)
+		return coretypes.CharToStringObjectFast(v.Ch)
 	default:
 		return coretypes.String{S: obj.ToString(false)}
 	}
@@ -15739,7 +15739,7 @@ func (RuntimeExecutionAdapter) Str1(obj coretypes.Object) coretypes.Object {
 
 func (RuntimeExecutionAdapter) Str2(a coretypes.Object, b coretypes.Object) coretypes.Object {
 	switch av := a.(type) {
-	case *corert.TransientString:
+	case *coretypes.TransientString:
 		switch bv := b.(type) {
 		case coretypes.Char:
 			return av.AppendChar(bv.Ch)
@@ -15751,19 +15751,19 @@ func (RuntimeExecutionAdapter) Str2(a coretypes.Object, b coretypes.Object) core
 	case coretypes.String:
 		switch bv := b.(type) {
 		case coretypes.Char:
-			return coretypes.String{S: av.S + corert.CharToStringFast(bv.Ch)}
+			return coretypes.String{S: av.S + coretypes.CharToStringFast(bv.Ch)}
 		case coretypes.String:
 			return coretypes.String{S: av.S + bv.S}
-		case *corert.TransientString:
+		case *coretypes.TransientString:
 			return bv.PrependString(av.S)
 		default:
 			return coretypes.String{S: av.S + b.ToString(false)}
 		}
 	case coretypes.Char:
-		if bv, ok := b.(*corert.TransientString); ok {
+		if bv, ok := b.(*coretypes.TransientString); ok {
 			return bv.PrependChar(av.Ch)
 		}
-		return coretypes.String{S: corert.CharToStringFast(av.Ch) + b.ToString(false)}
+		return coretypes.String{S: coretypes.CharToStringFast(av.Ch) + b.ToString(false)}
 	default:
 		return coretypes.String{S: a.ToString(false) + b.ToString(false)}
 	}
@@ -15771,7 +15771,7 @@ func (RuntimeExecutionAdapter) Str2(a coretypes.Object, b coretypes.Object) core
 
 func (RuntimeExecutionAdapter) Count(obj coretypes.Object) (int, bool) {
 	switch v := obj.(type) {
-	case *corert.TransientString:
+	case *coretypes.TransientString:
 		return v.Count(), true
 	case coretypes.Counted:
 		return v.Count(), true
@@ -15793,7 +15793,7 @@ func (adapter RuntimeExecutionAdapter) NthASCIIStringConst(prog *IRProgram, cons
 }
 
 func (RuntimeExecutionAdapter) CursorChar(obj coretypes.Object) (coretypes.Object, bool) {
-	cur, ok := obj.(*corert.StringCursor)
+	cur, ok := obj.(*coretypes.StringCursor)
 	if !ok {
 		return nil, false
 	}
@@ -15804,7 +15804,7 @@ func (RuntimeExecutionAdapter) CursorChar(obj coretypes.Object) (coretypes.Objec
 }
 
 func (RuntimeExecutionAdapter) CursorNext(obj coretypes.Object) (coretypes.Object, bool) {
-	cur, ok := obj.(*corert.StringCursor)
+	cur, ok := obj.(*coretypes.StringCursor)
 	if !ok {
 		return nil, false
 	}
@@ -15812,7 +15812,7 @@ func (RuntimeExecutionAdapter) CursorNext(obj coretypes.Object) (coretypes.Objec
 }
 
 func (RuntimeExecutionAdapter) CursorDone(obj coretypes.Object) (coretypes.Object, bool) {
-	cur, ok := obj.(*corert.StringCursor)
+	cur, ok := obj.(*coretypes.StringCursor)
 	if !ok {
 		return nil, false
 	}
@@ -16775,11 +16775,11 @@ func procStringCursor(args []coretypes.Object) coretypes.Object {
 	if !ok {
 		panic(RT.NewError("string-cursor expects a string argument"))
 	}
-	return corert.NewStringCursor(s.S)
+	return coretypes.NewStringCursor(s.S)
 }
 
 func procCursorChar(args []coretypes.Object) coretypes.Object {
-	c, ok := args[0].(*corert.StringCursor)
+	c, ok := args[0].(*coretypes.StringCursor)
 	if !ok {
 		panic(RT.NewError("cursor-char expects a StringCursor"))
 	}
@@ -16791,7 +16791,7 @@ func procCursorChar(args []coretypes.Object) coretypes.Object {
 }
 
 func procCursorNext(args []coretypes.Object) coretypes.Object {
-	c, ok := args[0].(*corert.StringCursor)
+	c, ok := args[0].(*coretypes.StringCursor)
 	if !ok {
 		panic(RT.NewError("cursor-next expects a StringCursor"))
 	}
@@ -16799,7 +16799,7 @@ func procCursorNext(args []coretypes.Object) coretypes.Object {
 }
 
 func procCursorDone(args []coretypes.Object) coretypes.Object {
-	c, ok := args[0].(*corert.StringCursor)
+	c, ok := args[0].(*coretypes.StringCursor)
 	if !ok {
 		panic(RT.NewError("cursor-done? expects a StringCursor"))
 	}
@@ -16807,7 +16807,7 @@ func procCursorDone(args []coretypes.Object) coretypes.Object {
 }
 
 func procCursorIndex(args []coretypes.Object) coretypes.Object {
-	c, ok := args[0].(*corert.StringCursor)
+	c, ok := args[0].(*coretypes.StringCursor)
 	if !ok {
 		panic(RT.NewError("cursor-index expects a StringCursor"))
 	}
@@ -19639,7 +19639,7 @@ var procStr = func(args []coretypes.Object) coretypes.Object {
 		// Fastest: string + char (the parser hot path)
 		if as, ok := a.(coretypes.String); ok {
 			if bc, ok := b.(coretypes.Char); ok {
-				return coretypes.String{S: as.S + corert.CharToStringFast(bc.Ch)}
+				return coretypes.String{S: as.S + coretypes.CharToStringFast(bc.Ch)}
 			}
 			if bs, ok := b.(coretypes.String); ok {
 				return coretypes.String{S: as.S + bs.S}

@@ -88,7 +88,7 @@ func addUser(m *corecollections.ArrayMap, section string, name string, email str
 func makeRemote(remote *gitConfig.RemoteConfig) coretypes.Map {
 	res := corecollections.EmptyArrayMap()
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(remote.Name))
-	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "urls"), corert.MakeStringVector(remote.URLs))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "urls"), corecollections.MakeStringVector(remote.URLs))
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "mirror?"), coretypes.MakeBoolean(remote.Mirror))
 	return res
 }
