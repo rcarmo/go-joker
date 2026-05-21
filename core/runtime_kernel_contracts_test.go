@@ -1,6 +1,7 @@
 package core
 
 import (
+	corestr "github.com/rcarmo/go-joker/core/types/string"
 	"io"
 	"io/fs"
 	"math"
@@ -3124,10 +3125,10 @@ func TestIRNthStringFastPath(t *testing.T) {
 }
 
 func TestCharToStringFast(t *testing.T) {
-	if got := coretypes.CharToStringFast('A'); got != "A" {
+	if got := corestr.CharToStringFast('A'); got != "A" {
 		t.Fatalf("expected A, got %q", got)
 	}
-	if got := coretypes.CharToStringFast('é'); got != "é" {
+	if got := corestr.CharToStringFast('é'); got != "é" {
 		t.Fatalf("expected é, got %q", got)
 	}
 	if got := coretypes.CharToStringObjectFast('A'); got.(coretypes.String).S != "A" {

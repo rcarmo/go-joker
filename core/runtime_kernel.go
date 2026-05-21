@@ -15171,7 +15171,7 @@ func irValueToString(v irValue) string {
 	case irValStringBuilder:
 		return string(v.bytes())
 	case irValChar:
-		return coretypes.CharToStringFast(v.char())
+		return corestr.CharToStringFast(v.char())
 	case irValNil:
 		return ""
 	case irValInt:
@@ -15195,7 +15195,7 @@ func irValueStringKey(v irValue) (string, bool) {
 	case irValStringBuilder:
 		return string(v.bytes()), true
 	case irValChar:
-		return coretypes.CharToStringFast(v.char()), true
+		return corestr.CharToStringFast(v.char()), true
 	default:
 		return "", false
 	}
@@ -15751,7 +15751,7 @@ func (RuntimeExecutionAdapter) Str2(a coretypes.Object, b coretypes.Object) core
 	case coretypes.String:
 		switch bv := b.(type) {
 		case coretypes.Char:
-			return coretypes.String{S: av.S + coretypes.CharToStringFast(bv.Ch)}
+			return coretypes.String{S: av.S + corestr.CharToStringFast(bv.Ch)}
 		case coretypes.String:
 			return coretypes.String{S: av.S + bv.S}
 		case *coretypes.TransientString:
@@ -15763,7 +15763,7 @@ func (RuntimeExecutionAdapter) Str2(a coretypes.Object, b coretypes.Object) core
 		if bv, ok := b.(*coretypes.TransientString); ok {
 			return bv.PrependChar(av.Ch)
 		}
-		return coretypes.String{S: coretypes.CharToStringFast(av.Ch) + b.ToString(false)}
+		return coretypes.String{S: corestr.CharToStringFast(av.Ch) + b.ToString(false)}
 	default:
 		return coretypes.String{S: a.ToString(false) + b.ToString(false)}
 	}
@@ -19639,7 +19639,7 @@ var procStr = func(args []coretypes.Object) coretypes.Object {
 		// Fastest: string + char (the parser hot path)
 		if as, ok := a.(coretypes.String); ok {
 			if bc, ok := b.(coretypes.Char); ok {
-				return coretypes.String{S: as.S + coretypes.CharToStringFast(bc.Ch)}
+				return coretypes.String{S: as.S + corestr.CharToStringFast(bc.Ch)}
 			}
 			if bs, ok := b.(coretypes.String); ok {
 				return coretypes.String{S: as.S + bs.S}

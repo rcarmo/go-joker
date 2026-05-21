@@ -5,14 +5,12 @@ import (
 )
 
 var asciiCharStringObjects = corestr.NewObjectCache(func(ch rune) Object {
-	return String{S: corestr.String(ch)}
+	return String{S: corestr.CharToStringFast(ch)}
 })
-
-func CharToStringFast(ch rune) string { return corestr.String(ch) }
 
 func CharToStringObjectFast(ch rune) Object {
 	if obj, ok := asciiCharStringObjects.Lookup(ch); ok {
 		return obj
 	}
-	return String{S: corestr.String(ch)}
+	return String{S: corestr.CharToStringFast(ch)}
 }
