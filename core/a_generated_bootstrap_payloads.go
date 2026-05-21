@@ -4645,7 +4645,7 @@ var ty_Buffer coretypes.Type = coretypes.Type{
 		Meta: &arrayMap_NUM_39,
 	},
 	Name:        "Buffer",
-	ReflectType: reflect.TypeOf((*Buffer)(nil)),
+	ReflectType: reflect.TypeOf((*corert.Buffer)(nil)),
 }
 var arrayMap_NUM_40 corecollections.ArrayMap = corecollections.ArrayMap{
 	Arr: []coretypes.Object{
@@ -4829,7 +4829,7 @@ var ty_File coretypes.Type = coretypes.Type{
 		Meta: &arrayMap_NUM_47,
 	},
 	Name:        "File",
-	ReflectType: reflect.TypeOf((*File)(nil)),
+	ReflectType: reflect.TypeOf((*corert.File)(nil)),
 }
 var arrayMap_NUM_48 corecollections.ArrayMap = corecollections.ArrayMap{
 	Arr: []coretypes.Object{
@@ -4852,7 +4852,7 @@ var ty_BufferedReader coretypes.Type = coretypes.Type{
 		Meta: &arrayMap_NUM_48,
 	},
 	Name:        "BufferedReader",
-	ReflectType: reflect.TypeOf((*BufferedReader)(nil)),
+	ReflectType: reflect.TypeOf((*corert.BufferedReader)(nil)),
 }
 var arrayMap_NUM_49 corecollections.ArrayMap = corecollections.ArrayMap{
 	Arr: []coretypes.Object{

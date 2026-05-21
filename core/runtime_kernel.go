@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert coretypes.Comparable coretypes.Vec coretypes.Char coretypes.String coretypes.Symbol coretypes.Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number coretypes.Seqable coretypes.Callable *coretypes.Type coretypes.Meta coretypes.Int coretypes.Double coretypes.Stack coretypes.Map coretypes.Set coretypes.Associative coretypes.Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn coretypes.Deref *corert.Atom coretypes.Ref coretypes.KVReduce coretypes.Reduce coretypes.Pending *File io.Reader io.Writer coretypes.StringReader io.RuneReader *corert.ObjectChannel coretypes.CountedIndexed
+//go:generate go run gen/gen_types.go assert coretypes.Comparable coretypes.Vec coretypes.Char coretypes.String coretypes.Symbol coretypes.Keyword *coretypes.Regex coretypes.Boolean coretypes.Time coretypes.Number coretypes.Seqable coretypes.Callable *coretypes.Type coretypes.Meta coretypes.Int coretypes.Double coretypes.Stack coretypes.Map coretypes.Set coretypes.Associative coretypes.Reversible coretypes.Named coretypes.Comparator *coretypes.Ratio *coretypes.BigFloat *coretypes.BigInt *Namespace *Var coretypes.Error *Fn coretypes.Deref *corert.Atom coretypes.Ref coretypes.KVReduce coretypes.Reduce coretypes.Pending *corert.File io.Reader io.Writer coretypes.StringReader io.RuneReader *corert.ObjectChannel coretypes.CountedIndexed
 //go:generate go run gen/gen_types.go info *corecollections.List *corecollections.ArrayMapSeq *corecollections.ArrayMap *corecollections.HashMap *ExInfo *Fn *Var Nil *corecollections.LazySeq *corecollections.MappingSeq *corecollections.ArraySeq *corecollections.ConsSeq *corecollections.NodeSeq *corecollections.ArrayNodeSeq *corecollections.MapSet *corecollections.Vector *corecollections.ArrayVector *corecollections.VectorSeq *corecollections.VectorRSeq
 //go:generate go run -tags gen_code gen/codegen/main.go
 
@@ -17005,16 +17005,16 @@ func EnsureArgIsAtom(args []coretypes.Object, index int) *corert.Atom {
 	panic(FailArg(obj, "Atom", index))
 }
 
-func EnsureObjectIsFile(obj coretypes.Object, pattern string) *File {
-	if c, yes := obj.(*File); yes {
+func EnsureObjectIsFile(obj coretypes.Object, pattern string) *corert.File {
+	if c, yes := obj.(*corert.File); yes {
 		return c
 	}
 	panic(FailObject(obj, "File", pattern))
 }
 
-func EnsureArgIsFile(args []coretypes.Object, index int) *File {
+func EnsureArgIsFile(args []coretypes.Object, index int) *corert.File {
 	obj := args[index]
-	if c, yes := obj.(*File); yes {
+	if c, yes := obj.(*corert.File); yes {
 		return c
 	}
 	panic(FailArg(obj, "File", index))
@@ -17566,9 +17566,9 @@ func (env *Env) SetClassPath(cp string) {
 }
 
 func (env *Env) InitEnv(stdin io.Reader, stdout, stderr io.Writer, args []string) {
-	env.stdin.Value = MakeBufferedReader(stdin)
-	env.stdout.Value = MakeIOWriter(stdout)
-	env.stderr.Value = MakeIOWriter(stderr)
+	env.stdin.Value = corert.MakeBufferedReader(stdin)
+	env.stdout.Value = corert.MakeIOWriter(stdout)
+	env.stderr.Value = corert.MakeIOWriter(stderr)
 	if vr := env.CoreNamespace.Resolve("constantly"); vr != nil {
 		vr.Value = Proc{Name: "procConstantly", Fn: func(args []coretypes.Object) coretypes.Object {
 			runtimeCheckArity(args, 1, 1)
@@ -20605,7 +20605,7 @@ var procNewline = func(args []coretypes.Object) coretypes.Object {
 
 var procFlush = func(args []coretypes.Object) coretypes.Object {
 	switch f := args[0].(type) {
-	case *File:
+	case *corert.File:
 		f.Sync()
 	}
 	return NIL
@@ -20844,15 +20844,15 @@ const bufferHashMask uint32 = 0x5ed19e84
 var procBuffer = func(args []coretypes.Object) coretypes.Object {
 	if len(args) > 0 {
 		s := coretypes.EnsureArgIsString(args, 0)
-		return MakeBuffer(bytes.NewBufferString(s.S))
+		return corert.MakeBuffer(bytes.NewBufferString(s.S))
 	}
-	return MakeBuffer(&bytes.Buffer{})
+	return corert.MakeBuffer(&bytes.Buffer{})
 }
 
 var procBufferedReader = func(args []coretypes.Object) coretypes.Object {
 	switch rdr := args[0].(type) {
 	case io.Reader:
-		return MakeBufferedReader(rdr)
+		return corert.MakeBufferedReader(rdr)
 	default:
 		panic(RT.NewArgTypeError(0, args[0], "IOReader"))
 	}
@@ -21945,84 +21945,6 @@ func registerChunkedSeqProcs() {
 			return coretypes.MakeBoolean(ok)
 		}}
 	}
-}
-
-// ---- io_objects.go ----
-type File struct{ *corereader.File }
-
-func MakeFile(f *os.File) *File { return &File{File: corereader.NewFile(f)} }
-
-func (f *File) ToString(escape bool) string                          { return "#object[File]" }
-func (f *File) Equals(other interface{}) bool                        { return f == other }
-func (f *File) GetInfo() *coretypes.ObjectInfo                       { return nil }
-func (f *File) GetType() *coretypes.Type                             { return TYPE.File }
-func (f *File) Hash() uint32                                         { return f.File.Hash() }
-func (f *File) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return f }
-func (f *File) Namespace() string                                    { return "" }
-func ExtractFile(args []coretypes.Object, index int) *File           { return EnsureArgIsFile(args, index) }
-
-type Buffer struct{ *corereader.Buffer }
-
-func MakeBuffer(b *bytes.Buffer) *Buffer { return &Buffer{Buffer: corereader.NewBuffer(b)} }
-
-func (b *Buffer) ToString(escape bool) string                          { return b.String() }
-func (b *Buffer) Equals(other interface{}) bool                        { return b == other }
-func (b *Buffer) GetInfo() *coretypes.ObjectInfo                       { return nil }
-func (b *Buffer) GetType() *coretypes.Type                             { return TYPE.Buffer }
-func (b *Buffer) Hash() uint32                                         { return b.Buffer.Hash() }
-func (b *Buffer) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return b }
-
-type BufferedReader struct{ *corereader.Buffered }
-
-func MakeBufferedReader(rd io.Reader) *BufferedReader {
-	return &BufferedReader{Buffered: corereader.NewBuffered(rd)}
-}
-
-func (br *BufferedReader) ToString(escape bool) string                          { return "#object[BufferedReader]" }
-func (br *BufferedReader) Equals(other interface{}) bool                        { return br == other }
-func (br *BufferedReader) GetInfo() *coretypes.ObjectInfo                       { return nil }
-func (br *BufferedReader) GetType() *coretypes.Type                             { return TYPE.BufferedReader }
-func (br *BufferedReader) Hash() uint32                                         { return br.Buffered.Hash() }
-func (br *BufferedReader) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return br }
-
-type IOReader struct{ *corereader.IOReader }
-
-func MakeIOReader(r io.Reader) *IOReader { return &IOReader{IOReader: corereader.NewIOReader(r)} }
-
-func (ior *IOReader) ToString(escape bool) string                          { return "#object[IOReader]" }
-func (ior *IOReader) Equals(other interface{}) bool                        { return ior == other }
-func (ior *IOReader) GetInfo() *coretypes.ObjectInfo                       { return nil }
-func (ior *IOReader) GetType() *coretypes.Type                             { return TYPE.IOReader }
-func (ior *IOReader) Hash() uint32                                         { return ior.IOReader.Hash() }
-func (ior *IOReader) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return ior }
-func (ior *IOReader) Close() error {
-	if err := ior.IOReader.Close(); err != nil {
-		if errors.Is(err, corereader.ErrNotClosable) {
-			return RT.NewError("coretypes.Object is not closable: " + ior.ToString(false))
-		}
-		return err
-	}
-	return nil
-}
-
-type IOWriter struct{ *corereader.IOWriter }
-
-func MakeIOWriter(w io.Writer) *IOWriter { return &IOWriter{IOWriter: corereader.NewIOWriter(w)} }
-
-func (iow *IOWriter) ToString(escape bool) string                          { return "#object[IOWriter]" }
-func (iow *IOWriter) Equals(other interface{}) bool                        { return iow == other }
-func (iow *IOWriter) GetInfo() *coretypes.ObjectInfo                       { return nil }
-func (iow *IOWriter) GetType() *coretypes.Type                             { return TYPE.IOWriter }
-func (iow *IOWriter) Hash() uint32                                         { return iow.IOWriter.Hash() }
-func (iow *IOWriter) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return iow }
-func (iow *IOWriter) Close() error {
-	if err := iow.IOWriter.Close(); err != nil {
-		if errors.Is(err, corereader.ErrNotClosable) {
-			return RT.NewError("coretypes.Object is not closable: " + iow.ToString(false))
-		}
-		return err
-	}
-	return nil
 }
 
 // ---- core_api_gaps.go ----
