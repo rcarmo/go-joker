@@ -737,7 +737,7 @@ func init() {
 	coretypes.RuntimeKVReduceType = TYPE.KVReduce
 	coretypes.SpecialSymbolLookup = func(sym coretypes.Symbol) bool { return SPECIAL_SYMBOLS[sym.NameKey()] }
 	coretypes.NumberCompare = coretypes.CompareNumbers
-	coretypes.NumberEquals = equalsNumbers
+	coretypes.NumberEquals = coretypes.NumberEqualsDefault
 	coretypes.NamedLookup = getMap
 	coretypes.TransientMutationError = func() any { return RT.NewError("Cannot mutate a frozen transient") }
 	coretypes.TransientVectorIndexTypeError = func(obj coretypes.Object) any { return RT.NewArgTypeError(1, obj, "Int") }

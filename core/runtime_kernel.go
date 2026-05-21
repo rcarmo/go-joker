@@ -16170,15 +16170,6 @@ func getMap(k coretypes.Object, args []coretypes.Object) coretypes.Object {
 	return NIL
 }
 
-func equalsNumbers(x coretypes.Number, y interface{}) bool {
-	switch y := y.(type) {
-	case coretypes.Number:
-		return coretypes.Category(x) == coretypes.Category(y) && coretypes.NumbersEq(x, y)
-	default:
-		return false
-	}
-}
-
 func (exInfo *ExInfo) ToString(escape bool) string {
 	return exInfo.Error()
 }

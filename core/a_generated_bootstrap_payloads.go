@@ -5558,7 +5558,7 @@ var TYPES coretypes.Registry = coretypes.Registry{
 func init() {
 	coretypes.RuntimeTypes = &TYPE
 	coretypes.NumberCompare = coretypes.CompareNumbers
-	coretypes.NumberEquals = equalsNumbers
+	coretypes.NumberEquals = coretypes.NumberEqualsDefault
 	coretypes.NamedLookup = getMap
 	installAssertionErrors()
 	coretypes.DelayCall = call0
