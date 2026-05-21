@@ -1,6 +1,6 @@
 # Repository architecture refactor plan
 
-Updated: 2026-05-20
+Updated: 2026-05-21
 
 ## Goal
 
@@ -21,7 +21,7 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 - Tracing/profiling aggregation state is extracted into `core/trace`.
 
 
-Current focused cleanup metrics (2026-05-20): root `core/*.go` is 5 files with one consolidated root test file; `core/types` is 19 files and owns the canonical object/type/protocol/value contracts plus shared protocols (`Map`, `Meta`, `Set`, `Vec`, `Ref`), transient implementations, tagged-literal parsing helpers, runtime hooks, and generated/assertion replacements for `coretypes.*` and stdlib I/O return types. `core/types/collections` owns concrete vectors/maps/sets/lists/seqs/chunks, and `core/runtime` owns channel/future/promise/agent/atom wrappers plus runtime primitives.
+Current focused cleanup metrics (2026-05-21): root `core/*.go` is 5 files with one consolidated root test file; `core/types` is 19 files and owns the canonical object/type/protocol/value contracts plus shared protocols (`Map`, `Meta`, `Set`, `Vec`, `Ref`), transient implementations, tagged-literal parsing helpers, runtime hooks, and generated/assertion replacements for `coretypes.*` and stdlib I/O return types. `core/types/collections` owns concrete vectors/maps/sets/lists/seqs/chunks, and `core/runtime` owns channel/future/promise/agent/atom wrappers plus runtime primitives.
 
 ## Refactor document set
 
@@ -43,6 +43,7 @@ This folder is the canonical refactor/audit document set:
 - `reader-parser-audit.md` — current remaining reader/parser root ownership, blockers, and next safe extraction seams.
 - `std-resource-layout.md` — repository layout rules for std namespace roots, Go packages, and pure Joker sub-namespace resources.
 - `collections-extraction-audit.md` — current collection family grouping, extracted mechanics seams, and blockers for concrete collection moves.
+- `root-kernel-inventory.md` — final coalesced root kernel file set plus the next real extraction targets and blockers.
 
 ## Target package map
 
