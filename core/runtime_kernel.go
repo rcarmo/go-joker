@@ -16955,11 +16955,6 @@ func isBodyIndent(obj coretypes.Object) bool {
 	}
 }
 
-func isNewLine(obj, nextObj coretypes.Object) bool {
-	info, nextInfo := obj.GetInfo(), nextObj.GetInfo()
-	return !(info == nil || nextInfo == nil || info.EndLine == nextInfo.StartLine)
-}
-
 func formatSeq(seq coretypes.Seq, w io.Writer, indent int) int {
 	return formatSeqEx(seq, w, indent, false)
 }
@@ -17057,7 +17052,7 @@ func formatSeqEx(seq coretypes.Seq, w io.Writer, indent int, formatAsDef bool) i
 				seq, _, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
 				seq, prevObj, i = seqFirstAfterSpace(seq, w, i, isDefRecord)
 			default:
-				if !isNewLine(obj, seq.First()) {
+				if !corert.IsNewLine(obj, seq.First()) {
 					restIndent = i + 1
 				}
 			}
@@ -17075,7 +17070,7 @@ func formatSeqEx(seq coretypes.Seq, w io.Writer, indent int, formatAsDef bool) i
 			seq = seq.Rest()
 		}
 	} else if isDoIndent(obj) {
-		if !seq.IsEmpty() && !isNewLine(obj, seq.First()) {
+		if !seq.IsEmpty() && !corert.IsNewLine(obj, seq.First()) {
 			restIndent = i + 1
 		}
 	} else if formatAsDef {
@@ -17084,14 +17079,14 @@ func formatSeqEx(seq coretypes.Seq, w io.Writer, indent int, formatAsDef bool) i
 	} else {
 		// Indent function call arguments.
 		restIndent = indent + 1
-		if !seq.IsEmpty() && !isNewLine(obj, seq.First()) {
+		if !seq.IsEmpty() && !corert.IsNewLine(obj, seq.First()) {
 			restIndent = i + 1
 		}
 	}
 
 	for !seq.IsEmpty() {
 		nextObj := seq.First()
-		if isNewLine(obj, nextObj) {
+		if corert.IsNewLine(obj, nextObj) {
 			seq, prevObj, i = seqFirstAfterBreak(prevObj, seq, w, restIndent, isDefRecord)
 		} else {
 			seq, prevObj, i = seqFirstAfterSpace(seq, w, i, isDefRecord)

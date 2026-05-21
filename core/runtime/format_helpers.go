@@ -78,6 +78,11 @@ func WriteNewLines(w io.Writer, prevObj coretypes.Object, obj coretypes.Object) 
 	return cnt
 }
 
+func IsNewLine(obj, nextObj coretypes.Object) bool {
+	info, nextInfo := obj.GetInfo(), nextObj.GetInfo()
+	return !(info == nil || nextInfo == nil || info.EndLine == nextInfo.StartLine)
+}
+
 func NewLineCount(obj, nextObj coretypes.Object) int {
 	info, nextInfo := obj.GetInfo(), nextObj.GetInfo()
 	if info == nil || nextInfo == nil {

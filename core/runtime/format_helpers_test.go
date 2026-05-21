@@ -21,4 +21,11 @@ func TestFormatHelpers(t *testing.T) {
 	if !IsComment(obj) || !IsComma(obj) {
 		t.Fatal("comment/comma helpers failed")
 	}
+	first := coretypes.MakeString("a")
+	second := coretypes.MakeString("b")
+	first.Info = &coretypes.ObjectInfo{Position: coretypes.Position{EndLine: 1}}
+	second.Info = &coretypes.ObjectInfo{Position: coretypes.Position{StartLine: 3}}
+	if !IsNewLine(first, second) || NewLineCount(first, second) != 2 {
+		t.Fatal("newline helpers failed")
+	}
 }
