@@ -32,7 +32,7 @@ Race/fuzz:
    - Previous calibration loop could repeatedly grow iterations and stall tests.
    - Added bounded calibration strategy and max-iteration cap.
 
-2. **Reader conditional logic bug + panic** (`core/read.go`)
+2. **Reader conditional logic bug + panic** (then `core/read.go`, now coalesced into `core/runtime_kernel.go`)
    - `forms` queue was shadowed inside `readCondList`, causing incorrect state handling.
    - `readMulti` could panic on empty splice (`#?@`) expansion due to pop from empty queue.
    - Fixed queue handling and added loop to keep reading until queue is populated.

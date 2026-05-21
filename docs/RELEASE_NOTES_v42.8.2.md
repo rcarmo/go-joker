@@ -12,7 +12,7 @@ The headline result is that the documented best-Joker benchmark track now beats 
 
 - Bumped fork version from `v42.8.1` to `v42.8.2`.
 - Updated version references in:
-  - `core/procs.go`
+  - then `core/procs.go` (now coalesced into `core/runtime_kernel.go`)
   - `README.md`
   - `docs/WEB_RUNTIME_AND_NAMESPACES.md`
   - `docs/PARITY_STATUS.md`

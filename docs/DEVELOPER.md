@@ -141,7 +141,7 @@ Their source code resides in the `core/data/` directory as `*.joke` files.
 
 Not every such file corresponds to a single namespace; the `linter_*.joke` files modify the `joker.core` namespace, while the remaining files do correspond to namespaces, and are named by dropping the `joker.` prefix and changing all `.` characters to `_`. So, for example, the `joker.tools.cli` namespace is defined by `core/data/tools_cli.joke`.
 
-When Joker is built (via the `run.sh` script), `go generate ./...` is first run. Among other things, this causes the following source line (as a Go comment) in `core/object.go` to be executed:
+When Joker is built (via the `run.sh` script), `go generate ./...` is first run. Among other things, this causes the following source line (as a Go comment) in `core/runtime_kernel.go` to be executed:
 
 ```Go
 //go:generate go run -tags gen_code gen/codegen/main.go

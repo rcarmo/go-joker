@@ -59,7 +59,7 @@ Approximate Go file counts at this audit:
   - `make refactor-internals-check`
   - `make core-contract-check`
 - Refactor documents consolidated under `docs/refactor/`.
-- Leaf/data packages extracted under `core/{generated,trace,ir,runtime,wasm,collections,reader,string,cursor}`.
+- Leaf/data packages extracted under `core/{generated,trace,ir,wasm,runtime,reader,types,types/collections,types/string,types/numerical}`.
 - Collection and reader construction adapters plus boundary guards now prevent new direct construction drift before package moves.
 - Root-independent collection storage/bitmap/trie mechanics and a broad set of reader lexical/token/scanning/form/IO mechanics have moved to real packages without importing root `core`.
 
@@ -67,16 +67,14 @@ Approximate Go file counts at this audit:
 
 ### 1. Root `core` is still too large
 
-`core` root still mixes object model, concrete collections, reader/parser orchestration, evaluator, runtime, IR compiler/executor, WASM lowering/runtime, generated bootstrap, and tests. Go benchmarks have moved to `benchmarks/core` and are guarded against returning to root `core`.
+Root `core` has been coalesced to five files: generated fast-start payloads, gen-code bootstrap helpers, the handwritten `runtime_kernel.go`, root contract tests, and the optional `go_spew` override. Go benchmarks have moved to `benchmarks/core` and are guarded against returning to root `core`.
 
-Current root clustering by filename indicates the next logical seams:
+Current remaining seams are no longer file-name based; they are sections inside `runtime_kernel.go` plus generated bootstrap mutation:
 
-- `ir*.go`: compiler/executor/cache/export adapters still mostly root-coupled.
-- `wasm*.go`: lowering/runtime still depends on root `IRProgram` and object handles.
-- collection files: `array_*`, `vector`, `persistent_vector`, `map`, `hash_map`, `set`, `seq`, `transient`.
-- reader/parser/evaluator: `read`, `reader`, `parse`, `eval`, `expr`, `tco`.
-- runtime/calls: `call_fast`, `goroutine_rt`, frame and dispatch helpers.
-- generated bootstrap: grouped `a_generated_bootstrap_payloads.go`, `types_*_gen.go`.
+- IR compiler/cache/executor and WASM lowering still depend on root `Fn`, `Var`, `Expr`, frames, call dispatch, and error behavior.
+- reader/parser orchestration still depends on root object construction, namespace/tagged-literal state, and evaluator handoff.
+- namespace/env/proc registration still depends on `GLOBAL_ENV`, `Namespace`, `Var`, `Proc`, `STRINGS`, `TYPE`, generated bootstrap mutation, and `referToUser`.
+- generated bootstrap remains in `a_generated_bootstrap_payloads.go`/`bootstrap_gen_code.go` until generators emit a real package contract instead of direct root state mutation.
 
 Recommendation: continue extracting pure leaf helpers and contracts before moving high-cycle packages, but use mechanical grouping where root-coupled files cannot yet move to a real package. Current root `core` file counts are 70 total Go files, 69 non-test files, 3 generated root files, and 66 hand-written non-test/non-generated root files.
 

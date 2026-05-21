@@ -216,7 +216,7 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_native_helper.go` | ~170 | Native f64 closure compiler |
 | native recursive specialization in `runtime_kernel.go` | ~450 | Native int closure compiler (fib/tak) |
 | `ir_fn_cache.go` | ~155 | Fn→IRProgram caching + loop wrapper |
-| string runtime wrappers in `runtime_kernel.go` | ~150 | StringCursor/TransientString wrappers and cursor proc registration |
+| string object wrappers in `core/types`; string mechanics in `core/types/string` | ~150 | StringCursor/TransientString object wrappers, StringSeq descriptor, char/string fast paths; cursor proc registration remains in `runtime_kernel.go` |
 | `ir_analysis.go` | ~155 | IR program analysis |
 | `ir_value_accessors.go` | ~140 | irValue unsafe.Pointer accessors |
 | `ir_nanbox.go` | ~100 | NaN-boxing encode/decode |
@@ -224,9 +224,9 @@ Does NOT compile: atom deref, higher-order calls, try/catch, interop.
 | `ir_arena.go` | — | (removed — arena caused corruption) |
 | `noescape.go` | ~22 | unsafe.Pointer noescape trick |
 | `range_fast.go` | ~130 | IntRange with fast reduce |
-| reduce/transducer fast paths in `runtime_kernel.go` | ~475 | Seq-walking reduce support, full transducer semantics wiring, and dedicated `Reduced` runtime type |
+| reduce/transducer fast paths in `runtime_kernel.go` | ~475 | Seq-walking reduce support and transducer semantics wiring; `Reduced` wrapper lives in `core/runtime` |
 | protocol/record/hierarchy runtime glue in `runtime_kernel.go` | ~1380 | Protocol dispatch/registration, public protocol/record forms, record type/constructors, and hierarchy derive/isa APIs |
-| `chunked_seq.go` | ~230 | Chunked-seq API compatibility layer |
+| chunked proc glue in `runtime_kernel.go` | ~230 | Chunked-seq API compatibility registration; chunk mechanics live in `core/types/collections` |
 | atom extensions in `runtime_kernel.go` | ~170 | Validators, watches, CAS for atoms |
 | unchecked/core API compatibility in `runtime_kernel.go` | ~600 | `unchecked-*`, primitive array helper surface, and remaining compatibility APIs (`alter-var-root`, etc.) |
 | sorted/transient collection proc glue in `runtime_kernel.go` | ~340 | sorted-map/set API, metadata support, transient bridges/procs |

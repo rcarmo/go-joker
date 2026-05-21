@@ -128,7 +128,7 @@ Current aggregate result:
 ## Best-practice rules going forward
 
 - Keep new namespaces small: adapter file, native file, tests, `.joke` docs.
-- Do not add unrelated runtime features to `procs.go`; create a focused file with a clear suffix.
+- Do not add unrelated runtime features to `runtime_kernel.go`; create/move code by responsibility once a real package boundary is available.
 - Prefer exported bridge functions over cross-package access to private runtime structs.
 - Treat warnings as failures; `make docs-check` now enforces this for docs.
 - Every new public namespace var must have doc and added metadata at install time.

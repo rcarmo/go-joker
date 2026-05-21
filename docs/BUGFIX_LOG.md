@@ -8,8 +8,8 @@
 - **Fix:** bounded calibration loop with target window + max iteration cap.
 - **Regression coverage:** `std/runtime/runtime_test.go::TestBenchmarkFn` now enforces timely completion and validates result shape.
 
-### 2) `core/read`: conditional reader state corruption + empty-splice panic
-- **Area:** `core/read.go` (`readCondList`, `readMulti`)
+### 2) reader/runtime kernel: conditional reader state corruption + empty-splice panic
+- **Area:** then `core/read.go` (`readCondList`, `readMulti`), now coalesced into `core/runtime_kernel.go`
 - **Symptom A:** shadowed `forms` variable in conditional reader.
 - **Symptom B:** runtime panic (`index out of range`) when splice expansion produced zero forms.
 - **Fix:** removed shadowing; `readMulti` now loops until queue has an item or a non-multi object is read.
@@ -51,7 +51,7 @@
 - **Regression coverage:** `std/pdf/pdf_test.go::TestImageMissingPathPanics`
 
 ### 8) Deprecated API cleanup (`ioutil`)
-- **Areas:** `core/procs.go`, `std/http/http_native.go`, `std/os/os_native.go`, `std/os/a_os.go`
+- **Areas:** then `core/procs.go` (now coalesced into `core/runtime_kernel.go`), `std/http/http_native.go`, `std/os/os_native.go`, `std/os/a_os.go`
 - **Fix:** migrated to `os.ReadFile`, `io.ReadAll`, `os.ReadDir`, `os.CreateTemp`, `os.MkdirTemp`.
 
 ### 9) Analyzer-driven cleanup
