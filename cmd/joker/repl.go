@@ -88,7 +88,7 @@ func repl(phase corereader.Phase) {
 	ProcessReplData()
 	GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "user")).ReferAll(GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "joker.repl")))
 	GLOBAL_ENV.CoreNamespace.Resolve("*repl*").Value = coretypes.Boolean{B: true}
-	fmt.Printf("Welcome to joker %s. Use '(exit)', %s to exit.\n", VERSION, EXITERS)
+	fmt.Printf("Welcome to joker %s. Use '(exit)', %s to exit.\n", corert.VERSION, EXITERS)
 	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
 	replContext := NewReplContext(parseContext.GlobalEnv)
 

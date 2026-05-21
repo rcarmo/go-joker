@@ -32,7 +32,7 @@ func main() {
 	}
 
 	if versionFlag {
-		println(VERSION)
+		println(corert.VERSION)
 		return
 	}
 

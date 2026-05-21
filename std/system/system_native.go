@@ -1,6 +1,7 @@
 package system
 
 import (
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"math/big"
 	"os"
 	"os/user"
@@ -48,8 +49,8 @@ func systemProperties() coretypes.Map {
 		{"path.separator", string(os.PathListSeparator)},
 		{"line.separator", lineSeparator()},
 		{"file.encoding", "UTF-8"},
-		{"joker.version", VERSION},
-		{"go-joker.version", VERSION},
+		{"joker.version", corert.VERSION},
+		{"go-joker.version", corert.VERSION},
 	} {
 		m.Add(coretypes.MakeString(kv[0]), coretypes.MakeString(kv[1]))
 	}

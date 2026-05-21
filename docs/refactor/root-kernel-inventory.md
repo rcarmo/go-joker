@@ -29,7 +29,7 @@ The root `core` package has been coalesced to the smallest practical file set wi
 - Generic root-independent object predicates (`IsSymbol`, `IsKeyword`, `IsVector`, `IsSeq`) and default number equality now live in `core/types`.
 - Character-to-string fast-path helpers now live in `core/runtime`.
 - Generic formatting hooks (`PprintObject`, `FormatObject`, indentation/comment/newline helpers) now live in `core/runtime`.
-- Process exit callback plumbing now lives in `core/runtime`.
+- Process exit callback plumbing and the runtime version constant now live in `core/runtime`.
 
 ## Guardrails
 

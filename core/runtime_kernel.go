@@ -17141,7 +17141,7 @@ type (
 
 func versionMap() coretypes.Map {
 	res := corecollections.EmptyArrayMap()
-	major, minor, incremental := corestr.ParseVersionTriplet(VERSION)
+	major, minor, incremental := corestr.ParseVersionTriplet(corert.VERSION)
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "major"), coretypes.Int{I: int(major)})
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "minor"), coretypes.Int{I: int(minor)})
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "incremental"), coretypes.Int{I: int(incremental)})
@@ -18971,8 +18971,6 @@ func registerHierarchyProcs() {
 
 // ---- procs.go ----
 
-const VERSION = "v42.8.2"
-
 func ExtractCallable(args []coretypes.Object, index int) coretypes.Callable {
 	return coretypes.EnsureArgIsCallable(args, index)
 }
@@ -20517,7 +20515,7 @@ var procDeriveInfo = func(args []coretypes.Object) coretypes.Object {
 }
 
 var procJokerVersion = func(args []coretypes.Object) coretypes.Object {
-	return coretypes.String{S: VERSION[1:]}
+	return coretypes.String{S: corert.VERSION[1:]}
 }
 
 var procHash = func(args []coretypes.Object) coretypes.Object {

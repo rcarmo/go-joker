@@ -63,7 +63,7 @@ func srepl(port string, phase corereader.Phase) {
 	reader := NewReader(runeReader, "<srepl>")
 
 	fmt.Fprintf(Stdout, "Welcome to joker %s, client at %s. Use '(exit)', or close the connection, to exit.\n",
-		VERSION, conn.RemoteAddr())
+		corert.VERSION, conn.RemoteAddr())
 
 	for {
 		fmt.Fprint(Stdout, GLOBAL_ENV.CurrentNamespace().Name.ToString(false)+"=> ")

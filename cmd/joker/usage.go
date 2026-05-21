@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
-
-	. "github.com/rcarmo/go-joker/core"
 )
 
 func usage(out io.Writer) {
-	fmt.Fprintf(out, "Joker - %s\n\n", VERSION)
+	fmt.Fprintf(out, "Joker - %s\n\n", corert.VERSION)
 	fmt.Fprintln(out, "Usage: joker [args] [-- <repl-args>]                starts a repl")
 	fmt.Fprintln(out, "   or: joker [args] --repl [<socket>] [-- <repl-args>]")
 	fmt.Fprintln(out, "                                                    starts a repl (on optional network socket)")
