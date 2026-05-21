@@ -1078,7 +1078,7 @@ func (fi contractFileInfo) IsDir() bool        { return false }
 func (fi contractFileInfo) Sys() any           { return nil }
 
 func TestFileInfoMapPromotesLargeSize(t *testing.T) {
-	m := FileInfoMap("contract", contractFileInfo{size: math.MaxInt64})
+	m := corert.FileInfoMap("contract", contractFileInfo{size: math.MaxInt64}, STRINGS.Intern)
 	found, got := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "size"))
 	if !found {
 		t.Fatal("FileInfoMap missing :size")

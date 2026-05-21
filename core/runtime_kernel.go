@@ -16857,16 +16857,6 @@ func maybeNewLine(w io.Writer, obj, nextObj coretypes.Object, baseIndent, curren
 	return currentIndent + 1
 }
 
-func FileInfoMap(name string, info os.FileInfo) coretypes.Map {
-	m := corecollections.EmptyArrayMap()
-	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "name"), coretypes.MakeString(name))
-	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "size"), coretypes.IntOrBigInt(big.NewInt(info.Size())))
-	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "mode"), coretypes.MakeInt(int(info.Mode())))
-	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "modtime"), coretypes.MakeTime(info.ModTime()))
-	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "dir?"), coretypes.MakeBoolean(info.IsDir()))
-	return m
-}
-
 func ToBool(obj coretypes.Object) bool {
 	switch obj := obj.(type) {
 	case Nil:

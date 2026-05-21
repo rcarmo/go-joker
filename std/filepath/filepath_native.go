@@ -1,6 +1,7 @@
 package filepath
 
 import (
+	corert "github.com/rcarmo/go-joker/core/runtime"
 	"os"
 	"path/filepath"
 
@@ -15,7 +16,7 @@ func fileSeq(root string) *corecollections.ArrayVector {
 		if err != nil {
 			return err
 		}
-		m := FileInfoMap(path, info)
+		m := corert.FileInfoMap(path, info, STRINGS.Intern)
 		res.Append(m)
 		return nil
 	})

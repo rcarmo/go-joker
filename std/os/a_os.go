@@ -505,7 +505,7 @@ func __lstat_(_args []coretypes.Object) coretypes.Object {
 		filename := ExtractString(_args, 0)
 		_info, err := os.Lstat(filename)
 		PanicOnErr(err)
-		_res := FileInfoMap(_info.Name(), _info)
+		_res := corert.FileInfoMap(_info.Name(), _info, STRINGS.Intern)
 		return _res
 
 	default:
@@ -837,7 +837,7 @@ func __stat_(_args []coretypes.Object) coretypes.Object {
 		filename := ExtractString(_args, 0)
 		_info, err := os.Stat(filename)
 		PanicOnErr(err)
-		_res := FileInfoMap(_info.Name(), _info)
+		_res := corert.FileInfoMap(_info.Name(), _info, STRINGS.Intern)
 		return _res
 
 	default:
