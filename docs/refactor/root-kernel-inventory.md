@@ -27,6 +27,7 @@ The root `core` package has been coalesced to the smallest practical file set wi
 ## Recent small extractions
 
 - Generic root-independent object predicates (`IsSymbol`, `IsKeyword`, `IsVector`, `IsSeq`) now live in `core/types`.
+- Character-to-string fast-path helpers now live in `core/runtime`.
 
 ## Guardrails
 

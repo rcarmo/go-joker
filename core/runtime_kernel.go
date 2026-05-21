@@ -15171,7 +15171,7 @@ func irValueToString(v irValue) string {
 	case irValStringBuilder:
 		return string(v.bytes())
 	case irValChar:
-		return charToStringFast(v.char())
+		return corert.CharToStringFast(v.char())
 	case irValNil:
 		return ""
 	case irValInt:
@@ -15195,7 +15195,7 @@ func irValueStringKey(v irValue) (string, bool) {
 	case irValStringBuilder:
 		return string(v.bytes()), true
 	case irValChar:
-		return charToStringFast(v.char()), true
+		return corert.CharToStringFast(v.char()), true
 	default:
 		return "", false
 	}
@@ -15731,7 +15731,7 @@ func (RuntimeExecutionAdapter) Str1(obj coretypes.Object) coretypes.Object {
 	case coretypes.String:
 		return v
 	case coretypes.Char:
-		return charToStringObjectFast(v.Ch)
+		return corert.CharToStringObjectFast(v.Ch)
 	default:
 		return coretypes.String{S: obj.ToString(false)}
 	}
@@ -15751,7 +15751,7 @@ func (RuntimeExecutionAdapter) Str2(a coretypes.Object, b coretypes.Object) core
 	case coretypes.String:
 		switch bv := b.(type) {
 		case coretypes.Char:
-			return coretypes.String{S: av.S + charToStringFast(bv.Ch)}
+			return coretypes.String{S: av.S + corert.CharToStringFast(bv.Ch)}
 		case coretypes.String:
 			return coretypes.String{S: av.S + bv.S}
 		case *corert.TransientString:
@@ -15763,7 +15763,7 @@ func (RuntimeExecutionAdapter) Str2(a coretypes.Object, b coretypes.Object) core
 		if bv, ok := b.(*corert.TransientString); ok {
 			return bv.PrependChar(av.Ch)
 		}
-		return coretypes.String{S: charToStringFast(av.Ch) + b.ToString(false)}
+		return coretypes.String{S: corert.CharToStringFast(av.Ch) + b.ToString(false)}
 	default:
 		return coretypes.String{S: a.ToString(false) + b.ToString(false)}
 	}
@@ -16526,19 +16526,6 @@ func (v *Var) Call(args []coretypes.Object) coretypes.Object {
 
 func (v *Var) Deref() coretypes.Object {
 	return v.Resolve()
-}
-
-var asciiCharStringObjects = corestr.NewObjectCache(func(ch rune) coretypes.Object {
-	return coretypes.String{S: corestr.String(ch)}
-})
-
-func charToStringFast(ch rune) string { return corestr.String(ch) }
-
-func charToStringObjectFast(ch rune) coretypes.Object {
-	if obj, ok := asciiCharStringObjects.Lookup(ch); ok {
-		return obj
-	}
-	return coretypes.String{S: corestr.String(ch)}
 }
 
 func MakeMeta(arglists coretypes.Seq, docstring string, added string) *corecollections.ArrayMap {
@@ -19848,7 +19835,7 @@ var procStr = func(args []coretypes.Object) coretypes.Object {
 		// Fastest: string + char (the parser hot path)
 		if as, ok := a.(coretypes.String); ok {
 			if bc, ok := b.(coretypes.Char); ok {
-				return coretypes.String{S: as.S + charToStringFast(bc.Ch)}
+				return coretypes.String{S: as.S + corert.CharToStringFast(bc.Ch)}
 			}
 			if bs, ok := b.(coretypes.String); ok {
 				return coretypes.String{S: as.S + bs.S}

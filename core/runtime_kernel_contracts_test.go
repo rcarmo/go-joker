@@ -3124,16 +3124,16 @@ func TestIRNthStringFastPath(t *testing.T) {
 }
 
 func TestCharToStringFast(t *testing.T) {
-	if got := charToStringFast('A'); got != "A" {
+	if got := corert.CharToStringFast('A'); got != "A" {
 		t.Fatalf("expected A, got %q", got)
 	}
-	if got := charToStringFast('é'); got != "é" {
+	if got := corert.CharToStringFast('é'); got != "é" {
 		t.Fatalf("expected é, got %q", got)
 	}
-	if got := charToStringObjectFast('A'); got.(coretypes.String).S != "A" {
+	if got := corert.CharToStringObjectFast('A'); got.(coretypes.String).S != "A" {
 		t.Fatalf("expected cached A object, got %T %s", got, got.ToString(false))
 	}
-	if got := charToStringObjectFast('é'); got.(coretypes.String).S != "é" {
+	if got := corert.CharToStringObjectFast('é'); got.(coretypes.String).S != "é" {
 		t.Fatalf("expected unicode string object, got %T %s", got, got.ToString(false))
 	}
 }
