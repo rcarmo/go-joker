@@ -30,14 +30,14 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 
 | What | Result |
 |------|--------|
-| **Mandelbrot** | **~0.095 ms** best-Joker path — ~33× faster than Python (~3.13 ms) and ~123× faster than let-go |
-| **N-body** | **~0.006 ms** best-Joker path — ~47× faster than Python and ~318× faster than let-go |
-| **Fannkuch** | **~0.174 ms** best-Joker path — ~37× faster than Python and ~117× faster than let-go after output-equivalent audit |
-| **Binary trees** | **~4.79 ms** best-Joker path — beats Python, Goja, and let-go; Bun/JSC is slightly faster in this run (~4.26 ms) |
+| **Mandelbrot** | **~0.095 ms** best-Joker path — ~68× faster than Python (~6.53 ms), ~4× faster than Bun/JSC, and ~123× faster than let-go |
+| **N-body** | **~0.006 ms** best-Joker path — ~133× faster than Python, ~71× faster than Bun/JSC, and ~302× faster than let-go |
+| **Fannkuch** | **~0.174 ms** best-Joker path — ~50× faster than Python, ~8× faster than Bun/JSC, and ~117× faster than let-go after output-equivalent audit |
+| **Binary trees** | **~4.79 ms** best-Joker path — beats Python, Bun/JSC, Goja, and let-go in the current validated comparison |
 | **Pidigits** | **~0.009 ms** — faster than Python, Bun/JSC, Goja, and let-go after JS BigInt correctness fix |
 | **Arithmetic loop** | **~0.280 ms** — fastest in the validated comparison table |
 | **Benchmark validation** | portable, micro, best-Joker/native helper, cross-runtime, and let-go-suite outputs are validated before timing reports/charts are accepted; latest full profile shows allocation/GC cost dominates portable CLBG paths |
-| **Best-Joker suite** | wins **10/15** displayed workloads; beats Python on **15/15**, Goja on **14/15**, and let-go on **15/15** |
+| **Best-Joker suite** | wins **12/15** displayed workloads; beats Python on **15/15**, Goja on **15/15**, and let-go on **15/15** |
 | **let-go suite** | current go-joker wins **3/7** mirrored let-go workloads (`reduce` ~14×, `loop-recur` ~9×, `persistent-map` slightly); let-go still leads recursive/sequence-heavy cases |
 | **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
 | **Concurrency** | GIL-free — true parallel goroutines, futures, promises, agents, pmap |

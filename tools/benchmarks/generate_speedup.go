@@ -92,7 +92,7 @@ svg{background:var(--bg);font-family:Inter,system-ui,sans-serif}
 `, w, h, w, h))
 
 	b.WriteString(`<text class="title" x="15" y="22">Speedup vs Original Joker</text>`)
-	b.WriteString(`<text class="subtitle" x="15" y="38">Before → current best-Joker 2026-05-16 (ms) · generated from benchmark-history.json</text>`)
+	b.WriteString(`<text class="subtitle" x="15" y="38">Before → current best-Joker 2026-05-22 (ms) · generated from benchmark-history.json</text>`)
 
 	b.WriteString(fmt.Sprintf(`<text class="before" x="130" y="%d">Before</text>`, headerH-8))
 	b.WriteString(fmt.Sprintf(`<text class="before" x="195" y="%d">After</text>`, headerH-8))
