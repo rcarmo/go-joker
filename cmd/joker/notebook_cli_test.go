@@ -26,6 +26,24 @@ func TestNotebookNewCLI(t *testing.T) {
 	}
 }
 
+func TestNotebookDemoCLI(t *testing.T) {
+	bin := buildJokerBinary(t)
+	dir := t.TempDir()
+	nb := filepath.Join(dir, "demo.edn")
+	cmd := exec.Command(bin, "notebook", "demo", nb)
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	if out, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("notebook demo: %v\n%s", err, out)
+	}
+	data, err := os.ReadFile(nb)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(data), "Joker notebook rich demo") || !strings.Contains(string(data), "joker.notebook/chart") {
+		t.Fatalf("demo notebook:\n%s", data)
+	}
+}
+
 func TestNotebookRunAndExportCLI(t *testing.T) {
 	bin := buildJokerBinary(t)
 	dir := t.TempDir()

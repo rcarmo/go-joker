@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"os"
 	"strconv"
@@ -10,6 +11,9 @@ import (
 	"github.com/rcarmo/go-joker/internal/notebook"
 )
 
+//go:embed notebook_assets/rich-demo.edn
+var embeddedRichDemoNotebook string
+
 func handleNotebookCommand(args []string) {
 	if len(args) == 0 || args[0] == "serve" {
 		serveNotebook(args)
@@ -18,6 +22,8 @@ func handleNotebookCommand(args []string) {
 	switch args[0] {
 	case "new":
 		newNotebook(args[1:])
+	case "demo":
+		demoNotebook(args[1:])
 	case "run":
 		if len(args) < 2 {
 			fmt.Fprintln(Stderr, "notebook run requires a file")
@@ -47,6 +53,17 @@ func handleNotebookCommand(args []string) {
 		printNotebookUsage()
 	default:
 		serveNotebook(args)
+	}
+}
+
+func demoNotebook(args []string) {
+	path := "rich-demo.edn"
+	if len(args) > 0 {
+		path = args[0]
+	}
+	if err := os.WriteFile(path, []byte(embeddedRichDemoNotebook), 0644); err != nil {
+		fmt.Fprintln(Stderr, err)
+		os.Exit(1)
 	}
 }
 
@@ -285,6 +302,7 @@ func printNotebookUsage() {
   joker notebook [file.edn] [-p 8080] [--open]
   joker notebook serve [file.edn] [-p 8080]
   joker notebook new file.edn [--title "Title"] [--serve] [--open]
+  joker notebook demo [file.edn]
   joker notebook run file.edn
   joker notebook status file.edn
   joker notebook deps file.edn

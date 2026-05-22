@@ -20,6 +20,7 @@ joker notebook serve [file.edn] [-p 8080]
 joker notebook serve [file.edn] --addr 127.0.0.1:8080
 joker notebook new file.edn --title "Example"
 joker notebook new file.edn --title "Example" --serve --open -p 8080
+joker notebook demo rich-demo.edn
 joker notebook run file.edn
 joker notebook status file.edn
 joker notebook deps file.edn
@@ -173,7 +174,7 @@ examples/notebooks/rich-demo.edn
 Try it with:
 
 ```bash
-cp examples/notebooks/rich-demo.edn /tmp/rich-demo.edn
+joker notebook demo /tmp/rich-demo.edn
 joker notebook run /tmp/rich-demo.edn
 joker notebook /tmp/rich-demo.edn -p 8080 --open
 ```
