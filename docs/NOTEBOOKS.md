@@ -105,9 +105,10 @@ The current slices provide:
 - Markdown export;
 - local web UI with lightweight Joker syntax highlighting;
 - `GET /api/notebook`;
-- `POST /api/save`;
-- `POST /api/evaluate-cell?id=<cell-id>`;
-- `POST /api/evaluate-all`;
+- `POST /api/save` for full EDN replacement;
+- `POST /api/save-sources` for browser source edits as JSON;
+- `POST /api/evaluate-cell?id=<cell-id>` with optional plain-text source body;
+- `POST /api/evaluate-all` with optional JSON source update body;
 - inline SVG and base64 image rendering;
 - dependency-free browser-side bar-chart rendering from simple chart specs (`{:data [...]}` or an ECharts-like first series);
 - Mermaid/DOT diagram source blocks with renderer labels;

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
@@ -197,8 +198,23 @@ func Serve(addr, path string, open bool) error {
 			return
 		}
 		nb = loaded
-		nb.UpdatedAt = time.Now().UTC().Format(time.RFC3339)
-		if err := Save(path, nb); err != nil {
+		if err := saveCurrent(path, &nb); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/edn")
+		fmt.Fprint(w, Encode(nb))
+	})
+	mux.HandleFunc("/api/save-sources", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		if err := applySourceUpdate(r.Body, &nb); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		if err := saveCurrent(path, &nb); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -220,9 +236,12 @@ func Serve(addr, path string, open bool) error {
 			http.Error(w, "cell not found", http.StatusNotFound)
 			return
 		}
+		body, _ := io.ReadAll(r.Body)
+		if len(body) > 0 {
+			cell.Source = string(body)
+		}
 		EvaluateCell(cell)
-		nb.UpdatedAt = time.Now().UTC().Format(time.RFC3339)
-		_ = Save(path, nb)
+		_ = saveCurrent(path, &nb)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
@@ -231,8 +250,9 @@ func Serve(addr, path string, open bool) error {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		_ = applySourceUpdate(r.Body, &nb)
 		Run(&nb)
-		_ = Save(path, nb)
+		_ = saveCurrent(path, &nb)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
@@ -277,6 +297,38 @@ func findCell(nb *Notebook, id string) (*Cell, bool) {
 	return nil, false
 }
 
+func saveCurrent(path string, nb *Notebook) error {
+	nb.UpdatedAt = time.Now().UTC().Format(time.RFC3339)
+	return Save(path, *nb)
+}
+
+type sourceUpdate struct {
+	Cells []struct {
+		ID     string `json:"id"`
+		Source string `json:"source"`
+	} `json:"cells"`
+}
+
+func applySourceUpdate(r io.Reader, nb *Notebook) error {
+	if r == nil {
+		return nil
+	}
+	body, err := io.ReadAll(r)
+	if err != nil || len(bytes.TrimSpace(body)) == 0 {
+		return err
+	}
+	var update sourceUpdate
+	if err := json.Unmarshal(body, &update); err != nil {
+		return err
+	}
+	for _, c := range update.Cells {
+		if cell, ok := findCell(nb, c.ID); ok {
+			cell.Source = c.Source
+		}
+	}
+	return nil
+}
+
 var page = template.Must(template.New("nb").Parse(`<!doctype html>
 <html>
 <head>
@@ -300,9 +352,10 @@ function hi(s){return esc(s).replace(/"(?:\\.|[^"])*"/g,'<span class="str">$&</s
 function highlight(t){t.nextElementSibling.innerHTML=hi(t.value)}
 document.querySelectorAll('textarea').forEach(highlight)
 function refresh(t){document.getElementById('raw').textContent=t; setTimeout(function(){location.reload()},150)}
-function evaluateAll(){fetch('/api/evaluate-all',{method:'POST'}).then(r=>r.text()).then(refresh)}
-function evaluateCell(id){fetch('/api/evaluate-cell?id='+encodeURIComponent(id),{method:'POST'}).then(r=>r.text()).then(refresh)}
-function saveNotebook(){fetch('/api/notebook').then(r=>r.text()).then(t=>fetch('/api/save',{method:'POST',body:t})).then(r=>r.text()).then(refresh)}
+function sourcePayload(){return JSON.stringify({cells:Array.from(document.querySelectorAll('.cell')).map(function(c){return {id:c.dataset.id,source:c.querySelector('textarea').value}})})}
+function evaluateAll(){fetch('/api/evaluate-all',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
+function evaluateCell(id){var c=document.querySelector('.cell[data-id="'+CSS.escape(id)+'"]');var src=c?c.querySelector('textarea').value:'';fetch('/api/evaluate-cell?id='+encodeURIComponent(id),{method:'POST',headers:{'Content-Type':'text/plain'},body:src}).then(r=>r.text()).then(refresh)}
+function saveNotebook(){fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
 function parseMaybeJSON(s){try{return JSON.parse(s)}catch(e){return null}}
 function renderCharts(){document.querySelectorAll('.chart').forEach(function(el){var spec=parseMaybeJSON(el.dataset.spec)||{};var data=(spec.series&&spec.series[0]&&spec.series[0].data)||spec.data||[];var labels=(spec.xAxis&&spec.xAxis.data)||data.map(function(_,i){return String(i+1)});var max=Math.max(1,...data.map(Number));var w=720,h=220,p=32,bw=(w-2*p)/Math.max(1,data.length);var svg='<svg viewBox="0 0 '+w+' '+h+'"><line class="axis" x1="'+p+'" y1="'+(h-p)+'" x2="'+(w-p)+'" y2="'+(h-p)+'"/>';data.forEach(function(v,i){var bh=(h-2*p)*Number(v)/max;var x=p+i*bw+3;var y=h-p-bh;svg+='<rect class="bar" x="'+x+'" y="'+y+'" width="'+Math.max(2,bw-6)+'" height="'+bh+'"><title>'+esc(labels[i])+': '+esc(String(v))+'</title></rect>'});svg+='</svg>';el.innerHTML=svg})}
 function renderDiagrams(){document.querySelectorAll('.diagram').forEach(function(el){var r=el.dataset.renderer||'diagram';var s=el.dataset.source||'';el.innerHTML='<b>'+esc(r)+'</b><pre>'+esc(s)+'</pre>'})}
