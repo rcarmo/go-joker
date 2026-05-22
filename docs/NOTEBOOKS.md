@@ -8,7 +8,7 @@ V1 goals:
 - EDN notebook files with inline outputs;
 - Markdown and Joker code cells;
 - headless execution for agents/CI;
-- Markdown export;
+- Markdown export with fenced blocks for text, EDN values, chart specs, Mermaid/DOT diagrams, and graph JSON;
 - manual dependency metadata for future reactive execution;
 - rich-output envelope for charts, images, SVG, Mermaid, DOT, and graph JSON.
 
@@ -127,7 +127,7 @@ The current slices provide:
 - code-cell returned value capture as `:value` outputs;
 - code-cell rich-output map normalization via `:notebook/output`/`:type`;
 - headless `notebook run`;
-- Markdown export;
+- Markdown export with rich output fallbacks;
 - local web UI with editable notebook title, add/delete/reorder controls, raw EDN import, editable cell metadata (`kind`, `name`, `depends-on`), and lightweight Joker syntax highlighting;
 - `GET /api/notebook`;
 - `GET /api/export/markdown` for browser/API Markdown export;

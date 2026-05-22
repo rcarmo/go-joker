@@ -268,21 +268,37 @@ func ExportMarkdown(w io.Writer, nb Notebook) error {
 			fmt.Fprintln(w)
 		}
 		for _, o := range c.Outputs {
-			switch o.Type {
-			case "stdout", "stderr", "error":
-				fmt.Fprintf(w, "```text\n%s\n```\n\n", strings.TrimRight(o.Text, "\n"))
-			case "svg":
-				fmt.Fprintln(w, o.Source, "")
-			case "image":
-				fmt.Fprintf(w, "![image](data:%s;base64,%s)\n\n", o.MIME, o.Data)
-			default:
-				if o.Text != "" {
-					fmt.Fprintln(w, o.Text, "")
-				}
-			}
+			writeMarkdownOutput(w, o)
 		}
 	}
 	return nil
+}
+
+func writeMarkdownOutput(w io.Writer, o Output) {
+	switch o.Type {
+	case "stdout", "stderr", "error":
+		fmt.Fprintf(w, "```text\n%s\n```\n\n", strings.TrimRight(o.Text, "\n"))
+	case "value":
+		fmt.Fprintf(w, "```edn\n%s\n```\n\n", strings.TrimRight(o.Text, "\n"))
+	case "svg":
+		fmt.Fprintln(w, o.Source, "")
+	case "image":
+		fmt.Fprintf(w, "![image](data:%s;base64,%s)\n\n", o.MIME, o.Data)
+	case "chart":
+		fmt.Fprintf(w, "```json\n%s\n```\n\n", strings.TrimSpace(o.Spec))
+	case "diagram":
+		lang := o.Renderer
+		if lang == "" {
+			lang = "text"
+		}
+		fmt.Fprintf(w, "```%s\n%s\n```\n\n", lang, strings.TrimSpace(o.Source))
+	case "graph":
+		fmt.Fprintf(w, "```json\n%s\n```\n\n", strings.TrimSpace(o.Source))
+	default:
+		if o.Text != "" {
+			fmt.Fprintln(w, o.Text, "")
+		}
+	}
 }
 
 func Encode(nb Notebook) string {

@@ -78,13 +78,16 @@ func TestEvaluateCellValueOutput(t *testing.T) {
 
 func TestExportMarkdown(t *testing.T) {
 	nb := New("Export")
-	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", Outputs: []Output{{Type: "stdout", Text: "3\n"}}}}
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", Outputs: []Output{{Type: "stdout", Text: "3\n"}, {Type: "value", Text: "{:ok true}"}, {Type: "chart", Spec: `{"data":[1,2]}`}, {Type: "diagram", Renderer: "mermaid", Source: "graph TD; A-->B"}, {Type: "graph", Source: `{"nodes":[]}`}}}}
 	var b bytes.Buffer
 	if err := ExportMarkdown(&b, nb); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(b.String(), "```clojure") || !strings.Contains(b.String(), "3") {
-		t.Fatalf("markdown:\n%s", b.String())
+	md := b.String()
+	for _, want := range []string{"```clojure", "```text", "```edn", "```json", "```mermaid", "graph TD; A-->B"} {
+		if !strings.Contains(md, want) {
+			t.Fatalf("markdown missing %q:\n%s", want, md)
+		}
 	}
 }
 
