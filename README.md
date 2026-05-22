@@ -121,6 +121,18 @@ make parity                 # run language parity suite + refresh divergence mat
 make jank-subset            # run imported jank-lang/clojure-test-suite smoke subset
 ```
 
+## Web notebooks
+
+Joker includes a local EDN notebook runner/server for Mathematica-style exploratory documents with Observable-style manual dependency metadata:
+
+```bash
+joker notebook example.edn -p 8080       # local browser UI
+joker notebook run example.edn           # headless execution, updates inline outputs
+joker notebook export example.edn -o report.md
+```
+
+Notebook files are regular EDN maps with `:format :joker/notebook`; outputs are stored inline by default for self-contained agent/debug reports. See [`docs/NOTEBOOKS.md`](docs/NOTEBOOKS.md).
+
 ## Runtime documentation lookup
 
 Joker includes a pydoc-style runtime documentation frontend backed by the live namespace metadata:
@@ -161,6 +173,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 - [`docs/BENCHMARK_CI.md`](docs/BENCHMARK_CI.md) — CI benchmark smoke guard policy and local reproduction
 - [`docs/RUNTIME_DOCS.md`](docs/RUNTIME_DOCS.md) — `joker doc` Markdown/JSON lookup and local HTTP docs server
+- [`docs/NOTEBOOKS.md`](docs/NOTEBOOKS.md) — EDN notebooks, headless runs, Markdown export, and local notebook server
 - [`docs/refactor/README.md`](docs/refactor/README.md) — repository split plan and target folder structure
 - [`docs/refactor/code-structure.md`](docs/refactor/code-structure.md) — package/module and coverage audit
 - [`docs/refactor/module-structure-audit.md`](docs/refactor/module-structure-audit.md) — current Go module/package layout and next structural improvements

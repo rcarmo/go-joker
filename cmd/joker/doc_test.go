@@ -28,6 +28,16 @@ func TestParseDocPort(t *testing.T) {
 	}
 }
 
+func TestParseNotebookPort(t *testing.T) {
+	got, err := parseNotebookPort("8081")
+	if err != nil || got != "8081" {
+		t.Fatalf("parseNotebookPort = %q, %v", got, err)
+	}
+	if _, err := parseNotebookPort("70000"); err == nil {
+		t.Fatal("parseNotebookPort accepted invalid port")
+	}
+}
+
 func TestQueryDocsNamespaceAndSearch(t *testing.T) {
 	idx := docIndex{Namespaces: []docNamespace{{Name: "joker.http", Doc: "HTTP and websocket helpers.", Vars: []docVar{{Name: "server", Qualified: "joker.http/server", Doc: "Starts a server."}}}}}
 	if got := queryDocs(idx, "joker.http"); len(got.Namespaces) != 1 || got.Namespaces[0].Name != "joker.http" {
