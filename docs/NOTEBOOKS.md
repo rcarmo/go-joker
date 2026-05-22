@@ -101,6 +101,51 @@ Code cells can use helper functions in `joker.notebook` or return a map with `:n
 
 Outputs are inline by default so notebooks are self-contained.
 
+## Quick rich-output example
+
+Create `demo.edn`:
+
+```clojure
+{:format :joker/notebook
+ :version 1
+ :title "Notebook rich output demo"
+ :cells [{:id "cell-1"
+          :kind :markdown
+          :source "# Rich output demo"
+          :outputs []}
+
+         {:id "cell-2"
+          :kind :code
+          :name "chart"
+          :depends-on []
+          :source "(joker.notebook/chart \"{\\\"xAxis\\\":{\\\"data\\\":[\\\"A\\\",\\\"B\\\",\\\"C\\\"]},\\\"series\\\":[{\\\"data\\\":[4,7,3]}]}\")"
+          :execution-count 0
+          :state :idle
+          :outputs []}
+
+         {:id "cell-3"
+          :kind :code
+          :name "flow"
+          :depends-on ["chart"]
+          :source "(joker.notebook/mermaid \"graph TD; Load-->Transform; Transform-->Render\")"
+          :execution-count 0
+          :state :idle
+          :outputs []}]}
+```
+
+Run headlessly and export:
+
+```bash
+joker notebook run demo.edn
+joker notebook export demo.edn -o demo.md
+```
+
+Or browse it locally:
+
+```bash
+joker notebook demo.edn -p 8080
+```
+
 ## Dependency metadata
 
 Reactive execution starts with manual dependencies:
