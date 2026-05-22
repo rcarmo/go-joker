@@ -123,6 +123,11 @@ func TestNotebookHTTPHandler(t *testing.T) {
 		t.Fatalf("evaluate-cell code=%d body=%s", w.Code, w.Body.String())
 	}
 	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/dependencies", nil))
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), "cycles") {
+		t.Fatalf("dependencies code=%d body=%s", w.Code, w.Body.String())
+	}
+	w = httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-downstream?name=data", strings.NewReader(`{"cells":[{"id":"cell-2","kind":"code","name":"summary","dependsOn":["data"],"source":"(+ 4 5)"}]}`)))
 	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), ":text \"9\"") {
 		t.Fatalf("evaluate-downstream code=%d body=%s", w.Code, w.Body.String())
@@ -151,7 +156,7 @@ func TestNotebookPageRenders(t *testing.T) {
 	if err := page.Execute(&w, nb); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "cell-name") || !strings.Contains(w.String(), "cell-deps") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
+	if !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Check deps") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "cell-name") || !strings.Contains(w.String(), "cell-deps") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
 		t.Fatalf("page missing expected UI:\n%s", w.String())
 	}
 }
@@ -186,6 +191,14 @@ func TestApplySourceUpdate(t *testing.T) {
 	}
 	if nb.Cells[0].Source != "new" || nb.Cells[0].Kind != "markdown" || nb.Cells[0].Name != "intro" || len(nb.Cells[0].DependsOn) != 1 || nb.Cells[0].DependsOn[0] != "data" {
 		t.Fatalf("cell = %#v", nb.Cells[0])
+	}
+}
+
+func TestDependencyCycles(t *testing.T) {
+	nb := New("Cycles")
+	nb.Cells = []Cell{{ID: "1", Name: "a", DependsOn: []string{"b"}}, {ID: "2", Name: "b", DependsOn: []string{"a"}}}
+	if cycles := DependencyCycles(nb); len(cycles) == 0 {
+		t.Fatalf("expected dependency cycle")
 	}
 }
 

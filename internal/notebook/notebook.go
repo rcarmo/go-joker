@@ -76,6 +76,9 @@ func Run(nb *Notebook) {
 }
 
 func EvaluateDownstream(nb *Notebook, name string) []string {
+	if len(DependencyCycles(*nb)) > 0 {
+		return nil
+	}
 	cells := Downstream(*nb, name)
 	ids := make([]string, 0, len(cells))
 	wanted := map[string]bool{}
@@ -442,6 +445,10 @@ func Handler(path string) http.Handler {
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
+	mux.HandleFunc("/api/dependencies", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"cycles": DependencyCycles(nb)})
+	})
 	mux.HandleFunc("/api/evaluate-downstream", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
@@ -453,6 +460,10 @@ func Handler(path string) http.Handler {
 			return
 		}
 		_ = applySourceUpdate(r.Body, &nb)
+		if cycles := DependencyCycles(nb); len(cycles) > 0 {
+			http.Error(w, fmt.Sprintf("dependency cycle: %v", cycles), http.StatusBadRequest)
+			return
+		}
 		_ = EvaluateDownstream(&nb, name)
 		_ = saveCurrent(path, &nb)
 		w.Header().Set("Content-Type", "application/edn")
@@ -616,7 +627,7 @@ body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margi
 <body>
 <h1>{{.Title}}</h1>
 <p class="meta">Trusted local Joker execution. File is read/written by this server only.</p>
-<p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button><button onclick="addCell('code')">Add code</button><button onclick="addCell('markdown')">Add Markdown</button></p>
+<p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button><button onclick="checkDeps()">Check deps</button><button onclick="addCell('code')">Add code</button><button onclick="addCell('markdown')">Add Markdown</button></p>
 <div id="cells">{{range .Cells}}<div class="cell" data-id="{{.ID}}" data-name="{{.Name}}"><div><b>{{.Kind}}</b> <span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button>{{if .Name}}<button onclick="evaluateDownstream('{{.Name}}')">Evaluate downstream</button>{{end}}<button onclick="moveCell('{{.ID}}',-1)">↑</button><button onclick="moveCell('{{.ID}}',1)">↓</button><button onclick="deleteCell('{{.ID}}')">Delete</button></div><div class="meta-row"><label>kind <select class="cell-kind"><option value="code" {{if eq .Kind "code"}}selected{{end}}>code</option><option value="markdown" {{if eq .Kind "markdown"}}selected{{end}}>markdown</option></select></label><label> name <input class="cell-name" value="{{.Name}}" placeholder="optional name"></label><label> depends-on <input class="cell-deps" value="{{join .DependsOn ","}}" placeholder="comma-separated names"></label></div><textarea oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</div>{{end}}</div>
 <h2>Raw notebook</h2><pre id="raw"></pre>
 <script>
@@ -634,6 +645,7 @@ function addCell(kind){fetch('/api/cell?kind='+encodeURIComponent(kind),{method:
 function deleteCell(id){if(confirm('Delete '+id+'?'))fetch('/api/cell?id='+encodeURIComponent(id),{method:'DELETE'}).then(r=>r.text()).then(refresh)}
 function moveCell(id,delta){var ids=Array.from(document.querySelectorAll('.cell')).map(c=>c.dataset.id);var i=ids.indexOf(id),j=i+delta;if(i<0||j<0||j>=ids.length)return;var t=ids[i];ids[i]=ids[j];ids[j]=t;fetch('/api/reorder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ids:ids})}).then(r=>r.text()).then(refresh)}
 function evaluateDownstream(name){fetch('/api/evaluate-downstream?name='+encodeURIComponent(name),{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
+function checkDeps(){fetch('/api/dependencies').then(r=>r.json()).then(j=>alert(j.cycles&&j.cycles.length?'Dependency cycles: '+JSON.stringify(j.cycles):'No dependency cycles'))}
 function parseMaybeJSON(s){try{return JSON.parse(s)}catch(e){return null}}
 function renderCharts(){document.querySelectorAll('.chart').forEach(function(el){var spec=parseMaybeJSON(el.dataset.spec)||{};var data=(spec.series&&spec.series[0]&&spec.series[0].data)||spec.data||[];var labels=(spec.xAxis&&spec.xAxis.data)||data.map(function(_,i){return String(i+1)});var max=Math.max(1,...data.map(Number));var w=720,h=220,p=32,bw=(w-2*p)/Math.max(1,data.length);var svg='<svg viewBox="0 0 '+w+' '+h+'"><line class="axis" x1="'+p+'" y1="'+(h-p)+'" x2="'+(w-p)+'" y2="'+(h-p)+'"/>';data.forEach(function(v,i){var bh=(h-2*p)*Number(v)/max;var x=p+i*bw+3;var y=h-p-bh;svg+='<rect class="bar" x="'+x+'" y="'+y+'" width="'+Math.max(2,bw-6)+'" height="'+bh+'"><title>'+esc(labels[i])+': '+esc(String(v))+'</title></rect>'});svg+='</svg>';el.innerHTML=svg})}
 function renderDiagrams(){document.querySelectorAll('.diagram').forEach(function(el){var r=el.dataset.renderer||'diagram';var s=el.dataset.source||'';el.innerHTML='<b>'+esc(r)+'</b><pre>'+esc(s)+'</pre>'})}
@@ -728,6 +740,45 @@ func emptyDefault(s, d string) string {
 func EncodeImage(mime string, data []byte) Output {
 	return Output{Type: "image", MIME: mime, Encoding: "base64", Data: base64.StdEncoding.EncodeToString(data)}
 }
+func DependencyCycles(nb Notebook) [][]string {
+	deps := map[string][]string{}
+	for _, c := range nb.Cells {
+		if c.Name != "" {
+			deps[c.Name] = append([]string(nil), c.DependsOn...)
+		}
+	}
+	var cycles [][]string
+	visiting := map[string]bool{}
+	visited := map[string]bool{}
+	var walk func(string, []string)
+	walk = func(n string, stack []string) {
+		if visiting[n] {
+			for i, s := range stack {
+				if s == n {
+					cycles = append(cycles, append(append([]string(nil), stack[i:]...), n))
+					break
+				}
+			}
+			return
+		}
+		if visited[n] {
+			return
+		}
+		visiting[n] = true
+		for _, d := range deps[n] {
+			if _, ok := deps[d]; ok {
+				walk(d, append(stack, n))
+			}
+		}
+		visiting[n] = false
+		visited[n] = true
+	}
+	for n := range deps {
+		walk(n, nil)
+	}
+	return cycles
+}
+
 func Downstream(nb Notebook, name string) []Cell {
 	seen := map[string]bool{name: true}
 	var out []Cell
