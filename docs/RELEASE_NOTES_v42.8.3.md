@@ -30,6 +30,34 @@ Highlights:
 
 See [`docs/RUNTIME_DOCS.md`](RUNTIME_DOCS.md).
 
+## EDN web notebooks
+
+Added the first end-to-end `joker notebook` subsystem:
+
+```bash
+joker notebook example.edn -p 8080
+joker notebook run example.edn
+joker notebook status example.edn
+joker notebook deps example.edn
+joker notebook snapshots example.edn
+joker notebook restore example.edn snapshot.bak.edn
+joker notebook export example.edn -o report.md
+```
+
+Highlights:
+
+- trusted localhost web notebook UI backed by self-contained EDN files;
+- Markdown and Joker code cells;
+- editable notebook title and cell metadata (`kind`, `name`, `depends-on`);
+- Mathematica-like cell chrome with `In[n]`/`Out[n]`, state pills, collapsible outputs, dark/light/auto themes, keyboard shortcuts, dirty-state tracking, and action/error log;
+- headless `run`, `status`, `deps`, `snapshots`, `restore`, and Markdown `export` commands for agents/CI;
+- rich output helpers under `joker.notebook/*` for charts, SVG, images, Mermaid, DOT, and graph JSON;
+- dependency graph/cycle detection with downstream evaluation from explicit `:depends-on` metadata;
+- local save snapshots with browser/CLI listing and restore;
+- notebook HTTP API coverage for load/export/save/evaluate/add/delete/reorder/downstream/status/snapshot paths.
+
+See [`docs/NOTEBOOKS.md`](NOTEBOOKS.md).
+
 ## CI/parity fixes
 
 - Restored string seqability so Clojure parity `reader/string-unicode` passes again.
@@ -53,7 +81,8 @@ Validated locally with CI-equivalent commands:
 go build -o joker ./cmd/joker
 ./joker --version
 
-go test ./core ./std/... ./cmd/joker -timeout 10m -count=1
+go test ./core ./std/... ./cmd/joker ./internal/notebook -timeout 10m -count=1
+make notebook-check
 make docs-check
 go run tests/clojure_parity.go -joker ./joker -out docs/DIVERGENCE_MATRIX.md
 JOKER_BIN=./joker tests/run_jank_subset.sh
@@ -63,7 +92,8 @@ go vet ./core ./std/... ./cmd/joker
 Observed results:
 
 - Runtime reports `v42.8.3`.
-- Core/std/cmd tests pass.
+- Core/std/cmd/internal notebook tests pass.
+- `make notebook-check` passes.
 - `make docs-check` passes, including docs command smoke checks.
 - Clojure parity: `271/271 pass`, `0 fail`, `0 error`.
 - Imported jank smoke subset: `7 pass`, `0 fail`.
