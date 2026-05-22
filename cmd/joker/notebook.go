@@ -56,10 +56,23 @@ func newNotebook(args []string) {
 		os.Exit(2)
 	}
 	title := args[0]
+	serve := false
+	serveArgs := []string{args[0]}
 	for i := 1; i < len(args); i++ {
-		if args[i] == "--title" && i+1 < len(args) {
-			i++
-			title = args[i]
+		switch args[i] {
+		case "--title":
+			if i+1 < len(args) {
+				i++
+				title = args[i]
+			}
+		case "--serve":
+			serve = true
+		case "--open", "-p", "--port", "--addr":
+			serveArgs = append(serveArgs, args[i])
+			if (args[i] == "-p" || args[i] == "--port" || args[i] == "--addr") && i+1 < len(args) {
+				i++
+				serveArgs = append(serveArgs, args[i])
+			}
 		}
 	}
 	nb := notebook.New(title)
@@ -70,6 +83,9 @@ func newNotebook(args []string) {
 	if err := notebook.Save(args[0], nb); err != nil {
 		fmt.Fprintln(Stderr, err)
 		os.Exit(1)
+	}
+	if serve {
+		serveNotebook(serveArgs)
 	}
 }
 
@@ -268,7 +284,7 @@ func printNotebookUsage() {
 	fmt.Fprintln(Stdout, `Usage:
   joker notebook [file.edn] [-p 8080] [--open]
   joker notebook serve [file.edn] [-p 8080]
-  joker notebook new file.edn [--title "Title"]
+  joker notebook new file.edn [--title "Title"] [--serve] [--open]
   joker notebook run file.edn
   joker notebook status file.edn
   joker notebook deps file.edn
