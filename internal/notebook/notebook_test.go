@@ -63,12 +63,12 @@ func TestFindCell(t *testing.T) {
 
 func TestNotebookPageRenders(t *testing.T) {
 	nb := New("Web")
-	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", Outputs: []Output{{Type: "chart", Spec: `{"data":[1,2,3]}`}, {Type: "graph", Source: `{"nodes":[{"id":"A"}],"edges":[]}`}}}}
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Name: "data", Source: "(+ 1 2)", Outputs: []Output{{Type: "chart", Spec: `{"data":[1,2,3]}`}, {Type: "graph", Source: `{"nodes":[{"id":"A"}],"edges":[]}`}}}}
 	var w bytes.Buffer
 	if err := page.Execute(&w, nb); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
+	if !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
 		t.Fatalf("page missing expected UI:\n%s", w.String())
 	}
 }
@@ -103,6 +103,15 @@ func TestApplySourceUpdate(t *testing.T) {
 	}
 	if nb.Cells[0].Source != "new" {
 		t.Fatalf("source = %q", nb.Cells[0].Source)
+	}
+}
+
+func TestEvaluateDownstream(t *testing.T) {
+	nb := New("EvalDeps")
+	nb.Cells = []Cell{{ID: "1", Name: "data", Kind: "code", Source: "(def x 1)"}, {ID: "2", Name: "chart", Kind: "code", DependsOn: []string{"data"}, Source: "(+ 1 2)"}}
+	ids := EvaluateDownstream(&nb, "data")
+	if len(ids) != 1 || ids[0] != "2" || nb.Cells[1].State != "ok" {
+		t.Fatalf("EvaluateDownstream ids=%v cells=%#v", ids, nb.Cells)
 	}
 }
 

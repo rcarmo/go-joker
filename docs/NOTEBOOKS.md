@@ -94,7 +94,7 @@ Reactive execution starts with manual dependencies:
  :source "(make-chart data)"}
 ```
 
-The current implementation includes downstream dependency calculation and keeps the schema ready for later runtime dependency tracking.
+The current implementation includes downstream dependency calculation and `evaluate-downstream` support from explicit `:depends-on` metadata. It keeps the schema ready for later runtime dependency tracking.
 
 ## Current implementation status
 
@@ -111,6 +111,7 @@ The current slices provide:
 - `DELETE /api/cell?id=<cell-id>` to delete cells;
 - `POST /api/reorder` with `{"ids":[...]}` to reorder cells;
 - `POST /api/evaluate-cell?id=<cell-id>` with optional plain-text source body;
+- `POST /api/evaluate-downstream?name=<cell-name>` to evaluate cells that manually depend on a named cell;
 - `POST /api/evaluate-all` with optional JSON source update body;
 - inline SVG and base64 image rendering;
 - dependency-free browser-side bar-chart rendering from simple chart specs (`{:data [...]}` or an ECharts-like first series);

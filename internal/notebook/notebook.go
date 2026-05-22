@@ -75,6 +75,23 @@ func Run(nb *Notebook) {
 	nb.UpdatedAt = time.Now().UTC().Format(time.RFC3339)
 }
 
+func EvaluateDownstream(nb *Notebook, name string) []string {
+	cells := Downstream(*nb, name)
+	ids := make([]string, 0, len(cells))
+	wanted := map[string]bool{}
+	for _, c := range cells {
+		wanted[c.ID] = true
+	}
+	for i := range nb.Cells {
+		if wanted[nb.Cells[i].ID] && (nb.Cells[i].Kind == "code" || nb.Cells[i].Kind == "") {
+			EvaluateCell(&nb.Cells[i])
+			ids = append(ids, nb.Cells[i].ID)
+		}
+	}
+	nb.UpdatedAt = time.Now().UTC().Format(time.RFC3339)
+	return ids
+}
+
 func EvaluateCell(c *Cell) {
 	c.ExecutionCount++
 	var out, errb bytes.Buffer
@@ -296,6 +313,22 @@ func Serve(addr, path string, open bool) error {
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
+	mux.HandleFunc("/api/evaluate-downstream", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		name := r.URL.Query().Get("name")
+		if name == "" {
+			http.Error(w, "missing name", http.StatusBadRequest)
+			return
+		}
+		_ = applySourceUpdate(r.Body, &nb)
+		_ = EvaluateDownstream(&nb, name)
+		_ = saveCurrent(path, &nb)
+		w.Header().Set("Content-Type", "application/edn")
+		fmt.Fprint(w, Encode(nb))
+	})
 	mux.HandleFunc("/api/evaluate-all", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
@@ -451,7 +484,7 @@ body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margi
 <h1>{{.Title}}</h1>
 <p class="meta">Trusted local Joker execution. File is read/written by this server only.</p>
 <p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button><button onclick="addCell('code')">Add code</button><button onclick="addCell('markdown')">Add Markdown</button></p>
-<div id="cells">{{range .Cells}}<div class="cell" data-id="{{.ID}}"><div><b>{{.Kind}}</b> <span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button><button onclick="moveCell('{{.ID}}',-1)">↑</button><button onclick="moveCell('{{.ID}}',1)">↓</button><button onclick="deleteCell('{{.ID}}')">Delete</button></div><textarea oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</div>{{end}}</div>
+<div id="cells">{{range .Cells}}<div class="cell" data-id="{{.ID}}" data-name="{{.Name}}"><div><b>{{.Kind}}</b> <span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button>{{if .Name}}<button onclick="evaluateDownstream('{{.Name}}')">Evaluate downstream</button>{{end}}<button onclick="moveCell('{{.ID}}',-1)">↑</button><button onclick="moveCell('{{.ID}}',1)">↓</button><button onclick="deleteCell('{{.ID}}')">Delete</button></div><textarea oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</div>{{end}}</div>
 <h2>Raw notebook</h2><pre id="raw"></pre>
 <script>
 function esc(s){return (s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
@@ -466,6 +499,7 @@ function saveNotebook(){fetch('/api/save-sources',{method:'POST',headers:{'Conte
 function addCell(kind){fetch('/api/cell?kind='+encodeURIComponent(kind),{method:'POST'}).then(r=>r.text()).then(refresh)}
 function deleteCell(id){if(confirm('Delete '+id+'?'))fetch('/api/cell?id='+encodeURIComponent(id),{method:'DELETE'}).then(r=>r.text()).then(refresh)}
 function moveCell(id,delta){var ids=Array.from(document.querySelectorAll('.cell')).map(c=>c.dataset.id);var i=ids.indexOf(id),j=i+delta;if(i<0||j<0||j>=ids.length)return;var t=ids[i];ids[i]=ids[j];ids[j]=t;fetch('/api/reorder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ids:ids})}).then(r=>r.text()).then(refresh)}
+function evaluateDownstream(name){fetch('/api/evaluate-downstream?name='+encodeURIComponent(name),{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
 function parseMaybeJSON(s){try{return JSON.parse(s)}catch(e){return null}}
 function renderCharts(){document.querySelectorAll('.chart').forEach(function(el){var spec=parseMaybeJSON(el.dataset.spec)||{};var data=(spec.series&&spec.series[0]&&spec.series[0].data)||spec.data||[];var labels=(spec.xAxis&&spec.xAxis.data)||data.map(function(_,i){return String(i+1)});var max=Math.max(1,...data.map(Number));var w=720,h=220,p=32,bw=(w-2*p)/Math.max(1,data.length);var svg='<svg viewBox="0 0 '+w+' '+h+'"><line class="axis" x1="'+p+'" y1="'+(h-p)+'" x2="'+(w-p)+'" y2="'+(h-p)+'"/>';data.forEach(function(v,i){var bh=(h-2*p)*Number(v)/max;var x=p+i*bw+3;var y=h-p-bh;svg+='<rect class="bar" x="'+x+'" y="'+y+'" width="'+Math.max(2,bw-6)+'" height="'+bh+'"><title>'+esc(labels[i])+': '+esc(String(v))+'</title></rect>'});svg+='</svg>';el.innerHTML=svg})}
 function renderDiagrams(){document.querySelectorAll('.diagram').forEach(function(el){var r=el.dataset.renderer||'diagram';var s=el.dataset.source||'';el.innerHTML='<b>'+esc(r)+'</b><pre>'+esc(s)+'</pre>'})}
