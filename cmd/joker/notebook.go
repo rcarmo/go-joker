@@ -43,6 +43,8 @@ func handleNotebookCommand(args []string) {
 		exportNotebook(args[1:])
 	case "status":
 		statusNotebook(args[1:])
+	case "validate":
+		validateNotebook(args[1:])
 	case "deps":
 		depsNotebook(args[1:])
 	case "snapshots":
@@ -182,6 +184,23 @@ func snapshotsNotebook(args []string) {
 	fmt.Fprintln(Stdout, "]")
 }
 
+func validateNotebook(args []string) {
+	if len(args) < 1 {
+		fmt.Fprintln(Stderr, "notebook validate requires a file")
+		os.Exit(2)
+	}
+	nb, err := notebook.Load(args[0])
+	if err != nil {
+		fmt.Fprintln(Stderr, err)
+		os.Exit(1)
+	}
+	if cycles := notebook.DependencyCycles(nb); len(cycles) > 0 {
+		fmt.Fprintf(Stderr, "notebook dependency cycles: %v\n", cycles)
+		os.Exit(1)
+	}
+	fmt.Fprintf(Stdout, "notebook ok: %s (%d cells)\n", args[0], len(nb.Cells))
+}
+
 func depsNotebook(args []string) {
 	if len(args) < 1 {
 		fmt.Fprintln(Stderr, "notebook deps requires a file")
@@ -304,6 +323,7 @@ func printNotebookUsage() {
   joker notebook new file.edn [--title "Title"] [--serve] [--open]
   joker notebook demo [file.edn]
   joker notebook run file.edn
+  joker notebook validate file.edn
   joker notebook status file.edn
   joker notebook deps file.edn
   joker notebook snapshots file.edn

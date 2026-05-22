@@ -68,6 +68,15 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 		t.Fatalf("updated notebook missing output:\n%s", updated)
 	}
 	outPath := filepath.Join(dir, "report.md")
+	cmd = exec.Command(bin, "notebook", "validate", nb)
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	validateOut, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("notebook validate: %v\n%s", err, validateOut)
+	}
+	if !strings.Contains(string(validateOut), "notebook ok") {
+		t.Fatalf("validate output: %s", validateOut)
+	}
 	cmd = exec.Command(bin, "notebook", "status", nb)
 	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
 	statusOut, err := cmd.CombinedOutput()

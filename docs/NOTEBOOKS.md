@@ -22,6 +22,7 @@ joker notebook new file.edn --title "Example"
 joker notebook new file.edn --title "Example" --serve --open -p 8080
 joker notebook demo rich-demo.edn
 joker notebook run file.edn
+joker notebook validate file.edn
 joker notebook status file.edn
 joker notebook deps file.edn
 joker notebook snapshots file.edn

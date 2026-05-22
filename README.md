@@ -132,6 +132,7 @@ joker notebook demo rich-demo.edn
 joker notebook rich-demo.edn -p 8080 --open
 joker notebook example.edn -p 8080       # local browser UI
 joker notebook run example.edn           # headless execution, updates inline outputs
+joker notebook validate example.edn      # format/cycle validation
 joker notebook status example.edn        # status/size JSON
 joker notebook deps example.edn          # dependency graph/cycles JSON
 joker notebook snapshots example.edn     # list recovery snapshots
