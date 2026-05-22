@@ -735,7 +735,17 @@ func init() {
 	coretypes.RuntimeDerefReduced = corert.DerefReduced
 	coretypes.RuntimeReduceType = TYPE.Reduce
 	coretypes.RuntimeKVReduceType = TYPE.KVReduce
-	coretypes.SpecialSymbolLookup = func(sym coretypes.Symbol) bool { return SPECIAL_SYMBOLS[sym.NameKey()] }
+	coretypes.SpecialSymbolLookup = func(sym coretypes.Symbol) bool {
+		if SPECIAL_SYMBOLS[sym.NameKey()] {
+			return true
+		}
+		switch sym.Name() {
+		case "if", "quote", "fn", "let", "letfn", "loop", "recur", "set!", "def", "def-linter", "var", "do", "throw", "try", "catch", "finally":
+			return true
+		default:
+			return false
+		}
+	}
 	coretypes.NumberCompare = coretypes.CompareNumbers
 	coretypes.NumberEquals = coretypes.NumberEqualsDefault
 	coretypes.NamedLookup = getMap

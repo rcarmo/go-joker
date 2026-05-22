@@ -19,7 +19,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -38,6 +38,7 @@ help:
 	@echo "  make coverage       # Run package coverage and generated-file-aware summary"
 	@echo "  make docs           # Generate HTML docs from runtime namespaces"
 	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
+	@echo "  make docs-command-check # Verify joker doc Markdown/JSON lookup smoke tests"
 	@echo "  make generated-check # Verify generated-file boundary guardrails"
 	@echo "  make generated-bootstrap-check # Verify generated bootstrap manifest equivalence"
 	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker"
@@ -113,6 +114,12 @@ docs:
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
 	cd docs && $(DOCS_JOKER_BIN) generate-docs.joke > docs-generation.log && cat docs-generation.log && ! grep -q WARNING docs-generation.log && rm docs-generation.log
 
+docs-command-check:
+	$(GO) test ./cmd/joker -run 'TestRenderDoc|TestQueryDocs' -count=$(TEST_COUNT)
+	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
+	$(DOCS_JOKER_BIN) doc joker.core/first | grep -q '# `joker.core/first`'
+	$(DOCS_JOKER_BIN) doc --format json joker.core/first | grep -q '"qualified": "joker.core/first"'
+
 bb-compat:
 	$(GO) test ./tests -run Babashka -count=$(TEST_COUNT) -timeout=120s
 
@@ -154,7 +161,7 @@ runtime-contract-check:
 std-contract-check:
 	$(GO) test ./std/... -count=$(TEST_COUNT) -timeout=120s
 
-docs-check: docs generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
+docs-check: docs docs-command-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md

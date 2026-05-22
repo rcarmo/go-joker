@@ -6907,6 +6907,15 @@ func syntaxQuoteColl(seq coretypes.Seq, env map[*string]coretypes.Symbol, reader
 	return coretypes.WithInfo(res, info)
 }
 
+func isSpecialSymbolName(name string) bool {
+	switch name {
+	case "if", "quote", "fn", "let", "letfn", "loop", "recur", "set!", "def", "def-linter", "var", "do", "throw", "try", "catch", "finally":
+		return true
+	default:
+		return false
+	}
+}
+
 func makeSyntaxQuote(obj coretypes.Object, env map[*string]coretypes.Symbol, reader *Reader) coretypes.Object {
 	if isSelfEvaluating(obj) {
 		return obj
@@ -6917,6 +6926,9 @@ func makeSyntaxQuote(obj coretypes.Object, env map[*string]coretypes.Symbol, rea
 	info := obj.GetInfo()
 	switch s := obj.(type) {
 	case coretypes.Symbol:
+		if s.NamespaceKey() == nil && isSpecialSymbolName(s.Name()) {
+			return makeQuote(obj, SYMBOLS.quote)
+		}
 		str := s.Name()
 		nameKey := s.NameKey()
 		if corereader.IsAutoGensymSymbolName(str, s.NamespaceKey() != nil) {
@@ -17583,10 +17595,6 @@ func (ns *Namespace) Aliases() map[*string]*Namespace {
 // make sure they still have enough metadata for doc generation and lint-style
 // checks instead of surfacing as noisy <internal> warnings.
 
-func init() {
-	fillNativeVarMetadata()
-}
-
 func fillNativeVarMetadata() {
 	if GLOBAL_ENV == nil {
 		return
@@ -22596,7 +22604,10 @@ func installAgentExt() {
 // <!/>! operations. This file exposes a Clojure-shaped clojure.core.async
 // namespace plus the most commonly used higher-level coordination helpers.
 
-func init() { installCoreAsyncNamespace() }
+func init() {
+	installCoreAsyncNamespace()
+	fillNativeVarMetadata()
+}
 
 func installCoreAsyncNamespace() {
 	if GLOBAL_ENV == nil || GLOBAL_ENV.CoreNamespace == nil {

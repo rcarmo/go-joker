@@ -17,6 +17,12 @@ func main() {
 		return
 	}
 
+	if len(os.Args) >= 2 && os.Args[1] == "doc" {
+		initRuntime()
+		handleDocCommand(os.Args[2:])
+		return
+	}
+
 	// Check for embedded standalone payload before anything else
 	if src, ok := checkEmbeddedSource(); ok {
 		runEmbeddedSource(src)

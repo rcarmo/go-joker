@@ -1,6 +1,6 @@
 # Clojure parity divergence matrix
 
-_Generated: 2026-05-11_
+_Generated: 2026-05-22_
 
 **271/271 pass** (100%), 0 fail, 0 error
 

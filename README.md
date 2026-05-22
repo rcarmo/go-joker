@@ -121,6 +121,21 @@ make parity                 # run language parity suite + refresh divergence mat
 make jank-subset            # run imported jank-lang/clojure-test-suite smoke subset
 ```
 
+## Runtime documentation lookup
+
+Joker includes a pydoc-style runtime documentation frontend backed by the live namespace metadata:
+
+```bash
+joker doc                         # list documented namespaces as Markdown
+joker doc joker.string            # namespace documentation
+joker doc joker.core/first        # qualified symbol documentation
+joker doc search websocket        # full-text-ish namespace/var search
+joker doc --format json first     # agent/tool-friendly JSON
+joker doc serve --addr 127.0.0.1:8080  # local browsable docs with search
+```
+
+The CLI output is Markdown by default so agents and terminals can consume it directly. The local HTTP view uses the same runtime index and does not embed the generated static HTML/PNG documentation payload.
+
 ## Benchmarks
 
 > **Note:** The CLBG programs were chosen as a starting point for optimizing the IR and WASM compilation pipeline, not because they represent realistic workloads. They stress specific interpreter bottlenecks (arithmetic loops, recursion, allocation, string processing) that guided the optimization work. Real-world gi scripts will have different profiles — the gains here prove the execution machinery works, not that every Joker program runs 500× faster.
@@ -144,6 +159,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 ## Documentation
 
 - [`docs/BENCHMARK_CI.md`](docs/BENCHMARK_CI.md) — CI benchmark smoke guard policy and local reproduction
+- [`docs/RUNTIME_DOCS.md`](docs/RUNTIME_DOCS.md) — `joker doc` Markdown/JSON lookup and local HTTP docs server
 - [`docs/refactor/README.md`](docs/refactor/README.md) — repository split plan and target folder structure
 - [`docs/refactor/code-structure.md`](docs/refactor/code-structure.md) — package/module and coverage audit
 - [`docs/refactor/module-structure-audit.md`](docs/refactor/module-structure-audit.md) — current Go module/package layout and next structural improvements
@@ -164,8 +180,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on [candid82/joker](https://github.com/candid82/joker) v1.7.2 plus selected upstream feature ports. This fork is v42.8.2.  
-Release notes: [`docs/RELEASE_NOTES_v42.8.2.md`](docs/RELEASE_NOTES_v42.8.2.md).  
+Based on [candid82/joker](https://github.com/candid82/joker) v1.7.2 plus selected upstream feature ports. This fork is v42.8.3.
+Release notes: [`docs/RELEASE_NOTES_v42.8.3.md`](docs/RELEASE_NOTES_v42.8.3.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 
 ## Why v42?
