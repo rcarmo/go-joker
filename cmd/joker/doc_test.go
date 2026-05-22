@@ -6,6 +6,16 @@ import (
 	"testing"
 )
 
+func TestUsageMentionsNotebookCommands(t *testing.T) {
+	var b strings.Builder
+	usage(&b)
+	for _, want := range []string{"notebook status", "notebook deps", "notebook snapshots", "notebook restore"} {
+		if !strings.Contains(b.String(), want) {
+			t.Fatalf("usage missing %q:\n%s", want, b.String())
+		}
+	}
+}
+
 func TestRenderDocMarkdownVar(t *testing.T) {
 	idx := docIndex{Namespaces: []docNamespace{{Name: "joker.core", Doc: "Core docs.", Vars: []docVar{{Name: "first", Qualified: "joker.core/first", Kind: "function", Doc: "Returns the first item.", Added: "1.0", Arglists: []string{"(first coll)"}}}}}}
 	got := renderDocMarkdown(idx, "joker.core/first")
