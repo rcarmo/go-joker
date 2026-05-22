@@ -23,6 +23,10 @@ func TestWriteSnapshot(t *testing.T) {
 	if err != nil || len(matches) != 1 {
 		t.Fatalf("snapshots = %v err=%v", matches, err)
 	}
+	snaps, err := ListSnapshots(path)
+	if err != nil || len(snaps) != 1 || snaps[0].Size == 0 {
+		t.Fatalf("ListSnapshots = %#v err=%v", snaps, err)
+	}
 }
 
 func TestBuildStatus(t *testing.T) {
@@ -145,6 +149,11 @@ func TestNotebookHTTPHandler(t *testing.T) {
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/status", nil))
 	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), "cellCount") || !strings.Contains(w.Header().Get("Content-Type"), "application/json") {
 		t.Fatalf("status code=%d content-type=%s body=%s", w.Code, w.Header().Get("Content-Type"), w.Body.String())
+	}
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/snapshots", nil))
+	if w.Code != http.StatusOK || !strings.Contains(w.Header().Get("Content-Type"), "application/json") {
+		t.Fatalf("snapshots code=%d content-type=%s body=%s", w.Code, w.Header().Get("Content-Type"), w.Body.String())
 	}
 	w = httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/export/markdown", nil))

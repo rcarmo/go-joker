@@ -37,6 +37,8 @@ func handleNotebookCommand(args []string) {
 		statusNotebook(args[1:])
 	case "deps":
 		depsNotebook(args[1:])
+	case "snapshots":
+		snapshotsNotebook(args[1:])
 	case "-h", "--help":
 		printNotebookUsage()
 	default:
@@ -84,6 +86,26 @@ func serveNotebook(args []string) {
 		fmt.Fprintln(Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func snapshotsNotebook(args []string) {
+	if len(args) < 1 {
+		fmt.Fprintln(Stderr, "notebook snapshots requires a file")
+		os.Exit(2)
+	}
+	snaps, err := notebook.ListSnapshots(args[0])
+	if err != nil {
+		fmt.Fprintln(Stderr, err)
+		os.Exit(1)
+	}
+	fmt.Fprint(Stdout, "[")
+	for i, snap := range snaps {
+		if i > 0 {
+			fmt.Fprint(Stdout, ",")
+		}
+		fmt.Fprintf(Stdout, "{\"path\":%q,\"size\":%d}", snap.Path, snap.Size)
+	}
+	fmt.Fprintln(Stdout, "]")
 }
 
 func depsNotebook(args []string) {
@@ -208,5 +230,6 @@ func printNotebookUsage() {
   joker notebook run file.edn
   joker notebook status file.edn
   joker notebook deps file.edn
+  joker notebook snapshots file.edn
   joker notebook export file.edn [-o report.md]`)
 }

@@ -21,6 +21,7 @@ joker notebook serve [file.edn] --addr 127.0.0.1:8080
 joker notebook run file.edn
 joker notebook status file.edn
 joker notebook deps file.edn
+joker notebook snapshots file.edn
 joker notebook export file.edn -o report.md
 ```
 
@@ -135,6 +136,7 @@ The current slices provide:
 - local web UI with automatic OS color-scheme support plus explicit Light/Dark/Auto theme buttons, keyboard shortcuts (`Ctrl/Cmd+S`, `Ctrl/Cmd+Enter`, `Shift+Enter`), unsaved-change tracking and before-unload warning, local save snapshots, Mathematica-like cell chrome (`In[n]`/`Out[n]`, state pills, collapsible outputs), action/error log, editable notebook title, size/status warning, output pruning controls, add/delete/reorder controls, raw EDN import, editable cell metadata (`kind`, `name`, `depends-on`), and lightweight Joker syntax highlighting;
 - `GET /api/notebook`;
 - `GET /api/status` for cell/output counts, encoded EDN size, and the >10 MB inline-output warning;
+- `GET /api/snapshots` to list local recovery snapshots;
 - `POST /api/clear-outputs` or `POST /api/clear-outputs?id=<cell-id>` to prune inline outputs;
 - `GET /api/export/markdown` for browser/API Markdown export;
 - `POST /api/save` for full EDN replacement/import from the raw pane;

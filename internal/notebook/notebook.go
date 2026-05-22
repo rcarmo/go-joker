@@ -75,6 +75,11 @@ type Status struct {
 	Warning     string `json:"warning,omitempty"`
 }
 
+type Snapshot struct {
+	Path string `json:"path"`
+	Size int64  `json:"size"`
+}
+
 func New(title string) Notebook {
 	now := time.Now().UTC().Format(time.RFC3339)
 	return Notebook{Format: "joker/notebook", Version: 1, Title: title, CreatedAt: now, UpdatedAt: now}
@@ -386,6 +391,11 @@ func Handler(path string) http.Handler {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(BuildStatus(nb))
 	})
+	mux.HandleFunc("/api/snapshots", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		snaps, _ := ListSnapshots(path)
+		_ = json.NewEncoder(w).Encode(snaps)
+	})
 	mux.HandleFunc("/api/export/markdown", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/markdown; charset=utf-8")
 		_ = ExportMarkdown(w, nb)
@@ -607,6 +617,23 @@ func saveCurrent(path string, nb *Notebook) error {
 		return err
 	}
 	return Save(path, *nb)
+}
+
+func ListSnapshots(path string) ([]Snapshot, error) {
+	dir := filepath.Join(filepath.Dir(path), ".joker-notebook-snapshots")
+	matches, err := filepath.Glob(filepath.Join(dir, filepath.Base(path)+".*.bak.edn"))
+	if err != nil {
+		return nil, err
+	}
+	snaps := make([]Snapshot, 0, len(matches))
+	for _, match := range matches {
+		info, err := os.Stat(match)
+		if err != nil {
+			continue
+		}
+		snaps = append(snaps, Snapshot{Path: match, Size: info.Size()})
+	}
+	return snaps, nil
 }
 
 func writeSnapshot(path string) error {

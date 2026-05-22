@@ -41,6 +41,15 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 	if !strings.Contains(string(statusOut), `"cellCount"`) || !strings.Contains(string(statusOut), `"outputCount"`) {
 		t.Fatalf("status output: %s", statusOut)
 	}
+	cmd = exec.Command(bin, "notebook", "snapshots", nb)
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	snapOut, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("notebook snapshots: %v\n%s", err, snapOut)
+	}
+	if strings.TrimSpace(string(snapOut)) != "[]" && (!strings.Contains(string(snapOut), `"path"`) || !strings.Contains(string(snapOut), `"size"`)) {
+		t.Fatalf("snapshots output: %s", snapOut)
+	}
 	cmd = exec.Command(bin, "notebook", "deps", nb)
 	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
 	depsOut, err := cmd.CombinedOutput()
