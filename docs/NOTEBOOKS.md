@@ -108,8 +108,11 @@ The current slices provide:
 - `POST /api/save`;
 - `POST /api/evaluate-cell?id=<cell-id>`;
 - `POST /api/evaluate-all`;
-- first-pass rendering placeholders/envelopes for SVG, images, chart specs, Mermaid/DOT diagrams, and graph JSON;
+- inline SVG and base64 image rendering;
+- dependency-free browser-side bar-chart rendering from simple chart specs (`{:data [...]}` or an ECharts-like first series);
+- Mermaid/DOT diagram source blocks with renderer labels;
+- graph JSON circular-layout rendering for `{:nodes [...] :edges [...]}`-style JSON payloads;
 - port parsing and CLI plumbing;
 - unit tests for schema, execution capture, Markdown export, dependencies, web rendering, and CLI parsing.
 
-Further slices should improve browser editing ergonomics, add vendored interactive chart/diagram renderers, and support richer save/update payloads from the browser.
+Further slices should improve browser editing ergonomics, add vendored ECharts/Mermaid/DOT renderers for fully interactive charts and diagrams, and support richer save/update payloads from the browser.

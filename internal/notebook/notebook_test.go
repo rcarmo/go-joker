@@ -65,14 +65,14 @@ func TestFindCell(t *testing.T) {
 
 func TestNotebookPageRenders(t *testing.T) {
 	nb := New("Web")
-	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)"}}
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", Outputs: []Output{{Type: "chart", Spec: `{"data":[1,2,3]}`}, {Type: "graph", Source: `{"nodes":[{"id":"A"}],"edges":[]}`}}}}
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
 	if err := page.Execute(w, nb); err != nil {
 		t.Fatal(err)
 	}
 	_ = r
-	if !strings.Contains(w.Body.String(), "Evaluate all") || !strings.Contains(w.Body.String(), "highlight") {
+	if !strings.Contains(w.Body.String(), "Evaluate all") || !strings.Contains(w.Body.String(), "highlight") || !strings.Contains(w.Body.String(), "renderCharts") || !strings.Contains(w.Body.String(), "renderGraphs") {
 		t.Fatalf("page missing expected UI:\n%s", w.Body.String())
 	}
 }
