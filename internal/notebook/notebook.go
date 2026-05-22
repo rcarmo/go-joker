@@ -17,6 +17,7 @@ import (
 
 	core "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
 
 type Notebook struct {
@@ -117,6 +118,7 @@ func EvaluateCell(c *Cell) {
 }
 
 func evalSource(source string) (coretypes.Object, error) {
+	installNotebookHelpers()
 	reader := core.NewReader(bufio.NewReader(strings.NewReader(source)), "<notebook-cell>")
 	ctx := &core.ParseContext{GlobalEnv: core.GLOBAL_ENV}
 	var result coretypes.Object
@@ -137,6 +139,66 @@ func evalSource(source string) (coretypes.Object, error) {
 			return nil, err
 		}
 	}
+}
+
+func installNotebookHelpers() {
+	ns := core.GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(core.STRINGS.Intern, "joker.notebook"))
+	intern := func(name string, fn core.ProcFn) {
+		if ns.Resolve(name) != nil {
+			return
+		}
+		ns.InternVar(name, core.Proc{Name: "notebook/" + name, Fn: fn}, core.MakeMeta(nil, "Notebook rich output helper.", "1.0"))
+	}
+	intern("chart", func(args []coretypes.Object) coretypes.Object {
+		return richOutputMap("chart", "echarts", "spec", firstArgString(args))
+	})
+	intern("svg", func(args []coretypes.Object) coretypes.Object {
+		return richOutputMap("svg", "", "source", firstArgString(args))
+	})
+	intern("mermaid", func(args []coretypes.Object) coretypes.Object {
+		return richOutputMap("diagram", "mermaid", "source", firstArgString(args))
+	})
+	intern("dot", func(args []coretypes.Object) coretypes.Object {
+		return richOutputMap("diagram", "dot", "source", firstArgString(args))
+	})
+	intern("graph", func(args []coretypes.Object) coretypes.Object {
+		return richOutputMap("graph", "graph-json", "source", firstArgString(args))
+	})
+	intern("image", func(args []coretypes.Object) coretypes.Object {
+		mime := "image/png"
+		data := ""
+		if len(args) > 0 {
+			mime = firstArgString(args[:1])
+		}
+		if len(args) > 1 {
+			data = firstArgString(args[1:2])
+		}
+		m := richOutputMap("image", "", "data", data)
+		m.Add(coretypes.MakeKeyword(core.STRINGS.Intern, "mime"), coretypes.MakeString(mime))
+		m.Add(coretypes.MakeKeyword(core.STRINGS.Intern, "encoding"), coretypes.MakeKeyword(core.STRINGS.Intern, "base64"))
+		return m
+	})
+}
+
+func firstArgString(args []coretypes.Object) string {
+	if len(args) == 0 || args[0] == nil {
+		return ""
+	}
+	if s, ok := args[0].(coretypes.String); ok {
+		return s.S
+	}
+	return args[0].ToString(false)
+}
+
+func richOutputMap(outputType, renderer, valueKey, value string) *corecollections.ArrayMap {
+	m := corecollections.EmptyArrayMap()
+	m.Add(coretypes.MakeKeyword(core.STRINGS.Intern, "notebook/output"), coretypes.MakeKeyword(core.STRINGS.Intern, outputType))
+	m.Add(coretypes.MakeKeyword(core.STRINGS.Intern, "type"), coretypes.MakeKeyword(core.STRINGS.Intern, outputType))
+	if renderer != "" {
+		m.Add(coretypes.MakeKeyword(core.STRINGS.Intern, "renderer"), coretypes.MakeKeyword(core.STRINGS.Intern, renderer))
+	}
+	m.Add(coretypes.MakeKeyword(core.STRINGS.Intern, valueKey), coretypes.MakeString(value))
+	return m
 }
 
 func outputFromObject(obj coretypes.Object) Output {

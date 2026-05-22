@@ -38,6 +38,14 @@ func TestRunCapturesReturnedValue(t *testing.T) {
 	}
 }
 
+func TestEvaluateCellNotebookHelper(t *testing.T) {
+	cell := Cell{ID: "helper", Kind: "code", Source: `(joker.notebook/chart "{\"data\":[4,5]}")`}
+	EvaluateCell(&cell)
+	if cell.State != "ok" || len(cell.Outputs) != 1 || cell.Outputs[0].Type != "chart" || cell.Outputs[0].Renderer != "echarts" || !strings.Contains(cell.Outputs[0].Spec, "data") {
+		t.Fatalf("helper output cell = %#v", cell)
+	}
+}
+
 func TestEvaluateCellRichOutput(t *testing.T) {
 	cell := Cell{ID: "rich", Kind: "code", Source: `{:notebook/output :chart :spec "{\"data\":[1,2,3]}"}`}
 	EvaluateCell(&cell)
