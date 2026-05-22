@@ -103,10 +103,13 @@ The current slices provide:
 - EDN load/save/roundtrip;
 - headless `notebook run`;
 - Markdown export;
-- local web UI with lightweight Joker syntax highlighting;
+- local web UI with add/delete/reorder controls and lightweight Joker syntax highlighting;
 - `GET /api/notebook`;
 - `POST /api/save` for full EDN replacement;
 - `POST /api/save-sources` for browser source edits as JSON;
+- `POST /api/cell?kind=code|markdown` to append cells;
+- `DELETE /api/cell?id=<cell-id>` to delete cells;
+- `POST /api/reorder` with `{"ids":[...]}` to reorder cells;
 - `POST /api/evaluate-cell?id=<cell-id>` with optional plain-text source body;
 - `POST /api/evaluate-all` with optional JSON source update body;
 - inline SVG and base64 image rendering;

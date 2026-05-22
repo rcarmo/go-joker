@@ -68,8 +68,30 @@ func TestNotebookPageRenders(t *testing.T) {
 	if err := page.Execute(&w, nb); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
+	if !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
 		t.Fatalf("page missing expected UI:\n%s", w.String())
+	}
+}
+
+func TestCellMutationHelpers(t *testing.T) {
+	nb := New("Mutate")
+	nb.Cells = []Cell{{ID: "cell-1"}, {ID: "cell-3"}}
+	if got := nextCellID(nb); got != "cell-4" {
+		t.Fatalf("nextCellID = %s", got)
+	}
+	if !deleteCell(&nb, "cell-1") || len(nb.Cells) != 1 || nb.Cells[0].ID != "cell-3" {
+		t.Fatalf("delete result = %#v", nb.Cells)
+	}
+}
+
+func TestApplyReorder(t *testing.T) {
+	nb := New("Order")
+	nb.Cells = []Cell{{ID: "a"}, {ID: "b"}}
+	if err := applyReorder(strings.NewReader(`{"ids":["b","a"]}`), &nb); err != nil {
+		t.Fatal(err)
+	}
+	if nb.Cells[0].ID != "b" || nb.Cells[1].ID != "a" {
+		t.Fatalf("reorder = %#v", nb.Cells)
 	}
 }
 

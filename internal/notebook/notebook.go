@@ -221,6 +221,57 @@ func Serve(addr, path string, open bool) error {
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
+	mux.HandleFunc("/api/cell", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodPost:
+			kind := r.URL.Query().Get("kind")
+			if kind == "" {
+				kind = "code"
+			}
+			cell := Cell{ID: nextCellID(nb), Kind: kind, State: "idle"}
+			if kind == "markdown" {
+				cell.Source = "Markdown"
+			} else {
+				cell.Source = "(+ 1 2)"
+			}
+			nb.Cells = append(nb.Cells, cell)
+		case http.MethodDelete:
+			id := r.URL.Query().Get("id")
+			if id == "" {
+				http.Error(w, "missing id", http.StatusBadRequest)
+				return
+			}
+			if !deleteCell(&nb, id) {
+				http.Error(w, "cell not found", http.StatusNotFound)
+				return
+			}
+		default:
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		if err := saveCurrent(path, &nb); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/edn")
+		fmt.Fprint(w, Encode(nb))
+	})
+	mux.HandleFunc("/api/reorder", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		if err := applyReorder(r.Body, &nb); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		if err := saveCurrent(path, &nb); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/edn")
+		fmt.Fprint(w, Encode(nb))
+	})
 	mux.HandleFunc("/api/evaluate-cell", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
@@ -309,6 +360,62 @@ type sourceUpdate struct {
 	} `json:"cells"`
 }
 
+func nextCellID(nb Notebook) string {
+	max := 0
+	for _, c := range nb.Cells {
+		if strings.HasPrefix(c.ID, "cell-") {
+			if n, err := strconv.Atoi(strings.TrimPrefix(c.ID, "cell-")); err == nil && n > max {
+				max = n
+			}
+		}
+	}
+	return fmt.Sprintf("cell-%d", max+1)
+}
+
+func deleteCell(nb *Notebook, id string) bool {
+	for i := range nb.Cells {
+		if nb.Cells[i].ID == id {
+			nb.Cells = append(nb.Cells[:i], nb.Cells[i+1:]...)
+			return true
+		}
+	}
+	return false
+}
+
+type reorderUpdate struct {
+	IDs []string `json:"ids"`
+}
+
+func applyReorder(r io.Reader, nb *Notebook) error {
+	body, err := io.ReadAll(r)
+	if err != nil {
+		return err
+	}
+	var update reorderUpdate
+	if err := json.Unmarshal(body, &update); err != nil {
+		return err
+	}
+	if len(update.IDs) != len(nb.Cells) {
+		return fmt.Errorf("reorder requires exactly %d ids", len(nb.Cells))
+	}
+	byID := map[string]Cell{}
+	for _, c := range nb.Cells {
+		byID[c.ID] = c
+	}
+	reordered := make([]Cell, 0, len(nb.Cells))
+	seen := map[string]bool{}
+	for _, id := range update.IDs {
+		c, ok := byID[id]
+		if !ok || seen[id] {
+			return fmt.Errorf("invalid reorder id %q", id)
+		}
+		seen[id] = true
+		reordered = append(reordered, c)
+	}
+	nb.Cells = reordered
+	return nil
+}
+
 func applySourceUpdate(r io.Reader, nb *Notebook) error {
 	if r == nil {
 		return nil
@@ -343,8 +450,8 @@ body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margi
 <body>
 <h1>{{.Title}}</h1>
 <p class="meta">Trusted local Joker execution. File is read/written by this server only.</p>
-<p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button></p>
-<div id="cells">{{range .Cells}}<div class="cell" data-id="{{.ID}}"><div><b>{{.Kind}}</b> <span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button></div><textarea oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</div>{{end}}</div>
+<p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button><button onclick="addCell('code')">Add code</button><button onclick="addCell('markdown')">Add Markdown</button></p>
+<div id="cells">{{range .Cells}}<div class="cell" data-id="{{.ID}}"><div><b>{{.Kind}}</b> <span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button><button onclick="moveCell('{{.ID}}',-1)">↑</button><button onclick="moveCell('{{.ID}}',1)">↓</button><button onclick="deleteCell('{{.ID}}')">Delete</button></div><textarea oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</div>{{end}}</div>
 <h2>Raw notebook</h2><pre id="raw"></pre>
 <script>
 function esc(s){return (s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
@@ -356,6 +463,9 @@ function sourcePayload(){return JSON.stringify({cells:Array.from(document.queryS
 function evaluateAll(){fetch('/api/evaluate-all',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
 function evaluateCell(id){var c=document.querySelector('.cell[data-id="'+CSS.escape(id)+'"]');var src=c?c.querySelector('textarea').value:'';fetch('/api/evaluate-cell?id='+encodeURIComponent(id),{method:'POST',headers:{'Content-Type':'text/plain'},body:src}).then(r=>r.text()).then(refresh)}
 function saveNotebook(){fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
+function addCell(kind){fetch('/api/cell?kind='+encodeURIComponent(kind),{method:'POST'}).then(r=>r.text()).then(refresh)}
+function deleteCell(id){if(confirm('Delete '+id+'?'))fetch('/api/cell?id='+encodeURIComponent(id),{method:'DELETE'}).then(r=>r.text()).then(refresh)}
+function moveCell(id,delta){var ids=Array.from(document.querySelectorAll('.cell')).map(c=>c.dataset.id);var i=ids.indexOf(id),j=i+delta;if(i<0||j<0||j>=ids.length)return;var t=ids[i];ids[i]=ids[j];ids[j]=t;fetch('/api/reorder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ids:ids})}).then(r=>r.text()).then(refresh)}
 function parseMaybeJSON(s){try{return JSON.parse(s)}catch(e){return null}}
 function renderCharts(){document.querySelectorAll('.chart').forEach(function(el){var spec=parseMaybeJSON(el.dataset.spec)||{};var data=(spec.series&&spec.series[0]&&spec.series[0].data)||spec.data||[];var labels=(spec.xAxis&&spec.xAxis.data)||data.map(function(_,i){return String(i+1)});var max=Math.max(1,...data.map(Number));var w=720,h=220,p=32,bw=(w-2*p)/Math.max(1,data.length);var svg='<svg viewBox="0 0 '+w+' '+h+'"><line class="axis" x1="'+p+'" y1="'+(h-p)+'" x2="'+(w-p)+'" y2="'+(h-p)+'"/>';data.forEach(function(v,i){var bh=(h-2*p)*Number(v)/max;var x=p+i*bw+3;var y=h-p-bh;svg+='<rect class="bar" x="'+x+'" y="'+y+'" width="'+Math.max(2,bw-6)+'" height="'+bh+'"><title>'+esc(labels[i])+': '+esc(String(v))+'</title></rect>'});svg+='</svg>';el.innerHTML=svg})}
 function renderDiagrams(){document.querySelectorAll('.diagram').forEach(function(el){var r=el.dataset.renderer||'diagram';var s=el.dataset.source||'';el.innerHTML='<b>'+esc(r)+'</b><pre>'+esc(s)+'</pre>'})}
