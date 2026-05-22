@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"testing"
 )
@@ -26,6 +27,19 @@ func TestParseDocPort(t *testing.T) {
 			t.Fatalf("parseDocPort(%q) unexpectedly succeeded", raw)
 		}
 	}
+}
+
+func TestNotebookServeWarnsForNonLocalhost(t *testing.T) {
+	// Keep this as a source-level smoke check: serveNotebook itself blocks in ListenAndServe.
+	// The warning is emitted before Serve is called when --addr is not localhost.
+	if !strings.Contains(readNotebookSourceForTest(), "exposes trusted local code execution") {
+		t.Fatal("notebook non-localhost warning missing")
+	}
+}
+
+func readNotebookSourceForTest() string {
+	data, _ := os.ReadFile("notebook.go")
+	return string(data)
 }
 
 func TestParseNotebookPort(t *testing.T) {

@@ -84,6 +84,9 @@ func serveNotebook(args []string) {
 			}
 		}
 	}
+	if !strings.HasPrefix(addr, "127.0.0.1:") && !strings.HasPrefix(addr, "localhost:") {
+		fmt.Fprintf(Stderr, "WARNING: notebook server bound to %s exposes trusted local code execution.\n", addr)
+	}
 	if err := notebook.Serve(addr, path, open); err != nil {
 		fmt.Fprintln(Stderr, err)
 		os.Exit(1)
