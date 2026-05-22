@@ -122,9 +122,12 @@ docs-command-check:
 	$(DOCS_JOKER_BIN) doc --format json joker.core/first | grep -q '"qualified": "joker.core/first"'
 
 notebook-check:
-	$(GO) test ./internal/notebook ./cmd/joker -run 'Test.*Notebook|TestEncodeLoad|TestFixtureLoad|TestRunCaptures|TestExportMarkdown|TestDownstream' -count=$(TEST_COUNT)
+	$(GO) test ./internal/notebook ./cmd/joker -run 'Test.*Notebook|TestEncodeLoad|TestFixtureLoad|TestRunCaptures|TestExportMarkdown|TestDownstream|TestBuildStatus|TestBuildDependencyGraph|TestDependencyCycles|TestUsageMentionsNotebookCommands' -count=$(TEST_COUNT)
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook run file.edn'
+	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook status file.edn'
+	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook deps file.edn'
+	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook snapshots file.edn'
 
 bb-compat:
 	$(GO) test ./tests -run Babashka -count=$(TEST_COUNT) -timeout=120s
