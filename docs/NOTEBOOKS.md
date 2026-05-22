@@ -52,9 +52,13 @@ Notebooks are regular EDN maps. The extension can be plain `.edn`; the format ma
 
 ## Rich output envelope
 
-Code can return or future renderers can store normalized outputs such as:
+Code cells can return a map with `:notebook/output` or `:type` to create a rich output directly. Renderers can also store normalized outputs in the same shape:
 
 ```clojure
+{:notebook/output :chart
+ :renderer :echarts
+ :spec "{\"data\":[1,2,3]}"}
+
 {:type :chart
  :renderer :echarts
  :spec "{...}"}
@@ -101,6 +105,8 @@ The current implementation includes downstream dependency calculation and `evalu
 The current slices provide:
 
 - EDN load/save/roundtrip;
+- code-cell returned value capture as `:value` outputs;
+- code-cell rich-output map normalization via `:notebook/output`/`:type`;
 - headless `notebook run`;
 - Markdown export;
 - local web UI with add/delete/reorder controls, editable cell metadata (`kind`, `name`, `depends-on`), and lightweight Joker syntax highlighting;

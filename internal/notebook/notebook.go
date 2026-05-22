@@ -16,7 +16,6 @@ import (
 	"time"
 
 	core "github.com/rcarmo/go-joker/core"
-	corereader "github.com/rcarmo/go-joker/core/reader"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
@@ -97,7 +96,7 @@ func EvaluateCell(c *Cell) {
 	var out, errb bytes.Buffer
 	oldOut, oldErr := core.Stdout, core.Stderr
 	core.Stdout, core.Stderr = &out, &errb
-	err := core.ProcessReader(core.NewReader(bufio.NewReader(strings.NewReader(c.Source)), "<notebook-cell>"), "", corereader.PrintIfNotNilPhase)
+	result, err := evalSource(c.Source)
 	core.Stdout, core.Stderr = oldOut, oldErr
 	c.Outputs = nil
 	if out.Len() > 0 {
@@ -109,9 +108,69 @@ func EvaluateCell(c *Cell) {
 	if err != nil {
 		c.State = "error"
 		c.Outputs = append(c.Outputs, Output{Type: "error", Text: err.Error()})
-	} else {
-		c.State = "ok"
+		return
 	}
+	if result != nil {
+		c.Outputs = append(c.Outputs, outputFromObject(result))
+	}
+	c.State = "ok"
+}
+
+func evalSource(source string) (coretypes.Object, error) {
+	reader := core.NewReader(bufio.NewReader(strings.NewReader(source)), "<notebook-cell>")
+	ctx := &core.ParseContext{GlobalEnv: core.GLOBAL_ENV}
+	var result coretypes.Object
+	for {
+		obj, err := core.TryRead(reader)
+		if err == io.EOF {
+			return result, nil
+		}
+		if err != nil {
+			return nil, err
+		}
+		expr, err := core.TryParse(obj, ctx)
+		if err != nil {
+			return nil, err
+		}
+		result, err = core.TryEval(expr)
+		if err != nil {
+			return nil, err
+		}
+	}
+}
+
+func outputFromObject(obj coretypes.Object) Output {
+	if m, ok := obj.(coretypes.Map); ok {
+		if out, ok := richOutputFromMap(m); ok {
+			return out
+		}
+	}
+	return Output{Type: "value", MIME: "text/edn", Text: obj.ToString(true)}
+}
+
+func richOutputFromMap(m coretypes.Map) (Output, bool) {
+	typeName := strings.TrimPrefix(mapString(m, "type"), ":")
+	if typeName == "" {
+		typeName = strings.TrimPrefix(mapString(m, "notebook/output"), ":")
+	}
+	if typeName == "" {
+		return Output{}, false
+	}
+	out := Output{Type: typeName, Text: mapString(m, "text"), MIME: mapString(m, "mime"), Data: mapString(m, "data"), Encoding: strings.TrimPrefix(mapString(m, "encoding"), ":"), Renderer: strings.TrimPrefix(mapString(m, "renderer"), ":"), Spec: mapString(m, "spec"), Source: mapString(m, "source")}
+	if out.Source == "" {
+		out.Source = mapString(m, "svg")
+	}
+	return out, true
+}
+
+func mapString(m coretypes.Map, key string) string {
+	if v := lookup(m, key); v != nil {
+		if s, ok := v.(coretypes.String); ok {
+			return s.S
+		}
+		return v.ToString(false)
+	}
+	return ""
 }
 
 func ExportMarkdown(w io.Writer, nb Notebook) error {

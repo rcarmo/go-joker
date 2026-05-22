@@ -38,6 +38,22 @@ func TestRunCapturesReturnedValue(t *testing.T) {
 	}
 }
 
+func TestEvaluateCellRichOutput(t *testing.T) {
+	cell := Cell{ID: "rich", Kind: "code", Source: `{:notebook/output :chart :spec "{\"data\":[1,2,3]}"}`}
+	EvaluateCell(&cell)
+	if cell.State != "ok" || len(cell.Outputs) != 1 || cell.Outputs[0].Type != "chart" || !strings.Contains(cell.Outputs[0].Spec, "data") {
+		t.Fatalf("rich output cell = %#v", cell)
+	}
+}
+
+func TestEvaluateCellValueOutput(t *testing.T) {
+	cell := Cell{ID: "value", Kind: "code", Source: `(+ 1 2)`}
+	EvaluateCell(&cell)
+	if cell.State != "ok" || len(cell.Outputs) != 1 || cell.Outputs[0].Type != "value" || cell.Outputs[0].Text != "3" {
+		t.Fatalf("value output cell = %#v", cell)
+	}
+}
+
 func TestExportMarkdown(t *testing.T) {
 	nb := New("Export")
 	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", Outputs: []Output{{Type: "stdout", Text: "3\n"}}}}
