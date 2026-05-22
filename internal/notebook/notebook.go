@@ -10,7 +10,9 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -369,10 +371,34 @@ func Encode(nb Notebook) string {
 
 func Serve(addr, path string, open bool) error {
 	fmt.Printf("Serving Joker notebook at http://%s/\n", addr)
+	url := "http://" + addr + "/"
 	if open {
-		fmt.Printf("Open http://%s/ in your browser.\n", addr)
+		if err := OpenBrowser(url); err != nil {
+			fmt.Printf("Open %s in your browser (%v).\n", url, err)
+		} else {
+			fmt.Printf("Opened %s in your browser.\n", url)
+		}
 	}
 	return http.ListenAndServe(addr, Handler(path))
+}
+
+func OpenBrowser(url string) error {
+	cmdName, args := browserCommand(url)
+	if cmdName == "" {
+		return fmt.Errorf("unsupported platform")
+	}
+	return exec.Command(cmdName, args...).Start()
+}
+
+func browserCommand(url string) (string, []string) {
+	switch runtime.GOOS {
+	case "darwin":
+		return "open", []string{url}
+	case "windows":
+		return "rundll32", []string{"url.dll,FileProtocolHandler", url}
+	default:
+		return "xdg-open", []string{url}
+	}
 }
 
 func Handler(path string) http.Handler {

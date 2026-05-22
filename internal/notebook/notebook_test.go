@@ -36,6 +36,13 @@ func TestWriteSnapshot(t *testing.T) {
 	}
 }
 
+func TestBrowserCommand(t *testing.T) {
+	cmd, args := browserCommand("http://127.0.0.1:8080/")
+	if cmd == "" || len(args) == 0 {
+		t.Fatalf("browserCommand = %q %#v", cmd, args)
+	}
+}
+
 func TestBuildStatus(t *testing.T) {
 	nb := New("Status")
 	nb.Cells = []Cell{{ID: "cell-1", Outputs: []Output{{Type: "value", Text: "1"}}}}
