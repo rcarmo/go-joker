@@ -388,8 +388,11 @@ func saveCurrent(path string, nb *Notebook) error {
 
 type sourceUpdate struct {
 	Cells []struct {
-		ID     string `json:"id"`
-		Source string `json:"source"`
+		ID        string   `json:"id"`
+		Kind      string   `json:"kind"`
+		Name      string   `json:"name"`
+		DependsOn []string `json:"dependsOn"`
+		Source    string   `json:"source"`
 	} `json:"cells"`
 }
 
@@ -463,13 +466,18 @@ func applySourceUpdate(r io.Reader, nb *Notebook) error {
 	}
 	for _, c := range update.Cells {
 		if cell, ok := findCell(nb, c.ID); ok {
+			if c.Kind != "" {
+				cell.Kind = c.Kind
+			}
+			cell.Name = c.Name
+			cell.DependsOn = c.DependsOn
 			cell.Source = c.Source
 		}
 	}
 	return nil
 }
 
-var page = template.Must(template.New("nb").Parse(`<!doctype html>
+var page = template.Must(template.New("nb").Funcs(template.FuncMap{"join": strings.Join}).Parse(`<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -477,14 +485,14 @@ var page = template.Must(template.New("nb").Parse(`<!doctype html>
 <style>
 :root{color-scheme:light dark;--bg:#fff;--fg:#172033;--muted:#667085;--panel:#f8fafc;--border:#d0d7de;--code:#f3f4f6;--kw:#7c3aed;--sym:#0369a1;--str:#15803d;--err:#b91c1c;--accent:#2563eb}
 @media(prefers-color-scheme:dark){:root{--bg:#0d1117;--fg:#e6edf3;--muted:#8b949e;--panel:#111827;--border:#30363d;--code:#161b22;--kw:#c084fc;--sym:#7dd3fc;--str:#86efac;--err:#fca5a5;--accent:#60a5fa}}
-body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margin:2rem auto;max-width:1180px;line-height:1.45;padding:0 1rem}button{padding:.4rem .7rem;margin:.15rem;border:1px solid var(--border);border-radius:6px;background:var(--panel);color:var(--fg)}textarea{width:100%;min-height:8rem;font-family:ui-monospace,monospace;background:var(--code);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:.7rem}.cell{border:1px solid var(--border);border-radius:10px;padding:1rem;margin:1rem 0;background:var(--panel)}pre{background:var(--code);padding:1rem;overflow:auto;border-radius:6px}.meta{color:var(--muted);font-size:.9rem}.kw{color:var(--kw);font-weight:700}.sym{color:var(--sym)}.str{color:var(--str)}.err{color:var(--err)}.output{border-left:4px solid var(--border);padding-left:.8rem;margin-top:.8rem}.chart,.diagram,.graph{min-height:180px;border:1px solid var(--border);border-radius:6px;padding:1rem;white-space:pre-wrap;background:var(--bg)}.chart svg,.graph svg{max-width:100%;height:auto}.bar{fill:var(--accent)}.axis{stroke:var(--border)}.node{fill:var(--panel);stroke:var(--accent)}.edge{stroke:var(--muted);marker-end:url(#arrow)}
+body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margin:2rem auto;max-width:1180px;line-height:1.45;padding:0 1rem}button{padding:.4rem .7rem;margin:.15rem;border:1px solid var(--border);border-radius:6px;background:var(--panel);color:var(--fg)}input,select{background:var(--code);color:var(--fg);border:1px solid var(--border);border-radius:5px;padding:.25rem}textarea{width:100%;min-height:8rem;font-family:ui-monospace,monospace;background:var(--code);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:.7rem}.cell{border:1px solid var(--border);border-radius:10px;padding:1rem;margin:1rem 0;background:var(--panel)}.meta-row{display:flex;flex-wrap:wrap;gap:.7rem;margin:.6rem 0}pre{background:var(--code);padding:1rem;overflow:auto;border-radius:6px}.meta{color:var(--muted);font-size:.9rem}.kw{color:var(--kw);font-weight:700}.sym{color:var(--sym)}.str{color:var(--str)}.err{color:var(--err)}.output{border-left:4px solid var(--border);padding-left:.8rem;margin-top:.8rem}.chart,.diagram,.graph{min-height:180px;border:1px solid var(--border);border-radius:6px;padding:1rem;white-space:pre-wrap;background:var(--bg)}.chart svg,.graph svg{max-width:100%;height:auto}.bar{fill:var(--accent)}.axis{stroke:var(--border)}.node{fill:var(--panel);stroke:var(--accent)}.edge{stroke:var(--muted);marker-end:url(#arrow)}
 </style>
 </head>
 <body>
 <h1>{{.Title}}</h1>
 <p class="meta">Trusted local Joker execution. File is read/written by this server only.</p>
 <p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button><button onclick="addCell('code')">Add code</button><button onclick="addCell('markdown')">Add Markdown</button></p>
-<div id="cells">{{range .Cells}}<div class="cell" data-id="{{.ID}}" data-name="{{.Name}}"><div><b>{{.Kind}}</b> <span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button>{{if .Name}}<button onclick="evaluateDownstream('{{.Name}}')">Evaluate downstream</button>{{end}}<button onclick="moveCell('{{.ID}}',-1)">↑</button><button onclick="moveCell('{{.ID}}',1)">↓</button><button onclick="deleteCell('{{.ID}}')">Delete</button></div><textarea oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</div>{{end}}</div>
+<div id="cells">{{range .Cells}}<div class="cell" data-id="{{.ID}}" data-name="{{.Name}}"><div><b>{{.Kind}}</b> <span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button>{{if .Name}}<button onclick="evaluateDownstream('{{.Name}}')">Evaluate downstream</button>{{end}}<button onclick="moveCell('{{.ID}}',-1)">↑</button><button onclick="moveCell('{{.ID}}',1)">↓</button><button onclick="deleteCell('{{.ID}}')">Delete</button></div><div class="meta-row"><label>kind <select class="cell-kind"><option value="code" {{if eq .Kind "code"}}selected{{end}}>code</option><option value="markdown" {{if eq .Kind "markdown"}}selected{{end}}>markdown</option></select></label><label> name <input class="cell-name" value="{{.Name}}" placeholder="optional name"></label><label> depends-on <input class="cell-deps" value="{{join .DependsOn ","}}" placeholder="comma-separated names"></label></div><textarea oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</div>{{end}}</div>
 <h2>Raw notebook</h2><pre id="raw"></pre>
 <script>
 function esc(s){return (s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
@@ -492,7 +500,8 @@ function hi(s){return esc(s).replace(/"(?:\\.|[^"])*"/g,'<span class="str">$&</s
 function highlight(t){t.nextElementSibling.innerHTML=hi(t.value)}
 document.querySelectorAll('textarea').forEach(highlight)
 function refresh(t){document.getElementById('raw').textContent=t; setTimeout(function(){location.reload()},150)}
-function sourcePayload(){return JSON.stringify({cells:Array.from(document.querySelectorAll('.cell')).map(function(c){return {id:c.dataset.id,source:c.querySelector('textarea').value}})})}
+function splitDeps(s){return (s||'').split(',').map(x=>x.trim()).filter(Boolean)}
+function sourcePayload(){return JSON.stringify({cells:Array.from(document.querySelectorAll('.cell')).map(function(c){return {id:c.dataset.id,kind:c.querySelector('.cell-kind').value,name:c.querySelector('.cell-name').value.trim(),dependsOn:splitDeps(c.querySelector('.cell-deps').value),source:c.querySelector('textarea').value}})})}
 function evaluateAll(){fetch('/api/evaluate-all',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
 function evaluateCell(id){var c=document.querySelector('.cell[data-id="'+CSS.escape(id)+'"]');var src=c?c.querySelector('textarea').value:'';fetch('/api/evaluate-cell?id='+encodeURIComponent(id),{method:'POST',headers:{'Content-Type':'text/plain'},body:src}).then(r=>r.text()).then(refresh)}
 function saveNotebook(){fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
