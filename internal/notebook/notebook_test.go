@@ -8,6 +8,15 @@ import (
 	"testing"
 )
 
+func TestBuildStatus(t *testing.T) {
+	nb := New("Status")
+	nb.Cells = []Cell{{ID: "cell-1", Outputs: []Output{{Type: "value", Text: "1"}}}}
+	status := BuildStatus(nb)
+	if status.Title != "Status" || status.CellCount != 1 || status.OutputCount != 1 || status.Bytes == 0 {
+		t.Fatalf("status = %#v", status)
+	}
+}
+
 func TestFixtureLoad(t *testing.T) {
 	for _, path := range []string{"../../tests/notebooks/basic.edn", "../../tests/notebooks/rich_outputs.edn", "../../tests/notebooks/dependencies.edn"} {
 		nb, err := Load(path)
@@ -116,6 +125,11 @@ func TestNotebookHTTPHandler(t *testing.T) {
 		t.Fatalf("GET notebook code=%d body=%s", w.Code, w.Body.String())
 	}
 	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/status", nil))
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), "cellCount") || !strings.Contains(w.Header().Get("Content-Type"), "application/json") {
+		t.Fatalf("status code=%d content-type=%s body=%s", w.Code, w.Header().Get("Content-Type"), w.Body.String())
+	}
+	w = httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/export/markdown", nil))
 	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), "# API") || !strings.Contains(w.Header().Get("Content-Type"), "text/markdown") {
 		t.Fatalf("export markdown code=%d content-type=%s body=%s", w.Code, w.Header().Get("Content-Type"), w.Body.String())
@@ -169,7 +183,7 @@ func TestNotebookPageRenders(t *testing.T) {
 	if err := page.Execute(&w, nb); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(w.String(), "notebook-title") || !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Export Markdown") || !strings.Contains(w.String(), "Load raw EDN") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Check deps") || !strings.Contains(w.String(), "Show dependency graph") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "cell-name") || !strings.Contains(w.String(), "cell-deps") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
+	if !strings.Contains(w.String(), "notebook-title") || !strings.Contains(w.String(), "notebook-status") || !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Export Markdown") || !strings.Contains(w.String(), "Load raw EDN") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Check deps") || !strings.Contains(w.String(), "Show dependency graph") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "cell-name") || !strings.Contains(w.String(), "cell-deps") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
 		t.Fatalf("page missing expected UI:\n%s", w.String())
 	}
 }

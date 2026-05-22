@@ -66,6 +66,14 @@ type DependencyGraph struct {
 	Edges []GraphEdge `json:"edges"`
 }
 
+type Status struct {
+	Title       string `json:"title"`
+	CellCount   int    `json:"cellCount"`
+	OutputCount int    `json:"outputCount"`
+	Bytes       int    `json:"bytes"`
+	Warning     string `json:"warning,omitempty"`
+}
+
 func New(title string) Notebook {
 	now := time.Now().UTC().Format(time.RFC3339)
 	return Notebook{Format: "joker/notebook", Version: 1, Title: title, CreatedAt: now, UpdatedAt: now}
@@ -80,6 +88,17 @@ func Load(path string) (Notebook, error) {
 }
 
 func Save(path string, nb Notebook) error { return os.WriteFile(path, []byte(Encode(nb)), 0644) }
+
+func BuildStatus(nb Notebook) Status {
+	status := Status{Title: nb.Title, CellCount: len(nb.Cells), Bytes: len(Encode(nb))}
+	for _, c := range nb.Cells {
+		status.OutputCount += len(c.Outputs)
+	}
+	if status.Bytes > 10*1024*1024 {
+		status.Warning = "notebook EDN exceeds 10 MB; consider pruning inline outputs"
+	}
+	return status
+}
 
 func Run(nb *Notebook) {
 	for i := range nb.Cells {
@@ -361,6 +380,10 @@ func Handler(path string) http.Handler {
 	mux.HandleFunc("/api/notebook", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
+	})
+	mux.HandleFunc("/api/status", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(BuildStatus(nb))
 	})
 	mux.HandleFunc("/api/export/markdown", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/markdown; charset=utf-8")
@@ -665,7 +688,7 @@ body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margi
 </head>
 <body>
 <h1><input id="notebook-title" value="{{.Title}}" style="font-size:1.5rem;width:70%"></h1>
-<p class="meta">Trusted local Joker execution. File is read/written by this server only.</p>
+<p class="meta">Trusted local Joker execution. File is read/written by this server only.</p><p id="notebook-status" class="meta"></p>
 <p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button><button onclick="exportMarkdown()">Export Markdown</button><button onclick="loadRawEdn()">Load raw EDN</button><button onclick="checkDeps()">Check deps</button><button onclick="showDependencyGraph()">Show dependency graph</button><button onclick="addCell('code')">Add code</button><button onclick="addCell('markdown')">Add Markdown</button></p>
 <div id="dependency-graph" class="graph" style="display:none"></div>
 <div id="cells">{{range .Cells}}<div class="cell" data-id="{{.ID}}" data-name="{{.Name}}"><div><b>{{.Kind}}</b> <span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button>{{if .Name}}<button onclick="evaluateDownstream('{{.Name}}')">Evaluate downstream</button>{{end}}<button onclick="moveCell('{{.ID}}',-1)">↑</button><button onclick="moveCell('{{.ID}}',1)">↓</button><button onclick="deleteCell('{{.ID}}')">Delete</button></div><div class="meta-row"><label>kind <select class="cell-kind"><option value="code" {{if eq .Kind "code"}}selected{{end}}>code</option><option value="markdown" {{if eq .Kind "markdown"}}selected{{end}}>markdown</option></select></label><label> name <input class="cell-name" value="{{.Name}}" placeholder="optional name"></label><label> depends-on <input class="cell-deps" value="{{join .DependsOn ","}}" placeholder="comma-separated names"></label></div><textarea oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</div>{{end}}</div>
@@ -675,6 +698,8 @@ function esc(s){return (s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;',
 function hi(s){return esc(s).replace(/"(?:\\.|[^"])*"/g,'<span class="str">$&</span>').replace(/\b(defn?|fn|let|letfn|loop|recur|if|do|quote|try|catch|throw|ns)\b/g,'<span class="kw">$1</span>').replace(/(:[\w!?*+<>=\/.-]+)/g,'<span class="sym">$1</span>')}
 function highlight(t){t.nextElementSibling.innerHTML=hi(t.value)}
 document.querySelectorAll('textarea').forEach(highlight)
+function loadStatus(){fetch('/api/status').then(r=>r.json()).then(s=>{document.getElementById('notebook-status').textContent=s.cellCount+' cells · '+s.outputCount+' outputs · '+Math.round(s.bytes/1024)+' KB'+(s.warning?' · WARNING: '+s.warning:'')})}
+loadStatus()
 function refresh(t){document.getElementById('raw').textContent=t; setTimeout(function(){location.reload()},150)}
 function splitDeps(s){return (s||'').split(',').map(x=>x.trim()).filter(Boolean)}
 function sourcePayload(){return JSON.stringify({title:document.getElementById('notebook-title').value,cells:Array.from(document.querySelectorAll('.cell')).map(function(c){return {id:c.dataset.id,kind:c.querySelector('.cell-kind').value,name:c.querySelector('.cell-name').value.trim(),dependsOn:splitDeps(c.querySelector('.cell-deps').value),source:c.querySelector('textarea').value}})})}
