@@ -24,7 +24,9 @@ jobs:
       - name: Build
         run: go build -o joker ./cmd/joker
       - name: Run tests
-        run: go test ./core ./std/... ./cmd/joker -timeout 10m -count=1
+        run: go test ./core ./std/... ./cmd/joker ./internal/notebook -timeout 10m -count=1
+      - name: Run notebook smoke checks
+        run: make notebook-check
       - name: Generate docs and verify namespace/feature coverage
         run: make docs-check
       - name: Run local parity suite
@@ -32,7 +34,7 @@ jobs:
       - name: Run imported jank smoke subset
         run: JOKER_BIN=./joker tests/run_jank_subset.sh
       - name: Run vet
-        run: go vet ./core ./std/... ./cmd/joker
+        run: go vet ./core ./std/... ./cmd/joker ./internal/notebook
 
   bench:
     runs-on: ubuntu-latest
