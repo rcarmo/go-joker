@@ -113,6 +113,11 @@ func TestNotebookHTTPHandler(t *testing.T) {
 		t.Fatalf("GET notebook code=%d body=%s", w.Code, w.Body.String())
 	}
 	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/export/markdown", nil))
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), "# API") || !strings.Contains(w.Header().Get("Content-Type"), "text/markdown") {
+		t.Fatalf("export markdown code=%d content-type=%s body=%s", w.Code, w.Header().Get("Content-Type"), w.Body.String())
+	}
+	w = httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/save-sources", strings.NewReader(`{"cells":[{"id":"cell-1","kind":"code","name":"data","source":"(+ 2 3)"}]}`)))
 	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), "(+ 2 3)") {
 		t.Fatalf("save-sources code=%d body=%s", w.Code, w.Body.String())
@@ -156,7 +161,7 @@ func TestNotebookPageRenders(t *testing.T) {
 	if err := page.Execute(&w, nb); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(w.String(), "notebook-title") || !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Check deps") || !strings.Contains(w.String(), "Show dependency graph") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "cell-name") || !strings.Contains(w.String(), "cell-deps") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
+	if !strings.Contains(w.String(), "notebook-title") || !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Export Markdown") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Check deps") || !strings.Contains(w.String(), "Show dependency graph") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "cell-name") || !strings.Contains(w.String(), "cell-deps") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
 		t.Fatalf("page missing expected UI:\n%s", w.String())
 	}
 }

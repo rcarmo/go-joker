@@ -346,6 +346,10 @@ func Handler(path string) http.Handler {
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
+	mux.HandleFunc("/api/export/markdown", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/markdown; charset=utf-8")
+		_ = ExportMarkdown(w, nb)
+	})
 	mux.HandleFunc("/api/save", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
@@ -646,7 +650,7 @@ body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margi
 <body>
 <h1><input id="notebook-title" value="{{.Title}}" style="font-size:1.5rem;width:70%"></h1>
 <p class="meta">Trusted local Joker execution. File is read/written by this server only.</p>
-<p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button><button onclick="checkDeps()">Check deps</button><button onclick="showDependencyGraph()">Show dependency graph</button><button onclick="addCell('code')">Add code</button><button onclick="addCell('markdown')">Add Markdown</button></p>
+<p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button><button onclick="exportMarkdown()">Export Markdown</button><button onclick="checkDeps()">Check deps</button><button onclick="showDependencyGraph()">Show dependency graph</button><button onclick="addCell('code')">Add code</button><button onclick="addCell('markdown')">Add Markdown</button></p>
 <div id="dependency-graph" class="graph" style="display:none"></div>
 <div id="cells">{{range .Cells}}<div class="cell" data-id="{{.ID}}" data-name="{{.Name}}"><div><b>{{.Kind}}</b> <span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button>{{if .Name}}<button onclick="evaluateDownstream('{{.Name}}')">Evaluate downstream</button>{{end}}<button onclick="moveCell('{{.ID}}',-1)">↑</button><button onclick="moveCell('{{.ID}}',1)">↓</button><button onclick="deleteCell('{{.ID}}')">Delete</button></div><div class="meta-row"><label>kind <select class="cell-kind"><option value="code" {{if eq .Kind "code"}}selected{{end}}>code</option><option value="markdown" {{if eq .Kind "markdown"}}selected{{end}}>markdown</option></select></label><label> name <input class="cell-name" value="{{.Name}}" placeholder="optional name"></label><label> depends-on <input class="cell-deps" value="{{join .DependsOn ","}}" placeholder="comma-separated names"></label></div><textarea oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</div>{{end}}</div>
 <h2>Raw notebook</h2><pre id="raw"></pre>
@@ -661,6 +665,7 @@ function sourcePayload(){return JSON.stringify({title:document.getElementById('n
 function evaluateAll(){fetch('/api/evaluate-all',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
 function evaluateCell(id){var c=document.querySelector('.cell[data-id="'+CSS.escape(id)+'"]');var src=c?c.querySelector('textarea').value:'';fetch('/api/evaluate-cell?id='+encodeURIComponent(id),{method:'POST',headers:{'Content-Type':'text/plain'},body:src}).then(r=>r.text()).then(refresh)}
 function saveNotebook(){fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
+function exportMarkdown(){fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(()=>fetch('/api/export/markdown')).then(r=>r.text()).then(t=>{document.getElementById('raw').textContent=t})}
 function addCell(kind){fetch('/api/cell?kind='+encodeURIComponent(kind),{method:'POST'}).then(r=>r.text()).then(refresh)}
 function deleteCell(id){if(confirm('Delete '+id+'?'))fetch('/api/cell?id='+encodeURIComponent(id),{method:'DELETE'}).then(r=>r.text()).then(refresh)}
 function moveCell(id,delta){var ids=Array.from(document.querySelectorAll('.cell')).map(c=>c.dataset.id);var i=ids.indexOf(id),j=i+delta;if(i<0||j<0||j>=ids.length)return;var t=ids[i];ids[i]=ids[j];ids[j]=t;fetch('/api/reorder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ids:ids})}).then(r=>r.text()).then(refresh)}
