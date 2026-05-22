@@ -1,0 +1,49 @@
+{:format :joker/notebook
+ :version 1
+ :title "Joker notebook rich demo"
+ :created-at "2026-05-22T22:20:00Z"
+ :updated-at "2026-05-22T22:20:00Z"
+ :cells [
+  {:id "cell-1"
+   :kind :markdown
+   :source "# Joker notebook rich demo\n\nThis notebook demonstrates value, chart, diagram, and graph outputs."
+   :execution-count 0
+   :state :idle
+   :outputs []}
+
+  {:id "cell-2"
+   :kind :code
+   :name "value"
+   :depends-on []
+   :source "(+ 20 22)"
+   :execution-count 0
+   :state :idle
+   :outputs []}
+
+  {:id "cell-3"
+   :kind :code
+   :name "chart"
+   :depends-on ["value"]
+   :source "(joker.notebook/chart \"{\\\"xAxis\\\":{\\\"data\\\":[\\\"A\\\",\\\"B\\\",\\\"C\\\"]},\\\"series\\\":[{\\\"data\\\":[4,7,3]}]}\")"
+   :execution-count 0
+   :state :idle
+   :outputs []}
+
+  {:id "cell-4"
+   :kind :code
+   :name "flow"
+   :depends-on ["chart"]
+   :source "(joker.notebook/mermaid \"graph TD; Load-->Transform; Transform-->Render\")"
+   :execution-count 0
+   :state :idle
+   :outputs []}
+
+  {:id "cell-5"
+   :kind :code
+   :name "graph"
+   :depends-on ["flow"]
+   :source "(joker.notebook/graph \"{\\\"nodes\\\":[{\\\"id\\\":\\\"Load\\\"},{\\\"id\\\":\\\"Transform\\\"},{\\\"id\\\":\\\"Render\\\"}],\\\"edges\\\":[{\\\"from\\\":\\\"Load\\\",\\\"to\\\":\\\"Transform\\\"},{\\\"from\\\":\\\"Transform\\\",\\\"to\\\":\\\"Render\\\"}]}\")"
+   :execution-count 0
+   :state :idle
+   :outputs []}
+ ]}

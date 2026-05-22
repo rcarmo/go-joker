@@ -53,7 +53,7 @@ func TestBuildStatus(t *testing.T) {
 }
 
 func TestFixtureLoad(t *testing.T) {
-	for _, path := range []string{"../../tests/notebooks/basic.edn", "../../tests/notebooks/rich_outputs.edn", "../../tests/notebooks/dependencies.edn"} {
+	for _, path := range []string{"../../tests/notebooks/basic.edn", "../../tests/notebooks/rich_outputs.edn", "../../tests/notebooks/dependencies.edn", "../../examples/notebooks/rich-demo.edn"} {
 		nb, err := Load(path)
 		if err != nil {
 			t.Fatalf("Load(%s): %v", path, err)

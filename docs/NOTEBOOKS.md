@@ -162,9 +162,23 @@ Reactive execution starts with manual dependencies:
 
 The current implementation includes downstream dependency calculation, dependency cycle detection, a dependency graph endpoint/UI, and `evaluate-downstream` support from explicit `:depends-on` metadata. Downstream evaluation rejects cyclic metadata. It keeps the schema ready for later runtime dependency tracking.
 
-## Fixtures
+## Demo and fixtures
 
-Example notebooks live under `tests/notebooks/`:
+A user-facing rich-output demo lives at:
+
+```bash
+examples/notebooks/rich-demo.edn
+```
+
+Try it with:
+
+```bash
+cp examples/notebooks/rich-demo.edn /tmp/rich-demo.edn
+joker notebook run /tmp/rich-demo.edn
+joker notebook /tmp/rich-demo.edn -p 8080 --open
+```
+
+Test fixtures live under `tests/notebooks/`:
 
 - `basic.edn` — markdown + simple code value output;
 - `rich_outputs.edn` — chart and Mermaid helper outputs;
