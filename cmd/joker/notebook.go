@@ -35,6 +35,8 @@ func handleNotebookCommand(args []string) {
 		exportNotebook(args[1:])
 	case "status":
 		statusNotebook(args[1:])
+	case "deps":
+		depsNotebook(args[1:])
 	case "-h", "--help":
 		printNotebookUsage()
 	default:
@@ -82,6 +84,49 @@ func serveNotebook(args []string) {
 		fmt.Fprintln(Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func depsNotebook(args []string) {
+	if len(args) < 1 {
+		fmt.Fprintln(Stderr, "notebook deps requires a file")
+		os.Exit(2)
+	}
+	nb, err := notebook.Load(args[0])
+	if err != nil {
+		fmt.Fprintln(Stderr, err)
+		os.Exit(1)
+	}
+	graph := notebook.BuildDependencyGraph(nb)
+	cycles := notebook.DependencyCycles(nb)
+	fmt.Fprintf(Stdout, "{\"nodes\":[")
+	for i, n := range graph.Nodes {
+		if i > 0 {
+			fmt.Fprint(Stdout, ",")
+		}
+		fmt.Fprintf(Stdout, "{\"id\":%q,\"label\":%q}", n.ID, n.Label)
+	}
+	fmt.Fprintf(Stdout, "],\"edges\":[")
+	for i, e := range graph.Edges {
+		if i > 0 {
+			fmt.Fprint(Stdout, ",")
+		}
+		fmt.Fprintf(Stdout, "{\"from\":%q,\"to\":%q}", e.From, e.To)
+	}
+	fmt.Fprintf(Stdout, "],\"cycles\":[")
+	for i, cycle := range cycles {
+		if i > 0 {
+			fmt.Fprint(Stdout, ",")
+		}
+		fmt.Fprint(Stdout, "[")
+		for j, node := range cycle {
+			if j > 0 {
+				fmt.Fprint(Stdout, ",")
+			}
+			fmt.Fprintf(Stdout, "%q", node)
+		}
+		fmt.Fprint(Stdout, "]")
+	}
+	fmt.Fprintln(Stdout, "]}")
 }
 
 func statusNotebook(args []string) {
@@ -162,5 +207,6 @@ func printNotebookUsage() {
   joker notebook serve [file.edn] [-p 8080]
   joker notebook run file.edn
   joker notebook status file.edn
+  joker notebook deps file.edn
   joker notebook export file.edn [-o report.md]`)
 }

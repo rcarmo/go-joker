@@ -20,6 +20,7 @@ joker notebook serve [file.edn] [-p 8080]
 joker notebook serve [file.edn] --addr 127.0.0.1:8080
 joker notebook run file.edn
 joker notebook status file.edn
+joker notebook deps file.edn
 joker notebook export file.edn -o report.md
 ```
 

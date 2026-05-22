@@ -41,6 +41,15 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 	if !strings.Contains(string(statusOut), `"cellCount"`) || !strings.Contains(string(statusOut), `"outputCount"`) {
 		t.Fatalf("status output: %s", statusOut)
 	}
+	cmd = exec.Command(bin, "notebook", "deps", nb)
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	depsOut, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("notebook deps: %v\n%s", err, depsOut)
+	}
+	if !strings.Contains(string(depsOut), `"nodes"`) || !strings.Contains(string(depsOut), `"cycles"`) {
+		t.Fatalf("deps output: %s", depsOut)
+	}
 	cmd = exec.Command(bin, "notebook", "export", nb, "-o", outPath)
 	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
 	if out, err := cmd.CombinedOutput(); err != nil {
