@@ -27,6 +27,13 @@ func TestWriteSnapshot(t *testing.T) {
 	if err != nil || len(snaps) != 1 || snaps[0].Size == 0 {
 		t.Fatalf("ListSnapshots = %#v err=%v", snaps, err)
 	}
+	if err := os.WriteFile(path, []byte("{:format :joker/notebook :version 1 :title \"new\" :cells []}"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	restored, err := RestoreSnapshot(path, snaps[0].Path)
+	if err != nil || restored.Title == "new" {
+		t.Fatalf("RestoreSnapshot = %#v err=%v", restored, err)
+	}
 }
 
 func TestBuildStatus(t *testing.T) {
@@ -154,6 +161,11 @@ func TestNotebookHTTPHandler(t *testing.T) {
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/snapshots", nil))
 	if w.Code != http.StatusOK || !strings.Contains(w.Header().Get("Content-Type"), "application/json") {
 		t.Fatalf("snapshots code=%d content-type=%s body=%s", w.Code, w.Header().Get("Content-Type"), w.Body.String())
+	}
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/restore-snapshot?path=missing", nil))
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("restore missing code=%d body=%s", w.Code, w.Body.String())
 	}
 	w = httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/export/markdown", nil))

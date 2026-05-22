@@ -50,6 +50,11 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 	if strings.TrimSpace(string(snapOut)) != "[]" && (!strings.Contains(string(snapOut), `"path"`) || !strings.Contains(string(snapOut), `"size"`)) {
 		t.Fatalf("snapshots output: %s", snapOut)
 	}
+	cmd = exec.Command(bin, "notebook", "restore", nb, "missing")
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	if out, err := cmd.CombinedOutput(); err == nil || !strings.Contains(string(out), "snapshot") {
+		t.Fatalf("notebook restore missing expected snapshot error, err=%v out=%s", err, out)
+	}
 	cmd = exec.Command(bin, "notebook", "deps", nb)
 	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
 	depsOut, err := cmd.CombinedOutput()

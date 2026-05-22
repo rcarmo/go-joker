@@ -396,6 +396,25 @@ func Handler(path string) http.Handler {
 		snaps, _ := ListSnapshots(path)
 		_ = json.NewEncoder(w).Encode(snaps)
 	})
+	mux.HandleFunc("/api/restore-snapshot", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		snap := r.URL.Query().Get("path")
+		if snap == "" {
+			http.Error(w, "missing path", http.StatusBadRequest)
+			return
+		}
+		loaded, err := RestoreSnapshot(path, snap)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		nb = loaded
+		w.Header().Set("Content-Type", "application/edn")
+		fmt.Fprint(w, Encode(nb))
+	})
 	mux.HandleFunc("/api/export/markdown", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/markdown; charset=utf-8")
 		_ = ExportMarkdown(w, nb)
@@ -617,6 +636,35 @@ func saveCurrent(path string, nb *Notebook) error {
 		return err
 	}
 	return Save(path, *nb)
+}
+
+func RestoreSnapshot(path, snapshotPath string) (Notebook, error) {
+	snaps, err := ListSnapshots(path)
+	if err != nil {
+		return Notebook{}, err
+	}
+	allowed := false
+	for _, snap := range snaps {
+		if snap.Path == snapshotPath {
+			allowed = true
+			break
+		}
+	}
+	if !allowed {
+		return Notebook{}, fmt.Errorf("snapshot is not listed for notebook")
+	}
+	data, err := os.ReadFile(snapshotPath)
+	if err != nil {
+		return Notebook{}, err
+	}
+	nb, err := Decode(data, snapshotPath)
+	if err != nil {
+		return Notebook{}, err
+	}
+	if err := Save(path, nb); err != nil {
+		return Notebook{}, err
+	}
+	return nb, nil
 }
 
 func ListSnapshots(path string) ([]Snapshot, error) {
