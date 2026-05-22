@@ -12,3 +12,5 @@ docs/dash/*.js
 .claude
 *.test
 tests/clojure-test-suite/
+.joker-notebook-snapshots/
+**/.joker-notebook-snapshots/

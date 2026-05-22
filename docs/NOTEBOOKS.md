@@ -30,7 +30,7 @@ joker notebook export file.edn -o report.md
 
 The server binds to `127.0.0.1` when `-p`/`--port` is used. Pass `--open` to launch the local notebook URL in the default browser. Use `--addr` only when you explicitly want another interface; notebooks are trusted local code execution surfaces. The CLI prints a warning when `--addr` does not bind to `127.0.0.1` or `localhost`. Responses set `Cache-Control: no-store` and `X-Content-Type-Options: nosniff`.
 
-Before overwriting an existing notebook, the server writes a recovery snapshot under `.joker-notebook-snapshots/` next to the notebook file.
+Before overwriting an existing notebook, the server writes a recovery snapshot under `.joker-notebook-snapshots/` next to the notebook file. Snapshot directories are ignored by git.
 
 ## File format
 
