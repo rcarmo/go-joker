@@ -131,7 +131,8 @@ joker doc joker.string            # namespace documentation
 joker doc joker.core/first        # qualified symbol documentation
 joker doc search websocket        # full-text-ish namespace/var search
 joker doc --format json first     # agent/tool-friendly JSON
-joker doc serve --addr 127.0.0.1:8080  # local browsable docs with search
+joker doc serve -p 8080          # local browsable docs with search
+joker doc serve --addr 127.0.0.1:8080
 ```
 
 The CLI output is Markdown by default so agents and terminals can consume it directly. The local HTTP view uses the same runtime index and does not embed the generated static HTML/PNG documentation payload.

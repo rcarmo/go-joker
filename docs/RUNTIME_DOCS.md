@@ -17,6 +17,7 @@ joker doc joker.string
 joker doc joker.core/first
 joker doc search websocket
 joker doc --format json joker.core/first
+joker doc serve -p 8080
 joker doc serve --addr 127.0.0.1:8080
 ```
 
@@ -51,8 +52,11 @@ joker doc --format json first
 ## Local web UI
 
 ```bash
+joker doc serve -p 8080
 joker doc serve --addr 127.0.0.1:8080
 ```
+
+`-p`/`--port` binds to `127.0.0.1:<port>`; use `--addr` when you need an explicit host/interface.
 
 The HTTP server exposes:
 

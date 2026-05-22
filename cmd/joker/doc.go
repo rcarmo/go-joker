@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -54,6 +55,18 @@ func handleDocCommand(args []string) {
 			}
 			i++
 			addr = args[i]
+		case "-p", "--port":
+			if i+1 >= len(args) {
+				fmt.Fprintln(Stderr, "doc: -p/--port requires a port number")
+				os.Exit(2)
+			}
+			i++
+			port, err := parseDocPort(args[i])
+			if err != nil {
+				fmt.Fprintln(Stderr, err)
+				os.Exit(2)
+			}
+			addr = "127.0.0.1:" + port
 		case "-h", "--help":
 			printDocUsage()
 			return
@@ -95,12 +108,21 @@ func printDocUsage() {
   joker doc [symbol-or-namespace]
   joker doc search QUERY
   joker doc --format json [symbol-or-namespace]
+  joker doc serve [-p 8080]
   joker doc serve [--addr 127.0.0.1:8080]
 
 Examples:
   joker doc joker.core/first
   joker doc joker.string
   joker doc search websocket`)
+}
+
+func parseDocPort(raw string) (string, error) {
+	port, err := strconv.Atoi(raw)
+	if err != nil || port <= 0 || port > 65535 {
+		return "", fmt.Errorf("doc: invalid port %q", raw)
+	}
+	return strconv.Itoa(port), nil
 }
 
 func buildDocIndex() docIndex {

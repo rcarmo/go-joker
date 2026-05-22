@@ -17,6 +17,7 @@ joker doc joker.string
 joker doc joker.core/first
 joker doc search websocket
 joker doc --format json joker.core/first
+joker doc serve -p 8080
 joker doc serve --addr 127.0.0.1:8080
 ```
 
