@@ -102,7 +102,7 @@ func TestFindCell(t *testing.T) {
 func TestNotebookHTTPHandler(t *testing.T) {
 	path := t.TempDir() + "/api.edn"
 	nb := New("API")
-	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Name: "data", Source: "(+ 1 2)"}}
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Name: "data", Source: "(+ 1 2)"}, {ID: "cell-2", Kind: "code", Name: "summary", DependsOn: []string{"data"}, Source: "(+ 3 4)"}}
 	if err := Save(path, nb); err != nil {
 		t.Fatal(err)
 	}
@@ -113,14 +113,34 @@ func TestNotebookHTTPHandler(t *testing.T) {
 		t.Fatalf("GET notebook code=%d body=%s", w.Code, w.Body.String())
 	}
 	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/save-sources", strings.NewReader(`{"cells":[{"id":"cell-1","kind":"code","name":"data","source":"(+ 2 3)"}]}`)))
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), "(+ 2 3)") {
+		t.Fatalf("save-sources code=%d body=%s", w.Code, w.Body.String())
+	}
+	w = httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-cell?id=cell-1", strings.NewReader("(+ 2 3)")))
 	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), ":text \"5\"") {
 		t.Fatalf("evaluate-cell code=%d body=%s", w.Code, w.Body.String())
 	}
 	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-downstream?name=data", strings.NewReader(`{"cells":[{"id":"cell-2","kind":"code","name":"summary","dependsOn":["data"],"source":"(+ 4 5)"}]}`)))
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), ":text \"9\"") {
+		t.Fatalf("evaluate-downstream code=%d body=%s", w.Code, w.Body.String())
+	}
+	w = httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/cell?kind=markdown", nil))
 	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), ":kind :markdown") {
 		t.Fatalf("add cell code=%d body=%s", w.Code, w.Body.String())
+	}
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/reorder", strings.NewReader(`{"ids":["cell-3","cell-2","cell-1"]}`)))
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), "cell-3") {
+		t.Fatalf("reorder code=%d body=%s", w.Code, w.Body.String())
+	}
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodDelete, "/api/cell?id=cell-3", nil))
+	if w.Code != http.StatusOK || strings.Contains(w.Body.String(), "Markdown") {
+		t.Fatalf("delete cell code=%d body=%s", w.Code, w.Body.String())
 	}
 }
 

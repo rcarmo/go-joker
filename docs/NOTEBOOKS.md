@@ -143,6 +143,6 @@ The current slices provide:
 - Mermaid/DOT diagram source blocks with renderer labels;
 - graph JSON circular-layout rendering for `{:nodes [...] :edges [...]}`-style JSON payloads;
 - port parsing and CLI plumbing;
-- unit tests for schema, execution capture, Markdown export, dependencies, web rendering, HTTP APIs, and CLI parsing.
+- unit tests for schema, execution capture, Markdown export, dependencies, web rendering, HTTP APIs (load/save/evaluate/add/delete/reorder/downstream), and CLI parsing.
 
 Further slices should improve browser editing ergonomics, add vendored ECharts/Mermaid/DOT renderers for fully interactive charts and diagrams, and support richer save/update payloads from the browser.
