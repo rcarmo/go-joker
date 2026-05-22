@@ -128,9 +128,10 @@ The current slices provide:
 - code-cell rich-output map normalization via `:notebook/output`/`:type`;
 - headless `notebook run`;
 - Markdown export with rich output fallbacks;
-- local web UI with editable notebook title, size/status warning, add/delete/reorder controls, raw EDN import, editable cell metadata (`kind`, `name`, `depends-on`), and lightweight Joker syntax highlighting;
+- local web UI with editable notebook title, size/status warning, output pruning controls, add/delete/reorder controls, raw EDN import, editable cell metadata (`kind`, `name`, `depends-on`), and lightweight Joker syntax highlighting;
 - `GET /api/notebook`;
 - `GET /api/status` for cell/output counts, encoded EDN size, and the >10 MB inline-output warning;
+- `POST /api/clear-outputs` or `POST /api/clear-outputs?id=<cell-id>` to prune inline outputs;
 - `GET /api/export/markdown` for browser/API Markdown export;
 - `POST /api/save` for full EDN replacement/import from the raw pane;
 - `POST /api/save-sources` for browser source/metadata edits as JSON;
