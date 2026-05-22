@@ -8,6 +8,24 @@ import (
 	"testing"
 )
 
+func TestNotebookNewCLI(t *testing.T) {
+	bin := buildJokerBinary(t)
+	dir := t.TempDir()
+	nb := filepath.Join(dir, "new.edn")
+	cmd := exec.Command(bin, "notebook", "new", nb, "--title", "Created")
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	if out, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("notebook new: %v\n%s", err, out)
+	}
+	data, err := os.ReadFile(nb)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(data), ":format :joker/notebook") || !strings.Contains(string(data), "Created") {
+		t.Fatalf("new notebook:\n%s", data)
+	}
+}
+
 func TestNotebookRunAndExportCLI(t *testing.T) {
 	bin := buildJokerBinary(t)
 	dir := t.TempDir()

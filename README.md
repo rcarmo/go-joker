@@ -126,6 +126,7 @@ make jank-subset            # run imported jank-lang/clojure-test-suite smoke su
 Joker includes a local EDN notebook runner/server for Mathematica-style exploratory documents with Observable-style manual dependency metadata:
 
 ```bash
+joker notebook new example.edn --title Demo
 joker notebook example.edn -p 8080       # local browser UI
 joker notebook run example.edn           # headless execution, updates inline outputs
 joker notebook status example.edn        # status/size JSON

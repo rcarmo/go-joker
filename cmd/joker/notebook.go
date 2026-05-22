@@ -16,6 +16,8 @@ func handleNotebookCommand(args []string) {
 		return
 	}
 	switch args[0] {
+	case "new":
+		newNotebook(args[1:])
 	case "run":
 		if len(args) < 2 {
 			fmt.Fprintln(Stderr, "notebook run requires a file")
@@ -45,6 +47,29 @@ func handleNotebookCommand(args []string) {
 		printNotebookUsage()
 	default:
 		serveNotebook(args)
+	}
+}
+
+func newNotebook(args []string) {
+	if len(args) < 1 {
+		fmt.Fprintln(Stderr, "notebook new requires a file")
+		os.Exit(2)
+	}
+	title := args[0]
+	for i := 1; i < len(args); i++ {
+		if args[i] == "--title" && i+1 < len(args) {
+			i++
+			title = args[i]
+		}
+	}
+	nb := notebook.New(title)
+	nb.Cells = []notebook.Cell{
+		{ID: "cell-1", Kind: "markdown", Source: "# " + title, State: "idle"},
+		{ID: "cell-2", Kind: "code", Source: "(+ 1 2)", State: "idle"},
+	}
+	if err := notebook.Save(args[0], nb); err != nil {
+		fmt.Fprintln(Stderr, err)
+		os.Exit(1)
 	}
 }
 
@@ -243,6 +268,7 @@ func printNotebookUsage() {
 	fmt.Fprintln(Stdout, `Usage:
   joker notebook [file.edn] [-p 8080] [--open]
   joker notebook serve [file.edn] [-p 8080]
+  joker notebook new file.edn [--title "Title"]
   joker notebook run file.edn
   joker notebook status file.edn
   joker notebook deps file.edn

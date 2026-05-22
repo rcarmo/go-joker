@@ -18,6 +18,7 @@ V1 goals:
 joker notebook [file.edn] [-p 8080] [--open]
 joker notebook serve [file.edn] [-p 8080]
 joker notebook serve [file.edn] --addr 127.0.0.1:8080
+joker notebook new file.edn --title "Example"
 joker notebook run file.edn
 joker notebook status file.edn
 joker notebook deps file.edn
