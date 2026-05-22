@@ -60,28 +60,7 @@ func Load(path string) (Notebook, error) {
 	if err != nil {
 		return Notebook{}, err
 	}
-	reader := core.NewReader(bufio.NewReader(bytes.NewReader(data)), path)
-	obj, err := core.TryRead(reader)
-	if err != nil {
-		return Notebook{}, err
-	}
-	m, ok := obj.(coretypes.Map)
-	if !ok {
-		return Notebook{}, fmt.Errorf("notebook root must be an EDN map")
-	}
-	nb := New(lookupString(m, "title"))
-	nb.Format = strings.TrimPrefix(lookupKeywordOrString(m, "format"), ":")
-	if nb.Format != "joker/notebook" {
-		return Notebook{}, fmt.Errorf("notebook :format must be :joker/notebook")
-	}
-	nb.Version = lookupInt(m, "version")
-	if nb.Version == 0 {
-		nb.Version = 1
-	}
-	nb.CreatedAt = lookupString(m, "created-at")
-	nb.UpdatedAt = lookupString(m, "updated-at")
-	nb.Cells = parseCells(lookup(m, "cells"))
-	return nb, nil
+	return Decode(data, path)
 }
 
 func Save(path string, nb Notebook) error { return os.WriteFile(path, []byte(Encode(nb)), 0644) }
@@ -194,6 +173,7 @@ func Serve(addr, path string, open bool) error {
 	nb, err := Load(path)
 	if err != nil {
 		nb = New(path)
+		nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", State: "idle"}}
 	}
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { _ = page.Execute(w, nb) })
@@ -201,7 +181,56 @@ func Serve(addr, path string, open bool) error {
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
+	mux.HandleFunc("/api/save", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		loaded, err := Decode(body, "<request>")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		nb = loaded
+		nb.UpdatedAt = time.Now().UTC().Format(time.RFC3339)
+		if err := Save(path, nb); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/edn")
+		fmt.Fprint(w, Encode(nb))
+	})
+	mux.HandleFunc("/api/evaluate-cell", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		id := r.URL.Query().Get("id")
+		if id == "" {
+			http.Error(w, "missing id", http.StatusBadRequest)
+			return
+		}
+		cell, ok := findCell(&nb, id)
+		if !ok {
+			http.Error(w, "cell not found", http.StatusNotFound)
+			return
+		}
+		EvaluateCell(cell)
+		nb.UpdatedAt = time.Now().UTC().Format(time.RFC3339)
+		_ = Save(path, nb)
+		w.Header().Set("Content-Type", "application/edn")
+		fmt.Fprint(w, Encode(nb))
+	})
 	mux.HandleFunc("/api/evaluate-all", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
 		Run(&nb)
 		_ = Save(path, nb)
 		w.Header().Set("Content-Type", "application/edn")
@@ -214,7 +243,71 @@ func Serve(addr, path string, open bool) error {
 	return http.ListenAndServe(addr, mux)
 }
 
-var page = template.Must(template.New("nb").Parse(`<!doctype html><html><head><meta charset="utf-8"><title>Joker Notebook</title><style>body{font-family:system-ui;margin:2rem auto;max-width:1100px;line-height:1.4}textarea{width:100%;min-height:8rem;font-family:ui-monospace,monospace}.cell{border:1px solid #ccc;border-radius:8px;padding:1rem;margin:1rem 0}pre{background:#f3f4f6;padding:1rem;overflow:auto}.kw{color:#7c3aed;font-weight:600}@media(prefers-color-scheme:dark){body{background:#0d1117;color:#e6edf3}.cell{border-color:#30363d}pre{background:#161b22}}</style></head><body><h1>{{.Title}}</h1><p><button onclick="fetch('/api/evaluate-all',{method:'POST'}).then(r=>r.text()).then(t=>document.getElementById('raw').textContent=t)">Evaluate all</button></p>{{range .Cells}}<div class="cell"><b>{{.Kind}}</b>{{if .Name}} — {{.Name}}{{end}}<textarea>{{.Source}}</textarea>{{range .Outputs}}<pre>{{.Text}}</pre>{{end}}</div>{{end}}<h2>Raw notebook</h2><pre id="raw"></pre></body></html>`))
+func Decode(data []byte, filename string) (Notebook, error) {
+	reader := core.NewReader(bufio.NewReader(bytes.NewReader(data)), filename)
+	obj, err := core.TryRead(reader)
+	if err != nil {
+		return Notebook{}, err
+	}
+	m, ok := obj.(coretypes.Map)
+	if !ok {
+		return Notebook{}, fmt.Errorf("notebook root must be an EDN map")
+	}
+	nb := New(lookupString(m, "title"))
+	nb.Format = strings.TrimPrefix(lookupKeywordOrString(m, "format"), ":")
+	if nb.Format != "joker/notebook" {
+		return Notebook{}, fmt.Errorf("notebook :format must be :joker/notebook")
+	}
+	nb.Version = lookupInt(m, "version")
+	if nb.Version == 0 {
+		nb.Version = 1
+	}
+	nb.CreatedAt = lookupString(m, "created-at")
+	nb.UpdatedAt = lookupString(m, "updated-at")
+	nb.Cells = parseCells(lookup(m, "cells"))
+	return nb, nil
+}
+
+func findCell(nb *Notebook, id string) (*Cell, bool) {
+	for i := range nb.Cells {
+		if nb.Cells[i].ID == id {
+			return &nb.Cells[i], true
+		}
+	}
+	return nil, false
+}
+
+var page = template.Must(template.New("nb").Parse(`<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Joker Notebook</title>
+<style>
+:root{color-scheme:light dark;--bg:#fff;--fg:#172033;--muted:#667085;--panel:#f8fafc;--border:#d0d7de;--code:#f3f4f6;--kw:#7c3aed;--sym:#0369a1;--str:#15803d;--err:#b91c1c}
+@media(prefers-color-scheme:dark){:root{--bg:#0d1117;--fg:#e6edf3;--muted:#8b949e;--panel:#111827;--border:#30363d;--code:#161b22;--kw:#c084fc;--sym:#7dd3fc;--str:#86efac;--err:#fca5a5}}
+body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margin:2rem auto;max-width:1180px;line-height:1.45;padding:0 1rem}button{padding:.4rem .7rem;margin:.15rem;border:1px solid var(--border);border-radius:6px;background:var(--panel);color:var(--fg)}textarea{width:100%;min-height:8rem;font-family:ui-monospace,monospace;background:var(--code);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:.7rem}.cell{border:1px solid var(--border);border-radius:10px;padding:1rem;margin:1rem 0;background:var(--panel)}pre{background:var(--code);padding:1rem;overflow:auto;border-radius:6px}.meta{color:var(--muted);font-size:.9rem}.kw{color:var(--kw);font-weight:700}.sym{color:var(--sym)}.str{color:var(--str)}.err{color:var(--err)}.output{border-left:4px solid var(--border);padding-left:.8rem;margin-top:.8rem}.chart,.diagram,.graph{min-height:180px;border:1px dashed var(--border);border-radius:6px;padding:1rem;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<h1>{{.Title}}</h1>
+<p class="meta">Trusted local Joker execution. File is read/written by this server only.</p>
+<p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button></p>
+<div id="cells">{{range .Cells}}<div class="cell" data-id="{{.ID}}"><div><b>{{.Kind}}</b> <span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button></div><textarea oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}">interactive chart spec
+{{.Spec}}</div>{{else if eq .Type "diagram"}}<div class="diagram">{{.Renderer}} diagram
+{{.Source}}</div>{{else if eq .Type "graph"}}<div class="graph">graph
+{{.Source}}</div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</div>{{end}}</div>
+<h2>Raw notebook</h2><pre id="raw"></pre>
+<script>
+function esc(s){return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+function hi(s){return esc(s).replace(/"(?:\\.|[^"])*"/g,'<span class="str">$&</span>').replace(/\b(defn?|fn|let|letfn|loop|recur|if|do|quote|try|catch|throw|ns)\b/g,'<span class="kw">$1</span>').replace(/(:[\w!?*+<>=\/.-]+)/g,'<span class="sym">$1</span>')}
+function highlight(t){t.nextElementSibling.innerHTML=hi(t.value)}
+document.querySelectorAll('textarea').forEach(highlight)
+function refresh(t){document.getElementById('raw').textContent=t; setTimeout(function(){location.reload()},150)}
+function evaluateAll(){fetch('/api/evaluate-all',{method:'POST'}).then(r=>r.text()).then(refresh)}
+function evaluateCell(id){fetch('/api/evaluate-cell?id='+encodeURIComponent(id),{method:'POST'}).then(r=>r.text()).then(refresh)}
+function saveNotebook(){fetch('/api/notebook').then(r=>r.text()).then(t=>fetch('/api/save',{method:'POST',body:t})).then(r=>r.text()).then(refresh)}
+</script>
+</body></html>`))
 
 func lookup(m coretypes.Map, key string) coretypes.Object {
 	ok, v := m.Get(coretypes.MakeKeyword(core.STRINGS.Intern, key))

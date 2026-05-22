@@ -98,13 +98,18 @@ The current implementation includes downstream dependency calculation and keeps 
 
 ## Current implementation status
 
-The first slice provides:
+The current slices provide:
 
 - EDN load/save/roundtrip;
 - headless `notebook run`;
 - Markdown export;
-- minimal local web UI and API;
+- local web UI with lightweight Joker syntax highlighting;
+- `GET /api/notebook`;
+- `POST /api/save`;
+- `POST /api/evaluate-cell?id=<cell-id>`;
+- `POST /api/evaluate-all`;
+- first-pass rendering placeholders/envelopes for SVG, images, chart specs, Mermaid/DOT diagrams, and graph JSON;
 - port parsing and CLI plumbing;
-- unit tests for schema, execution capture, Markdown export, dependencies, and CLI parsing.
+- unit tests for schema, execution capture, Markdown export, dependencies, web rendering, and CLI parsing.
 
-Further slices should improve browser editing, syntax highlighting, lazy rich renderers, and richer cell-level evaluate/save APIs.
+Further slices should improve browser editing ergonomics, add vendored interactive chart/diagram renderers, and support richer save/update payloads from the browser.

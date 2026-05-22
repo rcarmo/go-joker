@@ -2,6 +2,8 @@ package notebook
 
 import (
 	"bytes"
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 )
@@ -47,6 +49,31 @@ func TestExportMarkdown(t *testing.T) {
 	}
 	if !strings.Contains(b.String(), "```clojure") || !strings.Contains(b.String(), "3") {
 		t.Fatalf("markdown:\n%s", b.String())
+	}
+}
+
+func TestFindCell(t *testing.T) {
+	nb := New("Find")
+	nb.Cells = []Cell{{ID: "cell-1"}}
+	if _, ok := findCell(&nb, "cell-1"); !ok {
+		t.Fatal("cell not found")
+	}
+	if _, ok := findCell(&nb, "missing"); ok {
+		t.Fatal("missing cell found")
+	}
+}
+
+func TestNotebookPageRenders(t *testing.T) {
+	nb := New("Web")
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)"}}
+	r := httptest.NewRequest(http.MethodGet, "/", nil)
+	w := httptest.NewRecorder()
+	if err := page.Execute(w, nb); err != nil {
+		t.Fatal(err)
+	}
+	_ = r
+	if !strings.Contains(w.Body.String(), "Evaluate all") || !strings.Contains(w.Body.String(), "highlight") {
+		t.Fatalf("page missing expected UI:\n%s", w.Body.String())
 	}
 }
 
