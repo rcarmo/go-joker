@@ -2,6 +2,8 @@ package notebook
 
 import (
 	"bytes"
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 )
@@ -94,6 +96,31 @@ func TestFindCell(t *testing.T) {
 	}
 	if _, ok := findCell(&nb, "missing"); ok {
 		t.Fatal("missing cell found")
+	}
+}
+
+func TestNotebookHTTPHandler(t *testing.T) {
+	path := t.TempDir() + "/api.edn"
+	nb := New("API")
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Name: "data", Source: "(+ 1 2)"}}
+	if err := Save(path, nb); err != nil {
+		t.Fatal(err)
+	}
+	h := Handler(path)
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/notebook", nil))
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), ":format :joker/notebook") {
+		t.Fatalf("GET notebook code=%d body=%s", w.Code, w.Body.String())
+	}
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-cell?id=cell-1", strings.NewReader("(+ 2 3)")))
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), ":text \"5\"") {
+		t.Fatalf("evaluate-cell code=%d body=%s", w.Code, w.Body.String())
+	}
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/cell?kind=markdown", nil))
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), ":kind :markdown") {
+		t.Fatalf("add cell code=%d body=%s", w.Code, w.Body.String())
 	}
 }
 

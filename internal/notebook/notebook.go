@@ -309,6 +309,14 @@ func Encode(nb Notebook) string {
 }
 
 func Serve(addr, path string, open bool) error {
+	fmt.Printf("Serving Joker notebook at http://%s/\n", addr)
+	if open {
+		fmt.Printf("Open http://%s/ in your browser.\n", addr)
+	}
+	return http.ListenAndServe(addr, Handler(path))
+}
+
+func Handler(path string) http.Handler {
 	nb, err := Load(path)
 	if err != nil {
 		nb = New(path)
@@ -461,11 +469,7 @@ func Serve(addr, path string, open bool) error {
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
-	fmt.Printf("Serving Joker notebook at http://%s/\n", addr)
-	if open {
-		fmt.Printf("Open http://%s/ in your browser.\n", addr)
-	}
-	return http.ListenAndServe(addr, mux)
+	return mux
 }
 
 func Decode(data []byte, filename string) (Notebook, error) {
