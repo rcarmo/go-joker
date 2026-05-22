@@ -128,7 +128,7 @@ The current slices provide:
 - code-cell rich-output map normalization via `:notebook/output`/`:type`;
 - headless `notebook run`;
 - Markdown export;
-- local web UI with add/delete/reorder controls, editable cell metadata (`kind`, `name`, `depends-on`), and lightweight Joker syntax highlighting;
+- local web UI with editable notebook title, add/delete/reorder controls, editable cell metadata (`kind`, `name`, `depends-on`), and lightweight Joker syntax highlighting;
 - `GET /api/notebook`;
 - `POST /api/save` for full EDN replacement;
 - `POST /api/save-sources` for browser source/metadata edits as JSON;

@@ -156,7 +156,7 @@ func TestNotebookPageRenders(t *testing.T) {
 	if err := page.Execute(&w, nb); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Check deps") || !strings.Contains(w.String(), "Show dependency graph") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "cell-name") || !strings.Contains(w.String(), "cell-deps") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
+	if !strings.Contains(w.String(), "notebook-title") || !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Check deps") || !strings.Contains(w.String(), "Show dependency graph") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "cell-name") || !strings.Contains(w.String(), "cell-deps") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
 		t.Fatalf("page missing expected UI:\n%s", w.String())
 	}
 }
@@ -186,10 +186,10 @@ func TestApplyReorder(t *testing.T) {
 func TestApplySourceUpdate(t *testing.T) {
 	nb := New("Update")
 	nb.Cells = []Cell{{ID: "cell-1", Source: "old"}}
-	if err := applySourceUpdate(strings.NewReader(`{"cells":[{"id":"cell-1","kind":"markdown","name":"intro","dependsOn":["data"],"source":"new"}]}`), &nb); err != nil {
+	if err := applySourceUpdate(strings.NewReader(`{"title":"Updated","cells":[{"id":"cell-1","kind":"markdown","name":"intro","dependsOn":["data"],"source":"new"}]}`), &nb); err != nil {
 		t.Fatal(err)
 	}
-	if nb.Cells[0].Source != "new" || nb.Cells[0].Kind != "markdown" || nb.Cells[0].Name != "intro" || len(nb.Cells[0].DependsOn) != 1 || nb.Cells[0].DependsOn[0] != "data" {
+	if nb.Title != "Updated" || nb.Cells[0].Source != "new" || nb.Cells[0].Kind != "markdown" || nb.Cells[0].Name != "intro" || len(nb.Cells[0].DependsOn) != 1 || nb.Cells[0].DependsOn[0] != "data" {
 		t.Fatalf("cell = %#v", nb.Cells[0])
 	}
 }

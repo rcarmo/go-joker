@@ -538,6 +538,7 @@ func saveCurrent(path string, nb *Notebook) error {
 }
 
 type sourceUpdate struct {
+	Title string `json:"title"`
 	Cells []struct {
 		ID        string   `json:"id"`
 		Kind      string   `json:"kind"`
@@ -615,6 +616,9 @@ func applySourceUpdate(r io.Reader, nb *Notebook) error {
 	if err := json.Unmarshal(body, &update); err != nil {
 		return err
 	}
+	if update.Title != "" {
+		nb.Title = update.Title
+	}
 	for _, c := range update.Cells {
 		if cell, ok := findCell(nb, c.ID); ok {
 			if c.Kind != "" {
@@ -640,7 +644,7 @@ body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margi
 </style>
 </head>
 <body>
-<h1>{{.Title}}</h1>
+<h1><input id="notebook-title" value="{{.Title}}" style="font-size:1.5rem;width:70%"></h1>
 <p class="meta">Trusted local Joker execution. File is read/written by this server only.</p>
 <p><button onclick="evaluateAll()">Evaluate all</button><button onclick="saveNotebook()">Save</button><button onclick="checkDeps()">Check deps</button><button onclick="showDependencyGraph()">Show dependency graph</button><button onclick="addCell('code')">Add code</button><button onclick="addCell('markdown')">Add Markdown</button></p>
 <div id="dependency-graph" class="graph" style="display:none"></div>
@@ -653,7 +657,7 @@ function highlight(t){t.nextElementSibling.innerHTML=hi(t.value)}
 document.querySelectorAll('textarea').forEach(highlight)
 function refresh(t){document.getElementById('raw').textContent=t; setTimeout(function(){location.reload()},150)}
 function splitDeps(s){return (s||'').split(',').map(x=>x.trim()).filter(Boolean)}
-function sourcePayload(){return JSON.stringify({cells:Array.from(document.querySelectorAll('.cell')).map(function(c){return {id:c.dataset.id,kind:c.querySelector('.cell-kind').value,name:c.querySelector('.cell-name').value.trim(),dependsOn:splitDeps(c.querySelector('.cell-deps').value),source:c.querySelector('textarea').value}})})}
+function sourcePayload(){return JSON.stringify({title:document.getElementById('notebook-title').value,cells:Array.from(document.querySelectorAll('.cell')).map(function(c){return {id:c.dataset.id,kind:c.querySelector('.cell-kind').value,name:c.querySelector('.cell-name').value.trim(),dependsOn:splitDeps(c.querySelector('.cell-deps').value),source:c.querySelector('textarea').value}})})}
 function evaluateAll(){fetch('/api/evaluate-all',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
 function evaluateCell(id){var c=document.querySelector('.cell[data-id="'+CSS.escape(id)+'"]');var src=c?c.querySelector('textarea').value:'';fetch('/api/evaluate-cell?id='+encodeURIComponent(id),{method:'POST',headers:{'Content-Type':'text/plain'},body:src}).then(r=>r.text()).then(refresh)}
 function saveNotebook(){fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}).then(r=>r.text()).then(refresh)}
