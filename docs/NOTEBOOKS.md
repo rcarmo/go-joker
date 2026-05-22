@@ -26,7 +26,7 @@ joker notebook restore file.edn snapshot.bak.edn
 joker notebook export file.edn -o report.md
 ```
 
-The server binds to `127.0.0.1` when `-p`/`--port` is used. Use `--addr` only when you explicitly want another interface; notebooks are trusted local code execution surfaces.
+The server binds to `127.0.0.1` when `-p`/`--port` is used. Use `--addr` only when you explicitly want another interface; notebooks are trusted local code execution surfaces. Responses set `Cache-Control: no-store` and `X-Content-Type-Options: nosniff`.
 
 Before overwriting an existing notebook, the server writes a recovery snapshot under `.joker-notebook-snapshots/` next to the notebook file.
 

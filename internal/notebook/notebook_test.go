@@ -149,8 +149,8 @@ func TestNotebookHTTPHandler(t *testing.T) {
 	h := Handler(path)
 	w := httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/notebook", nil))
-	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), ":format :joker/notebook") {
-		t.Fatalf("GET notebook code=%d body=%s", w.Code, w.Body.String())
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), ":format :joker/notebook") || w.Header().Get("Cache-Control") != "no-store" || w.Header().Get("X-Content-Type-Options") != "nosniff" {
+		t.Fatalf("GET notebook code=%d headers=%v body=%s", w.Code, w.Header(), w.Body.String())
 	}
 	w = httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/status", nil))

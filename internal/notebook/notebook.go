@@ -382,16 +382,23 @@ func Handler(path string) http.Handler {
 		nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", State: "idle"}}
 	}
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { _ = page.Execute(w, nb) })
+	writeHeaders := func(w http.ResponseWriter) {
+		w.Header().Set("Cache-Control", "no-store")
+		w.Header().Set("X-Content-Type-Options", "nosniff")
+	}
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { writeHeaders(w); _ = page.Execute(w, nb) })
 	mux.HandleFunc("/api/notebook", func(w http.ResponseWriter, r *http.Request) {
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
 	mux.HandleFunc("/api/status", func(w http.ResponseWriter, r *http.Request) {
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(BuildStatus(nb))
 	})
 	mux.HandleFunc("/api/snapshots", func(w http.ResponseWriter, r *http.Request) {
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/json")
 		snaps, _ := ListSnapshots(path)
 		_ = json.NewEncoder(w).Encode(snaps)
@@ -412,10 +419,12 @@ func Handler(path string) http.Handler {
 			return
 		}
 		nb = loaded
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
 	mux.HandleFunc("/api/export/markdown", func(w http.ResponseWriter, r *http.Request) {
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "text/markdown; charset=utf-8")
 		_ = ExportMarkdown(w, nb)
 	})
@@ -439,6 +448,7 @@ func Handler(path string) http.Handler {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
@@ -455,6 +465,7 @@ func Handler(path string) http.Handler {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
@@ -480,6 +491,7 @@ func Handler(path string) http.Handler {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
@@ -515,6 +527,7 @@ func Handler(path string) http.Handler {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
@@ -531,6 +544,7 @@ func Handler(path string) http.Handler {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
@@ -555,10 +569,12 @@ func Handler(path string) http.Handler {
 		}
 		EvaluateCell(cell)
 		_ = saveCurrent(path, &nb)
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
 	mux.HandleFunc("/api/dependencies", func(w http.ResponseWriter, r *http.Request) {
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{"cycles": DependencyCycles(nb), "graph": BuildDependencyGraph(nb)})
 	})
@@ -579,6 +595,7 @@ func Handler(path string) http.Handler {
 		}
 		_ = EvaluateDownstream(&nb, name)
 		_ = saveCurrent(path, &nb)
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
@@ -590,6 +607,7 @@ func Handler(path string) http.Handler {
 		_ = applySourceUpdate(r.Body, &nb)
 		Run(&nb)
 		_ = saveCurrent(path, &nb)
+		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
