@@ -4,9 +4,26 @@ import (
 	"bytes"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
+
+func TestWriteSnapshot(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "snap.edn")
+	if err := os.WriteFile(path, []byte("{:format :joker/notebook}"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := writeSnapshot(path); err != nil {
+		t.Fatal(err)
+	}
+	matches, err := filepath.Glob(filepath.Join(dir, ".joker-notebook-snapshots", "snap.edn.*.bak.edn"))
+	if err != nil || len(matches) != 1 {
+		t.Fatalf("snapshots = %v err=%v", matches, err)
+	}
+}
 
 func TestBuildStatus(t *testing.T) {
 	nb := New("Status")

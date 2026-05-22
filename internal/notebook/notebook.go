@@ -10,6 +10,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -602,7 +603,24 @@ func findCell(nb *Notebook, id string) (*Cell, bool) {
 
 func saveCurrent(path string, nb *Notebook) error {
 	nb.UpdatedAt = time.Now().UTC().Format(time.RFC3339)
+	if err := writeSnapshot(path); err != nil {
+		return err
+	}
 	return Save(path, *nb)
+}
+
+func writeSnapshot(path string) error {
+	data, err := os.ReadFile(path)
+	if err != nil || len(data) == 0 {
+		return nil
+	}
+	dir := filepath.Join(filepath.Dir(path), ".joker-notebook-snapshots")
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return err
+	}
+	base := filepath.Base(path)
+	stamp := time.Now().UTC().Format("20060102T150405Z")
+	return os.WriteFile(filepath.Join(dir, base+"."+stamp+".bak.edn"), data, 0644)
 }
 
 type sourceUpdate struct {

@@ -26,6 +26,8 @@ joker notebook export file.edn -o report.md
 
 The server binds to `127.0.0.1` when `-p`/`--port` is used. Use `--addr` only when you explicitly want another interface; notebooks are trusted local code execution surfaces.
 
+Before overwriting an existing notebook, the server writes a recovery snapshot under `.joker-notebook-snapshots/` next to the notebook file.
+
 ## File format
 
 Notebooks are regular EDN maps. The extension can be plain `.edn`; the format marker identifies notebook files.
@@ -130,7 +132,7 @@ The current slices provide:
 - code-cell rich-output map normalization via `:notebook/output`/`:type`;
 - headless `notebook run`;
 - Markdown export with rich output fallbacks;
-- local web UI with automatic OS color-scheme support plus explicit Light/Dark/Auto theme buttons, keyboard shortcuts (`Ctrl/Cmd+S`, `Ctrl/Cmd+Enter`, `Shift+Enter`), unsaved-change tracking and before-unload warning, Mathematica-like cell chrome (`In[n]`/`Out[n]`, state pills, collapsible outputs), action/error log, editable notebook title, size/status warning, output pruning controls, add/delete/reorder controls, raw EDN import, editable cell metadata (`kind`, `name`, `depends-on`), and lightweight Joker syntax highlighting;
+- local web UI with automatic OS color-scheme support plus explicit Light/Dark/Auto theme buttons, keyboard shortcuts (`Ctrl/Cmd+S`, `Ctrl/Cmd+Enter`, `Shift+Enter`), unsaved-change tracking and before-unload warning, local save snapshots, Mathematica-like cell chrome (`In[n]`/`Out[n]`, state pills, collapsible outputs), action/error log, editable notebook title, size/status warning, output pruning controls, add/delete/reorder controls, raw EDN import, editable cell metadata (`kind`, `name`, `depends-on`), and lightweight Joker syntax highlighting;
 - `GET /api/notebook`;
 - `GET /api/status` for cell/output counts, encoded EDN size, and the >10 MB inline-output warning;
 - `POST /api/clear-outputs` or `POST /api/clear-outputs?id=<cell-id>` to prune inline outputs;
