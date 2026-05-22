@@ -33,6 +33,8 @@ func handleNotebookCommand(args []string) {
 		}
 	case "export":
 		exportNotebook(args[1:])
+	case "status":
+		statusNotebook(args[1:])
 	case "-h", "--help":
 		printNotebookUsage()
 	default:
@@ -80,6 +82,24 @@ func serveNotebook(args []string) {
 		fmt.Fprintln(Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func statusNotebook(args []string) {
+	if len(args) < 1 {
+		fmt.Fprintln(Stderr, "notebook status requires a file")
+		os.Exit(2)
+	}
+	nb, err := notebook.Load(args[0])
+	if err != nil {
+		fmt.Fprintln(Stderr, err)
+		os.Exit(1)
+	}
+	status := notebook.BuildStatus(nb)
+	fmt.Fprintf(Stdout, "{\"title\":%q,\"cellCount\":%d,\"outputCount\":%d,\"bytes\":%d", status.Title, status.CellCount, status.OutputCount, status.Bytes)
+	if status.Warning != "" {
+		fmt.Fprintf(Stdout, ",\"warning\":%q", status.Warning)
+	}
+	fmt.Fprintln(Stdout, "}")
 }
 
 func exportNotebook(args []string) {
@@ -141,5 +161,6 @@ func printNotebookUsage() {
   joker notebook [file.edn] [-p 8080] [--open]
   joker notebook serve [file.edn] [-p 8080]
   joker notebook run file.edn
+  joker notebook status file.edn
   joker notebook export file.edn [-o report.md]`)
 }

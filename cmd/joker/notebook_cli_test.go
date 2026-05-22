@@ -32,6 +32,15 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 		t.Fatalf("updated notebook missing output:\n%s", updated)
 	}
 	outPath := filepath.Join(dir, "report.md")
+	cmd = exec.Command(bin, "notebook", "status", nb)
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	statusOut, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("notebook status: %v\n%s", err, statusOut)
+	}
+	if !strings.Contains(string(statusOut), `"cellCount"`) || !strings.Contains(string(statusOut), `"outputCount"`) {
+		t.Fatalf("status output: %s", statusOut)
+	}
 	cmd = exec.Command(bin, "notebook", "export", nb, "-o", outPath)
 	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
 	if out, err := cmd.CombinedOutput(); err != nil {
