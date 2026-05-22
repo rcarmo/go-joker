@@ -1,0 +1,9 @@
+{:format :joker/notebook
+ :version 1
+ :title "Dependency notebook fixture"
+ :created-at "2026-05-22T21:20:00Z"
+ :updated-at "2026-05-22T21:20:00Z"
+ :cells [
+  {:id "cell-1" :kind :code :name "data" :depends-on [] :source "(def notebook-dep-value 40)" :execution-count 0 :state :idle :outputs []}
+  {:id "cell-2" :kind :code :name "summary" :depends-on ["data"] :source "(+ 1 2)" :execution-count 0 :state :idle :outputs []}
+ ]}

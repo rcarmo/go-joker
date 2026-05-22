@@ -1,0 +1,9 @@
+{:format :joker/notebook
+ :version 1
+ :title "Basic notebook fixture"
+ :created-at "2026-05-22T21:20:00Z"
+ :updated-at "2026-05-22T21:20:00Z"
+ :cells [
+  {:id "cell-1" :kind :markdown :source "# Basic notebook" :execution-count 0 :state :idle :outputs []}
+  {:id "cell-2" :kind :code :name "sum" :depends-on [] :source "(+ 1 2)" :execution-count 0 :state :idle :outputs []}
+ ]}

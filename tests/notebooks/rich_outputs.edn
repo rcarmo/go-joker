@@ -1,0 +1,9 @@
+{:format :joker/notebook
+ :version 1
+ :title "Rich output notebook fixture"
+ :created-at "2026-05-22T21:20:00Z"
+ :updated-at "2026-05-22T21:20:00Z"
+ :cells [
+  {:id "cell-1" :kind :code :name "chart" :depends-on [] :source "(joker.notebook/chart \"{\\\"data\\\":[1,2,3]}\")" :execution-count 0 :state :idle :outputs []}
+  {:id "cell-2" :kind :code :name "diagram" :depends-on ["chart"] :source "(joker.notebook/mermaid \"graph TD; A-->B\")" :execution-count 0 :state :idle :outputs []}
+ ]}

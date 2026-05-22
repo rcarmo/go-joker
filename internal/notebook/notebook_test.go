@@ -6,6 +6,18 @@ import (
 	"testing"
 )
 
+func TestFixtureLoad(t *testing.T) {
+	for _, path := range []string{"../../tests/notebooks/basic.edn", "../../tests/notebooks/rich_outputs.edn", "../../tests/notebooks/dependencies.edn"} {
+		nb, err := Load(path)
+		if err != nil {
+			t.Fatalf("Load(%s): %v", path, err)
+		}
+		if nb.Format != "joker/notebook" || len(nb.Cells) == 0 {
+			t.Fatalf("Load(%s) = %#v", path, nb)
+		}
+	}
+}
+
 func TestEncodeLoadRoundTrip(t *testing.T) {
 	nb := New("Demo")
 	nb.Cells = []Cell{{ID: "cell-1", Kind: "markdown", Source: "# Hello"}, {ID: "cell-2", Kind: "code", Name: "x", Source: "(+ 1 2)", Outputs: []Output{{Type: "stdout", Text: "3\n"}}}}

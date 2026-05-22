@@ -109,6 +109,16 @@ Reactive execution starts with manual dependencies:
 
 The current implementation includes downstream dependency calculation and `evaluate-downstream` support from explicit `:depends-on` metadata. It keeps the schema ready for later runtime dependency tracking.
 
+## Fixtures
+
+Example notebooks live under `tests/notebooks/`:
+
+- `basic.edn` — markdown + simple code value output;
+- `rich_outputs.edn` — chart and Mermaid helper outputs;
+- `dependencies.edn` — named cells and manual dependency metadata.
+
+They are used by the notebook load/run/export tests and are good starting points for manual UI checks.
+
 ## Current implementation status
 
 The current slices provide:
