@@ -25,20 +25,7 @@ func handleNotebookCommand(args []string) {
 	case "demo":
 		demoNotebook(args[1:])
 	case "run":
-		if len(args) < 2 {
-			fmt.Fprintln(Stderr, "notebook run requires a file")
-			os.Exit(2)
-		}
-		nb, err := notebook.Load(args[1])
-		if err != nil {
-			fmt.Fprintln(Stderr, err)
-			os.Exit(1)
-		}
-		notebook.Run(&nb)
-		if err := notebook.Save(args[1], nb); err != nil {
-			fmt.Fprintln(Stderr, err)
-			os.Exit(1)
-		}
+		runNotebook(args[1:])
 	case "export":
 		exportNotebook(args[1:])
 	case "status":
@@ -276,6 +263,33 @@ func statusNotebook(args []string) {
 		fmt.Fprintf(Stdout, ",\"warning\":%q", status.Warning)
 	}
 	fmt.Fprintln(Stdout, "}")
+}
+
+func runNotebook(args []string) {
+	if len(args) < 1 {
+		fmt.Fprintln(Stderr, "notebook run requires a file")
+		os.Exit(2)
+	}
+	path := ""
+	for _, arg := range args {
+		if !strings.HasPrefix(arg, "-") && path == "" {
+			path = arg
+		}
+	}
+	if path == "" {
+		fmt.Fprintln(Stderr, "notebook run requires a file")
+		os.Exit(2)
+	}
+	nb, err := notebook.Load(path)
+	if err != nil {
+		fmt.Fprintln(Stderr, err)
+		os.Exit(1)
+	}
+	notebook.Run(&nb)
+	if err := notebook.Save(path, nb); err != nil {
+		fmt.Fprintln(Stderr, err)
+		os.Exit(1)
+	}
 }
 
 func exportNotebook(args []string) {
