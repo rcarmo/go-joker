@@ -1,8 +1,8 @@
 SHELL := /bin/bash
 
 GO ?= go
-TMPDIR ?= /workspace/tmp
-GOTMPDIR ?= /workspace/tmp
+TMPDIR ?= $(CURDIR)/.cache/tmp
+GOTMPDIR ?= $(CURDIR)/.cache/gotmp
 export TMPDIR
 export GOTMPDIR
 TOOLBIN := $(shell $(GO) env GOPATH)/bin
@@ -12,7 +12,7 @@ GOVULNCHECK_BIN ?= $(TOOLBIN)/govulncheck
 
 BENCH_REGEX ?= BenchmarkCLBG(NBody|Mandelbrot|SpectralNorm|BinaryTrees|FannkuchRedux)
 COMPARE_OUT ?= benchmarks/compare/out/latest
-DOCS_JOKER_BIN ?= /workspace/tmp/go-joker-docs
+DOCS_JOKER_BIN ?= $(TMPDIR)/go-joker-docs
 CLI_BIN ?= .cache/tmp/joker
 DIST_DIR ?= dist
 DIST_PLATFORMS ?= linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64 windows/arm64
@@ -68,14 +68,14 @@ help:
 	@echo "  make audit          # full audit-fast + race + bench-sanity"
 
 cli:
-	@mkdir -p $$(dirname "$(CLI_BIN)")
+	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)" $$(dirname "$(CLI_BIN)")
 	$(GO) build -o $(CLI_BIN) ./cmd/joker
 
 clean-dist:
 	rm -rf $(DIST_DIR)
 
 dist: clean-dist
-	@mkdir -p $(DIST_DIR)
+	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)" $(DIST_DIR)
 	@set -euo pipefail; \
 	for platform in $(DIST_PLATFORMS); do \
 		goos=$${platform%/*}; goarch=$${platform#*/}; ext=""; \
