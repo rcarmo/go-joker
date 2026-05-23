@@ -23,6 +23,7 @@ joker notebook new file.edn --title "Example" --serve --open -p 8080
 joker notebook new file.edn --title "Example" --serve --readonly --token secret
 joker notebook demo rich-demo.edn
 joker notebook run file.edn
+joker notebook run file.edn --no-save
 joker notebook validate file.edn
 joker notebook status file.edn
 joker notebook deps file.edn
@@ -159,8 +160,11 @@ Run headlessly and export:
 
 ```bash
 joker notebook run demo.edn
+joker notebook run demo.edn --no-save
 joker notebook export demo.edn -o demo.md
 ```
+
+Use `--no-save` for CI/smoke checks that should execute cells without rewriting the notebook EDN.
 
 Or browse it locally:
 

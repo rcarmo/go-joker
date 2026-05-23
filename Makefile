@@ -127,6 +127,7 @@ notebook-check:
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook new file.edn'
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook demo'
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook run file.edn'
+	$(DOCS_JOKER_BIN) notebook --help | grep -q -- '--no-save'
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook validate file.edn'
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook status file.edn'
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook deps file.edn'

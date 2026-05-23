@@ -41,6 +41,33 @@ func TestNotebookNewCLI(t *testing.T) {
 	}
 }
 
+func TestNotebookRunNoSaveCLI(t *testing.T) {
+	bin := buildJokerBinary(t)
+	dir := t.TempDir()
+	nb := filepath.Join(dir, "nosave.edn")
+	cmd := exec.Command(bin, "notebook", "new", nb, "--title", "NoSave")
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	if out, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("notebook new: %v\n%s", err, out)
+	}
+	before, err := os.ReadFile(nb)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cmd = exec.Command(bin, "notebook", "run", nb, "--no-save")
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	if out, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("notebook run --no-save: %v\n%s", err, out)
+	}
+	after, err := os.ReadFile(nb)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(before) != string(after) {
+		t.Fatalf("--no-save changed notebook\nbefore:\n%s\nafter:\n%s", before, after)
+	}
+}
+
 func TestNotebookDemoCLI(t *testing.T) {
 	bin := buildJokerBinary(t)
 	dir := t.TempDir()

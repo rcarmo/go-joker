@@ -271,9 +271,15 @@ func runNotebook(args []string) {
 		os.Exit(2)
 	}
 	path := ""
+	noSave := false
 	for _, arg := range args {
-		if !strings.HasPrefix(arg, "-") && path == "" {
-			path = arg
+		switch arg {
+		case "--no-save":
+			noSave = true
+		default:
+			if !strings.HasPrefix(arg, "-") && path == "" {
+				path = arg
+			}
 		}
 	}
 	if path == "" {
@@ -286,6 +292,9 @@ func runNotebook(args []string) {
 		os.Exit(1)
 	}
 	notebook.Run(&nb)
+	if noSave {
+		return
+	}
 	if err := notebook.Save(path, nb); err != nil {
 		fmt.Fprintln(Stderr, err)
 		os.Exit(1)
@@ -352,7 +361,7 @@ func printNotebookUsage() {
   joker notebook serve [file.edn] [-p 8080] [--token secret] [--readonly]
   joker notebook new file.edn [--title "Title"] [--serve] [--open] [--token secret] [--readonly]
   joker notebook demo [file.edn]
-  joker notebook run file.edn
+  joker notebook run file.edn [--no-save]
   joker notebook validate file.edn
   joker notebook status file.edn
   joker notebook deps file.edn
