@@ -348,7 +348,7 @@ func TestNotebookPageReflectsReadOnlyMode(t *testing.T) {
 		t.Fatal(err)
 	}
 	html := w.String()
-	if !strings.Contains(html, "NOTEBOOK_READONLY") || !strings.Contains(html, "true") || !strings.Contains(html, "read-only-mode") || !strings.Contains(html, "applyReadOnly") {
+	if !strings.Contains(html, "NOTEBOOK_READONLY") || !strings.Contains(html, "true") || !strings.Contains(html, "read-only-mode") || !strings.Contains(html, "applyReadOnly") || !strings.Contains(html, "guardWrite") {
 		t.Fatalf("read-only page missing UI wiring:\n%s", html)
 	}
 }
