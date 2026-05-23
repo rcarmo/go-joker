@@ -18,6 +18,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	core "github.com/rcarmo/go-joker/core"
@@ -46,6 +47,33 @@ type Cell struct {
 	ExecutionCount int
 	State          string
 	Outputs        []Output
+}
+
+var notebookRuns = runTracker{running: map[string]bool{}}
+
+type runTracker struct {
+	mu      sync.Mutex
+	running map[string]bool
+}
+
+func (t *runTracker) begin(id string) func() {
+	if id == "" {
+		return func() {}
+	}
+	t.mu.Lock()
+	t.running[id] = true
+	t.mu.Unlock()
+	return func() {
+		t.mu.Lock()
+		delete(t.running, id)
+		t.mu.Unlock()
+	}
+}
+
+func (t *runTracker) isRunning(id string) bool {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	return t.running[id]
 }
 
 type Output struct {
@@ -674,6 +702,8 @@ func Handler(path string) http.Handler {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		finishRun := notebookRuns.begin(r.URL.Query().Get("run"))
+		defer finishRun()
 		id := r.URL.Query().Get("id")
 		if id == "" {
 			http.Error(w, "missing id", http.StatusBadRequest)
@@ -689,7 +719,7 @@ func Handler(path string) http.Handler {
 			cell.Source = string(body)
 		}
 		EvaluateCell(cell)
-		if requestCancelled(r) {
+		if requestAborted(r) {
 			return
 		}
 		_ = saveCurrent(path, &nb)
@@ -702,11 +732,18 @@ func Handler(path string) http.Handler {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{"cycles": DependencyCycles(nb), "graph": BuildDependencyGraph(nb)})
 	})
+	mux.HandleFunc("/api/run-status", func(w http.ResponseWriter, r *http.Request) {
+		writeHeaders(w)
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"running": notebookRuns.isRunning(r.URL.Query().Get("id"))})
+	})
 	mux.HandleFunc("/api/evaluate-downstream", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		finishRun := notebookRuns.begin(r.URL.Query().Get("run"))
+		defer finishRun()
 		name := r.URL.Query().Get("name")
 		if name == "" {
 			http.Error(w, "missing name", http.StatusBadRequest)
@@ -718,7 +755,7 @@ func Handler(path string) http.Handler {
 			return
 		}
 		_ = EvaluateDownstream(&nb, name)
-		if requestCancelled(r) {
+		if requestAborted(r) {
 			return
 		}
 		_ = saveCurrent(path, &nb)
@@ -731,9 +768,11 @@ func Handler(path string) http.Handler {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		finishRun := notebookRuns.begin(r.URL.Query().Get("run"))
+		defer finishRun()
 		_ = applySourceUpdate(r.Body, &nb)
 		Run(&nb)
-		if requestCancelled(r) {
+		if requestAborted(r) {
 			return
 		}
 		_ = saveCurrent(path, &nb)
@@ -744,7 +783,7 @@ func Handler(path string) http.Handler {
 	return sameOriginMiddleware(mux)
 }
 
-func requestCancelled(r *http.Request) bool {
+func requestAborted(r *http.Request) bool {
 	select {
 	case <-r.Context().Done():
 		return true
@@ -1104,11 +1143,14 @@ function downstreamCells(name){var cells=Array.from(document.querySelectorAll('.
 var runControllers={}
 function setCellRunState(c,state,label){if(!c)return;c.classList.remove('cell-state-idle','cell-state-ok','cell-state-error','cell-state-processing');c.classList.add('cell-state-'+state);var pill=c.querySelector('.state-pill');if(pill)pill.textContent=label||state}
 function cancelButton(id){var b=document.createElement('button');b.className='cancel-run';b.type='button';b.title='Cancel run';b.setAttribute('aria-label','Cancel run');b.onclick=function(ev){ev.stopPropagation();cancelRun(id)};b.innerHTML='<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/></svg><span class="sr-only">Cancel run</span>';return b}
-function setCellRunning(c,running){if(!c)return;var actions=c.querySelector('.cell-actions'),existing=actions&&actions.querySelector('.cancel-run');if(running&&!existing)actions.appendChild(cancelButton(c.dataset.id));if(!running&&existing)existing.remove();if(actions)actions.querySelectorAll('button').forEach(function(btn){btn.disabled=running&&!btn.classList.contains('cancel-run')})}
-function startCellRun(key,cells,request,ok){if(runControllers[key])runControllers[key].abort();var ctrl=new AbortController();runControllers[key]=ctrl;cells.forEach(function(c){setCellRunState(c,'processing','running');setCellRunning(c,true)});logMsg('Running '+cells.length+' cell'+(cells.length===1?'':'s')+'...',false);return apiText(request(ctrl.signal),ok).then(function(t){if(runControllers[key]===ctrl)delete runControllers[key];refresh(t)}).catch(function(e){if(runControllers[key]===ctrl)delete runControllers[key];var aborted=e&&e.name==='AbortError';cells.forEach(function(c){setCellRunState(c,aborted?'idle':'error',aborted?'cancelled':'error');setCellRunning(c,false)});if(aborted)logMsg('Cancelled run',false)})}
-function cancelRun(id){var didCancel=false;Object.keys(runControllers).forEach(function(key){if(key==='all'||key==='cell:'+id||key.indexOf('downstream:')===0){runControllers[key].abort();didCancel=true}});if(didCancel)logMsg('Cancelling run...',false)}
-function evaluateAll(){if(guardWrite())return;startCellRun('all',codeCells(),function(signal){return fetch('/api/evaluate-all',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload(),signal:signal})},'Evaluated all cells')}
-function evaluateCell(id){if(guardWrite())return;var c=cellElement(id);var src=c?c.querySelector('textarea').value:'';startCellRun('cell:'+id,c?[c]:[],function(signal){return fetch('/api/evaluate-cell?id='+encodeURIComponent(id),{method:'POST',headers:{'Content-Type':'text/plain'},body:src,signal:signal})},'Evaluated '+id)}
+function setCellRunning(c,running,stopping){if(!c)return;var actions=c.querySelector('.cell-actions'),existing=actions&&actions.querySelector('.cancel-run');if(running&&!existing){existing=cancelButton(c.dataset.id);actions.appendChild(existing)}if(!running&&existing)existing.remove();if(existing){existing.disabled=!!stopping;existing.title=stopping?'Stopping run':'Cancel run';existing.setAttribute('aria-label',existing.title)}if(actions)actions.querySelectorAll('button').forEach(function(btn){btn.disabled=running&&(!btn.classList.contains('cancel-run')||stopping)})}
+function runID(key){return key+':'+Date.now()+':'+Math.random().toString(36).slice(2)}
+function runURL(url,id){return url+(url.indexOf('?')<0?'?':'&')+'run='+encodeURIComponent(id)}
+function finishStoppedRun(key,entry){if(runControllers[key]!==entry)return;fetch('/api/run-status?id='+encodeURIComponent(entry.id)).then(function(r){return r.json()}).then(function(j){if(j.running){setTimeout(function(){finishStoppedRun(key,entry)},400);return}delete runControllers[key];entry.cells.forEach(function(c){setCellRunState(c,'idle','idle');setCellRunning(c,false)});logMsg('Run stopped',false)}).catch(function(){setTimeout(function(){finishStoppedRun(key,entry)},800)})}
+function startCellRun(key,cells,request,ok){if(runControllers[key]&&runControllers[key].ctrl)runControllers[key].ctrl.abort();var ctrl=new AbortController(),entry={ctrl:ctrl,id:runID(key),cells:cells};runControllers[key]=entry;cells.forEach(function(c){setCellRunState(c,'processing','running');setCellRunning(c,true,false)});logMsg('Running '+cells.length+' cell'+(cells.length===1?'':'s')+'...',false);return apiText(request(ctrl.signal,entry.id),ok).then(function(t){if(runControllers[key]===entry)delete runControllers[key];refresh(t)}).catch(function(e){var aborted=e&&e.name==='AbortError';if(runControllers[key]!==entry)return;if(aborted){cells.forEach(function(c){setCellRunState(c,'processing','stopping');setCellRunning(c,true,true)});logMsg('Cancel requested; waiting for run to stop...',false);finishStoppedRun(key,entry);return}delete runControllers[key];cells.forEach(function(c){setCellRunState(c,'error','error');setCellRunning(c,false)})})}
+function cancelRun(id){var didCancel=false;Object.keys(runControllers).forEach(function(key){var entry=runControllers[key];if(key==='all'||key==='cell:'+id||key.indexOf('downstream:')===0){entry.ctrl.abort();didCancel=true}});if(didCancel)logMsg('Stopping run...',false)}
+function evaluateAll(){if(guardWrite())return;startCellRun('all',codeCells(),function(signal,run){return fetch(runURL('/api/evaluate-all',run),{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload(),signal:signal})},'Evaluated all cells')}
+function evaluateCell(id){if(guardWrite())return;var c=cellElement(id);var src=c?c.querySelector('textarea').value:'';startCellRun('cell:'+id,c?[c]:[],function(signal,run){return fetch(runURL('/api/evaluate-cell?id='+encodeURIComponent(id),run),{method:'POST',headers:{'Content-Type':'text/plain'},body:src,signal:signal})},'Evaluated '+id)}
 function saveNotebook(){if(guardWrite())return;apiText(fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}),'Saved notebook').then(updateRaw).catch(()=>{})}
 function exportMarkdown(){var chain=NOTEBOOK_READONLY?Promise.resolve(''):apiText(fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}),'Saved before export').then(updateRaw);chain.then(()=>apiText(fetch('/api/export/markdown'),'Exported Markdown')).then(t=>{setRawText(t);showRawNotebook(true)}).catch(()=>{})}
 function loadRawEdn(){if(guardWrite())return;showRawNotebook(true);var raw=rawText().trim();if(!raw){document.getElementById('raw').focus();logMsg('Paste notebook EDN into the raw pane, then run Load raw EDN again.',true);return}apiText(fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/edn'},body:raw}),'Loaded raw EDN').then(refresh).catch(()=>{})}
@@ -1116,7 +1158,7 @@ function addCell(kind,after){if(guardWrite())return;after=after||activeCell||'';
 function deleteCell(id){if(guardWrite())return;if(confirm('Delete '+id+'?'))apiText(fetch('/api/cell?id='+encodeURIComponent(id),{method:'DELETE'}),'Deleted '+id).then(refresh).catch(()=>{})}
 function clearOutputs(id){if(guardWrite())return;var url='/api/clear-outputs'+(id?'?id='+encodeURIComponent(id):'');apiText(fetch(url,{method:'POST'}),'Cleared outputs').then(refresh).catch(()=>{})}
 function moveCell(id,delta){if(guardWrite())return;var ids=Array.from(document.querySelectorAll('.cell')).map(c=>c.dataset.id);var i=ids.indexOf(id),j=i+delta;if(i<0||j<0||j>=ids.length)return;var t=ids[i];ids[i]=ids[j];ids[j]=t;apiText(fetch('/api/reorder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ids:ids})}),'Reordered cells').then(refresh).catch(()=>{})}
-function evaluateDownstream(name){if(guardWrite())return;startCellRun('downstream:'+name,downstreamCells(name),function(signal){return fetch('/api/evaluate-downstream?name='+encodeURIComponent(name),{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload(),signal:signal})},'Evaluated downstream of '+name)}
+function evaluateDownstream(name){if(guardWrite())return;startCellRun('downstream:'+name,downstreamCells(name),function(signal,run){return fetch(runURL('/api/evaluate-downstream?name='+encodeURIComponent(name),run),{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload(),signal:signal})},'Evaluated downstream of '+name)}
 function checkDeps(){fetch('/api/dependencies').then(r=>r.json()).then(j=>alert(j.cycles&&j.cycles.length?'Dependency cycles: '+JSON.stringify(j.cycles):'No dependency cycles'))}
 function showDependencyGraph(){var el=document.getElementById('dependency-graph');if(el.style.display!=='none'){el.style.display='none';el.innerHTML='';delete el.dataset.source;logMsg('Hid dependency graph',false);return}fetch('/api/dependencies').then(r=>r.json()).then(j=>{el.style.display='block';el.dataset.source=JSON.stringify(j.graph||{nodes:[],edges:[]});renderGraphs();logMsg('Showing dependency graph',false)})}
 function showSnapshots(){var el=document.getElementById('snapshot-list');if(el.style.display!=='none'){el.style.display='none';el.innerHTML='';logMsg('Hid snapshots',false);return}fetch('/api/snapshots').then(r=>r.json()).then(snaps=>{el.style.display='block';el.innerHTML='<b>Snapshots</b><br>'+(snaps.length?snaps.map(s=>'<button onclick="restoreSnapshot(\''+esc(s.path)+'\')">Restore</button> '+esc(s.path)+' ('+s.size+' bytes)').join('<br>'):'No snapshots');logMsg('Showing snapshots',false)})}
