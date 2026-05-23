@@ -338,6 +338,21 @@ func TestNotebookHTTPHandler(t *testing.T) {
 	}
 }
 
+func TestNotebookPageReflectsReadOnlyMode(t *testing.T) {
+	old := ReadOnly
+	ReadOnly = true
+	defer func() { ReadOnly = old }()
+	nb := New("ReadOnlyPage")
+	var w bytes.Buffer
+	if err := page.Execute(&w, nb); err != nil {
+		t.Fatal(err)
+	}
+	html := w.String()
+	if !strings.Contains(html, "NOTEBOOK_READONLY") || !strings.Contains(html, "true") || !strings.Contains(html, "read-only-mode") || !strings.Contains(html, "applyReadOnly") {
+		t.Fatalf("read-only page missing UI wiring:\n%s", html)
+	}
+}
+
 func TestNotebookPageIncludesTokenWhenConfigured(t *testing.T) {
 	old := AuthToken
 	AuthToken = "secret"
