@@ -7,7 +7,9 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
+	"time"
 )
 
 func TestWriteSnapshot(t *testing.T) {
@@ -341,6 +343,38 @@ func TestNotebookHTTPHandler(t *testing.T) {
 	}
 }
 
+func TestNotebookHTTPHandlerRejectsConcurrentEvaluation(t *testing.T) {
+	path := t.TempDir() + "/api.edn"
+	nb := New("Concurrent")
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(loop [n 0] (if (< n 20000000) (recur (+ n 1)) (+ 1 2)))"}}
+	if err := Save(path, nb); err != nil {
+		t.Fatal(err)
+	}
+	h := Handler(path)
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-cell?id=cell-1", nil))
+		if w.Code != http.StatusOK {
+			t.Errorf("first evaluate-cell code=%d body=%s", w.Code, w.Body.String())
+		}
+	}()
+	time.Sleep(25 * time.Millisecond)
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-cell?id=cell-1", nil))
+	if w.Code != http.StatusConflict || !strings.Contains(w.Body.String(), "already in progress") {
+		t.Fatalf("concurrent evaluate-cell code=%d body=%s", w.Code, w.Body.String())
+	}
+	wg.Wait()
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/notebook", nil))
+	if got := strings.Count(w.Body.String(), ":type :value"); got != 1 {
+		t.Fatalf("persisted value outputs = %d body=%s", got, w.Body.String())
+	}
+}
+
 func TestNotebookPageReflectsReadOnlyMode(t *testing.T) {
 	old := ReadOnly
 	ReadOnly = true
@@ -399,7 +433,7 @@ func TestNotebookPageRenders(t *testing.T) {
 	if strings.Contains(w.String(), "cancelled") || strings.Contains(w.String(), "canceled") {
 		t.Fatalf("page rendered a terminal cancellation pill label:\n%s", w.String())
 	}
-	for _, want := range []string{"showRawNotebook", `id="raw-notebook"`, `contenteditable="true"`, ".raw-notebook{display:none}", "Hid dependency graph", "Showing dependency graph", "Hid snapshots", "Showing snapshots", ".cell-actions{display:flex", "pointer-events:none", ".cell:hover .cell-actions", ".cell-state-processing .cell-actions", "cancel-run", "Cancel run", "AbortController", "runControllers", "run-status", "stopping", "Cancel requested; waiting for run to stop", "Run stopped", "running-dot", "button-group theme-toggle", "M12 3a6", "notebook-commandbar", "#notebook-title{box-sizing:border-box", "height:2.125rem", ".button-group>button", "border-radius:999px 0 0 999px", "caret-color:var(--accent)", ".CodeMirror-cursor{border-left:2px solid var(--accent)!important", ".CodeMirror-focused .CodeMirror-cursor{border-left-color:var(--fg)!important", ".time-pill{border:1px solid var(--border)", `data-elapsed-ns="3000000"`, `title="Last execution time"`, "3.0 ms", "formatElapsedMS", "startRunTimer", "stopRunTimer", ".CodeMirror-scroll{min-height:5rem;overflow-y:hidden!important;overflow-x:auto!important", ".chart{height:360px;min-height:360px", ".diagram,.graph,.svg-output{min-height:260px", ".svg-output>svg{display:block;width:100%;height:auto", `class="svg-output"`, `<svg viewBox="0 0 10 10"><circle`, "requestAnimationFrame(function(){chart.resize()}", "autosizeTextarea", "viewportMargin:Infinity"} {
+	for _, want := range []string{"showRawNotebook", `id="raw-notebook"`, `contenteditable="true"`, ".raw-notebook{display:none}", "Hid dependency graph", "Showing dependency graph", "Hid snapshots", "Showing snapshots", ".cell-actions{display:flex", "pointer-events:none", ".cell:hover .cell-actions", ".cell-state-processing .cell-actions", "cancel-run", "Cancel run", "AbortController", "runControllers", "run-status", "stopping", "Cancel requested; waiting for run to stop", "Run stopped", "Run already in progress", "running-dot", "button-group theme-toggle", "M12 3a6", "notebook-commandbar", "#notebook-title{box-sizing:border-box", "height:2.125rem", ".button-group>button", "border-radius:999px 0 0 999px", "caret-color:var(--accent)", ".CodeMirror-cursor{border-left:2px solid var(--accent)!important", ".CodeMirror-focused .CodeMirror-cursor{border-left-color:var(--fg)!important", ".time-pill{border:1px solid var(--border)", `data-elapsed-ns="3000000"`, `title="Last execution time"`, "3.0 ms", "formatElapsedMS", "startRunTimer", "stopRunTimer", ".CodeMirror-scroll{min-height:5rem;overflow-y:hidden!important;overflow-x:auto!important", ".chart{height:360px;min-height:360px", ".diagram,.graph,.svg-output{min-height:260px", ".svg-output>svg{display:block;width:100%;height:auto", `class="svg-output"`, `<svg viewBox="0 0 10 10"><circle`, "requestAnimationFrame(function(){chart.resize()}", "autosizeTextarea", "viewportMargin:Infinity"} {
 		if !strings.Contains(w.String(), want) {
 			t.Fatalf("page missing interaction/style %q:\n%s", want, w.String())
 		}

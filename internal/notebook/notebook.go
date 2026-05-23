@@ -536,19 +536,37 @@ func Handler(path string) http.Handler {
 		nb = New(path)
 		nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", State: "idle"}}
 	}
+	var nbMu sync.RWMutex
+	var evalMu sync.Mutex
 	mux := http.NewServeMux()
 	writeHeaders := func(w http.ResponseWriter) {
 		w.Header().Set("Cache-Control", "no-store")
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 	}
+	beginEval := func(w http.ResponseWriter) (func(), bool) {
+		if !evalMu.TryLock() {
+			http.Error(w, "notebook run already in progress", http.StatusConflict)
+			return nil, false
+		}
+		return evalMu.Unlock, true
+	}
 	mux.Handle("/assets/", http.FileServer(http.FS(notebookAssets)))
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { writeHeaders(w); _ = page.Execute(w, nb) })
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		nbMu.RLock()
+		defer nbMu.RUnlock()
+		writeHeaders(w)
+		_ = page.Execute(w, nb)
+	})
 	mux.HandleFunc("/api/notebook", func(w http.ResponseWriter, r *http.Request) {
+		nbMu.RLock()
+		defer nbMu.RUnlock()
 		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
 	mux.HandleFunc("/api/status", func(w http.ResponseWriter, r *http.Request) {
+		nbMu.RLock()
+		defer nbMu.RUnlock()
 		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(BuildStatus(nb))
@@ -574,12 +592,16 @@ func Handler(path string) http.Handler {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+		nbMu.Lock()
+		defer nbMu.Unlock()
 		nb = loaded
 		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
 	mux.HandleFunc("/api/export/markdown", func(w http.ResponseWriter, r *http.Request) {
+		nbMu.RLock()
+		defer nbMu.RUnlock()
 		writeHeaders(w)
 		w.Header().Set("Content-Type", "text/markdown; charset=utf-8")
 		_ = ExportMarkdown(w, nb)
@@ -599,6 +621,8 @@ func Handler(path string) http.Handler {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+		nbMu.Lock()
+		defer nbMu.Unlock()
 		nb = loaded
 		if err := saveCurrent(path, &nb); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -613,6 +637,8 @@ func Handler(path string) http.Handler {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		nbMu.Lock()
+		defer nbMu.Unlock()
 		if err := applySourceUpdate(r.Body, &nb); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -630,6 +656,8 @@ func Handler(path string) http.Handler {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		nbMu.Lock()
+		defer nbMu.Unlock()
 		id := r.URL.Query().Get("id")
 		if id == "" {
 			for i := range nb.Cells {
@@ -656,6 +684,8 @@ func Handler(path string) http.Handler {
 	mux.HandleFunc("/api/cell", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodPost:
+			nbMu.Lock()
+			defer nbMu.Unlock()
 			kind := r.URL.Query().Get("kind")
 			if kind == "" {
 				kind = "code"
@@ -674,6 +704,8 @@ func Handler(path string) http.Handler {
 				return
 			}
 		case http.MethodDelete:
+			nbMu.Lock()
+			defer nbMu.Unlock()
 			id := r.URL.Query().Get("id")
 			if id == "" {
 				http.Error(w, "missing id", http.StatusBadRequest)
@@ -700,6 +732,8 @@ func Handler(path string) http.Handler {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		nbMu.Lock()
+		defer nbMu.Unlock()
 		if err := applyReorder(r.Body, &nb); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -717,8 +751,15 @@ func Handler(path string) http.Handler {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		finishEval, ok := beginEval(w)
+		if !ok {
+			return
+		}
+		defer finishEval()
 		finishRun := notebookRuns.begin(r.URL.Query().Get("run"))
 		defer finishRun()
+		nbMu.Lock()
+		defer nbMu.Unlock()
 		id := r.URL.Query().Get("id")
 		if id == "" {
 			http.Error(w, "missing id", http.StatusBadRequest)
@@ -743,6 +784,8 @@ func Handler(path string) http.Handler {
 		fmt.Fprint(w, Encode(nb))
 	})
 	mux.HandleFunc("/api/dependencies", func(w http.ResponseWriter, r *http.Request) {
+		nbMu.RLock()
+		defer nbMu.RUnlock()
 		writeHeaders(w)
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{"cycles": DependencyCycles(nb), "graph": BuildDependencyGraph(nb)})
@@ -757,8 +800,15 @@ func Handler(path string) http.Handler {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		finishEval, ok := beginEval(w)
+		if !ok {
+			return
+		}
+		defer finishEval()
 		finishRun := notebookRuns.begin(r.URL.Query().Get("run"))
 		defer finishRun()
+		nbMu.Lock()
+		defer nbMu.Unlock()
 		name := r.URL.Query().Get("name")
 		if name == "" {
 			http.Error(w, "missing name", http.StatusBadRequest)
@@ -783,8 +833,15 @@ func Handler(path string) http.Handler {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		finishEval, ok := beginEval(w)
+		if !ok {
+			return
+		}
+		defer finishEval()
 		finishRun := notebookRuns.begin(r.URL.Query().Get("run"))
 		defer finishRun()
+		nbMu.Lock()
+		defer nbMu.Unlock()
 		_ = applySourceUpdate(r.Body, &nb)
 		Run(&nb)
 		if requestAborted(r) {
@@ -1168,7 +1225,7 @@ function setCellRunning(c,running,stopping){if(!c)return;var actions=c.querySele
 function runID(key){return key+':'+Date.now()+':'+Math.random().toString(36).slice(2)}
 function runURL(url,id){return url+(url.indexOf('?')<0?'?':'&')+'run='+encodeURIComponent(id)}
 function finishStoppedRun(key,entry){if(runControllers[key]!==entry)return;fetch('/api/run-status?id='+encodeURIComponent(entry.id)).then(function(r){return r.json()}).then(function(j){if(j.running){setTimeout(function(){finishStoppedRun(key,entry)},400);return}stopRunTimer(entry);delete runControllers[key];entry.cells.forEach(function(c){setCellRunState(c,'idle','idle');setCellRunning(c,false)});logMsg('Run stopped',false)}).catch(function(){setTimeout(function(){finishStoppedRun(key,entry)},800)})}
-function startCellRun(key,cells,request,ok){if(runControllers[key]&&runControllers[key].ctrl)runControllers[key].ctrl.abort();var ctrl=new AbortController(),entry={ctrl:ctrl,id:runID(key),cells:cells};runControllers[key]=entry;cells.forEach(function(c){setCellRunState(c,'processing','running');setCellRunning(c,true,false)});startRunTimer(entry);logMsg('Running '+cells.length+' cell'+(cells.length===1?'':'s')+'...',false);return apiText(request(ctrl.signal,entry.id),ok).then(function(t){stopRunTimer(entry);if(runControllers[key]===entry)delete runControllers[key];refresh(t)}).catch(function(e){var aborted=e&&e.name==='AbortError';if(runControllers[key]!==entry)return;if(aborted){cells.forEach(function(c){setCellRunState(c,'processing','stopping');setCellRunning(c,true,true)});logMsg('Cancel requested; waiting for run to stop...',false);finishStoppedRun(key,entry);return}stopRunTimer(entry);delete runControllers[key];cells.forEach(function(c){setCellRunState(c,'error','error');setCellRunning(c,false)})})}
+function startCellRun(key,cells,request,ok){if(runControllers[key]){logMsg('Run already in progress',false);return Promise.resolve()}var ctrl=new AbortController(),entry={ctrl:ctrl,id:runID(key),cells:cells};runControllers[key]=entry;cells.forEach(function(c){setCellRunState(c,'processing','running');setCellRunning(c,true,false)});startRunTimer(entry);logMsg('Running '+cells.length+' cell'+(cells.length===1?'':'s')+'...',false);return apiText(request(ctrl.signal,entry.id),ok).then(function(t){stopRunTimer(entry);if(runControllers[key]===entry)delete runControllers[key];refresh(t)}).catch(function(e){var aborted=e&&e.name==='AbortError';if(runControllers[key]!==entry)return;if(aborted){cells.forEach(function(c){setCellRunState(c,'processing','stopping');setCellRunning(c,true,true)});logMsg('Cancel requested; waiting for run to stop...',false);finishStoppedRun(key,entry);return}stopRunTimer(entry);delete runControllers[key];cells.forEach(function(c){setCellRunState(c,'error','error');setCellRunning(c,false)})})}
 function cancelRun(id){var didCancel=false;Object.keys(runControllers).forEach(function(key){var entry=runControllers[key];if(key==='all'||key==='cell:'+id||key.indexOf('downstream:')===0){entry.ctrl.abort();didCancel=true}});if(didCancel)logMsg('Stopping run...',false)}
 function evaluateAll(){if(guardWrite())return;startCellRun('all',codeCells(),function(signal,run){return fetch(runURL('/api/evaluate-all',run),{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload(),signal:signal})},'Evaluated all cells')}
 function evaluateCell(id){if(guardWrite())return;var c=cellElement(id);var src=c?c.querySelector('textarea').value:'';startCellRun('cell:'+id,c?[c]:[],function(signal,run){return fetch(runURL('/api/evaluate-cell?id='+encodeURIComponent(id),run),{method:'POST',headers:{'Content-Type':'text/plain'},body:src,signal:signal})},'Evaluated '+id)}
