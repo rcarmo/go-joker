@@ -3,6 +3,7 @@ package notebook
 import (
 	"bufio"
 	"bytes"
+	"embed"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -23,6 +24,9 @@ import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 )
+
+//go:embed assets/*.js
+var notebookAssets embed.FS
 
 type Notebook struct {
 	Format    string
@@ -465,6 +469,18 @@ func Handler(path string) http.Handler {
 		w.Header().Set("Cache-Control", "no-store")
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 	}
+	mux.HandleFunc("/assets/echarts.min.js", func(w http.ResponseWriter, r *http.Request) {
+		writeHeaders(w)
+		w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+		data, _ := notebookAssets.ReadFile("assets/echarts.min.js")
+		_, _ = w.Write(data)
+	})
+	mux.HandleFunc("/assets/mermaid.min.js", func(w http.ResponseWriter, r *http.Request) {
+		writeHeaders(w)
+		w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+		data, _ := notebookAssets.ReadFile("assets/mermaid.min.js")
+		_, _ = w.Write(data)
+	})
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { writeHeaders(w); _ = page.Execute(w, nb) })
 	mux.HandleFunc("/api/notebook", func(w http.ResponseWriter, r *http.Request) {
 		writeHeaders(w)
@@ -962,7 +978,10 @@ body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margi
 <div id="dependency-graph" class="graph" style="display:none"></div><div id="snapshot-list" class="graph" style="display:none"></div>
 <div id="cells">{{range .Cells}}<div class="cell cell-state-{{.State}}" data-id="{{.ID}}" data-name="{{.Name}}" data-count="In[{{.ExecutionCount}}]"><div class="cell-header"><b>{{if .Name}}{{.Name}}{{else if eq .Kind "markdown"}}Markdown{{else}}&nbsp;{{end}}</b><span class="state-pill">{{if .State}}{{.State}}{{else}}idle{{end}}</span><button onclick="evaluateCell('{{.ID}}')" title="Evaluate" aria-label="Evaluate"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span class="sr-only">Evaluate</span></button>{{if .Name}}<button onclick="evaluateDownstream('{{.Name}}')" title="Evaluate downstream" aria-label="Evaluate downstream"><svg viewBox="0 0 24 24"><path d="M4 12h10M10 6l6 6-6 6M17 5h3v14h-3"/></svg><span class="sr-only">Evaluate downstream</span></button>{{end}}<button onclick="clearOutputs('{{.ID}}')" title="Clear outputs" aria-label="Clear outputs"><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg><span class="sr-only">Clear outputs</span></button><button onclick="moveCell('{{.ID}}',-1)" title="Move up" aria-label="Move up"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span class="sr-only">Move up</span></button><button onclick="moveCell('{{.ID}}',1)" title="Move down" aria-label="Move down"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg><span class="sr-only">Move down</span></button><button onclick="deleteCell('{{.ID}}')" title="Delete" aria-label="Delete"><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg><span class="sr-only">Delete</span></button></div><details class="cell-edit"><summary>Source and metadata</summary><div class="meta-row"><label>id <input value="{{.ID}}" disabled></label><label>kind <select class="cell-kind"><option value="code" {{if eq .Kind "code"}}selected{{end}}>code</option><option value="markdown" {{if eq .Kind "markdown"}}selected{{end}}>markdown</option></select></label><label> name <input class="cell-name" value="{{.Name}}" placeholder="optional name"></label><label> depends-on <input class="cell-deps" value="{{join .DependsOn ","}}" placeholder="comma-separated names"></label></div><textarea onfocus="activeCell=this.closest('.cell').dataset.id" oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre></details><div class="markdown-preview" style="display:none"></div>{{if .Outputs}}<details class="outputs" open><summary>Out[{{.ExecutionCount}}] · {{len .Outputs}} output(s)</summary>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{trustedHTML .Source}}{{else if eq .Type "html"}}{{trustedHTML .Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else if eq .Type "table"}}<div class="table-output" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</details>{{end}}</div>{{end}}</div>
 <details class="raw-notebook"><summary>Raw notebook EDN / Markdown export</summary><pre id="raw"></pre></details>
+<script src="/assets/echarts.min.js"></script>
+<script src="/assets/mermaid.min.js"></script>
 <script>
+if(window.mermaid){mermaid.initialize({startOnLoad:false,securityLevel:'loose',flowchart:{curve:'basis'}})}
 var NOTEBOOK_TOKEN={{authToken}}, NOTEBOOK_READONLY={{readOnly}};
 var realFetch=window.fetch.bind(window);window.fetch=function(url,opts){opts=opts||{};var method=(opts.method||'GET').toUpperCase();if(NOTEBOOK_TOKEN&&method!=='GET'&&method!=='HEAD'&&method!=='OPTIONS'){opts.headers=Object.assign({},opts.headers||{},{'X-Joker-Notebook-Token':NOTEBOOK_TOKEN})}return realFetch(url,opts)};
 var activeCell='', dirty=false
@@ -1000,11 +1019,12 @@ function showDependencyGraph(){fetch('/api/dependencies').then(r=>r.json()).then
 function showSnapshots(){fetch('/api/snapshots').then(r=>r.json()).then(snaps=>{var el=document.getElementById('snapshot-list');el.style.display='block';el.innerHTML='<b>Snapshots</b><br>'+(snaps.length?snaps.map(s=>'<button onclick="restoreSnapshot(\''+esc(s.path)+'\')">Restore</button> '+esc(s.path)+' ('+s.size+' bytes)').join('<br>'):'No snapshots')})}
 function restoreSnapshot(path){if(guardWrite())return;if(confirm('Restore snapshot '+path+'?'))apiText(fetch('/api/restore-snapshot?path='+encodeURIComponent(path),{method:'POST'}),'Restored snapshot').then(refresh).catch(()=>{})}
 function parseMaybeJSON(s){try{return JSON.parse(s)}catch(e){return null}}
-function renderCharts(){document.querySelectorAll('.chart').forEach(function(el){var spec=parseMaybeJSON(el.dataset.spec)||{};var data=(spec.series&&spec.series[0]&&spec.series[0].data)||spec.data||[];var labels=(spec.xAxis&&spec.xAxis.data)||data.map(function(_,i){return String(i+1)});var max=Math.max(1,...data.map(Number));var w=720,h=220,p=32,bw=(w-2*p)/Math.max(1,data.length);var svg='<svg viewBox="0 0 '+w+' '+h+'"><line class="axis" x1="'+p+'" y1="'+(h-p)+'" x2="'+(w-p)+'" y2="'+(h-p)+'"/>';data.forEach(function(v,i){var bh=(h-2*p)*Number(v)/max;var x=p+i*bw+3;var y=h-p-bh;svg+='<rect class="bar" x="'+x+'" y="'+y+'" width="'+Math.max(2,bw-6)+'" height="'+bh+'"><title>'+esc(labels[i])+': '+esc(String(v))+'</title></rect>'});svg+='</svg>';el.innerHTML=svg})}
+function fallbackChart(el,spec){var data=(spec.series&&spec.series[0]&&spec.series[0].data)||spec.data||[];var labels=(spec.xAxis&&spec.xAxis.data)||data.map(function(_,i){return String(i+1)});var max=Math.max(1,...data.map(Number));var w=720,h=220,p=32,bw=(w-2*p)/Math.max(1,data.length);var svg='<svg viewBox="0 0 '+w+' '+h+'"><line class="axis" x1="'+p+'" y1="'+(h-p)+'" x2="'+(w-p)+'" y2="'+(h-p)+'"/>';data.forEach(function(v,i){var bh=(h-2*p)*Number(v)/max;var x=p+i*bw+3;var y=h-p-bh;svg+='<rect class="bar" x="'+x+'" y="'+y+'" width="'+Math.max(2,bw-6)+'" height="'+bh+'"><title>'+esc(labels[i])+': '+esc(String(v))+'</title></rect>'});svg+='</svg>';el.innerHTML=svg}
+function renderCharts(){document.querySelectorAll('.chart').forEach(function(el){var spec=parseMaybeJSON(el.dataset.spec)||{};if(window.echarts){try{var chart=echarts.init(el,null,{renderer:'svg'});chart.setOption(spec.series?spec:{grid:{containLabel:true},xAxis:{type:'category',data:(spec.xAxis&&spec.xAxis.data)||((spec.data||[]).map(function(_,i){return String(i+1)}))},yAxis:{type:'value'},series:[{type:'bar',data:spec.data||[]}]});window.addEventListener('resize',function(){chart.resize()});return}catch(e){console.warn('ECharts render failed, using fallback',e)}}fallbackChart(el,spec)})}
 function parseMermaidFlow(s){var lines=(s||'').split(/\n|;/).map(x=>x.trim()).filter(Boolean),edges=[],nodes=[];lines.forEach(function(line){line=line.replace(/^graph\s+(TD|LR|BT|RL)\s*/i,'').trim();var m=line.match(/^([\w.-]+)(?:\[[^\]]*\])?\s*[-=.]+>\s*([\w.-]+)(?:\[[^\]]*\])?$/);if(m){edges.push({from:m[1],to:m[2]});if(!nodes.includes(m[1]))nodes.push(m[1]);if(!nodes.includes(m[2]))nodes.push(m[2])}});return {nodes:nodes,edges:edges}}
 function roundedOrthogonalPath(x1,y1,x2,y2){var mid=(y1+y2)/2,r=10,dir=x2>=x1?1:-1;return 'M'+x1+' '+y1+' V'+(mid-r)+' Q'+x1+' '+mid+' '+(x1+dir*r)+' '+mid+' H'+(x2-dir*r)+' Q'+x2+' '+mid+' '+x2+' '+(mid+r)+' V'+y2}
 function renderMermaidFlow(s){var g=parseMermaidFlow(s);if(!g.edges.length)return '<b>mermaid</b><pre>'+esc(s)+'</pre>';var w=720,boxW=120,boxH=36,gapY=78,left=80,right=w-left-boxW,levels={},order=[];g.nodes.forEach(function(n,i){levels[n]=i;order.push(n)});g.edges.forEach(function(e){levels[e.to]=Math.max(levels[e.to]||0,(levels[e.from]||0)+1)});order.sort((a,b)=>levels[a]-levels[b]);var pos={};order.forEach(function(n,i){var x=levels[n]%2?right:left,y=40+i*gapY;pos[n]={x:x,y:y}});var h=Math.max(140,80+order.length*gapY);var svg='<svg viewBox="0 0 '+w+' '+h+'" role="img"><defs><marker id="mermaidArrow" markerWidth="8" markerHeight="8" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="currentColor"/></marker></defs>';g.edges.forEach(function(e){var a=pos[e.from],b=pos[e.to];if(a&&b){var x1=a.x+boxW/2,y1=a.y+boxH,x2=b.x+boxW/2,y2=b.y;svg+='<path class="edge" d="'+roundedOrthogonalPath(x1,y1,x2,y2)+'" fill="none"/>'}});order.forEach(function(n){var p=pos[n];svg+='<rect class="node" x="'+p.x+'" y="'+p.y+'" width="'+boxW+'" height="'+boxH+'" rx="10"/><text x="'+(p.x+boxW/2)+'" y="'+(p.y+23)+'" text-anchor="middle" font-size="12">'+esc(n)+'</text>'});return svg+'</svg>'}
-function renderDiagrams(){document.querySelectorAll('.diagram').forEach(function(el){var r=el.dataset.renderer||'diagram';var s=el.dataset.source||'';el.innerHTML=r==='mermaid'?renderMermaidFlow(s):'<b>'+esc(r)+'</b><pre>'+esc(s)+'</pre>'})}
+async function renderDiagrams(){for(const el of document.querySelectorAll('.diagram')){var r=el.dataset.renderer||'diagram';var s=el.dataset.source||'';if(r==='mermaid'&&window.mermaid){try{var rendered=await mermaid.render('m'+Math.random().toString(36).slice(2),s);el.innerHTML=rendered.svg;el.querySelectorAll('path.flowchart-link').forEach(function(p){p.setAttribute('stroke-linejoin','round');p.setAttribute('stroke-linecap','round')});continue}catch(e){console.warn('Mermaid render failed, using fallback',e)}}el.innerHTML=r==='mermaid'?renderMermaidFlow(s):'<b>'+esc(r)+'</b><pre>'+esc(s)+'</pre>'}}
 function renderGraphs(){document.querySelectorAll('.graph').forEach(function(el){var g=parseMaybeJSON(el.dataset.source)||{};var nodes=g.nodes||[],edges=g.edges||[];var w=720,h=260,cx=w/2,cy=h/2,rad=Math.min(w,h)/2-45;var pos={};nodes.forEach(function(n,i){var a=2*Math.PI*i/Math.max(1,nodes.length)-Math.PI/2;pos[n.id]={x:cx+rad*Math.cos(a),y:cy+rad*Math.sin(a),label:n.label||n.id}});var svg='<svg viewBox="0 0 '+w+' '+h+'"><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="currentColor"/></marker></defs>';edges.forEach(function(e){var a=pos[e.from],b=pos[e.to];if(a&&b)svg+='<line class="edge" x1="'+a.x+'" y1="'+a.y+'" x2="'+b.x+'" y2="'+b.y+'"/>'});nodes.forEach(function(n){var p=pos[n.id];svg+='<circle class="node" cx="'+p.x+'" cy="'+p.y+'" r="22"/><text x="'+p.x+'" y="'+(p.y+4)+'" text-anchor="middle" font-size="11">'+esc(p.label)+'</text>'});el.innerHTML=svg+'</svg>'})}
 document.addEventListener('input',function(e){if(e.target.matches('input,select,textarea'))setDirty(true)})
 window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue=''}})
