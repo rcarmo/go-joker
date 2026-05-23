@@ -210,7 +210,7 @@ Test fixtures live under `tests/notebooks/`:
 - `rich_outputs.edn` — chart and Mermaid helper outputs;
 - `dependencies.edn` — named cells and manual dependency metadata.
 
-They are used by the notebook load/run/export tests, validated by `make notebook-check`, and are good starting points for manual UI checks.
+They are used by the notebook load/run/export tests, validated by `make notebook-check`, and are good starting points for manual UI checks. `make notebook-check` also runs the rich demo headlessly with `--no-save --summary --fail-on-error` to catch execution regressions without rewriting the example.
 
 ## Current implementation status
 
