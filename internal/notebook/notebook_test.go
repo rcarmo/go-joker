@@ -315,6 +315,20 @@ func TestNotebookHTTPHandler(t *testing.T) {
 	}
 }
 
+func TestNotebookPageIncludesTokenWhenConfigured(t *testing.T) {
+	old := AuthToken
+	AuthToken = "secret"
+	defer func() { AuthToken = old }()
+	nb := New("TokenPage")
+	var w bytes.Buffer
+	if err := page.Execute(&w, nb); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(w.String(), `NOTEBOOK_TOKEN="secret"`) || !strings.Contains(w.String(), "X-Joker-Notebook-Token") {
+		t.Fatalf("token page missing token wiring:\n%s", w.String())
+	}
+}
+
 func TestNotebookPageRenders(t *testing.T) {
 	nb := New("Web")
 	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Name: "data", Source: "(+ 1 2)", Outputs: []Output{{Type: "chart", Spec: `{"data":[1,2,3]}`}, {Type: "graph", Source: `{"nodes":[{"id":"A"}],"edges":[]}`}}}}

@@ -931,7 +931,7 @@ func applySourceUpdate(r io.Reader, nb *Notebook) error {
 	return nil
 }
 
-var page = template.Must(template.New("nb").Funcs(template.FuncMap{"join": strings.Join}).Parse(`<!doctype html>
+var page = template.Must(template.New("nb").Funcs(template.FuncMap{"join": strings.Join, "authToken": func() string { return AuthToken }}).Parse(`<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -952,6 +952,8 @@ body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;margi
 <div id="cells">{{range .Cells}}<div class="cell cell-state-{{.State}}" data-id="{{.ID}}" data-name="{{.Name}}" data-count="In[{{.ExecutionCount}}]"><div class="cell-header"><b>{{.Kind}}</b><span class="state-pill">{{if .State}}{{.State}}{{else}}idle{{end}}</span><span class="meta">{{.ID}}{{if .Name}} · {{.Name}}{{end}}{{if .DependsOn}} · depends on {{.DependsOn}}{{end}}</span><button onclick="evaluateCell('{{.ID}}')">Evaluate</button>{{if .Name}}<button onclick="evaluateDownstream('{{.Name}}')">Evaluate downstream</button>{{end}}<button onclick="clearOutputs('{{.ID}}')">Clear outputs</button><button onclick="moveCell('{{.ID}}',-1)">↑</button><button onclick="moveCell('{{.ID}}',1)">↓</button><button onclick="deleteCell('{{.ID}}')">Delete</button></div><div class="meta-row"><label>kind <select class="cell-kind"><option value="code" {{if eq .Kind "code"}}selected{{end}}>code</option><option value="markdown" {{if eq .Kind "markdown"}}selected{{end}}>markdown</option></select></label><label> name <input class="cell-name" value="{{.Name}}" placeholder="optional name"></label><label> depends-on <input class="cell-deps" value="{{join .DependsOn ","}}" placeholder="comma-separated names"></label></div><textarea onfocus="activeCell=this.closest('.cell').dataset.id" oninput="highlight(this)">{{.Source}}</textarea><pre class="highlight"></pre><div class="markdown-preview" style="display:none"></div>{{if .Outputs}}<details class="outputs" open><summary>Out[{{.ExecutionCount}}] · {{len .Outputs}} output(s)</summary>{{range .Outputs}}<div class="output">{{if eq .Type "svg"}}{{.Source}}{{else if eq .Type "html"}}{{.Source}}{{else if eq .Type "image"}}<img style="max-width:100%" src="data:{{.MIME}};base64,{{.Data}}">{{else if eq .Type "chart"}}<div class="chart" data-spec="{{.Spec}}"></div>{{else if eq .Type "diagram"}}<div class="diagram" data-renderer="{{.Renderer}}" data-source="{{.Source}}"></div>{{else if eq .Type "graph"}}<div class="graph" data-source="{{.Source}}"></div>{{else if eq .Type "table"}}<div class="table-output" data-source="{{.Source}}"></div>{{else}}<pre class="{{if eq .Type "error"}}err{{end}}">{{.Text}}</pre>{{end}}</div>{{end}}</details>{{end}}</div>{{end}}</div>
 <h2>Raw notebook</h2><pre id="raw"></pre>
 <script>
+var NOTEBOOK_TOKEN={{authToken}};
+var realFetch=window.fetch.bind(window);window.fetch=function(url,opts){opts=opts||{};var method=(opts.method||'GET').toUpperCase();if(NOTEBOOK_TOKEN&&method!=='GET'&&method!=='HEAD'&&method!=='OPTIONS'){opts.headers=Object.assign({},opts.headers||{},{'X-Joker-Notebook-Token':NOTEBOOK_TOKEN})}return realFetch(url,opts)};
 var activeCell='', dirty=false
 function setDirty(v){dirty=v;document.getElementById('notebook-dirty').textContent=v?'Unsaved changes':'Saved'}
 function setTheme(t){if(t==='auto'){localStorage.removeItem('jokerNotebookTheme');document.documentElement.removeAttribute('data-theme')}else{localStorage.setItem('jokerNotebookTheme',t);document.documentElement.setAttribute('data-theme',t)}logMsg('Theme: '+t,false)}
