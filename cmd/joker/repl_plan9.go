@@ -5,7 +5,6 @@ import (
 	"fmt"
 	corereader "github.com/rcarmo/go-joker/core/reader"
 	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"io"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -13,7 +12,7 @@ import (
 
 func repl(phase corereader.Phase) {
 	ProcessReplData()
-	GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "user")).ReferAll(GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "joker.repl")))
+	referReplNamespace()
 	fmt.Printf("Welcome to joker %s. Use '(exit)', %s to exit.\n", corert.VERSION, EXITERS)
 	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
 	replContext := NewReplContext(parseContext.GlobalEnv)

@@ -13,6 +13,34 @@ import (
 var dataRead = []rune{}
 var saveForRepl = true
 
+func findReplNamespace() *Namespace {
+	replSym := coretypes.MakeSymbol(STRINGS.Intern, "joker.repl")
+	replNs := GLOBAL_ENV.FindNamespace(replSym)
+	if replNs != nil {
+		return replNs
+	}
+
+	// Some generated bootstrap payloads still register this namespace as
+	// joker.Repl even though the source namespace is joker.repl.
+	replNs = GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "joker.Repl"))
+	if replNs != nil {
+		corert.NamespaceMu.Lock()
+		GLOBAL_ENV.Namespaces[replSym.NameKey()] = replNs
+		corert.NamespaceMu.Unlock()
+		return replNs
+	}
+
+	panic(coretypes.RuntimeError("missing generated REPL namespace joker.repl"))
+}
+
+func referReplNamespace() {
+	userNs := GLOBAL_ENV.FindNamespace(coretypes.MakeSymbol(STRINGS.Intern, "user"))
+	if userNs == nil {
+		panic(coretypes.RuntimeError("missing user namespace"))
+	}
+	userNs.ReferAll(findReplNamespace())
+}
+
 type replayable struct {
 	reader *Reader
 }
