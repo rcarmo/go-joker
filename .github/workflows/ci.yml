@@ -27,6 +27,13 @@ jobs:
         run: go test ./core ./std/... ./cmd/joker ./internal/notebook -timeout 10m -count=1
       - name: Run notebook smoke checks
         run: make notebook-check
+      - uses: oven-sh/setup-bun@v2
+      - name: Install notebook browser smoke dependencies
+        run: |
+          bun install --frozen-lockfile
+          PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.cache/ms-playwright bunx playwright install chromium
+      - name: Run notebook browser smoke check
+        run: PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.cache/ms-playwright make notebook-browser-smoke
       - name: Generate docs and verify namespace/feature coverage
         run: make docs-check
       - name: Run local parity suite
