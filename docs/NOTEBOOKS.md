@@ -24,6 +24,7 @@ joker notebook new file.edn --title "Example" --serve --readonly --token secret
 joker notebook demo rich-demo.edn
 joker notebook run file.edn
 joker notebook run file.edn --no-save
+joker notebook run file.edn --no-save --summary
 joker notebook validate file.edn
 joker notebook status file.edn
 joker notebook deps file.edn
@@ -164,7 +165,7 @@ joker notebook run demo.edn --no-save
 joker notebook export demo.edn -o demo.md
 ```
 
-Use `--no-save` for CI/smoke checks that should execute cells without rewriting the notebook EDN.
+Use `--no-save` for CI/smoke checks that should execute cells without rewriting the notebook EDN. Add `--summary` for a compact JSON report of cell states/output counts.
 
 Or browse it locally:
 

@@ -16,7 +16,7 @@ func TestNotebookHelpMentionsSecurityFlags(t *testing.T) {
 	if err != nil {
 		t.Fatalf("notebook --help: %v\n%s", err, out)
 	}
-	for _, want := range []string{"--token secret", "--readonly"} {
+	for _, want := range []string{"--token secret", "--readonly", "--summary"} {
 		if !strings.Contains(string(out), want) {
 			t.Fatalf("notebook --help missing %q:\n%s", want, out)
 		}
@@ -38,6 +38,28 @@ func TestNotebookNewCLI(t *testing.T) {
 	}
 	if !strings.Contains(string(data), ":format :joker/notebook") || !strings.Contains(string(data), "Created") {
 		t.Fatalf("new notebook:\n%s", data)
+	}
+}
+
+func TestNotebookRunSummaryCLI(t *testing.T) {
+	bin := buildJokerBinary(t)
+	dir := t.TempDir()
+	nb := filepath.Join(dir, "summary.edn")
+	cmd := exec.Command(bin, "notebook", "new", nb, "--title", "Summary")
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	if out, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("notebook new: %v\n%s", err, out)
+	}
+	cmd = exec.Command(bin, "notebook", "run", nb, "--no-save", "--summary")
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("notebook run --summary: %v\n%s", err, out)
+	}
+	for _, want := range []string{`"title":"Summary"`, `"cellCount":2`, `"id":"cell-2"`, `"state":"ok"`} {
+		if !strings.Contains(string(out), want) {
+			t.Fatalf("summary missing %q:\n%s", want, out)
+		}
 	}
 }
 

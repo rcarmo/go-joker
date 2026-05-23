@@ -272,10 +272,13 @@ func runNotebook(args []string) {
 	}
 	path := ""
 	noSave := false
+	summary := false
 	for _, arg := range args {
 		switch arg {
 		case "--no-save":
 			noSave = true
+		case "--summary", "--json-summary":
+			summary = true
 		default:
 			if !strings.HasPrefix(arg, "-") && path == "" {
 				path = arg
@@ -292,6 +295,9 @@ func runNotebook(args []string) {
 		os.Exit(1)
 	}
 	notebook.Run(&nb)
+	if summary {
+		writeNotebookRunSummary(nb)
+	}
 	if noSave {
 		return
 	}
@@ -299,6 +305,18 @@ func runNotebook(args []string) {
 		fmt.Fprintln(Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func writeNotebookRunSummary(nb notebook.Notebook) {
+	status := notebook.BuildStatus(nb)
+	fmt.Fprintf(Stdout, "{\"title\":%q,\"cellCount\":%d,\"outputCount\":%d,\"cells\":[", status.Title, status.CellCount, status.OutputCount)
+	for i, c := range nb.Cells {
+		if i > 0 {
+			fmt.Fprint(Stdout, ",")
+		}
+		fmt.Fprintf(Stdout, "{\"id\":%q,\"kind\":%q,\"name\":%q,\"state\":%q,\"outputs\":%d}", c.ID, c.Kind, c.Name, c.State, len(c.Outputs))
+	}
+	fmt.Fprintln(Stdout, "]}")
 }
 
 func exportNotebook(args []string) {
@@ -361,7 +379,7 @@ func printNotebookUsage() {
   joker notebook serve [file.edn] [-p 8080] [--token secret] [--readonly]
   joker notebook new file.edn [--title "Title"] [--serve] [--open] [--token secret] [--readonly]
   joker notebook demo [file.edn]
-  joker notebook run file.edn [--no-save]
+  joker notebook run file.edn [--no-save] [--summary]
   joker notebook validate file.edn
   joker notebook status file.edn
   joker notebook deps file.edn
