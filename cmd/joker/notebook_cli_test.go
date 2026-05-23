@@ -8,6 +8,21 @@ import (
 	"testing"
 )
 
+func TestNotebookHelpMentionsSecurityFlags(t *testing.T) {
+	bin := buildJokerBinary(t)
+	cmd := exec.Command(bin, "notebook", "--help")
+	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("notebook --help: %v\n%s", err, out)
+	}
+	for _, want := range []string{"--token secret", "--readonly"} {
+		if !strings.Contains(string(out), want) {
+			t.Fatalf("notebook --help missing %q:\n%s", want, out)
+		}
+	}
+}
+
 func TestNotebookNewCLI(t *testing.T) {
 	bin := buildJokerBinary(t)
 	dir := t.TempDir()

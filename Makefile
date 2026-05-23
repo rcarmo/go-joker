@@ -131,6 +131,8 @@ notebook-check:
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook status file.edn'
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook deps file.edn'
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook snapshots file.edn'
+	$(DOCS_JOKER_BIN) notebook --help | grep -q -- '--token secret'
+	$(DOCS_JOKER_BIN) notebook --help | grep -q -- '--readonly'
 	$(DOCS_JOKER_BIN) notebook validate tests/notebooks/basic.edn
 	$(DOCS_JOKER_BIN) notebook validate tests/notebooks/rich_outputs.edn
 	$(DOCS_JOKER_BIN) notebook validate tests/notebooks/dependencies.edn
