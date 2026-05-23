@@ -54,7 +54,7 @@ func TestNotebookRunFailOnErrorCLI(t *testing.T) {
 	if err == nil {
 		t.Fatalf("expected --fail-on-error to fail, output:\n%s", out)
 	}
-	if !strings.Contains(string(out), `"errors":1`) || !strings.Contains(string(out), `"state":"error"`) || !strings.Contains(string(out), `"error":`) || !strings.Contains(string(out), `missing-symbol`) {
+	if !strings.Contains(string(out), `"success":false`) || !strings.Contains(string(out), `"errors":1`) || !strings.Contains(string(out), `"state":"error"`) || !strings.Contains(string(out), `"error":`) || !strings.Contains(string(out), `missing-symbol`) {
 		t.Fatalf("fail summary missing error details:\n%s", out)
 	}
 }
@@ -74,7 +74,7 @@ func TestNotebookRunSummaryCLI(t *testing.T) {
 	if err != nil {
 		t.Fatalf("notebook run --summary: %v\n%s", err, out)
 	}
-	for _, want := range []string{`"title":"Summary"`, `"cellCount":2`, `"ok":1`, `"idle":1`, `"errors":0`, `"id":"cell-2"`, `"state":"ok"`} {
+	for _, want := range []string{`"title":"Summary"`, `"cellCount":2`, `"success":true`, `"ok":1`, `"idle":1`, `"errors":0`, `"id":"cell-2"`, `"state":"ok"`} {
 		if !strings.Contains(string(out), want) {
 			t.Fatalf("summary missing %q:\n%s", want, out)
 		}

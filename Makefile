@@ -140,7 +140,7 @@ notebook-check:
 	$(DOCS_JOKER_BIN) notebook validate tests/notebooks/rich_outputs.edn
 	$(DOCS_JOKER_BIN) notebook validate tests/notebooks/dependencies.edn
 	$(DOCS_JOKER_BIN) notebook validate examples/notebooks/rich-demo.edn
-	$(DOCS_JOKER_BIN) notebook run examples/notebooks/rich-demo.edn --no-save --summary --fail-on-error | grep -q '"errors":0'
+	$(DOCS_JOKER_BIN) notebook run examples/notebooks/rich-demo.edn --no-save --summary --fail-on-error | grep -q '"success":true'
 
 bb-compat:
 	$(GO) test ./tests -run Babashka -count=$(TEST_COUNT) -timeout=120s
