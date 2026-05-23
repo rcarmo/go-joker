@@ -96,6 +96,14 @@ func TestRunCapturesReturnedValue(t *testing.T) {
 	}
 }
 
+func TestEvaluateCellNotebookHTMLHelper(t *testing.T) {
+	cell := Cell{ID: "helper-html", Kind: "code", Source: `(joker.notebook/html "<b>Hello</b>")`}
+	EvaluateCell(&cell)
+	if cell.State != "ok" || len(cell.Outputs) != 1 || cell.Outputs[0].Type != "html" || !strings.Contains(cell.Outputs[0].Source, "Hello") {
+		t.Fatalf("html output cell = %#v", cell)
+	}
+}
+
 func TestEvaluateCellNotebookTableHelper(t *testing.T) {
 	cell := Cell{ID: "helper-table", Kind: "code", Source: `(joker.notebook/table [{:name "Ada" :score 42}])`}
 	EvaluateCell(&cell)
@@ -138,7 +146,7 @@ func TestEvaluateCellValueOutput(t *testing.T) {
 
 func TestExportMarkdown(t *testing.T) {
 	nb := New("Export")
-	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", Outputs: []Output{{Type: "stdout", Text: "3\n"}, {Type: "value", Text: "{:ok true}"}, {Type: "chart", Spec: `{"data":[1,2]}`}, {Type: "diagram", Renderer: "mermaid", Source: "graph TD; A-->B"}, {Type: "graph", Source: `{"nodes":[]}`}, {Type: "table", Source: `[{"name":"Ada"}]`}}}}
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", Outputs: []Output{{Type: "stdout", Text: "3\n"}, {Type: "value", Text: "{:ok true}"}, {Type: "chart", Spec: `{"data":[1,2]}`}, {Type: "diagram", Renderer: "mermaid", Source: "graph TD; A-->B"}, {Type: "graph", Source: `{"nodes":[]}`}, {Type: "table", Source: `[{"name":"Ada"}]`}, {Type: "html", Source: `<b>Hello</b>`}}}}
 	var b bytes.Buffer
 	if err := ExportMarkdown(&b, nb); err != nil {
 		t.Fatal(err)

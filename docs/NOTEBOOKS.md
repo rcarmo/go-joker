@@ -10,7 +10,7 @@ V1 goals:
 - headless execution for agents/CI;
 - Markdown export with fenced blocks for text, EDN values, chart specs, Mermaid/DOT diagrams, and graph JSON;
 - manual dependency metadata for future reactive execution;
-- rich-output envelope for charts, tables, images, SVG, Mermaid, DOT, and graph JSON.
+- rich-output envelope for charts, tables, images, trusted HTML, SVG, Mermaid, DOT, and graph JSON.
 
 ## Commands
 
@@ -68,6 +68,7 @@ Code cells can use helper functions in `joker.notebook` or return a map with `:n
 (joker.notebook/chart {:data [1 2 3]})
 (joker.notebook/chart "{\"data\":[1,2,3]}")
 (joker.notebook/svg "<svg>...</svg>")
+(joker.notebook/html "<b>trusted local HTML</b>")
 (joker.notebook/mermaid "graph TD; A-->B")
 (joker.notebook/dot "digraph { A -> B }")
 (joker.notebook/graph {:nodes [{:id "A"}] :edges []})
@@ -99,6 +100,10 @@ Code cells can use helper functions in `joker.notebook` or return a map with `:n
 
 {:type :table
  :source "[{\"name\":\"Ada\",\"score\":42}]"}
+
+{:type :html
+ :renderer :trusted
+ :source "<b>trusted local HTML</b>"}
 
 {:type :svg
  :source "<svg>...</svg>"}
