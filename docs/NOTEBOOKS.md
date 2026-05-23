@@ -220,6 +220,8 @@ make notebook-browser-smoke
 
 The smoke script creates a temporary rich demo notebook, runs it, starts a localhost notebook server with a token, opens Chromium, verifies rendered cells/table output, filters/sorts a table, exports Markdown, displays the dependency graph, saves a title change, and checks the status API.
 
+Use `make notebook-screenshot` to capture a full-page rich demo screenshot under `.cache/screenshots/` for visual review.
+
 ## Current implementation status
 
 The current slices provide:

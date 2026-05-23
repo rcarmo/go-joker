@@ -19,7 +19,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset audit-fast audit
+.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -41,6 +41,7 @@ help:
 	@echo "  make docs-command-check # Verify joker doc Markdown/JSON lookup smoke tests"
 	@echo "  make notebook-check # Verify joker notebook schema/CLI smoke tests"
 	@echo "  make notebook-browser-smoke # Verify joker notebook browser UI with Playwright"
+	@echo "  make notebook-screenshot # Capture rich demo notebook full-page screenshot"
 	@echo "  make generated-check # Verify generated-file boundary guardrails"
 	@echo "  make generated-bootstrap-check # Verify generated bootstrap manifest equivalence"
 	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker"
@@ -146,6 +147,10 @@ notebook-check:
 notebook-browser-smoke:
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
 	PLAYWRIGHT_BROWSERS_PATH=$(shell pwd)/.cache/ms-playwright JOKER_BIN=$(DOCS_JOKER_BIN) bun run scripts/notebook_smoke.ts
+
+notebook-screenshot:
+	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
+	PLAYWRIGHT_BROWSERS_PATH=$(shell pwd)/.cache/ms-playwright JOKER_BIN=$(DOCS_JOKER_BIN) bun run scripts/notebook_screenshot.ts
 
 bb-compat:
 	$(GO) test ./tests -run Babashka -count=$(TEST_COUNT) -timeout=120s
