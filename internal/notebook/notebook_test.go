@@ -96,6 +96,14 @@ func TestRunCapturesReturnedValue(t *testing.T) {
 	}
 }
 
+func TestEvaluateCellNotebookHelperAcceptsMaps(t *testing.T) {
+	cell := Cell{ID: "helper-map", Kind: "code", Source: `(joker.notebook/chart {:data [4 5]})`}
+	EvaluateCell(&cell)
+	if cell.State != "ok" || len(cell.Outputs) != 1 || cell.Outputs[0].Type != "chart" || !strings.Contains(cell.Outputs[0].Spec, `"data"`) || !strings.Contains(cell.Outputs[0].Spec, `[4,5]`) {
+		t.Fatalf("helper map output cell = %#v", cell)
+	}
+}
+
 func TestEvaluateCellNotebookHelper(t *testing.T) {
 	cell := Cell{ID: "helper", Kind: "code", Source: `(joker.notebook/chart "{\"data\":[4,5]}")`}
 	EvaluateCell(&cell)

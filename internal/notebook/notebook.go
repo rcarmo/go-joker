@@ -195,7 +195,7 @@ func installNotebookHelpers() {
 		ns.InternVar(name, core.Proc{Name: "notebook/" + name, Fn: fn}, core.MakeMeta(nil, "Notebook rich output helper.", "1.0"))
 	}
 	intern("chart", func(args []coretypes.Object) coretypes.Object {
-		return richOutputMap("chart", "echarts", "spec", firstArgString(args))
+		return richOutputMap("chart", "echarts", "spec", firstArgJSON(args))
 	})
 	intern("svg", func(args []coretypes.Object) coretypes.Object {
 		return richOutputMap("svg", "", "source", firstArgString(args))
@@ -207,7 +207,7 @@ func installNotebookHelpers() {
 		return richOutputMap("diagram", "dot", "source", firstArgString(args))
 	})
 	intern("graph", func(args []coretypes.Object) coretypes.Object {
-		return richOutputMap("graph", "graph-json", "source", firstArgString(args))
+		return richOutputMap("graph", "graph-json", "source", firstArgJSON(args))
 	})
 	intern("image", func(args []coretypes.Object) coretypes.Object {
 		mime := "image/png"
@@ -223,6 +223,49 @@ func installNotebookHelpers() {
 		m.Add(coretypes.MakeKeyword(core.STRINGS.Intern, "encoding"), coretypes.MakeKeyword(core.STRINGS.Intern, "base64"))
 		return m
 	})
+}
+
+func firstArgJSON(args []coretypes.Object) string {
+	if len(args) == 0 || args[0] == nil {
+		return ""
+	}
+	if s, ok := args[0].(coretypes.String); ok {
+		return s.S
+	}
+	return objectJSON(args[0])
+}
+
+func objectJSON(obj coretypes.Object) string {
+	switch v := obj.(type) {
+	case coretypes.String:
+		return strconv.Quote(v.S)
+	case coretypes.Int:
+		return strconv.Itoa(v.I)
+	case coretypes.Double:
+		return strconv.FormatFloat(v.D, 'f', -1, 64)
+	case coretypes.Boolean:
+		if v.B {
+			return "true"
+		}
+		return "false"
+	case coretypes.Map:
+		parts := []string{}
+		for it := v.Iter(); it.HasNext(); {
+			p := it.Next()
+			parts = append(parts, strconv.Quote(strings.TrimPrefix(p.Key.ToString(false), ":"))+":"+objectJSON(p.Value))
+		}
+		return "{" + strings.Join(parts, ",") + "}"
+	case coretypes.Seqable:
+		seq := v.Seq()
+		parts := []string{}
+		for seq != nil && !seq.IsEmpty() {
+			parts = append(parts, objectJSON(seq.First()))
+			seq = seq.Rest()
+		}
+		return "[" + strings.Join(parts, ",") + "]"
+	default:
+		return strconv.Quote(obj.ToString(false))
+	}
 }
 
 func firstArgString(args []coretypes.Object) string {
