@@ -45,6 +45,8 @@ func initImagingNamespace() {
 		{"saturation", procSaturation, "img amount", "Adjusts saturation. Range -100 to 100."},
 		{"gamma", procGamma, "img value", "Adjusts gamma correction. >1 brightens, <1 darkens."},
 		{"sigmoid", procSigmoid, "img midpoint factor", "Applies sigmoid contrast. Midpoint 0-1, factor controls steepness."},
+		{"pixel", procPixel, "img x y", "Returns pixel color at x,y as [r g b a]."},
+		{"set-pixel!", procSetPixel, "img x y color", "Sets pixel x,y to color [r g b a]. Returns img."},
 		// Effects
 		{"blur", procBlur, "img sigma", "Applies gaussian blur with given sigma."},
 		{"sharpen", procSharpen, "img sigma", "Sharpens image with given sigma."},

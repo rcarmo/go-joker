@@ -382,7 +382,7 @@ func TestNotebookPageRendersTrustedHTML(t *testing.T) {
 
 func TestNotebookPageRenders(t *testing.T) {
 	nb := New("Web")
-	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Name: "data", Source: "(+ 1 2)", Outputs: []Output{{Type: "chart", Spec: `{"data":[1,2,3]}`}, {Type: "graph", Source: `{"nodes":[{"id":"A"}],"edges":[]}`}}}}
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Name: "data", Source: "(+ 1 2)", Outputs: []Output{{Type: "chart", Spec: `{"data":[1,2,3]}`}, {Type: "graph", Source: `{"nodes":[{"id":"A"}],"edges":[]}`}, {Type: "svg", Source: `<svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4"/></svg>`}}}}
 	var w bytes.Buffer
 	if err := page.Execute(&w, nb); err != nil {
 		t.Fatal(err)
@@ -393,7 +393,7 @@ func TestNotebookPageRenders(t *testing.T) {
 	if strings.Contains(w.String(), ">Cell</b>") || strings.Contains(w.String(), ">Markdown</b>") {
 		t.Fatalf("page rendered noisy fallback cell title:\n%s", w.String())
 	}
-	for _, want := range []string{"showRawNotebook", `id="raw-notebook"`, `contenteditable="true"`, ".raw-notebook{display:none}", "Hid dependency graph", "Showing dependency graph", "Hid snapshots", "Showing snapshots", ".cell-actions{display:flex", "pointer-events:none", ".cell:hover .cell-actions", "button-group theme-toggle", "M12 3a6", "notebook-commandbar", "#notebook-title{box-sizing:border-box", "height:2.125rem", ".button-group>button", "border-radius:999px 0 0 999px", ".CodeMirror-scroll{min-height:5rem;overflow-y:hidden!important;overflow-x:auto!important", "autosizeTextarea", "viewportMargin:Infinity"} {
+	for _, want := range []string{"showRawNotebook", `id="raw-notebook"`, `contenteditable="true"`, ".raw-notebook{display:none}", "Hid dependency graph", "Showing dependency graph", "Hid snapshots", "Showing snapshots", ".cell-actions{display:flex", "pointer-events:none", ".cell:hover .cell-actions", "button-group theme-toggle", "M12 3a6", "notebook-commandbar", "#notebook-title{box-sizing:border-box", "height:2.125rem", ".button-group>button", "border-radius:999px 0 0 999px", ".CodeMirror-scroll{min-height:5rem;overflow-y:hidden!important;overflow-x:auto!important", ".chart{height:360px;min-height:360px", ".diagram,.graph,.svg-output{min-height:260px", ".svg-output>svg{display:block;width:100%;height:auto", `class="svg-output"`, `<svg viewBox="0 0 10 10"><circle`, "requestAnimationFrame(function(){chart.resize()}", "autosizeTextarea", "viewportMargin:Infinity"} {
 		if !strings.Contains(w.String(), want) {
 			t.Fatalf("page missing interaction/style %q:\n%s", want, w.String())
 		}

@@ -7,6 +7,7 @@ import (
 	"image/color"
 	"image/png"
 	"math"
+	"strings"
 
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	corecollections "github.com/rcarmo/go-joker/core/types/collections"
@@ -82,6 +83,7 @@ func toNRGBA(img image.Image) *image.NRGBA {
 }
 
 func parseAnchor(s string) imaging.Anchor {
+	s = strings.TrimPrefix(s, ":")
 	switch s {
 	case "center":
 		return imaging.Center
@@ -129,7 +131,7 @@ var procSave ProcFn = func(args []coretypes.Object) coretypes.Object {
 
 var procEncode ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)
-	format := coretypes.ExtractKeyword(args, 1)
+	format := strings.TrimPrefix(coretypes.ExtractKeyword(args, 1), ":")
 	var buf bytes.Buffer
 	switch format {
 	case "png":
@@ -402,6 +404,27 @@ func colorChannel(obj coretypes.Object, name string) uint8 {
 	return uint8(v)
 }
 
+func imageColor(obj coretypes.Object, op string) color.NRGBA {
+	v, ok := obj.(coretypes.Indexed)
+	counted, countedOk := obj.(coretypes.Counted)
+	if !ok || !countedOk || counted.Count() != 4 {
+		panic(RT.NewError(op + ": color must be a vector [r g b a]"))
+	}
+	channel := func(idx int, name string) uint8 {
+		n := coretypes.EnsureObjectIsInt(v.Nth(idx), op+" color "+name+": %s").I
+		if n < 0 || n > 255 {
+			panic(RT.NewError(op + ": color channel " + name + " must be in [0,255]"))
+		}
+		return uint8(n)
+	}
+	return color.NRGBA{
+		R: channel(0, "r"),
+		G: channel(1, "g"),
+		B: channel(2, "b"),
+		A: channel(3, "a"),
+	}
+}
+
 var procNewImage ProcFn = func(args []coretypes.Object) coretypes.Object {
 	CheckArity(args, 2, 3)
 	w := coretypes.ExtractInt(args, 0)
@@ -422,6 +445,38 @@ var procNewImage ProcFn = func(args []coretypes.Object) coretypes.Object {
 		c.A = colorChannel(v.Nth(3), "a")
 	}
 	return wrapImage(toNRGBA(imaging.New(w, h, c)))
+}
+
+func pixelPoint(im *Image, x, y int, op string) {
+	bounds := im.img.Bounds()
+	if x < bounds.Min.X || x >= bounds.Max.X || y < bounds.Min.Y || y >= bounds.Max.Y {
+		panic(RT.NewError(fmt.Sprintf("%s: pixel coordinate out of bounds: %d,%d", op, x, y)))
+	}
+}
+
+var procPixel ProcFn = func(args []coretypes.Object) coretypes.Object {
+	CheckArity(args, 3, 3)
+	im := extractImage(args, 0)
+	x := coretypes.ExtractInt(args, 1)
+	y := coretypes.ExtractInt(args, 2)
+	pixelPoint(im, x, y, "imaging/pixel")
+	c := im.img.NRGBAAt(x, y)
+	return corecollections.NewVectorFrom(
+		coretypes.MakeInt(int(c.R)),
+		coretypes.MakeInt(int(c.G)),
+		coretypes.MakeInt(int(c.B)),
+		coretypes.MakeInt(int(c.A)),
+	)
+}
+
+var procSetPixel ProcFn = func(args []coretypes.Object) coretypes.Object {
+	CheckArity(args, 4, 4)
+	im := extractImage(args, 0)
+	x := coretypes.ExtractInt(args, 1)
+	y := coretypes.ExtractInt(args, 2)
+	pixelPoint(im, x, y, "imaging/set-pixel!")
+	im.img.SetNRGBA(x, y, imageColor(args[3], "imaging/set-pixel!"))
+	return im
 }
 
 // --- Registration ---

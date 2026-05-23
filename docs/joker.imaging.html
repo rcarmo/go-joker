@@ -89,6 +89,9 @@
   <a href="#paste">paste</a>
 </li>
 <li>
+  <a href="#pixel">pixel</a>
+</li>
+<li>
   <a href="#resize">resize</a>
 </li>
 <li>
@@ -99,6 +102,9 @@
 </li>
 <li>
   <a href="#save">save</a>
+</li>
+<li>
+  <a href="#set-pixel!">set-pixel!</a>
 </li>
 <li>
   <a href="#sharpen">sharpen</a>
@@ -329,6 +335,16 @@
   
 </li>
 <li>
+  <h3 class="Function" id="pixel">pixel</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(pixel img x y)</code></div>
+</pre>
+  <p class="var-docstr">Returns pixel color at x,y as [r g b a].</p>
+
+
+</li>
+<li>
   <h3 class="Function" id="resize">resize</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
@@ -367,6 +383,16 @@
   <p class="var-docstr">Saves image to file. Format detected from extension.</p>
   
   
+</li>
+<li>
+  <h3 class="Function" id="set-pixel!">set-pixel!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(set-pixel! img x y color)</code></div>
+</pre>
+  <p class="var-docstr">Sets pixel x,y to color [r g b a]. Returns img.</p>
+
+
 </li>
 <li>
   <h3 class="Function" id="sharpen">sharpen</h3>

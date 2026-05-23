@@ -83,6 +83,12 @@ Code cells can use helper functions in `joker.notebook` or return a map with `:n
 (joker.notebook/image "image/png" "base64...")
 ```
 
+Bitmap outputs can be generated directly inside Joker with `joker.imaging`.
+Use `joker.imaging/new` to allocate an image, `joker.imaging/set-pixel!` and
+`joker.imaging/pixel` for pixel-level access, `joker.imaging/resize` for display
+scaling, and `joker.imaging/encode` plus `joker.base64/encode-string` to pass PNG
+or JPEG data to `joker.notebook/image`.
+
 ```clojure
 {:type :text
  :text "plain text output"}
@@ -189,6 +195,7 @@ A user-facing rich-output demo lives at:
 
 ```bash
 examples/notebooks/rich-demo.edn
+examples/notebooks/complex-demo.edn
 ```
 
 Try it with:
@@ -198,6 +205,11 @@ joker notebook demo /tmp/rich-demo.edn
 joker notebook run /tmp/rich-demo.edn
 joker notebook /tmp/rich-demo.edn -p 8080 --open
 ```
+
+`examples/notebooks/complex-demo.edn` is a broader smoke/demo notebook with
+charts, tables, Mermaid, graph JSON, trusted SVG/HTML, a generated Mandelbrot PNG
+using bitmap pixel writes, and a projected SVG 3D scene with depth sorting and
+back-face culling.
 
 Test fixtures live under `tests/notebooks/`:
 

@@ -30,6 +30,32 @@ func TestNewAndInfo(t *testing.T) {
 	t.Logf("image: %s", img.ToString(false))
 }
 
+func TestPixelMutation(t *testing.T) {
+	initImagingNamespace()
+
+	img := procNewImage([]coretypes.Object{coretypes.MakeInt(3), coretypes.MakeInt(2), corecollections.NewVectorFrom(coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(255))})
+	color := corecollections.NewVectorFrom(coretypes.MakeInt(12), coretypes.MakeInt(34), coretypes.MakeInt(56), coretypes.MakeInt(255))
+	if got := procSetPixel([]coretypes.Object{img, coretypes.MakeInt(1), coretypes.MakeInt(0), color}); got != img {
+		t.Fatal("set-pixel! should return the mutated image")
+	}
+	pixel := procPixel([]coretypes.Object{img, coretypes.MakeInt(1), coretypes.MakeInt(0)}).(coretypes.Indexed)
+	for i, want := range []int{12, 34, 56, 255} {
+		if got := pixel.Nth(i).(coretypes.Int).I; got != want {
+			t.Fatalf("pixel[%d] = %d, want %d", i, got, want)
+		}
+	}
+	assertImagingPanic(t, "pixel out of bounds", func() {
+		procPixel([]coretypes.Object{img, coretypes.MakeInt(3), coretypes.MakeInt(0)})
+	})
+	assertImagingPanic(t, "set-pixel bad color", func() {
+		procSetPixel([]coretypes.Object{img, coretypes.MakeInt(0), coretypes.MakeInt(0), corecollections.NewVectorFrom(coretypes.MakeInt(255))})
+	})
+	encoded := procEncode([]coretypes.Object{img, coretypes.MakeKeyword(STRINGS.Intern, "png")}).(coretypes.String)
+	if len(encoded.S) == 0 {
+		t.Fatal("encode :png returned empty data")
+	}
+}
+
 func TestResize(t *testing.T) {
 	initImagingNamespace()
 

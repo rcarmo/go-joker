@@ -144,8 +144,9 @@ docs:
 docs-command-check:
 	$(GO) test ./cmd/joker -run 'TestRenderDoc|TestQueryDocs' -count=$(TEST_COUNT)
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
-	$(DOCS_JOKER_BIN) doc joker.core/first | grep -q '# `joker.core/first`'
+	$(DOCS_JOKER_BIN) doc joker.core/first | grep -q '# \[`joker.core/first`\]'
 	$(DOCS_JOKER_BIN) doc --format json joker.core/first | grep -q '"qualified": "joker.core/first"'
+	$(DOCS_JOKER_BIN) doc joker.imaging/pixel | grep -q '# \[`joker.imaging/pixel`\]'
 
 notebook-check:
 	$(GO) test ./internal/notebook ./cmd/joker -run 'Test.*Notebook|TestEncodeLoad|TestFixtureLoad|TestRunCaptures|TestExportMarkdown|TestDownstream|TestBuildStatus|TestBuildDependencyGraph|TestDependencyCycles|TestUsageMentionsNotebookCommands' -count=$(TEST_COUNT)
@@ -166,7 +167,9 @@ notebook-check:
 	$(DOCS_JOKER_BIN) notebook validate tests/notebooks/rich_outputs.edn
 	$(DOCS_JOKER_BIN) notebook validate tests/notebooks/dependencies.edn
 	$(DOCS_JOKER_BIN) notebook validate examples/notebooks/rich-demo.edn
+	$(DOCS_JOKER_BIN) notebook validate examples/notebooks/complex-demo.edn
 	$(DOCS_JOKER_BIN) notebook run examples/notebooks/rich-demo.edn --no-save --summary --fail-on-error | grep -q '"success":true'
+	$(DOCS_JOKER_BIN) notebook run examples/notebooks/complex-demo.edn --no-save --summary --fail-on-error | grep -q '"success":true'
 
 notebook-browser-smoke:
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
