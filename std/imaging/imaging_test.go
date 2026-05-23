@@ -92,6 +92,57 @@ func TestFromRGBA32(t *testing.T) {
 	})
 }
 
+func TestFromRGBA32Fn(t *testing.T) {
+	initImagingNamespace()
+
+	pixelFn := Proc{Fn: func(args []coretypes.Object) coretypes.Object {
+		x := args[0].(coretypes.Int).I
+		y := args[1].(coretypes.Int).I
+		if x == 1 && y == 0 {
+			return coretypes.MakeInt(0x102030ff)
+		}
+		return coretypes.MakeInt(0xff0000ff)
+	}, Name: "test-pixel"}
+	img := procFromRGBA32Fn([]coretypes.Object{coretypes.MakeInt(2), coretypes.MakeInt(1), pixelFn})
+	pixel := procPixel([]coretypes.Object{img, coretypes.MakeInt(1), coretypes.MakeInt(0)}).(coretypes.Indexed)
+	for i, want := range []int{16, 32, 48, 255} {
+		if got := pixel.Nth(i).(coretypes.Int).I; got != want {
+			t.Fatalf("pixel[%d] = %d, want %d", i, got, want)
+		}
+	}
+	assertImagingPanic(t, "non-callable pixel function", func() {
+		procFromRGBA32Fn([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(1), coretypes.MakeInt(0)})
+	})
+}
+
+func TestFromRGBA32DomainFn(t *testing.T) {
+	initImagingNamespace()
+
+	pixelFn := Proc{Fn: func(args []coretypes.Object) coretypes.Object {
+		x := args[0].(coretypes.Double).D
+		y := args[1].(coretypes.Double).D
+		if x > 0.4 && y < 0.1 {
+			return coretypes.MakeInt(0x102030ff)
+		}
+		return coretypes.MakeInt(0xff0000ff)
+	}, Name: "test-domain-pixel"}
+	img := procFromRGBA32DomainFn([]coretypes.Object{
+		coretypes.MakeInt(2),
+		coretypes.MakeInt(1),
+		coretypes.Double{D: 0},
+		coretypes.Double{D: 0},
+		coretypes.Double{D: 0.5},
+		coretypes.Double{D: 1},
+		pixelFn,
+	})
+	pixel := procPixel([]coretypes.Object{img, coretypes.MakeInt(1), coretypes.MakeInt(0)}).(coretypes.Indexed)
+	for i, want := range []int{16, 32, 48, 255} {
+		if got := pixel.Nth(i).(coretypes.Int).I; got != want {
+			t.Fatalf("domain pixel[%d] = %d, want %d", i, got, want)
+		}
+	}
+}
+
 func TestResize(t *testing.T) {
 	initImagingNamespace()
 

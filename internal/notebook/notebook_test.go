@@ -66,7 +66,7 @@ func TestFixtureLoad(t *testing.T) {
 
 func TestEncodeLoadRoundTrip(t *testing.T) {
 	nb := New("Demo")
-	nb.Cells = []Cell{{ID: "cell-1", Kind: "markdown", Source: "# Hello"}, {ID: "cell-2", Kind: "code", Name: "x", Source: "(+ 1 2)", Outputs: []Output{{Type: "stdout", Text: "3\n"}}}}
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "markdown", Source: "# Hello"}, {ID: "cell-2", Kind: "code", Name: "x", Source: "(+ 1 2)", ElapsedNS: int64(2 * 1000 * 1000), Outputs: []Output{{Type: "stdout", Text: "3\n"}}}}
 	path := t.TempDir() + "/demo.edn"
 	if err := Save(path, nb); err != nil {
 		t.Fatal(err)
@@ -75,7 +75,7 @@ func TestEncodeLoadRoundTrip(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got.Format != "joker/notebook" || got.Title != "Demo" || len(got.Cells) != 2 || got.Cells[1].Name != "x" {
+	if got.Format != "joker/notebook" || got.Title != "Demo" || len(got.Cells) != 2 || got.Cells[1].Name != "x" || got.Cells[1].ElapsedNS == 0 {
 		t.Fatalf("roundtrip = %#v", got)
 	}
 }
@@ -86,6 +86,9 @@ func TestRunCapturesReturnedValue(t *testing.T) {
 	Run(&nb)
 	if nb.Cells[0].State != "ok" {
 		t.Fatalf("state = %s", nb.Cells[0].State)
+	}
+	if nb.Cells[0].ElapsedNS <= 0 {
+		t.Fatalf("elapsed time = %d", nb.Cells[0].ElapsedNS)
 	}
 	joined := ""
 	for _, o := range nb.Cells[0].Outputs {
@@ -382,7 +385,7 @@ func TestNotebookPageRendersTrustedHTML(t *testing.T) {
 
 func TestNotebookPageRenders(t *testing.T) {
 	nb := New("Web")
-	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Name: "data", Source: "(+ 1 2)", Outputs: []Output{{Type: "chart", Spec: `{"data":[1,2,3]}`}, {Type: "graph", Source: `{"nodes":[{"id":"A"}],"edges":[]}`}, {Type: "svg", Source: `<svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4"/></svg>`}}}}
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Name: "data", Source: "(+ 1 2)", ElapsedNS: int64(3 * 1000 * 1000), Outputs: []Output{{Type: "chart", Spec: `{"data":[1,2,3]}`}, {Type: "graph", Source: `{"nodes":[{"id":"A"}],"edges":[]}`}, {Type: "svg", Source: `<svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4"/></svg>`}}}}
 	var w bytes.Buffer
 	if err := page.Execute(&w, nb); err != nil {
 		t.Fatal(err)
@@ -396,7 +399,7 @@ func TestNotebookPageRenders(t *testing.T) {
 	if strings.Contains(w.String(), "cancelled") || strings.Contains(w.String(), "canceled") {
 		t.Fatalf("page rendered a terminal cancellation pill label:\n%s", w.String())
 	}
-	for _, want := range []string{"showRawNotebook", `id="raw-notebook"`, `contenteditable="true"`, ".raw-notebook{display:none}", "Hid dependency graph", "Showing dependency graph", "Hid snapshots", "Showing snapshots", ".cell-actions{display:flex", "pointer-events:none", ".cell:hover .cell-actions", ".cell-state-processing .cell-actions", "cancel-run", "Cancel run", "AbortController", "runControllers", "run-status", "stopping", "Cancel requested; waiting for run to stop", "Run stopped", "running-dot", "button-group theme-toggle", "M12 3a6", "notebook-commandbar", "#notebook-title{box-sizing:border-box", "height:2.125rem", ".button-group>button", "border-radius:999px 0 0 999px", ".CodeMirror-scroll{min-height:5rem;overflow-y:hidden!important;overflow-x:auto!important", ".chart{height:360px;min-height:360px", ".diagram,.graph,.svg-output{min-height:260px", ".svg-output>svg{display:block;width:100%;height:auto", `class="svg-output"`, `<svg viewBox="0 0 10 10"><circle`, "requestAnimationFrame(function(){chart.resize()}", "autosizeTextarea", "viewportMargin:Infinity"} {
+	for _, want := range []string{"showRawNotebook", `id="raw-notebook"`, `contenteditable="true"`, ".raw-notebook{display:none}", "Hid dependency graph", "Showing dependency graph", "Hid snapshots", "Showing snapshots", ".cell-actions{display:flex", "pointer-events:none", ".cell:hover .cell-actions", ".cell-state-processing .cell-actions", "cancel-run", "Cancel run", "AbortController", "runControllers", "run-status", "stopping", "Cancel requested; waiting for run to stop", "Run stopped", "running-dot", "button-group theme-toggle", "M12 3a6", "notebook-commandbar", "#notebook-title{box-sizing:border-box", "height:2.125rem", ".button-group>button", "border-radius:999px 0 0 999px", "caret-color:var(--accent)", ".CodeMirror-cursor{border-left:2px solid var(--accent)!important", ".CodeMirror-focused .CodeMirror-cursor{border-left-color:var(--fg)!important", ".time-pill{border:1px solid var(--border)", `data-elapsed-ns="3000000"`, `title="Last execution time"`, "3.0 ms", "formatElapsedMS", "startRunTimer", "stopRunTimer", ".CodeMirror-scroll{min-height:5rem;overflow-y:hidden!important;overflow-x:auto!important", ".chart{height:360px;min-height:360px", ".diagram,.graph,.svg-output{min-height:260px", ".svg-output>svg{display:block;width:100%;height:auto", `class="svg-output"`, `<svg viewBox="0 0 10 10"><circle`, "requestAnimationFrame(function(){chart.resize()}", "autosizeTextarea", "viewportMargin:Infinity"} {
 		if !strings.Contains(w.String(), want) {
 			t.Fatalf("page missing interaction/style %q:\n%s", want, w.String())
 		}

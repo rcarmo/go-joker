@@ -90,15 +90,21 @@ Bitmap outputs can be generated directly inside Joker with `joker.imaging`.
 Use `joker.imaging/new` to allocate an image, `joker.imaging/set-pixel!` and
 `joker.imaging/pixel` for pixel-level access, `joker.imaging/resize` for display
 scaling, and `joker.imaging/from-rgba32` to build an image from row-major packed
-RGBA integer pixels (`0xRRGGBBAA`). Notebook cells may return a `joker.imaging`
-image object directly; the notebook renderer encodes it at the output boundary.
-Use `joker.imaging/encode` plus `joker.base64/encode-string` only when a cell
-needs to construct an explicit `joker.notebook/image` envelope itself.
+RGBA integer pixels (`0xRRGGBBAA`). Use `joker.imaging/from-rgba32-fn` when a
+cell can compute pixels procedurally; it calls a supplied `(fn [x y] ...)` and
+fills the image directly, which avoids building a large intermediate pixel
+vector. Use `joker.imaging/from-rgba32-domain-fn` when a numeric kernel works
+in a continuous coordinate space; it passes `xmin + x*dx` and `ymin + y*dy` to
+the pixel function and is a good fit for `joker.jit/compile-wasm` kernels.
+Notebook cells may return a `joker.imaging` image object directly; the notebook
+renderer encodes it at the output boundary. Use `joker.imaging/encode` plus
+`joker.base64/encode-string` only when a cell needs to construct an explicit
+`joker.notebook/image` envelope itself.
 
 Hot numeric kernels can be moved to the in-process WASM path with
 `joker.jit/compile-wasm` when the function is pure numeric and WASM-eligible.
-The complex demo uses this for Mandelbrot escape iteration, then stores the
-computed colors as packed RGBA32 pixels before constructing the image.
+The complex demo uses this for Mandelbrot color calculation, then rasterizes
+packed RGBA32 pixels through `joker.imaging/from-rgba32-domain-fn`.
 
 ```clojure
 {:type :text

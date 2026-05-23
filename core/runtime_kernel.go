@@ -15509,6 +15509,52 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 }
 
 func wasmExec(wp *WasmProgram, slots []coretypes.Object) coretypes.Object {
+	if !wp.hasImports {
+		numericOnly := true
+		for _, s := range slots {
+			switch s.(type) {
+			case coretypes.Int, coretypes.Double:
+			default:
+				numericOnly = false
+			}
+		}
+		if numericOnly {
+			var stackBuf [16]uint64
+			var stack []uint64
+			if len(slots) <= len(stackBuf) {
+				stack = stackBuf[:len(slots)]
+			} else {
+				stack = make([]uint64, len(slots))
+			}
+			for i, s := range slots {
+				switch v := s.(type) {
+				case coretypes.Int:
+					if wp.useFloat {
+						stack[i] = math.Float64bits(float64(v.I))
+					} else {
+						stack[i] = uint64(v.I)
+					}
+				case coretypes.Double:
+					if wp.useFloat {
+						stack[i] = math.Float64bits(v.D)
+					} else {
+						return nil
+					}
+				default:
+					return nil
+				}
+			}
+			if err := wp.execFn.CallWithStack(context.Background(), stack); err != nil {
+				return nil
+			}
+			r := stack[0]
+			if wp.useFloat {
+				return coretypes.Double{D: math.Float64frombits(r)}
+			}
+			return corewasm.RawIntObject(r)
+		}
+	}
+
 	// Create object table for this execution
 	table := corewasm.NewObjectTable(NIL)
 

@@ -489,6 +489,64 @@ var procFromRGBA32 ProcFn = func(args []coretypes.Object) coretypes.Object {
 	return wrapImage(img)
 }
 
+var procFromRGBA32Fn ProcFn = func(args []coretypes.Object) coretypes.Object {
+	CheckArity(args, 3, 3)
+	w := positiveDimension(args[0], "width")
+	h := positiveDimension(args[1], "height")
+	pixelFn, ok := args[2].(coretypes.Callable)
+	if !ok {
+		panic(RT.NewError("imaging/from-rgba32-fn: pixel function must be callable"))
+	}
+	img := image.NewNRGBA(image.Rect(0, 0, w, h))
+	callArgs := []coretypes.Object{coretypes.Int{}, coretypes.Int{}}
+	i := 0
+	for y := 0; y < h; y++ {
+		callArgs[1] = coretypes.MakeInt(y)
+		for x := 0; x < w; x++ {
+			callArgs[0] = coretypes.MakeInt(x)
+			rgba := packedRGBA32(pixelFn.Call(callArgs), i)
+			off := i * 4
+			img.Pix[off] = uint8(rgba >> 24)
+			img.Pix[off+1] = uint8(rgba >> 16)
+			img.Pix[off+2] = uint8(rgba >> 8)
+			img.Pix[off+3] = uint8(rgba)
+			i++
+		}
+	}
+	return wrapImage(img)
+}
+
+var procFromRGBA32DomainFn ProcFn = func(args []coretypes.Object) coretypes.Object {
+	CheckArity(args, 7, 7)
+	w := positiveDimension(args[0], "width")
+	h := positiveDimension(args[1], "height")
+	xmin := coretypes.EnsureArgIsNumber(args, 2).Double().D
+	ymin := coretypes.EnsureArgIsNumber(args, 3).Double().D
+	dx := coretypes.EnsureArgIsNumber(args, 4).Double().D
+	dy := coretypes.EnsureArgIsNumber(args, 5).Double().D
+	pixelFn, ok := args[6].(coretypes.Callable)
+	if !ok {
+		panic(RT.NewError("imaging/from-rgba32-domain-fn: pixel function must be callable"))
+	}
+	img := image.NewNRGBA(image.Rect(0, 0, w, h))
+	callArgs := []coretypes.Object{coretypes.Double{}, coretypes.Double{}}
+	i := 0
+	for y := 0; y < h; y++ {
+		callArgs[1] = coretypes.Double{D: ymin + dy*float64(y)}
+		for x := 0; x < w; x++ {
+			callArgs[0] = coretypes.Double{D: xmin + dx*float64(x)}
+			rgba := packedRGBA32(pixelFn.Call(callArgs), i)
+			off := i * 4
+			img.Pix[off] = uint8(rgba >> 24)
+			img.Pix[off+1] = uint8(rgba >> 16)
+			img.Pix[off+2] = uint8(rgba >> 8)
+			img.Pix[off+3] = uint8(rgba)
+			i++
+		}
+	}
+	return wrapImage(img)
+}
+
 func pixelPoint(im *Image, x, y int, op string) {
 	bounds := im.img.Bounds()
 	if x < bounds.Min.X || x >= bounds.Max.X || y < bounds.Min.Y || y >= bounds.Max.Y {
