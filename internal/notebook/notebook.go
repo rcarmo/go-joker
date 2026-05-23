@@ -983,13 +983,14 @@ function loadStatus(){fetch('/api/status').then(r=>r.json()).then(s=>{document.g
 loadStatus();applyReadOnly()
 function logMsg(s,isErr){var el=document.getElementById('notebook-log');el.textContent=s;el.className=isErr?'err':''}
 function apiText(promise,ok){return promise.then(async r=>{var t=await r.text();if(!r.ok){logMsg(t||('HTTP '+r.status),true);throw new Error(t)};logMsg(ok||'OK',false);return t})}
-function refresh(t){setDirty(false);document.getElementById('raw').textContent=t; setTimeout(function(){location.reload()},150)}
+function updateRaw(t){setDirty(false);document.getElementById('raw').textContent=t;loadStatus()}
+function refresh(t){updateRaw(t);setTimeout(function(){location.reload()},150)}
 function splitDeps(s){return (s||'').split(',').map(x=>x.trim()).filter(Boolean)}
 function sourcePayload(){return JSON.stringify({title:document.getElementById('notebook-title').value,cells:Array.from(document.querySelectorAll('.cell')).map(function(c){return {id:c.dataset.id,kind:c.querySelector('.cell-kind').value,name:c.querySelector('.cell-name').value.trim(),dependsOn:splitDeps(c.querySelector('.cell-deps').value),source:c.querySelector('textarea').value}})})}
 function evaluateAll(){apiText(fetch('/api/evaluate-all',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}),'Evaluated all cells').then(refresh).catch(()=>{})}
 function evaluateCell(id){var c=document.querySelector('.cell[data-id="'+CSS.escape(id)+'"]');var src=c?c.querySelector('textarea').value:'';apiText(fetch('/api/evaluate-cell?id='+encodeURIComponent(id),{method:'POST',headers:{'Content-Type':'text/plain'},body:src}),'Evaluated '+id).then(refresh).catch(()=>{})}
-function saveNotebook(){apiText(fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}),'Saved notebook').then(refresh).catch(()=>{})}
-function exportMarkdown(){apiText(fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}),'Saved before export').then(()=>apiText(fetch('/api/export/markdown'),'Exported Markdown')).then(t=>{document.getElementById('raw').textContent=t}).catch(()=>{})}
+function saveNotebook(){apiText(fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}),'Saved notebook').then(updateRaw).catch(()=>{})}
+function exportMarkdown(){apiText(fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}),'Saved before export').then(updateRaw).then(()=>apiText(fetch('/api/export/markdown'),'Exported Markdown')).then(t=>{document.getElementById('raw').textContent=t}).catch(()=>{})}
 function loadRawEdn(){var raw=document.getElementById('raw').textContent.trim();if(!raw){alert('Paste notebook EDN into the raw pane first.');return}apiText(fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/edn'},body:raw}),'Loaded raw EDN').then(refresh).catch(()=>{})}
 function addCell(kind){apiText(fetch('/api/cell?kind='+encodeURIComponent(kind),{method:'POST'}),'Added '+kind+' cell').then(refresh).catch(()=>{})}
 function deleteCell(id){if(confirm('Delete '+id+'?'))apiText(fetch('/api/cell?id='+encodeURIComponent(id),{method:'DELETE'}),'Deleted '+id).then(refresh).catch(()=>{})}
