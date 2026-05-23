@@ -226,7 +226,7 @@ The current slices provide:
 - code-cell rich-output map normalization via `:notebook/output`/`:type`;
 - headless `notebook run`;
 - Markdown export with rich output fallbacks;
-- local web UI with automatic OS color-scheme support plus explicit Light/Dark/Auto theme buttons, keyboard shortcuts (`Ctrl/Cmd+S`, `Ctrl/Cmd+Enter`, `Shift+Enter`), unsaved-change tracking and before-unload warning, local save snapshot listing/restoring, Mathematica-like cell chrome (`In[n]`/`Out[n]`, state pills, collapsible outputs), action/error log, editable notebook title, size/status warning, output pruning controls, add/delete/reorder controls, raw EDN import, editable cell metadata (`kind`, `name`, `depends-on`), Markdown previews for markdown cells, and lightweight Joker syntax highlighting;
+- local web UI with automatic OS color-scheme support plus explicit Light/Dark/Auto theme buttons, keyboard shortcuts (`Ctrl/Cmd+S`, `Ctrl/Cmd+Enter`, `Shift+Enter`), unsaved-change tracking and before-unload warning, local save snapshot listing/restoring, Mathematica-like cell chrome (`In[n]`/`Out[n]`, state pills, collapsible outputs), action/error log, editable notebook title, size/status warning, output pruning controls, add/delete/reorder controls, raw EDN import, editable cell metadata (`kind`, `name`, `depends-on`), Markdown previews for markdown cells, and vendored CodeMirror editing with Clojure/Joker + Markdown modes, close brackets, and Joker symbol autocomplete;
 - `GET /api/notebook`;
 - `GET /api/status` for cell/output counts, encoded EDN size, and the >10 MB inline-output warning;
 - `GET /api/snapshots` to list local recovery snapshots;
@@ -250,4 +250,4 @@ The current slices provide:
 - port parsing and CLI plumbing;
 - unit tests for schema, execution capture, Markdown export, dependencies, web rendering, HTTP APIs (load/export/save/evaluate/add/delete/reorder/downstream), and CLI parsing.
 
-Further slices should improve browser editing ergonomics and support richer save/update payloads from the browser. The vendored CodeMirror/ECharts/Mermaid assets are served locally by the notebook server; simple Mermaid flowcharts intentionally bypass Mermaid's default curved links and use the picker-style renderer with rounded boxes plus rounded orthogonal arrows.
+Further slices should support richer no-reload evaluate/update payloads from the browser and deeper runtime dependency tracking. The vendored CodeMirror/ECharts/Mermaid assets are served locally by the notebook server; simple Mermaid flowcharts intentionally bypass Mermaid's default curved links and use the picker-style renderer with rounded boxes plus rounded orthogonal arrows.

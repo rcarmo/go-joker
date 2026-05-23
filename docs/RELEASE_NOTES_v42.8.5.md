@@ -1,6 +1,6 @@
 # go-joker v42.8.5 Release Notes
 
-`v42.8.5` is a patch release focused on the notebook editor experience and CI/release workflow hardening after `v42.8.4`.
+`v42.8.5` is a patch release focused on the notebook editor experience, Mermaid flow rendering, and CI/release workflow hardening after `v42.8.4`.
 
 ## Version
 
@@ -25,6 +25,17 @@ Vendored CodeMirror files are embedded and served locally under `/assets/codemir
 ## Notebook browser assets
 
 The notebook asset embed now covers nested asset directories, so CodeMirror, ECharts, and Mermaid assets are all served through the same local `/assets/` path.
+
+## Mermaid flow rendering
+
+Simple Mermaid flowcharts now intentionally bypass Mermaid's default curved-link renderer and use the local picker-style renderer instead:
+
+- rounded node boxes (`rx`/`ry` set on SVG rects);
+- rounded orthogonal connector paths using vertical/horizontal segments plus quadratic corner curves;
+- rounded line caps/joins;
+- explicit arrow markers.
+
+Vendored Mermaid remains available for diagram shapes the simple local parser does not understand.
 
 ## CI/release hardening
 

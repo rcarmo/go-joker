@@ -132,6 +132,7 @@ joker notebook demo rich-demo.edn
 joker notebook rich-demo.edn -p 8080 --open
 joker notebook example.edn -p 8080       # local browser UI
 joker notebook run example.edn           # headless execution, updates inline outputs
+joker notebook run example.edn --no-save --summary --fail-on-error
 joker notebook validate example.edn      # format/cycle validation
 joker notebook status example.edn        # status/size JSON
 joker notebook deps example.edn          # dependency graph/cycles JSON
@@ -139,7 +140,7 @@ joker notebook snapshots example.edn     # list recovery snapshots
 joker notebook export example.edn -o report.md
 ```
 
-Notebook files are regular EDN maps with `:format :joker/notebook`; outputs are stored inline by default for self-contained agent/debug reports. See [`docs/NOTEBOOKS.md`](docs/NOTEBOOKS.md).
+Notebook files are regular EDN maps with `:format :joker/notebook`; outputs are stored inline by default for self-contained agent/debug reports. The browser UI uses local vendored CodeMirror/ECharts/Mermaid assets (no CDN), supports Joker/Markdown highlighting and Joker symbol autocomplete, and renders simple Mermaid flows with rounded boxes plus rounded orthogonal arrows. See [`docs/NOTEBOOKS.md`](docs/NOTEBOOKS.md).
 
 ## Runtime documentation lookup
 
