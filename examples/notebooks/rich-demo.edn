@@ -6,7 +6,7 @@
  :cells [
   {:id "cell-1"
    :kind :markdown
-   :source "# Joker notebook rich demo\n\nThis notebook demonstrates value, chart, diagram, and graph outputs."
+   :source "# Joker notebook rich demo\n\nThis notebook demonstrates value, chart, table, diagram, and graph outputs."
    :execution-count 0
    :state :idle
    :outputs []}
@@ -31,14 +31,23 @@
 
   {:id "cell-4"
    :kind :code
-   :name "flow"
+   :name "table"
    :depends-on ["chart"]
-   :source "(joker.notebook/mermaid \"graph TD; Load-->Transform; Transform-->Render\")"
+   :source "(joker.notebook/table [{:name \"Ada\" :score 42} {:name \"Grace\" :score 99}])"
    :execution-count 0
    :state :idle
    :outputs []}
 
   {:id "cell-5"
+   :kind :code
+   :name "flow"
+   :depends-on ["table"]
+   :source "(joker.notebook/mermaid \"graph TD; Load-->Transform; Transform-->Render\")"
+   :execution-count 0
+   :state :idle
+   :outputs []}
+
+  {:id "cell-6"
    :kind :code
    :name "graph"
    :depends-on ["flow"]
