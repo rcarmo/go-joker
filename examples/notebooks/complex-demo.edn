@@ -2,7 +2,7 @@
  :version 1
  :title "Joker complex notebook demo"
  :created-at "2026-05-23T00:00:00Z"
- :updated-at "2026-05-23T20:53:06Z"
+ :updated-at "2026-05-23T21:38:52Z"
  :cells [
   {:id "intro"
    :kind :markdown
@@ -17,90 +17,129 @@
    :name "scenario-table"
    :depends-on []
    :source "(joker.notebook/table [{:stage \"ingest\" :latency-ms 14 :throughput 420 :risk \"low\"} {:stage \"parse\" :latency-ms 31 :throughput 360 :risk \"medium\"} {:stage \"evaluate\" :latency-ms 58 :throughput 250 :risk \"medium\"} {:stage \"render\" :latency-ms 22 :throughput 390 :risk \"low\"} {:stage \"export\" :latency-ms 18 :throughput 405 :risk \"low\"}])"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 3
+   :state :ok
+   :outputs [
+    {:type :table
+     :renderer :json
+     :source "[{\"stage\":\"ingest\",\"latency-ms\":14,\"throughput\":420,\"risk\":\"low\"},{\"stage\":\"parse\",\"latency-ms\":31,\"throughput\":360,\"risk\":\"medium\"},{\"stage\":\"evaluate\",\"latency-ms\":58,\"throughput\":250,\"risk\":\"medium\"},{\"stage\":\"render\",\"latency-ms\":22,\"throughput\":390,\"risk\":\"low\"},{\"stage\":\"export\",\"latency-ms\":18,\"throughput\":405,\"risk\":\"low\"}]"}
+   ]}
 
   {:id "throughput-chart"
    :kind :code
    :name "throughput-chart"
    :depends-on ["scenario-table"]
    :source "(joker.notebook/chart {:tooltip {:trigger \"axis\"} :legend {:data [\"throughput\" \"latency\"]} :grid {:left 48 :right 48 :top 52 :bottom 42 :containLabel true} :xAxis {:type \"category\" :data [\"ingest\" \"parse\" \"evaluate\" \"render\" \"export\"]} :yAxis [{:type \"value\" :name \"items/s\"} {:type \"value\" :name \"ms\"}] :series [{:name \"throughput\" :type \"bar\" :data [420 360 250 390 405]} {:name \"latency\" :type \"line\" :yAxisIndex 1 :smooth true :data [14 31 58 22 18]}]})"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 3
+   :state :ok
+   :outputs [
+    {:type :chart
+     :renderer :echarts
+     :spec "{\"tooltip\":{\"trigger\":\"axis\"},\"legend\":{\"data\":[\"throughput\",\"latency\"]},\"grid\":{\"left\":48,\"right\":48,\"top\":52,\"bottom\":42,\"containLabel\":true},\"xAxis\":{\"type\":\"category\",\"data\":[\"ingest\",\"parse\",\"evaluate\",\"render\",\"export\"]},\"yAxis\":[{\"type\":\"value\",\"name\":\"items/s\"},{\"type\":\"value\",\"name\":\"ms\"}],\"series\":[{\"name\":\"throughput\",\"type\":\"bar\",\"data\":[420,360,250,390,405]},{\"name\":\"latency\",\"type\":\"line\",\"yAxisIndex\":1,\"smooth\":true,\"data\":[14,31,58,22,18]}]}"}
+   ]}
 
   {:id "heatmap-chart"
    :kind :code
    :name "heatmap-chart"
    :depends-on ["throughput-chart"]
    :source "(joker.notebook/chart {:tooltip {:position \"top\"} :grid {:height \"62%\" :top 38 :containLabel true} :xAxis {:type \"category\" :data [\"Mon\" \"Tue\" \"Wed\" \"Thu\" \"Fri\" \"Sat\" \"Sun\"]} :yAxis {:type \"category\" :data [\"compile\" \"lint\" \"docs\" \"render\" \"export\"]} :visualMap {:min 0 :max 18 :calculable true :orient \"horizontal\" :left \"center\" :bottom 4} :series [{:type \"heatmap\" :label {:show true} :data [[0 0 5] [1 0 7] [2 0 4] [3 0 8] [4 0 6] [5 0 2] [6 0 1] [0 1 8] [1 1 12] [2 1 11] [3 1 10] [4 1 9] [5 1 3] [6 1 2] [0 2 3] [1 2 5] [2 2 6] [3 2 7] [4 2 5] [5 2 4] [6 2 2] [0 3 9] [1 3 14] [2 3 15] [3 3 18] [4 3 13] [5 3 5] [6 3 4] [0 4 4] [1 4 6] [2 4 7] [3 4 9] [4 4 8] [5 4 3] [6 4 1]]}]})"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 3
+   :state :ok
+   :outputs [
+    {:type :chart
+     :renderer :echarts
+     :spec "{\"tooltip\":{\"position\":\"top\"},\"grid\":{\"height\":\"62%\",\"top\":38,\"containLabel\":true},\"xAxis\":{\"type\":\"category\",\"data\":[\"Mon\",\"Tue\",\"Wed\",\"Thu\",\"Fri\",\"Sat\",\"Sun\"]},\"yAxis\":{\"type\":\"category\",\"data\":[\"compile\",\"lint\",\"docs\",\"render\",\"export\"]},\"visualMap\":{\"min\":0,\"max\":18,\"calculable\":true,\"orient\":\"horizontal\",\"left\":\"center\",\"bottom\":4},\"series\":[{\"type\":\"heatmap\",\"label\":{\"show\":true},\"data\":[[0,0,5],[1,0,7],[2,0,4],[3,0,8],[4,0,6],[5,0,2],[6,0,1],[0,1,8],[1,1,12],[2,1,11],[3,1,10],[4,1,9],[5,1,3],[6,1,2],[0,2,3],[1,2,5],[2,2,6],[3,2,7],[4,2,5],[5,2,4],[6,2,2],[0,3,9],[1,3,14],[2,3,15],[3,3,18],[4,3,13],[5,3,5],[6,3,4],[0,4,4],[1,4,6],[2,4,7],[3,4,9],[4,4,8],[5,4,3],[6,4,1]]}]}"}
+   ]}
 
   {:id "flow"
    :kind :code
    :name "flow"
    :depends-on ["scenario-table"]
    :source "(joker.notebook/mermaid \"graph TD; Load-->Normalize; Normalize-->Analyze; Analyze-->Render; Analyze-->Bitmap; Render-->Publish; Bitmap-->Publish\")"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 3
+   :state :ok
+   :outputs [
+    {:type :diagram
+     :renderer :mermaid
+     :source "graph TD; Load-->Normalize; Normalize-->Analyze; Analyze-->Render; Analyze-->Bitmap; Render-->Publish; Bitmap-->Publish"}
+   ]}
 
   {:id "dependency-graph"
    :kind :code
    :name "dependency-graph"
    :depends-on ["flow"]
    :source "(joker.notebook/graph {:nodes [{:id \"Load\"} {:id \"Normalize\"} {:id \"Analyze\"} {:id \"Render\"} {:id \"Bitmap\"} {:id \"Publish\"}] :edges [{:from \"Load\" :to \"Normalize\"} {:from \"Normalize\" :to \"Analyze\"} {:from \"Analyze\" :to \"Render\"} {:from \"Analyze\" :to \"Bitmap\"} {:from \"Render\" :to \"Publish\"} {:from \"Bitmap\" :to \"Publish\"}]})"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 3
+   :state :ok
+   :outputs [
+    {:type :graph
+     :renderer :graph-json
+     :source "{\"nodes\":[{\"id\":\"Load\"},{\"id\":\"Normalize\"},{\"id\":\"Analyze\"},{\"id\":\"Render\"},{\"id\":\"Bitmap\"},{\"id\":\"Publish\"}],\"edges\":[{\"from\":\"Load\",\"to\":\"Normalize\"},{\"from\":\"Normalize\",\"to\":\"Analyze\"},{\"from\":\"Analyze\",\"to\":\"Render\"},{\"from\":\"Analyze\",\"to\":\"Bitmap\"},{\"from\":\"Render\",\"to\":\"Publish\"},{\"from\":\"Bitmap\",\"to\":\"Publish\"}]}"}
+   ]}
 
   {:id "control-room"
    :kind :code
    :name "control-room"
    :depends-on ["heatmap-chart"]
    :source "(joker.notebook/svg \"<svg viewBox='0 0 760 240' role='img' aria-label='Notebook control room'><rect width='760' height='240' fill='#0b1220'/><g transform='translate(70 120)'><circle r='72' fill='#10213a' stroke='#38bdf8' stroke-width='2'/><circle r='42' fill='none' stroke='#22c55e' stroke-width='7' stroke-dasharray='72 34'/><circle r='18' fill='#f8fafc'/><text y='5' text-anchor='middle' font-family='ui-sans-serif,system-ui' font-size='12' fill='#0b1220'>OK</text></g><g font-family='ui-monospace,monospace' font-size='13' fill='#dbeafe'><text x='190' y='64'>render queue</text><rect x='190' y='80' width='510' height='22' rx='4' fill='#1d4ed8'/><rect x='190' y='120' width='430' height='22' rx='4' fill='#059669'/><rect x='190' y='160' width='570' height='22' rx='4' fill='#7c3aed'/><text x='710' y='97' text-anchor='end'>charts</text><text x='710' y='137' text-anchor='end'>bitmap</text><text x='710' y='177' text-anchor='end'>svg depth</text></g></svg>\")"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 3
+   :state :ok
+   :outputs [
+    {:type :svg
+     :source "<svg viewBox='0 0 760 240' role='img' aria-label='Notebook control room'><rect width='760' height='240' fill='#0b1220'/><g transform='translate(70 120)'><circle r='72' fill='#10213a' stroke='#38bdf8' stroke-width='2'/><circle r='42' fill='none' stroke='#22c55e' stroke-width='7' stroke-dasharray='72 34'/><circle r='18' fill='#f8fafc'/><text y='5' text-anchor='middle' font-family='ui-sans-serif,system-ui' font-size='12' fill='#0b1220'>OK</text></g><g font-family='ui-monospace,monospace' font-size='13' fill='#dbeafe'><text x='190' y='64'>render queue</text><rect x='190' y='80' width='510' height='22' rx='4' fill='#1d4ed8'/><rect x='190' y='120' width='430' height='22' rx='4' fill='#059669'/><rect x='190' y='160' width='570' height='22' rx='4' fill='#7c3aed'/><text x='710' y='97' text-anchor='end'>charts</text><text x='710' y='137' text-anchor='end'>bitmap</text><text x='710' y='177' text-anchor='end'>svg depth</text></g></svg>"}
+   ]}
 
   {:id "svg-3d-depth"
    :kind :code
    :name "svg-3d-depth"
    :depends-on ["control-room"]
    :source "(let [faces [{:depth 1 :visible? true :fill \"#334155\" :points \"74,310 626,310 704,238 156,238\"} {:depth 2 :visible? true :fill \"#1d4ed8\" :points \"198,198 310,150 386,188 272,248\"} {:depth 3 :visible? true :fill \"#38bdf8\" :points \"310,150 418,198 386,188 198,198\"} {:depth 4 :visible? false :fill \"#0f172a\" :points \"198,198 272,248 386,188 310,150\"} {:depth 5 :visible? true :fill \"#22c55e\" :points \"272,248 386,188 500,238 382,306\"} {:depth 6 :visible? true :fill \"#0f766e\" :points \"386,188 498,136 616,188 500,238\"} {:depth 7 :visible? true :fill \"#38bdf8\" :points \"498,136 610,184 616,188 386,188\"} {:depth 8 :visible? false :fill \"#064e3b\" :points \"386,188 500,238 616,188 498,136\"} {:depth 9 :visible? true :fill \"#7c3aed\" :points \"298,112 408,64 512,116 402,176\"} {:depth 10 :visible? true :fill \"#a855f7\" :points \"402,176 512,116 570,170 458,238\"} {:depth 11 :visible? true :fill \"#f59e0b\" :points \"298,112 402,176 458,238 344,168\"} {:depth 12 :visible? false :fill \"#581c87\" :points \"344,168 458,238 570,170 512,116\"}] visible (sort-by :depth (filter (fn [face] (:visible? face)) faces)) polygon (fn [face] (str \"<polygon points='\" (:points face) \"' fill='\" (:fill face) \"' stroke='#0f172a' stroke-width='1.4' opacity='.92'/>\")) grid (str (apply str (for [x (range 80 720 48)] (str \"<path d='M\" x \" 330 L\" (- x 120) \" 156'/>\"))) (apply str (for [y (range 150 330 30)] (str \"<path d='M56 \" y \" L704 \" y \"'/>\"))))] (joker.notebook/svg (str \"<svg viewBox='0 0 760 390' role='img' aria-label='Depth culled SVG 3D scene'><rect width='760' height='390' fill='#f8fafc'/><g opacity='.18' stroke='#64748b'>\" grid \"</g><g>\" (apply str (map polygon visible)) \"</g><text x='24' y='32' font-family='ui-sans-serif,system-ui' font-size='18' fill='#0f172a'>SVG 3D scene</text><text x='24' y='56' font-family='ui-monospace,monospace' font-size='12' fill='#475569'>Preprojected faces are depth-sorted; hidden polygons are culled before rendering.</text><text x='24' y='374' font-family='ui-monospace,monospace' font-size='12' fill='#64748b'>visible faces: \" (count visible) \" / \" (count faces) \"</text></svg>\")))"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 3
+   :state :ok
+   :outputs [
+    {:type :svg
+     :source "<svg viewBox='0 0 760 390' role='img' aria-label='Depth culled SVG 3D scene'><rect width='760' height='390' fill='#f8fafc'/><g opacity='.18' stroke='#64748b'><path d='M80 330 L-40 156'/><path d='M128 330 L8 156'/><path d='M176 330 L56 156'/><path d='M224 330 L104 156'/><path d='M272 330 L152 156'/><path d='M320 330 L200 156'/><path d='M368 330 L248 156'/><path d='M416 330 L296 156'/><path d='M464 330 L344 156'/><path d='M512 330 L392 156'/><path d='M560 330 L440 156'/><path d='M608 330 L488 156'/><path d='M656 330 L536 156'/><path d='M704 330 L584 156'/><path d='M56 150 L704 150'/><path d='M56 180 L704 180'/><path d='M56 210 L704 210'/><path d='M56 240 L704 240'/><path d='M56 270 L704 270'/><path d='M56 300 L704 300'/></g><g><polygon points='74,310 626,310 704,238 156,238' fill='#334155' stroke='#0f172a' stroke-width='1.4' opacity='.92'/><polygon points='198,198 310,150 386,188 272,248' fill='#1d4ed8' stroke='#0f172a' stroke-width='1.4' opacity='.92'/><polygon points='310,150 418,198 386,188 198,198' fill='#38bdf8' stroke='#0f172a' stroke-width='1.4' opacity='.92'/><polygon points='272,248 386,188 500,238 382,306' fill='#22c55e' stroke='#0f172a' stroke-width='1.4' opacity='.92'/><polygon points='386,188 498,136 616,188 500,238' fill='#0f766e' stroke='#0f172a' stroke-width='1.4' opacity='.92'/><polygon points='498,136 610,184 616,188 386,188' fill='#38bdf8' stroke='#0f172a' stroke-width='1.4' opacity='.92'/><polygon points='298,112 408,64 512,116 402,176' fill='#7c3aed' stroke='#0f172a' stroke-width='1.4' opacity='.92'/><polygon points='402,176 512,116 570,170 458,238' fill='#a855f7' stroke='#0f172a' stroke-width='1.4' opacity='.92'/><polygon points='298,112 402,176 458,238 344,168' fill='#f59e0b' stroke='#0f172a' stroke-width='1.4' opacity='.92'/></g><text x='24' y='32' font-family='ui-sans-serif,system-ui' font-size='18' fill='#0f172a'>SVG 3D scene</text><text x='24' y='56' font-family='ui-monospace,monospace' font-size='12' fill='#475569'>Preprojected faces are depth-sorted; hidden polygons are culled before rendering.</text><text x='24' y='374' font-family='ui-monospace,monospace' font-size='12' fill='#64748b'>visible faces: 9 / 12</text></svg>"}
+   ]}
 
   {:id "mandelbrot-params"
    :kind :code
    :name "mandelbrot-params"
    :depends-on []
    :source "(joker.notebook/table [{:parameter \"width\" :value 12} {:parameter \"height\" :value 10} {:parameter \"max-iter\" :value 8} {:parameter \"compute\" :value \"WASM escape-iteration kernel\"} {:parameter \"pixels\" :value \"packed RGBA32 vector\"} {:parameter \"output\" :value \"image object rendered by notebook\"}])"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 3
+   :state :ok
+   :outputs [
+    {:type :table
+     :renderer :json
+     :source "[{\"parameter\":\"width\",\"value\":12},{\"parameter\":\"height\",\"value\":10},{\"parameter\":\"max-iter\",\"value\":8},{\"parameter\":\"compute\",\"value\":\"WASM escape-iteration kernel\"},{\"parameter\":\"pixels\",\"value\":\"packed RGBA32 vector\"},{\"parameter\":\"output\",\"value\":\"image object rendered by notebook\"}]"}
+   ]}
 
   {:id "mandelbrot"
    :kind :code
    :name "mandelbrot"
    :depends-on ["mandelbrot-params"]
    :source "(require 'joker.imaging)\n(require 'joker.jit)\n\n(let [width 12\n      height 10\n      max-iter 8\n      xmin -2.25\n      ymin -1.25\n      dx (/ 3.25 width)\n      dy (/ 2.5 height)\n      pack (fn [r g b a]\n             (bit-or (bit-shift-left r 24)\n                     (bit-shift-left g 16)\n                     (bit-shift-left b 8)\n                     a))\n      palette (vec\n                (map (fn [n]\n                       (if (= n max-iter)\n                         (pack 4 7 20 255)\n                         (pack (mod (+ 20 (* n 7)) 256)\n                               (mod (+ 42 (* n 13)) 256)\n                               (mod (+ 95 (* n 19)) 256)\n                               255)))\n                     (range (+ max-iter 1))))\n      escape-iter (joker.jit/compile-wasm\n                    (fn [cr ci]\n                      (loop [zr 0.0\n                             zi 0.0\n                             n 0]\n                        (if (= n max-iter)\n                          n\n                          (if (> (+ (* zr zr) (* zi zi)) 4.0)\n                            n\n                            (recur (+ (- (* zr zr) (* zi zi)) cr)\n                                   (+ (* (* 2.0 zr) zi) ci)\n                                   (+ n 1)))))))\n      pixel (fn [x y]\n              (nth palette\n                   (int (escape-iter (+ xmin (* dx x))\n                                     (+ ymin (* dy y))))))\n      pixels (persistent!\n               (loop [y 0\n                      out (transient [])]\n                 (if (= y height)\n                   out\n                   (recur (+ y 1)\n                          (loop [x 0\n                                 row out]\n                            (if (= x width)\n                              row\n                              (recur (+ x 1)\n                                     (conj! row (pixel x y)))))))))]\n  (joker.imaging/from-rgba32 width height pixels))"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 3
+   :state :ok
+   :outputs [
+    {:type :image
+     :mime "image/png"
+     :encoding :base64
+     :data "iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAIAAAAPTiitAAAAoUlEQVR4nGKRNi9iAAN2XmE4CQE/P7+FMJjgKiAIwuaTUru9rYZPSg0iwoRsDFw1n5QaAwMDRBE7rzALAxKAyJ2dEwbhHut3Nk5Z9fPzWxZku+DSyNo+PbsFUvTocD8DDvDp2S0GBgaQIjnbQoj1+Ez6+fktBBmnrEJ2E9wkJjTDIUod6y4wMDBYFe6FBBUTWrhBjIQYANHz8/NbQAAAAP//B8xPKvqe9QoAAAAASUVORK5CYII="}
+   ]}
 
   {:id "summary"
    :kind :code
    :name "summary"
    :depends-on ["mandelbrot" "svg-3d-depth" "dependency-graph"]
    :source "(joker.notebook/html \"<section style='font-family:ui-sans-serif,system-ui;line-height:1.45'><h3>Execution summary</h3><p>The notebook has generated structured data, charts, a workflow graph, trusted HTML, a projected SVG scene, and a Mandelbrot image using Joker bitmap operations.</p><ul><li>Charts use the ECharts output renderer.</li><li>The Mandelbrot cell compiles its escape-iteration kernel with <code>joker.jit/compile-wasm</code>, stores packed RGBA32 pixels in a vector, and returns an image object for notebook rendering.</li><li>The 3D SVG cell performs projection, depth sorting, and back-face culling in Joker code.</li></ul></section>\")"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 1
+   :state :ok
+   :outputs [
+    {:type :html
+     :renderer :trusted
+     :source "<section style='font-family:ui-sans-serif,system-ui;line-height:1.45'><h3>Execution summary</h3><p>The notebook has generated structured data, charts, a workflow graph, trusted HTML, a projected SVG scene, and a Mandelbrot image using Joker bitmap operations.</p><ul><li>Charts use the ECharts output renderer.</li><li>The Mandelbrot cell compiles its escape-iteration kernel with <code>joker.jit/compile-wasm</code>, stores packed RGBA32 pixels in a vector, and returns an image object for notebook rendering.</li><li>The 3D SVG cell performs projection, depth sorting, and back-face culling in Joker code.</li></ul></section>"}
+   ]}
 
   {:id "notes"
    :kind :markdown
