@@ -10,6 +10,7 @@ permissions:
 env:
   TMPDIR: ${{ github.workspace }}/.cache/tmp
   GOTMPDIR: ${{ github.workspace }}/.cache/go-build-tmp
+  DOCS_JOKER_BIN: ${{ github.workspace }}/.cache/tmp/go-joker-docs
 
 jobs:
   test:
