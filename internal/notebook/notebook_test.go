@@ -193,6 +193,29 @@ func TestSameOrigin(t *testing.T) {
 	}
 }
 
+func TestNotebookHTTPHandlerReadOnlyRejectsMutation(t *testing.T) {
+	old := ReadOnly
+	ReadOnly = true
+	defer func() { ReadOnly = old }()
+	path := t.TempDir() + "/api.edn"
+	nb := New("API")
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)"}}
+	if err := Save(path, nb); err != nil {
+		t.Fatal(err)
+	}
+	h := Handler(path)
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-all", nil))
+	if w.Code != http.StatusForbidden || !strings.Contains(w.Body.String(), "read-only") {
+		t.Fatalf("read-only mutation code=%d body=%s", w.Code, w.Body.String())
+	}
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/notebook", nil))
+	if w.Code != http.StatusOK {
+		t.Fatalf("read-only GET code=%d body=%s", w.Code, w.Body.String())
+	}
+}
+
 func TestNotebookHTTPHandlerRequiresTokenWhenConfigured(t *testing.T) {
 	old := AuthToken
 	AuthToken = "secret"

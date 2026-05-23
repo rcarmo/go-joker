@@ -112,6 +112,7 @@ func serveNotebook(args []string) {
 	addr := "127.0.0.1:8080"
 	path := "notebook.edn"
 	open := false
+	readOnly := false
 	token := ""
 	if len(args) > 0 && args[0] == "serve" {
 		args = args[1:]
@@ -139,6 +140,8 @@ func serveNotebook(args []string) {
 			addr = args[i]
 		case "--open":
 			open = true
+		case "--readonly", "--read-only":
+			readOnly = true
 		case "--token":
 			i++
 			if i >= len(args) {
@@ -153,6 +156,7 @@ func serveNotebook(args []string) {
 		}
 	}
 	notebook.AuthToken = token
+	notebook.ReadOnly = readOnly
 	if !strings.HasPrefix(addr, "127.0.0.1:") && !strings.HasPrefix(addr, "localhost:") {
 		fmt.Fprintf(Stderr, "WARNING: notebook server bound to %s exposes trusted local code execution.\n", addr)
 		if token == "" {
@@ -330,8 +334,8 @@ func parseNotebookPort(raw string) (string, error) {
 
 func printNotebookUsage() {
 	fmt.Fprintln(Stdout, `Usage:
-  joker notebook [file.edn] [-p 8080] [--open] [--token secret]
-  joker notebook serve [file.edn] [-p 8080] [--token secret]
+  joker notebook [file.edn] [-p 8080] [--open] [--token secret] [--readonly]
+  joker notebook serve [file.edn] [-p 8080] [--token secret] [--readonly]
   joker notebook new file.edn [--title "Title"] [--serve] [--open]
   joker notebook demo [file.edn]
   joker notebook run file.edn
