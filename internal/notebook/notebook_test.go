@@ -367,6 +367,19 @@ func TestNotebookPageIncludesTokenWhenConfigured(t *testing.T) {
 	}
 }
 
+func TestNotebookPageRendersTrustedHTML(t *testing.T) {
+	nb := New("HTML")
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Outputs: []Output{{Type: "html", Source: "<strong>Trusted</strong>"}, {Type: "svg", Source: "<svg><text>SVG</text></svg>"}}}}
+	var w bytes.Buffer
+	if err := page.Execute(&w, nb); err != nil {
+		t.Fatal(err)
+	}
+	html := w.String()
+	if !strings.Contains(html, "<strong>Trusted</strong>") || strings.Contains(html, "&lt;strong&gt;") || !strings.Contains(html, "<svg><text>SVG</text></svg>") {
+		t.Fatalf("trusted HTML/SVG not rendered raw:\n%s", html)
+	}
+}
+
 func TestNotebookPageRenders(t *testing.T) {
 	nb := New("Web")
 	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Name: "data", Source: "(+ 1 2)", Outputs: []Output{{Type: "chart", Spec: `{"data":[1,2,3]}`}, {Type: "graph", Source: `{"nodes":[{"id":"A"}],"edges":[]}`}}}}
