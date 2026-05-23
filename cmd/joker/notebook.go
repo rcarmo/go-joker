@@ -112,6 +112,7 @@ func serveNotebook(args []string) {
 	addr := "127.0.0.1:8080"
 	path := "notebook.edn"
 	open := false
+	token := ""
 	if len(args) > 0 && args[0] == "serve" {
 		args = args[1:]
 	}
@@ -138,14 +139,25 @@ func serveNotebook(args []string) {
 			addr = args[i]
 		case "--open":
 			open = true
+		case "--token":
+			i++
+			if i >= len(args) {
+				fmt.Fprintln(Stderr, "notebook: --token requires a value")
+				os.Exit(2)
+			}
+			token = args[i]
 		default:
 			if !strings.HasPrefix(args[i], "-") {
 				path = args[i]
 			}
 		}
 	}
+	notebook.AuthToken = token
 	if !strings.HasPrefix(addr, "127.0.0.1:") && !strings.HasPrefix(addr, "localhost:") {
 		fmt.Fprintf(Stderr, "WARNING: notebook server bound to %s exposes trusted local code execution.\n", addr)
+		if token == "" {
+			fmt.Fprintln(Stderr, "WARNING: consider --token for non-local notebook binds.")
+		}
 	}
 	if err := notebook.Serve(addr, path, open); err != nil {
 		fmt.Fprintln(Stderr, err)
@@ -318,8 +330,8 @@ func parseNotebookPort(raw string) (string, error) {
 
 func printNotebookUsage() {
 	fmt.Fprintln(Stdout, `Usage:
-  joker notebook [file.edn] [-p 8080] [--open]
-  joker notebook serve [file.edn] [-p 8080]
+  joker notebook [file.edn] [-p 8080] [--open] [--token secret]
+  joker notebook serve [file.edn] [-p 8080] [--token secret]
   joker notebook new file.edn [--title "Title"] [--serve] [--open]
   joker notebook demo [file.edn]
   joker notebook run file.edn

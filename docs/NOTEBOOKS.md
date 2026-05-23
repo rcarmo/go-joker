@@ -15,8 +15,8 @@ V1 goals:
 ## Commands
 
 ```bash
-joker notebook [file.edn] [-p 8080] [--open]
-joker notebook serve [file.edn] [-p 8080]
+joker notebook [file.edn] [-p 8080] [--open] [--token secret]
+joker notebook serve [file.edn] [-p 8080] [--token secret]
 joker notebook serve [file.edn] --addr 127.0.0.1:8080
 joker notebook new file.edn --title "Example"
 joker notebook new file.edn --title "Example" --serve --open -p 8080
@@ -30,7 +30,7 @@ joker notebook restore file.edn snapshot.bak.edn
 joker notebook export file.edn -o report.md
 ```
 
-The server binds to `127.0.0.1` when `-p`/`--port` is used. Pass `--open` to launch the local notebook URL in the default browser. Use `--addr` only when you explicitly want another interface; notebooks are trusted local code execution surfaces. The CLI prints a warning when `--addr` does not bind to `127.0.0.1` or `localhost`. Responses set `Cache-Control: no-store` and `X-Content-Type-Options: nosniff`; mutating HTTP requests with a non-matching `Origin` header are rejected.
+The server binds to `127.0.0.1` when `-p`/`--port` is used. Pass `--open` to launch the local notebook URL in the default browser. Use `--addr` only when you explicitly want another interface; notebooks are trusted local code execution surfaces. The CLI prints a warning when `--addr` does not bind to `127.0.0.1` or `localhost`, and recommends `--token` for non-local binds. When `--token` is set, mutating requests must include `X-Joker-Notebook-Token: <token>` or `?token=<token>`. Responses set `Cache-Control: no-store` and `X-Content-Type-Options: nosniff`; mutating HTTP requests with a non-matching `Origin` header are rejected.
 
 Before overwriting an existing notebook, the server writes a recovery snapshot under `.joker-notebook-snapshots/` next to the notebook file. Snapshot directories are ignored by git.
 

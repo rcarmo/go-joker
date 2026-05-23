@@ -422,6 +422,8 @@ func Encode(nb Notebook) string {
 	return b.String()
 }
 
+var AuthToken string
+
 func Serve(addr, path string, open bool) error {
 	fmt.Printf("Serving Joker notebook at http://%s/\n", addr)
 	url := "http://" + addr + "/"
@@ -694,10 +696,25 @@ func Handler(path string) http.Handler {
 }
 
 func sameOriginMiddleware(next http.Handler) http.Handler {
+	if AuthToken != "" {
+		next = tokenMiddleware(next)
+	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet && r.Method != http.MethodHead && r.Method != http.MethodOptions {
 			if !sameOrigin(r) {
 				http.Error(w, "cross-origin notebook request rejected", http.StatusForbidden)
+				return
+			}
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+func tokenMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet && r.Method != http.MethodHead && r.Method != http.MethodOptions {
+			if r.Header.Get("X-Joker-Notebook-Token") != AuthToken && r.URL.Query().Get("token") != AuthToken {
+				http.Error(w, "notebook token required", http.StatusForbidden)
 				return
 			}
 		}

@@ -193,6 +193,31 @@ func TestSameOrigin(t *testing.T) {
 	}
 }
 
+func TestNotebookHTTPHandlerRequiresTokenWhenConfigured(t *testing.T) {
+	old := AuthToken
+	AuthToken = "secret"
+	defer func() { AuthToken = old }()
+	path := t.TempDir() + "/api.edn"
+	nb := New("API")
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)"}}
+	if err := Save(path, nb); err != nil {
+		t.Fatal(err)
+	}
+	h := Handler(path)
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-all", nil))
+	if w.Code != http.StatusForbidden {
+		t.Fatalf("missing token code=%d body=%s", w.Code, w.Body.String())
+	}
+	w = httptest.NewRecorder()
+	req := httptest.NewRequest(http.MethodPost, "/api/evaluate-all", nil)
+	req.Header.Set("X-Joker-Notebook-Token", "secret")
+	h.ServeHTTP(w, req)
+	if w.Code != http.StatusOK {
+		t.Fatalf("token request code=%d body=%s", w.Code, w.Body.String())
+	}
+}
+
 func TestNotebookHTTPHandlerRejectsCrossOriginMutation(t *testing.T) {
 	path := t.TempDir() + "/api.edn"
 	nb := New("API")
