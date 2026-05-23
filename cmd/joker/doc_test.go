@@ -18,6 +18,19 @@ func TestUsageMentionsNotebookCommands(t *testing.T) {
 	}
 }
 
+func TestRenderDocHTML(t *testing.T) {
+	html, err := renderDocHTML("# `joker.core/first`\n\n```clojure\n(first coll)\n```\n\n- `x` — value")
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := string(html)
+	for _, want := range []string{"<h1><code>joker.core/first</code></h1>", `<pre><code class="language-clojure">`, "(first coll)", "<li><code>x</code> — value</li>"} {
+		if !strings.Contains(got, want) {
+			t.Fatalf("html missing %q:\n%s", want, got)
+		}
+	}
+}
+
 func TestRenderDocMarkdownVar(t *testing.T) {
 	idx := docIndex{Namespaces: []docNamespace{{Name: "joker.core", Doc: "Core docs.", Vars: []docVar{{Name: "first", Qualified: "joker.core/first", Kind: "function", Doc: "Returns the first item.", Added: "1.0", Arglists: []string{"(first coll)"}}}}}}
 	got := renderDocMarkdown(idx, "joker.core/first")
@@ -73,6 +86,11 @@ func TestDocsHandlerRendersHTML(t *testing.T) {
 	}
 	if !strings.Contains(got, `<h1><a href="?q=joker.core%2Ffirst"><code>joker.core/first</code></a></h1>`) || strings.Contains(got, "# `joker.core/first`") {
 		t.Fatalf("docs handler did not render markdown as HTML:\n%s", got)
+	}
+	for _, want := range []string{"--font-ui:ui-sans-serif", "--font-mono:ui-monospace", "font-family:var(--font-ui)", "font-family:var(--font-mono)"} {
+		if !strings.Contains(got, want) {
+			t.Fatalf("docs handler missing font stack %q:\n%s", want, got)
+		}
 	}
 }
 
