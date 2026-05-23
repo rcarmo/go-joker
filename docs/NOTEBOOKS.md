@@ -245,9 +245,9 @@ The current slices provide:
 - inline SVG and base64 image rendering;
 - vendored ECharts rendering for chart specs, with a dependency-free SVG bar-chart fallback for simple specs (`{:data [...]}` or an ECharts-like first series);
 - dependency-free browser-side table rendering from JSON row arrays;
-- vendored Mermaid rendering for diagrams, with a dependency-free simple flowchart fallback using picker-style rounded orthogonal SVG paths;
+- Mermaid rendering for diagrams; simple flowcharts intentionally use the local picker-style renderer with rounded boxes and rounded orthogonal SVG arrow paths;
 - graph JSON circular-layout rendering for `{:nodes [...] :edges [...]}`-style JSON payloads;
 - port parsing and CLI plumbing;
 - unit tests for schema, execution capture, Markdown export, dependencies, web rendering, HTTP APIs (load/export/save/evaluate/add/delete/reorder/downstream), and CLI parsing.
 
-Further slices should improve browser editing ergonomics and support richer save/update payloads from the browser. The vendored CodeMirror/ECharts/Mermaid assets are served locally by the notebook server; the Mermaid fallback intentionally uses the picker-style rounded orthogonal arrow path for simple flowcharts.
+Further slices should improve browser editing ergonomics and support richer save/update payloads from the browser. The vendored CodeMirror/ECharts/Mermaid assets are served locally by the notebook server; simple Mermaid flowcharts intentionally bypass Mermaid's default curved links and use the picker-style renderer with rounded boxes plus rounded orthogonal arrows.
