@@ -16,6 +16,15 @@ func TestUsageMentionsNotebookCommands(t *testing.T) {
 	}
 }
 
+func TestMarkdownToHTML(t *testing.T) {
+	html := string(markdownToHTML("# `joker.core/first`\n\n```clojure\n(first coll)\n```\n\n- `x` — value"))
+	for _, want := range []string{"<h1><code>joker.core/first</code></h1>", `<pre><code class="language-clojure">`, "(first coll)", `<div class="doc-row">• <code>x</code> — value</div>`} {
+		if !strings.Contains(html, want) {
+			t.Fatalf("html missing %q:\n%s", want, html)
+		}
+	}
+}
+
 func TestRenderDocMarkdownVar(t *testing.T) {
 	idx := docIndex{Namespaces: []docNamespace{{Name: "joker.core", Doc: "Core docs.", Vars: []docVar{{Name: "first", Qualified: "joker.core/first", Kind: "function", Doc: "Returns the first item.", Added: "1.0", Arglists: []string{"(first coll)"}}}}}}
 	got := renderDocMarkdown(idx, "joker.core/first")

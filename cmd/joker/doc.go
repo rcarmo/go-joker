@@ -325,7 +325,10 @@ func serveDocs(addr string, idx docIndex) error {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query().Get("q")
 		page := renderDocMarkdown(idx, q)
-		_ = docsPage.Execute(w, struct{ Query, Markdown string }{q, page})
+		_ = docsPage.Execute(w, struct {
+			Query string
+			HTML  template.HTML
+		}{q, markdownToHTML(page)})
 	})
 	mux.HandleFunc("/api/docs", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -335,4 +338,66 @@ func serveDocs(addr string, idx docIndex) error {
 	return http.ListenAndServe(addr, mux)
 }
 
-var docsPage = template.Must(template.New("docs").Parse(`<!doctype html><html><head><meta charset="utf-8"><title>Joker docs</title><style>body{font-family:system-ui,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;line-height:1.45}input{width:70%;padding:.5rem}button{padding:.5rem}pre{background:#f3f4f6;padding:1rem;overflow:auto}code{background:#f3f4f6;padding:.1rem .25rem}@media(prefers-color-scheme:dark){body{background:#0d1117;color:#e6edf3}pre,code{background:#161b22}}</style></head><body><form><input name="q" value="{{.Query}}" placeholder="namespace, symbol, or search text"><button>Search</button></form><pre>{{.Markdown}}</pre></body></html>`))
+func markdownToHTML(md string) template.HTML {
+	var b strings.Builder
+	inCode := false
+	for _, line := range strings.Split(md, "\n") {
+		if strings.HasPrefix(line, "```") {
+			if inCode {
+				b.WriteString("</code></pre>\n")
+				inCode = false
+			} else {
+				lang := strings.TrimSpace(strings.TrimPrefix(line, "```"))
+				b.WriteString(`<pre><code`)
+				if lang != "" {
+					b.WriteString(` class="language-` + template.HTMLEscapeString(lang) + `"`)
+				}
+				b.WriteString(">")
+				inCode = true
+			}
+			continue
+		}
+		if inCode {
+			b.WriteString(template.HTMLEscapeString(line) + "\n")
+			continue
+		}
+		trim := strings.TrimSpace(line)
+		switch {
+		case trim == "":
+			continue
+		case strings.HasPrefix(trim, "# "):
+			b.WriteString("<h1>" + inlineMarkdown(trim[2:]) + "</h1>\n")
+		case strings.HasPrefix(trim, "## "):
+			b.WriteString("<h2>" + inlineMarkdown(trim[3:]) + "</h2>\n")
+		case strings.HasPrefix(trim, "### "):
+			b.WriteString("<h3>" + inlineMarkdown(trim[4:]) + "</h3>\n")
+		case strings.HasPrefix(trim, "- "):
+			b.WriteString("<div class=\"doc-row\">• " + inlineMarkdown(trim[2:]) + "</div>\n")
+		default:
+			b.WriteString("<p>" + inlineMarkdown(trim) + "</p>\n")
+		}
+	}
+	if inCode {
+		b.WriteString("</code></pre>\n")
+	}
+	return template.HTML(b.String())
+}
+
+func inlineMarkdown(s string) string {
+	esc := template.HTMLEscapeString(s)
+	parts := strings.Split(esc, "`")
+	if len(parts) == 1 {
+		return esc
+	}
+	var b strings.Builder
+	for i, p := range parts {
+		if i%2 == 1 {
+			b.WriteString("<code>" + p + "</code>")
+		} else {
+			b.WriteString(p)
+		}
+	}
+	return b.String()
+}
+
+var docsPage = template.Must(template.New("docs").Parse(`<!doctype html><html><head><meta charset="utf-8"><title>Joker docs</title><style>body{font-family:system-ui,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;line-height:1.45}form{display:flex;gap:.5rem;position:sticky;top:0;background:Canvas;padding:.5rem 0}input{flex:1;padding:.5rem}button{padding:.5rem}.doc{margin-top:1rem}.doc-row{margin:.35rem 0}pre{background:#f3f4f6;padding:1rem;overflow:auto;border-radius:6px}code{background:#f3f4f6;padding:.1rem .25rem;border-radius:4px}h1,h2,h3{line-height:1.2}@media(prefers-color-scheme:dark){body{background:#0d1117;color:#e6edf3}form{background:#0d1117}pre,code{background:#161b22}}</style></head><body><form><input name="q" value="{{.Query}}" placeholder="namespace, symbol, or search text"><button>Search</button></form><main class="doc">{{.HTML}}</main></body></html>`))
