@@ -210,9 +210,6 @@ func installNotebookHelpers() {
 	intern("mermaid", func(args []coretypes.Object) coretypes.Object {
 		return richOutputMap("diagram", "mermaid", "source", firstArgString(args))
 	})
-	intern("dot", func(args []coretypes.Object) coretypes.Object {
-		return richOutputMap("diagram", "dot", "source", firstArgString(args))
-	})
 	intern("graph", func(args []coretypes.Object) coretypes.Object {
 		return richOutputMap("graph", "graph-json", "source", firstArgJSON(args))
 	})

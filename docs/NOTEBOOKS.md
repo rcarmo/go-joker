@@ -8,9 +8,9 @@ V1 goals:
 - EDN notebook files with inline outputs;
 - Markdown and Joker code cells;
 - headless execution for agents/CI;
-- Markdown export with fenced blocks for text, EDN values, chart specs, Mermaid/DOT diagrams, and graph JSON;
+- Markdown export with fenced blocks for text, EDN values, chart specs, Mermaid diagrams, and graph JSON;
 - manual dependency metadata for future reactive execution;
-- rich-output envelope for charts, tables, images, trusted HTML, SVG, Mermaid, DOT, and graph JSON.
+- rich-output envelope for charts, tables, images, trusted HTML, SVG, Mermaid, and graph JSON.
 
 ## Commands
 
@@ -77,7 +77,6 @@ Code cells can use helper functions in `joker.notebook` or return a map with `:n
 (joker.notebook/svg "<svg>...</svg>")
 (joker.notebook/html "<b>trusted local HTML</b>")
 (joker.notebook/mermaid "graph TD; A-->B")
-(joker.notebook/dot "digraph { A -> B }")
 (joker.notebook/graph {:nodes [{:id "A"}] :edges []})
 (joker.notebook/graph "{\"nodes\":[{\"id\":\"A\"}],\"edges\":[]}")
 (joker.notebook/table [{:name "Ada" :score 42}])
@@ -99,10 +98,6 @@ Code cells can use helper functions in `joker.notebook` or return a map with `:n
 {:type :diagram
  :renderer :mermaid
  :source "graph TD; A-->B"}
-
-{:type :diagram
- :renderer :dot
- :source "digraph { A -> B }"}
 
 {:type :graph
  :renderer :graph-json
@@ -250,9 +245,9 @@ The current slices provide:
 - inline SVG and base64 image rendering;
 - dependency-free browser-side bar-chart rendering from simple chart specs (`{:data [...]}` or an ECharts-like first series);
 - dependency-free browser-side table rendering from JSON row arrays;
-- Mermaid/DOT diagram source blocks with renderer labels;
+- Mermaid diagram source blocks with renderer labels;
 - graph JSON circular-layout rendering for `{:nodes [...] :edges [...]}`-style JSON payloads;
 - port parsing and CLI plumbing;
 - unit tests for schema, execution capture, Markdown export, dependencies, web rendering, HTTP APIs (load/export/save/evaluate/add/delete/reorder/downstream), and CLI parsing.
 
-Further slices should improve browser editing ergonomics, add vendored ECharts/Mermaid/DOT renderers for fully interactive charts and diagrams, and support richer save/update payloads from the browser.
+Further slices should improve browser editing ergonomics, add vendored ECharts/Mermaid renderers for fully interactive charts and diagrams, and support richer save/update payloads from the browser.
