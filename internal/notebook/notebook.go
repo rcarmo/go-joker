@@ -24,6 +24,7 @@ import (
 	core "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	stdimaging "github.com/rcarmo/go-joker/std/imaging"
 )
 
 //go:embed assets/**
@@ -329,6 +330,12 @@ func richOutputMap(outputType, renderer, valueKey, value string) *corecollection
 }
 
 func outputFromObject(obj coretypes.Object) Output {
+	if data, ok, err := stdimaging.EncodePNG(obj); ok {
+		if err != nil {
+			return Output{Type: "error", Text: err.Error()}
+		}
+		return EncodeImage("image/png", data)
+	}
 	if m, ok := obj.(coretypes.Map); ok {
 		if out, ok := richOutputFromMap(m); ok {
 			return out

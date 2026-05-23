@@ -32,6 +32,9 @@
   <a href="#compile">compile</a>
 </li>
 <li>
+  <a href="#compile-wasm">compile-wasm</a>
+</li>
+<li>
   <a href="#compiled?">compiled?</a>
 </li>
 <li>
@@ -68,6 +71,18 @@ For other fns, returns an IR-compiled wrapper.<br>
 The returned function can be called like any other fn.</p>
   
   
+</li>
+<li>
+  <h3 class="Function" id="compile-wasm">compile-wasm</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(compile-wasm fn)</code></div>
+</pre>
+  <p class="var-docstr">Compiles a pure numeric function to an in-process WASM module.<br>
+Returns a callable wrapper that invokes the module's exec function. Integer<br>
+programs use i64 parameters/results; floating-point programs use f64.</p>
+
+
 </li>
 <li>
   <h3 class="Function" id="compiled?">compiled?</h3>

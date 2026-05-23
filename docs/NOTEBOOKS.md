@@ -89,8 +89,16 @@ Code cells can use helper functions in `joker.notebook` or return a map with `:n
 Bitmap outputs can be generated directly inside Joker with `joker.imaging`.
 Use `joker.imaging/new` to allocate an image, `joker.imaging/set-pixel!` and
 `joker.imaging/pixel` for pixel-level access, `joker.imaging/resize` for display
-scaling, and `joker.imaging/encode` plus `joker.base64/encode-string` to pass PNG
-or JPEG data to `joker.notebook/image`.
+scaling, and `joker.imaging/from-rgba32` to build an image from row-major packed
+RGBA integer pixels (`0xRRGGBBAA`). Notebook cells may return a `joker.imaging`
+image object directly; the notebook renderer encodes it at the output boundary.
+Use `joker.imaging/encode` plus `joker.base64/encode-string` only when a cell
+needs to construct an explicit `joker.notebook/image` envelope itself.
+
+Hot numeric kernels can be moved to the in-process WASM path with
+`joker.jit/compile-wasm` when the function is pure numeric and WASM-eligible.
+The complex demo uses this for Mandelbrot escape iteration, then stores the
+computed colors as packed RGBA32 pixels before constructing the image.
 
 ```clojure
 {:type :text
@@ -210,9 +218,9 @@ joker notebook /tmp/rich-demo.edn -p 8080 --open
 ```
 
 `examples/notebooks/complex-demo.edn` is a broader smoke/demo notebook with
-charts, tables, Mermaid, graph JSON, trusted SVG/HTML, a generated Mandelbrot PNG
-using bitmap pixel writes, and a projected SVG 3D scene with depth sorting and
-back-face culling.
+charts, tables, Mermaid, graph JSON, trusted SVG/HTML, a generated Mandelbrot
+image using a WASM escape kernel plus packed RGBA32 bitmap data, and a projected
+SVG 3D scene with depth sorting and back-face culling.
 
 Test fixtures live under `tests/notebooks/`:
 

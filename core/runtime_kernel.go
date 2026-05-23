@@ -7794,6 +7794,100 @@ func buildNativeLoopWrapper(fn *Fn, arity FnArityExpr, loop *LoopExpr, loopProg 
 	}
 }
 
+func buildWasmLoopWrapper(fn *Fn, arity FnArityExpr, loop *LoopExpr, loopProg *IRProgram) coretypes.Object {
+	le := (*LetExpr)(loop)
+	nLoopBinds := len(le.names)
+	nSlots := loopProg.numSlots
+	capKeys := loopProg.captureKeys
+
+	wp := wasmCompile(loopProg)
+	if wp == nil {
+		return nil
+	}
+
+	initVals := make([]coretypes.Object, nLoopBinds)
+	for i, v := range le.values {
+		lit, ok := v.(*LiteralExpr)
+		if !ok {
+			return nil
+		}
+		switch lit.obj.(type) {
+		case coretypes.Int, coretypes.Double:
+			initVals[i] = lit.obj
+		default:
+			return nil
+		}
+	}
+
+	fnParamFrame := -1
+	for _, ck := range capKeys {
+		if ck.index < len(arity.args) {
+			if fnParamFrame < 0 {
+				fnParamFrame = ck.frame
+			} else if fnParamFrame != ck.frame {
+				break
+			}
+		}
+	}
+	type capInfo struct {
+		isDynamic bool
+		argIdx    int
+		constVal  coretypes.Object
+	}
+	caps := make([]capInfo, len(capKeys))
+	for ci, ck := range capKeys {
+		if ck.frame == fnParamFrame && ck.index < len(arity.args) {
+			caps[ci] = capInfo{isDynamic: true, argIdx: ck.index}
+			continue
+		}
+		resolved := false
+		for e := fn.env; e != nil; e = e.parent {
+			if ck.index < len(e.bindings) {
+				switch e.bindings[ck.index].(type) {
+				case coretypes.Int, coretypes.Double:
+					caps[ci] = capInfo{constVal: e.bindings[ck.index]}
+					resolved = true
+				}
+				if resolved {
+					break
+				}
+			}
+		}
+		if !resolved {
+			return nil
+		}
+	}
+
+	return Proc{
+		Fn: func(args []coretypes.Object) coretypes.Object {
+			if len(args) != len(arity.args) {
+				PanicArityMinMax(len(args), len(arity.args), len(arity.args))
+			}
+			var buf [16]coretypes.Object
+			var slots []coretypes.Object
+			if nSlots <= len(buf) {
+				slots = buf[:nSlots]
+			} else {
+				slots = make([]coretypes.Object, nSlots)
+			}
+			copy(slots[:nLoopBinds], initVals)
+			for ci, cap := range caps {
+				if cap.isDynamic {
+					slots[nLoopBinds+ci] = args[cap.argIdx]
+				} else {
+					slots[nLoopBinds+ci] = cap.constVal
+				}
+			}
+			result := wasmExec(wp, slots)
+			if result == nil {
+				panic(RT.NewError("jit/compile-wasm: WASM execution failed"))
+			}
+			return result
+		},
+		Name: "jit-wasm-loop",
+	}
+}
+
 // ir_call_dispatch.go — IR-aware function call dispatch for the tree-walker.
 //
 // When the tree-walker (CallExpr.Eval) calls a *Fn, this tries to dispatch
@@ -8550,12 +8644,60 @@ func IrCompileFn(fn *Fn) *IRProgram                                      { retur
 func IrExecTyped(prog *IRProgram, s []coretypes.Object) coretypes.Object { return irExecTyped(prog, s) }
 func IrExec(prog *IRProgram, s []coretypes.Object) coretypes.Object      { return irExec(prog, s) }
 
+func WasmCompileFnExported(fn *Fn) (coretypes.Object, string) {
+	if len(fn.fnExpr.arities) == 1 {
+		arity := fn.fnExpr.arities[0]
+		if len(arity.body) == 1 {
+			if loop, ok := arity.body[0].(*LoopExpr); ok {
+				if prog := irCompile(loop); prog != nil {
+					if wrapper := buildWasmLoopWrapper(fn, arity, loop, prog); wrapper != nil {
+						return wrapper, ""
+					}
+					if d := explainWASMEligibility(prog); d.Reason != "" {
+						return nil, d.Reason
+					}
+				}
+			}
+		}
+	}
+	prog := irCompileFn(fn)
+	if prog == nil {
+		return nil, "function cannot be compiled to IR"
+	}
+	wp := wasmCompile(prog)
+	if wp == nil {
+		d := ExplainWASMEligibility(prog)
+		if d.Reason != "" {
+			return nil, d.Reason
+		}
+		return nil, "unsupported IR shape"
+	}
+	return Proc{
+		Fn: func(args []coretypes.Object) coretypes.Object {
+			result := wasmExec(wp, args)
+			if result == nil {
+				panic(RT.NewError("jit/compile-wasm: WASM execution failed"))
+			}
+			return result
+		},
+		Name: "jit-wasm-compiled",
+	}, ""
+}
+
 func IsFloatExported(prog *IRProgram) bool {
 	model := prog.neutralModel()
 	return model != nil && corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0)
 }
 
 func IrToWasmExported(prog *IRProgram) []byte { return irToWasm(prog) }
+
+func WasmCompileExported(prog *IRProgram) *WasmProgram {
+	return wasmCompile(prog)
+}
+
+func WasmExecExported(wp *WasmProgram, s []coretypes.Object) coretypes.Object {
+	return wasmExec(wp, s)
+}
 
 func WasmCompileBytesExported(prog *IRProgram) []byte {
 	wp := wasmCompile(prog)

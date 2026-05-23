@@ -23,6 +23,13 @@ For pure arithmetic fns, returns a native Go f64 closure.
 For other fns, returns an IR-compiled wrapper.
 The returned function can be called like any other fn.`, "1.0"))
 
+	jitNamespace.InternVar("compile-wasm", compile_wasm_,
+		MakeMeta(
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
+			`Compiles a pure numeric function to an in-process WASM module.
+Returns a callable wrapper that invokes the module's exec function. Integer
+programs use i64 parameters/results; floating-point programs use f64.`, "1.0"))
+
 	jitNamespace.InternVar("info", info_,
 		MakeMeta(
 			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "fn"))),
@@ -57,6 +64,11 @@ var compile_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	fn := EnsureArgIsFn(args, 0)
 	return compile(fn)
 }, Name: "compile", Package: "std/jit"}
+
+var compile_wasm_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
+	fn := EnsureArgIsFn(args, 0)
+	return compileWASM(fn)
+}, Name: "compile-wasm", Package: "std/jit"}
 
 var info_ Proc = Proc{Fn: func(args []coretypes.Object) coretypes.Object {
 	fn := EnsureArgIsFn(args, 0)

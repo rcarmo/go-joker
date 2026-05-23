@@ -77,6 +77,17 @@ func compile(fn *Fn) coretypes.Object {
 	}
 }
 
+func compileWASM(fn *Fn) coretypes.Object {
+	compiled, reason := WasmCompileFnExported(fn)
+	if compiled == nil {
+		if reason == "" {
+			reason = "unsupported IR shape"
+		}
+		panic(RT.NewError("jit/compile-wasm: function cannot be compiled to WASM: " + reason))
+	}
+	return compiled
+}
+
 // info returns a map with compilation information about a fn.
 func info(fn *Fn) coretypes.Object {
 	m := corecollections.EmptyArrayMap()

@@ -56,6 +56,42 @@ func TestPixelMutation(t *testing.T) {
 	}
 }
 
+func TestFromRGBA32(t *testing.T) {
+	initImagingNamespace()
+
+	pixels := corecollections.NewVectorFrom(
+		coretypes.MakeInt(0xff0000ff),
+		coretypes.MakeInt(0x00ff00ff),
+		coretypes.MakeInt(0x0000ffff),
+		coretypes.MakeInt(0x10203040),
+	)
+	img := procFromRGBA32([]coretypes.Object{coretypes.MakeInt(2), coretypes.MakeInt(2), pixels})
+
+	for _, tt := range []struct {
+		name     string
+		x, y     int
+		wantRGBA []int
+	}{
+		{name: "red", x: 0, y: 0, wantRGBA: []int{255, 0, 0, 255}},
+		{name: "alpha", x: 1, y: 1, wantRGBA: []int{16, 32, 48, 64}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			pixel := procPixel([]coretypes.Object{img, coretypes.MakeInt(tt.x), coretypes.MakeInt(tt.y)}).(coretypes.Indexed)
+			for i, want := range tt.wantRGBA {
+				if got := pixel.Nth(i).(coretypes.Int).I; got != want {
+					t.Fatalf("pixel[%d] = %d, want %d", i, got, want)
+				}
+			}
+		})
+	}
+	assertImagingPanic(t, "wrong packed pixel count", func() {
+		procFromRGBA32([]coretypes.Object{coretypes.MakeInt(2), coretypes.MakeInt(2), corecollections.NewVectorFrom(coretypes.MakeInt(0))})
+	})
+	assertImagingPanic(t, "invalid packed pixel collection", func() {
+		procFromRGBA32([]coretypes.Object{coretypes.MakeInt(1), coretypes.MakeInt(1), coretypes.MakeString("x")})
+	})
+}
+
 func TestResize(t *testing.T) {
 	initImagingNamespace()
 

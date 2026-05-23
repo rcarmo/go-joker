@@ -2,7 +2,7 @@
  :version 1
  :title "Joker complex notebook demo"
  :created-at "2026-05-23T00:00:00Z"
- :updated-at "2026-05-23T00:00:00Z"
+ :updated-at "2026-05-23T20:53:06Z"
  :cells [
   {:id "intro"
    :kind :markdown
@@ -79,7 +79,7 @@
    :kind :code
    :name "mandelbrot-params"
    :depends-on []
-   :source "(joker.notebook/table [{:parameter \"width\" :value 8} {:parameter \"height\" :value 6} {:parameter \"max-iter\" :value 8} {:parameter \"parallelism\" :value \"rows computed with pmap\"} {:parameter \"scale\" :value \"32x display resize\"} {:parameter \"output\" :value \"direct PNG bitmap data\"}])"
+   :source "(joker.notebook/table [{:parameter \"width\" :value 12} {:parameter \"height\" :value 10} {:parameter \"max-iter\" :value 8} {:parameter \"compute\" :value \"WASM escape-iteration kernel\"} {:parameter \"pixels\" :value \"packed RGBA32 vector\"} {:parameter \"output\" :value \"image object rendered by notebook\"}])"
    :execution-count 0
    :state :idle
    :outputs []}
@@ -88,7 +88,7 @@
    :kind :code
    :name "mandelbrot"
    :depends-on ["mandelbrot-params"]
-   :source "(require 'joker.base64)\n(require 'joker.imaging)\n(let [width 8 height 6 max-iter 8 xmin -2.25 ymin -1.25 color (fn [n] (if (= n max-iter) [4 7 20 255] [(mod (+ 20 (* n 7)) 256) (mod (+ 42 (* n 13)) 256) (mod (+ 95 (* n 19)) 256) 255])) pixel (fn [x y] (let [cr (+ xmin (/ (* 3.25 x) width)) ci (+ ymin (/ (* 2.5 y) height)) state (reduce (fn [s _] (let [zr (nth s 0) zi (nth s 1) n (nth s 2) escaped (nth s 3)] (if escaped s (let [nzr (+ (- (* zr zr) (* zi zi)) cr) nzi (+ (* 2 zr zi) ci) nn (+ n 1)] [nzr nzi nn (> (+ (* nzr nzr) (* nzi nzi)) 4.0)])))) [0.0 0.0 0 false] (range max-iter))] (color (nth state 2)))) row (fn [y] (vec (map (fn [x] [x y (pixel x y)]) (range width)))) rows (pmap row (range height)) pixels (apply concat rows) bitmap (reduce (fn [img p] (joker.imaging/set-pixel! img (nth p 0) (nth p 1) (nth p 2))) (joker.imaging/new width height [4 7 20 255]) pixels) scaled (joker.imaging/resize bitmap (* width 32) (* height 32)) png-data (joker.imaging/encode scaled :png)] (joker.notebook/image \"image/png\" (joker.base64/encode-string png-data)))"
+   :source "(require 'joker.imaging)\n(require 'joker.jit)\n\n(let [width 12\n      height 10\n      max-iter 8\n      xmin -2.25\n      ymin -1.25\n      dx (/ 3.25 width)\n      dy (/ 2.5 height)\n      pack (fn [r g b a]\n             (bit-or (bit-shift-left r 24)\n                     (bit-shift-left g 16)\n                     (bit-shift-left b 8)\n                     a))\n      palette (vec\n                (map (fn [n]\n                       (if (= n max-iter)\n                         (pack 4 7 20 255)\n                         (pack (mod (+ 20 (* n 7)) 256)\n                               (mod (+ 42 (* n 13)) 256)\n                               (mod (+ 95 (* n 19)) 256)\n                               255)))\n                     (range (+ max-iter 1))))\n      escape-iter (joker.jit/compile-wasm\n                    (fn [cr ci]\n                      (loop [zr 0.0\n                             zi 0.0\n                             n 0]\n                        (if (= n max-iter)\n                          n\n                          (if (> (+ (* zr zr) (* zi zi)) 4.0)\n                            n\n                            (recur (+ (- (* zr zr) (* zi zi)) cr)\n                                   (+ (* (* 2.0 zr) zi) ci)\n                                   (+ n 1)))))))\n      pixel (fn [x y]\n              (nth palette\n                   (int (escape-iter (+ xmin (* dx x))\n                                     (+ ymin (* dy y))))))\n      pixels (persistent!\n               (loop [y 0\n                      out (transient [])]\n                 (if (= y height)\n                   out\n                   (recur (+ y 1)\n                          (loop [x 0\n                                 row out]\n                            (if (= x width)\n                              row\n                              (recur (+ x 1)\n                                     (conj! row (pixel x y)))))))))]\n  (joker.imaging/from-rgba32 width height pixels))"
    :execution-count 0
    :state :idle
    :outputs []}
@@ -97,7 +97,7 @@
    :kind :code
    :name "summary"
    :depends-on ["mandelbrot" "svg-3d-depth" "dependency-graph"]
-   :source "(joker.notebook/html \"<section style='font-family:ui-sans-serif,system-ui;line-height:1.45'><h3>Execution summary</h3><p>The notebook has generated structured data, charts, a workflow graph, trusted HTML, a projected SVG scene, and a PNG Mandelbrot image using Joker bitmap operations.</p><ul><li>Charts use the ECharts output renderer.</li><li>The Mandelbrot cell computes rows with <code>pmap</code>, then mutates pixels with <code>joker.imaging/set-pixel!</code>.</li><li>The 3D SVG cell performs projection, depth sorting, and back-face culling in Joker code.</li></ul></section>\")"
+   :source "(joker.notebook/html \"<section style='font-family:ui-sans-serif,system-ui;line-height:1.45'><h3>Execution summary</h3><p>The notebook has generated structured data, charts, a workflow graph, trusted HTML, a projected SVG scene, and a Mandelbrot image using Joker bitmap operations.</p><ul><li>Charts use the ECharts output renderer.</li><li>The Mandelbrot cell compiles its escape-iteration kernel with <code>joker.jit/compile-wasm</code>, stores packed RGBA32 pixels in a vector, and returns an image object for notebook rendering.</li><li>The 3D SVG cell performs projection, depth sorting, and back-face culling in Joker code.</li></ul></section>\")"
    :execution-count 0
    :state :idle
    :outputs []}

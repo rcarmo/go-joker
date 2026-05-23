@@ -59,6 +59,7 @@ func initImagingNamespace() {
 		{"bounds", procBounds, "img", "Returns [x y width height] of image bounds."},
 		// Creation
 		{"new", procNewImage, "width height & color", "Creates new image. Optional color as [r g b a] vector."},
+		{"from-rgba32", procFromRGBA32, "width height pixels", "Creates an image from row-major packed RGBA integer pixels (0xRRGGBBAA)."},
 	}
 
 	for _, p := range procs {

@@ -10,6 +10,14 @@
    :go "compile(fn)"}
   [fn])
 
+(defn compile-wasm
+  "Compiles a pure numeric function to an in-process WASM module.
+  Returns a callable wrapper that invokes the module's exec function. Integer
+  programs use i64 parameters/results; floating-point programs use f64."
+  {:added "1.0"
+   :go "compileWASM(fn)"}
+  [fn])
+
 (defn info
   "Returns a map with compilation information about a function.
   Keys: :compiled, :path, :slots, :captures, :self-recursive."

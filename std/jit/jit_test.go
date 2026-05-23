@@ -25,6 +25,24 @@ func TestJITCompile(t *testing.T) {
 	}
 }
 
+func TestJITCompileWASM(t *testing.T) {
+	Init()
+	compiled := compileWASM(mkFn("(fn [limit] (loop [i 0 acc 0] (if (= i limit) acc (recur (+ i 1) (+ acc (rem (* i 7) 11))))))"))
+	result := compiled.(coretypes.Callable).Call([]coretypes.Object{coretypes.Int{I: 100}})
+	if result.(coretypes.Int).I != 495 {
+		t.Fatalf("got %v, want 495", result)
+	}
+}
+
+func TestJITCompileWASMCapturedLoopLimit(t *testing.T) {
+	Init()
+	compiled := compileWASM(mkFn("(let [limit 100] (fn [] (loop [i 0 acc 0] (if (= i limit) acc (recur (+ i 1) (+ acc (rem (* i 7) 11)))))))"))
+	result := compiled.(coretypes.Callable).Call(nil)
+	if result.(coretypes.Int).I != 495 {
+		t.Fatalf("got %v, want 495", result)
+	}
+}
+
 func TestJITInfo(t *testing.T) {
 	Init()
 	t.Logf("info: %s", info(mkFn("(fn [x y] (* x y))")).ToString(false))

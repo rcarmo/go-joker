@@ -169,6 +169,19 @@ var procEncode ProcFn = func(args []coretypes.Object) coretypes.Object {
 	return coretypes.MakeString(buf.String())
 }
 
+// EncodePNG encodes a Joker Image as PNG bytes for host-side renderers.
+func EncodePNG(obj coretypes.Object) ([]byte, bool, error) {
+	im, ok := obj.(*Image)
+	if !ok {
+		return nil, false, nil
+	}
+	var buf bytes.Buffer
+	if err := png.Encode(&buf, im.img); err != nil {
+		return nil, true, err
+	}
+	return buf.Bytes(), true, nil
+}
+
 var procDecode ProcFn = func(args []coretypes.Object) coretypes.Object {
 	data := coretypes.ExtractString(args, 0)
 	img, _, err := image.Decode(bytes.NewReader([]byte(data)))
@@ -445,6 +458,35 @@ var procNewImage ProcFn = func(args []coretypes.Object) coretypes.Object {
 		c.A = colorChannel(v.Nth(3), "a")
 	}
 	return wrapImage(toNRGBA(imaging.New(w, h, c)))
+}
+
+func packedRGBA32(obj coretypes.Object, index int) uint32 {
+	n := coretypes.EnsureObjectIsNumber(obj, fmt.Sprintf("imaging/from-rgba32: pixel %d must be an integer", index))
+	return uint32(n.Int().I)
+}
+
+var procFromRGBA32 ProcFn = func(args []coretypes.Object) coretypes.Object {
+	CheckArity(args, 3, 3)
+	w := positiveDimension(args[0], "width")
+	h := positiveDimension(args[1], "height")
+	pixels, ok := args[2].(coretypes.CountedIndexed)
+	if !ok {
+		panic(RT.NewError("imaging/from-rgba32: pixels must be an indexed collection"))
+	}
+	expected := w * h
+	if pixels.Count() != expected {
+		panic(RT.NewError(fmt.Sprintf("imaging/from-rgba32: expected %d pixels, got %d", expected, pixels.Count())))
+	}
+	img := image.NewNRGBA(image.Rect(0, 0, w, h))
+	for i := 0; i < expected; i++ {
+		rgba := packedRGBA32(pixels.At(i), i)
+		off := i * 4
+		img.Pix[off] = uint8(rgba >> 24)
+		img.Pix[off+1] = uint8(rgba >> 16)
+		img.Pix[off+2] = uint8(rgba >> 8)
+		img.Pix[off+3] = uint8(rgba)
+	}
+	return wrapImage(img)
 }
 
 func pixelPoint(im *Image, x, y int, op string) {
