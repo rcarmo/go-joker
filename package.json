@@ -9,6 +9,7 @@
     "notebook-smoke": "bun run scripts/notebook_smoke.ts"
   },
   "dependencies": {
+    "codemirror": "5.65.18",
     "echarts": "^6.1.0",
     "mermaid": "^11.15.0"
   }

@@ -38,7 +38,7 @@ The server binds to `127.0.0.1` when `-p`/`--port` is used. Pass `--open` to lau
 
 Before overwriting an existing notebook, the server writes a recovery snapshot under `.joker-notebook-snapshots/` next to the notebook file. Snapshot directories are ignored by git.
 
-The browser UI avoids a full page reload for save and Markdown export: those actions update the raw/status panes in place. Evaluation and structural mutations still reload after success so rendered outputs and ordering stay consistent. Rendered table outputs have a client-side filter box and sortable column headers. They cap the initial display to 100 rows with a visible row-count/truncation summary plus a `Show all` toggle.
+The browser UI avoids a full page reload for save and Markdown export: those actions update the raw/status panes in place. Evaluation and structural mutations still reload after success so rendered outputs and ordering stay consistent. Cell source editing uses vendored CodeMirror with Clojure/Joker and Markdown highlighting, close-bracket editing, and Joker symbol autocomplete. Rendered table outputs have a client-side filter box and sortable column headers. They cap the initial display to 100 rows with a visible row-count/truncation summary plus a `Show all` toggle.
 
 ## File format
 
@@ -250,4 +250,4 @@ The current slices provide:
 - port parsing and CLI plumbing;
 - unit tests for schema, execution capture, Markdown export, dependencies, web rendering, HTTP APIs (load/export/save/evaluate/add/delete/reorder/downstream), and CLI parsing.
 
-Further slices should improve browser editing ergonomics and support richer save/update payloads from the browser. The vendored ECharts/Mermaid assets are served locally by the notebook server; the Mermaid fallback intentionally uses the picker-style rounded orthogonal arrow path for simple flowcharts.
+Further slices should improve browser editing ergonomics and support richer save/update payloads from the browser. The vendored CodeMirror/ECharts/Mermaid assets are served locally by the notebook server; the Mermaid fallback intentionally uses the picker-style rounded orthogonal arrow path for simple flowcharts.
