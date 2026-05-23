@@ -194,6 +194,9 @@ func installNotebookHelpers() {
 		}
 		ns.InternVar(name, core.Proc{Name: "notebook/" + name, Fn: fn}, core.MakeMeta(nil, "Notebook rich output helper.", "1.0"))
 	}
+	intern("text", func(args []coretypes.Object) coretypes.Object {
+		return richOutputMap("text", "", "text", firstArgString(args))
+	})
 	intern("chart", func(args []coretypes.Object) coretypes.Object {
 		return richOutputMap("chart", "echarts", "spec", firstArgJSON(args))
 	})
@@ -352,7 +355,7 @@ func ExportMarkdown(w io.Writer, nb Notebook) error {
 
 func writeMarkdownOutput(w io.Writer, o Output) {
 	switch o.Type {
-	case "stdout", "stderr", "error":
+	case "stdout", "stderr", "error", "text":
 		fmt.Fprintf(w, "```text\n%s\n```\n\n", strings.TrimRight(o.Text, "\n"))
 	case "value":
 		fmt.Fprintf(w, "```edn\n%s\n```\n\n", strings.TrimRight(o.Text, "\n"))

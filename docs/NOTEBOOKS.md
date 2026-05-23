@@ -65,6 +65,7 @@ Notebooks are regular EDN maps. The extension can be plain `.edn`; the format ma
 Code cells can use helper functions in `joker.notebook` or return a map with `:notebook/output`/`:type` to create a rich output directly. Renderers can also store normalized outputs in the same shape:
 
 ```clojure
+(joker.notebook/text "plain text output")
 (joker.notebook/chart {:data [1 2 3]})
 (joker.notebook/chart "{\"data\":[1,2,3]}")
 (joker.notebook/svg "<svg>...</svg>")
@@ -78,6 +79,9 @@ Code cells can use helper functions in `joker.notebook` or return a map with `:n
 ```
 
 ```clojure
+{:type :text
+ :text "plain text output"}
+
 {:notebook/output :chart
  :renderer :echarts
  :spec "{\"data\":[1,2,3]}"}

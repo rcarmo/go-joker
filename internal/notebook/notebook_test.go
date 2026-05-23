@@ -96,6 +96,14 @@ func TestRunCapturesReturnedValue(t *testing.T) {
 	}
 }
 
+func TestEvaluateCellNotebookTextHelper(t *testing.T) {
+	cell := Cell{ID: "helper-text", Kind: "code", Source: `(joker.notebook/text "hello")`}
+	EvaluateCell(&cell)
+	if cell.State != "ok" || len(cell.Outputs) != 1 || cell.Outputs[0].Type != "text" || cell.Outputs[0].Text != "hello" {
+		t.Fatalf("text output cell = %#v", cell)
+	}
+}
+
 func TestEvaluateCellNotebookHTMLHelper(t *testing.T) {
 	cell := Cell{ID: "helper-html", Kind: "code", Source: `(joker.notebook/html "<b>Hello</b>")`}
 	EvaluateCell(&cell)
