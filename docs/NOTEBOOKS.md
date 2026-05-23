@@ -26,6 +26,7 @@ joker notebook run file.edn
 joker notebook run file.edn --no-save
 joker notebook run file.edn --no-save --summary
 joker notebook run file.edn --no-save --summary --fail-on-error
+joker notebook format file.edn [...]
 joker notebook validate file.edn
 joker notebook status file.edn
 joker notebook deps file.edn
@@ -37,6 +38,8 @@ joker notebook export file.edn -o report.md
 The server binds to `127.0.0.1` when `-p`/`--port` is used. Pass `--open` to launch the local notebook URL in the default browser. Use `--addr` only when you explicitly want another interface; notebooks are trusted local code execution surfaces. The CLI prints a warning when `--addr` does not bind to `127.0.0.1` or `localhost`, and recommends `--token` for non-local binds. When `--token` is set, mutating requests must include `X-Joker-Notebook-Token: <token>` or `?token=<token>`; the served browser UI automatically attaches the token to mutating same-page API calls. Use `--readonly` to serve the notebook and export/status APIs without allowing save/evaluate/delete/restore mutations; the browser UI disables mutation controls and guards keyboard shortcuts/actions. Responses set `Cache-Control: no-store` and `X-Content-Type-Options: nosniff`; mutating HTTP requests with a non-matching `Origin` header are rejected.
 
 Before overwriting an existing notebook, the server writes a recovery snapshot under `.joker-notebook-snapshots/` next to the notebook file. Snapshot directories are ignored by git.
+
+Use `joker notebook format file.edn [...]` to rewrite notebooks with Joker's stable pretty-printed EDN layout without evaluating cells or changing outputs.
 
 The browser UI avoids a full page reload for save and Markdown export: those actions update the raw/status panes in place. Evaluation and structural mutations still reload after success so rendered outputs and ordering stay consistent. Cell source editing uses vendored CodeMirror with Clojure/Joker and Markdown highlighting, close-bracket editing, and Joker symbol autocomplete. Rendered table outputs have a client-side filter box and sortable column headers. They cap the initial display to 100 rows with a visible row-count/truncation summary plus a `Show all` toggle.
 

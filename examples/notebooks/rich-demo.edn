@@ -2,10 +2,11 @@
  :version 1
  :title "Joker notebook rich demo"
  :created-at "2026-05-22T22:20:00Z"
- :updated-at "2026-05-22T22:20:00Z"
+ :updated-at "2026-05-23T19:08:56Z"
  :cells [
   {:id "cell-1"
    :kind :markdown
+   :depends-on []
    :source "# Joker notebook rich demo\n\nThis notebook demonstrates value, text, chart, table, trusted HTML, diagram, and graph outputs."
    :execution-count 0
    :state :idle
@@ -16,61 +17,88 @@
    :name "value"
    :depends-on []
    :source "(+ 20 22)"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 1
+   :state :ok
+   :outputs [
+    {:type :value
+     :text "42"
+     :mime "text/edn"}
+   ]}
 
   {:id "cell-3"
    :kind :code
    :name "text"
    :depends-on ["value"]
    :source "(joker.notebook/text \"A plain text output emitted explicitly.\")"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 1
+   :state :ok
+   :outputs [
+    {:type :text
+     :text "A plain text output emitted explicitly."}
+   ]}
 
   {:id "cell-4"
    :kind :code
    :name "chart"
    :depends-on ["text"]
-   :source "(joker.notebook/chart {:xAxis {:data [\"A\" \"B\" \"C\"]} :series [{:data [4 7 3]}]})"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :source "(joker.notebook/chart {:xAxis {:data [\"A\" \"B\" \"C\"]} :series [{:data [4 9 3]}]})"
+   :execution-count 3
+   :state :ok
+   :outputs [
+    {:type :chart
+     :renderer :echarts
+     :spec "{\"xAxis\":{\"data\":[\"A\",\"B\",\"C\"]},\"series\":[{\"data\":[4,9,3]}]}"}
+   ]}
 
   {:id "cell-5"
    :kind :code
    :name "table"
    :depends-on ["chart"]
    :source "(joker.notebook/table [{:name \"Ada\" :score 42} {:name \"Grace\" :score 99}])"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 1
+   :state :ok
+   :outputs [
+    {:type :table
+     :renderer :json
+     :source "[{\"name\":\"Ada\",\"score\":42},{\"name\":\"Grace\",\"score\":99}]"}
+   ]}
 
   {:id "cell-6"
    :kind :code
    :name "html"
    :depends-on ["table"]
    :source "(joker.notebook/html \"<strong>Trusted local HTML output</strong>\")"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 1
+   :state :ok
+   :outputs [
+    {:type :html
+     :renderer :trusted
+     :source "<strong>Trusted local HTML output</strong>"}
+   ]}
 
   {:id "cell-7"
    :kind :code
    :name "flow"
    :depends-on ["html"]
    :source "(joker.notebook/mermaid \"graph TD; Load-->Transform; Transform-->Render\")"
-   :execution-count 0
-   :state :idle
-   :outputs []}
+   :execution-count 1
+   :state :ok
+   :outputs [
+    {:type :diagram
+     :renderer :mermaid
+     :source "graph TD; Load-->Transform; Transform-->Render"}
+   ]}
 
   {:id "cell-8"
    :kind :code
    :name "graph"
    :depends-on ["flow"]
    :source "(joker.notebook/graph \"{\\\"nodes\\\":[{\\\"id\\\":\\\"Load\\\"},{\\\"id\\\":\\\"Transform\\\"},{\\\"id\\\":\\\"Render\\\"}],\\\"edges\\\":[{\\\"from\\\":\\\"Load\\\",\\\"to\\\":\\\"Transform\\\"},{\\\"from\\\":\\\"Transform\\\",\\\"to\\\":\\\"Render\\\"}]}\")"
-   :execution-count 0
-   :state :idle
-   :outputs []}
- ]}
+   :execution-count 1
+   :state :ok
+   :outputs [
+    {:type :graph
+     :renderer :graph-json
+     :source "{\"nodes\":[{\"id\":\"Load\"},{\"id\":\"Transform\"},{\"id\":\"Render\"}],\"edges\":[{\"from\":\"Load\",\"to\":\"Transform\"},{\"from\":\"Transform\",\"to\":\"Render\"}]}"}
+   ]}
+]}

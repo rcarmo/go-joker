@@ -386,41 +386,72 @@ func Encode(nb Notebook) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "{:format :joker/notebook\n :version %d\n", nb.Version)
 	fmt.Fprintf(&b, " :title %s\n :created-at %s\n :updated-at %s\n :cells [\n", q(nb.Title), q(nb.CreatedAt), q(nb.UpdatedAt))
-	for _, c := range nb.Cells {
-		fmt.Fprintf(&b, "  {:id %s :kind :%s", q(c.ID), emptyDefault(c.Kind, "code"))
+	for i, c := range nb.Cells {
+		if i > 0 {
+			b.WriteString("\n")
+		}
+		fmt.Fprintf(&b, "  {:id %s\n", q(c.ID))
+		fmt.Fprintf(&b, "   :kind :%s\n", emptyDefault(c.Kind, "code"))
 		if c.Name != "" {
-			fmt.Fprintf(&b, " :name %s", q(c.Name))
+			fmt.Fprintf(&b, "   :name %s\n", q(c.Name))
 		}
-		fmt.Fprintf(&b, " :depends-on [%s] :source %s :execution-count %d :state :%s :outputs [", quoteList(c.DependsOn), q(c.Source), c.ExecutionCount, emptyDefault(c.State, "idle"))
-		for _, o := range c.Outputs {
-			fmt.Fprintf(&b, "{:type :%s", emptyDefault(o.Type, "value"))
-			if o.Text != "" {
-				fmt.Fprintf(&b, " :text %s", q(o.Text))
-			}
-			if o.MIME != "" {
-				fmt.Fprintf(&b, " :mime %s", q(o.MIME))
-			}
-			if o.Encoding != "" {
-				fmt.Fprintf(&b, " :encoding :%s", o.Encoding)
-			}
-			if o.Renderer != "" {
-				fmt.Fprintf(&b, " :renderer :%s", o.Renderer)
-			}
-			if o.Data != "" {
-				fmt.Fprintf(&b, " :data %s", q(o.Data))
-			}
-			if o.Spec != "" {
-				fmt.Fprintf(&b, " :spec %s", q(o.Spec))
-			}
-			if o.Source != "" {
-				fmt.Fprintf(&b, " :source %s", q(o.Source))
-			}
-			b.WriteString("}")
+		fmt.Fprintf(&b, "   :depends-on [%s]\n", quoteList(c.DependsOn))
+		fmt.Fprintf(&b, "   :source %s\n", q(c.Source))
+		fmt.Fprintf(&b, "   :execution-count %d\n", c.ExecutionCount)
+		fmt.Fprintf(&b, "   :state :%s\n", emptyDefault(c.State, "idle"))
+		if len(c.Outputs) == 0 {
+			b.WriteString("   :outputs []}\n")
+			continue
 		}
-		b.WriteString("]}\n")
+		b.WriteString("   :outputs [\n")
+		for j, o := range c.Outputs {
+			if j > 0 {
+				b.WriteString("\n")
+			}
+			writeEncodedOutput(&b, o)
+		}
+		b.WriteString("   ]}\n")
 	}
 	b.WriteString("]}\n")
 	return b.String()
+}
+
+func writeEncodedOutput(b *strings.Builder, o Output) {
+	fields := []string{}
+	if o.Text != "" {
+		fields = append(fields, fmt.Sprintf("     :text %s", q(o.Text)))
+	}
+	if o.MIME != "" {
+		fields = append(fields, fmt.Sprintf("     :mime %s", q(o.MIME)))
+	}
+	if o.Encoding != "" {
+		fields = append(fields, fmt.Sprintf("     :encoding :%s", o.Encoding))
+	}
+	if o.Renderer != "" {
+		fields = append(fields, fmt.Sprintf("     :renderer :%s", o.Renderer))
+	}
+	if o.Data != "" {
+		fields = append(fields, fmt.Sprintf("     :data %s", q(o.Data)))
+	}
+	if o.Spec != "" {
+		fields = append(fields, fmt.Sprintf("     :spec %s", q(o.Spec)))
+	}
+	if o.Source != "" {
+		fields = append(fields, fmt.Sprintf("     :source %s", q(o.Source)))
+	}
+	fmt.Fprintf(b, "    {:type :%s", emptyDefault(o.Type, "value"))
+	if len(fields) == 0 {
+		b.WriteString("}\n")
+		return
+	}
+	b.WriteString("\n")
+	for i, field := range fields {
+		if i == len(fields)-1 {
+			fmt.Fprintf(b, "%s}\n", field)
+			continue
+		}
+		fmt.Fprintf(b, "%s\n", field)
+	}
 }
 
 var AuthToken string

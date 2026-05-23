@@ -27,6 +27,8 @@ func handleNotebookCommand(args []string) {
 		demoNotebook(args[1:])
 	case "run":
 		runNotebook(args[1:])
+	case "format":
+		formatNotebook(args[1:])
 	case "export":
 		exportNotebook(args[1:])
 	case "status":
@@ -43,6 +45,24 @@ func handleNotebookCommand(args []string) {
 		printNotebookUsage()
 	default:
 		serveNotebook(args)
+	}
+}
+
+func formatNotebook(args []string) {
+	if len(args) < 1 {
+		fmt.Fprintln(Stderr, "notebook format requires at least one file")
+		os.Exit(2)
+	}
+	for _, path := range args {
+		nb, err := notebook.Load(path)
+		if err != nil {
+			fmt.Fprintln(Stderr, err)
+			os.Exit(1)
+		}
+		if err := notebook.Save(path, nb); err != nil {
+			fmt.Fprintln(Stderr, err)
+			os.Exit(1)
+		}
 	}
 }
 
@@ -434,6 +454,7 @@ func printNotebookUsage() {
   joker notebook new file.edn [--title "Title"] [--serve] [--open] [--token secret] [--readonly]
   joker notebook demo [file.edn]
   joker notebook run file.edn [--no-save] [--summary] [--fail-on-error]
+  joker notebook format file.edn [...]
   joker notebook validate file.edn
   joker notebook status file.edn
   joker notebook deps file.edn

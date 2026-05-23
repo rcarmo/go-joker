@@ -6,6 +6,7 @@
  :cells [
   {:id "cell-1"
    :kind :markdown
+   :depends-on []
    :source "# Joker notebook rich demo\n\nThis notebook demonstrates value, text, chart, table, trusted HTML, diagram, and graph outputs."
    :execution-count 0
    :state :idle
@@ -73,4 +74,4 @@
    :execution-count 0
    :state :idle
    :outputs []}
- ]}
+]}

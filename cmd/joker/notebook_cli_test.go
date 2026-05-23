@@ -16,7 +16,7 @@ func TestNotebookHelpMentionsSecurityFlags(t *testing.T) {
 	if err != nil {
 		t.Fatalf("notebook --help: %v\n%s", err, out)
 	}
-	for _, want := range []string{"--token secret", "--readonly", "--summary", "--fail-on-error"} {
+	for _, want := range []string{"--token secret", "--readonly", "--summary", "--fail-on-error", "notebook format"} {
 		if !strings.Contains(string(out), want) {
 			t.Fatalf("notebook --help missing %q:\n%s", want, out)
 		}
@@ -38,6 +38,29 @@ func TestNotebookNewCLI(t *testing.T) {
 	}
 	if !strings.Contains(string(data), ":format :joker/notebook") || !strings.Contains(string(data), "Created") {
 		t.Fatalf("new notebook:\n%s", data)
+	}
+}
+
+func TestNotebookFormatCLI(t *testing.T) {
+	bin := buildJokerBinary(t)
+	dir := t.TempDir()
+	nb := filepath.Join(dir, "format.edn")
+	if err := os.WriteFile(nb, []byte(`{:format :joker/notebook :version 1 :title "Format" :cells [{:id "cell-1" :kind :code :source "(+ 1 2)" :state :idle :outputs []}]}`), 0644); err != nil {
+		t.Fatal(err)
+	}
+	cmd := exec.Command(bin, "notebook", "format", nb)
+	cmd.Env = notebookCLIEnv(t)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("notebook format: %v\n%s", err, out)
+	}
+	data, err := os.ReadFile(nb)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"\n  {:id \"cell-1\"\n", "\n   :source \"(+ 1 2)\"\n", "\n   :outputs []}"} {
+		if !strings.Contains(string(data), want) {
+			t.Fatalf("formatted notebook missing %q:\n%s", want, data)
+		}
 	}
 }
 
