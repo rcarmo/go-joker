@@ -34,7 +34,7 @@ The server binds to `127.0.0.1` when `-p`/`--port` is used. Pass `--open` to lau
 
 Before overwriting an existing notebook, the server writes a recovery snapshot under `.joker-notebook-snapshots/` next to the notebook file. Snapshot directories are ignored by git.
 
-The browser UI avoids a full page reload for save and Markdown export: those actions update the raw/status panes in place. Evaluation and structural mutations still reload after success so rendered outputs and ordering stay consistent.
+The browser UI avoids a full page reload for save and Markdown export: those actions update the raw/status panes in place. Evaluation and structural mutations still reload after success so rendered outputs and ordering stay consistent. Rendered table outputs have sortable column headers in the browser.
 
 ## File format
 
