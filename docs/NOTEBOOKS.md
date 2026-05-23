@@ -20,6 +20,7 @@ joker notebook serve [file.edn] [-p 8080] [--token secret] [--readonly]
 joker notebook serve [file.edn] --addr 127.0.0.1:8080
 joker notebook new file.edn --title "Example"
 joker notebook new file.edn --title "Example" --serve --open -p 8080
+joker notebook new file.edn --title "Example" --serve --readonly --token secret
 joker notebook demo rich-demo.edn
 joker notebook run file.edn
 joker notebook validate file.edn

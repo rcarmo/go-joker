@@ -86,9 +86,9 @@ func newNotebook(args []string) {
 			}
 		case "--serve":
 			serve = true
-		case "--open", "-p", "--port", "--addr":
+		case "--open", "--readonly", "--read-only", "-p", "--port", "--addr", "--token":
 			serveArgs = append(serveArgs, args[i])
-			if (args[i] == "-p" || args[i] == "--port" || args[i] == "--addr") && i+1 < len(args) {
+			if (args[i] == "-p" || args[i] == "--port" || args[i] == "--addr" || args[i] == "--token") && i+1 < len(args) {
 				i++
 				serveArgs = append(serveArgs, args[i])
 			}
@@ -336,7 +336,7 @@ func printNotebookUsage() {
 	fmt.Fprintln(Stdout, `Usage:
   joker notebook [file.edn] [-p 8080] [--open] [--token secret] [--readonly]
   joker notebook serve [file.edn] [-p 8080] [--token secret] [--readonly]
-  joker notebook new file.edn [--title "Title"] [--serve] [--open]
+  joker notebook new file.edn [--title "Title"] [--serve] [--open] [--token secret] [--readonly]
   joker notebook demo [file.edn]
   joker notebook run file.edn
   joker notebook validate file.edn
