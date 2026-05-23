@@ -273,12 +273,15 @@ func runNotebook(args []string) {
 	path := ""
 	noSave := false
 	summary := false
+	failOnError := false
 	for _, arg := range args {
 		switch arg {
 		case "--no-save":
 			noSave = true
 		case "--summary", "--json-summary":
 			summary = true
+		case "--fail-on-error":
+			failOnError = true
 		default:
 			if !strings.HasPrefix(arg, "-") && path == "" {
 				path = arg
@@ -295,16 +298,29 @@ func runNotebook(args []string) {
 		os.Exit(1)
 	}
 	notebook.Run(&nb)
+	errors := notebookRunErrorCount(nb)
 	if summary {
 		writeNotebookRunSummary(nb)
 	}
-	if noSave {
-		return
+	if !noSave {
+		if err := notebook.Save(path, nb); err != nil {
+			fmt.Fprintln(Stderr, err)
+			os.Exit(1)
+		}
 	}
-	if err := notebook.Save(path, nb); err != nil {
-		fmt.Fprintln(Stderr, err)
+	if failOnError && errors > 0 {
 		os.Exit(1)
 	}
+}
+
+func notebookRunErrorCount(nb notebook.Notebook) int {
+	errors := 0
+	for _, c := range nb.Cells {
+		if c.State == "error" {
+			errors++
+		}
+	}
+	return errors
 }
 
 func writeNotebookRunSummary(nb notebook.Notebook) {
@@ -390,7 +406,7 @@ func printNotebookUsage() {
   joker notebook serve [file.edn] [-p 8080] [--token secret] [--readonly]
   joker notebook new file.edn [--title "Title"] [--serve] [--open] [--token secret] [--readonly]
   joker notebook demo [file.edn]
-  joker notebook run file.edn [--no-save] [--summary]
+  joker notebook run file.edn [--no-save] [--summary] [--fail-on-error]
   joker notebook validate file.edn
   joker notebook status file.edn
   joker notebook deps file.edn

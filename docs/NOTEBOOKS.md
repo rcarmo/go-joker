@@ -25,6 +25,7 @@ joker notebook demo rich-demo.edn
 joker notebook run file.edn
 joker notebook run file.edn --no-save
 joker notebook run file.edn --no-save --summary
+joker notebook run file.edn --no-save --summary --fail-on-error
 joker notebook validate file.edn
 joker notebook status file.edn
 joker notebook deps file.edn
@@ -165,7 +166,7 @@ joker notebook run demo.edn --no-save
 joker notebook export demo.edn -o demo.md
 ```
 
-Use `--no-save` for CI/smoke checks that should execute cells without rewriting the notebook EDN. Add `--summary` for a compact JSON report of cell states/output counts, including aggregate `ok`, `errors`, and `idle` counts.
+Use `--no-save` for CI/smoke checks that should execute cells without rewriting the notebook EDN. Add `--summary` for a compact JSON report of cell states/output counts, including aggregate `ok`, `errors`, and `idle` counts. Add `--fail-on-error` to exit non-zero when any evaluated cell ends in `:error`.
 
 Or browse it locally:
 
