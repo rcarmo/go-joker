@@ -54,7 +54,7 @@ func TestNotebookRunFailOnErrorCLI(t *testing.T) {
 	if err == nil {
 		t.Fatalf("expected --fail-on-error to fail, output:\n%s", out)
 	}
-	if !strings.Contains(string(out), `"errors":1`) || !strings.Contains(string(out), `"state":"error"`) {
+	if !strings.Contains(string(out), `"errors":1`) || !strings.Contains(string(out), `"state":"error"`) || !strings.Contains(string(out), `"error":`) || !strings.Contains(string(out), `missing-symbol`) {
 		t.Fatalf("fail summary missing error details:\n%s", out)
 	}
 }

@@ -323,6 +323,15 @@ func notebookRunErrorCount(nb notebook.Notebook) int {
 	return errors
 }
 
+func notebookCellErrorText(c notebook.Cell) string {
+	for _, out := range c.Outputs {
+		if out.Type == "error" {
+			return out.Text
+		}
+	}
+	return ""
+}
+
 func writeNotebookRunSummary(nb notebook.Notebook) {
 	status := notebook.BuildStatus(nb)
 	ok, errors, idle := 0, 0, 0
@@ -341,7 +350,11 @@ func writeNotebookRunSummary(nb notebook.Notebook) {
 		if i > 0 {
 			fmt.Fprint(Stdout, ",")
 		}
-		fmt.Fprintf(Stdout, "{\"id\":%q,\"kind\":%q,\"name\":%q,\"state\":%q,\"outputs\":%d}", c.ID, c.Kind, c.Name, c.State, len(c.Outputs))
+		fmt.Fprintf(Stdout, "{\"id\":%q,\"kind\":%q,\"name\":%q,\"state\":%q,\"outputs\":%d", c.ID, c.Kind, c.Name, c.State, len(c.Outputs))
+		if errText := notebookCellErrorText(c); errText != "" {
+			fmt.Fprintf(Stdout, ",\"error\":%q", errText)
+		}
+		fmt.Fprint(Stdout, "}")
 	}
 	fmt.Fprintln(Stdout, "]}")
 }
