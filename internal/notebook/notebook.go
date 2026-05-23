@@ -689,7 +689,7 @@ func Handler(path string) http.Handler {
 			cell.Source = string(body)
 		}
 		EvaluateCell(cell)
-		if requestCanceled(r) {
+		if requestCancelled(r) {
 			return
 		}
 		_ = saveCurrent(path, &nb)
@@ -718,7 +718,7 @@ func Handler(path string) http.Handler {
 			return
 		}
 		_ = EvaluateDownstream(&nb, name)
-		if requestCanceled(r) {
+		if requestCancelled(r) {
 			return
 		}
 		_ = saveCurrent(path, &nb)
@@ -733,7 +733,7 @@ func Handler(path string) http.Handler {
 		}
 		_ = applySourceUpdate(r.Body, &nb)
 		Run(&nb)
-		if requestCanceled(r) {
+		if requestCancelled(r) {
 			return
 		}
 		_ = saveCurrent(path, &nb)
@@ -744,7 +744,7 @@ func Handler(path string) http.Handler {
 	return sameOriginMiddleware(mux)
 }
 
-func requestCanceled(r *http.Request) bool {
+func requestCancelled(r *http.Request) bool {
 	select {
 	case <-r.Context().Done():
 		return true
@@ -1105,8 +1105,8 @@ var runControllers={}
 function setCellRunState(c,state,label){if(!c)return;c.classList.remove('cell-state-idle','cell-state-ok','cell-state-error','cell-state-processing');c.classList.add('cell-state-'+state);var pill=c.querySelector('.state-pill');if(pill)pill.textContent=label||state}
 function cancelButton(id){var b=document.createElement('button');b.className='cancel-run';b.type='button';b.title='Cancel run';b.setAttribute('aria-label','Cancel run');b.onclick=function(ev){ev.stopPropagation();cancelRun(id)};b.innerHTML='<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/></svg><span class="sr-only">Cancel run</span>';return b}
 function setCellRunning(c,running){if(!c)return;var actions=c.querySelector('.cell-actions'),existing=actions&&actions.querySelector('.cancel-run');if(running&&!existing)actions.appendChild(cancelButton(c.dataset.id));if(!running&&existing)existing.remove();if(actions)actions.querySelectorAll('button').forEach(function(btn){btn.disabled=running&&!btn.classList.contains('cancel-run')})}
-function startCellRun(key,cells,request,ok){if(runControllers[key])runControllers[key].abort();var ctrl=new AbortController();runControllers[key]=ctrl;cells.forEach(function(c){setCellRunState(c,'processing','running');setCellRunning(c,true)});logMsg('Running '+cells.length+' cell'+(cells.length===1?'':'s')+'...',false);return apiText(request(ctrl.signal),ok).then(function(t){if(runControllers[key]===ctrl)delete runControllers[key];refresh(t)}).catch(function(e){if(runControllers[key]===ctrl)delete runControllers[key];var aborted=e&&e.name==='AbortError';cells.forEach(function(c){setCellRunState(c,aborted?'idle':'error',aborted?'canceled':'error');setCellRunning(c,false)});if(aborted)logMsg('Canceled run',false)})}
-function cancelRun(id){var didCancel=false;Object.keys(runControllers).forEach(function(key){if(key==='all'||key==='cell:'+id||key.indexOf('downstream:')===0){runControllers[key].abort();didCancel=true}});if(didCancel)logMsg('Canceling run...',false)}
+function startCellRun(key,cells,request,ok){if(runControllers[key])runControllers[key].abort();var ctrl=new AbortController();runControllers[key]=ctrl;cells.forEach(function(c){setCellRunState(c,'processing','running');setCellRunning(c,true)});logMsg('Running '+cells.length+' cell'+(cells.length===1?'':'s')+'...',false);return apiText(request(ctrl.signal),ok).then(function(t){if(runControllers[key]===ctrl)delete runControllers[key];refresh(t)}).catch(function(e){if(runControllers[key]===ctrl)delete runControllers[key];var aborted=e&&e.name==='AbortError';cells.forEach(function(c){setCellRunState(c,aborted?'idle':'error',aborted?'cancelled':'error');setCellRunning(c,false)});if(aborted)logMsg('Cancelled run',false)})}
+function cancelRun(id){var didCancel=false;Object.keys(runControllers).forEach(function(key){if(key==='all'||key==='cell:'+id||key.indexOf('downstream:')===0){runControllers[key].abort();didCancel=true}});if(didCancel)logMsg('Cancelling run...',false)}
 function evaluateAll(){if(guardWrite())return;startCellRun('all',codeCells(),function(signal){return fetch('/api/evaluate-all',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload(),signal:signal})},'Evaluated all cells')}
 function evaluateCell(id){if(guardWrite())return;var c=cellElement(id);var src=c?c.querySelector('textarea').value:'';startCellRun('cell:'+id,c?[c]:[],function(signal){return fetch('/api/evaluate-cell?id='+encodeURIComponent(id),{method:'POST',headers:{'Content-Type':'text/plain'},body:src,signal:signal})},'Evaluated '+id)}
 function saveNotebook(){if(guardWrite())return;apiText(fetch('/api/save-sources',{method:'POST',headers:{'Content-Type':'application/json'},body:sourcePayload()}),'Saved notebook').then(updateRaw).catch(()=>{})}
