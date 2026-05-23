@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "embed"
+	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
@@ -334,29 +335,42 @@ func notebookCellErrorText(c notebook.Cell) string {
 
 func writeNotebookRunSummary(nb notebook.Notebook) {
 	status := notebook.BuildStatus(nb)
-	ok, errors, idle := 0, 0, 0
+	type cellSummary struct {
+		ID      string `json:"id"`
+		Kind    string `json:"kind"`
+		Name    string `json:"name"`
+		State   string `json:"state"`
+		Outputs int    `json:"outputs"`
+		Error   string `json:"error,omitempty"`
+	}
+	summary := struct {
+		Title       string        `json:"title"`
+		CellCount   int           `json:"cellCount"`
+		OutputCount int           `json:"outputCount"`
+		Success     bool          `json:"success"`
+		OK          int           `json:"ok"`
+		Errors      int           `json:"errors"`
+		Idle        int           `json:"idle"`
+		Cells       []cellSummary `json:"cells"`
+	}{Title: status.Title, CellCount: status.CellCount, OutputCount: status.OutputCount}
 	for _, c := range nb.Cells {
 		switch c.State {
 		case "ok":
-			ok++
+			summary.OK++
 		case "error":
-			errors++
+			summary.Errors++
 		default:
-			idle++
+			summary.Idle++
 		}
+		summary.Cells = append(summary.Cells, cellSummary{ID: c.ID, Kind: c.Kind, Name: c.Name, State: c.State, Outputs: len(c.Outputs), Error: notebookCellErrorText(c)})
 	}
-	fmt.Fprintf(Stdout, "{\"title\":%q,\"cellCount\":%d,\"outputCount\":%d,\"success\":%t,\"ok\":%d,\"errors\":%d,\"idle\":%d,\"cells\":[", status.Title, status.CellCount, status.OutputCount, errors == 0, ok, errors, idle)
-	for i, c := range nb.Cells {
-		if i > 0 {
-			fmt.Fprint(Stdout, ",")
-		}
-		fmt.Fprintf(Stdout, "{\"id\":%q,\"kind\":%q,\"name\":%q,\"state\":%q,\"outputs\":%d", c.ID, c.Kind, c.Name, c.State, len(c.Outputs))
-		if errText := notebookCellErrorText(c); errText != "" {
-			fmt.Fprintf(Stdout, ",\"error\":%q", errText)
-		}
-		fmt.Fprint(Stdout, "}")
+	summary.Success = summary.Errors == 0
+	payload, err := json.Marshal(summary)
+	if err != nil {
+		fmt.Fprintln(Stderr, err)
+		os.Exit(1)
 	}
-	fmt.Fprintln(Stdout, "]}")
+	fmt.Fprintln(Stdout, string(payload))
 }
 
 func exportNotebook(args []string) {
