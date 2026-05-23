@@ -56,7 +56,7 @@ func TestNotebookRunSummaryCLI(t *testing.T) {
 	if err != nil {
 		t.Fatalf("notebook run --summary: %v\n%s", err, out)
 	}
-	for _, want := range []string{`"title":"Summary"`, `"cellCount":2`, `"id":"cell-2"`, `"state":"ok"`} {
+	for _, want := range []string{`"title":"Summary"`, `"cellCount":2`, `"ok":1`, `"idle":1`, `"errors":0`, `"id":"cell-2"`, `"state":"ok"`} {
 		if !strings.Contains(string(out), want) {
 			t.Fatalf("summary missing %q:\n%s", want, out)
 		}

@@ -165,7 +165,7 @@ joker notebook run demo.edn --no-save
 joker notebook export demo.edn -o demo.md
 ```
 
-Use `--no-save` for CI/smoke checks that should execute cells without rewriting the notebook EDN. Add `--summary` for a compact JSON report of cell states/output counts.
+Use `--no-save` for CI/smoke checks that should execute cells without rewriting the notebook EDN. Add `--summary` for a compact JSON report of cell states/output counts, including aggregate `ok`, `errors`, and `idle` counts.
 
 Or browse it locally:
 

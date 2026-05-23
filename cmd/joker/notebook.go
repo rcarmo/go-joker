@@ -309,7 +309,18 @@ func runNotebook(args []string) {
 
 func writeNotebookRunSummary(nb notebook.Notebook) {
 	status := notebook.BuildStatus(nb)
-	fmt.Fprintf(Stdout, "{\"title\":%q,\"cellCount\":%d,\"outputCount\":%d,\"cells\":[", status.Title, status.CellCount, status.OutputCount)
+	ok, errors, idle := 0, 0, 0
+	for _, c := range nb.Cells {
+		switch c.State {
+		case "ok":
+			ok++
+		case "error":
+			errors++
+		default:
+			idle++
+		}
+	}
+	fmt.Fprintf(Stdout, "{\"title\":%q,\"cellCount\":%d,\"outputCount\":%d,\"ok\":%d,\"errors\":%d,\"idle\":%d,\"cells\":[", status.Title, status.CellCount, status.OutputCount, ok, errors, idle)
 	for i, c := range nb.Cells {
 		if i > 0 {
 			fmt.Fprint(Stdout, ",")
