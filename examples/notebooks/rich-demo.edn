@@ -24,7 +24,7 @@
    :kind :code
    :name "chart"
    :depends-on ["value"]
-   :source "(joker.notebook/chart \"{\\\"xAxis\\\":{\\\"data\\\":[\\\"A\\\",\\\"B\\\",\\\"C\\\"]},\\\"series\\\":[{\\\"data\\\":[4,7,3]}]}\")"
+   :source "(joker.notebook/chart {:xAxis {:data [\"A\" \"B\" \"C\"]} :series [{:data [4 7 3]}]})"
    :execution-count 0
    :state :idle
    :outputs []}
