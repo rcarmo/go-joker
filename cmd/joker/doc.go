@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
+	"net/url"
 	"os"
 	"sort"
 	"strconv"
@@ -12,6 +14,7 @@ import (
 
 	. "github.com/rcarmo/go-joker/core"
 	coretypes "github.com/rcarmo/go-joker/core/types"
+	"github.com/yuin/goldmark"
 )
 
 type docIndex struct {
@@ -255,7 +258,7 @@ func renderDocMarkdown(idx docIndex, query string) string {
 	if strings.TrimSpace(query) == "" {
 		b.WriteString("# Joker runtime documentation\n\n## Namespaces\n\n")
 		for _, ns := range res.Namespaces {
-			b.WriteString(fmt.Sprintf("- `%s`", ns.Name))
+			b.WriteString(fmt.Sprintf("- %s", docSymbolLink(ns.Name, ns.Name)))
 			if ns.Doc != "" {
 				b.WriteString(" — " + firstLine(ns.Doc))
 			}
@@ -265,7 +268,7 @@ func renderDocMarkdown(idx docIndex, query string) string {
 	}
 	if len(res.Namespaces) == 1 && strings.EqualFold(res.Namespaces[0].Name, query) {
 		ns := res.Namespaces[0]
-		b.WriteString(fmt.Sprintf("# `%s`\n\n%s\n\n## Vars\n\n", ns.Name, ns.Doc))
+		b.WriteString(fmt.Sprintf("# %s\n\n%s\n\n## Vars\n\n", docSymbolLink(ns.Name, ns.Name), ns.Doc))
 		for _, v := range ns.Vars {
 			renderVarSummary(&b, v)
 		}
@@ -277,10 +280,10 @@ func renderDocMarkdown(idx docIndex, query string) string {
 	}
 	b.WriteString(fmt.Sprintf("# Matches for `%s`\n\n", query))
 	for _, ns := range res.Namespaces {
-		b.WriteString(fmt.Sprintf("- namespace `%s` — %s\n", ns.Name, firstLine(ns.Doc)))
+		b.WriteString(fmt.Sprintf("- namespace %s — %s\n", docSymbolLink(ns.Name, ns.Name), firstLine(ns.Doc)))
 	}
 	for _, v := range res.Vars {
-		b.WriteString(fmt.Sprintf("- `%s` — %s\n", v.Qualified, firstLine(v.Doc)))
+		b.WriteString(fmt.Sprintf("- %s — %s\n", docSymbolLink(v.Qualified, v.Qualified), firstLine(v.Doc)))
 	}
 	if len(res.Namespaces) == 0 && len(res.Vars) == 0 {
 		b.WriteString("No matches.\n")
@@ -289,7 +292,7 @@ func renderDocMarkdown(idx docIndex, query string) string {
 }
 
 func renderVarSummary(b *strings.Builder, v docVar) {
-	b.WriteString(fmt.Sprintf("### `%s`\n\n", v.Name))
+	b.WriteString(fmt.Sprintf("### %s\n\n", docSymbolLink(v.Name, v.Qualified)))
 	if len(v.Arglists) > 0 {
 		b.WriteString("```clojure\n" + strings.Join(v.Arglists, "\n") + "\n```\n\n")
 	}
@@ -299,18 +302,23 @@ func renderVarSummary(b *strings.Builder, v docVar) {
 }
 
 func renderVarFull(b *strings.Builder, v docVar) {
-	b.WriteString(fmt.Sprintf("# `%s`\n\n", v.Qualified))
+	b.WriteString(fmt.Sprintf("# %s\n\n", docSymbolLink(v.Qualified, v.Qualified)))
 	if len(v.Arglists) > 0 {
 		b.WriteString("```clojure\n" + strings.Join(v.Arglists, "\n") + "\n```\n\n")
 	}
 	if v.Doc != "" {
 		b.WriteString(v.Doc + "\n\n")
 	}
-	b.WriteString(fmt.Sprintf("Namespace: `%s`  \nKind: `%s`", strings.Split(v.Qualified, "/")[0], v.Kind))
+	ns := strings.Split(v.Qualified, "/")[0]
+	b.WriteString(fmt.Sprintf("Namespace: %s  \nKind: `%s`", docSymbolLink(ns, ns), v.Kind))
 	if v.Added != "" {
 		b.WriteString(fmt.Sprintf("  \nAdded: `%s`", v.Added))
 	}
 	b.WriteString("\n")
+}
+
+func docSymbolLink(label string, query string) string {
+	return fmt.Sprintf("[`%s`](?q=%s)", label, url.QueryEscape(query))
 }
 
 func firstLine(s string) string {
@@ -320,19 +328,39 @@ func firstLine(s string) string {
 	return s
 }
 
+func renderDocHTML(markdown string) (template.HTML, error) {
+	var b bytes.Buffer
+	if err := goldmark.Convert([]byte(markdown), &b); err != nil {
+		return "", err
+	}
+	return template.HTML(b.String()), nil
+}
+
 func serveDocs(addr string, idx docIndex) error {
+	fmt.Fprintf(Stdout, "Serving Joker docs at http://%s/\n", addr)
+	return http.ListenAndServe(addr, docsHandler(idx))
+}
+
+func docsHandler(idx docIndex) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query().Get("q")
-		page := renderDocMarkdown(idx, q)
-		_ = docsPage.Execute(w, struct{ Query, Markdown string }{q, page})
+		page, err := renderDocHTML(renderDocMarkdown(idx, q))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		_ = docsPage.Execute(w, struct {
+			Query string
+			HTML  template.HTML
+		}{q, page})
 	})
 	mux.HandleFunc("/api/docs", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(queryDocs(idx, r.URL.Query().Get("q")))
 	})
-	fmt.Fprintf(Stdout, "Serving Joker docs at http://%s/\n", addr)
-	return http.ListenAndServe(addr, mux)
+	return mux
 }
 
-var docsPage = template.Must(template.New("docs").Parse(`<!doctype html><html><head><meta charset="utf-8"><title>Joker docs</title><style>body{font-family:system-ui,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;line-height:1.45}input{width:70%;padding:.5rem}button{padding:.5rem}pre{background:#f3f4f6;padding:1rem;overflow:auto}code{background:#f3f4f6;padding:.1rem .25rem}@media(prefers-color-scheme:dark){body{background:#0d1117;color:#e6edf3}pre,code{background:#161b22}}</style></head><body><form><input name="q" value="{{.Query}}" placeholder="namespace, symbol, or search text"><button>Search</button></form><pre>{{.Markdown}}</pre></body></html>`))
+var docsPage = template.Must(template.New("docs").Parse(`<!doctype html><html><head><meta charset="utf-8"><title>Joker docs</title><style>body{font-family:system-ui,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;line-height:1.45}input{width:70%;padding:.5rem}button{padding:.5rem}.doc{margin-top:1.5rem}.doc pre{background:#f3f4f6;padding:1rem;overflow:auto}.doc code{background:#f3f4f6;padding:.1rem .25rem}.doc pre code{padding:0}@media(prefers-color-scheme:dark){body{background:#0d1117;color:#e6edf3}.doc pre,.doc code{background:#161b22}}</style></head><body><form><input name="q" value="{{.Query}}" placeholder="namespace, symbol, or search text"><button>Search</button></form><main class="doc">{{.HTML}}</main></body></html>`))

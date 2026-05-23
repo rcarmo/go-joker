@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
@@ -19,11 +21,58 @@ func TestUsageMentionsNotebookCommands(t *testing.T) {
 func TestRenderDocMarkdownVar(t *testing.T) {
 	idx := docIndex{Namespaces: []docNamespace{{Name: "joker.core", Doc: "Core docs.", Vars: []docVar{{Name: "first", Qualified: "joker.core/first", Kind: "function", Doc: "Returns the first item.", Added: "1.0", Arglists: []string{"(first coll)"}}}}}}
 	got := renderDocMarkdown(idx, "joker.core/first")
-	if want := "# `joker.core/first`"; !strings.Contains(got, want) {
+	if want := "# [`joker.core/first`](?q=joker.core%2Ffirst)"; !strings.Contains(got, want) {
 		t.Fatalf("markdown missing %q:\n%s", want, got)
 	}
 	if want := "```clojure\n(first coll)\n```"; !strings.Contains(got, want) {
 		t.Fatalf("markdown missing arglist:\n%s", got)
+	}
+}
+
+func TestRenderDocMarkdownLinksSymbols(t *testing.T) {
+	idx := docIndex{Namespaces: []docNamespace{{Name: "joker.core", Doc: "Core docs.", Vars: []docVar{{Name: "first", Qualified: "joker.core/first", Kind: "function", Doc: "Returns the first item.", Arglists: []string{"(first coll)"}}}}}}
+	for name, tt := range map[string]struct {
+		got  string
+		want []string
+	}{
+		"index":     {got: renderDocMarkdown(idx, ""), want: []string{"[`joker.core`](?q=joker.core)"}},
+		"namespace": {got: renderDocMarkdown(idx, "joker.core"), want: []string{"[`joker.core`](?q=joker.core)", "[`first`](?q=joker.core%2Ffirst)"}},
+		"search":    {got: renderDocMarkdown(idx, "first"), want: []string{"[`joker.core/first`](?q=joker.core%2Ffirst)"}},
+	} {
+		for _, want := range tt.want {
+			if !strings.Contains(tt.got, want) {
+				t.Fatalf("%s markdown missing %q:\n%s", name, want, tt.got)
+			}
+		}
+	}
+}
+
+func TestRenderDocHTMLVar(t *testing.T) {
+	html, err := renderDocHTML("# [`joker.core/first`](?q=joker.core%2Ffirst)\n\n```clojure\n(first coll)\n```\n")
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := string(html)
+	for _, want := range []string{`<h1><a href="?q=joker.core%2Ffirst"><code>joker.core/first</code></a></h1>`, `<pre><code class="language-clojure">`} {
+		if !strings.Contains(got, want) {
+			t.Fatalf("html missing %q:\n%s", want, got)
+		}
+	}
+	if strings.Contains(got, "# `joker.core/first`") {
+		t.Fatalf("html still contains raw markdown:\n%s", got)
+	}
+}
+
+func TestDocsHandlerRendersHTML(t *testing.T) {
+	idx := docIndex{Namespaces: []docNamespace{{Name: "joker.core", Doc: "Core docs.", Vars: []docVar{{Name: "first", Qualified: "joker.core/first", Kind: "function", Doc: "Returns the first item.", Added: "1.0", Arglists: []string{"(first coll)"}}}}}}
+	w := httptest.NewRecorder()
+	docsHandler(idx).ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/?q=joker.core/first", nil))
+	got := w.Body.String()
+	if w.Code != http.StatusOK || !strings.Contains(w.Header().Get("Content-Type"), "text/html") {
+		t.Fatalf("docs handler code=%d content-type=%s body=%s", w.Code, w.Header().Get("Content-Type"), got)
+	}
+	if !strings.Contains(got, `<h1><a href="?q=joker.core%2Ffirst"><code>joker.core/first</code></a></h1>`) || strings.Contains(got, "# `joker.core/first`") {
+		t.Fatalf("docs handler did not render markdown as HTML:\n%s", got)
 	}
 }
 
