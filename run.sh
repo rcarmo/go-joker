@@ -6,7 +6,7 @@ build() {
   go generate ./...
   (cd core; go fmt a_*.go > /dev/null)
   go vet ./...
-  go build
+  go build -o joker ./cmd/joker
 }
 
 set -e  # Exit on error.
