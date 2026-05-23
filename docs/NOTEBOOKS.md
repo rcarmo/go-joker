@@ -245,9 +245,9 @@ The current slices provide:
 - inline SVG and base64 image rendering;
 - dependency-free browser-side bar-chart rendering from simple chart specs (`{:data [...]}` or an ECharts-like first series);
 - dependency-free browser-side table rendering from JSON row arrays;
-- Mermaid diagram source blocks with renderer labels;
+- dependency-free Mermaid flowchart rendering for simple arrows using rounded orthogonal SVG paths;
 - graph JSON circular-layout rendering for `{:nodes [...] :edges [...]}`-style JSON payloads;
 - port parsing and CLI plumbing;
 - unit tests for schema, execution capture, Markdown export, dependencies, web rendering, HTTP APIs (load/export/save/evaluate/add/delete/reorder/downstream), and CLI parsing.
 
-Further slices should improve browser editing ergonomics, add vendored ECharts/Mermaid renderers for fully interactive charts and diagrams, and support richer save/update payloads from the browser.
+Further slices should improve browser editing ergonomics, add vendored ECharts/Mermaid renderers for fully interactive charts and diagrams, and support richer save/update payloads from the browser. The dependency-free Mermaid fallback intentionally uses the picker-style rounded orthogonal arrow path for simple flowcharts.
