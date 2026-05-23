@@ -11,7 +11,7 @@ import (
 func TestNotebookHelpMentionsSecurityFlags(t *testing.T) {
 	bin := buildJokerBinary(t)
 	cmd := exec.Command(bin, "notebook", "--help")
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("notebook --help: %v\n%s", err, out)
@@ -28,7 +28,7 @@ func TestNotebookNewCLI(t *testing.T) {
 	dir := t.TempDir()
 	nb := filepath.Join(dir, "new.edn")
 	cmd := exec.Command(bin, "notebook", "new", nb, "--title", "Created")
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("notebook new: %v\n%s", err, out)
 	}
@@ -49,7 +49,7 @@ func TestNotebookRunFailOnErrorCLI(t *testing.T) {
 		t.Fatal(err)
 	}
 	cmd := exec.Command(bin, "notebook", "run", nb, "--no-save", "--summary", "--fail-on-error")
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	out, err := cmd.CombinedOutput()
 	if err == nil {
 		t.Fatalf("expected --fail-on-error to fail, output:\n%s", out)
@@ -64,12 +64,12 @@ func TestNotebookRunSummaryCLI(t *testing.T) {
 	dir := t.TempDir()
 	nb := filepath.Join(dir, "summary.edn")
 	cmd := exec.Command(bin, "notebook", "new", nb, "--title", "Summary")
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("notebook new: %v\n%s", err, out)
 	}
 	cmd = exec.Command(bin, "notebook", "run", nb, "--no-save", "--summary")
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("notebook run --summary: %v\n%s", err, out)
@@ -86,7 +86,7 @@ func TestNotebookRunNoSaveCLI(t *testing.T) {
 	dir := t.TempDir()
 	nb := filepath.Join(dir, "nosave.edn")
 	cmd := exec.Command(bin, "notebook", "new", nb, "--title", "NoSave")
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("notebook new: %v\n%s", err, out)
 	}
@@ -95,7 +95,7 @@ func TestNotebookRunNoSaveCLI(t *testing.T) {
 		t.Fatal(err)
 	}
 	cmd = exec.Command(bin, "notebook", "run", nb, "--no-save")
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("notebook run --no-save: %v\n%s", err, out)
 	}
@@ -113,7 +113,7 @@ func TestNotebookDemoCLI(t *testing.T) {
 	dir := t.TempDir()
 	nb := filepath.Join(dir, "demo.edn")
 	cmd := exec.Command(bin, "notebook", "demo", nb)
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("notebook demo: %v\n%s", err, out)
 	}
@@ -138,7 +138,7 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 		t.Fatal(err)
 	}
 	cmd := exec.Command(bin, "notebook", "run", nb)
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("notebook run: %v\n%s", err, out)
 	}
@@ -151,7 +151,7 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 	}
 	outPath := filepath.Join(dir, "report.md")
 	cmd = exec.Command(bin, "notebook", "validate", nb)
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	validateOut, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("notebook validate: %v\n%s", err, validateOut)
@@ -160,7 +160,7 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 		t.Fatalf("validate output: %s", validateOut)
 	}
 	cmd = exec.Command(bin, "notebook", "status", nb)
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	statusOut, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("notebook status: %v\n%s", err, statusOut)
@@ -169,7 +169,7 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 		t.Fatalf("status output: %s", statusOut)
 	}
 	cmd = exec.Command(bin, "notebook", "snapshots", nb)
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	snapOut, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("notebook snapshots: %v\n%s", err, snapOut)
@@ -178,12 +178,12 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 		t.Fatalf("snapshots output: %s", snapOut)
 	}
 	cmd = exec.Command(bin, "notebook", "restore", nb, "missing")
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	if out, err := cmd.CombinedOutput(); err == nil || !strings.Contains(string(out), "snapshot") {
 		t.Fatalf("notebook restore missing expected snapshot error, err=%v out=%s", err, out)
 	}
 	cmd = exec.Command(bin, "notebook", "deps", nb)
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	depsOut, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("notebook deps: %v\n%s", err, depsOut)
@@ -192,7 +192,7 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 		t.Fatalf("deps output: %s", depsOut)
 	}
 	cmd = exec.Command(bin, "notebook", "export", nb, "-o", outPath)
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("notebook export: %v\n%s", err, out)
 	}
@@ -205,6 +205,12 @@ func TestNotebookRunAndExportCLI(t *testing.T) {
 	}
 }
 
+func notebookCLIEnv(t *testing.T) []string {
+	t.Helper()
+	tmp := t.TempDir()
+	return append(os.Environ(), "TMPDIR="+tmp, "GOTMPDIR="+tmp)
+}
+
 func buildJokerBinary(t *testing.T) string {
 	t.Helper()
 	root, err := filepath.Abs(filepath.Join("..", ".."))
@@ -214,7 +220,7 @@ func buildJokerBinary(t *testing.T) string {
 	bin := filepath.Join(t.TempDir(), "joker")
 	cmd := exec.Command("go", "build", "-o", bin, "./cmd/joker")
 	cmd.Dir = root
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = notebookCLIEnv(t)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("go build: %v\n%s", err, out)
 	}
