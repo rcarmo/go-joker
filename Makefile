@@ -13,16 +13,22 @@ GOVULNCHECK_BIN ?= $(TOOLBIN)/govulncheck
 BENCH_REGEX ?= BenchmarkCLBG(NBody|Mandelbrot|SpectralNorm|BinaryTrees|FannkuchRedux)
 COMPARE_OUT ?= benchmarks/compare/out/latest
 DOCS_JOKER_BIN ?= /workspace/tmp/go-joker-docs
+CLI_BIN ?= .cache/tmp/joker
+DIST_DIR ?= dist
+DIST_PLATFORMS ?= linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64 windows/arm64
 
 TEST_PKGS ?= ./...
 TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset audit-fast audit
 
 help:
 	@echo "Available targets:"
+	@echo "  make cli            # Build the local joker CLI into $(CLI_BIN)"
+	@echo "  make dist           # Build release binaries into $(DIST_DIR)/"
+	@echo "  make clean-dist     # Remove $(DIST_DIR)/ release binaries"
 	@echo "  make tools          # Install/update audit tools (staticcheck, golangci-lint, govulncheck)"
 	@echo "  make test           # Run full test suite (cached)"
 	@echo "  make test-repro     # Reproducible tests: no shuffle, no cache"
@@ -60,6 +66,24 @@ help:
 	@echo "  make compare-clean  # Remove generated comparison outputs"
 	@echo "  make audit-fast     # test + vet + staticcheck + lint + vuln"
 	@echo "  make audit          # full audit-fast + race + bench-sanity"
+
+cli:
+	@mkdir -p $$(dirname "$(CLI_BIN)")
+	$(GO) build -o $(CLI_BIN) ./cmd/joker
+
+clean-dist:
+	rm -rf $(DIST_DIR)
+
+dist: clean-dist
+	@mkdir -p $(DIST_DIR)
+	@set -euo pipefail; \
+	for platform in $(DIST_PLATFORMS); do \
+		goos=$${platform%/*}; goarch=$${platform#*/}; ext=""; \
+		if [ "$$goos" = "windows" ]; then ext=".exe"; fi; \
+		out="$(DIST_DIR)/joker-$$goos-$$goarch$$ext"; \
+		echo "building $$out"; \
+		GOOS=$$goos GOARCH=$$goarch CGO_ENABLED=0 $(GO) build -ldflags="-s -w" -o "$$out" ./cmd/joker; \
+	done
 
 tools:
 	@echo "Installing/updating audit tooling..."
