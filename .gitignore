@@ -1,4 +1,6 @@
 /joker
+/.cache/
+/node_modules/
 .vscode
 .idea
 *.exe

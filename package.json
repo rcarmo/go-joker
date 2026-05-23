@@ -1,0 +1,11 @@
+{
+  "name": "go-joker-browser-smoke",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "playwright": "^1.52.0"
+  },
+  "scripts": {
+    "notebook-smoke": "bun run scripts/notebook_smoke.ts"
+  }
+}

@@ -212,6 +212,14 @@ Test fixtures live under `tests/notebooks/`:
 
 They are used by the notebook load/run/export tests, validated by `make notebook-check`, and are good starting points for manual UI checks. `make notebook-check` also runs the rich demo headlessly with `--no-save --summary --fail-on-error` to catch execution regressions without rewriting the example.
 
+Browser-level smoke coverage lives in `scripts/notebook_smoke.ts` and runs through Playwright:
+
+```bash
+make notebook-browser-smoke
+```
+
+The smoke script creates a temporary rich demo notebook, runs it, starts a localhost notebook server with a token, opens Chromium, verifies rendered cells/table output, filters/sorts a table, exports Markdown, displays the dependency graph, saves a title change, and checks the status API.
+
 ## Current implementation status
 
 The current slices provide:
