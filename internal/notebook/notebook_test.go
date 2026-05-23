@@ -178,6 +178,38 @@ func TestFindCell(t *testing.T) {
 	}
 }
 
+func TestSameOrigin(t *testing.T) {
+	req := httptest.NewRequest(http.MethodPost, "http://127.0.0.1:8080/api/save", nil)
+	if !sameOrigin(req) {
+		t.Fatal("empty origin should be accepted")
+	}
+	req.Header.Set("Origin", "http://127.0.0.1:8080")
+	if !sameOrigin(req) {
+		t.Fatal("matching origin should be accepted")
+	}
+	req.Header.Set("Origin", "http://evil.example")
+	if sameOrigin(req) {
+		t.Fatal("cross origin should be rejected")
+	}
+}
+
+func TestNotebookHTTPHandlerRejectsCrossOriginMutation(t *testing.T) {
+	path := t.TempDir() + "/api.edn"
+	nb := New("API")
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)"}}
+	if err := Save(path, nb); err != nil {
+		t.Fatal(err)
+	}
+	h := Handler(path)
+	w := httptest.NewRecorder()
+	req := httptest.NewRequest(http.MethodPost, "http://127.0.0.1:8080/api/evaluate-all", nil)
+	req.Header.Set("Origin", "http://evil.example")
+	h.ServeHTTP(w, req)
+	if w.Code != http.StatusForbidden {
+		t.Fatalf("cross-origin mutation code=%d body=%s", w.Code, w.Body.String())
+	}
+}
+
 func TestNotebookHTTPHandler(t *testing.T) {
 	path := t.TempDir() + "/api.edn"
 	nb := New("API")
