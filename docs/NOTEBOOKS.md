@@ -10,7 +10,7 @@ V1 goals:
 - headless execution for agents/CI;
 - Markdown export with fenced blocks for text, EDN values, chart specs, Mermaid/DOT diagrams, and graph JSON;
 - manual dependency metadata for future reactive execution;
-- rich-output envelope for charts, images, SVG, Mermaid, DOT, and graph JSON.
+- rich-output envelope for charts, tables, images, SVG, Mermaid, DOT, and graph JSON.
 
 ## Commands
 
@@ -72,6 +72,7 @@ Code cells can use helper functions in `joker.notebook` or return a map with `:n
 (joker.notebook/dot "digraph { A -> B }")
 (joker.notebook/graph {:nodes [{:id "A"}] :edges []})
 (joker.notebook/graph "{\"nodes\":[{\"id\":\"A\"}],\"edges\":[]}")
+(joker.notebook/table [{:name "Ada" :score 42}])
 (joker.notebook/image "image/png" "base64...")
 ```
 
@@ -95,6 +96,9 @@ Code cells can use helper functions in `joker.notebook` or return a map with `:n
 {:type :graph
  :renderer :graph-json
  :source "{\"nodes\":[],\"edges\":[]}"}
+
+{:type :table
+ :source "[{\"name\":\"Ada\",\"score\":42}]"}
 
 {:type :svg
  :source "<svg>...</svg>"}
@@ -217,6 +221,7 @@ The current slices provide:
 - `POST /api/evaluate-all` with optional JSON source update body;
 - inline SVG and base64 image rendering;
 - dependency-free browser-side bar-chart rendering from simple chart specs (`{:data [...]}` or an ECharts-like first series);
+- dependency-free browser-side table rendering from JSON row arrays;
 - Mermaid/DOT diagram source blocks with renderer labels;
 - graph JSON circular-layout rendering for `{:nodes [...] :edges [...]}`-style JSON payloads;
 - port parsing and CLI plumbing;

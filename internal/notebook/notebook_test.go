@@ -96,6 +96,14 @@ func TestRunCapturesReturnedValue(t *testing.T) {
 	}
 }
 
+func TestEvaluateCellNotebookTableHelper(t *testing.T) {
+	cell := Cell{ID: "helper-table", Kind: "code", Source: `(joker.notebook/table [{:name "Ada" :score 42}])`}
+	EvaluateCell(&cell)
+	if cell.State != "ok" || len(cell.Outputs) != 1 || cell.Outputs[0].Type != "table" || !strings.Contains(cell.Outputs[0].Source, `"name"`) {
+		t.Fatalf("table output cell = %#v", cell)
+	}
+}
+
 func TestEvaluateCellNotebookHelperAcceptsMaps(t *testing.T) {
 	cell := Cell{ID: "helper-map", Kind: "code", Source: `(joker.notebook/chart {:data [4 5]})`}
 	EvaluateCell(&cell)
@@ -130,7 +138,7 @@ func TestEvaluateCellValueOutput(t *testing.T) {
 
 func TestExportMarkdown(t *testing.T) {
 	nb := New("Export")
-	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", Outputs: []Output{{Type: "stdout", Text: "3\n"}, {Type: "value", Text: "{:ok true}"}, {Type: "chart", Spec: `{"data":[1,2]}`}, {Type: "diagram", Renderer: "mermaid", Source: "graph TD; A-->B"}, {Type: "graph", Source: `{"nodes":[]}`}}}}
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)", Outputs: []Output{{Type: "stdout", Text: "3\n"}, {Type: "value", Text: "{:ok true}"}, {Type: "chart", Spec: `{"data":[1,2]}`}, {Type: "diagram", Renderer: "mermaid", Source: "graph TD; A-->B"}, {Type: "graph", Source: `{"nodes":[]}`}, {Type: "table", Source: `[{"name":"Ada"}]`}}}}
 	var b bytes.Buffer
 	if err := ExportMarkdown(&b, nb); err != nil {
 		t.Fatal(err)
@@ -241,7 +249,7 @@ func TestNotebookPageRenders(t *testing.T) {
 	if err := page.Execute(&w, nb); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(w.String(), "markdown-preview") || !strings.Contains(w.String(), "function md") || !strings.Contains(w.String(), "showSnapshots") || !strings.Contains(w.String(), "restoreSnapshot") || !strings.Contains(w.String(), "snapshot-list") || !strings.Contains(w.String(), "beforeunload") || !strings.Contains(w.String(), "Unsaved changes") || !strings.Contains(w.String(), "keydown") || !strings.Contains(w.String(), "activeCell") || !strings.Contains(w.String(), "data-theme") || !strings.Contains(w.String(), "setTheme") || !strings.Contains(w.String(), "notebook-title") || !strings.Contains(w.String(), "notebook-status") || !strings.Contains(w.String(), "notebook-log") || !strings.Contains(w.String(), "apiText") || !strings.Contains(w.String(), "cell-header") || !strings.Contains(w.String(), "state-pill") || !strings.Contains(w.String(), "Out[") || !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Export Markdown") || !strings.Contains(w.String(), "Load raw EDN") || !strings.Contains(w.String(), "Clear all outputs") || !strings.Contains(w.String(), "Clear outputs") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Check deps") || !strings.Contains(w.String(), "Show dependency graph") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "cell-name") || !strings.Contains(w.String(), "cell-deps") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
+	if !strings.Contains(w.String(), "renderTables") || !strings.Contains(w.String(), "table-output") || !strings.Contains(w.String(), "markdown-preview") || !strings.Contains(w.String(), "function md") || !strings.Contains(w.String(), "showSnapshots") || !strings.Contains(w.String(), "restoreSnapshot") || !strings.Contains(w.String(), "snapshot-list") || !strings.Contains(w.String(), "beforeunload") || !strings.Contains(w.String(), "Unsaved changes") || !strings.Contains(w.String(), "keydown") || !strings.Contains(w.String(), "activeCell") || !strings.Contains(w.String(), "data-theme") || !strings.Contains(w.String(), "setTheme") || !strings.Contains(w.String(), "notebook-title") || !strings.Contains(w.String(), "notebook-status") || !strings.Contains(w.String(), "notebook-log") || !strings.Contains(w.String(), "apiText") || !strings.Contains(w.String(), "cell-header") || !strings.Contains(w.String(), "state-pill") || !strings.Contains(w.String(), "Out[") || !strings.Contains(w.String(), "Evaluate all") || !strings.Contains(w.String(), "Export Markdown") || !strings.Contains(w.String(), "Load raw EDN") || !strings.Contains(w.String(), "Clear all outputs") || !strings.Contains(w.String(), "Clear outputs") || !strings.Contains(w.String(), "Evaluate downstream") || !strings.Contains(w.String(), "Check deps") || !strings.Contains(w.String(), "Show dependency graph") || !strings.Contains(w.String(), "Add code") || !strings.Contains(w.String(), "cell-name") || !strings.Contains(w.String(), "cell-deps") || !strings.Contains(w.String(), "deleteCell") || !strings.Contains(w.String(), "moveCell") || !strings.Contains(w.String(), "highlight") || !strings.Contains(w.String(), "renderCharts") || !strings.Contains(w.String(), "renderGraphs") || !strings.Contains(w.String(), "save-sources") {
 		t.Fatalf("page missing expected UI:\n%s", w.String())
 	}
 }
