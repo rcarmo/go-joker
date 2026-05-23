@@ -393,7 +393,7 @@ func TestNotebookPageRenders(t *testing.T) {
 	if strings.Contains(w.String(), ">Cell</b>") || strings.Contains(w.String(), ">Markdown</b>") {
 		t.Fatalf("page rendered noisy fallback cell title:\n%s", w.String())
 	}
-	for _, want := range []string{"showRawNotebook", `id="raw-notebook"`, `contenteditable="true"`, ".raw-notebook{display:none}", "Hid dependency graph", "Showing dependency graph", "Hid snapshots", "Showing snapshots", ".cell-actions{display:flex", "pointer-events:none", ".cell:hover .cell-actions", "button-group theme-toggle", "M12 3a6", "notebook-commandbar", ".button-group>button", "border-radius:999px 0 0 999px", ".CodeMirror-hscrollbar"} {
+	for _, want := range []string{"showRawNotebook", `id="raw-notebook"`, `contenteditable="true"`, ".raw-notebook{display:none}", "Hid dependency graph", "Showing dependency graph", "Hid snapshots", "Showing snapshots", ".cell-actions{display:flex", "pointer-events:none", ".cell:hover .cell-actions", "button-group theme-toggle", "M12 3a6", "notebook-commandbar", ".button-group>button", "border-radius:999px 0 0 999px", ".CodeMirror-scroll{min-height:5rem;overflow-y:hidden!important;overflow-x:auto!important", "autosizeTextarea", "viewportMargin:Infinity"} {
 		if !strings.Contains(w.String(), want) {
 			t.Fatalf("page missing interaction/style %q:\n%s", want, w.String())
 		}
