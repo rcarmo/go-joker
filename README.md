@@ -206,8 +206,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on [candid82/joker](https://github.com/candid82/joker) v1.7.2 plus selected upstream feature ports. This fork is v42.8.7.
-Release notes: [`docs/RELEASE_NOTES_v42.8.7.md`](docs/RELEASE_NOTES_v42.8.7.md).
+Based on [candid82/joker](https://github.com/candid82/joker) v1.7.2 plus selected upstream feature ports. This fork is v42.8.8.
+Release notes: [`docs/RELEASE_NOTES_v42.8.8.md`](docs/RELEASE_NOTES_v42.8.8.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 
 ## Why v42?
