@@ -11,6 +11,24 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
+func TestImageHashes(t *testing.T) {
+	initImagingNamespace()
+	black := procNewImage([]coretypes.Object{coretypes.MakeInt(8), coretypes.MakeInt(8), corecollections.NewVectorFrom(coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(255))})
+	white := procNewImage([]coretypes.Object{coretypes.MakeInt(8), coretypes.MakeInt(8), corecollections.NewVectorFrom(coretypes.MakeInt(255), coretypes.MakeInt(255), coretypes.MakeInt(255), coretypes.MakeInt(255))})
+	for name, proc := range map[string]ProcFn{"average": procAverageHash, "difference": procDifferenceHash, "default": procImageHash} {
+		h := proc([]coretypes.Object{black}).(coretypes.String).S
+		if len(h) != 16 {
+			t.Fatalf("%s hash length = %d (%q), want 16", name, len(h), h)
+		}
+	}
+	if got, want := procAverageHash([]coretypes.Object{black}).(coretypes.String).S, procAverageHash([]coretypes.Object{black}).(coretypes.String).S; got != want {
+		t.Fatalf("average hash not deterministic: %q vs %q", got, want)
+	}
+	if procDifferenceHash([]coretypes.Object{black}).(coretypes.String).S != procDifferenceHash([]coretypes.Object{white}).(coretypes.String).S {
+		t.Fatal("flat black and white images should have the same difference hash")
+	}
+}
+
 func TestMetadataAndTerminals(t *testing.T) {
 	initImagingNamespace()
 	img := procNewImage([]coretypes.Object{coretypes.MakeInt(4), coretypes.MakeInt(3), corecollections.NewVectorFrom(coretypes.MakeInt(255), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(255))})

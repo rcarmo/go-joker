@@ -3,6 +3,7 @@ package imaging
 import (
 	"bytes"
 	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"image"
 	"image/color"
@@ -251,6 +252,54 @@ func opacityFloat(obj coretypes.Object) float64 {
 	}
 	return v
 }
+
+func hashHex(bits []bool) string {
+	out := make([]byte, (len(bits)+7)/8)
+	for i, bit := range bits {
+		if bit {
+			out[i/8] |= 1 << uint(7-(i%8))
+		}
+	}
+	return hex.EncodeToString(out)
+}
+
+func gray8(c color.NRGBA) uint16 {
+	return uint16(c.R)*299 + uint16(c.G)*587 + uint16(c.B)*114
+}
+
+var procAverageHash ProcFn = func(args []coretypes.Object) coretypes.Object {
+	im := extractImage(args, 0)
+	small := imaging.Resize(im.img, 8, 8, imaging.Lanczos)
+	vals := make([]uint16, 0, 64)
+	var sum uint32
+	for y := 0; y < 8; y++ {
+		for x := 0; x < 8; x++ {
+			v := gray8(small.NRGBAAt(x, y))
+			vals = append(vals, v)
+			sum += uint32(v)
+		}
+	}
+	avg := uint16(sum / 64)
+	bits := make([]bool, 64)
+	for i, v := range vals {
+		bits[i] = v >= avg
+	}
+	return coretypes.MakeString(hashHex(bits))
+}
+
+var procDifferenceHash ProcFn = func(args []coretypes.Object) coretypes.Object {
+	im := extractImage(args, 0)
+	small := imaging.Resize(im.img, 9, 8, imaging.Lanczos)
+	bits := make([]bool, 0, 64)
+	for y := 0; y < 8; y++ {
+		for x := 0; x < 8; x++ {
+			bits = append(bits, gray8(small.NRGBAAt(x, y)) > gray8(small.NRGBAAt(x+1, y)))
+		}
+	}
+	return coretypes.MakeString(hashHex(bits))
+}
+
+var procImageHash ProcFn = func(args []coretypes.Object) coretypes.Object { return procDifferenceHash(args) }
 
 var procResize ProcFn = func(args []coretypes.Object) coretypes.Object {
 	im := extractImage(args, 0)

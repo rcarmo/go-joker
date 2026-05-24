@@ -61,6 +61,10 @@ func initImagingNamespace() {
 		{"height", procHeight, "img", "Returns image height in pixels."},
 		{"bounds", procBounds, "img", "Returns [x y width height] of image bounds."},
 		{"metadata", procMetadata, "img", "Returns image metadata map {:width :height :bounds :color-model}."},
+		// Hashing
+		{"average-hash", procAverageHash, "img", "Returns a 64-bit perceptual average hash as 16 hex characters."},
+		{"difference-hash", procDifferenceHash, "img", "Returns a 64-bit perceptual difference hash as 16 hex characters."},
+		{"hash", procImageHash, "img", "Returns the default perceptual image hash (currently difference-hash)."},
 		// Creation
 		{"new", procNewImage, "width height & color", "Creates new image. Optional color as [r g b a] vector."},
 		{"from-rgba32", procFromRGBA32, "width height pixels", "Creates an image from row-major packed RGBA integer pixels (0xRRGGBBAA)."},

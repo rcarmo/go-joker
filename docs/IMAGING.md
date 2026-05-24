@@ -72,6 +72,14 @@ Anchors for `fill` include `:center`, `:top-left`, `:top`, `:top-right`, `:left`
 - `(imaging/overlay base top x y & opacity)`
 - `(imaging/paste base top x y)`
 
+## Perceptual hashes
+
+- `(imaging/average-hash img)` — 64-bit average hash as 16 lowercase hex characters.
+- `(imaging/difference-hash img)` — 64-bit difference hash as 16 lowercase hex characters.
+- `(imaging/hash img)` — default perceptual hash, currently `difference-hash`.
+
+These hashes are intended for quick similarity checks, deduplication, and notebook/browser workflows. They are not cryptographic hashes.
+
 ## Pixel and procedural generation
 
 - `(imaging/new width height & color)`
@@ -85,12 +93,13 @@ The RGBA32 helpers are intended for notebooks and procedural demos. Pixels are p
 
 ## Bun Image parity notes
 
-Compared with Bun's chainable `Bun.Image` API, `joker.imaging` now covers the low-friction metadata and terminal helpers:
+Compared with Bun's chainable `Bun.Image` API, `joker.imaging` now covers the low-friction metadata, terminal, and similarity helpers:
 
 - metadata map;
 - bytes terminal;
 - base64 terminal;
-- data URI terminal.
+- data URI terminal;
+- perceptual average/difference hashes.
 
 Known gaps:
 
