@@ -1,12 +1,14 @@
 import { chromium } from "playwright";
 import { mkdtemp, mkdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import { spawn, spawnSync, type ChildProcess } from "node:child_process";
 
 const root = new URL("..", import.meta.url).pathname.replace(/\/$/, "");
 const joker = process.env.JOKER_BIN || join(root, ".cache", "tmp", "go-joker-screenshot");
-const out = process.env.NOTEBOOK_SCREENSHOT || join(root, ".cache", "screenshots", "notebook-rich-demo-full-page.png");
+const sourceNotebook = process.env.NOTEBOOK_SOURCE || "demo";
+const defaultName = sourceNotebook === "demo" ? "rich-demo" : basename(sourceNotebook).replace(/\.edn$/, "");
+const out = process.env.NOTEBOOK_SCREENSHOT || join(root, ".cache", "screenshots", `${defaultName}-full-page.png`);
 const port = Number(process.env.NOTEBOOK_SCREENSHOT_PORT || 19180 + Math.floor(Math.random() * 1000));
 const addr = `127.0.0.1:${port}`;
 const url = `http://${addr}/`;
@@ -38,8 +40,14 @@ const work = await mkdtemp(join(tmpdir(), "joker-notebook-shot-"));
 let server: ChildProcess | undefined;
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 try {
-  const notebook = join(work, "rich-demo.edn");
-  run(["notebook", "demo", notebook]);
+  const notebook = join(work, `${defaultName}.edn`);
+  if (sourceNotebook === "demo") {
+    run(["notebook", "demo", notebook]);
+  } else {
+    run(["notebook", "run", sourceNotebook, "--no-save", "--summary", "--fail-on-error"]);
+    const cp = spawnSync("cp", [sourceNotebook, notebook], { cwd: root, encoding: "utf8" });
+    if (cp.status !== 0) throw new Error(`copy failed\n${cp.stdout}\n${cp.stderr}`);
+  }
   run(["notebook", "run", notebook, "--summary", "--fail-on-error"]);
   server = spawn(joker, ["notebook", notebook, "--addr", addr, "--token", "shot"], {
     cwd: root,
@@ -51,10 +59,10 @@ try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1800 }, deviceScaleFactor: 1 });
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.waitForSelector("#cells .cell");
-  await page.waitForSelector(".table-output table");
   await page.locator("button", { hasText: "Show dependency graph" }).click();
   await page.waitForSelector("#dependency-graph svg");
   await mkdir(join(root, ".cache", "screenshots"), { recursive: true });
+  await mkdir(join(root, "docs", "images"), { recursive: true });
   await page.screenshot({ path: out, fullPage: true });
   console.log(out);
 } finally {

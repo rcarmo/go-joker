@@ -91,21 +91,57 @@ These hashes are intended for quick similarity checks, deduplication, and notebo
 
 The RGBA32 helpers are intended for notebooks and procedural demos. Pixels are packed as `0xRRGGBBAA`.
 
-## Bun Image parity notes
+## Bun Image parity audit
 
-Compared with Bun's chainable `Bun.Image` API, `joker.imaging` now covers the low-friction metadata, terminal, and similarity helpers:
+Bun's `Bun.Image` is a lazy, chainable image pipeline: construct from a path/bytes/blob, chain transforms, choose a format, then await a terminal such as `write`, `bytes`, or `blob`. `joker.imaging` is eager and functional: each call returns an image or terminal value immediately and composes naturally with threading macros.
 
-- metadata map;
-- bytes terminal;
-- base64 terminal;
-- data URI terminal;
-- perceptual average/difference hashes.
+### Covered or close equivalents
 
-Known gaps:
+| Bun Image area | `joker.imaging` equivalent | Notes |
+|---|---|---|
+| Path input | `(imaging/open path)` | File-backed decode. |
+| Bytes input | `(imaging/decode data)` | Joker string carries bytes. |
+| Metadata | `(imaging/metadata img)`, `width`, `height`, `bounds` | Does not retain original input format yet. |
+| Resize | `resize`, `fit`, `fill` | Separate functions instead of `resize(..., {fit})`. |
+| Crop | `crop`, `crop-center` | Explicit rectangle/center crop. |
+| Rotate | `rotate` | Arbitrary degrees. |
+| Flip | `flip-h`, `flip-v`, `transpose`, `transverse` | Covers common orientation transforms. |
+| Modulate-style color changes | `brightness`, `contrast`, `saturation`, `gamma`, `sigmoid`, `grayscale`, `invert` | Separate operations instead of one option map. |
+| Output write | `(imaging/save img path)` | Format inferred by backend from extension. |
+| Output bytes | `(imaging/bytes img format & quality)` / `encode` | Returns encoded bytes as a Joker string. |
+| Base64/data URL terminals | `base64`, `data-uri` | Added for notebook/browser workflows. |
+| PNG/JPEG output | `encode`/`bytes`/`base64`/`data-uri` with `:png`, `:jpeg` | JPEG quality supported. |
+| TIFF/BMP/GIF output | `:tiff`, `:bmp`, `:gif` | Available through current backend. |
 
-- no WebP/AVIF/HEIC encoder yet;
-- no Blob abstraction;
-- no lazy image pipeline object;
-- no option-map variants for resize/encode yet.
+### Joker-only additions
 
-The functional Joker style remains the preferred surface for now; threading macros already provide a compact pipeline form.
+| Area | API | Notes |
+|---|---|---|
+| Pixel read/write | `pixel`, `set-pixel!` | Direct per-pixel access. |
+| Blank images | `new` | Optional `[r g b a]` color. |
+| Procedural raster generation | `from-rgba32`, `from-rgba32-fn`, `from-rgba32-domain-fn` | Useful for notebooks and numeric demos. |
+| Perceptual hashes | `average-hash`, `difference-hash`, `hash` | Lightweight similarity/dedup helpers; not cryptographic. |
+| Compositing | `overlay`, `paste` | Alpha and direct compositing helpers. |
+| Filters | `blur`, `sharpen` | Classic image filters. |
+
+### Remaining gaps versus Bun Image
+
+| Gap | Impact | Likely next step |
+|---|---|---|
+| WebP encode/decode | High for browser/notebook output size and modern web workflows. | Add `:webp` if we accept a Go WebP dependency. |
+| AVIF/HEIC encode/decode | Medium; useful, but heavier/platform-sensitive. | Defer unless there is a strong use case. |
+| Blob abstraction | Low in Joker today. | Only add if Joker gets a broader Blob/file API. |
+| Lazy chain/pipeline object | Low-to-medium ergonomics gap. | Prefer functional API for now; threading macros cover most use. |
+| Option-map resize/encode variants | Medium ergonomics/extensibility gap. | Add optional map overloads while preserving current positional APIs. |
+| Original format retention in metadata | Medium for audits/conversion tools. | Store source format on `Image` during `open`/`decode`. |
+| Orientation/EXIF handling | Medium for photos. | Consider EXIF-aware open/auto-orient if photo workflows matter. |
+| SIMD/native backend performance parity | Medium-to-high for large batches. | Current implementation is pure Go and portable, not Bun's native/SIMD pipeline. |
+
+### Recommended order
+
+1. Add WebP support (`:webp`) if dependency cost is acceptable.
+2. Retain original decoded format in `Image` and expose it in `metadata`.
+3. Add option-map overloads for `resize`/`encode` to mirror Bun's extensibility without replacing the functional API.
+4. Consider EXIF auto-orientation for camera/photo workflows.
+
+The functional Joker style remains the preferred surface; threading macros already provide compact pipeline composition without introducing a separate lazy pipeline object.
