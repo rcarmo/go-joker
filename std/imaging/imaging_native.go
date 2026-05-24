@@ -2,6 +2,7 @@ package imaging
 
 import (
 	"bytes"
+	"encoding/base64"
 	"fmt"
 	"image"
 	"image/color"
@@ -129,44 +130,62 @@ var procSave ProcFn = func(args []coretypes.Object) coretypes.Object {
 	return NIL
 }
 
-var procEncode ProcFn = func(args []coretypes.Object) coretypes.Object {
-	im := extractImage(args, 0)
-	format := strings.TrimPrefix(coretypes.ExtractKeyword(args, 1), ":")
+func encodeImage(im *Image, format string, quality int) []byte {
+	format = strings.TrimPrefix(format, ":")
 	var buf bytes.Buffer
+	var err error
 	switch format {
 	case "png":
-		err := png.Encode(&buf, im.img)
-		if err != nil {
-			panic(RT.NewError("imaging/encode: " + err.Error()))
-		}
+		err = png.Encode(&buf, im.img)
 	case "jpeg", "jpg":
-		quality := 90
-		if len(args) > 2 {
-			quality = coretypes.ExtractInt(args, 2)
-		}
-		err := imaging.Encode(&buf, im.img, imaging.JPEG, imaging.JPEGQuality(quality))
-		if err != nil {
-			panic(RT.NewError("imaging/encode: " + err.Error()))
-		}
+		err = imaging.Encode(&buf, im.img, imaging.JPEG, imaging.JPEGQuality(quality))
 	case "gif":
-		err := imaging.Encode(&buf, im.img, imaging.GIF)
-		if err != nil {
-			panic(RT.NewError("imaging/encode: " + err.Error()))
-		}
+		err = imaging.Encode(&buf, im.img, imaging.GIF)
 	case "bmp":
-		err := imaging.Encode(&buf, im.img, imaging.BMP)
-		if err != nil {
-			panic(RT.NewError("imaging/encode: " + err.Error()))
-		}
+		err = imaging.Encode(&buf, im.img, imaging.BMP)
 	case "tiff":
-		err := imaging.Encode(&buf, im.img, imaging.TIFF)
-		if err != nil {
-			panic(RT.NewError("imaging/encode: " + err.Error()))
-		}
+		err = imaging.Encode(&buf, im.img, imaging.TIFF)
 	default:
 		panic(RT.NewError("imaging/encode: unsupported format: " + format))
 	}
-	return coretypes.MakeString(buf.String())
+	if err != nil {
+		panic(RT.NewError("imaging/encode: " + err.Error()))
+	}
+	return buf.Bytes()
+}
+
+func encodeArgs(args []coretypes.Object) (*Image, string, int) {
+	im := extractImage(args, 0)
+	format := strings.TrimPrefix(coretypes.ExtractKeyword(args, 1), ":")
+	quality := 90
+	if len(args) > 2 {
+		quality = coretypes.ExtractInt(args, 2)
+	}
+	return im, format, quality
+}
+
+var procEncode ProcFn = func(args []coretypes.Object) coretypes.Object {
+	im, format, quality := encodeArgs(args)
+	return coretypes.MakeString(string(encodeImage(im, format, quality)))
+}
+
+var procBytes ProcFn = func(args []coretypes.Object) coretypes.Object {
+	im, format, quality := encodeArgs(args)
+	return coretypes.MakeString(string(encodeImage(im, format, quality)))
+}
+
+var procBase64 ProcFn = func(args []coretypes.Object) coretypes.Object {
+	im, format, quality := encodeArgs(args)
+	return coretypes.MakeString(base64.StdEncoding.EncodeToString(encodeImage(im, format, quality)))
+}
+
+var procDataURI ProcFn = func(args []coretypes.Object) coretypes.Object {
+	im, format, quality := encodeArgs(args)
+	mime := "image/" + format
+	if format == "jpg" {
+		mime = "image/jpeg"
+	}
+	return coretypes.MakeString("data:" + mime + ";base64," + base64.StdEncoding.EncodeToString(encodeImage(im, format, quality)))
 }
 
 // EncodePNG encodes a Joker Image as PNG bytes for host-side renderers.
@@ -405,6 +424,23 @@ var procBounds ProcFn = func(args []coretypes.Object) coretypes.Object {
 		coretypes.MakeInt(b.Dx()),
 		coretypes.MakeInt(b.Dy()),
 	)
+}
+
+var procMetadata ProcFn = func(args []coretypes.Object) coretypes.Object {
+	CheckArity(args, 1, 1)
+	im := extractImage(args, 0)
+	b := im.img.Bounds()
+	m := corecollections.EmptyArrayMap()
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "width"), coretypes.MakeInt(b.Dx()))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "height"), coretypes.MakeInt(b.Dy()))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "bounds"), corecollections.NewVectorFrom(
+		coretypes.MakeInt(b.Min.X),
+		coretypes.MakeInt(b.Min.Y),
+		coretypes.MakeInt(b.Dx()),
+		coretypes.MakeInt(b.Dy()),
+	))
+	m.Add(coretypes.MakeKeyword(STRINGS.Intern, "color-model"), coretypes.MakeKeyword(STRINGS.Intern, "nrgba"))
+	return m
 }
 
 // --- New blank image ---

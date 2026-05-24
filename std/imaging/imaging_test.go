@@ -2,6 +2,7 @@ package imaging
 
 import (
 	"math"
+	"strings"
 	"testing"
 
 	coretypes "github.com/rcarmo/go-joker/core/types"
@@ -9,6 +10,30 @@ import (
 
 	. "github.com/rcarmo/go-joker/core"
 )
+
+func TestMetadataAndTerminals(t *testing.T) {
+	initImagingNamespace()
+	img := procNewImage([]coretypes.Object{coretypes.MakeInt(4), coretypes.MakeInt(3), corecollections.NewVectorFrom(coretypes.MakeInt(255), coretypes.MakeInt(0), coretypes.MakeInt(0), coretypes.MakeInt(255))})
+	meta := procMetadata([]coretypes.Object{img}).(coretypes.Map)
+	if ok, v := meta.Get(coretypes.MakeKeyword(STRINGS.Intern, "width")); !ok || v.(coretypes.Int).I != 4 {
+		t.Fatalf("metadata width = %v %v", ok, v)
+	}
+	if ok, v := meta.Get(coretypes.MakeKeyword(STRINGS.Intern, "height")); !ok || v.(coretypes.Int).I != 3 {
+		t.Fatalf("metadata height = %v %v", ok, v)
+	}
+	bytes := procBytes([]coretypes.Object{img, coretypes.MakeKeyword(STRINGS.Intern, "png")}).(coretypes.String).S
+	if len(bytes) == 0 || bytes != procEncode([]coretypes.Object{img, coretypes.MakeKeyword(STRINGS.Intern, "png")}).(coretypes.String).S {
+		t.Fatal("bytes should return encoded image bytes")
+	}
+	b64 := procBase64([]coretypes.Object{img, coretypes.MakeKeyword(STRINGS.Intern, "png")}).(coretypes.String).S
+	if len(b64) == 0 || strings.Contains(b64, "data:") {
+		t.Fatalf("unexpected base64 output: %q", b64)
+	}
+	uri := procDataURI([]coretypes.Object{img, coretypes.MakeKeyword(STRINGS.Intern, "png")}).(coretypes.String).S
+	if !strings.HasPrefix(uri, "data:image/png;base64,") {
+		t.Fatalf("unexpected data URI: %q", uri)
+	}
+}
 
 func TestNewAndInfo(t *testing.T) {
 	initImagingNamespace()

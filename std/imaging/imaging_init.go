@@ -25,6 +25,9 @@ func initImagingNamespace() {
 		{"open", procOpen, "path", "Opens an image file. Supports PNG, JPEG, GIF, BMP, TIFF."},
 		{"save", procSave, "img path", "Saves image to file. Format detected from extension."},
 		{"encode", procEncode, "img format & quality", "Encodes image to bytes. Format: :png :jpeg :gif :bmp :tiff. Optional quality for JPEG."},
+		{"bytes", procBytes, "img format & quality", "Alias for encode: returns encoded image bytes as a string. Format: :png :jpeg :gif :bmp :tiff."},
+		{"base64", procBase64, "img format & quality", "Encodes image and returns base64 text. Format: :png :jpeg :gif :bmp :tiff."},
+		{"data-uri", procDataURI, "img format & quality", "Encodes image and returns a data:image/...;base64 URI."},
 		{"decode", procDecode, "data", "Decodes image from byte string."},
 		// Geometry
 		{"resize", procResize, "img width height", "Resizes image to width×height. Use 0 for proportional."},
@@ -57,6 +60,7 @@ func initImagingNamespace() {
 		{"width", procWidth, "img", "Returns image width in pixels."},
 		{"height", procHeight, "img", "Returns image height in pixels."},
 		{"bounds", procBounds, "img", "Returns [x y width height] of image bounds."},
+		{"metadata", procMetadata, "img", "Returns image metadata map {:width :height :bounds :color-model}."},
 		// Creation
 		{"new", procNewImage, "width height & color", "Creates new image. Optional color as [r g b a] vector."},
 		{"from-rgba32", procFromRGBA32, "width height pixels", "Creates an image from row-major packed RGBA integer pixels (0xRRGGBBAA)."},

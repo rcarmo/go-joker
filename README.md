@@ -182,6 +182,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 - [`docs/BENCHMARK_CI.md`](docs/BENCHMARK_CI.md) — CI benchmark smoke guard policy and local reproduction
 - [`docs/RUNTIME_DOCS.md`](docs/RUNTIME_DOCS.md) — `joker doc` Markdown/JSON lookup and local HTTP docs server
+- [`docs/IMAGING.md`](docs/IMAGING.md) — `joker.imaging` image processing API and Bun Image parity notes
 - [`docs/NOTEBOOKS.md`](docs/NOTEBOOKS.md) — EDN notebooks, headless runs, Markdown export, and local notebook server
 - [`docs/refactor/README.md`](docs/refactor/README.md) — repository split plan and target folder structure
 - [`docs/refactor/code-structure.md`](docs/refactor/code-structure.md) — package/module and coverage audit
