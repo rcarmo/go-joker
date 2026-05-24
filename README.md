@@ -142,6 +142,8 @@ joker notebook export example.edn -o report.md
 
 Notebook files are regular EDN maps with `:format :joker/notebook`; outputs are stored inline by default for self-contained agent/debug reports. The browser UI uses local vendored CodeMirror/ECharts/Mermaid assets (no CDN), supports Joker/Markdown highlighting and Joker symbol autocomplete, and renders simple Mermaid flows with rounded boxes plus rounded orthogonal arrows. See [`docs/NOTEBOOKS.md`](docs/NOTEBOOKS.md).
 
+![Joker notebook rich demo](docs/images/notebook-rich-demo.png)
+
 ## Runtime documentation lookup
 
 Joker includes a pydoc-style runtime documentation frontend backed by the live namespace metadata:
