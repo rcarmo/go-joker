@@ -18,7 +18,7 @@ It is intentionally Joker-shaped rather than a clone of Bun's chainable `Bun.Ima
 
 ## Input/output
 
-- `(imaging/open path)` — open PNG/JPEG/GIF/BMP/TIFF files supported by the backend.
+- `(imaging/open path)` — open PNG/JPEG/GIF/BMP/TIFF/WebP files supported by the backend.
 - `(imaging/save img path)` — save using the output extension.
 - `(imaging/encode img format & quality)` — return encoded bytes as a Joker string.
 - `(imaging/bytes img format & quality)` — explicit alias for `encode`.
@@ -128,7 +128,8 @@ Bun's `Bun.Image` is a lazy, chainable image pipeline: construct from a path/byt
 
 | Gap | Impact | Likely next step |
 |---|---|---|
-| WebP encode/decode | High for browser/notebook output size and modern web workflows. | Add `:webp` if we accept a Go WebP dependency. |
+| WebP decode | ✅ Done — registered via `golang.org/x/image/webp`. | |
+| WebP encode | Medium; requires cgo (`libwebp`) for lossy output. | Defer unless strong use case. |
 | AVIF/HEIC encode/decode | Medium; useful, but heavier/platform-sensitive. | Defer unless there is a strong use case. |
 | Blob abstraction | Low in Joker today. | Only add if Joker gets a broader Blob/file API. |
 | Lazy chain/pipeline object | Low-to-medium ergonomics gap. | Prefer functional API for now; threading macros cover most use. |

@@ -11,6 +11,8 @@ import (
 	"math"
 	"strings"
 
+	_ "golang.org/x/image/webp"
+
 	coretypes "github.com/rcarmo/go-joker/core/types"
 	corecollections "github.com/rcarmo/go-joker/core/types/collections"
 

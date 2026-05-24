@@ -22,7 +22,7 @@ func initImagingNamespace() {
 		doc  string
 	}{
 		// I/O
-		{"open", procOpen, "path", "Opens an image file. Supports PNG, JPEG, GIF, BMP, TIFF."},
+		{"open", procOpen, "path", "Opens an image file. Supports PNG, JPEG, GIF, BMP, TIFF, WebP."},
 		{"save", procSave, "img path", "Saves image to file. Format detected from extension."},
 		{"encode", procEncode, "img format & quality", "Encodes image to bytes. Format: :png :jpeg :gif :bmp :tiff. Optional quality for JPEG."},
 		{"bytes", procBytes, "img format & quality", "Alias for encode: returns encoded image bytes as a string. Format: :png :jpeg :gif :bmp :tiff."},
