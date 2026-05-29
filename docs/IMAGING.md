@@ -34,6 +34,9 @@ Supported encode formats today:
 
 JPEG quality defaults to `90` when omitted.
 
+**Input formats** (decode/open): PNG, JPEG, GIF, BMP, TIFF, **WebP**.
+WebP encode is not yet supported (would require cgo + libwebp).
+
 ## Metadata
 
 - `(imaging/width img)`
@@ -140,7 +143,7 @@ Bun's `Bun.Image` is a lazy, chainable image pipeline: construct from a path/byt
 
 ### Recommended order
 
-1. Add WebP support (`:webp`) if dependency cost is acceptable.
+1. ~~Add WebP support~~ — **done** (decode via `golang.org/x/image/webp`; encode deferred pending cgo/libwebp decision).
 2. Retain original decoded format in `Image` and expose it in `metadata`.
 3. Add option-map overloads for `resize`/`encode` to mirror Bun's extensibility without replacing the functional API.
 4. Consider EXIF auto-orientation for camera/photo workflows.
