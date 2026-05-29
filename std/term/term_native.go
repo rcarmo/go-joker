@@ -102,6 +102,30 @@ var procResetStyle ProcFn = func(args []coretypes.Object) coretypes.Object {
 	return coretypes.String{S: "\033[0m"}
 }
 
+var procBold ProcFn = func(args []coretypes.Object) coretypes.Object {
+	return coretypes.String{S: "\033[1m"}
+}
+
+var procDim ProcFn = func(args []coretypes.Object) coretypes.Object {
+	return coretypes.String{S: "\033[2m"}
+}
+
+var procItalic ProcFn = func(args []coretypes.Object) coretypes.Object {
+	return coretypes.String{S: "\033[3m"}
+}
+
+var procUnderline ProcFn = func(args []coretypes.Object) coretypes.Object {
+	return coretypes.String{S: "\033[4m"}
+}
+
+var procInverse ProcFn = func(args []coretypes.Object) coretypes.Object {
+	return coretypes.String{S: "\033[7m"}
+}
+
+var procStrikethrough ProcFn = func(args []coretypes.Object) coretypes.Object {
+	return coretypes.String{S: "\033[9m"}
+}
+
 var procReadKey ProcFn = func(args []coretypes.Object) coretypes.Object {
 	timeoutMs := 50
 	if len(args) > 0 {

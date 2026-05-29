@@ -40,6 +40,12 @@ func initTermNamespace() {
 		{"fg", procFg, "Returns ANSI escape string to set foreground to [r g b] or a named color keyword."},
 		{"bg", procBg, "Returns ANSI escape string to set background to [r g b] or a named color keyword."},
 		{"reset-style", procResetStyle, "Returns ANSI escape string to reset all styles."},
+		{"bold", procBold, "Returns ANSI escape string for bold text."},
+		{"dim", procDim, "Returns ANSI escape string for dim text."},
+		{"italic", procItalic, "Returns ANSI escape string for italic text."},
+		{"underline", procUnderline, "Returns ANSI escape string for underlined text."},
+		{"inverse", procInverse, "Returns ANSI escape string for inverse/reverse video."},
+		{"strikethrough", procStrikethrough, "Returns ANSI escape string for strikethrough text."},
 
 		// Input
 		{"read-key", procReadKey, "Reads one keypress with optional timeout-ms (default 50). Returns a keyword (:up :down :left :right :space :enter :esc :none :eof) or a single-char string."},
