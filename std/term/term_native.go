@@ -163,6 +163,27 @@ var procMillis ProcFn = func(args []coretypes.Object) coretypes.Object {
 	return coretypes.Int{I: int(time.Now().UnixMilli())}
 }
 
+// --- Buffered screen output for flicker-free rendering ---
+
+var screenBuf []byte
+
+var procBeginFrame ProcFn = func(args []coretypes.Object) coretypes.Object {
+	screenBuf = screenBuf[:0]
+	return NIL
+}
+
+var procEndFrame ProcFn = func(args []coretypes.Object) coretypes.Object {
+	os.Stdout.Write(screenBuf)
+	os.Stdout.Sync()
+	return NIL
+}
+
+var procBufPrint ProcFn = func(args []coretypes.Object) coretypes.Object {
+	s := coretypes.ExtractString(args, 0)
+	screenBuf = append(screenBuf, s...)
+	return NIL
+}
+
 // extractRGB gets r,g,b from args[index] which should be a vector [r g b].
 func extractRGB(args []coretypes.Object, index int) (int, int, int) {
 	v := coretypes.EnsureArgIsSeqable(args, index)

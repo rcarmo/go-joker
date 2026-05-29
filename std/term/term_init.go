@@ -47,6 +47,11 @@ func initTermNamespace() {
 		// Utility
 		{"sleep", procSleep, "Sleeps for the given number of milliseconds."},
 		{"millis", procMillis, "Returns current time in milliseconds (monotonic-ish)."},
+
+		// Buffered frame rendering
+		{"begin-frame!", procBeginFrame, "Begins a buffered frame. Subsequent buf-print! calls accumulate output."},
+		{"end-frame!", procEndFrame, "Flushes the buffered frame to stdout in one write (flicker-free)."},
+		{"buf-print!", procBufPrint, "Appends string to the current frame buffer (use between begin-frame!/end-frame!)."},
 	}
 
 	for _, p := range procs {

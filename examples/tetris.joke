@@ -139,23 +139,26 @@
                (cond (:over? s)   "*** GAME OVER *** (r)"
                      (:paused? s) "*** PAUSED ***"
                      :else "")]
-        border (str "+" (apply str (repeat (* 2 COLS) "-")) "+")]
-    (t/move-to 0 0)
-    (t/print! border)
-    (t/print! "\r\n")
+        border (str "+" (apply str (repeat (* 2 COLS) "-")) "+")
+        p! t/buf-print!]
+    (t/begin-frame!)
+    (p! "\033[H") ;; move to top-left
+    (p! border)
+    (p! "\r\n")
     (doseq [y (range ROWS)]
-      (t/print! "|")
+      (p! "|")
       (doseq [x (range COLS)]
         (let [k (or (get active [x y]) (get-in board [y x]))]
-          (t/print! (render-cell k))))
-      (t/print! "|")
+          (p! (render-cell k))))
+      (p! "|")
       (when-let [text (get panel y)]
         (when (seq text)
-          (t/print! (str "  " text))))
-      (t/print! "\r\n"))
-    (t/print! border)
-    (t/print! "\r\n")
-    (t/flush!)))
+          (p! (str "  " text))))
+      (p! "\033[K") ;; clear to end of line
+      (p! "\r\n"))
+    (p! border)
+    (p! "\033[K\r\n")
+    (t/end-frame!)))
 
 ;; ---------------------------------------------------------------- main loop
 
