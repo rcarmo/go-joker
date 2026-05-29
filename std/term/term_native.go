@@ -2,7 +2,9 @@ package term
 
 import (
 	"fmt"
+	"io"
 	"os"
+	"sync"
 	"time"
 
 	coretypes "github.com/rcarmo/go-joker/core/types"
@@ -15,6 +17,17 @@ import (
 
 // Terminal state saved when entering raw mode.
 var oldState *term.State
+
+// stdin reader state for timeout-capable key reading across real TTYs/PTYS.
+type stdinReadResult struct {
+	b   byte
+	err error
+}
+
+var stdinReadOnce sync.Once
+var stdinReadCh chan stdinReadResult
+var stdinPendingMu sync.Mutex
+var stdinPending []byte
 
 var procRawMode ProcFn = func(args []coretypes.Object) coretypes.Object {
 	state, err := term.MakeRaw(int(os.Stdin.Fd()))
@@ -132,49 +145,7 @@ var procReadKey ProcFn = func(args []coretypes.Object) coretypes.Object {
 		timeoutMs = coretypes.EnsureArgIsInt(args, 0).I
 	}
 
-	buf := make([]byte, 1)
-	os.Stdin.SetReadDeadline(time.Now().Add(time.Duration(timeoutMs) * time.Millisecond))
-	n, err := os.Stdin.Read(buf)
-	os.Stdin.SetReadDeadline(time.Time{})
-
-	if n == 0 || err != nil {
-		return coretypes.MakeKeyword(STRINGS.Intern, "none")
-	}
-
-	ch := buf[0]
-
-	// ESC sequence
-	if ch == 27 {
-		buf2 := make([]byte, 2)
-		os.Stdin.SetReadDeadline(time.Now().Add(10 * time.Millisecond))
-		n2, _ := os.Stdin.Read(buf2)
-		os.Stdin.SetReadDeadline(time.Time{})
-
-		if n2 >= 2 && (buf2[0] == '[' || buf2[0] == 'O') {
-			switch buf2[1] {
-			case 'A':
-				return coretypes.MakeKeyword(STRINGS.Intern, "up")
-			case 'B':
-				return coretypes.MakeKeyword(STRINGS.Intern, "down")
-			case 'C':
-				return coretypes.MakeKeyword(STRINGS.Intern, "right")
-			case 'D':
-				return coretypes.MakeKeyword(STRINGS.Intern, "left")
-			}
-		}
-		return coretypes.MakeKeyword(STRINGS.Intern, "esc")
-	}
-
-	switch ch {
-	case ' ':
-		return coretypes.MakeKeyword(STRINGS.Intern, "space")
-	case '\r', '\n':
-		return coretypes.MakeKeyword(STRINGS.Intern, "enter")
-	case 3, 4: // Ctrl-C, Ctrl-D
-		return coretypes.MakeKeyword(STRINGS.Intern, "eof")
-	default:
-		return coretypes.String{S: string(ch)}
-	}
+	return readKeyWithTimeout(time.Duration(timeoutMs) * time.Millisecond)
 }
 
 var procSleep ProcFn = func(args []coretypes.Object) coretypes.Object {
@@ -185,6 +156,131 @@ var procSleep ProcFn = func(args []coretypes.Object) coretypes.Object {
 
 var procMillis ProcFn = func(args []coretypes.Object) coretypes.Object {
 	return coretypes.Int{I: int(time.Now().UnixMilli())}
+}
+
+func makeTermKeyword(name string) coretypes.Object {
+	return coretypes.MakeKeyword(STRINGS.Intern, name)
+}
+
+func ensureStdinReader() {
+	stdinReadOnce.Do(func() {
+		stdinReadCh = make(chan stdinReadResult, 128)
+		go func() {
+			buf := make([]byte, 1)
+			for {
+				n, err := os.Stdin.Read(buf)
+				if n > 0 {
+					stdinReadCh <- stdinReadResult{b: buf[0]}
+				}
+				if err != nil {
+					stdinReadCh <- stdinReadResult{err: err}
+					return
+				}
+			}
+		}()
+	})
+}
+
+func unreadStdinByte(b byte) {
+	stdinPendingMu.Lock()
+	stdinPending = append(stdinPending, b)
+	stdinPendingMu.Unlock()
+}
+
+func readStdinByte(timeout time.Duration) (byte, bool, error) {
+	stdinPendingMu.Lock()
+	if n := len(stdinPending); n > 0 {
+		b := stdinPending[n-1]
+		stdinPending = stdinPending[:n-1]
+		stdinPendingMu.Unlock()
+		return b, true, nil
+	}
+	stdinPendingMu.Unlock()
+
+	ensureStdinReader()
+
+	if timeout <= 0 {
+		select {
+		case res := <-stdinReadCh:
+			if res.err != nil {
+				return 0, false, res.err
+			}
+			return res.b, true, nil
+		default:
+			return 0, false, nil
+		}
+	}
+
+	select {
+	case res := <-stdinReadCh:
+		if res.err != nil {
+			return 0, false, res.err
+		}
+		return res.b, true, nil
+	case <-time.After(timeout):
+		return 0, false, nil
+	}
+}
+
+func decodeReadByte(ch byte, next func(time.Duration) (byte, bool, error), unread func(byte)) coretypes.Object {
+	if ch == 27 {
+		b2, ok, err := next(10 * time.Millisecond)
+		if err != nil || !ok {
+			return makeTermKeyword("esc")
+		}
+		if b2 != '[' && b2 != 'O' {
+			if unread != nil {
+				unread(b2)
+			}
+			return makeTermKeyword("esc")
+		}
+
+		b3, ok, err := next(10 * time.Millisecond)
+		if err != nil || !ok {
+			return makeTermKeyword("esc")
+		}
+		switch b3 {
+		case 'A':
+			return makeTermKeyword("up")
+		case 'B':
+			return makeTermKeyword("down")
+		case 'C':
+			return makeTermKeyword("right")
+		case 'D':
+			return makeTermKeyword("left")
+		default:
+			return makeTermKeyword("esc")
+		}
+	}
+
+	switch ch {
+	case ' ':
+		return makeTermKeyword("space")
+	case '\r', '\n':
+		return makeTermKeyword("enter")
+	case 3, 4: // Ctrl-C, Ctrl-D
+		return makeTermKeyword("eof")
+	default:
+		return coretypes.String{S: string(ch)}
+	}
+}
+
+func readKey(timeout time.Duration, next func(time.Duration) (byte, bool, error), unread func(byte)) coretypes.Object {
+	ch, ok, err := next(timeout)
+	if err != nil {
+		if err == io.EOF {
+			return makeTermKeyword("eof")
+		}
+		return makeTermKeyword("none")
+	}
+	if !ok {
+		return makeTermKeyword("none")
+	}
+	return decodeReadByte(ch, next, unread)
+}
+
+func readKeyWithTimeout(timeout time.Duration) coretypes.Object {
+	return readKey(timeout, readStdinByte, unreadStdinByte)
 }
 
 // --- Buffered screen output for flicker-free rendering ---
