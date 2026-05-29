@@ -80,6 +80,7 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 
 ### Additional namespaces / web runtime
 - `joker.imaging` — image processing (resize, crop, blur, overlay) via pure Go, with guarded image/color argument boundaries
+- `joker.term` — raw terminal I/O, ANSI colors/styles, buffered frame rendering, key input (see [`docs/TERM.md`](docs/TERM.md))
 - `joker.svg` — SVG generation + raster rendering, with guarded coordinate-vector handling
 - `joker.pdf` — PDF document generation, with checked document-proc arities
 - `joker.random` — random numbers (int, float, choice, shuffle, uuid, secure-bytes)
@@ -185,6 +186,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 - [`docs/BENCHMARK_CI.md`](docs/BENCHMARK_CI.md) — CI benchmark smoke guard policy and local reproduction
 - [`docs/RUNTIME_DOCS.md`](docs/RUNTIME_DOCS.md) — `joker doc` Markdown/JSON lookup and local HTTP docs server
 - [`docs/IMAGING.md`](docs/IMAGING.md) — `joker.imaging` image processing API and Bun Image parity notes
+- [`docs/TERM.md`](docs/TERM.md) — `joker.term` terminal I/O, ANSI rendering, buffered frames, key input
 - [`docs/NOTEBOOKS.md`](docs/NOTEBOOKS.md) — EDN notebooks, headless runs, Markdown export, and local notebook server
 - [`docs/refactor/README.md`](docs/refactor/README.md) — repository split plan and target folder structure
 - [`docs/refactor/code-structure.md`](docs/refactor/code-structure.md) — package/module and coverage audit
@@ -206,8 +208,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on [candid82/joker](https://github.com/candid82/joker) v1.7.2 plus selected upstream feature ports. This fork is v42.8.8.
-Release notes: [`docs/RELEASE_NOTES_v42.8.8.md`](docs/RELEASE_NOTES_v42.8.8.md).
+Based on [candid82/joker](https://github.com/candid82/joker) v1.7.2 plus selected upstream feature ports. This fork is v42.8.9.
+Release notes: [`docs/RELEASE_NOTES_v42.8.9.md`](docs/RELEASE_NOTES_v42.8.9.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 
 ## Why v42?
