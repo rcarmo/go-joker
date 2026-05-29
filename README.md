@@ -2,7 +2,7 @@
 
 ![icon](docs/icon-256.png)
 
-An optimized fork of [Joker](https://github.com/candid82/joker) (Clojure-like Lisp interpreter) for inclusion in [gi](https://github.com/rcarmo/gi), a self-hosted coding agent.
+An optimized fork of [go-joker](https://github.com/rcarmo/go-joker) (a Clojure-like Lisp interpreter) for inclusion in [gi](https://github.com/rcarmo/gi), a self-hosted coding agent.
 
 ## Compatibility additions
 
@@ -208,7 +208,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on [candid82/joker](https://github.com/candid82/joker) v1.7.2 plus selected upstream feature ports. This fork is v42.8.9.
+Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.8.9.
 Release notes: [`docs/RELEASE_NOTES_v42.8.9.md`](docs/RELEASE_NOTES_v42.8.9.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 

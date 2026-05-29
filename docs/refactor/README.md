@@ -12,7 +12,7 @@ Go package boundaries are real API boundaries. Moving files into subdirectories 
 
 ## Current high-level state
 
-- Module identity is now `github.com/rcarmo/go-joker`; remaining `candid82` references should be attribution/upstream history or third-party dependencies only.
+- Module identity is now `github.com/rcarmo/go-joker`; remaining legacy/upstream references should be attribution or third-party dependency references only.
 - CLI entrypoint now lives under `cmd/joker`.
 - `std/*` is already package-oriented and increasingly guarded by focused native-boundary contracts and explicit resource-layout rules.
 - `core` remains the main monolith, but the object/type split is now real: `core/types` owns the canonical `Object` protocol, type descriptors/registry, scalar values, big numeric values/ops, simple runtime values (`Delay`, `RecurBindings`), root-independent predicates/extractors, string object wrappers that would otherwise cycle with `core/types/string`, most root-independent protocols, and shared collection/runtime contracts (`Map`, `MapIterator`, `Pair`, `Meta`, `MetaHolder`, `Set`, `Vec`, `Ref`). Concrete collections and collection builders now live in `core/types/collections`; pure string mechanics live in `core/types/string`; runtime-owned wrappers/state/helpers for channels, futures/promises, agents, atoms, eval errors, nil/truthiness, I/O wrappers, callstacks, interpreter state, process exit/version/error plumbing, and generic formatting hooks now live in `core/runtime`. Leaf packages also exist under `core/trace`, `core/ir`, `core/wasm`, `core/reader`, `core/types/string`, and `core/types/numerical`, with data-only generated payloads under `core/generated`.

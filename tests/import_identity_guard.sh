@@ -4,9 +4,11 @@ set -euo pipefail
 root=${1:-.}
 cd "$root"
 
-if grep -R "github.com/candid82/joker" -n \
+legacy_import_re='github.com/[^/]+/joker(["[:space:]]|$)'
+
+if grep -R -E "$legacy_import_re" -n \
   --include='*.go' --include='go.mod' --include='*.joke' \
   cmd core std tests benchmarks tools Makefile .github .circleci docs/generate-docs.joke docs/joker.xml 2>/dev/null; then
-  echo "import identity guard: internal package/template references still use github.com/candid82/joker" >&2
+  echo "import identity guard: internal package/template references still use a legacy joker module path" >&2
   exit 1
 fi
