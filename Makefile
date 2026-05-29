@@ -22,13 +22,28 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
-	@echo "  make cli            # Build the local joker CLI into $(CLI_BIN)"
-	@echo "  make dist           # Build release binaries into $(DIST_DIR)/"
+	@echo ""
+	@echo "Command-producing targets (build usable binaries):"
+	@echo "  make cli            # Build the local joker CLI => $(CLI_BIN)"
+	@echo "  make dist           # Build release CLIs => $(DIST_DIR)/joker-<os>-<arch>[.exe]"
 	@echo "  make clean-dist     # Remove $(DIST_DIR)/ release binaries"
+	@echo ""
+	@echo "Targets that consume the local CLI artifact ($(CLI_BIN)):"
+	@echo "  make parity         # Build $(CLI_BIN), then run Clojure parity tests"
+	@echo "  make jank-subset    # Build $(CLI_BIN), then run imported jank subset"
+	@echo ""
+	@echo "Targets that build a temporary CLI internally for checks/docs:"
+	@echo "  make docs           # Build temp CLI => $(DOCS_JOKER_BIN), then generate HTML docs"
+	@echo "  make docs-command-check # Build temp CLI => $(DOCS_JOKER_BIN), then smoke-test doc queries"
+	@echo "  make notebook-check # Build temp CLI => $(DOCS_JOKER_BIN), then verify notebook CLI/schema"
+	@echo "  make notebook-browser-smoke # Build temp CLI => $(DOCS_JOKER_BIN), then run Playwright smoke test"
+	@echo "  make notebook-screenshot # Build temp CLI => $(DOCS_JOKER_BIN), then capture notebook screenshot"
+	@echo ""
+	@echo "Test and audit targets:"
 	@echo "  make tools          # Install/update audit tools (staticcheck, golangci-lint, govulncheck)"
 	@echo "  make test           # Run full test suite (cached)"
 	@echo "  make test-repro     # Reproducible tests: no shuffle, no cache"
@@ -42,12 +57,7 @@ help:
 	@echo "  make race           # Run race tests on critical packages"
 	@echo "  make bench-sanity   # Run CLBG benchmark sanity subset"
 	@echo "  make coverage       # Run package coverage and generated-file-aware summary"
-	@echo "  make docs           # Generate HTML docs from runtime namespaces"
 	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
-	@echo "  make docs-command-check # Verify joker doc Markdown/JSON lookup smoke tests"
-	@echo "  make notebook-check # Verify joker notebook schema/CLI smoke tests"
-	@echo "  make notebook-browser-smoke # Verify joker notebook browser UI with Playwright"
-	@echo "  make notebook-screenshot # Capture rich demo notebook full-page screenshot"
 	@echo "  make generated-check # Verify generated-file boundary guardrails"
 	@echo "  make generated-bootstrap-check # Verify generated bootstrap manifest equivalence"
 	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker"
@@ -55,12 +65,11 @@ help:
 	@echo "  make layout-check    # Verify top-level refactor layout invariants"
 	@echo "  make native-int-check # Verify 32-bit/native-int audit TODOs are closed"
 	@echo "  make error-handling-check # Verify close/process/raw-error audit guardrails"
+	@echo "  make benchmark-docs-check # Verify benchmark docs/code stay in sync"
 	@echo "  make refactor-internals-check # Run tests for extracted core helper subpackages"
 	@echo "  make core-contract-check # Run object/protocol contract tests that gate future core splits"
 	@echo "  make runtime-contract-check # Run IR/runtime execution-envelope contract tests"
 	@echo "  make std-contract-check # Run focused std native-boundary contract tests"
-	@echo "  make parity         # Run Clojure parity tests (271 core form tests)"
-	@echo "  make jank-subset    # Run imported jank-lang/clojure-test-suite subset"
 	@echo "  make bb-compat      # Run portable Babashka compatibility fixture suite"
 	@echo "  make compare-bench  # Run cross-runtime + let-go-suite comparison sub-project"
 	@echo "  make compare-clean  # Remove generated comparison outputs"
@@ -267,11 +276,11 @@ docs-check: docs docs-command-check notebook-check generated-check generated-boo
 	grep -q 'id="pmap"' docs/joker.core.html
 	grep -q 'id="pcalls"' docs/joker.core.html
 
-parity:
-	$(GO) run tests/clojure_parity.go -joker $(shell pwd)/joker -out docs/DIVERGENCE_MATRIX.md
+parity: cli
+	$(GO) run tests/clojure_parity.go -joker $(abspath $(CLI_BIN)) -out docs/DIVERGENCE_MATRIX.md
 
-jank-subset:
-	JOKER_BIN=$(shell pwd)/joker tests/run_jank_subset.sh
+jank-subset: cli
+	JOKER_BIN=$(abspath $(CLI_BIN)) tests/run_jank_subset.sh
 
 audit-fast: tools test vet staticcheck-sa lint vuln
 
