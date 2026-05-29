@@ -23,6 +23,7 @@ import (
 	_ "github.com/rcarmo/go-joker/std/pods"
 	_ "github.com/rcarmo/go-joker/std/random"
 	_ "github.com/rcarmo/go-joker/std/runtime"
+	_ "github.com/rcarmo/go-joker/std/term"
 	_ "github.com/rcarmo/go-joker/std/strconv"
 	_ "github.com/rcarmo/go-joker/std/string"
 	_ "github.com/rcarmo/go-joker/std/svg"

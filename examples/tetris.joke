@@ -1,0 +1,198 @@
+#!/usr/bin/env joker
+
+;; Tetris in the terminal. Run with: joker tetris.joke
+;; Uses joker.term for raw keyboard input and ANSI rendering.
+;; No external dependencies.
+
+(ns tetris
+  (:require [joker.term :as t]))
+
+(def COLS 10)
+(def ROWS 20)
+(def TICK-MS 500)
+
+;; [r g b] per piece kind
+(def COLORS
+  {:I [0x22 0xd3 0xee]
+   :O [0xfa 0xcc 0x15]
+   :T [0xa8 0x55 0xf7]
+   :S [0x22 0xc5 0x5e]
+   :Z [0xef 0x44 0x44]
+   :L [0xf9 0x73 0x16]
+   :J [0x3b 0x82 0xf6]})
+
+;; Pieces as vectors of [x y] offsets from origin.
+;; Rotation: (x,y) -> (-y, x). O never rotates.
+(def PIECES
+  {:I [[-1 0] [0 0] [1 0] [2 0]]
+   :O [[0 0] [1 0] [0 1] [1 1]]
+   :T [[-1 0] [0 0] [1 0] [0 1]]
+   :S [[0 0] [1 0] [-1 1] [0 1]]
+   :Z [[-1 0] [0 0] [0 1] [1 1]]
+   :L [[-1 0] [0 0] [1 0] [-1 1]]
+   :J [[-1 0] [0 0] [1 0] [1 1]]})
+
+(def SCORES {0 0, 1 100, 2 300, 3 500, 4 800})
+
+(defn empty-board []
+  (vec (repeat ROWS (vec (repeat COLS nil)))))
+
+(defn rand-piece []
+  (let [kinds (keys PIECES)
+        k (nth kinds (rand-int (count kinds)))]
+    {:kind k
+     :cells (get PIECES k)
+     :pos [(quot COLS 2) 0]}))
+
+(defn new-state []
+  {:board (empty-board)
+   :piece (rand-piece)
+   :score 0
+   :lines 0
+   :over? false
+   :paused? false})
+
+(defn piece-cells [piece]
+  (let [[px py] (:pos piece)]
+    (map (fn [[dx dy]] [(+ px dx) (+ py dy)]) (:cells piece))))
+
+(defn collides? [board piece]
+  (some (fn [[x y]]
+          (or (< x 0) (>= x COLS) (>= y ROWS)
+              (and (>= y 0) (get-in board [y x]))))
+        (piece-cells piece)))
+
+(defn rotate-cells [cells]
+  (mapv (fn [[x y]] [(- y) x]) cells))
+
+(defn lock-piece [board piece]
+  (reduce (fn [b [x y]]
+            (if (and (>= y 0) (< x COLS) (>= x 0))
+              (assoc-in b [y x] (:kind piece))
+              b))
+          board
+          (piece-cells piece)))
+
+(defn clear-lines [board]
+  (let [kept (vec (remove (fn [row] (every? some? row)) board))
+        cleared (- ROWS (count kept))
+        pad (vec (repeat cleared (vec (repeat COLS nil))))]
+    [(into pad kept) cleared]))
+
+(defn try-move [s dx dy]
+  (let [p' (update (:piece s) :pos (fn [[x y]] [(+ x dx) (+ y dy)]))]
+    (if (collides? (:board s) p') s (assoc s :piece p'))))
+
+(defn try-rotate [s]
+  (let [p (:piece s)
+        p' (if (= :O (:kind p)) p (update p :cells rotate-cells))]
+    (if (collides? (:board s) p') s (assoc s :piece p'))))
+
+(defn step-down [s]
+  (let [p (:piece s)
+        p' (update p :pos (fn [[x y]] [x (inc y)]))]
+    (if (collides? (:board s) p')
+      (let [locked (lock-piece (:board s) p)
+            [board' n] (clear-lines locked)
+            next-piece (rand-piece)
+            over? (collides? board' next-piece)]
+        (-> s
+            (assoc :board board'
+                   :piece next-piece
+                   :over? (boolean over?))
+            (update :score + (get SCORES n 0))
+            (update :lines + n)))
+      (assoc s :piece p'))))
+
+(defn hard-drop [s]
+  (loop [s s]
+    (let [p (:piece s)
+          p' (update p :pos (fn [[x y]] [x (inc y)]))]
+      (if (collides? (:board s) p')
+        (step-down s)
+        (recur (assoc s :piece p'))))))
+
+;; ---------------------------------------------------------------- rendering
+
+(def EMPTY-BG [0x1f 0x29 0x37])
+
+(defn render-cell [kind]
+  (let [color (if kind (get COLORS kind) EMPTY-BG)]
+    (str (t/bg color) "  " (t/reset-style))))
+
+(defn render! [s]
+  (let [board (:board s)
+        piece (:piece s)
+        active (into {} (map (fn [c] [c (:kind piece)]) (piece-cells piece)))
+        panel ["TETRIS"
+               (str "Score: " (:score s))
+               (str "Lines: " (:lines s))
+               ""
+               "<-/->  move"
+               "up     rotate"
+               "down   soft drop"
+               "space  hard drop"
+               "p      pause"
+               "r      reset"
+               "q      quit"
+               ""
+               (cond (:over? s)   "*** GAME OVER *** (r)"
+                     (:paused? s) "*** PAUSED ***"
+                     :else "")]
+        border (str "+" (apply str (repeat (* 2 COLS) "-")) "+")]
+    (t/move-to 0 0)
+    (t/print! border)
+    (t/print! "\r\n")
+    (doseq [y (range ROWS)]
+      (t/print! "|")
+      (doseq [x (range COLS)]
+        (let [k (or (get active [x y]) (get-in board [y x]))]
+          (t/print! (render-cell k))))
+      (t/print! "|")
+      (when-let [text (get panel y)]
+        (when (seq text)
+          (t/print! (str "  " text))))
+      (t/print! "\r\n"))
+    (t/print! border)
+    (t/print! "\r\n")
+    (t/flush!)))
+
+;; ---------------------------------------------------------------- main loop
+
+(defn -main []
+  (t/raw-mode!)
+  (t/alt-screen!)
+  (t/hide-cursor!)
+  (t/clear)
+  (try
+    (loop [s (new-state)
+           last-tick (t/millis)]
+      (render! s)
+      (let [k (t/read-key 50)
+            now (t/millis)
+            tick? (>= (- now last-tick) TICK-MS)
+            s (if (:over? s)
+                (if (= k "r") (new-state) s)
+                (case k
+                  :left  (try-move s -1 0)
+                  :right (try-move s 1 0)
+                  :down  (try-move s 0 1)
+                  :up    (try-rotate s)
+                  :space (hard-drop s)
+                  ;; string keys
+                  (cond
+                    (= k "p") (update s :paused? not)
+                    (= k "r") (new-state)
+                    :else s)))]
+        (cond
+          (or (= k "q") (= k :eof)) nil
+          (and tick? (not (:over? s)) (not (:paused? s)))
+          (recur (step-down s) now)
+          tick? (recur s now)
+          :else (recur s last-tick))))
+    (finally
+      (t/show-cursor!)
+      (t/main-screen!)
+      (t/restore!))))
+
+(-main)
