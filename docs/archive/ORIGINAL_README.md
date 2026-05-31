@@ -1,6 +1,6 @@
 <img src="https://user-images.githubusercontent.com/882970/48048842-a0224080-e151-11e8-8855-642cf5ef3fdd.png" width="117px"/>
 
-[![CircleCI](https://circleci.com/gh/candid82/joker.svg?style=svg)](https://circleci.com/gh/candid82/joker)
+[![CircleCI](https://circleci.com/gh/rcarmo/go-joker.svg?style=svg)](https://circleci.com/gh/rcarmo/go-joker)
 
 Joker is a small Clojure interpreter, linter and formatter written in Go.
 
@@ -9,7 +9,7 @@ Joker is a small Clojure interpreter, linter and formatter written in Go.
 On macOS, the easiest way to install Joker is via Homebrew:
 
 ```
-brew install candid82/brew/joker
+brew install go-joker
 ```
 
 The same command can be used on Linux if you use [Linuxbrew](http://linuxbrew.sh/).
@@ -22,7 +22,7 @@ If you use [Nix](https://nixos.org/nix/), then you can install Joker with
 nix-env -i joker
 ```
 
-On other platforms (or if you prefer manual installation), download a [precompiled binary](https://github.com/candid82/joker/releases) for your platform and put it on your PATH.
+On other platforms (or if you prefer manual installation), download a [precompiled binary](https://github.com/rcarmo/go-joker/releases) for your platform and put it on your PATH.
 
 You can also [build](#building) Joker from the source code.
 
@@ -50,9 +50,9 @@ in which case drops into the REPL after the expression is (successfully) execute
 
 ## Documentation
 
-[Standard library reference](https://candid82.github.io/joker/)
+[Standard library reference](https://github.com/rcarmo/go-joker/blob/master/docs/index.html)
 
-Dash docset: `dash-feed://https%3A%2F%2Fraw.githubusercontent.com%2Fcandid82%2Fjoker%2Fmaster%2Fdocs%2Fjoker.xml`
+Dash docset: `dash-feed://https%3A%2F%2Fraw.githubusercontent.com%2Frcarmo%2Fgo-joker%2Fmaster%2Fdocs%2Fjoker.xml`
 
 (either copy and paste this link to your browser's url bar or open it in a terminal with `open` command)
 
@@ -75,7 +75,7 @@ These are high level goals of the project that guide design and implementation d
 joker --hashmap-threshold -1 -e "(pprint (read))"
 ```
 
-There is [Sublime Text plugin](https://github.com/candid82/sublime-pretty-edn) that uses Joker for pretty printing EDN files. [Here](https://github.com/candid82/joker/releases/tag/v0.8.8) you can find the description of `--hashmap-threshold` parameter, if curious.
+There is [Sublime Text plugin](https://github.com/candid82/sublime-pretty-edn) that uses Joker for pretty printing EDN files. [Here](https://github.com/rcarmo/go-joker/releases/tag/v0.8.8) you can find the description of `--hashmap-threshold` parameter, if curious.
 
 - Be as close (syntactically and semantically) to Clojure as possible. Joker should truly be a dialect of Clojure, not a language inspired by Clojure. That said, there is a lot of Clojure features that Joker doesn't and will never have. Being close to Clojure only applies to features that Joker does have.
 
@@ -119,11 +119,11 @@ Note that `Nil` is a type that has one value: `nil`.
 | Vector     | PersistentVector                                                                                          |
 
 1. Joker doesn't have the same level of interoperability with the host language (Go) as Clojure does with Java or ClojureScript does with JavaScript. It doesn't have access to arbitrary Go types and functions. There is only a small fixed set of built-in types and interfaces. Dot notation for calling methods is not supported (as there are no methods). All Java/JVM specific functionality of Clojure is not implemented for obvious reasons.
-1. Joker is single-threaded with no support for parallelism. Therefore no refs, agents, futures, promises, locks, volatiles, transactions, `p*` functions that use multiple threads. Vars always have just one "root" binding. Joker does have core.async style support for concurrency. See `go` macro [documentation](https://candid82.github.io/joker/joker.core.html#go) for details.
+1. Joker is single-threaded with no support for parallelism. Therefore no refs, agents, futures, promises, locks, volatiles, transactions, `p*` functions that use multiple threads. Vars always have just one "root" binding. Joker does have core.async style support for concurrency. See `go` macro [documentation](https://github.com/rcarmo/go-joker/blob/master/docs/joker.core.html) for details.
 1. The following features are not implemented: protocols, records, structmaps, chunked seqs, transients, tagged literals, unchecked arithmetics, primitive arrays, custom data readers, transducers, validators and watch functions for vars and atoms, hierarchies, sorted maps and sets.
 1. Unrelated to the features listed above, the following function from clojure.core namespace are not currently implemented but will probably be implemented in some form in the future: `subseq`, `iterator-seq`, `reduced?`, `reduced`, `mix-collection-hash`, `definline`, `re-groups`, `hash-ordered-coll`, `enumeration-seq`, `compare-and-set!`, `rationalize`, `load-reader`, `find-keyword`, `comparator`, `resultset-seq`, `file-seq`, `sorted?`, `ensure-reduced`, `rsubseq`, `pr-on`, `seque`, `alter-var-root`, `hash-unordered-coll`, `re-matcher`, `unreduced`.
-1. Built-in namespaces have `joker` prefix. The core namespace is called `joker.core`. Other built-in namespaces include `joker.string`, `joker.json`, `joker.os`, `joker.base64` etc. See [standard library reference](https://candid82.github.io/joker/) for details.
-1. Joker doesn't support AOT compilation and `(-main)` entry point as Clojure does. It simply reads s-expressions from the file and executes them sequentially. If you want some code to be executed only if the file it's in is passed as `joker` argument but not if it's loaded from other files, use `(when (= *main-file* *file*) ...)` idiom. See https://github.com/candid82/joker/issues/277 for details.
+1. Built-in namespaces have `joker` prefix. The core namespace is called `joker.core`. Other built-in namespaces include `joker.string`, `joker.json`, `joker.os`, `joker.base64` etc. See [standard library reference](https://github.com/rcarmo/go-joker/blob/master/docs/index.html) for details.
+1. Joker doesn't support AOT compilation and `(-main)` entry point as Clojure does. It simply reads s-expressions from the file and executes them sequentially. If you want some code to be executed only if the file it's in is passed as `joker` argument but not if it's loaded from other files, use `(when (= *main-file* *file*) ...)` idiom. See https://github.com/rcarmo/go-joker/issues/277 for details.
 1. Miscellaneous:
 
 - `case` is just a syntactic sugar on top of `condp` and doesn't require options to be constants. It scans all the options sequentially.
@@ -217,7 +217,7 @@ If you use `:refer :all` Joker won't be able to properly resolve symbols because
 
    - :warning: Joker can be made aware of any additional declarations (like `deftest` and `is`) by providing them in `.jokerd/linter.clj[s|c]` files. However, this means Joker cannot check that the symbols really are declared in your namespace, so this feature should be used sparingly.
    - If you really want some symbols to be considered declared _in any namespace no matter what_, you can add `(in-ns 'joker.core)` to your `linter.clj[s|c]` and then declare those symbols.
-     (see issues [52](https://github.com/candid82/joker/issues/52) and [50](https://github.com/candid82/joker/issues/50) for discussion).
+     (see issues [52](https://github.com/rcarmo/go-joker/issues/52) and [50](https://github.com/rcarmo/go-joker/issues/50) for discussion).
 
 I generally prefer first option for `clojure.test` namespace.
 
@@ -323,9 +323,7 @@ Joker requires Go v1.13 or later.
 Below commands should get you up and running.
 
 ```
-go get -d github.com/candid82/joker
-cd $GOPATH/src/github.com/candid82/joker
-./run.sh --version && go install
+go install github.com/rcarmo/go-joker/cmd/joker@latest
 ```
 
 ### Cross-platform Builds

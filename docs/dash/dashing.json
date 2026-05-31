@@ -12,6 +12,6 @@
     },
     "icon32x32": "../joker32.png",
     "allowJS": true,
-    "ExternalURL": "https://candid82.github.io/joker",
+    "ExternalURL": "https://github.com/rcarmo/go-joker",
     "ignore": ["{name}"]
 }

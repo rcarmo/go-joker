@@ -130,7 +130,7 @@ Score: go-joker wins 5/7 in the mirrored let-go benchmark suite. The remaining g
 
 ## Upstream Joker features ported
 
-This release selectively ports current upstream `candid82/joker` feature commits instead of merging wholesale, because the fork is now highly divergent.
+This release selectively ports current upstream Joker feature commits instead of merging wholesale, because the fork is now highly divergent.
 
 Ported/adapted features include:
 
@@ -238,7 +238,7 @@ Observed results:
 
 ## Known follow-ups
 
-- Continue tracking upstream `candid82/joker` feature commits selectively.
+- Continue tracking upstream Joker feature commits selectively.
 - Keep static analysis scoped to avoid noise from generated files.
 - Continue investigating remaining let-go suite gaps:
   - `map-filter`

@@ -144,4 +144,4 @@ TBD.
 
 [Library Loader Behavior](docs/misc/lib-loader.md)
 
-[Dependency Management](https://github.com/candid82/joker/issues/208)
+[Dependency Management](https://github.com/rcarmo/go-joker/issues/208)
