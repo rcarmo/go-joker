@@ -1,6 +1,6 @@
 # Web Runtime + New Namespaces Guide
 
-_Last updated: 2026-05-08_
+_Last updated: 2026-05-31_
 
 This guide documents the new concurrency/web runtime surface and namespace additions in go-joker v42.8.2+.
 
@@ -283,3 +283,30 @@ Added in this cycle:
 - WebSocket and SSE are **Ring-compatible extensions** (extra response keys).
 - Existing handlers returning plain `{:status ... :headers ... :body ...}` continue to work unchanged.
 - Routing/middleware can be used purely at Clojure level (no Go changes needed in app code).
+
+---
+
+## 7) Terminal I/O: `joker.term`
+
+Added in v42.8.9. Raw terminal mode, ANSI escape sequences, buffered frame rendering, key input.
+
+```clojure
+(require '[joker.term :as t])
+(t/raw-mode!)
+(t/alt-screen!)
+(t/hide-cursor!)
+;; game/TUI loop using begin-frame!/buf-print!/end-frame!
+(t/show-cursor!)
+(t/main-screen!)
+(t/restore!)
+```
+
+See [`docs/TERM.md`](TERM.md) for the full API reference and `examples/tetris.joke` for a complete terminal game.
+
+---
+
+## 8) Image processing: `joker.imaging`
+
+Added in v42.8.7+. Pure-Go image processing with perceptual hashing, WebP decode, and Bun Image API parity.
+
+See [`docs/IMAGING.md`](IMAGING.md) for the full API reference.
