@@ -70,6 +70,7 @@ func initImagingNamespace() {
 		{"from-rgba32", procFromRGBA32, "width height pixels", "Creates an image from row-major packed RGBA integer pixels (0xRRGGBBAA)."},
 		{"from-rgba32-fn", procFromRGBA32Fn, "width height pixel-fn", "Creates an image by calling pixel-fn with x y for each pixel. pixel-fn must return packed RGBA (0xRRGGBBAA)."},
 		{"from-rgba32-domain-fn", procFromRGBA32DomainFn, "width height xmin ymin dx dy pixel-fn", "Creates an image by calling pixel-fn with continuous domain coordinates for each pixel. pixel-fn must return packed RGBA (0xRRGGBBAA)."},
+		{"fractal-flame", procFractalFlame, "width height & opts", "Generates a fractal flame image using the chaos game algorithm. Native Go implementation for high performance. Options: :iterations, :palette (:fire :ice :plasma :green), :gamma, :xmin/:xmax/:ymin/:ymax."},
 	}
 
 	for _, p := range procs {

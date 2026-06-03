@@ -666,4 +666,253 @@ var procSetPixel ProcFn = func(args []coretypes.Object) coretypes.Object {
 	return im
 }
 
+// --- Fractal flame (native, high-performance) ---
+
+var procFractalFlame ProcFn = func(args []coretypes.Object) coretypes.Object {
+	// (fractal-flame width height opts)
+	// opts is a map with:
+	//   :iterations - number of chaos game iterations (default 5000000)
+	//   :transforms - vector of transform maps
+	//   :palette    - keyword (:fire :ice :plasma :green, default :fire)
+	//   :gamma      - gamma correction (default 0.6)
+	//   :xmin/:xmax/:ymin/:ymax - view bounds (default -2..2)
+	CheckArity(args, 2, 3)
+	width := coretypes.ExtractInt(args, 0)
+	height := coretypes.ExtractInt(args, 1)
+	if width < 1 || height < 1 || width > 8192 || height > 8192 {
+		panic(RT.NewError("imaging/fractal-flame: dimensions must be 1-8192"))
+	}
+
+	// Parse options
+	iters := 5000000
+	gamma := 0.6
+	xmin, xmax := -2.0, 2.0
+	ymin, ymax := -2.0, 2.0
+	paletteKey := "fire"
+
+	type xform struct {
+		a, b, c, d, e, f float64
+		variation        int // 0=linear, 1=spherical, 2=swirl, 3=horseshoe, 4=diamond
+		weight, color    float64
+	}
+
+	// Default flame system (produces nice output)
+	xforms := []xform{
+		{-0.681206, -0.0779465, 0.20769, 0.0779465, -0.681206, 0.15589, 2, 0.50, 0.0},
+		{0.953766, 0.48187, 0.43268, -0.48187, 0.953766, 0.0413, 0, 0.25, 0.5},
+		{0.5613, -0.3254, -0.4827, 0.3254, 0.5613, 0.2836, 1, 0.15, 0.85},
+		{-0.1632, 0.7124, 0.0512, -0.7124, -0.1632, 0.2051, 3, 0.07, 0.35},
+		{0.3731, -0.6421, 0.1523, 0.6421, 0.3731, -0.0821, 4, 0.03, 0.7},
+	}
+
+	if len(args) > 2 && args[2] != nil && !args[2].Equals(NIL) {
+		opts, ok := args[2].(coretypes.Map)
+		if !ok {
+			panic(RT.NewError("imaging/fractal-flame: third arg must be a map"))
+		}
+		if found, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "iterations")); found {
+			iters = v.(coretypes.Int).I
+		}
+		if found, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "gamma")); found {
+			gamma = extractFloat(v)
+		}
+		if found, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "xmin")); found {
+			xmin = extractFloat(v)
+		}
+		if found, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "xmax")); found {
+			xmax = extractFloat(v)
+		}
+		if found, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "ymin")); found {
+			ymin = extractFloat(v)
+		}
+		if found, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "ymax")); found {
+			ymax = extractFloat(v)
+		}
+		if found, v := opts.Get(coretypes.MakeKeyword(STRINGS.Intern, "palette")); found {
+			if kw, ok := v.(coretypes.Keyword); ok {
+				paletteKey = kw.Name()
+			}
+		}
+	}
+
+	// Build cumulative weight table
+	cumWeights := make([]float64, len(xforms))
+	sum := 0.0
+	for i, xf := range xforms {
+		sum += xf.weight
+		cumWeights[i] = sum
+	}
+	// Normalize
+	for i := range cumWeights {
+		cumWeights[i] /= sum
+	}
+
+	// Histogram
+	npixels := width * height
+	counts := make([]uint32, npixels)
+	colorSums := make([]float64, npixels)
+
+	// Chaos game iteration
+	rng := newXorShift(42)
+	x, y, c := rng.float64()*4.0-2.0, rng.float64()*4.0-2.0, 0.5
+
+	scaleX := float64(width) / (xmax - xmin)
+	scaleY := float64(height) / (ymax - ymin)
+
+	for iter := 0; iter < iters; iter++ {
+		// Select transform
+		r := rng.float64()
+		var xf xform
+		for j, cw := range cumWeights {
+			if r < cw {
+				xf = xforms[j]
+				break
+			}
+		}
+
+		// Affine
+		ax := xf.a*x + xf.b*y + xf.c
+		ay := xf.d*x + xf.e*y + xf.f
+
+		// Variation
+		switch xf.variation {
+		case 0: // linear
+			x, y = ax, ay
+		case 1: // spherical
+			r2 := ax*ax + ay*ay
+			if r2 < 1e-10 {
+				r2 = 1e-10
+			}
+			x, y = ax/r2, ay/r2
+		case 2: // swirl
+			r2 := ax*ax + ay*ay
+			s := math.Sin(r2)
+			cos := math.Cos(r2)
+			x = ax*s - ay*cos
+			y = ax*cos + ay*s
+		case 3: // horseshoe
+			r2 := ax*ax + ay*ay
+			if r2 < 1e-10 {
+				r2 = 1e-10
+			}
+			rr := math.Sqrt(r2)
+			x = (ax - ay) * (ax + ay) / rr
+			y = 2.0 * ax * ay / rr
+		case 4: // diamond
+			r2 := ax*ax + ay*ay
+			if r2 < 1e-10 {
+				r2 = 1e-10
+			}
+			rr := math.Sqrt(r2)
+			theta := math.Atan2(ay, ax)
+			x = math.Sin(theta) * rr
+			y = math.Cos(theta) / rr
+		}
+
+		// Color blend
+		c = (c + xf.color) / 2.0
+
+		// Map to pixel and accumulate (skip warmup)
+		if iter > 20 {
+			px := int((x - xmin) * scaleX)
+			py := int((y - ymin) * scaleY)
+			if px >= 0 && px < width && py >= 0 && py < height {
+				idx := py*width + px
+				counts[idx]++
+				colorSums[idx] += c
+			}
+		}
+	}
+
+	// Tone mapping: log-density
+	var maxCount uint32
+	for _, cnt := range counts {
+		if cnt > maxCount {
+			maxCount = cnt
+		}
+	}
+	logMax := math.Log(1.0 + float64(maxCount))
+
+	// Render to image (black background)
+	img := image.NewNRGBA(image.Rect(0, 0, width, height))
+	// Fill with opaque black
+	for i := 3; i < len(img.Pix); i += 4 {
+		img.Pix[i] = 255
+	}
+	for idx := 0; idx < npixels; idx++ {
+		cnt := counts[idx]
+		if cnt == 0 {
+			continue
+		}
+		alpha := math.Pow(math.Log(1.0+float64(cnt))/logMax, gamma)
+		avgColor := colorSums[idx] / float64(cnt)
+
+		// Palette
+		var pr, pg, pb float64
+		switch paletteKey {
+		case "ice":
+			pr = avgColor * 0.3
+			pg = avgColor * 0.7
+			pb = 0.5 + avgColor*0.5
+		case "plasma":
+			pr = 0.5 + 0.5*math.Sin(avgColor*6.28)
+			pg = 0.5 + 0.5*math.Sin(avgColor*6.28+2.09)
+			pb = 0.5 + 0.5*math.Sin(avgColor*6.28+4.19)
+		case "green":
+			pr = avgColor * 0.2
+			pg = 0.3 + avgColor*0.7
+			pb = avgColor * 0.3
+		default: // fire
+			pr = math.Min(1.0, avgColor*3.0)
+			pg = math.Max(0.0, math.Min(1.0, avgColor*3.0-1.0))
+			pb = math.Max(0.0, math.Min(1.0, avgColor*3.0-2.0))
+		}
+
+		xx := idx % width
+		yy := idx / width
+		img.SetNRGBA(xx, yy, color.NRGBA{
+			R: uint8(alpha * pr * 255),
+			G: uint8(alpha * pg * 255),
+			B: uint8(alpha * pb * 255),
+			A: uint8(math.Min(255, alpha*255)),
+		})
+	}
+
+	return wrapImage(img)
+}
+
+// xorShift64 PRNG for fast deterministic random in flame iteration
+type xorShift64 struct {
+	s uint64
+}
+
+func newXorShift(seed uint64) *xorShift64 {
+	if seed == 0 {
+		seed = 0xdeadbeefcafe1234
+	}
+	return &xorShift64{s: seed}
+}
+
+func (x *xorShift64) next() uint64 {
+	x.s ^= x.s << 13
+	x.s ^= x.s >> 7
+	x.s ^= x.s << 17
+	return x.s
+}
+
+func (x *xorShift64) float64() float64 {
+	return float64(x.next()>>11) / (1 << 53)
+}
+
+func extractFloat(o coretypes.Object) float64 {
+	switch v := o.(type) {
+	case coretypes.Int:
+		return float64(v.I)
+	case coretypes.Double:
+		return v.D
+	default:
+		panic(RT.NewError("expected number"))
+	}
+}
+
 // --- Registration ---

@@ -1,0 +1,68 @@
+#!/usr/bin/env joker
+
+;; Fractal Flame Generator
+;; =======================
+;; Generates high-resolution fractal flame images using the chaos game
+;; (iterated function system) algorithm with native Go acceleration.
+;;
+;; The heavy iteration loop runs entirely in native Go via
+;; joker.imaging/fractal-flame, using:
+;;   - 5 affine transforms with nonlinear variations
+;;     (linear, spherical, swirl, horseshoe, diamond)
+;;   - XorShift64 PRNG for deterministic fast random
+;;   - Log-density tone mapping with gamma correction
+;;   - Multiple color palettes (fire, ice, plasma, green)
+;;
+;; Run:
+;;   joker examples/fractal-flame.joke                    # 1024x1024, fire
+;;   joker examples/fractal-flame.joke 2048               # 2048x2048
+;;   joker examples/fractal-flame.joke 4096 50000000      # 4K, 50M iterations
+;;   joker examples/fractal-flame.joke 2048 10000000 plasma output.png
+;;
+;; Args: [width iterations palette output-file]
+
+(ns fractal-flame
+  (:require [joker.imaging :as img]
+            [joker.time :as time]))
+
+(defn -main []
+  (let [args *command-line-args*
+        width (if (first args) (read-string (first args)) 1024)
+        height width
+        iterations (if (second args) (read-string (second args)) 5000000)
+        palette-name (or (nth args 2 nil) "fire")
+        output (or (nth args 3 nil) "fractal-flame.png")
+        palette-kw (keyword palette-name)]
+
+    (println "")
+    (println "╔══════════════════════════════════════════════╗")
+    (println "║   Fractal Flame Generator                    ║")
+    (println "║   Native chaos game + log-density mapping    ║")
+    (println "╚══════════════════════════════════════════════╝")
+    (println "")
+    (println (str "  Resolution:   " width " × " height))
+    (println (str "  Iterations:   " iterations))
+    (println (str "  Palette:      " palette-name))
+    (println (str "  Output:       " output))
+    (println (str "  Variations:   linear, spherical, swirl, horseshoe, diamond"))
+    (println (str "  Tone map:     log-density with gamma=0.6"))
+    (println "")
+    (println "Generating...")
+
+    (let [t0 (time/now)
+          flame (img/fractal-flame width height
+                  {:iterations iterations
+                   :palette palette-kw
+                   :gamma 0.6})
+          elapsed (quot (time/since t0) 1000000)]
+      (println (str "  Rendered in " elapsed "ms"))
+      (println (str "  (" (quot (* iterations 1000) (max 1 elapsed)) "K iterations/sec)"))
+      (println "")
+      (img/save flame output)
+      (println (str "Saved: " output))
+
+      ;; Also generate perceptual hash for reproducibility checks
+      (println (str "  dhash: " (img/difference-hash flame)))
+      (println "Done."))))
+
+(-main)
