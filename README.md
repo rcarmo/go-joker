@@ -209,8 +209,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.8.11.
-Release notes: [`docs/RELEASE_NOTES_v42.8.11.md`](docs/RELEASE_NOTES_v42.8.11.md).
+Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.8.12.
+Release notes: [`docs/RELEASE_NOTES_v42.8.12.md`](docs/RELEASE_NOTES_v42.8.12.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 
 ## Why v42?
