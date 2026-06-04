@@ -8653,7 +8653,7 @@ func WasmCompileFnExported(fn *Fn) (coretypes.Object, string) {
 					if wrapper := buildWasmLoopWrapper(fn, arity, loop, prog); wrapper != nil {
 						return wrapper, ""
 					}
-					if d := explainWASMEligibility(prog); d.Reason != "" {
+					if d := explainWASMEligibility(prog); !d.Eligible && d.Reason != "" {
 						return nil, d.Reason
 					}
 				}
@@ -8672,9 +8672,17 @@ func WasmCompileFnExported(fn *Fn) (coretypes.Object, string) {
 		}
 		return nil, "unsupported IR shape"
 	}
+	numSlots := prog.numSlots
+	numArgs := len(fn.fnExpr.arities[0].args)
 	return Proc{
 		Fn: func(args []coretypes.Object) coretypes.Object {
-			result := wasmExec(wp, args)
+			// Pad args to fill all WASM params (slots beyond fn args are loop vars, init to 0)
+			slots := make([]coretypes.Object, numSlots)
+			copy(slots, args)
+			for i := numArgs; i < numSlots; i++ {
+				slots[i] = coretypes.Int{I: 0}
+			}
+			result := wasmExec(wp, slots)
 			if result == nil {
 				panic(RT.NewError("jit/compile-wasm: WASM execution failed"))
 			}
@@ -11240,6 +11248,8 @@ func irToWasm(prog *IRProgram) []byte {
 	useFloat := corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0)
 	body := compileWasmBody(prog, useFloat)
 	if body == nil {
+		if len(model.Code) == 117 {
+		}
 		return nil
 	}
 	m := corewasm.NewModule()
@@ -11309,13 +11319,58 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 		resType = corewasm.ValTypeF64
 	}
 	o = append(o, 0x02, resType) // block $exit -> result type
-	o = append(o, 0x03, 0x40)    // loop $loop -> void
 
 	code := model.Code
+
+	// Find the loop start: scan for the first Recur opcode's target
+	loopStartPC := 0
+	{
+		scan := 0
+		for scan < len(code) {
+			op := code[scan]
+			scan++
+			switch op {
+			case irLiteral, irLoadSlot, irStoreSlot, irJumpIfNot, irJump, 29: // 2-byte operand ops
+				scan += 2
+			case irCallSlot:
+				scan += 4
+			case irCallSelf:
+				scan += 2
+			case irRecur:
+				tgt := int(code[scan+2])<<8 | int(code[scan+3])
+				if tgt != 0 {
+					loopStartPC = tgt
+				}
+				scan = len(code) // done
+			default:
+				// single-byte ops
+			}
+		}
+	}
+
 	pc := 0
 	depth := 0 // extra nesting from if blocks
+	// Track where each if-block's else-branch ends (jump target of irJump)
+	type ifEnd struct {
+		endPC int
+	}
+	var ifEnds []ifEnd
+	loopEmitted := false
 
 	for pc < len(code) {
+		// Emit loop instruction at the loop start PC
+		if !loopEmitted && pc >= loopStartPC {
+			o = append(o, 0x03, 0x40) // loop $loop -> void
+			loopEmitted = true
+		}
+
+		// Close any if-blocks that end at this PC
+		for len(ifEnds) > 0 && ifEnds[len(ifEnds)-1].endPC == pc {
+			o = append(o, 0x0b) // end if
+			depth--
+			ifEnds = ifEnds[:len(ifEnds)-1]
+		}
+
 		op := code[pc]
 		pc++
 
@@ -11448,38 +11503,83 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 			}
 
 		case irJumpIfNot:
+			jumpTarget := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			if !useFloat {
 				o = append(o, 0xa7) // i32.wrap_i64
 			}
-			// In f64 mode, comparison already left i32 on stack
-			o = append(o, 0x04, 0x40) // if void
+			// Determine if this if-block produces a value:
+			// Look for a Jump (else) whose target has StoreSlot next,
+			// meaning both branches leave a value on stack.
+			isValueIf := false
+			// Scan true branch for Jump opcode
+			for scan := pc; scan < jumpTarget && scan < len(code); {
+				scanOp := code[scan]
+				if scanOp == irJump {
+					jmpTgt := int(code[scan+1])<<8 | int(code[scan+2])
+					if jmpTgt < len(code) && code[jmpTgt] == irStoreSlot {
+						isValueIf = true
+					}
+					break
+				}
+				// advance scan past operands
+				switch scanOp {
+				case irLiteral, irLoadSlot, irStoreSlot, irJumpIfNot, irJump, 29: // NthStringASCII
+					scan += 3
+				case irCallSlot:
+					scan += 5
+				case irRecur:
+					scan += 5
+					break
+				case irCallSelf:
+					scan += 3
+				default:
+					scan++
+				}
+			}
+			if isValueIf {
+				o = append(o, 0x04, valType) // if (result valType)
+			} else {
+				o = append(o, 0x04, 0x40) // if void
+			}
 			depth++
 
 		case irJump:
+			target := int(code[pc])<<8 | int(code[pc+1])
 			pc += 2
 			o = append(o, 0x05) // else
+			// If jump target is before end of code, this if-block is a value
+			// expression (not tail control flow). Record where to close it.
+			if target < len(code) {
+				ifEnds = append(ifEnds, ifEnd{endPC: target})
+			}
 
 		case irReturn:
-			// Value on stack → br to $exit (block i64)
-			// Depth: depth (ifs) + 1 (loop) + 0 ($exit is the block)
-			// br N targets the Nth enclosing label from current position.
-			// Labels: if_0..if_{depth-1}, loop, block
-			// $exit = depth + 1
+			// Value on stack → br to $exit
 			o = append(o, 0x0c)
 			o = corewasm.AppendULEB(o, depth+1)
 			// If we're inside an if and no explicit else follows,
 			// emit else so the false branch code has somewhere to go.
 			if depth > 0 && pc < len(code) && code[pc] != irJump {
-				o = append(o, 0x05) // else
+				o = append(o, 0x05)
 			}
 
 		case irRecur:
 			nargs := int(code[pc])<<8 | int(code[pc+1])
+			tgt := int(code[pc+2])<<8 | int(code[pc+3])
 			pc += 4
-			for i := nargs - 1; i >= 0; i-- {
-				o = append(o, 0x21)
-				o = corewasm.AppendULEB(o, i)
+			if tgt != 0 {
+				baseSlot := int(code[pc])<<8 | int(code[pc+1])
+				pc += 2
+				for i := nargs - 1; i >= 0; i-- {
+					o = append(o, 0x21)
+					o = corewasm.AppendULEB(o, baseSlot+i)
+				}
+			} else {
+				for i := nargs - 1; i >= 0; i-- {
+					o = append(o, 0x21)
+					o = corewasm.AppendULEB(o, i)
+				}
 			}
 			o = append(o, 0x0c)
 			o = corewasm.AppendULEB(o, depth)
@@ -15477,6 +15577,7 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 
 	compiled, err := rt.CompileModule(ctx, bin)
 	if err != nil {
+		return nil
 		return nil
 	}
 

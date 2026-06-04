@@ -23,10 +23,7 @@ func Eligible(code []byte) bool {
 		case coreir.Recur:
 			pc += 4
 			tgt := int(code[pc-2])<<8 | int(code[pc-1])
-			if tgt != 0 {
-				pc += 2
-				return false
-			}
+			if tgt != 0 { pc += 2 }
 		default:
 			return false
 		}

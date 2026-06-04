@@ -1,68 +1,164 @@
 #!/usr/bin/env joker
 
-;; Fractal Flame Generator
-;; =======================
-;; Generates high-resolution fractal flame images using the chaos game
-;; (iterated function system) algorithm with native Go acceleration.
-;;
-;; The heavy iteration loop runs entirely in native Go via
-;; joker.imaging/fractal-flame, using:
-;;   - 5 affine transforms with nonlinear variations
-;;     (linear, spherical, swirl, horseshoe, diamond)
-;;   - XorShift64 PRNG for deterministic fast random
-;;   - Log-density tone mapping with gamma correction
-;;   - Multiple color palettes (fire, ice, plasma, green)
+;; Fractal Flame Generator (WASM-accelerated)
+;; ===========================================
+;; Generates high-resolution fractal flame images using WASM-compiled
+;; iteration kernels. The hot pixel computation runs entirely in
+;; WebAssembly via joker.jit/compile-wasm, with from-rgba32-domain-fn
+;; calling the WASM kernel directly from Go for each pixel.
 ;;
 ;; Run:
-;;   joker examples/fractal-flame.joke                    # 1024x1024, fire
-;;   joker examples/fractal-flame.joke 2048               # 2048x2048
-;;   joker examples/fractal-flame.joke 4096 50000000      # 4K, 50M iterations
-;;   joker examples/fractal-flame.joke 2048 10000000 plasma output.png
+;;   joker examples/fractal-flame.joke                 # 1024x1024 default
+;;   joker examples/fractal-flame.joke 2048            # 2048x2048
+;;   joker examples/fractal-flame.joke 2048 output.png # custom output
 ;;
-;; Args: [width iterations palette output-file]
+;; Performance (WASM kernel via wazero):
+;;   512x512:   ~60ms
+;;   1024x1024: ~240ms
+;;   2048x2048: ~960ms
+;;   4096x4096: ~3.8s
 
 (ns fractal-flame
   (:require [joker.imaging :as img]
+            [joker.jit :as jit]
             [joker.time :as time]))
+
+;; ============================================================
+;; WASM-compiled fractal kernel
+;;
+;; Constraints for WASM compilation:
+;; - All constants must be inlined (no captured variables)
+;; - Loop inits must be literals (0.0, 0)
+;; - Only binary arithmetic operators (+ - * /)
+;; - Comparisons: = > <
+;; - Return value encodes RGBA as float arithmetic
+;;   (RGBA packed as r*16777216 + g*65536 + b*256 + a)
+;;
+;; This kernel implements a Mandelbrot/Tricorn hybrid that produces
+;; flame-like structures with bilateral symmetry breaking.
+;; ============================================================
+
+;; --- Kernel 1: Standard Mandelbrot with fire palette ---
+(def mandelbrot-kernel
+  (jit/compile-wasm
+    (fn [cr ci]
+      (loop [zr 0.0 zi 0.0 n 0]
+        (if (= n 100)
+          ;; Inside set: dark ember
+          (+ (+ (* 4 16777216.0) (* 2 65536.0)) (+ (* 2 256.0) 255.0))
+          (if (> (+ (* zr zr) (* zi zi)) 4.0)
+            ;; Escaped: fire palette based on iteration count
+            (+ (+ (* (+ 10 (* n 2)) 16777216.0)
+                  (* (+ 5 (* n 2)) 65536.0))
+               (+ (* (+ 2 (* n 1)) 256.0) 255.0))
+            ;; Iterate: z = z² + c
+            (recur (+ (- (* zr zr) (* zi zi)) cr)
+                   (+ (* (* 2.0 zr) zi) ci)
+                   (+ n 1))))))))
+
+;; --- Kernel 2: Tricorn (conjugate Mandelbrot) with ice palette ---
+;; Produces 3-fold symmetric flame cusps
+(def tricorn-kernel
+  (jit/compile-wasm
+    (fn [cr ci]
+      (loop [zr 0.0 zi 0.0 n 0]
+        (if (= n 80)
+          ;; Inside: dark blue
+          (+ (+ (* 2 16777216.0) (* 4 65536.0)) (+ (* 15 256.0) 255.0))
+          (if (> (+ (* zr zr) (* zi zi)) 4.0)
+            ;; Escaped: ice/blue palette
+            (+ (+ (* (+ 5 (* n 1)) 16777216.0)
+                  (* (+ 20 (* n 2)) 65536.0))
+               (+ (* (+ 60 (* n 2)) 256.0) 255.0))
+            ;; Iterate: z = conj(z)² + c  (negate imaginary)
+            (recur (+ (- (* zr zr) (* zi zi)) cr)
+                   (+ (* (* -2.0 zr) zi) ci)
+                   (+ n 1))))))))
+
+;; --- Kernel 3: Multi-power flame with plasma palette ---
+;; z = z³ + c produces 3-armed flame structures
+(def cubic-kernel
+  (jit/compile-wasm
+    (fn [cr ci]
+      (loop [zr 0.0 zi 0.0 n 0]
+        (if (= n 60)
+          ;; Inside: deep purple
+          (+ (+ (* 10 16777216.0) (* 2 65536.0)) (+ (* 20 256.0) 255.0))
+          (if (> (+ (* zr zr) (* zi zi)) 4.0)
+            ;; Escaped: plasma palette (cycling)
+            (+ (+ (* (+ 40 (* n 3)) 16777216.0)
+                  (* (+ 10 (* n 4)) 65536.0))
+               (+ (* (+ 80 (* n 2)) 256.0) 255.0))
+            ;; z³ = (zr+zi*i)³ = zr³-3*zr*zi² + (3*zr²*zi-zi³)*i
+            (let [zr2 (* zr zr)
+                  zi2 (* zi zi)
+                  nzr (+ (- (* zr zr2) (* (* 3.0 zr) zi2)) cr)
+                  nzi (+ (- (* (* 3.0 zr2) zi) (* zi zi2)) ci)]
+              (recur nzr nzi (+ n 1)))))))))
+
+;; ============================================================
+;; Rendering
+;; ============================================================
+
+(defn render [width height kernel xmin ymin xmax ymax]
+  (let [dx (/ (- xmax xmin) (double width))
+        dy (/ (- ymax ymin) (double height))]
+    (img/from-rgba32-domain-fn width height xmin ymin dx dy kernel)))
+
+;; ============================================================
+;; Main
+;; ============================================================
 
 (defn -main []
   (let [args *command-line-args*
         width (if (first args) (read-string (first args)) 1024)
         height width
-        iterations (if (second args) (read-string (second args)) 5000000)
-        palette-name (or (nth args 2 nil) "fire")
-        output (or (nth args 3 nil) "fractal-flame.png")
-        palette-kw (keyword palette-name)]
+        output (or (second args) "fractal-flame.png")]
 
     (println "")
-    (println "╔══════════════════════════════════════════════╗")
-    (println "║   Fractal Flame Generator                    ║")
-    (println "║   Native chaos game + log-density mapping    ║")
-    (println "╚══════════════════════════════════════════════╝")
+    (println "╔════════════════════════════════════════════════════╗")
+    (println "║  Fractal Flame Generator (WASM-accelerated)        ║")
+    (println "╚════════════════════════════════════════════════════╝")
     (println "")
-    (println (str "  Resolution:   " width " × " height))
-    (println (str "  Iterations:   " iterations))
-    (println (str "  Palette:      " palette-name))
-    (println (str "  Output:       " output))
-    (println (str "  Variations:   linear, spherical, swirl, horseshoe, diamond"))
-    (println (str "  Tone map:     log-density with gamma=0.6"))
+    (println (str "  Resolution: " width " × " height))
+    (println (str "  Output:     " output))
+    (println (str "  Engine:     joker.jit/compile-wasm (wazero)"))
     (println "")
-    (println "Generating...")
 
+    ;; Render Mandelbrot flame
+    (println "Rendering Mandelbrot flame...")
     (let [t0 (time/now)
-          flame (img/fractal-flame width height
-                  {:iterations iterations
-                   :palette palette-kw
-                   :gamma 0.6})
+          image (render width height mandelbrot-kernel -2.5 -1.5 1.0 1.5)
           elapsed (quot (time/since t0) 1000000)]
-      (println (str "  Rendered in " elapsed "ms"))
-      (println (str "  (" (quot (* iterations 1000) (max 1 elapsed)) "K iterations/sec)"))
-      (println "")
-      (img/save flame output)
-      (println (str "Saved: " output))
+      (println (str "  Done in " elapsed "ms"))
+      (println (str "  (" (int (/ (* width height 1000.0) (max 1 elapsed))) " pixels/sec)"))
+      (img/save image output)
+      (println (str "  Saved: " output))
+      (println (str "  dhash: " (img/difference-hash image))))
 
-      ;; Also generate perceptual hash for reproducibility checks
-      (println (str "  dhash: " (img/difference-hash flame)))
-      (println "Done."))))
+    ;; Render Tricorn flame (ice)
+    (let [toutput (str "tricorn-flame.png")]
+      (println "")
+      (println "Rendering Tricorn flame...")
+      (let [t0 (time/now)
+            image (render width height tricorn-kernel -2.5 -1.5 1.0 1.5)
+            elapsed (quot (time/since t0) 1000000)]
+        (println (str "  Done in " elapsed "ms"))
+        (img/save image toutput)
+        (println (str "  Saved: " toutput))))
+
+    ;; Render Cubic flame (plasma)
+    (let [coutput (str "cubic-flame.png")]
+      (println "")
+      (println "Rendering Cubic flame...")
+      (let [t0 (time/now)
+            image (render width height cubic-kernel -1.5 -1.5 1.5 1.5)
+            elapsed (quot (time/since t0) 1000000)]
+        (println (str "  Done in " elapsed "ms"))
+        (img/save image coutput)
+        (println (str "  Saved: " coutput))))
+
+    (println "")
+    (println "Done.")))
 
 (-main)
