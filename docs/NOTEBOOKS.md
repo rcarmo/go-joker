@@ -104,7 +104,12 @@ renderer encodes it at the output boundary. Use `joker.imaging/encode` plus
 Hot numeric kernels can be moved to the in-process WASM path with
 `joker.jit/compile-wasm` when the function is pure numeric and WASM-eligible.
 The complex demo uses this for Mandelbrot color calculation, then rasterizes
-packed RGBA32 pixels through `joker.imaging/from-rgba32-domain-fn`.
+packed RGBA32 pixels through `joker.imaging/from-rgba32-domain-fn`. The same
+pattern is used by `examples/fractal-flame.joke`, which keeps the raster
+algorithm in Joker/Clojure code while handing each pixel to a WASM-compiled
+numeric kernel. Current WASM support handles binary arithmetic, loop/recur,
+comparisons, and value-producing `if` expressions such as
+`(let [a (if (< x 0.0) (- 0.0 x) x)] ...)`.
 
 ```clojure
 {:type :text

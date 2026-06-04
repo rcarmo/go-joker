@@ -52,7 +52,7 @@ Pure-integer recursive `defn` bodies (fib, tak) are compiled to fixed-arity nati
 Hot loops and functions compile to a flat bytecode. Eligible primitive/string loops now run on a typed IR value stack, while collection-heavy or unsupported cases fall back to the boxed IR interpreter and then to the tree-walker.
 
 ### WASM/wazero native compilation
-Pure numeric loops compile further to WASM bytecode and execute via [wazero](https://github.com/tetratelabs/wazero)'s native code compiler. This achieves JIT-level performance (matching Bun/JSC) with zero CGo dependencies.
+Pure numeric loops compile further to WASM bytecode and execute via [wazero](https://github.com/tetratelabs/wazero)'s native code compiler. This achieves JIT-level performance (matching Bun/JSC) with zero CGo dependencies. The WASM bridge now supports value-producing `if` expressions inside numeric loops and fn-level loop bodies with init stores, so procedural raster kernels can stay in Joker code and still run through WASM.
 
 ### Generic tail-call optimization
 Self-recursive functions in tail position are automatically rewritten to `recur` at parse time, eliminating stack growth. A runtime trampoline handles cases the rewriter can't catch.
@@ -109,6 +109,7 @@ The repository layout is being split along architectural boundaries. The module 
 - **Boxed IR path**: collections, fn calls, transients → []Object interpreter (~10–40ms)
 - **Tree-walker**: full Clojure semantics (macros, special forms, I/O)
 - **Fallback chain**: WASM → Typed IR → Boxed IR → Tree-walker (automatic)
+- **WASM raster example**: `examples/fractal-flame.joke` renders Mandelbrot, Tricorn, and cubic flame variants through `joker.jit/compile-wasm` plus `joker.imaging/from-rgba32-domain-fn` (about 1024×1024 in ~260ms per kernel on the current dev host).
 
 ## Building & testing
 
@@ -208,8 +209,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.8.9.
-Release notes: [`docs/RELEASE_NOTES_v42.8.9.md`](docs/RELEASE_NOTES_v42.8.9.md).
+Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.8.11.
+Release notes: [`docs/RELEASE_NOTES_v42.8.11.md`](docs/RELEASE_NOTES_v42.8.11.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 
 ## Why v42?

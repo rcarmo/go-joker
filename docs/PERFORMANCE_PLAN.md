@@ -1,7 +1,7 @@
 # Joker core performance plan for gi
 
 Status: Active
-Date: 2026-05-02
+Date: 2026-06-04
 
 This plan tracks the work to make core Joker faster for gi scripting. Additional namespaces and public convenience wrappers stay on the roadmap, but the current priority is the core evaluator/IR/runtime.
 
@@ -22,6 +22,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - Tail-call optimization and parse-time tail-call-to-`recur` rewriting.
 - WASM/wazero backend for pure numeric loops and self-recursive functions.
 - WASM f64 support and compiled helper dispatch for spectral-norm style code.
+- WASM bridge fixes for value-producing `if` expressions and fn-level loops with init stores, enabling high-resolution procedural raster examples such as `examples/fractal-flame.joke` to keep kernels in Joker code.
 - Escape analysis for safe in-place collection mutation.
 - Internal and explicit transient vector/map support.
 - WASM linear-memory f64/i64 arrays as an experimental foundation.
@@ -76,7 +77,7 @@ The following IR and WASM techniques have been **fully explored**:
 
 | Technique | Status | Evidence |
 |---|---|---|
-| WASM pure numeric | **Exhausted** | Arithmetic, fib, tail-rec match Bun/JSC |
+| WASM pure numeric | **Exhausted for simple loops; reopened for bridge quality** | Arithmetic, fib, tail-rec match Bun/JSC; value-producing `if` and fn-level init-store loops are now covered for raster kernels. |
 | IR boxed interpreter | **Exhausted** | 26+ opcodes cover all hot loop patterns |
 | Typed IR v2 (primitives/strings) | **Exhausted** | Auto-enabled, builder slots, count folding |
 | Typed IR string-int maps | **Exhausted** | k-nucleotide near parity |

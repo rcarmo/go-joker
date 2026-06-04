@@ -92,7 +92,7 @@ These hashes are intended for quick similarity checks, deduplication, and notebo
 - `(imaging/from-rgba32-fn width height pixel-fn)`
 - `(imaging/from-rgba32-domain-fn width height xmin ymin dx dy pixel-fn)`
 
-The RGBA32 helpers are intended for notebooks and procedural demos. Pixels are packed as `0xRRGGBBAA`.
+The RGBA32 helpers are intended for notebooks and procedural demos. Pixels are packed as `0xRRGGBBAA`. `from-rgba32-domain-fn` is the preferred bridge for WASM raster kernels: compile a pure numeric pixel function with `joker.jit/compile-wasm`, then pass the compiled function directly so the Go raster loop calls WASM for each coordinate.
 
 ## Bun Image parity audit
 
@@ -122,7 +122,7 @@ Bun's `Bun.Image` is a lazy, chainable image pipeline: construct from a path/byt
 |---|---|---|
 | Pixel read/write | `pixel`, `set-pixel!` | Direct per-pixel access. |
 | Blank images | `new` | Optional `[r g b a]` color. |
-| Procedural raster generation | `from-rgba32`, `from-rgba32-fn`, `from-rgba32-domain-fn` | Useful for notebooks and numeric demos. |
+| Procedural raster generation | `from-rgba32`, `from-rgba32-fn`, `from-rgba32-domain-fn` | Useful for notebooks and numeric demos; `from-rgba32-domain-fn` pairs well with `joker.jit/compile-wasm` for high-resolution fractals. |
 | Perceptual hashes | `average-hash`, `difference-hash`, `hash` | Lightweight similarity/dedup helpers; not cryptographic. |
 | Compositing | `overlay`, `paste` | Alpha and direct compositing helpers. |
 | Filters | `blur`, `sharpen` | Classic image filters. |
