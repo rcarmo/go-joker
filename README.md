@@ -110,6 +110,7 @@ The repository layout is being split along architectural boundaries. The module 
 - **Tree-walker**: full Clojure semantics (macros, special forms, I/O)
 - **Fallback chain**: WASM → Typed IR → Boxed IR → Tree-walker (automatic)
 - **WASM raster example**: `examples/fractal-flame.joke` renders Mandelbrot, Tricorn, and cubic flame variants through `joker.jit/compile-wasm` plus `joker.imaging/from-rgba32-domain-fn` (about 1024×1024 in ~260ms per kernel on the current dev host).
+- **Static-site example**: `examples/sushy-static.joke` ports the static subset of `rcarmo/sushy` from Hy to Joker: folder-per-page content, RFC2822-style front matter, Markdown/plain/HTML rendering, Atom feed, sitemap, aliases/interwiki mappings, and static asset copying.
 
 ## Building & testing
 

@@ -1,0 +1,7 @@
+From: System
+Date: 2026-06-05 08:00
+Content-Type: text/plain
+Title: Interwiki Map
+
+wiki https://en.wikipedia.org/wiki/%s
+tao https://taoofmac.com/space/%s

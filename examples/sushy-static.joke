@@ -1,0 +1,321 @@
+#!/usr/bin/env joker
+
+;; Sushy-style static site generator in Joker
+;; ==========================================
+;;
+;; This is a small static-site port of the core ideas in rcarmo/sushy,
+;; originally written in Hy:
+;;
+;; - content lives in a folder tree, one folder per page
+;; - each page has index.md/index.html/index.txt/etc.
+;; - front matter is RFC2822-like headers followed by a blank line
+;; - content-type controls the renderer
+;; - metadata drives listing, Atom feed, sitemap, and aliases
+;;
+;; Run:
+;;   joker examples/sushy-static.joke
+;;   joker examples/sushy-static.joke examples/sushy-static/pages .cache/sushy-site
+;;
+;; Output:
+;;   .cache/sushy-site/index.html
+;;   .cache/sushy-site/feed.xml
+;;   .cache/sushy-site/sitemap.xml
+
+(ns sushy-static
+  (:require [joker.filepath :as fp]
+            [joker.markdown :as markdown]
+            [joker.os :as os]
+            [joker.string :as str]))
+
+(def site-title "Joker Sushy Static")
+(def site-url "https://example.invalid")
+(def page-route-base "/")
+(def index-files ["index.md" "index.markdown" "index.html" "index.htm" "index.txt"])
+(def ignored-dirs #{".git" ".hg" ".svn" "CVS" ".AppleDouble" ".TemporaryItems"})
+
+(def content-types
+  {".md" "text/x-markdown"
+   ".markdown" "text/x-markdown"
+   ".html" "text/html"
+   ".htm" "text/html"
+   ".txt" "text/plain"})
+
+(defn now-rfc3339 [] "2026-06-05T00:00:00Z")
+
+(defn html-escape [s]
+  (-> (str s)
+      (str/replace "&" "&amp;")
+      (str/replace "<" "&lt;")
+      (str/replace ">" "&gt;")
+      (str/replace "\"" "&quot;")))
+
+(defn xml-escape [s] (html-escape s))
+
+(defn blank? [s]
+  (= "" (str/trim (or s ""))))
+
+(defn ensure-slash [s]
+  (if (str/ends-with? s "/") s (str s "/")))
+
+(defn route-for [page]
+  (ensure-slash (str page-route-base (if (= page "") "" page))))
+
+(defn output-file-for [out-dir page]
+  (let [dir (if (= page "") out-dir (fp/join out-dir page))]
+    (fp/join dir "index.html")))
+
+(defn split-once [s sep]
+  (let [idx (str/index-of s sep)]
+    (if idx
+      [(subs s 0 idx) (subs s (+ idx (count sep)))]
+      [s ""])))
+
+(defn parse-header-line [line]
+  (if (str/starts-with? line "---")
+    ["jekyll" "true"]
+    (let [[k v] (split-once line ":")]
+      [(str/lower-case (str/trim k)) (str/trim v)])))
+
+(defn parse-front-matter [buffer fallback-content-type]
+  (let [normalized (str/replace buffer "\r\n" "\n")
+        [head body] (split-once normalized "\n\n")
+        pairs (map parse-header-line (str/split-lines head))
+        headers (reduce (fn [m [k v]] (assoc m k v)) {} pairs)]
+    {:headers (merge {"from" "Unknown Author"
+                      "content-type" fallback-content-type
+                      "title" "Untitled"
+                      "date" (now-rfc3339)}
+                     headers)
+     :body (str/trim body)}))
+
+(defn ext-content-type [filename]
+  (get content-types (fp/ext filename) "text/plain"))
+
+(defn page-file? [path]
+  (some #(= % (fp/base path)) index-files))
+
+(defn hidden-or-ignored? [path]
+  (some #(contains? ignored-dirs %) (str/split path #"/")))
+
+(defn page-name [root filename]
+  (let [dir (fp/dir filename)
+        rel (fp/rel root dir)]
+    (if (= rel ".") "" (fp/to-slash rel))))
+
+(defn scan-pages [root]
+  (->> (fp/file-seq root)
+       (map :name)
+       (filter page-file?)
+       (remove hidden-or-ignored?)
+       (map (fn [path]
+              {:path (page-name root path)
+               :file path
+               :mtime (:modtime (os/stat path))}))
+       (sort-by :path)))
+
+(defn load-page [item]
+  (let [raw (slurp (:file item))
+        parsed (parse-front-matter raw (ext-content-type (:file item)))
+        headers (:headers parsed)]
+    (merge item
+           parsed
+           {:title (get headers "title" "Untitled")
+            :date (get headers "date" "")
+            :author (get headers "from" "Unknown Author")
+            :tags (->> (str/split (get headers "tags" "") #",")
+                       (map str/trim)
+                       (remove blank?)
+                       vec)})))
+
+(defn render-plaintext [raw]
+  (str "<pre>" (html-escape raw) "</pre>"))
+
+(defn render-html [raw]
+  (let [s (str/trim raw)]
+    (if (= s "") "<body></body>" s)))
+
+(defn render-markdown [raw]
+  (markdown/convert-string raw))
+
+(defn render-page-body [page]
+  (case (get-in page [:headers "content-type"])
+    "text/html" (render-html (:body page))
+    "text/plain" (render-plaintext (:body page))
+    "text/x-markdown" (render-markdown (:body page))
+    "text/markdown" (render-markdown (:body page))
+    "text/x-web-markdown" (render-markdown (:body page))
+    (render-plaintext (:body page))))
+
+(defn mapping-page [pages name]
+  (some #(when (= (:path %) name) %) pages))
+
+(defn plaintext-lines [page]
+  (if page
+    (->> (:body page)
+         str/split-lines
+         (map str/trim)
+         (remove blank?))
+    []))
+
+(defn parse-map-lines [lines]
+  (reduce (fn [m line]
+            (let [bits (str/split line #"\s+")]
+              (if (>= (count bits) 2)
+                (assoc m (str/lower-case (first bits)) (second bits))
+                m)))
+          {}
+          lines))
+
+(defn build-mappings [pages]
+  {:aliases (parse-map-lines (plaintext-lines (mapping-page pages "meta/aliases")))
+   :interwiki (parse-map-lines (plaintext-lines (mapping-page pages "meta/interwikimap")))})
+
+(defn rewrite-interwiki [html interwiki]
+  ;; Minimal Sushy-like interwiki expansion for href="wiki:Page" links.
+  (reduce (fn [acc [prefix template]]
+            (str/replace acc
+                         (re-pattern (str "href=\"" prefix ":([^\"]+)\""))
+                         (str "href=\"" (str/replace template "%s" "$1") "\"")))
+          html
+          interwiki))
+
+(defn rewrite-local-links [html]
+  ;; Make relative links folder-style when authors omit the leading slash.
+  (str/replace html #"href=\"([^/:#][A-Za-z0-9_./-]*)\""
+               "href=\"/$1\""))
+
+(defn transform-html [html mappings]
+  (-> html
+      rewrite-local-links
+      (rewrite-interwiki (:interwiki mappings))))
+
+(defn layout [page body]
+  (str "<!doctype html>\n"
+       "<html lang=\"en\"><head>"
+       "<meta charset=\"utf-8\">"
+       "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+       "<title>" (html-escape (:title page)) " · " (html-escape site-title) "</title>"
+       "<link rel=\"stylesheet\" href=\"/static/site.css\">"
+       "<link rel=\"alternate\" type=\"application/atom+xml\" href=\"/feed.xml\">"
+       "</head><body>"
+       "<header><strong><a href=\"/\">" (html-escape site-title) "</a></strong>"
+       " <span class=\"muted\">Sushy-style static output from Joker</span></header>"
+       "<main><article>"
+       "<h1>" (html-escape (:title page)) "</h1>"
+       "<p class=\"muted\">" (html-escape (:date page)) " · " (html-escape (:author page)) "</p>"
+       body
+       "</article></main>"
+       "<footer class=\"muted\">Generated by examples/sushy-static.joke</footer>"
+       "</body></html>\n"))
+
+(defn published? [page]
+  (let [h (:headers page)]
+    (not (some #(contains? #{"off" "no" "false"} (str/lower-case (get h % "true")))
+               ["visible" "published"]))))
+
+(defn meta-page? [page]
+  (str/starts-with? (:path page) "meta/"))
+
+(defn render-static-page [mappings page]
+  (let [body (transform-html (render-page-body page) mappings)]
+    (layout page body)))
+
+(defn write-page! [out-dir mappings page]
+  (let [target (output-file-for out-dir (:path page))]
+    (os/mkdir-all (fp/dir target) 493)
+    (spit target (render-static-page mappings page))))
+
+(defn render-index [pages]
+  (let [items (->> pages
+                   (remove meta-page?)
+                   (filter published?)
+                   (sort-by :date)
+                   reverse)]
+    (str "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">"
+         "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+         "<title>" (html-escape site-title) "</title>"
+         "<link rel=\"stylesheet\" href=\"/static/site.css\">"
+         "</head><body><header><strong>" (html-escape site-title) "</strong></header><main>"
+         "<h1>Pages</h1>"
+         (apply str (map (fn [p]
+                           (str "<article><h2><a href=\"" (route-for (:path p)) "\">"
+                                (html-escape (:title p)) "</a></h2>"
+                                "<p class=\"muted\">" (html-escape (:date p))
+                                " · " (html-escape (str/join ", " (:tags p))) "</p></article>"))
+                         items))
+         "</main><footer class=\"muted\">Generated by Joker</footer></body></html>")))
+
+(defn render-feed [pages]
+  (let [items (take 20 (->> pages
+                            (remove meta-page?)
+                            (filter published?)
+                            (sort-by :date)
+                            reverse))]
+    (str "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+         "<feed xmlns=\"http://www.w3.org/2005/Atom\">"
+         "<title>" (xml-escape site-title) "</title>"
+         "<id>" site-url "/</id>"
+         "<updated>" (now-rfc3339) "</updated>"
+         (apply str (map (fn [p]
+                           (let [url (str site-url (route-for (:path p)))]
+                             (str "<entry><title>" (xml-escape (:title p)) "</title>"
+                                  "<link href=\"" (xml-escape url) "\"/>"
+                                  "<id>" (xml-escape url) "</id>"
+                                  "<updated>" (xml-escape (:date p)) "</updated>"
+                                  "<summary>" (xml-escape (subs (:body p) 0 (min 160 (count (:body p))))) "</summary>"
+                                  "</entry>")))
+                         items))
+         "</feed>\n")))
+
+(defn render-sitemap [pages]
+  (let [items (->> pages (remove meta-page?) (filter published?))]
+    (str "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+         "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">"
+         (apply str (map (fn [p]
+                           (str "<url><loc>" (xml-escape (str site-url (route-for (:path p))))
+                                "</loc><lastmod>" (xml-escape (:date p)) "</lastmod></url>"))
+                         items))
+         "</urlset>\n")))
+
+(defn copy-static! [theme-dir out-dir]
+  (let [static-root (fp/join theme-dir "static")]
+    (when (os/exists? static-root)
+      (doseq [entry (fp/file-seq static-root)]
+        (let [path (:name entry)]
+          (when-not (:dir? entry)
+            (let [rel (fp/rel static-root path)
+                  target (fp/join out-dir "static" rel)]
+              (os/mkdir-all (fp/dir target) 493)
+              (spit target (slurp path)))))))))
+
+(defn clean-output! [out-dir]
+  (when (os/exists? out-dir)
+    (os/remove-all out-dir))
+  (os/mkdir-all out-dir 493))
+
+(defn build-site! [content-dir out-dir theme-dir]
+  (let [pages (vec (map load-page (scan-pages content-dir)))
+        mappings (build-mappings pages)
+        pages-to-write (->> pages (remove meta-page?) (filter published?))]
+    (clean-output! out-dir)
+    (doseq [page pages-to-write]
+      (write-page! out-dir mappings page))
+    ;; Keep /index.html as the rendered home page when present, and write
+    ;; the generated page listing separately.
+    (spit (fp/join out-dir "pages.html") (render-index pages-to-write))
+    (spit (fp/join out-dir "feed.xml") (render-feed pages-to-write))
+    (spit (fp/join out-dir "sitemap.xml") (render-sitemap pages-to-write))
+    (copy-static! theme-dir out-dir)
+    {:pages (count pages-to-write)
+     :out out-dir}))
+
+(defn -main []
+  (let [args *command-line-args*
+        content-dir (or (first args) "examples/sushy-static/pages")
+        out-dir (or (second args) ".cache/sushy-site")
+        theme-dir (or (nth args 2 nil) "examples/sushy-static/theme")
+        result (build-site! content-dir out-dir theme-dir)]
+    (println (str "Generated " (:pages result) " pages into " (:out result)))
+    (println (str "Open " (fp/join (:out result) "index.html")))))
+
+(-main)
