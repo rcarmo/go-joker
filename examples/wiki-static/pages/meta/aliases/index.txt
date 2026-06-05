@@ -1,0 +1,7 @@
+from: System
+date: 2026-06-05 08:00
+content-type: text/plain
+title: Aliases
+
+/start /
+/home /
