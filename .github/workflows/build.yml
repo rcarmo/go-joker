@@ -23,9 +23,9 @@ jobs:
         with:
           go-version: '1.25.10'
       - name: Run tests
-        run: go test ./core ./std/jit ./cmd/joker ./internal/notebook -timeout 10m
-      - name: Run notebook smoke checks
-        run: make notebook-check
+        run: go test ./core ./std/... ./cmd/joker ./internal/notebook -timeout 10m -count=1
+      - name: Run docs, examples, release hygiene, and contract checks
+        run: make docs-check
       - uses: oven-sh/setup-bun@v2
       - name: Install notebook browser smoke dependencies
         run: |

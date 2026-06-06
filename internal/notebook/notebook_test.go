@@ -2,6 +2,7 @@ package notebook
 
 import (
 	"bytes"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -9,8 +10,19 @@ import (
 	"strings"
 	"sync"
 	"testing"
-	"time"
 )
+
+type blockingBody struct {
+	started chan struct{}
+	release chan struct{}
+	once    sync.Once
+}
+
+func (b *blockingBody) Read(_ []byte) (int, error) {
+	b.once.Do(func() { close(b.started) })
+	<-b.release
+	return 0, io.EOF
+}
 
 func TestWriteSnapshot(t *testing.T) {
 	dir := t.TempDir()
@@ -346,27 +358,30 @@ func TestNotebookHTTPHandler(t *testing.T) {
 func TestNotebookHTTPHandlerRejectsConcurrentEvaluation(t *testing.T) {
 	path := t.TempDir() + "/api.edn"
 	nb := New("Concurrent")
-	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(loop [n 0] (if (< n 20000000) (recur (+ n 1)) (+ 1 2)))"}}
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)"}}
 	if err := Save(path, nb); err != nil {
 		t.Fatal(err)
 	}
 	h := Handler(path)
+	body := &blockingBody{started: make(chan struct{}), release: make(chan struct{})}
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		w := httptest.NewRecorder()
-		h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-cell?id=cell-1", nil))
+		h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-cell?id=cell-1", body))
 		if w.Code != http.StatusOK {
 			t.Errorf("first evaluate-cell code=%d body=%s", w.Code, w.Body.String())
 		}
 	}()
-	time.Sleep(25 * time.Millisecond)
+	<-body.started
 	w := httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-cell?id=cell-1", nil))
 	if w.Code != http.StatusConflict || !strings.Contains(w.Body.String(), "already in progress") {
+		close(body.release)
 		t.Fatalf("concurrent evaluate-cell code=%d body=%s", w.Code, w.Body.String())
 	}
+	close(body.release)
 	wg.Wait()
 	w = httptest.NewRecorder()
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/notebook", nil))
