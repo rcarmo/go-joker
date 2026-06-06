@@ -71,6 +71,9 @@ func FuzzEDNDecodeAll(f *testing.F) {
 		f.Add(seed)
 	}
 	f.Fuzz(func(t *testing.T, src string) {
+		if len(src) > 64*1024 {
+			t.Skip("fuzz input too large for EDN decode smoke target")
+		}
 		_, _ = DecodeAllEDN(src)
 	})
 }

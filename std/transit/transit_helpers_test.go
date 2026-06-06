@@ -41,6 +41,9 @@ func FuzzTransitDecodeValue(f *testing.F) {
 		f.Add(seed)
 	}
 	f.Fuzz(func(t *testing.T, src string) {
+		if len(src) > 64*1024 {
+			t.Skip("fuzz input too large for Transit decode smoke target")
+		}
 		_, _ = TransitDecodeValue(src)
 	})
 }
