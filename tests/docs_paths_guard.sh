@@ -43,7 +43,6 @@ check_present examples/wiki/README.md
 check_present examples/notebooks/rich-demo.edn
 check_present examples/notebooks/complex-demo.edn
 check_present docs/API_STABILITY.md
-check_present docs/MATURITY_HARDENING_PLAN.md
 
 if [ "$fail" -ne 0 ]; then
   exit 1

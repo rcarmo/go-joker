@@ -254,7 +254,6 @@ docs-check: docs docs-command-check notebook-check examples-check docs-paths-che
 	test -f docs/PORTABILITY_SHIM_ASSESSMENT.md
 	test -f docs/BENCHMARK_CI.md
 	test -f docs/API_STABILITY.md
-	test -f docs/MATURITY_HARDENING_PLAN.md
 	test -f docs/joker.imaging.html
 	test -f docs/joker.jit.html
 	test -f docs/joker.edn.html
