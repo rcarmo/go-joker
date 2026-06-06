@@ -6,7 +6,7 @@ tags: blog, joker, wasm
 
 # Hello from Joker
 
-This page is rendered by `examples/wiki-static.joke`.
+This page is rendered by `examples/wiki/static.joke`.
 
 The generator is intentionally small and keeps the dynamic web-server bits out of scope, but mirrors Sushy's content model closely enough to be useful as a starting point.
 

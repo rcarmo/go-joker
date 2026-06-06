@@ -20,7 +20,7 @@
 
 ## Examples
 
-- Added/updated `examples/fractal-flame.joke`: high-resolution procedural raster generation in Joker code via:
+- Added/updated `examples/graphics/fractal-flame.joke`: high-resolution procedural raster generation in Joker code via:
   - `joker.jit/compile-wasm`
   - `joker.imaging/from-rgba32-domain-fn`
   - Mandelbrot, Tricorn, and cubic flame-style kernels
@@ -34,6 +34,6 @@
 ```bash
 go test ./core -run 'TestWasm|TestIr|TestRuntime|TestJit' -count=1
 go build -o .cache/joker ./cmd/joker
-.cache/joker examples/fractal-flame.joke 1024 .cache/flame-mandel.png
+.cache/joker examples/graphics/fractal-flame.joke 1024 .cache/flame-mandel.png
 git diff --check
 ```

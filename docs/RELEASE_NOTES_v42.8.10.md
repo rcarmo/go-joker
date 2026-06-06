@@ -14,9 +14,9 @@
 - Replaced the broken `os.Stdin.SetReadDeadline(...)` approach with a background stdin reader and timeout-aware polling.
 - Restored the expected `:none` timeout behavior used by terminal apps and games.
 
-### `examples/tetris.joke`
+### `examples/games/tetris.joke`
 
-- `examples/tetris.joke` now starts promptly and responds to input correctly again.
+- `examples/games/tetris.joke` now starts promptly and responds to input correctly again.
 
 ## Verified
 

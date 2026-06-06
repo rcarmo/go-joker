@@ -301,7 +301,7 @@ Added in v42.8.9. Raw terminal mode, ANSI escape sequences, buffered frame rende
 (t/restore!)
 ```
 
-See [`docs/TERM.md`](TERM.md) for the full API reference and `examples/tetris.joke` for a complete terminal game.
+See [`docs/TERM.md`](TERM.md) for the full API reference and `examples/games/tetris.joke` for a complete terminal game.
 
 ---
 

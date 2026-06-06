@@ -108,7 +108,7 @@ Returns:
 
 ## Examples
 
-- `examples/tetris.joke` — full terminal Tetris (7 pieces, rotation, scoring, hard drop)
+- `examples/games/tetris.joke` — full terminal Tetris (7 pieces, rotation, scoring, hard drop)
 
 ## Design notes
 

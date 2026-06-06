@@ -8,9 +8,9 @@
 ;; calling the WASM kernel directly from Go for each pixel.
 ;;
 ;; Run:
-;;   joker examples/fractal-flame.joke                 # 1024x1024 default
-;;   joker examples/fractal-flame.joke 2048            # 2048x2048
-;;   joker examples/fractal-flame.joke 2048 output.png # custom output
+;;   joker examples/graphics/fractal-flame.joke                 # 1024x1024 default
+;;   joker examples/graphics/fractal-flame.joke 2048            # 2048x2048
+;;   joker examples/graphics/fractal-flame.joke 2048 output.png # custom output
 ;;
 ;; Performance (WASM kernel via wazero):
 ;;   512x512:   ~60ms

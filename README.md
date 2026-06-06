@@ -109,8 +109,8 @@ The repository layout is being split along architectural boundaries. The module 
 - **Boxed IR path**: collections, fn calls, transients → []Object interpreter (~10–40ms)
 - **Tree-walker**: full Clojure semantics (macros, special forms, I/O)
 - **Fallback chain**: WASM → Typed IR → Boxed IR → Tree-walker (automatic)
-- **WASM raster example**: `examples/fractal-flame.joke` renders Mandelbrot, Tricorn, and cubic flame variants through `joker.jit/compile-wasm` plus `joker.imaging/from-rgba32-domain-fn` (about 1024×1024 in ~260ms per kernel on the current dev host).
-- **Wiki/static-site example**: `examples/wiki-static.joke` ports the wiki/static subset of `rcarmo/sushy` from Hy to Joker: folder-per-page content, RFC2822-style front matter, Markdown/plain/HTML rendering, dynamic serving via `joker.http/start-server`, static build output, Atom feed, sitemap, aliases/interwiki mappings, and static asset copying.
+- **WASM raster example**: `examples/graphics/fractal-flame.joke` renders Mandelbrot, Tricorn, and cubic flame variants through `joker.jit/compile-wasm` plus `joker.imaging/from-rgba32-domain-fn` (about 1024×1024 in ~260ms per kernel on the current dev host).
+- **Wiki/static-site example**: `examples/wiki/static.joke` ports the wiki/static subset of `rcarmo/sushy` from Hy to Joker: folder-per-page content, RFC2822-style front matter, Markdown/plain/HTML rendering, dynamic serving via `joker.http/start-server`, static build output, Atom feed, sitemap, aliases/interwiki mappings, and static asset copying.
 
 ## Building & testing
 
@@ -185,6 +185,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Documentation
 
+- [`examples/README.md`](examples/README.md) — runnable examples grouped by graphics, terminal games, wiki/static serving, and notebooks
 - [`docs/BENCHMARK_CI.md`](docs/BENCHMARK_CI.md) — CI benchmark smoke guard policy and local reproduction
 - [`docs/RUNTIME_DOCS.md`](docs/RUNTIME_DOCS.md) — `joker doc` Markdown/JSON lookup and local HTTP docs server
 - [`docs/IMAGING.md`](docs/IMAGING.md) — `joker.imaging` image processing API and Bun Image parity notes

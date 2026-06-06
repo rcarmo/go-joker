@@ -20,31 +20,31 @@ From the repository root:
 Build static output:
 
 ```bash
-joker examples/wiki-static.joke build
+joker examples/wiki/static.joke build
 ```
 
 Or choose custom paths:
 
 ```bash
-joker examples/wiki-static.joke build \
-  examples/wiki-static/pages \
+joker examples/wiki/static.joke build \
+  examples/wiki/pages \
   .cache/wiki-site \
-  examples/wiki-static/theme
+  examples/wiki/theme
 ```
 
 Serve dynamically from the content tree:
 
 ```bash
-joker examples/wiki-static.joke serve
+joker examples/wiki/static.joke serve
 ```
 
 Or choose a custom bind address:
 
 ```bash
-joker examples/wiki-static.joke serve \
-  examples/wiki-static/pages \
+joker examples/wiki/static.joke serve \
+  examples/wiki/pages \
   127.0.0.1:8080 \
-  examples/wiki-static/theme
+  examples/wiki/theme
 ```
 
 Output:

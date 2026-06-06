@@ -17,12 +17,12 @@ Backed by `golang.org/x/term` for portable raw mode.
 
 See [`docs/TERM.md`](TERM.md) for full API reference.
 
-## New: `examples/tetris.joke`
+## New: `examples/games/tetris.joke`
 
 Terminal Tetris — a full port of babashka's JLine-based Tetris to native Joker:
 
 ```bash
-joker examples/tetris.joke
+joker examples/games/tetris.joke
 ```
 
 7 tetrominoes, rotation, hard/soft drop, line clearing, scoring, pause/reset.

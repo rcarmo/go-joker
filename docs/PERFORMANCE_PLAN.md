@@ -22,7 +22,7 @@ This plan tracks the work to make core Joker faster for gi scripting. Additional
 - Tail-call optimization and parse-time tail-call-to-`recur` rewriting.
 - WASM/wazero backend for pure numeric loops and self-recursive functions.
 - WASM f64 support and compiled helper dispatch for spectral-norm style code.
-- WASM bridge fixes for value-producing `if` expressions and fn-level loops with init stores, enabling high-resolution procedural raster examples such as `examples/fractal-flame.joke` to keep kernels in Joker code.
+- WASM bridge fixes for value-producing `if` expressions and fn-level loops with init stores, enabling high-resolution procedural raster examples such as `examples/graphics/fractal-flame.joke` to keep kernels in Joker code.
 - Escape analysis for safe in-place collection mutation.
 - Internal and explicit transient vector/map support.
 - WASM linear-memory f64/i64 arrays as an experimental foundation.
