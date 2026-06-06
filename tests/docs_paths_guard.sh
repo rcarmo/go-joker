@@ -4,18 +4,22 @@ set -euo pipefail
 ROOT="${1:-.}"
 cd "$ROOT"
 
+mkdir -p .cache/tmp
+MATCHES_FILE="$(mktemp .cache/tmp/go-joker-doc-paths.XXXXXX)"
+trap 'rm -f "$MATCHES_FILE"' EXIT
+
 fail=0
 
 check_absent() {
   local pattern="$1"
   local label="$2"
+  : >"$MATCHES_FILE"
   if grep -R --line-number --fixed-strings "$pattern" README.md docs examples \
-      --include='*.md' --include='*.joke' --include='*.edn' --include='*.html' >/tmp/go-joker-doc-paths.$$ 2>/dev/null; then
+      --include='*.md' --include='*.joke' --include='*.edn' --include='*.html' >"$MATCHES_FILE" 2>/dev/null; then
     echo "stale path/reference found for $label: $pattern" >&2
-    cat /tmp/go-joker-doc-paths.$$ >&2
+    cat "$MATCHES_FILE" >&2
     fail=1
   fi
-  rm -f /tmp/go-joker-doc-paths.$$
 }
 
 check_present() {

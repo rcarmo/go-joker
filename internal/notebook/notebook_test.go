@@ -24,6 +24,10 @@ func (b *blockingBody) Read(_ []byte) (int, error) {
 	return 0, io.EOF
 }
 
+type errReader struct{}
+
+func (errReader) Read(_ []byte) (int, error) { return 0, io.ErrUnexpectedEOF }
+
 func TestWriteSnapshot(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "snap.edn")
@@ -387,6 +391,21 @@ func TestNotebookHTTPHandlerRejectsConcurrentEvaluation(t *testing.T) {
 	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/api/notebook", nil))
 	if got := strings.Count(w.Body.String(), ":type :value"); got != 1 {
 		t.Fatalf("persisted value outputs = %d body=%s", got, w.Body.String())
+	}
+}
+
+func TestNotebookHTTPHandlerReportsEvaluateBodyReadErrors(t *testing.T) {
+	path := t.TempDir() + "/api.edn"
+	nb := New("BodyError")
+	nb.Cells = []Cell{{ID: "cell-1", Kind: "code", Source: "(+ 1 2)"}}
+	if err := Save(path, nb); err != nil {
+		t.Fatal(err)
+	}
+	h := Handler(path)
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/evaluate-cell?id=cell-1", errReader{}))
+	if w.Code != http.StatusBadRequest || !strings.Contains(w.Body.String(), "read request body") {
+		t.Fatalf("evaluate-cell body error code=%d body=%s", w.Code, w.Body.String())
 	}
 }
 

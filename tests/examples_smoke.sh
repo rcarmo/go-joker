@@ -4,6 +4,10 @@ set -euo pipefail
 ROOT="${1:-.}"
 JOKER_BIN="${JOKER_BIN:-${ROOT}/.cache/tmp/joker}"
 OUT_DIR="${ROOT}/.cache/examples-smoke"
+WIKI_BUILD_LOG="$OUT_DIR/wiki-build.log"
+WIKI_ROOT_HTML="$OUT_DIR/wiki-root.html"
+FLAME_LOG="$OUT_DIR/flame.log"
+TETRIS_LINT_LOG="$OUT_DIR/tetris-lint.log"
 
 cd "$ROOT"
 
@@ -29,7 +33,7 @@ require_file examples/notebooks/complex-demo.edn
 
 # Static wiki build smoke.
 rm -rf "$OUT_DIR/wiki"
-"$JOKER_BIN" examples/wiki/static.joke build examples/wiki/pages "$OUT_DIR/wiki" examples/wiki/theme >/tmp/go-joker-examples-wiki-build.log
+"$JOKER_BIN" examples/wiki/static.joke build examples/wiki/pages "$OUT_DIR/wiki" examples/wiki/theme >"$WIKI_BUILD_LOG"
 
 grep -q 'Joker Wiki Static' "$OUT_DIR/wiki/index.html"
 grep -q 'Hello from Joker' "$OUT_DIR/wiki/pages.html"
@@ -49,7 +53,7 @@ trap cleanup EXIT
 
 ready=0
 for _ in $(seq 1 50); do
-  if curl -fsS "http://127.0.0.1:${PORT}/" >/tmp/go-joker-examples-wiki-root.html 2>/dev/null; then
+  if curl -fsS "http://127.0.0.1:${PORT}/" >"$WIKI_ROOT_HTML" 2>/dev/null; then
     ready=1
     break
   fi
@@ -66,7 +70,7 @@ if [ "$ready" -ne 1 ]; then
   exit 1
 fi
 
-grep -q 'Joker Wiki Static' /tmp/go-joker-examples-wiki-root.html
+grep -q 'Joker Wiki Static' "$WIKI_ROOT_HTML"
 curl -fsS "http://127.0.0.1:${PORT}/pages.html" | grep -q 'Hello from Joker'
 curl -fsS "http://127.0.0.1:${PORT}/feed.xml" | grep -q '<feed'
 curl -fsS "http://127.0.0.1:${PORT}/static/site.css" | grep -q 'font'
@@ -75,18 +79,18 @@ trap - EXIT
 
 # WASM graphics smoke at tiny resolution to keep CI cheap.
 rm -f "$OUT_DIR/flame.png" tricorn-flame.png cubic-flame.png
-"$JOKER_BIN" examples/graphics/fractal-flame.joke 96 "$OUT_DIR/flame.png" >/tmp/go-joker-examples-flame.log
+"$JOKER_BIN" examples/graphics/fractal-flame.joke 96 "$OUT_DIR/flame.png" >"$FLAME_LOG"
 test -s "$OUT_DIR/flame.png"
 rm -f tricorn-flame.png cubic-flame.png
 
 # Interactive game: non-interactive lint/syntax smoke only.
-"$JOKER_BIN" --lint examples/games/tetris.joke >/tmp/go-joker-examples-tetris-lint.log 2>&1 || {
-  if grep -q 'Parse error\|Eval error\|Unable to resolve' /tmp/go-joker-examples-tetris-lint.log; then
-    cat /tmp/go-joker-examples-tetris-lint.log >&2
+"$JOKER_BIN" --lint examples/games/tetris.joke >"$TETRIS_LINT_LOG" 2>&1 || {
+  if grep -q 'Parse error\|Eval error\|Unable to resolve' "$TETRIS_LINT_LOG"; then
+    cat "$TETRIS_LINT_LOG" >&2
     exit 1
   fi
   # The current Tetris example has a harmless redundant-do lint warning.
-  grep -q 'Parse warning: redundant do form' /tmp/go-joker-examples-tetris-lint.log
+  grep -q 'Parse warning: redundant do form' "$TETRIS_LINT_LOG"
 }
 
 # Notebook fixtures are validated by notebook-check; assert paths here.

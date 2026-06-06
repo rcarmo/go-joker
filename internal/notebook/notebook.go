@@ -770,7 +770,11 @@ func Handler(path string) http.Handler {
 			http.Error(w, "cell not found", http.StatusNotFound)
 			return
 		}
-		body, _ := io.ReadAll(r.Body)
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "read request body: "+err.Error(), http.StatusBadRequest)
+			return
+		}
 		if len(body) > 0 {
 			cell.Source = string(body)
 		}
