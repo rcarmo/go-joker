@@ -4,8 +4,12 @@ set -euo pipefail
 root="${1:-.}"
 cd "$root"
 
-if grep -R "TODO: 32-bit issue" -n core std >/tmp/go-joker-native-int-todos.txt; then
-  cat /tmp/go-joker-native-int-todos.txt >&2
+mkdir -p .cache/tmp
+todos_file="$(mktemp .cache/tmp/go-joker-native-int-todos.XXXXXX)"
+trap 'rm -f "$todos_file"' EXIT
+
+if grep -R "TODO: 32-bit issue" -n core std >"$todos_file"; then
+  cat "$todos_file" >&2
   echo "native int guard: unresolved 32-bit conversion TODOs remain" >&2
   exit 1
 fi
