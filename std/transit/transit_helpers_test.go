@@ -24,3 +24,23 @@ func TestTransitPodHelpers(t *testing.T) {
 		t.Fatalf("decode helper mismatch: %s", decoded.ToString(false))
 	}
 }
+
+func FuzzTransitDecodeValue(f *testing.F) {
+	for _, seed := range []string{
+		`null`,
+		`true`,
+		`42`,
+		`"plain"`,
+		`"~:ok"`,
+		`["~#list",[1,2]]`,
+		`["~#set",[1,"~:a"]]`,
+		`["~#cmap",["~:k",1]]`,
+		`{"~:k":1}`,
+		`[`,
+	} {
+		f.Add(seed)
+	}
+	f.Fuzz(func(t *testing.T, src string) {
+		_, _ = TransitDecodeValue(src)
+	})
+}

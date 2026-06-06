@@ -56,3 +56,21 @@ func TestEDNDecodeAll(t *testing.T) {
 		t.Fatalf("unexpected objects: %#v", objs)
 	}
 }
+
+func FuzzEDNDecodeAll(f *testing.F) {
+	for _, seed := range []string{
+		"nil",
+		"true false",
+		"42 3.5 1/3",
+		"\"hello\" :kw sym",
+		"[1 2 :a]",
+		"{:a 1, :b [2 3]}",
+		"#{1 2 3}",
+		"[",
+	} {
+		f.Add(seed)
+	}
+	f.Fuzz(func(t *testing.T, src string) {
+		_, _ = DecodeAllEDN(src)
+	})
+}
