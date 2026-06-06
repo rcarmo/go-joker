@@ -11,6 +11,20 @@ import (
 	"testing"
 )
 
+func compatEnv(t *testing.T, extra ...string) []string {
+	t.Helper()
+	tmp := filepath.Join(t.TempDir(), "tmp")
+	gotmp := filepath.Join(t.TempDir(), "gotmp")
+	if err := os.MkdirAll(tmp, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(gotmp, 0755); err != nil {
+		t.Fatal(err)
+	}
+	env := append(os.Environ(), "TMPDIR="+tmp, "GOTMPDIR="+gotmp)
+	return append(env, extra...)
+}
+
 func buildJokerForCompat(t *testing.T) string {
 	t.Helper()
 	root, err := filepath.Abs("..")
@@ -20,7 +34,7 @@ func buildJokerForCompat(t *testing.T) string {
 	bin := filepath.Join(t.TempDir(), "joker")
 	cmd := exec.Command("go", "build", "-o", bin, "./cmd/joker")
 	cmd.Dir = root
-	cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+	cmd.Env = compatEnv(t)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("go build joker: %v\n%s", err, out)
@@ -47,7 +61,7 @@ func TestBabashkaCompatibilityPositiveFixtures(t *testing.T) {
 		fixture := fixture
 		t.Run(filepath.Base(fixture), func(t *testing.T) {
 			cmd := exec.Command(bin, fixture)
-			cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp", "BB_COMPAT_HTTP_URL="+server.URL+"/compat")
+			cmd.Env = compatEnv(t, "BB_COMPAT_HTTP_URL="+server.URL+"/compat")
 			out, err := cmd.CombinedOutput()
 			if err != nil {
 				t.Fatalf("%s failed: %v\n%s", fixture, err, out)
@@ -86,7 +100,7 @@ func TestBabashkaCompatibilityExpectedFailureFixtures(t *testing.T) {
 				t.Fatalf("%s missing EXPECT-ERROR marker", fixture)
 			}
 			cmd := exec.Command(bin, fixture)
-			cmd.Env = append(os.Environ(), "TMPDIR=/workspace/tmp", "GOTMPDIR=/workspace/tmp")
+			cmd.Env = compatEnv(t)
 			out, err := cmd.CombinedOutput()
 			if err == nil {
 				t.Fatalf("%s unexpectedly succeeded:\n%s", fixture, out)

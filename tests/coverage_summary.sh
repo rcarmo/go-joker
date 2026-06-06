@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-profile=${1:-/workspace/tmp/go-joker.cover}
-out=${2:-/workspace/tmp/go-joker.cover.func}
+profile=${1:-.cache/tmp/go-joker.cover}
+out=${2:-.cache/tmp/go-joker.cover.func}
+mkdir -p "$(dirname "$out")"
 
 if [[ ! -f "$profile" ]]; then
   echo "coverage profile not found: $profile" >&2
