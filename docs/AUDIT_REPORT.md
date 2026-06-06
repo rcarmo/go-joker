@@ -24,7 +24,8 @@ All checks were executed and are green:
 Race/fuzz:
 
 - `go test -race ./core ./std/runtime ./std/http ./std/pdf` → pass
-- Fuzz smoke: no `Fuzz*` targets currently present in repository
+- `std/http` includes request-map fuzz coverage.
+- `std/edn` and `std/transit` include bounded decode fuzz smoke targets for malformed input hardening.
 
 ## High-value issues found and fixed
 
@@ -71,5 +72,5 @@ Observed results stayed within expected variance for short benchtime runs, with 
 
 ## Residual items
 
-- No fuzz targets currently exist; adding parser/eval fuzzers would improve future resilience.
+- Existing fuzz targets cover HTTP request-map conversion plus bounded EDN and Transit decode inputs; broader reader/evaluator fuzzing would still improve future resilience.
 - Generated files still produce style noise under broad linters; these remain intentionally excluded from style-only checks.

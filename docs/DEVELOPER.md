@@ -434,6 +434,18 @@ $ make release-hygiene-check
 
 API stability classifications live in `docs/API_STABILITY.md`; release checklist and tag hygiene guidance live in `docs/RELEASE_CHECKLIST.md`.
 
+### Fuzz smoke targets
+
+The repository has small, bounded fuzz targets for malformed external inputs. They are not run by default in `make docs-check`, but are useful before changing parser/codec boundaries:
+
+```
+$ go test ./std/edn -run '^$' -fuzz=FuzzEDNDecodeAll -fuzztime=10s
+$ go test ./std/transit -run '^$' -fuzz=FuzzTransitDecodeValue -fuzztime=10s
+$ go test ./std/http -run '^$' -fuzz=FuzzReqToMapRemoteAddr -fuzztime=10s
+```
+
+Keep fuzz inputs bounded and use error-returning APIs where available; fuzz targets should find crashes and parser inconsistencies without becoming memory stress tests.
+
 Joker distributions currently include `core` and `std` libraries' documentation in their repositories, so new and changed `.html` files should be added to the changeset(s) along with the corresponding library code.
 
 ### Beware Circular Dependencies
