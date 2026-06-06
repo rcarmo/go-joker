@@ -22,7 +22,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -60,6 +60,7 @@ help:
 	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
 	@echo "  make examples-check # Run runnable examples smoke checks"
 	@echo "  make docs-paths-check # Guard stale moved-example paths in docs/examples"
+	@echo "  make release-hygiene-check # Verify VERSION/README/release-note consistency"
 	@echo "  make generated-check # Verify generated-file boundary guardrails"
 	@echo "  make generated-bootstrap-check # Verify generated bootstrap manifest equivalence"
 	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker"
@@ -237,7 +238,10 @@ examples-check:
 docs-paths-check:
 	tests/docs_paths_guard.sh .
 
-docs-check: docs docs-command-check notebook-check examples-check docs-paths-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
+release-hygiene-check:
+	tests/release_hygiene_guard.sh .
+
+docs-check: docs docs-command-check notebook-check examples-check docs-paths-check release-hygiene-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md
@@ -254,6 +258,7 @@ docs-check: docs docs-command-check notebook-check examples-check docs-paths-che
 	test -f docs/PORTABILITY_SHIM_ASSESSMENT.md
 	test -f docs/BENCHMARK_CI.md
 	test -f docs/API_STABILITY.md
+	test -f docs/RELEASE_CHECKLIST.md
 	test -f docs/joker.imaging.html
 	test -f docs/joker.jit.html
 	test -f docs/joker.edn.html

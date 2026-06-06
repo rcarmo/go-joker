@@ -3879,3 +3879,63 @@ func TestWasmOneHelperFloatRequiresForce(t *testing.T) {
 		t.Fatal("float helper should be gated off in auto mode")
 	}
 }
+
+func compileTestFnToWasm(t *testing.T, script string) Proc {
+	t.Helper()
+	obj := evalTestScript(t, script)
+	fn, ok := obj.(*Fn)
+	if !ok {
+		t.Fatalf("expected *Fn, got %T", obj)
+	}
+	compiled, reason := WasmCompileFnExported(fn)
+	if compiled == nil {
+		t.Fatalf("WASM compile failed: %s", reason)
+	}
+	proc, ok := compiled.(Proc)
+	if !ok {
+		t.Fatalf("expected Proc, got %T", compiled)
+	}
+	return proc
+}
+
+func TestWasmValueProducingIfInLoop(t *testing.T) {
+	proc := compileTestFnToWasm(t, `(fn [x]
+  (loop [acc 0.0 n 0]
+    (if (= n 5)
+      acc
+      (let [a (if (< x 0.0) (- 0.0 x) x)]
+        (recur (+ acc a) (+ n 1))))))`)
+	obj := proc.Fn([]coretypes.Object{coretypes.Double{D: -3.0}})
+	requireDouble(t, obj, 15.0)
+}
+
+func TestWasmFnLevelLoopWithInitStoresDoesNotReinitializeOnRecur(t *testing.T) {
+	proc := compileTestFnToWasm(t, `(fn [cr ci]
+  (loop [zr 0.0 zi 0.0 n 0]
+    (if (= n 10)
+      0.0
+      (if (> (+ (* zr zr) (* zi zi)) 4.0)
+        (* n 3.0)
+        (let [zr2 (* zr zr)
+              zi2 (* zi zi)]
+          (recur (+ (- zr2 zi2) cr)
+                 (+ (* (* 2.0 zr) zi) ci)
+                 (+ n 1)))))))`)
+	obj := proc.Fn([]coretypes.Object{coretypes.Double{D: 5.0}, coretypes.Double{D: 5.0}})
+	requireDouble(t, obj, 3.0)
+}
+
+func TestWasmCompileFallbackDoesNotTreatEligibleDiagnosticAsError(t *testing.T) {
+	proc := compileTestFnToWasm(t, `(fn [cr ci]
+  (loop [zr 0.0 zi 0.0 n 0]
+    (if (= n 18)
+      255.0
+      (if (> (+ (* zr zr) (* zi zi)) 4.0)
+        (* n 14.0)
+        (let [ar (if (< zr 0.0) (- 0.0 zr) zr)]
+          (recur (+ (- (* ar ar) (* zi zi)) cr)
+                 (+ (* (* 2.0 ar) zi) ci)
+                 (+ n 1)))))))`)
+	obj := proc.Fn([]coretypes.Object{coretypes.Double{D: 5.0}, coretypes.Double{D: 5.0}})
+	requireDouble(t, obj, 14.0)
+}
