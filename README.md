@@ -185,6 +185,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Documentation
 
+- [`docs/START_HERE.md`](docs/START_HERE.md) — concise clone/build/test orientation for new contributors
 - [`examples/README.md`](examples/README.md) — runnable examples grouped by graphics, terminal games, wiki/static serving, and notebooks
 - [`docs/API_STABILITY.md`](docs/API_STABILITY.md) — public namespace/API stability classifications
 - [`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md) — patch release checklist and validation commands
