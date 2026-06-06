@@ -22,7 +22,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -58,6 +58,8 @@ help:
 	@echo "  make bench-sanity   # Run CLBG benchmark sanity subset"
 	@echo "  make coverage       # Run package coverage and generated-file-aware summary"
 	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
+	@echo "  make examples-check # Run runnable examples smoke checks"
+	@echo "  make docs-paths-check # Guard stale moved-example paths in docs/examples"
 	@echo "  make generated-check # Verify generated-file boundary guardrails"
 	@echo "  make generated-bootstrap-check # Verify generated bootstrap manifest equivalence"
 	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker"
@@ -229,7 +231,13 @@ runtime-contract-check:
 std-contract-check:
 	$(GO) test ./std/... -count=$(TEST_COUNT) -timeout=120s
 
-docs-check: docs docs-command-check notebook-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
+examples-check:
+	tests/examples_smoke.sh .
+
+docs-paths-check:
+	tests/docs_paths_guard.sh .
+
+docs-check: docs docs-command-check notebook-check examples-check docs-paths-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md
@@ -245,6 +253,8 @@ docs-check: docs docs-command-check notebook-check generated-check generated-boo
 	test -f docs/BABASHKA_SHIM_ASSESSMENT.md
 	test -f docs/PORTABILITY_SHIM_ASSESSMENT.md
 	test -f docs/BENCHMARK_CI.md
+	test -f docs/API_STABILITY.md
+	test -f docs/MATURITY_HARDENING_PLAN.md
 	test -f docs/joker.imaging.html
 	test -f docs/joker.jit.html
 	test -f docs/joker.edn.html
