@@ -15578,7 +15578,6 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 	compiled, err := rt.CompileModule(ctx, bin)
 	if err != nil {
 		return nil
-		return nil
 	}
 
 	cfg := wazero.NewModuleConfig().WithName(corewasm.NextWasmModuleName())
