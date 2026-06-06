@@ -2,7 +2,7 @@
 
 Updated: 2026-06-06
 
-This document classifies go-joker public namespaces and major user-facing surfaces by stability. It is intentionally conservative: a namespace can be useful and well-tested while still being marked beta if its API shape may change.
+This document classifies go-joker public namespaces and major user-facing surfaces by stability. It is intentionally conservative: a namespace can be useful and well-tested while still being marked beta if its API shape may change. Its presence is guarded by `make docs-check` so new public surfaces have a canonical place to be classified.
 
 ## Stability levels
 

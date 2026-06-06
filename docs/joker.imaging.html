@@ -29,6 +29,12 @@
     <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
+  <a href="#average-hash">average-hash</a>
+</li>
+<li>
+  <a href="#base64">base64</a>
+</li>
+<li>
   <a href="#blur">blur</a>
 </li>
 <li>
@@ -36,6 +42,9 @@
 </li>
 <li>
   <a href="#brightness">brightness</a>
+</li>
+<li>
+  <a href="#bytes">bytes</a>
 </li>
 <li>
   <a href="#contrast">contrast</a>
@@ -47,7 +56,13 @@
   <a href="#crop-center">crop-center</a>
 </li>
 <li>
+  <a href="#data-uri">data-uri</a>
+</li>
+<li>
   <a href="#decode">decode</a>
+</li>
+<li>
+  <a href="#difference-hash">difference-hash</a>
 </li>
 <li>
   <a href="#encode">encode</a>
@@ -68,16 +83,28 @@
   <a href="#from-rgba32">from-rgba32</a>
 </li>
 <li>
+  <a href="#from-rgba32-domain-fn">from-rgba32-domain-fn</a>
+</li>
+<li>
+  <a href="#from-rgba32-fn">from-rgba32-fn</a>
+</li>
+<li>
   <a href="#gamma">gamma</a>
 </li>
 <li>
   <a href="#grayscale">grayscale</a>
 </li>
 <li>
+  <a href="#hash">hash</a>
+</li>
+<li>
   <a href="#height">height</a>
 </li>
 <li>
   <a href="#invert">invert</a>
+</li>
+<li>
+  <a href="#metadata">metadata</a>
 </li>
 <li>
   <a href="#new">new</a>
@@ -138,14 +165,34 @@
     <h2 id="_functions">Functions, Macros, and Special Forms</h2>
     <ul>
       <li>
+  <h3 class="Function" id="average-hash">average-hash</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(average-hash img)</code></div>
+</pre>
+  <p class="var-docstr">Returns a 64-bit perceptual average hash as 16 hex characters.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="base64">base64</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(base64 img format &amp; quality)</code></div>
+</pre>
+  <p class="var-docstr">Encodes image and returns base64 text. Format: :png :jpeg :gif :bmp :tiff.</p>
+
+
+</li>
+<li>
   <h3 class="Function" id="blur">blur</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(blur img sigma)</code></div>
 </pre>
   <p class="var-docstr">Applies gaussian blur with given sigma.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="bounds">bounds</h3>
@@ -154,8 +201,8 @@
   <pre class="var-usage"><div><code>(bounds img)</code></div>
 </pre>
   <p class="var-docstr">Returns [x y width height] of image bounds.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="brightness">brightness</h3>
@@ -164,8 +211,18 @@
   <pre class="var-usage"><div><code>(brightness img amount)</code></div>
 </pre>
   <p class="var-docstr">Adjusts brightness. Range -100 to 100.</p>
-  
-  
+
+
+</li>
+<li>
+  <h3 class="Function" id="bytes">bytes</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(bytes img format &amp; quality)</code></div>
+</pre>
+  <p class="var-docstr">Alias for encode: returns encoded image bytes as a string. Format: :png :jpeg :gif :bmp :tiff.</p>
+
+
 </li>
 <li>
   <h3 class="Function" id="contrast">contrast</h3>
@@ -174,8 +231,8 @@
   <pre class="var-usage"><div><code>(contrast img amount)</code></div>
 </pre>
   <p class="var-docstr">Adjusts contrast. Range -100 to 100.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="crop">crop</h3>
@@ -184,8 +241,8 @@
   <pre class="var-usage"><div><code>(crop img x y width height)</code></div>
 </pre>
   <p class="var-docstr">Crops region at x,y with given width and height.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="crop-center">crop-center</h3>
@@ -194,8 +251,18 @@
   <pre class="var-usage"><div><code>(crop-center img width height)</code></div>
 </pre>
   <p class="var-docstr">Crops width×height from center of image.</p>
-  
-  
+
+
+</li>
+<li>
+  <h3 class="Function" id="data-uri">data-uri</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(data-uri img format &amp; quality)</code></div>
+</pre>
+  <p class="var-docstr">Encodes image and returns a data:image/...;base64 URI.</p>
+
+
 </li>
 <li>
   <h3 class="Function" id="decode">decode</h3>
@@ -204,8 +271,18 @@
   <pre class="var-usage"><div><code>(decode data)</code></div>
 </pre>
   <p class="var-docstr">Decodes image from byte string.</p>
-  
-  
+
+
+</li>
+<li>
+  <h3 class="Function" id="difference-hash">difference-hash</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(difference-hash img)</code></div>
+</pre>
+  <p class="var-docstr">Returns a 64-bit perceptual difference hash as 16 hex characters.</p>
+
+
 </li>
 <li>
   <h3 class="Function" id="encode">encode</h3>
@@ -214,8 +291,8 @@
   <pre class="var-usage"><div><code>(encode img format &amp; quality)</code></div>
 </pre>
   <p class="var-docstr">Encodes image to bytes. Format: :png :jpeg :gif :bmp :tiff. Optional quality for JPEG.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="fill">fill</h3>
@@ -224,8 +301,8 @@
   <pre class="var-usage"><div><code>(fill img width height &amp; anchor)</code></div>
 </pre>
   <p class="var-docstr">Resizes and crops to fill exact width×height. Anchor: :center :top :bottom etc.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="fit">fit</h3>
@@ -234,8 +311,8 @@
   <pre class="var-usage"><div><code>(fit img width height)</code></div>
 </pre>
   <p class="var-docstr">Resizes to fit within width×height preserving aspect ratio.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="flip-h">flip-h</h3>
@@ -244,8 +321,8 @@
   <pre class="var-usage"><div><code>(flip-h img)</code></div>
 </pre>
   <p class="var-docstr">Flips image horizontally.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="flip-v">flip-v</h3>
@@ -254,8 +331,8 @@
   <pre class="var-usage"><div><code>(flip-v img)</code></div>
 </pre>
   <p class="var-docstr">Flips image vertically.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="from-rgba32">from-rgba32</h3>
@@ -268,14 +345,34 @@
 
 </li>
 <li>
+  <h3 class="Function" id="from-rgba32-domain-fn">from-rgba32-domain-fn</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(from-rgba32-domain-fn width height xmin ymin dx dy pixel-fn)</code></div>
+</pre>
+  <p class="var-docstr">Creates an image by calling pixel-fn with continuous domain coordinates for each pixel. pixel-fn must return packed RGBA (0xRRGGBBAA).</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="from-rgba32-fn">from-rgba32-fn</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(from-rgba32-fn width height pixel-fn)</code></div>
+</pre>
+  <p class="var-docstr">Creates an image by calling pixel-fn with x y for each pixel. pixel-fn must return packed RGBA (0xRRGGBBAA).</p>
+
+
+</li>
+<li>
   <h3 class="Function" id="gamma">gamma</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(gamma img value)</code></div>
 </pre>
   <p class="var-docstr">Adjusts gamma correction. &gt;1 brightens, &lt;1 darkens.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="grayscale">grayscale</h3>
@@ -284,8 +381,18 @@
   <pre class="var-usage"><div><code>(grayscale img)</code></div>
 </pre>
   <p class="var-docstr">Converts image to grayscale.</p>
-  
-  
+
+
+</li>
+<li>
+  <h3 class="Function" id="hash">hash</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(hash img)</code></div>
+</pre>
+  <p class="var-docstr">Returns the default perceptual image hash (currently difference-hash).</p>
+
+
 </li>
 <li>
   <h3 class="Function" id="height">height</h3>
@@ -294,8 +401,8 @@
   <pre class="var-usage"><div><code>(height img)</code></div>
 </pre>
   <p class="var-docstr">Returns image height in pixels.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="invert">invert</h3>
@@ -304,8 +411,18 @@
   <pre class="var-usage"><div><code>(invert img)</code></div>
 </pre>
   <p class="var-docstr">Inverts image colors.</p>
-  
-  
+
+
+</li>
+<li>
+  <h3 class="Function" id="metadata">metadata</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(metadata img)</code></div>
+</pre>
+  <p class="var-docstr">Returns image metadata map {:width :height :bounds :color-model}.</p>
+
+
 </li>
 <li>
   <h3 class="Function" id="new">new</h3>
@@ -314,8 +431,8 @@
   <pre class="var-usage"><div><code>(new width height &amp; color)</code></div>
 </pre>
   <p class="var-docstr">Creates new image. Optional color as [r g b a] vector.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="open">open</h3>
@@ -323,9 +440,9 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(open path)</code></div>
 </pre>
-  <p class="var-docstr">Opens an image file. Supports PNG, JPEG, GIF, BMP, TIFF.</p>
-  
-  
+  <p class="var-docstr">Opens an image file. Supports PNG, JPEG, GIF, BMP, TIFF, WebP.</p>
+
+
 </li>
 <li>
   <h3 class="Function" id="overlay">overlay</h3>
@@ -334,8 +451,8 @@
   <pre class="var-usage"><div><code>(overlay base top x y &amp; opacity)</code></div>
 </pre>
   <p class="var-docstr">Overlays top image at x,y with optional opacity (0.0-1.0).</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="paste">paste</h3>
@@ -344,8 +461,8 @@
   <pre class="var-usage"><div><code>(paste base top x y)</code></div>
 </pre>
   <p class="var-docstr">Pastes image at x,y (no alpha blending).</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="pixel">pixel</h3>
@@ -364,8 +481,8 @@
   <pre class="var-usage"><div><code>(resize img width height)</code></div>
 </pre>
   <p class="var-docstr">Resizes image to width×height. Use 0 for proportional.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="rotate">rotate</h3>
@@ -374,8 +491,8 @@
   <pre class="var-usage"><div><code>(rotate img degrees)</code></div>
 </pre>
   <p class="var-docstr">Rotates image by degrees (any angle). Background is transparent.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="saturation">saturation</h3>
@@ -384,8 +501,8 @@
   <pre class="var-usage"><div><code>(saturation img amount)</code></div>
 </pre>
   <p class="var-docstr">Adjusts saturation. Range -100 to 100.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="save">save</h3>
@@ -394,8 +511,8 @@
   <pre class="var-usage"><div><code>(save img path)</code></div>
 </pre>
   <p class="var-docstr">Saves image to file. Format detected from extension.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="set-pixel!">set-pixel!</h3>
@@ -414,8 +531,8 @@
   <pre class="var-usage"><div><code>(sharpen img sigma)</code></div>
 </pre>
   <p class="var-docstr">Sharpens image with given sigma.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="sigmoid">sigmoid</h3>
@@ -424,8 +541,8 @@
   <pre class="var-usage"><div><code>(sigmoid img midpoint factor)</code></div>
 </pre>
   <p class="var-docstr">Applies sigmoid contrast. Midpoint 0-1, factor controls steepness.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="transpose">transpose</h3>
@@ -434,8 +551,8 @@
   <pre class="var-usage"><div><code>(transpose img)</code></div>
 </pre>
   <p class="var-docstr">Transposes image (swap x and y axes).</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="transverse">transverse</h3>
@@ -444,8 +561,8 @@
   <pre class="var-usage"><div><code>(transverse img)</code></div>
 </pre>
   <p class="var-docstr">Transverses image (rotate 270° then flip).</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="width">width</h3>
@@ -454,8 +571,8 @@
   <pre class="var-usage"><div><code>(width img)</code></div>
 </pre>
   <p class="var-docstr">Returns image width in pixels.</p>
-  
-  
+
+
 </li>
 
     </ul>

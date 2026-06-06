@@ -186,6 +186,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 ## Documentation
 
 - [`examples/README.md`](examples/README.md) — runnable examples grouped by graphics, terminal games, wiki/static serving, and notebooks
+- [`docs/API_STABILITY.md`](docs/API_STABILITY.md) — public namespace/API stability classifications
+- [`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md) — patch release checklist and validation commands
 - [`docs/BENCHMARK_CI.md`](docs/BENCHMARK_CI.md) — CI benchmark smoke guard policy and local reproduction
 - [`docs/RUNTIME_DOCS.md`](docs/RUNTIME_DOCS.md) — `joker doc` Markdown/JSON lookup and local HTTP docs server
 - [`docs/IMAGING.md`](docs/IMAGING.md) — `joker.imaging` image processing API and Bun Image parity notes

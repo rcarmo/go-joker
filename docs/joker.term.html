@@ -1,0 +1,361 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: joker.term</h1>
+    <span class="var-added">v1.0</span>
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#_summary">Summary</a>
+      </li>
+      <li>
+        <a href="#_index">Index</a>
+      </li>
+      <li>
+        <a href="#_constants">Constants</a>
+      </li>
+      <li>
+        <a href="#_variables">Variables</a>
+      </li>
+      <li>
+        <a href="#_functions">Functions, Macros, and Special Forms</a>
+      </li>
+    </ul>
+    <h2 id="_summary">Summary</h2>
+    <p class="var-docstr">Terminal I/O: raw mode, ANSI escape sequences, key reading, screen manipulation.</p>
+    <h2 id="_index">Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#alt-screen!">alt-screen!</a>
+</li>
+<li>
+  <a href="#begin-frame!">begin-frame!</a>
+</li>
+<li>
+  <a href="#bg">bg</a>
+</li>
+<li>
+  <a href="#bold">bold</a>
+</li>
+<li>
+  <a href="#buf-print!">buf-print!</a>
+</li>
+<li>
+  <a href="#clear">clear</a>
+</li>
+<li>
+  <a href="#dim">dim</a>
+</li>
+<li>
+  <a href="#end-frame!">end-frame!</a>
+</li>
+<li>
+  <a href="#fg">fg</a>
+</li>
+<li>
+  <a href="#flush!">flush!</a>
+</li>
+<li>
+  <a href="#hide-cursor!">hide-cursor!</a>
+</li>
+<li>
+  <a href="#inverse">inverse</a>
+</li>
+<li>
+  <a href="#italic">italic</a>
+</li>
+<li>
+  <a href="#main-screen!">main-screen!</a>
+</li>
+<li>
+  <a href="#millis">millis</a>
+</li>
+<li>
+  <a href="#move-to">move-to</a>
+</li>
+<li>
+  <a href="#print!">print!</a>
+</li>
+<li>
+  <a href="#raw-mode!">raw-mode!</a>
+</li>
+<li>
+  <a href="#read-key">read-key</a>
+</li>
+<li>
+  <a href="#reset-style">reset-style</a>
+</li>
+<li>
+  <a href="#restore!">restore!</a>
+</li>
+<li>
+  <a href="#show-cursor!">show-cursor!</a>
+</li>
+<li>
+  <a href="#size">size</a>
+</li>
+<li>
+  <a href="#sleep">sleep</a>
+</li>
+<li>
+  <a href="#strikethrough">strikethrough</a>
+</li>
+<li>
+  <a href="#underline">underline</a>
+</li>
+
+    </ul>
+    <h2 id="_constants">Constants</h2>
+    Constants are variables with <tt>:const true</tt> in their metadata. Joker currently does not recognize them as special; as such, it allows redefining them or their values.
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_variables">Variables</h2>
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_functions">Functions, Macros, and Special Forms</h2>
+    <ul>
+      <li>
+  <h3 class="Function" id="alt-screen!">alt-screen!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Switches to the alternate screen buffer.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="begin-frame!">begin-frame!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Begins a buffered frame. Subsequent buf-print! calls accumulate output.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="bg">bg</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns ANSI escape string to set background to [r g b] or a named color keyword.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="bold">bold</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns ANSI escape string for bold text.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="buf-print!">buf-print!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Appends string to the current frame buffer (use between begin-frame!/end-frame!).</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="clear">clear</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Clears the entire terminal screen.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="dim">dim</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns ANSI escape string for dim text.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="end-frame!">end-frame!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Flushes the buffered frame to stdout in one write (flicker-free).</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="fg">fg</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns ANSI escape string to set foreground to [r g b] or a named color keyword.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="flush!">flush!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Flushes stdout.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="hide-cursor!">hide-cursor!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Hides the terminal cursor.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="inverse">inverse</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns ANSI escape string for inverse/reverse video.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="italic">italic</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns ANSI escape string for italic text.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="main-screen!">main-screen!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Switches back to the main screen buffer.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="millis">millis</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns current time in milliseconds (monotonic-ish).</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="move-to">move-to</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Moves cursor to column x, row y (0-based).</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="print!">print!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Prints string at current cursor position without newline.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="raw-mode!">raw-mode!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Enters raw terminal mode. Returns true. Call (restore!) to undo.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="read-key">read-key</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Reads one keypress with optional timeout-ms (default 50). Returns a keyword (:up :down :left :right :space :enter :esc :none :eof) or a single-char string.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="reset-style">reset-style</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns ANSI escape string to reset all styles.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="restore!">restore!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Restores terminal to its original mode (before raw-mode! was called).</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="show-cursor!">show-cursor!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Shows the terminal cursor.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="size">size</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns terminal size as {:cols N :rows N}.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="sleep">sleep</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Sleeps for the given number of milliseconds.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="strikethrough">strikethrough</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns ANSI escape string for strikethrough text.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="underline">underline</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns ANSI escape string for underlined text.</p>
+
+
+</li>
+
+    </ul>
+  </div>
+</body>
+<script src="main.js"></script>
+</html>

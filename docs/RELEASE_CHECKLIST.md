@@ -23,6 +23,8 @@ make docs-paths-check
 go test ./core -run 'TestWasm|TestIr|TestRuntime|TestJit' -count=1
 ```
 
+The tag-triggered release workflow also runs the broader package test set plus `make docs-check`, so failures in examples, docs paths, release hygiene, runtime contracts, or std native-boundary checks should be fixed before tagging.
+
 For a broader pre-release audit:
 
 ```bash

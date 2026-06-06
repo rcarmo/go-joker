@@ -422,7 +422,17 @@ For this fork, you can also run:
 $ make docs-check
 ```
 
-This regenerates docs and verifies expected namespace/feature coverage (including newly added namespaces and web runtime extensions).
+This regenerates docs and verifies expected namespace/feature coverage (including newly added namespaces and web runtime extensions). It also runs the example smoke tests, stale example-path guard, release hygiene guard, generated-file checks, import/non-goal/layout guards, native-int/error-handling guards, benchmark docs checks, refactor internals checks, runtime contract checks, and std native-boundary checks.
+
+For faster focused checks while iterating on user-facing docs/examples/release metadata, run:
+
+```
+$ make examples-check
+$ make docs-paths-check
+$ make release-hygiene-check
+```
+
+API stability classifications live in `docs/API_STABILITY.md`; release checklist and tag hygiene guidance live in `docs/RELEASE_CHECKLIST.md`.
 
 Joker distributions currently include `core` and `std` libraries' documentation in their repositories, so new and changed `.html` files should be added to the changeset(s) along with the corresponding library code.
 

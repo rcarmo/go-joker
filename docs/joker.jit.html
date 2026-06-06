@@ -69,8 +69,8 @@
 For pure arithmetic fns, returns a native Go f64 closure.<br>
 For other fns, returns an IR-compiled wrapper.<br>
 The returned function can be called like any other fn.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="compile-wasm">compile-wasm</h3>
@@ -79,7 +79,7 @@ The returned function can be called like any other fn.</p>
   <pre class="var-usage"><div><code>(compile-wasm fn)</code></div>
 </pre>
   <p class="var-docstr">Compiles a pure numeric function to an in-process WASM module.<br>
-Returns a callable wrapper that invokes the module's exec function. Integer<br>
+Returns a callable wrapper that invokes the module&#39;s exec function. Integer<br>
 programs use i64 parameters/results; floating-point programs use f64.</p>
 
 
@@ -91,8 +91,8 @@ programs use i64 parameters/results; floating-point programs use f64.</p>
   <pre class="var-usage"><div><code>(compiled? fn)</code></div>
 </pre>
   <p class="var-docstr">Returns true if the function can be compiled to IR.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="export-ir">export-ir</h3>
@@ -105,8 +105,8 @@ programs use i64 parameters/results; floating-point programs use f64.</p>
 The file contains format/version metadata, numSlots, base64-encoded IR<br>
 bytecode, serialized literal constants, and WASM eligibility metadata. It is<br>
 intended for external runners/tooling that implement the go-joker IR ABI.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="export-wasm">export-wasm</h3>
@@ -118,8 +118,8 @@ intended for external runners/tooling that implement the go-joker IR ABI.</p>
 <br>
 The exported module exposes an exec function. Parameters and return values are<br>
 i64 for integer IR programs or f64 for floating-point IR programs.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="info">info</h3>
@@ -130,8 +130,8 @@ i64 for integer IR programs or f64 for floating-point IR programs.</p>
   <p class="var-docstr">Returns a map with compilation information about a function.<br>
 Keys: :compiled, :path, :slots, :captures, :self-recursive.<br>
 :path is one of &#34;native-f64&#34;, &#34;typed-ir&#34;, &#34;boxed-ir&#34;.</p>
-  
-  
+
+
 </li>
 
     </ul>
