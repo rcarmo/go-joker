@@ -1514,6 +1514,12 @@ func requireInt(tb testing.TB, obj coretypes.Object, want int) {
 	}
 }
 
+func TestIntRangeFastReduceContracts(t *testing.T) {
+	requireInt(t, evalTestScript(t, `(reduce + 0 (range 1 11))`), 55)
+	requireInt(t, evalTestScript(t, `(reduce max (range 10 0 -2))`), 10)
+	requireInt(t, evalTestScript(t, `(count (range 10 0 -2))`), 5)
+}
+
 func requireDouble(tb testing.TB, obj coretypes.Object, want float64) {
 	tb.Helper()
 	got, ok := obj.(coretypes.Double)
