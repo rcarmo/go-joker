@@ -439,6 +439,7 @@ API stability classifications live in `docs/API_STABILITY.md`; release checklist
 The repository has small, bounded fuzz targets for malformed external inputs. They are not run by default in `make docs-check`, but are useful before changing parser/codec boundaries:
 
 ```
+$ go test ./core/reader -run '^$' -fuzz=FuzzScanStringLiteral -fuzztime=10s
 $ go test ./std/edn -run '^$' -fuzz=FuzzEDNDecodeAll -fuzztime=10s
 $ go test ./std/transit -run '^$' -fuzz=FuzzTransitDecodeValue -fuzztime=10s
 $ go test ./std/http -run '^$' -fuzz=FuzzReqToMapRemoteAddr -fuzztime=10s

@@ -50,3 +50,26 @@ func TestScanStringLiteralErrors(t *testing.T) {
 		t.Fatalf("unterminated = %q/%v, want error", got, err)
 	}
 }
+
+func FuzzScanStringLiteral(f *testing.F) {
+	for _, seed := range []struct {
+		src        string
+		formatMode bool
+	}{
+		{"simple\"tail", false},
+		{"a\\n\\u03bb\\101\"tail", false},
+		{"a\\n\"tail", true},
+		{"a\\x\"tail", false},
+		{"unterminated", false},
+		{"\\\"\"", false},
+	} {
+		f.Add(seed.src, seed.formatMode)
+	}
+	f.Fuzz(func(t *testing.T, src string, formatMode bool) {
+		if len(src) > 64*1024 {
+			t.Skip("fuzz input too large for string literal scanner smoke target")
+		}
+		r := newCommentReader(src)
+		_, _ = ScanStringLiteral(r, formatMode, testUnicodeDecoder(r))
+	})
+}

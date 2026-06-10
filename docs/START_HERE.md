@@ -72,6 +72,7 @@ make pretag-check          # local pre-tag release gate before pushing a version
 For parser/codec boundary changes, run the relevant bounded fuzz smoke target for a short interval:
 
 ```bash
+go test ./core/reader -run '^$' -fuzz=FuzzScanStringLiteral -fuzztime=10s
 go test ./std/edn -run '^$' -fuzz=FuzzEDNDecodeAll -fuzztime=10s
 go test ./std/transit -run '^$' -fuzz=FuzzTransitDecodeValue -fuzztime=10s
 go test ./std/http -run '^$' -fuzz=FuzzReqToMapRemoteAddr -fuzztime=10s
