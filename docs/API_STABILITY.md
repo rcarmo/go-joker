@@ -1,6 +1,6 @@
 # API stability matrix
 
-Updated: 2026-06-06
+Updated: 2026-06-10
 
 This document classifies go-joker public namespaces and major user-facing surfaces by stability. It is intentionally conservative: a namespace can be useful and well-tested while still being marked beta if its API shape may change. Its presence is guarded by `make docs-check` so new public surfaces have a canonical place to be classified.
 
@@ -37,23 +37,37 @@ This document classifies go-joker public namespaces and major user-facing surfac
 | `joker.json` | Stable | Common serialization surface. |
 | `joker.yaml` | Beta | Useful std surface; less central than JSON/EDN. |
 | `joker.edn` / `edn` | Stable | Core data interchange for Joker workflows. |
-| `joker.transit` | Beta | Useful and tested; edge cases depend on Transit semantics. |
+| `joker.transit` | Beta | Useful and tested; bounded fuzz smoke covers decode robustness, but edge cases depend on Transit semantics. |
+| `joker.base64` | Stable | Small RFC 4648 encoding/decoding API. |
+| `joker.hex` | Stable | Small hexadecimal encoding/decoding API. |
 | `joker.crypto` | Stable | Common helper surface; avoid semantic churn. |
 | `joker.uuid` | Stable | Small focused API. |
 | `joker.random` | Stable | Common scripting helper. |
 | `joker.log` | Stable | Small focused API. |
 | `joker.csv` | Stable | Native-boundary options are guarded. |
 | `joker.url` | Stable | URL parsing behavior guarded. |
-| `joker.http` | Beta | Useful Ring-style client/server surface with WebSocket/SSE extensions; production hardening should remain explicit. |
+| `joker.http` | Beta | Useful Ring-style client/server surface with WebSocket/SSE extensions; request-map fuzzing exists, but long-running service hardening should remain explicit. |
 | `joker.http.router` | Beta | Pure Joker routing layer; useful but not a core compatibility surface. |
 | `joker.markdown` | Stable | Small GFM conversion API. |
-| `joker.imaging` | Beta | Broad and actively extended; procedural raster helpers and hashes are useful but API growth should be curated. |
+| `joker.html` | Stable | Small HTML escape/unescape API. |
+| `joker.hiccup` | Beta | Useful markup rendering surface; syntax expectations should track examples and docs. |
+| `joker.imaging` | Beta | Broad and actively extended; procedural raster helpers, WebP decode, hashes, and native image operations are useful but API growth should be curated. |
 | `joker.svg` | Beta | Useful generation/raster surface; coordinate guards exist. |
 | `joker.pdf` | Beta | Useful document generation surface; native-boundary arity/dimension guards exist. |
-| `joker.term` | Beta | Raw terminal/ANSI/key API is useful and example-backed; still young. |
+| `joker.term` | Beta | Raw terminal/ANSI/key API is useful and example-backed; keep flags/key semantics source-compatible where possible, but terminal behavior remains platform-sensitive. |
+| `joker.bolt` | Beta | Embedded database API; useful but depends on bbolt semantics and filesystem behavior. |
+| `joker.git` | Beta | Repository manipulation API; useful but depends on go-git behavior and external repository shape. |
+| `joker.set` | Stable | Clojure-compatible set helpers; core data-structure behavior should remain compatible. |
+| `joker.walk` | Stable | Generic data walker; small Clojure-compatible utility surface. |
+| `joker.pprint` | Stable | Pretty-printing utilities; output formatting should avoid gratuitous patch-release churn. |
+| `joker.better-cond` | Stable | Macro utility surface ported from common Clojure usage. |
+| `joker.template` | Stable | Macro template helpers; small compatibility-style surface. |
+| `joker.test` | Beta | Useful in-repo/user testing framework; keep common assertions stable, but runner/reporting details may evolve. |
+| `joker.tools.cli` | Beta | Command-line parsing helpers; option semantics should be documented before marking stable. |
+| `joker.repl` | Internal/diagnostic | Interactive REPL utilities; useful at the prompt, not a broad application API commitment. |
 | `joker.system` | Stable | System/runtime helper surface. |
-| `joker.runtime` | Internal/diagnostic | Runtime inspection/profiling/memory controls; useful but not a portable app API. |
-| `joker.jit` | Experimental | IR/WASM compiler surface. Powerful, but compiler patterns and diagnostics are still maturing. |
+| `joker.runtime` | Internal/diagnostic | Runtime inspection/profiling/memory controls; useful but not a portable app API commitment. |
+| `joker.jit` | Experimental | IR/WASM compiler surface. Powerful, but compiler patterns, diagnostics, host imports, and fallback behavior are still maturing. |
 | `pods` / `babashka.pods` | Beta | Compatibility-oriented surface; depends on external pod protocols. |
 
 ## CLI surfaces
@@ -63,8 +77,8 @@ This document classifies go-joker public namespaces and major user-facing surfac
 | `joker` script execution | Stable | Primary CLI mode. |
 | No-argument REPL startup | Stable | Regression tested after startup namespace fixes. |
 | `joker doc` | Stable | Markdown/JSON lookup and local docs server. |
-| `joker notebook` | Beta | Rich and heavily tested; trusted local execution model and browser UI are still evolving. |
-| `joker notebook run/export/status/deps/snapshots` | Beta | Useful automation surface; preserve flags where possible. |
+| `joker notebook` | Beta | Rich and heavily tested; trusted local execution model, browser UI, auth/readonly flags, and recovery/snapshot behavior are still evolving. |
+| `joker notebook run/export/status/deps/snapshots` | Beta | Useful automation surface; preserve flags where possible and treat EDN notebook file compatibility as user-visible. |
 | `joker --lint` | Stable | Important development tool. |
 | `joker --compile` / standalone compile paths | Beta | More specialized; short-write and runtime behavior are guarded. |
 
