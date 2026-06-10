@@ -15554,60 +15554,6 @@ func wasmGetCached(prog *IRProgram) *WasmProgram {
 	return wp
 }
 
-// wasmCompile translates IR → WASM binary → wazero compiled module.
-func closeWasmModule(ctx context.Context, mod api.Module) {
-	if err := mod.Close(ctx); err != nil {
-		fmt.Fprintln(Stderr, "wasm module close error:", err)
-	}
-}
-
-func wasmCompile(prog *IRProgram) *WasmProgram {
-	// Try pure-numeric path first (faster, no imports needed)
-	bin := irToWasm(prog)
-	// TODO: enable imports path once collection handle ABI/control-flow is fully validated.
-	// if bin == nil {
-	// 	bin = irToWasmWithImports(prog)
-	// }
-	if bin == nil {
-		return nil
-	}
-
-	rt := getWasmRT()
-	ctx := context.Background()
-
-	compiled, err := rt.CompileModule(ctx, bin)
-	if err != nil {
-		return nil
-	}
-
-	cfg := wazero.NewModuleConfig().WithName(corewasm.NextWasmModuleName())
-	mod, err := rt.InstantiateModule(ctx, compiled, cfg)
-	if err != nil {
-		return nil
-	}
-
-	execFn := mod.ExportedFunction("exec")
-	if execFn == nil {
-		closeWasmModule(ctx, mod)
-		return nil
-	}
-	model := runtimeExec.ProgramModel(prog)
-	if model == nil {
-		closeWasmModule(ctx, mod)
-		return nil
-	}
-
-	wp := &WasmProgram{
-		mod:        mod,
-		execFn:     execFn,
-		useFloat:   corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0),
-		hasImports: !corewasm.Eligible(model.Code),
-		constants:  runtimeExec.ProgramConstants(prog),
-		bytes:      append([]byte(nil), bin...),
-	}
-	return wp
-}
-
 func wasmExec(wp *WasmProgram, slots []coretypes.Object) coretypes.Object {
 	if !wp.hasImports {
 		numericOnly := true

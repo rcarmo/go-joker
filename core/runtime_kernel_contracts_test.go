@@ -3686,6 +3686,31 @@ func TestWasmArithmeticLoopCorrectness(t *testing.T) {
 	}
 }
 
+func TestWasmCompileRetainsModuleBytes(t *testing.T) {
+	expr := compileBenchExpr(t, `(loop [i 0 s 0]
+  (if (= i 10) s (recur (+ i 1) (+ s i))))`)
+	loop := expr.(*LoopExpr)
+	prog := irCompile(loop)
+	if prog == nil {
+		t.Skip("IR failed")
+	}
+	wp := wasmCompile(prog)
+	if wp == nil {
+		t.Skip("WASM failed")
+	}
+	if len(wp.bytes) == 0 {
+		t.Fatal("wasmCompile should retain non-empty module bytes")
+	}
+	got := WasmCompileBytesExported(prog)
+	if len(got) == 0 {
+		t.Fatal("WasmCompileBytesExported returned empty bytes")
+	}
+	got[0] ^= 0xff
+	if wp.bytes[0] == got[0] {
+		t.Fatal("WasmCompileBytesExported should return a defensive copy")
+	}
+}
+
 func TestWasmSimpleLoop(t *testing.T) {
 	expr := compileBenchExpr(t, `(loop [i 0 s 0]
   (if (= i 10) s (recur (+ i 1) (+ s i))))`)
