@@ -66,6 +66,7 @@ make test-repro            # reproducible test subset
 make bb-compat             # Babashka compatibility fixtures
 make notebook-check        # notebook parser/runner checks
 make release-hygiene-check # version, README, release note, checklist consistency
+make pretag-check          # local pre-tag release gate before pushing a version tag
 ```
 
 For parser/codec boundary changes, run the relevant bounded fuzz smoke target for a short interval:

@@ -16,11 +16,13 @@ Use this checklist before tagging a patch release.
 Recommended minimum before tagging:
 
 ```bash
-make test-repro
-make docs-check
-make examples-check
-make docs-paths-check
-go test ./core -run 'TestWasm|TestIr|TestRuntime|TestJit' -count=1
+make pretag-check
+```
+
+This runs release hygiene, whitespace checks for pending diffs, the CI/release package vet and test scope, and `make docs-check`. By default it skips the Playwright browser smoke because that requires local browser dependencies; include it when those dependencies are installed with:
+
+```bash
+PRETAG_BROWSER_SMOKE=1 make pretag-check
 ```
 
 The tag-triggered release workflow also runs the broader package test set plus `make docs-check`, so failures in examples, docs paths, release hygiene, runtime contracts, or std native-boundary checks should be fixed before tagging.

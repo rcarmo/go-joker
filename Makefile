@@ -22,7 +22,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -61,6 +61,7 @@ help:
 	@echo "  make examples-check # Run runnable examples smoke checks"
 	@echo "  make docs-paths-check # Guard stale moved-example paths in docs/examples"
 	@echo "  make release-hygiene-check # Verify VERSION/README/release-note consistency"
+	@echo "  make pretag-check   # Pre-tag release gate: hygiene + vet/test + docs-check"
 	@echo "  make generated-check # Verify generated-file boundary guardrails"
 	@echo "  make generated-bootstrap-check # Verify generated bootstrap manifest equivalence"
 	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker"
@@ -240,6 +241,17 @@ docs-paths-check:
 
 release-hygiene-check:
 	tests/release_hygiene_guard.sh .
+
+pretag-check: release-hygiene-check
+	git diff --check
+	$(GO) vet ./core ./std/... ./cmd/joker ./internal/notebook
+	$(GO) test ./core ./std/... ./cmd/joker ./internal/notebook ./tests -timeout 10m -count=1
+	$(MAKE) docs-check
+	@if [ "$${PRETAG_BROWSER_SMOKE:-0}" = "1" ]; then \
+		$(MAKE) notebook-browser-smoke; \
+	else \
+		echo "skipping browser smoke; run PRETAG_BROWSER_SMOKE=1 make pretag-check to include it"; \
+	fi
 
 docs-check: docs docs-command-check notebook-check examples-check docs-paths-check release-hygiene-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md
