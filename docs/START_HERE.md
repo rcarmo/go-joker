@@ -57,6 +57,7 @@ Generated namespace documentation lives in `docs/*.html` and is refreshed by `ma
 - Keep examples under their grouped directories; `tests/docs_paths_guard.sh` rejects stale pre-reorganization paths.
 - Keep temporary files under `.cache/` or test-owned temp directories, not fixed `/tmp` or workspace-specific paths.
 - Public API additions should be classified in `docs/API_STABILITY.md` and covered by focused tests or smoke guards.
+- Runtime maintainability work should move cohesive same-package clusters in small slices, keep behavior unchanged, and pair each move with focused contract validation before broader checks.
 
 ## 6. Common commands
 

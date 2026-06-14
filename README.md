@@ -102,7 +102,7 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 
 <img src="benchmarks/architecture.svg" alt="architecture" width="100%">
 
-The repository layout is being split along architectural boundaries. The module identity is `github.com/rcarmo/go-joker`, the CLI lives in `cmd/joker`, tracing/IR/WASM/runtime leaf helpers are under `core/{trace,ir,wasm,runtime}`, data-only generated payloads and registries are under `core/generated`, and collection/reader construction is routed through guarded adapters before any package moves. The ongoing split plan is tracked in [`docs/refactor/README.md`](docs/refactor/README.md). Standard validation now includes generated-file/bootstrap, import-identity, non-goal, layout, refactor-internal, native-int, error-handling, core object/protocol, runtime execution, std native-boundary, docs, Babashka fixture, test, and vet guardrails.
+Start with [`docs/START_HERE.md`](docs/START_HERE.md) for the shortest contributor path through build, focused validation, API-stability, fuzz-smoke, and release-check expectations. The repository layout is being split along architectural boundaries in small, contract-tested slices rather than by broad rewrites. The module identity is `github.com/rcarmo/go-joker`, the CLI lives in `cmd/joker`, tracing/IR/WASM/runtime leaf helpers are under `core/{trace,ir,wasm,runtime}`, data-only generated payloads and registries are under `core/generated`, and collection/reader construction is routed through guarded adapters before any package moves. [`docs/refactor/README.md`](docs/refactor/README.md) and its linked notes describe the current boundary inventory and historical split context; active work should stay in issue/plan tooling unless it needs durable user-facing documentation. Standard validation now includes generated-file/bootstrap, import-identity, non-goal, layout, refactor-internal, native-int, error-handling, core object/protocol, runtime execution, std native-boundary, docs, Babashka fixture, test, and vet guardrails.
 
 - **WASM path**: pure integer/float loops → wazero JIT → native code (~0.2ms)
 - **Typed IR path**: primitive/string/cursor loops → irValue stack, zero-boxing (~2–8ms)
@@ -185,7 +185,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Documentation
 
-- [`docs/START_HERE.md`](docs/START_HERE.md) — concise clone/build/test orientation for new contributors
+- [`docs/START_HERE.md`](docs/START_HERE.md) — primary contributor entry point for clone/build/test orientation, focused validation, API-stability, fuzz-smoke, and release-check expectations
 - [`examples/README.md`](examples/README.md) — runnable examples grouped by graphics, terminal games, wiki/static serving, and notebooks
 - [`docs/API_STABILITY.md`](docs/API_STABILITY.md) — public namespace/API stability classifications
 - [`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md) — patch release checklist and validation commands
