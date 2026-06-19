@@ -3944,6 +3944,9 @@ func TestWasmValueProducingIfInLoop(t *testing.T) {
       acc
       (let [a (if (< x 0.0) (- 0.0 x) x)]
         (recur (+ acc a) (+ n 1))))))`)
+	if proc.Name != "jit-wasm-loop" {
+		t.Fatalf("expected WASM loop wrapper Proc, got %q", proc.Name)
+	}
 	obj := proc.Fn([]coretypes.Object{coretypes.Double{D: -3.0}})
 	requireDouble(t, obj, 15.0)
 }
