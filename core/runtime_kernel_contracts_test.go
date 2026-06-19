@@ -262,6 +262,7 @@ func TestReaderConstructionCallSitesUseAdapter(t *testing.T) {
 		"runtime_kernel.go":                   true, // currently coalesces parser/reader/evaluator construction.
 		"reader.go":                           true, // owns Reader constructor implementation.
 		"reader_construction.go":              true,
+		"reader_construction_runtime.go":      true,
 		"construction_boundary_guard_test.go": true,
 	}
 	assertNoDirectConstructionOutside(t, direct, allowed)
