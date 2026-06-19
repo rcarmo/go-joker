@@ -2838,6 +2838,13 @@ func TestRuntimeExecutionAdapterThrow(t *testing.T) {
 	adapter.Throw(coretypes.MakeString("boom"))
 }
 
+func TestIRDispatchFallbackStabilizesClosureArgs(t *testing.T) {
+	requireInt(t, evalTestScript(t, `(let [make (fn [x] (fn [] x))
+      a (make 10)
+      b (make 20)]
+  (+ (a) (b) (a)))`), 40)
+}
+
 func TestIRCompileFailureIsCachedOnFn(t *testing.T) {
 	fn := evalTestScript(t, `(fn [x] (println x))`).(*Fn)
 	if prog := irGetFnProg(fn); prog != nil {
