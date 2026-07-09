@@ -394,6 +394,23 @@ func TestNotebookHTTPHandlerRejectsConcurrentEvaluation(t *testing.T) {
 	}
 }
 
+func TestNotebookHTTPHandlerRejectsOversizedBodies(t *testing.T) {
+	path := t.TempDir() + "/api.edn"
+	if err := Save(path, New("BodyLimit")); err != nil {
+		t.Fatal(err)
+	}
+	h := Handler(path)
+	w := httptest.NewRecorder()
+	body := io.LimitReader(strings.NewReader(strings.Repeat("x", 1024)), maxNotebookRequestBody+1)
+	// The repeated reader is intentionally expanded without retaining a second
+	// full request body in the handler.
+	body = io.MultiReader(body, strings.NewReader(strings.Repeat("x", maxNotebookRequestBody)))
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodPost, "/api/save", body))
+	if w.Code != http.StatusRequestEntityTooLarge {
+		t.Fatalf("oversized body code=%d body=%s", w.Code, w.Body.String())
+	}
+}
+
 func TestNotebookHTTPHandlerReportsEvaluateBodyReadErrors(t *testing.T) {
 	path := t.TempDir() + "/api.edn"
 	nb := New("BodyError")

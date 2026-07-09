@@ -28,6 +28,9 @@ func env() coretypes.Object {
 	res := corecollections.EmptyArrayMap()
 	for _, v := range os.Environ() {
 		parts := strings.SplitN(v, "=", 2)
+		if len(parts) != 2 {
+			continue
+		}
 		res.Add(coretypes.String{S: parts[0]}, coretypes.String{S: parts[1]})
 	}
 	return res
@@ -70,7 +73,9 @@ func startProcess(name string, opts coretypes.Map) int {
 	err := cmd.Start()
 	corert.PanicOnErr(err)
 	pid := cmd.Process.Pid
-	corert.PanicOnErr(cmd.Process.Release())
+	go func() {
+		_ = cmd.Wait()
+	}()
 
 	return pid
 }

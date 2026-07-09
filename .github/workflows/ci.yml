@@ -20,11 +20,11 @@ jobs:
         run: mkdir -p "$TMPDIR" "$GOTMPDIR"
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.25.10'
+          go-version: '1.26.5'
       - name: Build
         run: go build -o .cache/tmp/joker ./cmd/joker
       - name: Run tests
-        run: go test ./core ./std/... ./cmd/joker ./internal/notebook -timeout 10m -count=1
+        run: go test ./... -timeout 10m -count=1
       - name: Run notebook smoke checks
         run: make notebook-check
       - uses: oven-sh/setup-bun@v2
@@ -41,7 +41,7 @@ jobs:
       - name: Run imported jank smoke subset
         run: JOKER_BIN=.cache/tmp/joker tests/run_jank_subset.sh
       - name: Run vet
-        run: go vet ./core ./std/... ./cmd/joker ./internal/notebook
+        run: go vet ./...
 
   bench:
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
         run: mkdir -p "$TMPDIR" "$GOTMPDIR"
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.25.10'
+          go-version: '1.26.5'
 
       - name: Run VM microbenchmarks
         run: |

@@ -244,8 +244,8 @@ release-hygiene-check:
 
 pretag-check: release-hygiene-check
 	git diff --check
-	$(GO) vet ./core ./std/... ./cmd/joker ./internal/notebook
-	$(GO) test ./core ./std/... ./cmd/joker ./internal/notebook ./tests -timeout 10m -count=1
+	$(GO) vet ./...
+	$(GO) test ./... -timeout 10m -count=1
 	$(MAKE) docs-check
 	@if [ "$${PRETAG_BROWSER_SMOKE:-0}" = "1" ]; then \
 		$(MAKE) notebook-browser-smoke; \
@@ -308,6 +308,6 @@ parity: cli
 jank-subset: cli
 	JOKER_BIN=$(abspath $(CLI_BIN)) tests/run_jank_subset.sh
 
-audit-fast: tools test vet staticcheck-sa lint vuln
+audit-fast: tools test-repro vet staticcheck-sa lint vuln
 
 audit: audit-fast race bench-sanity

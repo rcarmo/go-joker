@@ -4,7 +4,7 @@ set -euo pipefail
 root=${1:-.}
 cd "$root"
 
-legacy_import_re='github.com/[^/]+/joker(["[:space:]]|$)'
+legacy_import_re='"github.com/[^/]+/joker(/|"|[[:space:]]|$)|^module[[:space:]]+github.com/[^/]+/joker(/|[[:space:]]|$)'
 
 if grep -R -E "$legacy_import_re" -n \
   --include='*.go' --include='go.mod' --include='*.joke' \

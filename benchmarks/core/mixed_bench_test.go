@@ -1,6 +1,7 @@
 package core_test
 
 import (
+	"context"
 	"testing"
 
 	. "github.com/rcarmo/go-joker/core"
@@ -129,7 +130,7 @@ func BenchmarkIRTypedStringLoop(b *testing.B) {
 
 // From core/mem_array_test.go
 func BenchmarkWasmArrayF64Sum(b *testing.B) {
-	arr := corewasm.MakeF64ArrayWithRuntime(func() wazero.Runtime { return wazero.NewRuntime(nil) }, 10000, TYPE.ArrayVector)
+	arr := corewasm.MakeF64ArrayWithRuntime(func() wazero.Runtime { return wazero.NewRuntime(context.Background()) }, 10000, TYPE.ArrayVector)
 	if arr == nil {
 		b.Skip("WASM array failed")
 	}

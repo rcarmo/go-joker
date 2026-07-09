@@ -2576,11 +2576,11 @@ func TestRuntimeExecutionAdapterProgramMetadata(t *testing.T) {
 	if got := adapter.DispatchArityProgram(variadicOnly, 2); got != variadicOnly {
 		t.Fatalf("DispatchArityProgram variadic-only exact/min = %#v", got)
 	}
-	fnObj := &Fn{irProg: prog, env: &LocalEnv{bindings: []coretypes.Object{coretypes.MakeInt(1)}}}
+	fnObj := &Fn{irProg: prog, irProgOnce: 1, env: &LocalEnv{bindings: []coretypes.Object{coretypes.MakeInt(1)}}}
 	if got, ok := adapter.FnProgram(fnObj); !ok || got != prog {
 		t.Fatalf("FnProgram = %#v, %v", got, ok)
 	}
-	failedFn := &Fn{irProg: irCompileFailed}
+	failedFn := &Fn{irProg: irCompileFailed, irProgOnce: 1}
 	if got, ok := adapter.FnProgram(failedFn); ok || got != nil {
 		t.Fatalf("FnProgram should hide compile-failed sentinel, got %#v, %v", got, ok)
 	}
@@ -2635,11 +2635,11 @@ func TestRuntimeExecutionAdapterExecutionFailureFlags(t *testing.T) {
 		t.Fatal("fresh program should be executable by boxed and typed IR")
 	}
 	adapter.MarkTypedExecutionFailed(prog)
-	if !prog.typedFailed || !adapter.CanExecuteIR(prog) || adapter.CanExecuteTypedIR(prog) {
+	if !prog.typedFailed.Load() || !adapter.CanExecuteIR(prog) || adapter.CanExecuteTypedIR(prog) {
 		t.Fatalf("typed failure should only disable typed IR: %#v", prog)
 	}
 	adapter.MarkBoxedExecutionFailed(prog)
-	if !prog.execFailed || adapter.CanExecuteIR(prog) || adapter.CanExecuteTypedIR(prog) {
+	if !prog.execFailed.Load() || adapter.CanExecuteIR(prog) || adapter.CanExecuteTypedIR(prog) {
 		t.Fatalf("boxed failure should disable all IR execution: %#v", prog)
 	}
 	if adapter.CanExecuteIR(nil) || adapter.CanExecuteTypedIR(nil) {
@@ -2909,7 +2909,7 @@ func TestRuntimeExecutionAdapterMemNthFallbackState(t *testing.T) {
 		t.Fatal("fresh program should allow mem-nth attempt")
 	}
 	adapter.MarkMemNthFailed(prog)
-	if adapter.CanTryMemNth(prog) || !prog.memNthFailed {
+	if adapter.CanTryMemNth(prog) || !prog.memNthFailed.Load() {
 		t.Fatal("MarkMemNthFailed did not disable mem-nth attempts")
 	}
 	if adapter.CanTryMemNth(nil) {

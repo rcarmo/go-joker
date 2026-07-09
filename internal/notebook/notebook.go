@@ -6,6 +6,7 @@ import (
 	"embed"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"html/template"
 	"io"
@@ -613,7 +614,7 @@ func Handler(path string) http.Handler {
 		}
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			writeRequestBodyError(w, err)
 			return
 		}
 		loaded, err := Decode(body, "<request>")
@@ -640,7 +641,7 @@ func Handler(path string) http.Handler {
 		nbMu.Lock()
 		defer nbMu.Unlock()
 		if err := applySourceUpdate(r.Body, &nb); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			writeRequestBodyError(w, err)
 			return
 		}
 		if err := saveCurrent(path, &nb); err != nil {
@@ -735,7 +736,7 @@ func Handler(path string) http.Handler {
 		nbMu.Lock()
 		defer nbMu.Unlock()
 		if err := applyReorder(r.Body, &nb); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			writeRequestBodyError(w, err)
 			return
 		}
 		if err := saveCurrent(path, &nb); err != nil {
@@ -772,7 +773,7 @@ func Handler(path string) http.Handler {
 		}
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
-			http.Error(w, "read request body: "+err.Error(), http.StatusBadRequest)
+			writeRequestBodyError(w, err)
 			return
 		}
 		if len(body) > 0 {
@@ -856,7 +857,27 @@ func Handler(path string) http.Handler {
 		w.Header().Set("Content-Type", "application/edn")
 		fmt.Fprint(w, Encode(nb))
 	})
-	return sameOriginMiddleware(mux)
+	return sameOriginMiddleware(requestBodyLimitMiddleware(mux))
+}
+
+const maxNotebookRequestBody = 16 << 20
+
+func requestBodyLimitMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Body != nil {
+			r.Body = http.MaxBytesReader(w, r.Body, maxNotebookRequestBody)
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+func writeRequestBodyError(w http.ResponseWriter, err error) {
+	status := http.StatusBadRequest
+	var maxBytesErr *http.MaxBytesError
+	if errors.As(err, &maxBytesErr) {
+		status = http.StatusRequestEntityTooLarge
+	}
+	http.Error(w, "read request body: "+err.Error(), status)
 }
 
 func requestAborted(r *http.Request) bool {

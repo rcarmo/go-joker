@@ -35,6 +35,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 	"unicode/utf8"
 	"unsafe"
@@ -5751,25 +5752,32 @@ func AnalyzeIRProgram(prog *IRProgram) coreir.Analysis {
 	if prog == nil {
 		return coreir.Analysis{SuggestedPath: "none"}
 	}
+	prog.stateMu.Lock()
+	defer prog.stateMu.Unlock()
+	return analyzeIRProgramLocked(prog)
+}
+
+func analyzeIRProgramLocked(prog *IRProgram) coreir.Analysis {
 	if prog.analysis != nil {
 		return *prog.analysis
 	}
-	info := prog.escapeInfo
-	if info == nil {
-		info = analyzeEscapes(prog)
-		prog.escapeInfo = info
+	if prog.escapeInfo == nil {
+		prog.escapeInfo = analyzeEscapes(prog)
 	}
-	model := prog.neutralModel()
+	floatConsts := prog.neutralFloatConsts()
 	a := coreir.Analyze(
-		model.Code,
-		model.NumSlots,
+		prog.code,
+		prog.numSlots,
 		len(prog.captureKeys),
-		corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0),
-		info.StringBuilderSlots,
-		info.StringPrependSlots,
+		corewasm.UsesFloat(prog.code, len(floatConsts) > 0),
+		prog.escapeInfo.StringBuilderSlots,
+		prog.escapeInfo.StringPrependSlots,
 	)
 	prog.analysis = &a
-	model.Analysis = &a
+	if prog.model == nil {
+		prog.refreshModelLocked()
+	}
+	prog.model.Analysis = &a
 	return a
 }
 
@@ -5800,6 +5808,7 @@ func irGetCached(loop *LoopExpr) *IRProgram {
 // ---------- Program ----------
 
 type IRProgram struct {
+	stateMu         sync.RWMutex
 	model           *coreir.Program
 	code            []byte
 	constants       []coretypes.Object
@@ -5810,9 +5819,9 @@ type IRProgram struct {
 	hasSelf         bool
 	escapeInfo      *EscapeInfo
 	analysis        *coreir.Analysis
-	typedFailed     bool
-	execFailed      bool // both typed AND boxed failed — skip IR entirely
-	memNthFailed    bool
+	typedFailed     atomic.Bool
+	execFailed      atomic.Bool // both typed AND boxed failed — skip IR entirely
+	memNthFailed    atomic.Bool
 	nativeHelper    nativeF64Fn
 	nativeHelper2   nativeF64Fn2
 	nativeChecked   bool
@@ -5830,8 +5839,10 @@ func (p *IRProgram) neutralModel() *coreir.Program {
 	if p == nil {
 		return nil
 	}
+	p.stateMu.Lock()
+	defer p.stateMu.Unlock()
 	if p.model == nil {
-		p.refreshModel()
+		p.refreshModelLocked()
 	}
 	return p.model
 }
@@ -5856,6 +5867,12 @@ func (p *IRProgram) refreshModel() *IRProgram {
 	if p == nil {
 		return nil
 	}
+	p.stateMu.Lock()
+	defer p.stateMu.Unlock()
+	return p.refreshModelLocked()
+}
+
+func (p *IRProgram) refreshModelLocked() *IRProgram {
 	model := coreir.NewProgram(p.code, p.numSlots, len(p.constants))
 	model.HasSelf = p.hasSelf
 	model.FloatConsts = p.neutralFloatConsts()
@@ -8772,8 +8789,6 @@ func irToWasm(prog *IRProgram) []byte {
 	useFloat := corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0)
 	body := compileWasmBody(prog, useFloat)
 	if body == nil {
-		if len(model.Code) == 117 {
-		}
 		return nil
 	}
 	m := corewasm.NewModule()
@@ -9037,6 +9052,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 			// meaning both branches leave a value on stack.
 			isValueIf := false
 			// Scan true branch for Jump opcode
+		scanTrueBranch:
 			for scan := pc; scan < jumpTarget && scan < len(code); {
 				scanOp := code[scan]
 				if scanOp == irJump {
@@ -9053,8 +9069,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 				case irCallSlot:
 					scan += 5
 				case irRecur:
-					scan += 5
-					break
+					break scanTrueBranch
 				case irCallSelf:
 					scan += 3
 				default:
@@ -13585,13 +13600,13 @@ func (RuntimeExecutionAdapter) CursorDone(obj coretypes.Object) (coretypes.Objec
 
 func (RuntimeExecutionAdapter) MarkTypedExecutionFailed(prog *IRProgram) {
 	if prog != nil {
-		prog.typedFailed = true
+		prog.typedFailed.Store(true)
 	}
 }
 
 func (RuntimeExecutionAdapter) MarkBoxedExecutionFailed(prog *IRProgram) {
 	if prog != nil {
-		prog.execFailed = true
+		prog.execFailed.Store(true)
 	}
 }
 
@@ -13641,12 +13656,6 @@ func (RuntimeExecutionAdapter) FnProgram(fnObj coretypes.Object) (*IRProgram, bo
 	fn, ok := fnObj.(*Fn)
 	if !ok {
 		return nil, false
-	}
-	if fn.irProg != nil {
-		if fn.irProg == irCompileFailed {
-			return nil, false
-		}
-		return fn.irProg, true
 	}
 	prog := irGetFnProg(fn)
 	return prog, prog != nil
@@ -13731,6 +13740,8 @@ func (RuntimeExecutionAdapter) ProgramEscapeInfo(prog *IRProgram) *EscapeInfo {
 	if prog == nil {
 		return nil
 	}
+	prog.stateMu.Lock()
+	defer prog.stateMu.Unlock()
 	if prog.escapeInfo == nil {
 		prog.escapeInfo = analyzeEscapes(prog)
 	}
@@ -13787,42 +13798,56 @@ func (RuntimeExecutionAdapter) ProgramCaptureSlots(prog *IRProgram) ([]int, []co
 }
 
 func (RuntimeExecutionAdapter) CanExecuteIR(prog *IRProgram) bool {
-	return prog != nil && !prog.execFailed
+	return prog != nil && !prog.execFailed.Load()
 }
 
 func (RuntimeExecutionAdapter) CanExecuteTypedIR(prog *IRProgram) bool {
-	return prog != nil && !prog.typedFailed && !prog.execFailed
+	return prog != nil && !prog.typedFailed.Load() && !prog.execFailed.Load()
 }
 
 func (RuntimeExecutionAdapter) HasNativeHelper(prog *IRProgram) bool {
-	return prog != nil && prog.nativeHelper != nil
+	if prog == nil {
+		return false
+	}
+	prog.stateMu.RLock()
+	defer prog.stateMu.RUnlock()
+	return prog.nativeHelper != nil
 }
 
 func (RuntimeExecutionAdapter) NativeHelper(prog *IRProgram) (nativeF64Fn, bool) {
-	if prog == nil || prog.nativeHelper == nil {
+	if prog == nil {
 		return nil, false
 	}
-	return prog.nativeHelper, true
+	prog.stateMu.RLock()
+	defer prog.stateMu.RUnlock()
+	return prog.nativeHelper, prog.nativeHelper != nil
 }
 
 func (RuntimeExecutionAdapter) InstallNativeHelper(prog *IRProgram, helper nativeF64Fn) {
 	if prog != nil {
+		prog.stateMu.Lock()
 		prog.nativeHelper = helper
 		prog.nativeChecked = true
+		prog.stateMu.Unlock()
 	}
 }
 
 func (RuntimeExecutionAdapter) NativeHelperChecked(prog *IRProgram) bool {
-	return prog != nil && prog.nativeChecked
+	if prog == nil {
+		return false
+	}
+	prog.stateMu.RLock()
+	defer prog.stateMu.RUnlock()
+	return prog.nativeChecked
 }
 
 func (RuntimeExecutionAdapter) CanTryMemNth(prog *IRProgram) bool {
-	return prog != nil && !prog.memNthFailed
+	return prog != nil && !prog.memNthFailed.Load()
 }
 
 func (RuntimeExecutionAdapter) MarkMemNthFailed(prog *IRProgram) {
 	if prog != nil {
-		prog.memNthFailed = true
+		prog.memNthFailed.Store(true)
 	}
 }
 
@@ -13859,6 +13884,7 @@ type (
 		env           *LocalEnv
 		tailRewritten bool       // tail-self-calls rewritten to recur
 		irProg        *IRProgram // cached IR compilation (nil = not attempted, irCompileFailed = failed)
+		irProgInit    sync.Once  // serializes compilation and safely publishes irProg
 		irProgOnce    uint32     // atomic: 0=not tried, 1=done
 		defVar        *Var       // set when this fn is the value of a defn-created var
 	}
@@ -13992,9 +14018,21 @@ func (fn *Fn) Equals(other interface{}) bool {
 }
 
 func (fn *Fn) WithMeta(meta coretypes.Map) coretypes.Object {
-	res := *fn
+	res := &Fn{
+		InfoHolder:    fn.InfoHolder,
+		MetaHolder:    fn.MetaHolder,
+		isMacro:       fn.isMacro,
+		fnExpr:        fn.fnExpr,
+		env:           fn.env,
+		tailRewritten: fn.tailRewritten,
+		defVar:        fn.defVar,
+	}
+	if atomic.LoadUint32(&fn.irProgOnce) == 1 {
+		res.irProg = fn.irProg
+		atomic.StoreUint32(&res.irProgOnce, 1)
+	}
 	res.Meta = coretypes.SafeMerge(res.Meta, meta)
-	return &res
+	return res
 }
 
 func (fn *Fn) GetType() *coretypes.Type {
@@ -18943,12 +18981,15 @@ func ProcessLinterFiles(dialect corereader.Dialect, filename string, workingDir 
 
 // atomExtras holds validator and watches for an Atom.
 // Stored in a side table to avoid changing the Atom struct.
+type atomWatch struct {
+	key coretypes.Object
+	fn  coretypes.Callable
+}
+
 type atomExtras struct {
+	mu        sync.RWMutex
 	validator coretypes.Callable
-	watches   map[string]struct {
-		key coretypes.Object
-		fn  coretypes.Callable
-	} // key.ToString → watch
+	watches   map[string]atomWatch // key.ToString → watch
 }
 
 var atomExtrasMap sync.Map // *corert.Atom → *atomExtras
@@ -18961,24 +19002,24 @@ func getAtomExtras(a *corert.Atom) *atomExtras {
 }
 
 func getOrCreateAtomExtras(a *corert.Atom) *atomExtras {
-	if v, ok := atomExtrasMap.Load(a); ok {
-		return v.(*atomExtras)
-	}
-	ext := &atomExtras{watches: make(map[string]struct {
-		key coretypes.Object
-		fn  coretypes.Callable
-	})}
-	atomExtrasMap.Store(a, ext)
-	return ext
+	ext := &atomExtras{watches: make(map[string]atomWatch)}
+	actual, _ := atomExtrasMap.LoadOrStore(a, ext)
+	return actual.(*atomExtras)
 }
 
 // notifyWatches calls all watch functions with (key atom old-val new-val).
 func notifyWatches(a *corert.Atom, oldVal, newVal coretypes.Object) {
 	ext := getAtomExtras(a)
-	if ext == nil || len(ext.watches) == 0 {
+	if ext == nil {
 		return
 	}
-	for _, w := range ext.watches {
+	ext.mu.RLock()
+	watches := make([]atomWatch, 0, len(ext.watches))
+	for _, watch := range ext.watches {
+		watches = append(watches, watch)
+	}
+	ext.mu.RUnlock()
+	for _, w := range watches {
 		call4(w.fn, w.key, a, oldVal, newVal)
 	}
 }
@@ -18986,10 +19027,16 @@ func notifyWatches(a *corert.Atom, oldVal, newVal coretypes.Object) {
 // validateAtom checks the validator, panics if invalid.
 func validateAtom(a *corert.Atom, newVal coretypes.Object) {
 	ext := getAtomExtras(a)
-	if ext == nil || ext.validator == nil {
+	if ext == nil {
 		return
 	}
-	result := call1(ext.validator, newVal)
+	ext.mu.RLock()
+	validator := ext.validator
+	ext.mu.RUnlock()
+	if validator == nil {
+		return
+	}
+	result := call1(validator, newVal)
 	if !corert.ToBool(result) {
 		panic(coretypes.RuntimeError("Invalid reference state"))
 	}
@@ -19011,17 +19058,18 @@ func registerAtomExtProcs() {
 		runtimeCheckArity(args, 2, 2)
 		a := EnsureObjectIsAtom(args[0], "set-validator! requires an atom, got %s")
 		ext := getOrCreateAtomExtras(a)
-		if args[1] == nil || corert.IsNil(args[1]) {
-			ext.validator = nil
-		} else {
-			fn := coretypes.EnsureObjectIsCallable(args[1], "validator must be a function, got %s")
-			// Validate current value
-			result := call1(fn, a.Deref())
+		var validator coretypes.Callable
+		if args[1] != nil && !corert.IsNil(args[1]) {
+			validator = coretypes.EnsureObjectIsCallable(args[1], "validator must be a function, got %s")
+			// Validate current value before installing the validator.
+			result := call1(validator, a.Deref())
 			if !corert.ToBool(result) {
 				panic(coretypes.RuntimeError("Invalid reference state"))
 			}
-			ext.validator = fn
 		}
+		ext.mu.Lock()
+		ext.validator = validator
+		ext.mu.Unlock()
 		return NIL
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "set-validator!"), svVr)
@@ -19032,10 +19080,16 @@ func registerAtomExtProcs() {
 		runtimeCheckArity(args, 1, 1)
 		a := EnsureObjectIsAtom(args[0], "get-validator requires an atom, got %s")
 		ext := getAtomExtras(a)
-		if ext == nil || ext.validator == nil {
+		if ext == nil {
 			return NIL
 		}
-		return ext.validator.(coretypes.Object)
+		ext.mu.RLock()
+		validator := ext.validator
+		ext.mu.RUnlock()
+		if validator == nil {
+			return NIL
+		}
+		return validator.(coretypes.Object)
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "get-validator"), gvVr)
 
@@ -19047,10 +19101,9 @@ func registerAtomExtProcs() {
 		key := args[1]
 		fn := coretypes.EnsureObjectIsCallable(args[2], "watch function must be callable, got %s")
 		ext := getOrCreateAtomExtras(a)
-		ext.watches[key.ToString(false)] = struct {
-			key coretypes.Object
-			fn  coretypes.Callable
-		}{key, fn}
+		ext.mu.Lock()
+		ext.watches[key.ToString(false)] = atomWatch{key: key, fn: fn}
+		ext.mu.Unlock()
 		return a
 	}}
 	referToUser(coretypes.MakeSymbol(STRINGS.Intern, "add-watch"), awVr)
@@ -19063,7 +19116,9 @@ func registerAtomExtProcs() {
 		key := args[1]
 		ext := getAtomExtras(a)
 		if ext != nil {
+			ext.mu.Lock()
 			delete(ext.watches, key.ToString(false))
+			ext.mu.Unlock()
 		}
 		return a
 	}}

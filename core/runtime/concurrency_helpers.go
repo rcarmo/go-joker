@@ -19,18 +19,18 @@ func RunParallel(count int, before func(), after func(), run func(int)) (any, bo
 	panicCh := make(chan any, count)
 	for i := 0; i < count; i++ {
 		go func(idx int) {
-			if before != nil {
-				before()
-			}
-			if after != nil {
-				defer after()
-			}
 			defer func() {
 				if r := recover(); r != nil {
 					panicCh <- r
 				}
 				done <- idx
 			}()
+			if before != nil {
+				before()
+			}
+			if after != nil {
+				defer after()
+			}
 			run(idx)
 		}(i)
 	}

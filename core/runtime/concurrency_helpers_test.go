@@ -39,3 +39,19 @@ func TestRunParallelCompletesAndPropagatesPanic(t *testing.T) {
 		t.Fatalf("RunParallel panic = (%v, %v), want (boom, true)", r, panicked)
 	}
 }
+
+func TestRunParallelWaitsForAfterAndRecoversItsPanic(t *testing.T) {
+	afterDone := make(chan struct{}, 1)
+	if r, panicked := RunParallel(1, nil, func() { afterDone <- struct{}{} }, func(int) {}); panicked || r != nil {
+		t.Fatalf("RunParallel after = (%v, %v), want (nil, false)", r, panicked)
+	}
+	select {
+	case <-afterDone:
+	default:
+		t.Fatal("RunParallel returned before after completed")
+	}
+
+	if r, panicked := RunParallel(1, nil, func() { panic("after boom") }, func(int) {}); !panicked || r != "after boom" {
+		t.Fatalf("RunParallel after panic = (%v, %v), want (after boom, true)", r, panicked)
+	}
+}

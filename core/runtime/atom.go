@@ -11,8 +11,9 @@ import (
 // Atom holds synchronous mutable state with Joker object/ref protocols.
 type Atom struct {
 	coretypes.MetaHolder
-	mu    sync.Mutex
-	value coretypes.Object
+	mu            sync.Mutex
+	value         coretypes.Object
+	valueRevision uint64
 }
 
 func NewAtom(value coretypes.Object, meta coretypes.Map) *Atom {
@@ -24,7 +25,7 @@ func NewAtom(value coretypes.Object, meta coretypes.Map) *Atom {
 }
 
 func (a *Atom) ToString(escape bool) string {
-	return "#object[Atom {:val " + a.value.ToString(escape) + "}]"
+	return "#object[Atom {:val " + a.Deref().ToString(escape) + "}]"
 }
 func (a *Atom) Equals(other interface{}) bool                        { return a == other }
 func (a *Atom) GetInfo() *coretypes.ObjectInfo                       { return nil }
@@ -33,7 +34,7 @@ func (a *Atom) Hash() uint32                                         { return ha
 func (a *Atom) WithInfo(info *coretypes.ObjectInfo) coretypes.Object { return a }
 
 func (a *Atom) WithMeta(meta coretypes.Map) coretypes.Object {
-	res := &Atom{value: a.value}
+	res := &Atom{value: a.Deref()}
 	res.Meta = coretypes.SafeMerge(a.Meta, meta)
 	return res
 }
@@ -59,39 +60,60 @@ func (a *Atom) Deref() coretypes.Object {
 }
 
 func (a *Atom) Swap(fn coretypes.Callable, args []coretypes.Object, validate func(coretypes.Object)) (oldValue, newValue coretypes.Object) {
-	a.mu.Lock()
-	defer a.mu.Unlock()
-	fargs := append([]coretypes.Object{a.value}, args...)
-	oldValue = a.value
-	newValue = fn.Call(fargs)
-	if validate != nil {
-		validate(newValue)
+	for {
+		a.mu.Lock()
+		oldValue = a.value
+		revision := a.valueRevision
+		a.mu.Unlock()
+
+		fargs := append([]coretypes.Object{oldValue}, args...)
+		newValue = fn.Call(fargs)
+		if validate != nil {
+			validate(newValue)
+		}
+
+		a.mu.Lock()
+		if a.valueRevision != revision {
+			a.mu.Unlock()
+			continue
+		}
+		a.value = newValue
+		a.valueRevision++
+		a.mu.Unlock()
+		return oldValue, newValue
 	}
-	a.value = newValue
-	return oldValue, newValue
 }
 
 func (a *Atom) Reset(newValue coretypes.Object, validate func(coretypes.Object)) (oldValue coretypes.Object) {
-	a.mu.Lock()
-	defer a.mu.Unlock()
-	oldValue = a.value
 	if validate != nil {
 		validate(newValue)
 	}
+	a.mu.Lock()
+	oldValue = a.value
 	a.value = newValue
+	a.valueRevision++
+	a.mu.Unlock()
 	return oldValue
 }
 
 func (a *Atom) CompareAndSet(oldValue, newValue coretypes.Object, validate func(coretypes.Object)) (coretypes.Object, bool) {
+	a.mu.Lock()
+	matches := a.value.Equals(oldValue)
+	a.mu.Unlock()
+	if !matches {
+		return nil, false
+	}
+	if validate != nil {
+		validate(newValue)
+	}
+
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	if !a.value.Equals(oldValue) {
 		return nil, false
 	}
 	old := a.value
-	if validate != nil {
-		validate(newValue)
-	}
 	a.value = newValue
+	a.valueRevision++
 	return old, true
 }

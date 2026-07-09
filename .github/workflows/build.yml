@@ -21,9 +21,15 @@ jobs:
         run: mkdir -p "$TMPDIR" "$GOTMPDIR"
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.25.10'
-      - name: Run tests
-        run: go test ./core ./std/... ./cmd/joker ./internal/notebook -timeout 10m -count=1
+          go-version: '1.26.5'
+      - name: Verify release tag matches the source version
+        run: |
+          version=$(sed -n 's/^const VERSION = "\(.*\)"/\1/p' core/runtime/version.go)
+          test "$version" = "$GITHUB_REF_NAME"
+      - name: Run tests and vet
+        run: |
+          go test ./... -timeout 10m -count=1
+          go vet ./...
       - name: Run docs, examples, release hygiene, and contract checks
         run: make docs-check
       - uses: oven-sh/setup-bun@v2
@@ -58,7 +64,7 @@ jobs:
         run: mkdir -p "$TMPDIR" "$GOTMPDIR"
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.25.10'
+          go-version: '1.26.5'
 
       - name: Build
         env:
@@ -68,7 +74,7 @@ jobs:
         run: |
           ext=""
           if [ "${{ matrix.goos }}" = "windows" ]; then ext=".exe"; fi
-          go build -ldflags="-s -w -X main.version=${{ github.ref_name }}" \
+          go build -ldflags="-s -w" \
             -o joker-${{ matrix.goos }}-${{ matrix.goarch }}${ext} ./cmd/joker
 
       - name: Upload artifact

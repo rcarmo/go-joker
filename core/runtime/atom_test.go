@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"sync"
 	"testing"
 
 	coretypes "github.com/rcarmo/go-joker/core/types"
@@ -46,6 +47,29 @@ func TestAtomSwapResetAndCompareAndSet(t *testing.T) {
 	}
 	if oldValue, ok := a.CompareAndSet(coretypes.Int{I: 4}, coretypes.Int{I: 6}, nil); ok || oldValue != nil {
 		t.Fatalf("compare-and-set stale = (%v, %v), want (nil, false)", oldValue, ok)
+	}
+}
+
+func TestAtomSwapIsAtomicAndCallbacksMayDereference(t *testing.T) {
+	a := NewAtom(coretypes.Int{I: 0}, nil)
+	const goroutines = 16
+	const increments = 100
+	var wg sync.WaitGroup
+	wg.Add(goroutines)
+	for range goroutines {
+		go func() {
+			defer wg.Done()
+			for range increments {
+				a.Swap(atomTestCallable(func(args []coretypes.Object) coretypes.Object {
+					_ = a.Deref()
+					return coretypes.Int{I: args[0].(coretypes.Int).I + 1}
+				}), nil, func(coretypes.Object) { _ = a.Deref() })
+			}
+		}()
+	}
+	wg.Wait()
+	if got, want := a.Deref().(coretypes.Int).I, goroutines*increments; got != want {
+		t.Fatalf("atom value = %d, want %d", got, want)
 	}
 }
 
