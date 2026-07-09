@@ -68,7 +68,7 @@ jobs:
         with:
           name: bench-results
           path: bench-results.txt
-          retention-days: 90
+          retention-days: 7
 
       - name: Check benchmark smoke thresholds
         run: tests/benchmark_ci_check.sh bench-results.txt
