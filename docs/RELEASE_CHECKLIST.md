@@ -13,19 +13,25 @@ Use this checklist before tagging a patch release.
 
 ## Validation
 
-Recommended minimum before tagging:
+The canonical release gate used locally and by both GitHub workflows is:
+
+```bash
+make release-check
+```
+
+Before tagging, run its `pretag-check` wrapper:
 
 ```bash
 make pretag-check
 ```
 
-This runs release hygiene, whitespace checks for pending diffs, the CI/release package vet and test scope, and `make docs-check`. By default it skips the Playwright browser smoke because that requires local browser dependencies; include it when those dependencies are installed with:
+`release-check` runs release hygiene, whitespace checks for pending diffs, repository-wide vet and tests, and `make docs-check`. `pretag-check` runs that exact gate and optionally adds the Playwright browser smoke. By default it skips the browser smoke because that requires local browser dependencies; include it when those dependencies are installed with:
 
 ```bash
 PRETAG_BROWSER_SMOKE=1 make pretag-check
 ```
 
-The tag-triggered release workflow also runs the broader package test set plus `make docs-check`, so failures in examples, docs paths, release hygiene, runtime contracts, or std native-boundary checks should be fixed before tagging.
+The CI and tag-triggered release workflows call `make release-check` directly, so the non-browser release gate cannot drift from local validation. Both workflows run the browser smoke separately after installing its dependencies.
 
 For a broader pre-release audit:
 

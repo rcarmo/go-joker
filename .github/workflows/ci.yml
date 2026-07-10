@@ -23,10 +23,8 @@ jobs:
           go-version: '1.26.5'
       - name: Build
         run: go build -o .cache/tmp/joker ./cmd/joker
-      - name: Run tests
-        run: go test ./... -timeout 10m -count=1
-      - name: Run notebook smoke checks
-        run: make notebook-check
+      - name: Run canonical release checks
+        run: make release-check
       - uses: oven-sh/setup-bun@v2
       - name: Install notebook browser smoke dependencies
         run: |
@@ -34,14 +32,10 @@ jobs:
           PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.cache/ms-playwright bunx playwright install chromium
       - name: Run notebook browser smoke check
         run: PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.cache/ms-playwright make notebook-browser-smoke
-      - name: Generate docs and verify namespace/feature coverage
-        run: make docs-check
       - name: Run local parity suite
         run: go run tests/clojure_parity.go -joker .cache/tmp/joker -out docs/DIVERGENCE_MATRIX.md
       - name: Run imported jank smoke subset
         run: JOKER_BIN=.cache/tmp/joker tests/run_jank_subset.sh
-      - name: Run vet
-        run: go vet ./...
 
   bench:
     runs-on: ubuntu-latest

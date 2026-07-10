@@ -26,12 +26,8 @@ jobs:
         run: |
           version=$(sed -n 's/^const VERSION = "\(.*\)"/\1/p' core/runtime/version.go)
           test "$version" = "$GITHUB_REF_NAME"
-      - name: Run tests and vet
-        run: |
-          go test ./... -timeout 10m -count=1
-          go vet ./...
-      - name: Run docs, examples, release hygiene, and contract checks
-        run: make docs-check
+      - name: Run canonical release checks
+        run: make release-check
       - uses: oven-sh/setup-bun@v2
       - name: Install notebook browser smoke dependencies
         run: |
