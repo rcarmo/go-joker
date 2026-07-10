@@ -168,6 +168,8 @@ jobs:
               range="${TAG}"
             fi
             echo
+            # Literal backticks belong in the generated Markdown.
+            # shellcheck disable=SC2016
             git log --no-merges --date=short --pretty=format:'- \`%h\` %ad %s' "$range"
             echo
           } > release-notes.md
