@@ -309,6 +309,11 @@
         (s/replace "{index-of-types}" type-links-doc)
         (s/replace "{types}" types-docs))))
 
+(defn clean-output
+  "Removes trailing horizontal whitespace from generated files."
+  [content]
+  (s/replace content #"[ \\t]+\n" "\n"))
+
 (defn full-doc
   [ns-vars-fn]
   (let [namespaces (->> (all-ns)
@@ -322,10 +327,10 @@
         terms (for [ns namespaces
                     [k _] (sort #(compare (key %1) (key %2)) (ns-vars-fn ns))]
                 (joker.strconv/quote (str (name ns) "/" k)))]
-    (spit "index.html" (index-doc special-forms namespaces types))
-    (spit "main.js" (s/replace mainjs-template "{search-terms}" (s/join "," terms)))
+    (spit "index.html" (clean-output (index-doc special-forms namespaces types)))
+    (spit "main.js" (clean-output (s/replace mainjs-template "{search-terms}" (s/join "," terms))))
     (doseq [ns namespaces]
-      (spit (str ns ".html") (ns-doc ns ns-vars-fn)))))
+      (spit (str ns ".html") (clean-output (ns-doc ns ns-vars-fn))))))
 
 (let [opts (cli/parse-opts *command-line-args*
                            [

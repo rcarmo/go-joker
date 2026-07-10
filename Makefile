@@ -22,7 +22,7 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -37,7 +37,8 @@ help:
 	@echo "  make jank-subset    # Build $(CLI_BIN), then run imported jank subset"
 	@echo ""
 	@echo "Targets that build a temporary CLI internally for checks/docs:"
-	@echo "  make docs           # Build temp CLI => $(DOCS_JOKER_BIN), then generate HTML docs"
+	@echo "  make docs           # Build temp CLI => $(DOCS_JOKER_BIN), then regenerate tracked HTML docs"
+	@echo "  make docs-verify    # Generate docs in isolation and compare without modifying tracked files"
 	@echo "  make docs-command-check # Build temp CLI => $(DOCS_JOKER_BIN), then smoke-test doc queries"
 	@echo "  make notebook-check # Build temp CLI => $(DOCS_JOKER_BIN), then verify notebook CLI/schema"
 	@echo "  make notebook-browser-smoke # Build temp CLI => $(DOCS_JOKER_BIN), then run Playwright smoke test"
@@ -155,6 +156,10 @@ docs:
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
 	cd docs && $(DOCS_JOKER_BIN) generate-docs.joke > docs-generation.log && cat docs-generation.log && ! grep -q WARNING docs-generation.log && rm docs-generation.log
 
+docs-verify:
+	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
+	tests/docs_generation_guard.sh . $(DOCS_JOKER_BIN)
+
 docs-command-check:
 	$(GO) test ./cmd/joker -run 'TestRenderDoc|TestQueryDocs' -count=$(TEST_COUNT)
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
@@ -219,7 +224,7 @@ error-handling-check:
 
 benchmark-docs-check:
 	$(GO) run tools/benchmarks/validate_readme_table.go
-	cd benchmarks && python3 -m unittest run_benchmarks_test.py
+	cd benchmarks && PYTHONDONTWRITEBYTECODE=1 python3 -m unittest run_benchmarks_test.py
 
 refactor-internals-check:
 	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/types ./core/types/collections ./core/types/string ./core/types/numerical ./core/osutil ./core/bufferpool ./core/reader -count=$(TEST_COUNT)
@@ -256,7 +261,7 @@ pretag-check: release-check
 		echo "skipping browser smoke; run PRETAG_BROWSER_SMOKE=1 make pretag-check to include it"; \
 	fi
 
-docs-check: docs docs-command-check notebook-check examples-check docs-paths-check release-hygiene-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
+docs-check: docs-verify docs-command-check notebook-check examples-check docs-paths-check release-hygiene-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md

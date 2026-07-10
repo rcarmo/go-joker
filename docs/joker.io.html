@@ -60,8 +60,8 @@
   <pre class="var-usage"><div><code>(close f)</code></div>
 </pre>
   <p class="var-docstr">Closes f (IOWriter, IOReader, or File) if possible. Otherwise throws an error.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="copy">copy</h3>
@@ -73,8 +73,8 @@
   Returns the number of bytes copied as an Int, or BigInt if the count exceeds the native int range.<br>
   src must be IOReader, e.g. as returned by joker.os/open.<br>
   dst must be IOWriter, e.g. as returned by joker.os/create.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="pipe">pipe</h3>
@@ -85,8 +85,8 @@
   <p class="var-docstr">Pipe creates a synchronous in-memory pipe. It can be used to connect code expecting an IOReader<br>
   with code expecting an IOWriter.<br>
   Returns a vector [reader, writer].</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="read">read</h3>
@@ -96,8 +96,8 @@
 </pre>
   <p class="var-docstr">Reads up to n bytes from IOReader r and returns a string of the read bytes.<br>
   May return a shorter (or blank) string if EOF is encountered.</p>
-  
-  
+
+
 </li>
 
     </ul>

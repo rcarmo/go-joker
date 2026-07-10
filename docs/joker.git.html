@@ -79,8 +79,8 @@
 </pre>
   <p class="var-docstr">Stores the current contents of the index in a new commit along with<br>
    a log message from the user describing the changes.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="add-path">add-path</h3>
@@ -94,8 +94,8 @@
    directory given, adds the files and all his sub-directories recursively in<br>
    the worktree to the index. If any of the files is already staged in the index<br>
    no error is thrown. When path is a file, the hash is returned.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="commit">commit</h3>
@@ -104,8 +104,8 @@
   <pre class="var-usage"><div><code>(commit repo hash)</code></div>
 </pre>
   <p class="var-docstr">Returns a commit with the given hash.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="config">config</h3>
@@ -114,8 +114,8 @@
   <pre class="var-usage"><div><code>(config repo)</code></div>
 </pre>
   <p class="var-docstr">Returns git repo&#39;s config</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="head">head</h3>
@@ -124,8 +124,8 @@
   <pre class="var-usage"><div><code>(head repo)</code></div>
 </pre>
   <p class="var-docstr">Returns the reference where HEAD is pointing to.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="log">log</h3>
@@ -159,8 +159,8 @@
   :until - show commits older than a specific date.<br>
   It is equivalent to running `git log --until &lt;date&gt;` or `git log --before &lt;date&gt;`.<br>
 </p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="object">object</h3>
@@ -169,8 +169,8 @@
   <pre class="var-usage"><div><code>(object repo hash)</code></div>
 </pre>
   <p class="var-docstr">Returns an coretypes.Object with the given hash.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="open">open</h3>
@@ -180,8 +180,8 @@
 </pre>
   <p class="var-docstr">Opens a git repository from the given path. It detects if the<br>
    repository is bare or a normal one. Throws an error if the path doesn&#39;t contain a valid repository.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="ref">ref</h3>
@@ -191,8 +191,8 @@
 </pre>
   <p class="var-docstr">Returns the reference for a given reference name. If resolved is<br>
    true, any symbolic reference will be resolved.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="resolve-revision">resolve-revision</h3>
@@ -202,8 +202,8 @@
 </pre>
   <p class="var-docstr">Resolves revision to corresponding hash. It will always<br>
    resolve to a commit hash, not a tree or annotated tag.</p>
-  
-  
+
+
 </li>
 
     </ul>

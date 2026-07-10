@@ -67,8 +67,8 @@
   Query is expected to be a list of key=value settings separated by ampersands. A setting without<br>
   an equals sign is interpreted as a key set to an empty value. Settings containing a non-URL-encoded<br>
   semicolon are considered invalid. </p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="path-escape">path-escape</h3>
@@ -77,8 +77,8 @@
   <pre class="var-usage"><div><code>(path-escape s)</code></div>
 </pre>
   <p class="var-docstr">Escapes the string so it can be safely placed inside a URL path segment.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="path-unescape">path-unescape</h3>
@@ -91,8 +91,8 @@
   &#39;+&#39; into &#39; &#39; (space). It returns an error if any % is not followed by two hexadecimal digits.<br>
 <br>
   PathUnescape is identical to QueryUnescape except that it does not unescape &#39;+&#39; to &#39; &#39; (space).</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="query-escape">query-escape</h3>
@@ -101,8 +101,8 @@
   <pre class="var-usage"><div><code>(query-escape s)</code></div>
 </pre>
   <p class="var-docstr">Escapes the string so it can be safely placed inside a URL query.</p>
-  
-  
+
+
 </li>
 <li>
   <h3 class="Function" id="query-unescape">query-unescape</h3>
@@ -113,8 +113,8 @@
   <p class="var-docstr">Does the inverse transformation of query-escape, converting each 3-byte encoded<br>
   substring of the form &#34;%AB&#34; into the hex-decoded byte 0xAB. It also converts<br>
   &#39;+&#39; into &#39; &#39; (space). It returns an error if any % is not followed by two hexadecimal digits.</p>
-  
-  
+
+
 </li>
 
     </ul>
