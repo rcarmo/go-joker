@@ -9,6 +9,7 @@ TOOLBIN := $(shell $(GO) env GOPATH)/bin
 STATICCHECK_BIN ?= $(TOOLBIN)/staticcheck
 GOLANGCI_LINT_BIN ?= $(TOOLBIN)/golangci-lint
 GOVULNCHECK_BIN ?= $(TOOLBIN)/govulncheck
+ACTIONLINT_VERSION ?= v1.7.7
 
 BENCH_REGEX ?= BenchmarkCLBG(NBody|Mandelbrot|SpectralNorm|BinaryTrees|FannkuchRedux)
 COMPARE_OUT ?= benchmarks/compare/out/latest
@@ -29,7 +30,7 @@ BENCH_OUT ?= .cache/benchmarks/candidate.txt
 BENCH_BASELINE ?=
 BENCH_REPORT ?= .cache/benchmarks/benchstat.txt
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-supply-chain-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-supply-chain-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -61,6 +62,8 @@ help:
 	@echo "  make vet            # Run go vet"
 	@echo "  make staticcheck-sa # Run staticcheck SA checks"
 	@echo "  make lint           # Run focused golangci-lint profile"
+	@echo "  make workflow-lint  # Run pinned actionlint against GitHub workflows"
+	@echo "  make workflow-policy-check # Guard Actions cleanup/retention policy"
 	@echo "  make vuln           # Run govulncheck"
 	@echo "  make race           # Run race tests on critical packages"
 	@echo "  make race-stress    # Repeat shuffled interning, namespace, and tagged-reader race tests"
@@ -140,6 +143,12 @@ staticcheck-sa: tools
 
 lint: tools
 	$(GOLANGCI_LINT_BIN) run --timeout=10m --exclude-files '(^|/)a_.*\.go$$' --disable-all -E govet -E staticcheck
+
+workflow-lint:
+	$(GO) run github.com/rhysd/actionlint/cmd/actionlint@$(ACTIONLINT_VERSION)
+
+workflow-policy-check:
+	tests/workflow_policy_guard.sh .
 
 vuln: tools
 	$(GOVULNCHECK_BIN) ./...
@@ -275,7 +284,7 @@ release-hygiene-check:
 release-supply-chain-check:
 	tests/release_supply_chain_guard.sh .
 
-release-check: release-hygiene-check release-supply-chain-check
+release-check: release-hygiene-check release-supply-chain-check workflow-policy-check
 	git diff --check
 	$(GO) vet ./...
 	$(GO) test ./... -timeout 10m -count=1
@@ -288,7 +297,7 @@ pretag-check: release-check
 		echo "skipping browser smoke; run PRETAG_BROWSER_SMOKE=1 make pretag-check to include it"; \
 	fi
 
-docs-check: docs-verify docs-command-check notebook-check examples-check docs-paths-check release-hygiene-check release-supply-chain-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
+docs-check: docs-verify docs-command-check notebook-check examples-check docs-paths-check release-hygiene-check release-supply-chain-check workflow-policy-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md
@@ -307,6 +316,7 @@ docs-check: docs-verify docs-command-check notebook-check examples-check docs-pa
 	test -f docs/API_STABILITY.md
 	test -f docs/RELEASE_CHECKLIST.md
 	test -f docs/RELEASE_SUPPLY_CHAIN.md
+	test -f docs/CI_RETENTION.md
 	test -f docs/joker.imaging.html
 	test -f docs/joker.jit.html
 	test -f docs/joker.edn.html

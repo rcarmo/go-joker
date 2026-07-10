@@ -5,6 +5,8 @@ on:
     workflows:
       - "CI"
       - "Release"
+      - "Benchmark regression"
+      - "Race stress"
     types: [completed]
   workflow_dispatch:
 
@@ -24,9 +26,12 @@ jobs:
       github.event.workflow_run.conclusion != 'skipped'
     runs-on: ubuntu-latest
     env:
-      KEEP_RUNS: '10'
+      KEEP_RUNS_PER_WORKFLOW: '10'
       KEEP_CACHES: '100'
-      RETENTION_DAYS: '7'
+      STANDARD_ARTIFACT_DAYS: '7'
+      BENCHMARK_ARTIFACT_DAYS: '30'
+      CACHE_RETENTION_DAYS: '7'
+      RUN_RETENTION_DAYS: '30'
     steps:
       - name: Delete stale Actions storage
         uses: actions/github-script@v7
@@ -34,10 +39,15 @@ jobs:
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const keepRuns = Math.max(1, Number(process.env.KEEP_RUNS || '10') || 10);
+            const keepRuns = Math.max(1, Number(process.env.KEEP_RUNS_PER_WORKFLOW || '10') || 10);
             const keepCaches = Math.max(1, Number(process.env.KEEP_CACHES || '100') || 100);
-            const retentionDays = Math.max(1, Number(process.env.RETENTION_DAYS || '7') || 7);
-            const cutoff = Date.now() - retentionDays * 24 * 60 * 60 * 1000;
+            const standardArtifactDays = Math.max(1, Number(process.env.STANDARD_ARTIFACT_DAYS || '7') || 7);
+            const benchmarkArtifactDays = Math.max(standardArtifactDays, Number(process.env.BENCHMARK_ARTIFACT_DAYS || '30') || 30);
+            const cacheRetentionDays = Math.max(1, Number(process.env.CACHE_RETENTION_DAYS || '7') || 7);
+            const runRetentionDays = Math.max(1, Number(process.env.RUN_RETENTION_DAYS || '30') || 30);
+            const dayMs = 24 * 60 * 60 * 1000;
+            const cacheCutoff = Date.now() - cacheRetentionDays * dayMs;
+            const runCutoff = Date.now() - runRetentionDays * dayMs;
 
             async function tryDelete(label, fn) {
               for (let attempt = 1; attempt <= 3; attempt++) {
@@ -89,11 +99,15 @@ jobs:
             let artifactBytes = 0;
             for (const artifact of artifacts) {
               const created = new Date(artifact.created_at).getTime();
+              const retentionDays = artifact.name === 'benchmark-comparison'
+                ? benchmarkArtifactDays
+                : standardArtifactDays;
+              const artifactCutoff = Date.now() - retentionDays * dayMs;
               const runId = artifact.workflow_run?.id;
               const outsideRunWindow = runId
                 ? !keepRunIds.has(String(runId))
                 : !keepOrphanArtifactIds.has(artifact.id);
-              if (artifact.expired || created < cutoff || outsideRunWindow) {
+              if (artifact.expired || created < artifactCutoff || outsideRunWindow) {
                 if (await tryDelete(`delete artifact ${artifact.id}`, () => github.rest.actions.deleteArtifact({ owner, repo, artifact_id: artifact.id }))) {
                   artifactCount++;
                   artifactBytes += Number(artifact.size_in_bytes || 0);
@@ -113,7 +127,7 @@ jobs:
             let cacheBytes = 0;
             for (const cache of caches) {
               const lastUsed = new Date(cache.last_accessed_at || cache.created_at).getTime();
-              if (lastUsed < cutoff || !keepCacheIds.has(cache.id)) {
+              if (lastUsed < cacheCutoff || !keepCacheIds.has(cache.id)) {
                 if (await tryDelete(`delete cache ${cache.id}`, () => github.rest.actions.deleteActionsCacheById({ owner, repo, cache_id: cache.id }))) {
                   cacheCount++;
                   cacheBytes += Number(cache.size_in_bytes || 0);
@@ -125,7 +139,7 @@ jobs:
             for (const run of runs) {
               if (Number(run.id) === Number(context.runId)) continue;
               const created = new Date(run.created_at).getTime();
-              if (created < cutoff && await tryDelete(`delete workflow run ${run.id}`, () => github.rest.actions.deleteWorkflowRun({ owner, repo, run_id: run.id }))) {
+              if (created < runCutoff && !keepRunIds.has(String(run.id)) && await tryDelete(`delete workflow run ${run.id}`, () => github.rest.actions.deleteWorkflowRun({ owner, repo, run_id: run.id }))) {
                 runCount++;
               }
             }
