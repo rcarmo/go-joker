@@ -1,0 +1,80 @@
+name: Benchmark regression
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      baseline_ref:
+        description: Git ref used as the baseline
+        required: true
+        default: master
+      candidate_ref:
+        description: Git ref used as the candidate
+        required: true
+        default: HEAD
+
+permissions:
+  contents: read
+
+env:
+  TMPDIR: ${{ github.workspace }}/.cache/tmp
+  GOTMPDIR: ${{ github.workspace }}/.cache/go-build-tmp
+  RELEASE_BENCH_PATTERN: '^Benchmark(Fib20|Tak|LoopRecur1M|ReduceRange10K|ClosureCapture|MapAssoc100|VectorConj100|TransducePipeline)$'
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.5'
+      - name: Prepare temp directories
+        run: mkdir -p "$TMPDIR" "$GOTMPDIR" .cache/benchmarks
+      - name: Resolve comparison refs
+        id: refs
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          INPUT_BASE: ${{ inputs.baseline_ref }}
+          INPUT_CANDIDATE: ${{ inputs.candidate_ref }}
+        run: |
+          if [[ "$EVENT_NAME" == pull_request ]]; then
+            echo "baseline=$PR_BASE" >> "$GITHUB_OUTPUT"
+            echo "candidate=$PR_HEAD" >> "$GITHUB_OUTPUT"
+          else
+            echo "baseline=$INPUT_BASE" >> "$GITHUB_OUTPUT"
+            echo "candidate=$INPUT_CANDIDATE" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Capture baseline
+        env:
+          REF: ${{ steps.refs.outputs.baseline }}
+        run: |
+          git checkout --detach "$REF"
+          go test ./benchmarks/core -run '^$' -bench "$RELEASE_BENCH_PATTERN" \
+            -benchmem -benchtime=500ms -count=10 -timeout=20m \
+            | tee "$GITHUB_WORKSPACE/.cache/benchmarks/baseline.txt"
+      - name: Capture candidate
+        env:
+          REF: ${{ steps.refs.outputs.candidate }}
+        run: |
+          git checkout --detach "$REF"
+          go test ./benchmarks/core -run '^$' -bench "$RELEASE_BENCH_PATTERN" \
+            -benchmem -benchtime=500ms -count=10 -timeout=20m \
+            | tee "$GITHUB_WORKSPACE/.cache/benchmarks/candidate.txt"
+      - name: Compare stable samples
+        run: |
+          make benchmark-compare \
+            BENCH_BASELINE=.cache/benchmarks/baseline.txt \
+            BENCH_OUT=.cache/benchmarks/candidate.txt \
+            BENCH_REPORT=.cache/benchmarks/benchstat.txt
+      - name: Upload comparison evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-comparison
+          path: .cache/benchmarks/
+          retention-days: 30

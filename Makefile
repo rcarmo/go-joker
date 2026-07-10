@@ -22,8 +22,14 @@ TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
 RACE_STRESS_COUNT ?= 20
+RELEASE_BENCH_PATTERN ?= ^Benchmark(Fib20|Tak|LoopRecur1M|ReduceRange10K|ClosureCapture|MapAssoc100|VectorConj100|TransducePipeline)$$
+RELEASE_BENCH_COUNT ?= 10
+RELEASE_BENCH_TIME ?= 500ms
+BENCH_OUT ?= .cache/benchmarks/candidate.txt
+BENCH_BASELINE ?=
+BENCH_REPORT ?= .cache/benchmarks/benchstat.txt
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race race-stress bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -59,6 +65,8 @@ help:
 	@echo "  make race           # Run race tests on critical packages"
 	@echo "  make race-stress    # Repeat shuffled interning, namespace, and tagged-reader race tests"
 	@echo "  make bench-sanity   # Run CLBG benchmark sanity subset"
+	@echo "  make benchmark-capture BENCH_OUT=... # Capture repeated release benchmark samples"
+	@echo "  make benchmark-compare BENCH_BASELINE=... [BENCH_OUT=...] # benchstat + regression policy"
 	@echo "  make coverage       # Run package coverage and generated-file-aware summary"
 	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
 	@echo "  make examples-check # Run runnable examples smoke checks"
@@ -144,6 +152,14 @@ race-stress:
 
 bench-sanity:
 	$(GO) test ./benchmarks/core -run '^$$' -bench '$(BENCH_REGEX)' -benchmem -benchtime=1x -count=3
+
+benchmark-capture:
+	@mkdir -p "$(dir $(BENCH_OUT))"
+	$(GO) test ./benchmarks/core -run '^$$' -bench '$(RELEASE_BENCH_PATTERN)' -benchmem -benchtime=$(RELEASE_BENCH_TIME) -count=$(RELEASE_BENCH_COUNT) -timeout=20m | tee "$(BENCH_OUT)"
+
+benchmark-compare:
+	@test -n "$(BENCH_BASELINE)" || { echo "BENCH_BASELINE is required" >&2; exit 2; }
+	tests/benchmark_compare.sh "$(BENCH_BASELINE)" "$(BENCH_OUT)" "$(BENCH_REPORT)"
 
 compare-bench:
 	bash benchmarks/compare/collect.sh $(COMPARE_OUT)
@@ -231,6 +247,7 @@ error-handling-check:
 benchmark-docs-check:
 	$(GO) run tools/benchmarks/validate_readme_table.go
 	cd benchmarks && PYTHONDONTWRITEBYTECODE=1 python3 -m unittest run_benchmarks_test.py
+	PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests/benchmark_regression_check_test.py
 
 refactor-internals-check:
 	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/types ./core/types/collections ./core/types/string ./core/types/numerical ./core/osutil ./core/bufferpool ./core/reader -count=$(TEST_COUNT)
