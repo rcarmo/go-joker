@@ -42,9 +42,22 @@ fi
 allowed_root_core_files=(
   core/a_generated_bootstrap_payloads.go
   core/bootstrap_gen_code.go
+  core/error_frame_runtime.go
+  core/fn_ir_cache_runtime.go
+  core/frequencies_fast_runtime.go
+  core/int_range_runtime.go
+  core/ir_call_dispatch_runtime.go
+  core/reader_construction_runtime.go
+  core/reducible_pipeline_runtime.go
   core/runtime_kernel.go
   core/runtime_kernel_contracts_test.go
   core/runtime_kernel_spew_enabled.go
+  core/seq_ops_fast_runtime.go
+  core/tagged_literals_runtime.go
+  core/tail_call_runtime.go
+  core/transducer_compat_runtime.go
+  core/wasm_compile_runtime.go
+  core/wasm_loop_wrapper_runtime.go
 )
 for required in "${allowed_root_core_files[@]}"; do
   [[ -f "$required" ]] || fail "missing expected coalesced root kernel file: $required"
