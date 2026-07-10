@@ -4161,6 +4161,7 @@ type (
 	Reader   struct {
 		*corereader.RuneStream
 		filename *string
+		posStack corereader.PositionStack
 	}
 )
 
@@ -4170,6 +4171,7 @@ func NewReader(runeReader io.RuneReader, filename string) *Reader {
 			panic(RT.NewError(err.Error()))
 		}),
 		filename: STRINGS.Intern(filename),
+		posStack: corereader.NewPositionStack(8),
 	}
 }
 
@@ -4189,14 +4191,12 @@ var (
 	GENSYM int
 )
 
-var posStack = corereader.NewPositionStack(8)
-
 func pushPos(reader *Reader) {
-	posStack.Push(corereader.Position{Line: reader.Line(), Column: reader.Column()})
+	reader.posStack.Push(corereader.Position{Line: reader.Line(), Column: reader.Column()})
 }
 
-func popPos() corereader.Position {
-	p, ok := posStack.Pop()
+func popPos(reader *Reader) corereader.Position {
+	p, ok := reader.posStack.Pop()
 	if !ok {
 		panic("reader position stack underflow")
 	}
@@ -4217,7 +4217,7 @@ func MakeReadError(reader *Reader, msg string) ReadError {
 }
 
 func makeReadObject(reader *Reader, obj coretypes.Object) coretypes.Object {
-	p := popPos()
+	p := popPos(reader)
 	return coretypes.WithInfo(obj, &coretypes.ObjectInfo{Position: coretypes.Position{
 		StartColumn: p.Column,
 		StartLine:   p.Line,
@@ -5119,7 +5119,7 @@ func readDispatch(reader *Reader) (coretypes.Object, bool) {
 	case corereader.DispatchRegex:
 		return readRegex(reader), false
 	case corereader.DispatchVar:
-		popPos()
+		popPos(reader)
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
 			prefix, _ := corereader.DispatchFormatPrefix(kind)
@@ -5130,13 +5130,13 @@ func readDispatch(reader *Reader) (coretypes.Object, bool) {
 	case corereader.DispatchDiscard:
 		// Only possible in FORMAT mode, otherwise
 		// eatWhitespaces eats #_
-		popPos()
+		popPos(reader)
 		nextObj := readFirst(reader)
 		prefix, _ := corereader.DispatchFormatPrefix(kind)
 		addPrefix(nextObj, prefix)
 		return nextObj, false
 	case corereader.DispatchMeta:
-		popPos()
+		popPos(reader)
 		if FORMAT_MODE {
 			nextObj := readFirst(reader)
 			prefix, _ := corereader.DispatchFormatPrefix(kind)
@@ -5147,7 +5147,7 @@ func readDispatch(reader *Reader) (coretypes.Object, bool) {
 	case corereader.DispatchSet:
 		return readSet(reader), false
 	case corereader.DispatchFn:
-		popPos()
+		popPos(reader)
 		reader.Unget()
 		if FORMAT_MODE {
 			nextObj := readFirst(reader)
@@ -5167,7 +5167,7 @@ func readDispatch(reader *Reader) (coretypes.Object, bool) {
 	case corereader.DispatchSymbolicValue:
 		return readSymbolicValue(reader), false
 	}
-	popPos()
+	popPos(reader)
 	reader.Unget()
 	return readTagged(reader), false
 }
@@ -5239,7 +5239,7 @@ func Read(reader *Reader) (coretypes.Object, bool) {
 	case corereader.ReadFormStandaloneSlash:
 		return MakeReadObject(reader, SYMBOLS.backslash), false
 	case corereader.ReadFormQuote:
-		popPos()
+		popPos(reader)
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
 			prefix, _ := corereader.ReaderMacroPrefix(r)
@@ -5248,7 +5248,7 @@ func Read(reader *Reader) (coretypes.Object, bool) {
 		}
 		return makeQuote(nextObj, SYMBOLS.quote), false
 	case corereader.ReadFormDeref:
-		popPos()
+		popPos(reader)
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
 			prefix, _ := corereader.ReaderMacroPrefix(r)
@@ -5257,7 +5257,7 @@ func Read(reader *Reader) (coretypes.Object, bool) {
 		}
 		return DeriveReadObject(nextObj, readerConstruction.ListFrom([]coretypes.Object{DeriveReadObject(nextObj, SYMBOLS.deref), nextObj})), false
 	case corereader.ReadFormUnquote:
-		popPos()
+		popPos(reader)
 		isSplicing := corereader.IsUnquoteSplice(reader.Peek())
 		if isSplicing {
 			reader.Get()
@@ -5272,7 +5272,7 @@ func Read(reader *Reader) (coretypes.Object, bool) {
 		}
 		return makeQuote(nextObj, SYMBOLS.unquote), false
 	case corereader.ReadFormSyntaxQuote:
-		popPos()
+		popPos(reader)
 		nextObj := readFirst(reader)
 		if FORMAT_MODE {
 			prefix, _ := corereader.ReaderMacroPrefix(r)
@@ -5281,7 +5281,7 @@ func Read(reader *Reader) (coretypes.Object, bool) {
 		}
 		return makeSyntaxQuote(nextObj, make(map[*string]coretypes.Symbol), reader), false
 	case corereader.ReadFormMeta:
-		popPos()
+		popPos(reader)
 		if FORMAT_MODE {
 			nextObj := readFirst(reader)
 			prefix, _ := corereader.ReaderMacroPrefix(r)

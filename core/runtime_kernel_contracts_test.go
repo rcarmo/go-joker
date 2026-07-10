@@ -2237,6 +2237,63 @@ func TestReaderConstructionContractMetadataTaggedReadersAndConditionals(t *testi
 	}
 }
 
+func TestTaggedReadersAreConcurrent(t *testing.T) {
+	forms := []string{
+		`#inst "2026-07-10T12:34:56Z"`,
+		`#uuid "123e4567-e89b-12d3-a456-426614174000"`,
+	}
+	const goroutines = 32
+	const iterations = 50
+	errs := make(chan error, goroutines)
+	var wg sync.WaitGroup
+	wg.Add(goroutines)
+	for id := range goroutines {
+		go func() {
+			defer wg.Done()
+			for i := range iterations {
+				reader := NewReader(strings.NewReader(forms[(id+i)%len(forms)]), "<tagged-reader-race>")
+				if _, err := TryRead(reader); err != nil {
+					errs <- err
+					return
+				}
+			}
+		}()
+	}
+	wg.Wait()
+	close(errs)
+	for err := range errs {
+		t.Fatalf("concurrent tagged read failed: %v", err)
+	}
+}
+
+func TestEnvNamespaceLookupIsConcurrent(t *testing.T) {
+	env := &Env{Namespaces: make(map[*string]*Namespace)}
+	const goroutines = 32
+	const iterations = 100
+	errs := make(chan string, goroutines)
+	var wg sync.WaitGroup
+	wg.Add(goroutines)
+	for id := range goroutines {
+		go func() {
+			defer wg.Done()
+			for i := range iterations {
+				name := "race.namespace." + strconv.Itoa((id+i)%8)
+				sym := coretypes.MakeSymbol(STRINGS.Intern, name)
+				ns := env.EnsureSymbolIsNamespace(sym)
+				if found := env.FindNamespace(sym); found != ns {
+					errs <- name
+					return
+				}
+			}
+		}()
+	}
+	wg.Wait()
+	close(errs)
+	for name := range errs {
+		t.Fatalf("namespace %q was not safely published", name)
+	}
+}
+
 func TestReadConditionalSpliceEmptyInList(t *testing.T) {
 	reader := NewReader(strings.NewReader("(do #?@(:definitely-nope [1 2]) 3)"), "<test>")
 	obj, err := TryRead(reader)

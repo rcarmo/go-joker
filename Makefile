@@ -21,8 +21,9 @@ TEST_PKGS ?= ./...
 TEST_TIMEOUT ?= 20m
 TEST_COUNT ?= 1
 TEST_SHUFFLE ?= off
+RACE_STRESS_COUNT ?= 20
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race race-stress bench-sanity compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -56,6 +57,7 @@ help:
 	@echo "  make lint           # Run focused golangci-lint profile"
 	@echo "  make vuln           # Run govulncheck"
 	@echo "  make race           # Run race tests on critical packages"
+	@echo "  make race-stress    # Repeat shuffled interning, namespace, and tagged-reader race tests"
 	@echo "  make bench-sanity   # Run CLBG benchmark sanity subset"
 	@echo "  make coverage       # Run package coverage and generated-file-aware summary"
 	@echo "  make docs-check     # Generate docs + verify new namespace/feature coverage"
@@ -134,7 +136,11 @@ vuln: tools
 	$(GOVULNCHECK_BIN) ./...
 
 race:
-	$(GO) test -race ./core ./std/runtime ./std/http ./std/pdf
+	$(GO) test -race ./core ./core/types/string ./std/runtime ./std/http ./std/pdf
+
+race-stress:
+	$(GO) test -race ./core/types/string -shuffle=on -count=$(RACE_STRESS_COUNT)
+	$(GO) test -race ./core -run 'TestTaggedReadersAreConcurrent|TestEnvNamespaceLookupIsConcurrent' -shuffle=on -count=$(RACE_STRESS_COUNT) -timeout=10m
 
 bench-sanity:
 	$(GO) test ./benchmarks/core -run '^$$' -bench '$(BENCH_REGEX)' -benchmem -benchtime=1x -count=3
