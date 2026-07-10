@@ -13,6 +13,21 @@ import (
 	. "github.com/rcarmo/go-joker/core"
 )
 
+func TestEnvironmentPreservesEmptyAndEqualsValues(t *testing.T) {
+	t.Setenv("GO_JOKER_ENV_EMPTY", "")
+	t.Setenv("GO_JOKER_ENV_EQUALS", "left=right=tail")
+	values := env().(coretypes.Map)
+	for key, want := range map[string]string{
+		"GO_JOKER_ENV_EMPTY":  "",
+		"GO_JOKER_ENV_EQUALS": "left=right=tail",
+	} {
+		ok, got := values.Get(coretypes.MakeString(key))
+		if !ok || got.ToString(false) != want {
+			t.Fatalf("environment %s = %#v, want %q", key, got, want)
+		}
+	}
+}
+
 func TestStartProcessReleasesChild(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("uses Unix shell command")

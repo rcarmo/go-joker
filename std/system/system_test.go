@@ -1,10 +1,12 @@
 package system
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
 	"math"
+	"os"
 	"runtime"
 	"testing"
+
+	coretypes "github.com/rcarmo/go-joker/core/types"
 
 	. "github.com/rcarmo/go-joker/core"
 )
@@ -26,6 +28,21 @@ func TestGetPropertyDefaultAndEnv(t *testing.T) {
 	t.Setenv("GO_JOKER_SYSTEM_TEST", "ok")
 	if v := systemGetenv([]coretypes.Object{coretypes.MakeString("GO_JOKER_SYSTEM_TEST")}); v.ToString(false) != "ok" {
 		t.Fatalf("env mismatch: %v", v)
+	}
+}
+
+func TestSystemGetenvDistinguishesEmptyFromMissing(t *testing.T) {
+	t.Setenv("GO_JOKER_SYSTEM_EMPTY", "")
+	if got := systemGetenv([]coretypes.Object{coretypes.MakeString("GO_JOKER_SYSTEM_EMPTY")}); got.Equals(NIL) || got.ToString(false) != "" {
+		t.Fatalf("explicitly empty environment value = %#v, want empty string", got)
+	}
+	const missing = "GO_JOKER_SYSTEM_DEFINITELY_MISSING"
+	t.Setenv(missing, "temporary")
+	if err := os.Unsetenv(missing); err != nil {
+		t.Fatal(err)
+	}
+	if got := systemGetenv([]coretypes.Object{coretypes.MakeString(missing)}); !got.Equals(NIL) {
+		t.Fatalf("missing environment value = %#v, want nil", got)
 	}
 }
 

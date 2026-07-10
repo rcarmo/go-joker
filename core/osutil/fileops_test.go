@@ -29,3 +29,20 @@ func TestReadWriteFileString(t *testing.T) {
 		t.Fatalf("append result = %q", string(b))
 	}
 }
+
+func TestFileOperationsSurfaceMissingAndInvalidPaths(t *testing.T) {
+	root := t.TempDir()
+	missing := filepath.Join(root, "missing", "file.txt")
+	if _, err := ReadFileString(missing); err == nil {
+		t.Fatal("ReadFileString accepted a missing path")
+	}
+	if _, err := ReadFileBytes(missing); err == nil {
+		t.Fatal("ReadFileBytes accepted a missing path")
+	}
+	if err := WriteFileString(missing, "data", false); err == nil {
+		t.Fatal("WriteFileString silently created a missing parent directory")
+	}
+	if err := WriteFileString(root, "data", false); err == nil {
+		t.Fatal("WriteFileString accepted a directory as a file")
+	}
+}
