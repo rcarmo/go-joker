@@ -9,6 +9,7 @@ Use this checklist before tagging a patch release.
 - [ ] Update the README version sentence and release-notes link.
 - [ ] Add `docs/RELEASE_NOTES_<version>.md`.
 - [ ] Run `make release-hygiene-check`.
+- [ ] Run `make release-supply-chain-check`.
 - [ ] Make sure release notes describe the tag being created, not an ambiguous moving `master` state.
 
 ## Validation
@@ -52,6 +53,10 @@ git push origin vX.Y.Z
 ## Post-tag checks
 
 - [ ] Confirm GitHub Actions release workflow completed.
-- [ ] Confirm release binaries are attached.
-- [ ] Confirm `joker --version` reports the tagged version.
+- [ ] Confirm all six release binaries, their SPDX SBOMs, and `SHA256SUMS` are attached.
+- [ ] Verify the downloaded checksums with `sha256sum --strict --check SHA256SUMS`.
+- [ ] Verify build provenance with `gh attestation verify <binary> --repo rcarmo/go-joker`.
+- [ ] Confirm the downloaded native `joker --version` reports the tagged version.
 - [ ] Avoid editing the tagged release note with post-tag changes unless clearly marked as post-tag or moved into the next release notes file.
+
+See [`RELEASE_SUPPLY_CHAIN.md`](RELEASE_SUPPLY_CHAIN.md) for the asset, provenance, SBOM, and consumer-verification contract.

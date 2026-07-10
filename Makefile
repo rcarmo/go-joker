@@ -29,7 +29,7 @@ BENCH_OUT ?= .cache/benchmarks/candidate.txt
 BENCH_BASELINE ?=
 BENCH_REPORT ?= .cache/benchmarks/benchstat.txt
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-supply-chain-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -72,6 +72,7 @@ help:
 	@echo "  make examples-check # Run runnable examples smoke checks"
 	@echo "  make docs-paths-check # Guard stale moved-example paths in docs/examples"
 	@echo "  make release-hygiene-check # Verify VERSION/README/release-note consistency"
+	@echo "  make release-supply-chain-check # Verify checksums/SBOM/provenance workflow contracts"
 	@echo "  make release-check  # Canonical local and CI release gate"
 	@echo "  make pretag-check   # release-check plus optional browser smoke"
 	@echo "  make generated-check # Verify generated-file boundary guardrails"
@@ -271,7 +272,10 @@ docs-paths-check:
 release-hygiene-check:
 	tests/release_hygiene_guard.sh .
 
-release-check: release-hygiene-check
+release-supply-chain-check:
+	tests/release_supply_chain_guard.sh .
+
+release-check: release-hygiene-check release-supply-chain-check
 	git diff --check
 	$(GO) vet ./...
 	$(GO) test ./... -timeout 10m -count=1
@@ -284,7 +288,7 @@ pretag-check: release-check
 		echo "skipping browser smoke; run PRETAG_BROWSER_SMOKE=1 make pretag-check to include it"; \
 	fi
 
-docs-check: docs-verify docs-command-check notebook-check examples-check docs-paths-check release-hygiene-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
+docs-check: docs-verify docs-command-check notebook-check examples-check docs-paths-check release-hygiene-check release-supply-chain-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check
 	test -f docs/refactor/README.md
 	test -f docs/refactor/code-structure.md
 	test -f docs/refactor/module-structure-audit.md
@@ -302,6 +306,7 @@ docs-check: docs-verify docs-command-check notebook-check examples-check docs-pa
 	test -f docs/BENCHMARK_CI.md
 	test -f docs/API_STABILITY.md
 	test -f docs/RELEASE_CHECKLIST.md
+	test -f docs/RELEASE_SUPPLY_CHAIN.md
 	test -f docs/joker.imaging.html
 	test -f docs/joker.jit.html
 	test -f docs/joker.edn.html

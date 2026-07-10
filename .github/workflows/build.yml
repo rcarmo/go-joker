@@ -4,8 +4,7 @@ on:
   push:
     tags: ['v*']
 
-permissions:
-  contents: write
+permissions: {}
 
 env:
   TMPDIR: ${{ github.workspace }}/.cache/tmp
@@ -14,6 +13,8 @@ env:
 
 jobs:
   test:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -38,6 +39,10 @@ jobs:
 
   build:
     needs: test
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -63,25 +68,52 @@ jobs:
           go-version: '1.26.5'
 
       - name: Build
+        id: build
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: '0'
         run: |
+          set -euo pipefail
           ext=""
           if [ "${{ matrix.goos }}" = "windows" ]; then ext=".exe"; fi
-          go build -ldflags="-s -w" \
-            -o joker-${{ matrix.goos }}-${{ matrix.goarch }}${ext} ./cmd/joker
+          binary="joker-${{ matrix.goos }}-${{ matrix.goarch }}${ext}"
+          go build -trimpath -ldflags="-s -w" -o "$binary" ./cmd/joker
+          echo "binary=$binary" >> "$GITHUB_OUTPUT"
 
-      - name: Upload artifact
+      - name: Generate SPDX SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          path: ${{ steps.build.outputs.binary }}
+          format: spdx-json
+          output-file: ${{ steps.build.outputs.binary }}.spdx.json
+          upload-artifact: false
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: ${{ steps.build.outputs.binary }}
+
+      - name: Attest SBOM
+        uses: actions/attest-sbom@v2
+        with:
+          subject-path: ${{ steps.build.outputs.binary }}
+          sbom-path: ${{ steps.build.outputs.binary }}.spdx.json
+
+      - name: Upload binary and SBOM
         uses: actions/upload-artifact@v4
         with:
           retention-days: 7
           name: joker-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: joker-*
+          if-no-files-found: error
+          path: |
+            ${{ steps.build.outputs.binary }}
+            ${{ steps.build.outputs.binary }}.spdx.json
 
   release:
     needs: build
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -92,6 +124,19 @@ jobs:
         with:
           path: release-files
           merge-multiple: true
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.5'
+
+      - name: Generate and verify release checksums
+        run: tests/generate_release_checksums.sh release-files
+
+      - name: Verify downloaded binaries and supply-chain assets
+        env:
+          TAG: ${{ github.ref_name }}
+          REVISION: ${{ github.sha }}
+        run: tests/verify_release_assets.sh release-files "$TAG" "$REVISION"
 
       - name: Generate release notes
         env:
@@ -107,9 +152,13 @@ jobs:
             echo
             echo "## Binaries"
             echo
-            for f in release-files/joker-*; do
-              echo "- $(basename "$f")"
-            done
+            find release-files -maxdepth 1 -type f -name 'joker-*' ! -name '*.spdx.json' -printf '%f\n' | LC_ALL=C sort | sed 's/^/- /'
+            echo
+            echo "## Verification"
+            echo
+            echo "- \`SHA256SUMS\` covers every binary and SPDX SBOM."
+            echo "- Each binary has GitHub build-provenance and SBOM attestations."
+            echo "- Verify an artifact with \`gh attestation verify <file> --repo ${REPO}\`."
             echo
             if [ -n "$previous" ]; then
               echo "## Changes since ${previous}"
