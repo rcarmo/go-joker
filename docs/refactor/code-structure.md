@@ -1,7 +1,7 @@
 # Code structure, module boundaries, and coverage audit
 
 Generated: 2026-05-10
-Updated: 2026-05-20
+Updated: 2026-07-10
 
 ## Executive summary
 
@@ -40,7 +40,7 @@ Recent `std/transit` and `std/system` match this pattern.
 
 ### IR/WASM/JIT contract
 
-- `core/ir` owns opcode constants/names, bytecode counting/disassembly helpers, and IR shape analysis.
+- `core/ir` owns opcode constants/names, bytecode counting/disassembly helpers, IR shape analysis, and cycle-free slot escape analysis. Root `core` adapts `IRProgram` to this bytecode-only boundary.
 - `core/wasm` owns leaf WASM encoding/module/host metadata/value-type helpers.
 - Root `core` still owns `IRProgram`, lowering, execution, WASM emission orchestration and diagnostics adapters.
 - `std/jit` consumes only exported `core` bridge methods (`IrCompileFn`, `IrExec*`, `IrDisassemble`, `IrToWasmExported`, `WasmCompileBytesExported`).
@@ -59,7 +59,7 @@ Recent `std/transit` and `std/system` match this pattern.
 
 - `core/runtime_kernel.go` — now the consolidated handwritten runtime kernel: root runtime values (`Nil`, `Var`, `Proc`, `Fn`, `ExInfo`), proc/env/evaluator glue, reader/parser integration, IR/WASM execution, and root-specific helpers; object/protocol/scalar/shared collection contracts have moved to `core/types`, while Atom/Channel/Future/Promise/Agent wrappers now live in `core/runtime`.
 - `core/types/ops_impl.go` and `core/types/numbers.go` — numeric contracts are now type-package owned and remain critical; keep focused tests around promotion, ratio, and native-int bounds.
-- remaining root IR/WASM/executor sections in `runtime_kernel.go` are partially extracted, but compiler/executor/runtime pieces still depend on root `Fn`/`Var`/`Expr`, namespace/frame, and call contracts.
+- remaining root IR/WASM/executor sections in `runtime_kernel.go` are partially extracted, but compiler/executor/runtime pieces still depend on root `Fn`/`Var`/`Expr`, namespace/frame, and call contracts. Escape analysis has moved to `core/ir`; keep future analyzers bytecode/data-only where possible so they remain cycle-free.
 - moved concrete collection families now live in `core/types/collections`; root `core` should not grow new collection-owned files.
 
 Recommendation: keep collection ownership in `core/types/collections` and runtime wrapper ownership in `core/runtime`; use direct imports from root/runtime/generator code instead of root aliases. `tests/layout_guard.sh` now rejects reintroducing moved root collection files plus root channel/future/promise/agent/atom wrappers/literals. Current production collection and reader construction call sites use `corecollections.*`, and runtime-adjacent procs use `corert.*`; further root shrinking should focus on runtime/env/proc ownership, generated/bootstrap placement, and IR/WASM clusters rather than recreating shims. New feature code should not grow `runtime_kernel.go`; create/move code by responsibility once a real package boundary is available.

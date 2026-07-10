@@ -17,6 +17,7 @@ done
 [[ -f core/types/collections/doc.go ]] || fail "missing core/types/collections/doc.go"
 [[ -f core/types/string/doc.go ]] || fail "missing core/types/string/doc.go"
 [[ -f core/types/numerical/doc.go ]] || fail "missing core/types/numerical/doc.go"
+[[ -f core/ir/escape.go ]] || fail "missing extracted core/ir escape analysis"
 [[ -f std/http/router/router.joke ]] || fail "missing std/http/router/router.joke"
 
 if [[ -d lib/joker/http ]]; then
@@ -129,6 +130,9 @@ for pkg in runtime reader types/collections types/string types/numerical; do
     fail "core/${pkg} must not import root core; define an adapter contract before moving coupled code"
   fi
 done
+if grep -q '^type EscapeInfo struct' core/runtime_kernel.go; then
+  fail "IR escape analysis is owned by core/ir; do not reintroduce it in runtime_kernel.go"
+fi
 if grep -R 'github.com/rcarmo/go-joker/core/runtime' core/types --include='*.go' >/dev/null; then
   grep -R 'github.com/rcarmo/go-joker/core/runtime' core/types --include='*.go' >&2
   fail "core/types must not import core/runtime; runtime object wrappers own runtime-dependent behavior"
