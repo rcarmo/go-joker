@@ -17,6 +17,23 @@ func InternsOrThunks() {
 	}
 	httpNamespace.ResetMeta(MakeMeta(nil, `Provides HTTP client and server implementations.`, "1.0"))
 
+	httpNamespace.InternVar("client", client_,
+		MakeMeta(
+			corecollections.NewListFrom(
+				corecollections.NewVectorFrom(),
+				corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "opts"))),
+			`Creates a high-performance persistent HTTP client.
+
+  Options map keys:
+  - :max-idle-conns (default 100)
+  - :max-idle-conns-per-host (default 100)
+  - :idle-timeout-ms (default 90000)`, "1.0"))
+
+	httpNamespace.InternVar("close-client", close_client_,
+		MakeMeta(
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "c"))),
+			`Closes idle keep-alive connections for a client created by joker.http/client.`, "1.0"))
+
 	httpNamespace.InternVar("send", send_,
 		MakeMeta(
 			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "request"))),
@@ -26,13 +43,25 @@ func InternsOrThunks() {
   - method (string, keyword or symbol, defaults to :get)
   - body (string)
   - host (string, overrides Host header if provided)
-  - headers (map).
+  - headers (map)
+  - client (persistent client from joker.http/client)
+  - timeout-ms (optional per-request deadline).
   All keys except for url are optional.
   response is a map with the following keys:
   - status (int)
   - body (string)
   - headers (map)
   - content-length (int, or BigInt when it exceeds the native int range)`, "1.0"))
+
+	httpNamespace.InternVar("send-sse", send_sse_,
+		MakeMeta(
+			corecollections.NewListFrom(corecollections.NewVectorFrom(coretypes.MakeSymbol(STRINGS.Intern, "request"), coretypes.MakeSymbol(STRINGS.Intern, "callback"))),
+			`Sends an HTTP request and incrementally parses a text/event-stream response.
+
+  Calls callback with {:event string :data string} for each SSE event. :id and
+  :retry are included when present. Returning false from callback cancels the
+  response body. Supports :timeout-ms and :max-event-bytes request options.
+  Non-2xx responses are returned with a bounded :body.`, "1.0"))
 
 	httpNamespace.InternVar("start-file-server", start_file_server_,
 		MakeMeta(

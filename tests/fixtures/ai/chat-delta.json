@@ -1,0 +1,1 @@
+{"id":"chatcmpl_fixture","choices":[{"index":0,"delta":{"content":"hello","tool_calls":[{"index":0,"id":"call_1","type":"function","function":{"name":"weather","arguments":"{\"city\":"}}]},"finish_reason":null}]}

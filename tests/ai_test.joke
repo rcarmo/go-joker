@@ -1,0 +1,83 @@
+(load-file "examples/ai/joker/ai.joke")
+
+(require '[joker.json :as json])
+
+(def failures (atom []))
+(defn check [label value]
+  (when-not value (swap! failures conj label)))
+
+(let [payload (json/read-string (slurp "tests/fixtures/ai/chat-delta.json")
+                                {:keywords? true})
+      state (atom {:text "" :thinking "" :tool-calls {}})
+      events (atom [])]
+  (joker.ai/chat-stream-event! #(swap! events conj %) state payload)
+  (check "chat text delta" (= "hello" (:text @state)))
+  (check "chat tool name" (= "weather" (get-in @state [:tool-calls 0 :name])))
+  (check "chat raw payload" (= payload (:raw (first @events)))))
+
+(let [payload (json/read-string (slurp "tests/fixtures/ai/responses-delta.json")
+                                {:keywords? true})
+      state (atom {:text "" :thinking "" :tool-calls {}})
+      events (atom [])]
+  (joker.ai/responses-stream-event! #(swap! events conj %) state payload)
+  (check "responses text delta" (= "hello" (:text @state)))
+  (check "responses raw payload" (= payload (:raw (first @events)))))
+
+(binding [joker.ai/*model* "fixture-model"]
+  (let [context {:messages [{:role :user
+                             :content [{:type :text :text "describe"}
+                                       {:type :image :mime-type "image/png"
+                                        :data "aGVsbG8="}]}]
+                 :tools [{:name "weather" :description "Weather"
+                          :parameters {:type "object"}}]}
+        request (joker.ai/chat-request {:base-url "http://fixture/v1"
+                                        :headers {}}
+                                       context
+                                       {:response-schema
+                                        {:name "answer"
+                                         :schema {:type "object"}}})]
+    (check "multimodal image request"
+           (= "image_url" (get-in request [:body :messages 0 :content 1 :type])))
+    (check "tool request"
+           (= "weather" (get-in request [:body :tools 0 :function :name])))
+    (check "structured request"
+           (= "json_schema" (get-in request [:body :response_format :type])))))
+
+(binding [joker.ai/*model* "fixture-model"]
+  (let [request (joker.ai/responses-request
+                 {:base-url "http://fixture/v1" :headers {}}
+                 {:messages [{:role :assistant :content "previous answer"}]}
+                 {})]
+    (check "responses assistant history is input compatible"
+           (= "previous answer"
+              (get-in request [:body :input 0 :content 0 :text])))
+    (check "responses assistant history uses output item shape"
+           (= "output_text"
+              (get-in request [:body :input 0 :content 0 :type])))))
+
+(check "URL decode" (= "a+b c" (joker.ai/url-decode "a%2Bb+c")))
+(check "callback code parse"
+       (= "code/value" (joker.ai/callback-parameter
+                         "http://localhost/cb?code=code%2Fvalue&state=s" "code")))
+
+(let [stored (atom nil)]
+  (binding [joker.ai/*load-credentials* (fn [_] {:access "loaded"})
+            joker.ai/*save-credentials!* (fn [provider value]
+                                           (reset! stored [provider value]))]
+    (check "credential load callback"
+           (= "loaded" (:access (joker.ai/load-credentials :fixture))))
+    (joker.ai/save-credentials! :fixture {:access "saved"})
+    (check "credential save callback"
+           (= [:fixture {:access "saved"}] @stored))))
+
+(binding [joker.ai/*unsafe-debug?* false]
+  (let [redacted (joker.ai/redact {:Authorization "Bearer secret"
+                                   :nested {:access-token "secret"}
+                                   :safe "visible"})]
+    (check "authorization redacted" (= "[REDACTED]" (:Authorization redacted)))
+    (check "nested token redacted" (= "[REDACTED]" (get-in redacted [:nested :access-token])))
+    (check "safe diagnostic retained" (= "visible" (:safe redacted)))))
+
+(if (seq @failures)
+  (do (println "joker.ai failures:" @failures) (os/exit 1))
+  (println "joker.ai fixture tests passed"))

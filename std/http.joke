@@ -31,7 +31,8 @@
   - body (string)
   - host (string, overrides Host header if provided)
   - headers (map)
-  - client (persistent client from joker.http/client).
+  - client (persistent client from joker.http/client)
+  - timeout-ms (optional per-request deadline).
   All keys except for url are optional.
   response is a map with the following keys:
   - status (int)
@@ -41,6 +42,18 @@
   {:added "1.0"
    :go "sendRequest(request)"}
   [^Map request])
+
+(defn send-sse
+  "Sends an HTTP request and incrementally parses a text/event-stream response.
+
+  Calls callback with {:event string :data string} for each SSE event. :id and
+  :retry are included when present. Returning false from callback cancels the
+  response body. Request options are the same as send, plus :timeout-ms and
+  :max-event-bytes (default 1048576). Non-2xx responses are returned with a
+  bounded :body and do not invoke callback."
+  {:added "1.0"
+   :go "sendSSE(request, callback)"}
+  [^Map request ^Callable callback])
 
 (defn request
   "Alias for send; accepts the same request map."

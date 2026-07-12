@@ -1,0 +1,71 @@
+(ns examples
+  (:require [joker.ai :as ai]))
+
+(defn text-example []
+  (binding [ai/*provider* :openai
+            ai/*api-key* "replace-me"
+            ai/*model* "gpt-4.1"]
+    (ai/complete {:messages [{:role :user :content "Say hello."}]})))
+
+(defn streaming-example []
+  (binding [ai/*provider* :openai-compatible
+            ai/*base-url* "http://localhost:11434/v1"
+            ai/*model* "qwen3:8b"]
+    (ai/stream!
+     {:messages [{:role :user :content "Explain SSE briefly."}]}
+     (fn [event]
+       (when (= :text-delta (:type event)) (print (:delta event)))
+       true))))
+
+(defn tools-example []
+  (binding [ai/*provider* :openai
+            ai/*api-key* "replace-me"
+            ai/*model* "gpt-4.1"]
+    (ai/complete
+     {:messages [{:role :user :content "What is the weather in Lisbon?"}]
+      :tools [{:name "weather"
+               :description "Read current weather"
+               :parameters {:type "object"
+                            :properties {:city {:type "string"}}
+                            :required ["city"]}}]})))
+
+(defn structured-example []
+  (binding [ai/*provider* :openai
+            ai/*api-key* "replace-me"
+            ai/*model* "gpt-4.1"]
+    (ai/complete-json
+     {:messages [{:role :user :content "Return Lisbon's country."}]}
+     {:name "place"
+      :schema {:type "object"
+               :properties {:city {:type "string"}
+                            :country {:type "string"}}
+               :required ["city" "country"]}})))
+
+(defn multimodal-example [base64-png]
+  (binding [ai/*provider* :openai
+            ai/*api-key* "replace-me"
+            ai/*model* "gpt-4.1"]
+    (ai/complete
+     {:messages [{:role :user
+                  :content [{:type :text :text "Describe this image."}
+                            {:type :image :mime-type "image/png"
+                             :data base64-png}]}]})))
+
+(defn discovery-example []
+  (binding [ai/*provider* :openai
+            ai/*api-key* "replace-me"]
+    (ai/models)))
+
+(defn github-login-example []
+  (binding [ai/*oauth-progress!* println
+            ai/*open-browser!* (fn [url]
+                                 (println "Open:" url)
+                                 false)]
+    (ai/github-device-login!)))
+
+(defn codex-login-example []
+  (binding [ai/*oauth-progress!* println
+            ai/*open-browser!* (fn [url]
+                                 (println "Open:" url)
+                                 false)]
+    (ai/codex-login!)))

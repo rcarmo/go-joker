@@ -1,6 +1,8 @@
 package http
 
 import (
+	"bufio"
+	"context"
 	"fmt"
 	corert "github.com/rcarmo/go-joker/core/runtime"
 	"io"
@@ -223,11 +225,140 @@ func clientFromRequest(request coretypes.Map) *http.Client {
 	return client
 }
 
-func sendRequest(request coretypes.Map) coretypes.Map {
+func requestTimeout(request coretypes.Map) (time.Duration, bool) {
+	if ok, value := request.Get(coretypes.MakeKeyword(STRINGS.Intern, "timeout-ms")); ok {
+		milliseconds := nonNegativeHTTPOption(value, ":timeout-ms")
+		if int64(milliseconds) > maxHTTPMillisecondDuration {
+			panic(RT.NewError(":timeout-ms is too large"))
+		}
+		return time.Duration(milliseconds) * time.Millisecond, true
+	}
+	return 0, false
+}
+
+func requestWithContext(request coretypes.Map) (*http.Request, context.CancelFunc) {
 	req := mapToReq(request)
+	if timeout, ok := requestTimeout(request); ok && timeout > 0 {
+		ctx, cancel := context.WithTimeout(req.Context(), timeout)
+		return req.WithContext(ctx), cancel
+	}
+	return req, func() {}
+}
+
+func responseMetadata(resp *http.Response) *corecollections.ArrayMap {
+	res := corecollections.EmptyArrayMap()
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(resp.StatusCode))
+	respHeaders := corecollections.EmptyArrayMap()
+	for k, v := range resp.Header {
+		respHeaders.Add(coretypes.MakeString(k), corecollections.MakeStringVector(v))
+	}
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "headers"), respHeaders)
+	return res
+}
+
+func sendRequest(request coretypes.Map) coretypes.Map {
+	req, cancel := requestWithContext(request)
+	defer cancel()
 	resp, err := clientFromRequest(request).Do(req)
 	corert.PanicOnErr(err)
 	return respToMap(resp)
+}
+
+func sseEvent(event, data, id string, retry int) coretypes.Map {
+	res := corecollections.EmptyArrayMap()
+	if event == "" {
+		event = "message"
+	}
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "event"), coretypes.MakeString(event))
+	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "data"), coretypes.MakeString(data))
+	if id != "" {
+		res.Add(coretypes.MakeKeyword(STRINGS.Intern, "id"), coretypes.MakeString(id))
+	}
+	if retry >= 0 {
+		res.Add(coretypes.MakeKeyword(STRINGS.Intern, "retry"), coretypes.MakeInt(retry))
+	}
+	return res
+}
+
+func sendSSE(request coretypes.Map, callback coretypes.Callable) coretypes.Map {
+	req, cancel := requestWithContext(request)
+	defer cancel()
+	resp, err := clientFromRequest(request).Do(req)
+	corert.PanicOnErr(err)
+	defer func() { corert.PanicOnErr(resp.Body.Close()) }()
+
+	result := responseMetadata(resp)
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		body, readErr := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+		corert.PanicOnErr(readErr)
+		result.Add(coretypes.MakeKeyword(STRINGS.Intern, "body"), coretypes.MakeString(string(body)))
+		return result
+	}
+
+	maxEventBytes := 1 << 20
+	if ok, value := request.Get(coretypes.MakeKeyword(STRINGS.Intern, "max-event-bytes")); ok {
+		maxEventBytes = nonNegativeHTTPOption(value, ":max-event-bytes")
+	}
+	scanner := bufio.NewScanner(resp.Body)
+	scanner.Buffer(make([]byte, 4096), maxEventBytes)
+	event, id, retry := "", "", -1
+	eventBytes := 0
+	data := make([]string, 0, 1)
+	dispatch := func() bool {
+		if len(data) == 0 {
+			event = ""
+			retry = -1
+			eventBytes = 0
+			return true
+		}
+		value := callback.Call([]coretypes.Object{sseEvent(event, strings.Join(data, "\n"), id, retry)})
+		event = ""
+		data = data[:0]
+		retry = -1
+		eventBytes = 0
+		return corert.ToBool(value)
+	}
+	for scanner.Scan() {
+		line := strings.TrimSuffix(scanner.Text(), "\r")
+		if line == "" {
+			if !dispatch() {
+				result.Add(coretypes.MakeKeyword(STRINGS.Intern, "cancelled"), coretypes.MakeBoolean(true))
+				return result
+			}
+			continue
+		}
+		eventBytes += len(line) + 1
+		if eventBytes > maxEventBytes {
+			panic(RT.NewError("SSE event exceeds :max-event-bytes"))
+		}
+		if strings.HasPrefix(line, ":") {
+			continue
+		}
+		field, value, found := strings.Cut(line, ":")
+		if found && strings.HasPrefix(value, " ") {
+			value = value[1:]
+		}
+		switch field {
+		case "event":
+			event = value
+		case "data":
+			data = append(data, value)
+		case "id":
+			if !strings.ContainsRune(value, '\x00') {
+				id = value
+			}
+		case "retry":
+			var milliseconds int
+			if _, scanErr := fmt.Sscanf(value, "%d", &milliseconds); scanErr == nil && milliseconds >= 0 {
+				retry = milliseconds
+			}
+		}
+	}
+	corert.PanicOnErr(scanner.Err())
+	if !dispatch() {
+		result.Add(coretypes.MakeKeyword(STRINGS.Intern, "cancelled"), coretypes.MakeBoolean(true))
+	}
+	return result
 }
 
 const maxHTTPMillisecondDuration = int64(1<<63-1) / int64(time.Millisecond)

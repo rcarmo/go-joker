@@ -7,6 +7,34 @@ import (
 	coretypes "github.com/rcarmo/go-joker/core/types"
 )
 
+var __client__P ProcFn = __client_
+var client_ Proc = Proc{Fn: __client__P, Name: "client_", Package: "std/http"}
+
+func __client_(_args []coretypes.Object) coretypes.Object {
+	_c := len(_args)
+	switch {
+	case _c == 0:
+		return makeClient(nil)
+	case _c == 1:
+		return makeClient([]coretypes.Object{coretypes.ExtractMap(_args, 0)})
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
+var __close_client__P ProcFn = __close_client_
+var close_client_ Proc = Proc{Fn: __close_client__P, Name: "close_client_", Package: "std/http"}
+
+func __close_client_(_args []coretypes.Object) coretypes.Object {
+	_c := len(_args)
+	if _c == 1 {
+		return closeClient(_args[0])
+	}
+	PanicArity(_c)
+	return NIL
+}
+
 var __send__P ProcFn = __send_
 var send_ Proc = Proc{Fn: __send__P, Name: "send_", Package: "std/http"}
 
@@ -18,6 +46,22 @@ func __send_(_args []coretypes.Object) coretypes.Object {
 		_res := sendRequest(request)
 		return _res
 
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
+var __send_sse__P ProcFn = __send_sse_
+var send_sse_ Proc = Proc{Fn: __send_sse__P, Name: "send_sse_", Package: "std/http"}
+
+func __send_sse_(_args []coretypes.Object) coretypes.Object {
+	_c := len(_args)
+	switch {
+	case _c == 2:
+		request := coretypes.ExtractMap(_args, 0)
+		callback := coretypes.ExtractCallable(_args, 1)
+		return sendSSE(request, callback)
 	default:
 		PanicArity(_c)
 	}

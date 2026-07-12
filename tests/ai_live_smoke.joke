@@ -1,0 +1,27 @@
+;; Optional live smoke test. Nothing runs without explicit command-line values.
+;; From examples/ai (so joker.ai is on the load path):
+;;   ../../.cache/tmp/joker ../../tests/ai_live_smoke.joke -- \
+;;     openai https://api.openai.com/v1 gpt-4.1 sk-...
+
+(ns ai-live-smoke
+  (:require [joker.ai :as ai]))
+
+(let [[provider-name base-url model api-key] *command-line-args*]
+  (when-not (and provider-name base-url model api-key)
+    (throw (ex-info "Expected provider, base URL, model, and API key arguments."
+                    {:category :missing-live-credentials})))
+  (let [provider (keyword provider-name)]
+    (binding [ai/*provider* provider
+              ai/*base-url* base-url
+              ai/*model* model
+              ai/*api-key* api-key
+              ai/*timeout-ms* 30000
+              ai/*max-retries* 0]
+      (let [result (ai/complete
+                    {:messages [{:role :user
+                                 :content "Reply with exactly: joker-ai-ok"}]})]
+        (when-not (= "joker-ai-ok" (:text result))
+          (throw (ex-info "Unexpected live response."
+                          {:category :live-smoke-failure
+                           :provider provider :response (:text result)})))
+        (println "joker.ai live smoke passed for" provider)))))
