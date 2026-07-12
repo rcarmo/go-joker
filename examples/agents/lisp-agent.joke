@@ -1,0 +1,134 @@
+;; A Joker port of Jamie Beach's lisp-agent:
+;; https://github.com/jamiebeach/lisp-agent (MIT)
+;;
+;; The model receives one tool: a live Joker evaluator. This is intentionally
+;; unsafe outside a disposable sandbox; evaluated forms have the process's full
+;; filesystem, network, environment, and subprocess privileges.
+
+(ns lisp-agent
+  (:require [joker.http :as http]
+            [joker.json :as json]
+            [joker.os :as os]
+            [joker.string :as str]))
+
+(def endpoint "https://openrouter.ai/api/v1/chat/completions")
+(def default-model "anthropic/claude-sonnet-4.5")
+(def env (os/env))
+(def model (get env "OPENROUTER_MODEL" default-model))
+(def api-key (get env "OPENROUTER_API_KEY"))
+(def memory-file (get env "AGENT_MEMORY" "memory.json"))
+
+(def tools
+  [{:type "function"
+    :function
+    {:name "joker-eval"
+     :description (str "Evaluate one Joker form and return its printed value. "
+                       "Use this for computation and data manipulation.")
+     :parameters
+     {:type "object"
+      :properties
+      {:form {:type "string"
+              :description (str "One Joker form, for example "
+                                "(reduce + (range 1 101))")}}
+      :required ["form"]}}}])
+
+(def system-message
+  {:role "system"
+   :content (str "You are a helpful agent with a live Joker REPL. "
+                 "Prefer computing answers with joker-eval over guessing. "
+                 "Your conversation history persists across sessions.")})
+
+(defn joker-eval
+  "Reads, evaluates, and prints one Joker form. Intentionally unrestricted."
+  [form-string]
+  (pr-str (eval (read-string form-string))))
+
+(defn execute [tool-call]
+  (let [name (get-in tool-call [:function :name])
+        args (json/read-string (get-in tool-call [:function :arguments])
+                               {:keywords? true})
+        form (:form args)
+        result (cond
+                 (not= name "joker-eval") (str "ERROR: unknown tool " name)
+                 (not (string? form)) "ERROR: joker-eval requires a string form"
+                 :else (joker-eval form))]
+    (println (str "  [36m↳[0m " (or form name) " => " result))
+    {:role "tool"
+     :tool_call_id (:id tool-call)
+     :content result}))
+
+(defn call-model [messages]
+  (when-not api-key
+    (throw (ex-info "OPENROUTER_API_KEY is required" {})))
+  (let [response
+        (http/send {:method :post
+                    :url endpoint
+                    :body (json/write-string {:model model
+                                              :messages messages
+                                              :tools tools})
+                    :headers {"Authorization" (str "Bearer " api-key)
+                              "Content-Type" "application/json"}})]
+    (when-not (<= 200 (:status response) 299)
+      (throw (ex-info (str "OpenRouter returned HTTP " (:status response))
+                      {:status (:status response)
+                       :body (:body response)})))
+    (json/read-string (:body response) {:keywords? true})))
+
+(defn agent-loop
+  "Returns the complete history, including the final assistant message."
+  [initial-messages]
+  (loop [messages initial-messages]
+    (let [message (get-in (call-model messages) [:choices 0 :message])
+          tool-calls (:tool_calls message)
+          next-messages (conj messages message)]
+      (if (seq tool-calls)
+        (recur (into next-messages (map execute tool-calls)))
+        next-messages))))
+
+(defn remember [messages]
+  ;; This mirrors the original's deliberately tiny persistence model.
+  (spit memory-file (json/write-string messages {:indent "  "}))
+  messages)
+
+(defn recall []
+  (if (os/exists? memory-file)
+    (let [messages (json/read-string (slurp memory-file) {:keywords? true})]
+      (if (vector? messages)
+        messages
+        (throw (ex-info "Agent memory must contain a JSON array"
+                        {:path memory-file}))))
+    [system-message]))
+
+(defn forget []
+  (when (os/exists? memory-file)
+    (os/remove memory-file))
+  (println "Memory wiped."))
+
+(defn run [prompt]
+  (let [history (remember
+                 (agent-loop
+                  (conj (recall) {:role "user" :content prompt})))
+        answer (:content (peek history))]
+    (println answer)
+    answer))
+
+(defn usage []
+  (println "Usage:")
+  (println "  joker examples/agents/lisp-agent.joke PROMPT...")
+  (println "  joker examples/agents/lisp-agent.joke --forget")
+  (println "  joker examples/agents/lisp-agent.joke --eval FORM")
+  (println)
+  (println "OPENROUTER_API_KEY is required for prompts."))
+
+(defn -main []
+  (let [args *command-line-args*]
+    (cond
+      (empty? args) (usage)
+      (= ["--forget"] args) (forget)
+      (= "--eval" (first args))
+      (if-let [form (second args)]
+        (println (joker-eval form))
+        (throw (ex-info "--eval requires a Joker form" {})))
+      :else (run (str/join " " args)))))
+
+(-main)

@@ -2,6 +2,20 @@
 
 This directory contains runnable Joker examples grouped by purpose.
 
+## Agents
+
+### Lisp agent with a live Joker evaluator
+
+```bash
+export OPENROUTER_API_KEY=sk-or-...
+joker examples/agents/lisp-agent.joke \
+  'What is the 30th Fibonacci number? Compute it.'
+```
+
+A dependency-free Joker port of Jamie Beach's `lisp-agent`: an OpenRouter tool loop, unrestricted Joker `eval`, and persistent JSON conversation memory. It also demonstrates why Joker's namespace and Var introspection can support a safer capability-driven successor.
+
+See [`examples/agents/README.md`](agents/README.md), including the sandboxing warning.
+
 ## Graphics
 
 ### Fractal flame / procedural raster

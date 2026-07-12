@@ -8,6 +8,7 @@ WIKI_BUILD_LOG="$OUT_DIR/wiki-build.log"
 WIKI_ROOT_HTML="$OUT_DIR/wiki-root.html"
 FLAME_LOG="$OUT_DIR/flame.log"
 TETRIS_LINT_LOG="$OUT_DIR/tetris-lint.log"
+AGENT_EVAL_LOG="$OUT_DIR/lisp-agent-eval.log"
 
 cd "$ROOT"
 
@@ -24,12 +25,19 @@ require_file() {
 }
 
 require_file examples/README.md
+require_file examples/agents/lisp-agent.joke
+require_file examples/agents/README.md
 require_file examples/graphics/fractal-flame.joke
 require_file examples/games/tetris.joke
 require_file examples/wiki/static.joke
 require_file examples/wiki/README.md
 require_file examples/notebooks/rich-demo.edn
 require_file examples/notebooks/complex-demo.edn
+
+# Agent evaluator smoke does not require an API key or make a network request.
+"$JOKER_BIN" examples/agents/lisp-agent.joke --eval \
+  '(reduce + (range 1 101))' >"$AGENT_EVAL_LOG"
+grep -qx '5050' "$AGENT_EVAL_LOG"
 
 # Static wiki build smoke.
 rm -rf "$OUT_DIR/wiki"
