@@ -64,12 +64,15 @@ This is an educational example, not a production sandbox.
 
 ## Introspection-driven successor
 
-`introspective-agent.joke` is the hardened successor under development. Its first stage is already runnable without credentials:
+`introspective-agent.joke` is the runnable hardened successor. Its discovery, schemas, policy checks, controlled invocation, and self-test work without credentials:
 
 ```bash
 ./joker examples/agents/introspective-agent.joke --describe joker.string/join
 ./joker examples/agents/introspective-agent.joke --search join
 ./joker examples/agents/introspective-agent.joke --namespace joker.json 20
+./joker examples/agents/introspective-agent.joke --invoke pure-data \
+  joker.string/join '["-",["a","b"]]'
+./joker examples/agents/introspective-agent.joke --self-test
 ```
 
 Joker exposes Clojure-style runtime metadata and namespace discovery through `all-ns`, `ns-publics`, `ns-map`, `ns-resolve`, `meta`, `macroexpand`, and `joker.repl/apropos`. The successor uses those APIs instead of teaching the model a stale, hand-written API catalog.
@@ -87,7 +90,7 @@ The hardened path follows these rules:
 7. **Metadata is not a sandbox.** Policy checks reduce accidental capability use, but hostile general evaluation must still execute in an isolated child process or container with operating-system limits.
 8. **Compatibility is explicit.** `lisp-agent.joke` remains the small, unsafe upstream-style demonstration. Hardened behavior lives in `introspective-agent.joke`; callers must deliberately select the unsafe path.
 
-The current implementation covers deterministic namespace discovery and metadata-backed symbol descriptions. Schema generation, controlled invocation, form analysis, profiles, observability, and isolation are the next staged additions.
+The implementation now includes metadata-derived schemas, five strict model tools, denial-by-default dispatch, pre/post-expansion form analysis, deterministic runtime-generated prompts, structured observations, secret redaction, and a wall-clock-limited child runner. See [`HARDENING.md`](HARDENING.md) for architecture, profile authoring, migration, threat model, OS isolation, tests, and benchmark guidance. The child runner is defense in depth; metadata and allowlists are not a sandbox.
 
 ## Attribution
 

@@ -43,6 +43,8 @@ check_present examples/README.md
 check_present examples/agents/lisp-agent.joke
 check_present examples/agents/introspective-agent.joke
 check_present examples/agents/README.md
+check_present examples/agents/HARDENING.md
+check_present tests/introspective_agent_test.sh
 check_present examples/graphics/fractal-flame.joke
 check_present examples/games/tetris.joke
 check_present examples/wiki/static.joke

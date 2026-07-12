@@ -101,7 +101,7 @@ str-or-pattern."
                    #(re-find str-or-pattern (str %))
                    #(joker.string/includes? (str %) (str str-or-pattern)))]
     (sort (mapcat (fn [ns]
-                    (let [ns-name (str ns)]
+                    (let [ns-name (str (ns-name ns))]
                       (map #(symbol ns-name (str %))
                            (filter matches? (keys (ns-publics ns))))))
                   (all-ns)))))

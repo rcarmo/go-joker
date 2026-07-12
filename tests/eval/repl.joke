@@ -1,0 +1,10 @@
+(ns joker.test.repl
+  (:require [joker.repl :as repl]
+            [joker.string]
+            [joker.test :refer [deftest is]]))
+
+(deftest apropos-uses-namespace-names
+  (is (= "a,b" (joker.string/join "," ["a" "b"])))
+  (let [matches (repl/apropos "join")]
+    (is (some #(= 'joker.string/join %) matches))
+    (is (every? namespace matches))))

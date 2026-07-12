@@ -14,7 +14,15 @@ joker examples/agents/lisp-agent.joke \
 
 A dependency-free Joker port of Jamie Beach's `lisp-agent`: an OpenRouter tool loop, unrestricted Joker `eval`, and persistent JSON conversation memory. It also demonstrates why Joker's namespace and Var introspection can support a safer capability-driven successor.
 
-See [`examples/agents/README.md`](agents/README.md), including the sandboxing warning.
+The successor is runnable with a controlled pure-data profile:
+
+```bash
+joker examples/agents/introspective-agent.joke --describe joker.string/join
+joker examples/agents/introspective-agent.joke --invoke pure-data \
+  joker.string/join '["-",["a","b"]]'
+```
+
+See [`examples/agents/README.md`](agents/README.md) and the hardened agent's [architecture, threat model, and isolation guide](agents/HARDENING.md). The original evaluator remains explicitly unsafe.
 
 ## Graphics
 

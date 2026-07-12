@@ -47,9 +47,9 @@ grep -qx '5050' "$AGENT_EVAL_LOG"
 grep -q '"qualified-name": "joker.string/join"' "$AGENT_INTROSPECTION_LOG"
 grep -q '"invocable": true' "$AGENT_INTROSPECTION_LOG"
 grep -q '"arglists"' "$AGENT_INTROSPECTION_LOG"
-"$JOKER_BIN" examples/agents/introspective-agent.joke --self-test \
+JOKER_BIN="$JOKER_BIN" tests/introspective_agent_test.sh . \
   >>"$AGENT_INTROSPECTION_LOG"
-grep -q 'introspective agent self-test passed' "$AGENT_INTROSPECTION_LOG"
+grep -q 'introspective agent tests passed' "$AGENT_INTROSPECTION_LOG"
 
 # Static wiki build smoke.
 rm -rf "$OUT_DIR/wiki"

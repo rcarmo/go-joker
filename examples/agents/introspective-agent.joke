@@ -1,13 +1,16 @@
 ;; Introspection-driven successor to lisp-agent.joke.
 ;;
-;; This file is being built in stages. The first stage provides deterministic,
-;; bounded discovery and symbol-description primitives. Later stages use these
-;; records to derive tool schemas and enforce capability profiles.
+;; Discovery, metadata-derived schemas, policy analysis, and capability
+;; invocation are deterministic and bounded. Invocations run in a wall-clock
+;; limited child by default; see README.md for the required OS isolation layer.
 
 (ns introspective-agent
-  (:require [joker.json :as json]
+  (:require [joker.http :as http]
+            [joker.json :as json]
+            [joker.os :as os]
             [joker.repl :as repl]
-            [joker.string :as str]))
+            [joker.string :as str]
+            [joker.time :as time]))
 
 (def default-namespaces
   "Public namespaces exposed by the initial pure-data capability profile."
@@ -15,6 +18,102 @@
 
 (def default-result-limit 20)
 (def maximum-result-limit 100)
+(def maximum-result-preview 4096)
+
+(def capability-profiles
+  {"discover-only"
+   {:id "discover-only"
+    :domains #{}
+    :namespaces default-namespaces
+    :allow #{}
+    :allow-macros #{}
+    :unsafe-eval false}
+   "pure-data"
+   {:id "pure-data"
+    :domains #{:pure-computation :strings-collections :json-data}
+    :namespaces default-namespaces
+    :allow #{"joker.core/+" "joker.core/-" "joker.core/*" "joker.core//"
+             "joker.core/=" "joker.core/<" "joker.core/<="
+             "joker.core/>" "joker.core/>=" "joker.core/assoc"
+             "joker.core/conj" "joker.core/count" "joker.core/dec"
+             "joker.core/dissoc" "joker.core/first" "joker.core/get"
+             "joker.core/inc" "joker.core/keys" "joker.core/list"
+             "joker.core/max" "joker.core/merge" "joker.core/min"
+             "joker.core/nth" "joker.core/range" "joker.core/rest"
+             "joker.core/reverse" "joker.core/sort" "joker.core/str"
+             "joker.core/subs" "joker.core/vals" "joker.core/vector"
+             "joker.json/read-string" "joker.json/write-string"
+             "joker.string/blank?" "joker.string/capitalize"
+             "joker.string/ends-with?" "joker.string/includes?"
+             "joker.string/index-of" "joker.string/join"
+             "joker.string/last-index-of" "joker.string/lower-case"
+             "joker.string/pad-left" "joker.string/pad-right"
+             "joker.string/replace" "joker.string/reverse"
+             "joker.string/split" "joker.string/starts-with?"
+             "joker.string/trim" "joker.string/trim-newline"
+             "joker.string/triml" "joker.string/trimr"
+             "joker.string/upper-case"}
+    :allow-macros #{"joker.core/->" "joker.core/->>" "joker.core/and"
+                    "joker.core/cond" "joker.core/if-let" "joker.core/or"
+                    "joker.core/when" "joker.core/when-let"}
+    :unsafe-eval false}
+   "filesystem" {:id "filesystem" :domains #{:filesystem}
+                  :namespaces [] :allow #{} :allow-macros #{}
+                  :status "disabled-until-root-policy" :unsafe-eval false}
+   "environment" {:id "environment" :domains #{:environment}
+                   :namespaces [] :allow #{} :allow-macros #{}
+                   :status "disabled-until-name-redaction-policy"
+                   :unsafe-eval false}
+   "http-network" {:id "http-network" :domains #{:http-network}
+                    :namespaces [] :allow #{} :allow-macros #{}
+                    :status "disabled-until-host-policy" :unsafe-eval false}
+   "namespace-loading" {:id "namespace-loading" :domains #{:namespace-loading}
+                         :namespaces [] :allow #{} :allow-macros #{}
+                         :status "disabled" :unsafe-eval false}
+   "subprocesses" {:id "subprocesses" :domains #{:subprocesses}
+                    :namespaces [] :allow #{} :allow-macros #{}
+                    :status "disabled" :unsafe-eval false}
+   "unrestricted-evaluation"
+   {:id "unrestricted-evaluation" :domains #{:unrestricted-evaluation}
+    :namespaces [] :allow #{} :allow-macros #{}
+    :status "compatibility-example-only" :unsafe-eval true}})
+
+(def special-form-names
+  #{"if" "do" "let" "letfn" "loop" "recur" "fn" "quote" "var"
+    "throw" "try" "catch" "finally" "def" "set!"})
+(def maximum-form-characters 16384)
+(def maximum-macroexpand-depth 12)
+(def maximum-agent-turns 12)
+(def maximum-agent-tool-calls 32)
+(def environment (os/env))
+(def active-profile-id (get environment "JOKER_AGENT_PROFILE" "pure-data"))
+(def openrouter-model
+  (get environment "OPENROUTER_MODEL" "anthropic/claude-sonnet-4.5"))
+(def openrouter-api-key (get environment "OPENROUTER_API_KEY"))
+(def openrouter-endpoint "https://openrouter.ai/api/v1/chat/completions")
+(def agent-memory-file
+  (get environment "AGENT_MEMORY" "introspective-memory.json"))
+(def child-execution? (= "1" (get environment "JOKER_AGENT_CHILD" "1")))
+(def child-timeout-seconds (get environment "JOKER_AGENT_TIMEOUT" "5"))
+(def child-script "examples/agents/introspective-agent.joke")
+
+(def capability-domain-policies
+  {:pure-computation {:isolation-required false :default "allow-listed"}
+   :strings-collections {:isolation-required false :default "allow-listed"}
+   :json-data {:isolation-required false :default "allow-listed"}
+   :filesystem {:isolation-required true :default "deny"
+                :constraint "dedicated read/write roots required"}
+   :environment {:isolation-required true :default "deny"
+                 :constraint "explicit variable names and redaction required"}
+   :http-network {:isolation-required true :default "deny"
+                  :constraint "scheme/host allowlist required"}
+   :namespace-loading {:isolation-required true :default "deny"}
+   :subprocesses {:isolation-required true :default "deny"}
+   :unrestricted-evaluation {:isolation-required true :default "deny"
+                             :compatibility-example "lisp-agent.joke"}})
+
+(defn profile-by-id [profile-id]
+  (get capability-profiles profile-id))
 
 (defn bounded-limit [n]
   (max 1 (min maximum-result-limit (or n default-result-limit))))
@@ -35,6 +134,51 @@
   ;; argument position exactly as Joker prints it.
   (mapv (fn [arglist] (mapv str arglist)) (:arglists metadata)))
 
+(defn simple-argument-name? [argument]
+  (and (not= argument "&")
+       (boolean (re-matches #"[A-Za-z_][A-Za-z0-9_-]*" argument))))
+
+(defn arglist-shape [arglist]
+  (let [amp-index (first (keep-indexed (fn [index argument]
+                                         (when (= argument "&") index))
+                                       arglist))]
+    (if amp-index
+      {:minimum amp-index :maximum nil :variadic true}
+      {:minimum (count arglist) :maximum (count arglist) :variadic false})))
+
+(defn fixed-object-arglist? [arglist]
+  (and (every? simple-argument-name? arglist)
+       (= (count arglist) (count (set arglist)))))
+
+(defn positional-args-schema [qualified arglists]
+  (let [shapes (map arglist-shape arglists)
+        minimum (if (seq shapes) (apply min (map :minimum shapes)) 0)
+        fixed? (and (seq shapes) (not-any? :variadic shapes))
+        maximum (when fixed? (apply max (map :maximum shapes)))]
+    {:type "object"
+     :properties
+     {:args (cond-> {:type "array"
+                     :description (str "JSON-compatible positional arguments for "
+                                       qualified ".")
+                     :minItems minimum}
+              maximum (assoc :maxItems maximum))}
+     :required ["args"]
+     :additionalProperties false}))
+
+(defn metadata-parameter-schema [qualified arglists]
+  (if (and (= 1 (count arglists))
+           (fixed-object-arglist? (first arglists)))
+    (let [arguments (first arglists)]
+      {:type "object"
+       :properties (into {}
+                         (map (fn [argument]
+                                [argument {:description (str "Argument " argument
+                                                            " for " qualified ".")}])
+                              arguments))
+       :required arguments
+       :additionalProperties false})
+    (positional-args-schema qualified arglists)))
+
 (defn var-kind [variable metadata]
   (cond
     (:macro metadata) "macro"
@@ -42,13 +186,16 @@
     :else "value"))
 
 (defn describe-var [namespace-name symbol-name variable]
-  (let [metadata (meta variable)]
-    {:qualified-name (qualified-name namespace-name symbol-name)
+  (let [metadata (meta variable)
+        qualified (qualified-name namespace-name symbol-name)
+        arglists (metadata-arglists metadata)]
+    {:qualified-name qualified
      :namespace namespace-name
      :name (str symbol-name)
      :kind (var-kind variable metadata)
      :doc (:doc metadata)
-     :arglists (metadata-arglists metadata)
+     :arglists arglists
+     :parameters-schema (metadata-parameter-schema qualified arglists)
      :tag (when-let [tag (:tag metadata)] (str tag))
      :macro (boolean (:macro metadata))
      :dynamic (boolean (:dynamic metadata))
@@ -108,14 +255,671 @@
           (take (bounded-limit limit))
           vec))))
 
+(defn error-envelope [category message details]
+  {:ok false
+   :error {:category category
+           :message message
+           :details details}})
+
+(defn success-envelope [operation value metadata]
+  {:ok true
+   :operation operation
+   :value value
+   :meta metadata})
+
+(defn profile-allows? [profile qualified]
+  (contains? (:allow profile) qualified))
+
+(defn arity-accepts? [arglists argument-count]
+  (or (empty? arglists)
+      (some (fn [arglist]
+              (let [{:keys [minimum maximum]} (arglist-shape arglist)]
+                (and (<= minimum argument-count)
+                     (or (nil? maximum) (<= argument-count maximum)))))
+            arglists)))
+
+(defn secret-environment-key? [key]
+  (let [normalized (str/lower-case key)]
+    (or (str/includes? normalized "secret")
+        (str/includes? normalized "token")
+        (str/includes? normalized "password")
+        (str/includes? normalized "api_key")
+        (str/includes? normalized "apikey")
+        (= normalized "authorization"))))
+
+(defn redact-text-with-environment [text entries]
+  (reduce (fn [result [key value]]
+            (if (and (secret-environment-key? key)
+                     (string? value)
+                     (<= 6 (count value)))
+              (str/replace result value "[REDACTED]")
+              result))
+          (or text "")
+          entries))
+
+(defn redact-text [text]
+  (redact-text-with-environment text environment))
+
+(defn bounded-preview [value]
+  (let [rendered (pr-str value)]
+    (if (<= (count rendered) maximum-result-preview)
+      {:text rendered :truncated false :characters (count rendered)}
+      {:text (subs rendered 0 maximum-result-preview)
+       :truncated true
+       :characters (count rendered)})))
+
+(defn invoke-capability-direct-unsafe [profile-id qualified arguments]
+  (let [profile (profile-by-id profile-id)]
+    (cond
+      (nil? profile)
+      (error-envelope "unknown-profile" "Unknown capability profile."
+                      {:profile profile-id})
+
+      (not (string? qualified))
+      (error-envelope "invalid-request" "qualified-name must be a string."
+                      {:field "qualified-name"})
+
+      (not (vector? arguments))
+      (error-envelope "invalid-request" "args must be a JSON array."
+                      {:field "args"})
+
+      (not (profile-allows? profile qualified))
+      (error-envelope "policy-denied" "Capability is not allowed by the profile."
+                      {:profile profile-id :qualified-name qualified})
+
+      :else
+      (if-let [description (describe-symbol qualified)]
+        (cond
+          (not (:invocable description))
+          (error-envelope "not-invocable" "Symbol is not an invocable public function."
+                          {:qualified-name qualified :kind (:kind description)})
+
+          (not (arity-accepts? (:arglists description) (count arguments)))
+          (error-envelope "arity-mismatch" "Argument count does not match metadata."
+                          {:qualified-name qualified
+                           :argument-count (count arguments)
+                           :arglists (:arglists description)})
+
+          :else
+          (let [[namespace-name symbol-name] (split-qualified-symbol qualified)
+                variable (get (public-vars namespace-name) (symbol symbol-name))
+                started (time/now)
+                result (apply @variable arguments)
+                elapsed-ns (time/since started)]
+            (success-envelope "invoke-capability"
+                              (bounded-preview result)
+                              {:profile profile-id
+                               :requested-symbol qualified
+                               :resolved-symbol (:qualified-name description)
+                               :result-type (str (type result))
+                               :argument-count (count arguments)
+                               :normalized-arguments
+                               {:count (count arguments)
+                                :types (mapv #(str (type %)) arguments)}
+                               :policy-decision "allowed"
+                               :elapsed-ns elapsed-ns
+                               :metadata-provenance
+                               (select-keys description [:file :line :column])})))
+        (error-envelope "symbol-not-found" "Public symbol was not found."
+                        {:qualified-name qualified})))))
+
+(defn invoke-capability-direct [profile-id qualified arguments]
+  (invoke-capability-direct-unsafe profile-id qualified arguments))
+
+(defn invoke-capability-child [profile-id qualified arguments]
+  (let [started (time/now)
+        execution (os/exec "timeout"
+                           {:args [child-timeout-seconds
+                                   (os/executable)
+                                   child-script
+                                   "--child-invoke"
+                                   profile-id
+                                   qualified
+                                   (json/write-string arguments)]})
+        elapsed-ns (time/since started)]
+    (if (:success execution)
+      (json/read-string (:out execution) {:keywords? true})
+      (error-envelope (if (= 124 (:exit execution)) "timeout" "runtime-error")
+                      "Isolated child invocation failed."
+                      {:exit (:exit execution)
+                       :elapsed-ns elapsed-ns
+                       :stdout (bounded-preview (redact-text (:out execution)))
+                       :stderr (bounded-preview (redact-text (:err execution)))}))))
+
+(defn invoke-capability [profile-id qualified arguments]
+  (if child-execution?
+    (invoke-capability-child profile-id qualified arguments)
+    (invoke-capability-direct profile-id qualified arguments)))
+
 (defn emit-json [value]
   (println (json/write-string value {:indent "  "})))
+
+(defn map-value? [value]
+  ;; Use the concrete type name because map?/associative? in older Joker
+  ;; binaries do not recognize every persistent map implementation.
+  (and value (str/ends-with? (str (type value)) "Map")))
+
+(defn read-one-form [text]
+  (when (and (string? text) (<= (count text) maximum-form-characters))
+    (let [forms (read-string (str "(" text "\n)"))]
+      (when (= 1 (count forms)) (first forms)))))
+
+(defn collect-symbols [form]
+  (cond
+    (symbol? form) #{form}
+    (map-value? form)
+    (reduce into #{} (map collect-symbols (concat (keys form) (vals form))))
+    (and (seq? form) (= 'quote (first form))) #{}
+    (coll? form) (reduce into #{} (map collect-symbols form))
+    :else #{}))
+
+(defn resolved-symbol-record [symbol-value]
+  (if (and (nil? (namespace symbol-value))
+           (contains? special-form-names (name symbol-value)))
+    {:requested (str symbol-value) :kind "special-form" :resolved (str symbol-value)
+     :allowed true}
+    (if-let [variable (ns-resolve *ns* symbol-value)]
+      (let [metadata (meta variable)
+            namespace-name (str (:ns metadata))
+            qualified (qualified-name namespace-name (:name metadata))]
+        {:requested (str symbol-value)
+         :resolved qualified
+         :kind (var-kind variable metadata)
+         :private (boolean (:private metadata))
+         :dynamic (boolean (:dynamic metadata))
+         :file (:file metadata) :line (:line metadata) :column (:column metadata)})
+      {:requested (str symbol-value) :resolved nil :kind "unresolved"})))
+
+(defn symbol-policy-allowed? [profile record]
+  (cond
+    (= "special-form" (:kind record)) true
+    (nil? (:resolved record)) false
+    (:private record) false
+    (:dynamic record) false
+    (= "macro" (:kind record)) (contains? (:allow-macros profile) (:resolved record))
+    :else (contains? (:allow profile) (:resolved record))))
+
+(defn analyze-form [profile-id form]
+  (if-let [profile (profile-by-id profile-id)]
+    (let [records (->> (collect-symbols form)
+                       (map resolved-symbol-record)
+                       (map #(assoc % :allowed (symbol-policy-allowed? profile %)))
+                       (sort-by :requested)
+                       vec)
+          denied (vec (remove :allowed records))]
+      {:ok (empty? denied)
+       :profile profile-id
+       :symbols records
+       :denied denied
+       :form-characters (count (pr-str form))})
+    (error-envelope "unknown-profile" "Unknown capability profile."
+                    {:profile profile-id})))
+
+(defn expand-form-bounded [form]
+  (loop [current form depth 0]
+    (let [expanded (macroexpand current)
+          characters (count (pr-str expanded))]
+      (cond
+        (> characters maximum-form-characters)
+        {:ok false :category "expanded-form-too-large" :depth depth
+         :characters characters}
+        (= expanded current)
+        {:ok true :form expanded :depth depth :characters characters}
+        (>= depth maximum-macroexpand-depth)
+        {:ok false :category "macroexpand-depth-exceeded" :depth depth
+         :characters characters}
+        :else (recur expanded (inc depth))))))
+
+(defn macroexpand-form-tool [profile-id arguments]
+  (let [started (time/now)
+        text (:form arguments)]
+    (cond
+      (not (string? text))
+      (error-envelope "invalid-request" "form must be a string." {:field "form"})
+      (> (count text) maximum-form-characters)
+      (error-envelope "form-too-large" "Form exceeds the input size limit."
+                      {:characters (count text) :maximum maximum-form-characters})
+      :else
+      (if-let [form (read-one-form text)]
+        (let [before (analyze-form profile-id form)]
+          (if-not (:ok before)
+            (error-envelope "policy-denied" "Original form failed policy analysis."
+                            {:analysis before})
+            (let [expansion (expand-form-bounded form)]
+              (if-not (:ok expansion)
+                (error-envelope (:category expansion) "Macro expansion was bounded."
+                                (dissoc expansion :ok :category))
+                (let [after (analyze-form profile-id (:form expansion))]
+                  (if (:ok after)
+                    (success-envelope "macroexpand-form"
+                                      {:expanded (pr-str (:form expansion))
+                                       :depth (:depth expansion)}
+                                      {:profile profile-id
+                                       :before before :after after
+                                       :expanded-form (pr-str (:form expansion))
+                                       :policy-decision "allowed"
+                                       :elapsed-ns (time/since started)})
+                    (error-envelope "expanded-form-policy-denied"
+                                    "Expanded form failed policy analysis."
+                                    {:analysis after})))))))
+        (error-envelope "form-count" "Exactly one Joker form is required." {})))))
+
+(def agent-tools
+  [{:type "function"
+    :function
+    {:name "search-symbols"
+     :description "Search public Joker symbols in the active capability profile."
+     :parameters {:type "object"
+                  :properties {:query {:type "string"}
+                               :limit {:type "integer" :minimum 1
+                                       :maximum maximum-result-limit}}
+                  :required ["query"]
+                  :additionalProperties false}}}
+   {:type "function"
+    :function
+    {:name "describe-symbol"
+     :description "Describe one public namespace-qualified Joker symbol."
+     :parameters {:type "object"
+                  :properties {:qualified-name {:type "string"}}
+                  :required ["qualified-name"]
+                  :additionalProperties false}}}
+   {:type "function"
+    :function
+    {:name "list-namespace-publics"
+     :description "List public symbols from one namespace in the active profile."
+     :parameters {:type "object"
+                  :properties {:namespace {:type "string"}
+                               :limit {:type "integer" :minimum 1
+                                       :maximum maximum-result-limit}}
+                  :required ["namespace"]
+                  :additionalProperties false}}}
+   {:type "function"
+    :function
+    {:name "macroexpand-form"
+     :description "Macroexpand one Joker form under the active policy."
+     :parameters {:type "object"
+                  :properties {:form {:type "string"}}
+                  :required ["form"]
+                  :additionalProperties false}}}
+   {:type "function"
+    :function
+    {:name "invoke-capability"
+     :description "Invoke an allowed public Joker function with JSON-compatible arguments."
+     :parameters {:type "object"
+                  :properties {:qualified-name {:type "string"}
+                               :args {:type "array"}}
+                  :required ["qualified-name" "args"]
+                  :additionalProperties false}}}])
+
+(defn encode-tool-character [character]
+  (let [text (str character)]
+    (cond
+      (re-matches #"[A-Za-z0-9-]" text) text
+      (= character \_) "_u"
+      :else (str "_z" (int character) "_"))))
+
+(defn openrouter-capability-name [qualified]
+  (str "cap_" (apply str (map encode-tool-character qualified))))
+
+(defn profile-capability-descriptions [profile-id]
+  (if-let [profile (profile-by-id profile-id)]
+    (->> (:namespaces profile)
+         sort
+         (mapcat (fn [namespace-name]
+                   (->> (all-namespace-publics namespace-name)
+                        (filter #(contains? (:allow profile)
+                                            (:qualified-name %)))
+                        (take 12))))
+         vec)
+    []))
+
+(defn capability-openrouter-tools [profile-id]
+  (mapv (fn [description]
+          {:type "function"
+           :function
+           {:name (openrouter-capability-name (:qualified-name description))
+            :description (or (:doc description)
+                             (str "Invoke " (:qualified-name description)))
+            :parameters (:parameters-schema description)}})
+        (profile-capability-descriptions profile-id)))
+
+(defn compact-description [description]
+  (let [doc (or (:doc description) "")]
+    (assoc (select-keys description [:qualified-name :kind :arglists :tag])
+           :doc (if (<= (count doc) 160) doc (str (subs doc 0 160) "...")))))
+
+(defn capability-catalog [profile-id]
+  (mapv compact-description (profile-capability-descriptions profile-id)))
+
+(defn description-for-openrouter-tool [profile-id tool-name]
+  (first (filter #(= tool-name
+                     (openrouter-capability-name (:qualified-name %)))
+                 (profile-capability-descriptions profile-id))))
+
+(defn metadata-tool-arguments [description arguments]
+  (let [arglists (:arglists description)]
+    (if (and (= 1 (count arglists))
+             (fixed-object-arglist? (first arglists)))
+      (mapv #(get arguments (keyword %)) (first arglists))
+      (:args arguments))))
+
+(defn bounded-catalog-text [profile-id]
+  (let [rendered (json/write-string (capability-catalog profile-id))]
+    (if (<= (count rendered) 8000)
+      rendered
+      (str (subs rendered 0 8000) "...<catalog truncated>"))))
+
+(defn system-message [profile-id]
+  (let [profile (profile-by-id profile-id)]
+    {:role "system"
+     :content
+     (str "You are a Joker agent operating under capability profile " profile-id
+        ". Profile status: " (or (:status profile) "active")
+        ". Enabled policy domains: " (pr-str (:domains profile))
+        ". Discover APIs with search-symbols, describe-symbol, and "
+        "list-namespace-publics. Use invoke-capability for computation. "
+        "Never claim a denied operation succeeded. Metadata is descriptive, "
+        "not a sandbox. Active capability catalog (generated from live runtime "
+        "metadata):\n" (bounded-catalog-text profile-id))}))
+
+(defn valid-openrouter-tool-schema? [tool]
+  (let [function (:function tool)
+        parameters (:parameters function)]
+    (and (= "function" (:type tool))
+         (string? (:name function))
+         (map-value? parameters)
+         (= "object" (:type parameters))
+         (map-value? (:properties parameters))
+         (vector? (:required parameters))
+         (every? string? (:required parameters))
+         (= false (:additionalProperties parameters)))))
+
+(defn profile-namespace? [profile namespace-name]
+  (some #(= namespace-name %) (:namespaces profile)))
+
+(defn search-symbols-tool [profile-id arguments]
+  (let [started (time/now)
+        profile (profile-by-id profile-id)
+        query (:query arguments)
+        limit (:limit arguments)]
+    (cond
+      (nil? profile) (error-envelope "unknown-profile" "Unknown capability profile."
+                                     {:profile profile-id})
+      (not (string? query)) (error-envelope "invalid-request" "query must be a string."
+                                            {:field "query"})
+      (and limit (not (integer? limit)))
+      (error-envelope "invalid-request" "limit must be an integer."
+                      {:field "limit"})
+      :else (let [results (search-symbols query (:namespaces profile) limit)]
+              (success-envelope "search-symbols" results
+                                {:profile profile-id
+                                 :result-count (count results)
+                                 :elapsed-ns (time/since started)})))))
+
+(defn describe-symbol-tool [profile-id arguments]
+  (let [started (time/now)
+        profile (profile-by-id profile-id)
+        qualified (:qualified-name arguments)
+        parts (when (string? qualified) (split-qualified-symbol qualified))]
+    (cond
+      (nil? profile) (error-envelope "unknown-profile" "Unknown capability profile."
+                                     {:profile profile-id})
+      (nil? parts) (error-envelope "invalid-qualified-name"
+                                   "qualified-name must have namespace/name syntax."
+                                   {:qualified-name qualified})
+      (not (profile-namespace? profile (first parts)))
+      (error-envelope "policy-denied" "Namespace is outside the profile scope."
+                      {:profile profile-id :namespace (first parts)})
+      :else
+      (if-let [description (describe-symbol qualified)]
+        (success-envelope "describe-symbol" description
+                          {:profile profile-id
+                           :resolved-symbol (:qualified-name description)
+                           :metadata-provenance
+                           (select-keys description [:file :line :column])
+                           :elapsed-ns (time/since started)})
+        (error-envelope "symbol-not-found" "Public symbol was not found."
+                        {:qualified-name qualified})))))
+
+(defn list-namespace-publics-tool [profile-id arguments]
+  (let [started (time/now)
+        profile (profile-by-id profile-id)
+        namespace-name (:namespace arguments)
+        limit (:limit arguments)]
+    (cond
+      (nil? profile) (error-envelope "unknown-profile" "Unknown capability profile."
+                                     {:profile profile-id})
+      (not (string? namespace-name))
+      (error-envelope "invalid-request" "namespace must be a string."
+                      {:field "namespace"})
+      (not (profile-namespace? profile namespace-name))
+      (error-envelope "policy-denied" "Namespace is outside the profile scope."
+                      {:profile profile-id :namespace namespace-name})
+      (and limit (not (integer? limit)))
+      (error-envelope "invalid-request" "limit must be an integer."
+                      {:field "limit"})
+      :else (let [results (namespace-publics namespace-name limit)]
+              (success-envelope "list-namespace-publics" results
+                                {:profile profile-id
+                                 :namespace namespace-name
+                                 :result-count (count results)
+                                 :elapsed-ns (time/since started)})))))
+
+(defn execute-agent-tool [profile-id tool-name arguments]
+  (cond
+    (not (map-value? arguments))
+    (error-envelope "invalid-request" "Tool arguments must be a JSON object." {})
+    (= tool-name "search-symbols") (search-symbols-tool profile-id arguments)
+    (= tool-name "describe-symbol") (describe-symbol-tool profile-id arguments)
+    (= tool-name "list-namespace-publics")
+    (list-namespace-publics-tool profile-id arguments)
+    (= tool-name "macroexpand-form") (macroexpand-form-tool profile-id arguments)
+    (= tool-name "invoke-capability")
+    (invoke-capability profile-id (:qualified-name arguments) (:args arguments))
+    (and (string? tool-name) (str/starts-with? tool-name "cap_"))
+    (if-let [description (description-for-openrouter-tool profile-id tool-name)]
+      (invoke-capability profile-id (:qualified-name description)
+                         (metadata-tool-arguments description arguments))
+      (error-envelope "unknown-tool" "Unknown metadata-derived capability tool."
+                      {:tool tool-name :profile profile-id}))
+    :else (error-envelope "unknown-tool" "Unknown agent tool."
+                          {:tool tool-name})))
+
+(defn execute-agent-tool-child [profile-id tool-name raw-arguments]
+  (let [execution (os/exec "timeout"
+                           {:args [child-timeout-seconds
+                                   (os/executable)
+                                   child-script
+                                   "--child-tool"
+                                   profile-id
+                                   tool-name
+                                   raw-arguments]})]
+    (if (:success execution)
+      (json/read-string (:out execution) {:keywords? true})
+      (error-envelope (cond
+                        (= 124 (:exit execution)) "timeout"
+                        (= tool-name "macroexpand-form") "invalid-form"
+                        :else "malformed-tool-call")
+                      "Isolated tool execution failed."
+                      {:tool tool-name
+                       :exit (:exit execution)
+                       :stdout (bounded-preview (redact-text (:out execution)))
+                       :stderr (bounded-preview (redact-text (:err execution)))}))))
+
+(defn execute-openrouter-tool-call [profile-id tool-call]
+  (let [tool-name (get-in tool-call [:function :name])
+        raw-arguments (get-in tool-call [:function :arguments])
+        result (execute-agent-tool-child profile-id tool-name raw-arguments)]
+    (println (str "  \u001b[36m↳\u001b[0m " tool-name " => "
+                  (if (:ok result) "ok" (get-in result [:error :category]))))
+    {:role "tool"
+     :tool_call_id (:id tool-call)
+     :content (json/write-string result)}))
+
+(defn call-openrouter [profile-id messages]
+  (when-not openrouter-api-key
+    (throw (ex-info "OPENROUTER_API_KEY is required" {})))
+  (let [response
+        (http/send {:method :post
+                    :url openrouter-endpoint
+                    :body (json/write-string {:model openrouter-model
+                                              :messages messages
+                                              :tools (into agent-tools
+                                                           (capability-openrouter-tools
+                                                            profile-id))})
+                    :headers {"Authorization" (str "Bearer " openrouter-api-key)
+                              "Content-Type" "application/json"}})]
+    (when-not (<= 200 (:status response) 299)
+      (throw (ex-info (str "OpenRouter returned HTTP " (:status response))
+                      {:status (:status response)})))
+    (json/read-string (:body response) {:keywords? true})))
+
+(defn loop-budget-message [turns tool-calls]
+  {:role "assistant"
+   :content
+   (json/write-string
+    (error-envelope "agent-budget-exhausted"
+                    "The bounded agent loop stopped before another model call."
+                    {:turns turns :tool-calls tool-calls
+                     :maximum-turns maximum-agent-turns
+                     :maximum-tool-calls maximum-agent-tool-calls}))})
+
+(defn hardened-agent-loop [profile-id initial-messages]
+  (loop [messages initial-messages turns 0 total-tool-calls 0]
+    (if (or (>= turns maximum-agent-turns)
+            (>= total-tool-calls maximum-agent-tool-calls))
+      (conj messages (loop-budget-message turns total-tool-calls))
+      (let [message (get-in (call-openrouter profile-id messages)
+                            [:choices 0 :message])
+            tool-calls (:tool_calls message)
+            next-total (+ total-tool-calls (count tool-calls))
+            next-messages (conj messages message)]
+        (cond
+          (> next-total maximum-agent-tool-calls)
+          (conj next-messages (loop-budget-message (inc turns) next-total))
+          (seq tool-calls)
+          (recur (into next-messages
+                       (map #(execute-openrouter-tool-call profile-id %)
+                            tool-calls))
+                 (inc turns) next-total)
+          :else next-messages)))))
+
+(defn refresh-system-message [profile-id history]
+  (let [without-stale-system
+        (if (= "system" (:role (first history))) (rest history) history)]
+    (into [(system-message profile-id)] without-stale-system)))
+
+(defn recall-agent [profile-id]
+  (if (os/exists? agent-memory-file)
+    (refresh-system-message
+     profile-id
+     (json/read-string (slurp agent-memory-file) {:keywords? true}))
+    [(system-message profile-id)]))
+
+(defn remember-agent [messages]
+  (spit agent-memory-file (json/write-string messages {:indent "  "}))
+  messages)
+
+(defn forget-agent []
+  (when (os/exists? agent-memory-file) (os/remove agent-memory-file))
+  (println "Memory wiped."))
+
+(defn run-agent [profile-id prompt]
+  (if-not (profile-by-id profile-id)
+    (emit-json (error-envelope "unknown-profile" "Unknown capability profile."
+                               {:profile profile-id}))
+    (let [history (remember-agent
+                   (hardened-agent-loop
+                    profile-id
+                    (conj (recall-agent profile-id)
+                          {:role "user" :content prompt})))
+          answer (:content (peek history))]
+      (println answer)
+      answer)))
+
+(defn apropos-child-probe [query]
+  (let [execution (os/exec "timeout"
+                           {:args [child-timeout-seconds
+                                   (os/executable)
+                                   child-script
+                                   "--child-apropos"
+                                   query]})]
+    (if (:success execution)
+      {:status "ok"
+       :shape "sorted-sequence-of-qualified-symbols"
+       :sample (json/read-string (:out execution) {:keywords? true})}
+      {:status "runtime-error"
+       :edge "joker.repl/apropos child failed; inspect bounded diagnostics"
+       :exit (:exit execution)
+       :stderr (bounded-preview (redact-text (:err execution)))})))
+
+(defn introspection-probe []
+  (let [namespace (find-ns 'joker.string)
+        publics (ns-publics namespace)
+        namespace-map (ns-map namespace)
+        resolved (ns-resolve namespace 'join)
+        metadata (meta resolved)]
+    {:all-ns {:type (str (type (all-ns)))
+              :count (count (all-ns))
+              :sample (->> (all-ns) (map ns-name) (map str) sort (take 5) vec)}
+     :ns-publics {:type (str (type publics)) :count (count publics)
+                  :sample (->> (keys publics) (map str) sort (take 5) vec)}
+     :ns-map {:type (str (type namespace-map)) :count (count namespace-map)
+              :includes-private-or-referred (> (count namespace-map)
+                                               (count publics))}
+     :ns-resolve {:resolved (boolean resolved) :type (str (type resolved))}
+     :meta (select-keys metadata [:name :ns :doc :arglists :file :line :column
+                                  :macro :dynamic :private])
+     :macroexpand {:input "(when true 1)"
+                   :output (pr-str (macroexpand '(when true 1)))}
+     :joker.repl/apropos (apropos-child-probe "join")}))
+
+(defn benchmark-introspection []
+  (let [iterations 20
+        describe-start (time/now)]
+    (dotimes [_ iterations] (describe-symbol "joker.string/join"))
+    (let [describe-ns (time/since describe-start)
+          catalog-start (time/now)]
+      (dotimes [_ iterations] (capability-catalog "pure-data"))
+      (let [catalog-ns (time/since catalog-start)]
+        (emit-json {:iterations iterations
+                    :describe-total-ns describe-ns
+                    :describe-average-ns (quot describe-ns iterations)
+                    :catalog-total-ns catalog-ns
+                    :catalog-average-ns (quot catalog-ns iterations)})))))
 
 (defn self-test []
   (let [description (describe-symbol "joker.string/join")
         public (namespace-publics "joker.string" 7)
         names (mapv :qualified-name public)
-        matches (search-symbols "join" ["joker.string"] 5)]
+        matches (search-symbols "join" ["joker.string"] 5)
+        fixed-schema (metadata-parameter-schema "example/f" [["value"]])
+        overloaded-schema (metadata-parameter-schema
+                           "joker.string/join"
+                           [["coll"] ["separator" "coll"]])
+        variadic-schema (metadata-parameter-schema
+                         "example/v"
+                         [["value" "&" "more"]])
+        fallback-schema (metadata-parameter-schema "example/u" [])
+        invoke-result (invoke-capability
+                       "pure-data" "joker.string/join" ["-" ["a" "b"]])
+        denied-result (invoke-capability
+                       "discover-only" "joker.string/join" [])
+        expansion-result (macroexpand-form-tool
+                          "pure-data" {:form "(when true (+ 1 2))"})
+        prompt-a (system-message "pure-data")
+        prompt-b (system-message "pure-data")
+        derived-tools (capability-openrouter-tools "pure-data")
+        derived-tool-names (mapv #(get-in % [:function :name]) derived-tools)
+        budget-message (loop-budget-message maximum-agent-turns 0)
+        refreshed-memory
+        (refresh-system-message
+         "pure-data"
+         [{:role "system" :content "stale"}
+          {:role "user" :content "retained"}])
+        join-tool-name (openrouter-capability-name "joker.string/join")
+        derived-invoke (execute-agent-tool
+                        "pure-data" join-tool-name {:args ["/" ["a" "b"]]})]
     (assert (= "joker.string/join" (:qualified-name description)))
     (assert (= "function" (:kind description)))
     (assert (= [["coll"] ["separator" "coll"]] (:arglists description)))
@@ -128,6 +932,47 @@
     (assert (= 1 (count (namespace-publics "joker.string" 0))))
     (assert (= maximum-result-limit
                (count (namespace-publics "joker.core" 1000))))
+    (assert (= ["value"] (:required fixed-schema)))
+    (assert (= 1 (get-in overloaded-schema [:properties :args :minItems])))
+    (assert (= 2 (get-in overloaded-schema [:properties :args :maxItems])))
+    (assert (= 1 (get-in variadic-schema [:properties :args :minItems])))
+    (assert (nil? (get-in variadic-schema [:properties :args :maxItems])))
+    (assert (= 0 (get-in fallback-schema [:properties :args :minItems])))
+    (assert (= (json/write-string fixed-schema)
+               (json/write-string
+                (metadata-parameter-schema "example/f" [["value"]]))))
+    (assert (:ok invoke-result))
+    (assert (= "\"a-b\"" (get-in invoke-result [:value :text])))
+    (assert (= "policy-denied" (get-in denied-result [:error :category])))
+    (assert (:ok expansion-result))
+    (assert (= "(if true (+ 1 2) nil)"
+               (get-in expansion-result [:value :expanded])))
+    (assert (= "form-count"
+               (get-in (macroexpand-form-tool
+                        "pure-data" {:form "(+ 1 2) (+ 3 4)"})
+                       [:error :category])))
+    (assert (= "unknown-tool"
+               (get-in (execute-agent-tool "pure-data" "missing" {})
+                       [:error :category])))
+    (assert (= "failure [REDACTED]"
+               (redact-text-with-environment
+                "failure secret-value"
+                {"SERVICE_TOKEN" "secret-value"})))
+    (assert (every? valid-openrouter-tool-schema?
+                    (into agent-tools derived-tools)))
+    (assert (= (count derived-tool-names)
+               (count (set derived-tool-names))))
+    (assert (every? #(<= (count %) 64) derived-tool-names))
+    (assert (str/includes? (:content budget-message)
+                           "agent-budget-exhausted"))
+    (assert (not= "stale" (:content (first refreshed-memory))))
+    (assert (= "retained" (:content (second refreshed-memory))))
+    (assert (= derived-tools (capability-openrouter-tools "pure-data")))
+    (assert (some #(= join-tool-name (get-in % [:function :name])) derived-tools))
+    (assert (:ok derived-invoke))
+    (assert (= prompt-a prompt-b))
+    (assert (str/includes? (:content prompt-a) "joker.string/join"))
+    (assert (<= (count (bounded-catalog-text "pure-data")) 8022))
     (println "introspective agent self-test passed")))
 
 (defn usage []
@@ -135,6 +980,14 @@
   (println "  joker examples/agents/introspective-agent.joke --describe NS/SYMBOL")
   (println "  joker examples/agents/introspective-agent.joke --search QUERY")
   (println "  joker examples/agents/introspective-agent.joke --namespace NS [LIMIT]")
+  (println "  joker examples/agents/introspective-agent.joke --invoke PROFILE NS/SYMBOL JSON-ARGS")
+  (println "  joker examples/agents/introspective-agent.joke --macroexpand PROFILE FORM")
+  (println "  joker examples/agents/introspective-agent.joke --tools")
+  (println "  joker examples/agents/introspective-agent.joke --tool PROFILE NAME JSON")
+  (println "  joker examples/agents/introspective-agent.joke --forget")
+  (println "  joker examples/agents/introspective-agent.joke PROMPT...")
+  (println "  joker examples/agents/introspective-agent.joke --probe")
+  (println "  joker examples/agents/introspective-agent.joke --benchmark")
   (println "  joker examples/agents/introspective-agent.joke --self-test"))
 
 (defn -main []
@@ -147,7 +1000,33 @@
       (emit-json (namespace-publics (second args)
                                     (when-let [value (nth args 2 nil)]
                                       (read-string value))))
+      (= command "--invoke")
+      (emit-json (invoke-capability (second args) (nth args 2 nil)
+                                    (json/read-string (nth args 3 "[]")
+                                                      {:keywords? true})))
+      (= command "--child-invoke")
+      (emit-json (invoke-capability-direct
+                  (second args) (nth args 2 nil)
+                  (json/read-string (nth args 3 "[]") {:keywords? true})))
+      (= command "--child-tool")
+      (emit-json (execute-agent-tool
+                  (second args) (nth args 2 nil)
+                  (json/read-string (nth args 3 "{}") {:keywords? true})))
+      (= command "--macroexpand")
+      (emit-json (execute-agent-tool-child
+                  (second args) "macroexpand-form"
+                  (json/write-string {:form (nth args 2 nil)})))
+      (= command "--tools") (emit-json agent-tools)
+      (= command "--tool")
+      (emit-json (execute-agent-tool-child
+                  (second args) (nth args 2 nil) (nth args 3 "{}")))
+      (= command "--forget") (forget-agent)
+      (= command "--probe") (emit-json (introspection-probe))
+      (= command "--child-apropos")
+      (emit-json (mapv str (take 20 (repl/apropos (second args)))))
+      (= command "--benchmark") (benchmark-introspection)
       (= command "--self-test") (self-test)
+      (seq args) (run-agent active-profile-id (str/join " " args))
       :else (usage))))
 
 (-main)
