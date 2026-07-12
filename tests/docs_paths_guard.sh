@@ -41,6 +41,7 @@ check_absent 'sushy-site' 'old sushy output path'
 # Current high-value examples and docs paths.
 check_present examples/README.md
 check_present examples/agents/lisp-agent.joke
+check_present examples/agents/introspective-agent.joke
 check_present examples/agents/README.md
 check_present examples/graphics/fractal-flame.joke
 check_present examples/games/tetris.joke

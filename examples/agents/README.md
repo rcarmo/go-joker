@@ -62,9 +62,32 @@ Like the original, memory is the complete JSON message history, including tool c
 
 This is an educational example, not a production sandbox.
 
-## Why Joker introspection is the interesting next step
+## Introspection-driven successor
 
-Joker exposes Clojure-style runtime metadata and namespace discovery: `all-ns`, `ns-publics`, `ns-map`, `ns-resolve`, `meta`, `macroexpand`, and `joker.repl/apropos`. A safer and more capable successor can use those APIs to discover and describe available operations instead of giving the model unrestricted `eval`. See the project discussion accompanying this example for a staged design.
+`introspective-agent.joke` is the hardened successor under development. Its first stage is already runnable without credentials:
+
+```bash
+./joker examples/agents/introspective-agent.joke --describe joker.string/join
+./joker examples/agents/introspective-agent.joke --search join
+./joker examples/agents/introspective-agent.joke --namespace joker.json 20
+```
+
+Joker exposes Clojure-style runtime metadata and namespace discovery through `all-ns`, `ns-publics`, `ns-map`, `ns-resolve`, `meta`, `macroexpand`, and `joker.repl/apropos`. The successor uses those APIs instead of teaching the model a stale, hand-written API catalog.
+
+### Contract
+
+The hardened path follows these rules:
+
+1. **Discovery is scoped and bounded.** Searches inspect an explicit list of namespaces, expose public Vars by default, sort results by qualified name, and cap user-visible result counts at 100.
+2. **Descriptions are data, not prose.** Each symbol record has a qualified name, namespace, unqualified name, kind, documentation, normalized arglists, type tag, macro/dynamic/private flags, source location, and invocation eligibility.
+3. **Schemas are conservative.** Only metadata that can be represented unambiguously becomes a typed tool parameter. Overloaded, variadic, missing, or contradictory arglists fall back to a generic argument-array schema rather than inventing constraints.
+4. **Invocation is denied by default.** A symbol must be namespace-qualified, public, callable, non-macro, and present in the active capability profile. Resolution at invocation time prevents a catalog entry from becoming stale.
+5. **Forms are inspected twice.** Policy-checked evaluation reads exactly one form, validates its symbols, expands macros with depth and size limits, and validates the expansion again.
+6. **Results use envelopes.** Successes and failures are structured maps with stable categories. Errors, traces, and previews are bounded; secrets and full environment values are never included.
+7. **Metadata is not a sandbox.** Policy checks reduce accidental capability use, but hostile general evaluation must still execute in an isolated child process or container with operating-system limits.
+8. **Compatibility is explicit.** `lisp-agent.joke` remains the small, unsafe upstream-style demonstration. Hardened behavior lives in `introspective-agent.joke`; callers must deliberately select the unsafe path.
+
+The current implementation covers deterministic namespace discovery and metadata-backed symbol descriptions. Schema generation, controlled invocation, form analysis, profiles, observability, and isolation are the next staged additions.
 
 ## Attribution
 

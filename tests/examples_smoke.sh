@@ -9,6 +9,7 @@ WIKI_ROOT_HTML="$OUT_DIR/wiki-root.html"
 FLAME_LOG="$OUT_DIR/flame.log"
 TETRIS_LINT_LOG="$OUT_DIR/tetris-lint.log"
 AGENT_EVAL_LOG="$OUT_DIR/lisp-agent-eval.log"
+AGENT_INTROSPECTION_LOG="$OUT_DIR/introspective-agent.log"
 
 cd "$ROOT"
 
@@ -26,6 +27,7 @@ require_file() {
 
 require_file examples/README.md
 require_file examples/agents/lisp-agent.joke
+require_file examples/agents/introspective-agent.joke
 require_file examples/agents/README.md
 require_file examples/graphics/fractal-flame.joke
 require_file examples/games/tetris.joke
@@ -38,6 +40,16 @@ require_file examples/notebooks/complex-demo.edn
 "$JOKER_BIN" examples/agents/lisp-agent.joke --eval \
   '(reduce + (range 1 101))' >"$AGENT_EVAL_LOG"
 grep -qx '5050' "$AGENT_EVAL_LOG"
+
+# Introspection output is deterministic, structured, and credential-free.
+"$JOKER_BIN" examples/agents/introspective-agent.joke \
+  --describe joker.string/join >"$AGENT_INTROSPECTION_LOG"
+grep -q '"qualified-name": "joker.string/join"' "$AGENT_INTROSPECTION_LOG"
+grep -q '"invocable": true' "$AGENT_INTROSPECTION_LOG"
+grep -q '"arglists"' "$AGENT_INTROSPECTION_LOG"
+"$JOKER_BIN" examples/agents/introspective-agent.joke --self-test \
+  >>"$AGENT_INTROSPECTION_LOG"
+grep -q 'introspective agent self-test passed' "$AGENT_INTROSPECTION_LOG"
 
 # Static wiki build smoke.
 rm -rf "$OUT_DIR/wiki"

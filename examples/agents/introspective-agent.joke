@@ -1,0 +1,153 @@
+;; Introspection-driven successor to lisp-agent.joke.
+;;
+;; This file is being built in stages. The first stage provides deterministic,
+;; bounded discovery and symbol-description primitives. Later stages use these
+;; records to derive tool schemas and enforce capability profiles.
+
+(ns introspective-agent
+  (:require [joker.json :as json]
+            [joker.repl :as repl]
+            [joker.string :as str]))
+
+(def default-namespaces
+  "Public namespaces exposed by the initial pure-data capability profile."
+  ["joker.core" "joker.json" "joker.string"])
+
+(def default-result-limit 20)
+(def maximum-result-limit 100)
+
+(defn bounded-limit [n]
+  (max 1 (min maximum-result-limit (or n default-result-limit))))
+
+(defn namespace-by-name [namespace-name]
+  (find-ns (symbol namespace-name)))
+
+(defn public-vars [namespace-name]
+  (if-let [namespace (namespace-by-name namespace-name)]
+    (ns-publics namespace)
+    {}))
+
+(defn qualified-name [namespace-name symbol-name]
+  (str namespace-name "/" symbol-name))
+
+(defn metadata-arglists [metadata]
+  ;; JSON has no symbol type. Preserve the useful shape while rendering each
+  ;; argument position exactly as Joker prints it.
+  (mapv (fn [arglist] (mapv str arglist)) (:arglists metadata)))
+
+(defn var-kind [variable metadata]
+  (cond
+    (:macro metadata) "macro"
+    (callable? @variable) "function"
+    :else "value"))
+
+(defn describe-var [namespace-name symbol-name variable]
+  (let [metadata (meta variable)]
+    {:qualified-name (qualified-name namespace-name symbol-name)
+     :namespace namespace-name
+     :name (str symbol-name)
+     :kind (var-kind variable metadata)
+     :doc (:doc metadata)
+     :arglists (metadata-arglists metadata)
+     :tag (when-let [tag (:tag metadata)] (str tag))
+     :macro (boolean (:macro metadata))
+     :dynamic (boolean (:dynamic metadata))
+     :private (boolean (:private metadata))
+     :file (:file metadata)
+     :line (:line metadata)
+     :column (:column metadata)
+     :invocable (and (callable? @variable)
+                     (not (:macro metadata))
+                     (not (:private metadata)))}))
+
+(defn all-namespace-publics [namespace-name]
+  (->> (public-vars namespace-name)
+       (map (fn [[symbol-name variable]]
+              (describe-var namespace-name symbol-name variable)))
+       (sort-by :qualified-name)))
+
+(defn namespace-publics
+  "Returns deterministic, bounded descriptions of a namespace's public Vars."
+  ([namespace-name]
+   (namespace-publics namespace-name maximum-result-limit))
+  ([namespace-name limit]
+   (->> (all-namespace-publics namespace-name)
+        (take (bounded-limit limit))
+        vec)))
+
+(defn split-qualified-symbol [qualified]
+  (let [separator (str/index-of qualified "/")]
+    (when (and separator
+               (pos? separator)
+               (< separator (dec (count qualified))))
+      [(subs qualified 0 separator)
+       (subs qualified (inc separator))])))
+
+(defn describe-symbol
+  "Describes one public, namespace-qualified symbol or returns nil."
+  [qualified]
+  (when-let [[namespace-name symbol-name] (split-qualified-symbol qualified)]
+    (when-let [variable (get (public-vars namespace-name) (symbol symbol-name))]
+      (describe-var namespace-name (symbol symbol-name) variable))))
+
+(defn searchable-text [description]
+  (str/lower-case
+   (str (:qualified-name description) " " (or (:doc description) ""))))
+
+(defn search-symbols
+  "Searches qualified names and docs in an explicit namespace scope."
+  ([query]
+   (search-symbols query default-namespaces default-result-limit))
+  ([query namespaces limit]
+   (let [needle (str/lower-case query)]
+     (->> namespaces
+          sort
+          (mapcat all-namespace-publics)
+          (filter #(str/includes? (searchable-text %) needle))
+          (sort-by :qualified-name)
+          (take (bounded-limit limit))
+          vec))))
+
+(defn emit-json [value]
+  (println (json/write-string value {:indent "  "})))
+
+(defn self-test []
+  (let [description (describe-symbol "joker.string/join")
+        public (namespace-publics "joker.string" 7)
+        names (mapv :qualified-name public)
+        matches (search-symbols "join" ["joker.string"] 5)]
+    (assert (= "joker.string/join" (:qualified-name description)))
+    (assert (= "function" (:kind description)))
+    (assert (= [["coll"] ["separator" "coll"]] (:arglists description)))
+    (assert (:invocable description))
+    (assert (= 7 (count public)))
+    (assert (= names (vec (sort names))))
+    (assert (some #(= "joker.string/join" (:qualified-name %)) matches))
+    (assert (= [] (namespace-publics "not.a.namespace" 10)))
+    (assert (nil? (describe-symbol "join")))
+    (assert (= 1 (count (namespace-publics "joker.string" 0))))
+    (assert (= maximum-result-limit
+               (count (namespace-publics "joker.core" 1000))))
+    (println "introspective agent self-test passed")))
+
+(defn usage []
+  (println "Usage:")
+  (println "  joker examples/agents/introspective-agent.joke --describe NS/SYMBOL")
+  (println "  joker examples/agents/introspective-agent.joke --search QUERY")
+  (println "  joker examples/agents/introspective-agent.joke --namespace NS [LIMIT]")
+  (println "  joker examples/agents/introspective-agent.joke --self-test"))
+
+(defn -main []
+  (let [args *command-line-args*
+        command (first args)]
+    (cond
+      (= command "--describe") (emit-json (describe-symbol (second args)))
+      (= command "--search") (emit-json (search-symbols (or (second args) "")))
+      (= command "--namespace")
+      (emit-json (namespace-publics (second args)
+                                    (when-let [value (nth args 2 nil)]
+                                      (read-string value))))
+      (= command "--self-test") (self-test)
+      :else (usage))))
+
+(-main)
