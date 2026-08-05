@@ -1,6 +1,6 @@
 # CI retention and cleanup policy
 
-GitHub Actions retention is managed in one place: `.github/workflows/actions-cleanup.yml`. It runs after CI, release, benchmark-regression, and race-stress workflows, and can also be dispatched manually.
+GitHub Actions retention is managed in one place: `.github/workflows/actions-cleanup.yml`. It runs weekly and can also be dispatched manually.
 
 ## Retention windows
 
@@ -18,7 +18,7 @@ The artifact upload steps declare the same seven- or 30-day window as the cleanu
 
 ## Failure and concurrency behavior
 
-Only one cleanup run operates at a time (`actions-cleanup`, without cancellation). Deletions treat an already absent resource as success, retry transient server failures up to three times, and report unsuccessful rate-limited or non-retryable deletions as warnings. A later workflow completion or manual dispatch retries remaining stale resources.
+Only one cleanup run operates at a time (`actions-cleanup`, without cancellation). Deletions treat an already absent resource as success, retry transient server failures up to three times, and report unsuccessful rate-limited or non-retryable deletions as warnings. The next weekly run or a manual dispatch retries remaining stale resources.
 
 The workflow never deletes its currently running cleanup execution. Workflow-run pruning requires both age beyond 30 days and exclusion from the ten-newest-runs set.
 
@@ -31,4 +31,4 @@ make workflow-lint
 make workflow-policy-check
 ```
 
-`workflow-policy-check` is part of the canonical `make release-check`; it guards workflow coverage, matching retention declarations, least-privilege cleanup permissions, and the actionlint CI step. `workflow-lint` runs the pinned actionlint release directly and may download it through the Go toolchain on first use.
+`workflow-policy-check` is part of the canonical `make release-check`; it guards the weekly and manual cleanup triggers, matching retention declarations, least-privilege cleanup permissions, and the actionlint CI step. `workflow-lint` runs the pinned actionlint release directly and may download it through the Go toolchain on first use.

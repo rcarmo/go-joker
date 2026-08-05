@@ -15,12 +15,22 @@ benchmark=.github/workflows/benchmark-regression.yml
   exit 1
 }
 
-for workflow in 'CI' 'Release' 'Benchmark regression' 'Race stress'; do
-  grep -Fq -- "- \"$workflow\"" "$cleanup" || {
-    echo "cleanup is not triggered by completed $workflow workflows" >&2
-    exit 1
-  }
-done
+grep -Fq 'schedule:' "$cleanup" || {
+  echo "cleanup is missing its weekly schedule" >&2
+  exit 1
+}
+grep -Eq "cron: ['\"]?[0-9*,/-]+ [0-9*,/-]+ \\* \\* [0-6]['\"]?" "$cleanup" || {
+  echo "cleanup schedule is not weekly" >&2
+  exit 1
+}
+grep -Fq 'workflow_dispatch:' "$cleanup" || {
+  echo "cleanup cannot be dispatched manually" >&2
+  exit 1
+}
+if grep -Fq 'workflow_run:' "$cleanup"; then
+  echo "cleanup must not run after every completed workflow" >&2
+  exit 1
+fi
 
 for setting in \
   "KEEP_RUNS_PER_WORKFLOW: '10'" \
