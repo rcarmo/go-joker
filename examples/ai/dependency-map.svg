@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="980" viewBox="0 0 1400 980" role="img" aria-labelledby="title desc">
+<title id="title">joker.ai dependency map</title><desc id="desc">Dependencies and data flow between callers, joker.ai subsystems, providers, Joker standard namespaces, and native Go HTTP.</desc>
+<defs>
+  <style>
+    :root{--bg:#f7fafc;--text:#1a2a40;--muted:#58708a;--surface:#e8eff6;--primary:#2b6cb0;--accent:#c05050;--green:#2a7a3a;--amber:#c87020;--line:#90a8c0}
+    @media(prefers-color-scheme:dark){:root{--bg:#201814;--text:#e8d8d0;--muted:#b89888;--surface:#2a1e18;--primary:#e08050;--accent:#50b0a0;--green:#60c870;--amber:#e0a840;--line:#705848}}
+    .bg{fill:var(--bg)} .box{fill:var(--surface);stroke:var(--line);stroke-width:2;rx:12}.main{stroke:var(--primary);stroke-width:3}.auth{stroke:var(--amber)}.native{stroke:var(--green)}
+    text{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;fill:var(--text)} .h{font-size:24px;font-weight:700}.t{font-size:16px}.s{font-size:13px;fill:var(--muted)}
+    .edge{fill:none;stroke:var(--line);stroke-width:2;marker-end:url(#arrow)}.data{stroke:var(--primary)}.oauth{stroke:var(--amber);stroke-dasharray:8 5}.go{stroke:var(--green)}
+  </style>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="var(--line)"/></marker>
+</defs>
+<rect class="bg" width="1400" height="980"/>
+<text x="50" y="48" class="h">joker.ai dependency map</text><text x="50" y="74" class="s">Committed implementation at master; solid arrows are runtime calls, dashed arrows are OAuth flows.</text>
+
+<rect x="50" y="110" width="230" height="105" class="box main"/><text x="75" y="145" class="h">Caller</text><text x="75" y="175" class="t">complete / stream!</text><text x="75" y="198" class="t">complete-json / models</text>
+<rect x="355" y="100" width="690" height="135" class="box main"/><text x="380" y="135" class="h">joker.ai public layer</text><text x="380" y="168" class="t">dynamic configuration + provider registry + normalized context/events</text><text x="380" y="194" class="t">errors, retry/backoff, cancellation, diagnostics/redaction</text><text x="380" y="218" class="s">examples/ai/joker/ai.joke</text>
+<path d="M280 162 H355" class="edge data"/>
+
+<rect x="75" y="310" width="240" height="120" class="box"/><text x="95" y="342" class="h">Chat adapter</text><text x="95" y="374" class="t">chat-request</text><text x="95" y="398" class="t">chat-stream-event!</text><text x="95" y="418" class="s">OpenAI-compatible</text>
+<rect x="375" y="310" width="250" height="120" class="box"/><text x="395" y="342" class="h">Responses adapter</text><text x="395" y="374" class="t">responses-request</text><text x="395" y="398" class="t">responses-stream-event!</text><text x="395" y="418" class="s">OpenAI</text>
+<rect x="685" y="310" width="240" height="120" class="box"/><text x="705" y="342" class="h">Codex adapter</text><text x="705" y="374" class="t">codex-request</text><text x="705" y="398" class="t">Responses event parser</text><text x="705" y="418" class="s">ChatGPT backend</text>
+<rect x="985" y="310" width="330" height="120" class="box auth"/><text x="1005" y="342" class="h">Authentication</text><text x="1005" y="374" class="t">GitHub device + Copilot exchange</text><text x="1005" y="398" class="t">Codex PKCE + refresh</text><text x="1005" y="418" class="s">EDN store or bindable callbacks</text>
+<path d="M560 235 L195 310" class="edge data"/><path d="M650 235 L500 310" class="edge data"/><path d="M750 235 L805 310" class="edge data"/><path d="M880 235 L1150 310" class="edge oauth"/>
+
+<rect x="55" y="520" width="225" height="105" class="box"/><text x="75" y="552" class="h">GitHub</text><text x="75" y="584" class="t">Copilot Chat API</text><text x="75" y="607" class="s">Chat Completions + SSE</text>
+<rect x="320" y="520" width="225" height="105" class="box"/><text x="340" y="552" class="h">OpenCode</text><text x="340" y="584" class="t">Zen API</text><text x="340" y="607" class="s">Chat Completions + SSE</text>
+<rect x="585" y="520" width="225" height="105" class="box"/><text x="605" y="552" class="h">OpenAI</text><text x="605" y="584" class="t">Responses API</text><text x="605" y="607" class="s">Responses SSE events</text>
+<rect x="850" y="520" width="225" height="105" class="box"/><text x="870" y="552" class="h">Codex</text><text x="870" y="584" class="t">ChatGPT backend</text><text x="870" y="607" class="s">Codex Responses + SSE</text>
+<rect x="1115" y="520" width="225" height="105" class="box auth"/><text x="1135" y="552" class="h">OAuth hosts</text><text x="1135" y="584" class="t">github.com</text><text x="1135" y="607" class="t">auth.openai.com</text>
+<path d="M195 430 V520" class="edge data"/><path d="M245 430 L432 520" class="edge data"/><path d="M500 430 L697 520" class="edge data"/><path d="M805 430 L962 520" class="edge data"/><path d="M1150 430 L1227 520" class="edge oauth"/>
+
+<rect x="70" y="720" width="350" height="145" class="box"/><text x="95" y="752" class="h">Joker namespaces</text><text x="95" y="784" class="t">joker.json / joker.edn</text><text x="95" y="808" class="t">joker.crypto / base64 / random</text><text x="95" y="832" class="t">joker.os / string / time</text><text x="95" y="854" class="s">serialization, PKCE, storage, clocks</text>
+<rect x="525" y="700" width="350" height="180" class="box native"/><text x="550" y="735" class="h">joker.http</text><text x="550" y="768" class="t">send / send-sse / client</text><text x="550" y="794" class="t">timeout + per-event bound</text><text x="550" y="820" class="t">callback cancellation</text><text x="550" y="850" class="s">std/http.joke + generated bindings</text>
+<rect x="980" y="720" width="350" height="145" class="box native"/><text x="1005" y="752" class="h">Native Go runtime</text><text x="1005" y="784" class="t">net/http + bufio.Scanner</text><text x="1005" y="808" class="t">context deadlines + body close</text><text x="1005" y="836" class="s">std/http/http_native.go</text>
+<path d="M470 235 L245 720" class="edge"/><path d="M700 235 V700" class="edge go"/><path d="M875 790 H980" class="edge go"/>
+<path d="M700 700 C700 660 700 650 697 625" class="edge go"/><path d="M625 700 C520 660 350 650 195 625" class="edge go"/><path d="M650 700 C575 660 500 650 432 625" class="edge go"/><path d="M775 700 C850 660 920 650 962 625" class="edge go"/>
+
+<text x="50" y="930" class="s">Boundaries: SSE-only streaming; no semantic JSON Schema validator; tools run only through explicitly registered bounded handlers.</text>
+</svg>

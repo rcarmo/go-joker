@@ -53,6 +53,40 @@ func TestRequestAndResponseBodyReadFailuresCloseResources(t *testing.T) {
 	})
 }
 
+func TestRespToMapBoundedRejectsOversizedBodyAndClosesIt(t *testing.T) {
+	body := &trackingReadCloser{Reader: strings.NewReader("12345")}
+	resp := &stdhttp.Response{StatusCode: 200, Header: make(stdhttp.Header), Body: body}
+	defer func() {
+		recovered := recover()
+		if recovered == nil || !strings.Contains(fmt.Sprint(recovered), "max-response-bytes") {
+			t.Fatalf("oversized response panic = %v", recovered)
+		}
+		if !body.closed {
+			t.Fatal("oversized response body was not closed")
+		}
+	}()
+	_ = respToMapBounded(resp, 4)
+}
+
+type trackingReadCloser struct {
+	io.Reader
+	closed bool
+}
+
+func (r *trackingReadCloser) Close() error { r.closed = true; return nil }
+
+func TestRespToMapBoundedAcceptsExactLimit(t *testing.T) {
+	resp := &stdhttp.Response{
+		StatusCode: 200, Header: make(stdhttp.Header),
+		Body: io.NopCloser(strings.NewReader("1234")),
+	}
+	m := respToMapBounded(resp, 4)
+	ok, body := m.Get(coretypes.MakeKeyword(STRINGS.Intern, "body"))
+	if !ok || coretypes.EnsureObjectIsString(body, "body: %s").S != "1234" {
+		t.Fatalf("bounded body = %v", body)
+	}
+}
+
 func TestRespToMapPromotesLargeContentLengthOn32Bit(t *testing.T) {
 	if strconv.IntSize != 32 {
 		t.Skip("content-length promotion is only observable on 32-bit int platforms")

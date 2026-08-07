@@ -2,12 +2,14 @@
   (:require [joker.base64 :as base64]
             [joker.crypto :as crypto]
             [joker.edn :as edn]
+            [joker.filepath :as filepath]
             [joker.http :as http]
             [joker.json :as json]
             [joker.os :as os]
             [joker.random :as random]
             [joker.string :as str]
-            [joker.time :as time]))
+            [joker.time :as time]
+            [joker.url :as url]))
 
 ;; Provider-neutral AI client for Joker. Configuration is deliberately held in
 ;; dynamically bindable vars so applications, tests, and concurrent tasks can
@@ -20,6 +22,7 @@
 (def ^:dynamic *account-id* nil)
 (def ^:dynamic *timeout-ms* 120000)
 (def ^:dynamic *max-event-bytes* 4194304)
+(def ^:dynamic *max-response-bytes* 8388608)
 (def ^:dynamic *max-retries* 3)
 (def ^:dynamic *retry-base-ms* 500)
 (def ^:dynamic *cancelled?* (fn [] false))
@@ -27,6 +30,7 @@
 (def ^:dynamic *unsafe-debug?* false)
 (def ^:dynamic *diagnostic-fn* (fn [_] nil))
 (def ^:dynamic *token-store-path* ".joker-ai-tokens.edn")
+(def ^:dynamic *max-token-store-bytes* 1048576)
 (def ^:dynamic *load-credentials* nil)
 (def ^:dynamic *save-credentials!* nil)
 (def ^:dynamic *oauth-progress!* (fn [_] nil))
@@ -36,12 +40,19 @@
 
 (defonce provider-registry (atom {}))
 
-(defn fail! [category message data]
-  (throw (ex-info message (assoc data :category category))))
-
 (defn map-value? [value]
-  (contains? #{"corecollections.ArrayMap" "corecollections.HashMap"}
-             (str (type value))))
+  (map? value))
+
+(defn sensitive-diagnostic-key? [key]
+  (boolean
+   (re-find #"(?i)(authorization|token|secret|cookie|api[-_]?key|body|content|arguments|output|input|messages|tools|image|data|raw)"
+            (str key))))
+
+(defn redact-string [value]
+  (-> value
+      (str/replace #"(?i)bearer\\s+[a-z0-9._~+/-]+" "Bearer [REDACTED]")
+      (str/replace #"(?i)(access_token|refresh_token|id_token|api_key)=([^&\\s]+)"
+                   "$1=[REDACTED]")))
 
 (defn redact [value]
   (if *unsafe-debug?*
@@ -49,25 +60,41 @@
     (cond
       (map-value? value)
       (into {} (map (fn [[key item]]
-                      [key (if (re-find #"(?i)(authorization|token|secret|cookie|api[-_]?key)"
-                                             (str key))
+                      [key (if (sensitive-diagnostic-key? key)
                              "[REDACTED]"
                              (redact item))]) value))
       (vector? value) (mapv redact value)
       (seq? value) (mapv redact value)
+      (string? value) (redact-string value)
       :else value)))
+
+(defn fail! [category message data]
+  (throw (ex-info message (assoc (redact data) :category category))))
 
 (defn diagnostic! [event]
   (when *debug?*
     (*diagnostic-fn* (redact event))))
 
+(defn validate-adapter! [provider-id adapter]
+  (when-not (map? adapter)
+    (fail! :invalid-provider-adapter "Provider adapter must be a map."
+           {:provider provider-id}))
+  (doseq [hook [:request :event]]
+    (when-not (fn? (get adapter hook))
+      (fail! :invalid-provider-hook "Required provider hook must be callable."
+             {:provider provider-id :hook hook})))
+  (doseq [hook [:models :auth]]
+    (when (and (contains? adapter hook)
+               (not (fn? (get adapter hook))))
+      (fail! :invalid-provider-hook "Optional provider hook must be callable."
+             {:provider provider-id :hook hook})))
+  adapter)
+
 (defn register-provider! [provider-id adapter]
   (when-not (keyword? provider-id)
     (fail! :invalid-provider "Provider id must be a keyword."
            {:provider provider-id}))
-  (when-not (and (map-value? adapter) (:request adapter))
-    (fail! :invalid-provider "Provider adapter requires a :request function."
-           {:provider provider-id}))
+  (validate-adapter! provider-id adapter)
   (swap! provider-registry assoc provider-id adapter)
   provider-id)
 
@@ -78,10 +105,11 @@
 (defn provider
   ([] (provider *provider*))
   ([provider-id]
-   (or (get @provider-registry provider-id)
-       (fail! :unknown-provider "Unknown AI provider."
-              {:provider provider-id
-               :registered (->> (keys @provider-registry) sort vec)}))))
+   (if-let [adapter (get @provider-registry provider-id)]
+     (validate-adapter! provider-id adapter)
+     (fail! :unknown-provider "Unknown AI provider."
+            {:provider provider-id
+             :registered (->> (keys @provider-registry) sort vec)}))))
 
 (defn trim-trailing-slash [text]
   (str/replace text #"/+$" ""))
@@ -90,44 +118,31 @@
   (str (trim-trailing-slash base) "/" (str/replace path #"^/+" "")))
 
 (defn url-encode [text]
-  (apply str
-         (map (fn [character]
-                (let [code (int character)]
-                  (if (or (<= (int \a) code (int \z))
-                          (<= (int \A) code (int \Z))
-                          (<= (int \0) code (int \9))
-                          (contains? #{\- \_ \. \~} character))
-                    (str character)
-                    (format "%%%02X" code))))
-              (str text))))
-
-(defn hex-value [character]
-  (let [code (int character)]
-    (cond
-      (<= (int \0) code (int \9)) (- code (int \0))
-      (<= (int \a) code (int \f)) (+ 10 (- code (int \a)))
-      (<= (int \A) code (int \F)) (+ 10 (- code (int \A)))
-      :else nil)))
+  (url/query-escape (str text)))
 
 (defn url-decode [text]
-  (loop [index 0 result ""]
-    (if (>= index (count text))
-      result
-      (let [character (nth text index)]
-        (cond
-          (= character \+) (recur (inc index) (str result " "))
-          (and (= character \%) (< (+ index 2) (count text)))
-          (let [high (hex-value (nth text (inc index)))
-                low (hex-value (nth text (+ index 2)))]
-            (if (and high low)
-              (recur (+ index 3) (str result (char (+ (* 16 high) low))))
-              (recur (inc index) (str result character))))
-          :else (recur (inc index) (str result character)))))))
+  (try
+    (url/query-unescape text)
+    (catch coretypes.Error error
+      (fail! :invalid-url-encoding "Malformed URL percent encoding."
+             {:cause (ex-message error)}))))
+
+(defn callback-parameters [callback-url]
+  (let [query (second (re-find #"^[^?]*\?([^#]*)" callback-url))]
+    (if query
+      (try
+        (url/parse-query query)
+        (catch coretypes.Error error
+          (fail! :invalid-oauth-callback "Malformed OAuth callback query."
+                 {:cause (ex-message error)})))
+      {})))
 
 (defn callback-parameter [callback-url parameter]
-  (when-let [matched (re-find (re-pattern (str "[?&]" parameter "=([^&]+)"))
-                              callback-url)]
-    (url-decode (second matched))))
+  (let [values (get (callback-parameters callback-url) parameter)]
+    (when (> (count values) 1)
+      (fail! :invalid-oauth-callback "OAuth callback parameter is duplicated."
+             {:parameter parameter}))
+    (first values)))
 
 (defn form-encode [fields]
   (->> fields
@@ -135,11 +150,38 @@
               (str (url-encode (name key)) "=" (url-encode value))))
        (str/join "&")))
 
+(defn parse-json! [text category message data]
+  (try
+    (json/read-string text {:keywords? true})
+    (catch coretypes.Error error
+      (fail! category message
+             (assoc data :cause (ex-message error) :raw text)))))
+
 (defn json-response! [response category message]
   (when-not (<= 200 (:status response) 299)
     (fail! category message
-           {:status (:status response) :body (redact (:body response))}))
-  (json/read-string (:body response) {:keywords? true}))
+           {:status (:status response) :raw (:body response)}))
+  (parse-json! (:body response) category message {:status (:status response)}))
+
+(defn send-http!
+  ([request] (send-http! request {}))
+  ([request context]
+   (try
+     (http/send request)
+     (catch coretypes.Error error
+       (if (ex-data error)
+         (throw error)
+         (fail! :transport-error "HTTP transport failed."
+                (assoc context :cause (ex-message error))))))))
+
+(defn send-sse-http! [request callback context]
+  (try
+    (http/send-sse request callback)
+    (catch coretypes.Error error
+      (if (ex-data error)
+        (throw error)
+        (fail! :transport-error "Streaming HTTP transport failed."
+               (assoc context :cause (ex-message error)))))))
 
 (defn header [headers name]
   (or (get headers name)
@@ -149,7 +191,7 @@
   (let [headers {"Content-Type" "application/json"
                  "Accept" "text/event-stream"}]
     (if api-key
-      (assoc headers "Authorization" (str "Bearer " api-key))
+      (assoc headers "Authorization" (apply str ["Bearer " api-key]))
       headers)))
 
 (defn image-data-url [block]
@@ -317,9 +359,11 @@
 
 (defn provider-configuration [provider-id options]
   (let [adapter (provider provider-id)
-        credentials (:credentials options)
+        credentials (apply (resolve 'joker.ai/active-credentials)
+                           [provider-id options])
         api-key (or (:api-key options) *api-key* (:access credentials))
-        base-url (or (:base-url options) *base-url* (:base-url adapter))
+        base-url (or (:base-url options) *base-url* (:base-url credentials)
+                     (:base-url adapter))
         headers (merge (bearer-headers api-key)
                        (:headers adapter)
                        (:headers options))]
@@ -392,8 +436,14 @@
     (let [key (or (:call_id payload) (:item_id payload) (:output_index payload))
           previous (get-in @state [:tool-calls key]
                            {:id (:call_id payload) :item-id (:item_id payload)
-                            :arguments ""})
-          current (update previous :arguments str (:delta payload))]
+                            :index (:output_index payload) :arguments ""
+                            :raw []})
+          current (-> previous
+                      (assoc :id (or (:call_id payload) (:id previous))
+                             :item-id (or (:item_id payload) (:item-id previous))
+                             :index (or (:output_index payload) (:index previous)))
+                      (update :arguments str (:delta payload))
+                      (update :raw conj payload))]
       (swap! state assoc-in [:tool-calls key] current)
       (emit! (event :toolcall-delta
                     {:key key :delta (:delta payload) :tool-call current
@@ -402,9 +452,16 @@
     "response.output_item.done"
     (when (= "function_call" (get-in payload [:item :type]))
       (let [item (:item payload)
-            key (or (:call_id item) (:id item))
-            current {:id (:call_id item) :item-id (:id item)
-                     :name (:name item) :arguments (:arguments item)}]
+            key (or (:call_id item) (:id item) (:output_index payload))
+            previous (get-in @state [:tool-calls key] {:raw []})
+            current (-> previous
+                        (assoc :id (or (:call_id item) (:id previous))
+                               :item-id (or (:id item) (:item-id previous))
+                               :index (or (:output_index payload) (:index previous))
+                               :name (:name item)
+                               :arguments (or (:arguments item)
+                                              (:arguments previous)))
+                        (update :raw conj payload))]
         (swap! state assoc-in [:tool-calls key] current)
         (emit! (event :toolcall-end {:key key :tool-call current
                                      :partial @state} payload))))
@@ -432,6 +489,11 @@
 (defn retryable-status? [status]
   (contains? #{408 409 429 500 502 503 504} status))
 
+(defn ordered-tool-calls [calls]
+  (->> calls vals
+       (sort-by (fn [call] [(or (:index call) 0) (or (:id call) "")]))
+       vec))
+
 (defn stream!
   ([context emit!] (stream! *provider* context {} emit!))
   ([provider-id context options emit!]
@@ -451,16 +513,21 @@
        (let [request (request-map provider-id context options)
              _ (diagnostic! {:type :request :provider provider-id
                              :attempt attempt :request request})
-             response (http/send-sse
+             response (send-sse-http!
                        request
                        (fn [sse]
                          (if (or (*cancelled?*) @consumer-cancelled)
                            false
                            (let [data (:data sse)]
                              (when (and (seq data) (not= data "[DONE]"))
-                               (let [payload (json/read-string data {:keywords? true})]
+                               (let [payload (parse-json!
+                                              data :invalid-provider-json
+                                              "Provider stream returned invalid JSON."
+                                              {:provider provider-id
+                                               :partial @state})]
                                  (parse-event! emit-event! state payload)))
-                             (not @consumer-cancelled)))))
+                             (not @consumer-cancelled))))
+                       {:provider provider-id :attempt attempt :partial @state})
              status (:status response)]
          (diagnostic! {:type :response :provider provider-id
                        :status status :headers (:headers response)})
@@ -476,7 +543,7 @@
            (not (<= 200 status 299))
            (fail! :provider-error "Provider returned an HTTP error."
                   {:provider provider-id :status status
-                   :body (redact (:body response)) :partial @state})
+                   :raw (:body response) :partial @state})
 
            (:error @state)
            (fail! :provider-error "Provider stream reported an error."
@@ -484,8 +551,7 @@
                    :partial @state})
 
            :else
-           (let [completed (update @state :tool-calls
-                                   #(->> % vals (sort-by :index) vec))]
+           (let [completed (update @state :tool-calls ordered-tool-calls)]
              (emit-event! (event :done {:message completed} (:response completed)))
              completed)))))))
 
@@ -494,12 +560,101 @@
   ([provider-id context options]
    (stream! provider-id context options (fn [_] true))))
 
+(defn tool-table [tools]
+  (reduce
+   (fn [result tool]
+     (let [name (:name tool)
+           handler (:handler tool)]
+       (when-not (and (string? name) (seq name))
+         (fail! :invalid-tool "Tool names must be non-empty strings."
+                {:tool (redact tool)}))
+       (when (contains? result name)
+         (fail! :duplicate-tool "Tool names must be unique." {:tool name}))
+       (when-not (callable? handler)
+         (fail! :invalid-tool-handler "Tool handlers must be callable."
+                {:tool name}))
+       (assoc result name tool)))
+   {} tools))
+
+(defn decode-tool-arguments [call]
+  (let [arguments (:arguments call)]
+    (cond
+      (map? arguments) arguments
+      (string? arguments)
+      (parse-json! arguments :invalid-tool-arguments
+                   "Tool arguments are not valid JSON."
+                   {:tool (:name call) :tool-call-id (:id call)})
+      :else
+      (fail! :invalid-tool-arguments
+             "Tool arguments must be a JSON object or encoded JSON string."
+             {:tool (:name call) :tool-call-id (:id call)}))))
+
+(defn execute-tool-call [tools call]
+  (let [name (:name call)
+        tool (get tools name)]
+    (when-not tool
+      (fail! :unknown-tool "Provider requested an unknown tool."
+             {:tool name :tool-call-id (:id call)}))
+    (let [arguments (decode-tool-arguments call)]
+      (when-not (map? arguments)
+        (fail! :invalid-tool-arguments "Tool arguments must decode to an object."
+               {:tool name :tool-call-id (:id call)}))
+      (try
+        {:role :tool :tool-call-id (:id call)
+         :name name :content ((:handler tool) arguments)}
+        (catch coretypes.Error error
+          (fail! :tool-execution-error "Tool handler failed."
+                 {:tool name :tool-call-id (:id call)
+                  :cause (ex-message error)}))))))
+
+(defn complete-with-tools
+  ([context] (complete-with-tools *provider* context {}))
+  ([provider-id context options]
+   (let [tools (tool-table (:tools context))
+         maximum (or (:max-tool-rounds options) 8)
+         completion (or (:complete-fn options) complete)]
+     (when-not (and (integer? maximum) (pos? maximum))
+       (fail! :invalid-tool-round-limit
+              ":max-tool-rounds must be a positive integer."
+              {:max-tool-rounds maximum}))
+     (loop [current context round 0 seen #{}]
+       (when (*cancelled?*)
+         (fail! :cancelled "AI tool execution cancelled."
+                {:round round}))
+       (let [result (completion provider-id current options)
+             calls (:tool-calls result)]
+         (if-not (seq calls)
+           result
+           (do
+             (when (>= round maximum)
+               (fail! :tool-round-limit "AI tool execution exceeded its round limit."
+                      {:round round :max-tool-rounds maximum :partial result}))
+             (let [ids (mapv :id calls)]
+               (when (some nil? ids)
+                 (fail! :invalid-tool-call "Tool calls must have identifiers."
+                        {:round round :partial result}))
+               (when-not (= (count ids) (count (set ids)))
+                 (fail! :duplicate-tool-call "Provider repeated a tool call identifier."
+                        {:round round :tool-call-ids ids :partial result}))
+               (when (some seen ids)
+                 (fail! :duplicate-tool-call "Provider repeated an executed tool call."
+                        {:round round :tool-call-ids ids :partial result}))
+               (let [assistant {:role :assistant :text (:text result)
+                                :tool-calls calls}
+                     outputs (mapv #(execute-tool-call tools %) calls)]
+                 (recur (update current :messages into
+                                (into [assistant] outputs))
+                        (inc round) (into seen ids)))))))))))
+
 (defn complete-json
   ([context schema] (complete-json *provider* context schema {}))
   ([provider-id context schema options]
    (let [result (complete provider-id context
                           (assoc options :response-schema schema))]
-     (assoc result :value (json/read-string (:text result) {:keywords? true})))))
+     (assoc result :value
+            (parse-json! (:text result) :invalid-structured-output
+                         "Provider returned invalid structured JSON."
+                         {:provider provider-id :partial result})))))
 
 (defn models
   ([] (models *provider* {}))
@@ -508,29 +663,71 @@
          adapter (:adapter configuration)
          endpoint (or (:models-url adapter)
                       (join-url (:base-url configuration) "models"))
-         response (http/send {:method :get :url endpoint
+         response (send-http! {:method :get :url endpoint
                               :headers (assoc (:headers configuration)
                                               "Accept" "application/json")
-                              :timeout-ms (or (:timeout-ms options) *timeout-ms*)})]
+                              :timeout-ms (or (:timeout-ms options) *timeout-ms*)
+                              :max-response-bytes (or (:max-response-bytes options)
+                                                      *max-response-bytes*)})]
      (if (<= 200 (:status response) 299)
-       (let [payload (json/read-string (:body response) {:keywords? true})]
+       (let [payload (parse-json! (:body response) :invalid-provider-json
+                                  "Model discovery returned invalid JSON."
+                                  {:provider provider-id
+                                   :status (:status response)})]
          {:models (or (:data payload) (:models payload) payload)
           :raw payload})
        (if-let [fallback (:models adapter)]
-         {:models fallback :fallback? true :raw response}
+         {:models (fallback configuration options) :fallback? true :raw response}
          (fail! :provider-error "Model discovery failed."
                 {:provider provider-id :status (:status response)
-                 :body (redact (:body response))}))))))
+                 :raw (:body response)}))))))
 
-(defn read-token-store []
+(defonce token-store-locked? (atom false))
+
+(defn with-token-store-lock [f]
+  (loop []
+    (if (compare-and-set! token-store-locked? false true)
+      (try (f) (finally (reset! token-store-locked? false)))
+      (do (time/sleep time/millisecond) (recur)))))
+
+(defn read-token-store-unlocked []
   (if (os/exists? *token-store-path*)
-    (edn/read-string (slurp *token-store-path*))
+    (let [size (:size (os/stat *token-store-path*))]
+      (when (> size *max-token-store-bytes*)
+        (fail! :credential-store-too-large "Credential store exceeds its size limit."
+               {:size size :max-bytes *max-token-store-bytes*}))
+      (try
+        (let [value (edn/read-string (slurp *token-store-path*))]
+          (when-not (map? value)
+            (fail! :malformed-credential-store
+                   "Credential store must contain an EDN map." {}))
+          value)
+        (catch coretypes.Error error
+          (if (ex-data error)
+            (throw error)
+            (fail! :malformed-credential-store
+                   "Credential store contains malformed EDN."
+                   {:cause (ex-message error)})))))
     {}))
 
+(defn read-token-store []
+  (with-token-store-lock read-token-store-unlocked))
+
+(defn write-token-store-unlocked! [store]
+  (let [directory (filepath/dir *token-store-path*)
+        temporary (os/create-temp directory ".joker-ai-tokens-*")
+        temporary-path (name temporary)]
+    (os/close temporary)
+    (try
+      (spit temporary-path (edn/write-string store))
+      (os/chmod temporary-path 384)
+      (os/rename temporary-path *token-store-path*)
+      store
+      (finally
+        (when (os/exists? temporary-path) (os/remove temporary-path))))))
+
 (defn write-token-store! [store]
-  (spit *token-store-path* (edn/write-string store))
-  (os/chmod *token-store-path* 384)
-  store)
+  (with-token-store-lock #(write-token-store-unlocked! store)))
 
 (defn load-credentials [provider-id]
   (if *load-credentials*
@@ -540,7 +737,9 @@
 (defn save-credentials! [provider-id credentials]
   (if *save-credentials!*
     (apply *save-credentials!* [provider-id credentials])
-    (write-token-store! (assoc (read-token-store) provider-id credentials)))
+    (with-token-store-lock
+      #(write-token-store-unlocked!
+        (assoc (read-token-store-unlocked) provider-id credentials))))
   credentials)
 
 (defn base64url [raw]
@@ -561,7 +760,7 @@
   ([] (github-device-login! {}))
   ([options]
    (let [device-response
-         (http/send {:method :post
+         (send-http! {:method :post
                      :url (or (:device-url options)
                               "https://github.com/login/device/code")
                      :headers {"Accept" "application/json"
@@ -569,7 +768,8 @@
                      :body (form-encode {:client_id (or (:client-id options)
                                                         github-client-id)
                                          :scope "read:user"})
-                     :timeout-ms *timeout-ms*})
+                     :timeout-ms *timeout-ms*
+                     :max-response-bytes *max-response-bytes*})
          device (json-response! device-response :oauth-error
                                 "GitHub device authorization failed.")]
      (*oauth-progress!* {:type :device-code
@@ -579,7 +779,7 @@
      (loop [delay-seconds (or (:interval device) 5)]
        (time/sleep (* delay-seconds time/second))
        (let [token-response
-             (http/send {:method :post
+             (send-http! {:method :post
                          :url (or (:token-url options)
                                   "https://github.com/login/oauth/access_token")
                          :headers {"Accept" "application/json"
@@ -588,7 +788,8 @@
                                 {:client_id (or (:client-id options) github-client-id)
                                  :device_code (:device_code device)
                                  :grant_type "urn:ietf:params:oauth:grant-type:device_code"})
-                         :timeout-ms *timeout-ms*})
+                         :timeout-ms *timeout-ms*
+                         :max-response-bytes *max-response-bytes*})
              token (json-response! token-response :oauth-error
                                   "GitHub device token polling failed.")]
          (case (:error token)
@@ -606,15 +807,16 @@
    (when-not (:refresh credentials)
      (fail! :missing-credentials "GitHub OAuth credentials are missing." {}))
    (let [response
-         (http/send {:method :get
+         (send-http! {:method :get
                      :url (or (:copilot-token-url options)
                               "https://api.github.com/copilot_internal/v2/token")
-                     :headers {"Authorization" (str "token " (:refresh credentials))
+                     :headers {"Authorization" (apply str ["token " (:refresh credentials)])
                                "Accept" "application/json"
                                "Editor-Version" "vscode/1.107.0"
                                "Editor-Plugin-Version" "copilot-chat/0.35.0"
                                "User-Agent" "GitHubCopilotChat/0.35.0"}
-                     :timeout-ms *timeout-ms*})
+                     :timeout-ms *timeout-ms*
+                     :max-response-bytes *max-response-bytes*})
          token (json-response! response :oauth-error
                                "GitHub Copilot token exchange failed.")]
      (save-credentials!
@@ -644,7 +846,7 @@
 
 (defn codex-exchange-code! [authorization code options]
   (let [response
-        (http/send {:method :post
+        (send-http! {:method :post
                     :url (or (:token-url options) "https://auth.openai.com/oauth/token")
                     :headers {"Content-Type" "application/x-www-form-urlencoded"
                               "Accept" "application/json"}
@@ -653,7 +855,8 @@
                             :client_id (or (:client-id options) codex-client-id)
                             :code code :redirect_uri (:redirect-uri authorization)
                             :code_verifier (:verifier authorization)})
-                    :timeout-ms *timeout-ms*})
+                    :timeout-ms *timeout-ms*
+                    :max-response-bytes *max-response-bytes*})
         token (json-response! response :oauth-error
                               "Codex authorization-code exchange failed.")]
     (save-credentials!
@@ -682,7 +885,7 @@
 
 (defn refresh-codex! [credentials options]
   (let [response
-        (http/send {:method :post
+        (send-http! {:method :post
                     :url (or (:token-url options) "https://auth.openai.com/oauth/token")
                     :headers {"Content-Type" "application/x-www-form-urlencoded"
                               "Accept" "application/json"}
@@ -690,7 +893,8 @@
                                         :client_id (or (:client-id options)
                                                        codex-client-id)
                                         :refresh_token (:refresh credentials)})
-                    :timeout-ms *timeout-ms*})
+                    :timeout-ms *timeout-ms*
+                    :max-response-bytes *max-response-bytes*})
         token (json-response! response :oauth-error
                               "Codex token refresh failed.")]
     (save-credentials!
@@ -728,14 +932,14 @@
  :github
  {:base-url "https://api.individual.githubcopilot.com"
   :request chat-request :event chat-stream-event!
-  :models [{:id "gpt-4.1"} {:id "gpt-5-mini"}]})
+  :models (fn [_ _] [{:id "gpt-4.1"} {:id "gpt-5-mini"}])})
 (register-provider!
  :opencode
  {:base-url "https://opencode.ai/zen/v1"
   :request chat-request :event chat-stream-event!
-  :models [{:id "gpt-5-mini"} {:id "claude-sonnet-4-5"}]})
+  :models (fn [_ _] [{:id "gpt-5-mini"} {:id "claude-sonnet-4-5"}])})
 (register-provider!
  :codex
  {:base-url "https://chatgpt.com/backend-api"
   :request codex-request :event responses-stream-event!
-  :models [{:id "gpt-5.1-codex"} {:id "gpt-5.1-codex-mini"}]})
+  :models (fn [_ _] [{:id "gpt-5.1-codex"} {:id "gpt-5.1-codex-mini"}])})

@@ -30,14 +30,14 @@ Provider HTTP and stream failures become `ex-info` values with structured `ex-da
 
 ## Authentication and persistence
 
-API keys and endpoint configuration are dynamic vars; the namespace never reads environment variables. OAuth tokens default to an EDN file with mode `0600`, but load/save functions are bindable for keychains, databases, tests, or an embedding application's own encrypted store.
+API keys and endpoint configuration are dynamic vars; the namespace never reads environment variables. OAuth tokens default to a bounded EDN file updated through private temporary files and atomic replacement with mode `0600`; in-process updates are serialized. Load/save functions remain bindable for keychains, databases, tests, or an embedding application's own encrypted store.
 
 GitHub device authorization, Copilot exchange, Codex PKCE authorization-code exchange, and Codex refresh are implemented. Browser launching, prompting, and progress reporting are callbacks. Codex currently expects a pasted code or callback URL instead of running a temporary localhost receiver -- a deliberate limitation until Joker has a small, stoppable one-shot HTTP listener.
 
 ## Known gaps
 
-The native SSE function bounds each event rather than imposing a total stream byte cap; long-lived streams are expected to be cancelled by their owner. Network-level exceptions still originate in the native HTTP namespace, whereas provider status and payload failures use `joker.ai`'s structured categories.
+The native SSE function bounds each event rather than imposing a total stream byte cap; long-lived streams are expected to be cancelled by their owner. Streaming is SSE-only -- JSONL is deliberately not advertised. Transport, provider, OAuth, JSON decoding, cancellation, timeout, and size failures are normalized into structured `ex-info` at the AI boundary.
 
-Tool execution and JSON Schema validation are outside this namespace. Models can emit malformed tool arguments or structured JSON, and callers must validate both before performing side effects. Audio, video, file upload, batch jobs, realtime WebSockets, and provider-specific prompt caching are also outside the current example.
+`complete-with-tools` validates and executes registered handlers with bounded rounds and duplicate-call protection, but JSON Schema validation remains outside this namespace. Audio, video, file upload, batch jobs, realtime WebSockets, and provider-specific prompt caching are also outside the current example.
 
-Offline fixtures cover both event dialects, request conversion for images/tools/JSON schemas, credential callback replacement, and redaction. Native tests cover SSE parsing, multiline data, cancellation, and deadlines. Live checks remain opt-in because credentials and provider availability should never decide whether Joker's repository tests pass.
+Offline fixtures cover both event dialects, deterministic interleaved tool calls, tool execution, request conversion for images/tools/JSON schemas, credential activation, strict callback parsing, structured failures, and redaction. Native tests cover bounded ordinary responses, SSE parsing, multiline data, cancellation, deadlines, and invalid limits. Live checks remain opt-in because credentials and provider availability should never decide whether Joker's repository tests pass.

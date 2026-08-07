@@ -18,3 +18,5 @@ docs/dash/*.js
 tests/clojure-test-suite/
 .joker-notebook-snapshots/
 **/.joker-notebook-snapshots/
+.joker-ai-tokens.edn
+**/.joker-ai-tokens.edn

@@ -45,7 +45,7 @@ A context contains normalized messages and optional tools:
                        :required ["city"]}}]}
 ```
 
-Images can use `:url`, or `:data` and `:mime-type`. Assistant tool calls use `{:id ... :name ... :arguments ...}`; a result is a message with `{:role :tool :tool-call-id ... :content ...}`.
+Images can use `:url`, or `:data` and `:mime-type`. Assistant tool calls use `{:id ... :name ... :arguments ...}`; a result is a message with `{:role :tool :tool-call-id ... :content ...}`. Tool definitions may include a callable `:handler`; `complete-with-tools` validates and invokes handlers, rejects malformed or duplicate calls, limits execution rounds, and continues until the provider returns a terminal assistant response.
 
 `complete-json` adds the provider's structured-output form and parses the resulting text:
 
@@ -61,7 +61,7 @@ Images can use `:url`, or `:data` and `:mime-type`. Assistant tool calls use `{:
 
 ## Streaming
 
-`stream!` emits `:start`, `:text-delta`, `:thinking-delta`, `:toolcall-delta`, `:toolcall-end`, and `:done` events. Every provider-derived event retains its decoded payload under `:raw`.
+`stream!` consumes SSE and emits `:start`, `:text-delta`, `:thinking-delta`, `:toolcall-delta`, `:toolcall-end`, and `:done` events. Every provider-derived event retains its decoded payload under `:raw`. JSONL streaming is intentionally not part of this API; providers must expose SSE or supply a separate transport adapter.
 
 ```joke
 (binding [ai/*provider* :openai-compatible
@@ -88,13 +88,13 @@ The default token store is `.joker-ai-tokens.edn`, written with mode `0600`. Bin
   (ai/codex-login!))
 ```
 
-`github-device-login!` obtains the long-lived GitHub token. `github-copilot-token!` exchanges it for a short-lived Copilot token. `codex-login!` creates a PKCE authorization URL, calls `*open-browser!*`, and asks `*oauth-prompt!*` for either the code or pasted callback URL. `active-credentials` refreshes short-lived credentials when required; pass the result as `{:credentials ...}` to `complete`, `stream!`, or `models`.
+`github-device-login!` obtains the long-lived GitHub token. `github-copilot-token!` exchanges it for a short-lived Copilot token. `codex-login!` creates a PKCE authorization URL, calls `*open-browser!*`, and asks `*oauth-prompt!*` for either the code or pasted callback URL. `complete`, `stream!`, and `models` automatically load and refresh stored credentials. Explicit operation options override dynamic bindings, which override stored credentials and adapter defaults.
 
 OAuth callbacks, progress reporting, browser opening, and storage are all bindable, which keeps the namespace usable in a terminal, service, or embedded process without assuming a particular UI.
 
 ## Adapters
 
-An adapter is a map with `:request` and `:event` functions plus optional `:base-url`, `:headers`, `:models-url`, and fallback `:models` data.
+An adapter is a map with callable `:request` and `:event` hooks plus optional `:base-url`, `:headers`, `:models-url`, and callable `:models` or `:auth` hooks. Registration and use validate the hook contract.
 
 ```joke
 (ai/register-provider!
@@ -110,7 +110,7 @@ The request function translates normalized context into an HTTP request. The eve
 
 Diagnostics are off by default. With `*debug?*` enabled, authorization, cookies, token-like fields, API keys, secrets, and nested values are redacted before reaching `*diagnostic-fn*`. `*unsafe-debug?*` disables that protection and should only be bound in throw-away local tests.
 
-The implementation does not execute tools, fetch image URLs, or validate model-produced JSON against the supplied schema. Codex login currently uses pasted-code callback handling rather than opening a local callback listener. Network exceptions raised by Joker's native HTTP stack are not retried; status-based failures are. These boundaries are intentional -- an embedding application should own side effects, policy, and secret management.
+The implementation executes only explicitly registered tool handlers and does not fetch image URLs or validate model-produced JSON against the supplied schema. Codex login currently uses strict pasted-code callback handling rather than opening a local callback listener. Transport failures are normalized as structured errors; status-based transient failures are retried. Embedding applications still own tool policy, schema validation, and secret management.
 
 Run the offline checks from the repository root:
 

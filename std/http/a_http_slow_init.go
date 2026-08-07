@@ -45,7 +45,8 @@ func InternsOrThunks() {
   - host (string, overrides Host header if provided)
   - headers (map)
   - client (persistent client from joker.http/client)
-  - timeout-ms (optional per-request deadline).
+  - timeout-ms (optional per-request deadline)
+  - max-response-bytes (default 8388608; must be positive).
   All keys except for url are optional.
   response is a map with the following keys:
   - status (int)

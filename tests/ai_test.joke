@@ -6,6 +6,12 @@
 (defn check [label value]
   (when-not value (swap! failures conj label)))
 
+(defn caught-data [f]
+  (try
+    (f)
+    nil
+    (catch coretypes.Error error (ex-data error))))
+
 (let [payload (json/read-string (slurp "tests/fixtures/ai/chat-delta.json")
                                 {:keywords? true})
       state (atom {:text "" :thinking "" :tool-calls {}})
@@ -22,6 +28,38 @@
   (joker.ai/responses-stream-event! #(swap! events conj %) state payload)
   (check "responses text delta" (= "hello" (:text @state)))
   (check "responses raw payload" (= payload (:raw (first @events)))))
+
+(let [state (atom {:tool-calls {}})
+      events (atom [])]
+  (joker.ai/responses-stream-event!
+   #(swap! events conj %) state
+   {:type "response.function_call_arguments.delta" :output_index 2
+    :call_id "call-b" :item_id "item-b" :delta "{\"b\":"})
+  (joker.ai/responses-stream-event!
+   #(swap! events conj %) state
+   {:type "response.function_call_arguments.delta" :output_index 1
+    :call_id "call-a" :item_id "item-a" :delta "{\"a\":1}"})
+  (joker.ai/responses-stream-event!
+   #(swap! events conj %) state
+   {:type "response.function_call_arguments.delta" :output_index 2
+    :call_id "call-b" :item_id "item-b" :delta "2}"})
+  (joker.ai/responses-stream-event!
+   #(swap! events conj %) state
+   {:type "response.output_item.done" :output_index 2
+    :item {:type "function_call" :id "item-b" :call_id "call-b"
+           :name "second"}})
+  (joker.ai/responses-stream-event!
+   #(swap! events conj %) state
+   {:type "response.output_item.done" :output_index 1
+    :item {:type "function_call" :id "item-a" :call_id "call-a"
+           :name "first" :arguments "{\"a\":1}"}})
+  (let [calls (joker.ai/ordered-tool-calls (:tool-calls @state))]
+    (check "responses multi-tool deterministic output ordering"
+           (= ["call-a" "call-b"] (mapv :id calls)))
+    (check "responses interleaved arguments accumulate"
+           (= "{\"b\":2}" (:arguments (second calls))))
+    (check "responses tool call retains raw event payloads"
+           (= 3 (count (:raw (second calls)))))))
 
 (binding [joker.ai/*model* "fixture-model"]
   (let [context {:messages [{:role :user
@@ -55,7 +93,30 @@
            (= "output_text"
               (get-in request [:body :input 0 :content 0 :type])))))
 
+(let [data (caught-data #(joker.ai/register-provider!
+                          :broken {:request "not-callable"
+                                   :event joker.ai/chat-stream-event!}))]
+  (check "provider request hook validated as callable"
+         (= :invalid-provider-hook (:category data)))
+  (check "provider hook error identifies hook" (= :request (:hook data))))
+
+(let [data (caught-data #(joker.ai/register-provider!
+                          :broken {:request joker.ai/chat-request
+                                   :event joker.ai/chat-stream-event!
+                                   :models []}))]
+  (check "provider models hook validated as callable"
+         (= :invalid-provider-hook (:category data))))
+
 (check "URL decode" (= "a+b c" (joker.ai/url-decode "a%2Bb+c")))
+(check "UTF-8 form encoding round trip"
+       (= "Olá ✓" (joker.ai/url-decode (joker.ai/url-encode "Olá ✓"))))
+(let [data (caught-data #(joker.ai/url-decode "%ZZ"))]
+  (check "malformed percent encoding rejected"
+         (= :invalid-url-encoding (:category data))))
+(let [data (caught-data #(joker.ai/callback-parameter
+                          "http://localhost/cb?code=a&code=b" "code"))]
+  (check "duplicate callback parameters rejected"
+         (= :invalid-oauth-callback (:category data))))
 (check "callback code parse"
        (= "code/value" (joker.ai/callback-parameter
                          "http://localhost/cb?code=code%2Fvalue&state=s" "code")))
@@ -70,6 +131,46 @@
     (check "credential save callback"
            (= [:fixture {:access "saved"}] @stored))))
 
+(let [path (str (os/temp-dir) "/joker-ai-test-" (joker.random/uuid) ".edn")]
+  (try
+    (binding [joker.ai/*token-store-path* path]
+      (joker.ai/save-credentials! :fixture {:access "saved"})
+      (check "credential file round trip"
+             (= "saved" (:access (joker.ai/load-credentials :fixture))))
+      (check "credential file mode is private"
+             (= 384 (bit-and 511 (:mode (os/stat path)))))
+      (spit path "{")
+      (let [data (caught-data #(joker.ai/read-token-store))]
+        (check "malformed credential store structured error"
+               (= :malformed-credential-store (:category data))))
+      (spit path "{:fixture {:access \"large\"}}")
+      (binding [joker.ai/*max-token-store-bytes* 2]
+        (let [data (caught-data #(joker.ai/read-token-store))]
+          (check "credential store size bound"
+                 (= :credential-store-too-large (:category data))))))
+    (finally (when (os/exists? path) (os/remove path)))))
+
+(binding [joker.ai/*load-credentials*
+          (fn [_] {:access "stored-key" :base-url "https://stored.example/v1"
+                   :account-id "stored-account"})]
+  (let [configuration (joker.ai/provider-configuration :openai {})]
+    (check "provider configuration loads stored access token"
+           (= "Bearer stored-key" (str (get (:headers configuration) "Authorization"))))
+    (check "provider configuration loads stored endpoint"
+           (= "https://stored.example/v1" (:base-url configuration)))))
+
+(binding [joker.ai/*api-key* "bound-key"
+          joker.ai/*base-url* "https://bound.example/v1"
+          joker.ai/*load-credentials*
+          (fn [_] {:access "stored-key" :base-url "https://stored.example/v1"})]
+  (let [configuration (joker.ai/provider-configuration
+                       :openai {:api-key "option-key"
+                                :base-url "https://option.example/v1"})]
+    (check "explicit API key overrides binding and store"
+           (= "Bearer option-key" (str (get (:headers configuration) "Authorization"))))
+    (check "explicit endpoint overrides binding and store"
+           (= "https://option.example/v1" (:base-url configuration)))))
+
 (binding [joker.ai/*unsafe-debug?* false]
   (let [redacted (joker.ai/redact {:Authorization "Bearer secret"
                                    :nested {:access-token "secret"}
@@ -77,6 +178,92 @@
     (check "authorization redacted" (= "[REDACTED]" (:Authorization redacted)))
     (check "nested token redacted" (= "[REDACTED]" (get-in redacted [:nested :access-token])))
     (check "safe diagnostic retained" (= "visible" (:safe redacted)))))
+
+(binding [joker.ai/*unsafe-debug?* false]
+  (let [request {:headers {"Authorization" "Bearer secret"}
+                 :body "{\"messages\":[{\"content\":\"private prompt\"}],\"tools\":[{\"arguments\":\"private args\"}]}"}
+        redacted (joker.ai/redact {:type :request :request request})]
+    (check "serialized request body redacted"
+           (= "[REDACTED]" (get-in redacted [:request :body])))
+    (check "authorization header redacted"
+           (= "[REDACTED]" (get-in redacted [:request :headers "Authorization"])))))
+
+(binding [joker.ai/*unsafe-debug?* true]
+  (let [payload {:body "private prompt" :arguments "private args"}]
+    (check "unsafe diagnostics explicit opt-in"
+           (= payload (joker.ai/redact payload)))))
+
+(let [data (caught-data #(joker.ai/parse-json!
+                          "{" :invalid-provider-json "bad JSON"
+                          {:provider :fixture :partial {:text "so far"}}))]
+  (check "malformed JSON structured category"
+         (= :invalid-provider-json (:category data)))
+  (check "malformed JSON preserves partial state"
+         (= "so far" (get-in data [:partial :text])))
+  (check "malformed JSON redacts raw payload"
+         (= "[REDACTED]" (:raw data))))
+
+(let [data (caught-data #(joker.ai/json-response!
+                          {:status 503 :body "provider unavailable"}
+                          :provider-error "provider failed"))]
+  (check "provider HTTP error structured category"
+         (= :provider-error (:category data)))
+  (check "provider HTTP error status" (= 503 (:status data)))
+  (check "provider HTTP error redacts raw payload"
+         (= "[REDACTED]" (:raw data))))
+
+(binding [joker.ai/*unsafe-debug?* true]
+  (let [data (caught-data #(joker.ai/json-response!
+                            {:status 503 :body "provider unavailable"}
+                            :provider-error "provider failed"))]
+    (check "unsafe errors explicitly preserve raw payload"
+           (= "provider unavailable" (:raw data)))))
+
+(let [data (caught-data #(joker.ai/send-http!
+                          {:method :get :url "://invalid"}
+                          {:provider :fixture}))]
+  (check "transport error structured category"
+         (= :transport-error (:category data)))
+  (check "transport error context"
+         (= :fixture (:provider data))))
+
+(let [round (atom 0)
+      continued-context (atom nil)
+      completion (fn [_ context _]
+                   (reset! continued-context context)
+                   (if (zero? @round)
+                     (do (swap! round inc)
+                         {:text "" :tool-calls [{:id "call-1" :name "weather"
+                                                  :arguments "{\"city\":\"Lisbon\"}"}]})
+                     {:text "sunny" :tool-calls []}))
+      result (joker.ai/complete-with-tools
+              :fixture
+              {:messages [{:role :user :content "weather?"}]
+               :tools [{:name "weather" :handler (fn [args] {:city (:city args)
+                                                               :condition "sunny"})}]}
+              {:complete-fn completion})]
+  (check "tool loop reaches terminal assistant response" (= "sunny" (:text result)))
+  (check "tool loop appends assistant tool call"
+         (= "call-1" (get-in @continued-context [:messages 1 :tool-calls 0 :id])))
+  (check "tool loop appends normalized result"
+         (= {:city "Lisbon" :condition "sunny"}
+            (get-in @continued-context [:messages 2 :content]))))
+
+(let [completion (fn [_ _ _]
+                   {:tool-calls [{:id "same" :name "echo" :arguments "{}"}
+                                 {:id "same" :name "echo" :arguments "{}"}]})
+      data (caught-data #(joker.ai/complete-with-tools
+                          :fixture
+                          {:messages [] :tools [{:name "echo" :handler identity}]}
+                          {:complete-fn completion}))]
+  (check "duplicate tool calls rejected"
+         (= :duplicate-tool-call (:category data))))
+
+(let [data (caught-data #(joker.ai/complete-with-tools
+                          :fixture {:messages [] :tools []}
+                          {:max-tool-rounds 0 :complete-fn (fn [& _] {})}))]
+  (check "tool round limit validated"
+         (= :invalid-tool-round-limit (:category data))))
 
 (if (seq @failures)
   (do (println "joker.ai failures:" @failures) (os/exit 1))

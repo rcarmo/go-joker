@@ -112,6 +112,23 @@ func TestSendSSEBoundsWholeEvent(t *testing.T) {
 	_ = sendSSE(request, callback)
 }
 
+func TestSendSSERejectsZeroEventLimit(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		_, _ = w.Write([]byte("data: value\n\n"))
+	}))
+	defer server.Close()
+	request := sseRequest(server.URL, 1000)
+	request.Add(coretypes.MakeKeyword(STRINGS.Intern, "max-event-bytes"), coretypes.MakeInt(0))
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected zero event limit failure")
+		}
+	}()
+	_ = sendSSE(request, Proc{Name: "callback", Fn: func([]coretypes.Object) coretypes.Object {
+		return coretypes.MakeBoolean(true)
+	}})
+}
+
 func TestSendSSEHonorsTimeout(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		time.Sleep(100 * time.Millisecond)

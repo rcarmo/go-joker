@@ -143,12 +143,21 @@ func reqToMap(host coretypes.String, port coretypes.String, req *http.Request) c
 	return res
 }
 
+const defaultMaxResponseBytes = 8 << 20
+
 func respToMap(resp *http.Response) coretypes.Map {
+	return respToMapBounded(resp, defaultMaxResponseBytes)
+}
+
+func respToMapBounded(resp *http.Response, maxResponseBytes int) coretypes.Map {
 	res := corecollections.EmptyArrayMap()
-	body, err := io.ReadAll(resp.Body)
+	body, err := io.ReadAll(io.LimitReader(resp.Body, int64(maxResponseBytes)+1))
 	closeErr := resp.Body.Close()
 	corert.PanicOnErr(err)
 	corert.PanicOnErr(closeErr)
+	if len(body) > maxResponseBytes {
+		panic(RT.NewError("HTTP response exceeds :max-response-bytes"))
+	}
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "body"), coretypes.MakeString(string(body)))
 	res.Add(coretypes.MakeKeyword(STRINGS.Intern, "status"), coretypes.MakeInt(resp.StatusCode))
 	respHeaders := corecollections.EmptyArrayMap()
@@ -256,12 +265,27 @@ func responseMetadata(resp *http.Response) *corecollections.ArrayMap {
 	return res
 }
 
+func requestMaxResponseBytes(request coretypes.Map) int {
+	if ok, value := request.Get(coretypes.MakeKeyword(STRINGS.Intern, "max-response-bytes")); ok {
+		maximum := nonNegativeHTTPOption(value, ":max-response-bytes")
+		if maximum == 0 {
+			panic(RT.NewError(":max-response-bytes must be positive"))
+		}
+		if int64(maximum) == int64(^uint64(0)>>1) {
+			panic(RT.NewError(":max-response-bytes is too large"))
+		}
+		return maximum
+	}
+	return defaultMaxResponseBytes
+}
+
 func sendRequest(request coretypes.Map) coretypes.Map {
+	maximum := requestMaxResponseBytes(request)
 	req, cancel := requestWithContext(request)
 	defer cancel()
 	resp, err := clientFromRequest(request).Do(req)
 	corert.PanicOnErr(err)
-	return respToMap(resp)
+	return respToMapBounded(resp, maximum)
 }
 
 func sseEvent(event, data, id string, retry int) coretypes.Map {
@@ -285,7 +309,14 @@ func sendSSE(request coretypes.Map, callback coretypes.Callable) coretypes.Map {
 	defer cancel()
 	resp, err := clientFromRequest(request).Do(req)
 	corert.PanicOnErr(err)
-	defer func() { corert.PanicOnErr(resp.Body.Close()) }()
+	defer func() {
+		primary := recover()
+		closeErr := resp.Body.Close()
+		if primary != nil {
+			panic(primary)
+		}
+		corert.PanicOnErr(closeErr)
+	}()
 
 	result := responseMetadata(resp)
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
@@ -298,6 +329,9 @@ func sendSSE(request coretypes.Map, callback coretypes.Callable) coretypes.Map {
 	maxEventBytes := 1 << 20
 	if ok, value := request.Get(coretypes.MakeKeyword(STRINGS.Intern, "max-event-bytes")); ok {
 		maxEventBytes = nonNegativeHTTPOption(value, ":max-event-bytes")
+		if maxEventBytes == 0 {
+			panic(RT.NewError(":max-event-bytes must be positive"))
+		}
 	}
 	scanner := bufio.NewScanner(resp.Body)
 	scanner.Buffer(make([]byte, 4096), maxEventBytes)

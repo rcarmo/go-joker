@@ -1,6 +1,7 @@
-;; Optional live smoke test. Nothing runs without explicit command-line values.
-;; From examples/ai (so joker.ai is on the load path):
-;;   ../../.cache/tmp/joker ../../tests/ai_live_smoke.joke -- \
+;; Optional live smoke test. Nothing runs without explicit command-line values,
+;; and credentials are never printed. Invoke it separately for each configured
+;; provider family (:openai, :openai-compatible, :github, :opencode, or :codex):
+;;   .cache/tmp/joker tests/ai_live_smoke.joke -- \
 ;;     openai https://api.openai.com/v1 gpt-4.1 sk-...
 
 (ns ai-live-smoke

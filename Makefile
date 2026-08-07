@@ -30,7 +30,7 @@ BENCH_OUT ?= .cache/benchmarks/candidate.txt
 BENCH_BASELINE ?=
 BENCH_REPORT ?= .cache/benchmarks/benchstat.txt
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check docs-paths-check release-hygiene-check release-supply-chain-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check ai-check docs-paths-check release-hygiene-check release-supply-chain-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -275,6 +275,12 @@ std-contract-check:
 examples-check:
 	tests/examples_smoke.sh .
 
+ai-check:
+	@mkdir -p $(dir $(CLI_BIN))
+	$(GO) build -o $(CLI_BIN) ./cmd/joker
+	$(CLI_BIN) --lint examples/ai/joker/ai.joke
+	$(CLI_BIN) tests/ai_test.joke
+
 docs-paths-check:
 	tests/docs_paths_guard.sh .
 
@@ -284,7 +290,7 @@ release-hygiene-check:
 release-supply-chain-check:
 	tests/release_supply_chain_guard.sh .
 
-release-check: release-hygiene-check release-supply-chain-check workflow-policy-check
+release-check: release-hygiene-check release-supply-chain-check workflow-policy-check ai-check
 	git diff --check
 	$(GO) vet ./...
 	$(GO) test ./... -timeout 10m -count=1
