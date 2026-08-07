@@ -5,11 +5,11 @@ This repository is a maintained, performance-oriented fork of Joker with extra n
 ## 1. Build the CLI
 
 ```bash
-go build -o joker ./cmd/joker
-./joker --version
+make cli
+.cache/tmp/joker --version
 ```
 
-The command-line entrypoint is `cmd/joker`. The version string is defined in `core/runtime/version.go` and cross-checked by the release hygiene guard.
+The command-line entrypoint is `cmd/joker`; repository-local binaries belong under `.cache/` so the layout guard remains clean. The version string is defined in `core/runtime/version.go` and cross-checked by the release hygiene guard.
 
 ## 2. Run a small confidence check
 
@@ -19,6 +19,7 @@ For day-to-day local work, prefer focused checks over running everything:
 make test-short
 make docs-paths-check
 make examples-check
+make ai-check               # lint and run the offline joker.ai fixture suite
 ```
 
 Before sending changes that affect public docs, examples, release metadata, generated docs, or runtime contracts, run:
@@ -37,6 +38,7 @@ Examples are grouped by purpose:
 - `examples/games/tetris.joke` — terminal UI example using `joker.term`.
 - `examples/wiki/static.joke` — static/dynamic wiki site example.
 - `examples/notebooks/*.edn` — local Joker notebook files.
+- `examples/ai/joker/ai.joke` — experimental provider-neutral AI client with offline fixtures.
 
 Use `examples/README.md` for exact commands.
 
@@ -48,6 +50,7 @@ Use `examples/README.md` for exact commands.
 - `docs/RELEASE_CHECKLIST.md` — patch-release validation and tagging hygiene.
 - `docs/NOTEBOOKS.md` — local notebook format, CLI, and browser UI.
 - `docs/TRACING.md` — runtime tracing/profiling support.
+- `examples/ai/README.md` — provider-neutral AI client contract, credentials, security boundaries, and tests.
 
 Generated namespace documentation lives in `docs/*.html` and is refreshed by `make docs-check`.
 

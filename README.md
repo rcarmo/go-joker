@@ -11,7 +11,7 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 - `pods` and `babashka.pods` with bencode routing, subprocess lifecycle, dynamic vars, and JSON/EDN/Transit+JSON payloads.
 - `joker.edn` plus `edn` alias namespace with `read-string`/`write-string` using the reader/printer without evaluation.
 - Expanded `joker.transit` for pod-oriented Transit+JSON payloads.
-- CLI entrypoint lives in `cmd/joker`; build with `go build -o joker ./cmd/joker`.
+- CLI entrypoint lives in `cmd/joker`; build with `make cli` (output: `.cache/tmp/joker`).
 - Portable Babashka fixture suite via `make bb-compat`.
 - Script-driven Babashka shim policy documented in `docs/BABASHKA_SHIM_ASSESSMENT.md`.
 - Tracing/profile tooling documented in `docs/TRACING.md`; latest validated benchmark rerun in `docs/BENCHMARK_RESULTS_2026-05-16.md`, with profile audit context in `docs/BENCHMARK_PROFILE_2026-05-12.md`.
@@ -87,6 +87,7 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 - `joker.log` — leveled logging (debug, info, warn, error)
 - `joker.http` — persistent keep-alive HTTP client, Ring-style HTTP server, **WebSocket** and **SSE/streaming** response extensions
 - `joker.http.router` — Bottle-style HTTP routing with path params, middleware, CORS (`std/http/router/router.joke`)
+- `joker.ai` — experimental, dependency-free provider-neutral AI client example with SSE streaming, tools, structured output, and offline provider/auth fixtures (`examples/ai/`)
 
 ### Clojure parity surface now implemented
 - Protocols: public `defprotocol`, `extend-type`, `extend-protocol`, `satisfies?`, protocol method dispatch
@@ -186,7 +187,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 ## Documentation
 
 - [`docs/START_HERE.md`](docs/START_HERE.md) — primary contributor entry point for clone/build/test orientation, focused validation, API-stability, fuzz-smoke, and release-check expectations
-- [`examples/README.md`](examples/README.md) — runnable examples grouped by graphics, terminal games, wiki/static serving, and notebooks
+- [`examples/README.md`](examples/README.md) — runnable examples grouped by agents/AI, graphics, terminal games, wiki/static serving, and notebooks
+- [`examples/ai/README.md`](examples/ai/README.md) — experimental provider-neutral AI client, supported providers, security model, and offline checks
 - [`docs/API_STABILITY.md`](docs/API_STABILITY.md) — public namespace/API stability classifications
 - [`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md) — patch release checklist and validation commands
 - [`docs/BENCHMARK_CI.md`](docs/BENCHMARK_CI.md) — CI benchmark smoke guard policy and local reproduction

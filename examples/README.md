@@ -24,6 +24,16 @@ joker examples/agents/introspective-agent.joke --invoke pure-data \
 
 See [`examples/agents/README.md`](agents/README.md) and the hardened agent's [architecture, threat model, and isolation guide](agents/HARDENING.md). The original evaluator remains explicitly unsafe.
 
+## Provider-neutral AI client
+
+`examples/ai/joker/ai.joke` is an experimental, dependency-free client for OpenAI Responses, OpenAI-compatible Chat Completions, GitHub Copilot, OpenCode, and Codex. It provides normalized messages, SSE streaming, structured output, bounded tool execution, credential callbacks, and offline provider/auth fixtures.
+
+```bash
+make ai-check
+```
+
+The namespace does not read environment variables; embedding applications supply credentials through dynamic bindings or callbacks. See [`examples/ai/README.md`](ai/README.md) for usage, supported boundaries, security guidance, and optional credential-gated live checks.
+
 ## Graphics
 
 ### Fractal flame / procedural raster

@@ -72,7 +72,7 @@ The command is covered by Go tests in `cmd/joker/doc_test.go` and CI-equivalent 
 
 ```bash
 go test ./cmd/joker -run 'TestRenderDoc|TestQueryDocs' -count=1
-go build -o joker ./cmd/joker
-./joker doc joker.core/first
-./joker doc --format json joker.core/first
+make cli
+.cache/tmp/joker doc joker.core/first
+.cache/tmp/joker doc --format json joker.core/first
 ```

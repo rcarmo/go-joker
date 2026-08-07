@@ -1,8 +1,8 @@
 # Web Runtime + New Namespaces Guide
 
-_Last updated: 2026-05-31_
+_Last updated: 2026-08-07_
 
-This guide documents the new concurrency/web runtime surface and namespace additions in go-joker v42.8.2+.
+This guide documents the concurrency/web runtime surface and namespace additions in go-joker v42.10.0.
 
 ---
 
@@ -29,7 +29,32 @@ Available helpers:
 
 - `client`, `close-client`
 - `send` / `request` for full request maps
+- `send-sse` for incremental client-side `text/event-stream` consumption
 - `get`, `post`, `put`, `delete`
+
+Ordinary client responses are bounded to 8 MiB by default. Override that per request with a positive `:max-response-bytes`; responses exceeding the bound fail rather than returning silently truncated data. `:timeout-ms` sets a per-request deadline.
+
+```clojure
+(http/send {:method :get
+            :url "https://example.com/api"
+            :client c
+            :timeout-ms 10000
+            :max-response-bytes 1048576})
+```
+
+Client-side SSE parsing is incremental and callback-driven. `:max-event-bytes` must be positive, returning `false` from the callback cancels and closes the response body, and non-2xx bodies are bounded.
+
+```clojure
+(http/send-sse
+ {:method :get
+  :url "https://example.com/events"
+  :client c
+  :timeout-ms 30000
+  :max-event-bytes 1048576}
+ (fn [event]
+   (println (:event event) (:data event))
+   true))
+```
 
 `joker.http/start-server` remains Ring-style:
 
@@ -128,7 +153,7 @@ File: `std/http/router/router.joke`
 The namespace is part of the std resource tree and is loaded by requiring it directly; do not mirror the old `lib/joker/http` or classpath-root layout for this resource.
 
 ```bash
-/workspace/tmp/go-joker your_app.clj
+.cache/tmp/joker your_app.clj
 ```
 
 Then:

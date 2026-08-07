@@ -7,20 +7,19 @@ This repository has three complementary tracing paths for performance work.
 Use normal Go `pprof` to profile the Go runtime while Joker code runs:
 
 ```bash
-TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
+mkdir -p .cache/tmp .cache/gotmp
+TMPDIR=$PWD/.cache/tmp GOTMPDIR=$PWD/.cache/gotmp \
   go test ./core -run '^$' -bench 'BenchmarkCLBGBinaryTrees$' \
-  -benchtime=3s -cpuprofile=/workspace/tmp/clbg.pprof
+  -benchtime=3s -cpuprofile=$PWD/.cache/tmp/clbg.pprof
 ```
 
-Render the pprof call-flow Sankey with the workspace skill:
+Render the pprof call flow with the repository's pure Joker SVG renderer:
 
 ```bash
-bun /workspace/.pi/skills/go-pprof-sankey/pprof-sankey.ts \
-  /workspace/tmp/clbg.pprof \
-  --out-svg /workspace/tmp/clbg-go-sankey.svg \
-  --out-html /workspace/tmp/clbg-go-sankey.html \
-  --out-json /workspace/tmp/clbg-go-sankey.json \
-  --top 60
+make cli
+.cache/tmp/joker docs/render-trace-svg.clj \
+  .cache/tmp/clbg.pprof .cache/tmp/clbg-go-sankey.svg \
+  "Go pprof trace — CLBG Binary Trees"
 ```
 
 ## 2. IR opcode tracing
@@ -29,8 +28,8 @@ Enable optional IR opcode tracing with environment variables:
 
 ```bash
 JOKER_IR_PROFILE=1 \
-JOKER_IR_PROFILE_OUT=/workspace/tmp/clbg-ir-profile.json \
-TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
+JOKER_IR_PROFILE_OUT=$PWD/.cache/tmp/clbg-ir-profile.json \
+TMPDIR=$PWD/.cache/tmp GOTMPDIR=$PWD/.cache/gotmp \
   go test ./core -run '^$' -bench 'BenchmarkCLBGBinaryTrees$' -benchtime=1s -count=1
 ```
 
@@ -41,12 +40,12 @@ The JSON includes:
 - opcode transition counts
 - opcode/transition elapsed nanoseconds and average nanoseconds
 
-Render with the skill helper:
+Render it with the same repository script:
 
 ```bash
-bun /workspace/.pi/skills/go-pprof-sankey/ir-profile-sankey.ts \
-  /workspace/tmp/clbg-ir-profile.json \
-  --out-svg /workspace/tmp/clbg-ir-sankey.svg
+.cache/tmp/joker docs/render-trace-svg.clj \
+  .cache/tmp/clbg-ir-profile.json .cache/tmp/clbg-ir-sankey.svg \
+  "IR opcode trace — CLBG Binary Trees"
 ```
 
 ## 3. Joker function and symbol tracing
@@ -55,8 +54,8 @@ Function tracing:
 
 ```bash
 JOKER_FUNCTION_TRACE=1 \
-JOKER_FUNCTION_TRACE_OUT=/workspace/tmp/clbg-function-trace.json \
-TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
+JOKER_FUNCTION_TRACE_OUT=$PWD/.cache/tmp/clbg-function-trace.json \
+TMPDIR=$PWD/.cache/tmp GOTMPDIR=$PWD/.cache/gotmp \
   go test ./core -run '^$' -bench 'BenchmarkCLBGBinaryTrees$' -benchtime=1s -count=1
 ```
 
@@ -64,8 +63,8 @@ Symbol tracing:
 
 ```bash
 JOKER_SYMBOL_TRACE=1 \
-JOKER_SYMBOL_TRACE_OUT=/workspace/tmp/clbg-symbol-trace.json \
-TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
+JOKER_SYMBOL_TRACE_OUT=$PWD/.cache/tmp/clbg-symbol-trace.json \
+TMPDIR=$PWD/.cache/tmp GOTMPDIR=$PWD/.cache/gotmp \
   go test ./core -run '^$' -bench 'BenchmarkCLBGBinaryTrees$' -benchtime=1s -count=1
 ```
 
@@ -83,28 +82,27 @@ These are intentionally optional and disabled by default. They add overhead and 
 Usage:
 
 ```bash
-./joker docs/render-trace-svg.clj INPUT.{pprof,json} OUTPUT.svg "Optional title"
+.cache/tmp/joker docs/render-trace-svg.clj INPUT.{pprof,json} OUTPUT.svg "Optional title"
 ```
 
 When `INPUT` is not JSON, the Joker script runs `go tool pprof -raw` itself and follows the TypeScript renderer's pprof pipeline: parse raw sections, simplify function names, reverse leaf-first stacks, squash adjacent frames, accumulate node/edge time, compute stack-derived depths, and render the same static SVG layout.
-```
 
 Examples:
 
 ```bash
-./joker docs/render-trace-svg.clj \
-  /workspace/tmp/clbg-go-sankey.json \
-  /workspace/tmp/clbg-go-trace-clj.svg \
+.cache/tmp/joker docs/render-trace-svg.clj \
+  .cache/tmp/clbg.pprof \
+  .cache/tmp/clbg-go-trace-clj.svg \
   "Go pprof trace — CLBG Binary Trees"
 
-./joker docs/render-trace-svg.clj \
-  /workspace/tmp/clbg-function-trace.json \
-  /workspace/tmp/clbg-joker-function-trace-clj.svg \
+.cache/tmp/joker docs/render-trace-svg.clj \
+  .cache/tmp/clbg-function-trace.json \
+  .cache/tmp/clbg-joker-function-trace-clj.svg \
   "Joker function trace — CLBG Binary Trees"
 
-./joker docs/render-trace-svg.clj \
-  /workspace/tmp/clbg-ir-profile.json \
-  /workspace/tmp/clbg-ir-trace-clj.svg \
+.cache/tmp/joker docs/render-trace-svg.clj \
+  .cache/tmp/clbg-ir-profile.json \
+  .cache/tmp/clbg-ir-trace-clj.svg \
   "IR opcode trace — CLBG Binary Trees"
 ```
 

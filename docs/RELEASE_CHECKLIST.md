@@ -1,10 +1,10 @@
 # Release checklist
 
-Use this checklist before tagging a patch release.
+Use this checklist before tagging any release. Select the next version according to the scope of user-visible changes rather than assuming a patch increment.
 
 ## Version and notes
 
-- [ ] Decide whether current `master` user-visible changes require a patch release.
+- [ ] Decide whether current `master` changes require a major, minor, or patch release under the repository's existing `vX.Y.Z` convention.
 - [ ] Update `core/runtime/version.go`.
 - [ ] Update the README version sentence and release-notes link.
 - [ ] Add `docs/RELEASE_NOTES_<version>.md`.
@@ -26,7 +26,7 @@ Before tagging, run its `pretag-check` wrapper:
 make pretag-check
 ```
 
-`release-check` runs release hygiene, whitespace checks for pending diffs, repository-wide vet and tests, and `make docs-check`. `pretag-check` runs that exact gate and optionally adds the Playwright browser smoke. By default it skips the browser smoke because that requires local browser dependencies; include it when those dependencies are installed with:
+`release-check` runs release hygiene, supply-chain/workflow guards, `joker.ai` lint and offline fixtures, whitespace checks for pending diffs, repository-wide vet and tests, and `make docs-check`. `pretag-check` runs that exact gate and optionally adds the Playwright browser smoke. By default it skips the browser smoke because that requires local browser dependencies; include it when those dependencies are installed with:
 
 ```bash
 PRETAG_BROWSER_SMOKE=1 make pretag-check

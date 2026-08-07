@@ -84,10 +84,11 @@ Parallel variants are intentionally tracked separately from the single-threaded 
 Run these with a fixed Go scheduler width:
 
 ```bash
-GOMAXPROCS=4 TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
+mkdir -p .cache/tmp .cache/gotmp
+GOMAXPROCS=4 TMPDIR=$PWD/.cache/tmp GOTMPDIR=$PWD/.cache/gotmp \
   go test ./core -run '^$' -bench '^BenchmarkCLBGBinaryTrees$' -benchmem -benchtime=30x
 
-GOMAXPROCS=4 TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
+GOMAXPROCS=4 TMPDIR=$PWD/.cache/tmp GOTMPDIR=$PWD/.cache/gotmp \
   go test ./core -run '^$' -bench '^BenchmarkCLBGBinaryTreesParallel$' -benchmem -benchtime=30x
 ```
 

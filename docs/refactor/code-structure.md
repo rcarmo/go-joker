@@ -95,8 +95,9 @@ Recent additions (`System`, `joker.transit`, `joker.edn`, `pods`/`babashka.pods`
 Command used:
 
 ```sh
-TMPDIR=/workspace/tmp GOTMPDIR=/workspace/tmp \
-  go test ./core ./std/... -coverprofile=/workspace/tmp/go-joker.cover \
+mkdir -p .cache/tmp .cache/gotmp
+TMPDIR=$PWD/.cache/tmp GOTMPDIR=$PWD/.cache/gotmp \
+  go test ./core ./std/... -coverprofile=$PWD/.cache/tmp/go-joker.cover \
   -covermode=atomic -timeout 120s -count=1
 ```
 

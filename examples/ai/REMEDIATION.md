@@ -25,15 +25,14 @@ The dependency map is `examples/ai/dependency-map.svg`. The implementation enter
 | Documentation | Capability claims exceed tested behaviour | README/AUDIT/examples/map agree with executable contracts |
 | Release integration | AI tests are absent from canonical CI/release gates | Make/CI/release checks invoke lint and offline AI suite |
 
-## Release target
+## Release closure
 
-The current source and latest tag are `v42.9.3`. The explicitly requested minor release target is `v42.10.0`.
+The remediation shipped in `v42.10.0` on 2026-08-07.
 
-Required release artefacts and gates:
+Closure evidence:
 
-* `core/runtime/version.go` updated to `v42.10.0`.
-* Top-level `README.md` updated to the same version and release-note link.
-* `docs/RELEASE_NOTES_v42.10.0.md` added.
-* `examples/README.md` lists `examples/ai`.
-* `make release-check` and `make pretag-check` pass after all remediation.
-* Commit and annotated tag are pushed, the tag-triggered GitHub release completes, and published artefacts/checksums are verified.
+* `core/runtime/version.go`, the top-level README, and `docs/RELEASE_NOTES_v42.10.0.md` agree on `v42.10.0`.
+* `examples/README.md` lists `examples/ai`, and `make release-check` includes `make ai-check` for lint plus offline fixtures.
+* `make pretag-check` passed before tagging.
+* The annotated tag and `master` were pushed; the tag-triggered workflow published six binaries, six SPDX SBOMs, and `SHA256SUMS`.
+* All published checksums were downloaded and verified after publication.

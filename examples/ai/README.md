@@ -79,7 +79,7 @@ Returning `false` cancels the native response body. `*cancelled?*` supplies an e
 
 ## Credentials
 
-The default token store is `.joker-ai-tokens.edn`, written with mode `0600`. Bind `*token-store-path*`, or replace storage completely:
+The default token store is `.joker-ai-tokens.edn`, written with mode `0600` through a private temporary file and atomic replacement. That filename is ignored throughout this repository, but applications should still treat it as a credential file, keep it out of backups/logs where appropriate, and bind `*token-store-path*` or replace storage completely:
 
 ```joke
 (binding [ai/*load-credentials* (fn [provider] (vault-read provider))
@@ -104,7 +104,7 @@ An adapter is a map with callable `:request` and `:event` hooks plus optional `:
   :event ai/chat-stream-event!})
 ```
 
-The request function translates normalized context into an HTTP request. The event function translates decoded SSE payloads into normalized events and accumulated state. Errors use `ex-info`; `ex-data` includes the category, provider status, redacted body, and partial stream state where available.
+The request function translates normalized context into an HTTP request. The event function translates decoded SSE payloads into normalized events and accumulated state. Errors use `ex-info`; by default, sensitive `ex-data` fields such as `:body` and `:raw` are replaced with `"[REDACTED]"`, while category, provider status, and safe partial state remain available. Binding `*unsafe-debug?*` to true preserves raw fields and is an explicit secret-exposure opt-in.
 
 ## Security and awkward edges
 
@@ -112,10 +112,10 @@ Diagnostics are off by default. With `*debug?*` enabled, authorization, cookies,
 
 The implementation executes only explicitly registered tool handlers and does not fetch image URLs or validate model-produced JSON against the supplied schema. Codex login currently uses strict pasted-code callback handling rather than opening a local callback listener. Transport failures are normalized as structured errors; status-based transient failures are retried. Embedding applications still own tool policy, schema validation, and secret management.
 
-Run the offline checks from the repository root:
+Run the canonical offline AI check from the repository root:
 
 ```bash
-TMPDIR=$PWD/.cache/tmp GOTMPDIR=$PWD/.cache/gotmp go test ./std/http
-.cache/tmp/joker --lint examples/ai/joker/ai.joke
-.cache/tmp/joker tests/ai_test.joke
+make ai-check
 ```
+
+Native HTTP bounds and SSE contracts are covered by `go test ./std/http`; the complete repository release gate runs both through `make release-check`. Optional live checks in `tests/ai_live_smoke.joke` are credential-gated and are never part of normal offline validation.
