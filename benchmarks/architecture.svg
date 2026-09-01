@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="378" viewBox="0 0 1200 378">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="466" viewBox="0 0 1200 466">
   <style>
     /* Default: light mode (for rsvg-convert and non-media-query agents) */
     .bg { fill: transparent; }
@@ -14,7 +14,7 @@
     .box-orange { fill: #ffedd5; stroke: #ea580c; stroke-width: 1.5; }
     .box-cyan { fill: #d9c9fe; stroke: #5e30eb; stroke-width: 1.5; }
     .label { fill: #1a2a40; }
-    .sub { fill: #5070a0; }
+    .sub { fill: #243b53; }
     text { font-family: -apple-system, "Segoe UI", Helvetica, sans-serif; }
     .label { font-size: 13px; font-weight: 600; }
     .sub { font-size: 11px; }
@@ -32,7 +32,7 @@
       .box-orange { fill: #2a1a08; stroke: #f97316; }
       .box-cyan { fill: #1a1030; stroke: #7040d0; }
       .label { fill: #d0daf0; }
-      .sub { fill: #5070a0; }
+      .sub { fill: #90a8c0; }
     }
   </style>
   <defs>
@@ -43,7 +43,7 @@
       <path d="M0,0 L8,4 L0,8z" fill="#3b82f6" stroke="none"/>
     </marker>
   </defs>
-  <rect width="1200" height="378" class="bg" rx="8"/>
+  <rect width="1200" height="466" class="bg" rx="8"/>
 
   <rect x="30" y="30" width="180" height="60" rx="8" class="box-rose"/>
   <text x="120" y="56" text-anchor="middle" class="label">Clojure Source</text>
@@ -58,24 +58,28 @@
   <text x="600" y="74" text-anchor="middle" class="sub">45+ opcodes</text>
 
   <rect x="750" y="30" width="180" height="60" rx="8" class="box-green"/>
-  <text x="840" y="56" text-anchor="middle" class="label">WASM / wazero</text>
-  <text x="840" y="74" text-anchor="middle" class="sub">native JIT · ~0.2ms</text>
+  <text x="840" y="56" text-anchor="middle" class="label">Native integer</text>
+  <text x="840" y="74" text-anchor="middle" class="sub">fib(35) · 0.5s</text>
 
   <rect x="750" y="118" width="180" height="60" rx="8" class="box-green"/>
-  <text x="840" y="144" text-anchor="middle" class="label">Typed IR</text>
-  <text x="840" y="162" text-anchor="middle" class="sub">irValue stack · ~2ms</text>
+  <text x="840" y="144" text-anchor="middle" class="label">WASM / wazero</text>
+  <text x="840" y="162" text-anchor="middle" class="sub">numeric loop JIT</text>
 
-  <rect x="750" y="206" width="180" height="60" rx="8" class="box"/>
-  <text x="840" y="232" text-anchor="middle" class="label">Boxed IR</text>
-  <text x="840" y="250" text-anchor="middle" class="sub">transients · ~15ms</text>
+  <rect x="750" y="206" width="180" height="60" rx="8" class="box-green"/>
+  <text x="840" y="232" text-anchor="middle" class="label">Typed IR</text>
+  <text x="840" y="250" text-anchor="middle" class="sub">primitive loops</text>
 
-  <rect x="750" y="294" width="180" height="60" rx="8" class="box-slate"/>
-  <text x="840" y="320" text-anchor="middle" class="label">Tree-walker</text>
-  <text x="840" y="338" text-anchor="middle" class="sub">full semantics</text>
+  <rect x="750" y="294" width="180" height="60" rx="8" class="box"/>
+  <text x="840" y="320" text-anchor="middle" class="label">Boxed IR</text>
+  <text x="840" y="338" text-anchor="middle" class="sub">collections · transients</text>
 
-  <rect x="990" y="118" width="180" height="60" rx="8" class="box-orange"/>
-  <text x="1080" y="144" text-anchor="middle" class="label">Result</text>
-  <text x="1080" y="162" text-anchor="middle" class="sub">Object value</text>
+  <rect x="750" y="382" width="180" height="60" rx="8" class="box-slate"/>
+  <text x="840" y="408" text-anchor="middle" class="label">Tree-walker</text>
+  <text x="840" y="426" text-anchor="middle" class="sub">full semantics</text>
+
+  <rect x="990" y="206" width="180" height="60" rx="8" class="box-orange"/>
+  <text x="1080" y="232" text-anchor="middle" class="label">Result</text>
+  <text x="1080" y="250" text-anchor="middle" class="sub">Object value</text>
 
   <path d="M210,60 L270,60" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
   <path d="M450,60 L510,60" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
@@ -83,11 +87,13 @@
   <path d="M690,60 L706,60 Q720,60 720,74 L720,134 Q720,148 734,148 L750,148" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
   <path d="M690,60 L706,60 Q720,60 720,74 L720,222 Q720,236 734,236 L750,236" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
   <path d="M690,60 L706,60 Q720,60 720,74 L720,310 Q720,324 734,324 L750,324" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
+  <path d="M690,60 L706,60 Q720,60 720,74 L720,398 Q720,412 734,412 L750,412" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
   <text x="720" y="54" text-anchor="middle" class="sub">fallback</text>
-  <path d="M930,60 L946,60 Q960,60 960,74 L960,134 Q960,148 974,148 L990,148" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
-  <path d="M930,148 L990,148" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
-  <path d="M930,236 L946,236 Q960,236 960,222 L960,162 Q960,148 974,148 L990,148" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
-  <path d="M930,324 L946,324 Q960,324 960,310 L960,162 Q960,148 974,148 L990,148" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
+  <path d="M930,60 L946,60 Q960,60 960,74 L960,222 Q960,236 974,236 L990,236" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
+  <path d="M930,148 L946,148 Q960,148 960,162 L960,222 Q960,236 974,236 L990,236" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
+  <path d="M930,236 L990,236" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
+  <path d="M930,324 L946,324 Q960,324 960,310 L960,250 Q960,236 974,236 L990,236" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
+  <path d="M930,412 L946,412 Q960,412 960,398 L960,250 Q960,236 974,236 L990,236" fill="none" stroke="#5070a0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ah)"/>
 
-  <text x="600" y="374" text-anchor="middle" class="sub">go-joker — tiered IR compilation with WASM native backend</text>
+  <text x="600" y="462" text-anchor="middle" class="sub">go-joker — five execution tiers selected per expression</text>
 </svg>

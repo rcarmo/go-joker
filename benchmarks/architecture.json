@@ -1,5 +1,5 @@
 {
-  "title": "go-joker — tiered IR compilation with WASM native backend",
+  "title": "go-joker — five execution tiers selected per expression",
   "nodes": [
     {
       "id": "source",
@@ -26,28 +26,36 @@
       "row": 0
     },
     {
-      "id": "wasm",
-      "label": "WASM / wazero",
-      "sub": "native JIT · ~0.2ms",
+      "id": "native",
+      "label": "Native integer",
+      "sub": "fib(35) · 0.5s",
       "tag": "backend",
       "column": 3,
       "row": 0
     },
     {
-      "id": "typed",
-      "label": "Typed IR",
-      "sub": "irValue stack · ~2ms",
+      "id": "wasm",
+      "label": "WASM / wazero",
+      "sub": "numeric loop JIT",
       "tag": "backend",
       "column": 3,
       "row": 1
     },
     {
-      "id": "boxed",
-      "label": "Boxed IR",
-      "sub": "transients · ~15ms",
-      "tag": "state",
+      "id": "typed",
+      "label": "Typed IR",
+      "sub": "primitive loops",
+      "tag": "backend",
       "column": 3,
       "row": 2
+    },
+    {
+      "id": "boxed",
+      "label": "Boxed IR",
+      "sub": "collections · transients",
+      "tag": "state",
+      "column": 3,
+      "row": 3
     },
     {
       "id": "tree",
@@ -55,7 +63,7 @@
       "sub": "full semantics",
       "tag": "infra",
       "column": 3,
-      "row": 3
+      "row": 4
     },
     {
       "id": "output",
@@ -63,16 +71,18 @@
       "sub": "Object value",
       "tag": "output",
       "column": 4,
-      "row": 1
+      "row": 2
     }
   ],
   "edges": [
     { "from": "source", "to": "parser" },
     { "from": "parser", "to": "compiler" },
+    { "from": "compiler", "to": "native" },
     { "from": "compiler", "to": "wasm" },
     { "from": "compiler", "to": "typed" },
     { "from": "compiler", "to": "boxed" },
     { "from": "compiler", "to": "tree", "label": "fallback" },
+    { "from": "native", "to": "output" },
     { "from": "wasm", "to": "output" },
     { "from": "typed", "to": "output" },
     { "from": "boxed", "to": "output" },
