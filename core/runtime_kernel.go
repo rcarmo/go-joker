@@ -460,10 +460,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 				case coretypes.Int:
 					switch b := bx.(type) {
 					case coretypes.Int:
-						if b.I == 0 {
-							coretypes.PanicOnZero(coretypes.INT_OPS, b)
-						}
-						return coretypes.Double{D: float64(a.I) / float64(b.I)}
+						return coretypes.INT_OPS.Divide(a, b)
 					case coretypes.Double:
 						return coretypes.Double{D: float64(a.I) / b.D}
 					}

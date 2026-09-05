@@ -4112,3 +4112,27 @@ func TestAuditPrimitiveFallbackEvaluatesOnce(t *testing.T) {
 		})
 	}
 }
+
+func TestAuditPrimitiveDivisionPreservesExactNumbers(t *testing.T) {
+	for _, pair := range [][2]int{{1, 2}, {4, 2}, {-1, 2}, {1, 0}} {
+		t.Run(fmt.Sprint(pair), func(t *testing.T) {
+			args := []coretypes.Object{coretypes.MakeInt(pair[0]), coretypes.MakeInt(pair[1])}
+			capture := func(run func() coretypes.Object) (out string) {
+				defer func() {
+					if err := recover(); err != nil {
+						out = fmt.Sprintf("panic:%T", err)
+					}
+				}()
+				v := run()
+				return fmt.Sprintf("%T:%s", v, v.ToString(false))
+			}
+			want := capture(func() coretypes.Object { return procDivide(args) })
+			got := capture(func() coretypes.Object {
+				return evalTestScript(t, fmt.Sprintf("(joker.core/divide__ %d %d)", pair[0], pair[1]))
+			})
+			if got != want {
+				t.Errorf("got %s; numeric contract %s", got, want)
+			}
+		})
+	}
+}
