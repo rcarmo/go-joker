@@ -22,11 +22,3 @@ func TestIntMultiplyBoundaries(t *testing.T) {
 		}
 	}
 }
-
-var multiplyResult Number
-
-func BenchmarkIntMultiplySmall(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		multiplyResult = INT_OPS.Multiply(MakeInt(123), MakeInt(456))
-	}
-}
