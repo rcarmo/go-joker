@@ -6167,6 +6167,11 @@ func compileNativeRecursive(fn *Fn) *nativeRecursiveEntry {
 }
 
 func callNativeRecursive(entry *nativeRecursiveEntry, args []coretypes.Object) coretypes.Object {
+	// Leave invalid arities to Fn.Call's language-level error path. Native
+	// closures must neither index missing arguments nor ignore extra ones.
+	if len(args) != entry.arity {
+		return nil
+	}
 	switch entry.arity {
 	case 1:
 		a, ok := args[0].(coretypes.Int)
