@@ -4157,3 +4157,86 @@ func TestAuditNativeRespectsCoreRedefinition(t *testing.T) {
 	requireInt(t, evalTestScript(t, `(audit-first-binding 3)`), 4)
 	requireInt(t, fn.Call([]coretypes.Object{coretypes.MakeInt(3)}), 4)
 }
+
+// Compare both value and numeric type at the native arithmetic boundary.
+func TestNativeIntegerOverflowMatchesNumericContract(t *testing.T) {
+	maxInt := int(^uint(0) >> 1)
+	minInt := -maxInt - 1
+	cases := []struct {
+		name, body string
+		arg        int
+	}{
+		{"inc", "(inc x)", maxInt},
+		{"dec", "(dec x)", minInt},
+		{"add", "(+ x 1)", maxInt},
+		{"subtract", "(- x 1)", minInt},
+		{"multiply", "(* x 2)", maxInt},
+		{"negate", "(- x)", minInt},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			fn := evalTestScript(t, fmt.Sprintf("(do (defn audit-overflow-%s [x] %s) audit-overflow-%s)", tc.name, tc.body, tc.name)).(*Fn)
+			if tryNativeRecursive(fn) == nil {
+				t.Fatal("native integer tier not selected")
+			}
+			args := []coretypes.Object{coretypes.MakeInt(tc.arg)}
+			got := fn.Call(args)
+			var want coretypes.Object
+			switch tc.name {
+			case "inc":
+				want = procInc(args)
+			case "dec":
+				want = procDec(args)
+			case "add":
+				want = procAdd([]coretypes.Object{args[0], coretypes.MakeInt(1)})
+			case "subtract":
+				want = procSubtract([]coretypes.Object{args[0], coretypes.MakeInt(1)})
+			case "multiply":
+				want = procMultiply([]coretypes.Object{args[0], coretypes.MakeInt(2)})
+			case "negate":
+				want = procSubtract(args)
+			}
+
+			if fmt.Sprintf("%T:%s", got, got.ToString(false)) != fmt.Sprintf("%T:%s", want, want.ToString(false)) {
+				t.Errorf("native %T %s; numeric contract %T %s", got, got.ToString(false), want, want.ToString(false))
+			}
+		})
+	}
+}
+
+func TestUnaryNumericFallbackEvaluatesOperandOnce(t *testing.T) {
+	for _, op := range []string{"inc", "dec", "-"} {
+		t.Run(op, func(t *testing.T) {
+			requireString(t, evalTestScript(t, fmt.Sprintf(`(do (def audit-calls (atom 0)) (def audit-result (%s (do (swap! audit-calls inc) 1N))) (str @audit-calls ":" audit-result))`, op)), map[string]string{"inc": "1:2N", "dec": "1:0N", "-": "1:-1N"}[op])
+		})
+	}
+}
+
+func TestNativeIntegerOverflowIntermediateAndArities(t *testing.T) {
+	max := coretypes.MakeInt(coretypes.MaxInt)
+	for _, spec := range []struct {
+		params, body string
+		args         []coretypes.Object
+	}{
+		{"x", "(- (+ x 1) 1)", []coretypes.Object{max}},
+		{"x y", "(+ x y)", []coretypes.Object{max, coretypes.MakeInt(1)}},
+		{"x y z", "(+ (+ x y) z)", []coretypes.Object{max, coretypes.MakeInt(1), coretypes.MakeInt(1)}},
+	} {
+		fn := evalTestScript(t, fmt.Sprintf("(do (defn audit-promoted [%s] %s) audit-promoted)", spec.params, spec.body)).(*Fn)
+		entry := tryNativeRecursive(fn)
+		if entry == nil {
+			t.Fatal("native compilation failed")
+		}
+		got := fn.Call(spec.args)
+		if _, ok := got.(*coretypes.BigInt); !ok {
+			t.Fatalf("intermediate promotion lost: %T %s", got, got.ToString(false))
+		}
+		want := new(big.Int).SetInt64(int64(coretypes.MaxInt))
+		if len(spec.args) > 1 {
+			want.Add(want, big.NewInt(int64(len(spec.args)-1)))
+		}
+		if got.(*coretypes.BigInt).B.Cmp(want) != 0 {
+			t.Fatalf("got %s want %s", got.ToString(false), want)
+		}
+	}
+}

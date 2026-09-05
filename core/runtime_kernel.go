@@ -6095,11 +6095,12 @@ func nativeCoreBindingsUnchanged() bool {
 }
 
 type nativeRecursiveEntry struct {
-	dependencies map[*Var]*Fn
-	arity        int
-	fn1          nativeIntFn1
-	fn2          nativeIntFn2
-	fn3          nativeIntFn3
+	dependencies    map[*Var]*Fn
+	numericFallback func([]coretypes.Object) coretypes.Object
+	arity           int
+	fn1             nativeIntFn1
+	fn2             nativeIntFn2
+	fn3             nativeIntFn3
 }
 
 var nativeRecursiveCache sync.Map // *Fn → *nativeRecursiveEntry (or nativeRecursiveFailed sentinel)
@@ -6177,6 +6178,9 @@ func compileNativeRecursive(fn *Fn) *nativeRecursiveEntry {
 		return nil
 	}
 	entry := &nativeRecursiveEntry{arity: nargs, dependencies: deps}
+	entry.numericFallback = func(args []coretypes.Object) coretypes.Object {
+		return evalNativeNumeric(arity.body[0], selfVar, paramFrame, args, entry)
+	}
 
 	switch nargs {
 	case 1:
@@ -6201,7 +6205,88 @@ func compileNativeRecursive(fn *Fn) *nativeRecursiveEntry {
 	return entry
 }
 
-func callNativeRecursive(entry *nativeRecursiveEntry, args []coretypes.Object) coretypes.Object {
+// Native expressions contain only integer arithmetic, comparisons, branches and
+// self calls. Re-evaluating this restricted tree after overflow cannot replay I/O
+// or mutations; unlike general IR, it is safe to restart with promoted numbers.
+var nativeIntegerOverflow = &struct{}{}
+
+func nativeCheckedAdd(a, b int) int {
+	r := a + b
+	if (b > 0 && r < a) || (b < 0 && r > a) {
+		panic(nativeIntegerOverflow)
+	}
+	return r
+}
+func nativeCheckedSub(a, b int) int {
+	r := a - b
+	if (b < 0 && r < a) || (b > 0 && r > a) {
+		panic(nativeIntegerOverflow)
+	}
+	return r
+}
+func nativeCheckedMul(a, b int) int {
+	r := a * b
+	if a != 0 && ((a == -1 && b == coretypes.MinInt) || (b == -1 && a == coretypes.MinInt) || r/a != b) {
+		panic(nativeIntegerOverflow)
+	}
+	return r
+}
+func evalNativeNumeric(expr Expr, self *Var, frame int, args []coretypes.Object, entry *nativeRecursiveEntry) coretypes.Object {
+	switch e := expr.(type) {
+	case *LiteralExpr:
+		return e.obj
+	case *BindingExpr:
+		return args[e.binding.index]
+	case *IfExpr:
+		cond := evalNativeNumeric(e.cond, self, frame, args, entry).(coretypes.Boolean)
+		if cond.B {
+			return evalNativeNumeric(e.positive, self, frame, args, entry)
+		}
+		return evalNativeNumeric(e.negative, self, frame, args, entry)
+	case *CallExpr:
+		values := make([]coretypes.Object, len(e.args))
+		for i, arg := range e.args {
+			values[i] = evalNativeNumeric(arg, self, frame, args, entry)
+		}
+		vr := e.callable.(*VarRefExpr).vr
+		if vr == self {
+			return entry.numericFallback(values)
+		}
+		switch coreVarToProcName(vr) {
+		case "procAdd":
+			return procAdd(values)
+		case "procSubtract":
+			return procSubtract(values)
+		case "procMultiply":
+			return procMultiply(values)
+		case "procInc":
+			return procInc(values)
+		case "procDec":
+			return procDec(values)
+		case "procLt":
+			return procLt(values)
+		case "procLte":
+			return procLte(values)
+		case "procGt":
+			return procGt(values)
+		case "procGte":
+			return procGte(values)
+		case "procEq":
+			return procEq(values)
+		}
+	}
+	panic("unsupported expression in native numeric recovery")
+}
+
+func callNativeRecursive(entry *nativeRecursiveEntry, args []coretypes.Object) (result coretypes.Object) {
+	defer func() {
+		if failure := recover(); failure != nil {
+			if failure != nativeIntegerOverflow {
+				panic(failure)
+			}
+			result = entry.numericFallback(args)
+		}
+	}()
 	// Leave invalid arities to Fn.Call's language-level error path. Native
 	// closures must neither index missing arguments nor ignore extra ones.
 	if len(args) != entry.arity {
@@ -6316,14 +6401,14 @@ func compileArith1(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil || b == nil {
 			return nil
 		}
-		return func(x int) int { return a(x) + b(x) }
+		return func(x int) int { return nativeCheckedAdd(a(x), b(x)) }
 	case "procSubtract":
 		if len(args) == 1 {
 			a := compileIntExpr1(args[0], selfVar, pf, entry)
 			if a == nil {
 				return nil
 			}
-			return func(x int) int { return -a(x) }
+			return func(x int) int { return nativeCheckedSub(0, a(x)) }
 		}
 		if len(args) != 2 {
 			return nil
@@ -6333,7 +6418,7 @@ func compileArith1(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil || b == nil {
 			return nil
 		}
-		return func(x int) int { return a(x) - b(x) }
+		return func(x int) int { return nativeCheckedSub(a(x), b(x)) }
 	case "procMultiply":
 		if len(args) != 2 {
 			return nil
@@ -6343,7 +6428,7 @@ func compileArith1(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil || b == nil {
 			return nil
 		}
-		return func(x int) int { return a(x) * b(x) }
+		return func(x int) int { return nativeCheckedMul(a(x), b(x)) }
 	case "procInc":
 		if len(args) != 1 {
 			return nil
@@ -6352,7 +6437,7 @@ func compileArith1(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil {
 			return nil
 		}
-		return func(x int) int { return a(x) + 1 }
+		return func(x int) int { return nativeCheckedAdd(a(x), 1) }
 	case "procDec":
 		if len(args) != 1 {
 			return nil
@@ -6361,7 +6446,7 @@ func compileArith1(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil {
 			return nil
 		}
-		return func(x int) int { return a(x) - 1 }
+		return func(x int) int { return nativeCheckedSub(a(x), 1) }
 	}
 	return nil
 }
@@ -6458,14 +6543,14 @@ func compileArith3(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil || b == nil {
 			return nil
 		}
-		return func(x, y, z int) int { return a(x, y, z) + b(x, y, z) }
+		return func(x, y, z int) int { return nativeCheckedAdd(a(x, y, z), b(x, y, z)) }
 	case "procSubtract":
 		if len(args) == 1 {
 			a := compileIntExpr3(args[0], selfVar, pf, entry)
 			if a == nil {
 				return nil
 			}
-			return func(x, y, z int) int { return -a(x, y, z) }
+			return func(x, y, z int) int { return nativeCheckedSub(0, a(x, y, z)) }
 		}
 		if len(args) != 2 {
 			return nil
@@ -6475,7 +6560,7 @@ func compileArith3(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil || b == nil {
 			return nil
 		}
-		return func(x, y, z int) int { return a(x, y, z) - b(x, y, z) }
+		return func(x, y, z int) int { return nativeCheckedSub(a(x, y, z), b(x, y, z)) }
 	case "procMultiply":
 		if len(args) != 2 {
 			return nil
@@ -6485,7 +6570,7 @@ func compileArith3(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil || b == nil {
 			return nil
 		}
-		return func(x, y, z int) int { return a(x, y, z) * b(x, y, z) }
+		return func(x, y, z int) int { return nativeCheckedMul(a(x, y, z), b(x, y, z)) }
 	case "procInc":
 		if len(args) != 1 {
 			return nil
@@ -6494,7 +6579,7 @@ func compileArith3(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil {
 			return nil
 		}
-		return func(x, y, z int) int { return a(x, y, z) + 1 }
+		return func(x, y, z int) int { return nativeCheckedAdd(a(x, y, z), 1) }
 	case "procDec":
 		if len(args) != 1 {
 			return nil
@@ -6503,7 +6588,7 @@ func compileArith3(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil {
 			return nil
 		}
-		return func(x, y, z int) int { return a(x, y, z) - 1 }
+		return func(x, y, z int) int { return nativeCheckedSub(a(x, y, z), 1) }
 	}
 	return nil
 }
@@ -6597,14 +6682,14 @@ func compileArith2(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil || b == nil {
 			return nil
 		}
-		return func(x, y int) int { return a(x, y) + b(x, y) }
+		return func(x, y int) int { return nativeCheckedAdd(a(x, y), b(x, y)) }
 	case "procSubtract":
 		if len(args) == 1 {
 			a := compileIntExpr2(args[0], selfVar, pf, entry)
 			if a == nil {
 				return nil
 			}
-			return func(x, y int) int { return -a(x, y) }
+			return func(x, y int) int { return nativeCheckedSub(0, a(x, y)) }
 		}
 		if len(args) != 2 {
 			return nil
@@ -6614,7 +6699,7 @@ func compileArith2(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil || b == nil {
 			return nil
 		}
-		return func(x, y int) int { return a(x, y) - b(x, y) }
+		return func(x, y int) int { return nativeCheckedSub(a(x, y), b(x, y)) }
 	case "procMultiply":
 		if len(args) != 2 {
 			return nil
@@ -6624,7 +6709,7 @@ func compileArith2(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil || b == nil {
 			return nil
 		}
-		return func(x, y int) int { return a(x, y) * b(x, y) }
+		return func(x, y int) int { return nativeCheckedMul(a(x, y), b(x, y)) }
 	case "procInc":
 		if len(args) != 1 {
 			return nil
@@ -6633,7 +6718,7 @@ func compileArith2(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil {
 			return nil
 		}
-		return func(x, y int) int { return a(x, y) + 1 }
+		return func(x, y int) int { return nativeCheckedAdd(a(x, y), 1) }
 	case "procDec":
 		if len(args) != 1 {
 			return nil
@@ -6642,7 +6727,7 @@ func compileArith2(proc string, args []Expr, selfVar *Var, pf int, entry *native
 		if a == nil {
 			return nil
 		}
-		return func(x, y int) int { return a(x, y) - 1 }
+		return func(x, y int) int { return nativeCheckedSub(a(x, y), 1) }
 	}
 	return nil
 }
