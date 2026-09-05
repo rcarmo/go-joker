@@ -4362,3 +4362,18 @@ func TestAuditIRPromotedComparisons(t *testing.T) {
 		}
 	}
 }
+
+func TestAuditInlineNumericPromotion(t *testing.T) {
+	fn := evalTestScript(t, `(fn [x] (+ x 1))`).(*Fn)
+	prog := irCompileFn(fn)
+	if prog == nil {
+		t.Fatal("IR compilation failed")
+	}
+	slots := make([]irValue, runtimeExec.ProgramNumSlots(prog))
+	slots[0] = objectToIRValue(coretypes.MakeInt(coretypes.MaxInt))
+	got := irExecTypedInline(prog, slots).object()
+	want := procInc([]coretypes.Object{coretypes.MakeInt(coretypes.MaxInt)})
+	if !got.Equals(want) {
+		t.Fatalf("got %T %s want %s", got, got.ToString(false), want.ToString(false))
+	}
+}
