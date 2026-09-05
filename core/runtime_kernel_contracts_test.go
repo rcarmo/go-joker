@@ -4082,3 +4082,19 @@ func TestNativeIntegerArityMatchesInterpreter(t *testing.T) {
 		})
 	}
 }
+
+func TestAuditWasmLoopControl(t *testing.T) {
+	for _, iterations := range []int{0, 1, 5} {
+		for _, initial := range []int{-7, 0, 7} {
+			loop := compileTestExpr(t, fmt.Sprintf("(loop [i 0 x 0] (if (< i %d) (recur (inc i) (inc x)) x))", iterations)).(*LoopExpr)
+			prog := irGetCached(loop)
+			wp := wasmCompile(prog)
+			if wp == nil {
+				t.Fatal("WASM compilation failed")
+			}
+			input := []coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(initial)}
+			requireInt(t, wasmExec(wp, append([]coretypes.Object(nil), input...)), initial+iterations)
+			requireInt(t, irExec(prog, append([]coretypes.Object(nil), input...)), initial+iterations)
+		}
+	}
+}

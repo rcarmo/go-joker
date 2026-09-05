@@ -8696,6 +8696,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 		endPC int
 	}
 	var ifEnds []ifEnd
+	falseBranches := map[int]int{}
 	loopEmitted := false
 
 	for pc < len(code) {
@@ -8845,6 +8846,7 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 
 		case irJumpIfNot:
 			jumpTarget := int(code[pc])<<8 | int(code[pc+1])
+			falseBranches[depth+1] = jumpTarget
 			pc += 2
 			if !useFloat {
 				o = append(o, 0xa7) // i32.wrap_i64
@@ -8924,7 +8926,12 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 			}
 			o = append(o, 0x0c)
 			o = corewasm.AppendULEB(o, depth)
-			pc = len(code)
+			if pc < len(code) && depth > 0 && falseBranches[depth] == pc {
+				// Preserve the false branch containing the loop exit.
+				o = append(o, 0x05) // else
+			} else {
+				pc = len(code)
+			}
 
 		case irCallSlot:
 			slotIdx := int(code[pc])<<8 | int(code[pc+1])
