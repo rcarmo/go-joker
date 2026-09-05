@@ -4136,3 +4136,24 @@ func TestAuditPrimitiveDivisionPreservesExactNumbers(t *testing.T) {
 		})
 	}
 }
+
+func TestAuditNativeRespectsCoreRedefinition(t *testing.T) {
+	fn := evalTestScript(t, `(do (defn audit-rebinding [x] (+ x 1)) audit-rebinding)`).(*Fn)
+	if tryNativeRecursive(fn) == nil {
+		t.Fatalf("native compilation not selected; canonicals=%d value=%T", len(nativeCanonicalVars), fn.fnExpr.arities[0].body[0].(*CallExpr).callable.(*VarRefExpr).vr.Value)
+	}
+	requireInt(t, fn.Call([]coretypes.Object{coretypes.MakeInt(3)}), 4)
+	vr := fn.fnExpr.arities[0].body[0].(*CallExpr).callable.(*VarRefExpr).vr
+	old := vr.Value
+	t.Cleanup(func() { vr.Value = old })
+	vr.Value = evalTestScript(t, `(fn [a b] 99)`)
+	if tryNativeRecursive(fn) != nil {
+		t.Fatal("stale native entry accepted")
+	}
+	requireInt(t, fn.Call([]coretypes.Object{coretypes.MakeInt(3)}), 99)
+	vr.Value = old
+	requireInt(t, evalTestScript(t, `(with-redefs [+ (fn [a b] 99)] (audit-rebinding 3))`), 99)
+	requireInt(t, evalTestScript(t, `(with-redefs [+ (fn [a b] 99)] (defn audit-first-binding [x] (+ x 1)) (audit-first-binding 3))`), 99)
+	requireInt(t, evalTestScript(t, `(audit-first-binding 3)`), 4)
+	requireInt(t, fn.Call([]coretypes.Object{coretypes.MakeInt(3)}), 4)
+}

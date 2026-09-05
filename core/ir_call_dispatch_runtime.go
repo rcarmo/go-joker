@@ -16,7 +16,7 @@ func irDispatchFnCall(fn *Fn, args []coretypes.Object) coretypes.Object {
 	// Only try IR dispatch for self-recursive fns (proven correct patterns)
 	// and fns with native helpers. Other fns may have subtle correctness
 	// differences between IR and tree-walker evaluation.
-	if fnProg := irCompileFn(fn); fnProg != nil && (fnProg.hasSelf || runtimeExec.HasNativeHelper(fnProg)) {
+	if fnProg := irCompileFn(fn); fnProg != nil && nativeCoreBindingsUnchanged() && (fnProg.hasSelf || runtimeExec.HasNativeHelper(fnProg)) {
 		var result coretypes.Object
 		func() {
 			defer func() {

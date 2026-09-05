@@ -6073,11 +6073,33 @@ type nativeIntFn2 func(a, b int) int
 type nativeIntFn3 func(a, b, c int) int
 
 // nativeRecursiveEntry holds a compiled native fn for a specific arity.
+var nativeCanonicalVars = map[*Var]*Fn{}
+
+func init() {
+	for _, vr := range GLOBAL_ENV.CoreNamespace.mappings {
+		if coreVarToProcName(vr) != "" {
+			if fn, ok := vr.Value.(*Fn); ok {
+				nativeCanonicalVars[vr] = fn
+			}
+		}
+	}
+}
+
+func nativeCoreBindingsUnchanged() bool {
+	for vr, value := range nativeCanonicalVars {
+		if vr.Value != value {
+			return false
+		}
+	}
+	return true
+}
+
 type nativeRecursiveEntry struct {
-	arity int
-	fn1   nativeIntFn1
-	fn2   nativeIntFn2
-	fn3   nativeIntFn3
+	dependencies map[*Var]*Fn
+	arity        int
+	fn1          nativeIntFn1
+	fn2          nativeIntFn2
+	fn3          nativeIntFn3
 }
 
 var nativeRecursiveCache sync.Map // *Fn → *nativeRecursiveEntry (or nativeRecursiveFailed sentinel)
@@ -6088,6 +6110,11 @@ func tryNativeRecursive(fn *Fn) *nativeRecursiveEntry {
 		entry := cached.(*nativeRecursiveEntry)
 		if entry == nativeRecursiveFailed {
 			return nil
+		}
+		for vr, value := range entry.dependencies {
+			if vr.Value != value {
+				return nil
+			}
 		}
 		return entry
 	}
@@ -6120,7 +6147,36 @@ func compileNativeRecursive(fn *Fn) *nativeRecursiveEntry {
 		paramFrame = 1
 	}
 
-	entry := &nativeRecursiveEntry{arity: nargs}
+	deps := map[*Var]*Fn{}
+	var inspect func(Expr) bool
+	inspect = func(expr Expr) bool {
+		switch e := expr.(type) {
+		case *CallExpr:
+			v, ok := e.callable.(*VarRefExpr)
+			if !ok {
+				return false
+			}
+			if v.vr != selfVar {
+				canonical, ok := nativeCanonicalVars[v.vr]
+				if !ok || v.vr.Value != canonical {
+					return false
+				}
+				deps[v.vr] = canonical
+			}
+			for _, arg := range e.args {
+				if !inspect(arg) {
+					return false
+				}
+			}
+		case *IfExpr:
+			return inspect(e.cond) && inspect(e.positive) && inspect(e.negative)
+		}
+		return true
+	}
+	if !inspect(arity.body[0]) {
+		return nil
+	}
+	entry := &nativeRecursiveEntry{arity: nargs, dependencies: deps}
 
 	switch nargs {
 	case 1:
