@@ -4241,6 +4241,36 @@ func TestNativeIntegerOverflowIntermediateAndArities(t *testing.T) {
 	}
 }
 
+func TestAuditIntegerOverflowAcrossIRAndWasm(t *testing.T) {
+	loop := compileTestExpr(t, `(loop [i 0 x 0] (if (< i 1) (recur (inc i) (inc x)) x))`).(*LoopExpr)
+	prog := irGetCached(loop)
+	if prog == nil {
+		t.Fatal("IR compilation failed")
+	}
+	input := []coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(int(^uint(0) >> 1))}
+	want := procInc(input[1:])
+	checks := map[string]func() coretypes.Object{
+		"boxed": func() coretypes.Object { return irExec(prog, append([]coretypes.Object(nil), input...)) },
+		"typed": func() coretypes.Object {
+			if !irTypedEligible(AnalyzeIRProgram(prog)) {
+				t.Fatal("not typed eligible")
+			}
+			return irExecTyped(prog, append([]coretypes.Object(nil), input...))
+		},
+	}
+	for name, run := range checks {
+		t.Run(name, func(t *testing.T) {
+			got := run()
+			if got == nil {
+				t.Fatal("tier failed execution")
+			}
+			if fmt.Sprintf("%T:%s", got, got.ToString(false)) != fmt.Sprintf("%T:%s", want, want.ToString(false)) {
+				t.Errorf("%s got %T %s; contract %T %s", name, got, got.ToString(false), want, want.ToString(false))
+			}
+		})
+	}
+}
+
 func TestAuditTypedVectorFallbackPreservesWholeVector(t *testing.T) {
 	t.Setenv("JOKER_IR_TYPED_VEC", "1")
 	for _, source := range []string{`[1 "two" 3]`, `["one" 2]`, `[1 nil]`, `[1 [2 3]]`} {
@@ -4248,6 +4278,87 @@ func TestAuditTypedVectorFallbackPreservesWholeVector(t *testing.T) {
 		roundtrip := objectToIRValue(original).object()
 		if !original.Equals(roundtrip) {
 			t.Errorf("%s roundtrip became %T %s", source, roundtrip, roundtrip.ToString(false))
+		}
+	}
+}
+
+func TestAuditIRPromotionContinuesMultipleIterations(t *testing.T) {
+	loop := compileTestExpr(t, `(loop [i 0 x 0] (if (< i 3) (recur (inc i) (inc x)) x))`).(*LoopExpr)
+	prog := irGetCached(loop)
+	if prog == nil {
+		t.Fatal("IR compilation failed")
+	}
+	input := []coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(coretypes.MaxInt)}
+	want := new(big.Int).Add(big.NewInt(int64(coretypes.MaxInt)), big.NewInt(3))
+	for name, run := range map[string]func(*IRProgram, []coretypes.Object) coretypes.Object{"boxed": irExec, "typed": irExecTyped} {
+		t.Run(name, func(t *testing.T) {
+			got := run(prog, append([]coretypes.Object(nil), input...))
+			n, ok := got.(*coretypes.BigInt)
+			if !ok || n.B.Cmp(want) != 0 {
+				t.Fatalf("got %T %v want %s", got, got, want)
+			}
+		})
+	}
+}
+
+func TestAuditIRPromotedOperandPositions(t *testing.T) {
+	for _, body := range []string{`(+ x 1)`, `(+ 1 x)`, `(- x 1)`, `(* x 2)`, `(* 2 x)`} {
+		fn := evalTestScript(t, fmt.Sprintf(`(fn [x] %s)`, body)).(*Fn)
+		prog := irCompileFn(fn)
+		if prog == nil {
+			t.Fatal("IR compilation failed")
+		}
+		promoted := procInc([]coretypes.Object{coretypes.MakeInt(coretypes.MaxInt)})
+		var want coretypes.Object
+		switch body {
+		case `(+ x 1)`, `(+ 1 x)`:
+			want = procAdd([]coretypes.Object{promoted, coretypes.MakeInt(1)})
+		case `(- x 1)`:
+			want = procSubtract([]coretypes.Object{promoted, coretypes.MakeInt(1)})
+		default:
+			want = procMultiply([]coretypes.Object{promoted, coretypes.MakeInt(2)})
+		}
+		for name, run := range map[string]func(*IRProgram, []coretypes.Object) coretypes.Object{"boxed": irExec, "typed": irExecTyped} {
+			t.Run(name+body, func(t *testing.T) {
+				got := run(prog, []coretypes.Object{promoted})
+				if got == nil || !got.Equals(want) {
+					t.Fatalf("got %T %v want %s", got, got, want.ToString(false))
+				}
+			})
+		}
+	}
+}
+
+func TestAuditIRPromotedComparisons(t *testing.T) {
+	for _, op := range []string{"<", "<=", ">", ">=", "="} {
+		fn := evalTestScript(t, fmt.Sprintf(`(fn [x y] (%s x y))`, op)).(*Fn)
+		prog := irCompileFn(fn)
+		if prog == nil {
+			t.Fatal("IR compilation failed")
+		}
+		n := procInc([]coretypes.Object{coretypes.MakeInt(coretypes.MaxInt)})
+		for _, input := range [][]coretypes.Object{{n, coretypes.MakeInt(coretypes.MaxInt)}, {coretypes.MakeInt(coretypes.MaxInt), n}, {n, n}} {
+			var want coretypes.Object
+			switch op {
+			case "<":
+				want = procLt(input)
+			case "<=":
+				want = procLte(input)
+			case ">":
+				want = procGt(input)
+			case ">=":
+				want = procGte(input)
+			case "=":
+				want = procEq(input)
+			}
+			for name, run := range map[string]func(*IRProgram, []coretypes.Object) coretypes.Object{"boxed": irExec, "typed": irExecTyped} {
+				t.Run(name+op, func(t *testing.T) {
+					got := run(prog, input)
+					if got == nil || !got.Equals(want) {
+						t.Fatalf("got %T %v want %v", got, got, want)
+					}
+				})
+			}
 		}
 	}
 }

@@ -10200,7 +10200,12 @@ loop:
 			case coretypes.Int:
 				switch bv := b.(type) {
 				case coretypes.Int:
-					stack = append(stack, coretypes.Int{I: av.I + bv.I})
+					r := av.I + bv.I
+					if bv.I > 0 && r < av.I || bv.I < 0 && r > av.I {
+						stack = append(stack, procAdd([]coretypes.Object{a, b}))
+					} else {
+						stack = append(stack, coretypes.Int{I: r})
+					}
 					continue
 				case coretypes.Double:
 					stack = append(stack, coretypes.Double{D: float64(av.I) + bv.D})
@@ -10216,7 +10221,7 @@ loop:
 					continue
 				}
 			}
-			return nil
+			stack = append(stack, procAdd([]coretypes.Object{a, b}))
 
 		case irSub:
 			b := stack[len(stack)-1]
@@ -10226,7 +10231,12 @@ loop:
 			case coretypes.Int:
 				switch bv := b.(type) {
 				case coretypes.Int:
-					stack = append(stack, coretypes.Int{I: av.I - bv.I})
+					r := av.I - bv.I
+					if bv.I < 0 && r < av.I || bv.I > 0 && r > av.I {
+						stack = append(stack, procSubtract([]coretypes.Object{a, b}))
+					} else {
+						stack = append(stack, coretypes.Int{I: r})
+					}
 					continue
 				case coretypes.Double:
 					stack = append(stack, coretypes.Double{D: float64(av.I) - bv.D})
@@ -10242,7 +10252,7 @@ loop:
 					continue
 				}
 			}
-			return nil
+			stack = append(stack, procSubtract([]coretypes.Object{a, b}))
 
 		case irMul:
 			b := stack[len(stack)-1]
@@ -10252,7 +10262,12 @@ loop:
 			case coretypes.Int:
 				switch bv := b.(type) {
 				case coretypes.Int:
-					stack = append(stack, coretypes.Int{I: av.I * bv.I})
+					r := av.I * bv.I
+					if av.I != 0 && ((av.I == -1 && bv.I == coretypes.MinInt) || (bv.I == -1 && av.I == coretypes.MinInt) || r/av.I != bv.I) {
+						stack = append(stack, procMultiply([]coretypes.Object{a, b}))
+					} else {
+						stack = append(stack, coretypes.Int{I: r})
+					}
 					continue
 				case coretypes.Double:
 					stack = append(stack, coretypes.Double{D: float64(av.I) * bv.D})
@@ -10268,7 +10283,7 @@ loop:
 					continue
 				}
 			}
-			return nil
+			stack = append(stack, procMultiply([]coretypes.Object{a, b}))
 
 		case irRem:
 			b := stack[len(stack)-1]
@@ -10316,11 +10331,15 @@ loop:
 			stack = stack[:len(stack)-1]
 			switch av := a.(type) {
 			case coretypes.Int:
-				stack = append(stack, coretypes.Int{I: av.I + 1})
+				if av.I == coretypes.MaxInt {
+					stack = append(stack, procInc([]coretypes.Object{a}))
+				} else {
+					stack = append(stack, coretypes.Int{I: av.I + 1})
+				}
 			case coretypes.Double:
 				stack = append(stack, coretypes.Double{D: av.D + 1})
 			default:
-				return nil
+				stack = append(stack, procInc([]coretypes.Object{a}))
 			}
 
 		case irDec:
@@ -10328,11 +10347,15 @@ loop:
 			stack = stack[:len(stack)-1]
 			switch av := a.(type) {
 			case coretypes.Int:
-				stack = append(stack, coretypes.Int{I: av.I - 1})
+				if av.I == coretypes.MinInt {
+					stack = append(stack, procDec([]coretypes.Object{a}))
+				} else {
+					stack = append(stack, coretypes.Int{I: av.I - 1})
+				}
 			case coretypes.Double:
 				stack = append(stack, coretypes.Double{D: av.D - 1})
 			default:
-				return nil
+				stack = append(stack, procDec([]coretypes.Object{a}))
 			}
 
 		case irLt:
@@ -10359,7 +10382,7 @@ loop:
 					continue
 				}
 			}
-			return nil
+			stack = append(stack, procLt([]coretypes.Object{a, b}))
 
 		case irGte:
 			b := stack[len(stack)-1]
@@ -10385,7 +10408,7 @@ loop:
 					continue
 				}
 			}
-			return nil
+			stack = append(stack, procGte([]coretypes.Object{a, b}))
 
 		case irGt:
 			b := stack[len(stack)-1]
@@ -10411,7 +10434,7 @@ loop:
 					continue
 				}
 			}
-			return nil
+			stack = append(stack, procGt([]coretypes.Object{a, b}))
 
 		case irLte:
 			b := stack[len(stack)-1]
@@ -10437,7 +10460,7 @@ loop:
 					continue
 				}
 			}
-			return nil
+			stack = append(stack, procLte([]coretypes.Object{a, b}))
 
 		case irCursorChar:
 			cur := stack[len(stack)-1]
@@ -11092,7 +11115,13 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			if a.tag == irValInt && b.tag == irValInt {
-				stack = append(stack, irValue{tag: irValInt, i: a.i + b.i})
+				r := a.i + b.i
+				if b.i > 0 && r < a.i || b.i < 0 && r > a.i {
+					stack = append(stack, objectToIRValue(procAdd([]coretypes.Object{a.object(), b.object()})))
+					continue
+				} else {
+					stack = append(stack, irValue{tag: irValInt, i: r})
+				}
 			} else {
 				af, bf := 0.0, 0.0
 				if a.tag == irValDouble {
@@ -11100,14 +11129,16 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 				} else if a.tag == irValInt {
 					af = float64(a.i)
 				} else {
-					return nil
+					stack = append(stack, objectToIRValue(procAdd([]coretypes.Object{a.object(), b.object()})))
+					continue
 				}
 				if b.tag == irValDouble {
 					bf = b.f
 				} else if b.tag == irValInt {
 					bf = float64(b.i)
 				} else {
-					return nil
+					stack = append(stack, objectToIRValue(procAdd([]coretypes.Object{a.object(), b.object()})))
+					continue
 				}
 				stack = append(stack, irValue{tag: irValDouble, f: af + bf})
 			}
@@ -11115,7 +11146,13 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			if a.tag == irValInt && b.tag == irValInt {
-				stack = append(stack, irValue{tag: irValInt, i: a.i - b.i})
+				r := a.i - b.i
+				if b.i < 0 && r < a.i || b.i > 0 && r > a.i {
+					stack = append(stack, objectToIRValue(procSubtract([]coretypes.Object{a.object(), b.object()})))
+					continue
+				} else {
+					stack = append(stack, irValue{tag: irValInt, i: r})
+				}
 			} else if a.tag == irValDouble || b.tag == irValDouble {
 				af, bf := 0.0, 0.0
 				if a.tag == irValDouble {
@@ -11123,24 +11160,33 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 				} else if a.tag == irValInt {
 					af = float64(a.i)
 				} else {
-					return nil
+					stack = append(stack, objectToIRValue(procSubtract([]coretypes.Object{a.object(), b.object()})))
+					continue
 				}
 				if b.tag == irValDouble {
 					bf = b.f
 				} else if b.tag == irValInt {
 					bf = float64(b.i)
 				} else {
-					return nil
+					stack = append(stack, objectToIRValue(procSubtract([]coretypes.Object{a.object(), b.object()})))
+					continue
 				}
 				stack = append(stack, irValue{tag: irValDouble, f: af - bf})
 			} else {
-				return nil
+				stack = append(stack, objectToIRValue(procSubtract([]coretypes.Object{a.object(), b.object()})))
+				continue
 			}
 		case irMul:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
 			if a.tag == irValInt && b.tag == irValInt {
-				stack = append(stack, irValue{tag: irValInt, i: a.i * b.i})
+				r := a.i * b.i
+				if a.i != 0 && ((a.i == -1 && b.i == coretypes.MinInt) || (b.i == -1 && a.i == coretypes.MinInt) || r/a.i != b.i) {
+					stack = append(stack, objectToIRValue(procMultiply([]coretypes.Object{a.object(), b.object()})))
+					continue
+				} else {
+					stack = append(stack, irValue{tag: irValInt, i: r})
+				}
 			} else if a.tag == irValDouble || b.tag == irValDouble {
 				af, bf := 0.0, 0.0
 				if a.tag == irValDouble {
@@ -11148,18 +11194,21 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 				} else if a.tag == irValInt {
 					af = float64(a.i)
 				} else {
-					return nil
+					stack = append(stack, objectToIRValue(procMultiply([]coretypes.Object{a.object(), b.object()})))
+					continue
 				}
 				if b.tag == irValDouble {
 					bf = b.f
 				} else if b.tag == irValInt {
 					bf = float64(b.i)
 				} else {
-					return nil
+					stack = append(stack, objectToIRValue(procMultiply([]coretypes.Object{a.object(), b.object()})))
+					continue
 				}
 				stack = append(stack, irValue{tag: irValDouble, f: af * bf})
 			} else {
-				return nil
+				stack = append(stack, objectToIRValue(procMultiply([]coretypes.Object{a.object(), b.object()})))
+				continue
 			}
 		case irDiv:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
@@ -11193,15 +11242,17 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 		case irInc:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			if a.tag != irValInt {
-				return nil
+			if a.tag != irValInt || a.i == coretypes.MaxInt {
+				stack = append(stack, objectToIRValue(procInc([]coretypes.Object{a.object()})))
+				continue
 			}
 			stack = append(stack, irValue{tag: irValInt, i: a.i + 1})
 		case irDec:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
-			if a.tag != irValInt {
-				return nil
+			if a.tag != irValInt || a.i == coretypes.MinInt {
+				stack = append(stack, objectToIRValue(procDec([]coretypes.Object{a.object()})))
+				continue
 			}
 			stack = append(stack, irValue{tag: irValInt, i: a.i - 1})
 		case irLt:
@@ -11216,7 +11267,7 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 			} else if a.tag == irValInt && b.tag == irValDouble {
 				stack = append(stack, irMakeBool(float64(a.i) < b.f))
 			} else {
-				return nil
+				stack = append(stack, objectToIRValue(procLt([]coretypes.Object{a.object(), b.object()})))
 			}
 		case irGte:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
@@ -11230,7 +11281,7 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 			} else if a.tag == irValInt && b.tag == irValDouble {
 				stack = append(stack, irMakeBool(float64(a.i) >= b.f))
 			} else {
-				return nil
+				stack = append(stack, objectToIRValue(procGte([]coretypes.Object{a.object(), b.object()})))
 			}
 		case irGt:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
@@ -11244,7 +11295,7 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 			} else if a.tag == irValInt && b.tag == irValDouble {
 				stack = append(stack, irMakeBool(float64(a.i) > b.f))
 			} else {
-				return nil
+				stack = append(stack, objectToIRValue(procGt([]coretypes.Object{a.object(), b.object()})))
 			}
 		case irLte:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
@@ -11258,7 +11309,7 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 			} else if a.tag == irValInt && b.tag == irValDouble {
 				stack = append(stack, irMakeBool(float64(a.i) <= b.f))
 			} else {
-				return nil
+				stack = append(stack, objectToIRValue(procLte([]coretypes.Object{a.object(), b.object()})))
 			}
 
 		case irCursorChar:
