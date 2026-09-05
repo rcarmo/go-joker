@@ -12800,8 +12800,8 @@ func objectToIRValue(obj coretypes.Object) irValue {
 	case *corecollections.ArrayVector:
 		if corert.IRTypedVecEnabled() {
 			iv := make([]int, len(v.Arr))
-			for i, obj := range v.Arr {
-				x, ok := obj.(coretypes.Int)
+			for i, item := range v.Arr {
+				x, ok := item.(coretypes.Int)
 				if !ok {
 					return irMakeObject(obj)
 				}

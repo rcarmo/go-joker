@@ -4240,3 +4240,14 @@ func TestNativeIntegerOverflowIntermediateAndArities(t *testing.T) {
 		}
 	}
 }
+
+func TestAuditTypedVectorFallbackPreservesWholeVector(t *testing.T) {
+	t.Setenv("JOKER_IR_TYPED_VEC", "1")
+	for _, source := range []string{`[1 "two" 3]`, `["one" 2]`, `[1 nil]`, `[1 [2 3]]`} {
+		original := evalTestScript(t, source)
+		roundtrip := objectToIRValue(original).object()
+		if !original.Equals(roundtrip) {
+			t.Errorf("%s roundtrip became %T %s", source, roundtrip, roundtrip.ToString(false))
+		}
+	}
+}
