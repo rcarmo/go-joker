@@ -4098,3 +4098,17 @@ func TestAuditWasmLoopControl(t *testing.T) {
 		}
 	}
 }
+
+func TestAuditPrimitiveFallbackEvaluatesOnce(t *testing.T) {
+	for _, op := range []string{"inc__", "dec__", "add__", "subtract__", "multiply__"} {
+		t.Run(op, func(t *testing.T) {
+			args := `(do (swap! audit-primitive-calls inc) 1N)`
+			expected := "1"
+			if op == "add__" || op == "subtract__" || op == "multiply__" {
+				args += ` (do (swap! audit-primitive-calls inc) 2N)`
+				expected = "2"
+			}
+			requireString(t, evalTestScript(t, fmt.Sprintf(`(do (def audit-primitive-calls (atom 0)) (joker.core/%s %s) (str @audit-primitive-calls))`, op, args)), expected)
+		})
+	}
+}

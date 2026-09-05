@@ -347,30 +347,31 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 		case 0:
 			return callable.Fn(nil)
 		case 1:
+			arg := Eval(expr.args[0], env)
 			switch callable.Name {
 			case "procInc":
-				switch x := Eval(expr.args[0], env).(type) {
+				switch x := arg.(type) {
 				case coretypes.Int:
 					return coretypes.Int{I: x.I + 1}
 				case coretypes.Double:
 					return coretypes.Double{D: x.D + 1}
 				}
 			case "procDec":
-				switch x := Eval(expr.args[0], env).(type) {
+				switch x := arg.(type) {
 				case coretypes.Int:
 					return coretypes.Int{I: x.I - 1}
 				case coretypes.Double:
 					return coretypes.Double{D: x.D - 1}
 				}
 			case "procIsZero":
-				switch x := Eval(expr.args[0], env).(type) {
+				switch x := arg.(type) {
 				case coretypes.Int:
 					return coretypes.Boolean{B: x.I == 0}
 				case coretypes.Double:
 					return coretypes.Boolean{B: x.D == 0}
 				}
 			case "procSubtract":
-				switch x := Eval(expr.args[0], env).(type) {
+				switch x := arg.(type) {
 				case coretypes.Int:
 					return coretypes.Int{I: -x.I}
 				case coretypes.Double:
@@ -378,13 +379,14 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 				}
 			}
 			var args [1]coretypes.Object
-			args[0] = Eval(expr.args[0], env)
+			args[0] = arg
 			return callable.Fn(args[:])
 		case 2:
+			ax, bx := Eval(expr.args[0], env), Eval(expr.args[1], env)
 			switch callable.Name {
 			case "procGet":
-				coll := Eval(expr.args[0], env)
-				key := Eval(expr.args[1], env)
+				coll := ax
+				key := bx
 				switch c := coll.(type) {
 				case coretypes.Gettable:
 					ok, v := c.Get(key)
@@ -394,8 +396,6 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 					return NIL
 				}
 			case "procAdd":
-				ax := Eval(expr.args[0], env)
-				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
 				case coretypes.Int:
 					switch b := bx.(type) {
@@ -413,8 +413,6 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 					}
 				}
 			case "procSubtract":
-				ax := Eval(expr.args[0], env)
-				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
 				case coretypes.Int:
 					switch b := bx.(type) {
@@ -432,8 +430,6 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 					}
 				}
 			case "procMultiply":
-				ax := Eval(expr.args[0], env)
-				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
 				case coretypes.Int:
 					switch b := bx.(type) {
@@ -451,8 +447,6 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 					}
 				}
 			case "procRem":
-				ax := Eval(expr.args[0], env)
-				bx := Eval(expr.args[1], env)
 				if a, ok := ax.(coretypes.Int); ok {
 					if b, ok := bx.(coretypes.Int); ok {
 						if b.I == 0 {
@@ -462,8 +456,6 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 					}
 				}
 			case "procDivide":
-				ax := Eval(expr.args[0], env)
-				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
 				case coretypes.Int:
 					switch b := bx.(type) {
@@ -484,8 +476,6 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 					}
 				}
 			case "procLt":
-				ax := Eval(expr.args[0], env)
-				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
 				case coretypes.Int:
 					switch b := bx.(type) {
@@ -503,8 +493,6 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 					}
 				}
 			case "procEq":
-				ax := Eval(expr.args[0], env)
-				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
 				case coretypes.Int:
 					switch b := bx.(type) {
@@ -522,8 +510,6 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 					}
 				}
 			case "procGt":
-				ax := Eval(expr.args[0], env)
-				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
 				case coretypes.Int:
 					switch b := bx.(type) {
@@ -541,8 +527,6 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 					}
 				}
 			case "procGte":
-				ax := Eval(expr.args[0], env)
-				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
 				case coretypes.Int:
 					switch b := bx.(type) {
@@ -560,8 +544,6 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 					}
 				}
 			case "procLte":
-				ax := Eval(expr.args[0], env)
-				bx := Eval(expr.args[1], env)
 				switch a := ax.(type) {
 				case coretypes.Int:
 					switch b := bx.(type) {
@@ -580,8 +562,8 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 				}
 			}
 			var args [2]coretypes.Object
-			args[0] = Eval(expr.args[0], env)
-			args[1] = Eval(expr.args[1], env)
+			args[0] = ax
+			args[1] = bx
 			return callable.Fn(args[:])
 		case 3:
 			switch callable.Name {
