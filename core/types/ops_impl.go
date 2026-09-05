@@ -204,6 +204,12 @@ func (ops RatioOps) Subtract(x, y Number) Number {
 
 func (ops IntOps) Multiply(x, y Number) Number {
 	xi, yi := x.Int().I, y.Int().I
+	product := xi * yi
+	// Division verifies a non-overflowing product, except MinInt / -1,
+	// whose machine result also wraps. Handle that pair explicitly.
+	if xi == 0 || (xi != -1 || yi != MinInt) && (yi != -1 || xi != MinInt) && product/xi == yi {
+		return Int{I: product}
+	}
 	b := new(big.Int).Mul(big.NewInt(int64(xi)), big.NewInt(int64(yi)))
 	return IntOrBigInt(b)
 }
