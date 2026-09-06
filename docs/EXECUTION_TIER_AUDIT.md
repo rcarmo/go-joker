@@ -15,7 +15,7 @@ This is a progress report, not a claim that all execution tiers are equivalent. 
 | Captures and collections | Retained closures preserve separate captures across repeated IR execution; mixed vectors survive typed-vector conversion fallback |
 | Integer WASM | Loop exit after `recur`; checked arithmetic traps; promoted recovery for import-free arithmetic traps |
 | Float-mode WASM inputs | Integer-containing calls use IR before execution; double-only direct execution is tested. This is an explicit backend restriction until per-value typing exists. |
-| Error recovery | Zero-divisor errors, explicit exceptions, callable-origin type errors and errors after callable entry do not replay prior calls. The unsupported typed `zero?` case also has a regression. |
+| Error recovery | Zero-divisor errors, explicit exceptions, callable-origin type errors and errors after callable entry do not replay prior calls. Unsupported typed `zero?` and late `try/catch` both reproduced callback replay; `zero?` now executes and unsupported `try/catch` is rejected before execution. |
 
 Tests live in `core/runtime_kernel_contracts_test.go` and `core/ir/nanbox_test.go`. They require compilation or direct executor invocation where a tier is claimed. Unsupported direct-executor shapes are not counted as successful tier coverage.
 
@@ -31,14 +31,15 @@ Runs used Linux amd64, Go 1.26.5 and an Intel Core i7-12700 with six visible CPU
 | Portable Binary Trees, IR promotion candidate | 10 samples x 10 iterations each | 76.32 to 76.98 ms, not significant | No significant difference | No significant difference |
 | Fibonacci 20, pre-audit release versus audit candidate | 10 x 500 ms each | 1.550 to 1.554 ms, not significant | 578 to 578 | 7 to 7 |
 | Tak, same comparison | 10 x 500 ms each | 4.429 to 4.291 ms | No significant difference | 6 to 6 |
+| Invoice totals, only multiplication changed | 10 samples x 20 iterations each | 2.332 to 2.372 ms, not significant | 283.6 to 264.8 KiB | 10,221 to 9,821 |
 
-Each listed comparison passed the repository regression policy. The Fibonacci/Tak comparison includes all intervening audit changes, so it does not isolate the guard cost or justify attributing the small Tak improvement to one patch. The multiplication result is a primitive microbenchmark, not a whole-program speedup. An earlier generic numeric IR prototype increased Binary Trees allocations by 43% and was rejected.
+Each listed comparison passed the repository regression policy. The Fibonacci/Tak comparison includes all intervening audit changes, so it does not isolate the guard cost or justify attributing the small Tak improvement to one patch. The primitive multiplication result is not a whole-program speedup. The invoice workload separately validates checksum 470,400 and shows 6.6% fewer bytes and 3.9% fewer allocations, without a significant timing change. An earlier generic numeric IR prototype increased Binary Trees allocations by 43% and was rejected.
 
 The live Joker `pidigits` fixture was incorrect: it used `/`, while the Python and JavaScript references used integer quotient. Its old expected value was a large floating-point result rather than a digit checksum. The corrected fixture uses arbitrary-precision integers and `quot`; its 27-digit checksum is 129, independently matched against the JavaScript reference. Measurements of the corrected fixture must not be compared directly with the old fixture. Historical charts and their source data were not overwritten.
 
 ## Validation performed
 
-Isolated correctness changes passed `make pretag-check`, including repository-wide tests, vet, generated/documentation guards, example smoke tests and notebook checks. Focused race tests covered native arithmetic/rebinding, IR numeric behaviour, WASM boundaries and NaN-boxing. Browser smoke is optional in the local gate and was not included in these audit runs.
+Isolated correctness changes passed `make pretag-check`, including repository-wide tests, vet, generated/documentation guards, example smoke tests and notebook checks. The final focused race sweep covered all TestAudit regressions, native arithmetic/rebinding, captures, transients and NaN-boxing and passed. The full pre-tag gate passed after the unsupported try/catch fix. Browser smoke is optional in the local gate and was not included in these audit runs.
 
 ## Remaining work
 
@@ -47,6 +48,12 @@ Isolated correctness changes passed `make pretag-check`, including repository-wi
 * Public-call promotion tests now pass, but source and generated numeric docstrings still say ordinary arithmetic wraps. Regeneration is blocked by bootstrap type aliases, optimisation during source loading, nil reflection metadata and malformed generated identifiers for extracted packages. The investigation patch is retained separately; committed generated files were restored and build successfully.
 * Linux/386 tests passed for `core/ir` and `core/types`. Full `core` compilation on 386 is blocked by an out-of-range generated bitmap literal and a 64-bit handle constant stored in `int`. ARM and Windows execution checks were not run.
 * Bounded fuzz runs passed approximately 1.74 million numeric boxing cases and 1.32 million multiplication cases on amd64, plus 2.35 million multiplication cases on 386 (without coverage guidance). This is not exhaustive input coverage.
-* There has been no independent model review: attempted delegation was blocked by the configured provider/model approval policy. The complete exception/transient matrix and final sign-off remain pending.
+* There has been no independent model review. Earlier delegation attempts were blocked by approval policy; the final attempt found azure-openai/gpt-5-4 available in Piclaw but not executable by its child CLI. Independent sign-off remains pending.
 
 No release was published as part of this audit. The open items need implementation and validation before the plan can be marked complete.
+
+## Current operator-facing contract
+
+Public ordinary integer arithmetic promotes on overflow. Integer division/remainder preserve numeric primitive types and zero-divisor failures. Direct tests cover native, boxed, typed, inline and NaN-boxed entry points, with backend restrictions where a representation cannot preserve those semantics. Generated API docstrings remain stale; this report and executable regressions record the verified contract pending generator repair.
+
+The audit produced concrete fixes and measured allocation improvements, but it did not prove equivalence for every Joker program. Unresolved generator, platform and speculative-execution limitations must not be hidden by marking their checklist items complete.
