@@ -4569,3 +4569,39 @@ func TestAuditWasmFloatPreservesWideIntegerComparison(t *testing.T) {
 		t.Fatalf("got %v want %v", got, want)
 	}
 }
+
+func TestAuditCapturedStateAcrossIRExecutors(t *testing.T) {
+	loop := compileTestExpr(t, `(loop [x 0] (fn [y] (+ x y)))`).(*LoopExpr)
+	prog := irCompile(loop)
+	if prog == nil {
+		t.Fatal("IR compilation required")
+	}
+	var closures []*Fn
+	for _, n := range []int{2, 9, 2} {
+		got := irExec(prog, []coretypes.Object{coretypes.MakeInt(n)})
+		fn, ok := got.(*Fn)
+		if !ok {
+			t.Fatalf("expected IR closure got %T", got)
+		}
+		closures = append(closures, fn)
+	}
+	for i, n := range []int{2, 9, 2} {
+		requireInt(t, closures[i].Call([]coretypes.Object{coretypes.MakeInt(4)}), n+4)
+	}
+}
+
+func TestAuditNativeRecursivePromotion(t *testing.T) {
+	fn := evalTestScript(t, `(do (defn audit-recursive-promote [n x] (if (< n 1) x (+ 0 (audit-recursive-promote (- n 1) (+ x 1))))) audit-recursive-promote)`).(*Fn)
+	entry := tryNativeRecursive(fn)
+	if entry == nil {
+		t.Fatal("native compilation required")
+	}
+	args := []coretypes.Object{coretypes.MakeInt(3), coretypes.MakeInt(coretypes.MaxInt)}
+	got := callNativeRecursive(entry, args)
+	want := new(big.Int).Add(big.NewInt(int64(coretypes.MaxInt)), big.NewInt(3))
+	n, ok := got.(*coretypes.BigInt)
+	if !ok || n.B.Cmp(want) != 0 {
+		t.Fatalf("got %T %v want %s", got, got, want)
+	}
+	requireInt(t, callNativeRecursive(entry, []coretypes.Object{coretypes.MakeInt(3), coretypes.MakeInt(0)}), 3)
+}
