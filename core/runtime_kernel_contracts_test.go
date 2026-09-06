@@ -4852,3 +4852,27 @@ func TestAuditNonAssociativeLookupDoesNotReplayCallback(t *testing.T) {
 	}
 	requireInt(t, evalTestScript(t, `@audit-nil-count`), 1)
 }
+
+func TestAuditBoxedCollectionBoundaryMatrix(t *testing.T) {
+	t.Setenv("JOKER_IR_TYPED", "off")
+	for _, tc := range []struct{ value, operation, want string }{
+		{`[4 7]`, `(get value 9)`, `nil`},
+		{`{:k 7}`, `(assoc value :k 9)`, `{:k 9}`},
+		{`nil`, `(assoc value :k 9)`, `{:k 9}`},
+		{`(list 4 7)`, `(first value)`, `4`},
+		{`[4 7]`, `(nth value 1)`, `7`},
+	} {
+		t.Run(tc.value+tc.operation, func(t *testing.T) {
+			evalTestScript(t, `(def audit-collection-count (atom 0))`)
+			expr := compileTestExpr(t, fmt.Sprintf(`(let [touch (fn [x] (swap! audit-collection-count inc))] (loop [i 0 value %s] (if (< i 1) (recur (touch i) value) %s)))`, tc.value, tc.operation))
+			if irGetCached(expr.(*LetExpr).body[0].(*LoopExpr)) == nil {
+				t.Fatal("IR required")
+			}
+			got := Eval(expr, nil)
+			if got.ToString(false) != tc.want {
+				t.Fatalf("got %s want %s", got.ToString(false), tc.want)
+			}
+			requireInt(t, evalTestScript(t, `@audit-collection-count`), 1)
+		})
+	}
+}
