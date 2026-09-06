@@ -1,0 +1,104 @@
+{
+  "warmup": 3,
+  "runs": 10,
+  "bench_dir": "/workspace/projects/go-joker/benchmarks/compare/letgo_suite",
+  "runtimes": [
+    "let-go",
+    "go-joker"
+  ],
+  "benchmarks": [
+    "fib",
+    "loop-recur",
+    "map-filter",
+    "persistent-map",
+    "reduce",
+    "tak",
+    "transducers"
+  ],
+  "results": {
+    "fib": {
+      "go-joker": {
+        "mean_ms": 2134.0577975,
+        "stddev_ms": 48.69082528272894,
+        "runs": 10
+      },
+      "let-go": {
+        "mean_ms": 1733.2321985000003,
+        "stddev_ms": 40.63996739748371,
+        "runs": 10
+      }
+    },
+    "loop-recur": {
+      "go-joker": {
+        "mean_ms": 8.8412643,
+        "stddev_ms": 0.9399207114799684,
+        "runs": 10
+      },
+      "let-go": {
+        "mean_ms": 48.5975535,
+        "stddev_ms": 1.0666670195199859,
+        "runs": 10
+      }
+    },
+    "map-filter": {
+      "go-joker": {
+        "mean_ms": 6.0177435,
+        "stddev_ms": 0.1760748925862232,
+        "runs": 10
+      },
+      "let-go": {
+        "mean_ms": 3.1734170999999995,
+        "stddev_ms": 0.2021591583745095,
+        "runs": 10
+      }
+    },
+    "persistent-map": {
+      "go-joker": {
+        "mean_ms": 16.9000914,
+        "stddev_ms": 1.824269716590899,
+        "runs": 10
+      },
+      "let-go": {
+        "mean_ms": 15.0427956,
+        "stddev_ms": 0.671646026014179,
+        "runs": 10
+      }
+    },
+    "reduce": {
+      "go-joker": {
+        "mean_ms": 6.8723206,
+        "stddev_ms": 0.7553550320449582,
+        "runs": 10
+      },
+      "let-go": {
+        "mean_ms": 67.23735060000001,
+        "stddev_ms": 2.9996277947492156,
+        "runs": 10
+      }
+    },
+    "tak": {
+      "go-joker": {
+        "mean_ms": 2637.1911945999996,
+        "stddev_ms": 68.34114167194609,
+        "runs": 10
+      },
+      "let-go": {
+        "mean_ms": 1887.7861294999998,
+        "stddev_ms": 26.946866895896708,
+        "runs": 10
+      }
+    },
+    "transducers": {
+      "go-joker": {
+        "mean_ms": 6.0544259,
+        "stddev_ms": 0.26371102029473475,
+        "runs": 10
+      },
+      "let-go": {
+        "mean_ms": 2.836762,
+        "stddev_ms": 0.07789057336931086,
+        "runs": 10
+      }
+    }
+  }
+}

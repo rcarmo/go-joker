@@ -46,6 +46,10 @@ A comparison fails when:
 
 Noisy timing and bytes measurements are reported but not gated. Allocation counts are always checked. This combination catches stable regressions without turning transient shared-runner noise into release blockers.
 
+## Current benchmark snapshot
+
+The [2026-09-06 refresh](BENCHMARK_RESULTS_2026-09-06.md) records fresh Joker and comparison-runtime samples. The corrected `pidigits` fixture uses integer quotient and checksum 129; do not compare its timings with the old floating-point fixture. Chart generators honour `metadata.non_comparable_baseline` in `benchmarks/benchmark-history.json`. Earlier snapshot data remains under `benchmarks/history/2026-05-22/`.
+
 ## Maintenance policy
 
 - Treat missing benchmark names as failures.

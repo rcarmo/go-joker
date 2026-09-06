@@ -30,7 +30,8 @@ type CrossLang struct {
 
 type History struct {
 	Metadata struct {
-		Host string `json:"host"`
+		Host          string   `json:"host"`
+		NonComparable []string `json:"non_comparable_baseline"`
 	} `json:"metadata"`
 	Series        []Series  `json:"series"`
 	CrossLanguage CrossLang `json:"cross_language"`
@@ -71,7 +72,13 @@ func main() {
 			panic(fmt.Sprintf("current benchmark %s must be positive", name))
 		}
 		r := Row{Name: name, CurrentMS: cur.MSPerOp}
-		if base, ok := baseline.Benchmarks[name]; ok {
+		comparable := true
+		for _, excluded := range h.Metadata.NonComparable {
+			if name == excluded {
+				comparable = false
+			}
+		}
+		if base, ok := baseline.Benchmarks[name]; ok && comparable {
 			if base.MSPerOp <= 0 {
 				panic(fmt.Sprintf("baseline benchmark %s must be positive", name))
 			}
@@ -222,7 +229,7 @@ svg{background:var(--bg)}.panel{fill:var(--panel);stroke:var(--border)}.row{fill
 
 	b.WriteString(fmt.Sprintf(`<rect x="0" y="0" width="1200" height="%d" fill="var(--bg)"/>`, height))
 	b.WriteString(fmt.Sprintf(`<rect class="panel" x="20" y="20" width="1160" height="%d" rx="14"/>`, height-40))
-	b.WriteString(`<text class="text title" x="40" y="56">Joker vs Python 3.13 vs Goja — CLBG benchmarks</text>`)
+	b.WriteString(`<text class="text title" x="40" y="56">Joker vs Python 3.14 vs Goja — CLBG benchmarks</text>`)
 
 	winsP, winsG := 0, 0
 	for _, r := range rows {

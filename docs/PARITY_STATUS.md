@@ -23,21 +23,19 @@ Runner/output:
 - `benchmarks/compare/out/latest/letgo-suite-comparison.md`
 - `benchmarks/compare/out/latest/letgo-suite-results.json`
 
-### Latest measured results (ms/op)
+### Measured results (2026-09-06, ms/op)
 
 | Benchmark | let-go | go-joker | Winner |
 |---|---:|---:|---|
-| fib | 1934.9 | 1269.6 | **go-joker** (1.5×) |
-| loop-recur | 73.8 | 8.70 | **go-joker** (8.5×) |
-| map-filter | 5.37 | 7.48 | let-go (1.39×) |
-| persistent-map | 29.9 | 26.2 | **go-joker** (1.1×) |
-| reduce | 109.1 | 7.81 | **go-joker** (14.0×) |
-| tak | 2804.1 | 2547.6 | **go-joker** (1.1×) |
-| transducers | 3.15 | 5.40 | let-go (1.71×) |
+| fib | 1733.2 | 2134.1 | let-go |
+| loop-recur | 48.6 | 8.84 | go-joker |
+| map-filter | 3.17 | 6.02 | let-go |
+| persistent-map | 15.0 | 16.9 | let-go |
+| reduce | 67.2 | 6.87 | go-joker |
+| tak | 1887.8 | 2637.2 | let-go |
+| transducers | 2.84 | 6.05 | let-go |
 
-**Score:** go-joker wins 5/7. The remaining gaps are map-filter (~1.39×) and transducers (~1.71×).
-
----
+Go-joker wins 2/7 workloads. See [full current results](../benchmarks/results/2026-09-06/letgo-suite-comparison.md). Compliance figures below are historical and were not rerun by this performance refresh.
 
 ## 2) Language compliance parity
 

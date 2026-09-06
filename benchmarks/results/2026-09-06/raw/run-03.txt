@@ -1,0 +1,32 @@
+goos: linux
+goarch: amd64
+pkg: github.com/rcarmo/go-joker/benchmarks/core
+cpu: 12th Gen Intel(R) Core(TM) i7-12700
+BenchmarkCLBGNBody-6                        	       4	 277579079 ns/op	18888252 B/op	  481180 allocs/op
+BenchmarkCLBGNBodyBestJoker-6               	  254875	      4963 ns/op	      24 B/op	       2 allocs/op
+BenchmarkCLBGSpectralNorm-6                 	      39	  29856035 ns/op	 5821267 B/op	  153212 allocs/op
+BenchmarkCLBGSpectralNormBestJoker-6        	   12537	     95494 ns/op	    1272 B/op	       5 allocs/op
+BenchmarkCLBGBinaryTrees-6                  	      15	  77361267 ns/op	38024149 B/op	 1268083 allocs/op
+BenchmarkCLBGBinaryTreesParallel-6          	      26	  48566439 ns/op	76085115 B/op	 2536478 allocs/op
+BenchmarkCLBGBinaryTreesBestJoker-6         	     378	   3184280 ns/op	 2850857 B/op	  178179 allocs/op
+BenchmarkCLBGFannkuchRedux-6                	       4	 258638718 ns/op	31213462 B/op	  789681 allocs/op
+BenchmarkCLBGFannkuchReduxBestJoker-6       	    8012	    140377 ns/op	     216 B/op	       5 allocs/op
+BenchmarkCLBGMandelbrot-6                   	     280	   4286138 ns/op	  181951 B/op	   10411 allocs/op
+BenchmarkCLBGMandelbrotBestJoker-6          	   15828	     77021 ns/op	      40 B/op	       2 allocs/op
+BenchmarkCLBGFasta-6                        	    4257	    260369 ns/op	  199286 B/op	   14844 allocs/op
+BenchmarkCLBGPidigits-6                     	     298	   4060780 ns/op	  599531 B/op	   17250 allocs/op
+BenchmarkCLBGKnucleotide-6                  	    4392	    279556 ns/op	   35025 B/op	    2288 allocs/op
+BenchmarkCLBGKnucleotideBestJoker-6         	  147360	      7601 ns/op	   19736 B/op	      10 allocs/op
+BenchmarkCLBGReverseComplement-6            	   21003	     58331 ns/op	   28808 B/op	     576 allocs/op
+BenchmarkCLBGReverseComplementBestJoker-6   	 3909817	       310.8 ns/op	     224 B/op	       2 allocs/op
+BenchmarkCLBGRegexRedux-6                   	    5709	    202633 ns/op	   53979 B/op	     779 allocs/op
+BenchmarkCLBGRegexReduxBestJoker-6          	   21123	     57774 ns/op	   41367 B/op	     332 allocs/op
+BenchmarkEvalArithmeticLoop-6               	    2644	    467072 ns/op	     226 B/op	       4 allocs/op
+BenchmarkEvalRecursiveFib-6                 	      33	  35080718 ns/op	 7211326 B/op	  450872 allocs/op
+BenchmarkEvalWordFrequency-6                	    3319	    356619 ns/op	  769858 B/op	    8074 allocs/op
+BenchmarkEvalMapUpdateLoop-6                	    1239	    925625 ns/op	  288946 B/op	   15704 allocs/op
+BenchmarkEvalMapUpdateLoopBestJoker-6       	  809278	      1535 ns/op	      24 B/op	       2 allocs/op
+BenchmarkEvalTailRecursiveSum-6             	     252	   4683543 ns/op	     291 B/op	       8 allocs/op
+BenchmarkEvalTailRecursiveSumLoopRecur-6    	   14467	     83005 ns/op	     217 B/op	       4 allocs/op
+PASS
+ok  	github.com/rcarmo/go-joker/benchmarks/core	39.557s

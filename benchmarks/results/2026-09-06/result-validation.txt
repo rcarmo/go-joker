@@ -1,0 +1,4 @@
+validated .cache/benchmark-refresh-2026-09-06/compare/python.txt
+validated .cache/benchmark-refresh-2026-09-06/compare/bun.txt
+validated .cache/benchmark-refresh-2026-09-06/compare/goja.txt
+validated .cache/benchmark-refresh-2026-09-06/compare/letgo.txt

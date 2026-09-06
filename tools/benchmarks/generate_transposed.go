@@ -62,7 +62,7 @@ func main() {
 	}
 	sort.Slice(rows, func(i, j int) bool { return rows[i].joker < rows[j].joker })
 
-	runtimes := []string{"Joker", "Python 3.13", "Bun/JSC", "Goja", "let-go"}
+	runtimes := []string{"Joker", "Python 3.14", "Bun/JSC", "Goja", "let-go"}
 	cellW, cellH, headerH, labelW := 82, 44, 60, 110
 	w := labelW + len(rows)*cellW + 20
 	hgt := headerH + len(runtimes)*cellH + 50

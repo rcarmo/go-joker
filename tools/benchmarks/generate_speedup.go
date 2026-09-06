@@ -21,6 +21,10 @@ type benchSeries struct {
 }
 
 type benchHistory struct {
+	Metadata struct {
+		Updated       string   `json:"updated"`
+		NonComparable []string `json:"non_comparable_baseline"`
+	} `json:"metadata"`
 	Series []benchSeries `json:"series"`
 }
 
@@ -52,6 +56,15 @@ func main() {
 	current := findSeries(history, "current")
 	data := make([]Row, 0, len(speedupOrder))
 	for _, key := range speedupOrder {
+		skip := false
+		for _, excluded := range history.Metadata.NonComparable {
+			if key == excluded {
+				skip = true
+			}
+		}
+		if skip {
+			continue
+		}
 		before, ok := baseline.Benchmarks[key]
 		if !ok || before.MSPerOp <= 0 {
 			panic(fmt.Sprintf("missing positive baseline benchmark value for %s", key))
@@ -92,7 +105,7 @@ svg{background:var(--bg);font-family:Inter,system-ui,sans-serif}
 `, w, h, w, h))
 
 	b.WriteString(`<text class="title" x="15" y="22">Speedup vs Original Joker</text>`)
-	b.WriteString(`<text class="subtitle" x="15" y="38">Before → current best-Joker 2026-05-22 (ms) · generated from benchmark-history.json</text>`)
+	b.WriteString(`<text class="subtitle" x="15" y="38">Historical baseline → best-Joker 2026-09-06 (ms) · incompatible pidigits excluded</text>`)
 
 	b.WriteString(fmt.Sprintf(`<text class="before" x="130" y="%d">Before</text>`, headerH-8))
 	b.WriteString(fmt.Sprintf(`<text class="before" x="195" y="%d">After</text>`, headerH-8))

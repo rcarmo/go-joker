@@ -1,8 +1,8 @@
 # Web Runtime + New Namespaces Guide
 
-_Last updated: 2026-08-07_
+_Last reviewed: 2026-09-06_
 
-This guide documents the concurrency/web runtime surface and namespace additions in go-joker v42.10.0.
+This guide documents the concurrency/web runtime surface and namespace additions in go-joker v42.11.0. The HTTP/SSE contracts introduced in v42.10.0 remain unchanged by the execution-tier audit.
 
 ---
 

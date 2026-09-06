@@ -4,78 +4,35 @@
 
 13 CLBG benchmarks adapted from the [Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/), plus 2 additional runtime micro-workloads (`map_update_loop`, `word_frequency`). Scaled down for benchmark harness practicality.
 
-### Current Results (best-Joker, validated local run on i7-12700, refreshed 2026-05-22)
+### Validated comparison tables (2026-09-06)
 
-| Benchmark | Joker | Python 3.13 | Bun/JSC | Goja | let-go | Winner |
+Fresh runs on the i7-12700, after checking 97–99% CPU idle. Joker values are medians of five one-second Go samples; Python, Bun/JSC, Goja and let-go were all rerun and output-validated. All times below are milliseconds/op. Best-Joker/native helpers and portable interpreted execution are different workloads; these results do not identify the WASM tier.
+
+| Benchmark | Joker | Python | Bun/JSC | Goja | let-go | Winner |
 |---|---:|---:|---:|---:|---:|---|
-| arithmetic-loop | 0.280ms | 9.62ms | 0.390ms | 26.6ms | 10.0ms | Joker |
-| recursive-fib | 1.02ms | 15.2ms | 1.54ms | 80.8ms | 30.0ms | Joker |
-| tail-recursive-sum | 0.067ms | 7.16ms | 0.400ms | 13.3ms | 5.84ms | Joker |
-| map-update-loop | 0.002ms | 0.460ms | 0.140ms | 3.04ms | 2.82ms | Joker |
-| word-frequency | 0.475ms | 0.990ms | 0.160ms | 2.33ms | 25.5ms | Bun/JSC |
-| nbody | 0.006ms | 0.840ms | 0.450ms | 6.01ms | 1.91ms | Joker |
-| spectral-norm | 0.151ms | 25.4ms | 0.970ms | 70.0ms | 34.6ms | Joker |
-| binary-trees | 4.79ms | 33.4ms | 7.05ms | 165.1ms | 120.3ms | Joker |
-| fannkuch | 0.174ms | 8.72ms | 1.46ms | 39.2ms | 20.4ms | Joker |
-| mandelbrot | 0.095ms | 6.53ms | 0.380ms | 49.5ms | 11.7ms | Joker |
-| fasta | 0.055ms | 0.140ms | 0.030ms | 0.760ms | 0.140ms | Bun/JSC |
-| knucleotide | 0.010ms | 0.110ms | 0.060ms | 0.680ms | 0.460ms | Joker |
-| reverse-complement | 0.000ms | 0.030ms | 0.060ms | 0.150ms | 0.120ms | Joker |
-| regex-redux | 0.086ms | 0.200ms | 0.080ms | 0.210ms | 0.090ms | Bun/JSC |
-| pidigits | 0.009ms | 0.160ms | 0.140ms | 0.350ms | 0.250ms | Joker |
+| arithmetic-loop | 0.467ms | 5.370ms | 0.200ms | 10.480ms | 8.160ms | Bun/JSC |
+| recursive-fib | 35.081ms | 10.000ms | 0.790ms | 40.060ms | 25.850ms | Bun/JSC |
+| tail-recursive-sum | 0.083ms | 3.830ms | 0.230ms | 6.860ms | 4.980ms | Joker |
+| spectral-norm | 0.096ms | 12.080ms | 0.710ms | 37.000ms | 27.460ms | Joker |
+| binary-trees | 3.259ms | 20.510ms | 3.600ms | 99.670ms | 84.860ms | Joker |
+| nbody | 0.004921ms | 0.460ms | 0.230ms | 2.710ms | 1.660ms | Joker |
+| fannkuch | 0.140ms | 7.580ms | 0.540ms | 15.590ms | 13.380ms | Joker |
+| mandelbrot | 0.077ms | 5.560ms | 0.280ms | 17.280ms | 8.190ms | Joker |
+| fasta | 0.259ms | 0.090ms | 0.020ms | 0.230ms | 0.150ms | Bun/JSC |
+| pidigits | 4.063ms | 0.070ms | 0.110ms | 0.190ms | 0.140ms | Python |
+| knucleotide | 0.007836ms | 0.050ms | 0.070ms | 0.240ms | 0.220ms | Joker |
+| reverse-complement | 0.000311ms | 0.010ms | 0.040ms | 0.050ms | 0.110ms | Joker |
+| regex-redux | 0.058ms | 0.100ms | 0.040ms | 0.110ms | 0.070ms | Bun/JSC |
+| map-update-loop | 0.001535ms | 0.270ms | 0.150ms | 0.990ms | 1.790ms | Joker |
+| word-frequency | 0.356ms | 0.470ms | 0.190ms | 1.070ms | 19.100ms | Bun/JSC |
 
-**Current validated run: Joker wins 12/15 displayed workloads; Bun/JSC wins 3/15; Python wins 0/15; Goja wins 0/15; let-go wins 0/15. Joker beats Python on 15/15, Goja on 15/15, and let-go on 15/15 displayed workloads.** Python/Bun/Goja values were refreshed on 2026-05-22; let-go values remain the last validated installed-runtime sample because `lg`/`let-go` was not available during the refresh.
+Joker wins **9/15** displayed workloads, Bun/JSC **5/15**, and Python **1/15**. The separate mirrored let-go suite favours go-joker on **2/7** workloads (loop-recur and reduce).
 
-### Runtime micro-workloads
+The full 26-benchmark Joker samples, environment details and cross-runtime outputs are in [results/2026-09-06](results/2026-09-06/). The previous snapshot and charts are preserved in [history/2026-05-22](history/2026-05-22/).
 
-`BenchmarkEvalWordFrequency` now uses native whitespace tokenization plus native `frequencies` over string keys instead of regex `re-seq` and interpreted persistent-map churn. Current focused result:
+The corrected pidigits fixture uses arbitrary-precision integer quotient and checksum 129. Its historical timings are not comparable and are excluded from baseline-speedup charts. Portable Binary Trees measured 76.326 ms/op; its best-Joker helper measured 3.259 ms/op. Portable Mandelbrot measured 0.140 ms/op; the best-Joker helper measured 0.077 ms/op. See the [complete Joker summary](results/2026-09-06/joker-summary.md) for allocations, variation and all portable/helper pairs.
 
-| Benchmark | Before | Current | Allocation change |
-|---|---:|---:|---:|
-| `BenchmarkEvalWordFrequency` | 181ms/op, 49.9MB/op, 612k allocs/op | 0.533ms/op, 0.536MB/op, 8.1k allocs/op | ~340× faster, ~93× fewer allocations |
-
-### Benchmark intent taxonomy
-
-The benchmark suite now separates portable/literal ports from best-Joker runtime shapes. Portable results remain useful for cross-language parity, but best-Joker variants show what users should write when targeting Joker's strongest execution paths. `core/benchmark_results_test.go` now pins representative portable, micro, and best-Joker outputs so timing-only benchmark changes cannot silently drift away from the intended computations.
-
-| Benchmark | Intent | Notes |
-|---|---|---|
-| `BenchmarkEvalTailRecursiveSum` | portable/stress | Measures recursive function self-call overhead (`irCallSelf`). Useful runtime stress, but not comparable to Python's `while` loop. |
-| `BenchmarkEvalTailRecursiveSumLoopRecur` | best-Joker | Equivalent sum written as `loop/recur`, matching Python's iterative shape and hitting `irRecur`. |
-| `BenchmarkEvalWordFrequency` | best-Joker | Uses native tokenization + `frequencies` instead of regex plus interpreted persistent-map updates. |
-| `BenchmarkEvalMapUpdateLoop` | portable/stress | Persistent-map update loop. Generic transient rewrite was rejected; `BenchmarkEvalMapUpdateLoopBestJoker` uses a native small-count helper. |
-| `BenchmarkCLBGNBodyBestJoker` | best-Joker/native | Uses flat native `float64` state for the 5-body simulation. |
-| `BenchmarkCLBGSpectralNormBestJoker` | best-Joker/native | Uses native `float64` slices and tight matrix-vector loops. |
-| `BenchmarkCLBGMandelbrotBestJoker` | best-Joker/native | Uses native nested numeric loops for the pixel count. |
-| `BenchmarkCLBGFannkuchReduxBestJoker` | best-Joker/native | Uses mutable local permutation arrays. |
-| `BenchmarkCLBGBinaryTreesBestJoker` | best-Joker/native | Uses native tree nodes instead of persistent vectors. |
-| `BenchmarkCLBGKnucleotideBestJoker` | best-Joker/native | Uses a native k-mer distinct-count helper instead of interpreted substring construction plus persistent-map churn. |
-| `BenchmarkCLBGReverseComplementBestJoker` | best-Joker/native | Uses a byte-slice native reverse-complement helper instead of repeated string concatenation. |
-| `BenchmarkCLBGRegexReduxBestJoker` | best-Joker/native | Uses count-only native regex matching instead of `re-seq` object materialization. |
-| `BenchmarkCLBGBinaryTreesParallel` | concurrency smoke/best-Joker | Uses `pmap` over independent depth work; keep separate from portable single-thread CLBG. |
-| `BenchmarkCLBGFasta`, `BenchmarkCLBGPidigits` | portable/stress | Already small/native enough in this suite; no separate best-Joker variant accepted. |
-
-Focused tail-sum audit (`-benchtime=100x`):
-
-| Benchmark | Time | Allocated | Allocs | Meaning |
-|---|---:|---:|---:|---|
-| `BenchmarkEvalTailRecursiveSum` | 12.37ms/op | 3.20MB/op | 299,770/op | recursive function path |
-| `BenchmarkEvalTailRecursiveSumLoopRecur` | 0.080ms/op | 775B/op | 7/op | best-Joker iterative path |
-
-Focused best-Joker CLBG/string audit (`-benchtime=50x`):
-
-| Benchmark | Portable | Best-Joker | Speedup |
-|---|---:|---:|---:|
-| nbody | 2.39ms/op | 0.00445ms/op | 536× |
-| spectral-norm | 51.4ms/op | 0.117ms/op | 439× |
-| binary-trees | 99.3ms/op | 5.17ms/op | 19.2× |
-| fannkuch | 22.6ms/op | 0.258ms/op | 87.7× |
-| mandelbrot | 5.72ms/op | 0.093ms/op | 61.5× |
-| k-nucleotide | 0.230ms/op | 0.0126ms/op | 18.3× |
-| reverse-complement | 0.046ms/op | 0.000374ms/op | 124× |
-| regex-redux | 0.351ms/op | 0.083ms/op | 4.2× |
-| map-update-loop native helper | 0.598ms/op | 0.00163ms/op | 367× |
-| map-update-loop transient attempt | 0.823ms/op | rejected: 184.9ms/op | generic transient dispatch too costly here |
+Older optimisation notes below are historical measurements, not this refresh.
 
 ## Parallel benchmark variants
 
@@ -192,7 +149,7 @@ fast on missing or non-positive required values. `make docs-check` also validate
 the README benchmark table and the Python summary parser, including decimal
 `ns/op` values from fast Go benchmarks.
 
-## Optimization Session Progress
+## Historical Optimization Session Progress
 
 Session start → final (best-of-5 min values):
 
@@ -209,23 +166,21 @@ Session start → final (best-of-5 min values):
 
 See [OPTIMIZATION_REPORT.md](../docs/OPTIMIZATION_REPORT.md) for the full architecture documentation.
 
-## let-go Benchmark Suite Parity
+## let-go Benchmark Suite Parity (2026-09-06)
 
-Direct head-to-head against [let-go](https://github.com/nooga/let-go)'s benchmark suite.
+Three warmups and ten timed runs; current results in ms/op.
 
 | Benchmark | let-go | go-joker | Winner |
 |---|---:|---:|---|
-| fib | 2467.2ms | 2835.5ms | let-go (1.15×) |
-| loop-recur | 70.8ms | 7.88ms | **go-joker** (9.0×) |
-| map-filter | 3.47ms | 6.16ms | let-go (1.78×) |
-| persistent-map | 19.6ms | 18.9ms | **go-joker** (1.04×) |
-| reduce | 89.1ms | 6.27ms | **go-joker** (14.2×) |
-| tak | 2549.1ms | 3899.8ms | let-go (1.53×) |
-| transducers | 3.43ms | 7.91ms | let-go (2.31×) |
+| fib | 1733.2 | 2134.1 | let-go |
+| loop-recur | 48.6 | 8.84 | go-joker |
+| map-filter | 3.17 | 6.02 | let-go |
+| persistent-map | 15.0 | 16.9 | let-go |
+| reduce | 67.2 | 6.87 | go-joker |
+| tak | 1887.8 | 2637.2 | let-go |
+| transducers | 2.84 | 6.05 | let-go |
 
-**go-joker wins 3/7; remaining gaps are fib (~1.15×), map-filter (~1.78×), tak (~1.53×), and transducers (~2.31×).**
-
-For detailed analysis see [`docs/PARITY_STATUS.md`](../docs/PARITY_STATUS.md).
+Go-joker wins 2/7 workloads: loop-recur and reduce. See [raw results](results/2026-09-06/letgo-suite-comparison.md).
 
 ## Language Compliance Suite
 

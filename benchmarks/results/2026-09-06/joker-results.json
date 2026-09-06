@@ -1,0 +1,1009 @@
+{
+  "command": [
+    "go",
+    "test",
+    "./benchmarks/core",
+    "-run",
+    "^$",
+    "-bench",
+    "BenchmarkCLBG|BenchmarkEval",
+    "-benchmem",
+    "-benchtime=1s",
+    "-timeout=600s"
+  ],
+  "runs_requested": 5,
+  "bench": "BenchmarkCLBG|BenchmarkEval",
+  "benchtime": "1s",
+  "summaries": [
+    {
+      "benchmark": "BenchmarkCLBGBinaryTrees",
+      "runs": 5,
+      "median_ns_per_op": 76326082.0,
+      "min_ns_per_op": 73958217.0,
+      "max_ns_per_op": 77361267.0,
+      "stdev_pct": 2.024196822589522,
+      "median_ms_per_op": 76.326082,
+      "median_bytes_per_op": 38024022.0,
+      "median_allocs_per_op": 1268083.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGBinaryTreesBestJoker",
+      "runs": 5,
+      "median_ns_per_op": 3258788.0,
+      "min_ns_per_op": 3143926.0,
+      "max_ns_per_op": 3267404.0,
+      "stdev_pct": 1.7450861535782993,
+      "median_ms_per_op": 3.258788,
+      "median_bytes_per_op": 2850857.0,
+      "median_allocs_per_op": 178179.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGBinaryTreesParallel",
+      "runs": 5,
+      "median_ns_per_op": 48896699.0,
+      "min_ns_per_op": 46377683.0,
+      "max_ns_per_op": 52778025.0,
+      "stdev_pct": 4.7257405836433435,
+      "median_ms_per_op": 48.896699,
+      "median_bytes_per_op": 76084725.0,
+      "median_allocs_per_op": 2536481.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGFannkuchRedux",
+      "runs": 5,
+      "median_ns_per_op": 250070414.0,
+      "min_ns_per_op": 241947832.0,
+      "max_ns_per_op": 323377125.0,
+      "stdev_pct": 13.491091451720902,
+      "median_ms_per_op": 250.070414,
+      "median_bytes_per_op": 31213462.0,
+      "median_allocs_per_op": 789681.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGFannkuchReduxBestJoker",
+      "runs": 5,
+      "median_ns_per_op": 140377.0,
+      "min_ns_per_op": 136755.0,
+      "max_ns_per_op": 141410.0,
+      "stdev_pct": 1.303998556375573,
+      "median_ms_per_op": 0.140377,
+      "median_bytes_per_op": 216.0,
+      "median_allocs_per_op": 5.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGFasta",
+      "runs": 5,
+      "median_ns_per_op": 259189.0,
+      "min_ns_per_op": 250336.0,
+      "max_ns_per_op": 262840.0,
+      "stdev_pct": 1.8235982297159707,
+      "median_ms_per_op": 0.259189,
+      "median_bytes_per_op": 199285.0,
+      "median_allocs_per_op": 14844.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGKnucleotide",
+      "runs": 5,
+      "median_ns_per_op": 279556.0,
+      "min_ns_per_op": 274230.0,
+      "max_ns_per_op": 319412.0,
+      "stdev_pct": 6.637113032586263,
+      "median_ms_per_op": 0.279556,
+      "median_bytes_per_op": 35025.0,
+      "median_allocs_per_op": 2288.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGKnucleotideBestJoker",
+      "runs": 5,
+      "median_ns_per_op": 7836.0,
+      "min_ns_per_op": 7392.0,
+      "max_ns_per_op": 8555.0,
+      "stdev_pct": 5.59531902605532,
+      "median_ms_per_op": 0.007836,
+      "median_bytes_per_op": 19736.0,
+      "median_allocs_per_op": 10.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGMandelbrot",
+      "runs": 5,
+      "median_ns_per_op": 4400904.0,
+      "min_ns_per_op": 4286138.0,
+      "max_ns_per_op": 4481643.0,
+      "stdev_pct": 1.6301360686620099,
+      "median_ms_per_op": 4.400904,
+      "median_bytes_per_op": 181951.0,
+      "median_allocs_per_op": 10411.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGMandelbrotBestJoker",
+      "runs": 5,
+      "median_ns_per_op": 77021.0,
+      "min_ns_per_op": 75350.0,
+      "max_ns_per_op": 80302.0,
+      "stdev_pct": 3.1096515452467868,
+      "median_ms_per_op": 0.077021,
+      "median_bytes_per_op": 40.0,
+      "median_allocs_per_op": 2.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGNBody",
+      "runs": 5,
+      "median_ns_per_op": 294214058.0,
+      "min_ns_per_op": 277579079.0,
+      "max_ns_per_op": 354775212.0,
+      "stdev_pct": 10.566329650311571,
+      "median_ms_per_op": 294.214058,
+      "median_bytes_per_op": 18888200.0,
+      "median_allocs_per_op": 481180.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGNBodyBestJoker",
+      "runs": 5,
+      "median_ns_per_op": 4921.0,
+      "min_ns_per_op": 4476.0,
+      "max_ns_per_op": 6092.0,
+      "stdev_pct": 13.255719531641013,
+      "median_ms_per_op": 0.004921,
+      "median_bytes_per_op": 24.0,
+      "median_allocs_per_op": 2.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGPidigits",
+      "runs": 5,
+      "median_ns_per_op": 4063216.0,
+      "min_ns_per_op": 4008463.0,
+      "max_ns_per_op": 4174747.0,
+      "stdev_pct": 1.49426705329845,
+      "median_ms_per_op": 4.063216,
+      "median_bytes_per_op": 599531.0,
+      "median_allocs_per_op": 17250.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGRegexRedux",
+      "runs": 5,
+      "median_ns_per_op": 205211.0,
+      "min_ns_per_op": 202633.0,
+      "max_ns_per_op": 207489.0,
+      "stdev_pct": 0.9423404118669099,
+      "median_ms_per_op": 0.205211,
+      "median_bytes_per_op": 53952.0,
+      "median_allocs_per_op": 779.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGRegexReduxBestJoker",
+      "runs": 5,
+      "median_ns_per_op": 57774.0,
+      "min_ns_per_op": 56044.0,
+      "max_ns_per_op": 58474.0,
+      "stdev_pct": 1.6562276396739923,
+      "median_ms_per_op": 0.057774,
+      "median_bytes_per_op": 41368.0,
+      "median_allocs_per_op": 332.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGReverseComplement",
+      "runs": 5,
+      "median_ns_per_op": 57605.0,
+      "min_ns_per_op": 57182.0,
+      "max_ns_per_op": 62402.0,
+      "stdev_pct": 3.804721010740766,
+      "median_ms_per_op": 0.057605,
+      "median_bytes_per_op": 28808.0,
+      "median_allocs_per_op": 576.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGReverseComplementBestJoker",
+      "runs": 5,
+      "median_ns_per_op": 310.8,
+      "min_ns_per_op": 308.6,
+      "max_ns_per_op": 316.7,
+      "stdev_pct": 0.9784596040539578,
+      "median_ms_per_op": 0.0003108,
+      "median_bytes_per_op": 224.0,
+      "median_allocs_per_op": 2.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGSpectralNorm",
+      "runs": 5,
+      "median_ns_per_op": 30233029.0,
+      "min_ns_per_op": 29856035.0,
+      "max_ns_per_op": 31517443.0,
+      "stdev_pct": 2.203433374423053,
+      "median_ms_per_op": 30.233029,
+      "median_bytes_per_op": 5821220.0,
+      "median_allocs_per_op": 153212.0
+    },
+    {
+      "benchmark": "BenchmarkCLBGSpectralNormBestJoker",
+      "runs": 5,
+      "median_ns_per_op": 96218.0,
+      "min_ns_per_op": 95494.0,
+      "max_ns_per_op": 113146.0,
+      "stdev_pct": 8.054471142332837,
+      "median_ms_per_op": 0.096218,
+      "median_bytes_per_op": 1272.0,
+      "median_allocs_per_op": 5.0
+    },
+    {
+      "benchmark": "BenchmarkEvalArithmeticLoop",
+      "runs": 5,
+      "median_ns_per_op": 467072.0,
+      "min_ns_per_op": 453001.0,
+      "max_ns_per_op": 472599.0,
+      "stdev_pct": 1.9291192060529223,
+      "median_ms_per_op": 0.467072,
+      "median_bytes_per_op": 226.0,
+      "median_allocs_per_op": 4.0
+    },
+    {
+      "benchmark": "BenchmarkEvalMapUpdateLoop",
+      "runs": 5,
+      "median_ns_per_op": 928751.0,
+      "min_ns_per_op": 924038.0,
+      "max_ns_per_op": 1010666.0,
+      "stdev_pct": 3.95240283634296,
+      "median_ms_per_op": 0.928751,
+      "median_bytes_per_op": 288946.0,
+      "median_allocs_per_op": 15704.0
+    },
+    {
+      "benchmark": "BenchmarkEvalMapUpdateLoopBestJoker",
+      "runs": 5,
+      "median_ns_per_op": 1535.0,
+      "min_ns_per_op": 1522.0,
+      "max_ns_per_op": 1607.0,
+      "stdev_pct": 2.6933994462749955,
+      "median_ms_per_op": 0.001535,
+      "median_bytes_per_op": 24.0,
+      "median_allocs_per_op": 2.0
+    },
+    {
+      "benchmark": "BenchmarkEvalRecursiveFib",
+      "runs": 5,
+      "median_ns_per_op": 35080718.0,
+      "min_ns_per_op": 34901576.0,
+      "max_ns_per_op": 36671142.0,
+      "stdev_pct": 2.1109118299547465,
+      "median_ms_per_op": 35.080718,
+      "median_bytes_per_op": 7211289.0,
+      "median_allocs_per_op": 450872.0
+    },
+    {
+      "benchmark": "BenchmarkEvalTailRecursiveSum",
+      "runs": 5,
+      "median_ns_per_op": 4818088.0,
+      "min_ns_per_op": 4683543.0,
+      "max_ns_per_op": 5036965.0,
+      "stdev_pct": 3.0396685490749173,
+      "median_ms_per_op": 4.818088,
+      "median_bytes_per_op": 291.0,
+      "median_allocs_per_op": 8.0
+    },
+    {
+      "benchmark": "BenchmarkEvalTailRecursiveSumLoopRecur",
+      "runs": 5,
+      "median_ns_per_op": 82875.0,
+      "min_ns_per_op": 80988.0,
+      "max_ns_per_op": 89886.0,
+      "stdev_pct": 4.319413065372801,
+      "median_ms_per_op": 0.082875,
+      "median_bytes_per_op": 217.0,
+      "median_allocs_per_op": 4.0
+    },
+    {
+      "benchmark": "BenchmarkEvalWordFrequency",
+      "runs": 5,
+      "median_ns_per_op": 356173.0,
+      "min_ns_per_op": 341030.0,
+      "max_ns_per_op": 358571.0,
+      "stdev_pct": 1.9870061645396682,
+      "median_ms_per_op": 0.356173,
+      "median_bytes_per_op": 769858.0,
+      "median_allocs_per_op": 8074.0
+    }
+  ],
+  "samples": {
+    "BenchmarkCLBGNBody": [
+      {
+        "ns_per_op": 354775212.0,
+        "bytes_per_op": 18888100,
+        "allocs_per_op": 481179
+      },
+      {
+        "ns_per_op": 294214058.0,
+        "bytes_per_op": 18888232,
+        "allocs_per_op": 481180
+      },
+      {
+        "ns_per_op": 277579079.0,
+        "bytes_per_op": 18888252,
+        "allocs_per_op": 481180
+      },
+      {
+        "ns_per_op": 297423678.0,
+        "bytes_per_op": 18888200,
+        "allocs_per_op": 481180
+      },
+      {
+        "ns_per_op": 281849236.0,
+        "bytes_per_op": 18888148,
+        "allocs_per_op": 481180
+      }
+    ],
+    "BenchmarkCLBGNBodyBestJoker": [
+      {
+        "ns_per_op": 4476.0,
+        "bytes_per_op": 24,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 6092.0,
+        "bytes_per_op": 24,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 4963.0,
+        "bytes_per_op": 24,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 4921.0,
+        "bytes_per_op": 24,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 4523.0,
+        "bytes_per_op": 24,
+        "allocs_per_op": 2
+      }
+    ],
+    "BenchmarkCLBGSpectralNorm": [
+      {
+        "ns_per_op": 30233029.0,
+        "bytes_per_op": 5821133,
+        "allocs_per_op": 153212
+      },
+      {
+        "ns_per_op": 31517443.0,
+        "bytes_per_op": 5821304,
+        "allocs_per_op": 153212
+      },
+      {
+        "ns_per_op": 29856035.0,
+        "bytes_per_op": 5821267,
+        "allocs_per_op": 153212
+      },
+      {
+        "ns_per_op": 30310319.0,
+        "bytes_per_op": 5821141,
+        "allocs_per_op": 153212
+      },
+      {
+        "ns_per_op": 29955163.0,
+        "bytes_per_op": 5821220,
+        "allocs_per_op": 153213
+      }
+    ],
+    "BenchmarkCLBGSpectralNormBestJoker": [
+      {
+        "ns_per_op": 113146.0,
+        "bytes_per_op": 1272,
+        "allocs_per_op": 5
+      },
+      {
+        "ns_per_op": 96218.0,
+        "bytes_per_op": 1272,
+        "allocs_per_op": 5
+      },
+      {
+        "ns_per_op": 95494.0,
+        "bytes_per_op": 1272,
+        "allocs_per_op": 5
+      },
+      {
+        "ns_per_op": 105008.0,
+        "bytes_per_op": 1272,
+        "allocs_per_op": 5
+      },
+      {
+        "ns_per_op": 96135.0,
+        "bytes_per_op": 1272,
+        "allocs_per_op": 5
+      }
+    ],
+    "BenchmarkCLBGBinaryTrees": [
+      {
+        "ns_per_op": 73958217.0,
+        "bytes_per_op": 38025299,
+        "allocs_per_op": 1268085
+      },
+      {
+        "ns_per_op": 74267518.0,
+        "bytes_per_op": 38023802,
+        "allocs_per_op": 1268081
+      },
+      {
+        "ns_per_op": 77361267.0,
+        "bytes_per_op": 38024149,
+        "allocs_per_op": 1268083
+      },
+      {
+        "ns_per_op": 76850784.0,
+        "bytes_per_op": 38023164,
+        "allocs_per_op": 1268082
+      },
+      {
+        "ns_per_op": 76326082.0,
+        "bytes_per_op": 38024022,
+        "allocs_per_op": 1268084
+      }
+    ],
+    "BenchmarkCLBGBinaryTreesParallel": [
+      {
+        "ns_per_op": 48896699.0,
+        "bytes_per_op": 76084062,
+        "allocs_per_op": 2536481
+      },
+      {
+        "ns_per_op": 46377683.0,
+        "bytes_per_op": 76084725,
+        "allocs_per_op": 2536481
+      },
+      {
+        "ns_per_op": 48566439.0,
+        "bytes_per_op": 76085115,
+        "allocs_per_op": 2536478
+      },
+      {
+        "ns_per_op": 49516980.0,
+        "bytes_per_op": 76082953,
+        "allocs_per_op": 2536469
+      },
+      {
+        "ns_per_op": 52778025.0,
+        "bytes_per_op": 76087086,
+        "allocs_per_op": 2536487
+      }
+    ],
+    "BenchmarkCLBGBinaryTreesBestJoker": [
+      {
+        "ns_per_op": 3267046.0,
+        "bytes_per_op": 2850857,
+        "allocs_per_op": 178179
+      },
+      {
+        "ns_per_op": 3143926.0,
+        "bytes_per_op": 2850857,
+        "allocs_per_op": 178179
+      },
+      {
+        "ns_per_op": 3184280.0,
+        "bytes_per_op": 2850857,
+        "allocs_per_op": 178179
+      },
+      {
+        "ns_per_op": 3258788.0,
+        "bytes_per_op": 2850858,
+        "allocs_per_op": 178179
+      },
+      {
+        "ns_per_op": 3267404.0,
+        "bytes_per_op": 2850858,
+        "allocs_per_op": 178179
+      }
+    ],
+    "BenchmarkCLBGFannkuchRedux": [
+      {
+        "ns_per_op": 323377125.0,
+        "bytes_per_op": 31213478,
+        "allocs_per_op": 789681
+      },
+      {
+        "ns_per_op": 246164855.0,
+        "bytes_per_op": 31212700,
+        "allocs_per_op": 789671
+      },
+      {
+        "ns_per_op": 258638718.0,
+        "bytes_per_op": 31213462,
+        "allocs_per_op": 789681
+      },
+      {
+        "ns_per_op": 250070414.0,
+        "bytes_per_op": 31213498,
+        "allocs_per_op": 789681
+      },
+      {
+        "ns_per_op": 241947832.0,
+        "bytes_per_op": 31212768,
+        "allocs_per_op": 789671
+      }
+    ],
+    "BenchmarkCLBGFannkuchReduxBestJoker": [
+      {
+        "ns_per_op": 141410.0,
+        "bytes_per_op": 216,
+        "allocs_per_op": 5
+      },
+      {
+        "ns_per_op": 140903.0,
+        "bytes_per_op": 216,
+        "allocs_per_op": 5
+      },
+      {
+        "ns_per_op": 140377.0,
+        "bytes_per_op": 216,
+        "allocs_per_op": 5
+      },
+      {
+        "ns_per_op": 139936.0,
+        "bytes_per_op": 216,
+        "allocs_per_op": 5
+      },
+      {
+        "ns_per_op": 136755.0,
+        "bytes_per_op": 216,
+        "allocs_per_op": 5
+      }
+    ],
+    "BenchmarkCLBGMandelbrot": [
+      {
+        "ns_per_op": 4426089.0,
+        "bytes_per_op": 181951,
+        "allocs_per_op": 10411
+      },
+      {
+        "ns_per_op": 4400904.0,
+        "bytes_per_op": 181954,
+        "allocs_per_op": 10411
+      },
+      {
+        "ns_per_op": 4286138.0,
+        "bytes_per_op": 181951,
+        "allocs_per_op": 10411
+      },
+      {
+        "ns_per_op": 4379913.0,
+        "bytes_per_op": 181949,
+        "allocs_per_op": 10411
+      },
+      {
+        "ns_per_op": 4481643.0,
+        "bytes_per_op": 181951,
+        "allocs_per_op": 10411
+      }
+    ],
+    "BenchmarkCLBGMandelbrotBestJoker": [
+      {
+        "ns_per_op": 80144.0,
+        "bytes_per_op": 40,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 80302.0,
+        "bytes_per_op": 40,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 77021.0,
+        "bytes_per_op": 40,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 75646.0,
+        "bytes_per_op": 40,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 75350.0,
+        "bytes_per_op": 40,
+        "allocs_per_op": 2
+      }
+    ],
+    "BenchmarkCLBGFasta": [
+      {
+        "ns_per_op": 250336.0,
+        "bytes_per_op": 199285,
+        "allocs_per_op": 14844
+      },
+      {
+        "ns_per_op": 257563.0,
+        "bytes_per_op": 199286,
+        "allocs_per_op": 14844
+      },
+      {
+        "ns_per_op": 260369.0,
+        "bytes_per_op": 199286,
+        "allocs_per_op": 14844
+      },
+      {
+        "ns_per_op": 262840.0,
+        "bytes_per_op": 199285,
+        "allocs_per_op": 14844
+      },
+      {
+        "ns_per_op": 259189.0,
+        "bytes_per_op": 199285,
+        "allocs_per_op": 14844
+      }
+    ],
+    "BenchmarkCLBGPidigits": [
+      {
+        "ns_per_op": 4083931.0,
+        "bytes_per_op": 599528,
+        "allocs_per_op": 17250
+      },
+      {
+        "ns_per_op": 4174747.0,
+        "bytes_per_op": 599531,
+        "allocs_per_op": 17250
+      },
+      {
+        "ns_per_op": 4060780.0,
+        "bytes_per_op": 599531,
+        "allocs_per_op": 17250
+      },
+      {
+        "ns_per_op": 4063216.0,
+        "bytes_per_op": 599539,
+        "allocs_per_op": 17250
+      },
+      {
+        "ns_per_op": 4008463.0,
+        "bytes_per_op": 599534,
+        "allocs_per_op": 17250
+      }
+    ],
+    "BenchmarkCLBGKnucleotide": [
+      {
+        "ns_per_op": 319412.0,
+        "bytes_per_op": 35025,
+        "allocs_per_op": 2288
+      },
+      {
+        "ns_per_op": 277238.0,
+        "bytes_per_op": 35025,
+        "allocs_per_op": 2288
+      },
+      {
+        "ns_per_op": 279556.0,
+        "bytes_per_op": 35025,
+        "allocs_per_op": 2288
+      },
+      {
+        "ns_per_op": 283391.0,
+        "bytes_per_op": 35025,
+        "allocs_per_op": 2288
+      },
+      {
+        "ns_per_op": 274230.0,
+        "bytes_per_op": 35025,
+        "allocs_per_op": 2288
+      }
+    ],
+    "BenchmarkCLBGKnucleotideBestJoker": [
+      {
+        "ns_per_op": 7392.0,
+        "bytes_per_op": 19736,
+        "allocs_per_op": 10
+      },
+      {
+        "ns_per_op": 8555.0,
+        "bytes_per_op": 19736,
+        "allocs_per_op": 10
+      },
+      {
+        "ns_per_op": 7601.0,
+        "bytes_per_op": 19736,
+        "allocs_per_op": 10
+      },
+      {
+        "ns_per_op": 7852.0,
+        "bytes_per_op": 19736,
+        "allocs_per_op": 10
+      },
+      {
+        "ns_per_op": 7836.0,
+        "bytes_per_op": 19736,
+        "allocs_per_op": 10
+      }
+    ],
+    "BenchmarkCLBGReverseComplement": [
+      {
+        "ns_per_op": 57605.0,
+        "bytes_per_op": 28808,
+        "allocs_per_op": 576
+      },
+      {
+        "ns_per_op": 57299.0,
+        "bytes_per_op": 28808,
+        "allocs_per_op": 576
+      },
+      {
+        "ns_per_op": 58331.0,
+        "bytes_per_op": 28808,
+        "allocs_per_op": 576
+      },
+      {
+        "ns_per_op": 62402.0,
+        "bytes_per_op": 28808,
+        "allocs_per_op": 576
+      },
+      {
+        "ns_per_op": 57182.0,
+        "bytes_per_op": 28808,
+        "allocs_per_op": 576
+      }
+    ],
+    "BenchmarkCLBGReverseComplementBestJoker": [
+      {
+        "ns_per_op": 310.6,
+        "bytes_per_op": 224,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 308.6,
+        "bytes_per_op": 224,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 310.8,
+        "bytes_per_op": 224,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 316.7,
+        "bytes_per_op": 224,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 311.0,
+        "bytes_per_op": 224,
+        "allocs_per_op": 2
+      }
+    ],
+    "BenchmarkCLBGRegexRedux": [
+      {
+        "ns_per_op": 207489.0,
+        "bytes_per_op": 53951,
+        "allocs_per_op": 779
+      },
+      {
+        "ns_per_op": 204963.0,
+        "bytes_per_op": 53952,
+        "allocs_per_op": 779
+      },
+      {
+        "ns_per_op": 202633.0,
+        "bytes_per_op": 53979,
+        "allocs_per_op": 779
+      },
+      {
+        "ns_per_op": 207054.0,
+        "bytes_per_op": 53986,
+        "allocs_per_op": 779
+      },
+      {
+        "ns_per_op": 205211.0,
+        "bytes_per_op": 53928,
+        "allocs_per_op": 779
+      }
+    ],
+    "BenchmarkCLBGRegexReduxBestJoker": [
+      {
+        "ns_per_op": 56044.0,
+        "bytes_per_op": 41385,
+        "allocs_per_op": 332
+      },
+      {
+        "ns_per_op": 57268.0,
+        "bytes_per_op": 41364,
+        "allocs_per_op": 332
+      },
+      {
+        "ns_per_op": 57774.0,
+        "bytes_per_op": 41367,
+        "allocs_per_op": 332
+      },
+      {
+        "ns_per_op": 58474.0,
+        "bytes_per_op": 41368,
+        "allocs_per_op": 332
+      },
+      {
+        "ns_per_op": 58191.0,
+        "bytes_per_op": 41378,
+        "allocs_per_op": 332
+      }
+    ],
+    "BenchmarkEvalArithmeticLoop": [
+      {
+        "ns_per_op": 472599.0,
+        "bytes_per_op": 226,
+        "allocs_per_op": 4
+      },
+      {
+        "ns_per_op": 454789.0,
+        "bytes_per_op": 226,
+        "allocs_per_op": 4
+      },
+      {
+        "ns_per_op": 467072.0,
+        "bytes_per_op": 226,
+        "allocs_per_op": 4
+      },
+      {
+        "ns_per_op": 470064.0,
+        "bytes_per_op": 225,
+        "allocs_per_op": 4
+      },
+      {
+        "ns_per_op": 453001.0,
+        "bytes_per_op": 226,
+        "allocs_per_op": 4
+      }
+    ],
+    "BenchmarkEvalRecursiveFib": [
+      {
+        "ns_per_op": 36671142.0,
+        "bytes_per_op": 7211279,
+        "allocs_per_op": 450872
+      },
+      {
+        "ns_per_op": 35740406.0,
+        "bytes_per_op": 7211223,
+        "allocs_per_op": 450872
+      },
+      {
+        "ns_per_op": 35080718.0,
+        "bytes_per_op": 7211326,
+        "allocs_per_op": 450872
+      },
+      {
+        "ns_per_op": 34901576.0,
+        "bytes_per_op": 7211298,
+        "allocs_per_op": 450872
+      },
+      {
+        "ns_per_op": 35018592.0,
+        "bytes_per_op": 7211289,
+        "allocs_per_op": 450872
+      }
+    ],
+    "BenchmarkEvalWordFrequency": [
+      {
+        "ns_per_op": 341030.0,
+        "bytes_per_op": 769857,
+        "allocs_per_op": 8074
+      },
+      {
+        "ns_per_op": 358571.0,
+        "bytes_per_op": 769857,
+        "allocs_per_op": 8074
+      },
+      {
+        "ns_per_op": 356619.0,
+        "bytes_per_op": 769858,
+        "allocs_per_op": 8074
+      },
+      {
+        "ns_per_op": 355003.0,
+        "bytes_per_op": 769858,
+        "allocs_per_op": 8074
+      },
+      {
+        "ns_per_op": 356173.0,
+        "bytes_per_op": 769858,
+        "allocs_per_op": 8074
+      }
+    ],
+    "BenchmarkEvalMapUpdateLoop": [
+      {
+        "ns_per_op": 924038.0,
+        "bytes_per_op": 288946,
+        "allocs_per_op": 15704
+      },
+      {
+        "ns_per_op": 942312.0,
+        "bytes_per_op": 288946,
+        "allocs_per_op": 15704
+      },
+      {
+        "ns_per_op": 925625.0,
+        "bytes_per_op": 288946,
+        "allocs_per_op": 15704
+      },
+      {
+        "ns_per_op": 928751.0,
+        "bytes_per_op": 288946,
+        "allocs_per_op": 15704
+      },
+      {
+        "ns_per_op": 1010666.0,
+        "bytes_per_op": 288946,
+        "allocs_per_op": 15704
+      }
+    ],
+    "BenchmarkEvalMapUpdateLoopBestJoker": [
+      {
+        "ns_per_op": 1607.0,
+        "bytes_per_op": 24,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 1535.0,
+        "bytes_per_op": 24,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 1535.0,
+        "bytes_per_op": 24,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 1604.0,
+        "bytes_per_op": 24,
+        "allocs_per_op": 2
+      },
+      {
+        "ns_per_op": 1522.0,
+        "bytes_per_op": 24,
+        "allocs_per_op": 2
+      }
+    ],
+    "BenchmarkEvalTailRecursiveSum": [
+      {
+        "ns_per_op": 5036965.0,
+        "bytes_per_op": 291,
+        "allocs_per_op": 8
+      },
+      {
+        "ns_per_op": 4720136.0,
+        "bytes_per_op": 290,
+        "allocs_per_op": 8
+      },
+      {
+        "ns_per_op": 4683543.0,
+        "bytes_per_op": 291,
+        "allocs_per_op": 8
+      },
+      {
+        "ns_per_op": 4927805.0,
+        "bytes_per_op": 292,
+        "allocs_per_op": 8
+      },
+      {
+        "ns_per_op": 4818088.0,
+        "bytes_per_op": 291,
+        "allocs_per_op": 8
+      }
+    ],
+    "BenchmarkEvalTailRecursiveSumLoopRecur": [
+      {
+        "ns_per_op": 89886.0,
+        "bytes_per_op": 217,
+        "allocs_per_op": 4
+      },
+      {
+        "ns_per_op": 80988.0,
+        "bytes_per_op": 217,
+        "allocs_per_op": 4
+      },
+      {
+        "ns_per_op": 83005.0,
+        "bytes_per_op": 217,
+        "allocs_per_op": 4
+      },
+      {
+        "ns_per_op": 82875.0,
+        "bytes_per_op": 217,
+        "allocs_per_op": 4
+      },
+      {
+        "ns_per_op": 81584.0,
+        "bytes_per_op": 217,
+        "allocs_per_op": 4
+      }
+    ]
+  }
+}

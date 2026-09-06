@@ -14,7 +14,7 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 - CLI entrypoint lives in `cmd/joker`; build with `make cli` (output: `.cache/tmp/joker`).
 - Portable Babashka fixture suite via `make bb-compat`.
 - Script-driven Babashka shim policy documented in `docs/BABASHKA_SHIM_ASSESSMENT.md`.
-- Tracing/profile tooling documented in `docs/TRACING.md`; latest validated benchmark rerun in `docs/BENCHMARK_RESULTS_2026-05-16.md`, with profile audit context in `docs/BENCHMARK_PROFILE_2026-05-12.md`.
+- Tracing/profile tooling documented in `docs/TRACING.md`; latest benchmark refresh in `docs/BENCHMARK_RESULTS_2026-09-06.md`, with profile audit context in `docs/BENCHMARK_PROFILE_2026-05-12.md`.
 
 ## Performance
 
@@ -28,20 +28,19 @@ This fork includes practical Babashka/let-go compatibility work beyond upstream 
 
 ### Highlights
 
-| What | Result |
-|------|--------|
-| **Mandelbrot** | **~0.095 ms** best-Joker path — ~68× faster than Python (~6.53 ms), ~4× faster than Bun/JSC, and ~123× faster than let-go |
-| **N-body** | **~0.006 ms** best-Joker path — ~133× faster than Python, ~71× faster than Bun/JSC, and ~302× faster than let-go |
-| **Fannkuch** | **~0.174 ms** best-Joker path — ~50× faster than Python, ~8× faster than Bun/JSC, and ~117× faster than let-go after output-equivalent audit |
-| **Binary trees** | **~4.79 ms** best-Joker path — beats Python, Bun/JSC, Goja, and let-go in the current validated comparison |
-| **Pidigits** | **~0.009 ms** — faster than Python, Bun/JSC, Goja, and let-go after JS BigInt correctness fix |
-| **Arithmetic loop** | **~0.280 ms** — fastest in the validated comparison table |
-| **Benchmark validation** | portable, micro, best-Joker/native helper, cross-runtime, and let-go-suite outputs are validated before timing reports/charts are accepted; latest full profile shows allocation/GC cost dominates portable CLBG paths |
-| **Best-Joker suite** | wins **12/15** displayed workloads; beats Python on **15/15**, Goja on **15/15**, and let-go on **15/15** |
-| **let-go suite** | current go-joker wins **3/7** mirrored let-go workloads (`reduce` ~14×, `loop-recur` ~9×, `persistent-map` slightly); let-go still leads recursive/sequence-heavy cases |
-| **Language compliance** | **271/271 parity tests passing** + 7 imported jank-suite files passing |
-| **Concurrency** | GIL-free — true parallel goroutines, futures, promises, agents, pmap |
-| **Namespaces** | 29+ namespaces including `clojure.core.async`, `joker.random`, `joker.log`, HTTP router |
+Fresh output-validated measurements from **2026-09-06**, Intel Core i7-12700, Go 1.26.5. All four comparison runtimes were rerun; the previous snapshot is archived.
+
+| Workload | Current result |
+|---|---|
+| Best-Joker comparison | **9/15** displayed workload wins; Bun/JSC 5, Python 1 |
+| Mandelbrot | **0.077 ms** native-helper path; **0.140 ms** portable path -- not a WASM-specific claim |
+| Binary Trees | **3.259 ms** best-Joker helper; **76.326 ms** portable |
+| N-body | **0.004921 ms** best-Joker helper; distinct from portable interpreted execution |
+| Mirrored let-go suite | go-joker wins **2/7**, on loop-recur and reduce |
+| Corrected pidigits | Integer-quotient checksum **129**; old timings excluded from historical speedup comparisons |
+| Concurrency | GIL-free goroutines, futures, promises, agents and pmap |
+
+See [benchmark results and methodology](benchmarks/README.md) and the [full sample summary](benchmarks/results/2026-09-06/joker-summary.md). These microbenchmarks are not a general application-speed guarantee.
 
 ## What's different from upstream Joker
 
@@ -112,6 +111,8 @@ Start with [`docs/START_HERE.md`](docs/START_HERE.md) for the shortest contribut
 - **Fallback chain**: WASM → Typed IR → Boxed IR → Tree-walker (automatic)
 - **WASM raster example**: `examples/graphics/fractal-flame.joke` renders Mandelbrot, Tricorn, and cubic flame variants through `joker.jit/compile-wasm` plus `joker.imaging/from-rgba32-domain-fn` (about 1024×1024 in ~260ms per kernel on the current dev host).
 - **Wiki/static-site example**: `examples/wiki/static.joke` ports the wiki/static subset of `rcarmo/sushy` from Hy to Joker: folder-per-page content, RFC2822-style front matter, Markdown/plain/HTML rendering, dynamic serving via `joker.http/start-server`, static build output, Atom feed, sitemap, aliases/interwiki mappings, and static asset copying.
+
+The [execution-tier audit](docs/EXECUTION_TIER_AUDIT.md) documents numeric promotion, exact arithmetic, callback/fallback safety, WASM eligibility restrictions and remaining limitations. The [September benchmark refresh](docs/BENCHMARK_RESULTS_2026-09-06.md) records current measurements separately from historical charts.
 
 ## Building & testing
 
@@ -216,8 +217,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.10.2.
-Release notes: [`docs/RELEASE_NOTES_v42.10.2.md`](docs/RELEASE_NOTES_v42.10.2.md).
+Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.11.0.
+Release notes: [`docs/RELEASE_NOTES_v42.11.0.md`](docs/RELEASE_NOTES_v42.11.0.md).
 Audit report: [`docs/AUDIT_REPORT_2026-07-09.md`](docs/AUDIT_REPORT_2026-07-09.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 
