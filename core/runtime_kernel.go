@@ -8770,6 +8770,44 @@ func compileWasmBodyWithHelper(prog *IRProgram, useFloat bool, helperSlot int, h
 	return compileWasmBodyWithHelperParams(prog, useFloat, helperSlot, helperFuncIdx, model.NumSlots)
 }
 
+// Emit checked i64 arithmetic. Overflow traps before a wrapped value can affect
+// a comparison or loop state. Only import-free programs may recover in Go.
+func wasmCheckedArithmetic(out []byte, op byte, temp int) []byte {
+	local := func(code byte, idx int) { out = append(out, code); out = corewasm.AppendULEB(out, idx) }
+	local(0x21, temp+1) // b
+	local(0x21, temp)   // a
+	local(0x20, temp)
+	local(0x20, temp+1)
+	out = append(out, op)
+	local(0x21, temp+2)
+	if op == 0x7e { // mul: a != 0 && product/a != b
+		local(0x20, temp)
+		out = append(out, 0x50, 0x45, 0x04, 0x40)
+		local(0x20, temp+2)
+		local(0x20, temp)
+		out = append(out, 0x7f)
+		local(0x20, temp+1)
+		out = append(out, 0x52, 0x04, 0x40, 0x00, 0x0b, 0x0b)
+	} else {
+		local(0x20, temp)
+		if op == 0x7c {
+			local(0x20, temp+2)
+		} else {
+			local(0x20, temp+1)
+		}
+		out = append(out, 0x85) // xor
+		if op == 0x7c {
+			local(0x20, temp+1)
+		} else {
+			local(0x20, temp)
+		}
+		local(0x20, temp+2)
+		out = append(out, 0x85, 0x83, 0x42, 0x00, 0x53, 0x04, 0x40, 0x00, 0x0b)
+	}
+	local(0x20, temp+2)
+	return out
+}
+
 func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot int, helperFuncIdx int, numParams int) []byte {
 	model := prog.neutralModel()
 	if model == nil {
@@ -8781,6 +8819,9 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 		valType = corewasm.ValTypeF64
 	}
 	extraLocals := model.NumSlots - numParams
+	if !useFloat {
+		extraLocals += 3
+	}
 	if extraLocals > 0 {
 		o = append(o, 0x01) // 1 local decl group
 		o = corewasm.AppendULEB(o, extraLocals)
@@ -8892,19 +8933,19 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 			if useFloat {
 				o = append(o, 0xa0)
 			} else {
-				o = append(o, 0x7c)
+				o = wasmCheckedArithmetic(o, 0x7c, model.NumSlots)
 			}
 		case irSub:
 			if useFloat {
 				o = append(o, 0xa1)
 			} else {
-				o = append(o, 0x7d)
+				o = wasmCheckedArithmetic(o, 0x7d, model.NumSlots)
 			}
 		case irMul:
 			if useFloat {
 				o = append(o, 0xa2)
 			} else {
-				o = append(o, 0x7e)
+				o = wasmCheckedArithmetic(o, 0x7e, model.NumSlots)
 			}
 		case irDiv:
 			if useFloat {
@@ -8929,7 +8970,8 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 				o = corewasm.AppendF64(o, 1.0)
 				o = append(o, 0xa0)
 			} else {
-				o = append(o, 0x42, 0x01, 0x7c)
+				o = append(o, 0x42, 0x01)
+				o = wasmCheckedArithmetic(o, 0x7c, model.NumSlots)
 			}
 		case irDec:
 			if useFloat {
@@ -8937,7 +8979,8 @@ func compileWasmBodyWithHelperParams(prog *IRProgram, useFloat bool, helperSlot 
 				o = corewasm.AppendF64(o, 1.0)
 				o = append(o, 0xa1)
 			} else {
-				o = append(o, 0x42, 0x01, 0x7d)
+				o = append(o, 0x42, 0x01)
+				o = wasmCheckedArithmetic(o, 0x7d, model.NumSlots)
 			}
 		case irLt:
 			if useFloat {
@@ -13068,6 +13111,7 @@ func keywordObjectFromName(name *string) coretypes.Object {
 
 // WasmProgram is a compiled, ready-to-execute WASM module.
 type WasmProgram struct {
+	recovery   *IRProgram
 	mod        api.Module
 	execFn     api.Function
 	useFloat   bool
@@ -13149,6 +13193,9 @@ func wasmExec(wp *WasmProgram, slots []coretypes.Object) coretypes.Object {
 				}
 			}
 			if err := wp.execFn.CallWithStack(context.Background(), stack); err != nil {
+				if wp.recovery != nil && !wp.hasImports && (strings.Contains(err.Error(), "unreachable") || strings.Contains(err.Error(), "integer overflow")) {
+					return irExec(wp.recovery, slots)
+				}
 				return nil
 			}
 			r := stack[0]

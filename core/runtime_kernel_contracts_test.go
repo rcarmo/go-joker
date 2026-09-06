@@ -1,6 +1,7 @@
 package core
 
 import (
+	"context"
 	"fmt"
 	corestr "github.com/rcarmo/go-joker/core/types/string"
 	"io"
@@ -4509,4 +4510,47 @@ func TestAuditErrorDoesNotReplayMutation(t *testing.T) {
 		Eval(expr, nil)
 	}()
 	requireInt(t, evalTestScript(t, `@audit-error-count`), 1)
+}
+
+func TestAuditWasmOverflowRecovery(t *testing.T) {
+	loop := compileTestExpr(t, `(loop [i 0 x 0] (if (< i 2) (recur (inc i) (inc x)) x))`).(*LoopExpr)
+	prog := irGetCached(loop)
+	wp := wasmCompile(prog)
+	if wp == nil {
+		t.Fatal("WASM compilation failed")
+	}
+	args := []coretypes.Object{coretypes.MakeInt(0), coretypes.MakeInt(coretypes.MaxInt)}
+	raw := []uint64{0, uint64(coretypes.MaxInt)}
+	if err := wp.execFn.CallWithStack(context.Background(), raw); err == nil {
+		t.Fatal("WASM must trap overflow before returning wrapped state")
+	}
+	got := wasmExec(wp, args)
+	want := irExec(prog, args)
+	if got == nil || !got.Equals(want) {
+		t.Fatalf("got %v want %v", got, want)
+	}
+}
+
+func TestAuditWasmCheckedArithmetic(t *testing.T) {
+	for _, tc := range []struct {
+		body string
+		args []coretypes.Object
+	}{
+		{`(+ x y)`, []coretypes.Object{coretypes.MakeInt(coretypes.MaxInt), coretypes.MakeInt(1)}},
+		{`(- x y)`, []coretypes.Object{coretypes.MakeInt(coretypes.MinInt), coretypes.MakeInt(1)}},
+		{`(* x y)`, []coretypes.Object{coretypes.MakeInt(coretypes.MinInt), coretypes.MakeInt(-1)}},
+		{`(* x y)`, []coretypes.Object{coretypes.MakeInt(-1), coretypes.MakeInt(coretypes.MinInt)}},
+		{`(* x y)`, []coretypes.Object{coretypes.MakeInt(23), coretypes.MakeInt(7)}},
+	} {
+		fn := evalTestScript(t, fmt.Sprintf(`(fn [x y] %s)`, tc.body)).(*Fn)
+		prog := irCompileFn(fn)
+		wp := wasmCompile(prog)
+		if wp == nil {
+			t.Fatal("WASM compilation failed")
+		}
+		got, want := wasmExec(wp, tc.args), irExec(prog, tc.args)
+		if got == nil || !got.Equals(want) {
+			t.Errorf("%s got %v want %v", tc.body, got, want)
+		}
+	}
 }

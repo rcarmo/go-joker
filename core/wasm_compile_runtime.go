@@ -57,6 +57,7 @@ func wasmCompile(prog *IRProgram) *WasmProgram {
 	}
 
 	wp := &WasmProgram{
+		recovery:   prog,
 		mod:        mod,
 		execFn:     execFn,
 		useFloat:   corewasm.UsesFloat(model.Code, len(model.FloatConsts) > 0),
