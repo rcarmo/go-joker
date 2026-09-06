@@ -4453,3 +4453,40 @@ func TestAuditIRExactDivision(t *testing.T) {
 		}
 	}
 }
+
+func TestAuditIRRemainder(t *testing.T) {
+	fn := evalTestScript(t, `(fn [x y] (rem x y))`).(*Fn)
+	prog := irCompileFn(fn)
+	if prog == nil {
+		t.Fatal("IR compilation failed")
+	}
+	large := procInc([]coretypes.Object{coretypes.MakeInt(coretypes.MaxInt)})
+	for _, args := range [][]coretypes.Object{{large, coretypes.MakeInt(3)}, {coretypes.MakeInt(5), coretypes.MakeInt(0)}} {
+		capture := func(run func() coretypes.Object) (out string) {
+			defer func() {
+				if e := recover(); e != nil {
+					out = fmt.Sprintf("panic:%T", e)
+				}
+			}()
+			v := run()
+			if v == nil {
+				return "nil"
+			}
+			return fmt.Sprintf("%T:%s", v, v.ToString(false))
+		}
+		want := capture(func() coretypes.Object { return procRem(args) })
+		for name, run := range map[string]func() coretypes.Object{"boxed": func() coretypes.Object { return irExec(prog, args) }, "typed": func() coretypes.Object { return irExecTyped(prog, args) }, "nanbox": func() coretypes.Object { return irExecTypedNB(prog, args) }, "inline": func() coretypes.Object {
+			slots := make([]irValue, runtimeExec.ProgramNumSlots(prog))
+			for i, v := range args {
+				slots[i] = objectToIRValue(v)
+			}
+			return irExecTypedInline(prog, slots).object()
+		}} {
+			t.Run(name, func(t *testing.T) {
+				if got := capture(run); got != want {
+					t.Errorf("got %s want %s", got, want)
+				}
+			})
+		}
+	}
+}

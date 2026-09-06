@@ -10286,19 +10286,9 @@ loop:
 			stack = append(stack, procMultiply([]coretypes.Object{a, b}))
 
 		case irRem:
-			b := stack[len(stack)-1]
-			a := stack[len(stack)-2]
-			stack = stack[:len(stack)-2]
-			if ai, aok := a.(coretypes.Int); aok {
-				if bi, bok := b.(coretypes.Int); bok {
-					if bi.I == 0 {
-						return nil
-					}
-					stack = append(stack, coretypes.Int{I: ai.I % bi.I})
-					continue
-				}
-			}
-			return nil
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-1]
+			stack[len(stack)-1] = procRem([]coretypes.Object{a, b})
 
 		case irDiv:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
@@ -11200,11 +11190,9 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 
 		case irRem:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
-			stack = stack[:len(stack)-2]
-			if a.tag != irValInt || b.tag != irValInt || b.i == 0 {
-				return nil
-			}
-			stack = append(stack, irValue{tag: irValInt, i: a.i % b.i})
+			stack = stack[:len(stack)-1]
+			stack[len(stack)-1] = objectToIRValue(procRem([]coretypes.Object{a.object(), b.object()}))
+
 		case irInc:
 			a := stack[len(stack)-1]
 			stack = stack[:len(stack)-1]
@@ -12140,6 +12128,10 @@ func irExecTypedInline(prog *IRProgram, slots []irValue) irValue {
 				stack = append(stack, objectToIRValue(procMultiply([]coretypes.Object{a.object(), b.object()})))
 				continue
 			}
+		case irRem:
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-1]
+			stack[len(stack)-1] = objectToIRValue(procRem([]coretypes.Object{a.object(), b.object()}))
 		case irDiv:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-1]
@@ -12405,15 +12397,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 		case irRem:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if coreirx.IsInt(a) && coreirx.IsInt(b) {
-				bv := coreirx.ToInt(b)
-				if bv == 0 {
-					return nil
-				}
-				stackBuf[sp-1] = coreirx.BoxInt(coreirx.ToInt(a) % bv)
-			} else {
-				return nil
-			}
+			stackBuf[sp-1] = coreirx.NBFromObject(procRem([]coretypes.Object{coreirx.NBToObject(a, objTable, NIL), coreirx.NBToObject(b, objTable, NIL)}), &objTable, corert.IsNil)
 
 		case irSqrt:
 			stackBuf[sp-1] = coreirx.BoxDouble(math.Sqrt(coreirx.ToFloat(stackBuf[sp-1])))
