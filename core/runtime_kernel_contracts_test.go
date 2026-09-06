@@ -4794,3 +4794,23 @@ func TestAuditTryFallbackDoesNotReplayCallback(t *testing.T) {
 	requireInt(t, Eval(expr, nil), 42)
 	requireInt(t, evalTestScript(t, `@audit-try-count`), 1)
 }
+
+func TestAuditMapLookupAfterCallback(t *testing.T) {
+	evalTestScript(t, `(def audit-map-count (atom 0))`)
+	expr := compileTestExpr(t, `(let [touch (fn [x] (swap! audit-map-count inc))] (loop [i 0 value {:k 7}] (if (< i 1) (recur (touch i) value) (get value :k))))`)
+	if irGetCached(expr.(*LetExpr).body[0].(*LoopExpr)) == nil {
+		t.Fatal("IR required")
+	}
+	requireInt(t, Eval(expr, nil), 7)
+	requireInt(t, evalTestScript(t, `@audit-map-count`), 1)
+}
+
+func TestAuditSequenceNthAfterCallback(t *testing.T) {
+	evalTestScript(t, `(def audit-nth-count (atom 0))`)
+	expr := compileTestExpr(t, `(let [touch (fn [x] (swap! audit-nth-count inc))] (loop [i 0 value (list 4 7)] (if (< i 1) (recur (touch i) value) (nth value 1))))`)
+	if irGetCached(expr.(*LetExpr).body[0].(*LoopExpr)) == nil {
+		t.Fatal("IR required")
+	}
+	requireInt(t, Eval(expr, nil), 7)
+	requireInt(t, evalTestScript(t, `@audit-nth-count`), 1)
+}

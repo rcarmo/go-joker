@@ -13575,14 +13575,23 @@ func (RuntimeExecutionAdapter) Nth(coll coretypes.Object, idx int) (coretypes.Ob
 		if idx >= 0 && idx < len(c.Arr) {
 			return c.Arr[idx], true
 		}
+		return nil, false
 	case *coretypes.TransientVector:
 		if idx >= 0 && idx < len(c.Arr) {
 			return c.Arr[idx], true
 		}
+		return nil, false
 	case coretypes.String:
 		return stringNthFast(c.S, idx), true
 	case coretypes.Indexed:
 		return c.Nth(idx), true
+	case Nil:
+		return NIL, true
+	}
+	if _, sequential := coll.(coretypes.Sequential); sequential {
+		if seq, ok := coll.(coretypes.Seqable); ok {
+			return corecollections.SeqNth(seq.Seq(), idx), true
+		}
 	}
 	return nil, false
 }
