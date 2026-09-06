@@ -7268,7 +7268,9 @@ func (c *irCompiler) compileExpr(expr Expr, isLast bool) bool {
 		return c.compileNestedLoop(e, isLast)
 
 	case *TryExpr:
-		return c.compileTryCatch(e, isLast)
+		// Executors do not implement irTryCatch. Reject before execution;
+		// emitting a late unsupported opcode would replay preceding effects.
+		return c.reject("try/catch requires interpreter execution")
 
 	case *FnExpr:
 		// Store FnExpr index for irMakeFn opcode

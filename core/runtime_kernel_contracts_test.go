@@ -4775,3 +4775,14 @@ func TestAuditNaNBoxedMixedEquality(t *testing.T) {
 		}
 	}
 }
+
+func TestAuditTryFallbackDoesNotReplayCallback(t *testing.T) {
+	evalTestScript(t, `(def audit-try-count (atom 0))`)
+	expr := compileTestExpr(t, `(let [touch (fn [x] (swap! audit-try-count inc))] (loop [i 0] (if (< i 1) (recur (touch i)) (try 42 (catch coretypes.Error e 0)))))`)
+	loop := expr.(*LetExpr).body[0].(*LoopExpr)
+	if irGetCached(loop) != nil {
+		t.Fatal("unsupported try/catch must be rejected before execution")
+	}
+	requireInt(t, Eval(expr, nil), 42)
+	requireInt(t, evalTestScript(t, `@audit-try-count`), 1)
+}
