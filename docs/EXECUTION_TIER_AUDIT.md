@@ -39,7 +39,7 @@ The live Joker `pidigits` fixture was incorrect: it used `/`, while the Python a
 
 ## Validation performed
 
-Isolated correctness changes passed `make pretag-check`, including repository-wide tests, vet, generated/documentation guards, example smoke tests and notebook checks. The final focused race sweep covered all TestAudit regressions, native arithmetic/rebinding, captures, transients and NaN-boxing and passed. The full pre-tag gate passed after the unsupported try/catch fix. Browser smoke is optional in the local gate and was not included in these audit runs.
+Isolated correctness changes passed `make pretag-check`, including repository-wide tests, vet, generated/documentation guards, example smoke tests and notebook checks. The final focused race sweep covered all TestAudit regressions, native arithmetic/rebinding, captures, transients and NaN-boxing and passed. The final pre-tag gate, focused race sweep, Linux/386 full core/IR/types/collections suite and arithmetic metadata check passed after the callback-result matrix was added. That matrix checks list access/count, vector append, map lookup and promoted equality after exactly one callback invocation. Browser smoke is optional in the local gate and was not included in these audit runs.
 
 ## Remaining work
 
@@ -48,7 +48,7 @@ Isolated correctness changes passed `make pretag-check`, including repository-wi
 * Public-call promotion tests pass, and the five arithmetic docstrings now agree in source, bootstrap metadata and generated HTML. `bun tools/codegen/sync-arithmetic-docs.ts --check` verifies this narrow synchronisation. Full bootstrap regeneration still fails on extracted generic collection types/private fields; the investigated repair is retained separately and is not claimed complete.
 * Linux/386 full tests now pass for `core`, `core/ir`, `core/types` and `core/types/collections`. Fixes use fixed-width hash-trie bitmaps, width-independent WASM handles, architecture-aware promotion and test expectations. ARM and Windows execution checks were not run.
 * Bounded fuzz runs passed approximately 1.74 million numeric boxing cases and 1.32 million multiplication cases on amd64, plus 2.35 million multiplication cases on 386 (without coverage guidance). This is not exhaustive input coverage.
-* There has been no independent model review. Earlier delegation attempts were blocked by approval policy; the final attempt found azure-openai/gpt-5-4 available in Piclaw but not executable by its child CLI. Independent sign-off remains pending.
+* There has been no independent model review. Earlier delegation attempts were blocked by approval policy; the final attempt found azure-openai/gpt-5-4 available in Piclaw but not executable by its child CLI. A final automatic attempt was also blocked by the current model's missing ordered delegation rule. Independent sign-off remains pending.
 
 No release was published as part of this audit. The open items need implementation and validation before the plan can be marked complete.
 
