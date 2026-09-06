@@ -14050,7 +14050,7 @@ var arrayMap_NUM_151 corecollections.ArrayMap = corecollections.ArrayMap{
 		&vectorSeq_NUM_4,
 		coretypes.MakeKeywordFromKeys(nil, &s_doc),
 		coretypes.String{
-			S: "Returns the sum of nums. (+) returns 0. Does not auto-promote\n  ints, will overflow. See also: +'",
+			S: "Returns the sum of nums. (+) returns 0. Promotes integer overflow\n  to arbitrary-precision integers. See also: +'",
 		},
 		coretypes.MakeKeywordFromKeys(nil, &s_added),
 		coretypes.String{
@@ -15562,7 +15562,7 @@ var arrayMap_NUM_171 corecollections.ArrayMap = corecollections.ArrayMap{
 		&vectorSeq_NUM_6,
 		coretypes.MakeKeywordFromKeys(nil, &s_doc),
 		coretypes.String{
-			S: "If no ys are supplied, returns the negation of x, else subtracts\n  the ys from x and returns the result. Does not auto-promote\n  ints, will overflow. See also: -'",
+			S: "If no ys are supplied, returns the negation of x, else subtracts\n  the ys from x and returns the result. Promotes integer overflow\n  to arbitrary-precision integers. See also: -'",
 		},
 		coretypes.MakeKeywordFromKeys(nil, &s_added),
 		coretypes.String{
@@ -50395,7 +50395,7 @@ var arrayMap_NUM_382 corecollections.ArrayMap = corecollections.ArrayMap{
 		&vectorSeq_NUM_58,
 		coretypes.MakeKeywordFromKeys(nil, &s_doc),
 		coretypes.String{
-			S: "Returns a number one less than num. Does not auto-promote\n  ints, will overflow. See also: dec'",
+			S: "Returns a number one less than num. Promotes integer overflow\n  to arbitrary-precision integers. See also: dec'",
 		},
 		coretypes.MakeKeywordFromKeys(nil, &s_added),
 		coretypes.String{
@@ -68066,7 +68066,7 @@ var arrayMap_NUM_492 corecollections.ArrayMap = corecollections.ArrayMap{
 		&vectorSeq_NUM_93,
 		coretypes.MakeKeywordFromKeys(nil, &s_doc),
 		coretypes.String{
-			S: "Returns a number one greater than num. Does not auto-promote\n  ints, will overflow. See also: inc'",
+			S: "Returns a number one greater than num. Promotes integer overflow\n  to arbitrary-precision integers. See also: inc'",
 		},
 		coretypes.MakeKeywordFromKeys(nil, &s_added),
 		coretypes.String{
@@ -271773,7 +271773,7 @@ var arrayMap_NUM_102 corecollections.ArrayMap = corecollections.ArrayMap{
 		&vectorSeq_NUM_377,
 		coretypes.MakeKeywordFromKeys(nil, &s_doc),
 		coretypes.String{
-			S: "Returns the product of nums. (*) returns 1. Does not auto-promote\n  ints, will overflow. See also: *'",
+			S: "Returns the product of nums. (*) returns 1. Promotes integer overflow\n  to arbitrary-precision integers. See also: *'",
 		},
 		coretypes.MakeKeywordFromKeys(nil, &s_added),
 		coretypes.String{

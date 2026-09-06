@@ -673,8 +673,8 @@
   ^Number [^Number x] (inc'__ x))
 
 (defn inc
-  "Returns a number one greater than num. Does not auto-promote
-  ints, will overflow. See also: inc'"
+  "Returns a number one greater than num. Promotes integer overflow
+  to arbitrary-precision integers. See also: inc'"
   {:added "1.0"}
   ^Number [^Number x] (inc__ x))
 
@@ -721,8 +721,8 @@
    (reduce +' (+' x y) more)))
 
 (defn +
-  "Returns the sum of nums. (+) returns 0. Does not auto-promote
-  ints, will overflow. See also: +'"
+  "Returns the sum of nums. (+) returns 0. Promotes integer overflow
+  to arbitrary-precision integers. See also: +'"
   {:added "1.0"}
   (^Number [] 0)
   (^Number [^Number x] (cast Number x))
@@ -741,8 +741,8 @@
    (reduce *' (*' x y) more)))
 
 (defn *
-  "Returns the product of nums. (*) returns 1. Does not auto-promote
-  ints, will overflow. See also: *'"
+  "Returns the product of nums. (*) returns 1. Promotes integer overflow
+  to arbitrary-precision integers. See also: *'"
   {:added "1.0"}
   (^Number [] 1)
   (^Number [^Number x] (cast Number x))
@@ -771,8 +771,8 @@
 
 (defn -
   "If no ys are supplied, returns the negation of x, else subtracts
-  the ys from x and returns the result. Does not auto-promote
-  ints, will overflow. See also: -'"
+  the ys from x and returns the result. Promotes integer overflow
+  to arbitrary-precision integers. See also: -'"
   {:added "1.0"}
   (^Number [^Number x] (subtract__ x))
   (^Number [^Number x ^Number y] (subtract__ x y))
@@ -854,8 +854,8 @@
   ^Number [^Number x] (dec'__ x))
 
 (defn dec
-  "Returns a number one less than num. Does not auto-promote
-  ints, will overflow. See also: dec'"
+  "Returns a number one less than num. Promotes integer overflow
+  to arbitrary-precision integers. See also: dec'"
   {:added "1.0"}
   ^Number [^Number x] (dec__ x))
 

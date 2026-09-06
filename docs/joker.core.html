@@ -1796,8 +1796,8 @@
 <div><code>(* x y)</code><code class="hide">^Number (* ^Number x ^Number y)</code></div>
 <div><code>(* x y &amp; more)</code><code class="hide">^Number (* ^Number x ^Number y &amp; more)</code></div>
 </pre>
-  <p class="var-docstr">Returns the product of nums. (*) returns 1. Does not auto-promote<br>
-  ints, will overflow. See also: *&#39;</p>
+  <p class="var-docstr">Returns the product of nums. (*) returns 1. Promotes integer overflow<br>
+  to arbitrary-precision integers. See also: *&#39;</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L743">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -1824,8 +1824,8 @@
 <div><code>(+ x y)</code><code class="hide">^Number (+ ^Number x ^Number y)</code></div>
 <div><code>(+ x y &amp; more)</code><code class="hide">^Number (+ ^Number x ^Number y &amp; more)</code></div>
 </pre>
-  <p class="var-docstr">Returns the sum of nums. (+) returns 0. Does not auto-promote<br>
-  ints, will overflow. See also: +&#39;</p>
+  <p class="var-docstr">Returns the sum of nums. (+) returns 0. Promotes integer overflow<br>
+  to arbitrary-precision integers. See also: +&#39;</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L723">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -1852,8 +1852,8 @@
 <div><code>(- x y &amp; more)</code><code class="hide">^Number (- ^Number x ^Number y &amp; more)</code></div>
 </pre>
   <p class="var-docstr">If no ys are supplied, returns the negation of x, else subtracts<br>
-  the ys from x and returns the result. Does not auto-promote<br>
-  ints, will overflow. See also: -&#39;</p>
+  the ys from x and returns the result. Promotes integer overflow<br>
+  to arbitrary-precision integers. See also: -&#39;</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L772">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -2992,8 +2992,8 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(dec x)</code><code class="hide">^Number (dec ^Number x)</code></div>
 </pre>
-  <p class="var-docstr">Returns a number one less than num. Does not auto-promote<br>
-  ints, will overflow. See also: dec&#39;</p>
+  <p class="var-docstr">Returns a number one less than num. Promotes integer overflow<br>
+  to arbitrary-precision integers. See also: dec&#39;</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L856">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -4025,8 +4025,8 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(inc x)</code><code class="hide">^Number (inc ^Number x)</code></div>
 </pre>
-  <p class="var-docstr">Returns a number one greater than num. Does not auto-promote<br>
-  ints, will overflow. See also: inc&#39;</p>
+  <p class="var-docstr">Returns a number one greater than num. Promotes integer overflow<br>
+  to arbitrary-precision integers. See also: inc&#39;</p>
   <a href="https://github.com/rcarmo/go-joker/blob/master/core/data/core.joke#L675">source</a>
   <a href="#" class="types">show types</a>
 </li>
