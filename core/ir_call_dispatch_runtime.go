@@ -21,6 +21,7 @@ func irDispatchFnCall(fn *Fn, args []coretypes.Object) coretypes.Object {
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
+					rethrowIRLanguageFailure(r)
 					result = nil
 				}
 			}()

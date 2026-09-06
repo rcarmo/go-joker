@@ -55,6 +55,16 @@ type (
 
 var RT *Runtime = &Runtime{}
 
+// An unsupported executor may return nil, but a language failure is observable
+// and must not be converted into a retry of an already-started computation.
+func rethrowIRLanguageFailure(failure interface{}) {
+	// Numeric primitives currently use this string panic for zero divisors.
+	// Other executor failures still need a typed unsupported/error protocol.
+	if message, ok := failure.(string); ok && message == "Division by zero" {
+		panic(failure)
+	}
+}
+
 func Eval(expr Expr, env *LocalEnv) coretypes.Object {
 	switch expr := expr.(type) {
 	case *LiteralExpr:
@@ -148,6 +158,7 @@ func Eval(expr Expr, env *LocalEnv) coretypes.Object {
 				func() {
 					defer func() {
 						if r := recover(); r != nil {
+							rethrowIRLanguageFailure(r)
 							typedResult = nil
 						}
 					}()
@@ -173,6 +184,7 @@ func Eval(expr Expr, env *LocalEnv) coretypes.Object {
 			func() {
 				defer func() {
 					if r := recover(); r != nil {
+						rethrowIRLanguageFailure(r)
 						result = nil
 					}
 				}()
@@ -839,6 +851,7 @@ func (expr *LoopExpr) Eval(env *LocalEnv) coretypes.Object {
 			func() {
 				defer func() {
 					if r := recover(); r != nil {
+						rethrowIRLanguageFailure(r)
 						typedResult = nil
 					}
 				}()
@@ -864,6 +877,7 @@ func (expr *LoopExpr) Eval(env *LocalEnv) coretypes.Object {
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
+					rethrowIRLanguageFailure(r)
 					result = nil
 				}
 			}()

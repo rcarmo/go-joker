@@ -4490,3 +4490,23 @@ func TestAuditIRRemainder(t *testing.T) {
 		}
 	}
 }
+
+func TestAuditErrorDoesNotReplayMutation(t *testing.T) {
+	evalTestScript(t, `(def audit-error-count (atom 0))`)
+	expr := compileTestExpr(t, `(let [touch (fn [x] (swap! audit-error-count inc))] (loop [i 0] (if (< i 1) (recur (touch i)) (/ 1 0))))`)
+	let := expr.(*LetExpr)
+	loop := let.body[0].(*LoopExpr)
+	prog := irGetCached(loop)
+	if prog == nil {
+		t.Fatal("IR compilation required to exercise executor recovery")
+	}
+	func() {
+		defer func() {
+			if recover() == nil {
+				t.Error("expected division error")
+			}
+		}()
+		Eval(expr, nil)
+	}()
+	requireInt(t, evalTestScript(t, `@audit-error-count`), 1)
+}
