@@ -9304,7 +9304,7 @@ func compileWasmBodyWithImports(prog *IRProgram) []byte {
 				// Non-Int constant: use a pre-computed handle.
 				// The handle value is: (1<<62) | constant_index
 				// wasmExec will pre-populate the object table with these.
-				handle := int64((1 << 62) | idx)
+				handle := (int64(1) << 62) | int64(idx)
 				o = append(o, 0x42)
 				o = corewasm.AppendSLEB(o, handle)
 			}
