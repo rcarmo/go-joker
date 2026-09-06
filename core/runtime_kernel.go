@@ -8834,6 +8834,17 @@ func wasmCheckedArithmetic(out []byte, op byte, temp int) []byte {
 		local(0x20, temp+2)
 		out = append(out, 0x85, 0x83, 0x42, 0x00, 0x53, 0x04, 0x40, 0x00, 0x0b)
 	}
+	if strconv.IntSize == 32 {
+		// Joker Int follows the host word size even though WASM uses i64.
+		local(0x20, temp+2)
+		out = append(out, 0x42)
+		out = corewasm.AppendSLEB(out, int64(math.MaxInt32))
+		out = append(out, 0x55) // i64.gt_s
+		local(0x20, temp+2)
+		out = append(out, 0x42)
+		out = corewasm.AppendSLEB(out, int64(math.MinInt32))
+		out = append(out, 0x53, 0x72, 0x04, 0x40, 0x00, 0x0b) // lt_s, or, trap
+	}
 	local(0x20, temp+2)
 	return out
 }
@@ -12452,7 +12463,9 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 		case irAdd:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+			if coreirx.IsInt(a) && coreirx.IsInt(b) && strconv.IntSize == 32 {
+				stackBuf[sp-1] = coreirx.NBFromObject(procAdd([]coretypes.Object{coretypes.MakeInt(coreirx.ToInt(a)), coretypes.MakeInt(coreirx.ToInt(b))}), &objTable, corert.IsNil)
+			} else if coreirx.IsInt(a) && coreirx.IsInt(b) {
 				stackBuf[sp-1] = coreirx.NBFromObject(coretypes.MakeInt(coreirx.ToInt(a)+coreirx.ToInt(b)), &objTable, corert.IsNil)
 			} else if coreirx.IsObj(a) || coreirx.IsObj(b) {
 				stackBuf[sp-1] = coreirx.NBFromObject(procAdd([]coretypes.Object{coreirx.NBToObject(a, objTable, NIL), coreirx.NBToObject(b, objTable, NIL)}), &objTable, corert.IsNil)
@@ -12463,7 +12476,9 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 		case irSub:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+			if coreirx.IsInt(a) && coreirx.IsInt(b) && strconv.IntSize == 32 {
+				stackBuf[sp-1] = coreirx.NBFromObject(procSubtract([]coretypes.Object{coretypes.MakeInt(coreirx.ToInt(a)), coretypes.MakeInt(coreirx.ToInt(b))}), &objTable, corert.IsNil)
+			} else if coreirx.IsInt(a) && coreirx.IsInt(b) {
 				stackBuf[sp-1] = coreirx.NBFromObject(coretypes.MakeInt(coreirx.ToInt(a)-coreirx.ToInt(b)), &objTable, corert.IsNil)
 			} else if coreirx.IsObj(a) || coreirx.IsObj(b) {
 				stackBuf[sp-1] = coreirx.NBFromObject(procSubtract([]coretypes.Object{coreirx.NBToObject(a, objTable, NIL), coreirx.NBToObject(b, objTable, NIL)}), &objTable, corert.IsNil)
@@ -12474,7 +12489,9 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 		case irMul:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if coreirx.IsInt(a) && coreirx.IsInt(b) {
+			if coreirx.IsInt(a) && coreirx.IsInt(b) && strconv.IntSize == 32 {
+				stackBuf[sp-1] = coreirx.NBFromObject(procMultiply([]coretypes.Object{coretypes.MakeInt(coreirx.ToInt(a)), coretypes.MakeInt(coreirx.ToInt(b))}), &objTable, corert.IsNil)
+			} else if coreirx.IsInt(a) && coreirx.IsInt(b) {
 				stackBuf[sp-1] = coreirx.NBFromObject(coretypes.MakeInt(coreirx.ToInt(a)*coreirx.ToInt(b)), &objTable, corert.IsNil)
 			} else if coreirx.IsObj(a) || coreirx.IsObj(b) {
 				stackBuf[sp-1] = coreirx.NBFromObject(procMultiply([]coretypes.Object{coreirx.NBToObject(a, objTable, NIL), coreirx.NBToObject(b, objTable, NIL)}), &objTable, corert.IsNil)
@@ -12501,7 +12518,9 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 
 		case irInc:
 			v := stackBuf[sp-1]
-			if coreirx.IsInt(v) {
+			if coreirx.IsInt(v) && strconv.IntSize == 32 {
+				stackBuf[sp-1] = coreirx.NBFromObject(procInc([]coretypes.Object{coretypes.MakeInt(coreirx.ToInt(v))}), &objTable, corert.IsNil)
+			} else if coreirx.IsInt(v) {
 				stackBuf[sp-1] = coreirx.NBFromObject(coretypes.MakeInt(coreirx.ToInt(v)+1), &objTable, corert.IsNil)
 			} else if coreirx.IsObj(v) {
 				stackBuf[sp-1] = coreirx.NBFromObject(procInc([]coretypes.Object{coreirx.NBToObject(v, objTable, NIL)}), &objTable, corert.IsNil)
@@ -12511,7 +12530,9 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 
 		case irDec:
 			v := stackBuf[sp-1]
-			if coreirx.IsInt(v) {
+			if coreirx.IsInt(v) && strconv.IntSize == 32 {
+				stackBuf[sp-1] = coreirx.NBFromObject(procDec([]coretypes.Object{coretypes.MakeInt(coreirx.ToInt(v))}), &objTable, corert.IsNil)
+			} else if coreirx.IsInt(v) {
 				stackBuf[sp-1] = coreirx.NBFromObject(coretypes.MakeInt(coreirx.ToInt(v)-1), &objTable, corert.IsNil)
 			} else if coreirx.IsObj(v) {
 				stackBuf[sp-1] = coreirx.NBFromObject(procDec([]coretypes.Object{coreirx.NBToObject(v, objTable, NIL)}), &objTable, corert.IsNil)
