@@ -284,4 +284,6 @@ The current slices provide:
 - port parsing and CLI plumbing;
 - unit tests for schema, execution capture, Markdown export, dependencies, web rendering, HTTP APIs (load/export/save/evaluate/add/delete/reorder/downstream), and CLI parsing.
 
-Further slices should support richer no-reload evaluate/update payloads from the browser and deeper runtime dependency tracking. The vendored CodeMirror/ECharts/Mermaid assets are served locally by the notebook server; simple Mermaid flowcharts intentionally bypass Mermaid's default curved links and use the picker-style renderer with rounded boxes plus rounded orthogonal arrows.
+Further slices should support richer no-reload evaluate/update payloads from the browser and deeper runtime dependency tracking. The vendored The shipped front-end versions are CodeMirror 5.65.21 (maintained v5 channel), ECharts 6.1.0 and Mermaid 11.17.2. Browser automation uses Playwright 1.63.0. Package versions are pinned in `package.json` and resolved in `bun.lock`; vendored browser assets are copied from those installed packages. CodeMirror 6 is a separate API migration, not a drop-in update.
+
+CodeMirror/ECharts/Mermaid assets are served locally by the notebook server; simple Mermaid flowcharts intentionally bypass Mermaid's default curved links and use the picker-style renderer with rounded boxes plus rounded orthogonal arrows.

@@ -7,3 +7,6 @@
 *.tgz binary
 *.png binary
 *.svg binary
+
+# Preserve upstream generated bundles byte-for-byte (embedded template strings).
+internal/notebook/assets/mermaid.min.js -whitespace
