@@ -50,7 +50,7 @@ func TestBenchmarkPortableResults(t *testing.T) {
 	}
 	t.Run("spectral-norm", func(t *testing.T) { requireBenchDouble(t, spectralNormScript, 1.2741938369830932, 1e-12) })
 	t.Run("nbody", func(t *testing.T) { requireBenchDouble(t, nbodyScript, 0.5417510901232987, 1e-12) })
-	t.Run("pidigits", func(t *testing.T) { requireBenchDouble(t, clbgscripts.PidigitsScript, 9.855316369115884e+11, 1e-3) })
+	t.Run("pidigits", func(t *testing.T) { requireBenchInt(t, clbgscripts.PidigitsScript, 129) })
 }
 
 func TestBenchmarkMicroResults(t *testing.T) {

@@ -81,21 +81,21 @@ var FastaScript = `(let [im 139968
             idx (rem new-seed (count alu))]
         (recur (+ i 1) new-seed (+ checksum idx))))))`
 
-// --- pidigits (N=100) ---
+// --- pidigits (N=27; arbitrary-precision integer quotient) ---
 var PidigitsScript = `(loop [i 0
-       q 1 r 0 t 1 k 1 n 3 l 3
+       q 1N r 0N t 1N k 1 n 3 l 3
        digits 0 checksum 0]
   (if (= digits 27)
     checksum
     (if (< (- (+ (* 4 q) r) t) (* n t))
       (recur (+ i 1) (* q 10) (* 10 (- r (* n t))) t k
-             (- (/ (* 10 (+ (* 3 q) r)) t) (* 10 n)) l
+             (- (quot (* 10 (+ (* 3 q) r)) t) (* 10 n)) l
              (+ digits 1) (+ checksum n))
       (let [q2 (* q k)
             r2 (* (+ (* 2 q) r) l)
             t2 (* t l)
             k2 (+ k 1)
-            n2 (/ (+ (* q (+ (* 7 k) 2)) (* r l)) t2)
+            n2 (quot (+ (* q (+ (* 7 k) 2)) (* r l)) t2)
             l2 (+ l 2)]
         (recur i q2 r2 t2 k2 n2 l2 digits checksum)))))`
 
