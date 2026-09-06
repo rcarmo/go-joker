@@ -4814,3 +4814,27 @@ func TestAuditSequenceNthAfterCallback(t *testing.T) {
 	requireInt(t, Eval(expr, nil), 7)
 	requireInt(t, evalTestScript(t, `@audit-nth-count`), 1)
 }
+
+func TestAuditCallbackResultBoundaryMatrix(t *testing.T) {
+	for _, tc := range []struct{ operation, value, want string }{
+		{`(first value)`, `(list 4 7)`, `4`},
+		{`(count value)`, `(list 4 7)`, `2`},
+		{`(conj value 9)`, `[4 7]`, `[4 7 9]`},
+		{`(get value :k)`, `{:k 7}`, `7`},
+		{`(= value value)`, `0N`, `true`},
+	} {
+		t.Run(tc.operation, func(t *testing.T) {
+			evalTestScript(t, `(def audit-boundary-count (atom 0))`)
+			source := fmt.Sprintf(`(let [touch (fn [x] (swap! audit-boundary-count inc))] (loop [i 0 value %s] (if (< i 1) (recur (touch i) value) %s)))`, tc.value, tc.operation)
+			expr := compileTestExpr(t, source)
+			if irGetCached(expr.(*LetExpr).body[0].(*LoopExpr)) == nil {
+				t.Fatal("IR required")
+			}
+			got := Eval(expr, nil)
+			if got.ToString(false) != tc.want {
+				t.Fatalf("got %s want %s", got.ToString(false), tc.want)
+			}
+			requireInt(t, evalTestScript(t, `@audit-boundary-count`), 1)
+		})
+	}
+}
