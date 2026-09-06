@@ -37,3 +37,31 @@ func TestNaNBoxObjectNumericBoundaries(t *testing.T) {
 		}
 	}
 }
+
+func FuzzNaNBoxNumericRoundTrip(f *testing.F) {
+	for _, n := range []int64{0, 1, -1, 2147483647, 2147483648, -2147483649, 9223372036854775807} {
+		f.Add(n, uint64(n))
+	}
+	f.Fuzz(func(t *testing.T, n int64, bits uint64) {
+		var table []coretypes.Object
+		value := coretypes.MakeInt(int(n))
+		got := NBToObject(NBFromObject(value, &table, nil), table, nil)
+		if !value.Equals(got) {
+			t.Fatalf("integer %v became %v", value, got)
+		}
+		table = nil
+		d := math.Float64frombits(bits)
+		got = NBToObject(NBFromObject(coretypes.Double{D: d}, &table, nil), table, nil)
+		roundtrip, ok := got.(coretypes.Double)
+		if !ok {
+			t.Fatalf("double became %T", got)
+		}
+		if math.IsNaN(d) {
+			if !math.IsNaN(roundtrip.D) {
+				t.Fatal("NaN lost")
+			}
+		} else if math.Float64bits(roundtrip.D) != bits {
+			t.Fatal("double bits changed")
+		}
+	})
+}
