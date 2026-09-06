@@ -10301,30 +10301,9 @@ loop:
 			return nil
 
 		case irDiv:
-			b := stack[len(stack)-1]
-			a := stack[len(stack)-2]
-			stack = stack[:len(stack)-2]
-			var av, bv float64
-			switch x := a.(type) {
-			case coretypes.Int:
-				av = float64(x.I)
-			case coretypes.Double:
-				av = x.D
-			default:
-				return nil
-			}
-			switch x := b.(type) {
-			case coretypes.Int:
-				bv = float64(x.I)
-			case coretypes.Double:
-				bv = x.D
-			default:
-				return nil
-			}
-			if bv == 0 {
-				return nil
-			}
-			stack = append(stack, coretypes.Double{D: av / bv})
+			b, a := stack[len(stack)-1], stack[len(stack)-2]
+			stack = stack[:len(stack)-1]
+			stack[len(stack)-1] = procDivide([]coretypes.Object{a, b})
 
 		case irInc:
 			a := stack[len(stack)-1]
@@ -11212,26 +11191,13 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 			}
 		case irDiv:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
-			stack = stack[:len(stack)-2]
-			af, bf := 0.0, 0.0
-			if a.tag == irValDouble {
-				af = a.f
-			} else if a.tag == irValInt {
-				af = float64(a.i)
+			stack = stack[:len(stack)-1]
+			if a.tag == irValDouble && b.tag == irValDouble {
+				stack[len(stack)-1] = irValue{tag: irValDouble, f: a.f / b.f}
 			} else {
-				return nil
+				stack[len(stack)-1] = objectToIRValue(procDivide([]coretypes.Object{a.object(), b.object()}))
 			}
-			if b.tag == irValDouble {
-				bf = b.f
-			} else if b.tag == irValInt {
-				bf = float64(b.i)
-			} else {
-				return nil
-			}
-			if bf == 0 {
-				return nil
-			}
-			stack = append(stack, irValue{tag: irValDouble, f: af / bf})
+
 		case irRem:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
@@ -12176,18 +12142,13 @@ func irExecTypedInline(prog *IRProgram, slots []irValue) irValue {
 			}
 		case irDiv:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
-			stack = stack[:len(stack)-2]
+			stack = stack[:len(stack)-1]
 			if a.tag == irValDouble && b.tag == irValDouble {
-				stack = append(stack, irValue{tag: irValDouble, f: a.f / b.f})
-			} else if a.tag == irValDouble && b.tag == irValInt {
-				stack = append(stack, irValue{tag: irValDouble, f: a.f / float64(b.i)})
-			} else if a.tag == irValInt && b.tag == irValDouble {
-				stack = append(stack, irValue{tag: irValDouble, f: float64(a.i) / b.f})
-			} else if a.tag == irValInt && b.tag == irValInt {
-				stack = append(stack, irValue{tag: irValDouble, f: float64(a.i) / float64(b.i)})
+				stack[len(stack)-1] = irValue{tag: irValDouble, f: a.f / b.f}
 			} else {
-				return irValue{}
+				stack[len(stack)-1] = objectToIRValue(procDivide([]coretypes.Object{a.object(), b.object()}))
 			}
+
 		case irLt:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
@@ -12435,10 +12396,10 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 		case irDiv:
 			sp--
 			a, b := stackBuf[sp-1], stackBuf[sp]
-			if coreirx.IsObj(a) || coreirx.IsObj(b) {
-				stackBuf[sp-1] = coreirx.NBFromObject(procDivide([]coretypes.Object{coreirx.NBToObject(a, objTable, NIL), coreirx.NBToObject(b, objTable, NIL)}), &objTable, corert.IsNil)
+			if coreirx.IsDouble(a) && coreirx.IsDouble(b) {
+				stackBuf[sp-1] = coreirx.BoxDouble(coreirx.ToDouble(a) / coreirx.ToDouble(b))
 			} else {
-				stackBuf[sp-1] = coreirx.BoxDouble(coreirx.ToFloat(a) / coreirx.ToFloat(b))
+				stackBuf[sp-1] = coreirx.NBFromObject(procDivide([]coretypes.Object{coreirx.NBToObject(a, objTable, NIL), coreirx.NBToObject(b, objTable, NIL)}), &objTable, corert.IsNil)
 			}
 
 		case irRem:
