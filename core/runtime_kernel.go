@@ -383,14 +383,14 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 			case "procInc":
 				switch x := arg.(type) {
 				case coretypes.Int:
-					return coretypes.Int{I: x.I + 1}
+					return coretypes.INT_OPS.Add(x, coretypes.MakeInt(1))
 				case coretypes.Double:
 					return coretypes.Double{D: x.D + 1}
 				}
 			case "procDec":
 				switch x := arg.(type) {
 				case coretypes.Int:
-					return coretypes.Int{I: x.I - 1}
+					return coretypes.INT_OPS.Subtract(x, coretypes.MakeInt(1))
 				case coretypes.Double:
 					return coretypes.Double{D: x.D - 1}
 				}
@@ -404,7 +404,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 			case "procSubtract":
 				switch x := arg.(type) {
 				case coretypes.Int:
-					return coretypes.Int{I: -x.I}
+					return coretypes.INT_OPS.Subtract(coretypes.MakeInt(0), x)
 				case coretypes.Double:
 					return coretypes.Double{D: -x.D}
 				}
@@ -431,7 +431,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 				case coretypes.Int:
 					switch b := bx.(type) {
 					case coretypes.Int:
-						return coretypes.Int{I: a.I + b.I}
+						return coretypes.INT_OPS.Add(a, b)
 					case coretypes.Double:
 						return coretypes.Double{D: float64(a.I) + b.D}
 					}
@@ -448,7 +448,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 				case coretypes.Int:
 					switch b := bx.(type) {
 					case coretypes.Int:
-						return coretypes.Int{I: a.I - b.I}
+						return coretypes.INT_OPS.Subtract(a, b)
 					case coretypes.Double:
 						return coretypes.Double{D: float64(a.I) - b.D}
 					}
@@ -465,7 +465,7 @@ func (expr *CallExpr) Eval(env *LocalEnv) coretypes.Object {
 				case coretypes.Int:
 					switch b := bx.(type) {
 					case coretypes.Int:
-						return coretypes.Int{I: a.I * b.I}
+						return coretypes.INT_OPS.Multiply(a, b)
 					case coretypes.Double:
 						return coretypes.Double{D: float64(a.I) * b.D}
 					}

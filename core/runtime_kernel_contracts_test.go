@@ -4733,3 +4733,20 @@ func TestAuditUnsupportedResultDoesNotReplayCallback(t *testing.T) {
 	requireBool(t, Eval(expr, nil), true)
 	requireInt(t, evalTestScript(t, `@audit-fallback-count`), 1)
 }
+
+func TestAuditPublicArithmeticPromotion(t *testing.T) {
+	for _, tc := range []struct {
+		source string
+		want   coretypes.Object
+	}{
+		{fmt.Sprintf("(+ %d 1)", coretypes.MaxInt), procAdd([]coretypes.Object{coretypes.MakeInt(coretypes.MaxInt), coretypes.MakeInt(1)})},
+		{fmt.Sprintf("(inc %d)", coretypes.MaxInt), procInc([]coretypes.Object{coretypes.MakeInt(coretypes.MaxInt)})},
+		{fmt.Sprintf("(- %d 1)", coretypes.MinInt), procSubtract([]coretypes.Object{coretypes.MakeInt(coretypes.MinInt), coretypes.MakeInt(1)})},
+		{fmt.Sprintf("(* %d 2)", coretypes.MaxInt), procMultiply([]coretypes.Object{coretypes.MakeInt(coretypes.MaxInt), coretypes.MakeInt(2)})},
+	} {
+		got := evalTestScript(t, tc.source)
+		if !got.Equals(tc.want) {
+			t.Errorf("%s got %v want %v", tc.source, got, tc.want)
+		}
+	}
+}
