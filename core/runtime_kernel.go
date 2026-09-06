@@ -57,7 +57,15 @@ var RT *Runtime = &Runtime{}
 
 // An unsupported executor may return nil, but a language failure is observable
 // and must not be converted into a retry of an already-started computation.
+// Preserve the original language error/type while marking callable-origin
+// failures as non-speculative across executor recovery boundaries.
+type irLanguageError = coretypes.Error
+type irCallbackError struct{ irLanguageError }
+
 func rethrowIRLanguageFailure(failure interface{}) {
+	if _, ok := failure.(*irCallbackError); ok {
+		panic(failure)
+	}
 	if _, ok := failure.(*ExInfo); ok {
 		panic(failure)
 	}
@@ -13404,6 +13412,17 @@ func (RuntimeExecutionAdapter) CallObject(fnObj coretypes.Object, args []coretyp
 	if !ok {
 		return nil, false
 	}
+	defer func() {
+		if failure := recover(); failure != nil {
+			if err, ok := failure.(coretypes.Error); ok {
+				if _, marked := err.(*irCallbackError); marked {
+					panic(failure)
+				}
+				panic(&irCallbackError{irLanguageError: err})
+			}
+			panic(failure)
+		}
+	}()
 	return callable.Call(args), true
 }
 

@@ -4684,3 +4684,25 @@ func TestAuditCallbackFailureDoesNotReplayMutation(t *testing.T) {
 	}()
 	requireInt(t, evalTestScript(t, `@audit-callback-count`), 1)
 }
+
+func TestAuditCallbackTypeErrorDoesNotReplayMutation(t *testing.T) {
+	evalTestScript(t, `(def audit-type-error-count (atom 0))`)
+	expr := compileTestExpr(t, `(let [touch (fn [x] (swap! audit-type-error-count inc) (nth 3 0))] (loop [i 0] (if (< i 1) (recur (touch i)) i)))`)
+	if irGetCached(expr.(*LetExpr).body[0].(*LoopExpr)) == nil {
+		t.Fatal("IR required")
+	}
+	func() {
+		defer func() {
+			if recover() == nil {
+				t.Error("expected callback error")
+			}
+		}()
+		Eval(expr, nil)
+	}()
+	requireInt(t, evalTestScript(t, `@audit-type-error-count`), 1)
+}
+
+func TestAuditCallbackErrorCatchTypePreserved(t *testing.T) {
+	result := evalTestScript(t, `(let [touch (fn [x] (nth 3 0))] (try (loop [i 0] (if (< i 1) (recur (touch i)) i)) (catch coretypes.Error e :caught)))`)
+	requireKeyword(t, result, ":caught")
+}
