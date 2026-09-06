@@ -4876,3 +4876,21 @@ func TestAuditBoxedCollectionBoundaryMatrix(t *testing.T) {
 		})
 	}
 }
+
+func TestAuditOutOfRangeNthDoesNotReplayCallback(t *testing.T) {
+	t.Setenv("JOKER_IR_TYPED", "off")
+	evalTestScript(t, `(def audit-oob-count (atom 0))`)
+	expr := compileTestExpr(t, `(let [touch (fn [x] (swap! audit-oob-count inc))] (loop [i 0 value [4 7]] (if (< i 1) (recur (touch i) value) (nth value 9))))`)
+	if irGetCached(expr.(*LetExpr).body[0].(*LoopExpr)) == nil {
+		t.Fatal("IR required")
+	}
+	func() {
+		defer func() {
+			if recover() == nil {
+				t.Error("expected index error")
+			}
+		}()
+		Eval(expr, nil)
+	}()
+	requireInt(t, evalTestScript(t, `@audit-oob-count`), 1)
+}

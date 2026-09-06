@@ -10815,7 +10815,9 @@ loop:
 			}
 			result, ok := runtimeExec.Nth(coll, idx.I)
 			if !ok {
-				return nil
+				// Bounds/type failures are language errors, not permission
+				// to restart a loop that may have invoked a callback.
+				result = procNth([]coretypes.Object{coll, idxObj})
 			}
 			stack = append(stack, result)
 
@@ -11687,7 +11689,7 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 			} else if coll.tag == irValObject {
 				obj, ok := runtimeExec.Nth(coll.obj(), idx.i)
 				if !ok {
-					return nil
+					obj = procNth([]coretypes.Object{coll.obj(), coretypes.MakeInt(idx.i)})
 				}
 				stack = append(stack, objectToIRValue(obj))
 			} else {
@@ -12660,7 +12662,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 			}
 			obj, ok := runtimeExec.Nth(coll, idx)
 			if !ok {
-				return nil
+				obj = procNth([]coretypes.Object{coll, coretypes.MakeInt(idx)})
 			}
 			stackBuf[sp] = coreirx.NBFromObject(obj, &objTable, corert.IsNil)
 			sp++

@@ -80,7 +80,7 @@ func (tv *TransientVector) Nth(i int) Object {
 	if i >= 0 && i < len(tv.Arr) {
 		return tv.Arr[i]
 	}
-	return RuntimeNil
+	panic(RuntimeError(fmt.Sprintf("Index %d is out of bounds [0..%d]", i, len(tv.Arr)-1)))
 }
 func (tv *TransientVector) TryNth(i int, d Object) Object {
 	if i >= 0 && i < len(tv.Arr) {
