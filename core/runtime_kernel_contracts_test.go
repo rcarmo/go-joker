@@ -4605,3 +4605,17 @@ func TestAuditNativeRecursivePromotion(t *testing.T) {
 	}
 	requireInt(t, callNativeRecursive(entry, []coretypes.Object{coretypes.MakeInt(3), coretypes.MakeInt(0)}), 3)
 }
+
+func TestAuditWasmMixedIntegerIntermediate(t *testing.T) {
+	fn := evalTestScript(t, `(fn [x] (if (= (+ (* x x) 1) (* x x)) 1.0 0.0))`).(*Fn)
+	prog := irCompileFn(fn)
+	wp := wasmCompile(prog)
+	if wp == nil || !wp.useFloat {
+		t.Fatal("float WASM required")
+	}
+	args := []coretypes.Object{coretypes.MakeInt(100000000)}
+	got, want := wasmExec(wp, args), irExec(prog, args)
+	if got == nil || !got.Equals(want) {
+		t.Fatalf("got %v want %v", got, want)
+	}
+}

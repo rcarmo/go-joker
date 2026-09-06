@@ -13160,6 +13160,18 @@ func wasmExec(wp *WasmProgram, slots []coretypes.Object) coretypes.Object {
 	// Float-mode modules encode every numeric slot as f64. Preserve wide
 	// integer comparisons by declining that conversion before execution.
 	if wp.useFloat {
+		allInts := len(slots) > 0
+		for _, slot := range slots {
+			if _, ok := slot.(coretypes.Int); !ok {
+				allInts = false
+			}
+		}
+		// Float constants in result branches do not justify coercing an
+		// integer computation to f64. Until the backend tracks per-slot
+		// numeric types, run this case in typed/boxed IR before any effects.
+		if allInts && wp.recovery != nil && !wp.hasImports {
+			return irExec(wp.recovery, slots)
+		}
 		for _, slot := range slots {
 			if n, ok := slot.(coretypes.Int); ok && (int64(n.I) > 1<<53 || int64(n.I) < -(1<<53)) {
 				if wp.recovery != nil && !wp.hasImports {
