@@ -4666,3 +4666,21 @@ func TestAuditDoubleOnlyStillExecutesWasm(t *testing.T) {
 	args := []coretypes.Object{coretypes.Double{D: 2}, coretypes.Double{D: 3}}
 	requireDouble(t, wasmExec(wp, args), 6.5)
 }
+
+func TestAuditCallbackFailureDoesNotReplayMutation(t *testing.T) {
+	evalTestScript(t, `(def audit-callback-count (atom 0))`)
+	expr := compileTestExpr(t, `(let [touch (fn [x] (swap! audit-callback-count inc) (throw (ex-info "callback failed" {})))] (loop [i 0] (if (< i 1) (recur (touch i)) i)))`)
+	loop := expr.(*LetExpr).body[0].(*LoopExpr)
+	if irGetCached(loop) == nil {
+		t.Fatal("IR required")
+	}
+	func() {
+		defer func() {
+			if recover() == nil {
+				t.Error("expected callback error")
+			}
+		}()
+		Eval(expr, nil)
+	}()
+	requireInt(t, evalTestScript(t, `@audit-callback-count`), 1)
+}

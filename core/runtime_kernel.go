@@ -58,6 +58,9 @@ var RT *Runtime = &Runtime{}
 // An unsupported executor may return nil, but a language failure is observable
 // and must not be converted into a retry of an already-started computation.
 func rethrowIRLanguageFailure(failure interface{}) {
+	if _, ok := failure.(*ExInfo); ok {
+		panic(failure)
+	}
 	// Numeric primitives currently use this string panic for zero divisors.
 	// Other executor failures still need a typed unsupported/error protocol.
 	if message, ok := failure.(string); ok && message == "Division by zero" {
