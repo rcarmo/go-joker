@@ -73,3 +73,13 @@ func TestPackIndexedNodes(t *testing.T) {
 		}
 	}
 }
+
+func TestBitmapHighBitHasPortableIndex(t *testing.T) {
+	node := &BitmapIndexedNode{Bitmap: uint32(1)<<31 | 1}
+	if got := node.index(uint32(1) << 31); got != 1 {
+		t.Fatalf("high-bit index=%d", got)
+	}
+	if got := BitCount(int(node.Bitmap)); got != 2 {
+		t.Fatalf("bitmap count=%d", got)
+	}
+}

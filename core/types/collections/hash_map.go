@@ -24,7 +24,7 @@ type (
 		Root       Node
 	}
 	BitmapIndexedNode struct {
-		Bitmap int
+		Bitmap uint32
 		Array  []interface{}
 	}
 	HashCollisionNode struct {
@@ -376,7 +376,7 @@ func (n *ArrayNode) nodeSeq() coretypes.Seq {
 func (n *ArrayNode) pack(idx uint) Node {
 	bitmap, newArray := PackIndexedNodes(n.Array, idx, func(node Node) bool { return node != nil })
 	return &BitmapIndexedNode{
-		Bitmap: bitmap,
+		Bitmap: uint32(bitmap),
 		Array:  newArray,
 	}
 }
@@ -418,7 +418,7 @@ func (n *HashCollisionNode) assoc(shift uint, hash uint32, key coretypes.Object,
 		}
 	}
 	return (&BitmapIndexedNode{
-		Bitmap: Bitpos(n.HashValue, shift),
+		Bitmap: uint32(Bitpos(n.HashValue, shift)),
 		Array:  []interface{}{nil, n},
 	}).assoc(shift, hash, key, val, addedLeaf)
 }
@@ -466,8 +466,8 @@ func createNode(shift uint, key1 coretypes.Object, val1 coretypes.Object, key2ha
 	return emptyIndexedNode.assoc(shift, key1hash, key1, val1, addedLeaf).assoc(shift, key2hash, key2, val2, addedLeaf)
 }
 
-func (b *BitmapIndexedNode) index(bit int) int {
-	return BitCount(b.Bitmap & (bit - 1))
+func (b *BitmapIndexedNode) index(bit uint32) int {
+	return BitCount(int(b.Bitmap & (bit - 1)))
 }
 
 func (b *BitmapIndexedNode) iter() coretypes.MapIterator {
@@ -477,7 +477,7 @@ func (b *BitmapIndexedNode) iter() coretypes.MapIterator {
 }
 
 func (b *BitmapIndexedNode) assoc(shift uint, hash uint32, key coretypes.Object, val coretypes.Object, addedLeaf *Box) Node {
-	bit := Bitpos(hash, shift)
+	bit := uint32(Bitpos(hash, shift))
 	idx := b.index(bit)
 	if b.Bitmap&bit != 0 {
 		keyOrNull := b.Array[2*idx]
@@ -507,7 +507,7 @@ func (b *BitmapIndexedNode) assoc(shift uint, hash uint32, key coretypes.Object,
 			Array:  Assoc2Copy[interface{}](b.Array, 2*idx, nil, 2*idx+1, createNode(shift+5, keyOrNull.(coretypes.Object), valOrNode.(coretypes.Object), hash, key, val)),
 		}
 	} else {
-		n := BitCount(b.Bitmap)
+		n := BitCount(int(b.Bitmap))
 		if n >= 16 {
 			nodes := make([]Node, 32)
 			jdx := HashMask(hash, shift)
@@ -540,7 +540,7 @@ func (b *BitmapIndexedNode) assoc(shift uint, hash uint32, key coretypes.Object,
 }
 
 func (b *BitmapIndexedNode) without(shift uint, hash uint32, key coretypes.Object) Node {
-	bit := Bitpos(hash, shift)
+	bit := uint32(Bitpos(hash, shift))
 	if (b.Bitmap & bit) == 0 {
 		return b
 	}
@@ -576,7 +576,7 @@ func (b *BitmapIndexedNode) without(shift uint, hash uint32, key coretypes.Objec
 }
 
 func (b *BitmapIndexedNode) find(shift uint, hash uint32, key coretypes.Object) *coretypes.Pair {
-	bit := Bitpos(hash, shift)
+	bit := uint32(Bitpos(hash, shift))
 	if (b.Bitmap & bit) == 0 {
 		return nil
 	}
