@@ -2901,9 +2901,10 @@ func (err *ParseError) Message() coretypes.Object {
 
 func (err ParseError) Error() string {
 	line, column, filename := 0, 0, "<file>"
-	info := err.obj.GetInfo()
-	if info != nil {
-		line, column, filename = info.StartLine, info.StartColumn, info.FilenameOrUnknown()
+	if err.obj != nil {
+		if info := err.obj.GetInfo(); info != nil {
+			line, column, filename = info.StartLine, info.StartColumn, info.FilenameOrUnknown()
+		}
 	}
 	return fmt.Sprintf("%s:%d:%d: Parse error: %s", filename, line, column, err.msg)
 }

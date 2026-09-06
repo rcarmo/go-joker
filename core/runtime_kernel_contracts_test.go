@@ -4750,3 +4750,10 @@ func TestAuditPublicArithmeticPromotion(t *testing.T) {
 		}
 	}
 }
+
+func TestAuditParseErrorWithoutObject(t *testing.T) {
+	err := ParseError{msg: "Parameter declaration missing"}
+	if got := err.Error(); got != "<file>:0:0: Parse error: Parameter declaration missing" {
+		t.Fatalf("unexpected error %s", got)
+	}
+}
