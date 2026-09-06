@@ -10783,9 +10783,8 @@ loop:
 			key := stack[len(stack)-1]
 			coll := stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
-			if _, ok := coll.(coretypes.Gettable); !ok {
-				return nil
-			}
+			// Public get returns nil for non-associative values too. Do not
+			// signal unsupported execution after earlier effects have run.
 			stack = append(stack, runtimeExec.Get(coll, key, NIL))
 
 		case irGet3:

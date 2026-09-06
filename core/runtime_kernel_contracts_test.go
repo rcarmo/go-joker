@@ -4838,3 +4838,17 @@ func TestAuditCallbackResultBoundaryMatrix(t *testing.T) {
 		})
 	}
 }
+
+func TestAuditNonAssociativeLookupDoesNotReplayCallback(t *testing.T) {
+	t.Setenv("JOKER_IR_TYPED", "off")
+	evalTestScript(t, `(def audit-nil-count (atom 0))`)
+	expr := compileTestExpr(t, `(let [touch (fn [x] (swap! audit-nil-count inc))] (loop [i 0 value 7] (if (< i 1) (recur (touch i) value) (get value :missing))))`)
+	if irGetCached(expr.(*LetExpr).body[0].(*LoopExpr)) == nil {
+		t.Fatal("IR required")
+	}
+	result := Eval(expr, nil)
+	if !corert.IsNil(result) {
+		t.Fatalf("expected nil, got %v", result)
+	}
+	requireInt(t, evalTestScript(t, `@audit-nil-count`), 1)
+}
