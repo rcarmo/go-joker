@@ -12568,7 +12568,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 				stackBuf[sp-1] = coreirx.BoxBool(true)
 			} else if coreirx.IsInt(a) && coreirx.IsInt(b) {
 				stackBuf[sp-1] = coreirx.BoxBool(false)
-			} else if coreirx.IsDouble(a) || coreirx.IsDouble(b) {
+			} else if (coreirx.IsDouble(a) || coreirx.IsInt(a)) && (coreirx.IsDouble(b) || coreirx.IsInt(b)) {
 				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToFloat(a) == coreirx.ToFloat(b))
 			} else {
 				oa := coreirx.NBToObject(a, objTable, NIL)

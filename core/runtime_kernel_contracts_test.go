@@ -4757,3 +4757,21 @@ func TestAuditParseErrorWithoutObject(t *testing.T) {
 		t.Fatalf("unexpected error %s", got)
 	}
 }
+
+func TestAuditNaNBoxedMixedEquality(t *testing.T) {
+	fn := evalTestScript(t, `(fn [x y] (= x y))`).(*Fn)
+	prog := irCompileFn(fn)
+	if prog == nil {
+		t.Fatal("IR required")
+	}
+	for _, args := range [][]coretypes.Object{
+		{coretypes.MakeInt(coretypes.MaxInt), coretypes.Double{D: 0}},
+		{coretypes.Double{D: 0}, coretypes.MakeInt(coretypes.MaxInt)},
+		{coretypes.Double{D: 0}, coretypes.MakeString("zero")},
+	} {
+		got, want := irExecTypedNB(prog, args), irExec(prog, args)
+		if got == nil || !got.Equals(want) {
+			t.Errorf("got %v want %v", got, want)
+		}
+	}
+}
