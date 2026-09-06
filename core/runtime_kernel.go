@@ -167,8 +167,12 @@ func Eval(expr Expr, env *LocalEnv) coretypes.Object {
 			if corert.IRTypedEnabled() && runtimeExec.CanExecuteTypedIR(prog) {
 				var typedResult coretypes.Object
 				func() {
+					epoch := currentGRT().CallableEpoch
 					defer func() {
 						if r := recover(); r != nil {
+							if currentGRT().CallableEpoch != epoch {
+								panic(r)
+							}
 							rethrowIRLanguageFailure(r)
 							typedResult = nil
 						}
@@ -193,8 +197,12 @@ func Eval(expr Expr, env *LocalEnv) coretypes.Object {
 			}
 			var result coretypes.Object
 			func() {
+				epoch := currentGRT().CallableEpoch
 				defer func() {
 					if r := recover(); r != nil {
+						if currentGRT().CallableEpoch != epoch {
+							panic(r)
+						}
 						rethrowIRLanguageFailure(r)
 						result = nil
 					}
@@ -860,8 +868,12 @@ func (expr *LoopExpr) Eval(env *LocalEnv) coretypes.Object {
 		if corert.IRTypedEnabled() && runtimeExec.CanExecuteTypedIR(prog) {
 			var typedResult coretypes.Object
 			func() {
+				epoch := currentGRT().CallableEpoch
 				defer func() {
 					if r := recover(); r != nil {
+						if currentGRT().CallableEpoch != epoch {
+							panic(r)
+						}
 						rethrowIRLanguageFailure(r)
 						typedResult = nil
 					}
@@ -886,8 +898,12 @@ func (expr *LoopExpr) Eval(env *LocalEnv) coretypes.Object {
 		}
 		var result coretypes.Object
 		func() {
+			epoch := currentGRT().CallableEpoch
 			defer func() {
 				if r := recover(); r != nil {
+					if currentGRT().CallableEpoch != epoch {
+						panic(r)
+					}
 					rethrowIRLanguageFailure(r)
 					result = nil
 				}
@@ -13423,6 +13439,7 @@ func (RuntimeExecutionAdapter) CallObject(fnObj coretypes.Object, args []coretyp
 			panic(failure)
 		}
 	}()
+	currentGRT().CallableEpoch++
 	return callable.Call(args), true
 }
 

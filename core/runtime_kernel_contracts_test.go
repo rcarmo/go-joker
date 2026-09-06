@@ -4706,3 +4706,20 @@ func TestAuditCallbackErrorCatchTypePreserved(t *testing.T) {
 	result := evalTestScript(t, `(let [touch (fn [x] (nth 3 0))] (try (loop [i 0] (if (< i 1) (recur (touch i)) i)) (catch coretypes.Error e :caught)))`)
 	requireKeyword(t, result, ":caught")
 }
+
+func TestAuditNumericTypeErrorDoesNotReplayPriorCallback(t *testing.T) {
+	evalTestScript(t, `(def audit-prior-count (atom 0))`)
+	expr := compileTestExpr(t, `(let [touch (fn [x] (swap! audit-prior-count inc))] (loop [i 0 bad "oops"] (if (< i 1) (recur (touch i) bad) (+ bad 1))))`)
+	if irGetCached(expr.(*LetExpr).body[0].(*LoopExpr)) == nil {
+		t.Fatal("IR required")
+	}
+	func() {
+		defer func() {
+			if recover() == nil {
+				t.Error("expected numeric error")
+			}
+		}()
+		Eval(expr, nil)
+	}()
+	requireInt(t, evalTestScript(t, `@audit-prior-count`), 1)
+}

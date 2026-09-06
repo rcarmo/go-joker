@@ -19,8 +19,12 @@ func irDispatchFnCall(fn *Fn, args []coretypes.Object) coretypes.Object {
 	if fnProg := irCompileFn(fn); fnProg != nil && nativeCoreBindingsUnchanged() && (fnProg.hasSelf || runtimeExec.HasNativeHelper(fnProg)) {
 		var result coretypes.Object
 		func() {
+			epoch := currentGRT().CallableEpoch
 			defer func() {
 				if r := recover(); r != nil {
+					if currentGRT().CallableEpoch != epoch {
+						panic(r)
+					}
 					rethrowIRLanguageFailure(r)
 					result = nil
 				}

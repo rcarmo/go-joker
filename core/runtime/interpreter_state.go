@@ -5,6 +5,8 @@ package runtime
 type GoroutineRT struct {
 	Callstack   *Callstack
 	CurrentExpr any
+	// CallableEpoch tracks entered external calls during speculative execution.
+	CallableEpoch uint64
 }
 
 func NewGoroutineRT(stackCapacity int) *GoroutineRT {
