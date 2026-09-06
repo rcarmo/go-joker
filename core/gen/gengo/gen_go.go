@@ -62,6 +62,9 @@ func (g *GenGo) ValueExpr(target string, t reflect.Type, v reflect.Value) string
 
 // Generate code specifying the value as it would be assigned to a given target with a given declared type.
 func (g *GenGo) value(target string, t reflect.Type, v reflect.Value) string {
+	if !v.IsValid() {
+		return "nil"
+	}
 	v = UnsafeReflectValue(v)
 	if v.IsZero() && t == v.Type() {
 		// Empty value and the target (destination) is of the same concrete type, so no need to emit anything.
