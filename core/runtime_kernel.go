@@ -10649,7 +10649,7 @@ loop:
 			case coretypes.Double:
 				stack = append(stack, coretypes.Boolean{B: av.D == 0})
 			default:
-				return nil
+				stack = append(stack, procIsZero([]coretypes.Object{a}))
 			}
 
 		case irJumpIfNot:
@@ -12277,7 +12277,8 @@ func irExecTypedInline(prog *IRProgram, slots []irValue) irValue {
 			if v.tag == irValInt {
 				stack = append(stack, irMakeBool(v.i == 0))
 			} else {
-				return irValue{}
+				stack = append(stack, objectToIRValue(procIsZero([]coretypes.Object{v.object()})))
+				continue
 			}
 		case irBitAnd:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
@@ -12545,7 +12546,7 @@ func irExecTypedNB(prog *IRProgram, initSlots []coretypes.Object) coretypes.Obje
 			} else if coreirx.IsDouble(v) {
 				stackBuf[sp-1] = coreirx.BoxBool(coreirx.ToDouble(v) == 0)
 			} else {
-				stackBuf[sp-1] = coreirx.BoxBool(false)
+				stackBuf[sp-1] = coreirx.NBFromObject(procIsZero([]coretypes.Object{coreirx.NBToObject(v, objTable, NIL)}), &objTable, corert.IsNil)
 			}
 
 		case irJumpIfNot:

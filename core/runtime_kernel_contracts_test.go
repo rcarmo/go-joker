@@ -4619,3 +4619,24 @@ func TestAuditWasmMixedIntegerIntermediate(t *testing.T) {
 		t.Fatalf("got %v want %v", got, want)
 	}
 }
+
+func TestAuditPromotedZeroChecks(t *testing.T) {
+	fn := evalTestScript(t, `(fn [x] (zero? x))`).(*Fn)
+	prog := irCompileFn(fn)
+	if prog == nil {
+		t.Fatal("IR required")
+	}
+	zero := evalTestScript(t, `0N`)
+	for name, run := range map[string]func() coretypes.Object{"boxed": func() coretypes.Object { return irExec(prog, []coretypes.Object{zero}) }, "nanbox": func() coretypes.Object { return irExecTypedNB(prog, []coretypes.Object{zero}) }, "inline": func() coretypes.Object {
+		slots := make([]irValue, runtimeExec.ProgramNumSlots(prog))
+		slots[0] = objectToIRValue(zero)
+		return irExecTypedInline(prog, slots).object()
+	}} {
+		t.Run(name, func(t *testing.T) {
+			got := run()
+			if got == nil || !got.Equals(coretypes.Boolean{B: true}) {
+				t.Fatalf("got %T %v", got, got)
+			}
+		})
+	}
+}
