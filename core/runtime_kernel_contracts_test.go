@@ -125,6 +125,14 @@ func TestCoreAsyncReduceIntoAndCallbacks(t *testing.T) {
 }
 
 func TestConcurrencyTimeoutRejectsTooLarge(t *testing.T) {
+	if strconv.IntSize == 32 {
+		maxMilliseconds := coretypes.MaxInt
+		got := checkedMillisecondDuration(maxMilliseconds, "timeout")
+		if got != time.Duration(maxMilliseconds)*time.Millisecond {
+			t.Fatal("valid 32-bit timeout changed")
+		}
+		return
+	}
 	didPanic := false
 	func() {
 		defer func() {
@@ -1015,13 +1023,13 @@ func TestBitOpsRejectInvalidIndexesAndShifts(t *testing.T) {
 }
 
 func TestIntArithmeticPromotesToBigIntOnOverflow(t *testing.T) {
-	if got := procAdd([]coretypes.Object{coretypes.Int{I: coretypes.MaxInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "9223372036854775808N" {
+	if got := procAdd([]coretypes.Object{coretypes.Int{I: coretypes.MaxInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != new(big.Int).Add(big.NewInt(int64(coretypes.MaxInt)), big.NewInt(1)).String()+"N" {
 		t.Fatalf("add promotion mismatch: %T %s", got, got.ToString(false))
 	}
-	if got := procSubtract([]coretypes.Object{coretypes.Int{I: coretypes.MinInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "-9223372036854775809N" {
+	if got := procSubtract([]coretypes.Object{coretypes.Int{I: coretypes.MinInt}, coretypes.Int{I: 1}}); got.GetType() != TYPE.BigInt || got.ToString(false) != new(big.Int).Sub(big.NewInt(int64(coretypes.MinInt)), big.NewInt(1)).String()+"N" {
 		t.Fatalf("subtract promotion mismatch: %T %s", got, got.ToString(false))
 	}
-	if got := procMultiply([]coretypes.Object{coretypes.Int{I: coretypes.MaxInt}, coretypes.Int{I: 2}}); got.GetType() != TYPE.BigInt || got.ToString(false) != "18446744073709551614N" {
+	if got := procMultiply([]coretypes.Object{coretypes.Int{I: coretypes.MaxInt}, coretypes.Int{I: 2}}); got.GetType() != TYPE.BigInt || got.ToString(false) != new(big.Int).Mul(big.NewInt(int64(coretypes.MaxInt)), big.NewInt(2)).String()+"N" {
 		t.Fatalf("multiply promotion mismatch: %T %s", got, got.ToString(false))
 	}
 }
