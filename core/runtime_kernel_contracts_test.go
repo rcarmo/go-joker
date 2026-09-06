@@ -4640,3 +4640,29 @@ func TestAuditPromotedZeroChecks(t *testing.T) {
 		})
 	}
 }
+
+func TestAuditWasmMixedInputsKeepIntegerBranch(t *testing.T) {
+	fn := evalTestScript(t, `(fn [x scale] (if (= (+ (* x x) 1) (* x x)) scale 0.0))`).(*Fn)
+	prog := irCompileFn(fn)
+	wp := wasmCompile(prog)
+	if wp == nil || !wp.useFloat {
+		t.Fatal("float WASM required")
+	}
+	args := []coretypes.Object{coretypes.MakeInt(100000000), coretypes.Double{D: 1}}
+	got, want := wasmExec(wp, args), irExec(prog, args)
+	if got == nil || !got.Equals(want) {
+		t.Fatalf("got %v want %v", got, want)
+	}
+}
+
+func TestAuditDoubleOnlyStillExecutesWasm(t *testing.T) {
+	fn := evalTestScript(t, `(fn [x y] (+ (* x y) 0.5))`).(*Fn)
+	prog := irCompileFn(fn)
+	wp := wasmCompile(prog)
+	if wp == nil || !wp.useFloat {
+		t.Fatal("float WASM required")
+	}
+	wp.recovery = nil // A successful result cannot come from IR recovery.
+	args := []coretypes.Object{coretypes.Double{D: 2}, coretypes.Double{D: 3}}
+	requireDouble(t, wasmExec(wp, args), 6.5)
+}
