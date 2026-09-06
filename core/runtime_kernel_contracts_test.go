@@ -4554,3 +4554,18 @@ func TestAuditWasmCheckedArithmetic(t *testing.T) {
 		}
 	}
 }
+
+func TestAuditWasmFloatPreservesWideIntegerComparison(t *testing.T) {
+	fn := evalTestScript(t, `(fn [x y] (if (= x y) 1.0 0.0))`).(*Fn)
+	prog := irCompileFn(fn)
+	wp := wasmCompile(prog)
+	if wp == nil || !wp.useFloat {
+		t.Fatal("float WASM compilation required")
+	}
+	a := int64(1) << 53
+	args := []coretypes.Object{coretypes.MakeInt(int(a)), coretypes.MakeInt(int(a + 1))}
+	got, want := wasmExec(wp, args), irExec(prog, args)
+	if got == nil || !got.Equals(want) {
+		t.Fatalf("got %v want %v", got, want)
+	}
+}

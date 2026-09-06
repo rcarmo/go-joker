@@ -13157,6 +13157,18 @@ func wasmGetCached(prog *IRProgram) *WasmProgram {
 }
 
 func wasmExec(wp *WasmProgram, slots []coretypes.Object) coretypes.Object {
+	// Float-mode modules encode every numeric slot as f64. Preserve wide
+	// integer comparisons by declining that conversion before execution.
+	if wp.useFloat {
+		for _, slot := range slots {
+			if n, ok := slot.(coretypes.Int); ok && (int64(n.I) > 1<<53 || int64(n.I) < -(1<<53)) {
+				if wp.recovery != nil && !wp.hasImports {
+					return irExec(wp.recovery, slots)
+				}
+				return nil
+			}
+		}
+	}
 	if !wp.hasImports {
 		numericOnly := true
 		for _, s := range slots {
