@@ -15,8 +15,14 @@ const (
 	nbMask32 uint64 = 0x0000_0000_FFFF_FFFF
 )
 
-func BoxDouble(f float64) uint64 { return math.Float64bits(f) }
-func BoxInt(i int) uint64        { return nbTagInt | uint64(uint32(i)) }
+func BoxDouble(f float64) uint64 {
+	// Reserve one canonical NaN payload; other quiet-NaN payloads encode tags.
+	if math.IsNaN(f) {
+		return nbQuiet
+	}
+	return math.Float64bits(f)
+}
+func BoxInt(i int) uint64 { return nbTagInt | uint64(uint32(i)) }
 func BoxBool(b bool) uint64 {
 	if b {
 		return nbTagBol | 1
@@ -26,7 +32,7 @@ func BoxBool(b bool) uint64 {
 func BoxNil() uint64        { return nbTagNil }
 func BoxObj(idx int) uint64 { return nbTagObj | uint64(uint32(idx)) }
 
-func IsDouble(v uint64) bool { return (v & nbQuiet) != nbQuiet }
+func IsDouble(v uint64) bool { return v == nbQuiet || (v&nbQuiet) != nbQuiet }
 func IsInt(v uint64) bool    { return (v & 0xFFFF_FFFF_0000_0000) == nbTagInt }
 func IsBool(v uint64) bool   { return (v & 0xFFFF_FFFF_0000_0000) == nbTagBol }
 func IsNil(v uint64) bool    { return v == nbTagNil }
@@ -60,7 +66,12 @@ func ToFloat(v uint64) float64 {
 func NBFromObject(obj coretypes.Object, table *[]coretypes.Object, isNil func(coretypes.Object) bool) uint64 {
 	switch v := obj.(type) {
 	case coretypes.Int:
-		return BoxInt(v.I)
+		if v.I >= math.MinInt32 && v.I <= math.MaxInt32 {
+			return BoxInt(v.I)
+		}
+		idx := len(*table)
+		*table = append(*table, obj)
+		return BoxObj(idx)
 	case coretypes.Double:
 		return BoxDouble(v.D)
 	case coretypes.Boolean:

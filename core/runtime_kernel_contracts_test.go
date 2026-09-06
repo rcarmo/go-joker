@@ -4377,3 +4377,36 @@ func TestAuditInlineNumericPromotion(t *testing.T) {
 		t.Fatalf("got %T %s want %s", got, got.ToString(false), want.ToString(false))
 	}
 }
+
+func TestAuditNaNBoxedArithmeticBoundaries(t *testing.T) {
+	for _, body := range []string{`(+ x 1)`, `(* x 2)`, `(inc x)`, `(< x 1)`} {
+		fn := evalTestScript(t, fmt.Sprintf(`(fn [x] %s)`, body)).(*Fn)
+		prog := irCompileFn(fn)
+		if prog == nil {
+			t.Fatal("IR compilation failed")
+		}
+		for _, n := range []int{2147483647, coretypes.MaxInt, coretypes.MinInt} {
+			input := []coretypes.Object{coretypes.MakeInt(n)}
+			want := irExec(prog, input)
+			got := irExecTypedNB(prog, input)
+			if got == nil || !got.Equals(want) {
+				t.Errorf("%s %d got %T %v want %T %v", body, n, got, got, want, want)
+			}
+		}
+	}
+}
+
+func TestAuditNaNBoxedNaNEquality(t *testing.T) {
+	fn := evalTestScript(t, `(fn [x y] (= x y))`).(*Fn)
+	prog := irCompileFn(fn)
+	if prog == nil {
+		t.Fatal("IR compilation failed")
+	}
+	n := coretypes.Double{D: math.NaN()}
+	args := []coretypes.Object{n, n}
+	want := irExec(prog, args)
+	got := irExecTypedNB(prog, args)
+	if got == nil || !got.Equals(want) {
+		t.Fatalf("got %v want %v", got, want)
+	}
+}
