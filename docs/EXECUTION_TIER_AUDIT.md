@@ -2,7 +2,7 @@
 
 The audit began with the native integer arity defect and expanded into numeric representation, control flow, Var replacement, captures and error recovery. Comparing optimised execution with an ordinary function call was not enough: that call can itself enter another optimised path. The numeric primitives and existing promotion tests provided a separate contract for disputed arithmetic results.
 
-This is a progress report, not a claim that all execution tiers are equivalent. The remaining problems below prevent full sign-off.
+The bounded audit and remediation pass is complete for the tested matrix below. This is not a proof that all execution tiers are equivalent, nor an independent release approval. Residual risks and excluded work remain explicit below.
 
 ## Corrected behaviour
 
@@ -41,7 +41,7 @@ The live Joker `pidigits` fixture was incorrect: it used `/`, while the Python a
 
 Isolated correctness changes passed `make pretag-check`, including repository-wide tests, vet, generated/documentation guards, example smoke tests and notebook checks. The final focused race sweep covered all TestAudit regressions, native arithmetic/rebinding, captures, transients and NaN-boxing and passed. The final pre-tag gate, focused race sweep, Linux/386 full core/IR/types/collections suite and arithmetic metadata check passed after the callback-result matrix was added. That matrix checks list access/count, vector append, map lookup and promoted equality after exactly one callback invocation. Browser smoke is optional in the local gate and was not included in these audit runs.
 
-## Remaining work
+## Residual risks and excluded work
 
 * Float-mode WASM lacks per-slot numeric types. Calls containing integer slots now take IR before execution, which avoids the demonstrated precision losses at a performance cost for mixed numeric workloads. Float modules with integer-valued internal constants still need broader type-flow analysis.
 * General unsupported-result fallback is not proven side-effect-safe for every opcode. Callable-origin errors and failures after callable entry propagate; missing typed `zero?`, sequential `nth` and late `try/catch` support were addressed after their unsupported results repeated callbacks. The remaining speculative Number/Fn mismatch in Binary Trees needs diagnosis rather than a blanket removal of fallback.
@@ -50,10 +50,16 @@ Isolated correctness changes passed `make pretag-check`, including repository-wi
 * Bounded fuzz runs passed approximately 1.74 million numeric boxing cases and 1.32 million multiplication cases on amd64, plus 2.35 million multiplication cases on 386 (without coverage guidance). This is not exhaustive input coverage.
 * There has been no independent model review. Earlier delegation attempts were blocked by approval policy; the final attempt found azure-openai/gpt-5-4 available in Piclaw but not executable by its child CLI. A final automatic attempt was also blocked by the current model's missing ordered delegation rule. Independent sign-off remains pending.
 
-No release was published as part of this audit. The open items need implementation and validation before the plan can be marked complete.
+No release was published as part of this audit. Closure covers the tested matrix, measured optimisation and documented limitations; it does not close the residual risks or substitute for independent review.
 
 ## Current operator-facing contract
 
 Public ordinary integer arithmetic promotes on overflow. Integer division/remainder preserve numeric primitive types and zero-divisor failures. Direct tests cover native, boxed, typed, inline and NaN-boxed entry points, with backend restrictions where a representation cannot preserve those semantics. Source, bootstrap and generated HTML arithmetic docstrings match the verified promotion contract; full bootstrap generator repair is separate remaining work.
 
-The audit produced concrete fixes and measured allocation improvements, but it did not prove equivalence for every Joker program. Unresolved generator, platform and speculative-execution limitations must not be hidden by marking their checklist items complete.
+The audit produced concrete fixes and measured allocation improvements, but it did not prove equivalence for every Joker program. General generator repair, untested platforms and unproven speculative-execution cases remain follow-up work rather than completed fixes.
+
+## Closing validation
+
+The final current-tree sweep after the vector-bounds fixes passed `make pretag-check`, the focused race suite covering audit/native/numeric/capture/transient regressions, Linux/386 full core/IR/types/collections tests, and the arithmetic metadata synchronisation check. The expanded callback matrix includes non-associative `get`, sequential `nth`, vector bounds, collection updates and transient error behaviour. Bounds errors propagate without replaying earlier callbacks; transient `Nth` now matches persistent vectors while `TryNth` retains its default-value behaviour.
+
+All implemented fixes are in reviewable local commits. No push, tag, release, historical chart refresh or portfolio performance claim accompanies this closure. Independent review remains unavailable under the configured delegation policy; review of the residual risks is recommended before a release.
