@@ -14,8 +14,8 @@ This is a progress report, not a claim that all execution tiers are equivalent. 
 | NaN-boxed executor | Wide integer round trips, crossing the signed 32-bit payload boundary, object-table arithmetic, NaN tag collisions and equality |
 | Captures and collections | Retained closures preserve separate captures across repeated IR execution; mixed vectors survive typed-vector conversion fallback |
 | Integer WASM | Loop exit after `recur`; checked arithmetic traps; promoted recovery for import-free arithmetic traps |
-| Float-mode WASM inputs | Wide integer inputs avoid lossy conversion; all-integer inputs use IR when float constants would otherwise coerce the entire computation |
-| Numeric error recovery | A compiled loop that mutates an atom before dividing by zero mutates it once, not three times through fallback retries |
+| Float-mode WASM inputs | Integer-containing calls use IR before execution; double-only direct execution is tested. This is an explicit backend restriction until per-value typing exists. |
+| Error recovery | Zero-divisor errors, explicit exceptions, callable-origin type errors and errors after callable entry do not replay prior calls. The unsupported typed `zero?` case also has a regression. |
 
 Tests live in `core/runtime_kernel_contracts_test.go` and `core/ir/nanbox_test.go`. They require compilation or direct executor invocation where a tier is claimed. Unsupported direct-executor shapes are not counted as successful tier coverage.
 
@@ -42,10 +42,11 @@ Isolated correctness changes passed `make pretag-check`, including repository-wi
 
 ## Remaining work
 
-* Float-mode WASM still lacks per-slot numeric types. Mixed integer/double inputs and integer intermediates inside a floating computation need a complete contract; the input guards fix specific demonstrated losses, not every mixed expression.
-* General executor error classification is incomplete. Broadly rethrowing all failures exposed an existing Binary Trees speculative Number/Fn mismatch; only the zero-divisor replay case is fixed. Other failures can still be confused with unsupported-execution signals.
-* Core numeric docstrings still describe ordinary arithmetic as wrapping, while the numeric primitives and promotion tests require `BigInt`. Those source/generated contracts need reconciliation, including all optimised entry points.
-* No 32-bit, ARM or Windows execution checks were run. NaN-boxed arithmetic uses machine-sized Go operations after decoding 32-bit payloads, so 32-bit behaviour needs explicit validation.
-* There has been no independent model review: attempted delegation was blocked by the configured provider/model approval policy. Fuzz/property generation and a complete exception/transient matrix have not been completed.
+* Float-mode WASM lacks per-slot numeric types. Calls containing integer slots now take IR before execution, which avoids the demonstrated precision losses at a performance cost for mixed numeric workloads. Float modules with integer-valued internal constants still need broader type-flow analysis.
+* General unsupported-result fallback is not proven side-effect-safe for every opcode. Callable-origin errors and failures after callable entry propagate; a missing typed `zero?` handler was fixed after its unsupported result repeated a callback. The remaining speculative Number/Fn mismatch in Binary Trees needs diagnosis rather than a blanket removal of fallback.
+* Public-call promotion tests now pass, but source and generated numeric docstrings still say ordinary arithmetic wraps. Regeneration is blocked by bootstrap type aliases, optimisation during source loading, nil reflection metadata and malformed generated identifiers for extracted packages. The investigation patch is retained separately; committed generated files were restored and build successfully.
+* Linux/386 tests passed for `core/ir` and `core/types`. Full `core` compilation on 386 is blocked by an out-of-range generated bitmap literal and a 64-bit handle constant stored in `int`. ARM and Windows execution checks were not run.
+* Bounded fuzz runs passed approximately 1.74 million numeric boxing cases and 1.32 million multiplication cases on amd64, plus 2.35 million multiplication cases on 386 (without coverage guidance). This is not exhaustive input coverage.
+* There has been no independent model review: attempted delegation was blocked by the configured provider/model approval policy. The complete exception/transient matrix and final sign-off remain pending.
 
 No release was published as part of this audit. The open items need implementation and validation before the plan can be marked complete.
