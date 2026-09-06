@@ -4723,3 +4723,13 @@ func TestAuditNumericTypeErrorDoesNotReplayPriorCallback(t *testing.T) {
 	}()
 	requireInt(t, evalTestScript(t, `@audit-prior-count`), 1)
 }
+
+func TestAuditUnsupportedResultDoesNotReplayCallback(t *testing.T) {
+	evalTestScript(t, `(def audit-fallback-count (atom 0))`)
+	expr := compileTestExpr(t, `(let [touch (fn [x] (swap! audit-fallback-count inc))] (loop [i 0 value 0N] (if (< i 1) (recur (touch i) value) (zero? value))))`)
+	if irGetCached(expr.(*LetExpr).body[0].(*LoopExpr)) == nil {
+		t.Fatal("IR required")
+	}
+	requireBool(t, Eval(expr, nil), true)
+	requireInt(t, evalTestScript(t, `@audit-fallback-count`), 1)
+}

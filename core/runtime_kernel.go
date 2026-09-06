@@ -11497,6 +11497,15 @@ func irExecTyped(prog *IRProgram, initSlots []coretypes.Object) coretypes.Object
 				pc = int(code[pc])<<8 | int(code[pc+1])
 			}
 
+		case irIsZero:
+			v := stack[len(stack)-1]
+			if v.tag == irValInt {
+				stack[len(stack)-1] = irMakeBool(v.i == 0)
+			} else if v.tag == irValDouble {
+				stack[len(stack)-1] = irMakeBool(v.f == 0)
+			} else {
+				stack[len(stack)-1] = objectToIRValue(procIsZero([]coretypes.Object{v.object()}))
+			}
 		case irEq:
 			b, a := stack[len(stack)-1], stack[len(stack)-2]
 			stack = stack[:len(stack)-2]
