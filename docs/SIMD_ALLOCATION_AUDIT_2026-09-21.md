@@ -46,6 +46,8 @@ Native NEON dispatch, differential, guard-page, concurrent classification, scala
 
 The initial record batch improved 1012.1 to 333.9 us. A follow-up pinned to Cortex-A720 CPU 11 with GOMAXPROCS=1 and ten 100-iteration samples improved 579.5 to 274.8 us (-52.6%, stable timing). However, the strict allocation policy failed: median allocations increased from 307.5 to 308, despite no statistically significant difference (p=0.895). This result is not accepted as a fully passing regression comparison. Both initial and pinned raw samples are retained; investigate cache-allocation variability without weakening the gate.
 
+Direct `testing.AllocsPerRun` checks confirm zero allocations in both scalar and selected SIMD kernels on native amd64 and ARM64, for empty, long ASCII and non-ASCII inputs. This narrows the workload discrepancy to surrounding execution/cache behaviour, but does not waive the failed cache-inclusive regression gate. The final pre-tag gate with browser smoke and full repository race target passed again after adding these checks.
+
 Other limitations: this pass focuses on string scanning and the profiled allocation path, not a fresh proof of every execution tier. The pre-existing unbounded ASCII classification cache remains unchanged. No SSE2 intermediate kernel is provided on non-AVX2 amd64; scalar is the safe fallback. The existing general bootstrap generator limitations are outside this patch.
 
 No release, push or chart refresh is part of this audit. Native ARM64 correctness is verified on Orange Pi; the ARM record-batch allocation-policy discrepancy remains outstanding.

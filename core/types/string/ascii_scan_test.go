@@ -57,3 +57,20 @@ func TestASCIIClassificationConcurrent(t *testing.T) {
 	}
 	wg.Wait()
 }
+
+func TestASCIIScanKernelsDoNotAllocate(t *testing.T) {
+	samples := []string{strings.Repeat("a", 4096), strings.Repeat("a", 4095) + "é", "", "\xff"}
+	for name, kernel := range map[string]func(string) bool{"scalar": scanASCIIScalar, "selected": scanASCII} {
+		for _, s := range samples {
+			want := scanASCIIScalar(s)
+			allocations := testing.AllocsPerRun(1000, func() {
+				if kernel(s) != want {
+					panic("classification mismatch")
+				}
+			})
+			if allocations != 0 {
+				t.Fatalf("%s allocated %g times for %d bytes", name, allocations, len(s))
+			}
+		}
+	}
+}
