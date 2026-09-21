@@ -1,6 +1,10 @@
 package string
 
-import "testing"
+import (
+	"strings"
+	"sync"
+	"testing"
+)
 
 func TestASCIIScanDifferential(t *testing.T) {
 	for offset := 0; offset < 32; offset++ {
@@ -34,4 +38,22 @@ func FuzzASCIIScan(f *testing.F) {
 			t.Fatalf("mismatch for %q", s)
 		}
 	})
+}
+
+func TestASCIIClassificationConcurrent(t *testing.T) {
+	var wg sync.WaitGroup
+	for worker := 0; worker < 8; worker++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for n := 0; n < 128; n++ {
+				for _, s := range []string{strings.Repeat("a", n), strings.Repeat("b", n) + "é"} {
+					if IsASCII(s) != scanASCIIScalar(s) {
+						t.Errorf("classification mismatch")
+					}
+				}
+			}
+		}()
+	}
+	wg.Wait()
 }

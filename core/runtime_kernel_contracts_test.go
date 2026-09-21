@@ -4910,3 +4910,21 @@ func TestSplitWhitespaceVectorCapacityAndSemantics(t *testing.T) {
 		}
 	}
 }
+
+func TestAuditSIMDStringCountAndNthSemantics(t *testing.T) {
+	for _, s := range []string{"", strings.Repeat("a", 31), strings.Repeat("a", 32), strings.Repeat("a", 33), strings.Repeat("x", 64) + "é🙂", "\xff\xfeascii", "a\x00b", "\xe2\x82"} {
+		obj := coretypes.String{S: s}
+		runes := []rune(s)
+		for repeat := 0; repeat < 3; repeat++ {
+			if got := obj.Count(); got != len(runes) {
+				t.Fatalf("%q count=%d want=%d", s, got, len(runes))
+			}
+			for i, want := range runes {
+				got, ok := obj.Nth(i).(coretypes.Char)
+				if !ok || got.Ch != want {
+					t.Fatalf("%q nth%d got=%v want=%v", s, i, got, want)
+				}
+			}
+		}
+	}
+}
