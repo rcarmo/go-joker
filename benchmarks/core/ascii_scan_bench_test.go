@@ -39,8 +39,8 @@ func BenchmarkASCIIColdClassification(b *testing.B) {
 // Model scanning a fresh batch of ASCII log records through the public String
 // count operation. Unique batches avoid cached classification between samples.
 func BenchmarkASCIIRecordBatch(b *testing.B) {
-	if b.N > 100 {
-		b.Skip("use -benchtime=20x for bounded fresh batches")
+	if b.N > 500 {
+		b.Skip("use -benchtime=500x -count=1; repeat in fresh processes for allocation comparisons")
 	}
 	inputs := make([]string, b.N*128)
 	prefix := fmt.Sprintf("batch-%d-", asciiSampleID.Add(1))
