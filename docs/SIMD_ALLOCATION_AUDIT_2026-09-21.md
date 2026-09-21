@@ -38,10 +38,14 @@ A separate model statically reviewed assembly ABI offsets, feature dispatch, red
 * Linux/386 core and string tests passed. All six release platforms plus Linux/386 cross-built with CGO disabled.
 * ARM64 tests executed under QEMU, including explicit NEON dispatch, guard pages, differential and concurrent tests. This is emulated correctness coverage, not native hardware performance validation.
 
-## Native ARM64 handoff still pending
+## Native ARM64 validation
 
-Rui requested an agent on Sigma perform native validation. Sigma is paired/discoverable, but permission refresh requests timed out and the chat directory exposed no usable destination. No request was delivered. A patch and exact test/benchmark instructions are prepared for the peer; native NEON performance remains unmeasured.
+Sigma permission refresh requests timed out; no agent request was delivered. At Rui's direction, validation instead ran in an isolated directory on Orange Pi 6 Plus (`orangepi6plus`, CIX P1 CD8160, Cortex-A520/A720, Linux arm64, Go 1.26.5). Pre-run idle was 99–100%.
+
+Native NEON dispatch, differential, guard-page, concurrent classification, scalar/purego, race and public Unicode string tests passed. Ten-sample cold-classification runs showed 49.9%, 53.1% and 67.9% lower median times for 64-byte, 1KiB and 16KiB payloads. Their allocation counts were unchanged and the regression policy passed, but timing CV was high.
+
+The initial record batch improved 1012.1 to 333.9 us. A follow-up pinned to Cortex-A720 CPU 11 with GOMAXPROCS=1 and ten 100-iteration samples improved 579.5 to 274.8 us (-52.6%, stable timing). However, the strict allocation policy failed: median allocations increased from 307.5 to 308, despite no statistically significant difference (p=0.895). This result is not accepted as a fully passing regression comparison. Both initial and pinned raw samples are retained; investigate cache-allocation variability without weakening the gate.
 
 Other limitations: this pass focuses on string scanning and the profiled allocation path, not a fresh proof of every execution tier. The pre-existing unbounded ASCII classification cache remains unchanged. No SSE2 intermediate kernel is provided on non-AVX2 amd64; scalar is the safe fallback. The existing general bootstrap generator limitations are outside this patch.
 
-No release, push or chart refresh is part of this audit. Native Sigma validation remains an explicit outstanding item.
+No release, push or chart refresh is part of this audit. Native ARM64 correctness is verified on Orange Pi; the ARM record-batch allocation-policy discrepancy remains outstanding.
