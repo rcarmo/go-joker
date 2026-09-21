@@ -36,13 +36,7 @@ func IsASCII(s string) bool {
 	if v, ok := asciiCache.Load(s); ok {
 		return v.(bool)
 	}
-	result := true
-	for i := 0; i < len(s); i++ {
-		if s[i] >= 0x80 {
-			result = false
-			break
-		}
-	}
+	result := scanASCII(s)
 	asciiCache.Store(s, result)
 	return result
 }
