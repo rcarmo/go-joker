@@ -12,6 +12,7 @@ from pathlib import Path
 LINE_RE = re.compile(
     r"^(Benchmark\S+?)(?:-\d+)?\s+\d+\s+"
     r"(?P<ns>\d+(?:\.\d+)?) ns/op"
+    r"(?:\s+\d+(?:\.\d+)? MB/s)?"
     r"(?:\s+(?P<bytes>\d+) B/op)?"
     r"(?:\s+(?P<allocs>\d+) allocs/op)?$"
 )
@@ -50,6 +51,9 @@ def main() -> int:
     baseline = parse(args.baseline)
     candidate = parse(args.candidate)
     failures: list[str] = []
+    if not baseline or not candidate:
+        print("no benchmark samples parsed from baseline or candidate", file=sys.stderr)
+        return 1
     if set(baseline) != set(candidate):
         missing = sorted(set(baseline) - set(candidate))
         added = sorted(set(candidate) - set(baseline))
