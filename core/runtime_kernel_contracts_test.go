@@ -4894,3 +4894,19 @@ func TestAuditOutOfRangeNthDoesNotReplayCallback(t *testing.T) {
 	}()
 	requireInt(t, evalTestScript(t, `@audit-oob-count`), 1)
 }
+
+func TestSplitWhitespaceVectorCapacityAndSemantics(t *testing.T) {
+	for _, s := range []string{"", " \t\r\n", "a b\nc", "a\u00a0b c", "\xff a", strings.Repeat("token ", 4096)} {
+		want := corestr.SplitWhitespace(s)
+		got := splitWhitespaceVector(s)
+		if len(got.Arr) != len(want) {
+			t.Fatalf("length mismatch")
+		}
+		if cap(got.Arr) != len(want) {
+			t.Fatalf("capacity=%d tokens=%d", cap(got.Arr), len(want))
+		}
+		for i, token := range want {
+			requireString(t, got.Arr[i], token)
+		}
+	}
+}

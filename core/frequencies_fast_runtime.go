@@ -25,8 +25,10 @@ var procSplitWhitespace ProcFn = func(args []coretypes.Object) coretypes.Object 
 }
 
 func splitWhitespaceVector(s string) *corecollections.ArrayVector {
+	tokens := corestr.SplitWhitespace(s)
 	res := corecollections.EmptyArrayVector()
-	for _, token := range corestr.SplitWhitespace(s) {
+	res.Arr = make([]coretypes.Object, 0, len(tokens))
+	for _, token := range tokens {
 		res.Append(coretypes.String{S: token})
 	}
 	return res
