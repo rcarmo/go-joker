@@ -27,6 +27,8 @@ jobs:
         run: |
           version=$(sed -n 's/^const VERSION = "\(.*\)"/\1/p' core/runtime/version.go)
           test "$version" = "$GITHUB_REF_NAME"
+      - name: Populate dependency cache for offline consumer checks
+        run: go mod download
       - name: Run canonical release checks
         run: make release-check
       - uses: oven-sh/setup-bun@v2

@@ -28,6 +28,13 @@ grep -A5 '^  build:' "$workflow" | grep -Fq 'attestations: write' || {
   exit 1
 }
 
+for ci in .github/workflows/ci.yml "$workflow"; do
+  grep -Fq 'run: go mod download' "$ci" || {
+    echo "release supply-chain guard: $ci must populate archives before offline module checks" >&2
+    exit 1
+  }
+done
+
 bash -n tests/generate_release_checksums.sh tests/verify_release_assets.sh tests/verify_release_module.sh
 
 fixture=$(mktemp -d "${TMPDIR:-.cache/tmp}/release-assets.XXXXXX")

@@ -26,7 +26,7 @@ Before tagging, run its `pretag-check` wrapper:
 make pretag-check
 ```
 
-`make module-consumer-check` checks the release major against the module declaration and builds an external interpreter consumer and CLI through an offline file proxy, without `replace` or workspace overrides. Populate the dependency cache through the normal build first; this check does not fetch from the network.
+`make module-consumer-check` checks the release major against the module declaration and builds an external interpreter consumer and CLI through an offline file proxy, without `replace` or workspace overrides. Populate the dependency archive cache with `go mod download` first (also done by CI); this check does not fetch from the network. A build alone may omit test-only dependency archives.
 
 `release-check` runs this module consumer check, release hygiene, supply-chain/workflow guards, `joker.ai` lint and offline fixtures, whitespace checks for pending diffs, repository-wide vet and tests, and `make docs-check`. `pretag-check` runs that exact gate and optionally adds the Playwright browser smoke. By default it skips the browser smoke because that requires local browser dependencies; include it when those dependencies are installed with:
 
