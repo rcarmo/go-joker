@@ -1,7 +1,7 @@
 package main
 
 import (
-	corereader "github.com/rcarmo/go-joker/core/reader"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
 	"testing"
 )
 

@@ -1,18 +1,18 @@
 package git
 
 import (
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 	"unsafe"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 
 	git "github.com/go-git/go-git/v5"
 	gitConfig "github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
-	. "github.com/rcarmo/go-joker/core"
-	"github.com/rcarmo/go-joker/core/hashutil"
+	. "github.com/rcarmo/go-joker/v42/core"
+	"github.com/rcarmo/go-joker/v42/core/hashutil"
 )
 
 type (

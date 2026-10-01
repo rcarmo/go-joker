@@ -3,12 +3,12 @@ package main
 import (
 	"bufio"
 	"fmt"
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"net"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func srepl(port string, phase corereader.Phase) {

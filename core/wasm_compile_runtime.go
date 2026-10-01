@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	corewasm "github.com/rcarmo/go-joker/core/wasm"
+	corewasm "github.com/rcarmo/go-joker/v42/core/wasm"
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/api"
 )

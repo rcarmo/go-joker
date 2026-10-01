@@ -1,8 +1,8 @@
 package core
 
 import (
-	coreir "github.com/rcarmo/go-joker/core/ir"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coreir "github.com/rcarmo/go-joker/v42/core/ir"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 // ir_call_dispatch.go — IR-aware function call dispatch for the tree-walker.

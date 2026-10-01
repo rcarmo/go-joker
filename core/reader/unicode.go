@@ -3,7 +3,7 @@ package reader
 import (
 	"strings"
 
-	"github.com/rcarmo/go-joker/core/types/numerical"
+	"github.com/rcarmo/go-joker/v42/core/types/numerical"
 )
 
 // ParseUnicodeCode parses a reader unicode escape/code point using base and

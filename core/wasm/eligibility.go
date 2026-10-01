@@ -1,6 +1,6 @@
 package wasm
 
-import coreir "github.com/rcarmo/go-joker/core/ir"
+import coreir "github.com/rcarmo/go-joker/v42/core/ir"
 
 // Eligible reports whether IR bytecode can map to the pure single-function WASM backend.
 func Eligible(code []byte) bool {

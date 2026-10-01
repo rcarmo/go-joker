@@ -1,8 +1,8 @@
 package term
 
 import (
-	. "github.com/rcarmo/go-joker/core"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	. "github.com/rcarmo/go-joker/v42/core"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 var termNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.term"))

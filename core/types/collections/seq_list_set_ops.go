@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io"
 
-	githubhash "github.com/rcarmo/go-joker/core/hashutil"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	githubhash "github.com/rcarmo/go-joker/v42/core/hashutil"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 // ListNode is root-independent persistent list storage. Root core owns Object,

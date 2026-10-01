@@ -3,7 +3,7 @@ package svg
 import (
 	"bytes"
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"image"
 	"image/color"
 	"math"
@@ -14,8 +14,8 @@ import (
 	"github.com/srwiley/oksvg"
 	"github.com/srwiley/rasterx"
 
-	. "github.com/rcarmo/go-joker/core"
-	imaging "github.com/rcarmo/go-joker/std/imaging"
+	. "github.com/rcarmo/go-joker/v42/core"
+	imaging "github.com/rcarmo/go-joker/v42/std/imaging"
 )
 
 // Canvas wraps an SVG being built.

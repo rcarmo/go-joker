@@ -3,7 +3,7 @@ package collections
 import (
 	"io"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 // Persistent coretypes.Vector — Clojure-style 32-way branching trie with tail optimization.

@@ -5,8 +5,8 @@ import (
 	"io"
 	"strings"
 
-	"github.com/rcarmo/go-joker/core/hashutil"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	"github.com/rcarmo/go-joker/v42/core/hashutil"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 type IndexedView[T coretypes.Object] interface {

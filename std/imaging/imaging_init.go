@@ -1,9 +1,9 @@
 package imaging
 
 import (
-	. "github.com/rcarmo/go-joker/core"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	. "github.com/rcarmo/go-joker/v42/core"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 )
 
 var imagingNamespace = GLOBAL_ENV.EnsureSymbolIsLib(coretypes.MakeSymbol(STRINGS.Intern, "joker.imaging"))

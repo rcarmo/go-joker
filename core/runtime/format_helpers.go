@@ -5,7 +5,7 @@ import (
 	"io"
 	"unicode/utf8"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 func WriteIndent(w io.Writer, n int) {

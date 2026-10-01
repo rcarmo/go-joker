@@ -3,7 +3,7 @@ package pods
 import (
 	"errors"
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"io"
 	"os"
 	"os/exec"
@@ -11,7 +11,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 type podMessage map[string]any

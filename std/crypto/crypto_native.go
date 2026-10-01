@@ -7,7 +7,7 @@ import (
 	"crypto/sha512"
 	"hash"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func hmacSum(algorithm, message, key string) string {

@@ -3,7 +3,7 @@ package core
 import (
 	"context"
 	"fmt"
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 	"io"
 	"io/fs"
 	"math"
@@ -18,15 +18,15 @@ import (
 	"testing"
 	"time"
 
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 
-	coregenerated "github.com/rcarmo/go-joker/core/generated"
-	coreirx "github.com/rcarmo/go-joker/core/ir"
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
-	corewasm "github.com/rcarmo/go-joker/core/wasm"
-	"github.com/rcarmo/go-joker/tests/clbgscripts"
+	coregenerated "github.com/rcarmo/go-joker/v42/core/generated"
+	coreirx "github.com/rcarmo/go-joker/v42/core/ir"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
+	corewasm "github.com/rcarmo/go-joker/v42/core/wasm"
+	"github.com/rcarmo/go-joker/v42/tests/clbgscripts"
 )
 
 // ---- concurrency_ext_test.go ----

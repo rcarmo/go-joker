@@ -2,14 +2,14 @@ package pods
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"time"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 const podDescribeTimeout = 5 * time.Second

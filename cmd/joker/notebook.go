@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	. "github.com/rcarmo/go-joker/core"
-	"github.com/rcarmo/go-joker/internal/notebook"
+	. "github.com/rcarmo/go-joker/v42/core"
+	"github.com/rcarmo/go-joker/v42/internal/notebook"
 )
 
 //go:embed notebook_assets/rich-demo.edn

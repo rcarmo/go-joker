@@ -2,13 +2,13 @@ package main
 
 import (
 	"bytes"
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 	"runtime"
 	"strings"
 	"testing"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func resetArgsForTest(t *testing.T) {

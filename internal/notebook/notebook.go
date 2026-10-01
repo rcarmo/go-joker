@@ -22,10 +22,10 @@ import (
 	"sync"
 	"time"
 
-	core "github.com/rcarmo/go-joker/core"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
-	stdimaging "github.com/rcarmo/go-joker/std/imaging"
+	core "github.com/rcarmo/go-joker/v42/core"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
+	stdimaging "github.com/rcarmo/go-joker/v42/std/imaging"
 )
 
 //go:embed assets/**

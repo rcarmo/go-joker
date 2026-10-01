@@ -11,6 +11,7 @@ for required in \
   'anchore/sbom-action@v0' \
   'tests/generate_release_checksums.sh release-files' \
   'tests/verify_release_assets.sh release-files' \
+  'tests/verify_release_module.sh' \
   'gh release upload "$TAG" release-files/* --clobber'; do
   grep -Fq "$required" "$workflow" || {
     echo "release workflow is missing supply-chain step: $required" >&2
@@ -27,7 +28,7 @@ grep -A5 '^  build:' "$workflow" | grep -Fq 'attestations: write' || {
   exit 1
 }
 
-bash -n tests/generate_release_checksums.sh tests/verify_release_assets.sh
+bash -n tests/generate_release_checksums.sh tests/verify_release_assets.sh tests/verify_release_module.sh
 
 fixture=$(mktemp -d "${TMPDIR:-.cache/tmp}/release-assets.XXXXXX")
 trap 'rm -rf "$fixture"' EXIT

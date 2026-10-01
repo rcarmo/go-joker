@@ -1,7 +1,7 @@
 package os
 
 import (
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 	"io"
 	"math/big"
 	"os"
@@ -9,10 +9,10 @@ import (
 	"strings"
 	"syscall"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func nativeIntObject(n int64) coretypes.Object {

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 type testFileInfo struct{ size int64 }

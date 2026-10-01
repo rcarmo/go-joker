@@ -6,14 +6,14 @@ import (
 	"path/filepath"
 	"sync"
 
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 
 	"github.com/fsnotify/fsnotify"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 type fileWatcher struct {

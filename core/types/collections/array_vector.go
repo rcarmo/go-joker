@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 var (

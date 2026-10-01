@@ -3,8 +3,8 @@
 package yaml
 
 import (
-	. "github.com/rcarmo/go-joker/core"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	. "github.com/rcarmo/go-joker/v42/core"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 var __read_string__P ProcFn = __read_string_

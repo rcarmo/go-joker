@@ -1,12 +1,12 @@
 package core_test
 
 import (
-	. "github.com/rcarmo/go-joker/core"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	. "github.com/rcarmo/go-joker/v42/core"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"math"
 	"testing"
 
-	"github.com/rcarmo/go-joker/tests/clbgscripts"
+	"github.com/rcarmo/go-joker/v42/tests/clbgscripts"
 )
 
 func requireBenchInt(t *testing.T, script string, want int) {

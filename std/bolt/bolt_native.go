@@ -2,16 +2,16 @@ package bolt
 
 import (
 	"bytes"
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 	"math/big"
 	"os"
 	"unsafe"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 
-	. "github.com/rcarmo/go-joker/core"
-	"github.com/rcarmo/go-joker/core/hashutil"
+	. "github.com/rcarmo/go-joker/v42/core"
+	"github.com/rcarmo/go-joker/v42/core/hashutil"
 	bolt "go.etcd.io/bbolt"
 )
 

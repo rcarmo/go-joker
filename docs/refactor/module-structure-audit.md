@@ -11,7 +11,7 @@ This audit reviews the current Go module/package layout after the first refactor
 Module identity is now:
 
 ```text
-github.com/rcarmo/go-joker
+github.com/rcarmo/go-joker/v42
 ```
 
 Current major packages:
@@ -49,7 +49,7 @@ Approximate Go file counts at this audit:
 
 - Root package eliminated: no top-level `.go` files remain.
 - CLI moved to `cmd/joker`.
-- Internal imports/module identity moved to `github.com/rcarmo/go-joker`.
+- Internal imports/module identity moved to `github.com/rcarmo/go-joker/v42`.
 - Guardrails added:
   - `make layout-check`
   - `make import-identity-check`

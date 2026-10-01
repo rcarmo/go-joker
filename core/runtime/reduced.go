@@ -1,6 +1,6 @@
 package runtime
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import coretypes "github.com/rcarmo/go-joker/v42/core/types"
 
 // Reduced wraps a value to signal early termination in reduce/transduce.
 type Reduced struct {

@@ -1,8 +1,8 @@
 package term
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 )
 
 func makeTestVector(r, g, b int) coretypes.Object {

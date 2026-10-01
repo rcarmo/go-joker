@@ -1,6 +1,6 @@
 package runtime
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import coretypes "github.com/rcarmo/go-joker/v42/core/types"
 
 func IsNil(obj coretypes.Object) bool {
 	if obj == nil {

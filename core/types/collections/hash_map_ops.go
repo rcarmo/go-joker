@@ -1,6 +1,6 @@
 package collections
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import coretypes "github.com/rcarmo/go-joker/v42/core/types"
 
 // BitCount returns the number of set bits in n.
 func BitCount(n int) int {

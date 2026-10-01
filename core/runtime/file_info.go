@@ -4,8 +4,8 @@ import (
 	"math/big"
 	"os"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 )
 
 func FileInfoMap(name string, info os.FileInfo, intern func(string) *string) coretypes.Map {

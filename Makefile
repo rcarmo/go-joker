@@ -30,7 +30,7 @@ BENCH_OUT ?= .cache/benchmarks/candidate.txt
 BENCH_BASELINE ?=
 BENCH_REPORT ?= .cache/benchmarks/benchstat.txt
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check ai-check docs-paths-check release-hygiene-check release-supply-chain-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check ai-check docs-paths-check release-hygiene-check release-supply-chain-check module-consumer-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -76,11 +76,12 @@ help:
 	@echo "  make docs-paths-check # Guard stale moved-example paths in docs/examples"
 	@echo "  make release-hygiene-check # Verify VERSION/README/release-note consistency"
 	@echo "  make release-supply-chain-check # Verify checksums/SBOM/provenance workflow contracts"
+	@echo "  make module-consumer-check # Verify versioned Go imports from an offline external consumer"
 	@echo "  make release-check  # Canonical local and CI release gate"
 	@echo "  make pretag-check   # release-check plus optional browser smoke"
 	@echo "  make generated-check # Verify generated-file boundary guardrails"
 	@echo "  make generated-bootstrap-check # Verify generated bootstrap manifest equivalence"
-	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker"
+	@echo "  make import-identity-check # Verify internal imports use github.com/rcarmo/go-joker/v42"
 	@echo "  make non-goals-check # Verify explicit non-goals remain documented"
 	@echo "  make layout-check    # Verify top-level refactor layout invariants"
 	@echo "  make native-int-check # Verify 32-bit/native-int audit TODOs are closed"
@@ -290,7 +291,12 @@ release-hygiene-check:
 release-supply-chain-check:
 	tests/release_supply_chain_guard.sh .
 
-release-check: release-hygiene-check release-supply-chain-check workflow-policy-check ai-check
+module-consumer-check:
+	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)"
+	$(GO) test ./tools/modulecheck -count=1
+	$(GO) run ./tools/modulecheck .
+
+release-check: release-hygiene-check release-supply-chain-check workflow-policy-check ai-check module-consumer-check
 	git diff --check
 	$(GO) vet ./...
 	$(GO) test ./... -timeout 10m -count=1

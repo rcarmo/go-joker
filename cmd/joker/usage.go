@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 	"io"
 )
 

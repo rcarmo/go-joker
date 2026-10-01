@@ -2,10 +2,10 @@ package pods
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"time"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 const podInvokeTimeout = 30 * time.Second

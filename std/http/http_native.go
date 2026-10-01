@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"context"
 	"fmt"
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 	"io"
 	"math/big"
 	"net"
@@ -15,12 +15,12 @@ import (
 	"time"
 	"unsafe"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 
 	ws "github.com/gorilla/websocket"
-	. "github.com/rcarmo/go-joker/core"
-	"github.com/rcarmo/go-joker/core/hashutil"
+	. "github.com/rcarmo/go-joker/v42/core"
+	"github.com/rcarmo/go-joker/v42/core/hashutil"
 )
 
 var client = newPersistentHTTPClient(100, 100, 90*time.Second)

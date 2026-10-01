@@ -1,7 +1,7 @@
 package types
 
 import (
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
 var asciiCharStringObjects = corestr.NewObjectCache(func(ch rune) Object {

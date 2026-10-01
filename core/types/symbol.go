@@ -3,8 +3,8 @@ package types
 import (
 	"fmt"
 
-	"github.com/rcarmo/go-joker/core/hashutil"
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	"github.com/rcarmo/go-joker/v42/core/hashutil"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
 const KeywordHashMask uint32 = 0x7334c790

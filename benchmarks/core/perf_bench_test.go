@@ -1,7 +1,7 @@
 package core_test
 
 import (
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 	"io"
 	"strings"
 	"testing"

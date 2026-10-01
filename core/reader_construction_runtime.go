@@ -5,9 +5,9 @@ import (
 	"math/big"
 	"regexp"
 
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 )
 
 // ---- reader_construction.go ----

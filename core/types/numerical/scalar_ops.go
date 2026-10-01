@@ -6,7 +6,7 @@ import (
 	"math"
 	"math/big"
 
-	"github.com/rcarmo/go-joker/core/hashutil"
+	"github.com/rcarmo/go-joker/v42/core/hashutil"
 )
 
 func NumericFloat(v interface{}) (float64, bool) {

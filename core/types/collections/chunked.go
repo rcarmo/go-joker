@@ -1,6 +1,6 @@
 package collections
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import coretypes "github.com/rcarmo/go-joker/v42/core/types"
 
 func ChunkAppend[T any](arr []T, value T) ([]T, int) {
 	arr = append(arr, value)

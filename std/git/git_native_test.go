@@ -1,11 +1,11 @@
 package git
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"testing"
 
 	gitConfig "github.com/go-git/go-git/v5/config"
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func expectGitPanic(t *testing.T, fn func()) {

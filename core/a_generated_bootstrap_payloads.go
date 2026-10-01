@@ -10,11 +10,11 @@ import (
 	"reflect"
 	"regexp"
 
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
 // ---- a_better_cond_code.go ----

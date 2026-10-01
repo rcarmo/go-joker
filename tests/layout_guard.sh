@@ -126,15 +126,15 @@ if grep -R -E 'var atom_NUM_[0-9]+ Atom|Atom = Atom\{|\*Atom\)\(nil\)' core --in
 fi
 
 for pkg in runtime reader types/collections types/string types/numerical; do
-  if grep -R 'github.com/rcarmo/go-joker/core"' "core/${pkg}" --include='*.go' >/dev/null; then
+  if grep -R 'github.com/rcarmo/go-joker/v42/core"' "core/${pkg}" --include='*.go' >/dev/null; then
     fail "core/${pkg} must not import root core; define an adapter contract before moving coupled code"
   fi
 done
 if grep -q '^type EscapeInfo struct' core/runtime_kernel.go; then
   fail "IR escape analysis is owned by core/ir; do not reintroduce it in runtime_kernel.go"
 fi
-if grep -R 'github.com/rcarmo/go-joker/core/runtime' core/types --include='*.go' >/dev/null; then
-  grep -R 'github.com/rcarmo/go-joker/core/runtime' core/types --include='*.go' >&2
+if grep -R 'github.com/rcarmo/go-joker/v42/core/runtime' core/types --include='*.go' >/dev/null; then
+  grep -R 'github.com/rcarmo/go-joker/v42/core/runtime' core/types --include='*.go' >&2
   fail "core/types must not import core/runtime; runtime object wrappers own runtime-dependent behavior"
 fi
 
@@ -144,8 +144,8 @@ for artifact in core.test joker transit.test; do
   fi
 done
 
-if ! grep -qx 'module github.com/rcarmo/go-joker' go.mod; then
-  fail "go.mod module path is not github.com/rcarmo/go-joker"
+if ! grep -qx 'module github.com/rcarmo/go-joker/v42' go.mod; then
+  fail "go.mod module path is not github.com/rcarmo/go-joker/v42"
 fi
 
 exit "$status"

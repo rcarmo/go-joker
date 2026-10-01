@@ -4,7 +4,7 @@ import (
 	"encoding/gob"
 	"math/big"
 
-	"github.com/rcarmo/go-joker/core/hashutil"
+	"github.com/rcarmo/go-joker/v42/core/hashutil"
 )
 
 func MakeMathBigIntFromInt(i int) *big.Int     { return MakeMathBigIntFromInt64(int64(i)) }

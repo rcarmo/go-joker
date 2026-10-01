@@ -4,7 +4,7 @@ import (
 	"errors"
 	"unicode"
 
-	"github.com/rcarmo/go-joker/core/types/numerical"
+	"github.com/rcarmo/go-joker/v42/core/types/numerical"
 )
 
 type NumberTokenKind int

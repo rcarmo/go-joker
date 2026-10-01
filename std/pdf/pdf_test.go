@@ -1,13 +1,13 @@
 package pdf
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"math"
 	"os"
 	"path/filepath"
 	"testing"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func expectPanic(t *testing.T, fn func()) {

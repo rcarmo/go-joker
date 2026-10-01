@@ -6,8 +6,8 @@ import (
 	"io"
 	"os"
 
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 type File struct{ *corereader.File }

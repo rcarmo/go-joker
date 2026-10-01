@@ -3,8 +3,8 @@
 package base64
 
 import (
-	. "github.com/rcarmo/go-joker/core"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	. "github.com/rcarmo/go-joker/v42/core"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 var __decode_string__P ProcFn = __decode_string_

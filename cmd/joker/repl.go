@@ -6,8 +6,8 @@ package main
 import (
 	"bufio"
 	"fmt"
-	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"io"
 	"os"
 	"path/filepath"
@@ -16,9 +16,9 @@ import (
 	"strings"
 
 	"github.com/candid82/liner"
-	. "github.com/rcarmo/go-joker/core"
-	"github.com/rcarmo/go-joker/core/osutil"
-	corereader "github.com/rcarmo/go-joker/core/reader"
+	. "github.com/rcarmo/go-joker/v42/core"
+	"github.com/rcarmo/go-joker/v42/core/osutil"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
 )
 
 var qualifiedSymbolRe *regexp.Regexp = regexp.MustCompile(`([0-9A-Za-z_\-\+\*\'\.]+)/([0-9A-Za-z_\-\+\*\']*$)`)

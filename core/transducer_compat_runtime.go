@@ -3,10 +3,10 @@ package core
 import (
 	"unsafe"
 
-	"github.com/rcarmo/go-joker/core/hashutil"
-	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	"github.com/rcarmo/go-joker/v42/core/hashutil"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 )
 
 // ---- transducer_compat.go ----

@@ -21,7 +21,7 @@ package core
 `
 
 var importFmt string = `
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import coretypes "github.com/rcarmo/go-joker/v42/core/types"
 `
 
 var ensureObjectIsTemplate string = `
@@ -111,7 +111,7 @@ func generateInfo(types []string) {
 
 	_, err = f.WriteString(header)
 	checkError(err)
-	_, err = f.WriteString(`import coretypes "github.com/rcarmo/go-joker/core/types"
+	_, err = f.WriteString(`import coretypes "github.com/rcarmo/go-joker/v42/core/types"
 `)
 	checkError(err)
 	for _, t := range types {

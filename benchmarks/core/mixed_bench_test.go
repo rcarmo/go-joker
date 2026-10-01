@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	. "github.com/rcarmo/go-joker/core"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
-	corewasm "github.com/rcarmo/go-joker/core/wasm"
+	. "github.com/rcarmo/go-joker/v42/core"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
+	corewasm "github.com/rcarmo/go-joker/v42/core/wasm"
 	"github.com/tetratelabs/wazero"
 )
 

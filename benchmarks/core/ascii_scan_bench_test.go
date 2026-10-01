@@ -2,8 +2,8 @@ package core_test
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 	"strings"
 	"sync/atomic"
 	"testing"

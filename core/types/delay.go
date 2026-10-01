@@ -4,7 +4,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/rcarmo/go-joker/core/hashutil"
+	"github.com/rcarmo/go-joker/v42/core/hashutil"
 )
 
 type Delay struct {

@@ -4,8 +4,8 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/rcarmo/go-joker/core/hashutil"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	"github.com/rcarmo/go-joker/v42/core/hashutil"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 // Atom holds synchronous mutable state with Joker object/ref protocols.

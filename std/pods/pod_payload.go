@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 
-	. "github.com/rcarmo/go-joker/core"
-	edn "github.com/rcarmo/go-joker/std/edn"
-	transit "github.com/rcarmo/go-joker/std/transit"
+	. "github.com/rcarmo/go-joker/v42/core"
+	edn "github.com/rcarmo/go-joker/v42/std/edn"
+	transit "github.com/rcarmo/go-joker/v42/std/transit"
 )
 
 func (p *Pod) encodeArgs(args []coretypes.Object) (string, error) {

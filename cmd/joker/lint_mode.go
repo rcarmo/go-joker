@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func runLintMode() bool {

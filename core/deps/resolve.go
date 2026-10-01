@@ -3,7 +3,7 @@ package deps
 import (
 	"path/filepath"
 
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
 // ResolveRelativeLibPath resolves a dotted library name relative to the file

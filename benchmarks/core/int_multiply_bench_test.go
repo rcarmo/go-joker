@@ -1,8 +1,8 @@
 package core_test
 
 import (
-	core "github.com/rcarmo/go-joker/core"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	core "github.com/rcarmo/go-joker/v42/core"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"testing"
 )
 

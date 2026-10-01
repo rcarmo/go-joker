@@ -1,11 +1,11 @@
 package io
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"math"
 	"testing"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func TestCopyCountObjectPromotesOutsideNativeRange(t *testing.T) {

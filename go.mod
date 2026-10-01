@@ -1,4 +1,4 @@
-module github.com/rcarmo/go-joker
+module github.com/rcarmo/go-joker/v42
 
 go 1.25.0
 
@@ -21,6 +21,7 @@ require (
 	github.com/zeebo/bencode v1.0.0
 	go.etcd.io/bbolt v1.3.7
 	golang.org/x/image v0.44.0
+	golang.org/x/sys v0.47.0
 	golang.org/x/term v0.45.0
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -49,7 +50,6 @@ require (
 	golang.org/x/crypto v0.54.0 // indirect
 	golang.org/x/net v0.57.0 // indirect
 	golang.org/x/perf v0.0.0-20260709024250-82a0b07e230d // indirect
-	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/text v0.40.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )

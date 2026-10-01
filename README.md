@@ -102,7 +102,7 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 
 <img src="benchmarks/architecture.svg" alt="architecture" width="100%">
 
-Start with [`docs/START_HERE.md`](docs/START_HERE.md) for the shortest contributor path through build, focused validation, API-stability, fuzz-smoke, and release-check expectations. The repository layout is being split along architectural boundaries in small, contract-tested slices rather than by broad rewrites. The module identity is `github.com/rcarmo/go-joker`, the CLI lives in `cmd/joker`, tracing/IR/WASM/runtime leaf helpers are under `core/{trace,ir,wasm,runtime}`, data-only generated payloads and registries are under `core/generated`, and collection/reader construction is routed through guarded adapters before any package moves. [`docs/refactor/README.md`](docs/refactor/README.md) and its linked notes describe the current boundary inventory and historical split context; active work should stay in issue/plan tooling unless it needs durable user-facing documentation. Standard validation now includes generated-file/bootstrap, import-identity, non-goal, layout, refactor-internal, native-int, error-handling, core object/protocol, runtime execution, std native-boundary, docs, Babashka fixture, test, and vet guardrails.
+Start with [`docs/START_HERE.md`](docs/START_HERE.md) for the shortest contributor path through build, focused validation, API-stability, fuzz-smoke, and release-check expectations. The repository layout is being split along architectural boundaries in small, contract-tested slices rather than by broad rewrites. The module identity is `github.com/rcarmo/go-joker/v42`, the CLI lives in `cmd/joker`, tracing/IR/WASM/runtime leaf helpers are under `core/{trace,ir,wasm,runtime}`, data-only generated payloads and registries are under `core/generated`, and collection/reader construction is routed through guarded adapters before any package moves. [`docs/refactor/README.md`](docs/refactor/README.md) and its linked notes describe the current boundary inventory and historical split context; active work should stay in issue/plan tooling unless it needs durable user-facing documentation. Standard validation now includes generated-file/bootstrap, import-identity, non-goal, layout, refactor-internal, native-int, error-handling, core object/protocol, runtime execution, std native-boundary, docs, Babashka fixture, test, and vet guardrails.
 
 - **WASM path**: pure integer/float loops → wazero JIT → native code (~0.2ms)
 - **Typed IR path**: primitive/string/cursor loops → irValue stack, zero-boxing (~2–8ms)
@@ -113,6 +113,28 @@ Start with [`docs/START_HERE.md`](docs/START_HERE.md) for the shortest contribut
 - **Wiki/static-site example**: `examples/wiki/static.joke` ports the wiki/static subset of `rcarmo/sushy` from Hy to Joker: folder-per-page content, RFC2822-style front matter, Markdown/plain/HTML rendering, dynamic serving via `joker.http/start-server`, static build output, Atom feed, sitemap, aliases/interwiki mappings, and static asset copying.
 
 The [execution-tier audit](docs/EXECUTION_TIER_AUDIT.md) documents numeric promotion, exact arithmetic, callback/fallback safety, WASM eligibility restrictions and remaining limitations. The [September benchmark refresh](docs/BENCHMARK_RESULTS_2026-09-06.md) records current measurements separately from historical charts.
+
+## Using from Go
+
+Install the module with Go 1.25 or newer:
+
+```sh
+go get github.com/rcarmo/go-joker/v42@v42.11.3
+```
+
+Package imports include the major version, for example:
+
+```go
+import "github.com/rcarmo/go-joker/v42/core"
+```
+
+To install the CLI:
+
+```sh
+go install github.com/rcarmo/go-joker/v42/cmd/joker@v42.11.3
+```
+
+`v42.11.3` is the first v42 release with a valid Go module path. Existing Go consumers must add `/v42` to their imports and run `go mod tidy`. Earlier v42 tags lacked this suffix and cannot be selected as module versions; those tags remain unchanged. Repository and source URLs still use `github.com/rcarmo/go-joker`.
 
 ## Building & testing
 
@@ -217,8 +239,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.11.2.
-Release notes: [`docs/RELEASE_NOTES_v42.11.2.md`](docs/RELEASE_NOTES_v42.11.2.md).
+Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.11.3.
+Release notes: [`docs/RELEASE_NOTES_v42.11.3.md`](docs/RELEASE_NOTES_v42.11.3.md).
 Audit report: [`docs/AUDIT_REPORT_2026-07-09.md`](docs/AUDIT_REPORT_2026-07-09.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 

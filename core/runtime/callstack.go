@@ -3,9 +3,9 @@ package runtime
 import (
 	"fmt"
 
-	"github.com/rcarmo/go-joker/core/bufferpool"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	"github.com/rcarmo/go-joker/v42/core/bufferpool"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
 // Traceable is the minimal runtime-facing interface required for stack frames.

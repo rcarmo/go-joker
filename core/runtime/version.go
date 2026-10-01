@@ -1,12 +1,12 @@
 package runtime
 
 import (
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
-const VERSION = "v42.11.2"
+const VERSION = "v42.11.3"
 
 func VersionMap(intern func(string) *string) coretypes.Map {
 	res := corecollections.EmptyArrayMap()

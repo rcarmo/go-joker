@@ -3,8 +3,8 @@ package types
 import (
 	"math/big"
 
-	"github.com/rcarmo/go-joker/core/types/numerical"
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	"github.com/rcarmo/go-joker/v42/core/types/numerical"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
 type Double struct{ D float64 }

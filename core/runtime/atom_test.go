@@ -4,7 +4,7 @@ import (
 	"sync"
 	"testing"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 type atomTestCallable func([]coretypes.Object) coretypes.Object

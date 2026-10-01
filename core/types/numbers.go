@@ -3,7 +3,7 @@ package types
 import (
 	"math/big"
 
-	"github.com/rcarmo/go-joker/core/types/numerical"
+	"github.com/rcarmo/go-joker/v42/core/types/numerical"
 )
 
 // Number is the numeric object protocol shared by scalar and big numeric values.

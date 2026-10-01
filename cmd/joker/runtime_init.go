@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 	"os"
 	"strings"
 
-	. "github.com/rcarmo/go-joker/core"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	. "github.com/rcarmo/go-joker/v42/core"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 )
 
 func runEmbeddedSource(src string) {

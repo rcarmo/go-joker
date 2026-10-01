@@ -2,9 +2,9 @@ package pods
 
 import (
 	"fmt"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func installPodDescribeNamespaces(p *Pod, describe podMessage) error {

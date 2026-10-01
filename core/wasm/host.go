@@ -1,6 +1,6 @@
 package wasm
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import coretypes "github.com/rcarmo/go-joker/v42/core/types"
 
 const HostModuleName = "joker"
 

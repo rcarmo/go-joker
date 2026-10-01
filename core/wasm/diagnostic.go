@@ -1,6 +1,6 @@
 package wasm
 
-import coreir "github.com/rcarmo/go-joker/core/ir"
+import coreir "github.com/rcarmo/go-joker/v42/core/ir"
 
 type Diagnostic struct {
 	Eligible   bool

@@ -3,7 +3,7 @@ package base64
 import (
 	"encoding/base64"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func decodeString(s string) string {

@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    tags: ['v*']
+    tags: ['v42.*']
 
 permissions: {}
 
@@ -146,6 +146,13 @@ jobs:
           REVISION: ${{ github.sha }}
         run: tests/verify_release_assets.sh release-files "$TAG" "$REVISION"
 
+      - name: Verify public Go module and CLI installation
+        env:
+          TAG: ${{ github.ref_name }}
+          REVISION: ${{ github.sha }}
+          GOPROXY: https://proxy.golang.org
+        run: tests/verify_release_module.sh "$TAG" "$REVISION"
+
       - name: Generate release notes
         env:
           REPO: ${{ github.repository }}
@@ -158,6 +165,10 @@ jobs:
             echo
             echo "Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
             echo
+            if [ -f "docs/RELEASE_NOTES_${TAG}.md" ]; then
+              tail -n +3 "docs/RELEASE_NOTES_${TAG}.md"
+              echo
+            fi
             echo "## Binaries"
             echo
             find release-files -maxdepth 1 -type f -name 'joker-*' ! -name '*.spdx.json' -printf '%f\n' | LC_ALL=C sort | sed 's/^/- /'

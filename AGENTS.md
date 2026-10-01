@@ -135,8 +135,8 @@ import (
 
     "github.com/pkg/profile"
 
-    . "github.com/rcarmo/go-joker/core"
-    _ "github.com/rcarmo/go-joker/std/string"
+    . "github.com/rcarmo/go-joker/v42/core"
+    _ "github.com/rcarmo/go-joker/v42/std/string"
 )
 ```
 

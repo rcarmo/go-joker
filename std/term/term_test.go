@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 func TestResetStyleReturnsString(t *testing.T) {

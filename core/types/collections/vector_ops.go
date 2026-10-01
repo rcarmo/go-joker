@@ -1,6 +1,6 @@
 package collections
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import coretypes "github.com/rcarmo/go-joker/v42/core/types"
 
 // CloneSlice returns a copy of src preserving its length and capacity.
 func CloneSlice[T any](src []T) []T {

@@ -23,6 +23,10 @@ for platform in "${platforms[@]}"; do
   [[ -s $sbom ]] || { echo "missing or empty release SBOM: $sbom" >&2; exit 1; }
 
   metadata=$(go version -m "$binary")
+  grep -Fxq $'\tpath\tgithub.com/rcarmo/go-joker/v42/cmd/joker' <<<"$metadata" || {
+    echo "$binary has an unexpected Go command module path" >&2
+    exit 1
+  }
   grep -Fq $'\tbuild\tvcs.revision='"$expected_revision" <<<"$metadata" || {
     echo "$binary was not built from $expected_revision" >&2
     exit 1

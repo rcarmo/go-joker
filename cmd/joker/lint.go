@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 	"os"
 	"path/filepath"
 	"strings"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func makeDialectKeyword(dialect corereader.Dialect) coretypes.Keyword {

@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	corert "github.com/rcarmo/go-joker/core/runtime"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func handleCompile(args []string) {

@@ -4,9 +4,9 @@ package hex
 
 import (
 	"encoding/hex"
-	. "github.com/rcarmo/go-joker/core"
-	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	. "github.com/rcarmo/go-joker/v42/core"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 var __decode_string__P ProcFn = __decode_string_

@@ -3,9 +3,9 @@ package core
 import (
 	"sync"
 
-	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 )
 
 var hotReducerFnCache sync.Map // *Fn -> reducer proc name string

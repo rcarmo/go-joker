@@ -6,7 +6,7 @@ package uuid
 import (
 	"crypto/rand"
 	"encoding/hex"
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 	"io"
 )
 

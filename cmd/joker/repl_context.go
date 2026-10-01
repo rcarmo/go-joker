@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"io"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 var dataRead = []rune{}

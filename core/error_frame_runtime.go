@@ -3,8 +3,8 @@ package core
 import (
 	"fmt"
 
-	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 )
 
 func cloneGRT() *goroutineRT {

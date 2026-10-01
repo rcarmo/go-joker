@@ -3,11 +3,11 @@ package edn
 import (
 	"bufio"
 	"errors"
-	coretypes "github.com/rcarmo/go-joker/core/types"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
 	"io"
 	"strings"
 
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 )
 
 func readEDNString(s string) coretypes.Object {

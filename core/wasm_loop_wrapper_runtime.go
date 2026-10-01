@@ -1,6 +1,6 @@
 package core
 
-import coretypes "github.com/rcarmo/go-joker/core/types"
+import coretypes "github.com/rcarmo/go-joker/v42/core/types"
 
 func buildWasmLoopWrapper(fn *Fn, arity FnArityExpr, loop *LoopExpr, loopProg *IRProgram) coretypes.Object {
 	le := (*LetExpr)(loop)

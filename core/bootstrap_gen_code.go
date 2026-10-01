@@ -7,14 +7,14 @@ package core
 
 import (
 	"fmt"
-	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
 	"io"
 	"reflect"
 
-	gen_go "github.com/rcarmo/go-joker/core/gen/gengo"
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	gen_go "github.com/rcarmo/go-joker/v42/core/gen/gengo"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
 func filenameAsGo(name string) string {

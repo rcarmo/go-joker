@@ -1,10 +1,10 @@
 package core_test
 
 import (
-	. "github.com/rcarmo/go-joker/core"
+	. "github.com/rcarmo/go-joker/v42/core"
 	"testing"
 
-	"github.com/rcarmo/go-joker/tests/clbgscripts"
+	"github.com/rcarmo/go-joker/v42/tests/clbgscripts"
 )
 
 func BenchmarkCLBGFannkuchRedux(b *testing.B) {

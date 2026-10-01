@@ -15,16 +15,16 @@ import (
 	"strconv"
 	"strings"
 
-	_ "github.com/rcarmo/go-joker/std/html"
-	_ "github.com/rcarmo/go-joker/std/string"
+	_ "github.com/rcarmo/go-joker/v42/std/html"
+	_ "github.com/rcarmo/go-joker/v42/std/string"
 
-	. "github.com/rcarmo/go-joker/core"
-	gen_go "github.com/rcarmo/go-joker/core/gen/gengo"
-	corereader "github.com/rcarmo/go-joker/core/reader"
-	corert "github.com/rcarmo/go-joker/core/runtime"
-	coretypes "github.com/rcarmo/go-joker/core/types"
-	corecollections "github.com/rcarmo/go-joker/core/types/collections"
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	. "github.com/rcarmo/go-joker/v42/core"
+	gen_go "github.com/rcarmo/go-joker/v42/core/gen/gengo"
+	corereader "github.com/rcarmo/go-joker/v42/core/reader"
+	corert "github.com/rcarmo/go-joker/v42/core/runtime"
+	coretypes "github.com/rcarmo/go-joker/v42/core/types"
+	corecollections "github.com/rcarmo/go-joker/v42/core/types/collections"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
 type FileInfo struct {
@@ -370,8 +370,8 @@ func main() {
 	statics := []string{}
 	runtime := []string{}
 	imports := NewImports()
-	AddImport(imports, "corert", "github.com/rcarmo/go-joker/core/runtime", false)
-	AddImport(imports, "corecollections", "github.com/rcarmo/go-joker/core/types/collections", false)
+	AddImport(imports, "corert", "github.com/rcarmo/go-joker/v42/core/runtime", false)
+	AddImport(imports, "corecollections", "github.com/rcarmo/go-joker/v42/core/types/collections", false)
 
 	// Mark "everything" as used.
 	ResetUsage()

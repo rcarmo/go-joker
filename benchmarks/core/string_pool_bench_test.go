@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	corestr "github.com/rcarmo/go-joker/core/types/string"
+	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
 func BenchmarkStringPoolHotReadParallel(b *testing.B) {
