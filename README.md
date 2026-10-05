@@ -126,7 +126,7 @@ The [execution-tier audit](docs/EXECUTION_TIER_AUDIT.md) documents numeric promo
 Install the module with Go 1.25 or newer:
 
 ```sh
-go get github.com/rcarmo/go-joker/v42@v42.11.4
+go get github.com/rcarmo/go-joker/v42@v42.12.0
 ```
 
 Package imports include the major version, for example:
@@ -138,7 +138,7 @@ import "github.com/rcarmo/go-joker/v42/core"
 To install the CLI:
 
 ```sh
-go install github.com/rcarmo/go-joker/v42/cmd/joker@v42.11.4
+go install github.com/rcarmo/go-joker/v42/cmd/joker@v42.12.0
 ```
 
 `v42.11.3` is the first v42 release with a valid Go module path. Existing Go consumers must add `/v42` to their imports and run `go mod tidy`. Earlier v42 tags lacked this suffix and cannot be selected as module versions; those tags remain unchanged. Repository and source URLs still use `github.com/rcarmo/go-joker`.
@@ -247,8 +247,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.11.4.
-Release notes: [`docs/RELEASE_NOTES_v42.11.4.md`](docs/RELEASE_NOTES_v42.11.4.md).
+Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.12.0.
+Release notes: [`docs/RELEASE_NOTES_v42.12.0.md`](docs/RELEASE_NOTES_v42.12.0.md).
 Audit report: [`docs/AUDIT_REPORT_2026-07-09.md`](docs/AUDIT_REPORT_2026-07-09.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 

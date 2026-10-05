@@ -12,7 +12,7 @@ var initialize = unavailable
 
 func init() {
 	namespace.Lazy = func() {
-		namespace.ResetMeta(core.MakeMeta(nil, "Optional fixed-signature C ABI calls for trusted scripts. Build with joker_ffi; see docs/FFI.md.", "42.11.4-dev"))
+		namespace.ResetMeta(core.MakeMeta(nil, "Optional fixed-signature C ABI calls for trusted scripts. Build with joker_ffi; see docs/FFI.md.", "42.12.0"))
 		initialize()
 	}
 }
@@ -25,6 +25,6 @@ func unavailable() {
 	} {
 		namespace.InternVar(name, core.Proc{Name: name, Package: "std/ffi", Fn: func([]types.Object) types.Object {
 			panic(core.RT.NewError("ffi unavailable: build with -tags joker_ffi on Linux/macOS/Windows amd64/arm64"))
-		}}, core.MakeMeta(nil, doc, "42.11.4-dev"))
+		}}, core.MakeMeta(nil, doc, "42.12.0"))
 	}
 }

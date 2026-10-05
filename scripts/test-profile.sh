@@ -29,6 +29,15 @@ printf 'Profiles and analysis: %s\n' "$run"
 printf '%s\n' "$run" > "$PROFILE_ROOT/latest-run.txt"
 printf 'go=%s\n' "$GO" > "$run/invocation.txt"
 "$GO" version >> "$run/invocation.txt" 2>&1
+{
+  printf 'cwd=%s\nheap_sampling_bytes=%s\ncpu_sampling=Go test default (100Hz)\n' "$PWD" "$PROFILE_MEM_RATE"
+  printf 'revision='; git rev-parse HEAD 2>/dev/null || printf 'external consumer (see parent release invocation)\n'
+  git status --short 2>/dev/null || true
+  "$GO" env GOOS GOARCH GOAMD64 CGO_ENABLED GOTOOLCHAIN
+  for flag in "${flags[@]}"; do
+    case "$flag" in -fuzz|-fuzz=*) printf 'Fuzz workers/subprocesses are not covered by parent profiles; profile representative seeds separately.\n' ;; esac
+  done
+} >> "$run/invocation.txt" 2>&1
 printf 'package patterns:' >> "$run/invocation.txt"; printf ' %q' "${patterns[@]}" >> "$run/invocation.txt"
 printf '\nflags:' >> "$run/invocation.txt"; printf ' %q' "${flags[@]}" >> "$run/invocation.txt"; printf '\n' >> "$run/invocation.txt"
 list_flags=()

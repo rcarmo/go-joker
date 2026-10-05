@@ -31,6 +31,8 @@ jobs:
         run: go mod download
       - name: Run canonical release checks
         run: make release-check
+      - name: Test optional no-cgo FFI and fluid solver
+        run: make ffi-check
       - uses: oven-sh/setup-bun@v2
       - name: Install notebook browser smoke dependencies
         run: |

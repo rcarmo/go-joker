@@ -241,7 +241,7 @@ func bind(lib *Library, name string, args []string, ret string) *Function {
 func init() { initialize = initNamespace }
 func initNamespace() {
 	add := func(name, doc string, fn core.ProcFn) {
-		namespace.InternVar(name, core.Proc{Fn: fn, Name: name, Package: "std/ffi"}, core.MakeMeta(nil, doc, "42.11.4-dev"))
+		namespace.InternVar(name, core.Proc{Fn: fn, Name: name, Package: "std/ffi"}, core.MakeMeta(nil, doc, "42.12.0"))
 	}
 	add("open", "Load an absolute library path. Trusted native execution; library stays loaded for process lifetime.", func(a []types.Object) types.Object {
 		core.CheckArity(a, 1, 1)
