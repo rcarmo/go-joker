@@ -34,32 +34,6 @@ func TestGoIDConcurrentStable(t *testing.T) {
 	}
 }
 
-func BenchmarkGoID(b *testing.B) {
-	b.ReportAllocs()
-	for range b.N {
-		if GoID() <= 0 {
-			b.Fatal("missing goroutine ID")
-		}
-	}
-}
-
-func BenchmarkRegisteredInterpreterCurrent(b *testing.B) {
-	// Create the pool on a different goroutine: registering the pool's main
-	// goroutine deliberately leaves Current() selecting the main state.
-	ready := make(chan *InterpreterStatePool, 1)
-	go func() { ready <- NewInterpreterStatePool(NewGoroutineRT(1)) }()
-	pool := <-ready
-	want := pool.Register(1)
-	defer pool.Unregister()
-	b.ReportAllocs()
-	b.ResetTimer()
-	for range b.N {
-		if pool.Current() != want {
-			b.Fatal("wrong runtime state")
-		}
-	}
-}
-
 func TestGoIDIsPositive(t *testing.T) {
 	if id := GoID(); id <= 0 {
 		t.Fatalf("GoID() = %d, want > 0", id)

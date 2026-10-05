@@ -8,7 +8,7 @@ All Go test targets now capture CPU and heap profiles, retain binaries/logs and 
 make test-repro
 make test-core
 make race
-PROFILE_MEM_RATE=1 scripts/test-profile.sh ./core/runtime -- -run 'TestGoID' -bench BenchmarkGoID -benchtime=10000x
+PROFILE_MEM_RATE=1 scripts/test-profile.sh ./benchmarks/core -- -run '^$' -bench BenchmarkGoID -benchtime=10000x
 ```
 
 `PROFILE_ROOT` defaults to `.cache/test-profiles`. Each run has its own directory, an invocation record, package list and status table. Packages run separately because Go cannot write independent profiles for multiple packages in one invocation. No test-result cache is used. Coverage merges per-package coverage files. CI retains profile artifacts, including failed runs, under the existing retention policy.
@@ -21,7 +21,7 @@ Nested external Go consumer tests also use the runner. Python tooling, native-li
 
 Baseline: `a9d1cc6c`, Go 1.26.5, Linux amd64, Intel Core i7-12700. Environment and raw evidence are retained in `.cache/profiling-pass-20261005/`; all package profiles are in the recorded run directories.
 
-The baseline ran all 57 packages and analysed profiles for every package with test files. The first runner incorrectly rejected `std/html`, which contains benchmarks but no test functions. Its profile was present; no assertion failed. The runner now distinguishes this legitimate full-suite case from an empty focused selection. The subsequent full run passed, as did the profiled full pretag/browser gate and race suite.
+The baseline ran all 57 packages and analysed profiles for every package with test files. The first runner incorrectly rejected `std/html`, which contains benchmarks but no test functions. Its profile was present; no assertion failed. The runner now distinguishes this legitimate full-suite case from an empty focused selection. The subsequent full run passed. The first pretag attempt then rejected the new lookup benchmarks under `core/runtime`; they were moved to `benchmarks/core` as required. The corrected profiled full pretag/browser gate and race suite passed. Failed gate logs and profiles remain retained.
 
 Core allocated-byte samples attributed about 101 MB (31.7%) to the escaping 64-byte stack-header buffer in `core/runtime.GoID`. CPU attribution was more severe: `runtime.Stack` through interpreter-state lookup accounted for about 95% of core CPU samples. Per-goroutine lookup becomes active when worker runtime states exist. That CPU result is specific to this suite's concurrency/state lifecycle, not a typical application speed claim.
 
