@@ -80,11 +80,16 @@ func (p *GoRTPool) Register(state any) any { return p.state.Register(p.goid(), s
 
 func (p *GoRTPool) Unregister() { p.state.Unregister(p.goid()) }
 
+// runtime.Stack makes its destination escape. Reuse a private checked-out
+// buffer rather than allocating one on every interpreter-state lookup.
+var goIDBuffers = sync.Pool{New: func() any { return new([64]byte) }}
+
 // GoID extracts the current goroutine ID from the stack header.
 // It is intended for cold-path runtime bookkeeping only.
 func GoID() int64 {
-	var buf [64]byte
+	buf := goIDBuffers.Get().(*[64]byte)
 	n := sdkruntime.Stack(buf[:], false)
+	defer goIDBuffers.Put(buf)
 	i := len("goroutine ")
 	if n <= i {
 		return 0
