@@ -2,11 +2,22 @@
 source "$(dirname "${BASH_SOURCE[0]}")/project-env.sh" || exit 1
 # Run each package separately: Go cannot write distinct CPU profiles for ./...
 # in one invocation. Analysis is attempted after both passing and failing tests.
+# The resolver uses errexit, but test failures must still reach profile analysis.
+set +e
 set -u
 set -o pipefail
 GO=${GO:-go}
-PROFILE_ROOT=${PROFILE_ROOT:-.cache/test-profiles}
+PROFILE_ROOT=${PROFILE_ROOT:-$PROJECT_TMP_ROOT/runs/profiles}
 PROFILE_MEM_RATE=${PROFILE_MEM_RATE:-524288}
+# Ordinary development checks need no profiling. Release targets explicitly
+# request capture; benchmarks can request it via PROFILE_TESTS=1.
+if [[ ${PROFILE_TESTS:-0} != 1 ]]; then
+  normal=()
+  for arg in "$@"; do [[ $arg == -- ]] || normal+=("$arg"); done
+  ((${#normal[@]})) || normal=(./...)
+  if [[ -n ${COVERAGE_FILE:-} ]]; then normal+=("-coverprofile=$COVERAGE_FILE"); fi
+  exec "$GO" test "${normal[@]}"
+fi
 mkdir -p "$TMPDIR" "$GOTMPDIR"
 patterns=()
 flags=()
@@ -26,7 +37,11 @@ done
 mkdir -p "$PROFILE_ROOT" || exit 1
 run=$(mktemp -d "$PROFILE_ROOT/run-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX") || exit 1
 run=$(cd "$run" && pwd)
-printf 'Profiles and analysis: %s\n' "$run"
+printf 'Profiles pending immediate analysis/use: %s\n' "$run"
+if [[ ${CI:-} == true || ${GITHUB_ACTIONS:-} == true ]]; then
+  # Preserve a compact table before disposing captures; no raw CI artifact.
+  trap '"$(dirname "${BASH_SOURCE[0]}")/dispose-profiles.sh" "$run" "CI pre-release diagnostic review: see compact application call chains below; compare matched workloads before tuning. No speedup claim from capture. Empty CPU samples and capture failures remain visible." || true' EXIT
+fi
 printf '%s\n' "$run" > "$PROFILE_ROOT/latest-run.txt"
 printf 'go=%s\n' "$GO" > "$run/invocation.txt"
 "$GO" version >> "$run/invocation.txt" 2>&1
@@ -119,5 +134,10 @@ if [[ -n ${COVERAGE_FILE:-} ]]; then
   if [[ ! -s $run/coverage.out ]]; then printf 'mode: set\n' > "$run/coverage.out"; fi
   cp "$run/coverage.out" "$COVERAGE_FILE" || failed=1
 fi
-printf 'Result: %s; profiles: %s\n' "$failed" "$run"
+printf 'Result: %s; profiles pending analysis/use: %s\n' "$failed" "$run"
+if [[ -n ${PROFILE_ANALYSIS_NOTE:-} ]]; then
+  "$(dirname "${BASH_SOURCE[0]}")/dispose-profiles.sh" "$run" "$PROFILE_ANALYSIS_NOTE" || failed=1
+else
+  printf 'Review now, then dispose: scripts/dispose-profiles.sh %q "concise findings"\n' "$run"
+fi
 exit "$failed"

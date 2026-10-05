@@ -10,7 +10,7 @@ module=github.com/rcarmo/go-joker/v42
 [[ $expected_revision =~ ^[0-9a-f]{40}$ ]] || { echo 'expected a full git revision' >&2; exit 1; }
 
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-export PROFILE_ROOT=${PROFILE_ROOT:-$root/.cache/test-profiles/published-consumer}
+export PROFILE_ROOT=${PROFILE_ROOT:-$PROJECT_TMP_ROOT/runs/profiles/published-consumer}
 tmp_root=$TMPDIR
 mkdir -p "$tmp_root"
 work=$(mktemp -d "$tmp_root/joker-published-module.XXXXXX")

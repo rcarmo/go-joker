@@ -20,6 +20,6 @@ Source `scripts/project-env.sh` for direct commands; Makefile recipes load it au
 
 CI sources the vendored environment setup before tool/cache activity and persists the resolved root for later steps. GitHub normally selects `${RUNNER_TEMP}/go-joker`; CircleCI uses its inherited runner/platform temp. `PROJECT_TMP_ROOT` must be absolute and end in `/go-joker`. Test-owned roots remain isolated under `runs`; no test mutations point at real source/model/data state.
 
-Retained CPU/heap profiles, matching binaries/logs, benchmark results and release receipts stay in repository `.cache/test-profiles`, `.cache/release-*` or documented benchmark evidence locations. Tracked screenshots stay in `docs/images`. These paths are excluded from disposable cleanup.
+Raw CPU/heap captures, matching test binaries/traces/logs and completed scratch use `runs/profiles` and are deleted immediately after analysis/use. `scripts/dispose-profiles.sh <run> "concise conclusions"` records compact useful findings then removes the raw run. Only these conclusions persist under `.cache/profile-conclusions`; screenshots, source/fixtures and intentional release assets remain durable.
 
 `make clean-cache CLEAN_CONFIRM=go-joker` removes only this project's `cache` and `build` trees. Stop jobs first. It does not remove `runs`, evidence, source, other projects or installed system dependencies. Old home/repository caches and retained evidence are not automatically moved or deleted; verify new-path execution and coordinate any disposal with the owner.

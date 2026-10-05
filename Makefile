@@ -13,9 +13,11 @@ ifeq ($(strip $(PROJECT_TMP_ROOT)),)
 $(error No valid project temporary root)
 endif
 # Resolve before child TMPDIR export; invalid explicit roots fail, never fall back.
-PROFILE_ROOT ?= $(CURDIR)/.cache/test-profiles
+PROFILE_ROOT ?= $(PROJECT_TMP_ROOT)/runs/profiles
 PROFILE_MEM_RATE ?= 524288
-export GO PROFILE_ROOT PROFILE_MEM_RATE
+PROFILE_TESTS ?= 0
+PROFILE_CONCLUSIONS_ROOT ?= $(CURDIR)/.cache/profile-conclusions
+export GO PROFILE_ROOT PROFILE_MEM_RATE PROFILE_CONCLUSIONS_ROOT PROFILE_TESTS
 GO_TEST := scripts/test-profile.sh
 SDL_LIBRARY ?= /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0
 SDL_SCREENSHOT ?= docs/images/sdl-fluid.png
@@ -88,8 +90,8 @@ help:
 	@echo ""
 	@echo "Test and audit targets:"
 	@echo "  make tools          # Install/update audit tools (staticcheck, golangci-lint, govulncheck)"
-	@echo "  Go test targets capture CPU/heap profiles and reports in $(PROFILE_ROOT); review after every run."
-	@echo "  make test           # Full uncached profiled test suite"
+	@echo "  Pre-release Go checks capture profiles; review/tune then immediately dispose raw data."
+	@echo "  make test           # Ordinary development tests; PROFILE_TESTS=1 for capture"
 	@echo "  make test-repro     # Reproducible tests: no shuffle, no cache"
 	@echo "  make test-short     # Reproducible short test run"
 	@echo "  make test-core      # Reproducible core test run"
@@ -150,11 +152,13 @@ sdl-fluid:
 	CGO_ENABLED=0 $(GO) build -o $(PROJECT_TMP_ROOT)/build/sdl-fluid ./examples/graphics/sdl-fluid
 
 sdl-fluid-screenshot: sdl-fluid
-	@mkdir -p .cache/sdl-fluid
-	xvfb-run -a $(PROJECT_TMP_ROOT)/build/sdl-fluid -library "$(SDL_LIBRARY)" -frames 240 -screenshot "$(SDL_SCREENSHOT)" -cpuprofile .cache/sdl-fluid/cpu.pprof -memprofile .cache/sdl-fluid/heap.pprof
-	$(GO) tool pprof -top -cum $(PROJECT_TMP_ROOT)/build/sdl-fluid .cache/sdl-fluid/cpu.pprof > .cache/sdl-fluid/cpu.txt
-	$(GO) tool pprof -top -alloc_space $(PROJECT_TMP_ROOT)/build/sdl-fluid .cache/sdl-fluid/heap.pprof > .cache/sdl-fluid/alloc_space.txt
-	$(GO) tool pprof -top -alloc_objects $(PROJECT_TMP_ROOT)/build/sdl-fluid .cache/sdl-fluid/heap.pprof > .cache/sdl-fluid/alloc_objects.txt
+	@set -e; mkdir -p "$(PROFILE_ROOT)"; run=$$(mktemp -d "$(PROFILE_ROOT)/run-sdl-XXXXXX"); \
+	cp "$(PROJECT_TMP_ROOT)/build/sdl-fluid" "$$run/sdl-fluid"; \
+	xvfb-run -a "$$run/sdl-fluid" -library "$(SDL_LIBRARY)" -frames 240 -screenshot "$(SDL_SCREENSHOT)" -cpuprofile "$$run/cpu.pprof" -memprofile "$$run/heap.pprof"; \
+	$(GO) tool pprof -top -cum "$$run/sdl-fluid" "$$run/cpu.pprof" > "$$run/cpu.txt"; \
+	$(GO) tool pprof -top -alloc_space "$$run/sdl-fluid" "$$run/heap.pprof" > "$$run/alloc_space.txt"; \
+	$(GO) tool pprof -top -alloc_objects "$$run/sdl-fluid" "$$run/heap.pprof" > "$$run/alloc_objects.txt"; \
+	echo "Review $$run, then scripts/dispose-profiles.sh $$run 'concise findings'"
 
 clean-dist:
 	@case "$(DIST_DIR)" in "$(PROJECT_TMP_ROOT)/build/"*) ;; *) echo "Refusing cleanup outside project build root" >&2; exit 1;; esac
@@ -352,12 +356,14 @@ module-consumer-check:
 	$(GO_TEST) ./tools/modulecheck -- -count=1
 	$(GO) run ./tools/modulecheck .
 
+release-check: export PROFILE_TESTS=1
 release-check: release-hygiene-check release-supply-chain-check workflow-policy-check ai-check module-consumer-check
 	git diff --check
 	$(GO) vet ./...
 	$(GO_TEST) ./... -- -timeout 10m -count=1
 	$(MAKE) docs-check
 
+pretag-check: export PROFILE_TESTS=1
 pretag-check: release-check
 	@if [ "$${PRETAG_BROWSER_SMOKE:-0}" = "1" ]; then \
 		$(MAKE) notebook-browser-smoke; \
@@ -428,10 +434,11 @@ audit-fast: tools test-repro vet staticcheck-sa lint vuln
 
 audit: audit-fast race bench-sanity
 
-# Retained profiles/evidence are deliberately excluded. Stop active jobs first.
+# Raw profiling runs are disposed after analysis; durable conclusions/assets are excluded. Stop active jobs first.
 clean-cache:
 	@test "$(CLEAN_CONFIRM)" = go-joker || { echo 'Stop active jobs; use CLEAN_CONFIRM=go-joker. Retained evidence is excluded.' >&2; exit 1; }
+	@for dir in "$(PROJECT_TMP_ROOT)/cache" "$(PROJECT_TMP_ROOT)/build"; do test ! -d "$dir" || chmod -R u+w "$dir"; done
 	rm -rf -- "$(PROJECT_TMP_ROOT)/cache" "$(PROJECT_TMP_ROOT)/build"
 
 project-paths:
-	@printf '%s\n' "scratch=$(PROJECT_TMP_ROOT)" "go-cache=$(GOCACHE)" "go-modules=$(GOMODCACHE)" "retained-profiles=$(PROFILE_ROOT)"
+	@printf '%s\n' "scratch=$(PROJECT_TMP_ROOT)" "go-cache=$(GOCACHE)" "go-modules=$(GOMODCACHE)" "disposable-profiles=$(PROFILE_ROOT)" "conclusions=$(PROFILE_CONCLUSIONS_ROOT)"

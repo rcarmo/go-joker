@@ -6,6 +6,9 @@ on:
 
 permissions: {}
 
+env:
+  PROFILE_TESTS: 1
+
 jobs:
   test:
     permissions:
@@ -39,12 +42,12 @@ jobs:
           PLAYWRIGHT_BROWSERS_PATH="$PLAYWRIGHT_BROWSERS_PATH" bunx playwright install chromium
       - name: Run notebook browser smoke check
         run: PLAYWRIGHT_BROWSERS_PATH="$PLAYWRIGHT_BROWSERS_PATH" make notebook-browser-smoke
-      - name: Retain Go test profiles
+      - name: Retain concise Go test conclusions
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: go-test-profiles-${{ github.job }}
-          path: .cache/test-profiles/
+          name: go-test-conclusions-${{ github.job }}
+          path: .cache/profile-conclusions/
           retention-days: 7
 
 

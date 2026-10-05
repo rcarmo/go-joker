@@ -24,7 +24,7 @@ case $(go env GOOS) in
  *) echo 'FFI runtime smoke unavailable on this platform' >&2; exit 1 ;;
 esac
 [[ -n $library ]] || { echo 'Set JOKER_FFI_SMOKE_LIBRARY to an absolute C runtime path' >&2; exit 1; }
-profile_root=${PROFILE_ROOT:-$root/.cache/test-profiles/ffi-binary}
+profile_root=${PROFILE_ROOT:-$PROJECT_TMP_ROOT/runs/profiles/ffi-binary}
 mkdir -p "$profile_root"
 run=$(mktemp -d "$profile_root/run-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
 run=$(cd "$run" && pwd)
@@ -39,5 +39,8 @@ for metric in alloc_space alloc_objects; do
 done
 go tool pprof -top -cum "$run/joker.bin" "$run/cpu.pprof" > "$run/cpu.txt" 2>&1 || analysis=1
 printf 'test_exit=%s\nanalysis_exit=%s\n' "$status" "$analysis" > "$run/status.txt"
-((status==0 && analysis==0)) || { echo "FFI smoke failed; profiles/logs: $run" >&2; exit 1; }
-echo "verified default FFI in $binary; profiles: $run"
+if [[ ${CI:-} == true || ${GITHUB_ACTIONS:-} == true ]]; then
+  "$root/scripts/dispose-profiles.sh" "$run" "Default no-cgo ABI smoke: test exit $status, analysis exit $analysis. Short captures measure startup/test/profiler overhead; empty CPU samples are not performance evidence. Native allocation activity is outside Go heap profiling."
+fi
+((status==0 && analysis==0)) || { echo "FFI smoke failed (test=$status analysis=$analysis)" >&2; exit 1; }
+echo "verified default FFI in $binary"

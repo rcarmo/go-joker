@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 env:
-  PROFILE_ROOT: ${{ github.workspace }}/.cache/test-profiles
+  PROFILE_TESTS: 1
   RELEASE_BENCH_PATTERN: '^Benchmark(Fib20|Tak|LoopRecur1M|ReduceRange10K|ClosureCapture|MapAssoc100|VectorConj100|TransducePipeline)$'
 
 jobs:
@@ -39,7 +39,7 @@ jobs:
           mkdir -p .cache/benchmarks
           # Baseline refs may predate the runner; use the same candidate runner.
           mkdir -p "$PROJECT_TMP_ROOT/build/benchmark-tools"
-          cp scripts/test-profile.sh scripts/project-env.sh scripts/project-tmp.sh "$PROJECT_TMP_ROOT/build/benchmark-tools/"
+          cp scripts/test-profile.sh scripts/project-env.sh scripts/project-tmp.sh scripts/dispose-profiles.sh "$PROJECT_TMP_ROOT/build/benchmark-tools/"
       - name: Resolve comparison refs
         id: refs
         env:

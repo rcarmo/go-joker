@@ -1,5 +1,7 @@
 # Go test profiling and first allocation pass
 
+Updated lifecycle: pre-release profiling remains mandatory; ordinary development tests need not profile. Raw profiles, matching binaries and completed logs from this report have been disposed after analysis. Only the conclusions below remain. Use `PROFILE_TESTS=1` for capture under the canonical `runs/profiles`, then `scripts/dispose-profiles.sh <run> "concise findings"`.
+
 All Go test targets now capture CPU and heap profiles, retain binaries/logs and generate cumulative CPU, allocated-byte and allocated-object reports. Python checks are unchanged. Profiles are diagnostic evidence; every run also needs an engineering review.
 
 ## Running tests
@@ -11,7 +13,7 @@ make race
 PROFILE_MEM_RATE=1 scripts/test-profile.sh ./benchmarks/core -- -run '^$' -bench BenchmarkGoID -benchtime=10000x
 ```
 
-`PROFILE_ROOT` defaults to `.cache/test-profiles`. Each run has its own directory, an invocation record, package list and status table. Packages run separately because Go cannot write independent profiles for multiple packages in one invocation. No test-result cache is used. Coverage merges per-package coverage files. CI retains profile artifacts, including failed runs, under the existing retention policy.
+`PROFILE_ROOT` now defaults to the canonical project `runs/profiles` directory. Each run has its own directory, an invocation record, package list and status table. Packages run separately because Go cannot write independent profiles for multiple packages in one invocation. No test-result cache is used. Coverage merges per-package coverage files. CI retains profile artifacts, including failed runs, under the existing retention policy.
 
 The runner analyses profiles after failures too. Missing profiles cause a nonzero result. Build-only packages and benchmark-only packages in a full test run are reported separately from test execution; a focused pattern with no matches fails. Short tests can produce a valid CPU profile with zero samples; use a longer matching workload for CPU attribution. Heap sampling defaults to 512 KiB; use rate 1 for focused allocation attribution, not latency comparisons.
 

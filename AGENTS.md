@@ -1,3 +1,15 @@
+<!-- RUI-PROFILE-LIFECYCLE-20261005 -->
+## Current profiling and cleanup rule — supersedes older text below
+
+Rui's explicit rule: **profile and tune during pre-release tests; remove profiling data immediately after analysis/use.** Ordinary development tests do not require profiling on every run. Targeted diagnostic profiling is optional when useful and follows the same disposal rule.
+
+- During pre-release verification, capture CPU and heap/allocation behaviour, analyse hotspots and tune avoidable allocations/repeated work. Compare equivalent workloads without weakening correctness/security/numerical contracts. For Go, inspect CPU, alloc_space and alloc_objects; coverage alone is not profiling.
+- Keep captures and matching artifacts only while the current analysis needs them. Once used, immediately delete raw profiles, traces, matching test binaries, temporary fixtures and disposable logs, including failed/probe artifacts after diagnosis. Retain only concise conclusions and important measurements/limitations. Do not keep indefinite raw archives or copy them into exports/reports/evidence to evade cleanup.
+- Remove all completed disposable cache/build/test/run data promptly. Never delete files still in use: finish or safely pause the owning job and clean at a safe boundary. Preserve source, installed toolchains, durable datasets/checkpoints and intentional release assets. Minimise disk usage; no random exports or redundant snapshots.
+- This rule overrides **every conflicting older paragraph in this file and linked local guidance**, including “profile every test”, “unprofiled tests prohibited”, “retain all raw evidence”, “never delete profiles” and cleanup exclusions based only on an evidence/profiles directory name. Update helper/CI cleanup behaviour accordingly; do not weaken pre-release analysis.
+- Existing no-agent-contact and execution-pause rules remain unchanged. This policy grants no unsolicited coordination or automatic job restart.
+<!-- /RUI-PROFILE-LIFECYCLE-20261005 -->
+
 # AGENTS.md - Joker Codebase Guide
 
 This document provides guidance for AI coding agents working in the Joker codebase.
@@ -45,10 +57,10 @@ docs/           # Documentation generation
 - Source `scripts/project-env.sh` before direct commands. Make recipes, test helpers and Bun entrypoints load the same checked configuration. `TMPDIR`/`TMP`/`TEMP`, `GOTMPDIR`, `GOCACHE`, `GOMODCACHE`, `GOPATH`/`GOBIN`, Bun/npm/Python cache variables and Playwright downloads are routed to this root. Do not override them outside it.
 - `PROJECT_TMP_BASE` selects `<absolute-base>/go-joker`; compatible `PROJECT_TMP_ROOT` selects an absolute project-named root. If both are supplied they must agree; empty, relative, unsafe or unusable overrides fail, never silently fall back.
 - Snapshot inherited `TMPDIR` as `PROJECT_ORIGINAL_TMPDIR` before resolving. Without overrides, **CI selects usable `RUNNER_TEMP`, then original TMPDIR, then platform temp**, even if `/workspace/tmp` exists. Local use selects usable `/workspace/tmp`, then platform temp. Always append `go-joker`, resolve once and export the root to children so redirected TMPDIR cannot nest roots. CI vendors the resolver and does not depend on the host Makefile.
-- Stable layout: `cache/<tool>/`, `build/`, `tests/`, `logs/`, `runs/<purpose>/<run-id>/`. Test isolation/ownership checks remain mandatory; no retained evidence belongs to disposable cleanup.
-- Retained CPU/heap profiles, matching binaries/logs, release receipts, screenshots and datasets remain under the repository's documented `.cache/test-profiles`, `.cache/release-*` and tracked documentation paths. These are evidence, not cleanup targets. Never relocate/remove active outputs.
-- `make clean-cache CLEAN_CONFIRM=go-joker` removes only canonical rebuildable cache/build directories after jobs stop. It does not delete `runs` (which may be active), source, other projects or retained evidence. Test-owned isolated directories stay beneath `runs`; preserve ownership/symlink guards.
-- Old repository/home caches are not relocated or deleted during adoption. Confirm jobs are idle and verify the next run before owner-coordinated disposal. Python profiling is not part of this policy.
+- Stable layout: `cache/<tool>/`, `build/`, `tests/`, `logs/`, `runs/<purpose>/<run-id>/`. Test isolation/ownership checks remain mandatory; raw captures are disposable after analysis; durable assets stay protected.
+- Raw CPU/heap captures, matching test binaries/traces/run logs and completed scratch are disposable immediately after analysis/use. Keep concise conclusions only; preserve durable source, fixtures, screenshots, release assets and active-job files. Profile runs use the canonical `runs/profiles` root.
+- `make clean-cache CLEAN_CONFIRM=go-joker` removes only canonical rebuildable cache/build directories after jobs stop. Dispose completed profile runs immediately after review; never remove active runs, source, other projects, concise conclusions or durable release assets. Test-owned isolated directories stay beneath `runs`; preserve ownership/symlink guards.
+- Dispose completed rebuildable caches/scratch after jobs stop; never touch active-job files or another owner's project. Python profiling is not part of this policy.
 
 ## Build Commands
 
@@ -285,9 +297,9 @@ make docs-verify                  # compare without modifying tracked docs
 
 ## Profiling, allocation and performance criteria
 
-- Every Go test run must capture CPU and heap/allocation profiles, retain binaries/logs, and receive post-run analysis aimed at reducing allocations and improving performance in our code. This includes focused, full, race, benchmark, fuzz, delegated and failed runs. Python checks are outside this rule; leave them unchanged.
-- Use the profiling-aware Makefile targets or `scripts/test-profile.sh <packages> -- <go-test-flags>`. Profiles live in `.cache/test-profiles` (override `PROFILE_ROOT`); heap sampling defaults to 512 KiB (use `PROFILE_MEM_RATE=1` for allocation attribution). Review cumulative CPU, `alloc_space` and `alloc_objects` reports after every run and record an engineering conclusion; generated tables alone are not analysis.
-- Missing profiles after a build failure, crash or interrupted run fail the profiling gate and must be reported. Packages without tests are build-only, not execution coverage. Instrumented benchmark timings are diagnostic: use matched, separately profiled reference runs before uninstrumented timing of the same retained binaries. Do not weaken regression thresholds or optimize third-party code to hide our bottlenecks.
+- Pre-release Go checks must capture CPU/heap profiles, inspect cumulative CPU plus alloc_space/alloc_objects, and tune our measured bottlenecks. Ordinary development checks do not have to profile: use PROFILE_TESTS=1 when profiling is needed.
+- Raw captures, matching binaries/traces/logs are kept only during analysis/use. Immediately run scripts/dispose-profiles.sh <run> "concise conclusions" after review; it records compact findings and deletes the raw run. CI performs compact diagnostic review and disposes captures; do not upload raw profiles.
+- Profiles use the canonical project runs/profiles hierarchy; concise useful conclusions use .cache/profile-conclusions. Missing profiles after failed builds/crashes must be reported. Never use empty CPU samples as a performance result; longer representative workloads are required for CPU attribution. Do not optimize dependencies/tests merely to hide our costs or loosen acceptance thresholds.
 - Profile representative workloads before choosing an optimisation. Collect CPU profiles and allocation profiles/counts; report time/op, bytes/op and allocations/op where applicable. Use `./benchmarks/core`, not the old `./core` benchmark location, and verify a requested benchmark actually ran.
 - Check load before timing. Run baseline/candidate sequentially on the same runner with identical inputs, toolchain, flags and scheduler settings. Use repeated matched samples; keep instrumentation out of timings. Separate startup, parsing, compilation and execution costs.
 - Follow `docs/BENCHMARK_CI.md`: prefer ten samples, use the pinned `go tool benchstat`, and run `tests/benchmark_regression_check.py`. Current policy requires at least six samples and identical benchmark sets; gates stable timing growth above 15%, stable bytes growth above 5% and at least eight bytes, and any median allocation increase. Investigate noise or regressions; do not weaken the policy to accept a candidate.

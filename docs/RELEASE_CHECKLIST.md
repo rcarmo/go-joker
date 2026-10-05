@@ -14,6 +14,8 @@ Use this checklist before tagging any release. Select the next version according
 
 ## Validation
 
+Pre-release Go checks capture CPU/heap profiles for review and tuning. Dispose raw captures, matching test binaries/traces/run logs immediately after analysis/use, retaining concise conclusions only. Ordinary development tests need not profile.
+
 The canonical release gate used locally and by both GitHub workflows is:
 
 ```bash

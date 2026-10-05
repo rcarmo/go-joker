@@ -25,8 +25,10 @@ export PLAYWRIGHT_BROWSERS_PATH="$PROJECT_TMP_ROOT/cache/ms-playwright"
 export XDG_CACHE_HOME="$PROJECT_TMP_ROOT/cache/xdg"
 export CLI_BIN=${CLI_BIN:-$PROJECT_TMP_ROOT/build/joker}
 export DOCS_JOKER_BIN=${DOCS_JOKER_BIN:-$PROJECT_TMP_ROOT/build/go-joker-docs}
-# Profile/test evidence is retained in the repository, never inside a clean scope.
-export PROFILE_ROOT=${PROFILE_ROOT:-$project_repo/.cache/test-profiles}
+# Raw captures/binaries/logs are disposable immediately after analysis/use.
+export PROFILE_ROOT=${PROFILE_ROOT:-$PROJECT_TMP_ROOT/runs/profiles}
+export PROFILE_CONCLUSIONS_ROOT=${PROFILE_CONCLUSIONS_ROOT:-$project_repo/.cache/profile-conclusions}
+case "$PROFILE_ROOT" in "$PROJECT_TMP_ROOT"/runs/profiles|"$PROJECT_TMP_ROOT"/runs/profiles/*) ;; *) echo 'Profiles must use canonical disposable run paths' >&2; return 1 2>/dev/null || exit 1 ;; esac
 for project_dir in "$TMPDIR" "$GOTMPDIR" "$GOCACHE" "$GOMODCACHE" "$GOPATH" "$GOBIN" "$BUN_INSTALL_CACHE_DIR" "$npm_config_cache" "$PIP_CACHE_DIR" "$UV_CACHE_DIR" "$PYTHONPYCACHEPREFIX" "$PLAYWRIGHT_BROWSERS_PATH" "$XDG_CACHE_HOME" "$PROJECT_TMP_ROOT/build"; do
   project_path=/
   IFS=/ read -r -a project_parts <<<"${project_dir#/}"
