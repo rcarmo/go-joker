@@ -2,10 +2,16 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cimg/go:1.23
-    working_directory: /home/circleci/go/src/github.com/rcarmo/go-joker
+      - image: cimg/go:1.26
+    working_directory: ~/project
     steps:
       - checkout
+      - run:
+          name: Project environment
+          command: |
+            source scripts/project-env.sh
+            echo "export PROJECT_TMP_ROOT=\"$PROJECT_TMP_ROOT\"" >> "$BASH_ENV"
+            echo 'source "$PWD/scripts/project-env.sh"' >> "$BASH_ENV"
       - run:
           name: go get liner
           command: go get -d -v github.com/candid82/liner
@@ -20,7 +26,7 @@ jobs:
           command: go generate -v ./...
       - run:
           name: go build
-          command: go build -v ./cmd/joker
+          command: source scripts/project-env.sh && go build -v -o "$CLI_BIN" ./cmd/joker
       - run:
           name: linter tests
           command: ./tools/scripts/linter-tests.sh

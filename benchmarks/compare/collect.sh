@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/../../scripts/project-env.sh" || exit 1
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 OUT_DIR="${1:-${ROOT_DIR}/benchmarks/compare/out/latest}"
@@ -94,7 +95,7 @@ if command -v go >/dev/null 2>&1; then
     -letgo "${OUT_DIR}/letgo.txt" \
     -out "${OUT_DIR}/direct-comparison.md"
 
-  GOJOKER_COMPARE_BIN="${OUT_DIR}/go-joker"
+  GOJOKER_COMPARE_BIN="${PROJECT_TMP_ROOT}/build/compare-go-joker"
   echo "[compare] building go-joker for let-go suite: ${GOJOKER_COMPARE_BIN}"
   go build -o "${GOJOKER_COMPARE_BIN}" "${ROOT_DIR}/cmd/joker"
   GOJOKER_BIN="${GOJOKER_COMPARE_BIN}" run_capture letgo-suite-report go run "${ROOT_DIR}/benchmarks/compare/run_letgo_suite.go" \

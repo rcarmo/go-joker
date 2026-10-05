@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/project-env.sh" || exit 1
 set -euo pipefail
 
 ROOT="${1:-.}"
 cd "$ROOT"
 
-mkdir -p .cache/tmp
-MATCHES_FILE="$(mktemp .cache/tmp/go-joker-doc-paths.XXXXXX)"
+mkdir -p "$TMPDIR"
+MATCHES_FILE="$(mktemp "$TMPDIR"/go-joker-doc-paths.XXXXXX)"
 trap 'rm -f "$MATCHES_FILE"' EXIT
 
 fail=0

@@ -39,16 +39,24 @@ tests/          # Test suites (eval, linter, formatter, flags)
 docs/           # Documentation generation
 ```
 
+## Project-owned caches and scratch (mandatory 2026-10-05)
+
+- Canonical host root: `/workspace/tmp/go-joker/`. Reproducible caches go in `cache/<tool>/`, binaries/crossbuilds in `build/`, isolated disposable work in `runs/<purpose>/<run-id>/`. Use portable project-named fallback roots only when the workspace host is absent; never create bare/ad-hoc temporary or home cache paths.
+- Source `scripts/project-env.sh` before direct commands. Make recipes, test helpers and Bun entrypoints load the same checked configuration. `TMPDIR`/`TMP`/`TEMP`, `GOTMPDIR`, `GOCACHE`, `GOMODCACHE`, `GOPATH`/`GOBIN`, Bun/npm/Python cache variables and Playwright downloads are routed to this root. Do not override them outside it.
+- CI explicitly maps `PROJECT_TMP_ROOT` to `${github.workspace}/.project-tmp/go-joker` (GitHub) or its configured runner-owned root; keep the same `cache`, `build`, `runs` layout. Resolver order: valid explicit `PROJECT_TMP_ROOT`, writable `/workspace/tmp/go-joker`, then `RUNNER_TEMP/go-joker`, the original `TMPDIR/go-joker`, then platform temp `/tmp/go-joker`. Invalid explicit roots fail. Resolve once before exporting child TMPDIR.
+- Retained CPU/heap profiles, matching binaries/logs, release receipts, screenshots and datasets remain under the repository's documented `.cache/test-profiles`, `.cache/release-*` and tracked documentation paths. These are evidence, not cleanup targets. Never relocate/remove active outputs.
+- `make clean-cache CLEAN_CONFIRM=go-joker` removes only canonical rebuildable cache/build directories after jobs stop. It does not delete `runs` (which may be active), source, other projects or retained evidence. Test-owned isolated directories stay beneath `runs`; preserve ownership/symlink guards.
+- Old repository/home caches are not relocated or deleted during adoption. Confirm jobs are idle and verify the next run before owner-coordinated disposal. Python profiling is not part of this policy.
+
 ## Build Commands
 
 Use the versions declared in `go.mod` (currently Go 1.25 minimum, Go 1.26.5 toolchain). Record the actual toolchain used for measurements.
 
 ```bash
-mkdir -p .cache/tmp .cache/gotmp
-export TMPDIR="$PWD/.cache/tmp" GOTMPDIR="$PWD/.cache/gotmp"
-make cli                         # .cache/tmp/joker; no root build artifacts
-.cache/tmp/joker --version
-go build -tags go_spew -o .cache/tmp/joker-debug ./cmd/joker
+source scripts/project-env.sh
+make cli                         # /workspace/tmp/go-joker/build/joker
+"$CLI_BIN" --version
+go build -tags go_spew -o "$PROJECT_TMP_ROOT/build/joker-debug" ./cmd/joker
 ```
 
 Normal builds use committed generated sources. Full bootstrap regeneration has known extracted-package/generic serialization limitations; do not run it as a routine build step or hand-edit generated output to work around failures. See the generated-file section below.
@@ -82,7 +90,7 @@ make test-repro TEST_PKGS=./core TEST_TIMEOUT=30m
 ```
 
 Notes:
-- `make` exports `TMPDIR`/`GOTMPDIR` to avoid noexec `/tmp` issues in constrained environments.
+- `make` loads `scripts/project-env.sh` and exports the canonical project-owned temp/cache configuration.
 - If tooling is missing, targets auto-bootstrap required binaries via `make tools`.
 
 ## Test Commands
@@ -98,18 +106,18 @@ Notes:
 ./tools/scripts/flag-tests.sh          # Command-line flag tests
 
 # Run a single test file
-.cache/tmp/joker tests/run-eval-tests.joke tests/eval/<test-name>.joke
+/workspace/tmp/go-joker/build/joker tests/run-eval-tests.joke tests/eval/<test-name>.joke
 # Example:
-.cache/tmp/joker tests/run-eval-tests.joke tests/eval/core.joke
+/workspace/tmp/go-joker/build/joker tests/run-eval-tests.joke tests/eval/core.joke
 
 # Lint Go code for shadowed variables
 ./tools/scripts/shadow.sh
 
 # Lint Clojure/Joker files
-.cache/tmp/joker --lint <file.clj>
+/workspace/tmp/go-joker/build/joker --lint <file.clj>
 
 # Format Clojure/Joker files
-.cache/tmp/joker --format <file.clj>
+/workspace/tmp/go-joker/build/joker --format <file.clj>
 ```
 
 ## Test File Organization
@@ -225,7 +233,7 @@ Files prefixed with `a_` are auto-generated. Do not edit them directly:
 Full regeneration commands (use only for generator/source work, on a clean reviewed baseline):
 ```bash
 go generate ./...
-(cd std; ../.cache/tmp/joker generate-std.joke)
+(cd std; /workspace/tmp/go-joker/build/joker generate-std.joke)
 ```
 
 These commands currently have known bootstrap and std binding failures. Preserve diagnostics, review generated diffs and restore invalid output rather than committing an unbuildable tree. Generated code must come from a generator, never manual edits. For the five arithmetic docstrings, the checked narrow synchroniser is supported:
@@ -250,7 +258,7 @@ make docs-verify                  # compare without modifying tracked docs
 
 1. Create `std/<name>.joke` with `:go` metadata
 2. `mkdir -p std/<name>`
-3. `(cd std; ../.cache/tmp/joker generate-std.joke)`
+3. `(cd std; /workspace/tmp/go-joker/build/joker generate-std.joke)`
 4. Write supporting Go code in `std/<name>/<name>_native.go`
 5. Add the registration import in the appropriate `cmd/joker` initialization file
 6. Add tests in `tests/eval/`

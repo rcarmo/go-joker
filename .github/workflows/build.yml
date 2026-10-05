@@ -7,9 +7,17 @@ on:
 permissions: {}
 
 env:
-  TMPDIR: ${{ github.workspace }}/.cache/tmp
-  GOTMPDIR: ${{ github.workspace }}/.cache/go-build-tmp
-  DOCS_JOKER_BIN: ${{ github.workspace }}/.cache/tmp/go-joker-docs
+  PROJECT_TMP_ROOT: ${{ github.workspace }}/.project-tmp/go-joker
+  GOCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-build
+  GOMODCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-mod
+  GOPATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/gopath
+  GOBIN: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-tools
+  BUN_INSTALL_CACHE_DIR: ${{ github.workspace }}/.project-tmp/go-joker/cache/bun
+  npm_config_cache: ${{ github.workspace }}/.project-tmp/go-joker/cache/npm
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright
+  TMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/tmp
+  GOTMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/go-build
+  DOCS_JOKER_BIN: ${{ github.workspace }}/.project-tmp/go-joker/build/go-joker-docs
 
 jobs:
   test:
@@ -19,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Prepare reproducible temp directories
-        run: mkdir -p "$TMPDIR" "$GOTMPDIR"
+        run: mkdir -p "$TMPDIR" "$GOTMPDIR" "$PROJECT_TMP_ROOT/build"
       - uses: actions/setup-go@v5
         with:
           go-version: '1.26.5'
@@ -37,9 +45,9 @@ jobs:
       - name: Install notebook browser smoke dependencies
         run: |
           bun install --frozen-lockfile
-          PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.cache/ms-playwright bunx playwright install chromium
+          PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright bunx playwright install chromium
       - name: Run notebook browser smoke check
-        run: PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.cache/ms-playwright make notebook-browser-smoke
+        run: PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright make notebook-browser-smoke
       - name: Retain Go test profiles
         if: always()
         uses: actions/upload-artifact@v4
@@ -74,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Prepare reproducible temp directories
-        run: mkdir -p "$TMPDIR" "$GOTMPDIR"
+        run: mkdir -p "$TMPDIR" "$GOTMPDIR" "$PROJECT_TMP_ROOT/build"
       - uses: actions/setup-go@v5
         with:
           go-version: '1.26.5'
@@ -89,19 +97,19 @@ jobs:
           set -euo pipefail
           ext=""
           if [ "${{ matrix.goos }}" = "windows" ]; then ext=".exe"; fi
-          binary="joker-${{ matrix.goos }}-${{ matrix.goarch }}${ext}"
+          binary="$PROJECT_TMP_ROOT/build/joker-${{ matrix.goos }}-${{ matrix.goarch }}${ext}"
           go build -trimpath -ldflags="-s -w" -o "$binary" ./cmd/joker
           echo "binary=$binary" >> "$GITHUB_OUTPUT"
 
       - name: Stage binary for SBOM scan
         run: |
-          mkdir sbom-input
-          cp "${{ steps.build.outputs.binary }}" sbom-input/
+          mkdir -p "$PROJECT_TMP_ROOT/runs/sbom-input"
+          cp "${{ steps.build.outputs.binary }}" "$PROJECT_TMP_ROOT/runs/sbom-input/"
 
       - name: Generate SPDX SBOM
         uses: anchore/sbom-action@v0
         with:
-          path: sbom-input
+          path: ${{ github.workspace }}/.project-tmp/go-joker/runs/sbom-input
           format: spdx-json
           output-file: ${{ steps.build.outputs.binary }}.spdx.json
           upload-artifact: false
@@ -146,7 +154,7 @@ jobs:
           merge-multiple: true
 
       - name: Prepare reproducible temp directories
-        run: mkdir -p "$TMPDIR" "$GOTMPDIR"
+        run: mkdir -p "$TMPDIR" "$GOTMPDIR" "$PROJECT_TMP_ROOT/build"
 
       - uses: actions/setup-go@v5
         with:

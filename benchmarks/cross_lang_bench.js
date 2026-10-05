@@ -1,3 +1,4 @@
+import "../scripts/project-env.ts";
 // Cross-language benchmark suite matching the Joker CLBG benchmarks.
 // Run with: bun benchmarks/cross_lang_bench.js
 

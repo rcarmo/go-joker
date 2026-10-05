@@ -9,8 +9,17 @@ permissions:
   contents: read
 
 env:
-  TMPDIR: ${{ github.workspace }}/.cache/tmp
-  GOTMPDIR: ${{ github.workspace }}/.cache/go-build-tmp
+  PROJECT_TMP_ROOT: ${{ github.workspace }}/.project-tmp/go-joker
+  GOCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-build
+  GOMODCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-mod
+  GOPATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/gopath
+  GOBIN: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-tools
+  BUN_INSTALL_CACHE_DIR: ${{ github.workspace }}/.project-tmp/go-joker/cache/bun
+  npm_config_cache: ${{ github.workspace }}/.project-tmp/go-joker/cache/npm
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright
+  TMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/tmp
+  GOTMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/go-build
+  DOCS_JOKER_BIN: ${{ github.workspace }}/.project-tmp/go-joker/runs/tmp/go-joker-docs
 
 jobs:
   race-stress:

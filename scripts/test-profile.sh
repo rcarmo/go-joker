@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname "${BASH_SOURCE[0]}")/project-env.sh" || exit 1
 # Run each package separately: Go cannot write distinct CPU profiles for ./...
 # in one invocation. Analysis is attempted after both passing and failing tests.
 set -u
@@ -6,7 +7,7 @@ set -o pipefail
 GO=${GO:-go}
 PROFILE_ROOT=${PROFILE_ROOT:-.cache/test-profiles}
 PROFILE_MEM_RATE=${PROFILE_MEM_RATE:-524288}
-mkdir -p "${TMPDIR:-.cache/tmp}" "${GOTMPDIR:-.cache/gotmp}"
+mkdir -p "$TMPDIR" "$GOTMPDIR"
 patterns=()
 flags=()
 allow_empty=0

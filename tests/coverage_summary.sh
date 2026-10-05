@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/project-env.sh" || exit 1
 set -euo pipefail
 
-profile=${1:-.cache/tmp/go-joker.cover}
-out=${2:-.cache/tmp/go-joker.cover.func}
+profile=${1:-${TMPDIR}/go-joker.cover}
+out=${2:-${TMPDIR}/go-joker.cover.func}
 mkdir -p "$(dirname "$out")"
 
 if [[ ! -f "$profile" ]]; then

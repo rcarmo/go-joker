@@ -1,3 +1,4 @@
+import { projectBuild } from "./project-env";
 import { chromium } from "playwright";
 import { mkdtemp, mkdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -5,7 +6,7 @@ import { basename, join } from "node:path";
 import { spawn, spawnSync, type ChildProcess } from "node:child_process";
 
 const root = new URL("..", import.meta.url).pathname.replace(/\/$/, "");
-const joker = process.env.JOKER_BIN || join(root, ".cache", "tmp", "go-joker-screenshot");
+const joker = process.env.JOKER_BIN || join(projectBuild, "joker");
 const sourceNotebook = process.env.NOTEBOOK_SOURCE || "demo";
 const defaultName = sourceNotebook === "demo" ? "rich-demo" : basename(sourceNotebook).replace(/\.edn$/, "");
 const out = process.env.NOTEBOOK_SCREENSHOT || join(root, ".cache", "screenshots", `${defaultName}-full-page.png`);
@@ -17,7 +18,7 @@ function run(args: string[], cwd = root) {
   const result = spawnSync(joker, args, {
     cwd,
     encoding: "utf8",
-    env: { ...process.env, TMPDIR: join(root, ".cache", "tmp"), GOTMPDIR: join(root, ".cache", "gotmp") },
+    env: { ...process.env, TMPDIR: process.env.TMPDIR!, GOTMPDIR: process.env.GOTMPDIR! },
   });
   if (result.status !== 0) throw new Error(`${joker} ${args.join(" ")} failed\n${result.stdout}\n${result.stderr}`);
   return result.stdout;
@@ -52,7 +53,7 @@ try {
   server = spawn(joker, ["notebook", notebook, "--addr", addr, "--token", "shot"], {
     cwd: root,
     stdio: ["ignore", "pipe", "pipe"],
-    env: { ...process.env, TMPDIR: join(root, ".cache", "tmp"), GOTMPDIR: join(root, ".cache", "gotmp") },
+    env: { ...process.env, TMPDIR: process.env.TMPDIR!, GOTMPDIR: process.env.GOTMPDIR! },
   });
   await waitForServer(server);
   browser = await chromium.launch({ headless: true });

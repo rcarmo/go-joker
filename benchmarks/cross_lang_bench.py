@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Cross-language benchmark suite matching the Joker CLBG benchmarks."""
 import time, math
+from pathlib import Path
+exec((Path(__file__).resolve().parents[1] / "scripts/project-env.py").read_text(), globals())
+configure()
 
 def bench(name, fn, iterations=5):
     times = []

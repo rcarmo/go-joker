@@ -94,11 +94,18 @@ func check(root string) error {
 	if err != nil {
 		return err
 	}
-	tmp, err := os.MkdirTemp("", "joker-module-check-")
+	tmpRoot := os.Getenv("TMPDIR")
+	if tmpRoot == "" { return fmt.Errorf("source scripts/project-env.sh before running modulecheck") }
+	tmp, err := os.MkdirTemp(tmpRoot, "joker-module-check-")
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(tmp)
+	defer func(){
+		// Go's downloaded module files are read-only; make only this isolated
+		// owned directory writable before removal.
+		filepath.Walk(tmp, func(path string, info os.FileInfo, err error) error { if err==nil && info.IsDir(){_ = os.Chmod(path,0700)};return nil })
+		os.RemoveAll(tmp)
+	}()
 	proxy := filepath.Join(tmp, "proxy")
 	versions := filepath.Join(proxy, filepath.FromSlash(module), "@v")
 	consumer := filepath.Join(tmp, "consumer")

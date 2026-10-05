@@ -6,7 +6,7 @@ from the decision data we care about: median ns/op, allocs/op and bytes/op.
 
 Examples:
   python3 benchmarks/run_benchmarks.py --runs 7 --bench 'BenchmarkCLBG|BenchmarkEval'
-  python3 benchmarks/run_benchmarks.py --runs 5 --bench 'BenchmarkIRString|BenchmarkIRChar' --json /tmp/ir.json
+  python3 benchmarks/run_benchmarks.py --runs 5 --bench 'BenchmarkIRString|BenchmarkIRChar' --json /workspace/tmp/go-joker/runs/bench/ir.json
 """
 
 from __future__ import annotations
@@ -17,6 +17,9 @@ import re
 import statistics
 import subprocess
 import sys
+from pathlib import Path
+exec((Path(__file__).resolve().parents[1] / "scripts/project-env.py").read_text(), globals())
+configure()
 import time
 from dataclasses import dataclass, asdict
 from pathlib import Path

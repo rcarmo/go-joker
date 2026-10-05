@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/project-env.sh" || exit 1
 set -euo pipefail
 
 root=${1:-.}
 bin=${2:?usage: docs_generation_guard.sh ROOT JOKER_BIN}
 root=$(cd "$root" && pwd)
 bin=$(cd "$(dirname "$bin")" && pwd)/$(basename "$bin")
-tmp_root=${TMPDIR:-$root/.cache/tmp}
+tmp_root=$TMPDIR
 mkdir -p "$tmp_root"
 out=$(mktemp -d "$tmp_root/go-joker-docs.XXXXXX")
 trap 'rm -rf "$out"' EXIT

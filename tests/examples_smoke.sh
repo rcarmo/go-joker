@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/project-env.sh" || exit 1
 set -euo pipefail
 
 ROOT="${1:-.}"
-JOKER_BIN="${JOKER_BIN:-${ROOT}/.cache/tmp/joker}"
-OUT_DIR="${ROOT}/.cache/examples-smoke"
+JOKER_BIN="${JOKER_BIN:-$CLI_BIN}"
+OUT_DIR="$(mktemp -d "$TMPDIR/examples-smoke.XXXXXX")"
 WIKI_BUILD_LOG="$OUT_DIR/wiki-build.log"
 WIKI_ROOT_HTML="$OUT_DIR/wiki-root.html"
 FLAME_LOG="$OUT_DIR/flame.log"

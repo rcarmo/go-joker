@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/project-env.sh" || exit 1
 set -euo pipefail
 
 root="${1:-.}"
 cd "$root"
 
-mkdir -p .cache/tmp
-ignored_errors_file="$(mktemp .cache/tmp/go-joker-ignored-errors.XXXXXX)"
-raw_panic_file="$(mktemp .cache/tmp/go-joker-raw-panic-errors.XXXXXX)"
-ignored_writes_file="$(mktemp .cache/tmp/go-joker-ignored-write-errors.XXXXXX)"
+mkdir -p "$TMPDIR"
+ignored_errors_file="$(mktemp "$TMPDIR"/go-joker-ignored-errors.XXXXXX)"
+raw_panic_file="$(mktemp "$TMPDIR"/go-joker-raw-panic-errors.XXXXXX)"
+ignored_writes_file="$(mktemp "$TMPDIR"/go-joker-ignored-write-errors.XXXXXX)"
 trap 'rm -f "$ignored_errors_file" "$raw_panic_file" "$ignored_writes_file"' EXIT
 
 status=0

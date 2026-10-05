@@ -10,7 +10,7 @@ Install an SDL2 runtime library. The Go caller builds with `CGO_ENABLED=0`; no `
 
 ```sh
 make sdl-fluid
-.cache/tmp/sdl-fluid -frames 0 -library /absolute/path/to/SDL2
+/workspace/tmp/go-joker/build/sdl-fluid -frames 0 -library /absolute/path/to/SDL2
 ```
 
 Typical paths include `/usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0`, `/opt/homebrew/lib/libSDL2.dylib`, or an absolute path to `SDL2.dll`. Library and process architecture must match. The Linux default path is a convenience for the tested amd64 host, not a portable discovery mechanism.

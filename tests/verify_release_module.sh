@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/project-env.sh" || exit 1
 # Network-enabled, post-tag check. Ordinary release-check stays offline.
 set -euo pipefail
 
@@ -10,7 +11,7 @@ module=github.com/rcarmo/go-joker/v42
 
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 export PROFILE_ROOT=${PROFILE_ROOT:-$root/.cache/test-profiles/published-consumer}
-tmp_root=${TMPDIR:-$(pwd)/.cache/tmp}
+tmp_root=$TMPDIR
 mkdir -p "$tmp_root"
 work=$(mktemp -d "$tmp_root/joker-published-module.XXXXXX")
 trap 'rm -rf "$work"' EXIT

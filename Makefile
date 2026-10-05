@@ -1,17 +1,34 @@
 SHELL := /bin/bash
 
 GO ?= go
+PROJECT_TMP_ROOT := $(shell scripts/project-tmp.sh init-root)
+ifeq ($(strip $(PROJECT_TMP_ROOT)),)
+$(error No valid project temporary root)
+endif
+# Resolve before child TMPDIR export; invalid explicit roots fail, never fall back.
 PROFILE_ROOT ?= $(CURDIR)/.cache/test-profiles
 PROFILE_MEM_RATE ?= 524288
 export GO PROFILE_ROOT PROFILE_MEM_RATE
 GO_TEST := scripts/test-profile.sh
 SDL_LIBRARY ?= /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0
 SDL_SCREENSHOT ?= docs/images/sdl-fluid.png
-TMPDIR ?= $(CURDIR)/.cache/tmp
-GOTMPDIR ?= $(CURDIR)/.cache/gotmp
+TMPDIR ?= $(PROJECT_TMP_ROOT)/runs/tmp
+GOTMPDIR ?= $(PROJECT_TMP_ROOT)/runs/go-build
 export TMPDIR
 export GOTMPDIR
-TOOLBIN := $(shell $(GO) env GOPATH)/bin
+GOCACHE ?= $(PROJECT_TMP_ROOT)/cache/go-build
+GOMODCACHE ?= $(PROJECT_TMP_ROOT)/cache/go-mod
+GOPATH := $(PROJECT_TMP_ROOT)/cache/gopath
+GOBIN := $(PROJECT_TMP_ROOT)/cache/go-tools
+PLAYWRIGHT_BROWSERS_PATH := $(PROJECT_TMP_ROOT)/cache/ms-playwright
+BUN_INSTALL_CACHE_DIR := $(PROJECT_TMP_ROOT)/cache/bun
+npm_config_cache := $(PROJECT_TMP_ROOT)/cache/npm
+TMP := $(TMPDIR)
+TEMP := $(TMPDIR)
+export PROJECT_TMP_ROOT GOCACHE GOMODCACHE GOPATH GOBIN PLAYWRIGHT_BROWSERS_PATH BUN_INSTALL_CACHE_DIR npm_config_cache TMP TEMP
+# Source the same checked environment for every recipe and subprocess.
+SHELL := $(CURDIR)/scripts/project-shell.sh
+TOOLBIN := $(GOBIN)
 STATICCHECK_BIN ?= $(TOOLBIN)/staticcheck
 GOLANGCI_LINT_BIN ?= $(TOOLBIN)/golangci-lint
 GOVULNCHECK_BIN ?= $(TOOLBIN)/govulncheck
@@ -19,9 +36,9 @@ ACTIONLINT_VERSION ?= v1.7.7
 
 BENCH_REGEX ?= BenchmarkCLBG(NBody|Mandelbrot|SpectralNorm|BinaryTrees|FannkuchRedux)
 COMPARE_OUT ?= benchmarks/compare/out/latest
-DOCS_JOKER_BIN ?= $(TMPDIR)/go-joker-docs
-CLI_BIN ?= .cache/tmp/joker
-DIST_DIR ?= dist
+DOCS_JOKER_BIN ?= $(PROJECT_TMP_ROOT)/build/go-joker-docs
+CLI_BIN ?= $(PROJECT_TMP_ROOT)/build/joker
+DIST_DIR ?= $(PROJECT_TMP_ROOT)/build/dist
 DIST_PLATFORMS ?= linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64 windows/arm64
 
 TEST_PKGS ?= ./...
@@ -36,7 +53,7 @@ BENCH_OUT ?= .cache/benchmarks/candidate.txt
 BENCH_BASELINE ?=
 BENCH_REPORT ?= .cache/benchmarks/benchstat.txt
 
-.PHONY: ffi-cli ffi-check sdl-fluid sdl-fluid-screenshot help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check ai-check docs-paths-check release-hygiene-check release-supply-chain-check module-consumer-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: clean-cache project-paths ffi-cli ffi-check sdl-fluid sdl-fluid-screenshot help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check ai-check docs-paths-check release-hygiene-check release-supply-chain-check module-consumer-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -114,26 +131,27 @@ cli:
 
 ffi-cli:
 	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)"
-	CGO_ENABLED=0 $(GO) build -o .cache/tmp/joker-ffi ./cmd/joker
+	CGO_ENABLED=0 $(GO) build -o $(PROJECT_TMP_ROOT)/build/joker-ffi ./cmd/joker
 
 ffi-check:
 	CGO_ENABLED=0 $(GO_TEST) ./std/ffi ./examples/graphics/sdl-fluid/internal/fluid -- -count=1
 	$(MAKE) ffi-cli
-	tests/verify_ffi_binary.sh .cache/tmp/joker-ffi
+	tests/verify_ffi_binary.sh $(PROJECT_TMP_ROOT)/build/joker-ffi
 
 sdl-fluid:
 	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)"
-	CGO_ENABLED=0 $(GO) build -o .cache/tmp/sdl-fluid ./examples/graphics/sdl-fluid
+	CGO_ENABLED=0 $(GO) build -o $(PROJECT_TMP_ROOT)/build/sdl-fluid ./examples/graphics/sdl-fluid
 
 sdl-fluid-screenshot: sdl-fluid
 	@mkdir -p .cache/sdl-fluid
-	xvfb-run -a .cache/tmp/sdl-fluid -library "$(SDL_LIBRARY)" -frames 240 -screenshot "$(SDL_SCREENSHOT)" -cpuprofile .cache/sdl-fluid/cpu.pprof -memprofile .cache/sdl-fluid/heap.pprof
-	$(GO) tool pprof -top -cum .cache/tmp/sdl-fluid .cache/sdl-fluid/cpu.pprof > .cache/sdl-fluid/cpu.txt
-	$(GO) tool pprof -top -alloc_space .cache/tmp/sdl-fluid .cache/sdl-fluid/heap.pprof > .cache/sdl-fluid/alloc_space.txt
-	$(GO) tool pprof -top -alloc_objects .cache/tmp/sdl-fluid .cache/sdl-fluid/heap.pprof > .cache/sdl-fluid/alloc_objects.txt
+	xvfb-run -a $(PROJECT_TMP_ROOT)/build/sdl-fluid -library "$(SDL_LIBRARY)" -frames 240 -screenshot "$(SDL_SCREENSHOT)" -cpuprofile .cache/sdl-fluid/cpu.pprof -memprofile .cache/sdl-fluid/heap.pprof
+	$(GO) tool pprof -top -cum $(PROJECT_TMP_ROOT)/build/sdl-fluid .cache/sdl-fluid/cpu.pprof > .cache/sdl-fluid/cpu.txt
+	$(GO) tool pprof -top -alloc_space $(PROJECT_TMP_ROOT)/build/sdl-fluid .cache/sdl-fluid/heap.pprof > .cache/sdl-fluid/alloc_space.txt
+	$(GO) tool pprof -top -alloc_objects $(PROJECT_TMP_ROOT)/build/sdl-fluid .cache/sdl-fluid/heap.pprof > .cache/sdl-fluid/alloc_objects.txt
 
 clean-dist:
-	rm -rf $(DIST_DIR)
+	@case "$(DIST_DIR)" in "$(PROJECT_TMP_ROOT)/build/"*) ;; *) echo "Refusing cleanup outside project build root" >&2; exit 1;; esac
+	rm -rf -- "$(DIST_DIR)"
 
 dist: clean-dist
 	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)" $(DIST_DIR)
@@ -256,11 +274,11 @@ notebook-check:
 
 notebook-browser-smoke:
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
-	PLAYWRIGHT_BROWSERS_PATH=$(shell pwd)/.cache/ms-playwright JOKER_BIN=$(DOCS_JOKER_BIN) bun run scripts/notebook_smoke.ts
+	PLAYWRIGHT_BROWSERS_PATH=$(PLAYWRIGHT_BROWSERS_PATH) JOKER_BIN=$(DOCS_JOKER_BIN) bun run scripts/notebook_smoke.ts
 
 notebook-screenshot:
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
-	PLAYWRIGHT_BROWSERS_PATH=$(shell pwd)/.cache/ms-playwright JOKER_BIN=$(DOCS_JOKER_BIN) bun run scripts/notebook_screenshot.ts
+	PLAYWRIGHT_BROWSERS_PATH=$(PLAYWRIGHT_BROWSERS_PATH) JOKER_BIN=$(DOCS_JOKER_BIN) bun run scripts/notebook_screenshot.ts
 
 bb-compat:
 	$(GO_TEST) ./tests -- -run Babashka -count=$(TEST_COUNT) -timeout=120s
@@ -402,3 +420,11 @@ jank-subset: cli
 audit-fast: tools test-repro vet staticcheck-sa lint vuln
 
 audit: audit-fast race bench-sanity
+
+# Retained profiles/evidence are deliberately excluded. Stop active jobs first.
+clean-cache:
+	@test "$(CLEAN_CONFIRM)" = go-joker || { echo 'Stop active jobs; use CLEAN_CONFIRM=go-joker. Retained evidence is excluded.' >&2; exit 1; }
+	rm -rf -- "$(PROJECT_TMP_ROOT)/cache" "$(PROJECT_TMP_ROOT)/build"
+
+project-paths:
+	@printf '%s\n' "scratch=$(PROJECT_TMP_ROOT)" "go-cache=$(GOCACHE)" "go-modules=$(GOMODCACHE)" "retained-profiles=$(PROFILE_ROOT)"

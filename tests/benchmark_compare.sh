@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/project-env.sh" || exit 1
 set -euo pipefail
 
 baseline=${1:?usage: benchmark_compare.sh BASELINE CANDIDATE [REPORT]}

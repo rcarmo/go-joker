@@ -6,7 +6,7 @@ This repository is a maintained, performance-oriented fork of Joker with extra n
 
 ```bash
 make cli
-.cache/tmp/joker --version
+/workspace/tmp/go-joker/build/joker --version
 ```
 
 The command-line entrypoint is `cmd/joker`; repository-local binaries belong under `.cache/` so the layout guard remains clean. The version string is defined in `core/runtime/version.go` and cross-checked by the release hygiene guard.

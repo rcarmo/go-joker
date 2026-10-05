@@ -1,3 +1,4 @@
+import { projectBuild } from "./project-env";
 import { chromium } from "playwright";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -5,7 +6,7 @@ import { join } from "node:path";
 import { spawn, spawnSync, type ChildProcess } from "node:child_process";
 
 const root = new URL("..", import.meta.url).pathname.replace(/\/$/, "");
-const joker = process.env.JOKER_BIN || join(root, ".cache", "tmp", "go-joker-smoke");
+const joker = process.env.JOKER_BIN || join(projectBuild, "joker");
 const port = Number(process.env.NOTEBOOK_SMOKE_PORT || 18080 + Math.floor(Math.random() * 1000));
 const addr = `127.0.0.1:${port}`;
 const url = `http://${addr}/`;
@@ -14,7 +15,7 @@ function run(args: string[], cwd = root) {
   const result = spawnSync(joker, args, {
     cwd,
     encoding: "utf8",
-    env: { ...process.env, TMPDIR: join(root, ".cache", "tmp"), GOTMPDIR: join(root, ".cache", "gotmp") },
+    env: { ...process.env, TMPDIR: process.env.TMPDIR!, GOTMPDIR: process.env.GOTMPDIR! },
   });
   if (result.status !== 0) {
     throw new Error(`${joker} ${args.join(" ")} failed\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`);
@@ -51,7 +52,7 @@ try {
   server = spawn(joker, ["notebook", notebook, "--addr", addr, "--token", "smoke"], {
     cwd: root,
     stdio: ["ignore", "pipe", "pipe"],
-    env: { ...process.env, TMPDIR: join(root, ".cache", "tmp"), GOTMPDIR: join(root, ".cache", "gotmp") },
+    env: { ...process.env, TMPDIR: process.env.TMPDIR!, GOTMPDIR: process.env.GOTMPDIR! },
   });
   let stderr = "";
   server.stderr?.on("data", (chunk) => { stderr += String(chunk); });

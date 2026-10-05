@@ -4,7 +4,7 @@
 
 ```sh
 CGO_ENABLED=0 make cli
-.cache/tmp/joker doc joker.ffi
+/workspace/tmp/go-joker/build/joker doc joker.ffi
 ```
 
 Supported build targets are Linux, macOS and Windows on amd64/arm64. Linux execution is tested; other targets require native library qualification. The backend is pinned to `github.com/ebitengine/purego v0.11.1`. Linux executables depend on the system loader/libc even with `CGO_ENABLED=0`. No C compiler, SDL or curl installation is needed to build Joker; a script needs the native libraries it explicitly opens.
@@ -60,7 +60,7 @@ The [SDL fluid example](../examples/graphics/sdl-fluid/README.md) uses this name
 ```sh
 make sdl-fluid-screenshot
 # Interactive (provide your platform's absolute SDL2 library path):
-.cache/tmp/sdl-fluid -frames 0 -library /absolute/path/to/SDL2
+/workspace/tmp/go-joker/build/sdl-fluid -frames 0 -library /absolute/path/to/SDL2
 ```
 
 ## Validation and profiling

@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/project-env.sh" || exit 1
 set -euo pipefail
 
 root="${1:-.}"
 cd "$root"
 
-mkdir -p .cache/tmp
-todos_file="$(mktemp .cache/tmp/go-joker-native-int-todos.XXXXXX)"
+mkdir -p "$TMPDIR"
+todos_file="$(mktemp "$TMPDIR"/go-joker-native-int-todos.XXXXXX)"
 trap 'rm -f "$todos_file"' EXIT
 
 if grep -R "TODO: 32-bit issue" -n core std >"$todos_file"; then

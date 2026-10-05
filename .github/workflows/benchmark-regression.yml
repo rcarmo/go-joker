@@ -17,8 +17,17 @@ permissions:
   contents: read
 
 env:
-  TMPDIR: ${{ github.workspace }}/.cache/tmp
-  GOTMPDIR: ${{ github.workspace }}/.cache/go-build-tmp
+  PROFILE_ROOT: ${{ github.workspace }}/.cache/test-profiles
+  PROJECT_TMP_ROOT: ${{ github.workspace }}/.project-tmp/go-joker
+  GOCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-build
+  GOMODCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-mod
+  GOPATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/gopath
+  GOBIN: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-tools
+  BUN_INSTALL_CACHE_DIR: ${{ github.workspace }}/.project-tmp/go-joker/cache/bun
+  npm_config_cache: ${{ github.workspace }}/.project-tmp/go-joker/cache/npm
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright
+  TMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/tmp
+  GOTMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/go-build
   RELEASE_BENCH_PATTERN: '^Benchmark(Fib20|Tak|LoopRecur1M|ReduceRange10K|ClosureCapture|MapAssoc100|VectorConj100|TransducePipeline)$'
 
 jobs:
@@ -35,7 +44,8 @@ jobs:
         run: |
           mkdir -p "$TMPDIR" "$GOTMPDIR" .cache/benchmarks
           # Baseline refs may predate the runner; use the same candidate runner.
-          cp scripts/test-profile.sh .cache/benchmarks/test-profile.sh
+          mkdir -p "$PROJECT_TMP_ROOT/build/benchmark-tools"
+          cp scripts/test-profile.sh scripts/project-env.sh scripts/project-tmp.sh "$PROJECT_TMP_ROOT/build/benchmark-tools/"
       - name: Resolve comparison refs
         id: refs
         env:
@@ -57,7 +67,7 @@ jobs:
           REF: ${{ steps.refs.outputs.baseline }}
         run: |
           git checkout --detach "$REF"
-          .cache/benchmarks/test-profile.sh ./benchmarks/core -- -run '^$' -bench "$RELEASE_BENCH_PATTERN" \
+          $PROJECT_TMP_ROOT/build/benchmark-tools/test-profile.sh ./benchmarks/core -- -run '^$' -bench "$RELEASE_BENCH_PATTERN" \
             -benchmem -benchtime=500ms -count=10 -timeout=20m \
             | tee "$GITHUB_WORKSPACE/.cache/benchmarks/baseline.txt"
       - name: Capture candidate

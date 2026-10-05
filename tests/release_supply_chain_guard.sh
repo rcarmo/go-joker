@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/project-env.sh" || exit 1
 set -euo pipefail
 
 ROOT=${1:-.}
@@ -39,7 +40,7 @@ done
 
 bash -n tests/generate_release_checksums.sh tests/verify_release_assets.sh tests/verify_release_module.sh tests/verify_ffi_binary.sh
 
-fixture=$(mktemp -d "${TMPDIR:-.cache/tmp}/release-assets.XXXXXX")
+fixture=$(mktemp -d "$TMPDIR/release-assets.XXXXXX")
 trap 'rm -rf "$fixture"' EXIT
 for platform in linux-amd64 linux-arm64 darwin-amd64 darwin-arm64 windows-amd64 windows-arm64; do
   ext=""

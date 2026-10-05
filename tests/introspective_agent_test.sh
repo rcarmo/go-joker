@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/project-env.sh" || exit 1
 set -euo pipefail
 
 ROOT="${1:-.}"
-JOKER_BIN="${JOKER_BIN:-${ROOT}/.cache/tmp/joker}"
+JOKER_BIN="${JOKER_BIN:-$CLI_BIN}"
 AGENT="examples/agents/introspective-agent.joke"
-OUT_DIR="${ROOT}/.cache/introspective-agent-test"
+OUT_DIR="$(mktemp -d "$TMPDIR/introspective-agent-test.XXXXXX")"
 
 cd "$ROOT"
 mkdir -p "$OUT_DIR"
