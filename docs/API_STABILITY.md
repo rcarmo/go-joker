@@ -23,6 +23,10 @@ This document classifies go-joker public namespaces and major user-facing surfac
 | Concurrency primitives (`future`, `promise`, `agent`, channels, `alts!`, `timeout`) | Stable | GIL-free/runtime concurrency behavior is guarded by runtime contract tests. |
 | Tail-call/recur behavior | Stable | Important scripting/runtime behavior; regression sensitive. |
 
+## Experimental native ABI namespace
+
+`joker.ffi` is opt-in (`joker_ffi`) for trusted native execution. Its fixed-signature API and opaque buffer/pointer types are experimental; callbacks, variadics, structs and unloading are not supported. Default builds retain documentation and clear unavailable errors. See [FFI contracts](FFI.md) and the [SDL fluid example](../examples/graphics/sdl-fluid/README.md).
+
 ## Standard namespaces
 
 | Namespace | Stability | Notes |

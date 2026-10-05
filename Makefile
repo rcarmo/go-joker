@@ -5,6 +5,8 @@ PROFILE_ROOT ?= $(CURDIR)/.cache/test-profiles
 PROFILE_MEM_RATE ?= 524288
 export GO PROFILE_ROOT PROFILE_MEM_RATE
 GO_TEST := scripts/test-profile.sh
+SDL_LIBRARY ?= /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0
+SDL_SCREENSHOT ?= docs/images/sdl-fluid.png
 TMPDIR ?= $(CURDIR)/.cache/tmp
 GOTMPDIR ?= $(CURDIR)/.cache/gotmp
 export TMPDIR
@@ -34,7 +36,7 @@ BENCH_OUT ?= .cache/benchmarks/candidate.txt
 BENCH_BASELINE ?=
 BENCH_REPORT ?= .cache/benchmarks/benchstat.txt
 
-.PHONY: help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check ai-check docs-paths-check release-hygiene-check release-supply-chain-check module-consumer-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: ffi-cli ffi-check sdl-fluid sdl-fluid-screenshot help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check ai-check docs-paths-check release-hygiene-check release-supply-chain-check module-consumer-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -43,6 +45,10 @@ help:
 	@echo "  make cli            # Build the local joker CLI => $(CLI_BIN)"
 	@echo "  make dist           # Build release CLIs => $(DIST_DIR)/joker-<os>-<arch>[.exe]"
 	@echo "  make clean-dist     # Remove $(DIST_DIR)/ release binaries"
+	@echo "  make ffi-cli        # Opt-in no-cgo joker.ffi CLI"
+	@echo "  make ffi-check      # Profiled ABI + fluid solver tests"
+	@echo "  make sdl-fluid      # SDL2 fluid example host (no cgo)"
+	@echo "  make sdl-fluid-screenshot # Xvfb render/readback with CPU/heap profiles"
 	@echo ""
 	@echo "Targets that consume the local CLI artifact ($(CLI_BIN)):"
 	@echo "  make parity         # Build $(CLI_BIN), then run Clojure parity tests"
@@ -105,6 +111,24 @@ help:
 cli:
 	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)" $$(dirname "$(CLI_BIN)")
 	$(GO) build -o $(CLI_BIN) ./cmd/joker
+
+ffi-cli:
+	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)"
+	CGO_ENABLED=0 $(GO) build -tags joker_ffi -o .cache/tmp/joker-ffi ./cmd/joker
+
+ffi-check:
+	CGO_ENABLED=0 $(GO_TEST) ./std/ffi ./examples/graphics/sdl-fluid/internal/fluid -- -tags joker_ffi -count=1
+
+sdl-fluid:
+	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)"
+	CGO_ENABLED=0 $(GO) build -tags joker_ffi -o .cache/tmp/sdl-fluid ./examples/graphics/sdl-fluid
+
+sdl-fluid-screenshot: sdl-fluid
+	@mkdir -p .cache/sdl-fluid
+	xvfb-run -a .cache/tmp/sdl-fluid -library "$(SDL_LIBRARY)" -frames 240 -screenshot "$(SDL_SCREENSHOT)" -cpuprofile .cache/sdl-fluid/cpu.pprof -memprofile .cache/sdl-fluid/heap.pprof
+	$(GO) tool pprof -top -cum .cache/tmp/sdl-fluid .cache/sdl-fluid/cpu.pprof > .cache/sdl-fluid/cpu.txt
+	$(GO) tool pprof -top -alloc_space .cache/tmp/sdl-fluid .cache/sdl-fluid/heap.pprof > .cache/sdl-fluid/alloc_space.txt
+	$(GO) tool pprof -top -alloc_objects .cache/tmp/sdl-fluid .cache/sdl-fluid/heap.pprof > .cache/sdl-fluid/alloc_objects.txt
 
 clean-dist:
 	rm -rf $(DIST_DIR)
@@ -334,6 +358,8 @@ docs-check: docs-verify docs-command-check notebook-check examples-check docs-pa
 	test -f docs/RELEASE_CHECKLIST.md
 	test -f docs/RELEASE_SUPPLY_CHAIN.md
 	test -f docs/CI_RETENTION.md
+	test -f docs/joker.ffi.html
+	test -f docs/FFI.md
 	test -f docs/joker.imaging.html
 	test -f docs/joker.jit.html
 	test -f docs/joker.edn.html

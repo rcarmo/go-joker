@@ -10,6 +10,10 @@ However, Joker does provide support for deployment of additional namespaces via 
 
 This document provides a brief overview of these mechanisms and recommendations as to how to organize code for such namespaces.
 
+## Optional native libraries
+
+`joker.ffi` is an experimental namespace for trusted fixed-signature C ABI calls. Default builds provide documentation and disabled errors; `CGO_ENABLED=0 make ffi-cli` enables the pinned purego backend on Linux/macOS/Windows amd64/arm64. Native `.so`/`.dylib`/`.dll` loading is separate from the Joker source-library loader. See [FFI contracts](FFI.md) and the [SDL fluid example](../examples/graphics/sdl-fluid/README.md).
+
 ## Default Behavior
 
 Absent overriding behavior as defined by `joker.core/*classpath*` and `joker.core/*ns-sources*`, Joker normally relies on the local filesystem to locate source files for namespaces.

@@ -1,0 +1,97 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: joker.ffi</h1>
+    <span class="var-added">v42.11.4-dev</span>
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#_summary">Summary</a>
+      </li>
+      <li>
+        <a href="#_index">Index</a>
+      </li>
+      <li>
+        <a href="#_constants">Constants</a>
+      </li>
+      <li>
+        <a href="#_variables">Variables</a>
+      </li>
+      <li>
+        <a href="#_functions">Functions, Macros, and Special Forms</a>
+      </li>
+    </ul>
+    <h2 id="_summary">Summary</h2>
+    <p class="var-docstr">Optional fixed-signature C ABI calls for trusted scripts. Build with joker_ffi; see docs/FFI.md.</p>
+    <h2 id="_index">Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#bind">bind</a>
+</li>
+<li>
+  <a href="#buffer">buffer</a>
+</li>
+<li>
+  <a href="#open">open</a>
+</li>
+<li>
+  <a href="#u32">u32</a>
+</li>
+
+    </ul>
+    <h2 id="_constants">Constants</h2>
+    Constants are variables with <tt>:const true</tt> in their metadata. Joker currently does not recognize them as special; as such, it allows redefining them or their values.
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_variables">Variables</h2>
+    <ul>
+      (None.)
+    </ul>
+    <h2 id="_functions">Functions, Macros, and Special Forms</h2>
+    <ul>
+      <li>
+  <h3 class="Function" id="bind">bind</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v42.11.4-dev</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Bind (library symbol argument-type-vector return-type); fixed scalar/string/pointer signatures. Requires joker_ffi.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="buffer">buffer</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v42.11.4-dev</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Allocate a reusable byte buffer (0..64 MiB). C must not retain its address. Requires joker_ffi.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="open">open</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v42.11.4-dev</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Load an absolute library path. Libraries stay loaded for process lifetime. Requires joker_ffi.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="u32">u32</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v42.11.4-dev</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Read a checked little-endian uint32 from a buffer at a byte offset. Requires joker_ffi.</p>
+
+
+</li>
+
+    </ul>
+  </div>
+</body>
+<script src="main.js"></script>
+</html>

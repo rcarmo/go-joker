@@ -78,6 +78,7 @@ Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze
 The Global Interpreter Lock has been removed. Goroutines run in true parallel on Go scheduler threads. Immutable data structures need no coordination. Atoms use per-atom mutexes. Concurrency primitives: `alts!`, `timeout`, `future`, `promise`, `agent`, `pmap`, `pcalls`, plus a `clojure.core.async` compatibility namespace with `go-loop`, `put!`/`take!`, `pipe`, `merge`, `split`, `mult`, and `pub` helpers. Channel close is idempotent and safe under concurrent callers; sends after close return false and takes from closed channels yield `nil`.
 
 ### Additional namespaces / web runtime
+- `joker.ffi` — opt-in, no-cgo fixed C ABI calls to `.so`/`.dylib`/`.dll` libraries; [contracts](docs/FFI.md) and [SDL fluid sample](examples/graphics/sdl-fluid/README.md)
 - `joker.imaging` — image processing (resize, crop, blur, overlay) via pure Go, with guarded image/color argument boundaries
 - `joker.term` — raw terminal I/O, ANSI colors/styles, buffered frame rendering, key input (see [`docs/TERM.md`](docs/TERM.md))
 - `joker.svg` — SVG generation + raster rendering, with guarded coordinate-vector handling
@@ -97,6 +98,12 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 - Atom mutation parity: `set-validator!`, `get-validator`, `add-watch`, `remove-watch`, `compare-and-set!`
 - Chunked seq API: `chunk-buffer`, `chunk-append`, `chunk`, `chunk-cons`, `chunk-first`, `chunk-rest`, `chunk-next`, `chunked-seq?`
 - Unchecked arithmetic + primitive array helpers: `unchecked-*`, `int-array`, `long-array`, `aget`, `aset`, `alength`, `aclone`, `make-array`
+
+### SDL fluid simulation through FFI
+
+An opt-in SDL2 example drives window, texture, render and event calls from Joker. A companion host supplies reusable simulation buffers. Build with `make sdl-fluid`; see [instructions](examples/graphics/sdl-fluid/README.md).
+
+![SDL fluid simulation](docs/images/sdl-fluid.png)
 
 ## Architecture
 
@@ -217,6 +224,7 @@ tests/benchmark_ci_check.sh bench-results.txt
 - [`docs/BENCHMARK_CI.md`](docs/BENCHMARK_CI.md) — CI benchmark smoke guard policy and local reproduction
 - [`docs/RUNTIME_DOCS.md`](docs/RUNTIME_DOCS.md) — `joker doc` Markdown/JSON lookup and local HTTP docs server
 - [`docs/IMAGING.md`](docs/IMAGING.md) — `joker.imaging` image processing API and Bun Image parity notes
+- [`docs/FFI.md`](docs/FFI.md) — optional trusted C ABI calls and SDL example
 - [`docs/TERM.md`](docs/TERM.md) — `joker.term` terminal I/O, ANSI rendering, buffered frames, key input
 - [`docs/NOTEBOOKS.md`](docs/NOTEBOOKS.md) — EDN notebooks, headless runs, Markdown export, and local notebook server
 - [`docs/refactor/README.md`](docs/refactor/README.md) — repository split plan and target folder structure
