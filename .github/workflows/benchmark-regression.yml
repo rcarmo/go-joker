@@ -18,16 +18,6 @@ permissions:
 
 env:
   PROFILE_ROOT: ${{ github.workspace }}/.cache/test-profiles
-  PROJECT_TMP_ROOT: ${{ github.workspace }}/.project-tmp/go-joker
-  GOCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-build
-  GOMODCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-mod
-  GOPATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/gopath
-  GOBIN: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-tools
-  BUN_INSTALL_CACHE_DIR: ${{ github.workspace }}/.project-tmp/go-joker/cache/bun
-  npm_config_cache: ${{ github.workspace }}/.project-tmp/go-joker/cache/npm
-  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright
-  TMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/tmp
-  GOTMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/go-build
   RELEASE_BENCH_PATTERN: '^Benchmark(Fib20|Tak|LoopRecur1M|ReduceRange10K|ClosureCapture|MapAssoc100|VectorConj100|TransducePipeline)$'
 
 jobs:
@@ -42,7 +32,11 @@ jobs:
           go-version: '1.26.5'
       - name: Prepare temp directories
         run: |
-          mkdir -p "$TMPDIR" "$GOTMPDIR" .cache/benchmarks
+          source scripts/project-env.sh
+          for name in PROJECT_TMP_ROOT PROJECT_ORIGINAL_TMPDIR TMPDIR GOTMPDIR GOCACHE GOMODCACHE GOPATH GOBIN; do
+            printf '%s=%s\n' "$name" "${!name}" >> "$GITHUB_ENV"
+          done
+          mkdir -p .cache/benchmarks
           # Baseline refs may predate the runner; use the same candidate runner.
           mkdir -p "$PROJECT_TMP_ROOT/build/benchmark-tools"
           cp scripts/test-profile.sh scripts/project-env.sh scripts/project-tmp.sh "$PROJECT_TMP_ROOT/build/benchmark-tools/"

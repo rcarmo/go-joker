@@ -6,19 +6,6 @@ on:
 
 permissions: {}
 
-env:
-  PROJECT_TMP_ROOT: ${{ github.workspace }}/.project-tmp/go-joker
-  GOCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-build
-  GOMODCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-mod
-  GOPATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/gopath
-  GOBIN: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-tools
-  BUN_INSTALL_CACHE_DIR: ${{ github.workspace }}/.project-tmp/go-joker/cache/bun
-  npm_config_cache: ${{ github.workspace }}/.project-tmp/go-joker/cache/npm
-  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright
-  TMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/tmp
-  GOTMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/go-build
-  DOCS_JOKER_BIN: ${{ github.workspace }}/.project-tmp/go-joker/build/go-joker-docs
-
 jobs:
   test:
     permissions:
@@ -27,7 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Prepare reproducible temp directories
-        run: mkdir -p "$TMPDIR" "$GOTMPDIR" "$PROJECT_TMP_ROOT/build"
+        run: |
+          source scripts/project-env.sh
+          for name in PROJECT_TMP_ROOT PROJECT_ORIGINAL_TMPDIR TMPDIR GOTMPDIR GOCACHE GOMODCACHE GOPATH GOBIN BUN_INSTALL_CACHE_DIR npm_config_cache PLAYWRIGHT_BROWSERS_PATH DOCS_JOKER_BIN; do
+            printf '%s=%s\n' "$name" "${!name}" >> "$GITHUB_ENV"
+          done
       - uses: actions/setup-go@v5
         with:
           go-version: '1.26.5'
@@ -45,9 +36,9 @@ jobs:
       - name: Install notebook browser smoke dependencies
         run: |
           bun install --frozen-lockfile
-          PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright bunx playwright install chromium
+          PLAYWRIGHT_BROWSERS_PATH="$PLAYWRIGHT_BROWSERS_PATH" bunx playwright install chromium
       - name: Run notebook browser smoke check
-        run: PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright make notebook-browser-smoke
+        run: PLAYWRIGHT_BROWSERS_PATH="$PLAYWRIGHT_BROWSERS_PATH" make notebook-browser-smoke
       - name: Retain Go test profiles
         if: always()
         uses: actions/upload-artifact@v4
@@ -82,7 +73,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Prepare reproducible temp directories
-        run: mkdir -p "$TMPDIR" "$GOTMPDIR" "$PROJECT_TMP_ROOT/build"
+        run: |
+          source scripts/project-env.sh
+          for name in PROJECT_TMP_ROOT PROJECT_ORIGINAL_TMPDIR TMPDIR GOTMPDIR GOCACHE GOMODCACHE GOPATH GOBIN BUN_INSTALL_CACHE_DIR npm_config_cache PLAYWRIGHT_BROWSERS_PATH DOCS_JOKER_BIN; do
+            printf '%s=%s\n' "$name" "${!name}" >> "$GITHUB_ENV"
+          done
       - uses: actions/setup-go@v5
         with:
           go-version: '1.26.5'
@@ -109,7 +104,7 @@ jobs:
       - name: Generate SPDX SBOM
         uses: anchore/sbom-action@v0
         with:
-          path: ${{ github.workspace }}/.project-tmp/go-joker/runs/sbom-input
+          path: ${{ env.PROJECT_TMP_ROOT }}/runs/sbom-input
           format: spdx-json
           output-file: ${{ steps.build.outputs.binary }}.spdx.json
           upload-artifact: false
@@ -154,7 +149,11 @@ jobs:
           merge-multiple: true
 
       - name: Prepare reproducible temp directories
-        run: mkdir -p "$TMPDIR" "$GOTMPDIR" "$PROJECT_TMP_ROOT/build"
+        run: |
+          source scripts/project-env.sh
+          for name in PROJECT_TMP_ROOT PROJECT_ORIGINAL_TMPDIR TMPDIR GOTMPDIR GOCACHE GOMODCACHE GOPATH GOBIN BUN_INSTALL_CACHE_DIR npm_config_cache PLAYWRIGHT_BROWSERS_PATH DOCS_JOKER_BIN; do
+            printf '%s=%s\n' "$name" "${!name}" >> "$GITHUB_ENV"
+          done
 
       - uses: actions/setup-go@v5
         with:

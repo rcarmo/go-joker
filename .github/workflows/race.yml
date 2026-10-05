@@ -8,26 +8,17 @@ on:
 permissions:
   contents: read
 
-env:
-  PROJECT_TMP_ROOT: ${{ github.workspace }}/.project-tmp/go-joker
-  GOCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-build
-  GOMODCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-mod
-  GOPATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/gopath
-  GOBIN: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-tools
-  BUN_INSTALL_CACHE_DIR: ${{ github.workspace }}/.project-tmp/go-joker/cache/bun
-  npm_config_cache: ${{ github.workspace }}/.project-tmp/go-joker/cache/npm
-  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright
-  TMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/tmp
-  GOTMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/go-build
-  DOCS_JOKER_BIN: ${{ github.workspace }}/.project-tmp/go-joker/runs/tmp/go-joker-docs
-
 jobs:
   race-stress:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Prepare reproducible temp directories
-        run: mkdir -p "$TMPDIR" "$GOTMPDIR"
+        run: |
+          source scripts/project-env.sh
+          for name in PROJECT_TMP_ROOT PROJECT_ORIGINAL_TMPDIR TMPDIR GOTMPDIR GOCACHE GOMODCACHE GOPATH GOBIN; do
+            printf '%s=%s\n' "$name" "${!name}" >> "$GITHUB_ENV"
+          done
       - uses: actions/setup-go@v5
         with:
           go-version: '1.26.5'

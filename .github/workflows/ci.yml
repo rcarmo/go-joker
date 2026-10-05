@@ -6,19 +6,6 @@ on:
   pull_request:
     branches: [master]
 
-env:
-  PROJECT_TMP_ROOT: ${{ github.workspace }}/.project-tmp/go-joker
-  GOCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-build
-  GOMODCACHE: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-mod
-  GOPATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/gopath
-  GOBIN: ${{ github.workspace }}/.project-tmp/go-joker/cache/go-tools
-  BUN_INSTALL_CACHE_DIR: ${{ github.workspace }}/.project-tmp/go-joker/cache/bun
-  npm_config_cache: ${{ github.workspace }}/.project-tmp/go-joker/cache/npm
-  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright
-  TMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/tmp
-  GOTMPDIR: ${{ github.workspace }}/.project-tmp/go-joker/runs/go-build
-  DOCS_JOKER_BIN: ${{ github.workspace }}/.project-tmp/go-joker/runs/tmp/go-joker-docs
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,7 +14,11 @@ jobs:
       - name: Lint GitHub Actions workflows
         uses: docker://rhysd/actionlint:1.7.7
       - name: Prepare reproducible temp directories
-        run: mkdir -p "$TMPDIR" "$GOTMPDIR" "$PROJECT_TMP_ROOT/build"
+        run: |
+          source scripts/project-env.sh
+          for name in PROJECT_TMP_ROOT PROJECT_ORIGINAL_TMPDIR TMPDIR GOTMPDIR GOCACHE GOMODCACHE GOPATH GOBIN BUN_INSTALL_CACHE_DIR npm_config_cache PLAYWRIGHT_BROWSERS_PATH DOCS_JOKER_BIN; do
+            printf '%s=%s\n' "$name" "${!name}" >> "$GITHUB_ENV"
+          done
       - uses: actions/setup-go@v5
         with:
           go-version: '1.26.5'
@@ -43,9 +34,9 @@ jobs:
       - name: Install notebook browser smoke dependencies
         run: |
           bun install --frozen-lockfile
-          PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright bunx playwright install chromium
+          PLAYWRIGHT_BROWSERS_PATH="$PLAYWRIGHT_BROWSERS_PATH" bunx playwright install chromium
       - name: Run notebook browser smoke check
-        run: PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.project-tmp/go-joker/cache/ms-playwright make notebook-browser-smoke
+        run: PLAYWRIGHT_BROWSERS_PATH="$PLAYWRIGHT_BROWSERS_PATH" make notebook-browser-smoke
       - name: Run local parity suite
         run: go run tests/clojure_parity.go -joker "$PROJECT_TMP_ROOT/build/joker" -out docs/DIVERGENCE_MATRIX.md
       - name: Run imported jank smoke subset
@@ -57,7 +48,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Prepare reproducible temp directories
-        run: mkdir -p "$TMPDIR" "$GOTMPDIR" "$PROJECT_TMP_ROOT/build"
+        run: |
+          source scripts/project-env.sh
+          for name in PROJECT_TMP_ROOT PROJECT_ORIGINAL_TMPDIR TMPDIR GOTMPDIR GOCACHE GOMODCACHE GOPATH GOBIN BUN_INSTALL_CACHE_DIR npm_config_cache PLAYWRIGHT_BROWSERS_PATH DOCS_JOKER_BIN; do
+            printf '%s=%s\n' "$name" "${!name}" >> "$GITHUB_ENV"
+          done
       - uses: actions/setup-go@v5
         with:
           go-version: '1.26.5'

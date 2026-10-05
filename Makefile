@@ -1,7 +1,14 @@
 SHELL := /bin/bash
 
 GO ?= go
-PROJECT_TMP_ROOT := $(shell scripts/project-tmp.sh init-root)
+ifeq ($(origin PROJECT_ORIGINAL_TMPDIR),undefined)
+PROJECT_ORIGINAL_TMPDIR := $(TMPDIR)
+endif
+export PROJECT_ORIGINAL_TMPDIR
+ifneq ($(origin PROJECT_TMP_BASE),undefined)
+export PROJECT_TMP_BASE
+endif
+override PROJECT_TMP_ROOT := $(shell scripts/project-tmp.sh make-root "$(PROJECT_TMP_BASE)" "$(origin PROJECT_TMP_BASE)" "$(PROJECT_TMP_ROOT)" "$(origin PROJECT_TMP_ROOT)" "$(PROJECT_ORIGINAL_TMPDIR)")
 ifeq ($(strip $(PROJECT_TMP_ROOT)),)
 $(error No valid project temporary root)
 endif
@@ -12,8 +19,8 @@ export GO PROFILE_ROOT PROFILE_MEM_RATE
 GO_TEST := scripts/test-profile.sh
 SDL_LIBRARY ?= /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0
 SDL_SCREENSHOT ?= docs/images/sdl-fluid.png
-TMPDIR ?= $(PROJECT_TMP_ROOT)/runs/tmp
-GOTMPDIR ?= $(PROJECT_TMP_ROOT)/runs/go-build
+override TMPDIR := $(PROJECT_TMP_ROOT)/runs/tmp
+override GOTMPDIR := $(PROJECT_TMP_ROOT)/runs/go-build
 export TMPDIR
 export GOTMPDIR
 GOCACHE ?= $(PROJECT_TMP_ROOT)/cache/go-build
