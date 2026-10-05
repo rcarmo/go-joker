@@ -1,4 +1,4 @@
-//go:build joker_ffi && windows && (amd64 || arm64)
+//go:build windows && (amd64 || arm64)
 
 package ffi
 

@@ -31,7 +31,7 @@ jobs:
         run: go mod download
       - name: Run canonical release checks
         run: make release-check
-      - name: Test optional no-cgo FFI and fluid solver
+      - name: Test default no-cgo FFI and fluid solver
         run: make ffi-check
       - uses: oven-sh/setup-bun@v2
       - name: Install notebook browser smoke dependencies
@@ -160,6 +160,9 @@ jobs:
           TAG: ${{ github.ref_name }}
           REVISION: ${{ github.sha }}
         run: tests/verify_release_assets.sh release-files "$TAG" "$REVISION"
+
+      - name: Verify default no-cgo FFI in downloaded binary
+        run: tests/verify_ffi_binary.sh release-files/joker-linux-amd64
 
       - name: Verify public Go module and CLI installation
         env:

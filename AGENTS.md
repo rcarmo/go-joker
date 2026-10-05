@@ -312,9 +312,9 @@ Run scalar/SIMD differential tests, bounded fuzzing and benchmark regression che
 
 Seek independent adversarial review for audit/sign-off when an approved executable model or human reviewer is available. Inspect actual availability; never invent a model or bypass delegate policy. Report unavailable review honestly.
 
-## Optional C ABI and SDL sample
+## C ABI and SDL sample
 
-- `std/ffi` registers `joker.ffi`; actual native loading requires `joker_ffi` on Linux/macOS/Windows amd64/arm64. Default builds must not import purego or acquire native loader dependencies.
+- `std/ffi` registers `joker.ffi`; native calls are enabled in normal Linux/macOS/Windows amd64/arm64 builds and release binaries with `CGO_ENABLED=0`. No feature tag is required. Unsupported targets retain unavailable errors. Do not introduce an unrequested opt-in gate.
 - Run `make ffi-check` and the profiled `make sdl-fluid-screenshot` for ABI/sample changes. Keep SDL calls in `examples/graphics/sdl-fluid/fluid.joke`; simulation/image buffers belong to the example host, not the FFI namespace.
 - Fixed signatures only: no guessed C varargs, callbacks, struct layouts or unsafe unload. Preserve opaque pointer provenance and distinct callable identity. Native buffers cannot be retained by C; embedded hosts own thread/authority policy.
 - Screenshots are actual SDL readback and documentation; never use image hashes/byte equality as fluid acceptance. Test finite fields, physical/output bounds and rounding-calibrated numerical/image error tolerances.

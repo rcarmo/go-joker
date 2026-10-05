@@ -1,4 +1,4 @@
-//go:build joker_ffi && (linux || darwin || windows) && (amd64 || arm64)
+//go:build (linux || darwin || windows) && (amd64 || arm64)
 
 package ffi
 

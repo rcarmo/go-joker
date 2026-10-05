@@ -1,4 +1,4 @@
-//go:build joker_ffi && (linux || darwin || windows) && (amd64 || arm64)
+//go:build (linux || darwin || windows) && (amd64 || arm64)
 
 // SDL fluid example host: simulation buffers only; SDL calls live in fluid.joke.
 package main

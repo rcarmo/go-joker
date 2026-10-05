@@ -6,7 +6,7 @@ This example renders an incompressible RGB dye simulation with SDL2 loaded at ru
 
 ## Run
 
-Install an SDL2 runtime library. Linux screenshot testing also needs Xvfb; macOS and Windows use their native display.
+Install an SDL2 runtime library. The Go caller builds with `CGO_ENABLED=0`; no `joker_ffi` tag or C compiler is needed. Linux screenshot testing also needs Xvfb; macOS and Windows use their native display.
 
 ```sh
 make sdl-fluid

@@ -59,6 +59,7 @@ EOF
 go mod tidy
 "$root/scripts/test-profile.sh" ./... -- -count=1 -v
 # Exercise the documented install command, independent of the consumer's go.mod.
-GOBIN="$work/bin" go install "$module/cmd/joker@$expected_tag"
+CGO_ENABLED=0 GOBIN="$work/bin" go install "$module/cmd/joker@$expected_tag"
 "$work/bin/joker" --version 2>&1 | grep -Fx "$expected_tag"
+"$root/tests/verify_ffi_binary.sh" "$work/bin/joker"
 echo "verified public module $resolved at $expected_revision"

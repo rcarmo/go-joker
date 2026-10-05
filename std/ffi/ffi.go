@@ -1,6 +1,6 @@
-//go:build joker_ffi && (linux || darwin || windows) && (amd64 || arm64)
+//go:build (linux || darwin || windows) && (amd64 || arm64)
 
-// Package ffi enables explicitly typed C ABI calls for trusted Joker scripts.
+// Package ffi provides explicitly typed C ABI calls for trusted Joker scripts.
 package ffi
 
 import (

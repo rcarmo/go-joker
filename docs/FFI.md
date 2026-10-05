@@ -1,13 +1,13 @@
 # C ABI calls with joker.ffi
 
-`joker.ffi` loads native libraries and calls fixed C signatures without cgo. It is experimental, opt-in and intended for trusted scripts. The default build exposes documentation and unavailable errors, without linking the native-call backend.
+`joker.ffi` loads native libraries and calls fixed C signatures without cgo. It is enabled in normal builds and published binaries on Linux/macOS/Windows amd64/arm64. The API is experimental and intended for trusted scripts. Other platforms expose documented unavailable errors.
 
 ```sh
-CGO_ENABLED=0 make ffi-cli
-.cache/tmp/joker-ffi doc joker.ffi
+CGO_ENABLED=0 make cli
+.cache/tmp/joker doc joker.ffi
 ```
 
-Supported build targets are Linux, macOS and Windows on amd64/arm64. Linux execution is tested; other targets require native library qualification. The backend is pinned to `github.com/ebitengine/purego v0.11.1`. On Linux the FFI-enabled executable depends on the system loader/libc even with `CGO_ENABLED=0`; the normal executable retains its static deployment model.
+Supported build targets are Linux, macOS and Windows on amd64/arm64. Linux execution is tested; other targets require native library qualification. The backend is pinned to `github.com/ebitengine/purego v0.11.1`. Linux executables depend on the system loader/libc even with `CGO_ENABLED=0`. No C compiler, SDL or curl installation is needed to build Joker; a script needs the native libraries it explicitly opens.
 
 ## Fixed signatures
 
@@ -47,9 +47,9 @@ Returned pointers retain input pointer/buffer owners conservatively, including a
 
 ## Threads and authority
 
-FFI executes arbitrary native code, including library constructors, with full process authority. Bad pointers/signatures can corrupt memory or terminate Joker; language exception handling is not a sandbox. Do not enable FFI for untrusted notebooks. The build tag and explicit package import enable it for a trusted process; there is no per-library sandbox policy.
+FFI executes arbitrary native code, including library constructors, with full process authority. Bad pointers/signatures can corrupt memory or terminate Joker; language exception handling is not a sandbox. Do not enable FFI for untrusted notebooks. Native calling is available in the normal CLI. Embedded hosts register the namespace through `std/ffi`; there is no per-library sandbox policy.
 
-The tagged CLI locks its startup goroutine to the process main OS thread. Embedded hosts must choose their own owner-thread executor. SDL/AppKit video APIs on macOS require the process main thread, not any locked worker. Native calls cannot generally be cancelled by a script timeout. Thread-local errno/GetLastError capture is not provided; use API return codes and explicit error functions with the required thread discipline.
+The CLI locks its startup goroutine to the process main OS thread on supported targets. Embedded hosts must choose their own owner-thread executor. SDL/AppKit video APIs on macOS require the process main thread, not any locked worker. Native calls cannot generally be cancelled by a script timeout. Thread-local errno/GetLastError capture is not provided; use API return codes and explicit error functions with the required thread discipline.
 
 ## SDL fluid sample
 

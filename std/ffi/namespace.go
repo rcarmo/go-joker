@@ -1,5 +1,5 @@
-// Package ffi registers the optional joker.ffi namespace. Native support needs
-// -tags joker_ffi on Linux/macOS/Windows amd64/arm64; default builds stay static.
+// Package ffi registers the joker.ffi namespace. Native calls are available without cgo
+// on Linux/macOS/Windows amd64/arm64. Other targets expose unavailable errors.
 package ffi
 
 import (
@@ -12,19 +12,19 @@ var initialize = unavailable
 
 func init() {
 	namespace.Lazy = func() {
-		namespace.ResetMeta(core.MakeMeta(nil, "Optional fixed-signature C ABI calls for trusted scripts. Build with joker_ffi; see docs/FFI.md.", "42.12.0"))
+		namespace.ResetMeta(core.MakeMeta(nil, "Fixed-signature C ABI calls for trusted scripts. No cgo required; see docs/FFI.md.", "42.12.0"))
 		initialize()
 	}
 }
 func unavailable() {
 	for name, doc := range map[string]string{
-		"open":   "Load an absolute library path. Libraries stay loaded for process lifetime. Requires joker_ffi.",
-		"bind":   "Bind (library symbol argument-type-vector return-type); fixed scalar/string/pointer signatures. Requires joker_ffi.",
-		"buffer": "Allocate a reusable byte buffer (0..64 MiB). C must not retain its address. Requires joker_ffi.",
-		"u32":    "Read a checked little-endian uint32 from a buffer at a byte offset. Requires joker_ffi.",
+		"open":   "Load an absolute library path. Libraries stay loaded for process lifetime. Supported on Linux/macOS/Windows amd64/arm64.",
+		"bind":   "Bind (library symbol argument-type-vector return-type); fixed scalar/string/pointer signatures. Supported on Linux/macOS/Windows amd64/arm64.",
+		"buffer": "Allocate a reusable byte buffer (0..64 MiB). C must not retain its address. Supported on Linux/macOS/Windows amd64/arm64.",
+		"u32":    "Read a checked little-endian uint32 from a buffer at a byte offset. Supported on Linux/macOS/Windows amd64/arm64.",
 	} {
 		namespace.InternVar(name, core.Proc{Name: name, Package: "std/ffi", Fn: func([]types.Object) types.Object {
-			panic(core.RT.NewError("ffi unavailable: build with -tags joker_ffi on Linux/macOS/Windows amd64/arm64"))
+			panic(core.RT.NewError("ffi unavailable: supported on Linux/macOS/Windows amd64/arm64"))
 		}}, core.MakeMeta(nil, doc, "42.12.0"))
 	}
 }

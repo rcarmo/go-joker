@@ -45,7 +45,7 @@ help:
 	@echo "  make cli            # Build the local joker CLI => $(CLI_BIN)"
 	@echo "  make dist           # Build release CLIs => $(DIST_DIR)/joker-<os>-<arch>[.exe]"
 	@echo "  make clean-dist     # Remove $(DIST_DIR)/ release binaries"
-	@echo "  make ffi-cli        # Opt-in no-cgo joker.ffi CLI"
+	@echo "  make ffi-cli        # Default no-cgo joker.ffi CLI"
 	@echo "  make ffi-check      # Profiled ABI + fluid solver tests"
 	@echo "  make sdl-fluid      # SDL2 fluid example host (no cgo)"
 	@echo "  make sdl-fluid-screenshot # Xvfb render/readback with CPU/heap profiles"
@@ -114,14 +114,16 @@ cli:
 
 ffi-cli:
 	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)"
-	CGO_ENABLED=0 $(GO) build -tags joker_ffi -o .cache/tmp/joker-ffi ./cmd/joker
+	CGO_ENABLED=0 $(GO) build -o .cache/tmp/joker-ffi ./cmd/joker
 
 ffi-check:
-	CGO_ENABLED=0 $(GO_TEST) ./std/ffi ./examples/graphics/sdl-fluid/internal/fluid -- -tags joker_ffi -count=1
+	CGO_ENABLED=0 $(GO_TEST) ./std/ffi ./examples/graphics/sdl-fluid/internal/fluid -- -count=1
+	$(MAKE) ffi-cli
+	tests/verify_ffi_binary.sh .cache/tmp/joker-ffi
 
 sdl-fluid:
 	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)"
-	CGO_ENABLED=0 $(GO) build -tags joker_ffi -o .cache/tmp/sdl-fluid ./examples/graphics/sdl-fluid
+	CGO_ENABLED=0 $(GO) build -o .cache/tmp/sdl-fluid ./examples/graphics/sdl-fluid
 
 sdl-fluid-screenshot: sdl-fluid
 	@mkdir -p .cache/sdl-fluid

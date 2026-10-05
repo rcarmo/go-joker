@@ -1,0 +1,12 @@
+;; Run with the normal CLI, no feature tag. The shell verifier supplies a
+;; platform library/symbol; this proves actual dynamic loading and invocation.
+(require '[joker.ffi :as ffi] '[joker.os :as os])
+(def lib (ffi/open (os/get-env "JOKER_FFI_SMOKE_LIBRARY")))
+(def length (ffi/bind lib "strlen" [:cstring] :size-t))
+(assert (= 7 (length "héllo!")))
+(assert (= 0 (length "")))
+(def buffer (ffi/buffer 8))
+(assert (= 0 (ffi/u32 buffer 0)))
+(println "default no-cgo FFI smoke passed")
+;; Flush CLI profile hooks explicitly (normal script return does not call them).
+(exit 0)

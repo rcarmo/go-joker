@@ -13,6 +13,7 @@ for required in \
   'tests/generate_release_checksums.sh release-files' \
   'tests/verify_release_assets.sh release-files' \
   'tests/verify_release_module.sh' \
+  'tests/verify_ffi_binary.sh release-files/joker-linux-amd64' \
   'gh release upload "$TAG" release-files/* --clobber'; do
   grep -Fq "$required" "$workflow" || {
     echo "release workflow is missing supply-chain step: $required" >&2
@@ -36,7 +37,7 @@ for ci in .github/workflows/ci.yml "$workflow"; do
   }
 done
 
-bash -n tests/generate_release_checksums.sh tests/verify_release_assets.sh tests/verify_release_module.sh
+bash -n tests/generate_release_checksums.sh tests/verify_release_assets.sh tests/verify_release_module.sh tests/verify_ffi_binary.sh
 
 fixture=$(mktemp -d "${TMPDIR:-.cache/tmp}/release-assets.XXXXXX")
 trap 'rm -rf "$fixture"' EXIT

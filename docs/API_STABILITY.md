@@ -25,7 +25,7 @@ This document classifies go-joker public namespaces and major user-facing surfac
 
 ## Experimental native ABI namespace
 
-`joker.ffi` is opt-in (`joker_ffi`) for trusted native execution. Its fixed-signature API and opaque buffer/pointer types are experimental; callbacks, variadics, structs and unloading are not supported. Default builds retain documentation and clear unavailable errors. See [FFI contracts](FFI.md) and the [SDL fluid example](../examples/graphics/sdl-fluid/README.md).
+`joker.ffi` is enabled without cgo in normal Linux/macOS/Windows amd64/arm64 builds for trusted native execution. Its fixed-signature API and opaque buffer/pointer types are experimental; callbacks, variadics, structs and unloading are not supported. Unsupported targets retain documentation and clear unavailable errors. See [FFI contracts](FFI.md) and the [SDL fluid example](../examples/graphics/sdl-fluid/README.md).
 
 ## Standard namespaces
 

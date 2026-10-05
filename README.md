@@ -78,7 +78,7 @@ Full IR/WASM/profiling introspection from Joker scripts: `disassemble`, `analyze
 The Global Interpreter Lock has been removed. Goroutines run in true parallel on Go scheduler threads. Immutable data structures need no coordination. Atoms use per-atom mutexes. Concurrency primitives: `alts!`, `timeout`, `future`, `promise`, `agent`, `pmap`, `pcalls`, plus a `clojure.core.async` compatibility namespace with `go-loop`, `put!`/`take!`, `pipe`, `merge`, `split`, `mult`, and `pub` helpers. Channel close is idempotent and safe under concurrent callers; sends after close return false and takes from closed channels yield `nil`.
 
 ### Additional namespaces / web runtime
-- `joker.ffi` — opt-in, no-cgo fixed C ABI calls to `.so`/`.dylib`/`.dll` libraries; [contracts](docs/FFI.md) and [SDL fluid sample](examples/graphics/sdl-fluid/README.md)
+- `joker.ffi` — no-cgo fixed C ABI calls to `.so`/`.dylib`/`.dll` libraries; [contracts](docs/FFI.md) and [SDL fluid sample](examples/graphics/sdl-fluid/README.md)
 - `joker.imaging` — image processing (resize, crop, blur, overlay) via pure Go, with guarded image/color argument boundaries
 - `joker.term` — raw terminal I/O, ANSI colors/styles, buffered frame rendering, key input (see [`docs/TERM.md`](docs/TERM.md))
 - `joker.svg` — SVG generation + raster rendering, with guarded coordinate-vector handling
@@ -101,7 +101,7 @@ The Global Interpreter Lock has been removed. Goroutines run in true parallel on
 
 ### SDL fluid simulation through FFI
 
-An opt-in SDL2 example drives window, texture, render and event calls from Joker. A companion host supplies reusable simulation buffers. Build with `make sdl-fluid`; see [instructions](examples/graphics/sdl-fluid/README.md).
+An SDL2 example drives window, texture, render and event calls from Joker. A companion host supplies reusable simulation buffers. Build with `make sdl-fluid`; see [instructions](examples/graphics/sdl-fluid/README.md).
 
 ![SDL fluid simulation](docs/images/sdl-fluid.png)
 
@@ -126,7 +126,7 @@ The [execution-tier audit](docs/EXECUTION_TIER_AUDIT.md) documents numeric promo
 Install the module with Go 1.25 or newer:
 
 ```sh
-go get github.com/rcarmo/go-joker/v42@v42.12.0
+go get github.com/rcarmo/go-joker/v42@v42.12.1
 ```
 
 Package imports include the major version, for example:
@@ -138,7 +138,7 @@ import "github.com/rcarmo/go-joker/v42/core"
 To install the CLI:
 
 ```sh
-go install github.com/rcarmo/go-joker/v42/cmd/joker@v42.12.0
+go install github.com/rcarmo/go-joker/v42/cmd/joker@v42.12.1
 ```
 
 `v42.11.3` is the first v42 release with a valid Go module path. Existing Go consumers must add `/v42` to their imports and run `go mod tidy`. Earlier v42 tags lacked this suffix and cannot be selected as module versions; those tags remain unchanged. Repository and source URLs still use `github.com/rcarmo/go-joker`.
@@ -247,8 +247,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.12.0.
-Release notes: [`docs/RELEASE_NOTES_v42.12.0.md`](docs/RELEASE_NOTES_v42.12.0.md).
+Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.12.1.
+Release notes: [`docs/RELEASE_NOTES_v42.12.1.md`](docs/RELEASE_NOTES_v42.12.1.md).
 Audit report: [`docs/AUDIT_REPORT_2026-07-09.md`](docs/AUDIT_REPORT_2026-07-09.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 

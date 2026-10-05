@@ -23,6 +23,8 @@ for platform in "${platforms[@]}"; do
   [[ -s $sbom ]] || { echo "missing or empty release SBOM: $sbom" >&2; exit 1; }
 
   metadata=$(go version -m "$binary")
+  grep -Fq $'\tbuild\tCGO_ENABLED=0' <<<"$metadata" || { echo "$binary requires cgo" >&2; exit 1; }
+  grep -Fq $'\tdep\tgithub.com/ebitengine/purego\t' <<<"$metadata" || { echo "$binary lacks default FFI backend" >&2; exit 1; }
   grep -Fxq $'\tpath\tgithub.com/rcarmo/go-joker/v42/cmd/joker' <<<"$metadata" || {
     echo "$binary has an unexpected Go command module path" >&2
     exit 1

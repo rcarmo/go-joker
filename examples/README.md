@@ -41,7 +41,7 @@ The namespace does not read environment variables; embedding applications supply
 - `graphics/sdl-fluid/fluid.joke` renders RGB stable fluids through runtime-loaded SDL2 using `joker.ffi`.
 - The companion host provides the reusable solver/buffers; SDL functions are declared by the script.
 - `make sdl-fluid-screenshot` produces a profiled, deterministic SDL framebuffer capture. `make sdl-fluid` builds the interactive host.
-- See [run instructions and screenshot](graphics/sdl-fluid/README.md) and [FFI contracts](../docs/FFI.md). Requires a matching SDL2 runtime; the default CLI stays native-dependency-free.
+- See [run instructions and screenshot](graphics/sdl-fluid/README.md) and [FFI contracts](../docs/FFI.md). Requires a matching SDL2 runtime for this sample. `joker.ffi` is enabled in normal builds without cgo or feature tags.
 
 ![SDL fluid simulation](../docs/images/sdl-fluid.png)
 

@@ -25,7 +25,7 @@
       </li>
     </ul>
     <h2 id="_summary">Summary</h2>
-    <p class="var-docstr">Optional fixed-signature C ABI calls for trusted scripts. Build with joker_ffi; see docs/FFI.md.</p>
+    <p class="var-docstr">Fixed-signature C ABI calls for trusted scripts. No cgo required; see docs/FFI.md.</p>
     <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
@@ -58,7 +58,7 @@
   <span class="var-kind Function">Function</span>
   <span class="var-added">v42.12.0</span>
   <pre class="var-usage"></pre>
-  <p class="var-docstr">Bind (library symbol argument-type-vector return-type); fixed scalar/string/pointer signatures. Requires joker_ffi.</p>
+  <p class="var-docstr">Bind a fixed C signature: (bind library symbol argument-type-vector return-type). No variadics/callbacks/structs.</p>
 
 
 </li>
@@ -67,7 +67,7 @@
   <span class="var-kind Function">Function</span>
   <span class="var-added">v42.12.0</span>
   <pre class="var-usage"></pre>
-  <p class="var-docstr">Allocate a reusable byte buffer (0..64 MiB). C must not retain its address. Requires joker_ffi.</p>
+  <p class="var-docstr">Allocate a reusable zeroed native-call byte buffer, at most 64 MiB. C must not retain its address.</p>
 
 
 </li>
@@ -76,7 +76,7 @@
   <span class="var-kind Function">Function</span>
   <span class="var-added">v42.12.0</span>
   <pre class="var-usage"></pre>
-  <p class="var-docstr">Load an absolute library path. Libraries stay loaded for process lifetime. Requires joker_ffi.</p>
+  <p class="var-docstr">Load an absolute library path. Trusted native execution; library stays loaded for process lifetime.</p>
 
 
 </li>
@@ -85,7 +85,7 @@
   <span class="var-kind Function">Function</span>
   <span class="var-added">v42.12.0</span>
   <pre class="var-usage"></pre>
-  <p class="var-docstr">Read a checked little-endian uint32 from a buffer at a byte offset. Requires joker_ffi.</p>
+  <p class="var-docstr">Read a little-endian uint32 at a checked byte offset in a buffer.</p>
 
 
 </li>
