@@ -61,7 +61,7 @@ jobs:
           REF: ${{ steps.refs.outputs.baseline }}
         run: |
           git checkout --detach "$REF"
-          $PROJECT_TMP_ROOT/build/benchmark-tools/test-profile.sh ./benchmarks/core -- -run '^$' -bench "$RELEASE_BENCH_PATTERN" \
+          "$PROJECT_TMP_ROOT/build/benchmark-tools/test-profile.sh" ./benchmarks/core -- -run '^$' -bench "$RELEASE_BENCH_PATTERN" \
             -benchmem -benchtime=500ms -count=10 -timeout=20m \
             | tee "$GITHUB_WORKSPACE/.cache/benchmarks/baseline.txt"
       - name: Capture candidate
@@ -69,7 +69,7 @@ jobs:
           REF: ${{ steps.refs.outputs.candidate }}
         run: |
           git checkout --detach "$REF"
-          .cache/benchmarks/test-profile.sh ./benchmarks/core -- -run '^$' -bench "$RELEASE_BENCH_PATTERN" \
+          "$PROJECT_TMP_ROOT/build/benchmark-tools/test-profile.sh" ./benchmarks/core -- -run '^$' -bench "$RELEASE_BENCH_PATTERN" \
             -benchmem -benchtime=500ms -count=10 -timeout=20m \
             | tee "$GITHUB_WORKSPACE/.cache/benchmarks/candidate.txt"
       - name: Compare stable samples
