@@ -1,6 +1,10 @@
 SHELL := /bin/bash
 
 GO ?= go
+PROFILE_ROOT ?= $(CURDIR)/.cache/test-profiles
+PROFILE_MEM_RATE ?= 524288
+export GO PROFILE_ROOT PROFILE_MEM_RATE
+GO_TEST := scripts/test-profile.sh
 TMPDIR ?= $(CURDIR)/.cache/tmp
 GOTMPDIR ?= $(CURDIR)/.cache/gotmp
 export TMPDIR
@@ -54,7 +58,8 @@ help:
 	@echo ""
 	@echo "Test and audit targets:"
 	@echo "  make tools          # Install/update audit tools (staticcheck, golangci-lint, govulncheck)"
-	@echo "  make test           # Run full test suite (cached)"
+	@echo "  Go test targets capture CPU/heap profiles and reports in $(PROFILE_ROOT); review after every run."
+	@echo "  make test           # Full uncached profiled test suite"
 	@echo "  make test-repro     # Reproducible tests: no shuffle, no cache"
 	@echo "  make test-short     # Reproducible short test run"
 	@echo "  make test-core      # Reproducible core test run"
@@ -122,19 +127,19 @@ tools:
 	@$(GO) install golang.org/x/vuln/cmd/govulncheck@latest
 
 test:
-	$(GO) test $(TEST_PKGS)
+	$(GO_TEST) $(TEST_PKGS) --
 
 test-repro:
-	$(GO) test -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT) $(TEST_PKGS)
+	$(GO_TEST) $(TEST_PKGS) -- -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT)
 
 test-short:
-	$(GO) test -short -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT) $(TEST_PKGS)
+	$(GO_TEST) $(TEST_PKGS) -- -short -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT)
 
 test-core:
-	$(GO) test -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT) ./core
+	$(GO_TEST) ./core -- -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT)
 
 test-std:
-	$(GO) test -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT) ./std/...
+	$(GO_TEST) ./std/... -- -count=$(TEST_COUNT) -shuffle=$(TEST_SHUFFLE) -timeout=$(TEST_TIMEOUT)
 
 vet:
 	$(GO) vet ./...
@@ -155,18 +160,18 @@ vuln: tools
 	$(GOVULNCHECK_BIN) ./...
 
 race:
-	$(GO) test -race ./core ./core/types/string ./std/runtime ./std/http ./std/pdf
+	$(GO_TEST) ./core ./core/types/string ./std/runtime ./std/http ./std/pdf -- -race
 
 race-stress:
-	$(GO) test -race ./core/types/string -shuffle=on -count=$(RACE_STRESS_COUNT)
-	$(GO) test -race ./core -run 'TestTaggedReadersAreConcurrent|TestEnvNamespaceLookupIsConcurrent' -shuffle=on -count=$(RACE_STRESS_COUNT) -timeout=10m
+	$(GO_TEST) ./core/types/string -- -race -shuffle=on -count=$(RACE_STRESS_COUNT)
+	$(GO_TEST) ./core -- -race -run 'TestTaggedReadersAreConcurrent|TestEnvNamespaceLookupIsConcurrent' -shuffle=on -count=$(RACE_STRESS_COUNT) -timeout=10m
 
 bench-sanity:
-	$(GO) test ./benchmarks/core -run '^$$' -bench '$(BENCH_REGEX)' -benchmem -benchtime=1x -count=3
+	$(GO_TEST) ./benchmarks/core -- -run '^$$' -bench '$(BENCH_REGEX)' -benchmem -benchtime=1x -count=3
 
 benchmark-capture:
 	@mkdir -p "$(dir $(BENCH_OUT))"
-	$(GO) test ./benchmarks/core -run '^$$' -bench '$(RELEASE_BENCH_PATTERN)' -benchmem -benchtime=$(RELEASE_BENCH_TIME) -count=$(RELEASE_BENCH_COUNT) -timeout=20m | tee "$(BENCH_OUT)"
+	@set -o pipefail; $(GO_TEST) ./benchmarks/core -- -run '^$$' -bench '$(RELEASE_BENCH_PATTERN)' -benchmem -benchtime=$(RELEASE_BENCH_TIME) -count=$(RELEASE_BENCH_COUNT) -timeout=20m | tee "$(BENCH_OUT)"
 
 benchmark-compare:
 	@test -n "$(BENCH_BASELINE)" || { echo "BENCH_BASELINE is required" >&2; exit 2; }
@@ -179,7 +184,7 @@ compare-clean:
 	rm -rf benchmarks/compare/out/latest
 
 coverage:
-	$(GO) test ./core ./std/... -coverprofile=$(TMPDIR)/go-joker.cover -covermode=atomic -timeout $(TEST_TIMEOUT) -count=$(TEST_COUNT)
+	COVERAGE_FILE=$(TMPDIR)/go-joker.cover $(GO_TEST) ./core ./std/... -- -covermode=atomic -timeout $(TEST_TIMEOUT) -count=$(TEST_COUNT)
 	tests/coverage_summary.sh $(TMPDIR)/go-joker.cover $(TMPDIR)/go-joker.cover.func
 
 coverage-summary:
@@ -194,14 +199,14 @@ docs-verify:
 	tests/docs_generation_guard.sh . $(DOCS_JOKER_BIN)
 
 docs-command-check:
-	$(GO) test ./cmd/joker -run 'TestRenderDoc|TestQueryDocs' -count=$(TEST_COUNT)
+	$(GO_TEST) ./cmd/joker -- -run 'TestRenderDoc|TestQueryDocs' -count=$(TEST_COUNT)
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
 	$(DOCS_JOKER_BIN) doc joker.core/first | grep -q '# \[`joker.core/first`\]'
 	$(DOCS_JOKER_BIN) doc --format json joker.core/first | grep -q '"qualified": "joker.core/first"'
 	$(DOCS_JOKER_BIN) doc joker.imaging/pixel | grep -q '# \[`joker.imaging/pixel`\]'
 
 notebook-check:
-	$(GO) test ./internal/notebook ./cmd/joker -run 'Test.*Notebook|TestEncodeLoad|TestFixtureLoad|TestRunCaptures|TestExportMarkdown|TestDownstream|TestBuildStatus|TestBuildDependencyGraph|TestDependencyCycles|TestUsageMentionsNotebookCommands' -count=$(TEST_COUNT)
+	$(GO_TEST) ./internal/notebook ./cmd/joker -- -run 'Test.*Notebook|TestEncodeLoad|TestFixtureLoad|TestRunCaptures|TestExportMarkdown|TestDownstream|TestBuildStatus|TestBuildDependencyGraph|TestDependencyCycles|TestUsageMentionsNotebookCommands' -count=$(TEST_COUNT)
 	$(GO) build -o $(DOCS_JOKER_BIN) ./cmd/joker
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook new file.edn'
 	$(DOCS_JOKER_BIN) notebook --help | grep -q 'notebook demo'
@@ -232,13 +237,13 @@ notebook-screenshot:
 	PLAYWRIGHT_BROWSERS_PATH=$(shell pwd)/.cache/ms-playwright JOKER_BIN=$(DOCS_JOKER_BIN) bun run scripts/notebook_screenshot.ts
 
 bb-compat:
-	$(GO) test ./tests -run Babashka -count=$(TEST_COUNT) -timeout=120s
+	$(GO_TEST) ./tests -- -run Babashka -count=$(TEST_COUNT) -timeout=120s
 
 generated-check:
 	tests/generated_guard.sh .
 
 generated-bootstrap-check:
-	$(GO) test ./core ./core/generated -run 'TestGeneratedCoreSourceManifestRows|TestGeneratedCoreNamespacesHelper|TestGeneratedCoreNamespacesDriveCoreNamespaceVar' -count=$(TEST_COUNT)
+	$(GO_TEST) ./core ./core/generated -- -run 'TestGeneratedCoreSourceManifestRows|TestGeneratedCoreNamespacesHelper|TestGeneratedCoreNamespacesDriveCoreNamespaceVar' -count=$(TEST_COUNT)
 
 import-identity-check:
 	tests/import_identity_guard.sh .
@@ -261,17 +266,17 @@ benchmark-docs-check:
 	PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests/benchmark_regression_check_test.py
 
 refactor-internals-check:
-	$(GO) test ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/types ./core/types/collections ./core/types/string ./core/types/numerical ./core/osutil ./core/bufferpool ./core/reader -count=$(TEST_COUNT)
+	$(GO_TEST) ./core/ir ./core/wasm ./core/trace ./core/generated ./core/hashutil ./core/types ./core/types/collections ./core/types/string ./core/types/numerical ./core/osutil ./core/bufferpool ./core/reader -- -count=$(TEST_COUNT)
 
 core-contract-check:
-	$(GO) test ./core -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestSortedCollectionContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics|TestBigIntInt|TestRatioOrInt|TestReadIntegerUsesNativeIntRange|TestFileInfoMapPromotesLargeSize|TestReaderConstructionContract' -count=$(TEST_COUNT) -timeout=120s
+	$(GO_TEST) ./core -- -run 'TestCountedIndexedVectorContract|TestAssociativeMapContract|TestSetContract|TestSortedCollectionContract|TestTransientContract|TestSeqContract|TestInfoAndMetaContract|TestPVObjectSemantics|TestBigIntInt|TestRatioOrInt|TestReadIntegerUsesNativeIntRange|TestFileInfoMapPromotesLargeSize|TestReaderConstructionContract' -count=$(TEST_COUNT) -timeout=120s
 
 runtime-contract-check:
-	$(GO) test ./core -run 'TestIRExecutionMetadata|TestEscapeAnalysis|TestIRMakeFn|TestIRFunctionCache|TestRuntimeExecutionAdapter|TestExecutorFilesUseRuntimeExecutionAdapter|TestIRCompileFailure|TestNativeHelperEligibility|TestChannelCloseIsIdempotentUnderConcurrency|TestWasmRawInt|TestWasmExecRawIntegerResultUsesNativeRange' -count=$(TEST_COUNT) -timeout=120s
-	$(GO) test ./core/runtime -run 'TestAgent|TestAtom|TestChannel|TestObjectChannel|TestFuture|TestObjectFuture|TestPromise|TestObjectPromise|TestCheckedMillisecondDuration|TestRunParallel|TestFeatureFlag|TestIRInlineMode|TestIRTypedMapMode|TestGoID' -count=$(TEST_COUNT) -timeout=120s
+	$(GO_TEST) ./core -- -run 'TestIRExecutionMetadata|TestEscapeAnalysis|TestIRMakeFn|TestIRFunctionCache|TestRuntimeExecutionAdapter|TestExecutorFilesUseRuntimeExecutionAdapter|TestIRCompileFailure|TestNativeHelperEligibility|TestChannelCloseIsIdempotentUnderConcurrency|TestWasmRawInt|TestWasmExecRawIntegerResultUsesNativeRange' -count=$(TEST_COUNT) -timeout=120s
+	$(GO_TEST) ./core/runtime -- -run 'TestAgent|TestAtom|TestChannel|TestObjectChannel|TestFuture|TestObjectFuture|TestPromise|TestObjectPromise|TestCheckedMillisecondDuration|TestRunParallel|TestFeatureFlag|TestIRInlineMode|TestIRTypedMapMode|TestGoID' -count=$(TEST_COUNT) -timeout=120s
 
 std-contract-check:
-	$(GO) test ./std/... -count=$(TEST_COUNT) -timeout=120s
+	$(GO_TEST) ./std/... -- -count=$(TEST_COUNT) -timeout=120s
 
 examples-check:
 	tests/examples_smoke.sh .
@@ -293,13 +298,13 @@ release-supply-chain-check:
 
 module-consumer-check:
 	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)"
-	$(GO) test ./tools/modulecheck -count=1
+	$(GO_TEST) ./tools/modulecheck -- -count=1
 	$(GO) run ./tools/modulecheck .
 
 release-check: release-hygiene-check release-supply-chain-check workflow-policy-check ai-check module-consumer-check
 	git diff --check
 	$(GO) vet ./...
-	$(GO) test ./... -timeout 10m -count=1
+	$(GO_TEST) ./... -- -timeout 10m -count=1
 	$(MAKE) docs-check
 
 pretag-check: release-check

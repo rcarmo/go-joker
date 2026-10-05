@@ -54,18 +54,20 @@ jobs:
 
       - name: Run VM microbenchmarks
         run: |
-          go test ./benchmarks/core -bench 'BenchmarkCall|BenchmarkFib|BenchmarkTak|BenchmarkLoop|BenchmarkReduce|BenchmarkClosure|BenchmarkMap|BenchmarkVector|BenchmarkTransduce' \
+          scripts/test-profile.sh ./benchmarks/core -- -bench 'BenchmarkCall|BenchmarkFib|BenchmarkTak|BenchmarkLoop|BenchmarkReduce|BenchmarkClosure|BenchmarkMap|BenchmarkVector|BenchmarkTransduce' \
             -benchmem -benchtime=1s -count=3 | tee bench-results.txt
 
       - name: Run CLBG benchmarks
         run: |
-          go test ./benchmarks/core -bench 'BenchmarkCLBG' -benchmem -benchtime=3x -count=1 | tee -a bench-results.txt
+          scripts/test-profile.sh ./benchmarks/core -- -bench 'BenchmarkCLBG' -benchmem -benchtime=3x -count=1 | tee -a bench-results.txt
 
       - name: Upload benchmark results
         uses: actions/upload-artifact@v4
         with:
           name: bench-results
-          path: bench-results.txt
+          path: |
+            bench-results.txt
+            .cache/test-profiles/
           retention-days: 7
 
       - name: Check benchmark smoke thresholds

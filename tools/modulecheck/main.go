@@ -155,12 +155,12 @@ func check(root string) error {
 	fileURL := func(path string) string { return (&url.URL{Scheme: "file", Path: filepath.ToSlash(path)}).String() }
 	// A separate module cache prevents an existing public release from masking
 	// checkout defects. All dependency downloads come from the existing file cache.
-	env = append(env, "GOMODCACHE="+filepath.Join(tmp, "modcache"),
+	env = append(env, "PROFILE_ROOT="+filepath.Join(root, ".cache/test-profiles/module-consumer"), "GOMODCACHE="+filepath.Join(tmp, "modcache"),
 		"GOPROXY="+fileURL(proxy)+","+fileURL(filepath.Join(strings.TrimSpace(string(cache)), "cache/download")),
 		"GOPRIVATE=", "GONOPROXY=none", "GOSUMDB=off", "GOTOOLCHAIN=local")
 	for _, args := range [][]string{
 		{"go", "mod", "tidy"},
-		{"go", "test", "-count=1", "-v", "./..."},
+		{"bash", filepath.Join(root, "scripts/test-profile.sh"), "./...", "--", "-count=1", "-v"},
 		{"go", "build", "-mod=mod", "-o", filepath.Join(tmp, "joker"), module + "/cmd/joker"},
 	} {
 		out, err := run(consumer, env, args...)

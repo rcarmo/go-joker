@@ -38,6 +38,14 @@ jobs:
           PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.cache/ms-playwright bunx playwright install chromium
       - name: Run notebook browser smoke check
         run: PLAYWRIGHT_BROWSERS_PATH=${{ github.workspace }}/.cache/ms-playwright make notebook-browser-smoke
+      - name: Retain Go test profiles
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: go-test-profiles-${{ github.job }}
+          path: .cache/test-profiles/
+          retention-days: 7
+
 
   build:
     needs: test

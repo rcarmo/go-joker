@@ -8,6 +8,8 @@ module=github.com/rcarmo/go-joker/v42
 [[ $expected_tag =~ ^v42\.[0-9]+\.[0-9]+$ ]] || { echo 'expected a v42 release tag' >&2; exit 1; }
 [[ $expected_revision =~ ^[0-9a-f]{40}$ ]] || { echo 'expected a full git revision' >&2; exit 1; }
 
+root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+export PROFILE_ROOT=${PROFILE_ROOT:-$root/.cache/test-profiles/published-consumer}
 tmp_root=${TMPDIR:-$(pwd)/.cache/tmp}
 mkdir -p "$tmp_root"
 work=$(mktemp -d "$tmp_root/joker-published-module.XXXXXX")
@@ -55,7 +57,7 @@ func TestPublishedModule(t *testing.T) {
 }
 EOF
 go mod tidy
-go test -count=1 -v ./...
+"$root/scripts/test-profile.sh" ./... -- -count=1 -v
 # Exercise the documented install command, independent of the consumer's go.mod.
 GOBIN="$work/bin" go install "$module/cmd/joker@$expected_tag"
 "$work/bin/joker" --version 2>&1 | grep -Fx "$expected_tag"
