@@ -6,6 +6,7 @@ cd "$ROOT"
 
 workflow=.github/workflows/build.yml
 for required in \
+  'pattern: joker-*' \
   'actions/attest-build-provenance@v2' \
   'actions/attest-sbom@v2' \
   'anchore/sbom-action@v0' \

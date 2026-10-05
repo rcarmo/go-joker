@@ -139,6 +139,9 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          # Test profiles are retained as separate diagnostic artifacts and must
+          # never be mixed into published binaries/SBOMs/checksum input.
+          pattern: joker-*
           path: release-files
           merge-multiple: true
 
