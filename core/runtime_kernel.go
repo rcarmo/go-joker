@@ -13183,22 +13183,30 @@ type WasmProgram struct {
 }
 
 var (
-	wasmRT     wazero.Runtime
-	wasmRTOnce sync.Once
-	wasmCache  sync.Map // map[*IRProgram]*WasmProgram
-	wasmFail   = &WasmProgram{}
+	wasmRT      wazero.Runtime
+	wasmEngine  string
+	wasmRTError error
+	wasmRTOnce  sync.Once
+	wasmCache   sync.Map // map[*IRProgram]*WasmProgram
+	wasmFail    = &WasmProgram{}
 )
 
 func getWasmRT() wazero.Runtime {
 	wasmRTOnce.Do(func() {
-		cache := wazero.NewCompilationCache()
-		wasmRT = wazero.NewRuntimeWithConfig(context.Background(),
-			wazero.NewRuntimeConfig().WithCompilationCache(cache))
-		// Register host functions for collection operations
-		registerWasmHost(wasmRT)
+		wasmRT, wasmEngine, wasmRTError = corewasm.NewRuntime(context.Background(), os.Getenv("JOKER_WASM_ENGINE"))
+		if wasmRTError == nil {
+			registerWasmHost(wasmRT)
+		}
 	})
+	if wasmRTError != nil {
+		panic(RT.NewError(wasmRTError.Error()))
+	}
 	return wasmRT
 }
+
+// WasmEngineExported reports the actual shared execution engine, initializing
+// it if needed. Select JOKER_WASM_ENGINE before the first WASM use.
+func WasmEngineExported() string { getWasmRT(); return wasmEngine }
 
 // wasmGetCached retrieves or compiles a WASM program for an IR program.
 func wasmGetCached(prog *IRProgram) *WasmProgram {

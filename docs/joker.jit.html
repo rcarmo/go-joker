@@ -46,6 +46,9 @@
 <li>
   <a href="#info">info</a>
 </li>
+<li>
+  <a href="#wasm-engine">wasm-engine</a>
+</li>
 
     </ul>
     <h2 id="_constants">Constants</h2>
@@ -130,6 +133,15 @@ i64 for integer IR programs or f64 for floating-point IR programs.</p>
   <p class="var-docstr">Returns a map with compilation information about a function.<br>
 Keys: :compiled, :path, :slots, :captures, :self-recursive.<br>
 :path is one of &#34;native-f64&#34;, &#34;typed-ir&#34;, &#34;boxed-ir&#34;.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="wasm-engine">wasm-engine</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v42.12.1-dev</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Returns the actual WASM engine: interpreter or compiler. Set JOKER_WASM_ENGINE before first WASM use.</p>
 
 
 </li>

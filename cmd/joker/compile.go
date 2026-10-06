@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	corert "github.com/rcarmo/go-joker/v42/core/runtime"
+	corewasm "github.com/rcarmo/go-joker/v42/core/wasm"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -11,11 +13,21 @@ import (
 	. "github.com/rcarmo/go-joker/v42/core"
 )
 
-func handleCompile(args []string) {
+func handleCompile(args []string) { handleCompileEngine(args, "") }
+func handleCompileEngine(args []string, engine string) {
+	run := false
+	var scriptArgs []string
 	var sourceFile, outputFile string
 
 	for i := 0; i < len(args); i++ {
 		switch args[i] {
+		case "--native":
+			engine = "compiler"
+		case "--run":
+			run = true
+		case "--":
+			scriptArgs = args[i+1:]
+			i = len(args)
 		case "-o", "--output":
 			if i+1 < len(args) {
 				i++
@@ -49,7 +61,18 @@ func handleCompile(args []string) {
 		}
 	}
 
-	if err := compileStandalone(sourceFile, outputFile); err != nil {
+	if engine == "" {
+		engine = os.Getenv("JOKER_WASM_ENGINE")
+	}
+	if engine != "" {
+		var err error
+		engine, err = corewasm.NormalizeEngine(engine)
+		if err != nil {
+			fmt.Fprintln(Stderr, "Error:", err)
+			corert.ExitJoker(1)
+		}
+	}
+	if err := compileStandaloneEngine(sourceFile, outputFile, engine); err != nil {
 		fmt.Fprintf(Stderr, "Error: %v\n", err)
 		corert.ExitJoker(1)
 	}
@@ -62,6 +85,28 @@ func handleCompile(args []string) {
 		return
 	}
 	fmt.Fprintf(Stdout, "Compiled %s → %s (%s)\n", sourceFile, outputFile, humanSize(fi.Size()))
+	fmt.Fprintln(Stdout, "Standalone native runtime; eligible WASM functions use the selected engine. Source is bundled, not whole-program AOT.")
+	if run {
+		path, err := filepath.Abs(outputFile)
+		if err != nil {
+			fmt.Fprintln(Stderr, err)
+			corert.ExitJoker(1)
+		}
+		if len(scriptArgs) > 0 {
+			scriptArgs = append([]string{"--"}, scriptArgs...)
+		}
+		cmd := exec.Command(path, scriptArgs...)
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = Stdout
+		cmd.Stderr = Stderr
+		if err = cmd.Run(); err != nil {
+			if e, ok := err.(*exec.ExitError); ok {
+				corert.ExitJoker(e.ExitCode())
+			}
+			fmt.Fprintln(Stderr, err)
+			corert.ExitJoker(1)
+		}
+	}
 }
 
 func humanSize(b int64) string {

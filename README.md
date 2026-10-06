@@ -51,6 +51,8 @@ Pure-integer recursive `defn` bodies (fib, tak) are compiled to fixed-arity nati
 Hot loops and functions compile to a flat bytecode. Eligible primitive/string loops now run on a typed IR value stack, while collection-heavy or unsupported cases fall back to the boxed IR interpreter and then to the tree-walker.
 
 ### WASM/wazero native compilation
+
+Select `--wasm-engine=interpreter` or `--wasm-engine=compiler` explicitly; `auto` prefers native compilation where available. `joker compile --native --run script.joke -o program` bundles a standalone executable and selects native WASM compilation for eligible functions. See [WASM execution and standalone workflow](docs/WASM_EXECUTION.md); this is not whole-program Joker AOT.
 Pure numeric loops compile further to WASM bytecode and execute via [wazero](https://github.com/tetratelabs/wazero)'s native code compiler. This achieves JIT-level performance (matching Bun/JSC) with zero CGo dependencies. The WASM bridge now supports value-producing `if` expressions inside numeric loops and fn-level loop bodies with init stores, so procedural raster kernels can stay in Joker code and still run through WASM.
 
 ### Generic tail-call optimization

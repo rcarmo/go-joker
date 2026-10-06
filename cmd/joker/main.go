@@ -10,28 +10,41 @@ import (
 
 func main() {
 	corert.OnExit(finish)
+	args, engine, err := extractWasmEngine(os.Args[1:])
+	if err != nil {
+		fmt.Fprintln(Stderr, "Error:", err)
+		corert.ExitJoker(1)
+	}
+	os.Args = append([]string{os.Args[0]}, args...)
 
-	// Handle compile subcommand before embedded source check
-	if len(os.Args) >= 2 && os.Args[1] == "compile" {
-		handleCompile(os.Args[2:])
+	// Standalone programs own their argv; host command names are script args.
+	if src, embeddedEngine, ok := checkEmbeddedProgram(); ok {
+		if engine == "" && os.Getenv("JOKER_WASM_ENGINE") == "" {
+			engine = embeddedEngine
+		}
+		if err := applyWasmEngine(engine); err != nil {
+			fmt.Fprintln(Stderr, "Error:", err)
+			corert.ExitJoker(1)
+		}
+		runEmbeddedSource(src)
 		return
 	}
-
+	if len(os.Args) >= 2 && os.Args[1] == "compile" {
+		handleCompileEngine(os.Args[2:], engine)
+		return
+	}
+	if err := applyWasmEngine(engine); err != nil {
+		fmt.Fprintln(Stderr, "Error:", err)
+		corert.ExitJoker(1)
+	}
 	if len(os.Args) >= 2 && os.Args[1] == "doc" {
 		initRuntime()
 		handleDocCommand(os.Args[2:])
 		return
 	}
-
 	if len(os.Args) >= 2 && os.Args[1] == "notebook" {
 		initRuntime()
 		handleNotebookCommand(os.Args[2:])
-		return
-	}
-
-	// Check for embedded standalone payload before anything else
-	if src, ok := checkEmbeddedSource(); ok {
-		runEmbeddedSource(src)
 		return
 	}
 

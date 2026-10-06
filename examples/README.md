@@ -34,6 +34,10 @@ make ai-check
 
 The namespace does not read environment variables; embedding applications supply credentials through dynamic bindings or callbacks. See [`examples/ai/README.md`](ai/README.md) for usage, supported boundaries, security guidance, and optional credential-gated live checks.
 
+## WASM engines and standalone executables
+
+`wasm/native-sum.joke` compiles a numeric loop through `joker.jit` and prints the actual WASM engine. Build and run it with `joker compile --native --run examples/wasm/native-sum.joke -o ./native-sum`; use `--wasm-engine=interpreter` to run the same module without native compilation. See [engine/workflow details](../docs/WASM_EXECUTION.md).
+
 ## Graphics
 
 ### SDL fluid simulation / FFI

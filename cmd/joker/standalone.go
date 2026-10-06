@@ -15,7 +15,9 @@ package main
 
 import (
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
+	corewasm "github.com/rcarmo/go-joker/v42/core/wasm"
 	"io"
 	"os"
 	"path/filepath"
@@ -27,18 +29,37 @@ const standaloneFooterSize = 12 // 8 bytes length + 4 bytes magic
 
 // checkEmbeddedSource checks if the current executable has an embedded
 // Clojure source payload. Returns the source string and true if found.
-func checkEmbeddedSource() (srcText string, ok bool) {
+func checkEmbeddedSource() (string, bool) { source, _, ok := checkEmbeddedProgram(); return source, ok }
+
+const standaloneMetadataPrefix = "\x00JKR-META-1\x00"
+
+type standaloneMetadata struct {
+	Source string `json:"source"`
+	Engine string `json:"wasmEngine"`
+}
+
+func decodeStandalonePayload(data []byte) (string, string, bool) {
+	if len(data) >= len(standaloneMetadataPrefix) && string(data[:len(standaloneMetadataPrefix)]) == standaloneMetadataPrefix {
+		var p standaloneMetadata
+		if json.Unmarshal(data[len(standaloneMetadataPrefix):], &p) != nil || p.Source == "" {
+			return "", "", false
+		}
+		return p.Source, p.Engine, true
+	}
+	return string(data), "", true
+}
+func checkEmbeddedProgram() (srcText string, engine string, ok bool) {
 	exe, err := os.Executable()
 	if err != nil {
-		return "", false
+		return "", "", false
 	}
 	exe, err = filepath.EvalSymlinks(exe)
 	if err != nil {
-		return "", false
+		return "", "", false
 	}
 	f, err := os.Open(exe)
 	if err != nil {
-		return "", false
+		return "", "", false
 	}
 	defer func() {
 		if err := f.Close(); err != nil {
@@ -50,34 +71,34 @@ func checkEmbeddedSource() (srcText string, ok bool) {
 	// Read the footer
 	fi, err := f.Stat()
 	if err != nil || fi.Size() < int64(standaloneFooterSize) {
-		return "", false
+		return "", "", false
 	}
 
 	footer := make([]byte, standaloneFooterSize)
 	_, err = f.ReadAt(footer, fi.Size()-int64(standaloneFooterSize))
 	if err != nil {
-		return "", false
+		return "", "", false
 	}
 
 	// Check magic
 	if string(footer[8:12]) != standaloneMagic {
-		return "", false
+		return "", "", false
 	}
 
 	// Read source length
 	srcLen := binary.LittleEndian.Uint64(footer[0:8])
-	if srcLen == 0 || int64(srcLen) > fi.Size()-int64(standaloneFooterSize) {
-		return "", false
+	if srcLen == 0 || srcLen > uint64(fi.Size()-int64(standaloneFooterSize)) {
+		return "", "", false
 	}
 
 	// Read source
 	src := make([]byte, srcLen)
 	_, err = f.ReadAt(src, fi.Size()-int64(standaloneFooterSize)-int64(srcLen))
 	if err != nil {
-		return "", false
+		return "", "", false
 	}
 
-	return string(src), true
+	return decodeStandalonePayload(src)
 }
 
 func writeStandaloneChunk(w io.Writer, label string, data []byte) error {
@@ -92,7 +113,10 @@ func writeStandaloneChunk(w io.Writer, label string, data []byte) error {
 }
 
 // compileStandalone produces a standalone binary from a source file.
-func compileStandalone(sourceFile string, outputFile string) (err error) {
+func compileStandalone(sourceFile, outputFile string) error {
+	return compileStandaloneEngine(sourceFile, outputFile, "")
+}
+func compileStandaloneEngine(sourceFile, outputFile, engine string) (err error) {
 	// Read source
 	src, err := os.ReadFile(sourceFile)
 	if err != nil {
@@ -100,6 +124,18 @@ func compileStandalone(sourceFile string, outputFile string) (err error) {
 	}
 	if len(src) == 0 {
 		return fmt.Errorf("source file is empty")
+	}
+	if engine != "" {
+		var e error
+		engine, e = corewasm.NormalizeEngine(engine)
+		if e != nil {
+			return e
+		}
+		data, e := json.Marshal(standaloneMetadata{Source: string(src), Engine: engine})
+		if e != nil {
+			return e
+		}
+		src = append([]byte(standaloneMetadataPrefix), data...)
 	}
 
 	// Find our own executable
@@ -112,6 +148,16 @@ func compileStandalone(sourceFile string, outputFile string) (err error) {
 		return fmt.Errorf("cannot resolve executable path: %w", err)
 	}
 
+	if sourceInfo, e := os.Stat(sourceFile); e == nil {
+		if outputInfo, e := os.Stat(outputFile); e == nil && os.SameFile(sourceInfo, outputInfo) {
+			return fmt.Errorf("output must not overwrite the source file")
+		}
+	}
+	if executableInfo, e := os.Stat(exe); e == nil {
+		if outputInfo, e := os.Stat(outputFile); e == nil && os.SameFile(executableInfo, outputInfo) {
+			return fmt.Errorf("output must not overwrite the running executable")
+		}
+	}
 	// Read the runtime binary (strip any existing embedded source)
 	runtimeBin, err := os.ReadFile(exe)
 	if err != nil {
@@ -122,13 +168,20 @@ func compileStandalone(sourceFile string, outputFile string) (err error) {
 	runtimeBin = stripEmbeddedPayload(runtimeBin)
 
 	// Create output
-	out, err := os.Create(outputFile)
+	out, err := os.CreateTemp(filepath.Dir(outputFile), ".joker-compile-*")
 	if err != nil {
 		return fmt.Errorf("cannot create output file: %w", err)
 	}
+	tempPath := out.Name()
+	closed := false
 	defer func() {
-		if closeErr := out.Close(); err == nil && closeErr != nil {
-			err = closeErr
+		if !closed {
+			if closeErr := out.Close(); err == nil && closeErr != nil {
+				err = closeErr
+			}
+		}
+		if removeErr := os.Remove(tempPath); removeErr != nil && !os.IsNotExist(removeErr) && err == nil {
+			err = removeErr
 		}
 	}()
 
@@ -157,6 +210,14 @@ func compileStandalone(sourceFile string, outputFile string) (err error) {
 		}
 	}
 
+	closeErr := out.Close()
+	closed = true
+	if closeErr != nil {
+		return fmt.Errorf("close executable: %w", closeErr)
+	}
+	if err := os.Rename(tempPath, outputFile); err != nil {
+		return fmt.Errorf("replace executable: %w", err)
+	}
 	return nil
 }
 
@@ -170,10 +231,10 @@ func stripEmbeddedPayload(bin []byte) []byte {
 		return bin
 	}
 	srcLen := binary.LittleEndian.Uint64(footer[0:8])
-	trimSize := int(srcLen) + standaloneFooterSize
-	if trimSize > len(bin) {
+	if srcLen > uint64(len(bin)-standaloneFooterSize) {
 		return bin
 	}
+	trimSize := int(srcLen) + standaloneFooterSize
 	return bin[:len(bin)-trimSize]
 }
 

@@ -10,6 +10,9 @@
    :go "compile(fn)"}
   [fn])
 
+;; wasm-engine diagnostics are registered by std/jit/engine.go, without full
+;; regeneration of the extracted bootstrap bindings.
+
 (defn compile-wasm
   "Compiles a pure numeric function to an in-process WASM module.
   Returns a callable wrapper that invokes the module's exec function. Integer

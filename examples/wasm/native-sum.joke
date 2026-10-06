@@ -1,0 +1,12 @@
+;; Build/run: joker compile --native --run examples/wasm/native-sum.joke -o sum
+;; Also run directly with --wasm-engine=interpreter to select WASM interpretation.
+(require '[joker.jit :as jit])
+(def sum (jit/compile-wasm
+           (fn [n]
+             (loop [i 0 total 0]
+               (if (< i n)
+                 (recur (+ i 1) (+ total i))
+                 total)))))
+(println "WASM engine:" (jit/wasm-engine))
+(println "sum(100):" (sum 100))
+(assert (= 4950 (sum 100)))
