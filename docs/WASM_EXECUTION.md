@@ -1,6 +1,14 @@
 # WASM interpretation and native compilation
 
-Joker's WASM backend can execute the same module using wazero's interpreter or native compiler. Select the engine before the first WASM use:
+Joker can turn eligible numeric functions and loops into WebAssembly, then execute that WASM using wazero's interpreter or native compiler. Both engines run the same module format without cgo or an external C compiler.
+
+| Engine | Execution |
+| --- | --- |
+| `interpreter` | Interprets WASM instructions |
+| `compiler` | Compiles the module into host machine code and executes it |
+| `auto` | Uses the compiler when available, otherwise the interpreter |
+
+The engine flag selects how WASM executes. It does not force every Joker expression through WASM. Select the engine before the first WASM use:
 
 ```sh
 joker --wasm-engine=interpreter examples/wasm/native-sum.joke
@@ -27,21 +35,40 @@ Packaging streams the existing runtime into a temporary output and appends the s
 
 The generated executable contains the native Joker runtime and bundled source. Eligible functions run as native helpers/IR or WASM according to their supported shape; arbitrary unsupported forms still use the interpreter. This is **not whole-program ahead-of-time compilation of Joker**. The standalone format embeds source/engine metadata, not portable persisted machine code. It targets the platform of the Joker binary used to build it. macOS signed executables may need re-signing after source is appended.
 
-## Script diagnostics
+## Compile a numeric function
+
+Use `joker.jit` to request WASM compilation explicitly:
 
 ```clojure
 (require '[joker.jit :as jit])
+
+(def sum
+  (jit/compile-wasm
+    (fn [n]
+      (loop [i 0 total 0]
+        (if (< i n)
+          (recur (+ i 1) (+ total i))
+          total)))))
+
 (println (jit/wasm-engine)) ;; "compiler" or "interpreter", actual selection
-(def sum (jit/compile-wasm
-           (fn [n]
-             (loop [i 0 total 0]
-               (if (< i n)
-                 (recur (+ i 1) (+ total i))
-                 total)))))
-(sum 100)
+(println (sum 100))        ;; 4950
 ```
 
-The current WASM emitter supports a bounded numeric IR surface. `jit/compile-wasm` reports eligibility errors. Existing overflow/exactness/type-shape safeguards and restricted IR recovery remain in force; selecting the compiler does not relax numeric contracts. `jit/export-wasm` exports the module bytes; both engine modes execute that WASM format. The `joker.wasm` namespace still contains encoding helpers, not a general WASI/program loader.
+The runnable version is [`examples/wasm/native-sum.joke`](../examples/wasm/native-sum.joke).
+
+## What can compile
+
+The current emitter supports a bounded numeric IR subset: supported arithmetic, comparisons, branches and loop/recur shapes. Integer modules use `i64`; floating-point modules use `f64`.
+
+Arbitrary object, string, collection and callback operations are not generally WASM-compilable. `jit/compile-wasm` reports an eligibility error for unsupported shapes. Existing overflow, exactness and type-shape safeguards remain in force; restricted cases recover through IR rather than accepting incorrect WASM arithmetic. Selecting the compiler does not relax these contracts.
+
+Export an eligible function as a numeric module with an `exec` export:
+
+```clojure
+(jit/export-wasm (fn [x] (+ x 1)) "increment.wasm")
+```
+
+Both engine modes execute that WASM format. The `joker.wasm` namespace contains encoding helpers; Joker does not currently provide a general WASI application runner.
 
 ## Verification
 
