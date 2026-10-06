@@ -70,6 +70,28 @@ Export an eligible function as a numeric module with an `exec` export:
 
 Both engine modes execute that WASM format. The `joker.wasm` namespace contains encoding helpers; Joker does not currently provide a general WASI application runner.
 
+## Checked dense numeric buffers
+
+`jit/compile-wasm` accepts `{:buffers [argument-indices]}` for checked f64 kernels with nested `loop`/`recur`, `let`, comparisons, branches, arithmetic and `joker.math/sqrt`, `abs` and `floor`. Modules have no host imports.
+
+```clojure
+(require '[joker.jit :as jit])
+(def values (jit/numeric-buffer 96))
+(def fill! (jit/compile-wasm
+  (fn [a] (loop [i 0]
+    (if (< i 96)
+      (do (jit/buffer-set! a i (* i 0.25)) (recur (+ i 1)))
+      (jit/buffer-get a 95))))
+  {:buffers [0]}))
+(println (fill! values)) ; 23.75
+```
+
+Dense kernels use IEEE-754 f64 arithmetic and return `Double`. Scalar arguments accept `Int` or `Double`; integers outside +/-2^53 are rejected before execution. Indices must be finite, integral and in bounds. Conditions preserve Joker truthiness, including numeric zero. Ambiguous mixed-type conditions, type-changing recurrences, captured locals, arbitrary calls and using buffers as scalars are rejected. Without options, the existing scalar compiler is unchanged.
+
+Each invocation copies unique buffers into and out of linear memory. Aliases share their region; kernel and buffer locks serialise mutation in stable identity order. Writes completed before a trap are copied back without replay. Rebinding a primitive invalidates the compiled call before it writes memory.
+
+The [mixed SDL/FFI/WASM fluid example](../examples/graphics/sdl-wasm-fluid/README.md) defines pressure projection, vorticity confinement, advection and colour conversion in Joker. Its screenshot is actual SDL readback with the compiler engine selected. SDL calls remain outside WASM.
+
 ## Verification
 
 Tests instantiate an identical standalone module in both engine configurations and assert actual selection plus its independent expected result. Separate JIT processes verify an emitted numeric-loop module returns `4950` in each mode. CLI integration builds/runs a saved compiler-mode executable, deletes the source, runs it in both modes and checks environment overrides.

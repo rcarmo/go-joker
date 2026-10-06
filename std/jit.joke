@@ -7,31 +7,30 @@
   For pure arithmetic fns, returns a native Go f64 closure.
   For other fns, returns an IR-compiled wrapper."
   {:added "1.0"
-   :go "compile(fn)"}
+   :go "compile(ensureJitFn(fn, \"jit compile\"))"}
   [fn])
 
 ;; wasm-engine diagnostics are registered by std/jit/engine.go, without full
 ;; regeneration of the extracted bootstrap bindings.
 
 (defn compile-wasm
-  "Compiles a pure numeric function to an in-process WASM module.
-  Returns a callable wrapper that invokes the module's exec function. Integer
-  programs use i64 parameters/results; floating-point programs use f64."
+  "Compile a numeric function to WASM. Optional {:buffers [argument-indices]} selects checked f64 buffers and nested loops. Dense kernels return Double, reject integers outside +/-2^53, and never replay after a trap. Without options the existing scalar compiler is unchanged."
   {:added "1.0"
-   :go "compileWASM(fn)"}
-  [fn])
+   :go {1 "compileWASM(ensureJitFn(fn, \"jit compile-wasm\"))" 2 "compileWASMOptions(ensureJitFn(fn, \"jit compile-wasm\"), options)"}}
+  ([fn])
+  ([fn options]))
 
 (defn info
   "Returns a map with compilation information about a function.
   Keys: :compiled, :path, :slots, :captures, :self-recursive."
   {:added "1.0"
-   :go "info(fn)"}
+   :go "info(ensureJitFn(fn, \"jit info\"))"}
   [fn])
 
 (defn compiled?
   "Returns true if the function can be compiled to IR."
   {:added "1.0"
-   :go "isCompiled(fn)"}
+   :go "coretypes.MakeBoolean(isCompiled(ensureJitFn(fn, \"jit compiled?\")))"}
   [fn])
 
 (defn export-ir
@@ -41,7 +40,7 @@
   bytecode, serialized literal constants, and WASM eligibility metadata. It is
   intended for external runners/tooling that implement the go-joker IR ABI."
   {:added "1.0"
-   :go "exportIR(fn, path)"}
+   :go "exportIR(ensureJitFn(fn, \"jit export-ir\"), coretypes.MakeString(path))"}
   [fn ^String path])
 
 (defn export-wasm
@@ -52,5 +51,17 @@
   pure WASM-eligible IR shapes can be exported this way; functions requiring
   Joker object/collection host imports should use export-ir instead."
   {:added "1.0"
-   :go "exportWASM(fn, path)"}
+   :go "exportWASM(ensureJitFn(fn, \"jit export-wasm\"), coretypes.MakeString(path))"}
   [fn ^String path])
+
+(defn ^{:doc "Allocate a checked f64 buffer of 0..1048576 elements for dense WASM kernels."
+        :added "42.12.3" :go "numericBuffer(size)"}
+  numeric-buffer [size])
+
+(defn ^{:doc "Read one f64 buffer element. The index must be finite, integral and in bounds."
+        :added "42.12.3" :go "bufferGet(buffer, index)"}
+  buffer-get [buffer index])
+
+(defn ^{:doc "Write and return one f64 buffer element. Checks the index and rejects integers outside +/-2^53."
+        :added "42.12.3" :go "bufferSet(buffer, index, value)"}
+  buffer-set! [buffer index value])

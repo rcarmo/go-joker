@@ -49,6 +49,12 @@ The namespace does not read environment variables; embedding applications supply
 
 ![SDL fluid simulation](../docs/images/sdl-fluid.png)
 
+### Compiled WASM with SDL FFI
+
+[`graphics/sdl-wasm-fluid`](graphics/sdl-wasm-fluid/README.md) runs Joker-defined fluid kernels through `jit/compile-wasm` with wazero's compiler engine. Joker drives SDL rendering and events through FFI. `make sdl-wasm-fluid-screenshot` captures the SDL framebuffer after 300 steps.
+
+![Mixed SDL/FFI/compiled-WASM fluid simulation](../docs/images/sdl-wasm-fluid.png)
+
 ### Fractal flame / procedural raster
 
 ```bash

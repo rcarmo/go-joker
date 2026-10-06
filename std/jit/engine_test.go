@@ -5,11 +5,15 @@ import (
 	types "github.com/rcarmo/go-joker/v42/core/types"
 	"os"
 	"os/exec"
+	"runtime"
 	"testing"
 )
 
 func TestJITWASMEngines(t *testing.T) {
 	if mode := os.Getenv("JOKER_TEST_WASM_ENGINE"); mode != "" {
+		if mode == "compiler" && runtime.GOARCH != "amd64" && runtime.GOARCH != "arm64" {
+			t.Skip("explicit compiler unsupported on this architecture")
+		}
 		fn := mkFn("(fn [x] (loop [i 0 acc 0] (if (< i x) (recur (+ i 1) (+ acc i)) acc)))")
 		result := compileWASM(fn).(types.Callable).Call([]types.Object{types.MakeInt(100)})
 		if n, ok := result.(types.Int); !ok || n.I != 4950 {

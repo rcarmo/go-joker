@@ -1,6 +1,10 @@
 SHELL := /bin/bash
 
 GO ?= go
+# Latest stable release, updated together with go.mod and CI. No older override.
+GO_TOOLCHAIN := go1.27.1
+override GOTOOLCHAIN := $(GO_TOOLCHAIN)
+export GOTOOLCHAIN
 ifeq ($(origin PROJECT_ORIGINAL_TMPDIR),undefined)
 PROJECT_ORIGINAL_TMPDIR := $(TMPDIR)
 endif
@@ -21,6 +25,7 @@ export GO PROFILE_ROOT PROFILE_MEM_RATE PROFILE_CONCLUSIONS_ROOT PROFILE_TESTS
 GO_TEST := scripts/test-profile.sh
 SDL_LIBRARY ?= /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0
 SDL_SCREENSHOT ?= docs/images/sdl-fluid.png
+SDL_WASM_SCREENSHOT ?= docs/images/sdl-wasm-fluid.png
 override TMPDIR := $(PROJECT_TMP_ROOT)/runs/tmp
 override GOTMPDIR := $(PROJECT_TMP_ROOT)/runs/go-build
 export TMPDIR
@@ -48,6 +53,14 @@ COMPARE_OUT ?= benchmarks/compare/out/latest
 DOCS_JOKER_BIN ?= $(PROJECT_TMP_ROOT)/build/go-joker-docs
 CLI_BIN ?= $(PROJECT_TMP_ROOT)/build/joker
 DIST_DIR ?= $(PROJECT_TMP_ROOT)/build/dist
+RELEASE_BINARY ?= $(PROJECT_TMP_ROOT)/build/joker-$(GOOS)-$(GOARCH)
+RELEASE_ASSET_DIR ?= $(PROJECT_TMP_ROOT)/build/releases/$(TAG)
+GH_REPO ?= rcarmo/go-joker
+PROFILE_RUN ?=
+PROFILE_NOTE ?=
+TAG ?= $(shell sed -n 's/^const VERSION = "\(.*\)"/\1/p' core/runtime/version.go)
+REVISION ?= $(shell git rev-parse HEAD)
+RUN_ID ?=
 DIST_PLATFORMS ?= linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64 windows/arm64
 
 TEST_PKGS ?= ./...
@@ -62,7 +75,7 @@ BENCH_OUT ?= .cache/benchmarks/candidate.txt
 BENCH_BASELINE ?=
 BENCH_REPORT ?= .cache/benchmarks/benchstat.txt
 
-.PHONY: clean-cache project-paths ffi-cli ffi-check sdl-fluid sdl-fluid-screenshot help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check ai-check docs-paths-check release-hygiene-check release-supply-chain-check module-consumer-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
+.PHONY: clean-cache project-paths ffi-cli ffi-check sdl-fluid sdl-fluid-screenshot sdl-wasm-fluid sdl-wasm-fluid-screenshot help cli dist clean-dist tools test test-repro test-short test-core test-std vet staticcheck-sa lint workflow-lint workflow-policy-check vuln race race-stress bench-sanity benchmark-capture benchmark-compare compare-bench compare-clean coverage coverage-summary docs docs-verify docs-command-check notebook-check notebook-browser-smoke notebook-screenshot examples-check ai-check docs-paths-check release-hygiene-check release-supply-chain-check module-consumer-check release-check pretag-check docs-check generated-check generated-bootstrap-check import-identity-check non-goals-check layout-check native-int-check error-handling-check benchmark-docs-check refactor-internals-check core-contract-check runtime-contract-check std-contract-check parity jank-subset bb-compat audit-fast audit
 
 help:
 	@echo "Available targets:"
@@ -73,6 +86,8 @@ help:
 	@echo "  make clean-dist     # Remove $(DIST_DIR)/ release binaries"
 	@echo "  make ffi-cli        # Default no-cgo joker.ffi CLI"
 	@echo "  make ffi-check      # Profiled ABI + fluid solver tests"
+	@echo "  make sdl-wasm-fluid # Mixed SDL/FFI/compiled-WASM fluid host"
+	@echo "  make sdl-wasm-fluid-screenshot # Profile and capture the compiled-WASM sample"
 	@echo "  make sdl-fluid      # SDL2 fluid example host (no cgo)"
 	@echo "  make sdl-fluid-screenshot # Xvfb render/readback with CPU/heap profiles"
 	@echo ""
@@ -160,6 +175,19 @@ sdl-fluid-screenshot: sdl-fluid
 	$(GO) tool pprof -top -alloc_objects "$$run/sdl-fluid" "$$run/heap.pprof" > "$$run/alloc_objects.txt"; \
 	echo "Review $$run, then scripts/dispose-profiles.sh $$run 'concise findings'"
 
+sdl-wasm-fluid:
+	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)"
+	CGO_ENABLED=0 $(GO) build -o $(PROJECT_TMP_ROOT)/build/sdl-wasm-fluid ./examples/graphics/sdl-wasm-fluid
+
+sdl-wasm-fluid-screenshot: sdl-wasm-fluid
+	@set -e; mkdir -p "$(PROFILE_ROOT)"; run=$$(mktemp -d "$(PROFILE_ROOT)/run-sdl-wasm-XXXXXX"); \
+	cp "$(PROJECT_TMP_ROOT)/build/sdl-wasm-fluid" "$$run/host"; \
+	xvfb-run -a "$$run/host" -library "$(SDL_LIBRARY)" -wasm-engine compiler -frames 300 -screenshot "$(SDL_WASM_SCREENSHOT)" -cpuprofile "$$run/cpu.pprof" -memprofile "$$run/heap.pprof"; \
+	$(GO) tool pprof -top -cum "$$run/host" "$$run/cpu.pprof" > "$$run/cpu.txt"; \
+	$(GO) tool pprof -top -alloc_space "$$run/host" "$$run/heap.pprof" > "$$run/alloc_space.txt"; \
+	$(GO) tool pprof -top -alloc_objects "$$run/host" "$$run/heap.pprof" > "$$run/alloc_objects.txt"; \
+	echo "Review $$run, then scripts/dispose-profiles.sh $$run 'concise findings'"
+
 clean-dist:
 	@case "$(DIST_DIR)" in "$(PROJECT_TMP_ROOT)/build/"*) ;; *) echo "Refusing cleanup outside project build root" >&2; exit 1;; esac
 	rm -rf -- "$(DIST_DIR)"
@@ -215,6 +243,7 @@ vuln: tools
 	$(GOVULNCHECK_BIN) ./...
 
 race:
+	$(GO_TEST) ./std/jit ./examples/graphics/sdl-wasm-fluid -- -race
 	$(GO_TEST) ./core ./core/types/string ./std/runtime ./std/http ./std/pdf -- -race
 
 race-stress:
@@ -351,13 +380,13 @@ release-hygiene-check:
 release-supply-chain-check:
 	tests/release_supply_chain_guard.sh .
 
-module-consumer-check:
+module-consumer-check: deps
 	@mkdir -p "$(TMPDIR)" "$(GOTMPDIR)"
 	$(GO_TEST) ./tools/modulecheck -- -count=1
 	$(GO) run ./tools/modulecheck .
 
 release-check: export PROFILE_TESTS=1
-release-check: release-hygiene-check release-supply-chain-check workflow-policy-check ai-check module-consumer-check
+release-check: toolchain-check arithmetic-docs-check release-hygiene-check release-supply-chain-check workflow-policy-check ai-check module-consumer-check
 	git diff --check
 	$(GO) vet ./...
 	$(GO_TEST) ./... -- -timeout 10m -count=1
@@ -442,3 +471,100 @@ clean-cache:
 
 project-paths:
 	@printf '%s\n' "scratch=$(PROJECT_TMP_ROOT)" "go-cache=$(GOCACHE)" "go-modules=$(GOMODCACHE)" "disposable-profiles=$(PROFILE_ROOT)" "conclusions=$(PROFILE_CONCLUSIONS_ROOT)"
+
+
+# Build/test/release entrypoints also used by portable CI.
+.PHONY: toolchain-check deps browser-deps jit-generate arithmetic-docs-check interpreter-fixtures test-386 wasm-check profile-dense profile-dispose release-binary release-checksums release-assets-check ffi-binary-check public-module-check release-download release-attest release-status release-watch release-commit release-tag
+
+toolchain-check:
+	@actual=$$($(GO) version | awk '{print $$3}'); test "$$actual" = "$(GO_TOOLCHAIN)" || { echo "Expected $(GO_TOOLCHAIN), got $$actual" >&2; exit 1; }
+	@grep -qx 'toolchain $(GO_TOOLCHAIN)' go.mod
+	@for workflow in .github/workflows/*.yml; do if grep -q 'go-version:' "$$workflow"; then test -z "$$(grep 'go-version:' "$$workflow" | grep -v "'$${GOTOOLCHAIN#go}'")"; fi; done
+	$(GO) version
+
+deps: toolchain-check
+	$(GO) mod download
+
+browser-deps:
+	bun install --frozen-lockfile
+	bun x playwright install chromium
+
+jit-generate: cli
+	cd std && JOKER_STD_NAMESPACE=jit JOKER_STD_OS=linux $(CLI_BIN) generate-std.joke
+
+arithmetic-docs-check:
+	bun tools/codegen/sync-arithmetic-docs.ts --check
+
+interpreter-fixtures: cli
+	tools/scripts/linter-tests.sh
+	tools/scripts/flag-tests.sh
+	tools/scripts/eval-tests.sh
+	tools/scripts/formatter-tests.sh
+
+test-386:
+	GOARCH=386 CGO_ENABLED=0 $(GO_TEST) ./core ./std/jit ./core/wasm -- -count=1 -timeout=10m
+
+wasm-check: cli
+	$(CLI_BIN) --wasm-engine=interpreter examples/wasm/native-sum.joke
+	$(CLI_BIN) --wasm-engine=compiler examples/wasm/native-sum.joke
+	$(CLI_BIN) compile --native --run examples/wasm/native-sum.joke -o $(PROJECT_TMP_ROOT)/build/native-sum
+	$(PROJECT_TMP_ROOT)/build/native-sum --wasm-engine=interpreter
+	$(GO_TEST) ./std/jit -- -run '^TestDenseNumericWASM$$' -count=1
+	JOKER_WASM_ENGINE=interpreter $(GO_TEST) ./examples/graphics/sdl-wasm-fluid -- -count=1 -timeout=5m
+
+profile-dense: export PROFILE_TESTS=1
+profile-dense:
+	$(GO_TEST) ./std/jit -- -run '^TestDenseNumericWASM$$' -bench '^BenchmarkDenseBufferKernel$$' -benchmem -benchtime=1s -count=6
+
+profile-dispose:
+	@test -n "$(PROFILE_RUN)" && test -n "$(PROFILE_NOTE)"
+	scripts/dispose-profiles.sh "$(PROFILE_RUN)" "$(PROFILE_NOTE)"
+
+release-binary: toolchain-check
+	@mkdir -p $$(dirname "$(RELEASE_BINARY)")
+	CGO_ENABLED=0 $(GO) build -trimpath -ldflags="-s -w" -o "$(RELEASE_BINARY)" ./cmd/joker
+
+release-checksums:
+	tests/generate_release_checksums.sh "$(RELEASE_ASSET_DIR)"
+
+release-assets-check:
+	tests/verify_release_assets.sh "$(RELEASE_ASSET_DIR)" "$(TAG)" "$(REVISION)"
+
+ffi-binary-check:
+	@test -n "$(FFI_BINARY)"
+	tests/verify_ffi_binary.sh "$(FFI_BINARY)"
+
+public-module-check: toolchain-check
+	GOPROXY=https://proxy.golang.org tests/verify_release_module.sh "$(TAG)" "$(REVISION)"
+
+release-download:
+	@mkdir -p "$(RELEASE_ASSET_DIR)"
+	gh release download "$(TAG)" --repo "$(GH_REPO)" --dir "$(RELEASE_ASSET_DIR)" --skip-existing
+	$(MAKE) release-assets-check
+	$(MAKE) ffi-binary-check FFI_BINARY="$(RELEASE_ASSET_DIR)/joker-linux-amd64"
+
+release-attest:
+	gh attestation verify "$(RELEASE_ASSET_DIR)/joker-linux-amd64" --repo "$(GH_REPO)"
+	gh attestation verify "$(RELEASE_ASSET_DIR)/joker-linux-amd64" --repo "$(GH_REPO)" --predicate-type https://spdx.dev/Document/v2.3
+
+release-status:
+	gh run list --repo "$(GH_REPO)" --limit 5 --json databaseId,headSha,workflowName,status,conclusion,url
+	gh release view "$(TAG)" --repo "$(GH_REPO)" --json url,tagName,isDraft,assets
+
+release-watch:
+	@test -n "$(RUN_ID)"
+	gh run watch "$(RUN_ID)" --repo "$(GH_REPO)" --exit-status --interval 30
+
+release-commit:
+	git config user.name "Rui Carmo"
+	git config user.email "rui.carmo@gmail.com"
+	git config --global user.name "Rui Carmo"
+	git config --global user.email "rui.carmo@gmail.com"
+	git diff --check
+	git add AGENTS.md Makefile README.md go.mod .github/workflows .circleci/config.yml core/runtime/version.go core/wasm_compile_runtime.go docs/WASM_EXECUTION.md docs/RELEASE_NOTES_$(TAG).md docs/images/sdl-wasm-fluid.png docs/joker.jit.html docs/main.js examples/README.md examples/graphics/sdl-wasm-fluid std/addmeta.tmpl std/fn.tmpl std/generate-std.joke std/jit.joke std/jit/a_jit.go std/jit/a_jit_slow_init.go std/jit/buffer.go std/jit/buffer_test.go std/jit/engine_test.go std/math/numeric_native.go std/package.tmpl tests/release_supply_chain_guard.sh
+	git commit -m "Release $(TAG): checked numeric WASM buffers and mixed SDL FFI example"
+
+release-tag:
+	@test -z "$$(git status --porcelain)"
+	@test -z "$$(git tag -l '$(TAG)')"
+	git tag -a "$(TAG)" -m "$(TAG): checked numeric WASM buffers and SDL FFI example"

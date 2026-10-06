@@ -30,6 +30,9 @@
             (remove #(= "generate-std.joke" %))
             (filter #(s/ends-with? % ".joke"))
             (map #(rpl % #"[.]joke$" ""))
+            ;; Optional narrow regeneration, with the same templates and checks.
+            (filter #(or (nil? ((os/env) "JOKER_STD_NAMESPACE"))
+                         (= % ((os/env) "JOKER_STD_NAMESPACE"))))
             (map symbol))))
 
 (debug "Namespaces:" namespaces)
@@ -71,6 +74,7 @@
   (let [n (-> fn-name
               (rpl "-" "_")
               (rpl "?" "")
+                   (rpl "!" "")
               (str "_"))]
     (if (s/ends-with? fn-name "?")
       (str "is" n)
@@ -84,9 +88,9 @@
    (map-indexed
     (fn [i arg]
       (let [m (meta arg)
-            t (cond-> (:tag m)
+            t (cond-> (or (:tag m) "Object")
                 (:varargs m) (str "s"))]
-        (str arg " := Extract" t "(_args, " (str i) ")")))
+        (str arg " := coretypes.Extract" t "(_args, " (str i) ")")))
     args)))
 
 (defn handle-varargs
@@ -134,7 +138,7 @@
   [args]
   (str "corecollections.NewVectorFrom("
        (s/join ", " (for [arg args]
-                      (str "MakeSymbol(" (q (str arg)) ")")))
+                      (str "coretypes.MakeSymbol(STRINGS.Intern, " (q (str arg)) ")")))
        ")"))
 
 (defn make-value
@@ -309,7 +313,8 @@
                 (rpl "{imports}"
                      (s/join "\n\t" (sort compare-imports (conj
                                                            (mapv q (:go-imports m))
-                                                           "corecollections \"github.com/rcarmo/go-joker/v42/core/types/collections\""
+                                                           "coretypes \"github.com/rcarmo/go-joker/v42/core/types\""
+                                                           "_ \"github.com/rcarmo/go-joker/v42/core/types/collections\""
                                                            ". \"github.com/rcarmo/go-joker/v42/core\""))))
                 (rpl "{non-fn-decls}" (s/join "\n" (map first non-fn-decls)))
                 (rpl "{non-fn-inits}" (s/join "\n" non-fn-inits))
@@ -338,6 +343,7 @@
                 (rpl "{nsFullName}" ns-name)
                 (rpl "{nsName}" ns-name-final)
                 (rpl "{imports}" (s/join "\n\t" [". \"github.com/rcarmo/go-joker/v42/core\""
+                                                   "coretypes \"github.com/rcarmo/go-joker/v42/core/types\""
                                                    "corecollections \"github.com/rcarmo/go-joker/v42/core/types/collections\""]))
                 (rpl "{nsDocstring}" (raw-quoted-string (:doc m)))
                 (rpl "{non-fn-interns}" (s/join "\n\t" (map second non-fn-decls)))
@@ -361,6 +367,7 @@
         res (-> package-fast-template
                 (rpl "{nsName}" ns-name-final)
                 (rpl "{imports}" (s/join "\n\t" [". \"github.com/rcarmo/go-joker/v42/core\""
+                                                   "coretypes \"github.com/rcarmo/go-joker/v42/core/types\""
                                                    "corecollections \"github.com/rcarmo/go-joker/v42/core/types/collections\""]))
                 (rpl "{thunks}" (s/join "\n\t" thunks)))
         res (if (:empty m)

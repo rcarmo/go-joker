@@ -24,9 +24,9 @@ jobs:
           done
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.26.5'
+          go-version: '1.27.1'
       - name: Populate dependency cache for offline consumer checks
-        run: go mod download
+        run: make deps
       - name: Build
         run: go build -o "$PROJECT_TMP_ROOT/build/joker" ./cmd/joker
       - name: Run canonical release checks
@@ -36,8 +36,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - name: Install notebook browser smoke dependencies
         run: |
-          bun install --frozen-lockfile
-          PLAYWRIGHT_BROWSERS_PATH="$PLAYWRIGHT_BROWSERS_PATH" bunx playwright install chromium
+          make browser-deps
       - name: Run notebook browser smoke check
         run: PLAYWRIGHT_BROWSERS_PATH="$PLAYWRIGHT_BROWSERS_PATH" make notebook-browser-smoke
       - name: Run local parity suite
@@ -58,7 +57,7 @@ jobs:
           done
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.26.5'
+          go-version: '1.27.1'
 
       - name: Run VM microbenchmarks
         run: |

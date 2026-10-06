@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cimg/go:1.26
+      - image: cimg/go:1.27.1
     working_directory: ~/project
     steps:
       - checkout
@@ -13,29 +13,8 @@ jobs:
             echo "export PROJECT_TMP_ROOT=\"$PROJECT_TMP_ROOT\"" >> "$BASH_ENV"
             echo 'source "$PWD/scripts/project-env.sh"' >> "$BASH_ENV"
       - run:
-          name: go get liner
-          command: go get -d -v github.com/candid82/liner
+          name: Dependencies and CLI
+          command: make deps cli
       - run:
-          name: go get profile
-          command: go get -d -v github.com/pkg/profile
-      - run:
-          name: go get yaml
-          command: go get -d -v gopkg.in/yaml.v2
-      - run:
-          name: go generate
-          command: go generate -v ./...
-      - run:
-          name: go build
-          command: source scripts/project-env.sh && go build -v -o "$CLI_BIN" ./cmd/joker
-      - run:
-          name: linter tests
-          command: ./tools/scripts/linter-tests.sh
-      - run:
-          name: flag tests
-          command: ./tools/scripts/flag-tests.sh
-      - run:
-          name: eval tests
-          command: ./tools/scripts/eval-tests.sh
-      - run:
-          name: formatter tests
-          command: ./tools/scripts/formatter-tests.sh
+          name: Interpreter fixtures
+          command: make interpreter-fixtures

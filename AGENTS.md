@@ -66,7 +66,7 @@ docs/           # Documentation generation
 
 ## Build Commands
 
-Use the versions declared in `go.mod` (currently Go 1.25 minimum, Go 1.26.5 toolchain). Record the actual toolchain used for measurements.
+Use only the latest stable Go toolchain (currently Go 1.27.1). `go.mod`, Makefile and CI pins must agree; the Go 1.25 module minimum is a consumer compatibility floor, not the development toolchain. Run build, test, profiling and release operations through Makefile targets. Record the actual toolchain used for measurements.
 
 ```bash
 source scripts/project-env.sh
@@ -324,6 +324,12 @@ SIMD is an explicit optimisation target where available, with a correct scalar f
 - Select `--wasm-engine=interpreter|compiler|auto` or `JOKER_WASM_ENGINE` before the shared WASM runtime initializes. Assert `jit/wasm-engine` where execution-tier evidence is required; explicit compiler mode must not silently fall back.
 - `joker compile --native --run script.joke -o program` packages the native runtime and source, with saved WASM engine selection. Eligible WASM functions compile during execution; this is not whole-program Joker AOT. Preserve argument forwarding and backward-compatible payload parsing.
 - Packaging streams the runtime region. Do not reintroduce a runtime-sized `os.ReadFile` allocation. Test footer limits, engine metadata, safe output replacement and source-deleted execution.
+
+## Dense WASM and std regeneration
+
+- Dense numeric kernels use the optional `{:buffers [...]}` ABI; preserve checked indices, binding identity, Joker truthiness, trap side effects and primitive invalidation. Do not retry memory-mutating kernels through another execution tier.
+- `make sdl-wasm-fluid` builds the mixed SDL/FFI/compiled-WASM example; `make sdl-wasm-fluid-screenshot` captures compiler-engine SDL readback and profiles beneath the canonical project root. Review and immediately dispose the run.
+- Narrow std regeneration: run `make jit-generate`. This uses the ordinary templates; generated files must not be edited manually. Full bootstrap generation still has the older documented limitations.
 
 ## Mandatory full regression validation
 

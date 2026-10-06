@@ -11,10 +11,10 @@ for required in \
   'actions/attest-build-provenance@v2' \
   'actions/attest-sbom@v2' \
   'anchore/sbom-action@v0' \
-  'tests/generate_release_checksums.sh release-files' \
-  'tests/verify_release_assets.sh release-files' \
-  'tests/verify_release_module.sh' \
-  'tests/verify_ffi_binary.sh release-files/joker-linux-amd64' \
+  'make release-checksums RELEASE_ASSET_DIR=release-files' \
+  'make release-assets-check RELEASE_ASSET_DIR=release-files' \
+  'make public-module-check' \
+  'make ffi-binary-check FFI_BINARY=release-files/joker-linux-amd64' \
   'gh release upload "$TAG" release-files/* --clobber'; do
   grep -Fq "$required" "$workflow" || {
     echo "release workflow is missing supply-chain step: $required" >&2
@@ -32,7 +32,7 @@ grep -A5 '^  build:' "$workflow" | grep -Fq 'attestations: write' || {
 }
 
 for ci in .github/workflows/ci.yml "$workflow"; do
-  grep -Fq 'run: go mod download' "$ci" || {
+  grep -Fq 'run: make deps' "$ci" || {
     echo "release supply-chain guard: $ci must populate archives before offline module checks" >&2
     exit 1
   }

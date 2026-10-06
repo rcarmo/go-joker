@@ -107,6 +107,10 @@ An SDL2 example drives window, texture, render and event calls from Joker. A com
 
 ![SDL fluid simulation](docs/images/sdl-fluid.png)
 
+The [mixed SDL/FFI/WASM example](examples/graphics/sdl-wasm-fluid/README.md) compiles Joker-defined fluid kernels with `jit/compile-wasm` and runs them with wazero's compiler engine. SDL display and event calls use `joker.ffi`. Build it with `make sdl-wasm-fluid`.
+
+![Joker fluid kernels compiled to WASM, displayed through SDL FFI](docs/images/sdl-wasm-fluid.png)
+
 ## Architecture
 
 <img src="benchmarks/architecture.svg" alt="architecture" width="100%">
@@ -128,7 +132,7 @@ The [execution-tier audit](docs/EXECUTION_TIER_AUDIT.md) documents numeric promo
 Install the module with Go 1.25 or newer:
 
 ```sh
-go get github.com/rcarmo/go-joker/v42@v42.12.2
+go get github.com/rcarmo/go-joker/v42@v42.12.3
 ```
 
 Package imports include the major version, for example:
@@ -140,7 +144,7 @@ import "github.com/rcarmo/go-joker/v42/core"
 To install the CLI:
 
 ```sh
-go install github.com/rcarmo/go-joker/v42/cmd/joker@v42.12.2
+go install github.com/rcarmo/go-joker/v42/cmd/joker@v42.12.3
 ```
 
 `v42.11.3` is the first v42 release with a valid Go module path. Existing Go consumers must add `/v42` to their imports and run `go mod tidy`. Earlier v42 tags lacked this suffix and cannot be selected as module versions; those tags remain unchanged. Repository and source URLs still use `github.com/rcarmo/go-joker`.
@@ -249,8 +253,8 @@ tests/benchmark_ci_check.sh bench-results.txt
 
 ## Upstream
 
-Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.12.2.
-Release notes: [`docs/RELEASE_NOTES_v42.12.2.md`](docs/RELEASE_NOTES_v42.12.2.md).
+Based on the original Joker v1.7.2 codebase plus selected upstream feature ports. This fork is v42.12.3.
+Release notes: [`docs/RELEASE_NOTES_v42.12.3.md`](docs/RELEASE_NOTES_v42.12.3.md).
 Audit report: [`docs/AUDIT_REPORT_2026-07-09.md`](docs/AUDIT_REPORT_2026-07-09.md).
 Original README preserved as [`docs/archive/ORIGINAL_README.md`](docs/archive/ORIGINAL_README.md).
 

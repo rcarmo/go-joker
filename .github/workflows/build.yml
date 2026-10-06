@@ -24,13 +24,13 @@ jobs:
           done
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.26.5'
+          go-version: '1.27.1'
       - name: Verify release tag matches the source version
         run: |
           version=$(sed -n 's/^const VERSION = "\(.*\)"/\1/p' core/runtime/version.go)
           test "$version" = "$GITHUB_REF_NAME"
       - name: Populate dependency cache for offline consumer checks
-        run: go mod download
+        run: make deps
       - name: Run canonical release checks
         run: make release-check
       - name: Test default no-cgo FFI and fluid solver
@@ -38,8 +38,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - name: Install notebook browser smoke dependencies
         run: |
-          bun install --frozen-lockfile
-          PLAYWRIGHT_BROWSERS_PATH="$PLAYWRIGHT_BROWSERS_PATH" bunx playwright install chromium
+          make browser-deps
       - name: Run notebook browser smoke check
         run: PLAYWRIGHT_BROWSERS_PATH="$PLAYWRIGHT_BROWSERS_PATH" make notebook-browser-smoke
       - name: Retain concise Go test conclusions
@@ -83,7 +82,7 @@ jobs:
           done
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.26.5'
+          go-version: '1.27.1'
 
       - name: Build
         id: build
@@ -96,7 +95,7 @@ jobs:
           ext=""
           if [ "${{ matrix.goos }}" = "windows" ]; then ext=".exe"; fi
           binary="$PROJECT_TMP_ROOT/build/joker-${{ matrix.goos }}-${{ matrix.goarch }}${ext}"
-          go build -trimpath -ldflags="-s -w" -o "$binary" ./cmd/joker
+          make release-binary RELEASE_BINARY="$binary"
           echo "binary=$binary" >> "$GITHUB_OUTPUT"
 
       - name: Stage binary for SBOM scan
@@ -160,26 +159,26 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.26.5'
+          go-version: '1.27.1'
 
       - name: Generate and verify release checksums
-        run: tests/generate_release_checksums.sh release-files
+        run: make release-checksums RELEASE_ASSET_DIR=release-files
 
       - name: Verify downloaded binaries and supply-chain assets
         env:
           TAG: ${{ github.ref_name }}
           REVISION: ${{ github.sha }}
-        run: tests/verify_release_assets.sh release-files "$TAG" "$REVISION"
+        run: make release-assets-check RELEASE_ASSET_DIR=release-files
 
       - name: Verify default no-cgo FFI in downloaded binary
-        run: tests/verify_ffi_binary.sh release-files/joker-linux-amd64
+        run: make ffi-binary-check FFI_BINARY=release-files/joker-linux-amd64
 
       - name: Verify public Go module and CLI installation
         env:
           TAG: ${{ github.ref_name }}
           REVISION: ${{ github.sha }}
           GOPROXY: https://proxy.golang.org
-        run: tests/verify_release_module.sh "$TAG" "$REVISION"
+        run: make public-module-check
 
       - name: Generate release notes
         env:

@@ -29,6 +29,12 @@
     <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
+  <a href="#buffer-get">buffer-get</a>
+</li>
+<li>
+  <a href="#buffer-set!">buffer-set!</a>
+</li>
+<li>
   <a href="#compile">compile</a>
 </li>
 <li>
@@ -47,6 +53,9 @@
   <a href="#info">info</a>
 </li>
 <li>
+  <a href="#numeric-buffer">numeric-buffer</a>
+</li>
+<li>
   <a href="#wasm-engine">wasm-engine</a>
 </li>
 
@@ -63,15 +72,34 @@
     <h2 id="_functions">Functions, Macros, and Special Forms</h2>
     <ul>
       <li>
+  <h3 class="Function" id="buffer-get">buffer-get</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v42.12.3</span>
+  <pre class="var-usage"><div><code>(buffer-get buffer index)</code></div>
+</pre>
+  <p class="var-docstr">Read one f64 buffer element. The index must be finite, integral and in bounds.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="buffer-set!">buffer-set!</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v42.12.3</span>
+  <pre class="var-usage"><div><code>(buffer-set! buffer index value)</code></div>
+</pre>
+  <p class="var-docstr">Write and return one f64 buffer element. Checks the index and rejects integers outside +/-2^53.</p>
+
+
+</li>
+<li>
   <h3 class="Function" id="compile">compile</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(compile fn)</code></div>
 </pre>
   <p class="var-docstr">Compiles a function to the fastest available execution path.<br>
-For pure arithmetic fns, returns a native Go f64 closure.<br>
-For other fns, returns an IR-compiled wrapper.<br>
-The returned function can be called like any other fn.</p>
+  For pure arithmetic fns, returns a native Go f64 closure.<br>
+  For other fns, returns an IR-compiled wrapper.</p>
 
 
 </li>
@@ -80,10 +108,9 @@ The returned function can be called like any other fn.</p>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(compile-wasm fn)</code></div>
+<div><code>(compile-wasm fn options)</code></div>
 </pre>
-  <p class="var-docstr">Compiles a pure numeric function to an in-process WASM module.<br>
-Returns a callable wrapper that invokes the module&#39;s exec function. Integer<br>
-programs use i64 parameters/results; floating-point programs use f64.</p>
+  <p class="var-docstr">Compile a numeric function to WASM. Optional {:buffers [argument-indices]} selects checked f64 buffers and nested loops. Dense kernels return Double, reject integers outside +/-2^53, and never replay after a trap. Without options the existing scalar compiler is unchanged.</p>
 
 
 </li>
@@ -105,9 +132,9 @@ programs use i64 parameters/results; floating-point programs use f64.</p>
 </pre>
   <p class="var-docstr">Compiles fn to Joker IR and writes a portable .ir JSON file to path.<br>
 <br>
-The file contains format/version metadata, numSlots, base64-encoded IR<br>
-bytecode, serialized literal constants, and WASM eligibility metadata. It is<br>
-intended for external runners/tooling that implement the go-joker IR ABI.</p>
+  The file contains format/version metadata, numSlots, base64-encoded IR<br>
+  bytecode, serialized literal constants, and WASM eligibility metadata. It is<br>
+  intended for external runners/tooling that implement the go-joker IR ABI.</p>
 
 
 </li>
@@ -119,8 +146,10 @@ intended for external runners/tooling that implement the go-joker IR ABI.</p>
 </pre>
   <p class="var-docstr">Compiles fn to a standalone numeric WASM module and writes raw .wasm bytes.<br>
 <br>
-The exported module exposes an exec function. Parameters and return values are<br>
-i64 for integer IR programs or f64 for floating-point IR programs.</p>
+  The exported module exposes an `exec` function. Parameters and return values<br>
+  are i64 for integer IR programs or f64 for floating-point IR programs. Only<br>
+  pure WASM-eligible IR shapes can be exported this way; functions requiring<br>
+  Joker object/collection host imports should use export-ir instead.</p>
 
 
 </li>
@@ -131,8 +160,17 @@ i64 for integer IR programs or f64 for floating-point IR programs.</p>
   <pre class="var-usage"><div><code>(info fn)</code></div>
 </pre>
   <p class="var-docstr">Returns a map with compilation information about a function.<br>
-Keys: :compiled, :path, :slots, :captures, :self-recursive.<br>
-:path is one of &#34;native-f64&#34;, &#34;typed-ir&#34;, &#34;boxed-ir&#34;.</p>
+  Keys: :compiled, :path, :slots, :captures, :self-recursive.</p>
+
+
+</li>
+<li>
+  <h3 class="Function" id="numeric-buffer">numeric-buffer</h3>
+  <span class="var-kind Function">Function</span>
+  <span class="var-added">v42.12.3</span>
+  <pre class="var-usage"><div><code>(numeric-buffer size)</code></div>
+</pre>
+  <p class="var-docstr">Allocate a checked f64 buffer of 0..1048576 elements for dense WASM kernels.</p>
 
 
 </li>
