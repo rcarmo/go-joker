@@ -6,7 +6,7 @@ import (
 	corestr "github.com/rcarmo/go-joker/v42/core/types/string"
 )
 
-const VERSION = "v42.12.3"
+const VERSION = "v42.12.4"
 
 func VersionMap(intern func(string) *string) coretypes.Map {
 	res := corecollections.EmptyArrayMap()

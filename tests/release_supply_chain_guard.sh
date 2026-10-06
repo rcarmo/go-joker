@@ -32,6 +32,13 @@ grep -A5 '^  build:' "$workflow" | grep -Fq 'attestations: write' || {
 }
 
 for ci in .github/workflows/ci.yml "$workflow"; do
+  # The canonical gate checks arithmetic docs with Bun before browser setup.
+  bun_line=$(grep -n 'uses: oven-sh/setup-bun@v2' "$ci" | head -1 | cut -d: -f1)
+  gate_line=$(grep -n 'run: make release-check' "$ci" | head -1 | cut -d: -f1)
+  [[ -n $bun_line && -n $gate_line && $bun_line -lt $gate_line ]] || {
+    echo "release supply-chain guard: $ci must install Bun before release-check" >&2
+    exit 1
+  }
   grep -Fq 'run: make deps' "$ci" || {
     echo "release supply-chain guard: $ci must populate archives before offline module checks" >&2
     exit 1

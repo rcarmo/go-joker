@@ -51,6 +51,7 @@ ACTIONLINT_VERSION ?= v1.7.7
 BENCH_REGEX ?= BenchmarkCLBG(NBody|Mandelbrot|SpectralNorm|BinaryTrees|FannkuchRedux)
 COMPARE_OUT ?= benchmarks/compare/out/latest
 DOCS_JOKER_BIN ?= $(PROJECT_TMP_ROOT)/build/go-joker-docs
+PARITY_OUT ?= docs/DIVERGENCE_MATRIX.md
 CLI_BIN ?= $(PROJECT_TMP_ROOT)/build/joker
 DIST_DIR ?= $(PROJECT_TMP_ROOT)/build/dist
 RELEASE_BINARY ?= $(PROJECT_TMP_ROOT)/build/joker-$(GOOS)-$(GOARCH)
@@ -454,7 +455,7 @@ docs-check: docs-verify docs-command-check notebook-check examples-check docs-pa
 	grep -q 'id="pcalls"' docs/joker.core.html
 
 parity: cli
-	$(GO) run tests/clojure_parity.go -joker $(abspath $(CLI_BIN)) -out docs/DIVERGENCE_MATRIX.md
+	$(GO) run tests/clojure_parity.go -joker $(abspath $(CLI_BIN)) -out $(PARITY_OUT)
 
 jank-subset: cli
 	JOKER_BIN=$(abspath $(CLI_BIN)) tests/run_jank_subset.sh
@@ -554,6 +555,11 @@ release-status:
 release-watch:
 	@test -n "$(RUN_ID)"
 	gh run watch "$(RUN_ID)" --repo "$(GH_REPO)" --exit-status --interval 30
+
+.PHONY: release-log
+release-log:
+	@test -n "$(RUN_ID)"
+	gh run view "$(RUN_ID)" --repo "$(GH_REPO)" --log-failed
 
 release-commit:
 	git config user.name "Rui Carmo"
