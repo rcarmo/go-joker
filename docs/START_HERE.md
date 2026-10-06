@@ -1,19 +1,20 @@
 # Start Here
 
-This repository is a maintained, performance-oriented fork of Joker with extra namespaces, notebook tooling, examples, and compatibility checks. If you are new to this tree, use this page as the shortest path from clone to useful local validation.
+This repository is a maintained, performance-oriented fork of Joker with extra namespaces, notebook tooling, examples and compatibility checks. Start here for a local build, a small validation pass and the current WASM workflow.
 
 ## 1. Build the CLI
 
 ```bash
+source scripts/project-env.sh
 make cli
-/workspace/tmp/go-joker/build/joker --version
+"$CLI_BIN" --version
 ```
 
-The command-line entrypoint is `cmd/joker`; repository-local binaries belong under `.cache/` so the layout guard remains clean. The version string is defined in `core/runtime/version.go` and cross-checked by the release hygiene guard.
+`cmd/joker` is the CLI entrypoint. On this host `CLI_BIN` defaults to `/workspace/tmp/go-joker/build/joker`.
 
-## 2. Run a small confidence check
+## 2. Run a focused local check
 
-For day-to-day local work, prefer focused checks over running everything:
+For ordinary development, run the narrowest useful target:
 
 ```bash
 make test-short
@@ -22,19 +23,36 @@ make examples-check
 make ai-check               # lint and run the offline joker.ai fixture suite
 ```
 
-Before sending changes that affect public docs, examples, release metadata, generated docs, or runtime contracts, run:
+Before sending changes that affect public docs, examples, release metadata, generated docs or runtime contracts, run:
 
 ```bash
 make docs-check
 ```
 
-`docs-check` regenerates API docs and runs the high-value documentation, example, release hygiene, generated-file, layout, error-handling, runtime-contract, and std native-boundary guards.
+`docs-check` regenerates API docs and runs the high-value documentation, example, release hygiene, generated-file, layout, error-handling, runtime-contract and std native-boundary guards.
 
-## 3. Try the examples
+## 3. Try the WASM engines and standalone workflow
+
+```bash
+source scripts/project-env.sh
+make cli
+"$CLI_BIN" --wasm-engine=interpreter examples/wasm/native-sum.joke
+"$CLI_BIN" --wasm-engine=compiler examples/wasm/native-sum.joke
+"$CLI_BIN" compile --native --run examples/wasm/native-sum.joke \
+  -o "$PROJECT_TMP_ROOT/build/native-sum"
+"$PROJECT_TMP_ROOT/build/native-sum" --wasm-engine=interpreter
+```
+
+`--wasm-engine` accepts `auto`, `interpreter` or `compiler`; `native` aliases `compiler`. `compile` produces a platform executable that contains the Joker runtime plus bundled source. `--native` stores compiler selection for eligible `joker.jit/compile-wasm` functions. Runtime flags or `JOKER_WASM_ENGINE` can still override that saved default. The resulting program remains source-bundled; eligible functions compile to WASM at runtime.
+
+Use `docs/WASM_EXECUTION.md` for the full engine, override and standalone notes.
+
+## 4. Try the examples
 
 Examples are grouped by purpose:
 
-- `examples/graphics/fractal-flame.joke` — pure Joker graphics example.
+- `examples/wasm/native-sum.joke` — small `joker.jit/compile-wasm` example that prints the actual WASM engine.
+- `examples/graphics/fractal-flame.joke` — pure Joker graphics example with a WASM-compiled numeric kernel.
 - `examples/games/tetris.joke` — terminal UI example using `joker.term`.
 - `examples/wiki/static.joke` — static/dynamic wiki site example.
 - `examples/notebooks/*.edn` — local Joker notebook files.
@@ -42,27 +60,28 @@ Examples are grouped by purpose:
 
 Use `examples/README.md` for exact commands.
 
-## 4. Find the right documentation
+## 5. Find the right documentation
 
-- `README.md` — project overview, feature highlights, and benchmark summary.
+- `README.md` — project overview, feature highlights and benchmark summary.
+- `docs/WASM_EXECUTION.md` — WASM engine selection, `joker.jit/compile-wasm` limits and standalone executable workflow.
 - `docs/API_STABILITY.md` — stability classification for public namespaces and user-facing surfaces.
-- `docs/DEVELOPER.md` — internals, generated docs, and development checks.
+- `docs/DEVELOPER.md` — internals, generated docs and development checks.
 - `docs/RELEASE_CHECKLIST.md` — patch-release validation and tagging hygiene.
-- `docs/NOTEBOOKS.md` — local notebook format, CLI, and browser UI.
-- `docs/TRACING.md` — runtime tracing/profiling support.
-- `examples/ai/README.md` — provider-neutral AI client contract, credentials, security boundaries, and tests.
+- `docs/NOTEBOOKS.md` — local notebook format, CLI and browser UI.
+- `docs/TRACING.md` — targeted tracing and pre-release profiling workflow.
+- `examples/ai/README.md` — provider-neutral AI client contract, credentials, security boundaries and tests.
 
 Generated namespace documentation lives in `docs/*.html` and is refreshed by `make docs-check`.
 
-## 5. Repository conventions
+## 6. Repository conventions
 
-- Keep planning and work tracking outside versioned roadmap documents unless a durable user-facing doc is required.
-- Keep examples under their grouped directories; `tests/docs_paths_guard.sh` rejects stale pre-reorganization paths.
-- Keep temporary files under `.cache/` or test-owned temp directories, not fixed `/tmp` or workspace-specific paths.
+- Source `scripts/project-env.sh` before direct commands that build binaries or create scratch output.
+- Keep temporary files under the project-owned `$PROJECT_TMP_ROOT` hierarchy, not ad hoc `/tmp` paths or the repository root.
 - Public API additions should be classified in `docs/API_STABILITY.md` and covered by focused tests or smoke guards.
-- Runtime maintainability work should move cohesive same-package clusters in small slices, keep behavior unchanged, and pair each move with focused contract validation before broader checks.
+- Runtime maintainability work should move cohesive same-package clusters in small slices, keep behaviour unchanged and pair each move with focused contract validation before broader checks.
+- Pre-release profiling must review CPU and heap/allocation behaviour. Ordinary local tests do not need profiles unless you are investigating a problem. Delete raw profiles, matching binaries and disposable logs after review; keep short conclusions only.
 
-## 6. Common commands
+## 7. Common commands
 
 ```bash
 make help                  # list the curated targets

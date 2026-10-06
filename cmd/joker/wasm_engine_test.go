@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/binary"
 	"encoding/json"
 	"os"
@@ -72,6 +73,70 @@ func TestWASMEngineOptions(t *testing.T) {
 		}
 	}
 }
+func TestStandaloneRejectsOverwriteAndPreservesTarget(t *testing.T) {
+	dir := t.TempDir()
+	source := filepath.Join(dir, "source.joke")
+	output := filepath.Join(dir, "output")
+	if err := os.WriteFile(source, []byte("(println 42)"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := compileStandalone(source, source); err == nil {
+		t.Fatal("source overwrite accepted")
+	}
+	if data, err := os.ReadFile(source); err != nil || string(data) != "(println 42)" {
+		t.Fatal("source changed", err)
+	}
+	exe, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := compileStandalone(source, exe); err == nil {
+		t.Fatal("running executable overwrite accepted")
+	}
+	if err := os.Mkdir(output, 0700); err != nil {
+		t.Fatal(err)
+	}
+	marker := filepath.Join(output, "marker")
+	if err := os.WriteFile(marker, []byte("preserve"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := compileStandalone(source, output); err == nil {
+		t.Fatal("directory target replaced")
+	}
+	if data, err := os.ReadFile(marker); err != nil || string(data) != "preserve" {
+		t.Fatal("existing target changed", err)
+	}
+	leftovers, err := filepath.Glob(filepath.Join(dir, ".joker-compile-*"))
+	if err != nil || len(leftovers) != 0 {
+		t.Fatal("temporary output leaked", leftovers, err)
+	}
+}
+
+func TestStandaloneStreamingRuntimeSize(t *testing.T) {
+	for _, payload := range []string{"", "legacy", "\x00JKR-META-1\x00{}"} {
+		data := []byte("runtime")
+		if payload != "" {
+			footer := make([]byte, 12)
+			binary.LittleEndian.PutUint64(footer, uint64(len(payload)))
+			copy(footer[8:], standaloneMagic)
+			data = append(append(data, []byte(payload)...), footer...)
+		}
+		n, err := standaloneRuntimeSize(bytes.NewReader(data), int64(len(data)))
+		if err != nil || n != 7 {
+			t.Fatalf("payload %q: %d %v", payload, n, err)
+		}
+	}
+	footer := make([]byte, 12)
+	binary.LittleEndian.PutUint64(footer, ^uint64(0))
+	copy(footer[8:], standaloneMagic)
+	if n, err := standaloneRuntimeSize(bytes.NewReader(footer), 12); err != nil || n != 12 {
+		t.Fatal("malformed footer", n, err)
+	}
+	if _, err := standaloneRuntimeSize(bytes.NewReader(nil), 12); err == nil {
+		t.Fatal("short footer accepted")
+	}
+}
+
 func TestStandaloneEngineMetadata(t *testing.T) {
 	data, err := json.Marshal(standaloneMetadata{Source: "(+ 20 22)", Engine: "compiler"})
 	if err != nil {

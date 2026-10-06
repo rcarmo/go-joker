@@ -23,6 +23,8 @@ The example explicitly uses `jit/compile-wasm` to compile its integer loop. Both
 
 `compile --run` builds and executes immediately; arguments after `--` are passed to the resulting program. `--native` embeds compiler selection. `--wasm-engine=interpreter` or `auto` can be embedded instead. Runtime CLI engine flags override the embedded choice; an explicit environment variable also overrides it. Without any saved selection, `auto` is the default. Existing source-only standalone payloads still load.
 
+Packaging streams the existing runtime into a temporary output and appends the source/engine metadata, avoiding a runtime-sized Go buffer. The temporary file is closed and made executable before replacing the destination; build errors preserve an existing destination. Source and running-executable overwrite attempts are rejected.
+
 The generated executable contains the native Joker runtime and bundled source. Eligible functions run as native helpers/IR or WASM according to their supported shape; arbitrary unsupported forms still use the interpreter. This is **not whole-program ahead-of-time compilation of Joker**. The standalone format embeds source/engine metadata, not portable persisted machine code. It targets the platform of the Joker binary used to build it. macOS signed executables may need re-signing after source is appended.
 
 ## Script diagnostics

@@ -19,10 +19,12 @@ Before publication, `tests/verify_release_assets.sh`:
 
 1. verifies every entry in `SHA256SUMS`;
 2. requires the complete six-platform binary/SBOM set;
-3. inspects Go build metadata in every binary and requires the `/v42/cmd/joker` command path, the tag commit and `vcs.modified=false`;
+3. inspects Go build metadata in every binary and requires the `/v42/cmd/joker` command path, the tag commit, `vcs.modified=false`, `CGO_ENABLED=0` and the default purego FFI backend;
 4. executes the downloaded Linux `amd64` binary on the release runner and checks that `--version` reports the tag.
 
 `tests/verify_release_module.sh <tag> <revision>` also resolves the public `/v42` module, checks its exact version and commit, evaluates an expression in a separate consumer and installs the CLI. Release CI requires `proxy.golang.org` and checksum verification before publication, retrying briefly for a new tag to propagate. Run the same check after publication. Ordinary `make release-check` uses an offline local-proxy consumer fixture with no replacement directives.
+
+The downloaded Linux binary also runs a real C ABI smoke through `joker.ffi`, without feature tags. Pre-release tests analyse CPU and heap profiles; raw profiles, matching test binaries and disposable logs are deleted after use. CI uploads concise conclusions only.
 
 A failure prevents release creation or asset upload. `make release-supply-chain-check`, included in `make release-check`, guards the workflow contract and tests checksum tamper detection without producing a release.
 

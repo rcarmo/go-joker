@@ -1,54 +1,51 @@
-# Go test profiling and first allocation pass
+# Go profiling and allocation review
 
-Updated lifecycle: pre-release profiling remains mandatory; ordinary development tests need not profile. Raw profiles, matching binaries and completed logs from this report have been disposed after analysis. Only the conclusions below remain. Use `PROFILE_TESTS=1` for capture under the canonical `runs/profiles`, then `scripts/dispose-profiles.sh <run> "concise findings"`.
+Pre-release checks must capture CPU and heap profiles, inspect application costs and tune measured bottlenecks. Ordinary development tests need not profile. Delete raw captures, matching binaries, traces and disposable logs immediately after analysis/use; keep concise findings and measurements.
 
-All Go test targets now capture CPU and heap profiles, retain binaries/logs and generate cumulative CPU, allocated-byte and allocated-object reports. Python checks are unchanged. Profiles are diagnostic evidence; every run also needs an engineering review.
-
-## Running tests
+## Commands and disposal
 
 ```sh
-make test-repro
-make test-core
-make race
-PROFILE_MEM_RATE=1 scripts/test-profile.sh ./benchmarks/core -- -run '^$' -bench BenchmarkGoID -benchtime=10000x
+source scripts/project-env.sh
+make test-repro                       # ordinary development tests
+PROFILE_TESTS=1 make test-core         # diagnostic profiling
+PRETAG_BROWSER_SMOKE=1 make pretag-check
 ```
 
-`PROFILE_ROOT` now defaults to the canonical project `runs/profiles` directory. Each run has its own directory, an invocation record, package list and status table. Packages run separately because Go cannot write independent profiles for multiple packages in one invocation. No test-result cache is used. Coverage merges per-package coverage files. CI retains profile artifacts, including failed runs, under the existing retention policy.
+Profiles use `$PROJECT_TMP_ROOT/runs/profiles`. The runner tests packages separately, producing cumulative CPU, `alloc_space` and `alloc_objects` reports. Heap sampling defaults to 512 KiB; `PROFILE_MEM_RATE=1` provides exact allocation attribution with greater instrumentation cost. Empty CPU samples in short tests are not hotspot evidence. Parent profiles do not cover child CLI processes or native-library heap activity.
 
-The runner analyses profiles after failures too. Missing profiles cause a nonzero result. Build-only packages and benchmark-only packages in a full test run are reported separately from test execution; a focused pattern with no matches fails. Short tests can produce a valid CPU profile with zero samples; use a longer matching workload for CPU attribution. Heap sampling defaults to 512 KiB; use rate 1 for focused allocation attribution, not latency comparisons.
+After reviewing a capture:
 
-Nested external Go consumer tests also use the runner. Python tooling, native-library allocations and child CLI processes are not measured by these Go test profiles. This change does not add Python profiling or modify third-party code.
+```sh
+scripts/dispose-profiles.sh "$run" "workload, result, hotspot, change and limitations"
+```
 
-## First full run
+The helper saves compact conclusions under `.cache/profile-conclusions` and removes the raw run. CI keeps compact diagnostic findings and disposes raw captures. Do not upload raw profile archives or move them into report/export directories.
 
-Baseline: `a9d1cc6c`, Go 1.26.5, Linux amd64, Intel Core i7-12700. Environment and raw evidence are retained in `.cache/profiling-pass-20261005/`; all package profiles are in the recorded run directories.
+Use matched workloads/toolchains/flags before attributing an improvement. Instrumented benchmark latency is diagnostic; measure uninstrumented throughput separately. Coverage and `-benchmem` alone do not replace CPU and allocation profiles.
 
-The baseline ran all 57 packages and analysed profiles for every package with test files. The first runner incorrectly rejected `std/html`, which contains benchmarks but no test functions. Its profile was present; no assertion failed. The runner now distinguishes this legitimate full-suite case from an empty focused selection. The subsequent full run passed. The first pretag attempt then rejected the new lookup benchmarks under `core/runtime`; they were moved to `benchmarks/core` as required. The corrected profiled full pretag/browser gate and race suite passed. Failed gate logs and profiles remain retained.
+## Goroutine-state lookup
 
-Core allocated-byte samples attributed about 101 MB (31.7%) to the escaping 64-byte stack-header buffer in `core/runtime.GoID`. CPU attribution was more severe: `runtime.Stack` through interpreter-state lookup accounted for about 95% of core CPU samples. Per-goroutine lookup becomes active when worker runtime states exist. That CPU result is specific to this suite's concurrency/state lifecycle, not a typical application speed claim.
+The first profiled core suite attributed about 101 MB of allocation to the escaping 64-byte stack-header buffer in `core/runtime.GoID`. Pooling that private buffer reduced both GoID and registered-state lookup from 64 B/op and one allocation to zero in six matched focused samples. GC can clear the pool, so zero steady-state allocation is not a lifetime guarantee.
 
-## Allocation change
+Core allocated-byte samples fell from about 319 MB to 220 MB, but concurrent suite totals are noisy. The focused per-operation comparison establishes the change. `runtime.Stack` still dominates CPU when spawned interpreter states exist; replacing it requires explicit state ownership and concurrency/fallback tests, not undocumented runtime offsets.
 
-A private `sync.Pool` now supplies the stack-header buffer. Each call checks out a distinct buffer and returns it after parsing, preserving IDs and state lookup rules without undocumented runtime offsets or unsafe goroutine pointers.
+## Standalone packaging
 
-Six matched focused samples with allocation sampling rate 1 showed:
+The WASM/CLI follow-up profiled two packaging variants on Go 1.27.1, Linux amd64, Intel Core i7-12700. Six samples per variant used two builds each, including source/metadata and filesystem writes. Reading the complete runtime dominated allocated bytes (over 99% of the sampled baseline).
 
-| Workload | Baseline | Candidate |
-| --- | --- | --- |
-| GoID | 64 B/op, 1 alloc/op | 0 B/op, 0 allocs/op |
-| Registered interpreter-state lookup | 64 B/op, 1 alloc/op | 0 B/op, 0 allocs/op |
+Streaming the runtime and reusing the footer reduced:
 
-Concurrent ID stability/uniqueness and focused race checks passed. A discarded first benchmark registered the pool's main goroutine and incorrectly expected a worker state; that test mistake and its profiles are retained. The corrected benchmark creates the pool on a separate goroutine.
+| Variant | Baseline bytes/op | Streaming bytes/op | Allocations/op |
+| --- | --- | --- | --- |
+| Legacy source payload | 46,177,632 | 7,536 | 74 -> 74 |
+| Saved compiler mode | 46,179,152 | about 8,612 | 86 -> 85 |
 
-Core full-suite allocated-byte samples fell from 318.98 MB to 220.29 MB; allocated-object samples fell from 6.32 million to 4.70 million. Sampling and concurrency change whole-suite totals, so the focused per-operation measurements establish the reduction. Instrumented benchmark latency improved, but no uninstrumented speedup is claimed. Pool reuse is not a hard guarantee of zero allocations after GC: the runtime may clear pooled buffers.
+This removes about 99.98% of Go allocation bytes in the measured packaging workload. Timings were instrumented and filesystem-noisy; no general startup/execution speedup is claimed. Metadata, malformed-length, safe replacement, source-deleted execution and argument/engine-override tests pass. Raw baseline, intermediate and candidate captures were removed after comparison.
 
-## Profile review and next candidates
+## Other observed costs
 
-* Core still spends roughly 96% of CPU samples in runtime-state lookup/stack extraction after the change. Pooling removes allocation, not stack formatting or runtime synchronization. Replacing this mechanism needs an explicit state-passing/runtime ownership design and concurrency/fallback tests; a fragile runtime-offset trick is not justified.
-* Vector construction and IR execution now lead core allocations (`BuildVector` about 58 MB, `irExec` about 34.5 MB flat in the candidate sample). `BuildVector` deliberately copies temporary IR input; removing that copy would alias mutable executor memory. Keep it until a measured ownership-transfer design proves collection immutability.
-* String tests allocate about 193 MB, of which 186.5 MB (96.5%) is the differential-test fixture construction. Rewriting that fixture would improve test totals without reducing interpreter allocations. Preserve its independent/reference coverage. Collection profiles are about 2.35 MB and largely profiling/runtime overhead; no collection change is justified by that sample.
-* Notebook profiles allocate about 60 MB, led by `io.ReadAll` (32.8 MB) and byte/string copying (16 MB). These include serving embedded assets and test scaffolding. A repeated notebook/request workload can determine whether static-asset caching or bounded copy reduction would benefit users before changing resource ownership.
-* CLI, HTTP, PDF and integration packages allocate roughly 5.7–6.9 MB each, with compression/profiling buffers, bootstrap and runtime allocations prominent. No third-party optimization was attempted. Profiles of the parent Go test do not cover child-process allocations.
-* The benchmark-only HTML package does not establish throughput in a full test run. Use a dedicated profiled benchmark and a matched uninstrumented measurement before making performance claims.
+Vector construction and IR execution lead core allocations after GoID pooling. `BuildVector` copies temporary IR input deliberately; removing that copy without ownership transfer could break immutable collection behaviour. String differential-test fixture creation accounts for most allocations in that test package and is not an application optimization target.
 
-No release or push is part of this pass. Curl/SDL ABI qualification resumes using the same profiling rule for its Go tests.
+Notebook profiles highlight `io.ReadAll` and byte/string copying around embedded assets and test scaffolding. Repeat a realistic request workload before changing ownership or asset caching. Short CLI/HTTP/PDF/collection captures often show bootstrap, runtime/profiler and compression overhead; no third-party changes are justified by those samples.
+
+The SDL fluid solver uses persistent arrays and records zero steady-state allocations for step/RGBA conversion. Its iterative relaxation dominates CPU. Reducing solver passes changes the simulation; it was not used to improve a benchmark. Native SDL allocations are outside Go heap profiling.

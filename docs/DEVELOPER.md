@@ -2,7 +2,19 @@
 
 # Developer Notes
 
-These notes are intended for developers working on the internals of Joker itself. They are not comprehensive.
+These notes cover Joker internals, runtime packaging and development checks. Use `docs/WASM_EXECUTION.md` for the full user-facing WASM workflow.
+
+## WASM engines and standalone executables
+
+`joker.jit/compile-wasm` modules run through wazero's interpreter or native compiler. Select the mode before the first WASM use with `--wasm-engine=auto|interpreter|compiler` or `JOKER_WASM_ENGINE`; `native` normalises to `compiler`. `auto` prefers the compiler and falls back to the interpreter when the host or executable-memory policy does not allow native compilation. `joker.jit/wasm-engine` reports the actual shared engine, which is always `compiler` or `interpreter`.
+
+`joker compile <source.joke> -o output` copies the current Joker executable and appends source, producing a platform-specific native runtime plus bundled source. `compile --native --run` builds that executable and runs it immediately. `--native` saves `compiler` as the embedded engine choice; `--wasm-engine=auto|interpreter|compiler` can save another default. Runtime precedence is: CLI `--wasm-engine`, then `JOKER_WASM_ENGINE`, then the embedded choice, then `auto`.
+
+The generated executable stores source and optional engine metadata. Eligible functions still compile to WASM at runtime, and unsupported forms continue on Joker's normal interpreter or IR paths. The format does not persist host machine code and is not whole-program Joker ahead-of-time compilation.
+
+## Profiling lifecycle
+
+Ordinary development tests do not need profiling unless you are investigating a problem. Pre-release verification does. Capture CPU plus heap/allocation behaviour, inspect cumulative CPU together with `alloc_space` and `alloc_objects`, review the hotspots, then delete raw profiles, traces, matching test binaries and disposable logs as soon as the analysis is complete. Keep concise findings only. `docs/TRACING.md` contains the command patterns and disposable run layout.
 
 ## Library Code (Namespaces)
 

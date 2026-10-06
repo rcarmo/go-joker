@@ -10,6 +10,8 @@ Rui's explicit rule: **profile and tune during pre-release tests; remove profili
 - Existing no-agent-contact and execution-pause rules remain unchanged. This policy grants no unsolicited coordination or automatic job restart.
 <!-- /RUI-PROFILE-LIFECYCLE-20261005 -->
 
+
+
 # AGENTS.md - Joker Codebase Guide
 
 This document provides guidance for AI coding agents working in the Joker codebase.
@@ -316,6 +318,12 @@ SIMD is an explicit optimisation target where available, with a correct scalar f
 - Differential-test SIMD against scalar on identical data. Cover zero/short inputs, vector-width boundaries and tails, unaligned slices, aliasing, page/buffer boundaries, overflow, NaNs and Unicode where relevant. No out-of-bounds reads, unsafe alignment assumptions, or semantic changes for speed.
 - Provide a testable way to exercise scalar and each available SIMD path; verify actual selection. Do not claim SIMD coverage from fallback results or cross-compilation alone.
 - Measure representative benefits with the same repeated timing/allocation policy. Retain scalar code as the portable reference; report architectures executed, only cross-built, unavailable or unsupported.
+
+## WASM engines and standalone scripts
+
+- Select `--wasm-engine=interpreter|compiler|auto` or `JOKER_WASM_ENGINE` before the shared WASM runtime initializes. Assert `jit/wasm-engine` where execution-tier evidence is required; explicit compiler mode must not silently fall back.
+- `joker compile --native --run script.joke -o program` packages the native runtime and source, with saved WASM engine selection. Eligible WASM functions compile during execution; this is not whole-program Joker AOT. Preserve argument forwarding and backward-compatible payload parsing.
+- Packaging streams the runtime region. Do not reintroduce a runtime-sized `os.ReadFile` allocation. Test footer limits, engine metadata, safe output replacement and source-deleted execution.
 
 ## Mandatory full regression validation
 

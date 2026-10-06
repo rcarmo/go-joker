@@ -158,14 +158,26 @@ func compileStandaloneEngine(sourceFile, outputFile, engine string) (err error) 
 			return fmt.Errorf("output must not overwrite the running executable")
 		}
 	}
-	// Read the runtime binary (strip any existing embedded source)
-	runtimeBin, err := os.ReadFile(exe)
+	// Read only the footer, then stream the executable. Avoid allocating a
+	// runtime-sized byte slice for every compile operation.
+	runtimeFile, err := os.Open(exe)
 	if err != nil {
-		return fmt.Errorf("cannot read runtime binary: %w", err)
+		return fmt.Errorf("cannot open runtime binary: %w", err)
 	}
-
-	// Strip existing payload if present
-	runtimeBin = stripEmbeddedPayload(runtimeBin)
+	defer func() {
+		if closeErr := runtimeFile.Close(); err == nil && closeErr != nil {
+			err = closeErr
+		}
+	}()
+	runtimeInfo, err := runtimeFile.Stat()
+	if err != nil {
+		return fmt.Errorf("stat runtime: %w", err)
+	}
+	footer := make([]byte, standaloneFooterSize)
+	runtimeSize, err := standaloneRuntimeSizeWithFooter(runtimeFile, runtimeInfo.Size(), footer)
+	if err != nil {
+		return err
+	}
 
 	// Create output
 	out, err := os.CreateTemp(filepath.Dir(outputFile), ".joker-compile-*")
@@ -185,9 +197,9 @@ func compileStandaloneEngine(sourceFile, outputFile, engine string) (err error) 
 		}
 	}()
 
-	// Write runtime binary
-	if err := writeStandaloneChunk(out, "runtime", runtimeBin); err != nil {
-		return err
+	// Copy the original runtime region without a previous script payload.
+	if _, err := io.CopyN(out, runtimeFile, runtimeSize); err != nil {
+		return fmt.Errorf("copy runtime: %w", err)
 	}
 
 	// Write source
@@ -196,7 +208,6 @@ func compileStandaloneEngine(sourceFile, outputFile, engine string) (err error) 
 	}
 
 	// Write footer: [8-byte LE source length][4-byte magic]
-	footer := make([]byte, standaloneFooterSize)
 	binary.LittleEndian.PutUint64(footer[0:8], uint64(len(src)))
 	copy(footer[8:12], standaloneMagic)
 	if err := writeStandaloneChunk(out, "footer", footer); err != nil {
@@ -219,6 +230,29 @@ func compileStandaloneEngine(sourceFile, outputFile, engine string) (err error) 
 		return fmt.Errorf("replace executable: %w", err)
 	}
 	return nil
+}
+
+// standaloneRuntimeSize validates a footer without converting untrusted uint64
+// lengths to int, and locates the runtime region for bounded streaming.
+func standaloneRuntimeSize(r io.ReaderAt, size int64) (int64, error) {
+	var footer [standaloneFooterSize]byte
+	return standaloneRuntimeSizeWithFooter(r, size, footer[:])
+}
+func standaloneRuntimeSizeWithFooter(r io.ReaderAt, size int64, footer []byte) (int64, error) {
+	if size < standaloneFooterSize {
+		return size, nil
+	}
+	if _, err := r.ReadAt(footer, size-standaloneFooterSize); err != nil {
+		return 0, fmt.Errorf("read runtime footer: %w", err)
+	}
+	if string(footer[8:]) != standaloneMagic {
+		return size, nil
+	}
+	n := binary.LittleEndian.Uint64(footer[:8])
+	if n > uint64(size-standaloneFooterSize) {
+		return size, nil
+	}
+	return size - standaloneFooterSize - int64(n), nil
 }
 
 // stripEmbeddedPayload removes an existing JKRB payload from a binary.

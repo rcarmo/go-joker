@@ -4,7 +4,7 @@ Use this checklist before tagging any release. Select the next version according
 
 ## Version and notes
 
-- [ ] Decide whether current `master` changes require a major, minor, or patch release under the repository's existing `vX.Y.Z` convention.
+- [ ] Decide whether current `master` changes require a major, minor or patch release under the repository's existing `vX.Y.Z` convention.
 - [ ] Update `core/runtime/version.go`; keep the major aligned with the `go.mod` suffix (`/v42`) and all package imports. Never replace existing tags.
 - [ ] Update the README version sentence, Go module/CLI install examples and release-notes link.
 - [ ] Add `docs/RELEASE_NOTES_<version>.md`.
@@ -14,7 +14,7 @@ Use this checklist before tagging any release. Select the next version according
 
 ## Validation
 
-Pre-release Go checks capture CPU/heap profiles for review and tuning. Dispose raw captures, matching test binaries/traces/run logs immediately after analysis/use, retaining concise conclusions only. Ordinary development tests need not profile.
+Pre-release verification must capture CPU and heap/allocation behaviour. Review cumulative CPU together with `alloc_space` and `alloc_objects`, tune avoidable work, then delete raw profiles, matching test binaries, traces and disposable logs as soon as the analysis is complete. Keep concise conclusions only. Ordinary development tests do not need profiles unless you are investigating a problem.
 
 The canonical release gate used locally and by both GitHub workflows is:
 
@@ -27,6 +27,20 @@ Before tagging, run its `pretag-check` wrapper:
 ```bash
 make pretag-check
 ```
+
+When the release changes `joker.jit/compile-wasm`, `--wasm-engine` or `joker compile`, run a direct WASM and standalone smoke as well:
+
+```bash
+source scripts/project-env.sh
+make cli
+"$CLI_BIN" --wasm-engine=interpreter examples/wasm/native-sum.joke
+"$CLI_BIN" --wasm-engine=compiler examples/wasm/native-sum.joke
+"$CLI_BIN" compile --native --run examples/wasm/native-sum.joke \
+  -o "$PROJECT_TMP_ROOT/build/native-sum"
+"$PROJECT_TMP_ROOT/build/native-sum" --wasm-engine=interpreter
+```
+
+Record the actual `joker.jit/wasm-engine` result when comparing hosts or profile runs. `compile` bundles the current Joker runtime and source into a platform executable. `--native` stores compiler selection for eligible WASM functions, and runtime CLI flags or `JOKER_WASM_ENGINE` can still override that saved default.
 
 `make module-consumer-check` checks the release major against the module declaration and builds an external interpreter consumer and CLI through an offline file proxy, without `replace` or workspace overrides. Populate the dependency archive cache with `go mod download` first (also done by CI); this check does not fetch from the network. A build alone may omit test-only dependency archives.
 
@@ -57,11 +71,11 @@ git push origin vX.Y.Z
 ## Post-tag checks
 
 - [ ] Confirm GitHub Actions release workflow completed.
-- [ ] Confirm all six release binaries, their SPDX SBOMs, and `SHA256SUMS` are attached.
+- [ ] Confirm all six release binaries, their SPDX SBOMs and `SHA256SUMS` are attached.
 - [ ] Verify the downloaded checksums with `sha256sum --strict --check SHA256SUMS`.
 - [ ] Verify build provenance with `gh attestation verify <binary> --repo rcarmo/go-joker`.
 - [ ] Confirm the downloaded native `joker --version` reports the tagged version.
 - [ ] Verify public Go module resolution, interpreter use and CLI installation with `GOPROXY=https://proxy.golang.org tests/verify_release_module.sh "$TAG" "$(git rev-parse "$TAG^{}")"`. Release CI also requires the public proxy before publication and retries briefly for propagation. Consumers must use `/v42`; the unversioned path's `@latest` still selects its v1 series.
 - [ ] Avoid editing the tagged release note with post-tag changes unless clearly marked as post-tag or moved into the next release notes file.
 
-See [`RELEASE_SUPPLY_CHAIN.md`](RELEASE_SUPPLY_CHAIN.md) for the asset, provenance, SBOM, and consumer-verification contract.
+See [`RELEASE_SUPPLY_CHAIN.md`](RELEASE_SUPPLY_CHAIN.md) for the asset, provenance, SBOM and consumer-verification contract.
